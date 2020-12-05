@@ -1,10 +1,10 @@
 {
   "braveRewards": {
-    "message": "Вознаграждение Brave",
+    "message": "Brave Rewards",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Начните зарабатывать уже сейчас!",
+    "message": "Начать зарабатывать сейчас!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,15 +12,15 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Получайте оплату за просмотр рекламы и оплачивайте ее авансом, чтобы поддержать ваших любимых создателей контента.",
+    "message": "Получайте вознаграждение за просмотр рекламы и используйте его, чтобы поддержать ваши любимые сайты.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Вы теперь можете получать токены за просмотр рекламы, уважающей конфиденциальность.",
+    "message": "Сейчас вы можете заработать бонусы за просмотр рекламы с сохранением конфиденциальности.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "Теперь вы сможете зарабатывать деньги за просмотр рекламы соответствии с вашими интересами.",
+    "message": "Теперь вы можете зарабатывать очки за просмотр рекламы в соответствии с вашими интересами.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Узнать подробнее",
+    "message": "Подробнее…",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Приготовьтесь пользоваться интернетом будущего.",
+    "message": "Приготовьтесь познакомиться с новой сетью Интернет.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Детали",
+    "message": "Сведения",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "Очки BAT",
+    "message": "Баллы BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -92,11 +92,11 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "за",
+    "message": "для",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Сумма вознаграждений за месяц",
+    "message": "Суммарное вознаграждение",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -158,15 +158,15 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Полученные токен-гранты",
+    "message": "Утвержденные токен-гранты",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Бонусные очки затребованы",
+    "message": "Утвержденные гранты баллов",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Выручка от рекламы",
+    "message": "Доход от рекламы",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
@@ -182,11 +182,11 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Ежемесячные пожертвования ",
+    "message": "Ежемесячные пожертвования",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Выкл.",
+    "message": "ВЫКЛ",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -202,7 +202,7 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Автоматический Взнос",
+    "message": "Автоматический взнос",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -232,11 +232,11 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Пожалуйста, создайте резервную копию своего кошелька Brave.",
+    "message": "Пожалуйста, создайте резервную копию вашего кошелька Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Ваш аккаунт наград Brave ожидает внесения депозита.",
+    "message": "Ваш аккаунт Brave Rewards ожидает внесения депозита.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Создать кошелек",
+    "message": "Создание кошелька",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -268,7 +268,7 @@
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "Пожалуйста, докажите, что вы человек.",
+    "message": "Докажите, что вы не робот.",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -280,7 +280,7 @@
     "description": "Message upon failing captcha"
   },
   "claim": {
-    "message": "Получить",
+    "message": "Утвердить",
     "description": "Claim text"
   },
   "newTokenGrant": {
@@ -296,11 +296,11 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "В настоящий момент наградная система Brave не работает. Пожалуйста, попробуйте позже.",
+    "message": "В настоящий момент вознаграждения Brave не работают. Пожалуйста, попробуйте позже.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Возникла непредвиденная ошибка. Пожалуйста, попробуйте еще раз.",
+    "message": "Ой, что-то не так. Пожалуйста, повторите попытку позже.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
@@ -316,7 +316,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Узнать больше.",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -324,11 +324,11 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Узнать больше.",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Выкл",
+    "message": "ВЫКЛ",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Повторить",
+    "message": "Повторить попытку",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -368,7 +368,7 @@
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
-    "message": "Получайте вознаграждение за просмотр!",
+    "message": "Получайте вознаграждение за просмотр страниц!",
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
@@ -376,7 +376,7 @@
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Включить вознаграждение Brave",
+    "message": "Включить Brave Rewards",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
@@ -388,11 +388,11 @@
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Условия обслуживания",
+    "message": "Условия использования",
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "С возвращением!",
+    "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Ожидающий вклад",
+    "message": "Ожидающее пожертвование",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Бесплатные бонусные очки ",
+    "message": "Бесплатный грант баллов",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -508,11 +508,11 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "Проверить кошелек",
+    "message": "Верифицировать кошелек",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Кошелек проверен",
+    "message": "Кошелек верифицирован",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -524,7 +524,7 @@
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
-    "message": "Проверен",
+    "message": "Верифицирован",
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
@@ -554,7 +554,7 @@
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "Завершить проверку кошелька",
+    "message": "Завершить верификацию кошелька",
     "description": "CTA for completing wallet verification"
   },
   "set": {
@@ -562,7 +562,7 @@
     "description": "Button text for setting monthly contribution"
   },
   "tokens":  {
-    "message": "токены",
+    "message": "жетоны",
     "description": "Standard tokens text"
   },
   "point":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Примечание: ваши транзакции будут видимы для Uphold с момента вашей авторизации; например, они смогут просмотреть получателя и сумму ваших чаевых.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Зарабатывайте жетоны и выражайте благодарность",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Зарабатывайте жетоны, просматривая рекламу, не нарушающую вашу конфиденциальность, и автоматически поддерживайте ваши любимые сайты и создателей контента.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Начать использовать Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Продолжая, вы соглашаетесь с $$1Условиями предоставления услуг$$2 и $$3Политикой Конфиденциальности$$4.",
+    "description": ""
   }
 }

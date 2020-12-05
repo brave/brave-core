@@ -20,7 +20,7 @@
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "Ara pots guanyar punts visualitzant anuncis que respecten la teva privacitat.",
+    "message": "Ara pots guanyar punts mirant anuncis que respecten la teva privacitat.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Subvencions de punts rebudes",
+    "message": "Punts de subvenció reclamats",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-contribueix",
+    "message": "Auto-Contribució",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Contribucions Mensuals",
+    "message": "Aportacions Mensuals",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Ara pots guanyar per mirar anuncis.",
+    "message": "Ara podeu guanyar diners veient anuncis.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "OK",
+    "message": "D'acord",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -412,11 +412,11 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
-    "message": "Punts BAT",
+    "message": "i cant",
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Activa els anuncis",
+    "message": "Activeu els anuncis",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Contribució pendent",
+    "message": "Aportació Pendent",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Subvenció de punts gratuïta",
+    "message": "Punt de subvenció gratuït",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -492,7 +492,7 @@
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "La vostra Recompensa està fent camí al vostre moneder de Recompenses Brave.",
+    "message": "La vostra Recompensa està fent camí cap al vostre moneder de Recompenses Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
@@ -508,7 +508,7 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "Verificar el Moneder",
+    "message": "Verificar el moneder",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
@@ -582,7 +582,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Subvencions de punts",
+    "message": "Recompenses de punts",
     "description": "BAT Points Grant Text"
   },
   "greetingsVerified":  {
@@ -624,7 +624,23 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Nota: Les vostres transaccions estaran visibles per a Uphold un cop ho autoritzeu; per exemple, podran veure el destinatari i la quantitat de les vostres propines.  ",
+    "message": "Nota: Les vostres transaccions estaran visibles per a Uphold un cop ho autoritzeu; per exemple, podran veure el destinatari i la quantitat de les vostres propines. ",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Guanyey & Torneu Fitxes",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Guanyey fitxes mirant anuncis que respectin la privadesa i doneu suport als vostres llocs preferits i creadors de contingut automàticament. ",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Comenceu a utilitzar Recompenses Brave",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Si continueu, esteu acceptant els $$1Termes de Servei$$2 i $$3Política de Privadesa$$4.",
+    "description": ""
   }
 }

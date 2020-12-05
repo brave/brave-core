@@ -40,19 +40,31 @@
 <translation id="3446024864193919737">แสดง Brave Rewards</translation>
 <translation id="6274899614137380422">แสดง Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">บัตรอื่น ๆ</translation>
+<translation id="5585019845078534178">บัตร</translation>
 <translation id="3870475560794762985">แสดงรูปที่ได้รับการสนับสนุน</translation>
 <translation id="2875302873837723333">ไซต์ยอดนิยม</translation>
 <translation id="8173998484743827990">สถิติ Brave</translation>
 <translation id="383680190590774040">นาฬิกา</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">ภาพพื้นหลัง</translation>
+<translation id="385051799172605136">กลับ</translation>
+<translation id="7415602225677446066">เรื่องเด่นประจำวันนี้ในฟีดที่มีความเป็นส่วนตัวเต็มขั้น สำหรับคุณเท่านั้น</translation>
+<translation id="8607689491789524900">Brave Today จะจับคู่สิ่งที่คุณสนใจบนอุปกรณ์ของคุณ เพื่อให้ข้อมูลส่วนตัวของคุณไม่เคยเล็ดลอดออกจากเบราว์เซอร์ และมีการอัพเดทเนื้อหาใหม่ตลอดทั้งวัน</translation>
+<translation id="9164544612367905452">กำลังดึงข้อมูล…</translation>
+<translation id="1276592121036104130">โหลดเนื้อหาใหม่</translation>
+<translation id="4210987321913275328">เลื่อนดู Brave Today</translation>
+<translation id="3122595178900736207">รีเซ็ตแหล่งข้อมูล Brave Today</translation>
+<translation id="2197023915568148978">รีเซ็ตตัวเลือกผู้เผยแพร่ Brave Today ทั้งหมดเป็นค่าเริ่มต้นใช่หรือไม่</translation>
+<translation id="954001034349395856">แหล่งข้อมูลทั้งหมด</translation>
+<translation id="8890516388109605451">แหล่งที่มา</translation>
+<translation id="5158129253322921540">ปิดใช้งานเนื้อหาจาก <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">นาฬิกา</translation>
 <translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="7679334366167089823">รับโทเคนจากการชมโฆษณาที่เคารพความเป็นส่วนตัว</translation>
 <translation id="1531133232292396145">เทรด Crypto บน Binance ในเบราว์เซอร์ของคุณได้โดยตรง</translation>
 <translation id="2166494527623220386">เทรด Crypto บน Gemini ในเบราว์เซอร์ของคุณได้โดยตรง</translation>
+<translation id="7191394989411626168">เมื่อปิดใช้งาน "บัตร" บัตรทั้งหมดที่แสดงอยู่ในขณะนี้จะถูกซ่อน แต่คุณอาจยังได้รับแจ้งเตือนเมื่อมีบัตรใหม่</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="6248988683584659830">ตั้งค่าการค้นหา</translation>
@@ -93,9 +105,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2974339193389078578">ขอต้อนรับสู่ Brave กับอินเทอร์เน็ตยุคใหม่</translation>
 <translation id="7735138632831241257">เตรียมพร้อมเพลิดเพลินไปกับประสบการณ์ท่องเว็บที่รวดเร็วและปลอดภัยยิ่งกว่า ด้วยเบราว์เซอร์ที่สร้างมาเพื่อปกป้องความเป็นส่วนตัวของคุณ</translation>
 <translation id="6001839398155993679">ไปกันเลย</translation>
-<translation id="8050847734948770789">เปิด Brave Rewards</translation>
-<translation id="2862598513212603756">ความสนใจของคุณมีค่า รับรายได้จากการชมโฆษณาที่เคารพความเป็นส่วนตัวในขณะที่คุณเรียกดูเว็บ และส่งต่อสิ่งดีๆ ตอบแทนเพื่อสนับสนุนผู้สร้างสรรค์คอนเทนต์ที่คุณชื่นชอบ</translation>
-<translation id="4942016616604700968">เปิดการให้รางวัล</translation>
+<translation id="2835162985889791522">รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบได้ตามค่าเริ่มต้น</translation>
+<translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
 <translation id="3958088479270651626">นำเข้าบุ๊กมาร์กและการตั้งค่า</translation>
 <translation id="2609701960545338618">ตั้งค่าสภาพแวดล้อมการท่องเว็บตามปกติของคุณโดยการนำเข้าบุ๊กมาร์กและการตั้งค่าจากเบราว์เซอร์เก่า สามารถพบตัวเลือกการนำเข้าขั้นสูงได้ในเมนูการตั้งค่า</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
@@ -119,7 +130,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3742599705619405136">วิธีสนับสนุนผู้เผยแพร่และผู้สร้างสรรค์เนื้อหาโดยอัตโนมัติ ตั้งการชำระเงินรายเดือนไว้แล้วเข้าชมตามปกติ ไซต์ที่ Brave ยืนยันแล้วซึ่งคุณได้เข้าชมจะได้รับรายได้จากคุณโดยอัตโนมัติตามความสนใจของคุณที่ Brave วัดค่าไว้</translation>
 <translation id="20281847067919078">รางวัลที่รอดำเนินการโดยประมาณ</translation>
 <translation id="8593551638387217772">วันที่ชำระเงินถัดไป</translation>
-<translation id="319209088187794725">การแจ้งเตือนโฆษณาที่ได้รับในเดือนนี้</translation>
+<translation id="4428871418618312983">โฆษณาที่ได้รับในเดือนนี้</translation>
 <translation id="4229016885653790965">ขออภัย! ยังไม่มีโฆษณาในพื้นที่ของคุณ</translation>
 <translation id="2539279826042558064">Brave Rewards และโฆษณายังทำงานบนอุปกรณ์ของคุณไม่ได้ในขณะนี้</translation>
 <translation id="5421369907811917952">การตั้งค่าอื่น</translation>
@@ -292,11 +303,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1723857724166389190">การสนับสนุนรายเดือนของคุณสำหรับครีเอเตอร์รายนี้ถูกยกเลิก</translation>
 <translation id="534368327994110883">ขณะนี้คุณกำลังสนับสนุนครีเอเตอร์รายนี้</translation>
 <translation id="2621124276654521177">การสนับสนุนรายเดือนปัจจุบัน</translation>
-<translation id="3084276630953238154">อุ๊ปส์ - มีความผิดพลาดเกิดขึ้น</translation>
+<translation id="3084276630953238154">ตรวจพบบั๊กตัวฉกาจ</translation>
+<translation id="3263379510325043678">การเชื่อมต่อเซิร์ฟเวอร์ขัดข้อง</translation>
+<translation id="8994556588732085585">โปรดปิดแล้วเปิดแบนเนอร์แสดงเคล็ดลับใหม่เพื่อลองอีกครั้ง</translation>
 <translation id="4371618764691059036">ตั้งค่าการสนับสนุนรายเดือนแล้ว</translation>
 <translation id="6356822617569064293">วันที่สนับสนุนรอบถัดไป:</translation>
 <translation id="4622723187300249546">ทิปครั้งเดียว</translation>
 <translation id="5268142130226208198">จำนวนทิปครั้งเดียว:</translation>
+<translation id="3669086939205397942">ช้าก่อน คุณยังไม่สามารถให้ทิปได้</translation>
 <translation id="1142440886533556131">{{user}}’s โพสต์</translation>
 <translation id="3489551030916418665">{{user}}’s ทวีต</translation>
 <translation id="5531915212947569943">รู้สึกเสียใจที่เห็นคุณไปนะ…</translation>
@@ -306,6 +320,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="379596083010863211">คุณได้ส่งทิปครั้งเดียวแล้ว</translation>
 <translation id="5096821444729034955">สำหรับโพสต์ของพวกเขา</translation>
 <translation id="2978223787436054634">ทวีตเกี่ยวกับการสนับสนุนของคุณ</translation>
+<translation id="1543259266592091784">เพิ่มเงินทุน</translation>
+<translation id="7465614181960492526">รับโทเค็นเพื่อนำไปตอบแทน</translation>
+<translation id="2731539192954672606">รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ</translation>
+<translation id="1275213816424141989">ไว้ทีหลัง</translation>
+<translation id="2404165674840145940">เคล็ดลับการใช้ Brave Reward</translation>
+<translation id="5820285701794581330">เมื่อใช้ Brave Reward คุณจะเริ่มได้รับ BAT ซึ่งสามารถใช้ในการให้ทิปแก่ผู้สร้างเนื้อหา</translation>
 <translation id="5094577350232361255">เกี่ยวกับ</translation>
 <translation id="4918086044614829423">ยอมรับ</translation>
 <translation id="5916290544882167205">Brave Software, Brave เป็นเครื่องหมายการค้าที่จดทะเบียนของ Brave Software ชื่อเว็บไซต์อาจเป็นเครื่องหมายการค้าหรือเครื่องหมายการค้าที่จดทะเบียนของเจ้าของเว็บไซต์</translation>
@@ -506,7 +526,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1193434225710679930">คะแนนแจกฟรี</translation>
 <translation id="4395099108822007284">กำลังโหลดรูปภาพ...</translation>
 <translation id="3535654229833214438">ธุรกรรม</translation>
-<translation id="7952665812649667034">ฉันพร้อมที่จะ Earn &amp; Give</translation>
 <translation id="2623808496299703826">รับโทเคนด้วยการชมโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนผู้สร้างเนื้อหาเว็บคนโปรดของคุณ</translation>
 <translation id="8987812599455325915">มีโฆษณาและการเพิ่มข้อมูลอัตโนมัติ ซึ่งคุณสามารถเปิดหรือปิดแยกกันได้ตลอดเวลา</translation>
 <translation id="1485484147452131556">เปิดใช้งานรางวัล</translation>
@@ -576,7 +595,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7840362246306242214">มีให้บริการซื้อขายหุ้นในสหรัฐฯ บน Uphold</translation>
 <translation id="3345432088196080137">ลงทุนเล็กน้อยแค่ $1 ในหุ้นยอดนิยมและแลกเปลี่ยนเงินทุนเทรดเช่น AAPL, TSLA หรือ AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/> เกี่ยวกับ Brave Rewards</translation>
-<translation id="4342305967788502343">ด้วยการคลิก รับ &amp; ให้ คุณได้ยอมรับ <ph name="LINK_BEGIN"/>เงื่อนไขการให้บริการ<ph name="LINK_END"/> และ <ph name="LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">เมื่อคลิกเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับ <ph name="LINK_BEGIN"/>เงื่อนไขการใช้บริการ<ph name="LINK_END"/> และ <ph name="LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/></translation>
 <translation id="8344084848798035850">ประมาณการรายได้จนถึงปัจจุบันในเดือนนี้</translation>
 <translation id="5235444069025581717">ทิปและเงินบริจาคในเดือนนี้</translation>
 <translation id="1210965535849006928">ขอรับ Rewards</translation>
@@ -588,9 +607,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6759185676704303656">คุณจะได้รับเงินจากการดูรูปพื้นหลังนี้</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/> เกี่ยวกับรูปที่ได้รับการสนับสนุนใน Brave Rewards</translation>
 <translation id="6113004497629356998">ซ่อนรูปที่ได้รับการสนับสนุน</translation>
-<translation id="2148613324460538318">เพิ่มบัตร</translation>
+<translation id="3787061634640932557">แก้ไขบัตร</translation>
 <translation id="4925543565930352284">ด้วยการคลิก {{title}}คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">รับ &amp; ให้</translation>
 <translation id="5977237145327845546">เริ่มวิดีโอคอลส่วนตัวกับเพื่อนและคนรู้จักของคุณ</translation>
 <translation id="5850325887346946383">เริ่มวิดีโอคอล</translation>
 <translation id="3651550649176056334">เกี่ยวกับข้อมูลของคุณ</translation>
@@ -683,13 +701,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1974060860693918893">ขั้นสูง</translation>
 <translation id="9096577886148726047">ซ่อนค่าขั้นสูง</translation>
 <translation id="6334164481400727517">เราไม่สามารถเชื่อมต่อไปยังเนื้อหาที่ร้องขอได้ด้วยการใช้โหนด IPFS ท้องถิ่นเพราะโหนดท้องถิ่นไม่ทำงานหรือไม่มีเพียที่เชื่อมต่อพร้อมใช้งาน ณ ขณะนี้ ด้วยการดำเนินการต่อ เราจะถอยกลับไปเกตเวย์สาธารณะที่เป็นค่าเริ่มต้นโดยอัตโนมัติในอนาคตเมื่อเราไม่สามารถเชื่อมต่อไปยังเนื้อหา IPFS โดยใช้โหนด IPFS ท้องถิ่นได้ การกระทำนี้สามารถปิดในภายหลังได้ในการตั้งค่า</translation>
-<translation id="2901715907314796027">ซื้อเงินดิจิทัลจาก Bitcoin.com</translation>
-<translation id="4065681313949497252">สกุลเงิน</translation>
-<translation id="3833315885381772739">ใส่จำนวน</translation>
-<translation id="4011828592358027165">เพิ่งรู้จักเงินดิจิทัลใช่ไหม</translation>
-<translation id="3358050091139900813">รับวอลเล็ทที่นี่เพื่อเริ่มต้นใช้งาน</translation>
-<translation id="3449068867189933593">จำนวนที่ใส่ต้องเป็นจำนวนอย่างน้อย {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">ดูตลาดแล้วซื้อเงินคริปโตจาก crypto.com</translation>
 <translation id="4292334826913000023">แสดงราคา</translation>
@@ -701,4 +712,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5337526542182802976">คู่ที่ได้รับการสนับสนุน</translation>
 <translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="4799744519698299121">บัตรอื่น ๆ</translation>
+<translation id="8050847734948770789">เปิด Brave Rewards</translation>
+<translation id="2862598513212603756">ความสนใจของคุณมีค่า รับรายได้จากการชมโฆษณาที่เคารพความเป็นส่วนตัวในขณะที่คุณเรียกดูเว็บ และส่งต่อสิ่งดีๆ ตอบแทนเพื่อสนับสนุนผู้สร้างสรรค์คอนเทนต์ที่คุณชื่นชอบ</translation>
+<translation id="4942016616604700968">เปิดการให้รางวัล</translation>
+<translation id="319209088187794725">การแจ้งเตือนโฆษณาที่ได้รับในเดือนนี้</translation>
+<translation id="7952665812649667034">ฉันพร้อมที่จะ Earn &amp; Give</translation>
+<translation id="4342305967788502343">ด้วยการคลิก รับ &amp; ให้ คุณได้ยอมรับ <ph name="LINK_BEGIN"/>เงื่อนไขการให้บริการ<ph name="LINK_END"/> และ <ph name="LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="LINK_END"/>.</translation>
+<translation id="2148613324460538318">เพิ่มบัตร</translation>
+<translation id="7983303953939627894">รับ &amp; ให้</translation>
+<translation id="2901715907314796027">ซื้อเงินดิจิทัลจาก Bitcoin.com</translation>
+<translation id="4065681313949497252">สกุลเงิน</translation>
+<translation id="3833315885381772739">ใส่จำนวน</translation>
+<translation id="4011828592358027165">เพิ่งรู้จักเงินดิจิทัลใช่ไหม</translation>
+<translation id="3358050091139900813">รับวอลเล็ทที่นี่เพื่อเริ่มต้นใช้งาน</translation>
+<translation id="3449068867189933593">จำนวนที่ใส่ต้องเป็นจำนวนอย่างน้อย {{minimumAmount}} {{fiat}}</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

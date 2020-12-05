@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Kriptopénztárcák</translation>
 <translation id="2445484935443597917">Új profil létrehozása</translation>
 <translation id="2666990579225592931">Vendég módú ablak megnyitása</translation>
+<translation id="8275068909952022340">Bővebben…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (kiterjesztésazonosító "<ph name="EXTENSION_ID"/>") nem engedélyezett a Brave-ben.</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="984275831282074731">Fizetési módok</translation>
@@ -43,23 +44,20 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="814018970995616154">Ellenőrizze az URL-eket a Brave-ben tárolt nem biztonságos webhelyek listájával.</translation>
 <translation id="1144810021918451336">Nem védi meg a veszélyes webhelyek, letöltések és bővítmények ellen.</translation>
 <translation id="7781069478569868053">Új lap</translation>
-<translation id="1717331825806276156">Háttérképek</translation>
-<translation id="1820041496463124489">Szponzorált képek</translation>
-<translation id="8173998484743827990">Brave statisztikák</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Népszerű oldalak</translation>
-<translation id="1776831331757823105">Óra</translation>
 <translation id="1988804048511540801">Ez látható az új ablakban</translation>
 <translation id="2970343821770026391">Műszerfal</translation>
 <translation id="3719826155360621982">Honlap</translation>
 <translation id="5448570825852364919">Üres lap</translation>
+<translation id="5919424224662539292">Állítsa be az új ablakban megjelenő háttérképet és widgeteket.</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
 <translation id="8511502469534942133">Új Tor csatlakozás ehhez az oldalhoz</translation>
-<translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Tor ablak megnyitása</translation>
+<translation id="4734294903299549345">Tor privát ablak elhagyása</translation>
+<translation id="8612763432858587652">Kilépés a privát ablakból</translation>
+<translation id="8760415064721320867">Privát ablak Tor-ral</translation>
+<translation id="2055363275850890030">Privát Ablak</translation>
+<translation id="8934172355414207733">Privát Torral</translation>
+<translation id="1970435562892104727">Ez egy privát ablak Torral</translation>
+<translation id="1037341607922068025">Indítson egy privát ablakot Torral</translation>
 <translation id="1725356094208762656">Megnyitás Torban</translation>
 <translation id="1672270084584211506">Elérhető Onion</translation>
 <translation id="1434416574322382019">Új</translation>
@@ -68,6 +66,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="6313675821927505581">Új privát ablak a Tor böngészővel</translation>
 <translation id="2638041073279639246">Hivatkozás megnyitása privát ablakban a Tor böngészővel</translation>
 <translation id="3425600262621021599">Hivatkozás megnyitása Brave privát ablakban a Tor böngészővel</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT hirdetési szolgáltatás</translation>
 <translation id="7924918279836988121">Bat főkönyvi szolgáltatás</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
@@ -235,6 +234,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="1854270995641373652">Szeretné engedélyezni az IPFS helyi daemon támogatását a Brave-ben?</translation>
 <translation id="2366908098700680611">IPF-ek engedélyezése</translation>
+<translation id="1556882415222118816">Tudjon meg többet az adatvédelmi következményekről</translation>
 <translation id="4552520379838695057">Elnézést, ez az oldal hiányzik.</translation>
 <translation id="2609895996619941644">Meg szeretné tekinteni, hogy van-e mentett verziója a Wayback Machine-nek?</translation>
 <translation id="8053093028263274061">Elnézést, de nincs mentett verzió</translation>

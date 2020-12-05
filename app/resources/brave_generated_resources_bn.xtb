@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
 <translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
 <translation id="2666990579225592931">গেস্ট উইন্ডো খুলুন</translation>
+<translation id="8275068909952022340">অনেক…</translation>
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="984275831282074731">পেমেন্ট পদ্ধতি</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Brave এ সঞ্চিত অনিরাপদ সাইটগুলির একটি তালিকার সাথে URLগুলি পরীক্ষা করুন।</translation>
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
-<translation id="1717331825806276156">ব্যাকগ্রাউন্ডের ছবিসমূহ</translation>
-<translation id="1820041496463124489">স্পন্সর করা ছবিগুলি</translation>
-<translation id="8173998484743827990">Brave পরিসংখ্যান</translation>
-<translation id="5551238871320268996">একসাথে ব্রেভ</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">সেরা সাইটগুলি</translation>
-<translation id="1776831331757823105">ঘড়ি</translation>
 <translation id="1988804048511540801">নতুন ট্যাব পেজ দেখায়</translation>
 <translation id="2970343821770026391">ড্যাশবোর্ড</translation>
 <translation id="3719826155360621982">হোমপেজ</translation>
 <translation id="5448570825852364919">খালি পাতা</translation>
+<translation id="5919424224662539292">পটভূমি চিত্র কাস্টমাইজ করুন এবং নতুন ট্যাব পৃষ্ঠায় প্রদর্শিত উইজেটগুলি</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="8511502469534942133">এই সাইটের জন্য নতুন Tor Connection</translation>
-<translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
-<translation id="5410152065859052603">টর</translation>
-<translation id="3696187925156352769">টর উইন্ডো খোলা</translation>
+<translation id="4734294903299549345">টরের সাথে প্রাইভেট উইন্ডো থেকে প্রস্থান করুন</translation>
+<translation id="8612763432858587652">প্রাইভেট উইন্ডো থেকে প্রস্থান করুন</translation>
+<translation id="8760415064721320867">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
+<translation id="2055363275850890030">ব্যক্তিগত উইন্ডো</translation>
+<translation id="8934172355414207733">টরের সাথে ব্যক্তিগত</translation>
+<translation id="1970435562892104727">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
+<translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
 <translation id="1672270084584211506">অনিয়ন উপলব্ধ</translation>
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
+<translation id="5410152065859052603">টর</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">সেটিংস</translation>
 <translation id="1854270995641373652">আপনি কি Brave এ IPFS স্থানীয় ডিমন সহায়তা সক্রিয় করতে চান?</translation>
 <translation id="2366908098700680611">IPFS সক্রিয় করুন</translation>
+<translation id="1556882415222118816">গোপনীয়তার পরিণতি সম্পর্কে আরও জানুন</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
 <translation id="8053093028263274061">দুঃখিত, কোনও সংরক্ষিত সংস্করণ উপলভ্য নেই।</translation>

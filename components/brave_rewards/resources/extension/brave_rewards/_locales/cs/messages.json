@@ -8,19 +8,19 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Přidat se k Rewards ",
+    "message": "Přidat se k Odměnám",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Dostávejte zaplaceno zobrazováním reklam a posílejte tyto peníze vašim oblíbeným tvůrcům obsahu. ",
+    "message": "Dostávejte zaplaceno za zobrazování reklam a posílejte tyto peníze vašim oblíbeným tvůrcům obsahu. ",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Nyní můžete získávat tokeny za sledování reklam o respektování soukromí. ",
+    "message": "Nyní můžete získat žetony za sledování reklam beroucích ohled na soukromí.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "Nyní můžete získat body za sledování reklamy, která respektuje soukromí.",
+    "message": "Nyní můžete získat body za sledování reklamy, která bere ohled na soukromí.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Granty",
+    "message": "Udělení",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -56,11 +56,11 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "Body BAT",
+    "message": "BAT body",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
-    "message": "můžete v Brave Rewards použít pro zaslání příspěvku vašemu oblíbenému tvůrci obsahu. Body BAT lze vyměnit za BAT.",
+    "message": "můžete v Brave Rewards použít pro zaslání příspěvku vašemu oblíbenému tvůrci obsahu. Body BAT nelze vyměnit za BAT.",
     "description": "Text for BAT Point helper message"
   },
   "on": {
@@ -120,7 +120,7 @@
     "description": "Month"
   },
   "monthJul": {
-    "message": "Červenec ",
+    "message": "Červenec",
     "description": "Month"
   },
   "monthJun": {
@@ -158,19 +158,19 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Nárokovaných grantů",
+    "message": "Nárokovaných žetonových grantů",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Nárokována udělení bodů",
+    "message": "Bodové příspěvky získány",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Zisky z reklam ",
+    "message": "Zisk z reklam",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automaticky přispívat ",
+    "message": "Automatický příspěvek ",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "platnost vyprší ",
+    "message": "vyprší dne",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Nyní si můžete vydělávat sledováním reklam.",
+    "message": "Teď můžete vydělávat prohlížením reklam.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -232,7 +232,7 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Zálohujte prosím svoji Brave peněženku.",
+    "message": "Zálohujte, prosím, svoji Brave peněženku.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -284,7 +284,7 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Volný grant k dispozici",
+    "message": "Volný žetonový grant",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -316,7 +316,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Dozvědět se více.",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -324,19 +324,19 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Dozvědět se více.",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Vypnuté",
+    "message": "Vypnuto ",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "Nastavení",
+    "message": "Nastavení.",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Momentálně při prohlížení nezískáváte žádné výhody Odměn. Zapněte Odměny znovu",
+    "message": "V současnosti při prohlížení nezískáváte žádné výhody Odměn. Znovu zapněte Odměny ",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -392,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Vítejte zpět!",
+    "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Zapnout reklamy ",
+    "message": "Zapněte Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Nevyřízený příspěvek",
+    "message": "Příspěvek čeká na vyřízení",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -480,11 +480,11 @@
     }
   },
   "grantFinishTokenTitleUGP": {
-    "message": "Volný grant k dispozici",
+    "message": "Volný žetonový grant",
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Udělení bodů zdarma",
+    "message": "Příspěvek volných bodů",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -500,7 +500,7 @@
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
-    "message": "Ověřit",
+    "message": "ověřit",
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
@@ -562,7 +562,7 @@
     "description": "Button text for setting monthly contribution"
   },
   "tokens":  {
-    "message": "známky",
+    "message": "žetony",
     "description": "Standard tokens text"
   },
   "point":  {
@@ -570,7 +570,7 @@
     "description": "BAT Point text"
   },
   "token":  {
-    "message": "Token",
+    "message": "Žeton",
     "description": "BAT Token text"
   },
   "points":  {
@@ -578,7 +578,7 @@
     "description": "BAT Points text"
   },
   "tokenGrants":  {
-    "message": "Tokenové granty",
+    "message": "Žetonové granty",
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Poznámka: Jakmile provedete ověření, transakce budou pro Uphold viditelné; například uvidí příjemce a částky vašich příspěvků.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Vydělejte tokeny a odvděčte se",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Vydělávejte zobrazováním reklam respektujících soukromí tokeny a podporujte automaticky své oblíbené weby a tvůrce obsahu.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Začněte používat Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Pokračováním souhlasíte s $$1Podmínkami služby$$2 a $$3Ochranou soukromí$$4.",
+    "description": ""
   }
 }

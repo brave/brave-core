@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
 <translation id="2445484935443597917">สร้างโปรไฟล์ใหม่</translation>
 <translation id="2666990579225592931">เปิดหน้าต่างผู้มาเยือน</translation>
+<translation id="8275068909952022340">เพิ่มเติม…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="984275831282074731">วิธีการชำระเงิน</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">ตรวจสอบ URL ที่มีรายชื่อเว็บไซต์ที่ไม่ปลอดภัยเก็บไว้ใน Brave</translation>
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
-<translation id="1717331825806276156">ภาพพื้นหลัง</translation>
-<translation id="1820041496463124489">ภาพที่ได้รับการสนับสนุน</translation>
-<translation id="8173998484743827990">สถิติ Brave</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
-<translation id="1776831331757823105">นาฬิกา</translation>
 <translation id="1988804048511540801">การแสดงหน้าแท็บใหม่</translation>
 <translation id="2970343821770026391">แดชบอร์ด</translation>
 <translation id="3719826155360621982">หน้าหลัก</translation>
 <translation id="5448570825852364919">หน้าว่าง</translation>
+<translation id="5919424224662539292">ปรับแต่งภาพพื้นหลังและวิดเจ็ตที่ปรากฏในหน้าแท็บใหม่</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
 <translation id="8511502469534942133">การเชื่อมต่อ Tor ใหม่สำหรับเว็บไซต์นี้</translation>
-<translation id="8784924142044142231">ออกจาก Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">เปิดหน้าต่าง Tor</translation>
+<translation id="4734294903299549345">ออกจากหน้าต่างส่วนตัวของ Tor</translation>
+<translation id="8612763432858587652">ออกจากหน้าต่างส่วนตัว</translation>
+<translation id="8760415064721320867">หน้าต่างส่วนตัว พร้อม Tor</translation>
+<translation id="2055363275850890030">วินโดว์ส่วนบุคคล</translation>
+<translation id="8934172355414207733">แบบส่วนตัวผ่าน Tor</translation>
+<translation id="1970435562892104727">นี่เป็นหน้าต่างส่วนตัวที่เชื่อมต่อผ่าน Tor</translation>
+<translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="1725356094208762656">เปิดใน Tor</translation>
 <translation id="1672270084584211506">บริการหัวหอมพร้อมใช้งาน</translation>
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">หน้าต่างส่วนตัวใหม่ด้วย Tor</translation>
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="1854270995641373652">คุณต้องการเปิดใช้งานการสนับสนุน IPFS local daemon ใน Brave หรือไม่</translation>
 <translation id="2366908098700680611">เปิดใช้งาน IPFS</translation>
+<translation id="1556882415222118816">ดูข้อมูลเพิ่มเติมเกี่ยวกับผลของความเป็นส่วนตัว</translation>
 <translation id="4552520379838695057">ขออภัย หน้านั้นหายไปแล้ว</translation>
 <translation id="2609895996619941644">คุณต้องการตรวจสอบไหมว่ามีเวอร์ชันที่บันทึกไว้ใน Wayback Machine หรือไม่</translation>
 <translation id="8053093028263274061">ขออภัย ไม่มีเวอร์ชันที่บันทึกไว้</translation>

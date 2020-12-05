@@ -43,19 +43,31 @@
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
 <translation id="6274899614137380422">Binanceを表示する</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">追加のカード</translation>
+<translation id="5585019845078534178">カード</translation>
 <translation id="3870475560794762985">スポンサー画像を表示する</translation>
 <translation id="2875302873837723333">トップサイト</translation>
 <translation id="8173998484743827990">Brave統計データ</translation>
 <translation id="383680190590774040">時刻表示</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">背景画像</translation>
+<translation id="385051799172605136">戻る</translation>
+<translation id="7415602225677446066">完全にプライベートなフィードで今日のトップ記事を、あなたのためだけに。</translation>
+<translation id="8607689491789524900">Brave Todayは、お使いのデバイス上であなたの興味と一致するので、あなたの個人情報はブラウザーから決して離れることはありません。新しいコンテンツは1日中更新されます。</translation>
+<translation id="9164544612367905452">フェッチしています…</translation>
+<translation id="1276592121036104130">新しいコンテンツを読み込む</translation>
+<translation id="4210987321913275328">Brave Todayのスクロール</translation>
+<translation id="3122595178900736207">Brave Todayのソースをリセット</translation>
+<translation id="2197023915568148978">すべてのBrave Todayのパブリッシャーの選択をデフォルトにリセットしますか？</translation>
+<translation id="954001034349395856">すべてのソース</translation>
+<translation id="8890516388109605451">ソース</translation>
+<translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>のコンテンツを無効にする</translation>
 <translation id="1776831331757823105">時刻表示</translation>
 <translation id="4643117005422448078">トップサイト</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="7679334366167089823">プライバシーを尊重する広告を見てトークンを獲得しましょう。</translation>
 <translation id="1531133232292396145">ブラウザで、直接Binanceで暗号通貨を取引します。</translation>
 <translation id="2166494527623220386">ブラウザで直接Geminiで暗号通貨を取引しましょう。</translation>
+<translation id="7191394989411626168">カードをオフにすると、現在表示されているカードはすべて非表示になります。ただし、新しいカードが通知される場合があります。</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="6248988683584659830">設定の検索</translation>
@@ -95,9 +107,8 @@
 <translation id="2974339193389078578">Brave がもたらす新しいインターネットの世界</translation>
 <translation id="7735138632831241257">プライバシー保護機能が搭載されたブラウザを使って、より高速かつ安全なブラウジングを楽しみましょう。</translation>
 <translation id="6001839398155993679">さあ始めましょう</translation>
-<translation id="8050847734948770789">Brave Rewardsを有効にする</translation>
-<translation id="2862598513212603756">あなたのアテンション(注意力)は貴重です。閲覧中にプライバシー重視型の広告を閲覧すると報酬が支払われ、あなたのお気に入りのサイトを支援することができます。</translation>
-<translation id="4942016616604700968">Rewardを有効にする</translation>
+<translation id="2835162985889791522">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのサイトやクリエイターをデフォルトでサポートします。</translation>
+<translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="3958088479270651626">ブックマークと設定のインポート</translation>
 <translation id="2609701960545338618">以前のブラウザからブックマークと設定をインポートして、通常のブラウザ環境を構築してください。インポートの詳細オプションについては「設定」をご覧ください。</translation>
 <translation id="8275038454117074363">インポート</translation>
@@ -121,7 +132,7 @@
 <translation id="3742599705619405136">パブリッシャーやコンテンツクリエイターを自動的に支援する方法です。毎月支援する金額を設定し、通常通りブラウジングをしましょう。あなたが訪問したサイトがBraveの認証を完了していた場合、あなたのアテンションに基づいて自動的に支援が行われます。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
 <translation id="8593551638387217772">次回支払日</translation>
-<translation id="319209088187794725">今月受け取った広告通知</translation>
+<translation id="4428871418618312983">今月受信した広告</translation>
 <translation id="4229016885653790965">申し訳ありません。広告はお住まいの地域ではまだご利用いただけません。</translation>
 <translation id="2539279826042558064">Braveの報酬と広告は、現時点ではお使いの端末に対応していません。</translation>
 <translation id="5421369907811917952">その他の設定</translation>
@@ -294,11 +305,14 @@
 <translation id="1723857724166389190">このクリエイターへの毎月の寄付はキャンセルされました。</translation>
 <translation id="534368327994110883">あなたは’現在このクリエイターをサポートしています</translation>
 <translation id="2621124276654521177">現在の月の寄付</translation>
-<translation id="3084276630953238154">おっと - エラーが発生しました。</translation>
+<translation id="3084276630953238154">ワイルドバグが現れました</translation>
+<translation id="3263379510325043678">サーバー接続エラー</translation>
+<translation id="8994556588732085585">再試行するには、チッピングバナーを閉じてから再度開いてください。</translation>
 <translation id="4371618764691059036">毎月の寄付が設定されています。</translation>
 <translation id="6356822617569064293">次の寄付日：</translation>
 <translation id="4622723187300249546">一度だけのヒント</translation>
 <translation id="5268142130226208198">1回のチップ額：</translation>
+<translation id="3669086939205397942">ちょっと待ってください、まだチップを渡すことはできません</translation>
 <translation id="1142440886533556131">{{user}}’の投稿</translation>
 <translation id="3489551030916418665">{{user}}’のツイート</translation>
 <translation id="5531915212947569943">あなたが去っていくは寂しいです…</translation>
@@ -308,6 +322,12 @@
 <translation id="379596083010863211">ワンタイムチップが送信されました。</translation>
 <translation id="5096821444729034955">投稿に</translation>
 <translation id="2978223787436054634">サポートについてツイートする</translation>
+<translation id="1543259266592091784">資金を追加する</translation>
+<translation id="7465614181960492526">トークンを獲得して還元する</translation>
+<translation id="2731539192954672606">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのサイトやコンテンツクリエイターを自動的にサポートします。</translation>
+<translation id="1275213816424141989">あとで</translation>
+<translation id="2404165674840145940">Brave rewardsでチップを渡す</translation>
+<translation id="5820285701794581330">Brave Rewardsを使用することで、あなたはクリエイターにチップを渡すために使用できるBATを獲得できるようになります。</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
 <translation id="5916290544882167205">「Brave Software」や「Brave」は、Brave Softwareの登録商標です。サイト名は、サイト所有者の商標または登録商標である可能性があります。</translation>
@@ -508,7 +528,6 @@
 <translation id="1193434225710679930">ポイント付与</translation>
 <translation id="4395099108822007284">画像を読み込み中...</translation>
 <translation id="3535654229833214438">取引</translation>
-<translation id="7952665812649667034">稼いであげる準備ができています</translation>
 <translation id="2623808496299703826">プライバシーを尊重する広告を表示してトークンを獲得し、デフォルトでお気に入りになっているWebコンテンツ作成者をサポートしましょう。</translation>
 <translation id="8987812599455325915">広告と自動引き落とし機能を有効にします。これらの機能は、いつでも個別に有効化・無効化できます。</translation>
 <translation id="1485484147452131556">Rewardsを有効化する</translation>
@@ -578,7 +597,7 @@
 <translation id="7840362246306242214">Upholdで利用可能な米国株取引</translation>
 <translation id="3345432088196080137">人気のある株式や、AAPL、TSLA、AMZNなどの上場投資信託にわずか1ドルを投資</translation>
 <translation id="4360054110030715117">Brave Rewardsに関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/></translation>
-<translation id="4342305967788502343">Earn &amp; Giveをクリックすることで、<ph name="LINK_BEGIN"/>利用規約<ph name="LINK_END"/> および <ph name="LINK_BEGIN"/>プライバシーポリシー<ph name="LINK_END"/>に同意することとなります。</translation>
+<translation id="629521674505004728">[Brave Rewardsの使用を開始]をクリックすることで、あなたは<ph name="LINK_BEGIN"/>利用規約<ph name="LINK_END"/>と<ph name="LINK_BEGIN"/>プライバシーポリシー<ph name="LINK_END"/>に同意したことになります。</translation>
 <translation id="8344084848798035850">今月のこれまでの推定収益</translation>
 <translation id="5235444069025581717">今月のチップと支援実績</translation>
 <translation id="1210965535849006928">報酬を受け取る</translation>
@@ -590,9 +609,8 @@
 <translation id="6759185676704303656">この背景画像を見ると、報酬が支払われます。</translation>
 <translation id="1749232564087138444">Brave Rewardsのスポンサー画像に関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/>。</translation>
 <translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
-<translation id="2148613324460538318">カードを追加</translation>
+<translation id="3787061634640932557">カードを編集</translation>
 <translation id="4925543565930352284">{{title}}をクリックすることで、 <ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/> および <ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意することとなります。</translation>
-<translation id="7983303953939627894">獲得とチップ</translation>
 <translation id="5977237145327845546">友人や同僚とプライベートなビデオ通話を開始する。</translation>
 <translation id="5850325887346946383">ビデオ通話を開始</translation>
 <translation id="3651550649176056334">あなたのデータについて</translation>
@@ -685,13 +703,6 @@
 <translation id="1974060860693918893">詳細設定</translation>
 <translation id="9096577886148726047">高度な設定を隠す</translation>
 <translation id="6334164481400727517">ローカルノードが起動しなかったか、または現在利用可能な接続ピアがないため、ローカルIPFSノードを使用して要求されたコンテンツに接続できません。続行すると、将来ローカルIPFSノードを使用してIPFSコンテンツに接続できなくなった時に、デフォルトのパブリックゲートウェイに自動的にフォールバックします。これは、後で設定でオフにすることができます。</translation>
-<translation id="2901715907314796027">Bitcoin.comから仮想通貨を購入する。</translation>
-<translation id="4065681313949497252">通貨</translation>
-<translation id="3833315885381772739">金額を入力してください</translation>
-<translation id="4011828592358027165">仮想通貨の初心者ですか？</translation>
-<translation id="3358050091139900813">ここでウォレットを入手して始めましょう</translation>
-<translation id="3449068867189933593">入力する金額は、少なくとも{{minimumAmount}} {{fiat}}である必要があります</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">市場を表示し、crypto.comから暗号通貨を購入してください。</translation>
 <translation id="4292334826913000023">価格を表示</translation>
@@ -703,4 +714,20 @@
 <translation id="5337526542182802976">サポートされているペア</translation>
 <translation id="1164622162816276433">24時間のボリューム</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="4799744519698299121">追加のカード</translation>
+<translation id="8050847734948770789">Brave Rewardsを有効にする</translation>
+<translation id="2862598513212603756">あなたのアテンション(注意力)は貴重です。閲覧中にプライバシー重視型の広告を閲覧すると報酬が支払われ、あなたのお気に入りのサイトを支援することができます。</translation>
+<translation id="4942016616604700968">Rewardを有効にする</translation>
+<translation id="319209088187794725">今月受け取った広告通知</translation>
+<translation id="7952665812649667034">稼いであげる準備ができています</translation>
+<translation id="4342305967788502343">Earn &amp; Giveをクリックすることで、<ph name="LINK_BEGIN"/>利用規約<ph name="LINK_END"/> および <ph name="LINK_BEGIN"/>プライバシーポリシー<ph name="LINK_END"/>に同意することとなります。</translation>
+<translation id="2148613324460538318">カードを追加</translation>
+<translation id="7983303953939627894">獲得とチップ</translation>
+<translation id="2901715907314796027">Bitcoin.comから仮想通貨を購入する。</translation>
+<translation id="4065681313949497252">通貨</translation>
+<translation id="3833315885381772739">金額を入力してください</translation>
+<translation id="4011828592358027165">仮想通貨の初心者ですか？</translation>
+<translation id="3358050091139900813">ここでウォレットを入手して始めましょう</translation>
+<translation id="3449068867189933593">入力する金額は、少なくとも{{minimumAmount}} {{fiat}}である必要があります</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

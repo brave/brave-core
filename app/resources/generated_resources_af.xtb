@@ -6553,6 +6553,10 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="3098826269712097986">Aanmelddata sal in Brave geberg word nadat jy Incognitomodus verlaat het. Dit sal jou in staat stel om Aanraak-ID weer later met hierdie webwerf te gebruik.</translation>
 <translation id="5186185447130319458">Incognito</translation>
 <translation id="2579188629646253712">Verlaat Incognito</translation>
+<translation id="7475335772460644497">{COUNT, plural,
+          =0 {Open almal in &amp;privaat venster}
+          =1 {Open in &amp;privaat venster}
+          other {Open almal ({COUNT}) in &amp;privaat venster}}</translation>
 <translation id="2431625704210501303">Maak in incognitovenster oop</translation>
 <translation id="4620367155626060530">Wys boekmerkbalk</translation>
 <translation id="1985165269306590797">Maak in incognitovenster oop</translation>

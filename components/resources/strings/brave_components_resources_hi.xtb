@@ -40,19 +40,32 @@
 <translation id="3446024864193919737">Brave पुरस्कार दिखाएँ</translation>
 <translation id="6274899614137380422">Binance दिखाएँ</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">और कार्ड</translation>
+<translation id="5585019845078534178">कार्ड्स</translation>
 <translation id="3870475560794762985">स्पांसर्ड इमेजों को दिखाएं</translation>
 <translation id="2875302873837723333">शीर्ष साइट्स</translation>
 <translation id="8173998484743827990">Brave आँकड़े</translation>
 <translation id="383680190590774040">घड़ी</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="3159285901314605198">बैकग्राउंड इमेज</translation>
+<translation id="385051799172605136">वापस</translation>
+<translation id="7415602225677446066">आज की शीर्ष कहानियाँ पूरी तरह से निजी फीड में, सिर्फ आपके लिए।</translation>
+<translation id="8607689491789524900">ब्रेव टूडे आपके डिवाइस पर आपकी रुचियों को मैच कराता है, इसलिए आपकी व्यक्तिगत जानकारी कभी भी आपके ब्राउज़र को नहीं छोड़ती है। दिन भर नया कंटेंट अपडेट किया जाता है।</translation>
+<translation id="9164544612367905452">ला रहा है…</translation>
+<translation id="1276592121036104130">नया कंटेंट लोड करें</translation>
+<translation id="4210987321913275328">ब्रेव टूडे के लिए स्क्रॉल करें</translation>
+<translation id="3122595178900736207">ब्रेव टूडे के स्रोतों को रीसेट करें</translation>
+<translation id="2197023915568148978">अपने सभी ब्रेव टूडे के प्रकाशक विकल्पों को उनके डिफ़ॉल्ट पर रीसेट करें?</translation>
+<translation id="954001034349395856">सभी स्रोत</translation>
+<translation id="8890516388109605451">स्रोत</translation>
+<translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>
+से कंटेंट को अक्षम करें।</translation>
 <translation id="1776831331757823105">घड़ी</translation>
 <translation id="4643117005422448078">शीर्ष साइट्स</translation>
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="7679334366167089823">गोपनीयता-सम्मान वाले विज्ञापन देखने के लिए टोकन कमाएँ।</translation>
 <translation id="1531133232292396145">सीधे अपने ब्राउज़र में Binance पर क्रिप्टो ट्रेड करें।</translation>
 <translation id="2166494527623220386">सीधे अपने ब्राउज़र में Gemini पर ट्रेड क्रिप्टो करें।</translation>
+<translation id="7191394989411626168">कार्डस बंद करने से, वर्तमान में दिखाई देने वाले सभी कार्ड छिप जाएंगे। हालाँकि आपको अभी भी नए कार्ड के बारे में सूचित किया जा सकता है।</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8730621377337864115">पूर्ण</translation>
 <translation id="6248988683584659830">खोज सेटिंग्स.</translation>
@@ -92,9 +105,8 @@
 <translation id="2974339193389078578">नया इंटरनेट Brave करें</translation>
 <translation id="7735138632831241257">आपकी गोपनीयता की सुरक्षा के लिए बनाए गए ब्राउज़र से तेज़ और अधिक सुरक्षित ब्राउज़िंग अनुभव पाने के लिए तैयार हो जाएँ।</translation>
 <translation id="6001839398155993679">चलिए चलते हैं</translation>
-<translation id="8050847734948770789">Brave रिवार्ड्स को सक्षम करें</translation>
-<translation id="2862598513212603756">आपकी दिलचस्पी हमारे लिए महत्वपूर्ण है। ब्राउज़ करते समय गोपनीयता का पालन करने वाले विज्ञापन देखकर धनोपार्जन करें और इसे अपने पसंदीदा सामग्री निर्माताओं की सहायता के लिए भुगतान करें।</translation>
-<translation id="4942016616604700968">रिवार्ड्स सक्रिय करें</translation>
+<translation id="2835162985889791522">गोपनीयता का सम्मान करने वाले विज्ञापन देखकर टोकन अर्जित करें और डिफ़ॉल्ट रूप से अपने पसंदीदा साइटों और रचनाकारों का सपोर्ट करें।</translation>
+<translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
 <translation id="3958088479270651626">बुकमार्क और सेटिंग आयात करें</translation>
 <translation id="2609701960545338618">अपने पुराने ब्राउज़र से बुकमार्क और सेटिंग को इम्पोर्ट करके अपना उपयुक्त ब्राउज़िंग वातावरण सेट करें। इम्पोर्ट करने के उन्नत विकल्प सेटिंग में पाए जा सकते हैं।</translation>
 <translation id="8275038454117074363">आयात करें</translation>
@@ -118,7 +130,7 @@
 <translation id="3742599705619405136">प्रकाशकों और सामग्री रचनाकारों का समर्थन करने का एक स्वचालित तरीका।  मासिक भुगतान सेट करें और सामान्य रूप से ब्राउज़ करें।  Brave सत्यापित साइटें जो आप देखते हैं, वे आपके योगदान को स्वचालित रूप से प्राप्त करेंगी, जो कि आपके ध्यान में Brave द्वारा मापी गई हैं।</translation>
 <translation id="20281847067919078">अनुमानित लंबित पुरस्कार</translation>
 <translation id="8593551638387217772">अगली भुगतान तिथि</translation>
-<translation id="319209088187794725">इस महीने प्राप्त हुईं  विज्ञापन सूचनाएँ</translation>
+<translation id="4428871418618312983">इस महीने प्राप्त हुए विज्ञापन</translation>
 <translation id="4229016885653790965">क्षमा करें! आपके क्षेत्र में विज्ञापन अभी तक उपलब्ध नहीं हैं।</translation>
 <translation id="2539279826042558064">Brave के पुरस्कार और विज्ञापन इस समय आपके डिवाइस पर उपलब्ध नहीं हैं।</translation>
 <translation id="5421369907811917952">अन्य सेटिंग</translation>
@@ -291,11 +303,14 @@
 <translation id="1723857724166389190">इस क्रिएटर के लिए आपका मासिक योगदान कैंसल कर दिया गया है।</translation>
 <translation id="534368327994110883">आप ’ वर्तमान में इस क्रिएटर का सपोर्ट कर रहे हैंi</translation>
 <translation id="2621124276654521177">मौजूदा मासिक योगदान राशि</translation>
-<translation id="3084276630953238154">उप्स - एक गड़बड़ी हुई है।</translation>
+<translation id="3084276630953238154">एक बड़ी त्रुटि आ गई है</translation>
+<translation id="3263379510325043678">सर्वर कनेक्शन में त्रुटि</translation>
+<translation id="8994556588732085585">कृपया बंद करें और पुनः प्रयास करने के लिए टिपिंग बैनर को पुनः खोलें।</translation>
 <translation id="4371618764691059036">मासिक योगदान तय किया गया है।</translation>
 <translation id="6356822617569064293">अगली योगदान तिथि:</translation>
 <translation id="4622723187300249546">एकबार की टिप</translation>
 <translation id="5268142130226208198">एकबार की टिप राशि:</translation>
+<translation id="3669086939205397942">रुकें, आप अभी तक’ टिप नहीं कर सकते</translation>
 <translation id="1142440886533556131">{{user}}’s पोस्ट</translation>
 <translation id="3489551030916418665">{{user}}’s ट्वीट</translation>
 <translation id="5531915212947569943">आपके जाने पर … बहुत दुख हो रहा है</translation>
@@ -305,6 +320,12 @@
 <translation id="379596083010863211">आपकी एकबार की टिप भेजी जा चुकी है।</translation>
 <translation id="5096821444729034955">उनके पोस्ट के लिए</translation>
 <translation id="2978223787436054634">अपने सपोर्ट के बारे में ट्वीट करें</translation>
+<translation id="1543259266592091784">धनराशि जोड़ें</translation>
+<translation id="7465614181960492526">टोकन कमाएँ और वापस देंं</translation>
+<translation id="2731539192954672606">गोपनीयता का सम्मान करने वाले विज्ञापन देखकर टोकन कमाएँ और अपनी पसंदीदा साइटों और कंटेंट रचनाकारों का स्वचालित रूप से सपोर्ट करें।</translation>
+<translation id="1275213816424141989">शायद बाद में</translation>
+<translation id="2404165674840145940">ब्रेव रिवार्ड्स के साथ टिप करें</translation>
+<translation id="5820285701794581330">ब्रेव रिवार्ड्स का उपयोग करके, आप BAT हासिल करना शुरू कर देंगे जिसका उपयोग आप रचनाकारों को टिप करने के लिए कर सकते हैं।</translation>
 <translation id="5094577350232361255">बारे में</translation>
 <translation id="4918086044614829423">स्वीकार करें</translation>
 <translation id="5916290544882167205">Brave सॉफ़्टवेयर। Brave, Brave सॉफ़्टवेयर का एक पंजीकृत ट्रेडमार्क है। साइट के नाम साइट के मालिकों के ट्रेडमार्क या पंजीकृत ट्रेडमार्क हो सकते हैं।</translation>
@@ -505,7 +526,6 @@
 <translation id="1193434225710679930">अंक अनुदान</translation>
 <translation id="4395099108822007284">इमेज लोड हो रही है ...</translation>
 <translation id="3535654229833214438">लेन-देन</translation>
-<translation id="7952665812649667034">मै अर्जित करने और देने के लिए तैयार हूँ</translation>
 <translation id="2623808496299703826">गोपनीयता-बनाए रखने वाले विज्ञापन देखकर टोकन अर्जित करें और डिफ़ॉल्ट रूप से अपने पसंदीदा वेब कंटेंट क्रिएटर्स का सपोर्ट करें।</translation>
 <translation id="8987812599455325915">यह विज्ञापन और स्वतः योगदान दोनों को सक्रिय करता है। आप उनको किसी भी समय</translation>
 <translation id="1485484147452131556">रिवार्ड्स सक्रिय करें</translation>
@@ -575,7 +595,7 @@
 <translation id="7840362246306242214">अपहोल्ड पर यूएस इक्विटी ट्रेडिंग उपलब्ध है</translation>
 <translation id="3345432088196080137">AAPL, TSLA या AMZN जैसे जानेमाने शेयरों और एक्सचेंज ट्रेडेड फंडों में कम से कम $1 निवेश करें</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स<ph name="LINK_END"/> के बारे में अधिक जानें</translation>
-<translation id="4342305967788502343">Earn &amp; Give पर क्लिक करके आप <ph name="LINK_BEGIN"/>सेवा की शर्तों<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>गोपनीयता नीति<ph name="LINK_END"/>से सहमत होते हैं।</translation>
+<translation id="629521674505004728">ब्रेव रिवार्ड्स का उपयोग प्रारंभ करें पर क्लिक करके, आप <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/> और <ph name="LINK_BEGIN"/>Privacy Policy<ph name="LINK_END"/> से सहमत होते हैं।</translation>
 <translation id="8344084848798035850">इस महीने की अब तक की अनुमानित कमाई</translation>
 <translation id="5235444069025581717">इस महीने के टिप्स और योगदान</translation>
 <translation id="1210965535849006928">मेरे पुरस्कारों को क्लेम करें</translation>
@@ -587,9 +607,8 @@
 <translation id="6759185676704303656">आप’ इस बैकग्राउंड इमेज को देखने के लिए भुगतान कर रहे हैं।</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स में<ph name="LINK_END"/> स्पांसर्ड इमेजों के बारे में अधिक जानें।</translation>
 <translation id="6113004497629356998">स्पांसर्ड इमेजों को छिपाएँ</translation>
-<translation id="2148613324460538318">कार्ड जोड़ें</translation>
+<translation id="3787061634640932557">कार्ड एडिट करें</translation>
 <translation id="4925543565930352284">{{title}} पर क्लिक करके, आप <ph name="BEGIN_LINK1"/>सेवा की शर्तें<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>गोपनीयता नीति<ph name="END_LINK2"/>से सहमत होते हैं।</translation>
-<translation id="7983303953939627894">कमाएँ amp;amp; और दें</translation>
 <translation id="5977237145327845546">अपने दोस्तों और सहकर्मियों के साथ एक निजी वीडियो कॉल शुरू करें।</translation>
 <translation id="5850325887346946383">वीडियो कॉल शुरू करें</translation>
 <translation id="3651550649176056334">आपके डेटा के बारे में</translation>
@@ -682,13 +701,6 @@
 <translation id="1974060860693918893">बेहतर</translation>
 <translation id="9096577886148726047">एडवांस्ड छुपाएँ</translation>
 <translation id="6334164481400727517">हम लोकल IPFS नोड का इस्तेमाल करके रिक्वेस्ट किए हुए कंटेंट से कनेक्ट नहीं कर सकते हैं क्योंकि लोकल नोड शुरू नहीं हुआ है या क्योंकि मौजूदा समय में कोई कनेक्टेड पीयर उपलब्ध नहीं है। जब हम लोकल  IPFS नोड का इस्तेमाल करते हुए  IPFS कंटेंट से कनेक्ट नहीं कर पाते, तो आगे बढ़ने पर, हम फ़्यूचर में अपने आप  ही पब्लिक गेटवे पर वापस आ जाएंगे। इसे बाद में सेटिंग्स में बंद किया जा सकता है।</translation>
-<translation id="2901715907314796027">Bitcoin.com से क्रिप्टो खरीदें।</translation>
-<translation id="4065681313949497252">मुद्रा</translation>
-<translation id="3833315885381772739">मात्रा दर्ज करें</translation>
-<translation id="4011828592358027165">क्रिप्टो में नए हैं?</translation>
-<translation id="3358050091139900813">शुरू करने के लिए यहाँ से वॉलेट प्राप्त करें</translation>
-<translation id="3449068867189933593">भरी गई राशि कम से कम {{minimumAmount}} {{fiat}} होनी चाहिए</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">मार्केट देखें और crypto.com से क्रिप्टो खरीदें।</translation>
 <translation id="4292334826913000023">मूल्य दिखाएं</translation>
@@ -700,4 +712,20 @@
 <translation id="5337526542182802976">सपोर्ट किए गए पेयर्स</translation>
 <translation id="1164622162816276433">24 घंटे वॉल्यूम</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
+<translation id="4799744519698299121">और कार्ड</translation>
+<translation id="8050847734948770789">Brave रिवार्ड्स को सक्षम करें</translation>
+<translation id="2862598513212603756">आपकी दिलचस्पी हमारे लिए महत्वपूर्ण है। ब्राउज़ करते समय गोपनीयता का पालन करने वाले विज्ञापन देखकर धनोपार्जन करें और इसे अपने पसंदीदा सामग्री निर्माताओं की सहायता के लिए भुगतान करें।</translation>
+<translation id="4942016616604700968">रिवार्ड्स सक्रिय करें</translation>
+<translation id="319209088187794725">इस महीने प्राप्त हुईं  विज्ञापन सूचनाएँ</translation>
+<translation id="7952665812649667034">मै अर्जित करने और देने के लिए तैयार हूँ</translation>
+<translation id="4342305967788502343">Earn &amp; Give पर क्लिक करके आप <ph name="LINK_BEGIN"/>सेवा की शर्तों<ph name="LINK_END"/> and <ph name="LINK_BEGIN"/>गोपनीयता नीति<ph name="LINK_END"/>से सहमत होते हैं।</translation>
+<translation id="2148613324460538318">कार्ड जोड़ें</translation>
+<translation id="7983303953939627894">कमाएँ amp;amp; और दें</translation>
+<translation id="2901715907314796027">Bitcoin.com से क्रिप्टो खरीदें।</translation>
+<translation id="4065681313949497252">मुद्रा</translation>
+<translation id="3833315885381772739">मात्रा दर्ज करें</translation>
+<translation id="4011828592358027165">क्रिप्टो में नए हैं?</translation>
+<translation id="3358050091139900813">शुरू करने के लिए यहाँ से वॉलेट प्राप्त करें</translation>
+<translation id="3449068867189933593">भरी गई राशि कम से कम {{minimumAmount}} {{fiat}} होनी चाहिए</translation>
+<translation id="3105412115725259537">Bitcoin.com</translation>
 </translationbundle>

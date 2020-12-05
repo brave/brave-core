@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Granturi",
+    "message": "Subvenții",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Granturi de puncte revendicate",
+    "message": "Acordarea de puncte a fost revendicată",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "expiră în data de",
+    "message": "expiră pe",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Oprit",
+    "message": "Dezactivat",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -328,11 +328,11 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Oprit",
+    "message": "Dezactivat",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "Setări.",
+    "message": "Setări",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Activează Ads",
+    "message": "Activare Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Grant de puncte gratuite",
+    "message": "Acordare punct gratuit",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -496,7 +496,7 @@
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Suma Recompensei",
+    "message": "Suma de Recompense",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -608,7 +608,7 @@
     "description": "Text for login button"
   },
   "loginMessageTitle":  {
-    "message": "Dacă verificați portofelul, puteți să vă gestionați fondurile mai eficient.",
+    "message": "Dacă vă confirmați portofelul, puteți să vă gestionați fondurile mai eficient.",
     "description": "Text for login button"
   },
   "loginMessageText":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Notă: Tranzacțiile dumneavoastră vor fi vizibile Uphold după autorizare; de exemplu, aceștia vor putea să vadă destinatarul și sumele plătite.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Câștigați tokenuri și dăruiți",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Câștigați tokenuri vizualizând reclame care respectă confidențialitatea și susțineți automat site-urile și creatorii de conținut favoriți.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Începeți să folosiți Recompensele Brave",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Dacă alegeți să continuați, sunteți de acord cu $$1Termenii și condițiile$$2 și $$3Politica de confidențialitate$$4.",
+    "description": ""
   }
 }

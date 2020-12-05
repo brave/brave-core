@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Pelajari Lebih Lanjut",
+    "message": "Pelajari Selengkapnya",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Detail",
+    "message": "Rincian",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT Points",
+    "message": "Poin BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -80,7 +80,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Sertakan di Konribusi Otomatis",
+    "message": "Sertakan dalam Kontribusi Otomatis",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -158,7 +158,7 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Hibah Token Diklaim\n",
+    "message": "Hibah Token Diklaim",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Mati",
+    "message": "Nonaktif",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Sekarang Anda bisa mendapatkan penghasilan dari melihat iklan.",
+    "message": "Sekarang Anda bisa mendapat imbalan dengan melihat iklan.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -228,7 +228,7 @@
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Cadangkan Dompet\n",
+    "message": "Cadangkan Dompet",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
@@ -244,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Membuat wallet",
+    "message": "Membuat dompet",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -268,7 +268,7 @@
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "Buktikan bahwa Anda adalah manusia!",
+    "message": "Anda bukan robot kan?",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -296,7 +296,7 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Brave Rewards mengalami masalah. Silakan coba lagi nanti.",
+    "message": "Brave Rewards mengalami kendala. Silakan coba lagi nanti.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
@@ -324,11 +324,11 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Pelajari lebih lanjut.\n",
+    "message": "Pelajari lebih lanjut.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Mati",
+    "message": "Nonaktif",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Aktifkan Iklan",
+    "message": "Nyalakan Iklan",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Catatan: Transaksi Anda akan terlihat untuk Dijalankan setelah Anda mengotorisasi; misalnya, mereka akan dapat melihat penerima dan jumlah tip Anda.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Dapatkan Token & Berikan Balik\n",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung situs dan pembuat konten favorit Anda secara otomatis.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Mulai Gunakan Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Dengan melanjutkan, Anda menyetujui $$1Ketentuan Layanan$$2 dan $$3Kebijakan Privasi$$4.",
+    "description": ""
   }
 }

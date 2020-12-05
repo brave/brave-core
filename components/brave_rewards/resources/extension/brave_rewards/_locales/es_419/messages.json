@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "Los puntos BAT",
+    "message": "Puntos BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Autocontribuir",
+    "message": "Contribución automática",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Desactivado",
+    "message": "No",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Desactivado",
+    "message": "No",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Reintentar",
+    "message": "Intentar nuevamente",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -360,7 +360,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "¡Sus recompensas por las publicidades están aquí!",
+    "message": "¡Aquí están tus recompensas por los anuncios!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -412,7 +412,7 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
-    "message": "PBAT",
+    "message": "BAP",
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
@@ -520,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Desconectar de Recompensas de Brave",
+    "message": "Desconectar de Recompensas Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -626,5 +626,21 @@
   "walletVerificationNote3":  {
     "message": "Nota: Uphold tendrá visibilidad de tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Gana tokens y retribuye",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma automática.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Comenzar a utilizar Recompensas Brave",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Al continuar, aceptas las $$1Condiciones del servicio$$2 y la $$3Política de privacidad$$4.",
+    "description": ""
   }
 }

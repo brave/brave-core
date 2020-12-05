@@ -8,6 +8,7 @@
 <translation id="5655621391922317800">Kripto denarnice</translation>
 <translation id="2445484935443597917">Ustvari nov profil</translation>
 <translation id="2666990579225592931">Odpri okno načina za goste</translation>
+<translation id="8275068909952022340">Več…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="6786747875388722282">Razširitve</translation>
 <translation id="984275831282074731">Plačilna sredstva</translation>
@@ -43,23 +44,20 @@
 <translation id="814018970995616154">Preveri URL-je na seznamu nevarnih spletnih mest, shranjenih v programu Brave.</translation>
 <translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
 <translation id="7781069478569868053">Stran na novem zavihku</translation>
-<translation id="1717331825806276156">Slike ozadja</translation>
-<translation id="1820041496463124489">Sponzorirane slike</translation>
-<translation id="8173998484743827990">Brave statistika</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Najb. prilj.</translation>
-<translation id="1776831331757823105">Ura</translation>
 <translation id="1988804048511540801">Prikaže se stran novega zavihka</translation>
 <translation id="2970343821770026391">Nadzorna plošča</translation>
 <translation id="3719826155360621982">Domača stran</translation>
 <translation id="5448570825852364919">Prazna stran</translation>
+<translation id="5919424224662539292">Prilagodite sliko za ozadje in pripomočke, ki se prikažejo na strani novega zavihka</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
 <translation id="8511502469534942133">Nova Tor povezava za to spletno mesto</translation>
-<translation id="8784924142044142231">Izhod iz brskalnika Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Odpri okno Tor</translation>
+<translation id="4734294903299549345">Izhod iz zasebnega okna s Tor-om</translation>
+<translation id="8612763432858587652">Izhod iz zasebnega okna</translation>
+<translation id="8760415064721320867">Zasebno okno v brskalniku Tor</translation>
+<translation id="2055363275850890030">Zasebno okno</translation>
+<translation id="8934172355414207733">Zasebno s Tor-om</translation>
+<translation id="1970435562892104727">To je zasebno okno s Tor-om</translation>
+<translation id="1037341607922068025">Odprite zasebno okno s Tor-om</translation>
 <translation id="1725356094208762656">Odpri v Tor-u</translation>
 <translation id="1672270084584211506">Na voljo je Onion</translation>
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
@@ -68,6 +66,7 @@
 <translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Storitev oglasov Bat Ads</translation>
 <translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
@@ -235,6 +234,7 @@
 <translation id="8428213095426709021">Nastavitve</translation>
 <translation id="1854270995641373652">Želite omogočiti podporo lokalnega daemona IPFS v programu Brave?</translation>
 <translation id="2366908098700680611">Omogoči IPFS</translation>
+<translation id="1556882415222118816">Preberite si več o posledicah zasebnosti</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
 <translation id="8053093028263274061">Žal ni na voljo nobene shranjene različice.</translation>
