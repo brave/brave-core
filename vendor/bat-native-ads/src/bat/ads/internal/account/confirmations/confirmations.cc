@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/confirmations/confirmations.h"
+#include "bat/ads/internal/account/confirmations/confirmations.h"
 
 #include <stdint.h>
 
@@ -13,8 +13,8 @@
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -30,22 +30,18 @@ const int64_t kRetryAfterSeconds = 5 * base::Time::kSecondsPerMinute;
 }  // namespace
 
 Confirmations::Confirmations(
-    privacy::TokenGeneratorInterface* token_generator)
+    privacy::TokenGeneratorInterface* token_generator,
+    AdRewards* ad_rewards)
     : token_generator_(token_generator),
-      confirmations_state_(std::make_unique<ConfirmationsState>()),
+      confirmations_state_(std::make_unique<ConfirmationsState>(ad_rewards)),
       redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()) {
   DCHECK(token_generator_);
+
   redeem_unblinded_token_->set_delegate(this);
 }
 
 Confirmations::~Confirmations() {
   redeem_unblinded_token_->set_delegate(nullptr);
-}
-
-void Confirmations::set_ad_rewards(
-    AdRewards* ad_rewards) {
-  DCHECK(ad_rewards);
-  ConfirmationsState::Get()->set_ad_rewards(ad_rewards);
 }
 
 void Confirmations::AddObserver(

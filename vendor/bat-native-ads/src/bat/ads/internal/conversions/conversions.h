@@ -12,8 +12,8 @@
 
 #include "base/values.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"

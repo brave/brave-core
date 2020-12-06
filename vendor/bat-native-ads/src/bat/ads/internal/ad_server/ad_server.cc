@@ -11,12 +11,12 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/ad_server/get_catalog_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/bundle.h"
 #include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"

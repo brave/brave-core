@@ -10,7 +10,7 @@
 #include <string>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/confirmations/confirmations_observer.h"
+#include "bat/ads/internal/account/confirmations/confirmations_observer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
@@ -28,14 +28,10 @@ class Confirmations
     : public RedeemUnblindedTokenDelegate {
  public:
   Confirmations(
-      privacy::TokenGeneratorInterface* token_generator);
+      privacy::TokenGeneratorInterface* token_generator,
+      AdRewards* ad_rewards);
 
   ~Confirmations() override;
-
-  // TODO(https://github.com/brave/brave-browser/issues/12563): Decouple Brave
-  // Ads rewards state from confirmations
-  void set_ad_rewards(
-      AdRewards* ad_rewards);
 
   void AddObserver(
       ConfirmationsObserver* observer);

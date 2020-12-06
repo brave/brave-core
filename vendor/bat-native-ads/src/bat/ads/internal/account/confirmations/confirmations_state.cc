@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 
 #include <stdint.h>
 
@@ -33,10 +33,15 @@ const char kConfirmationsFilename[] = "confirmations.json";
 
 }  // namespace
 
-ConfirmationsState::ConfirmationsState()
-    : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
+ConfirmationsState::ConfirmationsState(
+    AdRewards* ad_rewards)
+    : ad_rewards_(ad_rewards),
+      unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
       unblinded_payment_tokens_(std::make_unique<privacy::UnblindedTokens>()) {
+  DCHECK(ad_rewards_);
+
   DCHECK_EQ(g_confirmations_state, nullptr);
+
   g_confirmations_state = this;
 }
 
@@ -54,12 +59,6 @@ ConfirmationsState* ConfirmationsState::Get() {
 // static
 bool ConfirmationsState::HasInstance() {
   return g_confirmations_state;
-}
-
-void ConfirmationsState::set_ad_rewards(
-    AdRewards* ad_rewards) {
-  DCHECK(ad_rewards);
-  ad_rewards_ = ad_rewards;
 }
 
 void ConfirmationsState::Initialize(

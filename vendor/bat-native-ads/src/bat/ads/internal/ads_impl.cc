@@ -14,6 +14,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
@@ -32,16 +33,12 @@
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/confirmations/confirmation_info.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
-#include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
@@ -76,7 +73,6 @@ void AdsImpl::set_for_testing(
   DCHECK(token_generator);
 
   token_generator_.release();
-
   set(token_generator);
 }
 
@@ -308,7 +304,7 @@ AdContentInfo::LikeAction AdsImpl::ToggleAdThumbUp(
   auto like_action = Client::Get()->ToggleAdThumbUp(creative_instance_id,
       creative_set_id, action);
   if (like_action == AdContentInfo::LikeAction::kThumbsUp) {
-    confirmations_->ConfirmAd(creative_instance_id, ConfirmationType::kUpvoted);
+    account_->Deposit(creative_instance_id, ConfirmationType::kUpvoted);
   }
 
   return like_action;
@@ -321,8 +317,7 @@ AdContentInfo::LikeAction AdsImpl::ToggleAdThumbDown(
   auto like_action = Client::Get()->ToggleAdThumbDown(creative_instance_id,
       creative_set_id, action);
   if (like_action == AdContentInfo::LikeAction::kThumbsDown) {
-    confirmations_->ConfirmAd(creative_instance_id,
-        ConfirmationType::kDownvoted);
+    account_->Deposit(creative_instance_id, ConfirmationType::kDownvoted);
   }
 
   return like_action;
@@ -355,7 +350,7 @@ bool AdsImpl::ToggleFlagAd(
   auto flag_ad = Client::Get()->ToggleFlagAd(creative_instance_id,
       creative_set_id, flagged);
   if (flag_ad) {
-    confirmations_->ConfirmAd(creative_instance_id, ConfirmationType::kFlagged);
+    account_->Deposit(creative_instance_id, ConfirmationType::kFlagged);
   }
 
   return flag_ad;
@@ -367,10 +362,7 @@ void AdsImpl::set(
     privacy::TokenGeneratorInterface* token_generator) {
   DCHECK(token_generator);
 
-  confirmations_ = std::make_unique<Confirmations>(token_generator_.get());
-
-  account_ = std::make_unique<Account>(confirmations_.get(),
-      token_generator_.get());
+  account_ = std::make_unique<Account>(token_generator_.get());
   account_->AddObserver(this);
 
   page_classifier_ =
@@ -482,9 +474,7 @@ void AdsImpl::InitializeStep6(
   CleanupAdEvents();
 
   account_->Reconcile();
-  account_->ProcessUnclearedTransactions();
-
-  confirmations_->RetryAfterDelay();
+  account_->ProcessTransactions();
 
   subdivision_targeting_->MaybeFetchForCurrentLocale();
 
@@ -547,54 +537,47 @@ void AdsImpl::OnTransactionsChanged() {
 
 void AdsImpl::OnAdNotificationViewed(
     const AdNotificationInfo& ad) {
-  confirmations_->ConfirmAd(ad.creative_instance_id, ConfirmationType::kViewed);
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
 }
 
 void AdsImpl::OnAdNotificationClicked(
     const AdNotificationInfo& ad) {
   ad_transfer_->set_last_clicked_ad(ad);
 
-  confirmations_->ConfirmAd(ad.creative_instance_id,
-      ConfirmationType::kClicked);
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 }
 
 void AdsImpl::OnAdNotificationDismissed(
     const AdNotificationInfo& ad) {
-  confirmations_->ConfirmAd(ad.creative_instance_id,
-      ConfirmationType::kDismissed);
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kDismissed);
 }
 
 void AdsImpl::OnCatalogUpdated(
     const CatalogIssuersInfo& catalog_issuers) {
-  confirmations_->SetCatalogIssuers(catalog_issuers);
-
+  account_->SetCatalogIssuers(catalog_issuers);
   account_->TopUpUnblindedTokens();
 }
 
 void AdsImpl::OnAdTransfer(
     const AdInfo& ad) {
-  confirmations_->ConfirmAd(ad.creative_instance_id,
-      ConfirmationType::kTransferred);
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kTransferred);
 }
 
 void AdsImpl::OnConversion(
     const std::string& creative_instance_id) {
-  confirmations_->ConfirmAd(creative_instance_id,
-      ConfirmationType::kConversion);
+  account_->Deposit(creative_instance_id, ConfirmationType::kConversion);
 }
 
 void AdsImpl::OnNewTabPageAdViewed(
     const NewTabPageAdInfo& ad) {
-  confirmations_->ConfirmAd(ad.creative_instance_id,
-      ConfirmationType::kViewed);
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
 }
 
 void AdsImpl::OnNewTabPageAdClicked(
     const NewTabPageAdInfo& ad) {
   ad_transfer_->set_last_clicked_ad(ad);
 
-  confirmations_->ConfirmAd(ad.creative_instance_id,
-      ConfirmationType::kClicked);
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
 }
 
 }  // namespace ads

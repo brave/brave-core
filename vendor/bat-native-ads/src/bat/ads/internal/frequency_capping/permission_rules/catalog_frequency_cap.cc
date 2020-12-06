@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
-#include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {

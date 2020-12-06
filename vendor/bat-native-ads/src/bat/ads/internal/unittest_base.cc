@@ -157,7 +157,10 @@ void UnitTestBase::Initialize() {
     ASSERT_EQ(Result::SUCCESS, result);
   });
 
-  confirmations_state_ = std::make_unique<ConfirmationsState>();
+  ad_rewards_ = std::make_unique<AdRewards>();
+
+  confirmations_state_ =
+      std::make_unique<ConfirmationsState>(ad_rewards_.get());
   confirmations_state_->Initialize([](
       const Result result) {
     ASSERT_EQ(Result::SUCCESS, result);
