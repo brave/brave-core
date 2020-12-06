@@ -1040,6 +1040,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(
   NavigateParams nav_params(browser, gurl, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
+  nav_params.path_behavior = NavigateParams::IGNORE_AND_NAVIGATE;
   Navigate(&nav_params);
 #endif
 }
