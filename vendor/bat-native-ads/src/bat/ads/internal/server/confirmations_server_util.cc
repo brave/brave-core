@@ -3,16 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/confirmations_server_util.h"
 
 #include "bat/ads/ads.h"
 
 namespace ads {
+namespace confirmations {
 namespace server {
 
 namespace {
 
-const char kProductionHost[] = "https://ads-static.brave.com";
+const char kProductionHost[] = "https://ads-serve.brave.com";
 const char kStagingHost[] = "https://ads-serve.bravesoftware.com";
 const char kDevelopmentHost[] = "https://ads-serve.brave.software";
 
@@ -35,4 +36,5 @@ std::string GetHost() {
 }
 
 }  // namespace server
+}  // namespace confirmations
 }  // namespace ads

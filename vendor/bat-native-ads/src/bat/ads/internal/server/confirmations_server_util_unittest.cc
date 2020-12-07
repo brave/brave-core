@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/confirmations_server_util.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -12,39 +12,39 @@
 
 namespace ads {
 
-TEST(BatAdsServerUtilTest,
+TEST(BatAdsConfirmationsServerUtilTest,
     Production) {
   // Arrange
   SetEnvironment(Environment::PRODUCTION);
 
   // Act
-  const std::string host = server::GetHost();
+  const std::string host = confirmations::server::GetHost();
 
   // Assert
-  const std::string expected_host = "https://ads-static.brave.com";
+  const std::string expected_host = "https://ads-serve.brave.com";
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerUtilTest,
+TEST(BatAdsConfirmationsServerUtilTest,
     Staging) {
   // Arrange
   SetEnvironment(Environment::STAGING);
 
   // Act
-  const std::string host = server::GetHost();
+  const std::string host = confirmations::server::GetHost();
 
   // Assert
   const std::string expected_host = "https://ads-serve.bravesoftware.com";
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerUtilTest,
+TEST(BatAdsConfirmationsServerUtilTest,
     Development) {
   // Arrange
   SetEnvironment(Environment::DEVELOPMENT);
 
   // Act
-  const std::string host = server::GetHost();
+  const std::string host = confirmations::server::GetHost();
 
   // Assert
   const std::string expected_host = "https://ads-serve.brave.software";
