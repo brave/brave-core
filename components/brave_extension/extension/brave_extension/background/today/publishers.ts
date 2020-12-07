@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { debounce } from '../../../../../common/debounce'
 import Events from '../../../../../common/events'
 import { fetchResource, URLS } from './privateCDN'
 import { getPrefs as getPublisherPrefs, addPrefsChangedListener } from './publisher-user-prefs'
@@ -58,7 +59,7 @@ async function convertToObject (publishers: BraveToday.Publisher[]): Promise<Bra
   return data
 }
 
-function performUpdate () {
+function performUpdate (notify: boolean = true) {
   // Sanity check
   if (readLock) {
     console.error('Asked to update feed but already waiting for another update!')
@@ -77,7 +78,9 @@ function performUpdate () {
         resolve()
         // Notify
         setPublishersCache(memoryData)
-        publishersEvents.dispatchEvent<BraveToday.Publishers>(eventNameChanged, memoryData)
+        if (notify) {
+          publishersEvents.dispatchEvent<BraveToday.Publishers>(eventNameChanged, memoryData)
+        }
       } else {
         throw new Error(`Not ok when fetching publishers. Status ${feedResponse.status} (${feedResponse.statusText})`)
       }
@@ -95,19 +98,22 @@ export async function getOrFetchData () {
   if (memoryData) {
     return memoryData
   }
-  return update()
+  // Don't notify about updated data if we're only getting new data
+  // due to not having retrieved any data yet. Avoids double feed fetch since
+  // requesting feed data also requests publishers data.
+  return update(false, false)
 }
 
-export async function update (force: boolean = false) {
+export async function update (force: boolean = false, notify: boolean = true) {
   // Fetch but only once at a time, and wait.
   if (!readLock) {
-    performUpdate()
+    performUpdate(notify)
   } else if (force) {
     // If there was already an update in-progress, and we want
     // to make sure we use the latest data, we'll have to perform
     // another update to be sure.
     await readLock
-    performUpdate()
+    performUpdate(notify)
   }
   await readLock
   return memoryData
@@ -119,9 +125,13 @@ export function addPublishersChangedListener (listener: changeListener) {
   publishersEvents.addEventListener<BraveToday.Publishers>(eventNameChanged, listener)
 }
 
-// When publisher pref changes, update prefs data as we depend on it
-addPrefsChangedListener(async function (prefs) {
+const updateOnPrefsChanged = debounce(async () => {
   // TODO(petemill): only re-parse, don't re-fetch (as no indication that remote data
   // has changed).
-  await update(true)
+  await update()
+}, 2000)
+
+// When publisher pref changes, update prefs data as we depend on it
+addPrefsChangedListener(async function (prefs) {
+  updateOnPrefsChanged()
 })
