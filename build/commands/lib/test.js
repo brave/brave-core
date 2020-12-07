@@ -9,7 +9,7 @@ const getTestBinary = (suite) => {
 }
 
 const getTestsToRun = (config, suite) => {
-  testsToRun = [suite]
+  let testsToRun = [suite]
   if (suite === 'brave_unit_tests') {
     if (config.targetOS !== 'android') {
       testsToRun.push('brave_installer_unittests')

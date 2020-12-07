@@ -71,7 +71,7 @@ def get_vs_env(vs_version, arch):
     be one of "x86", "amd64", "arm", "x86_amd64", "x86_arm", "amd64_x86",
     "amd64_arm", e.g. the args passed to vcvarsall.bat.
     """
-    vsvarsall = "C:\\Program Files (x86)\\Microsoft Visual Studio {0}"
-    "\\VC\\vcvarsall.bat".format(vs_version)
+    vsvarsall = "C:\\Program Files (x86)\\Microsoft Visual Studio {0}" \
+                "\\VC\\vcvarsall.bat".format(vs_version)
 
     return get_environment_from_batch_command([vsvarsall, arch])
