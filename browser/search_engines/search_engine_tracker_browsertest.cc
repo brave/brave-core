@@ -27,7 +27,7 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
-                       DefaultSearchEngineP3A) {
+                       DISABLED_DefaultSearchEngineP3A) {
   // Check that the metric is reported on startup.
   histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
                                         SearchEngineP3A::kGoogle, 1);

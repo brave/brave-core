@@ -89,7 +89,8 @@ class BraveProfileManagerTest : public InProcessBrowserTest {
 // Test that legacy profile names (Person X) that have
 // not been user-modified are automatically renamed
 // to brave profile names (Profile X).
-IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest, PRE_MigrateProfileNames) {
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
+                       DISABLED_PRE_MigrateProfileNames) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ProfileAttributesStorage& storage =
       profile_manager->GetProfileAttributesStorage();
@@ -124,7 +125,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest, PRE_MigrateProfileNames) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest, MigrateProfileNames) {
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
+                       DISABLED_MigrateProfileNames) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ProfileAttributesStorage& storage =
       profile_manager->GetProfileAttributesStorage();
