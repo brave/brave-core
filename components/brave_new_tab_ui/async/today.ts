@@ -82,12 +82,17 @@ handler.on<number>(Actions.feedItemViewedCountChanged.getType(), async (store, p
 
 handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), async (store, payload) => {
   const { publisherId, enabled } = payload
-  const { publishers } = await Background.send<Messages.SetPublisherPrefResponse, Messages.SetPublisherPrefPayload>(MessageTypes.setPublisherPref, {
+  Background.send<{}, Messages.SetPublisherPrefPayload>(MessageTypes.setPublisherPref, {
     publisherId,
     enabled
-  })
-  store.dispatch(Actions.dataReceived({ publishers }))
-  store.dispatch(Actions.checkForUpdate())
+  }).catch((e) => console.error(e))
+  // Refreshing of content after prefs changed is throttled, so wait
+  // a while before seeing if we have new content yet.
+  // This doesn't have to be exact since we often check for update when
+  // opening or scrolling through the feed.
+  window.setTimeout(() => {
+    store.dispatch(Actions.checkForUpdate())
+  }, 3000)
 })
 
 handler.on(Actions.checkForUpdate.getType(), async function (store) {
