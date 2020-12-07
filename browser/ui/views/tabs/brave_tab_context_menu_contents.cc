@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 
+#include <string>
+#include <vector>
+
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "chrome/browser/defaults.h"
@@ -121,7 +124,8 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       std::vector<int> affected_indices = tab_strip_model->IsTabSelected(index_)
           ? tab_strip_model->selection_model().selected_indices()
           : std::vector<int>{index_};
-      const bool mute = !model_->AreAllTabsMuted(*tab_strip_model, affected_indices);
+      const bool mute = !model_->AreAllTabsMuted(*tab_strip_model,
+                                                 affected_indices);
 
       for (int tab_index : affected_indices) {
         chrome::SetTabAudioMuted(tab_strip_model->GetWebContentsAt(tab_index),

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 
+#include <vector>
+
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -69,7 +71,6 @@ void BraveTabMenuModel::Build(TabStripModel* tab_strip_model, int index) {
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
-
 }
 
 bool BraveTabMenuModel::AreAllTabsMuted(const TabStripModel& tab_strip_model,
