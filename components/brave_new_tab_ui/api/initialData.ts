@@ -19,6 +19,7 @@ export type InitialData = {
   geminiSupported: boolean
   binanceSupported: boolean
   cryptoDotComSupported: boolean
+  ftxSupported: boolean
 }
 
 export type PreInitialRewardsData = {
@@ -49,6 +50,7 @@ export async function getInitialData (): Promise<InitialData> {
       togetherSupported,
       geminiSupported,
       cryptoDotComSupported,
+      ftxSupported,
       binanceSupported
     ] = await Promise.all([
       preferencesAPI.getPreferences(),

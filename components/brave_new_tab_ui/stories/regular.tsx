@@ -70,6 +70,7 @@ export const Regular = () => {
       saveShowTogether={doNothing}
       saveShowGemini={doNothing}
       saveShowCryptoDotCom={doNothing}
+      saveShowFTX={doNothing}
       saveBrandedWallpaperOptIn={doNothing}
       saveSetAllStackWidgets={doNothing}
       onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}

@@ -13,6 +13,7 @@ import binanceReducer from './binance_reducer'
 import rewardsReducer from './rewards_reducer'
 import geminiReducer from './gemini_reducer'
 import cryptoDotComReducer from './cryptoDotCom_reducer'
+import ftxReducer from '../components/widgets/ftx/reducer'
 import { stackWidgetReducer } from './stack_widget_reducer'
 import todayReducer, { BraveTodayState } from './today'
 
@@ -31,6 +32,7 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
   state = rewardsReducer(state, action)
   state = geminiReducer(state, action)
   state = cryptoDotComReducer(state, action)
+  state = ftxReducer(state, action)
   state = stackWidgetReducer(state, action)
 
   if (state !== startingState) {

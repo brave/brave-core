@@ -50,9 +50,9 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWal
 function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   switch (firstWidget) {
     case 'together':
-      return ['rewards', 'binance', 'together']
+      return ['rewards', 'binance', 'together', 'ftx']
     default:
-      return ['together', 'binance', 'rewards']
+      return ['together', 'binance', 'rewards', 'ftx']
   }
 }
 
@@ -78,6 +78,8 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   togetherPromptDismissed: !boolean('Together prompt?', false),
   geminiSupported: boolean('Gemini Supported?', true),
   cryptoDotComSupported: boolean('Crypto.com supported?', true),
+  ftxSupported: boolean('FTX supported?', true),
+  showFTX: boolean('Show FTX?', true),
   showBinance: boolean('Show Binance?', true),
   isBraveTodayIntroDismissed: boolean('Brave Today intro dismissed?', false),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
