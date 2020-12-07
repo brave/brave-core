@@ -2229,8 +2229,11 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView) {
-        guard let selectedTab = tabManager.selectedTab else { return }
-        if selectedTab.url?.isLocalUtility == true {
+        guard let selectedTab = tabManager.selectedTab, var url = selectedTab.url else { return }
+        if url.isErrorPageURL, let originalURL = url.originalURLFromErrorURL {
+            url = originalURL
+        }
+        if url.isLocalUtility {
             return
         }
         let shields = ShieldsViewController(tab: selectedTab)
