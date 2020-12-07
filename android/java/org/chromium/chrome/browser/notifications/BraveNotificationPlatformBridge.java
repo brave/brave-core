@@ -41,6 +41,10 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
             @NotificationType
             int notificationType = intent.getIntExtra(
                     NotificationConstants.EXTRA_NOTIFICATION_TYPE, NotificationType.WEB_PERSISTENT);
+            if (notificationType == NotificationType.BRAVE_ADS
+                    && NotificationConstants.ACTION_CLICK_NOTIFICATION.equals(intent.getAction())) {
+                bringToForeground();
+            }
             return true;
         }
 
@@ -69,6 +73,10 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
             boolean renotify, boolean silent, ActionInfo[] actions, String webApkPackage) {
         mNotificationType = notificationType;
 
+        if (notificationType == NotificationType.BRAVE_ADS) {
+            vibrationPattern = EMPTY_VIBRATION_PATTERN;
+        }
+
         return super.prepareNotificationBuilder(notificationId, notificationType, origin, scopeUrl,
                 profileId, incognito, vibrateEnabled, title, body, image, icon, badge,
                 vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
@@ -76,6 +84,12 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
 
     @Override
     protected NotificationBuilderBase createNotificationBuilder(Context context, boolean hasImage) {
+        if (mNotificationType == NotificationType.BRAVE_ADS) {
+            // TODO(jocelyn): Remove setPriority here since we already set the
+            // importance of Ads notification channel to IMPORTANCE_HIGH?
+            return new BraveAdsNotificationBuilder(context).setPriority(Notification.PRIORITY_HIGH);
+        }
+
         return super.createNotificationBuilder(context, hasImage);
     }
 }

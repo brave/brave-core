@@ -38,6 +38,7 @@ struct ClientInfo {
   std::map<std::string, uint64_t> seen_advertisers;
   uint64_t next_ad_serving_interval_timestamp_ = 0;
   ad_targeting::contextual::PageProbabilitiesList page_probabilities_history;
+  std::string version_code;
   PurchaseIntentSignalSegmentHistoryMap purchase_intent_signal_history;
 };
 

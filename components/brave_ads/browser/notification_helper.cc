@@ -26,6 +26,10 @@ bool NotificationHelper::ShowMyFirstAdNotification() {
   return false;
 }
 
+bool NotificationHelper::CanShowBackgroundNotifications() const {
+  return true;
+}
+
 NotificationHelper* NotificationHelper::GetInstance() {
   if (g_notification_helper_for_testing) {
     return g_notification_helper_for_testing;

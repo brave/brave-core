@@ -436,6 +436,17 @@ void Client::RemoveAllHistory() {
   Save();
 }
 
+std::string Client::GetVersionCode() const {
+  return client_->version_code;
+}
+
+void Client::SetVersionCode(
+    const std::string& value) {
+  client_->version_code = value;
+
+  Save();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void Client::Save() {
