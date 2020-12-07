@@ -59,6 +59,7 @@ export interface Props {
   toggleShowBinance: () => void
   toggleShowGemini: () => void
   toggleShowCryptoDotCom: () => void
+  toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   showBackgroundImage: boolean
@@ -79,6 +80,8 @@ export interface Props {
   geminiSupported: boolean
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
+  showFTX: boolean
+  ftxSupported: boolean
   todayPublishers?: BraveToday.Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
@@ -258,6 +261,9 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowCryptoDotCom,
       cryptoDotComSupported,
       showCryptoDotCom,
+      toggleShowFTX,
+      ftxSupported,
+      showFTX,
       toggleCards,
       cardsHidden
     } = this.props
@@ -387,6 +393,9 @@ export default class Settings extends React.PureComponent<Props, State> {
                       toggleShowCryptoDotCom={toggleShowCryptoDotCom}
                       cryptoDotComSupported={cryptoDotComSupported}
                       showCryptoDotCom={showCryptoDotCom}
+                      toggleShowFTX={toggleShowFTX}
+                      ftxSupported={ftxSupported}
+                      showFTX={showFTX}
                     />
                   ) : null
               }

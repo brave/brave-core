@@ -49,6 +49,9 @@ interface Props {
   toggleShowCryptoDotCom: () => void
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
+  toggleShowFTX: () => void
+  showFTX: boolean
+  ftxSupported: boolean
   toggleCards: (show: boolean) => void
   cardsHidden: boolean
 }
@@ -95,6 +98,9 @@ class CardsSettings extends React.PureComponent<Props, {}> {
       cryptoDotComSupported,
       toggleShowCryptoDotCom,
       showCryptoDotCom,
+      ftxSupported,
+      toggleShowFTX,
+      showFTX,
       toggleCards,
       cardsHidden
     } = this.props
@@ -161,6 +167,22 @@ class CardsSettings extends React.PureComponent<Props, {}> {
                 </StyledSettingsCopy>
               </StyledSettingsInfo>
               {this.renderToggleButton(showCryptoDotCom, toggleShowCryptoDotCom, false)}
+            </SettingsWidget>
+          : null
+        }
+        {
+          ftxSupported
+          ? <SettingsWidget>
+              <StyledBannerImage src={cryptoDotComBanner} />
+              <StyledSettingsInfo>
+                <StyledSettingsTitle>
+                  {'FTX'}
+                </StyledSettingsTitle>
+                <StyledSettingsCopy>
+                  {getLocale('ftxWidgetDesc')}
+                </StyledSettingsCopy>
+              </StyledSettingsInfo>
+              {this.renderToggleButton(showFTX, toggleShowFTX, false)}
             </SettingsWidget>
           : null
         }
