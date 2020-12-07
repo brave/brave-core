@@ -29,8 +29,7 @@
 
 const char kVideoPlaying[] = "Video playing";
 const char kVideoPlayingDetect[] =
-    "window.domAutomationController.send(document.getElementById('status')."
-    "textContent);";
+    "document.getElementById('status').textContent;";
 const char kEmbeddedTestServerDirectory[] = "autoplay";
 
 class AutoplayBrowserTest : public InProcessBrowserTest {
@@ -103,44 +102,32 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
   }
 
   void GotoAutoplayByAttr(bool muted) {
-    bool clicked;
-    if (muted)
-      ASSERT_TRUE(ExecuteScriptAndExtractBool(
-          contents(),
-          "window.domAutomationController.send(clickAutoplayByAttrMuted())",
-          &clicked));
-    else
-      ASSERT_TRUE(ExecuteScriptAndExtractBool(
-          contents(),
-          "window.domAutomationController.send(clickAutoplayByAttr())",
-          &clicked));
+    if (muted) {
+      ASSERT_EQ(true, EvalJsWithManualReply(contents(),
+                                            "clickAutoplayByAttrMuted()"));
+    } else {
+      ASSERT_EQ(true,
+                EvalJsWithManualReply(contents(), "clickAutoplayByAttr()"));
+    }
     ASSERT_TRUE(WaitForLoadStop(contents()));
     WaitForCanPlay();
-    ASSERT_TRUE(clicked);
   }
 
   void GotoAutoplayByMethod(bool muted) {
-    bool clicked;
-    if (muted)
-      ASSERT_TRUE(ExecuteScriptAndExtractBool(
-          contents(),
-          "window.domAutomationController.send(clickAutoplayByMethodMuted())",
-          &clicked));
-    else
-      ASSERT_TRUE(ExecuteScriptAndExtractBool(
-          contents(),
-          "window.domAutomationController.send(clickAutoplayByMethod())",
-          &clicked));
+    if (muted) {
+      ASSERT_EQ(true, EvalJsWithManualReply(contents(),
+                                            "clickAutoplayByMethodMuted()"));
+    } else {
+      ASSERT_EQ(true,
+                EvalJsWithManualReply(contents(), "clickAutoplayByMethod()"));
+    }
     ASSERT_TRUE(WaitForLoadStop(contents()));
     WaitForCanPlay();
-    ASSERT_TRUE(clicked);
   }
 
   void WaitForCanPlay() {
-    std::string msg_from_renderer;
-    ASSERT_TRUE(ExecuteScriptAndExtractString(
-        contents(), "notifyWhenCanPlay();", &msg_from_renderer));
-    ASSERT_EQ("CANPLAY", msg_from_renderer);
+    ASSERT_EQ("CANPLAY",
+              EvalJsWithManualReply(contents(), "notifyWhenCanPlay()"));
   }
 
  private:
@@ -153,78 +140,59 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AutoplayBrowserTest, AllowAutoplay) {
-  std::string result;
   AllowAutoplay();
 
   NavigateToURLUntilLoadStop(index_url());
   GotoAutoplayByMethod(false);
 
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
-  EXPECT_EQ(result, kVideoPlaying);
-
-  result.clear();
+  EXPECT_EQ(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 
   NavigateToURLUntilLoadStop(index_url());
   GotoAutoplayByAttr(false);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
-  EXPECT_EQ(result, kVideoPlaying);
+  EXPECT_EQ(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
 
 // If content setting = BLOCK, ignore play() method call
 IN_PROC_BROWSER_TEST_F(AutoplayBrowserTest, BlockAutoplayByMethod) {
-  std::string result;
   BlockAutoplay();
 
   NavigateToURLUntilLoadStop(index_url());
   GotoAutoplayByMethod(false);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should not play
-  EXPECT_NE(result, kVideoPlaying);
+  EXPECT_NE(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
 
 // If content setting = BLOCK, ignore autoplay attribute
 IN_PROC_BROWSER_TEST_F(AutoplayBrowserTest, BlockAutoplayByAttribute) {
-  std::string result;
   BlockAutoplay();
 
   ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
   GotoAutoplayByAttr(false);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should not play
-  EXPECT_NE(result, kVideoPlaying);
+  EXPECT_NE(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
 
 // If content setting = BLOCK, ignore play() method call, even if video would
 // play muted.
 IN_PROC_BROWSER_TEST_F(AutoplayBrowserTest, BlockAutoplayByMethodOnMutedVideo) {
-  std::string result;
   BlockAutoplay();
 
   NavigateToURLUntilLoadStop(index_url());
   GotoAutoplayByMethod(true);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should not play
-  EXPECT_NE(result, kVideoPlaying);
+  EXPECT_NE(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
 
 // If content setting = BLOCK, ignore autoplay attribute, even if the video
 // would play muted.
 IN_PROC_BROWSER_TEST_F(AutoplayBrowserTest,
                        BlockAutoplayByAttributeOnMutedVideo) {
-  std::string result;
   BlockAutoplay();
 
   ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
   GotoAutoplayByAttr(false);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should not play
-  EXPECT_NE(result, kVideoPlaying);
+  EXPECT_NE(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
 
 class AutoplayNoUserGestureRequiredBrowserTest : public AutoplayBrowserTest {
@@ -242,43 +210,28 @@ class AutoplayNoUserGestureRequiredBrowserTest : public AutoplayBrowserTest {
 // does not verify that.)
 IN_PROC_BROWSER_TEST_F(AutoplayNoUserGestureRequiredBrowserTest,
                        AllowAutoplay) {
-  std::string result;
   AllowAutoplay();
 
   ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
   GotoAutoplayByMethod(false);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should play
-  EXPECT_EQ(result, kVideoPlaying);
-
-  result.clear();
+  EXPECT_EQ(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 
   ASSERT_TRUE(NavigateToURLUntilLoadStop(index_url()));
   GotoAutoplayByAttr(false);
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should play
-  EXPECT_EQ(result, kVideoPlaying);
+  EXPECT_EQ(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
 
 // Default allow autoplay on file urls
 IN_PROC_BROWSER_TEST_F(AutoplayNoUserGestureRequiredBrowserTest, FileAutoplay) {
-  std::string result;
-
   NavigateToURLUntilLoadStop(file_autoplay_method_url());
   WaitForCanPlay();
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should play
-  EXPECT_EQ(result, kVideoPlaying);
-
-  result.clear();
+  EXPECT_EQ(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 
   NavigateToURLUntilLoadStop(file_autoplay_attr_url());
   WaitForCanPlay();
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   // should play
-  EXPECT_EQ(result, kVideoPlaying);
+  EXPECT_EQ(kVideoPlaying, EvalJs(contents(), kVideoPlayingDetect));
 }
