@@ -2,16 +2,19 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="uk">
 <translation id="1008557486741366299">Не зараз</translation>
+<translation id="100957008357583611">Використовувати геодані?</translation>
 <translation id="1010200102790553230">Завантажити сторінку пізніше</translation>
 <translation id="1015730422737071372">Надати додаткову інформацію</translation>
 <translation id="1019413721762100891">Вимкнено</translation>
 <translation id="1021110881106174305">Прийняті картки</translation>
+<translation id="1024111578869940408">Іноді зловмисники імітують сайти, вносячи майже непомітні зміни у веб-адресу.</translation>
 <translation id="1030706264415084469">Сайт <ph name="URL"/> хоче постійно зберігати великий обсяг даних на вашому пристрої</translation>
 <translation id="1032854598605920125">Обернути за годинниковою стрілкою</translation>
 <translation id="1036348656032585052">Вимкнути</translation>
 <translation id="1038106730571050514">Показувати пропозиції</translation>
 <translation id="1038842779957582377">Невідоме ім’я</translation>
 <translation id="1041998700806130099">Повідомлення на аркуші вихідних даних</translation>
+<translation id="1048785276086539861">Коли ви редагуєте примітки, документ переходить у режим перегляду по одній сторінці</translation>
 <translation id="1050038467049342496">Закрийте інші додатки</translation>
 <translation id="1055184225775184556">&amp;Відмінити додавання</translation>
 <translation id="1056898198331236512">Застереження</translation>
@@ -19,6 +22,7 @@
 <translation id="10614374240317010">Ніколи не зберігалося</translation>
 <translation id="1062160989074299343">Prc10 (конверт)</translation>
 <translation id="106701514854093668">Закладки на комп’ютері</translation>
+<translation id="1068672505746868501">Ніколи не перекладати сторінки такою мовою: <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070901266639972381">Ніч</translation>
 <translation id="1074497978438210769">Не конфіденційний</translation>
 <translation id="1080116354587839789">За шириною сторінки</translation>
@@ -26,22 +30,25 @@
 <translation id="1088860948719068836">Додайте ім’я на картці</translation>
 <translation id="1089439967362294234">Змінити пароль</translation>
 <translation id="1096545575934602868">Максимальна кількість записів у цьому полі: <ph name="MAX_ITEMS_LIMIT"/>. Усі подальші записи буде відхилено.</translation>
-<translation id="1920681928837417101">Керуйте паролями в налаштуваннях Brave</translation>
 <translation id="1101672080107056897">Помилка дії</translation>
 <translation id="1103523840287552314">Завжди перекладати з такої мови: <ph name="LANGUAGE"/></translation>
 <translation id="1110994991967754504">Виберіть тип для дозволу "<ph name="PERMISSION_NAME"/>"</translation>
 <translation id="1113869188872983271">&amp;Відмінити перевпорядкування</translation>
 <translation id="1125573121925420732">Можуть з’являтися застереження під час оновлення системи безпеки сайтів. Цю проблему буде незабаром виправлено.</translation>
 <translation id="112840717907525620">Кеш-пам’ять правила не пошкоджено</translation>
+<translation id="3186248837008742887">Кнопка "Перекласти сторінку"; натисніть Enter, що перекласти цю сторінку в Brave Перекладачі</translation>
 <translation id="1131264053432022307">Скопійоване зображення</translation>
 <translation id="1150979032973867961">Цей сервер не зміг довести, що він – домен <ph name="DOMAIN"/>. Операційна система вашого комп’ютера не вважає його сертифікат безпеки надійним. Імовірні причини: неправильна конфігурація або хтось намагається перехопити ваше з’єднання.</translation>
 <translation id="1151972924205500581">Потрібен пароль</translation>
-<translation id="1152921474424827756">Відкрийте <ph name="BEGIN_LINK"/>кешовану копію<ph name="END_LINK"/> <ph name="URL"/></translation>
 <translation id="1156303062776767266">Ви переглядаєте локальний або спільний файл</translation>
 <translation id="1158211211994409885">Хост <ph name="HOST_NAME"/> неочікувано розірвав з’єднання.</translation>
 <translation id="115926840831309955">Перевірте код CVC й повторіть спробу або оновіть дату закінчення терміну дії</translation>
 <translation id="1161325031994447685">знову під’єднати пристрій до мережі Wi-Fi</translation>
 <translation id="1165039591588034296">Помилка</translation>
+<translation id="1165174597379888365">Відвідано сторінку</translation>
+<translation id="1174723505405632867">Надати сайту <ph name="EMBEDDED_URL"/> доступ до файлів cookie й даних на сайті <ph name="TOP_LEVEL_URL"/>?
+
+Інакше доступ буде заблоковано вашими налаштуваннями конфіденційності. Якщо ви надасте доступ, контент, з яким ви взаємодіяли, працюватиме належним чином, але сайт <ph name="EMBEDDED_URL"/> зможе відстежувати ваші дії.</translation>
 <translation id="1175364870820465910">&amp;Друк...</translation>
 <translation id="1175875016430184367">Тричі скріпити праворуч</translation>
 <translation id="1178581264944972037">Пауза</translation>
@@ -60,6 +67,7 @@
 <translation id="1232569758102978740">Без імені</translation>
 <translation id="1236081509407217141">Дозволити віртуальну реальність?</translation>
 <translation id="1240347957665416060">Назва пристрою</translation>
+<translation id="124116460088058876">Інші мови</translation>
 <translation id="1052005765108026699">Щоб наступного разу платити швидше, збережіть дані картки, ім’я та платіжну адресу в обліковому записі Brave.</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (синхронізовано)</translation>
 <translation id="1256368399071562588">&lt;p&gt;Якщо веб-сайт не відкривається:&lt;/p&gt;
@@ -79,7 +87,6 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Спробуйте видалити файли cookie<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">Перевірте налаштування безпеки DNS</translation>
 <translation id="1307966114820526988">Функції не підтримуються</translation>
-<translation id="1310581832770023220">Дані цієї форми надсилаються через незахищене з'єднання</translation>
 <translation id="131405271941274527">Сайт <ph name="URL"/> хоче обмінюватися даними з телефоном через NFC</translation>
 <translation id="1314509827145471431">Зшити праворуч</translation>
 <translation id="1320233736580025032">Prc1 (конверт)</translation>
@@ -99,6 +106,8 @@
 <translation id="1348198688976932919">Сайт містить небезпечні додатки</translation>
 <translation id="1348779747280417563">Підтвердити назву</translation>
 <translation id="1357195169723583938">Хто й коли нещодавно користувався пристроєм</translation>
+<translation id="1360955481084547712">Відкрити нове вікно в режимі анонімного перегляду</translation>
+<translation id="1363819917331173092">Не пропонувати перекладати сторінки такою мовою: <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1364822246244961190">Це правило заблоковано. Його значення ігноруватиметься.</translation>
 <translation id="1374468813861204354">пропозиції</translation>
 <translation id="1374692235857187091">Index-4x6 (листівка)</translation>
@@ -108,6 +117,7 @@
 <translation id="1380591466760231819">Зігнути у вигляді конверта</translation>
 <translation id="138218114945450791">Світло-синій</translation>
 <translation id="1382194467192730611">Пристрій USB дозволив адміністратор</translation>
+<translation id="1386623374109090026">Примітки</translation>
 <translation id="139305205187523129">Хост <ph name="HOST_NAME"/> не надіслав дані.</translation>
 <translation id="1405567553485452995">Світло-зелений</translation>
 <translation id="1407135791313364759">Відкрити все</translation>
@@ -118,9 +128,11 @@
 <translation id="1430915738399379752">Друк</translation>
 <translation id="1442386063175183758">Зігнути за типом "ворота праворуч"</translation>
 <translation id="1442987760062738829">Пробити отвір</translation>
+<translation id="1447067628680007684">(x86_64)</translation>
 <translation id="7408760246081928496">Текст, який ви вставляєте або долучаєте, надсилається на платформу Brave Cloud або стороннім сервісам на аналіз. Наприклад, його можуть сканувати на наявність конфіденційних даних.</translation>
 <translation id="1455413310270022028">Гумка</translation>
 <translation id="1462245070427461050">JIS B9</translation>
+<translation id="1462951478840426066">Використовувати встановлені на вашому комп'ютері шрифти, щоб ви могли створювати контент високої якості</translation>
 <translation id="1463543813647160932">5x7</translation>
 <translation id="1467432559032391204">Ліворуч</translation>
 <translation id="1472675084647422956">Показати більше</translation>
@@ -143,9 +155,11 @@
 <translation id="1531205177818805254">Exec</translation>
 <translation id="1532118530259321453">Повідомлення з цієї сторінки</translation>
 <translation id="153384715582417236">Більше нічого немає</translation>
+<translation id="1536390784834419204">Перекласти сторінку</translation>
 <translation id="154408704832528245">Вибрати адресу доставки</translation>
 <translation id="1549470594296187301">Щоб користуватися цією функцією, потрібно ввімкнути JavaScript.</translation>
 <translation id="155039086686388498">Engineering-D</translation>
+<translation id="1705567146636171298">Оновити Brave</translation>
 <translation id="1555130319947370107">Синій</translation>
 <translation id="1559447966090556585">Отримувати сповіщення?</translation>
 <translation id="1559528461873125649">Такого файла або каталогу немає</translation>
@@ -163,10 +177,11 @@
 <translation id="1620510694547887537">Камера</translation>
 <translation id="1623104350909869708">Заборонити цій сторінці створювати додаткові діалогові вікна</translation>
 <translation id="16338877384480380">Architecture-B</translation>
+<translation id="1634828734222219955">Усього</translation>
 <translation id="1638780421120290329">Не вдається зберегти картку</translation>
 <translation id="1639239467298939599">Завантаження</translation>
 <translation id="1640180200866533862">Правила користувача</translation>
-<translation id="1640244768702815859"><ph name="BEGIN_LINK"/>Відвідайте домашню сторінку цього сайту<ph name="END_LINK"/>.</translation>
+<translation id="1640244768702815859">Спробуйте <ph name="BEGIN_LINK"/>відкрити головну сторінку цього сайту<ph name="END_LINK"/>.</translation>
 <translation id="1641976391427233992">Відкласти виведення до</translation>
 <translation id="1644574205037202324">Історія</translation>
 <translation id="1645368109819982629">Протокол не підтримується</translation>
@@ -203,6 +218,7 @@
 <translation id="17513872634828108">Відкриті вкладки</translation>
 <translation id="1752021286346845558">Поштова скринька 8</translation>
 <translation id="1753706481035618306">Номер сторінки</translation>
+<translation id="1757773103848038814">Моноширинний шрифт</translation>
 <translation id="1763864636252898013">Цей сервер не зміг довести, що він – домен <ph name="DOMAIN"/>. Операційна система вашого пристрою не вважає його сертифікат безпеки надійним. Імовірні причини: неправильна конфігурація або хтось намагається перехопити ваше з’єднання.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Проведіть діагностику мережі Windows<ph name="END_LINK"/>.</translation>
 <translation id="1772163372082567643">Для сервера, на який ви переходите (<ph name="ORIGIN"/>), вибрано заголовок,
@@ -214,8 +230,10 @@
 <translation id="1783075131180517613">Оновіть парольну фразу для синхронізації.</translation>
 <translation id="1787142507584202372">Тут відображатимуться ваші відкриті вкладки</translation>
 <translation id="3480410886581896628">Brave Smart Lock</translation>
+<translation id="1798447301915465742"><ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT"/>; доступно кілька дій, натискайте Tab, щоб переходити між ними</translation>
 <translation id="1800473098294731951">B9</translation>
 <translation id="1803264062614276815">Ім’я та прізвище власника картки</translation>
+<translation id="1807246157184219062">Світла</translation>
 <translation id="1807528111851433570">Перший аркуш</translation>
 <translation id="1821930232296380041">Недійсний запит або параметри запиту</translation>
 <translation id="1822540298136254167">Відвідані веб-сайти й час перебування на них</translation>
@@ -241,7 +259,6 @@
 <translation id="1919345977826869612">Оголошення</translation>
 <translation id="1919367280705858090">Як виправити конкретну помилку</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Немає}=1{1 сайт}one{# сайт}few{# сайти}many{# сайтів}other{# сайту}}</translation>
-<translation id="194030505837763158">Перейдіть за адресою <ph name="LINK"/></translation>
 <translation id="1947454675006758438">Скріпити вгорі праворуч</translation>
 <translation id="990584554013599191">Допоможіть посилити безпеку в Інтернеті для всіх користувачів, надсилаючи в Brave <ph name="BEGIN_WHITEPAPER_LINK"/>URL-адреси та вміст деяких відвіданих сторінок, а також обмежену системну інформацію<ph name="END_WHITEPAPER_LINK"/>. <ph name="BEGIN_PRIVACY_PAGE_LINK"/>Політика конфіденційності<ph name="END_PRIVACY_PAGE_LINK"/></translation>
 <translation id="1962204205936693436">Закладки <ph name="DOMAIN"/></translation>
@@ -249,20 +266,14 @@
 <translation id="1974060860693918893">Розширені</translation>
 <translation id="1975584088563498795">Поштова скринька 10</translation>
 <translation id="1978555033938440688">Версія мікропрограми</translation>
-<translation id="711418501679417607">Очистити дані історії веб-перегляду Brave</translation>
+<translation id="1988881251331415125">Якщо помилок немає, <ph name="BEGIN_LINK"/>проведіть діагностику з'єднання<ph name="END_LINK"/>.</translation>
 <translation id="1992331125980284532">JIS B3</translation>
-<translation id="1992796205810278279">Отримати доступ до файлів cookie й даних сайту.
-
-Надати сайту <ph name="EMBEDDED_URL"/> доступ до файлів cookie й даних на сайті <ph name="TOP_LEVEL_URL"/>?
-
-Інакше доступ буде заблоковано вашими налаштуваннями конфіденційності. Якщо ви надасте доступ, контент, з яким ви взаємодіяли, працюватиме належним чином, але сайт <ph name="EMBEDDED_URL"/> зможе відстежувати ваші дії.</translation>
 <translation id="1997484222658892567">Сайт <ph name="URL"/> хоче постійно зберігати великий обсяг даних на вашому локальному комп’ютері</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{і ще 1}one{і ще #}few{і ще #}many{і ще #}other{і ще #}}</translation>
 <translation id="2003709556000175978">Скиньте пароль</translation>
 <translation id="2003775180883135320">Пробити чотири отвори вгорі</translation>
 <translation id="2025115093177348061">Доповнена реальність</translation>
 <translation id="2025186561304664664">Проксі-сервер установлено на автоматичне налаштування.</translation>
-<translation id="2030481566774242610">Можливо, ви мали на увазі <ph name="LINK"/>?</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>перевірити проксі-сервер і брандмауер<ph name="END_LINK"/></translation>
 <translation id="2042213636306070719">Лоток 7</translation>
 <translation id="3163988908275223348">Увійдіть, щоб користуватися паролями, збереженими в обліковому записі Brave</translation>
@@ -278,6 +289,7 @@
 <translation id="2099652385553570808">Скріпити тричі ліворуч</translation>
 <translation id="2101225219012730419">Версія:</translation>
 <translation id="2102134110707549001">Запропонувати надійний пароль…</translation>
+<translation id="2102495993840063010">Додатки Android</translation>
 <translation id="2107021941795971877">Підтримка друку</translation>
 <translation id="2108755909498034140">Перезавантажте комп’ютер</translation>
 <translation id="2111256659903765347">Super-A</translation>
@@ -294,12 +306,14 @@
 <translation id="2154054054215849342">Синхронізація недоступна для вашого домену</translation>
 <translation id="2154484045852737596">Редагувати картку</translation>
 <translation id="2161656808144014275">Текст</translation>
+<translation id="2164510882479075877">Перевірте, чи немає описки в імені хосту <ph name="HOST_NAME"/>.</translation>
 <translation id="2166049586286450108">Повний адміністративний доступ</translation>
 <translation id="2166378884831602661">Цей сайт не може забезпечити захищене з’єднання</translation>
 <translation id="2169984857010174799">Kaku2 (конверт)</translation>
 <translation id="2181821976797666341">Правила</translation>
 <translation id="2183608646556468874">Номер телефону</translation>
 <translation id="2184405333245229118">{COUNT,plural, =1{1 адреса}one{# адреса}few{# адреси}many{# адрес}other{# адреси}}</translation>
+<translation id="2187243482123994665">Інформація про присутність</translation>
 <translation id="2187317261103489799">Визначати (за умовчанням)</translation>
 <translation id="2188375229972301266">Пробити кілька отворів унизу</translation>
 <translation id="2202020181578195191">Введіть дійсний рік закінчення терміну дії</translation>
@@ -318,7 +332,6 @@
 <translation id="2258928405015593961">Введіть майбутню дату закінчення терміну дії та повторіть спробу</translation>
 <translation id="225943865679747347">Код помилки: <ph name="ERROR_CODE"/></translation>
 <translation id="2262243747453050782">Помилка HTTP</translation>
-<translation id="112540507627099823">Оновіть дані для автозаповнення кредитної картки в налаштуваннях Brave</translation>
 <translation id="2267047181501709434">Підтвердження вашої особи…</translation>
 <translation id="2270484714375784793">Номер телефону</translation>
 <translation id="2276057643614339130">Надрукована основа</translation>
@@ -328,10 +341,10 @@
 <translation id="2289385804009217824">Обрізати</translation>
 <translation id="2292556288342944218">Ваш доступ до Інтернету заблоковано</translation>
 <translation id="2293443924986248631">Якщо цей параметр увімкнено, сайти не можуть використовувати файли cookie, через які відстежуються ваші дії в Інтернеті. Функції на деяких сайтах можуть не працювати.</translation>
+<translation id="6148139222908395733">URL-адреси сторінок, які ви відвідуєте, надсилаються на платформу Brave Cloud або стороннім сервісам на аналіз. Наприклад, їх можуть сканувати, щоб виявити ненадійні веб-сайти.</translation>
 <translation id="2297722699537546652">B5 (конверт)</translation>
 <translation id="2300306941146563769">Не завантажено</translation>
 <translation id="2310021320168182093">Chou2 (конверт)</translation>
-<translation id="2315864634253056100">Назва цього сайту схожа на назву сайту <ph name="LOOKALIKE_DOMAIN"/>. Іноді зловмисники імітують сайти, вносячи майже непомітні зміни у веб-адресу.</translation>
 <translation id="2316887270356262533">Звільняє менше 1 Мб. Деякі сайти можуть завантажуватися повільніше під час наступного відвідування.</translation>
 <translation id="2317259163369394535">Для сайту <ph name="DOMAIN"/> потрібно ввести ім’я користувача та пароль.</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, діє до <ph name="EXPIRATION_DATE_ABBR"/></translation>
@@ -348,21 +361,22 @@
 <translation id="2367567093518048410">Рівень</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="2384307209577226199">Стандартне корпоративне правило</translation>
+<translation id="5244533701344680487">Оновити веб-переглядач Brave у його налаштуваннях</translation>
 <translation id="2386255080630008482">Сертифікат сервера відкликано.</translation>
 <translation id="2392959068659972793">Показувати правила, для яких не встановлено значення</translation>
 <translation id="239429038616798445">Цей спосіб відправлення недоступний. Виберіть інший спосіб.</translation>
 <translation id="2396249848217231973">&amp;Відмінити видалення</translation>
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">Цей сервер не зміг довести, що він – домен <ph name="DOMAIN"/>. Можливо, його сертифікат безпеки відкликано. Імовірні причини: неправильна конфігурація або хтось намагається перехопити ваше з’єднання.</translation>
+<translation id="2414886740292270097">Темна</translation>
 <translation id="2438874542388153331">Пробити чотири отвори праворуч</translation>
-<translation id="2463193859425327265">Змінити домашню сторінку</translation>
 <translation id="2463739503403862330">Заповнити</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
 <translation id="2465655957518002998">Вибрати спосіб доставки</translation>
 <translation id="2465688316154986572">Скріпити</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>провести діагностику мережі<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">Порядок від 1 до N</translation>
-<translation id="2473195200299095979">Перекласти цю сторінку</translation>
+<translation id="2470767536994572628">Коли ви редагуєте примітки, документ переходить у режим перегляду по одній сторінці, а також відновлюється його початкова орієнтація</translation>
 <translation id="2479410451996844060">Недійсна URL-адреса для пошуку.</translation>
 <translation id="2482878487686419369">Сповіщення</translation>
 <translation id="248348093745724435">Правила пристрою</translation>
@@ -395,21 +409,25 @@
 <translation id="2609632851001447353">Різновиди</translation>
 <translation id="2618023639789766142">C10 (конверт)</translation>
 <translation id="2625385379895617796">Ваш годинник спішить</translation>
+<translation id="2915787201097107005">Щоб веб-переглядач Brave був максимально безпечним, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>увімкніть покращений захист<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
 <translation id="2634124572758952069">IP-адресу сервера <ph name="HOST_NAME"/> не знайдено.</translation>
 <translation id="2639739919103226564">Статус:</translation>
 <translation id="2649204054376361687"><ph name="CITY"/>, <ph name="COUNTRY"/></translation>
+<translation id="9078005688100552065"><ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб очистити історію веб-перегляду, файли cookie, кеш та інше в налаштуваннях Brave</translation>
 <translation id="2650446666397867134">У доступі до файлу відмовлено</translation>
 <translation id="2653659639078652383">Надіслати</translation>
 <translation id="2660779039299703961">Подія</translation>
 <translation id="2664887757054927933">{COUNT,plural, =0{Немає}=1{1 пароль (для <ph name="DOMAIN_LIST"/>)}=2{2 паролі (для <ph name="DOMAIN_LIST"/>)}one{# пароль (для <ph name="DOMAIN_LIST"/>)}few{# паролі (для <ph name="DOMAIN_LIST"/>)}many{# паролів (для <ph name="DOMAIN_LIST"/>)}other{# пароля (для <ph name="DOMAIN_LIST"/>)}}</translation>
 <translation id="2666092431469916601">Верх</translation>
 <translation id="2666117266261740852">Закрийте інші вкладки та додатки</translation>
+<translation id="2672201172023654893">Веб-переглядачем не керує адміністратор.</translation>
 <translation id="2674170444375937751">Ви дійсно бажаєте видалити ці сторінки зі своєї історії?</translation>
 <translation id="2674804415323431591">Сховати пропозиції</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Вийти</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Оптимальний розмір</translation>
+<translation id="2688969097326701645">Так, продовжити</translation>
 <translation id="2691924980723297736">Попередження щодо безпеки</translation>
 <translation id="2699302886720511147">Картки, які приймаються до оплати</translation>
 <translation id="2701514975700770343">Лицевою стороною вниз</translation>
@@ -418,7 +436,7 @@
 <translation id="2705137772291741111">Не вдається прочитати збережену (кешовану) копію цього сайту.</translation>
 <translation id="2709516037105925701">Автозаповнення</translation>
 <translation id="2713444072780614174">Білий</translation>
-<translation id="2720342946869265578">Поблизу</translation>
+<translation id="4131157740532436004"><ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб керувати платежами й даними кредитної картки в налаштуваннях Brave</translation>
 <translation id="2721148159707890343">Запит надіслано</translation>
 <translation id="272451190272506600">Щоб оплатити, торкніться датчика</translation>
 <translation id="2728127805433021124">Сертифікат сервера підписано з використанням слабкого алгоритму підпису.</translation>
@@ -428,6 +446,7 @@
 <translation id="2738330467931008676">Вибрати адресу отримання</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="2742870351467570537">Видалити вибрані елементи</translation>
+<translation id="2765217105034171413">Малий</translation>
 <translation id="277133753123645258">Спосіб відправлення</translation>
 <translation id="277499241957683684">Відсутній запис пристрою</translation>
 <translation id="2775884851269838147">Перша сторінка для друку</translation>
@@ -438,10 +457,10 @@
 <translation id="2799223571221894425">Перезапустити</translation>
 <translation id="2803306138276472711">Функція безпечного перегляду від Brave нещодавно <ph name="BEGIN_LINK"/>виявила зловмисне програмне забезпечення<ph name="END_LINK"/> на сайті <ph name="SITE"/>. Іноді зловмисне програмне забезпечення заражає зазвичай безпечні веб-сайти.</translation>
 <translation id="2807052079800581569">Вертикальне положення зображення</translation>
-<translation id="2824514415781424867">Надати доступ до геоданих?</translation>
 <translation id="2824775600643448204">Адресний і пошуковий рядок</translation>
 <translation id="2826760142808435982">З’єднання зашифровано й автентифіковано з використанням шифру <ph name="CIPHER"/> і використовує механізм обміну ключами <ph name="KX"/>.</translation>
 <translation id="2835170189407361413">Очистити форму</translation>
+<translation id="2839501879576190149">Ви переходите на фальшивий сайт</translation>
 <translation id="2850739647070081192">Invite (конверт)</translation>
 <translation id="2856444702002559011">Зловмисники можуть намагатися викрасти вашу інформацію із сайту <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (наприклад, паролі, повідомлення чи дані кредитних карток). <ph name="BEGIN_LEARN_MORE_LINK"/>Докладніше<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Зігнути за типом плаката</translation>
@@ -461,6 +480,7 @@
 <translation id="2928905813689894207">Платіжна адреса</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}few{<ph name="SHIPPING_ADDRESS_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}many{<ph name="SHIPPING_ADDRESS_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}}</translation>
 <translation id="2930577230479659665">Обрізати після кожної копії</translation>
+<translation id="2932085390869194046">Запропонувати пароль…</translation>
 <translation id="2934466151127459956">Government-Letter</translation>
 <translation id="2941952326391522266">Цей сервер не зміг довести, що він – домен <ph name="DOMAIN"/>. Його сертифікат безпеки походить із домену <ph name="DOMAIN2"/>. Імовірні причини: неправильна конфігурація або хтось намагається перехопити ваше з’єднання.</translation>
 <translation id="2943895734390379394">Час завантаження:</translation>
@@ -470,7 +490,6 @@
 <translation id="2955913368246107853">Закрити панель пошуку</translation>
 <translation id="2972581237482394796">&amp;Повторити</translation>
 <translation id="2977665033722899841">Зараз вибрано: <ph name="ROW_NAME"/> (<ph name="ROW_CONTENT"/>)</translation>
-<translation id="2982481275546140226">Очистити дані</translation>
 <translation id="2985398929374701810">Введіть дійсну адресу</translation>
 <translation id="2986368408720340940">Цей спосіб отримання недоступний. Виберіть інший спосіб.</translation>
 <translation id="2987034854559945715">Немає відповідних функцій</translation>
@@ -480,6 +499,7 @@
 <translation id="6683975920571472553">Пропозиції від Brave</translation>
 <translation id="3002501248619246229">Перевірте лоток введення медіа</translation>
 <translation id="3005723025932146533">Показати збережену копію</translation>
+<translation id="3007719053326478567">Адміністратор заблокував можливість друкувати цей контент</translation>
 <translation id="3008447029300691911">Введіть код CVC картки <ph name="CREDIT_CARD"/>. Щойно ви підтвердите дані картки, цей сайт отримає доступ до них.</translation>
 <translation id="3010559122411665027">Елемент списку "<ph name="ENTRY_INDEX"/>": <ph name="ERROR"/></translation>
 <translation id="301521992641321250">Блокується автоматично</translation>
@@ -490,6 +510,7 @@
 <translation id="3041612393474885105">Інформація про сертифікат</translation>
 <translation id="3060227939791841287">C9 (конверт)</translation>
 <translation id="3061707000357573562">Служба виправлень</translation>
+<translation id="3064966200440839136">Щоб оплатити в зовнішньому додатку, ви вийдете з режиму анонімного перегляду. Продовжити?</translation>
 <translation id="3080254622891793721">Зображення</translation>
 <translation id="3086579638707268289">Ваші дії в Інтернеті відстежуються</translation>
 <translation id="3087734570205094154">Низ</translation>
@@ -499,6 +520,7 @@
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>перевірити конфігурацію безпеки DNS-сервера<ph name="END_LINK"/></translation>
 <translation id="3109728660330352905">У вас немає дозволу переглядати цю сторінку.</translation>
 <translation id="3113284927548439113">Третя зміна</translation>
+<translation id="3115874930288085374">Домен <ph name="ENROLLMENT_DOMAIN"/> вимагає, щоб ви створили резервну копію своїх даних і повернули пристрій <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="3116158981186517402">Заламінувати</translation>
 <translation id="3120730422813725195">Elo</translation>
 <translation id="31207688938192855"><ph name="BEGIN_LINK"/>Проведіть діагностику з’єднання<ph name="END_LINK"/>.</translation>
@@ -509,12 +531,14 @@
 <translation id="3154506275960390542">Ця сторінка містить незахищену форму. Інші люди можуть бачити дані під час передавання, а зловмисники можуть змінювати їх.</translation>
 <translation id="3157931365184549694">Відновити</translation>
 <translation id="3162559335345991374">Можливо, щоб під’єднатися до цієї мережі Wi-Fi, потрібно відвідати її сторінку входу.</translation>
+<translation id="3167968892399408617">Сторінки, які ви переглядаєте на анонімних вкладках, не реєструються в історії веб-переглядача чи історії пошуку та не залишають файлів cookie, коли ви закриваєте всі анонімні вкладки. Усі завантажені файли чи створені закладки зберігаються.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Острів</translation>
 <translation id="3176929007561373547">Перевірте налаштування свого проксі-сервера чи зверніться до адміністратора мережі,
       щоб переконатися, що проксі-сервер працює. Якщо ви вважаєте, що не потрібно
       використовувати проксі-сервер, виконайте вказані нижче дії.
       <ph name="PLATFORM_TEXT"/></translation>
+<translation id="3184534047932533456">Сайт <ph name="URL"/> хоче дізнаватися, чи ви присутні</translation>
 <translation id="3188393374551744535">Баланс рахунку</translation>
 <translation id="3194737229810486521">Сайт <ph name="URL"/> хоче постійно зберігати дані на вашому пристрої</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> на сервері <ph name="SERVER_NAME"/></translation>
@@ -526,16 +550,17 @@
 <translation id="3218181027817787318">Відносна</translation>
 <translation id="3225919329040284222">Сервер надав сертифікат, який не відповідає очікуваним вбудованим параметрам. Ці очікувані параметри встановлено для певних веб-сайтів із високим рівнем безпеки, щоб захистити вас.</translation>
 <translation id="3226128629678568754">Натисніть кнопку перезавантаження, щоб повторно надіслати дані, потрібні для завантаження сторінки.</translation>
+<translation id="3226387218769101247">Ескізи</translation>
 <translation id="3227137524299004712">Мікрофон</translation>
 <translation id="3229041911291329567">Інформація про версії пристрою та веб-переглядача</translation>
 <translation id="323107829343500871">Ввести код CVC картки <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Завжди виявляти важливий вміст на цьому сайті</translation>
-<translation id="3262069459091978471">Назва сайту <ph name="LOOKALIKE_DOMAIN"/> схожа на назву сайту <ph name="SUGGESTED_DOMAIN"/>. Іноді зловмисники імітують сайти, використовуючи схожі URL-адреси.</translation>
 <translation id="3270847123878663523">&amp;Відмінити перевпорядкування</translation>
 <translation id="3274521967729236597">Pa-Kai</translation>
 <translation id="3282497668470633863">Додати ім’я на кредитній картці</translation>
 <translation id="3287510313208355388">Завантажити після відновлення інтернет-з’єднання</translation>
 <translation id="3293642807462928945">Докладніше про правило <ph name="POLICY_NAME"/></translation>
+<translation id="5894665462526421022">Переглянути паролі й керувати ними в налаштуваннях Brave</translation>
 <translation id="3303855915957856445">Немає результатів</translation>
 <translation id="3308006649705061278">Організаційний підрозділ (OU)</translation>
 <translation id="3320021301628644560">Додати платіжну адресу</translation>
@@ -548,6 +573,9 @@
 <translation id="3364869320075768271">Сайт <ph name="URL"/> хоче отримати доступ до ваших даних і пристрою віртуальної реальності</translation>
 <translation id="3366477098757335611">Переглянути картки</translation>
 <translation id="3369192424181595722">Помилка годинника</translation>
+<translation id="3371076217486966826">URL-адресі потрібен дозвіл, щоб <ph name="URL"/>:
+      • створити 3D-карту вашого оточення та відстежувати положення камери;
+      • використовувати вашу камеру.</translation>
 <translation id="337363190475750230">Деініціалізовано</translation>
 <translation id="3377144306166885718">Сервер використовував застарілу версію TLS.</translation>
 <translation id="3377188786107721145">Помилка аналізу правила</translation>
@@ -559,6 +587,7 @@
 <translation id="3395827396354264108">Спосіб отримання</translation>
 <translation id="3399952811970034796">Адреса доставки</translation>
 <translation id="3402261774528610252">Цей веб-сайт використовує протоколи TLS версії 1.0 або 1.1, які вже не підтримуються. Коли їх буде вимкнено, користувачі більше не зможуть його завантажувати. На сервері має бути встановлено протокол TLS 1.2 або новішої версії.</translation>
+<translation id="3411120537985775570">Адміністратор заблокував можливість вставляти сюди дані із сайту <ph name="ORIGIN_NAME"/></translation>
 <translation id="3414952576877147120">Розмір:</translation>
 <translation id="25726459489263481">Файли, які ви додаєте або долучаєте, надсилаються на платформу Brave Cloud або стороннім сервісам на аналіз. Наприклад, їх можуть сканувати на наявність конфіденційних даних або зловмисного програмного забезпечення.</translation>
 <translation id="3422248202833853650">Щоб звільнити пам’ять, закрийте інші програми.</translation>
@@ -595,6 +624,7 @@
 <translation id="3532844647053365774">Сайт <ph name="HOST"/> хоче отримати доступ до вашого мікрофона</translation>
 <translation id="3533328374079021623">Поштова скринька 5</translation>
 <translation id="3539171420378717834">Зберігати копію даних цієї картки на цьому пристрої</translation>
+<translation id="3552297013052089404">Шрифт Sans Serif</translation>
 <translation id="3558573058928565255">День</translation>
 <translation id="3566021033012934673">З’єднання не конфіденційне</translation>
 <translation id="3567778190852720481">Не вдається зареєструватися через корпоративний обліковий запис (такі облікові записи не підтримуються).</translation>
@@ -617,16 +647,18 @@
 <translation id="362276910939193118">Показати повну історію</translation>
 <translation id="3630155396527302611">Якщо цій програмі вже надано доступ до мережі, спробуйте
         вилучити її зі списку та додати знову.</translation>
+<translation id="3630699740441428070">Адміністратори цього пристрою, які налаштували з'єднання з мережею, імовірно, можуть переглядати ваш мережевий трафік (зокрема веб-сайти, які ви відвідуєте).</translation>
 <translation id="3631244953324577188">Біометрія</translation>
+<translation id="1367445511302842209">Кнопка "Оновити Brave"; натисніть Enter, щоб оновити веб-переглядач Brave у його налаштуваннях</translation>
 <translation id="3634530185120165534">Лоток 5</translation>
 <translation id="3640766068866876100">Index-4x6-Ext</translation>
 <translation id="3650584904733503804">Перевірку закінчено</translation>
 <translation id="3655670868607891010">Якщо ви бачите це часто, спробуйте <ph name="HELP_LINK"/>.</translation>
 <translation id="3658742229777143148">Редакція</translation>
-<translation id="366077651725703012">Оновити кредитну картку</translation>
 <translation id="3676592649209844519">Ідентифікатор пристрою:</translation>
 <translation id="3677008721441257057">Ви мали на увазі &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Не вдалося підписати запит</translation>
+<translation id="3678529606614285348">Відкрийте сторінку в анонімному вікні (Ctrl+Shift+N)</translation>
 <translation id="3681007416295224113">Інформація про сертифікат</translation>
 <translation id="3701427423622901115">Скидання підтверджено.</translation>
 <translation id="3704162925118123524">Можливо, щоб з’єднатися з цією мережею, потрібно відвідати її сторінку входу.</translation>
@@ -641,8 +673,8 @@
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>перевірити конфігурацію проксі-сервера, брандмауера та DNS-сервера<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">До додатків, що можуть спричиняти цю помилку, належать антивіруси, брандмауери та програми для веб-фільтрування доступу через проксі.</translation>
 <translation id="373042150751172459">B4 (конверт)</translation>
-<translation id="3731873414101415120">Відвідані веб-сайти та вміст ненадійних сторінок</translation>
 <translation id="3736520371357197498">Якщо ви розумієте ризики, пов’язані з безпекою, <ph name="BEGIN_LINK"/>перейдіть на цей ненадійний сайт<ph name="END_LINK"/> до того, як небезпечні програми буде видалено.</translation>
+<translation id="3738166223076830879">Ваша організація керує веб-переглядачем.</translation>
 <translation id="4098534208927606680">Щойно ви підтвердите дані картки з облікового запису Brave, цей сайт отримає доступ до них.</translation>
 <translation id="3748148204939282805">Зловмисники можуть використовувати сайт <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>, щоб обманом змусити вас виконати небезпечну дію, наприклад, установити шкідливе програмне забезпечення або повідомити особисту інформацію (пароль, номер телефону, дані кредитної картки тощо). <ph name="BEGIN_LEARN_MORE_LINK"/>Докладніше<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3754210790023674521">Вийти з режиму "Картинка в картинці"</translation>
@@ -681,14 +713,14 @@
 <translation id="3901925938762663762">Термін дії картки минув</translation>
 <translation id="3906600011954732550">B5-Extra</translation>
 <translation id="3906954721959377182">Планшет</translation>
-<translation id="2650609753175229582"><ph name="URL"/> хоче відтворити захищений вміст. Ми перевіримо ідентифікаційні дані вашого пристрою, і сайт зможе отримати до нього доступ.</translation>
+<translation id="3909477809443608991"><ph name="URL"/> хоче відтворити захищений вміст. Ми перевіримо ідентифікаційні дані вашого пристрою, і сайт зможе отримати до нього доступ.</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/>: <ph name="ERROR"/></translation>
 <translation id="3939773374150895049">Використовувати веб-автентифікацію замість коду CVC?</translation>
 <translation id="3946209740501886391">Завжди запитувати на цьому сайті</translation>
 <translation id="3949571496842715403">Цей сервер не зміг довести, що він – домен <ph name="DOMAIN"/>. У його сертифікаті безпеки не вказано альтернативні імена. Імовірні причини: неправильна конфігурація або хтось намагається перехопити ваше з’єднання.</translation>
 <translation id="3949601375789751990">Тут відображається ваша історія веб-перегляду</translation>
 <translation id="3949870428812919180">Немає збережених способів оплати</translation>
-<translation id="3950820424414687140">Увійти</translation>
+<translation id="3950820424414687140">Вхід</translation>
 <translation id="3961148744525529027">Аркуш обробника платежу відкрито на половину висоти</translation>
 <translation id="3962859241508114581">Попередня композиція</translation>
 <translation id="3963721102035795474">Режим перегляду</translation>
@@ -703,10 +735,10 @@
 <translation id="3990250421422698716">Поступове зміщення</translation>
 <translation id="3996311196211510766">Сайт <ph name="ORIGIN"/> просить, щоб правило джерела
     застосовувалося до всіх його запитів, однак наразі це неможливо.</translation>
-<translation id="40103911065039147">{URL_count,plural, =1{1 веб-сторінка поруч}one{# веб-сторінка поруч}few{# веб-сторінки поруч}many{# веб-сторінок поруч}other{# веб-сторінки поруч}}</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{Документ PDF містить {COUNT} сторінку}one{Документ PDF містить {COUNT} сторінку}few{Документ PDF містить {COUNT} сторінки}many{Документ PDF містить {COUNT} сторінок}other{Документ PDF містить {COUNT} сторінки}}</translation>
 <translation id="4030383055268325496">&amp;Відмінити додавання</translation>
 <translation id="4032320456957708163">Вашим веб-переглядачем керує домен <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="4056223980640387499">Сепія</translation>
 <translation id="4058922952496707368">Ключ "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (конверт)</translation>
 <translation id="4067947977115446013">Додайте дійсну адресу</translation>
@@ -715,11 +747,11 @@
 <translation id="4075941231477579656">Touch ID</translation>
 <translation id="4079302484614802869">Конфігурацію проксі-сервера налаштовано на використання URL-адреси сценарію .pac, а не фіксованих проксі-серверів.</translation>
 <translation id="4082393374666368382">Налаштування – керування</translation>
+<translation id="4084120443451129199">Режим пошуку; натисніть Enter, щоб шукати за запитом "<ph name="KEYWORD_SUFFIX"/>"</translation>
 <translation id="4088981014127559358">Вертикальний зсув сторони 1 зображення</translation>
 <translation id="4098354747657067197">Оманливий сайт</translation>
 <translation id="4101413244023615925">Текст і графіка</translation>
 <translation id="4103249731201008433">Недійсний серійний номер пристрою</translation>
-<translation id="4103763322291513355">Перейдіть на сторінку &lt;strong&gt;chrome://policy&lt;/strong&gt;, щоб переглянути список URL-адрес із "чорного" списку й інші правила, що примусово застосовується системним адміністратором.</translation>
 <translation id="4110652170750985508">Переглянути платіж</translation>
 <translation id="4112140312785995938">Перейти назад</translation>
 <translation id="4116663294526079822">Завжди дозволяти на цьому сайті</translation>
@@ -747,6 +779,7 @@
 <translation id="4194250254487269611">Не вдається зберегти картку</translation>
 <translation id="4196861286325780578">&amp;Повторити переміщення</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>перевірити конфігурацію брандмауера й антивірусної програми<ph name="END_LINK"/></translation>
+<translation id="4209092469652827314">Великий</translation>
 <translation id="4209166701302774460">Сервер, на який ви переходите (<ph name="ORIGIN"/>), просить
     застосовувати правило джерела до всіх запитів, які йому надсилаються. Однак зараз він
     не надав правило, що перешкоджає веб-переглядачу виконати ваш запит
@@ -772,9 +805,11 @@
 <translation id="4277028893293644418">Скинути пароль</translation>
 <translation id="4279811152705618813">Вашим пристроєм <ph name="DEVICE_TYPE"/> керує домен <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Цю картку збережено у вашому обліковому записі Brave}one{Ці картки збережено у вашому обліковому записі Brave}few{Ці картки збережено у вашому обліковому записі Brave}many{Ці картки збережено у вашому обліковому записі Brave}other{Ці картки збережено у вашому обліковому записі Brave}}</translation>
+<translation id="4297502707443874121">Ескіз для сторінки <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="42981349822642051">Розгорнути</translation>
 <translation id="4300675098767811073">Пробити кілька отворів праворуч</translation>
 <translation id="4302965934281694568">Chou3 (конверт)</translation>
+<translation id="4305666528087210886">Не вдалося отримати доступ до файлу</translation>
 <translation id="4305817255990598646">Перейти</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Блокувати (за умовчанням)</translation>
@@ -789,8 +824,9 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Зловмисники на цьому сайті можуть намагатися встановити на ваш комп’ютер небезпечні програми, що викрадають або видаляють інформацію (наприклад, фотографії, паролі, повідомлення й дані кредитних карток).</translation>
 <translation id="4358059973562876591">Вибрані шаблони можуть не застосовуватися через помилку в правилі DnsOverHttpsMode.</translation>
-<translation id="327628984294957152">Керувати способами оплати…</translation>
+<translation id="4358461427845829800">Керувати способами оплати…</translation>
 <translation id="4367563149485757821">Number-12 (конверт)</translation>
+<translation id="7954571639479265338">{1,plural, =0{Ваш збережений пароль для <ph name="ORIGIN"/> розкрито через порушення безпеки даних на сайті чи в додатку. Brave радить негайно змінити пароль на сайті <ph name="ORIGIN"/>.}=1{Ваш збережений пароль для <ph name="ORIGIN"/> та ще одного сайту розкрито через порушення безпеки даних на сайті чи в додатку. Brave радить негайно перевірити збережені паролі.}one{Ваш збережений пароль для <ph name="ORIGIN"/> та ще <ph name="SITES_COUNT"/> сайту розкрито через порушення безпеки даних на сайті чи в додатку. Brave радить негайно перевірити збережені паролі.}few{Ваш збережений пароль для <ph name="ORIGIN"/> та ще <ph name="SITES_COUNT"/> сайтів розкрито через порушення безпеки даних на сайті чи в додатку. Brave радить негайно перевірити збережені паролі.}many{Ваш збережений пароль для <ph name="ORIGIN"/> та ще <ph name="SITES_COUNT"/> сайтів розкрито через порушення безпеки даних на сайті чи в додатку. Brave радить негайно перевірити збережені паролі.}other{Ваш збережений пароль для <ph name="ORIGIN"/> та ще <ph name="SITES_COUNT"/> сайту розкрито через порушення безпеки даних на сайті чи в додатку. Brave радить негайно перевірити збережені паролі.}}</translation>
 <translation id="437058704415269440">Баланс рахунку</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
 <translation id="4372948949327679948">Очікуване значення: <ph name="VALUE_TYPE"/>.</translation>
@@ -802,10 +838,12 @@
 <translation id="4415426530740016218">Адреса отримання</translation>
 <translation id="443121186588148776">Послідовний порт</translation>
 <translation id="4432688616882109544">Хост <ph name="HOST_NAME"/> не прийняв ваш сертифікат входу або ви не надали цей сертифікат.</translation>
+<translation id="4432792777822557199">Надалі сторінки цією мовою (<ph name="SOURCE_LANGUAGE"/>) перекладатимуться такою мовою: <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="4434045419905280838">Спливаючі вікна й переадресація</translation>
 <translation id="4435702339979719576">Листівка)</translation>
 <translation id="443673843213245140">Використання проксі-сервера вимкнено, але чітко вказано налаштування проксі-сервера.</translation>
 <translation id="4466881336512663640">Зміни форми не буде збережено. Продовжити?</translation>
+<translation id="4476953670630786061">Ця форма незахищена. Автозаповнення вимкнено.</translation>
 <translation id="4477350412780666475">Наступна композиція</translation>
 <translation id="4482953324121162758">Цей сайт не перекладатиметься.</translation>
 <translation id="4490717597759821841">A7</translation>
@@ -816,6 +854,7 @@
 <translation id="4506599922270137252">зв’язатися із системним адміністратором</translation>
 <translation id="450710068430902550">Надання інформації адміністратору</translation>
 <translation id="4508814173490746936">Не вдалося скористатися Touch ID</translation>
+<translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб перекласти цю сторінку в Brave Перекладачі</translation>
 <translation id="4510487217173779431">Chou4 (конверт)</translation>
 <translation id="4892470328555495647">Дані картки та список адрес містяться в Brave і вашому обліковому записі Brave (<ph name="ACCOUNT_EMAIL"/>). Ними можна керувати в <ph name="BEGIN_LINK"/>Налаштуваннях<ph name="END_LINK"/>.</translation>
 <translation id="4517607026994743406">Comm-10 (конверт)</translation>
@@ -835,6 +874,7 @@
 <translation id="4597348597567598915">Розмір 8</translation>
 <translation id="4600854749408232102">C6/C5 (конверт)</translation>
 <translation id="4628948037717959914">Фотографія</translation>
+<translation id="4631649115723685955">З кешбеком</translation>
 <translation id="464342062220857295">Функції пошуку</translation>
 <translation id="4644670975240021822">Зворотний порядок лицевою стороною вниз</translation>
 <translation id="4646534391647090355">Перейти зараз</translation>
@@ -872,14 +912,17 @@
 <translation id="4780900888022378816">Вашим пристроєм керує<ph name="ENROLLMENT_DOMAIN"/>, а обліковим записом – <ph name="ACCOUNT_DOMAIN"/>.</translation>
 <translation id="4785689107224900852">Перейти на цю вкладку</translation>
 <translation id="4791134497475588553">Установлені додатки Linux і час їх останнього використання</translation>
+<translation id="4792686369684665359">Інформація, яку ви хочете надіслати, незахищена</translation>
 <translation id="4796594887379589189">Ідентифікатор робочого облікового запису</translation>
 <translation id="7110430050177876111">Введіть дату закінчення терміну дії та код CVC картки <ph name="CREDIT_CARD"/>, щоб оновити її дані. Щойно ви підтвердите дані картки в обліковому записі Brave, цей сайт отримає доступ до них.</translation>
 <translation id="4800132727771399293">Перевірте дату закінчення терміну дії та код CVC та повторіть спробу</translation>
 <translation id="480334179571489655">Помилка правила джерела</translation>
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="8896585555528145662">Зараз не можна перейти на сторінку <ph name="SITE"/>, оскільки веб-сайт надіслав зашифровані облікові дані, які Brave не може обробити. Помилки мережі й атаки зазвичай є тимчасовими, тому ця сторінка може працювати пізніше.</translation>
+<translation id="4809079943450490359">Вказівки адміністратора вашого пристрою:</translation>
 <translation id="4813512666221746211">Помилка мережі</translation>
 <translation id="4816492930507672669">За розміром сторінки</translation>
+<translation id="4819347708020428563">Редагувати примітки в режимі перегляду за умовчанням?</translation>
 <translation id="484462545196658690">Автоматично</translation>
 <translation id="4850886885716139402">Перегляд</translation>
 <translation id="4854362297993841467">Цей спосіб доставки недоступний. Виберіть інший спосіб.</translation>
@@ -891,15 +934,16 @@
 <translation id="4879725228911483934">Відкривати й розміщувати вікна на ваших екранах</translation>
 <translation id="4880827082731008257">Пошук в історії</translation>
 <translation id="4881695831933465202">Відкрити</translation>
+<translation id="4889420713887366944">Кнопка "Відкрити вікно в режимі анонімного перегляду"; натисніть Enter, щоб відкрити нове вікно в режимі анонімного перегляду</translation>
 <translation id="4892518386797173871">Задній</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">Зберегти…</translation>
 <translation id="4913987521957242411">Пробити отвір угорі ліворуч</translation>
-<translation id="4914479371620770914">{URL_count,plural, =1{і ще 1 веб-сторінка}one{і ще # веб-сторінка}few{і ще # веб-сторінки}many{і ще # веб-сторінок}other{і ще # веб-сторінки}}</translation>
 <translation id="4923459931733593730">Оплата</translation>
 <translation id="4926049483395192435">Потрібно вказати.</translation>
 <translation id="4926159001844873046">Повідомлення з <ph name="SITE"/></translation>
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/> з <ph name="TOTAL_MATCHCOUNT"/></translation>
+<translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб шукати</translation>
 <translation id="4930153903256238152">Велика місткість</translation>
 <translation id="4943872375798546930">Не знайдено жодного результату</translation>
 <translation id="4950898438188848926">Кнопка перемикання вкладки: натисніть Enter, щоб перейти на відкриту вкладку, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
@@ -926,6 +970,7 @@
 <translation id="503069730517007720">Для програмного забезпечення <ph name="SOFTWARE_NAME"/> потрібен кореневий сертифікат, однак його не встановлено. Вашому IT-адміністратору потрібно переглянути вказівки з налаштування <ph name="SOFTWARE_NAME"/>, щоб вирішити цю проблему. <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="6425384654920630035">Про Brave Перекладач</translation>
 <translation id="503498442187459473">Сайт <ph name="HOST"/> хоче отримати доступ до ваших камери й мікрофона</translation>
+<translation id="5039762155821394373">Розмір шрифту</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="5040262127954254034">Конфіденційність</translation>
 <translation id="5043480802608081735">Скопійоване посилання</translation>
@@ -951,7 +996,7 @@
 <translation id="5123063207673082822">Вихідні</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Підтвердьте дані картки</translation>
-<translation id="6291230311289558881">Керувати адресами…</translation>
+<translation id="5135404736266831032">Керувати адресами…</translation>
 <translation id="5138227688689900538">Показати менше</translation>
 <translation id="7186167407612593632">Шифрувати синхронізовані паролі за допомогою облікових даних Brave</translation>
 <translation id="5145883236150621069">Відповідь правила містить код помилки</translation>
@@ -959,6 +1004,7 @@
 <translation id="5148809049217731050">Лицевою стороною вгору</translation>
 <translation id="515292512908731282">C4 (конверт)</translation>
 <translation id="5158275234811857234">Обкладинка</translation>
+<translation id="5159010409087891077">Відкрийте сторінку в анонімному вікні (⇧⌘N)</translation>
 <translation id="5161506081086828129">Накопичувач 9</translation>
 <translation id="5164798890604758545">Введено текст</translation>
 <translation id="2996889577833788807">Введіть код CVC картки <ph name="CREDIT_CARD"/>. Щойно ви підтвердите дані картки в обліковому записі Brave, цей сайт отримає доступ до них.</translation>
@@ -967,6 +1013,8 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Комп’ютер</translation>
 <translation id="5179510805599951267">Це не <ph name="ORIGINAL_LANGUAGE"/>? Повідомте про помилку</translation>
+<translation id="5179740473595559246">Дізнаватися, чи ви присутні</translation>
+<translation id="5190835502935405962">Панель закладок</translation>
 <translation id="519422657042045905">Анотація недоступна</translation>
 <translation id="5201306358585911203">Повідомлення з вбудованої сторінки на цій сторінці</translation>
 <translation id="5205222826937269299">Укажіть ім’я</translation>
@@ -1002,6 +1050,7 @@
 <translation id="5308380583665731573">Під’єднатися</translation>
 <translation id="5308689395849655368">Повідомлення про аварійне завершення роботи вимкнено.</translation>
 <translation id="5314967030527622926">Виробник буклетів</translation>
+<translation id="5316812925700871227">Обернути проти годинникової стрілки</translation>
 <translation id="5317780077021120954">Зберегти</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="MATCH_POSITION"/> з <ph name="NUM_MATCHES"/></translation>
 <translation id="5324080437450482387">Вибрати контактну інформацію</translation>
@@ -1025,9 +1074,9 @@
 <translation id="5421136146218899937">Очистити історію…</translation>
 <translation id="5426179911063097041">Сайт <ph name="SITE"/> хоче надсилати вам сповіщення</translation>
 <translation id="5430298929874300616">Видалити закладку</translation>
-<translation id="5431657950005405462">Файл не знайдено</translation>
 <translation id="5439770059721715174">Помилка перевірки схеми за адресою "<ph name="ERROR_PATH"/>": <ph name="ERROR"/></translation>
 <translation id="5443468954631487277">Зворотний порядок лицевою стороною вгору</translation>
+<translation id="5447765697759493033">Цей сайт не буде перекладено</translation>
 <translation id="5452270690849572955">Сторінку хосту <ph name="HOST_NAME"/> не знайдено</translation>
 <translation id="5455374756549232013">Недійсна мітка часу правила</translation>
 <translation id="5457113250005438886">Недійсні дані</translation>
@@ -1045,9 +1094,11 @@
 <translation id="5509780412636533143">Закладки, якими керує адміністратор</translation>
 <translation id="5510481203689988000">Цим параметром можна керувати в налаштуваннях файлів cookie.</translation>
 <translation id="5510766032865166053">Можливо, його переміщено або видалено.</translation>
+<translation id="5519516356611866228">Зі змінами</translation>
 <translation id="5523118979700054094">Назва правила</translation>
 <translation id="55293785478302737">Зшити вздовж краю</translation>
 <translation id="553484882784876924">Prc6 (конверт)</translation>
+<translation id="6477838366754392112">Кнопка "Очистити дані веб-перегляду"; натисніть Enter, щоб очистити історію веб-перегляду, файли cookie, кеш та інше в налаштуваннях Brave</translation>
 <translation id="5536214594743852365">Показати розділ "<ph name="SECTION"/>"</translation>
 <translation id="5539243836947087108">Весь аркуш</translation>
 <translation id="5540224163453853">Не вдалося знайти потрібну статтю.</translation>
@@ -1057,6 +1108,7 @@
 <translation id="6084314943327785510">Brave періодично зіставляє ваші паролі зі списками, які були опубліковані онлайн. Під час цього ваші паролі й імена користувачів шифруються, тож їх ніхто не може прочитати, навіть Brave.</translation>
 <translation id="5556459405103347317">Перезавантажити</translation>
 <translation id="5560088892362098740">Термін дії</translation>
+<translation id="55635442646131152">Структура документа</translation>
 <translation id="5565735124758917034">Активний клієнт</translation>
 <translation id="5570825185877910964">Захистити обліковий запис</translation>
 <translation id="5571083550517324815">Адреса отримання не підтримується. Укажіть іншу адресу.</translation>
@@ -1070,8 +1122,10 @@
 <translation id="4067274479097837765">Цей сайт може бути підробленим або шахрайським. Brave радить залишити його.</translation>
 <translation id="5610142619324316209">перевірити наявність з’єднання</translation>
 <translation id="5610807607761827392">Ви можете керувати картками й адресами в <ph name="BEGIN_LINK"/>Налаштуваннях<ph name="END_LINK"/>.</translation>
+<translation id="2012723355262040739">Перекласти цю сторінку за допомогою Brave Перекладача</translation>
 <translation id="5612720917913232150">Сайт <ph name="URL"/> хоче отримати доступ до геоданих вашого комп’ютера</translation>
 <translation id="5617949217645503996">Хост <ph name="HOST_NAME"/> переспрямував вас забагато разів.</translation>
+<translation id="5624120631404540903">Керувати паролями</translation>
 <translation id="5629630648637658800">Помилка завантаження налаштувань правила</translation>
 <translation id="5631439013527180824">Недійсний маркер керування пристрою</translation>
 <translation id="2590378115732684772">Дані зашифровано <ph name="BEGIN_LINK"/>паролем Brave<ph name="END_LINK"/> від <ph name="TIME"/>. Введіть пароль, щоб почати синхронізацію.</translation>
@@ -1091,10 +1145,10 @@
 <translation id="5689516760719285838">Місцезнаходження</translation>
 <translation id="569000877158168851">Значення DnsOverHttpsTemplates невідповідне й не використовуватиметься, якщо для правила DnsOverHttpsMode не буде вибрано значення <ph name="SECURE_DNS_MODE_AUTOMATIC"/> або <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">По центру</translation>
-<translation id="3655851112780233803">Керувати…</translation>
-<translation id="5705882733397021510">Назад</translation>
+<translation id="570530837424789914">Керувати…</translation>
 <translation id="57094364128775171">Запропонувати надійний пароль…</translation>
 <translation id="5710435578057952990">Ідентифікаційну інформацію цього веб-сайта не було перевірено.</translation>
+<translation id="571403275720188526">(arm64)</translation>
 <translation id="5720705177508910913">Поточний користувач</translation>
 <translation id="5728056243719941842">C5 (конверт)</translation>
 <translation id="3006790309890592320">Brave радить скинути пароль, якщо ви застосовували його на інших сайтах.</translation>
@@ -1112,7 +1166,6 @@
 <translation id="5785756445106461925">Окрім цього, сторінка містить незахищені ресурси. Інші особи можуть переглядати їх під час передавання даних, а зловмисники можуть змінювати вигляд сторінки.</translation>
 <translation id="5786044859038896871">Ввести дані кредитної картки?</translation>
 <translation id="5798290721819630480">Відхилити зміни?</translation>
-<translation id="2828698628112858998">Змініть домашню сторінку в налаштуваннях Brave</translation>
 <translation id="5803412860119678065">Ввести дані кредитної картки <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Дозволи</translation>
 <translation id="5804427196348435412">Використовувати пристрої NFC</translation>
@@ -1144,8 +1197,10 @@
 <translation id="2687595201721621314">Зберегти картку в обліковому записі Brave?</translation>
 <translation id="5922853866070715753">Майже готово</translation>
 <translation id="5932224571077948991">Сайт показує нав’язливі чи оманливі оголошення</translation>
+<translation id="5938793338444039872">Troy</translation>
 <translation id="5946937721014915347">Відкривається <ph name="SITE_NAME"/>…</translation>
 <translation id="5951495562196540101">Не вдається зареєструватися за допомогою особистого облікового запису користувача (ліцензію отримано в комплекті з пристроєм).</translation>
+<translation id="5963413905009737549">Розділ</translation>
 <translation id="5967592137238574583">Змініть контактну інформацію</translation>
 <translation id="5967867314010545767">Видалити з історії</translation>
 <translation id="5975083100439434680">Зменшити масштаб</translation>
@@ -1181,6 +1236,8 @@
 <translation id="6049488691372270142">Подача сторінки</translation>
 <translation id="6051221802930200923">Зараз не можна перейти на сторінку <ph name="SITE"/>, оскільки цей веб-сайт використовує закріплення сертифікатів. Помилки мережі й атаки зазвичай тимчасові, тому ця сторінка, скоріш за все, запрацює пізніше.</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6053328359599022071">Інформувати, чи ви присутні?</translation>
+<translation id="6057359309778282021">Адміністратор заблокував можливість надавати машині <ph name="VM_NAME"/> доступ до контенту із сайту <ph name="ORIGIN_NAME"/></translation>
 <translation id="6058977677006700226">Використовувати картки на всіх ваших пристроях?</translation>
 <translation id="6059925163896151826">Пристрої USB</translation>
 <translation id="6060009363608157444">Недійсний режим DnsOverHttps.</translation>
@@ -1230,6 +1287,7 @@
         <ph name="END_LIST"/></translation>
 <translation id="6280223929691119688">Неможливо доставити замовлення за цією адресою. Укажіть іншу адресу.</translation>
 <translation id="6282194474023008486">Поштовий код</translation>
+<translation id="6289939620939689042">Колір сторінки</translation>
 <translation id="6290238015253830360">Тут відображатимуться рекомендовані статті</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="5880900081429361525">Припинення роботи Brave Асистента в Brave</translation>
@@ -1251,6 +1309,7 @@
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Можливе стягнення плати.</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{і ще 1 пропозиція}one{і ще # пропозиція}few{і ще # пропозиції}many{і ще # пропозицій}other{і ще # пропозиції}}</translation>
+<translation id="6387645831795005740">Зловмисники іноді імітують сайти, вносячи майже непомітні зміни в URL-адресу.</translation>
 <translation id="6389470377220713856">Ім’я на картці</translation>
 <translation id="6390200185239044127">Зігнути гармошкою посередині</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
@@ -1262,6 +1321,7 @@
 <translation id="6423385022588644828">Відтепер ви можете підтверджувати картки швидше за допомогою Touch ID</translation>
 <translation id="6425092077175753609">Матеріальний</translation>
 <translation id="6427730057873428458">Зігнути за типом "ворота"</translation>
+<translation id="6428450836711225518">Підтвердьте номер телефону</translation>
 <translation id="6433490469411711332">Змінити контактні дані</translation>
 <translation id="6433595998831338502">Хост <ph name="HOST_NAME"/> відхилив запит на з’єднання.</translation>
 <translation id="6434309073475700221">Відхилити</translation>
@@ -1272,17 +1332,18 @@
 <translation id="6447842834002726250">Cookie-файли</translation>
 <translation id="6451458296329894277">Підтвердити повторне надсилання форми</translation>
 <translation id="6457206614190510200">Скріпити по згину</translation>
-<translation id="2275235756919172538">Керувати паролями…</translation>
+<translation id="6465306955648956876">Керувати паролями…</translation>
+<translation id="6468485451923838994">Шрифти</translation>
 <translation id="647261751007945333">Правила пристрою</translation>
 <translation id="6476284679642588870">Керувати способами оплати</translation>
 <translation id="6489534406876378309">Почати завантаження даних про аварійне завершення роботи</translation>
 <translation id="6499038740797743453">Скинути пароль?</translation>
+<translation id="6502991525169604759">Без змін</translation>
 <translation id="3960299545138990065">Перезапустіть Brave</translation>
 <translation id="6517596291481585650">Застереження: це правило не об'єднано в список, як указано в правилі, оскільки це не список.</translation>
 <translation id="6518133107902771759">Підтвердити</translation>
 <translation id="6521745193039995384">Неактивне</translation>
 <translation id="6529602333819889595">&amp;Повторити видалення</translation>
-<translation id="6534179046333460208">Пропозиції сервісу "Інтернет навколо нас"</translation>
 <translation id="6545864417968258051">Пошук пристроїв Bluetooth</translation>
 <translation id="6547208576736763147">Пробити два отвори ліворуч</translation>
 <translation id="6554795675067793129">Вашим обліковим записом керує <ph name="ENROLLMENT_DOMAIN"/>.</translation>
@@ -1307,16 +1368,19 @@
 <translation id="6631202559048444592">У правилі є кілька джерел з однаковими значеннями.</translation>
 <translation id="663260587451432563">JIS B4</translation>
 <translation id="6643016212128521049">Очистити</translation>
+<translation id="6645291930348198241">Отримати доступ до файлів cookie й даних сайту.</translation>
 <translation id="1375868315964791309">{COUNT,plural, =0{Немає}=1{З 1 сайту (ви не вийдете з облікового запису Brave)}one{З # сайту (ви не вийдете з облікового запису Brave)}few{З # сайтів (ви не вийдете з облікового запису Brave)}many{З # сайтів (ви не вийдете з облікового запису Brave)}other{З # сайту (ви не вийдете з облікового запису Brave)}}</translation>
+<translation id="6678472970290886941">Адміністратор може змінити налаштування веб-переглядача віддалено. Діями на цьому пристрої можна керувати за межами Brave.</translation>
+<translation id="6648524591329069940">Шрифт Serif</translation>
 <translation id="6652101503459149953">Використовувати Windows Hello</translation>
 <translation id="6657585470893396449">Пароль</translation>
+<translation id="666259744093848177">(x86_64 перекладено)</translation>
 <translation id="6665553082534466207">Пробити три отвори праворуч</translation>
 <translation id="6685834062052613830">Вийдіть з облікового запису та завершіть процедуру налаштування</translation>
 <translation id="6687335167692595844">Запит на розмір шрифту</translation>
 <translation id="6689249931105087298">Відносно стиснення чорної точки</translation>
 <translation id="5406652219015697259">Brave пропонує вам зберегти картки в обліковому записі Brave, оскільки ви ввійшли в нього. Це можна змінити в налаштуваннях. Ім'я власника картки взято з вашого облікового запису.</translation>
-<translation id="6704582573942289642">Це правильний сайт?</translation>
-<translation id="6710213216561001401">Попереднє</translation>
+<translation id="6710213216561001401">Назад</translation>
 <translation id="6710594484020273272">&lt;Введіть пошуковий термін&gt;</translation>
 <translation id="671076103358959139">Маркер реєстрації:</translation>
 <translation id="6711464428925977395">Помилка проксі-сервера або неправильна адреса.</translation>
@@ -1343,7 +1407,6 @@
 <translation id="6846340164947227603">Скористатися номером віртуальної картки…</translation>
 <translation id="6852204201400771460">Перезапустити додаток?</translation>
 <translation id="6865412394715372076">Зараз цю картку не можна підтвердити</translation>
-<translation id="6868206169573555318">Перезапустити, щоб оновити</translation>
 <translation id="6874604403660855544">&amp;Повторити додавання</translation>
 <translation id="6884662655240309489">Розмір 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
@@ -1378,7 +1441,9 @@
 <translation id="6993898126790112050">6x9 (конверт)</translation>
 <translation id="6996312675313362352">Завжди перекладати з такої мови: <ph name="ORIGINAL_LANGUAGE"/></translation>
 <translation id="7004583254764674281">Використовувати Windows Hello, щоб швидше підтверджувати картки</translation>
+<translation id="7006930604109697472">Усе одно надіслати</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
+<translation id="7014741021609395734">Рівень масштабування</translation>
 <translation id="7016992613359344582">Такі стягнення можуть бути одноразовими чи регулярними й неочевидними.</translation>
 <translation id="7029809446516969842">Паролі</translation>
 <translation id="7031646650991750659">встановлені додатки Google Play.</translation>
@@ -1396,7 +1461,6 @@
 <translation id="7083258188081898530">Лоток 9</translation>
 <translation id="7086090958708083563">Запит на завантаження від користувача</translation>
 <translation id="7087282848513945231">Країна</translation>
-<translation id="5711818857380891233">Пошукайте за запитом "<ph name="LINK"/>" у Brave</translation>
 <translation id="7108338896283013870">Сховати</translation>
 <translation id="7108634116785509031">Сайт <ph name="HOST"/> хоче отримати доступ до вашої камери</translation>
 <translation id="7108819624672055576">Дозволено розширенням</translation>
@@ -1408,7 +1472,6 @@
 <translation id="7138472120740807366">Спосіб доставки</translation>
 <translation id="7139724024395191329">Емірат</translation>
 <translation id="714064300541049402">Горизонтальний зсув сторони 2 зображення</translation>
-<translation id="7147693119324090759">Усе одно надіслати</translation>
 <translation id="7152423860607593928">Number-14 (конверт)</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}one{<ph name="PAYMENT_METHOD_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}few{<ph name="PAYMENT_METHOD_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}many{<ph name="PAYMENT_METHOD_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}other{<ph name="PAYMENT_METHOD_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}}</translation>
 <translation id="7153618581592392745">Лавандовий</translation>
@@ -1418,6 +1481,7 @@
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}one{<ph name="SHIPPING_OPTION_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}few{<ph name="SHIPPING_OPTION_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}many{<ph name="SHIPPING_OPTION_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}other{<ph name="SHIPPING_OPTION_PREVIEW"/> і ще <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}}</translation>
 <translation id="7179323680825933600">Зберігати й заповнювати способи оплати</translation>
 <translation id="7180611975245234373">Оновити</translation>
+<translation id="7181261019481237103">Відкрити вікно в режимі анонімного перегляду</translation>
 <translation id="7182878459783632708">Правила не встановлено</translation>
 <translation id="7186367841673660872">Цю сторінку перекладено. Мова оригіналу:<ph name="ORIGINAL_LANGUAGE"/>мова перекладу:<ph name="LANGUAGE_LANGUAGE"/></translation>
 <translation id="7192203810768312527">Звільниться до <ph name="SIZE"/> простору. Після цього деякі сайти можуть завантажуватися довше.</translation>
@@ -1427,6 +1491,7 @@
 <translation id="7210863904660874423">Хост <ph name="HOST_NAME"/> не відповідає стандартам безпеки.</translation>
 <translation id="7210993021468939304">Активність Linux у межах контейнера. Може встановлювати та запускати додатки Linux у межах контейнера</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/> про цю проблему.</translation>
+<translation id="7217745192097460130">Підтвердити й завершити покупку за допомогою Touch ID?</translation>
 <translation id="7219179957768738017">З'єднання використовує версію <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Обробка</translation>
 <translation id="7221855153210829124">показувати сповіщення</translation>
@@ -1464,6 +1529,7 @@
 <translation id="7372973238305370288">результат пошуку</translation>
 <translation id="3898257577441589237">Ця проблема виникла через сертифікат, який установили ви або інший користувач на пристрої. Цей сертифікат відстежує й перехоплює мережу. Brave не вважає його надійним. Хоча існують законні випадки відстеження (наприклад, у мережі навчального закладу або компанії), Brave хоче переконатися, що ви знаєте про ці дії, навіть якщо не можете їх зупинити. Відстеження може відбуватися в будь-якому веб-переглядачі або додатку з доступом до Інтернету.</translation>
 <translation id="7375818412732305729">Долучено файл</translation>
+<translation id="5859172549848239531">Коли конектори Brave Enterprise Connectors позначають події системи безпеки, ваш адміністратор отримує відповідні дані про ці події. Наприклад URL-адреси відвіданих у Brave сторінок, назви файлів або метадані, а також ім'я користувача, через яке ви входите в обліковий запис на пристрої або в Brave.</translation>
 <translation id="7377249249140280793"><ph name="RELATIVE_DATE"/> - <ph name="FULL_DATE"/></translation>
 <translation id="7378594059915113390">Елементи керування медіа</translation>
 <translation id="7378627244592794276">Ні</translation>
@@ -1487,7 +1553,6 @@
 <translation id="7416351320495623771">Керувати паролями…</translation>
 <translation id="7419106976560586862">Шлях до профілю</translation>
 <translation id="7437289804838430631">Додати контактну інформацію</translation>
-<translation id="743897106051685947">Оригінал</translation>
 <translation id="7438976808740265764">З грудня 2020 року програвач Flash Player не підтримуватиметься.</translation>
 <translation id="7440140511386898319">Перегляд у режимі офлайн</translation>
 <translation id="7441627299479586546">Неправильна тема правила</translation>
@@ -1496,10 +1561,10 @@
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>дізнатися більше<ph name="END_LINK"/> про цю проблему.</translation>
 <translation id="7455133967321480974">Використовувати глобальне налаштування за умовчанням (Блокувати)</translation>
 <translation id="7460618730930299168">Дані відрізняються від вибраних. Продовжити?</translation>
+<translation id="7469935732330206581">Форма незахищена</translation>
 <translation id="7473891865547856676">Ні, дякую</translation>
 <translation id="7481312909269577407">Переслати</translation>
 <translation id="7485870689360869515">Даних не знайдено.</translation>
-<translation id="7488762544858401571">Відредагований файл</translation>
 <translation id="3692186536781145635">Ваш пароль розкрито через порушення безпеки даних на сайті чи в додатку, якими ви користуєтеся. Brave радить перевірити збережені паролі, а також негайно змінити пароль на сайті <ph name="ORIGIN"/>.</translation>
 <translation id="7495528107193238112">Підключення заблоковано. Щоб вирішити проблему, зв'яжіться з власником сайту.</translation>
 <translation id="7498234416455752244">Продовжити редагування</translation>
@@ -1510,6 +1575,7 @@
 <translation id="7518003948725431193">Не знайдено веб-сторінок для веб-адреси <ph name="URL"/></translation>
 <translation id="7520302887438682816">C8 (конверт)</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7521825010239864438">Розділ "<ph name="SECTION"/>" приховано</translation>
 <translation id="7526934274050461096">Ваше з’єднання з цим сайтом не конфіденційне</translation>
 <translation id="7535087603100972091">Яскравість</translation>
 <translation id="7537536606612762813">Обов’язкове</translation>
@@ -1533,6 +1599,7 @@
 <translation id="7600965453749440009">Ніколи не перекладати з такої мови: <ph name="LANGUAGE"/></translation>
 <translation id="7610193165460212391">Значення за межами діапазону <ph name="VALUE"/>.</translation>
 <translation id="7613889955535752492">Діє до: <ph name="EXPIRATION_MONTH"/>.<ph name="EXPIRATION_YEAR"/></translation>
+<translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб переглянути паролі й керувати ними в налаштуваннях Brave</translation>
 <translation id="6994126885316933886">Ви вже зашифрували дані, використовуючи іншу версію пароля облікового запису Brave. Введіть його нижче.</translation>
 <translation id="8565825862287624454">Ваш адміністратор увімкнув Brave Enterprise Connectors у веб-переглядачі. Ці конектори мають доступ до деяких ваших даних.</translation>
 <translation id="7619838219691048931">Останній аркуш</translation>
@@ -1545,6 +1612,7 @@
 <translation id="7647206758853451655">Якість друку</translation>
 <translation id="7648992873808071793">Зберігати файли на цьому пристрої</translation>
 <translation id="7653957176542370971">Аркуш обробника платежу закрито</translation>
+<translation id="7654909834015434372">Коли ви редагуєте примітки, відновлюється початкова орієнтація документа</translation>
 <translation id="765676359832457558">Сховати розширені налаштування...</translation>
 <translation id="7658239707568436148">Скасувати</translation>
 <translation id="7662298039739062396">Налаштуванням керує розширення</translation>
@@ -1554,7 +1622,6 @@
 <translation id="7669271284792375604">Зловмисники на цьому сайті можуть обманом змусити вас установити програми, які погіршують роботу в Інтернеті (наприклад, змінюють вашу домашню сторінку або показують додаткову рекламу на сайтах, які ви відвідуєте).</translation>
 <translation id="7673278391011283842">Поштова скринька 6</translation>
 <translation id="7676643023259824263">Пошук тексту з буфера обміну: <ph name="TEXT"/></translation>
-<translation id="7681101578153515023">Змінити пошукову систему</translation>
 <translation id="7682287625158474539">Адреса для надсилання</translation>
 <translation id="7687186412095877299">Заповнює платіжні форми, використовуючи збережені способи оплати</translation>
 <translation id="7687305263118037187">Час для повторної спроби минув</translation>
@@ -1569,6 +1636,7 @@
 <translation id="7716375162095500223">Ще не завантажено або проігноровано</translation>
 <translation id="7716424297397655342">Не вдається завантажити цей сайт із кешу</translation>
 <translation id="7723047071702270851">Відредагуйте картку</translation>
+<translation id="773466115871691567">Завжди перекладати сторінки такою мовою: <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="7740996059027112821">Стандартно</translation>
 <translation id="774634243536837715">Заблоковано небезпечний вміст.</translation>
 <translation id="7752995774971033316">Некерований клієнт</translation>
@@ -1591,7 +1659,6 @@
 <translation id="7802523362929240268">Сайт законно зареєстрований</translation>
 <translation id="780301667611848630">Ні, дякую</translation>
 <translation id="7805768142964895445">Статус</translation>
-<translation id="3350174497208615172">Змініть налаштування пошукової системи в Brave</translation>
 <translation id="7812922009395017822">Mir</translation>
 <translation id="4670564340385807132">Видалити дані для автозаповнення форм із Brave?</translation>
 <translation id="781440967107097262">Надати доступ до буфера обміну?</translation>
@@ -1599,6 +1666,7 @@
 <translation id="782886543891417279">Можливо, щоб під’єднатися до цієї мережі Wi-Fi (<ph name="WIFI_NAME"/>), потрібно відвідати її сторінку входу.</translation>
 <translation id="7836231406687464395">Postfix (конверт)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Немає}=1{1 додаток (<ph name="EXAMPLE_APP_1"/>)}=2{2 додатки (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{# додаток (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}few{# додатки (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}many{# додатків (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}other{# додатка (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
+<translation id="785549533363645510">Навіть у режимі анонімного перегляду ваш роботодавець, постачальник послуг Інтернету чи веб-сайти, які ви відвідуєте, можуть бачити, що ви переглядаєте.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/>: <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="7862185352068345852">Залишити сайт?</translation>
 <translation id="7865448901209910068">Оптимальна швидкість</translation>
@@ -1608,6 +1676,7 @@
 <translation id="7887683347370398519">Перевірте код CVC й повторіть спробу</translation>
 <translation id="7887885240995164102">Увімкнути режим "Картинка в картинці"</translation>
 <translation id="7888575728750733395">Команда обробки друку</translation>
+<translation id="7894280532028510793">Якщо помилок немає, <ph name="BEGIN_LINK"/>проведіть діагностику мережі<ph name="END_LINK"/>.</translation>
 <translation id="7904208859782148177">C3 (конверт)</translation>
 <translation id="7932579305932748336">Вкрити обкладинкою</translation>
 <translation id="79338296614623784">Введіть дійсний номер телефону</translation>
@@ -1621,18 +1690,20 @@
 <translation id="7947285636476623132">Перевірте рік закінчення терміну дії та повторіть спробу</translation>
 <translation id="7951415247503192394">(32-розрядна версія)</translation>
 <translation id="7953569069500808819">Зшити вздовж верхнього краю</translation>
+<translation id="7954523986259449736">Вашу інформацію бачитимуть інші користувачі, оскільки сайт використовує не повністю захищене з'єднання.</translation>
 <translation id="7956713633345437162">Закладки на мобільному</translation>
 <translation id="7961015016161918242">Ніколи</translation>
 <translation id="7966803981046576691">Тип робочого облікового запису</translation>
+<translation id="7976214039405368314">Забагато запитів</translation>
 <translation id="7977538094055660992">Пристрій виведення</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="799149739215780103">Зшити</translation>
 <translation id="7995512525968007366">Не вказано</translation>
 <translation id="800218591365569300">Щоб звільнити пам’ять, закрийте інші вкладки та програми.</translation>
 <translation id="8004582292198964060">Переглядач</translation>
-<translation id="8009225694047762179">Керувати паролями</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Цю картку та її платіжну адресу буде збережено. Ви зможете скористатися нею, коли ввійдете в обліковий запис <ph name="USER_EMAIL"/>.}one{Ці картки та їх платіжні адреси буде збережено. Ви зможете скористатися ними, коли ввійдете в обліковий запис <ph name="USER_EMAIL"/>.}few{Ці картки та їх платіжні адреси буде збережено. Ви зможете скористатися ними, коли ввійдете в обліковий запис <ph name="USER_EMAIL"/>.}many{Ці картки та їх платіжні адреси буде збережено. Ви зможете скористатися ними, коли ввійдете в обліковий запис <ph name="USER_EMAIL"/>.}other{Ці картки та їх платіжні адреси буде збережено. Ви зможете скористатися ними, коли ввійдете в обліковий запис <ph name="USER_EMAIL"/>.}}</translation>
 <translation id="8025119109950072390">Зловмисники на цьому сайті можуть обманом змусити вас виконати небезпечну дію, як-от установити програмне забезпечення або повідомити особисту інформацію (наприклад, паролі, номери телефонів або кредитних карток).</translation>
+<translation id="8026334261755873520">Очистити історію</translation>
 <translation id="8028960012888758725">Обрізати після завдання</translation>
 <translation id="8034522405403831421">Мова цієї сторінки: <ph name="SOURCE_LANGUAGE"/>. Перекласти її такою мовою: <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="8035152190676905274">Перо</translation>
@@ -1670,7 +1741,6 @@
 <translation id="4351627595884993315">Brave пропонує вам зберегти картки в обліковому записі Brave, оскільки ви ввійшли в нього. Це можна змінити в налаштуваннях.</translation>
 <translation id="8184538546369750125">Використовувати глобальне налаштування за умовчанням (Дозволяти)</translation>
 <translation id="8194797478851900357">&amp;Відмінити переміщення</translation>
-<translation id="8197543752516192074">Перекласти сторінку</translation>
 <translation id="8201077131113104583">Недійсна URL-адреса для оновлення розширення з ідентифікатором "<ph name="EXTENSION_ID"/>".</translation>
 <translation id="8202097416529803614">Підсумок замовлення</translation>
 <translation id="8202370299023114387">Конфлікт</translation>
@@ -1679,8 +1749,11 @@
 <translation id="8218327578424803826">Указане місцезнаходження:</translation>
 <translation id="8220146938470311105">C7/C6 (конверт)</translation>
 <translation id="3272614036080146686">Щойно ви ввели пароль на оманливому сайті. Brave радить негайно перейти на <ph name="WEBSITE_1"/> та інші сайти, де використовується цей пароль, і змінити його.</translation>
+<translation id="8225771182978767009">Користувач, який налаштував комп’ютер, заблокував цей сайт.</translation>
+<translation id="8228419419708659934">Перегляд по дві сторінки</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Температура платформи</translation>
+<translation id="8238581221633243064">Відкрити сторінку в новій анонімній вкладці</translation>
 <translation id="8241707690549784388">Сторінка, яку ви шукаєте, використовувала інформацію, введену вами. Повернення до такої сторінки може призвести до повторення ваших попередніх дій. Ви дійсно бажаєте продовжити?</translation>
 <translation id="8241712895048303527">Блокувати на цьому сайті</translation>
 <translation id="8242426110754782860">Продовжити</translation>
@@ -1693,6 +1766,8 @@
 <translation id="8265992338205884890">Видимі дані</translation>
 <translation id="8267698848189296333">Ви входите як <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Окремі документи/підібрані копії</translation>
+<translation id="8269981117540303696">Тепер ви можете переглядати контент анонімно. Інші користувачі цього пристрою не бачитимуть дані про ваші дії. Однак завантаження та закладки зберігатимуться.</translation>
+<translation id="8275952078857499577">Не пропонувати перекладати цей сайт</translation>
 <translation id="8277900682056760511">Аркуш обробника платежу відкрито</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Бачити ваш унікальний ідентифікатор пристрою</translation>
@@ -1702,6 +1777,7 @@
 <translation id="8293206222192510085">Додати закладку</translation>
 <translation id="8294431847097064396">Джерело</translation>
 <translation id="8298115750975731693">Можливо, щоб під’єднатися до цієї мережі Wi-Fi (<ph name="WIFI_NAME"/>), потрібно відвідати сторінку <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
+<translation id="8303854710873047864">Відображається розділ "<ph name="SECTION"/>"</translation>
 <translation id="830498451218851433">Зігнути посередині</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">Установлені додатки та як часто ними користуються</translation>
@@ -1709,12 +1785,13 @@
 <translation id="831997045666694187">Увечері</translation>
 <translation id="8332188693563227489">Відмовлено в доступі до хосту <ph name="HOST_NAME"/></translation>
 <translation id="833262891116910667">Виділити</translation>
+<translation id="8339163506404995330">Сторінки цією мовою (<ph name="LANGUAGE"/>) не перекладатимуться</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Якщо ви розумієте ризики, пов’язані з безпекою, можете <ph name="BEGIN_LINK"/>перейти на цей сайт<ph name="END_LINK"/> до того, як небезпечні програми буде видалено.</translation>
+<translation id="8349305172487531364">Панель закладок</translation>
 <translation id="8355270400102541638">Локальний контекст аварійного завершення роботи:</translation>
 <translation id="8363502534493474904">вимкнути режим польоту</translation>
 <translation id="8364627913115013041">Не встановлено.</translation>
-<translation id="8367477997601443248">Незахищена форма</translation>
 <translation id="8368476060205742148">Сервіси Google Play</translation>
 <translation id="8371889962595521444">Власні кореневі сертифікати</translation>
 <translation id="8380941800586852976">Небезпечна</translation>
@@ -1725,11 +1802,11 @@
 Додаткові відомості:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
-<translation id="8425213833346101688">Змінити</translation>
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="8433057134996913067">Ви вийдете з облікового запису на більшості веб-сайтів.</translation>
 <translation id="8437238597147034694">&amp;Відмінити переміщення</translation>
 <translation id="8438786541497918448">Використовувати камеру та мікрофон?</translation>
+<translation id="8446884382197647889">Докладніше</translation>
 <translation id="8457125768502047971">Необмежено</translation>
 <translation id="8461694314515752532">Шифрувати синхронізовані дані за допомогою власної парольної фрази</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 кредитна картка}one{# кредитна картка}few{# кредитні картки}many{# кредитних карток}other{# кредитної картки}}</translation>
@@ -1742,8 +1819,11 @@
 <translation id="8498891568109133222">Хост <ph name="HOST_NAME"/> довго не відповідає.</translation>
 <translation id="230699814587342492">Паролі Brave</translation>
 <translation id="8503813439785031346">Ім’я користувача</translation>
+<translation id="8507227106804027148">Командний рядок</translation>
 <translation id="8508648098325802031">Значок пошуку</translation>
 <translation id="1426902392270366682">Brave допоможе захистити обліковий запис Brave і змінити пароль.</translation>
+<translation id="1215802963054007211">Очистити історію веб-перегляду, файли cookie, кеш та інше в налаштуваннях Brave</translation>
+<translation id="8533619373899488139">Перейдіть на сторінку &lt;strong&gt;chrome://policy&lt;/strong&gt;, щоб переглянути список заблокованих URL-адрес та інші правила, які ввімкнув ваш системний адміністратор.</translation>
 <translation id="8541158209346794904">Пристрій Bluetooth</translation>
 <translation id="8542014550340843547">Тричі скріпити внизу</translation>
 <translation id="8543181531796978784">Ви можете <ph name="BEGIN_ERROR_LINK"/>повідомити про проблему з пошуком<ph name="END_ERROR_LINK"/> або <ph name="BEGIN_LINK"/>перейти на цей незахищений сайт<ph name="END_LINK"/> (якщо розумієте, наскільки це небезпечно).</translation>
@@ -1760,6 +1840,7 @@
 <translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">Пароль для цього сайту не знайдено. Показати всі збережені паролі.</translation>
 <translation id="8625384913736129811">Зберегти цю картку на пристрої</translation>
+<translation id="8657078576661269990">Адміністратор заблокував можливість надавати машинам <ph name="VM_NAME_1"/> і <ph name="VM_NAME_2"/> доступ до контенту із сайту <ph name="ORIGIN_NAME"/></translation>
 <translation id="8663226718884576429">Підсумок замовлення, <ph name="TOTAL_LABEL"/>, докладніше</translation>
 <translation id="867224526087042813">Підпис</translation>
 <translation id="8676424191133491403">Без затримки</translation>
@@ -1772,13 +1853,18 @@
 <translation id="8699041776323235191">Пристрій HID</translation>
 <translation id="8703575177326907206">Ваше з’єднання з <ph name="DOMAIN"/> не зашифровано.</translation>
 <translation id="8705331520020532516">Серійний номер</translation>
+<translation id="8710842507289500830">Стиль шрифту</translation>
 <translation id="8718314106902482036">Оплату не завершено</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, пропозиція пошуку</translation>
 <translation id="8719528812645237045">Пробити кілька отворів угорі</translation>
 <translation id="8725066075913043281">Повторити спробу</translation>
+<translation id="8728672262656704056">Ви перейшли в режим анонімного перегляду</translation>
 <translation id="8730621377337864115">Готово</translation>
+<translation id="1769647018144434441">Кнопка "Керувати паролями"; натисніть Enter, щоб переглянути паролі й керувати ними в налаштуваннях Brave</translation>
+<translation id="8737134861345396036"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб відкрити нове вікно в режимі анонімного перегляду</translation>
 <translation id="6326805297893828864">Щоб установити безпечне з’єднання, потрібно правильно вказати час, оскільки сертифікати, які веб-сайти використовують для самоідентифікації дійсні лише протягом певного періоду часу. Час на вашому пристрої неправильний, тому Brave не може перевірити сертифікати.</translation>
 <translation id="8740359287975076522">&lt;abbr id="dnsDefinition"&gt;Адресу DNS&lt;/abbr&gt; хосту <ph name="HOST_NAME"/> не знайдено. Діагностика проблеми.</translation>
+<translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> – ваш код для сайту <ph name="ORIGIN"/></translation>
 <translation id="874918643257405732">Зробити закладку для цієї вкладки</translation>
 <translation id="8751426954251315517">Повторіть спробу пізніше</translation>
 <translation id="8759274551635299824">Термін дії цієї картки минув</translation>
@@ -1790,15 +1876,16 @@
 <translation id="8790007591277257123">&amp;Повторити видалення</translation>
 <translation id="5304100303568917877">Ви можете втратити доступ до облікового запису, який вам надає <ph name="ORG_NAME"/>, або хтось може викрасти вашу особисту інформацію. Brave радить змінити пароль.</translation>
 <translation id="9156291179464624174">Домен <ph name="ENROLLMENT_DOMAIN"/> увімкнув Brave Enterprise Connectors у веб-переглядачі. Ці конектори мають доступ до деяких ваших даних.</translation>
-<translation id="8800988563907321413">Тут відображатимуться пропозиції</translation>
+<translation id="8798099450830957504">За умовчанням</translation>
 <translation id="8805819170075074995">Елемент списку <ph name="LANGUAGE_ID"/>: елемент ігнорується, оскільки його також включено в правило SpellcheckLanguage.</translation>
 <translation id="8807160976559152894">Обрізати після кожної сторінки</translation>
-<translation id="8831512686168463822">Ця форма надсилається через незахищене з'єднання. Тому ваші дані (наприклад, паролі, повідомлення чи інформацію про кредитні картки) може бути розкрито.</translation>
+<translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>; натисніть Tab, а потім – Enter, щоб оновити веб-переглядач Brave у його налаштуваннях</translation>
 <translation id="883848425547221593">Інші закладки</translation>
 <translation id="884264119367021077">Адреса доставки</translation>
 <translation id="884923133447025588">Не знайдено механізм відкликання.</translation>
 <translation id="7487066225574140895">Надання інформації службам Brave</translation>
 <translation id="4764754838347156633">Brave радить скинути пароль <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>, якщо ви застосовували його на інших сайтах.</translation>
+<translation id="885906927438988819">Якщо помилок немає, <ph name="BEGIN_LINK"/>проведіть діагностику мережі Windows<ph name="END_LINK"/>.</translation>
 <translation id="8866481888320382733">Помилка аналізу налаштувань правила</translation>
 <translation id="8866928039507595380">Зігнути</translation>
 <translation id="886872106311861689">B3</translation>
@@ -1810,15 +1897,17 @@
 <translation id="8903921497873541725">Збільшити масштаб</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Кнопка видалення підказки: натисніть Enter, щоб видалити, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="8910670906166981838">Ви перейшли в режим анонімного перегляду</translation>
 <translation id="2684652081942622950">Обліковий запис Brave</translation>
+<translation id="4102271590580840789">Кнопка "Керувати способами оплати"; натисніть Enter, щоб керувати платежами й даними кредитної картки в налаштуваннях Brave</translation>
 <translation id="8918231688545606538">Ця сторінка підозріла</translation>
 <translation id="892588693504540538">Пробити отвір угорі праворуч</translation>
 <translation id="7757992844965332255">Зберегти цю картку у вашому обліковому записі Brave?</translation>
 <translation id="8932102934695377596">Ваш годинник запізнюється</translation>
 <translation id="893332455753468063">Додайте ім’я</translation>
+<translation id="8942355029279167844">Адміністратор надав додатку <ph name="APP_NAME"/> дозвіл збирати дані діагностики, щоб покращувати роботу продукту. Докладніше читайте на сторінці <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/>.</translation>
 <translation id="8943282376843390568">Лаймовий</translation>
 <translation id="8957210676456822347">Авторизація приєднаного порталу</translation>
-<translation id="109444839364056698">Коли конектори Brave Enterprise Connectors позначають події системи безпеки, ваш адміністратор отримує відповідні дані про ці події. Наприклад URL-адреси відвіданих у Brave сторінок, назви файлів або метадані, а також ім'я користувача, через яке ви входите в обліковий запис на пристрої або в Brave.</translation>
 <translation id="8962950042226115166">Підозрілий сайт</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Пропозиції.<ph name="MARKUP_2"/>Переконайтеся, що пристрій під’єднано до мобільного Інтернету.<ph name="MARKUP_3"/>Оновіть цю веб-сторінку пізніше<ph name="MARKUP_4"/>Перевірне адресу, яку ви ввели<ph name="MARKUP_5"/></translation>
 <translation id="8968766641738584599">Зберегти картку</translation>
@@ -1847,6 +1936,8 @@
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619">Ви пробували зв’язатися з доменом <ph name="DOMAIN"/>, але сервер надав недійсний сертифікат.</translation>
 <translation id="9050666287014529139">Парольна фраза</translation>
+<translation id="9056953843249698117">Магазин</translation>
+<translation id="9062620674789239642">Можливо, його переміщено, змінено або видалено.</translation>
 <translation id="9065203028668620118">Редагувати</translation>
 <translation id="9065745800631924235">Пошук в історії за запитом "<ph name="TEXT"/>"</translation>
 <translation id="9069693763241529744">Заблоковано розширенням</translation>
@@ -1877,11 +1968,13 @@
 <translation id="9173282814238175921">Один документ/новий аркуш</translation>
 <translation id="917450738466192189">Сертифікат сервера недійсний.</translation>
 <translation id="9174917557437862841">Кнопка перемикання вкладки: натисніть Enter, щоб перейти на цю вкладку</translation>
+<translation id="5129795253416930127">Керувати платежами й даними кредитних карток у налаштуваннях Brave</translation>
 <translation id="9183302530794969518">Brave Документи</translation>
 <translation id="9183425211371246419">Протокол, який використовує хост <ph name="HOST_NAME"/>, не підтримується.</translation>
 <translation id="9191834167571392248">Пробити отвір унизу ліворуч</translation>
 <translation id="9205078245616868884">Ваші дані зашифровано за допомогою парольної фрази. Введіть її, щоб почати синхронізацію.</translation>
 <translation id="9207861905230894330">Не вдалося додати статтю.</translation>
+<translation id="9213433120051936369">Налаштувати оформлення</translation>
 <translation id="2206050430829841793">Додаток перешкоджає Brave безпечно під’єднуватися до цього сайту</translation>
 <translation id="9219103736887031265">Зображення</translation>
 <translation id="933712198907837967">Diners Club</translation>
@@ -1913,25 +2006,6 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">З Brave Pay</translation>
-<translation id="2586968635953373425">Відкрити вікно в режимі анонімного перегляду</translation>
-<translation id="3489858312836205593">Відкрийте нове вікно в режимі анонімного перегляду в Brave</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Крок 1. Увійдіть на портал&lt;/h4&gt;
-    &lt;p&gt;Щоб підключитися до мережі Wi-Fi у кафе, аеропорті тощо, потрібно ввійти. Щоб відкрилася сторінка входу, перейдіть на сторінку з &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Перейдіть на будь-який веб-сайт, що починається з &lt;code&gt;http://&lt;/code&gt;, наприклад &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Відкриється сторінка входу. Увійдіть, щоб користуватись Інтернетом.&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;Крок 2. Відкрийте сторінку в режимі анонімного перегляду (лише на комп’ютері)&lt;/h4&gt;
-    &lt;p&gt;Відкрийте сторінку, яку ви відвідували, в анонімному вікні.&lt;/p&gt;
-    &lt;p&gt;Якщо сторінка відкривається, помилку спричиняє розширення Brave. Щоб виправити помилку, вимкніть розширення.&lt;/p&gt;
-    &lt;h4&gt;Крок 3. Оновіть операційну систему&lt;/h4&gt;
-    &lt;p&gt;Переконайтеся, що на пристрої встановлено останню версію операційної системи.&lt;/p&gt;
-    &lt;h4&gt;Крок 4. Тимчасово вимкніть антивірусну програму&lt;/h4&gt;
-    &lt;p&gt;Це повідомлення про помилку з’являється, якщо встановлено антивірусну програму з функцією захисту або сканування HTTPS, що блокує систему безпеки Brave.&lt;/p&gt;
-    &lt;p&gt;Щоб вирішити цю проблему, вимкніть антивірусну програму. Якщо сторінка працює, вимикайте цю програму, коли переглядаєте надійні сайти.&lt;/p&gt;
-    &lt;p&gt;Закінчивши, не забудьте знову ввімкнути антивірусну програму.&lt;/p&gt;
-    &lt;h4&gt;Крок 5. Отримайте додаткову підтримку&lt;/h4&gt;
-    &lt;p&gt;Якщо повідомлення про помилку не зникає, зв’яжіться з власником веб-сайту.&lt;/p&gt;</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="8362995731815961365">Користувач, який налаштував комп’ютер, заблокував цей сайт.</translation>
 <translation id="4075123085690634698">Відкрийте сторінку в анонімному вікні (⇧⌘N)</translation>

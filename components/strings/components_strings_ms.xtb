@@ -2,16 +2,19 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
 <translation id="1008557486741366299">Bukan Sekarang</translation>
+<translation id="100957008357583611">Gunakan lokasi anda?</translation>
 <translation id="1010200102790553230">Muatkan halaman kemudian</translation>
 <translation id="1015730422737071372">Berikan butiran tambahan</translation>
 <translation id="1019413721762100891">Mati</translation>
 <translation id="1021110881106174305">Kad diterima</translation>
+<translation id="1024111578869940408">Kadangkala penyerang meniru tapak dengan membuat perubahan yang sukar dilihat pada alamat web.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> mahu menyimpan data bersaiz besar pada peranti anda secara kekal</translation>
 <translation id="1032854598605920125">Putar ikut arah jam</translation>
 <translation id="1036348656032585052">Matikan</translation>
 <translation id="1038106730571050514">Tunjukkan cadangan</translation>
 <translation id="1038842779957582377">nama tidak diketahui</translation>
 <translation id="1041998700806130099">Mesej helaian tugas</translation>
+<translation id="1048785276086539861">Apabila anda mengedit anotasi, dokumen ini akan kembali kepada paparan satu halaman</translation>
 <translation id="1050038467049342496">Tutup apl lain</translation>
 <translation id="1055184225775184556">&amp;Buat Asal Tambahkan</translation>
 <translation id="1056898198331236512">Amaran</translation>
@@ -19,6 +22,7 @@
 <translation id="10614374240317010">Tidak pernah disimpan</translation>
 <translation id="1062160989074299343">Prc10 (Sampul Surat)</translation>
 <translation id="106701514854093668">Penanda Halaman Desktop</translation>
+<translation id="1068672505746868501">Jangan sekali-kali terjemahkan halaman dalam <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070901266639972381">Malam</translation>
 <translation id="1074497978438210769">Tidak selamat</translation>
 <translation id="1080116354587839789">Muat ikut lebar</translation>
@@ -26,22 +30,25 @@
 <translation id="1088860948719068836">Tambahkan Nama pada Kad</translation>
 <translation id="1089439967362294234">Tukar Kata Laluan</translation>
 <translation id="1096545575934602868">Medan ini tidak boleh mengandungi lebih daripada <ph name="MAX_ITEMS_LIMIT"/> entri. Semua entri selebihnya akan dibuang.</translation>
-<translation id="1920681928837417101">Urus kata laluan dalam tetapan Brave</translation>
 <translation id="1101672080107056897">Tindakan ralat</translation>
 <translation id="1103523840287552314">Sentiasa terjemahkan <ph name="LANGUAGE"/></translation>
 <translation id="1110994991967754504">Pilih kebenaran untuk <ph name="PERMISSION_NAME"/></translation>
 <translation id="1113869188872983271">&amp;Buat asal susun semula</translation>
 <translation id="1125573121925420732">Amaran mungkin biasa dipaparkan semasa tapak web mengemas kini keselamatannya. Ini akan diperbaik tidak lama lagi.</translation>
 <translation id="112840717907525620">Cache dasar OK</translation>
+<translation id="3186248837008742887">Butang terjemah halaman, tekan Enter untuk menterjemah halaman ini dengan Brave Terjemah</translation>
 <translation id="1131264053432022307">Imej yang Anda Salin</translation>
 <translation id="1150979032973867961">Pelayan ini tidak dapat membuktikan bahawa domainnya ialah <ph name="DOMAIN"/>; sijil keselamatannya tidak dipercayai oleh sistem pengendalian komputer anda. Ini mungkin disebabkan oleh kesilapan konfigurasi atau penyerang yang memintasi sambungan anda.</translation>
 <translation id="1151972924205500581">Kata laluan diperlukan</translation>
-<translation id="1152921474424827756">Akses <ph name="BEGIN_LINK"/>salinan cache<ph name="END_LINK"/> <ph name="URL"/></translation>
 <translation id="1156303062776767266">Anda sedang melihat fail setempat atau yang dikongsi</translation>
 <translation id="1158211211994409885"><ph name="HOST_NAME"/> menutup sambungan tanpa di jangka.</translation>
 <translation id="115926840831309955">Semak CVC anda, kemudian cuba lagi atau kemas kini tarikh tamat tempoh kad</translation>
 <translation id="1161325031994447685">Menyambung semula kepada Wi-Fi</translation>
 <translation id="1165039591588034296">Ralat</translation>
+<translation id="1165174597379888365">Halaman dilawati</translation>
+<translation id="1174723505405632867">Adakah anda mahu membenarkan <ph name="EMBEDDED_URL"/> menggunakan kuki dan data tapak pada <ph name="TOP_LEVEL_URL"/>?
+
+Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membolehkan kandungan yang mempunyai interaksi dengan anda berfungsi dengan betul, tetapi mungkin akan membenarkan <ph name="EMBEDDED_URL"/> menjejaki aktiviti anda.</translation>
 <translation id="1175364870820465910">&amp;Cetak...</translation>
 <translation id="1175875016430184367">Tiga kokot kanan</translation>
 <translation id="1178581264944972037">Jeda</translation>
@@ -60,6 +67,7 @@
 <translation id="1232569758102978740">Tidak Bertajuk</translation>
 <translation id="1236081509407217141">Benarkan VR?</translation>
 <translation id="1240347957665416060">Nama peranti anda</translation>
+<translation id="124116460088058876">Lagi bahasa</translation>
 <translation id="1052005765108026699">Untuk membayar dengan lebih cepat selepas ini, simpan kad, nama dan alamat pengebilan anda ke Akaun Brave.</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (disegerakkan)</translation>
 <translation id="1256368399071562588">&lt;p&gt;Jika anda cuba melawati tapak web tetapi tapak itu tidak dibuka, cuba selesaikan ralat tersebut dengan langkah penyelesaian masalah berikut terlebih dahulu:&lt;/p&gt;
@@ -79,7 +87,6 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Cuba kosongkan kuki anda<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">Semak tetapan DNS Selamat anda</translation>
 <translation id="1307966114820526988">Ciri yang Ditamatkan</translation>
-<translation id="1310581832770023220">Data dalam borang ini dihantar melalui sambungan tidak selamat</translation>
 <translation id="131405271941274527"><ph name="URL"/> mahu menghantar dan menerima maklumat apabila anda mengetik telefon anda pada peranti NFC</translation>
 <translation id="1314509827145471431">Ikatan kanan</translation>
 <translation id="1320233736580025032">Prc1 (Sampul Surat)</translation>
@@ -99,6 +106,8 @@
 <translation id="1348198688976932919">Tapak yang akan disemak imbas mengandungi apl berbahaya</translation>
 <translation id="1348779747280417563">Sahkan nama</translation>
 <translation id="1357195169723583938">Orang yang menggunakan peranti ini baru-baru ini dan masa penggunaan</translation>
+<translation id="1360955481084547712">Buka tetingkap Inkognito baharu untuk menyemak imbas secara peribadi</translation>
+<translation id="1363819917331173092">Jangan tawarkan untuk menterjemahkan halaman dalam <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1364822246244961190">Dasar ini disekat, nilainya akan diabaikan.</translation>
 <translation id="1374468813861204354">cadangan</translation>
 <translation id="1374692235857187091">Indeks-4x6 (Poskad)</translation>
@@ -108,6 +117,7 @@
 <translation id="1380591466760231819">Lipatan surat</translation>
 <translation id="138218114945450791">Biru Cerah</translation>
 <translation id="1382194467192730611">Peranti USB yang dibenarkan oleh pentadbir anda</translation>
+<translation id="1386623374109090026">Anotasi</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> tidak menghantar sebarang data.</translation>
 <translation id="1405567553485452995">Hijau Cerah</translation>
 <translation id="1407135791313364759">Buka semua</translation>
@@ -118,9 +128,11 @@
 <translation id="1430915738399379752">Cetak</translation>
 <translation id="1442386063175183758">Lipatan pintu kanan</translation>
 <translation id="1442987760062738829">Tebuk</translation>
+<translation id="1447067628680007684">(x86_64)</translation>
 <translation id="7408760246081928496">Teks yang anda tampal atau lampirkan dihantar kepada Brave Cloud atau pihak ketiga untuk dianalisis. Contohnya, teks itu mungkin diimbas untuk mencari data sensitif.</translation>
 <translation id="1455413310270022028">Pemadam</translation>
 <translation id="1462245070427461050">JIS B9</translation>
+<translation id="1462951478840426066">Gunakan fon pada komputer anda supaya anda dapat membuat kandungan fideliti tinggi</translation>
 <translation id="1463543813647160932">5x7</translation>
 <translation id="1467432559032391204">Kiri</translation>
 <translation id="1472675084647422956">Tunjukkan lagi</translation>
@@ -143,9 +155,11 @@
 <translation id="1531205177818805254">Exec</translation>
 <translation id="1532118530259321453">Halaman ini menyatakan</translation>
 <translation id="153384715582417236">Itu sahaja buat masa ini</translation>
+<translation id="1536390784834419204">Terjemahkan halaman</translation>
 <translation id="154408704832528245">Pilih Alamat Penghantaran</translation>
 <translation id="1549470594296187301">JavaScript mesti didayakan untuk menggunakan ciri ini.</translation>
 <translation id="155039086686388498">Kejuruteraan-D</translation>
+<translation id="1705567146636171298">Kemas Kini Brave</translation>
 <translation id="1555130319947370107">Biru</translation>
 <translation id="1559447966090556585">Dapatkan pemberitahuan?</translation>
 <translation id="1559528461873125649">Tiada fail atau direktori sedemikian</translation>
@@ -163,6 +177,7 @@
 <translation id="1620510694547887537">Kamera</translation>
 <translation id="1623104350909869708">Halang halaman ini daripada mencipta dialog tambahan</translation>
 <translation id="16338877384480380">Seni Bina-B</translation>
+<translation id="1634828734222219955">Jumlah</translation>
 <translation id="1638780421120290329">Tidak dapat menyimpan kad</translation>
 <translation id="1639239467298939599">Memuatkan</translation>
 <translation id="1640180200866533862">Dasar pengguna</translation>
@@ -203,6 +218,7 @@
 <translation id="17513872634828108">Buka tab</translation>
 <translation id="1752021286346845558">Peti mel 8</translation>
 <translation id="1753706481035618306">Nombor halaman</translation>
+<translation id="1757773103848038814">Fon Monospace</translation>
 <translation id="1763864636252898013">Pelayan ini tidak dapat membuktikan bahawa domainnya ialah <ph name="DOMAIN"/>; sijil keselamatannya tidak dipercayai oleh sistem pengendalian peranti anda. Ini mungkin disebabkan oleh kesilapan konfigurasi atau penyerang yang memintasi sambungan anda.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Cuba jalankan Diagnostik Rangkaian Windows<ph name="END_LINK"/>.</translation>
 <translation id="1772163372082567643">Pelayan destinasi anda, <ph name="ORIGIN"/>, telah menetapkan pengepala
@@ -214,8 +230,10 @@
 <translation id="1783075131180517613">Sila kemas kini frasa laluan segerak anda.</translation>
 <translation id="1787142507584202372">Tab yang dibuka dipaparkan di sini</translation>
 <translation id="3480410886581896628">Brave Smart Lock</translation>
+<translation id="1798447301915465742"><ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pelbagai tindakan tersedia, tekan Tab untuk pergi ke setiap tindakan</translation>
 <translation id="1800473098294731951">B9</translation>
 <translation id="1803264062614276815">Nama Pemegang Kad</translation>
+<translation id="1807246157184219062">Cahaya</translation>
 <translation id="1807528111851433570">Helaian permulaan</translation>
 <translation id="1821930232296380041">Permintaan atau parameter permintaan tidak sah</translation>
 <translation id="1822540298136254167">Tapak web yang anda lawati dan tempoh anda melayarinya</translation>
@@ -241,7 +259,6 @@
 <translation id="1919345977826869612">Iklan</translation>
 <translation id="1919367280705858090">Dapatkan bantuan berkaitan mesej ralat tertentu</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Tiada}=1{1 tapak}other{# tapak}}</translation>
-<translation id="194030505837763158">Pergi ke <ph name="LINK"/></translation>
 <translation id="1947454675006758438">Kokot atas sebelah kanan</translation>
 <translation id="990584554013599191">Bantu kami meningkatkan keselamatan di web untuk semua orang dengan menghantar <ph name="BEGIN_WHITEPAPER_LINK"/>URL sesetengah halaman yang anda lawati, maklumat sistem terhad dan sesetengah kandungan halaman<ph name="END_WHITEPAPER_LINK"/> kepada Brave. <ph name="BEGIN_PRIVACY_PAGE_LINK"/>Dasar privasi<ph name="END_PRIVACY_PAGE_LINK"/></translation>
 <translation id="1962204205936693436"><ph name="DOMAIN"/> Penanda halaman</translation>
@@ -249,20 +266,14 @@
 <translation id="1974060860693918893">Lanjutan</translation>
 <translation id="1975584088563498795">Peti mel 10</translation>
 <translation id="1978555033938440688">Versi Perisian Tegar</translation>
-<translation id="711418501679417607">Kosongkan data sejarah penyemakan imbas Brave</translation>
+<translation id="1988881251331415125">Jika ejaan sudah betul, <ph name="BEGIN_LINK"/>cuba jalankan Diagnostik Sambungan<ph name="END_LINK"/>.</translation>
 <translation id="1992331125980284532">JIS B3</translation>
-<translation id="1992796205810278279">Akses kuki dan data tapak.
-
-Adakah anda mahu membenarkan <ph name="EMBEDDED_URL"/> menggunakan kuki dan data tapak pada <ph name="TOP_LEVEL_URL"/>?
-
-Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membolehkan kandungan yang mempunyai interaksi dengan anda berfungsi dengan betul, tetapi mungkin akan membenarkan <ph name="EMBEDDED_URL"/> menjejaki aktiviti anda.</translation>
 <translation id="1997484222658892567"><ph name="URL"/> mahu menyimpan data bersaiz besar pada komputer setempat anda secara kekal</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{dan 1 lagi}other{dan # lagi}}</translation>
 <translation id="2003709556000175978">Tetapkan semula kata laluan anda sekarang</translation>
 <translation id="2003775180883135320">Empat tebukan atas</translation>
 <translation id="2025115093177348061">Realiti tambahan</translation>
 <translation id="2025186561304664664">Proksi ditetapkan kepada auto konfigurasi.</translation>
-<translation id="2030481566774242610">Adakah anda maksudkan <ph name="LINK"/>?</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>Menyemak proksi dan tembok api<ph name="END_LINK"/></translation>
 <translation id="2042213636306070719">Dulang 7</translation>
 <translation id="3163988908275223348">Log masuk untuk menggunakan kata laluan yang disimpan dalam Akaun Brave anda</translation>
@@ -278,6 +289,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2099652385553570808">Tiga kokot kiri</translation>
 <translation id="2101225219012730419">Versi:</translation>
 <translation id="2102134110707549001">Cadangkan Kata Laluan Yang Kukuh…</translation>
+<translation id="2102495993840063010">Apl Android</translation>
 <translation id="2107021941795971877">Sokongan cetakan</translation>
 <translation id="2108755909498034140">Mulakan semula komputer anda</translation>
 <translation id="2111256659903765347">Super-A</translation>
@@ -294,12 +306,14 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2154054054215849342">Penyegerakan tidak tersedia untuk domain anda</translation>
 <translation id="2154484045852737596">Edit kad</translation>
 <translation id="2161656808144014275">Teks</translation>
+<translation id="2164510882479075877">Semak jika terdapat kesilapan ejaan dalam <ph name="HOST_NAME"/>.</translation>
 <translation id="2166049586286450108">Akses Penuh Pentadbir</translation>
 <translation id="2166378884831602661">Tapak ini tidak dapat menyediakan sambungan yang selamat</translation>
 <translation id="2169984857010174799">Kaku2 (Sampul Surat)</translation>
 <translation id="2181821976797666341">Dasar</translation>
 <translation id="2183608646556468874">Nombor Telefon</translation>
 <translation id="2184405333245229118">{COUNT,plural, =1{1 alamat}other{# alamat}}</translation>
+<translation id="2187243482123994665">Kehadiran pengguna</translation>
 <translation id="2187317261103489799">Kesan (lalai)</translation>
 <translation id="2188375229972301266">Berbilang tebukan bawah</translation>
 <translation id="2202020181578195191">Masukkan tahun tamat tempoh yang sah</translation>
@@ -318,7 +332,6 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2258928405015593961">Masukkan tarikh tamat tempoh pada masa hadapan dan cuba lagi</translation>
 <translation id="225943865679747347">Kod ralat: <ph name="ERROR_CODE"/></translation>
 <translation id="2262243747453050782">Ralat HTTP</translation>
-<translation id="112540507627099823">Kemas kini maklumat autolengkap kad kredit dalam tetapan Brave</translation>
 <translation id="2267047181501709434">Mengesahkan identiti anda...</translation>
 <translation id="2270484714375784793">Nombor telefon</translation>
 <translation id="2276057643614339130">Asas cetak</translation>
@@ -328,10 +341,10 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2289385804009217824">Pangkas</translation>
 <translation id="2292556288342944218">Akses Internet anda disekat</translation>
 <translation id="2293443924986248631">Apabila pilihan ini dihidupkan, tapak tidak dapat menggunakan kuki yang menjejaki anda merentas web. Ciri pada sesetengah tapak mungkin rosak.</translation>
+<translation id="6148139222908395733">URL halaman yang anda lawat dihantar kepada Brave Cloud atau pihak ketiga untuk analisis. Contohnya, halaman itu mungkin diimbas untuk mengesan tapak web yang tidak selamat</translation>
 <translation id="2297722699537546652">B5 (Sampul Surat)</translation>
 <translation id="2300306941146563769">Tidak dimuat naik</translation>
 <translation id="2310021320168182093">Chou2 (Sampul Surat)</translation>
-<translation id="2315864634253056100">Nama tapak ini kelihatan serupa dengan <ph name="LOOKALIKE_DOMAIN"/>. Kadangkala penyerang meniru tapak dengan membuat perubahan yang sukar dilihat pada alamat web.</translation>
 <translation id="2316887270356262533">Mengosongkan kurang daripada 1 MB. Sesetengah tapak mungkin dimuatkan dengan lebih perlahan pada lawatan anda yang seterusnya.</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> memerlukan nama pengguna dan kata laluan.</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, tamat tempoh pada <ph name="EXPIRATION_DATE_ABBR"/></translation>
@@ -348,21 +361,22 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2367567093518048410">Tahap</translation>
 <translation id="2380886658946992094">Perundangan</translation>
 <translation id="2384307209577226199">Lalai perusahaan</translation>
+<translation id="5244533701344680487">Kemas kini Brave daripada tetapan Brave anda</translation>
 <translation id="2386255080630008482">Sijil pelayan telah dibatalkan.</translation>
 <translation id="2392959068659972793">Paparkan dasar tanpa nilai yang ditetapkan</translation>
 <translation id="239429038616798445">Kaedah penghantaran ini tidak tersedia. Cuba kaedah lain.</translation>
 <translation id="2396249848217231973">&amp;Buat asal pemadaman</translation>
 <translation id="2410754574180102685">Kerajaan-Perundangan</translation>
 <translation id="2413528052993050574">Pelayan ini tidak dapat membuktikan bahawa domainnya ialah <ph name="DOMAIN"/>; sijil keselamatannya mungkin dibatalkan. Ini mungkin disebabkan oleh kesilapan konfigurasi atau penyerang yang memintasi sambungan anda.</translation>
+<translation id="2414886740292270097">Gelap</translation>
 <translation id="2438874542388153331">Empat tebukan kanan</translation>
-<translation id="2463193859425327265">Tukar Halaman Utama</translation>
 <translation id="2463739503403862330">Isi</translation>
 <translation id="2465402087343596252">Seni Bina-E</translation>
 <translation id="2465655957518002998">Pilih Kaedah Penghantaran</translation>
 <translation id="2465688316154986572">Kokot</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Jalankan Diagnostik Rangkaian<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">Susunan 1-ke-N</translation>
-<translation id="2473195200299095979">Terjemahkan halaman ini</translation>
+<translation id="2470767536994572628">Apabila anda mengedit anotasi, dokumen ini akan kembali kepada paparan satu halaman dan putaran asalnya</translation>
 <translation id="2479410451996844060">URL carian tidak sah.</translation>
 <translation id="2482878487686419369">Pemberitahuan</translation>
 <translation id="248348093745724435">Dasar mesin</translation>
@@ -395,21 +409,25 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2609632851001447353">Variasi</translation>
 <translation id="2618023639789766142">C10 (Sampul Surat)</translation>
 <translation id="2625385379895617796">Jam anda lebih awal</translation>
+<translation id="2915787201097107005">Untuk mendapatkan tahap keselamatan tertinggi Brave, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>hidupkan perlindungan dipertingkatkan<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
 <translation id="2634124572758952069">Alamat IP pelayan <ph name="HOST_NAME"/> tidak ditemui.</translation>
 <translation id="2639739919103226564">Status:</translation>
 <translation id="2649204054376361687"><ph name="CITY"/>, <ph name="COUNTRY"/></translation>
+<translation id="9078005688100552065"><ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk Mengosongkan sejarah penyemakan imbas, kuki, cache dan pelbagai lagi dalam tetapan Brave</translation>
 <translation id="2650446666397867134">Akses ke fail dinafikan</translation>
 <translation id="2653659639078652383">Serah</translation>
 <translation id="2660779039299703961">Acara</translation>
 <translation id="2664887757054927933">{COUNT,plural, =0{Tiada}=1{1 kata laluan (untuk <ph name="DOMAIN_LIST"/>)}=2{2 kata laluan (untuk <ph name="DOMAIN_LIST"/>)}other{# kata laluan (untuk <ph name="DOMAIN_LIST"/>)}}</translation>
 <translation id="2666092431469916601">Atas</translation>
 <translation id="2666117266261740852">Tutup tab atau apl lain</translation>
+<translation id="2672201172023654893">Penyemak imbas anda tidak diurus.</translation>
 <translation id="2674170444375937751">Adakah anda pasti anda mahu memadamkan halaman ini daripada sejarah anda?</translation>
 <translation id="2674804415323431591">Sembunyikan cadangan</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Tinggalkan</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Paling sesuai</translation>
+<translation id="2688969097326701645">Ya, teruskan</translation>
 <translation id="2691924980723297736">Amaran keselamatan</translation>
 <translation id="2699302886720511147">Kad yang Diterima</translation>
 <translation id="2701514975700770343">Menghadap ke bawah</translation>
@@ -418,7 +436,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2705137772291741111">Salinan tapak ini yang disimpan (cache) tidak boleh dibaca.</translation>
 <translation id="2709516037105925701">Autoisi</translation>
 <translation id="2713444072780614174">Putih</translation>
-<translation id="2720342946869265578">Berdekatan</translation>
+<translation id="4131157740532436004"><ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk menguruskan maklumat kad kredit dan pembayaran anda dalam tetapan Brave</translation>
 <translation id="2721148159707890343">Permintaan berjaya</translation>
 <translation id="272451190272506600">Sentuh penderia untuk bayar</translation>
 <translation id="2728127805433021124">Sijil pelayan ditandatangani menggunakan algoritma tandatangan yang lemah.</translation>
@@ -430,6 +448,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2738330467931008676">Pilih Alamat Pengambilan</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="2742870351467570537">Buang item yang dipilih</translation>
+<translation id="2765217105034171413">Kecil</translation>
 <translation id="277133753123645258">Kaedah penghantaran</translation>
 <translation id="277499241957683684">Tiada rekod peranti</translation>
 <translation id="2775884851269838147">Cetakan halaman pertama</translation>
@@ -440,10 +459,10 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2799223571221894425">Lancarkan semula</translation>
 <translation id="2803306138276472711">Penyemakan Selamat Brave <ph name="BEGIN_LINK"/>mengesan perisian hasad<ph name="END_LINK"/> pada <ph name="SITE"/> baru-baru ini. Tapak web yang biasanya selamat kadangkala dijangkiti oleh perisian hasad.</translation>
 <translation id="2807052079800581569">Kedudukan Y imej</translation>
-<translation id="2824514415781424867">Kongsi lokasi?</translation>
 <translation id="2824775600643448204">Bar alamat dan carian</translation>
 <translation id="2826760142808435982">Sambungan disulitkan dan disahkan menggunakan <ph name="CIPHER"/> dan menggunakan <ph name="KX"/> sebagai mekanisme pertukaran kunci.</translation>
 <translation id="2835170189407361413">Kosongkan borang</translation>
+<translation id="2839501879576190149">Tapak palsu di hadapan</translation>
 <translation id="2850739647070081192">Jemputan (Sampul Surat)</translation>
 <translation id="2856444702002559011">Penyerang mungkin akan cuba mencuri maklumat anda daripada <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (contohnya, kata laluan, mesej atau kad kredit). <ph name="BEGIN_LEARN_MORE_LINK"/>Ketahui lebih lanjut<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Lipatan poster</translation>
@@ -463,6 +482,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2928905813689894207">Alamat Pengebilan</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> lagi}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> lagi}}</translation>
 <translation id="2930577230479659665">Pangkas selepas setiap salinan</translation>
+<translation id="2932085390869194046">Cadangkan Kata Laluan...</translation>
 <translation id="2934466151127459956">Surat-Kerajaan</translation>
 <translation id="2941952326391522266">Pelayan ini tidak dapat membuktikan bahawa domainnya ialah <ph name="DOMAIN"/>; sijil keselamatannya adalah dari <ph name="DOMAIN2"/>. Ini mungkin disebabkan oleh kesilapan konfigurasi atau penyerang yang memintasi sambungan anda.</translation>
 <translation id="2943895734390379394">Masa Muat Naik:</translation>
@@ -472,7 +492,6 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2955913368246107853">Tutup bar cari</translation>
 <translation id="2972581237482394796">&amp;Buat Semula</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, dipilih pada masa ini. <ph name="ROW_CONTENT"/></translation>
-<translation id="2982481275546140226">Kosongkan Data</translation>
 <translation id="2985398929374701810">Masukkan alamat yang sah</translation>
 <translation id="2986368408720340940">Kaedah pengambilan ini tidak tersedia. Cuba kaedah lain.</translation>
 <translation id="2987034854559945715">Tiada ciri yang sepadan</translation>
@@ -482,6 +501,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6683975920571472553">Cadangan oleh Brave</translation>
 <translation id="3002501248619246229">Semak media dulang input</translation>
 <translation id="3005723025932146533">Paparkan salinan disimpan</translation>
+<translation id="3007719053326478567">Pencetakan kandungan ini disekat oleh pentadbir anda</translation>
 <translation id="3008447029300691911">Masukkan CVC untuk <ph name="CREDIT_CARD"/>. Setelah anda mengesahkan, butiran kad anda akan dikongsi dengan tapak ini.</translation>
 <translation id="3010559122411665027">Masukan senarai "<ph name="ENTRY_INDEX"/>": <ph name="ERROR"/></translation>
 <translation id="301521992641321250">Disekat secara automatik</translation>
@@ -492,6 +512,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3041612393474885105">Maklumat Sijil</translation>
 <translation id="3060227939791841287">C9 (Sampul Surat)</translation>
 <translation id="3061707000357573562">Perkhidmatan Tampung</translation>
+<translation id="3064966200440839136">Meninggalkan mod inkognito untuk membayar melalui aplikasi luar. Teruskan?</translation>
 <translation id="3080254622891793721">Grafik</translation>
 <translation id="3086579638707268289">Aktiviti anda di web sedang dipantau</translation>
 <translation id="3087734570205094154">Bawah</translation>
@@ -501,6 +522,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Menyemak konfigurasi DNS selamat<ph name="END_LINK"/></translation>
 <translation id="3109728660330352905">Anda tidak mempunyai kebenaran untuk melihat halaman ini.</translation>
 <translation id="3113284927548439113">Syif ketiga</translation>
+<translation id="3115874930288085374"><ph name="ENROLLMENT_DOMAIN"/> menghendaki anda menyandarkan data anda dan mengembalikan <ph name="DEVICE_TYPE"/> ini.</translation>
 <translation id="3116158981186517402">Lamina</translation>
 <translation id="3120730422813725195">Elo</translation>
 <translation id="31207688938192855"><ph name="BEGIN_LINK"/>Cuba jalankan Diagnostik Sambungan<ph name="END_LINK"/>.</translation>
@@ -511,12 +533,14 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3154506275960390542">Halaman ini mengandungi borang yang mungkin tidak diserahkan secara selamat. Data yang dihantar boleh dilihat oleh orang lain semasa dihantar atau boleh diubah suai oleh penyerang untuk mengubah data yang diterima oleh pelayan.</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="3162559335345991374">Wi-Fi yang anda gunakan mungkin memerlukan anda untuk melawat halaman log masuknya.</translation>
+<translation id="3167968892399408617">Halaman yang anda lihat dalam tab inkognito tidak akan kekal dalam sejarah, simpanan kuki atau sejarah carian penyemak imbas anda selepas anda menutup semua tab inkognito anda. Sebarang fail yang anda muat turun atau penanda halaman yang anda buat akan disimpan.</translation>
 <translation id="3169472444629675720">Temui</translation>
 <translation id="3174168572213147020">Pulau</translation>
 <translation id="3176929007561373547">Semak tetapan proksi anda atau hubungi pentadbir rangkaian anda untuk
       memastikan pelayan proksi berfungsi. Jika anda tidak percaya anda perlu 
       menggunakan pelayan proksi:
       <ph name="PLATFORM_TEXT"/></translation>
+<translation id="3184534047932533456"><ph name="URL"/> ingin tahu waktu anda ada</translation>
 <translation id="3188393374551744535">Baki akaun</translation>
 <translation id="3194737229810486521"><ph name="URL"/> mahu menyimpan data pada peranti anda secara kekal</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> pada <ph name="SERVER_NAME"/></translation>
@@ -528,16 +552,17 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3218181027817787318">Relatif</translation>
 <translation id="3225919329040284222">Pelayan memberikan sijil yang tidak sepadan dengan jangkaan terbina dalam. Jangkaan ini disertakan untuk tapak web dengan keselamatan tinggi tertentu untuk melindungi anda.</translation>
 <translation id="3226128629678568754">Tekan butang muat semula untuk menyerahkan kembali data yang diperlukan untuk memuatkan halaman.</translation>
+<translation id="3226387218769101247">Lakaran kenit</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
 <translation id="3229041911291329567">Maklumat versi tentang peranti dan penyemak imbas anda</translation>
 <translation id="323107829343500871">Masukkan CVC untuk <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">Sentiasa kesan kandungan penting di tapak web ini</translation>
-<translation id="3262069459091978471"><ph name="LOOKALIKE_DOMAIN"/> kelihatan serupa dengan <ph name="SUGGESTED_DOMAIN"/>. Kadangkala penyerang meniru tapak dengan menggunakan URL serupa.</translation>
 <translation id="3270847123878663523">&amp;Buat asal Susun semula</translation>
 <translation id="3274521967729236597">Pa-Kai</translation>
 <translation id="3282497668470633863">Tambahkan nama pada kad</translation>
 <translation id="3287510313208355388">Muat turun semasa dalam talian</translation>
 <translation id="3293642807462928945">Ketahui lebih lanjut tentang dasar <ph name="POLICY_NAME"/></translation>
+<translation id="5894665462526421022">Lihat dan urus kata laluan anda dalam tetapan Brave</translation>
 <translation id="3303855915957856445">Tiada hasil carian ditemui</translation>
 <translation id="3308006649705061278">Unit Organisasi (OU)</translation>
 <translation id="3320021301628644560">Tambahkan alamat pengebilan</translation>
@@ -550,6 +575,9 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3364869320075768271"><ph name="URL"/> mahu menggunakan peranti dan data realiti maya anda</translation>
 <translation id="3366477098757335611">Lihat kad</translation>
 <translation id="3369192424181595722">Ralat Jam</translation>
+<translation id="3371076217486966826"><ph name="URL"/> mahu:
+      • Membuat peta 3D bagi persekitaran anda dan menjejak kedudukan kamera
+      • Gunakan kamera anda</translation>
 <translation id="337363190475750230">Nyahperuntukkan</translation>
 <translation id="3377144306166885718">Pelayan menggunakan versi TLS yang sudah lapuk.</translation>
 <translation id="3377188786107721145">Ralat menghuraikan dasar</translation>
@@ -561,6 +589,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3395827396354264108">Kaedah pengambilan</translation>
 <translation id="3399952811970034796">Alamat Penghantaran</translation>
 <translation id="3402261774528610252">Sambungan yang digunakan untuk memuatkan tapak ini menggunakan TLS 1.0 atau TLS 1.1, yang telah ditamatkan dan akan dilumpuhkan pada masa hadapan. Apabila dilumpuhkan, pengguna akan dihalang daripada memuatkan tapak ini. Pelayan harus mendayakan TLS 1.2 atau yang lebih baharu.</translation>
+<translation id="3411120537985775570">Penampalan daripada <ph name="ORIGIN_NAME"/> ke lokasi ini disekat oleh pentadbir anda</translation>
 <translation id="3414952576877147120">Saiz:</translation>
 <translation id="25726459489263481">Fail yang anda muat naik atau lampirkan dihantar kepada Brave Cloud atau pihak ketiga untuk dianalisis. Contohnya, fail itu mungkin diimbas untuk mencari data sensitif atau perisian hasad.</translation>
 <translation id="3422248202833853650">Cuba keluar daripada atur cara lain untuk mengosongkan memori.</translation>
@@ -597,6 +626,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3532844647053365774"><ph name="HOST"/> ingin menggunakan mikrofon anda</translation>
 <translation id="3533328374079021623">Peti mel 5</translation>
 <translation id="3539171420378717834">Simpan salinan kad ini pada peranti ini</translation>
+<translation id="3552297013052089404">Fon Sans-serif</translation>
 <translation id="3558573058928565255">Waktu siang</translation>
 <translation id="3566021033012934673">Sambungan anda tidak diperibadikan</translation>
 <translation id="3567778190852720481">Tidak dapat membuat pendaftaran dengan akaun perusahaan (akaun perusahaan tidak layak).</translation>
@@ -620,16 +650,18 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3630155396527302611">Jika apl telah disenaraikan sebagai atur cara yang dibenarkan untuk mengakses
       rangkaian, cuba alihkannya keluar daripada senarai dan tambahkannya  
       semula.</translation>
+<translation id="3630699740441428070">Pentadbir peranti ini telah mengkonfigurasikan sambungan rangkaian anda yang mungkin membolehkan mereka melihat trafik rangkaian anda, termasuk tapak web yang anda lawat.</translation>
 <translation id="3631244953324577188">Biometrik</translation>
+<translation id="1367445511302842209">Butang Kemas Kini Brave, tekan Enter untuk mengemas kini Brave daripada tetapan Brave anda</translation>
 <translation id="3634530185120165534">Dulang 5</translation>
 <translation id="3640766068866876100">Index-4x6-Ext</translation>
 <translation id="3650584904733503804">Pengesahan berjaya</translation>
 <translation id="3655670868607891010">Jika anda kerap melihatnya, cuba <ph name="HELP_LINK"/> ini.</translation>
 <translation id="3658742229777143148">Semakan</translation>
-<translation id="366077651725703012">Kemas Kini Kad Kredit</translation>
 <translation id="3676592649209844519">ID peranti:</translation>
 <translation id="3677008721441257057">Adakah anda maksudkan &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Permintaan tidak dapat ditandatangani</translation>
+<translation id="3678529606614285348">Buka halaman dalam tetingkap Inkognito baharu (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Maklumat sijil</translation>
 <translation id="3701427423622901115">Tetap semula diakui.</translation>
 <translation id="3704162925118123524">Rangkaian yang anda gunakan mungkin memerlukan anda untuk melawat halaman log masuknya.</translation>
@@ -644,8 +676,8 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Menyemak proksi, tembok api dan konfigurasi DNS<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">Aplikasi yang boleh menyebabkan ralat ini termasuk antivirus, tembok api dan perisian penapisan web atau proksi.</translation>
 <translation id="373042150751172459">B4 (Sampul Surat)</translation>
-<translation id="3731873414101415120">Tapak web yang anda lawati dan kandungan bagi halaman yang tidak selamat</translation>
 <translation id="3736520371357197498">Jika anda memahami risiko terhadap keselamatan anda, anda boleh <ph name="BEGIN_LINK"/>melawati tapak web yang tidak selamat ini<ph name="END_LINK"/> sebelum program berbahaya dialih keluar.</translation>
+<translation id="3738166223076830879">Penyemak imbas anda diurus oleh pentadbir anda.</translation>
 <translation id="4098534208927606680">Setelah anda membuat pengesahan, butiran kad daripada Akaun Brave anda akan dikongsi dengan tapak ini.</translation>
 <translation id="3748148204939282805">Penyerang di <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> mungkin memperdaya anda agar melakukan sesuatu yang berbahaya seperti memasang perisian atau mendedahkan maklumat peribadi anda (contohnya, kata laluan, nombor telefon atau kad kredit). <ph name="BEGIN_LEARN_MORE_LINK"/>Ketahui lebih lanjut<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3754210790023674521">Keluar daripada gambar dalam gambar</translation>
@@ -706,10 +738,10 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="3990250421422698716">Ofset jog</translation>
 <translation id="3996311196211510766"><ph name="ORIGIN"/> tapak telah meminta dasar asal
     dikenakan pada semua permintaan yang diterima, tetapi dasar ini tidak dapat dikenakan pada masa ini.</translation>
-<translation id="40103911065039147">{URL_count,plural, =1{1 halaman web berdekatan}other{# halaman web berdekatan}}</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{Dokumen PDF mengandungi {COUNT} halaman}other{Dokumen PDF mengandungi {COUNT} halaman}}</translation>
 <translation id="4030383055268325496">&amp;Buat asal tambahkan</translation>
 <translation id="4032320456957708163">Penyemak imbas anda diurus oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="4056223980640387499">Sepia</translation>
 <translation id="4058922952496707368">Kekunci "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (Sampul Surat)</translation>
 <translation id="4067947977115446013">Tambahkan Alamat yang Sah</translation>
@@ -718,11 +750,11 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4075941231477579656">Touch ID</translation>
 <translation id="4079302484614802869">Konfigurasi proksi ditetapkan kepada penggunaaan URL skrip .pac, bukannya pelayan proksi tetap.</translation>
 <translation id="4082393374666368382">Tetapan - Pengurusan</translation>
+<translation id="4084120443451129199">Mod carian, tekan Enter untuk mencari <ph name="KEYWORD_SUFFIX"/></translation>
 <translation id="4088981014127559358">Anjakan Y sisi 1 imej</translation>
 <translation id="4098354747657067197">Tapak menipu di hadapan</translation>
 <translation id="4101413244023615925">Teks dan grafik</translation>
 <translation id="4103249731201008433">Nombor siri peranti tidak sah</translation>
-<translation id="4103763322291513355">Lawati &lt;strong&gt;chrome://policy&lt;/strong&gt; untuk melihat senarai URL yang disenarai hitam dan dasar lain yang dikuatkuasakan oleh pentadbir sistem anda.</translation>
 <translation id="4110652170750985508">Semak pembayaran anda</translation>
 <translation id="4112140312785995938">Cari Ke Belakang</translation>
 <translation id="4116663294526079822">Sentiasa benarkan di tapak ini</translation>
@@ -750,6 +782,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4194250254487269611">Kad anda tidak dapat disimpan sekarang</translation>
 <translation id="4196861286325780578">&amp;Buat semula pindahkan</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>Menyemak konfigurasi tembok api dan antivirus<ph name="END_LINK"/></translation>
+<translation id="4209092469652827314">Besar</translation>
 <translation id="4209166701302774460">Pelayan destinasi anda, <ph name="ORIGIN"/>, telah meminta
     dasar asal dikenakan pada semua permintaan yang diterima oleh pelayan itu. Akan tetapi, kini pelayan itu gagal
     menyampaikan dasar, yang menghalang penyemak imbas daripada memenuhi permintaan anda
@@ -775,9 +808,11 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4277028893293644418">Tetapkan semula kata laluan</translation>
 <translation id="4279811152705618813"><ph name="DEVICE_TYPE"/> anda diurus oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Kad ini telah disimpan ke Akaun Brave anda}other{Kad ini telah disimpan ke Akaun Brave anda}}</translation>
+<translation id="4297502707443874121">Lakaran kecil untuk halaman <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="42981349822642051">Kembangkan</translation>
 <translation id="4300675098767811073">Berbilang tebukan kanan</translation>
 <translation id="4302965934281694568">Chou3 (Sampul Surat)</translation>
+<translation id="4305666528087210886">Fail anda tidak dapat diakses</translation>
 <translation id="4305817255990598646">Tukar</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Sekat (lalai)</translation>
@@ -792,8 +827,9 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Penyerang pada tapak ini mungkin cuba memasang atur cara berbahaya pada komputer anda yang mencuri atau memadamkan maklumat anda (sebagai contoh, foto, kata laluan, mesej dan kad kredit).</translation>
 <translation id="4358059973562876591">Templat yang anda nyatakan tidak dapat digunakan kerana terdapat ralat pada dasar DnsOverHttpsMode.</translation>
-<translation id="327628984294957152">Urus kaedah pembayaran...</translation>
+<translation id="4358461427845829800">Urus kaedah pembayaran...</translation>
 <translation id="4367563149485757821">Number-12 (Sampul Surat)</translation>
+<translation id="7954571639479265338">{1,plural, =0{Pelanggaran data pada tapak atau apl mendedahkan kata laluan anda yang disimpan untuk <ph name="ORIGIN"/>. Brave mengesyorkan supaya anda menukar kata laluan anda pada <ph name="ORIGIN"/> sekarang.}=1{Pelanggaran data pada tapak atau apl mendedahkan kata laluan anda yang disimpan untuk <ph name="ORIGIN"/> dan satu lagi tapak. Brave mengesyorkan anda menyemak kata laluan anda yang disimpan sekarang.}other{Pelanggaran data pada tapak atau apl mendedahkan kata laluan anda yang disimpan untuk <ph name="ORIGIN"/> dan <ph name="SITES_COUNT"/> tapak yang lain. Brave mengesyorkan anda menyemak kata laluan anda yang disimpan sekarang.}}</translation>
 <translation id="437058704415269440">Baki Akaun</translation>
 <translation id="4372516964750095882">Fanfold-AS</translation>
 <translation id="4372948949327679948">Nilai <ph name="VALUE_TYPE"/> yang dijangka.</translation>
@@ -805,10 +841,12 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4415426530740016218">Alamat Pengambilan</translation>
 <translation id="443121186588148776">Port siri</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> tidak menerima sijil log masuk anda atau sijil log masuk mungkin tidak diberikan.</translation>
+<translation id="4432792777822557199">Halaman dalam <ph name="SOURCE_LANGUAGE"/> akan diterjemahkan kepada <ph name="TARGET_LANGUAGE"/> bermula dari sekarang</translation>
 <translation id="4434045419905280838">Tetingkap timbul dan ubah hala</translation>
 <translation id="4435702339979719576">Poskad)</translation>
 <translation id="443673843213245140">Penggunaan proksi dilumpuhkan tetapi konfigurasi proksi yang jelas dinyatakan.</translation>
 <translation id="4466881336512663640">Perubahan borang akan hilang. Adakah anda pasti mahu meneruskan?</translation>
+<translation id="4476953670630786061">Borang ini tidak selamat. Autolengkap telah dimatikan.</translation>
 <translation id="4477350412780666475">Lagu Seterusnya</translation>
 <translation id="4482953324121162758">Tapak ini tidak akan diterjemah.</translation>
 <translation id="4490717597759821841">A7</translation>
@@ -819,6 +857,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4506599922270137252">Menghubungi pentadbir sistem</translation>
 <translation id="450710068430902550">Berkongsi dengan Pentadbir</translation>
 <translation id="4508814173490746936">Tidak dapat menggunakan Touch ID</translation>
+<translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk menterjemahkan halaman ini dengan Brave Terjemah</translation>
 <translation id="4510487217173779431">Chou4 (Sampul Surat)</translation>
 <translation id="4892470328555495647">Kad dan alamat adalah daripada Brave dan Akaun Brave anda (<ph name="ACCOUNT_EMAIL"/>). Anda boleh mengurus kad dan alamat ini dalam <ph name="BEGIN_LINK"/>Tetapan<ph name="END_LINK"/>.</translation>
 <translation id="4517607026994743406">Comm-10 (Sampul Surat)</translation>
@@ -838,6 +877,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4597348597567598915">Saiz 8</translation>
 <translation id="4600854749408232102">C6/C5 (Sampul Surat)</translation>
 <translation id="4628948037717959914">Foto</translation>
+<translation id="4631649115723685955">Pulangan tunai dipautkan</translation>
 <translation id="464342062220857295">Ciri carian</translation>
 <translation id="4644670975240021822">Susunan terbalik menghadap ke bawah</translation>
 <translation id="4646534391647090355">Bawa saya ke sana sekarang</translation>
@@ -875,14 +915,17 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4780900888022378816">Peranti anda diurus oleh <ph name="ENROLLMENT_DOMAIN"/> dan akaun anda diurus oleh <ph name="ACCOUNT_DOMAIN"/>.</translation>
 <translation id="4785689107224900852">Beralih ke tab ini</translation>
 <translation id="4791134497475588553">Apl Linux yang dipasang dan kali terakhir apl tersebut digunakan</translation>
+<translation id="4792686369684665359">Maklumat yang hendak diserahkan adalah tidak selamat</translation>
 <translation id="4796594887379589189">ID akaun kerja</translation>
 <translation id="7110430050177876111">Masukkan tarikh tamat tempoh dan CVC <ph name="CREDIT_CARD"/> untuk mengemas kini butiran kad anda. Setelah anda mengesahkan maklumat, butiran kad daripada Akaun Brave anda akan dikongsi dengan tapak ini.</translation>
 <translation id="4800132727771399293">Semak tarikh tamat tempoh serta CVC anda dan cuba lagi</translation>
 <translation id="480334179571489655">Ralat Dasar Asal</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="8896585555528145662">Anda tidak boleh melawati <ph name="SITE"/> sekarang kerana tapak web ini menghantar bukti kelayakan yang dicampuradukkan yang tidak boleh diproses oleh Brave. Ralat rangkaian dan serangan biasanya bersifat sementara, oleh itu halaman ini mungkin akan berfungsi sebentar lagi.</translation>
+<translation id="4809079943450490359">Arahan daripada pentadbir peranti anda:</translation>
 <translation id="4813512666221746211">Ralat rangkaian</translation>
 <translation id="4816492930507672669">Muat halaman</translation>
+<translation id="4819347708020428563">Edit anotasi dalam paparan lalai?</translation>
 <translation id="484462545196658690">Auto</translation>
 <translation id="4850886885716139402">Lihat</translation>
 <translation id="4854362297993841467">Kaedah penghantaran ini tidak tersedia. Cuba kaedah lain.</translation>
@@ -894,15 +937,16 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4879725228911483934">Buka dan letakkan tetingkap pada skrin anda</translation>
 <translation id="4880827082731008257">Sejarah carian</translation>
 <translation id="4881695831933465202">Buka</translation>
+<translation id="4889420713887366944">Butang buka Tetingkap Inkognito, tekan Enter untuk membuka tetingkap Inkognito baharu untuk menyemak imbas secara peribadi</translation>
 <translation id="4892518386797173871">Belakang</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">Simpan...</translation>
 <translation id="4913987521957242411">Tebukan atas sebelah kiri</translation>
-<translation id="4914479371620770914">{URL_count,plural, =1{dan 1 lagi halaman web}other{dan # lagi halaman web}}</translation>
 <translation id="4923459931733593730">Pembayaran</translation>
 <translation id="4926049483395192435">Mesti ditentukan.</translation>
 <translation id="4926159001844873046"><ph name="SITE"/> menyatakan</translation>
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
+<translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk mencari</translation>
 <translation id="4930153903256238152">Kapasiti besar</translation>
 <translation id="4943872375798546930">Tiada hasil carian</translation>
 <translation id="4950898438188848926">Butang peralihan tab, tekan Enter untuk beralih ke tab yang terbuka, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
@@ -929,6 +973,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="503069730517007720">Sijil akar bagi "<ph name="SOFTWARE_NAME"/>" diperlukan tetapi tidak dipasang. Pentadbir IT anda harus melihat arahan konfigurasi "<ph name="SOFTWARE_NAME"/>" untuk menyelesaikan masalah ini. <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="6425384654920630035">Perihal Brave Terjemah</translation>
 <translation id="503498442187459473"><ph name="HOST"/> mahu menggunakan kamera dan mikrofon anda</translation>
+<translation id="5039762155821394373">Saiz Fon</translation>
 <translation id="5039804452771397117">Benarkan</translation>
 <translation id="5040262127954254034">Privasi</translation>
 <translation id="5043480802608081735">Pautan yang Anda Salin</translation>
@@ -954,7 +999,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5123063207673082822">Hujung minggu</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Sahkan kad anda</translation>
-<translation id="6291230311289558881">Urus alamat...</translation>
+<translation id="5135404736266831032">Urus alamat...</translation>
 <translation id="5138227688689900538">Tunjukkan kurang</translation>
 <translation id="7186167407612593632">Sulitkan kata laluan yang disegerakkan dengan bukti kelayakan Brave anda</translation>
 <translation id="5145883236150621069">Terdapat kod ralat dalam balasan dasar</translation>
@@ -962,6 +1007,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5148809049217731050">Menghadap ke atas</translation>
 <translation id="515292512908731282">C4 (Sampul Surat)</translation>
 <translation id="5158275234811857234">Muka depan</translation>
+<translation id="5159010409087891077">Buka halaman dalam tetingkap Inkognito baharu (⇧⌘N)</translation>
 <translation id="5161506081086828129">Petak 9</translation>
 <translation id="5164798890604758545">Teks dimasukkan</translation>
 <translation id="2996889577833788807">Masukkan CVC untuk <ph name="CREDIT_CARD"/>. Setelah anda mengesahkan maklumat, butiran kad daripada Akaun Brave anda akan dikongsi dengan tapak ini.</translation>
@@ -970,6 +1016,8 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5171689220826475070">Fanfold-Eropah</translation>
 <translation id="5172758083709347301">Mesin</translation>
 <translation id="5179510805599951267">Bukan dalam <ph name="ORIGINAL_LANGUAGE"/>? Laporkan ralat ini</translation>
+<translation id="5179740473595559246">Tahu waktu anda ada</translation>
+<translation id="5190835502935405962">Bar Penanda Halaman</translation>
 <translation id="519422657042045905">Anotasi tidak tersedia</translation>
 <translation id="5201306358585911203">Halaman terbenam pada halaman ini menyatakan</translation>
 <translation id="5205222826937269299">Nama diperlukan</translation>
@@ -1005,6 +1053,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5308380583665731573">Sambung</translation>
 <translation id="5308689395849655368">Pelaporan nahas dilumpuhkan.</translation>
 <translation id="5314967030527622926">Pembuat buku kecil</translation>
+<translation id="5316812925700871227">Putar lawan arah jam</translation>
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="MATCH_POSITION"/> daripada <ph name="NUM_MATCHES"/></translation>
 <translation id="5324080437450482387">Pilih Maklumat Hubungan</translation>
@@ -1028,9 +1077,9 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5421136146218899937">Kosongkan data semakan imbas...</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> mahu menghantar pemberitahuan kepada anda</translation>
 <translation id="5430298929874300616">Alih keluar penanda halaman</translation>
-<translation id="5431657950005405462">Fail anda tidak ditemui</translation>
 <translation id="5439770059721715174">Ralat pengesahan skema di "<ph name="ERROR_PATH"/>": <ph name="ERROR"/></translation>
 <translation id="5443468954631487277">Susunan terbalik menghadap ke atas</translation>
+<translation id="5447765697759493033">Tapak ini tidak akan diterjemah</translation>
 <translation id="5452270690849572955">Halaman <ph name="HOST_NAME"/> ini tidak ditemui</translation>
 <translation id="5455374756549232013">Cap waktu dasar tidak elok</translation>
 <translation id="5457113250005438886">Tidak sah</translation>
@@ -1048,9 +1097,11 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5509780412636533143">Penanda halaman terurus</translation>
 <translation id="5510481203689988000">Tetapan ini dikawal dalam tetapan Kuki.</translation>
 <translation id="5510766032865166053">Fail mungkin telah dipindahkan atau dipadamkan.</translation>
+<translation id="5519516356611866228">Dengan perubahan anda</translation>
 <translation id="5523118979700054094">Nama dasar</translation>
 <translation id="55293785478302737">Jahitan tepi</translation>
 <translation id="553484882784876924">Prc6 (Sampul Surat)</translation>
+<translation id="6477838366754392112">Butang kosongkan data semakan imbas, tekan Enter untuk mengosongkan sejarah penyemakan imbas, kuki, cache dan pelbagai lagi dalam tetapan Brave</translation>
 <translation id="5536214594743852365">Tunjukkan bahagian "<ph name="SECTION"/>"</translation>
 <translation id="5539243836947087108">Rakit</translation>
 <translation id="5540224163453853">Tidak menemui artikel yang diminta.</translation>
@@ -1060,6 +1111,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6084314943327785510">Brave menyemak kata laluan anda secara berkala pada senarai yang telah diterbitkan dalam talian. Apabila melakukan tindakan ini, kata laluan dan nama pengguna anda akan disulitkan supaya data ini tidak dapat dibaca oleh sesiapa termasuk Brave.</translation>
 <translation id="5556459405103347317">Muat Semula</translation>
 <translation id="5560088892362098740">Tarikh Tamat Tempoh</translation>
+<translation id="55635442646131152">Rangka dokumen</translation>
 <translation id="5565735124758917034">Aktif</translation>
 <translation id="5570825185877910964">Lindungi akaun</translation>
 <translation id="5571083550517324815">Tidak boleh mengambil dari alamat ini. Pilih alamat lain.</translation>
@@ -1073,8 +1125,10 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="4067274479097837765">Tapak ini mungkin palsu atau penipuan. Brave mengesyorkan agar anda meninggalkan tapak sekarang.</translation>
 <translation id="5610142619324316209">Menyemak sambungan</translation>
 <translation id="5610807607761827392">Anda boleh mengurus kad dan alamat dalam <ph name="BEGIN_LINK"/>Tetapan<ph name="END_LINK"/>.</translation>
+<translation id="2012723355262040739">Terjemahkan halaman ini dengan Brave Terjemah</translation>
 <translation id="5612720917913232150"><ph name="URL"/> mahu menggunakan lokasi komputer anda</translation>
 <translation id="5617949217645503996"><ph name="HOST_NAME"/> telah terlalu kerap mengubah hala anda.</translation>
+<translation id="5624120631404540903">Urus kata laluan</translation>
 <translation id="5629630648637658800">Gagal memuatkan tetapan dasar</translation>
 <translation id="5631439013527180824">Token pengurusan peranti tidak sah</translation>
 <translation id="2590378115732684772">Data anda disulitkan dengan <ph name="BEGIN_LINK"/>kata laluan Brave<ph name="END_LINK"/> anda pada <ph name="TIME"/>. Masukkan kata laluan itu untuk memulakan penyegerakan.</translation>
@@ -1094,10 +1148,10 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5689516760719285838">Lokasi</translation>
 <translation id="569000877158168851">Nilai DnsOverHttpsTemplates tidak berkaitan dan tidak akan digunakan, melainkan dasar DnsOverHttpsMode ditetapkan kepada <ph name="SECURE_DNS_MODE_AUTOMATIC"/> atau <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Tengah</translation>
-<translation id="3655851112780233803">Urus...</translation>
-<translation id="5705882733397021510">Kembali</translation>
+<translation id="570530837424789914">Urus...</translation>
 <translation id="57094364128775171">Cadangkan kata laluan yang kukuh…</translation>
 <translation id="5710435578057952990">Identiti tapak web ini belum disahkan.</translation>
+<translation id="571403275720188526">(arm64)</translation>
 <translation id="5720705177508910913">Pengguna semasa</translation>
 <translation id="5728056243719941842">C5 (Sampul Surat)</translation>
 <translation id="3006790309890592320">Brave mengesyorkan penetapan semula kata laluan jika anda menggunakan semula kata laluan itu di tapak lain.</translation>
@@ -1115,7 +1169,6 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="5785756445106461925">Selain itu, halaman ini mengandungi sumber lain yang tidak selamat. Sumber ini boleh dilihat oleh orang lain semasa dalam transit dan boleh diubah oleh penyerang untuk menukar penampilan halaman.</translation>
 <translation id="5786044859038896871">Adakah anda ingin mengisi maklumat kad anda?</translation>
 <translation id="5798290721819630480">Buang perubahan?</translation>
-<translation id="2828698628112858998">Tukar halaman utama dalam tetapan Brave</translation>
 <translation id="5803412860119678065">Adakah anda ingin mengisi <ph name="CARD_DETAIL"/> anda?</translation>
 <translation id="5804241973901381774">Kebenaran</translation>
 <translation id="5804427196348435412">Gunakan peranti NFC</translation>
@@ -1147,8 +1200,10 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="2687595201721621314">Simpan kad ke Akaun Brave?</translation>
 <translation id="5922853866070715753">Hampir selesai</translation>
 <translation id="5932224571077948991">Tapak menyiarkan iklan yang mengganggu atau mengelirukan</translation>
+<translation id="5938793338444039872">Troy</translation>
 <translation id="5946937721014915347">Membuka <ph name="SITE_NAME"/>…</translation>
 <translation id="5951495562196540101">Tidak dapat mendaftar dengan akaun pengguna (lesen berpakej tersedia).</translation>
+<translation id="5963413905009737549">Bahagian</translation>
 <translation id="5967592137238574583">Edit Maklumat Hubungan</translation>
 <translation id="5967867314010545767">Buang daripada sejarah</translation>
 <translation id="5975083100439434680">Zum keluar</translation>
@@ -1184,6 +1239,8 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6049488691372270142">Penghantaran halaman</translation>
 <translation id="6051221802930200923">Anda tidak boleh melawati <ph name="SITE"/> sekarang kerana tapak web ini menggunakan penyematan sijil. Ralat dan serangan rangkaian biasanya bersifat sementara. Oleh sebab itu, halaman ini mungkin akan berfungsi semula kemudian.</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6053328359599022071">Kongsi kehadiran anda?</translation>
+<translation id="6057359309778282021">Pentadbir anda telah menyekat tindakan mengongsikan data daripada <ph name="ORIGIN_NAME"/> ke <ph name="VM_NAME"/></translation>
 <translation id="6058977677006700226">Gunakan kad anda pada semua peranti anda?</translation>
 <translation id="6059925163896151826">Peranti USB</translation>
 <translation id="6060009363608157444">Mod DnsOverHttps tidak sah.</translation>
@@ -1233,6 +1290,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
         <ph name="END_LIST"/></translation>
 <translation id="6280223929691119688">Tidak dapat menghantar ke alamat ini. Pilih alamat lain.</translation>
 <translation id="6282194474023008486">Poskod</translation>
+<translation id="6289939620939689042">Warna Halaman</translation>
 <translation id="6290238015253830360">Artikel cadangan anda dipaparkan di sini</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="5880900081429361525">Brave Assistant dalam Brave berhenti</translation>
@@ -1254,6 +1312,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Caj mungkin dikenakan nanti.</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{1 cadangan lain}other{# cadangan lain}}</translation>
+<translation id="6387645831795005740">Penyerang kadangkala meniru tapak dengan melakukan perubahan kecil yang sukar untuk dikesan pada URL.</translation>
 <translation id="6389470377220713856">Nama pada Kad</translation>
 <translation id="6390200185239044127">Lipat dua Z</translation>
 <translation id="6390662030813198813">Kejuruteraan-E</translation>
@@ -1265,6 +1324,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6423385022588644828">Sahkan kad anda dengan lebih cepat dengan menggunakan Touch ID mulai sekarang</translation>
 <translation id="6425092077175753609">Bahan</translation>
 <translation id="6427730057873428458">Lipatan pintu</translation>
+<translation id="6428450836711225518">Sahkan nombor telefon anda</translation>
 <translation id="6433490469411711332">Edit maklumat hubungan</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> enggan menyambung.</translation>
 <translation id="6434309073475700221">Buang</translation>
@@ -1275,17 +1335,18 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6447842834002726250">Kuki</translation>
 <translation id="6451458296329894277">Sahkan Penyerahan Semula Borang</translation>
 <translation id="6457206614190510200">Jahitan pelana</translation>
-<translation id="2275235756919172538">Urus kata laluan...</translation>
+<translation id="6465306955648956876">Urus kata laluan...</translation>
+<translation id="6468485451923838994">Fon</translation>
 <translation id="647261751007945333">Dasar peranti</translation>
 <translation id="6476284679642588870">Urus kaedah pembayaran</translation>
 <translation id="6489534406876378309">Mulakan muat naik ranap sistem</translation>
 <translation id="6499038740797743453">Tetapkan semula kata laluan?</translation>
+<translation id="6502991525169604759">Tanpa perubahan anda</translation>
 <translation id="3960299545138990065">Mulakan semula Brave</translation>
 <translation id="6517596291481585650">Amaran: Dasar ini tidak digabungkan sebagai senarai seperti yang dinyatakan oleh dasar kerana dasar ini bukan senarai.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
 <translation id="6521745193039995384">Tidak aktif</translation>
 <translation id="6529602333819889595">&amp;Buat Semula Pemadaman</translation>
-<translation id="6534179046333460208">Cadangan Web Fizikal</translation>
 <translation id="6545864417968258051">Pengimbasan Bluetooth</translation>
 <translation id="6547208576736763147">Dua tebukan kiri</translation>
 <translation id="6554795675067793129">Akaun anda diurus oleh <ph name="ENROLLMENT_DOMAIN"/>.</translation>
@@ -1310,15 +1371,18 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6631202559048444592">Lebih daripada satu sumber terdapat dalam dasar ini, tetapi nilainya sama.</translation>
 <translation id="663260587451432563">JIS B4</translation>
 <translation id="6643016212128521049">Kosongkan</translation>
+<translation id="6645291930348198241">Akses kuki dan data tapak.</translation>
 <translation id="1375868315964791309">{COUNT,plural, =0{Tiada}=1{Daripada 1 tapak (anda tidak akan dilog keluar daripada Akaun Brave anda)}other{Daripada # tapak (anda tidak akan dilog keluar daripada Akaun Brave anda)}}</translation>
+<translation id="6678472970290886941">Pentadbir anda boleh menukar persediaan penyemak imbas anda dari jauh. Aktiviti pada peranti ini mungkin turut diurus di luar Brave.</translation>
+<translation id="6648524591329069940">Fon Serif</translation>
 <translation id="6652101503459149953">Gunakan Windows Hello</translation>
 <translation id="6657585470893396449">Kata laluan</translation>
+<translation id="666259744093848177">(x86_64 diterjemah)</translation>
 <translation id="6665553082534466207">Tiga tebukan kanan</translation>
 <translation id="6685834062052613830">Log keluar dan selesaikan persediaan</translation>
 <translation id="6687335167692595844">Saiz fon diminta</translation>
 <translation id="6689249931105087298">Relatif dengan mampatan mata hitam</translation>
 <translation id="5406652219015697259">Brave menawarkan penyimpanan kad dalam Akaun Brave anda kerana anda telah log masuk. Anda boleh menukar gelagat ini dalam tetapan. Nama pemegang kad diambil daripada akaun anda.</translation>
-<translation id="6704582573942289642">Adakah ini tapak yang betul?</translation>
 <translation id="6710213216561001401">Sebelumnya</translation>
 <translation id="6710594484020273272">&lt;Taip istilah carian&gt;</translation>
 <translation id="671076103358959139">Token Pendaftaran:</translation>
@@ -1346,7 +1410,6 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6846340164947227603">Gunakan nombor kad maya...</translation>
 <translation id="6852204201400771460">Muat semula apl?</translation>
 <translation id="6865412394715372076">Kad ini tidak dapat disahkan sekarang</translation>
-<translation id="6868206169573555318">Lancarkan Semula untuk Mengemas Kini</translation>
 <translation id="6874604403660855544">&amp;Buat semula tambahkan</translation>
 <translation id="6884662655240309489">Saiz 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
@@ -1381,7 +1444,9 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="6993898126790112050">6x9 (Sampul Surat)</translation>
 <translation id="6996312675313362352">Sentiasa terjemahkan <ph name="ORIGINAL_LANGUAGE"/></translation>
 <translation id="7004583254764674281">Gunakan Windows Hello untuk mengesahkan kad dengan lebih cepat</translation>
+<translation id="7006930604109697472">Hantar sahaja</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
+<translation id="7014741021609395734">Tahap zum</translation>
 <translation id="7016992613359344582">Caj ini mungkin caj sekali atau caj berulang dan mungkin tidak ketara.</translation>
 <translation id="7029809446516969842">Kata laluan</translation>
 <translation id="7031646650991750659">Apl Google Play yang telah anda pasang</translation>
@@ -1399,7 +1464,6 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="7083258188081898530">Dulang 9</translation>
 <translation id="7086090958708083563">Muat naik diminta oleh pengguna</translation>
 <translation id="7087282848513945231">Daerah</translation>
-<translation id="5711818857380891233">Cari <ph name="LINK"/> di Brave</translation>
 <translation id="7108338896283013870">Sembunyikan</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> mahu menggunakan kamera anda</translation>
 <translation id="7108819624672055576">Dibenarkan oleh sambungan</translation>
@@ -1411,7 +1475,6 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="7138472120740807366">Kaedah penghantaran</translation>
 <translation id="7139724024395191329">Amiriah</translation>
 <translation id="714064300541049402">Anjakan X sisi 2 imej</translation>
-<translation id="7147693119324090759">Serahkan Juga</translation>
 <translation id="7152423860607593928">Number-14 (Sampul Surat)</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> lagi}other{<ph name="PAYMENT_METHOD_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> lagi}}</translation>
 <translation id="7153618581592392745">Gandaria</translation>
@@ -1421,6 +1484,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> lagi}other{<ph name="SHIPPING_OPTION_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> lagi}}</translation>
 <translation id="7179323680825933600">Simpan dan Lengkapkan Kaedah Pembayaran</translation>
 <translation id="7180611975245234373">Muat semula</translation>
+<translation id="7181261019481237103">Buka tetingkap Inkognito</translation>
 <translation id="7182878459783632708">Tiada dasar ditetapkan</translation>
 <translation id="7186367841673660872">Halaman ini telah diterjemahkan dari<ph name="ORIGINAL_LANGUAGE"/>ke<ph name="LANGUAGE_LANGUAGE"/></translation>
 <translation id="7192203810768312527">Mengosongkan <ph name="SIZE"/>. Sesetengah tapak mungkin dimuatkan dengan perlahan pada lawatan anda yang seterusnya.</translation>
@@ -1430,6 +1494,7 @@ Jika tidak, ini akan disekat oleh tetapan privasi anda. Kebenaran ini akan membo
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> tidak mematuhi piawaian keselamatan.</translation>
 <translation id="7210993021468939304">Aktiviti Linux dalam bekas dan boleh memasang serta menjalankan apl Linux dalam bekas</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/> mengenai masalah ini.</translation>
+<translation id="7217745192097460130">Gunakan Touch ID untuk mengesahkan dan melengkapkan pembelian anda?</translation>
 <translation id="7219179957768738017">Sambungan menggunakan <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Memproses</translation>
 <translation id="7221855153210829124">Tunjukkan pemberitahuan</translation>
@@ -1467,6 +1532,7 @@ Butiran tambahan:
 <translation id="7372973238305370288">hasil carian</translation>
 <translation id="3898257577441589237">Masalah ini berlaku disebabkan oleh sijil yang anda pasang atau dipasang oleh orang lain pada peranti anda. Sijil itu diketahui digunakan untuk memantau dan memintas rangkaian, dan tidak dipercayai oleh Brave. Walaupun terdapat sebab yang munasabah untuk melakukan pemantauan, seperti pada rangkaian institusi pengajian atau syarikat, Brave ingin memastikan anda menyedari pemantauan berlaku, walaupun anda tidak dapat menghentikan pemantauan itu. Pemantauan boleh berlaku pada mana-mana penyemak imbas atau aplikasi yang mengakses web.</translation>
 <translation id="7375818412732305729">Fail dilampirkan</translation>
+<translation id="5859172549848239531">Apabila peristiwa keselamatan dibenderakan oleh Brave Enterprise Connectors, data yang berkaitan tentang peristiwa tersebut akan dihantar kepada pentadbir anda. Data ini boleh termasuk URL halaman yang anda lawati dalam Brave, nama fail atau metadata dan nama pengguna yang anda gunakan untuk log masuk ke peranti dan Brave anda.</translation>
 <translation id="7377249249140280793"><ph name="RELATIVE_DATE"/> - <ph name="FULL_DATE"/></translation>
 <translation id="7378594059915113390">Kawalan Media</translation>
 <translation id="7378627244592794276">Tidak</translation>
@@ -1490,7 +1556,6 @@ Butiran tambahan:
 <translation id="7416351320495623771">Urus Kata Laluan…</translation>
 <translation id="7419106976560586862">Laluan Profil</translation>
 <translation id="7437289804838430631">Tambahkan Maklumat Hubungan</translation>
-<translation id="743897106051685947">Asal</translation>
 <translation id="7438976808740265764">Flash Player tidak akan disokong lagi selepas bulan Disember 2020.</translation>
 <translation id="7440140511386898319">Teroka semasa di luar talian</translation>
 <translation id="7441627299479586546">Subjek dasar salah</translation>
@@ -1499,10 +1564,10 @@ Butiran tambahan:
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/> tentang masalah ini.</translation>
 <translation id="7455133967321480974">Gunakan lalai global (Sekat)</translation>
 <translation id="7460618730930299168">Tayangan ini berbeza daripada pilihan anda. Teruskan?</translation>
+<translation id="7469935732330206581">Borang tidak selamat</translation>
 <translation id="7473891865547856676">Tidak, Terima Kasih</translation>
 <translation id="7481312909269577407">Majukan</translation>
 <translation id="7485870689360869515">Tiada data dijumpai.</translation>
-<translation id="7488762544858401571">Diedit</translation>
 <translation id="3692186536781145635">Pelanggaran data pada tapak atau apl mendedahkan kata laluan anda. Brave mengesyorkan anda menyemak kata laluan yang disimpan dan menukar kata laluan anda pada <ph name="ORIGIN"/> sekarang.</translation>
 <translation id="7495528107193238112">Kandungan ini disekat. Hubungi pemilik tapak untuk menyelesaikan isu ini.</translation>
 <translation id="7498234416455752244">Teruskan mengedit</translation>
@@ -1513,6 +1578,7 @@ Butiran tambahan:
 <translation id="7518003948725431193">Tiada halaman web dijumpai untuk alamat web: <ph name="URL"/></translation>
 <translation id="7520302887438682816">C8 (Sampul Surat)</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7521825010239864438">Bahagian "<ph name="SECTION"/>" disembunyikan</translation>
 <translation id="7526934274050461096">Sambungan anda ke tapak ini tidak berciri peribadi</translation>
 <translation id="7535087603100972091">Nilai</translation>
 <translation id="7537536606612762813">Wajib</translation>
@@ -1536,6 +1602,7 @@ Butiran tambahan:
 <translation id="7600965453749440009">Jangan sekali-kali terjemahkan <ph name="LANGUAGE"/></translation>
 <translation id="7610193165460212391">Nilai berada di luar julat <ph name="VALUE"/></translation>
 <translation id="7613889955535752492">Tamat: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
+<translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk melihat dan mengurus kata laluan anda dalam tetapan Brave</translation>
 <translation id="6994126885316933886">Anda sudah mempunyai data yang disulitkan menggunakan versi kata laluan Akaun Brave anda yang berbeza. Sila masukkannya di bawah.</translation>
 <translation id="8565825862287624454">Pentadbir anda telah menghidupkan Brave Enterprise Connectors pada penyemak imbas anda. Penyambung ini boleh mengakses sesetengah data anda.</translation>
 <translation id="7619838219691048931">Helaian akhir</translation>
@@ -1548,6 +1615,7 @@ Butiran tambahan:
 <translation id="7647206758853451655">Kualiti cetakan</translation>
 <translation id="7648992873808071793">Simpan fail pada peranti ini</translation>
 <translation id="7653957176542370971">Helaian pengendali pembayaran ditutup</translation>
+<translation id="7654909834015434372">Apabila anda mengedit anotasi, dokumen ini akan kembali kepada putaran asalnya</translation>
 <translation id="765676359832457558">Sembunyikan tetapan lanjutan...</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="7662298039739062396">Tetapan dikawal oleh sambungan</translation>
@@ -1557,7 +1625,6 @@ Butiran tambahan:
 <translation id="7669271284792375604">Penyerang pada tapak ini mungkin cuba menipu dengan meminta anda memasang atur cara yang membahayakan pengalaman penyemakan imbas anda (contohnya, dengan menukar halaman utama anda atau menunjukkan iklan tambahan pada laman yang anda lawati).</translation>
 <translation id="7673278391011283842">Peti mel 6</translation>
 <translation id="7676643023259824263">Cari teks papan keratan, <ph name="TEXT"/></translation>
-<translation id="7681101578153515023">Tukar Enjin Carian</translation>
 <translation id="7682287625158474539">Penghantaran</translation>
 <translation id="7687186412095877299">Mengisi borang pembayaran dengan kaedah pembayaran yang disimpan</translation>
 <translation id="7687305263118037187">Cuba semula tamat masa</translation>
@@ -1572,6 +1639,7 @@ Butiran tambahan:
 <translation id="7716375162095500223">Belum dimuat naik, atau diabaikan</translation>
 <translation id="7716424297397655342">Tapak ini tidak dapat dimuatkan daripada cache</translation>
 <translation id="7723047071702270851">Edit Kad</translation>
+<translation id="773466115871691567">Sentiasa terjemahkan halaman dalam <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="774634243536837715">Kandungan berbahaya disekat.</translation>
 <translation id="7752995774971033316">Tidak Diurus</translation>
@@ -1594,7 +1662,6 @@ Butiran tambahan:
 <translation id="7802523362929240268">Tapak ini sah</translation>
 <translation id="780301667611848630">Tidak, terima kasih</translation>
 <translation id="7805768142964895445">Status</translation>
-<translation id="3350174497208615172">Tukar tetapan Enjin Carian dalam Brave</translation>
 <translation id="7812922009395017822">Mir</translation>
 <translation id="4670564340385807132">Alih keluar cadangan borang daripada Brave?</translation>
 <translation id="781440967107097262">Kongsi papan keratan?</translation>
@@ -1602,6 +1669,7 @@ Butiran tambahan:
 <translation id="782886543891417279">Wi-Fi yang anda gunakan (<ph name="WIFI_NAME"/>) mungkin memerlukan anda melawat halaman log masuknya.</translation>
 <translation id="7836231406687464395">Postfix (Sampul Surat)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Tiada}=1{1 apl (<ph name="EXAMPLE_APP_1"/>)}=2{2 apl (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# apl (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
+<translation id="785549533363645510">Walau bagaimanapun, anda tidak halimunan. Apabila anda menggunakan mod inkognito, penyemakan imbas anda tidak akan disembunyikan daripada majikan anda, penyedia perkhidmatan Internet anda atau tapak web yang anda lawati.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Tinggalkan tapak?</translation>
 <translation id="7865448901209910068">Kelajuan terbaik</translation>
@@ -1611,6 +1679,7 @@ Butiran tambahan:
 <translation id="7887683347370398519">Semak CVC anda dan cuba lagi</translation>
 <translation id="7887885240995164102">Akses mod gambar dalam gambar</translation>
 <translation id="7888575728750733395">Niat pemaparan cetakan</translation>
+<translation id="7894280532028510793">Jika ejaan sudah betul, <ph name="BEGIN_LINK"/>cuba jalankan Diagnostik Rangkaian<ph name="END_LINK"/>.</translation>
 <translation id="7904208859782148177">C3 (Sampul Surat)</translation>
 <translation id="7932579305932748336">Kot</translation>
 <translation id="79338296614623784">Masukkan nombor telefon yang sah</translation>
@@ -1624,18 +1693,20 @@ Butiran tambahan:
 <translation id="7947285636476623132">Semak tahun tamat tempoh anda dan cuba lagi</translation>
 <translation id="7951415247503192394">(32-bit)</translation>
 <translation id="7953569069500808819">Jahitan tepi atas</translation>
+<translation id="7954523986259449736">Disebabkan tapak menggunakan sambungan yang tidak selamat sepenuhnya, maklumat anda akan dapat dilihat oleh orang lain.</translation>
 <translation id="7956713633345437162">Penanda halaman mudah alih</translation>
 <translation id="7961015016161918242">Tidak sama sekali</translation>
 <translation id="7966803981046576691">Jenis akaun kerja</translation>
+<translation id="7976214039405368314">Terlalu banyak permintaan</translation>
 <translation id="7977538094055660992">Peranti output</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="799149739215780103">Ikatan</translation>
 <translation id="7995512525968007366">Tidak Ditentukan</translation>
 <translation id="800218591365569300">Cuba tutup tab atau atur cara lain untuk mengosongkan memori.</translation>
 <translation id="8004582292198964060">Penyemak Imbas</translation>
-<translation id="8009225694047762179">Urus Kata Laluan</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Kad ini dan alamat pengebilannya akan disimpan. Anda akan dapat menggunakan kad ini apabila anda log masuk ke <ph name="USER_EMAIL"/>.}other{Kad ini dan alamat pengebilannya akan disimpan. Anda akan dapat menggunakan kad ini apabila anda log masuk ke <ph name="USER_EMAIL"/>.}}</translation>
 <translation id="8025119109950072390">Penyerang pada tapak ini mungkin menipu anda supaya melakukan sesuatu yang berbahaya seperti memasang perisian atau mendedahkan maklumat peribadi anda (contohnya, kata laluan, nombor telefon atau maklumat kad kredit).</translation>
+<translation id="8026334261755873520">Kosongkan data semakan imbas</translation>
 <translation id="8028960012888758725">Pangkas selepas tugasan</translation>
 <translation id="8034522405403831421">Halaman ini dalam <ph name="SOURCE_LANGUAGE"/>. Terjemahkannya kepada <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="8035152190676905274">Pen</translation>
@@ -1673,7 +1744,6 @@ Butiran tambahan:
 <translation id="4351627595884993315">Brave menawarkan penyimpanan kad dalam Akaun Brave anda kerana anda log masuk. Anda boleh menukar gelagat ini dalam tetapan.</translation>
 <translation id="8184538546369750125">Gunakan lalai global (Benarkan)</translation>
 <translation id="8194797478851900357">&amp;Buat Asal Pindahkan</translation>
-<translation id="8197543752516192074">Terjemah Halaman</translation>
 <translation id="8201077131113104583">URL kemas kini tidak sah untuk sambungan dengan ID "<ph name="EXTENSION_ID"/>".</translation>
 <translation id="8202097416529803614">Ringkasan pesanan</translation>
 <translation id="8202370299023114387">Konflik</translation>
@@ -1682,8 +1752,11 @@ Butiran tambahan:
 <translation id="8218327578424803826">Lokasi yang Ditentukan:</translation>
 <translation id="8220146938470311105">C7/C6 (Sampul Surat)</translation>
 <translation id="3272614036080146686">Anda baru sahaja memasukkan kata laluan anda pada tapak yang menipu. Brave mengesyorkan supaya anda pergi ke <ph name="WEBSITE_1"/> dan tapak lain yang anda gunakan kata laluan ini dan menukar kata laluan tersebut sekarang.</translation>
+<translation id="8225771182978767009">Orang yang menyediakan komputer ini telah memilih untuk menyekat tapak ini.</translation>
+<translation id="8228419419708659934">Paparan dua halaman</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Suhu platform</translation>
+<translation id="8238581221633243064">Buka halaman dalam tab Inkognito baharu</translation>
 <translation id="8241707690549784388">Halaman yang anda cari untuk maklumat terpakai yang anda masukkan. Kembali ke halaman tersebut mungkin menyebabkan mana-mana tindakan yang anda ambil akan diulang. Adakah anda mahu teruskan?</translation>
 <translation id="8241712895048303527">Sekat di tapak ini</translation>
 <translation id="8242426110754782860">Teruskan</translation>
@@ -1696,6 +1769,8 @@ Butiran tambahan:
 <translation id="8265992338205884890">Data yang kelihatan</translation>
 <translation id="8267698848189296333">Log masuk sebagai <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Dokumen berasingan/Salinan dikumpul semak</translation>
+<translation id="8269981117540303696">Kini anda boleh menyemak imbas secara sulit dan orang lain yang menggunakan peranti ini tidak akan dapat melihat aktiviti anda. Namun begitu, muat turun dan penanda halaman akan disimpan.</translation>
+<translation id="8275952078857499577">Jangan tawarkan untuk menterjemahkan tapak ini</translation>
 <translation id="8277900682056760511">Helaian pengendali pembayaran dibuka</translation>
 <translation id="8281084378435768645">Foto-Besar</translation>
 <translation id="8282947398454257691">Ketahui pengecam peranti unik anda</translation>
@@ -1705,6 +1780,7 @@ Butiran tambahan:
 <translation id="8293206222192510085">Tambah Penanda Halaman</translation>
 <translation id="8294431847097064396">Sumber</translation>
 <translation id="8298115750975731693">Wi-Fi yang anda gunakan (<ph name="WIFI_NAME"/>) mungkin memerlukan anda untuk melawat <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
+<translation id="8303854710873047864">Bahagian "<ph name="SECTION"/>" ditunjukkan</translation>
 <translation id="830498451218851433">Lipat dua</translation>
 <translation id="8307358339886459768">Foto-Kecil</translation>
 <translation id="8307888238279532626">Apl yang dipasang dan kekerapan apl itu digunakan</translation>
@@ -1712,12 +1788,13 @@ Butiran tambahan:
 <translation id="831997045666694187">Petang</translation>
 <translation id="8332188693563227489">Akses ke <ph name="HOST_NAME"/> dinafikan</translation>
 <translation id="833262891116910667">Serlahkan</translation>
+<translation id="8339163506404995330">Halaman dalam <ph name="LANGUAGE"/> tidak akan diterjemahkan</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Jika anda memahami risiko terhadap keselamatan anda, anda boleh <ph name="BEGIN_LINK"/>lawati tapak ini<ph name="END_LINK"/> sebelum atur cara berbahaya dialih keluar.</translation>
+<translation id="8349305172487531364">Bar penanda halaman</translation>
 <translation id="8355270400102541638">Konteks Ranap Sistem Setempat:</translation>
 <translation id="8363502534493474904">Matikan mod pesawat</translation>
 <translation id="8364627913115013041">Tidak ditetapkan.</translation>
-<translation id="8367477997601443248">Borang Tidak Selamat</translation>
 <translation id="8368476060205742148">Perkhidmatan Google Play</translation>
 <translation id="8371889962595521444">Sijil akar tersuai</translation>
 <translation id="8380941800586852976">Berbahaya</translation>
@@ -1728,11 +1805,11 @@ Butiran tambahan:
 Butiran tambahan:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
-<translation id="8425213833346101688">Tukar</translation>
 <translation id="8428213095426709021">Tetapan</translation>
 <translation id="8433057134996913067">Pemadaman ini akan membuatkan anda dilog keluar daripada kebanyakan tapak web.</translation>
 <translation id="8437238597147034694">&amp;Buat asal pindahkan</translation>
 <translation id="8438786541497918448">Gunakan kamera &amp; mikrofon?</translation>
+<translation id="8446884382197647889">Ketahui Lebih Lanjut</translation>
 <translation id="8457125768502047971">Tidak tentu</translation>
 <translation id="8461694314515752532">Sulitkan data yang disegerakkan dengan ungkapan laluan penyegerakan anda sendiri</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 kad kredit}other{# kad kredit}}</translation>
@@ -1745,8 +1822,11 @@ Butiran tambahan:
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> mengambil masa terlalu lama untuk bertindak balas.</translation>
 <translation id="230699814587342492">Kata Laluan Brave</translation>
 <translation id="8503813439785031346">Nama pengguna</translation>
+<translation id="8507227106804027148">Baris perintah</translation>
 <translation id="8508648098325802031">Ikon Carian</translation>
 <translation id="1426902392270366682">Brave boleh membantu anda melindungi Akaun Brave anda dan menukar kata laluan anda.</translation>
+<translation id="1215802963054007211">Kosongkan sejarah penyemakan imbas, kuki, cache dan pelbagai lagi dalam tetapan Brave</translation>
+<translation id="8533619373899488139">Lawati &lt;strong&gt;chrome://policy&lt;/strong&gt; untuk melihat senarai URL yang disekat dan dasar lain yang dikuatkuasakan oleh pentadbir sistem anda.</translation>
 <translation id="8541158209346794904">Peranti Bluetooth</translation>
 <translation id="8542014550340843547">Tiga kokot bawah</translation>
 <translation id="8543181531796978784">Anda boleh <ph name="BEGIN_ERROR_LINK"/>laporkan masalah pengesanan<ph name="END_ERROR_LINK"/> atau jika anda memahami risikonya kepada keselamatan anda, <ph name="BEGIN_LINK"/>lawati tapak yang tidak selamat ini<ph name="END_LINK"/>.</translation>
@@ -1763,6 +1843,7 @@ Butiran tambahan:
 <translation id="8622948367223941507">Perundangan-Ekstra</translation>
 <translation id="8623885649813806493">Tiada kata laluan yang sepadan. Tunjukkan semua kata laluan yang disimpan.</translation>
 <translation id="8625384913736129811">Simpan Kad Ini pada Peranti Ini</translation>
+<translation id="8657078576661269990">Pentadbir anda telah menyekat tindakan mengongsikan data daripada <ph name="ORIGIN_NAME"/> ke <ph name="VM_NAME_1"/> dan <ph name="VM_NAME_2"/></translation>
 <translation id="8663226718884576429">Ringkasan Pesanan, <ph name="TOTAL_LABEL"/>, Butiran Lanjut</translation>
 <translation id="867224526087042813">Tandatangan</translation>
 <translation id="8676424191133491403">Tiada kelewatan</translation>
@@ -1775,13 +1856,18 @@ Butiran tambahan:
 <translation id="8699041776323235191">Peranti HID</translation>
 <translation id="8703575177326907206">Sambungan anda ke <ph name="DOMAIN"/> tidak disulitkan.</translation>
 <translation id="8705331520020532516">Nombor Siri</translation>
+<translation id="8710842507289500830">Gaya fon</translation>
 <translation id="8718314106902482036">Pembayaran belum selesai</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, cadangan carian</translation>
 <translation id="8719528812645237045">Berbilang tebukan atas</translation>
 <translation id="8725066075913043281">Cuba lagi</translation>
+<translation id="8728672262656704056">Anda menggunakan mod inkognito</translation>
 <translation id="8730621377337864115">Selesai</translation>
+<translation id="1769647018144434441">Urus butang kata laluan, tekan Enter untuk melihat dan mengurus kata laluan anda dalam tetapan Brave</translation>
+<translation id="8737134861345396036"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk membuka tetingkap Inkognito baharu untuk semak imbas secara peribadi</translation>
 <translation id="6326805297893828864">Untuk mewujudkan sambungan yang selamat, jam anda perlu ditetapkan dengan betul. Ini kerana sijil yang digunakan oleh tapak web untuk mengenal pastinya hanya sah untuk tempoh masa yang tertentu. Memandangkan jam peranti anda tidak betul, Brave tidak boleh mengesahkan sijil-sijil ini.</translation>
 <translation id="8740359287975076522">&lt;abbr id="dnsDefinition"&gt;Alamat DNS&lt;/abbr&gt; <ph name="HOST_NAME"/> tidak ditemui. Masalah sedang didiagnosis.</translation>
+<translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> ialah kod anda untuk <ph name="ORIGIN"/></translation>
 <translation id="874918643257405732">Tanda tab ini</translation>
 <translation id="8751426954251315517">Sila cuba lagi nanti</translation>
 <translation id="8759274551635299824">Kad ini telah tamat tempoh</translation>
@@ -1793,15 +1879,16 @@ Butiran tambahan:
 <translation id="8790007591277257123">&amp;Buat semula pemadaman</translation>
 <translation id="5304100303568917877">Anda boleh kehilangan akses kepada akaun <ph name="ORG_NAME"/> anda atau mengalami kecurian identiti. Brave mengesyorkan supaya kata laluan anda ditukar sekarang.</translation>
 <translation id="9156291179464624174"><ph name="ENROLLMENT_DOMAIN"/> telah menghidupkan Brave Enterprise Connectors pada penyemak imbas anda. Penyambung ini boleh mengakses sesetengah data anda.</translation>
-<translation id="8800988563907321413">Cadangan berdekatan anda dipaparkan di sini</translation>
+<translation id="8798099450830957504">Lalai</translation>
 <translation id="8805819170075074995">Masukan senarai "<ph name="LANGUAGE_ID"/>": Masukan diabaikan kerana masukan ini disertakan dalam dasar SpellcheckLanguage juga.</translation>
 <translation id="8807160976559152894">Pangkas selepas setiap halaman</translation>
-<translation id="8831512686168463822">Borang ini diserahkan melalui sambungan tidak selamat, yang mungkin mendedahkan maklumat anda (contohnya, kata laluan, mesej atau nombor kad kredit) apabila dihantar kepada tapak ini.</translation>
+<translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab kemudian Enter untuk mengemas kini Brave daripada tetapan Brave anda</translation>
 <translation id="883848425547221593">Penanda Halaman Lain</translation>
 <translation id="884264119367021077">Alamat penghantaran</translation>
 <translation id="884923133447025588">Tiada mekanisme pembatalan dijumpai.</translation>
 <translation id="7487066225574140895">Berkongsi dengan Brave</translation>
 <translation id="4764754838347156633">Brave mengesyorkan penetapan semula kata laluan <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> jika anda menggunakan semula kata laluan itu di tapak lain.</translation>
+<translation id="885906927438988819">Jika ejaan sudah betul, <ph name="BEGIN_LINK"/>cuba jalankan Diagnostik Rangkaian Windows<ph name="END_LINK"/>.</translation>
 <translation id="8866481888320382733">Ralat semasa menghuraikan tetapan dasar</translation>
 <translation id="8866928039507595380">Lipatan</translation>
 <translation id="886872106311861689">B3</translation>
@@ -1813,15 +1900,17 @@ Butiran tambahan:
 <translation id="8903921497873541725">Zum masuk</translation>
 <translation id="890485472659500557">Kejuruteraan-C</translation>
 <translation id="890493561996401738">Alih keluar butang Cadangan, tekan Enter untuk mengalih keluar, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="8910670906166981838">Anda menggunakan mod inkognito</translation>
 <translation id="2684652081942622950">Akaun Brave</translation>
+<translation id="4102271590580840789">Butang uruskan kaedah pembayaran, tekan Enter untuk menguruskan maklumat kad kredit dan pembayaran anda dalam tetapan Brave</translation>
 <translation id="8918231688545606538">Halaman ini mencurigakan</translation>
 <translation id="892588693504540538">Tebukan atas sebelah kanan</translation>
 <translation id="7757992844965332255">Adakah anda mahu menyimpan kad ini ke Akaun Brave anda?</translation>
 <translation id="8932102934695377596">Jam anda di belakang</translation>
 <translation id="893332455753468063">Tambahkan Nama</translation>
+<translation id="8942355029279167844">Pentadbir anda telah membenarkan <ph name="APP_NAME"/> untuk mengumpulkan data diagnostik untuk meningkatkan pengalaman produk. Lihat <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> untuk mendapatkan maklumat lanjut.</translation>
 <translation id="8943282376843390568">Hijau pucuk pisang</translation>
 <translation id="8957210676456822347">Keizinan Portal Tawanan</translation>
-<translation id="109444839364056698">Apabila acara keselamatan dibenderakan oleh Brave Enterprise Connectors, data yang berkaitan tentang acara tersebut akan dihantar kepada pentadbir anda. Data ini boleh termasuk URL halaman yang anda lawati dalam Brave, nama fail atau metadata dan nama pengguna yang anda gunakan untuk mengelog masuk ke peranti serta Brave anda.</translation>
 <translation id="8962950042226115166">Tapak mencurigakan</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>Cadangan:<ph name="MARKUP_2"/>Pastikan anda mempunyai sambungan data<ph name="MARKUP_3"/>Muatkan semula halaman web ini kemudian<ph name="MARKUP_4"/>Semak alamat yang anda masukkan<ph name="MARKUP_5"/></translation>
 <translation id="8968766641738584599">Simpan kad</translation>
@@ -1850,6 +1939,8 @@ Butiran tambahan:
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619">Anda cuba untuk mencapai <ph name="DOMAIN"/>, tetapi pelayan memberikan sijil tidak sah.</translation>
 <translation id="9050666287014529139">Frasa laluan</translation>
+<translation id="9056953843249698117">Kedai</translation>
+<translation id="9062620674789239642">Fail mungkin telah dipindahkan, diedit atau dipadamkan.</translation>
 <translation id="9065203028668620118">Edit</translation>
 <translation id="9065745800631924235">Carian <ph name="TEXT"/> daripada sejarah</translation>
 <translation id="9069693763241529744">Disekat oleh sambungan</translation>
@@ -1880,11 +1971,13 @@ Butiran tambahan:
 <translation id="9173282814238175921">Satu dokumen/Helaian baharu</translation>
 <translation id="917450738466192189">Sijil pelayan tidak sah.</translation>
 <translation id="9174917557437862841">Butang peralihan tab, tekan Enter untuk beralih ke tab ini</translation>
+<translation id="5129795253416930127">Urus maklumat pembayaran dan kad kredit anda dalam tetapan Brave</translation>
 <translation id="9183302530794969518">Dokumen Brave</translation>
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> menggunakan protokol yang tidak disokong.</translation>
 <translation id="9191834167571392248">Tebukan bawah sebelah kiri</translation>
 <translation id="9205078245616868884">Data anda disulitkan dengan ungkapan laluan segerak anda. Masukkannya untuk memulakan penyegerakan.</translation>
 <translation id="9207861905230894330">Gagal menambahkan artikel.</translation>
+<translation id="9213433120051936369">Sesuaikan rupa</translation>
 <translation id="2206050430829841793">Satu aplikasi menghalang Brave daripada menyambung ke tapak ini dengan selamat</translation>
 <translation id="9219103736887031265">Imej</translation>
 <translation id="933712198907837967">Diners Club</translation>
@@ -1916,25 +2009,6 @@ Butiran tambahan:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Daripada Brave Pay</translation>
-<translation id="2586968635953373425">Buka Tetingkap Inkognito</translation>
-<translation id="3489858312836205593">Buka tetingkap inkognito Brave baharu</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Langkah 1: Log masuk ke portal&lt;/h4&gt;
-    &lt;p&gt;Rangkaian Wi-Fi di tempat seperti kafe atau lapangan terbang menghendaki anda untuk log masuk. Untuk memaparkan halaman log masuk, lawati halaman yang menggunakan &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Pergi ke mana-mana tapak web yang bermula dengan &lt;code&gt;http://&lt;/code&gt;, seperti &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Pada halaman log masuk yang terbuka, log masuk untuk menggunakan Internet.&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;Langkah 2: Buka halaman dalam mod Inkognito (komputer sahaja)&lt;/h4&gt;
-    &lt;p&gt;Buka halaman yang anda lawati dalam tetingkap Inkognito.&lt;/p&gt;
-    &lt;p&gt;Jika halaman tersebut terbuka, terdapat sambungan Brave yang tidak berfungsi dengan betul. Untuk membetulkan ralat ini, matikan sambungan tersebut.&lt;/p&gt;
-    &lt;h4&gt;Langkah 3: Kemas kini sistem pengendalian anda&lt;/h4&gt;
-    &lt;p&gt;Pastikan peranti anda dalam keadaan terkini.&lt;/p&gt;
-    &lt;h4&gt;Langkah 4: Matikan antivirus anda buat sementara waktu&lt;/h4&gt;
-    &lt;p&gt;Ralat ini akan kelihatan jika anda memasang antivirus yang menyediakan "perlindungan HTTPS" atau "pengimbasan HTTPS". Antivirus tersebut menghalang Brave daripada menyediakan keselamatan.&lt;/p&gt;
-    &lt;p&gt;Untuk menyelesaikan masalah ini, matikan perisian antivirus anda. Jika halaman berfungsi selepas perisian dimatikan, matikan perisian ini apabila anda menggunakan tapak yang selamat.&lt;/p&gt;
-    &lt;p&gt;Jangan lupa untuk menghidupkan semula atur cara antivirus itu apabila anda sudah selesai.&lt;/p&gt;
-    &lt;h4&gt;Langkah 5: Dapatkan bantuan tambahan&lt;/h4&gt;
-    &lt;p&gt;Jika ralat masih kelihatan, hubungi pemilik tapak web.&lt;/p&gt;</translation>
 <translation id="8820817407110198400">Penanda buku</translation>
 <translation id="8362995731815961365">Orang yang menyediakan komputer ini telah memilih untuk menyekat tapak ini.</translation>
 <translation id="4075123085690634698">Buka halaman dalam tetingkap Inkognito baharu (⇧⌘N)</translation>

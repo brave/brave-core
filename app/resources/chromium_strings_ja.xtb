@@ -4,13 +4,15 @@
 <translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave で週 1 回、望ましくないソフトウェアがないか確認します。前回の確認: 1 時間前。}other{Brave で週 1 回、望ましくないソフトウェアがないか確認します。前回の確認: {NUM_HOURS} 時間前。}}</translation>
 <translation id="1065672644894730302">ユーザー設定ファイルを読み込むことができません。一部の機能が利用できない可能性があります。また、設定への変更は保存されません。</translation>
 <translation id="8488151306313572776">個人用と <ph name="NEW_USER"/> のブラウジング環境を分けるには、Brave で新しいプロファイルを作成します</translation>
-<translation id="2796517443093885402">Brave でデータ侵害や不正な拡張機能などの脅威から保護できているか確認します</translation>
+<translation id="2796517443093885402">Brave でデータ侵害や不正な拡張機能などの脅威から保護されているか確認します</translation>
 <translation id="5918095577778020936">Brave からパスワードをエクスポートするための許可を求められています。許可するには Windows のパスワードを入力してください。</translation>
 <translation id="5468853758063275923">既定のブラウザは Brave です</translation>
+<translation id="8522292744959221145">パスワードにデータ侵害などセキュリティに関する問題がないかどうかを確認するには、<ph name="BEGIN_LINK"/>Brave にログイン<ph name="END_LINK"/>してください。</translation>
 <translation id="8541922081612557424">Brave について</translation>
 <translation id="4798342026247191171">新しい Brave プロファイルの設定</translation>
 <translation id="113959764510199339">Brave はパスワードを表示しようとしています。</translation>
 <translation id="8132634101975074716">Brave にログインしました</translation>
+<translation id="7370605478942575409">Rosetta を使用して、保護されたメディアを再生するには、Brave を再起動する必要があります。</translation>
 <translation id="7419046106786626209">お使いのドメインでは同期を利用できないため、Chrome OS はデータを同期できませんでした。</translation>
 <translation id="5147525139567260139">Brave タブの共有</translation>
 <translation id="1530633922026945685">周囲の 3D マップを作成するには、Brave にカメラの使用を許可する必要があります</translation>
@@ -22,10 +24,12 @@
 <translation id="189297655255130768">Brave が応答しません。今すぐ再起動しますか？</translation>
 <translation id="1775322105159056176">Brave では既定のブラウザを判定または設定できません</translation>
 <translation id="9220324636239049437">このデバイスから 1 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
+<translation id="831418749472885028">他のパスワードにデータ侵害などセキュリティに関する問題がないかどうかを確認するには、<ph name="BEGIN_LINK"/>Brave にログイン<ph name="END_LINK"/>してください。</translation>
 <translation id="8745514854244955877">Brave - ネットワークにログイン - <ph name="PAGE_TITLE"/></translation>
 <translation id="162629503687514352">Chrome OS でパスワードを同期できませんでした。</translation>
 <translation id="5659384504794665581">パソコンを共有している場合、友だちや家族はそれぞれ Brave を自分専用のブラウザとして自分用の設定をして使うことができます。</translation>
 <translation id="5997267581285668459">オプション: 診断と使用状況のデータを Brave に自動送信して Chrome OS の機能と動作の改善に役立てる。</translation>
+<translation id="9095263438435683933">Android スマートフォンに番号を送信するには、両方のデバイスで Brave にログインしてください。</translation>
 <translation id="3813272600615358652">この拡張機能により、Brave の起動時に表示されるページが変更されました。</translation>
 <translation id="2576129394594491151">拡張機能「<ph name="EXTENSION_NAME"/>」により、Brave の起動時に表示されるページが変更されました。</translation>
 <translation id="6078442581074612226">Brave 内</translation>
@@ -35,6 +39,7 @@
 <translation id="7798069806040634998">ファイルをダウンロードするには、Brave でストレージへのアクセスを許可する必要があります</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="2063848847527508675">アップデートを適用するには Chrome OS を再起動する必要があります。</translation>
+<translation id="3913823837305937258">このパソコンは、ハードウェアのサポートが終了しているため、まもなく Brave アップデートの受信を停止します。</translation>
 <translation id="7387051847644272380">インストール中にオペレーティング システム エラーが発生しました。Brave をダウンロードし直してください。</translation>
 <translation id="6791166902140255175">Brave タブ</translation>
 <translation id="8372880274820509128">セキュリティ強化のため、Brave ではデータが暗号化されます。</translation>
@@ -67,6 +72,7 @@
 <translation id="5853262807109651878">このデバイスから <ph name="ITEMS_COUNT"/> 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="8703492925273919597">すべての Brave ウィンドウを閉じてからもう一度お試しください。</translation>
 <translation id="1384923383737428730">お使いのパソコンに有害なソフトウェアが見つかりました。Brave では、ブラウザを正常な動作に戻すためにこのソフトウェアを削除し、設定を復元して、拡張機能を無効化することができます。</translation>
+<translation id="7029305463989165490"><ph name="ORIGIN"/> から Android スマートフォンに番号を送信するには、両方のデバイスで Brave にログインしてください。</translation>
 <translation id="4304059894777924102">Brave がパスワードを確認できません。インターネット接続を確認してみてください。</translation>
 <translation id="1807774211756215222">新しい Brave タブでリンクを開く(&amp;T)</translation>
 <translation id="7453070689008684791">Brave からお客様のドライブにアクセスして、アドレスバーに候補を表示します</translation>
@@ -121,6 +127,7 @@
 <translation id="95624393026532554">Brave のご利用には Windows 7 以上が必要です。</translation>
 <translation id="5646769069113654257">今すぐ Brave を再起動してください</translation>
 <translation id="2335583906071111058">Brave をこの言語で表示</translation>
+<translation id="3009727137063767373">保護されたメディアを Brave で再生できるようにするには、Rosetta をインストールする必要があります。今すぐインストールしますか？</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="7207456302801184289">Brave へようこそ</translation>
 <translation id="5895138241574237353">再起動</translation>
@@ -136,6 +143,7 @@
 <translation id="492209281555538239">このパスワードは Brave アカウントに保存されるため、覚えておく必要はありません。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> は危険なファイルであるため、Brave でブロックしました。</translation>
 <translation id="7006260220514217183">セーフ ブラウジングがオフになっています。Brave はオンにすることをおすすめしています。</translation>
+<translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/> で Brave にログインしていることを確認してから、もう一度送信してください。</translation>
 <translation id="8320964054148936490">新しいバージョンの Brave が既にインストールされています。ソフトウェアが動作しない場合は、Brave をアンインストールしてからもう一度お試しください。</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave は今すぐ再起動されます}=1{Brave は 1 秒後に再起動されます}other{Brave は # 秒後に再起動されます}}</translation>
 <translation id="3127818369811890733">Chrome OS でデータを同期できませんでした。</translation>
@@ -147,7 +155,6 @@
 <translation id="1819119299840995223">Brave で別の処理が行われています。しばらくしてからもう一度お試しください。</translation>
 <translation id="8616874628011103667">共有パソコンの Brave で Brave アカウントが簡単に使用できるようになりました。</translation>
 <translation id="335632367599648646">Brave をアンインストールしてもよろしいですか？</translation>
-<translation id="6913582816347128893">Mac OS X 10.9 はサポートされなくなったため、Brave は正常に機能しない可能性があります。</translation>
 <translation id="6373767849825830651">Brave は、ウェブページやアプリケーションを高速に実行できるスピードと、高い安定性を兼ね備えた非常に使いやすいウェブブラウザです。不正なソフトウェアやフィッシングに対する保護機能が組み込まれており、ウェブを安全にブラウジングできます。</translation>
 <translation id="2644798301485385923">Chrome OS システム</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave は 1 秒後に再起動します}other{Brave は # 秒後に再起動します}}</translation>
@@ -167,6 +174,8 @@
 <translation id="5253815230176279256">Brave Pay（Brave にコピー）</translation>
 <translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave で週 1 回、望ましくないソフトウェアがないか確認します。前回の確認: 1 日前。}other{Brave で週 1 回、望ましくないソフトウェアがないか確認します。前回の確認: {NUM_DAYS} 日前。}}</translation>
 <translation id="2301993384336631869">Brave が更新されましたが、30 日以上使用されていません。</translation>
+<translation id="8522287263361940593">Rosetta をインストールすると、このページ上の保護されたメディアを Brave で再生できるようになります。</translation>
+<translation id="6418340404893954563">脆弱なパスワードは簡単に推測されてしまいます。Brave で<ph name="BEGIN_LINK"/>安全性の高いパスワードを自動生成して保存する<ph name="END_LINK"/>ことができます。</translation>
 <translation id="3335606533094650083">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
 <translation id="1785833016412082453">Brave で拡張機能を確認できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="1705567146636171298">Brave を更新</translation>
@@ -204,6 +213,7 @@
 <translation id="7747138024166251722">インストーラーの一時ディレクトリを作成できませんでした。ディスクの空き領域とソフトウェアのインストール許可があることを確認してください。</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="38898988211673781">Brave の終了時に Cookie とサイトデータを削除する</translation>
+<translation id="8462524920674814187">今後、Brave のアップデートを受信するには、OS X 10.11 以降が必要となります。このパソコンでは OS X 10.10 が実行されています。</translation>
 <translation id="7963515534397191222">Brave を最新版に更新できませんでした。新しい機能とセキュリティ修正は適用されていません。</translation>
 <translation id="7573289029918943991">デバイスが最新の状態かどうか確認するには、<ph name="LINK_BEGIN"/>Chrome OS の設定<ph name="LINK_END"/>をご覧ください</translation>
 <translation id="2925193881330501265">Brave に <ph name="USER_EMAIL_ADDRESS"/> としてログインしていました。再度ログインするには同じアカウントを使用してください。</translation>
