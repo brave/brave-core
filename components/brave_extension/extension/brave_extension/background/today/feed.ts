@@ -140,6 +140,14 @@ function performUpdateFeed () {
   })
 }
 
+export async function getLocalData () {
+  if (readLock) {
+    await readLock
+  }
+  await getLocalDataLock
+  return memoryTodayData
+}
+
 export async function getOrFetchData (waitForInProgressUpdate: boolean = false) {
   await getLocalDataLock
   if (waitForInProgressUpdate && readLock) {
@@ -204,5 +212,8 @@ export async function clearCache () {
 
 // When publishers (or publishers prefs) changes, update articles
 addPublishersChangedListener(async function (publishers) {
-  await update(true)
+  // Only update if we already have data
+  if ((await getLocalData())) {
+    await update(true)
+  }
 })
