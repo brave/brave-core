@@ -1,0 +1,15 @@
+import("//brave/components/rpill/buildflags.gni")
+import("//build/config/features.gni")
+
+source_set("rpill") {
+  # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
+  check_includes = false
+  public_deps = []
+
+  sources = [
+    "browser/rpill.cc",
+    "browser/rpill.h",
+  ]
+
+  deps = []
+}

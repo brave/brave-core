@@ -7,6 +7,9 @@ edition = "2018"
 adblock-ffi = { path = "../../vendor/adblock_rust_ffi" }
 challenge-bypass-ristretto-ffi = { path = "../../vendor/challenge_bypass_ristretto_ffi" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
+[target."cfg(target_os = \"windows\")".dependencies]
+rpill-ffi = { path = "../../components/rpill/rust/ffi" }
+
 [patch.crates-io]
 cssparser = { git = 'https://github.com/AndriusA/rust-cssparser', branch = "glibc" }
 

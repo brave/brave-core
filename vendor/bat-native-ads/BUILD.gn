@@ -540,6 +540,10 @@ source_set("ads") {
     rebase_path("brave_base", dep_base),
   ]
 
+  if (is_win) {
+    deps += [ "//brave/components/rpill" ]
+  }
+
   public_deps = [
     ":headers",
   ]
