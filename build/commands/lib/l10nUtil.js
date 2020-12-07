@@ -210,7 +210,7 @@ function getRemovedGRDParts(mapping) {
       const braveGRDPs = getGrdPartsFromGrd(destPath)
       const chromiumGRDPs = getGrdPartsFromGrd(sourcePath)
       let removed = new Set()
-      for (i = 0; i < braveGRDPs.length; i++) {
+      for (let i = 0; i < braveGRDPs.length; i++) {
         if (!chromiumGRDPs.includes(braveGRDPs[i])) {
           removed.add(braveGRDPs[i])
         }
