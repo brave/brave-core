@@ -64,8 +64,8 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
           return
         }
 
-        const hasPromotion = state.rewardsState.promotions.find((promotion: NewTab.Promotion) => {
-          return promotion.promotionId === promotion.promotionId
+        const hasPromotion = state.rewardsState.promotions.find((promo: NewTab.Promotion) => {
+          return promo.promotionId === promotion.promotionId
         })
         if (hasPromotion) {
           return
