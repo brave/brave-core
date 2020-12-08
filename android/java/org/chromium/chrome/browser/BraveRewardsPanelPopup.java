@@ -703,12 +703,21 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         cal.add(Calendar.MONTH, 1);
         cal.set(Calendar.DAY_OF_MONTH, 6);
         payoutDateText.setText(dateFormat.format(cal.getTime()));
-        TextView btnQuickRefresherTour = braveRewardsWelcomeView.findViewById(R.id.quick_refresher_tour_button);
+        TextView btnQuickRefresherTour =
+                braveRewardsWelcomeView.findViewById(R.id.quick_refresher_tour_button);
         btnQuickRefresherTour.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 braveRewardsWelcomeView.setVisibility(View.GONE);
                 showBraveRewardsOnboarding(root, false);
+            }
+        }));
+        AppCompatImageView modalCloseButton =
+                braveRewardsWelcomeView.findViewById(R.id.modal_close);
+        modalCloseButton.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                braveRewardsWelcomeView.setVisibility(View.GONE);
             }
         }));
     }
@@ -791,6 +800,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                                             currentYear);
         btRewardsSummary.setText(rewardsText);
         btRewardsSummary.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.slide_down, 0);
+        if (braveRewardsWelcomeView != null && braveRewardsWelcomeView.isShown()) {
+            braveRewardsWelcomeView.setBackground(
+                    ContextUtils.getApplicationContext().getResources().getDrawable(
+                            R.drawable.bat_rewards_summary_gradient));
+        }
     }
 
     private void RemoveRewardsSummaryMonthYear() {
@@ -799,6 +813,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         }
         btRewardsSummary.setText(this.root.getResources().getString(R.string.brave_ui_rewards_summary));
         btRewardsSummary.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.slide_up, 0);
+        if (braveRewardsWelcomeView != null && braveRewardsWelcomeView.isShown()) {
+            braveRewardsWelcomeView.setBackgroundColor(
+                    ContextUtils.getApplicationContext().getResources().getColor(
+                            android.R.color.white));
+        }
     }
 
     protected void onShow() {}
@@ -1631,6 +1650,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
                 if (balance_obj != null) {
                     walletBalance = balance_obj.mTotal;
+                }
+
+                if (walletBalance > 0 && braveRewardsWelcomeView != null) {
+                    braveRewardsWelcomeView.setVisibility(View.GONE);
                 }
 
                 DecimalFormat df = new DecimalFormat("#.###");
