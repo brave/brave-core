@@ -127,6 +127,21 @@
 		0AADC4CA20D2A66E00FDE368 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4C920D2A66E00FDE368 /* FavoriteCell.swift */; };
 		0AADC4D220D2A6A200FDE368 /* FavoritesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */; };
 		0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */; };
+		0AB22A88257EADA900126ADC /* dylan-malval_sea.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A79257EAD9100126ADC /* dylan-malval_sea.jpg */; };
+		0AB22A89257EADA900126ADC /* dylan-malval_alps.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7A257EAD9300126ADC /* dylan-malval_alps.jpg */; };
+		0AB22A8A257EADA900126ADC /* corwin-prescott_olympic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7B257EAD9500126ADC /* corwin-prescott_olympic.jpg */; };
+		0AB22A8B257EADA900126ADC /* zane-lee.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7C257EAD9700126ADC /* zane-lee.jpg */; };
+		0AB22A8C257EADA900126ADC /* andre-benz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7D257EAD9800126ADC /* andre-benz.jpg */; };
+		0AB22A8D257EADA900126ADC /* alex-plesovskich.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7E257EAD9A00126ADC /* alex-plesovskich.jpg */; };
+		0AB22A8E257EADA900126ADC /* spencer-moore_lake.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7F257EAD9C00126ADC /* spencer-moore_lake.jpg */; };
+		0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A80257EAD9E00126ADC /* su-san-lee.jpg */; };
+		0AB22A90257EADA900126ADC /* corwin-prescott_crestone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A81257EAD9F00126ADC /* corwin-prescott_crestone.jpg */; };
+		0AB22A91257EADA900126ADC /* spencer-moore_fern.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A82257EADA100126ADC /* spencer-moore_fern.jpg */; };
+		0AB22A92257EADA900126ADC /* spencer-moore_desert.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A83257EADA200126ADC /* spencer-moore_desert.jpg */; };
+		0AB22A93257EADA900126ADC /* corwin-prescott_canyon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A84257EADA400126ADC /* corwin-prescott_canyon.jpg */; };
+		0AB22A94257EADA900126ADC /* spencer-moore_ocean.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A85257EADA500126ADC /* spencer-moore_ocean.jpg */; };
+		0AB22A95257EADA900126ADC /* corwin-prescott_beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A86257EADA600126ADC /* corwin-prescott_beach.jpg */; };
+		0AB22A96257EADA900126ADC /* sora-sagano.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A87257EADA900126ADC /* sora-sagano.jpg */; };
 		0AB2442C22AA789B00B4D9DD /* ReaderModeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */; };
 		0AB477DC24D3130800D9DA90 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB477DB24D3130700D9DA90 /* sqlite3.h */; };
 		0AB477DE24D3131A00D9DA90 /* libsqlcipher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AB477DD24D3131900D9DA90 /* libsqlcipher.a */; };
@@ -208,6 +223,8 @@
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		27012EE924FD80B8002694C3 /* WebcompatReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27012EE824FD80B8002694C3 /* WebcompatReporter.swift */; };
 		2701C04924E450050073496F /* LegacyRelativeDateTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2701C04824E450050073496F /* LegacyRelativeDateTimeFormatter.swift */; };
+		27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */; };
+		27036EC3256718DA004EF6B6 /* PartnerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EC2256718DA004EF6B6 /* PartnerCardView.swift */; };
 		27036F8725684F64004EF6B6 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F8525684F64004EF6B6 /* Cryptography.swift */; };
 		27036F8825684F64004EF6B6 /* DeviceCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F8625684F64004EF6B6 /* DeviceCheck.swift */; };
 		27036F9825684F9F004EF6B6 /* AdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9325684F9F004EF6B6 /* AdsViewController.swift */; };
@@ -215,8 +232,6 @@
 		27036F9A25684F9F004EF6B6 /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9525684F9F004EF6B6 /* AdView.swift */; };
 		27036F9B25684F9F004EF6B6 /* AdsNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9625684F9F004EF6B6 /* AdsNotificationHandler.swift */; };
 		27036F9C25684F9F004EF6B6 /* AdContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9725684F9F004EF6B6 /* AdContentButton.swift */; };
-		27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */; };
-		27036EC3256718DA004EF6B6 /* PartnerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EC2256718DA004EF6B6 /* PartnerCardView.swift */; };
 		2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */; };
 		270C48CC24AE243300E2A1E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
@@ -411,8 +426,8 @@
 		2FCAE2781ABB531100877008 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCAE25C1ABB531100877008 /* Visit.swift */; };
 		2FCAE2841ABB533A00877008 /* MockFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCAE2791ABB533A00877008 /* MockFiles.swift */; };
 		2FCAE33E1ABB5F1800877008 /* Storage-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FCAE33D1ABB5F1800877008 /* Storage-Bridging-Header.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2FD0E3D62577F327000C773B /* SearchSuggestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E3D52577F327000C773B /* SearchSuggestionCell.swift */; };
 		2FD0E3AF2576C48A000C773B /* SchemePermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E3AE2576C48A000C773B /* SchemePermissionTests.swift */; };
+		2FD0E3D62577F327000C773B /* SearchSuggestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E3D52577F327000C773B /* SearchSuggestionCell.swift */; };
 		2FDB10931A9FBEC5006CF312 /* PrefsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDB10921A9FBEC5006CF312 /* PrefsTests.swift */; };
 		31ADB5DA1E58CEC300E87909 /* ClipboardBarDisplayHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ADB5D91E58CEC300E87909 /* ClipboardBarDisplayHandler.swift */; };
 		39236E721FCC600200A38F1B /* TabEventHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39236E711FCC600200A38F1B /* TabEventHandlerTests.swift */; };
@@ -653,21 +668,6 @@
 		5D24AF8221BA459000F9506A /* BlocklistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8121BA459000F9506A /* BlocklistName.swift */; };
 		5D24AF8421BA489A00F9506A /* ContentBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8321BA489A00F9506A /* ContentBlocker.swift */; };
 		5D24AF9021BA4D7700F9506A /* ContentBlockerRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8F21BA4D7700F9506A /* ContentBlockerRegion.swift */; };
-		5D53749C23846FFC00A2B587 /* anton-repponen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53748D23846FFA00A2B587 /* anton-repponen.jpg */; };
-		5D53749D23846FFC00A2B587 /* dc-cavalleri.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53748E23846FFA00A2B587 /* dc-cavalleri.jpg */; };
-		5D53749E23846FFC00A2B587 /* louis-kim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53748F23846FFA00A2B587 /* louis-kim.jpg */; };
-		5D53749F23846FFC00A2B587 /* Svalbard_Jerol_Soibam.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749023846FFA00A2B587 /* Svalbard_Jerol_Soibam.jpeg */; };
-		5D5374A023846FFC00A2B587 /* joe-gardner.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749123846FFB00A2B587 /* joe-gardner.jpg */; };
-		5D5374A123846FFC00A2B587 /* xavier-balderas-cejudo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749223846FFB00A2B587 /* xavier-balderas-cejudo.jpg */; };
-		5D5374A223846FFC00A2B587 /* anders-jilden.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749323846FFB00A2B587 /* anders-jilden.jpg */; };
-		5D5374A323846FFC00A2B587 /* will_christiansen_glacier_peak.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749423846FFB00A2B587 /* will_christiansen_glacier_peak.jpg */; };
-		5D5374A423846FFC00A2B587 /* will_christiansen_ice.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749523846FFB00A2B587 /* will_christiansen_ice.jpg */; };
-		5D5374A523846FFC00A2B587 /* ben-karpinski.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749623846FFB00A2B587 /* ben-karpinski.jpg */; };
-		5D5374A623846FFC00A2B587 /* oliwier gesla.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749723846FFB00A2B587 /* oliwier gesla.jpg */; };
-		5D5374A723846FFC00A2B587 /* andreas-gucklhorn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749823846FFC00A2B587 /* andreas-gucklhorn.jpg */; };
-		5D5374A823846FFC00A2B587 /* annie-spratt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749923846FFC00A2B587 /* annie-spratt.jpg */; };
-		5D5374A923846FFC00A2B587 /* matt-palmer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749A23846FFC00A2B587 /* matt-palmer.jpg */; };
-		5D5374AA23846FFC00A2B587 /* andy-mai.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749B23846FFC00A2B587 /* andy-mai.jpg */; };
 		5D5E2361238C386B00AD6FBD /* NTPTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5E2360238C386B00AD6FBD /* NTPTableViewController.swift */; };
 		5D6DDEF3214003A6001FF0AE /* DAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEE6214003A6001FF0AE /* DAU.swift */; };
 		5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEF62141B6A0001FF0AE /* Preferences.swift */; };
@@ -1388,6 +1388,21 @@
 		0AADC4C920D2A66E00FDE368 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
 		0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
 		0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadedFavorites.swift; sourceTree = "<group>"; };
+		0AB22A79257EAD9100126ADC /* dylan-malval_sea.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dylan-malval_sea.jpg"; sourceTree = "<group>"; };
+		0AB22A7A257EAD9300126ADC /* dylan-malval_alps.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dylan-malval_alps.jpg"; sourceTree = "<group>"; };
+		0AB22A7B257EAD9500126ADC /* corwin-prescott_olympic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_olympic.jpg"; sourceTree = "<group>"; };
+		0AB22A7C257EAD9700126ADC /* zane-lee.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "zane-lee.jpg"; sourceTree = "<group>"; };
+		0AB22A7D257EAD9800126ADC /* andre-benz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andre-benz.jpg"; sourceTree = "<group>"; };
+		0AB22A7E257EAD9A00126ADC /* alex-plesovskich.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "alex-plesovskich.jpg"; sourceTree = "<group>"; };
+		0AB22A7F257EAD9C00126ADC /* spencer-moore_lake.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_lake.jpg"; sourceTree = "<group>"; };
+		0AB22A80257EAD9E00126ADC /* su-san-lee.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "su-san-lee.jpg"; sourceTree = "<group>"; };
+		0AB22A81257EAD9F00126ADC /* corwin-prescott_crestone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_crestone.jpg"; sourceTree = "<group>"; };
+		0AB22A82257EADA100126ADC /* spencer-moore_fern.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_fern.jpg"; sourceTree = "<group>"; };
+		0AB22A83257EADA200126ADC /* spencer-moore_desert.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_desert.jpg"; sourceTree = "<group>"; };
+		0AB22A84257EADA400126ADC /* corwin-prescott_canyon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_canyon.jpg"; sourceTree = "<group>"; };
+		0AB22A85257EADA500126ADC /* spencer-moore_ocean.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_ocean.jpg"; sourceTree = "<group>"; };
+		0AB22A86257EADA600126ADC /* corwin-prescott_beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_beach.jpg"; sourceTree = "<group>"; };
+		0AB22A87257EADA900126ADC /* sora-sagano.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sora-sagano.jpg"; sourceTree = "<group>"; };
 		0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeButton.swift; sourceTree = "<group>"; };
 		0AB477DB24D3130700D9DA90 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		0AB477DD24D3131900D9DA90 /* libsqlcipher.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsqlcipher.a; sourceTree = "<group>"; };
@@ -1466,6 +1481,8 @@
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
 		27012EE824FD80B8002694C3 /* WebcompatReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebcompatReporter.swift; sourceTree = "<group>"; };
 		2701C04824E450050073496F /* LegacyRelativeDateTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRelativeDateTimeFormatter.swift; sourceTree = "<group>"; };
+		27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardFooterButton.swift; sourceTree = "<group>"; };
+		27036EC2256718DA004EF6B6 /* PartnerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCardView.swift; sourceTree = "<group>"; };
 		27036F8525684F64004EF6B6 /* Cryptography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
 		27036F8625684F64004EF6B6 /* DeviceCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCheck.swift; sourceTree = "<group>"; };
 		27036F9325684F9F004EF6B6 /* AdsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsViewController.swift; sourceTree = "<group>"; };
@@ -1473,8 +1490,6 @@
 		27036F9525684F9F004EF6B6 /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
 		27036F9625684F9F004EF6B6 /* AdsNotificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsNotificationHandler.swift; sourceTree = "<group>"; };
 		27036F9725684F9F004EF6B6 /* AdContentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdContentButton.swift; sourceTree = "<group>"; };
-		27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardFooterButton.swift; sourceTree = "<group>"; };
-		27036EC2256718DA004EF6B6 /* PartnerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCardView.swift; sourceTree = "<group>"; };
 		2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePDFActivity.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
@@ -1663,8 +1678,8 @@
 		2FCAE25C1ABB531100877008 /* Visit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
 		2FCAE2791ABB533A00877008 /* MockFiles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockFiles.swift; sourceTree = "<group>"; };
 		2FCAE33D1ABB5F1800877008 /* Storage-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Storage-Bridging-Header.h"; sourceTree = "<group>"; };
-		2FD0E3D52577F327000C773B /* SearchSuggestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionCell.swift; sourceTree = "<group>"; };
 		2FD0E3AE2576C48A000C773B /* SchemePermissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemePermissionTests.swift; sourceTree = "<group>"; };
+		2FD0E3D52577F327000C773B /* SearchSuggestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionCell.swift; sourceTree = "<group>"; };
 		2FDB10921A9FBEC5006CF312 /* PrefsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefsTests.swift; sourceTree = "<group>"; };
 		2FEBABAE1AB3659000DB5728 /* ResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTests.swift; sourceTree = "<group>"; };
 		31ADB5D91E58CEC300E87909 /* ClipboardBarDisplayHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClipboardBarDisplayHandler.swift; sourceTree = "<group>"; };
@@ -2105,21 +2120,6 @@
 		5D24AF8121BA459000F9506A /* BlocklistName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistName.swift; sourceTree = "<group>"; };
 		5D24AF8321BA489A00F9506A /* ContentBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlocker.swift; sourceTree = "<group>"; };
 		5D24AF8F21BA4D7700F9506A /* ContentBlockerRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerRegion.swift; sourceTree = "<group>"; };
-		5D53748D23846FFA00A2B587 /* anton-repponen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "anton-repponen.jpg"; sourceTree = "<group>"; };
-		5D53748E23846FFA00A2B587 /* dc-cavalleri.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dc-cavalleri.jpg"; sourceTree = "<group>"; };
-		5D53748F23846FFA00A2B587 /* louis-kim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "louis-kim.jpg"; sourceTree = "<group>"; };
-		5D53749023846FFA00A2B587 /* Svalbard_Jerol_Soibam.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Svalbard_Jerol_Soibam.jpeg; sourceTree = "<group>"; };
-		5D53749123846FFB00A2B587 /* joe-gardner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "joe-gardner.jpg"; sourceTree = "<group>"; };
-		5D53749223846FFB00A2B587 /* xavier-balderas-cejudo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xavier-balderas-cejudo.jpg"; sourceTree = "<group>"; };
-		5D53749323846FFB00A2B587 /* anders-jilden.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "anders-jilden.jpg"; sourceTree = "<group>"; };
-		5D53749423846FFB00A2B587 /* will_christiansen_glacier_peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = will_christiansen_glacier_peak.jpg; sourceTree = "<group>"; };
-		5D53749523846FFB00A2B587 /* will_christiansen_ice.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = will_christiansen_ice.jpg; sourceTree = "<group>"; };
-		5D53749623846FFB00A2B587 /* ben-karpinski.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ben-karpinski.jpg"; sourceTree = "<group>"; };
-		5D53749723846FFB00A2B587 /* oliwier gesla.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "oliwier gesla.jpg"; sourceTree = "<group>"; };
-		5D53749823846FFC00A2B587 /* andreas-gucklhorn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andreas-gucklhorn.jpg"; sourceTree = "<group>"; };
-		5D53749923846FFC00A2B587 /* annie-spratt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "annie-spratt.jpg"; sourceTree = "<group>"; };
-		5D53749A23846FFC00A2B587 /* matt-palmer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "matt-palmer.jpg"; sourceTree = "<group>"; };
-		5D53749B23846FFC00A2B587 /* andy-mai.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andy-mai.jpg"; sourceTree = "<group>"; };
 		5D5E2360238C386B00AD6FBD /* NTPTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPTableViewController.swift; sourceTree = "<group>"; };
 		5D6DDEE6214003A6001FF0AE /* DAU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAU.swift; sourceTree = "<group>"; };
 		5D6DDEF62141B6A0001FF0AE /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -3997,21 +3997,21 @@
 		5DB474CE237F4BE9007B7652 /* NTP_Images */ = {
 			isa = PBXGroup;
 			children = (
-				5D53749323846FFB00A2B587 /* anders-jilden.jpg */,
-				5D53749823846FFC00A2B587 /* andreas-gucklhorn.jpg */,
-				5D53749B23846FFC00A2B587 /* andy-mai.jpg */,
-				5D53749923846FFC00A2B587 /* annie-spratt.jpg */,
-				5D53748D23846FFA00A2B587 /* anton-repponen.jpg */,
-				5D53749623846FFB00A2B587 /* ben-karpinski.jpg */,
-				5D53748E23846FFA00A2B587 /* dc-cavalleri.jpg */,
-				5D53749123846FFB00A2B587 /* joe-gardner.jpg */,
-				5D53748F23846FFA00A2B587 /* louis-kim.jpg */,
-				5D53749A23846FFC00A2B587 /* matt-palmer.jpg */,
-				5D53749723846FFB00A2B587 /* oliwier gesla.jpg */,
-				5D53749023846FFA00A2B587 /* Svalbard_Jerol_Soibam.jpeg */,
-				5D53749423846FFB00A2B587 /* will_christiansen_glacier_peak.jpg */,
-				5D53749523846FFB00A2B587 /* will_christiansen_ice.jpg */,
-				5D53749223846FFB00A2B587 /* xavier-balderas-cejudo.jpg */,
+				0AB22A7E257EAD9A00126ADC /* alex-plesovskich.jpg */,
+				0AB22A7D257EAD9800126ADC /* andre-benz.jpg */,
+				0AB22A86257EADA600126ADC /* corwin-prescott_beach.jpg */,
+				0AB22A84257EADA400126ADC /* corwin-prescott_canyon.jpg */,
+				0AB22A81257EAD9F00126ADC /* corwin-prescott_crestone.jpg */,
+				0AB22A7B257EAD9500126ADC /* corwin-prescott_olympic.jpg */,
+				0AB22A7A257EAD9300126ADC /* dylan-malval_alps.jpg */,
+				0AB22A79257EAD9100126ADC /* dylan-malval_sea.jpg */,
+				0AB22A87257EADA900126ADC /* sora-sagano.jpg */,
+				0AB22A83257EADA200126ADC /* spencer-moore_desert.jpg */,
+				0AB22A82257EADA100126ADC /* spencer-moore_fern.jpg */,
+				0AB22A7F257EAD9C00126ADC /* spencer-moore_lake.jpg */,
+				0AB22A85257EADA500126ADC /* spencer-moore_ocean.jpg */,
+				0AB22A80257EAD9E00126ADC /* su-san-lee.jpg */,
+				0AB22A7C257EAD9700126ADC /* zane-lee.jpg */,
 			);
 			path = NTP_Images;
 			sourceTree = "<group>";
@@ -5519,14 +5519,18 @@
 			files = (
 				5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
-				5D5374A523846FFC00A2B587 /* ben-karpinski.jpg in Resources */,
 				0BA1E0301B051A07007675AF /* NetError.css in Resources */,
 				59871C1921E4D83900316590 /* block-cookies.json in Resources */,
+				0AB22A90257EADA900126ADC /* corwin-prescott_crestone.jpg in Resources */,
 				3BC659491E5BA4AE006D560F /* TopSites in Resources */,
 				E4B7B77E1A793CF20022C5E0 /* FiraSans-SemiBold.ttf in Resources */,
+				0AB22A93257EADA900126ADC /* corwin-prescott_canyon.jpg in Resources */,
 				F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */,
 				2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */,
+				0AB22A94257EADA900126ADC /* spencer-moore_ocean.jpg in Resources */,
 				0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */,
+				0AB22A8A257EADA900126ADC /* corwin-prescott_olympic.jpg in Resources */,
+				0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */,
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */,
@@ -5546,67 +5550,63 @@
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
-				5D5374A223846FFC00A2B587 /* anders-jilden.jpg in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
 				D0FCF8061FE4772D004A7995 /* AllFramesAtDocumentEnd.js in Resources */,
 				27658273217130D900754B2F /* DigiCertHighAssurance.cer in Resources */,
 				E4B7B7611A793CF20022C5E0 /* CharisSILB.ttf in Resources */,
+				0AB22A96257EADA900126ADC /* sora-sagano.jpg in Resources */,
+				0AB22A89257EADA900126ADC /* dylan-malval_alps.jpg in Resources */,
+				0AB22A92257EADA900126ADC /* spencer-moore_desert.jpg in Resources */,
 				4422D56E21BFFB7F00BF1855 /* make_perl_groups.pl in Resources */,
 				0A2FF33F24A4B75100F88F43 /* vpncheckmark.json in Resources */,
 				E4B7B7621A793CF20022C5E0 /* CharisSILBI.ttf in Resources */,
-				5D5374A723846FFC00A2B587 /* andreas-gucklhorn.jpg in Resources */,
 				F9F859702533CE52000CEB24 /* LoginsHelper.js in Resources */,
 				27F56F8D24E447020018F2F9 /* DateTools.bundle in Resources */,
-				5D53749E23846FFC00A2B587 /* louis-kim.jpg in Resources */,
 				78A9D0942407B3110077576C /* BraveGetUA.js in Resources */,
+				0AB22A95257EADA900126ADC /* corwin-prescott_beach.jpg in Resources */,
 				27658271217130D900754B2F /* GlobalSign_r1.cer in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
+				0AB22A8D257EADA900126ADC /* alex-plesovskich.jpg in Resources */,
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				4422D55221BFFB7E00BF1855 /* make_unicode_casefold.py in Resources */,
 				5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
+				0AB22A8B257EADA900126ADC /* zane-lee.jpg in Resources */,
 				5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */,
 				F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */,
 				59D4161B232681080087A6E1 /* Localizable.strings in Resources */,
 				F9F8597C2533CEBC000CEB24 /* DownloadHelper.js in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
-				5D5374A623846FFC00A2B587 /* oliwier gesla.jpg in Resources */,
 				74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */,
 				5EC1DDBC2356883800CA4028 /* onboarding-shields.json in Resources */,
-				5D53749C23846FFC00A2B587 /* anton-repponen.jpg in Resources */,
 				0AA4AA99231849450009AAEF /* ABPFilterParserData.dat in Resources */,
 				5EC1DDBE2356892900CA4028 /* onboarding-ads.json in Resources */,
 				4422D57621C05DE600BF1855 /* httpse.leveldb.tgz in Resources */,
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
+				0AB22A88257EADA900126ADC /* dylan-malval_sea.jpg in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
 				4422D4AD21BFFB7600BF1855 /* LICENSE in Resources */,
 				27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */,
-				5D5374AA23846FFC00A2B587 /* andy-mai.jpg in Resources */,
 				E4B7B7641A793CF20022C5E0 /* CharisSILR.ttf in Resources */,
 				5D21AE082303B70E00B30D97 /* Themes in Resources */,
 				4422D56D21BFFB7F00BF1855 /* make_unicode_groups.py in Resources */,
 				E4B7B7681A793CF20022C5E0 /* FiraSans-Bold.ttf in Resources */,
 				E4B7B7781A793CF20022C5E0 /* FiraSans-Italic.ttf in Resources */,
-				5D53749D23846FFC00A2B587 /* dc-cavalleri.jpg in Resources */,
+				0AB22A91257EADA900126ADC /* spencer-moore_fern.jpg in Resources */,
 				5EC1DDBD2356888000CA4028 /* onboarding-rewards.json in Resources */,
 				0BA1E00E1B03FB0B007675AF /* NetError.html in Resources */,
 				5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */,
-				5D5374A823846FFC00A2B587 /* annie-spratt.jpg in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
+				0AB22A8E257EADA900126ADC /* spencer-moore_lake.jpg in Resources */,
 				59C8119922D754D4005D5BBC /* BraveShared.strings in Resources */,
 				E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */,
+				0AB22A8C257EADA900126ADC /* andre-benz.jpg in Resources */,
 				F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */,
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
-				5D5374A423846FFC00A2B587 /* will_christiansen_ice.jpg in Resources */,
-				5D53749F23846FFC00A2B587 /* Svalbard_Jerol_Soibam.jpeg in Resources */,
 				0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */,
-				5D5374A023846FFC00A2B587 /* joe-gardner.jpg in Resources */,
-				5D5374A123846FFC00A2B587 /* xavier-balderas-cejudo.jpg in Resources */,
-				5D5374A923846FFC00A2B587 /* matt-palmer.jpg in Resources */,
 				0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */,
-				5D5374A323846FFC00A2B587 /* will_christiansen_glacier_peak.jpg in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				D0FCF8071FE4772D004A7995 /* MainFrameAtDocumentEnd.js in Resources */,
