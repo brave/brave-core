@@ -204,7 +204,8 @@ DBCommandResponse::Status Database::Initialize(
 
     is_initialized_ = true;
     memory_pressure_listener_.reset(new base::MemoryPressureListener(FROM_HERE,
-        base::BindOnce(&Database::OnMemoryPressure, base::Unretained(this))));
+        base::BindRepeating(
+            &Database::OnMemoryPressure, base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
