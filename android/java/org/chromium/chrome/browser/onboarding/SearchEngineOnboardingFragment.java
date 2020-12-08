@@ -64,7 +64,6 @@ public class SearchEngineOnboardingFragment extends Fragment {
             if (templateUrl.getIsPrepopulated()
                     && OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName())
                     != null) {
-                Log.e("NTP", templateUrl.getShortName());
                 SearchEngineEnum searchEngineEnum =
                     OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 
