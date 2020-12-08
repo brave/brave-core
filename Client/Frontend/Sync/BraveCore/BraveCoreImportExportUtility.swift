@@ -208,9 +208,9 @@ private enum ParsingError: String, Error {
 // MARK: - Private
 
 extension Bookmark {
-    fileprivate func toChromiumExportedBookmark() -> BraveExportedBookmark {
+    fileprivate func toChromiumExportedBookmark() -> BookmarkNode {
         // Tail recursion to map children..
-        return BraveExportedBookmark(
+        return BookmarkNode(
             title: self.isFolder ? self.customTitle ?? "(No Title)" : self.title ?? "(No Title)",
             id: Int64(self.order),
             guid: UUID().uuidString.lowercased(),
