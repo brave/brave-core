@@ -29,7 +29,6 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
       "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
       "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
 #if defined(OS_ANDROID)
-      "hfnkpimlhhgieaddgfemjhofmfblmnib",  // CRLSet
       "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
       "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
 #endif
