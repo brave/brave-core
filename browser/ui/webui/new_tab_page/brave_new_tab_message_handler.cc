@@ -604,7 +604,7 @@ void BraveNewTabMessageHandler::HandleTodayOnCardVisits(
       std::lower_bound(kBuckets, std::end(kBuckets),
                       total);
   int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyCardVisitsCount", answer,
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardVisitsCount", answer,
                              base::size(kBuckets) + 1);
 }
 
@@ -624,7 +624,7 @@ void BraveNewTabMessageHandler::HandleTodayOnCardViews(
       std::lower_bound(kBuckets, std::end(kBuckets),
                       total);
   int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyCardViewsCount", answer,
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardViewsCount", answer,
                              base::size(kBuckets) + 1);
 }
 
