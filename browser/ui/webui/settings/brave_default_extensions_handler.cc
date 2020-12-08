@@ -43,6 +43,10 @@
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #endif
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/pref_names.h"
+#endif
+
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
   : weak_ptr_factory_(this) {
 }
@@ -96,6 +100,12 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "isTorManaged",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorManaged,
                           base::Unretained(this)));
+#if BUILDFLAG(IPFS_ENABLED)
+  web_ui()->RegisterMessageCallback(
+      "setIPFSPublicGateway",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSPublicGateway,
+                          base::Unretained(this)));
+#endif
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -313,6 +323,16 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }
+
+#if BUILDFLAG(IPFS_ENABLED)
+void BraveDefaultExtensionsHandler::SetIPFSPublicGateway(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  std::string url;
+  args->GetString(0, &url);
+  profile_->GetPrefs()->SetString(kIPFSPublicGatewayAddress, url);
+}
+#endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(

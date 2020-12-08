@@ -24,6 +24,7 @@ cr.define('settings', function () {
     wasSignInEnabledAtStartup () {}
     getIPFSResolveMethodList () {}
     getIPFSEnabled () {}
+    setIPFSPublicGateway (value) {}
   }
 
   /**
@@ -96,6 +97,10 @@ cr.define('settings', function () {
         }
         chrome.ipfs.getIPFSEnabled(resolve)
       })
+    }
+
+    setIPFSPublicGateway (value) {
+      chrome.send('setIPFSPublicGateway', [value])
     }
   }
 

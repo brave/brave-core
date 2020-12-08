@@ -105,6 +105,18 @@
                                 menu-options="[[ipfsResolveMethod_]]">
         </settings-dropdown-menu>
       </div>
+      <div class="settings-box">
+        <div class="flex cr-padded-text">
+          <div>$i18n{ipfsPublicGatewayDesc}</div>
+          <div class="secondary" id="defaultIPFSGateway">
+            {{prefs.brave.ipfs.public_gateway_address.value}}
+          </div>
+        </div>
+        <cr-button id="changeIPFSGateway"
+            on-click="onChangeIPFSGatewayDialogTapped_">
+          $i18n{ipfsChangeGatewayButtonLabel}
+        </cr-button>
+      </div>
       <settings-toggle-button id="ipfsAutoGatewayFallbackEnabled"
           class="cr-row"
           pref="{{prefs.brave.ipfs.auto_fallback_to_gateway}}"
@@ -174,6 +186,10 @@
         on-click="openWebStoreUrl_" external>
       </cr-link-row>
     </div>
+  <template is="dom-if" if="[[ showChangeIPFSGatewayDialog_]]" restamp>
+    <change-ipfs-gateway-dialog on-close="onChangeIPFSGatewayDialogClosed_">
+    </change-ipfs-gateway-dialog>
+  </template>
   <template is="dom-if" if="{{ showRestartToast_ }}">
     <div id="needsRestart">
         <div class="flex-container">

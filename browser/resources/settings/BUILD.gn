@@ -130,6 +130,7 @@ preprocess_grit("preprocess_generated") {
     "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js",
     "brave_default_extensions_page/brave_default_extensions_browser_proxy.m.js",
     "brave_default_extensions_page/brave_default_extensions_page.m.js",
+    "brave_default_extensions_page/change_ipfs_gateway_dialog.js",
     "brave_help_tips_page/brave_help_tips_page.m.js",
     "brave_icons.m.js",
     "brave_new_tab_page/brave_new_tab_browser_proxy.m.js",
