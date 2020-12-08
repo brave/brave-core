@@ -18,6 +18,7 @@ extension ContentBlockerHelper: TabContentScript {
 
     func clearPageStats() {
         stats = TPPageStats()
+        blockedRequests.removeAll()
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
@@ -57,6 +58,11 @@ extension ContentBlockerHelper: TabContentScript {
                         return
                     }
                 }
+                if self.blockedRequests.contains(url) {
+                    return
+                }
+                
+                self.blockedRequests.insert(url)
                 self.stats = self.stats.create(byAddingListItem: listItem)
                 
                 // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
