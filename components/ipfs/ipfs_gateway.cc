@@ -9,6 +9,10 @@
 
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
+#include "brave/components/ipfs/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 
 namespace {
 
@@ -33,11 +37,14 @@ GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
 }
 
-GURL GetDefaultIPFSGateway() {
+GURL GetDefaultIPFSGateway(content::BrowserContext* context) {
   if (!ipfs_default_gateway_for_test.is_empty()) {
     return GURL(ipfs_default_gateway_for_test);
   }
-  return GURL(kDefaultIPFSGateway);
+
+  DCHECK(context);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  return GURL(prefs->GetString(kIPFSPublicGatewayAddress));
 }
 
 GURL GetAPIServer(version_info::Channel channel) {

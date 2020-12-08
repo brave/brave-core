@@ -24,6 +24,7 @@
 namespace ipfs {
 
 bool IsIpfsDisabledByPolicy(content::BrowserContext* context) {
+  DCHECK(context);
   PrefService* prefs = user_prefs::UserPrefs::Get(context);
   return prefs->FindPreference(kIPFSEnabled) &&
          prefs->IsManagedPreference(kIPFSEnabled) &&
@@ -31,6 +32,7 @@ bool IsIpfsDisabledByPolicy(content::BrowserContext* context) {
 }
 
 bool IsIpfsEnabled(content::BrowserContext* context) {
+  DCHECK(context);
   if (context->IsOffTheRecord() || IsIpfsDisabledByPolicy(context) ||
       !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     return false;
@@ -40,6 +42,8 @@ bool IsIpfsEnabled(content::BrowserContext* context) {
 }
 
 bool IsIpfsResolveMethodDisabled(content::BrowserContext* context) {
+  DCHECK(context);
+
   // Ignore the actual pref value if IPFS feature is disabled.
   if (!IsIpfsEnabled(context)) {
     return true;
@@ -60,8 +64,9 @@ bool HasIPFSPath(const GURL& gurl) {
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
-bool IsDefaultGatewayURL(const GURL& url) {
-  std::string gateway_host = GetDefaultIPFSGateway().host();
+bool IsDefaultGatewayURL(const GURL& url, content::BrowserContext* context) {
+  DCHECK(context);
+  std::string gateway_host = GetDefaultIPFSGateway(context).host();
   return url.DomainIs(gateway_host) &&
          (HasIPFSPath(url) ||
           url.DomainIs(std::string("ipfs.") + gateway_host) ||
@@ -79,13 +84,14 @@ bool IsIPFSScheme(const GURL& url) {
   return url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
 }
 
-GURL ToPublicGatewayURL(const GURL& url) {
+GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
+  DCHECK(context);
   DCHECK(IsIPFSScheme(url) || IsLocalGatewayURL(url));
   GURL new_url;
 
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.
   if (IsIPFSScheme(url) &&
-      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway())) {
+      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context))) {
     return new_url;
   }
 
@@ -93,7 +99,7 @@ GURL ToPublicGatewayURL(const GURL& url) {
   // public gateway URL.
   if (IsLocalGatewayURL(url)) {
     GURL::Replacements replacements;
-    GURL gateway_url = GetDefaultIPFSGateway();
+    GURL gateway_url = GetDefaultIPFSGateway(context);
     replacements.ClearPort();
     replacements.SetSchemeStr(gateway_url.scheme_piece());
     replacements.SetHostStr(gateway_url.host_piece());

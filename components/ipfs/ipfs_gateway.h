@@ -9,11 +9,15 @@
 #include "components/version_info/channel.h"
 #include "url/gurl.h"
 
+namespace content {
+class BrowserContext;
+}  // namespace content
+
 namespace ipfs {
 
 void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
-GURL GetDefaultIPFSGateway();
+GURL GetDefaultIPFSGateway(content::BrowserContext* context);
 GURL GetAPIServer(version_info::Channel channel);
 
 }  // namespace ipfs
