@@ -162,6 +162,15 @@ class BraveClassVisitor extends ClassVisitor {
                 }
             }
         }
+        // Explicitly redirect ownership to a new super class
+        if (mSuperName.equals(owner) && mSuperNames.containsKey(mName)) {
+            String newSuperOwner = mSuperNames.get(mName);
+            if (!newSuperOwner.equals(mSuperName)) {
+                System.out.println("redirecting ownership for " + mSuperName + "." + methodName
+                        + " in " + mName + " - new owner " + newSuperOwner);
+                return newSuperOwner;
+            }
+        }
         return owner;
     }
 
@@ -245,6 +254,7 @@ class BraveClassVisitor extends ClassVisitor {
                       String[] interfaces) {
         super.cv = new ClassNode();
         mName = name;
+        mSuperName = superName;
         if (mSuperNames.containsKey(name)) {
             superName = mSuperNames.get(name);
             System.out.println("change superclass of " + name + " to " + superName);

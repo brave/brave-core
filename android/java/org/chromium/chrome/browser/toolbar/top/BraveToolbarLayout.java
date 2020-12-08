@@ -827,9 +827,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomToolbarVisible);
   }
 
+  // Type is compatible after bytecode patching
+  @SuppressWarnings("EqualsIncompatibleType")
   @Override
   protected void onDraw(Canvas canvas) {
-      if (this instanceof CustomTabToolbar || this instanceof ToolbarPhone) {
+      if (this.getClass().equals(CustomTabToolbar.class) || this instanceof ToolbarPhone) {
           updateMenuButtonState();
       }
       super.onDraw(canvas);

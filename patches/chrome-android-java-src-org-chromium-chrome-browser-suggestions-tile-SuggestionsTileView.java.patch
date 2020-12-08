@@ -1,16 +1,7 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
-index 219aad30b54a4cdbd9530b7f908ec07c4910b174..7e8840b84e208cda28fad045bc272b5b6dcf33ab 100644
+index 219aad30b54a4cdbd9530b7f908ec07c4910b174..0da272b2d5c151302c42a61b1fe24484f4a532ea 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
-@@ -17,7 +17,7 @@ import org.chromium.url.GURL;
-  * The view for a site suggestion tile. Displays the title of the site beneath a large icon. If a
-  * large icon isn't available, displays a rounded rectangle with a single letter in its place.
-  */
--public class SuggestionsTileView extends TileView {
-+public class SuggestionsTileView extends org.chromium.chrome.browser.suggestions.tile.BraveTileView {
-     /** The data currently associated to this tile. */
-     private SiteSuggestion mData;
- 
 @@ -75,6 +75,7 @@ public class SuggestionsTileView extends TileView {
              params.height = resources.getDimensionPixelSize(R.dimen.tile_view_icon_size_modern);
              params.topMargin =
