@@ -194,7 +194,6 @@ public class OnboardingPrefManager {
     public boolean showOnboardingForSkip(Context context) {
         boolean shouldShow = PackageUtils.isFirstInstall(context)
                              && !hasOnboardingShownForSkip()
-                             && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED))
                              && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
                              && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
         return shouldShow;

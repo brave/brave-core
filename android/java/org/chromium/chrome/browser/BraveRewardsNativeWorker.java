@@ -422,8 +422,15 @@ public class BraveRewardsNativeWorker {
     }
 
     public void StartProcess() {
-        synchronized(lock) {
+        synchronized (lock) {
             nativeStartProcess(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    @CalledByNative
+    public void OnStartProcess() {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnStartProcess();
         }
     }
 

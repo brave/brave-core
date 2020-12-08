@@ -6,6 +6,7 @@ package org.chromium.chrome.browser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -20,15 +21,16 @@ import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
-import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
@@ -42,8 +44,14 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
-    private static final String PREF_BRAVE_REWARDS_OPEN_COUNT = "brave_rewards_open_count";
-    private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING = "show_brave_rewards_onboarding";
+    private static final String PREF_BRAVE_REWARDS_OPEN_COUNT = "brave_rewards_app_open_count";
+    private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL_ONCE =
+            "show_brave_rewards_onboarding_modal_once";
+    private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE =
+            "show_brave_rewards_onboarding_once";
+    private static final String PREF_SHOW_ONBOARDING_MINI_MODAL = "show_onboarding_mini_modal";
+    private static final String PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL =
+            "show_REWARDS_SETTINGS_ONBOARDING_MODAL";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
@@ -62,23 +70,62 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
 
-    public static int getBraveRewardsOpenCount() {
+    public static int getBraveRewardsAppOpenCount() {
         return ContextUtils.getAppSharedPreferences().getInt(PREF_BRAVE_REWARDS_OPEN_COUNT, 0);
     }
 
-    public static void updateBraveRewardsOpenCount() {
+    public static void updateBraveRewardsAppOpenCount() {
         SharedPreferences.Editor sharedPreferencesEditor = ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putInt(PREF_BRAVE_REWARDS_OPEN_COUNT, getBraveRewardsOpenCount() + 1);
+        sharedPreferencesEditor.putInt(PREF_BRAVE_REWARDS_OPEN_COUNT,
+                SharedPreferencesManager.getInstance().readInt(
+                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT));
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean shouldShowBraveRewardsOnboarding() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING, false);
+    public static boolean shouldShowBraveRewardsSettingsOnboardingModal() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL, true);
     }
 
-    public static void setShowBraveRewardsOnboarding(boolean enabled) {
+    public static void setShowBraveRewardsSettingsOnboardingModal(boolean enabled) {
         SharedPreferences.Editor sharedPreferencesEditor = ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING, enabled);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean shouldShowMiniOnboardingModal() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_SHOW_ONBOARDING_MINI_MODAL, true);
+    }
+
+    public static void setShowMiniOnboardingModal(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean shouldShowBraveRewardsOnboardingModalOnce() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL_ONCE, false);
+    }
+
+    public static void setShowBraveRewardsOnboardingModalOnce(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL_ONCE, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean shouldShowBraveRewardsOnboardingOnce() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
+    }
+
+    public static void setShowBraveRewardsOnboardingOnce(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, enabled);
         sharedPreferencesEditor.apply();
     }
 

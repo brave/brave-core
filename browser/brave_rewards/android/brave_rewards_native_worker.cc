@@ -273,11 +273,22 @@ void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::StartProcess(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj) {
+void BraveRewardsNativeWorker::StartProcess(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->StartProcess(base::DoNothing());
+    brave_rewards_service_->StartProcess(
+        base::BindOnce(&BraveRewardsNativeWorker::OnStartProcess,
+                       base::Unretained(this), brave_rewards_service_));
   }
+}
+
+void BraveRewardsNativeWorker::OnStartProcess(
+    brave_rewards::RewardsService* rewards_service,
+    const ledger::type::Result result) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnStartProcess(
+      env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
 void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env,

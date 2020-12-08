@@ -156,9 +156,9 @@ public class NTPUtil {
                 && ntpImage instanceof Wallpaper
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                 return SponsoredImageUtil.BR_ON_ADS_OFF ;
-            } else if (!PackageUtils.isFirstInstall(context)
-                && ntpImage instanceof Wallpaper
-                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile()) ) {
+            } else if (ntpImage instanceof Wallpaper
+                    && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                            Profile.getLastUsedRegularProfile())) {
                 return SponsoredImageUtil.BR_ON_ADS_ON;
             }
         }
@@ -170,11 +170,16 @@ public class NTPUtil {
         nonDistruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // clickOnBottomBanner(chromeActivity, ntpType, nonDistruptiveBannerLayout, sponsoredTab, newTabPageListener);
-                if (BraveActivity.getBraveActivity() != null) {
-                    nonDistruptiveBannerLayout.setVisibility(View.GONE);
-                    BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
-                    BraveActivity.getBraveActivity().openRewardsPanel();
+                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                            Profile.getLastUsedRegularProfile())) {
+                    clickOnBottomBanner(chromeActivity, ntpType, nonDistruptiveBannerLayout,
+                            sponsoredTab, newTabPageListener);
+                } else {
+                    if (BraveActivity.getBraveActivity() != null) {
+                        nonDistruptiveBannerLayout.setVisibility(View.GONE);
+                        BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(true);
+                        BraveActivity.getBraveActivity().openRewardsPanel();
+                    }
                 }
             }
         });

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,18 +15,28 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
@@ -37,10 +48,13 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -340,6 +354,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             && !tab.isIncognito()) {
           mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
         }
+        if (tab.getUrlString() != null
+                && (tab.getUrlString().equals(BraveActivity.REWARDS_SETTINGS_URL)
+                        || tab.getUrlString().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                        Profile.getLastUsedRegularProfile())
+                && BraveRewardsHelper.shouldShowBraveRewardsSettingsOnboardingModal()) {
+            showBraveRewardsOnboardingModal();
+            BraveRewardsHelper.setShowBraveRewardsSettingsOnboardingModal(false);
+        }
       }
 
       @Override
@@ -364,6 +387,112 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     if (mShieldsTooltipPopupWindow != null) {
       mShieldsTooltipPopupWindow.dismiss();
     }
+  }
+
+  private void showBraveRewardsOnboardingModal() {
+      Context context = getContext();
+      final Dialog dialog = new Dialog(context);
+      dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+      dialog.setCancelable(false);
+      dialog.setContentView(R.layout.brave_rewards_onboarding_modal);
+      dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+      View braveRewardsOnboardingModalView =
+              dialog.findViewById(R.id.brave_rewards_onboarding_modal_layout);
+      braveRewardsOnboardingModalView.setBackgroundColor(
+              context.getResources().getColor(android.R.color.white));
+      braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
+
+      String tosText =
+              String.format(context.getResources().getString(R.string.brave_rewards_tos_text),
+                      context.getResources().getString(R.string.terms_of_service),
+                      context.getResources().getString(R.string.privacy_policy));
+      int termsOfServiceIndex =
+              tosText.indexOf(context.getResources().getString(R.string.terms_of_service));
+      Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
+      SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
+
+      ClickableSpan tosClickableSpan = new ClickableSpan() {
+          @Override
+          public void onClick(@NonNull View textView) {
+              CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_TERMS_PAGE);
+          }
+          @Override
+          public void updateDrawState(@NonNull TextPaint ds) {
+              super.updateDrawState(ds);
+              ds.setUnderlineText(false);
+          }
+      };
+
+      tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex,
+              termsOfServiceIndex
+                      + context.getResources().getString(R.string.terms_of_service).length(),
+              Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+      tosTextSS.setSpan(new ForegroundColorSpan(context.getResources().getColor(
+                                R.color.brave_rewards_modal_theme_color)),
+              termsOfServiceIndex,
+              termsOfServiceIndex
+                      + context.getResources().getString(R.string.terms_of_service).length(),
+              Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+      ClickableSpan privacyProtectionClickableSpan = new ClickableSpan() {
+          @Override
+          public void onClick(@NonNull View textView) {
+              CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_PRIVACY_POLICY);
+          }
+          @Override
+          public void updateDrawState(@NonNull TextPaint ds) {
+              super.updateDrawState(ds);
+              ds.setUnderlineText(false);
+          }
+      };
+
+      int privacyPolicyIndex =
+              tosText.indexOf(context.getResources().getString(R.string.privacy_policy));
+      tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex,
+              privacyPolicyIndex
+                      + context.getResources().getString(R.string.privacy_policy).length(),
+              Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+      tosTextSS.setSpan(new ForegroundColorSpan(context.getResources().getColor(
+                                R.color.brave_rewards_modal_theme_color)),
+              privacyPolicyIndex,
+              privacyPolicyIndex
+                      + context.getResources().getString(R.string.privacy_policy).length(),
+              Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+      TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.tos_pp_text);
+      tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
+      tosAndPpText.setText(tosTextSS);
+
+      TextView takeQuickTourButton =
+              braveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button);
+      takeQuickTourButton.setOnClickListener((new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
+              BraveActivity.getBraveActivity().openRewardsPanel();
+              dialog.dismiss();
+          }
+      }));
+      Button btnBraveRewards = braveRewardsOnboardingModalView.findViewById(R.id.btn_brave_rewards);
+      btnBraveRewards.setOnClickListener((new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+              BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
+              dialog.dismiss();
+          }
+      }));
+      AppCompatImageView modalCloseButton =
+              braveRewardsOnboardingModalView.findViewById(R.id.modal_close);
+      modalCloseButton.setOnClickListener((new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              dialog.dismiss();
+          }
+      }));
+
+      dialog.show();
   }
 
   private void addSavedBandwidthToDb(long savings) {
@@ -465,7 +594,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   private boolean checkForRewardsOnboarding() {
     return PackageUtils.isFirstInstall(getContext())
-           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED))
            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
            && !OnboardingPrefManager.getInstance().isOnboardingShown();
   }
@@ -691,34 +819,33 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void OnNotificationsCount(int count) {
-    boolean rewardsEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED);
-    if (mBraveRewardsNotificationsCount != null && rewardsEnabled) {
-      if (count != 0) {
-        String value = Integer.toString(count);
-        if (count > 99) {
-          mBraveRewardsNotificationsCount.setBackground(
-            getResources().getDrawable(R.drawable.brave_rewards_rectangle));
-          value = "99+";
-        } else {
-          mBraveRewardsNotificationsCount.setBackground(
-            getResources().getDrawable(R.drawable.brave_rewards_circle));
-        }
-        mBraveRewardsNotificationsCount.setText(value);
-        mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
-        mIsNotificationPosted = true;
-      } else {
-        mBraveRewardsNotificationsCount.setText("");
-        mBraveRewardsNotificationsCount.setBackgroundResource(0);
-        mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
-        mIsNotificationPosted = false;
-        updateVerifiedPublisherMark();
+      if (mBraveRewardsNotificationsCount != null) {
+          if (count != 0) {
+              String value = Integer.toString(count);
+              if (count > 99) {
+                  mBraveRewardsNotificationsCount.setBackground(
+                          getResources().getDrawable(R.drawable.brave_rewards_rectangle));
+                  value = "99+";
+              } else {
+                  mBraveRewardsNotificationsCount.setBackground(
+                          getResources().getDrawable(R.drawable.brave_rewards_circle));
+              }
+              mBraveRewardsNotificationsCount.setText(value);
+              mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+              mIsNotificationPosted = true;
+          } else {
+              mBraveRewardsNotificationsCount.setText("");
+              mBraveRewardsNotificationsCount.setBackgroundResource(0);
+              mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
+              mIsNotificationPosted = false;
+              updateVerifiedPublisherMark();
+          }
       }
-    }
 
-    updateNotificationBadgeForNewInstall(rewardsEnabled);
-    if (!PackageUtils.isFirstInstall(getContext())
-        && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
-      mayShowBraveAdsOnboardingDialog();
+      updateNotificationBadgeForNewInstall();
+      if (!PackageUtils.isFirstInstall(getContext())
+              && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
+          mayShowBraveAdsOnboardingDialog();
     }
 
     if (checkForRewardsOnboarding()) {
@@ -731,19 +858,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
   }
 
-  private void updateNotificationBadgeForNewInstall(boolean rewardsEnabled) {
-    SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-    boolean shownBefore = sharedPref.getBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
-    boolean shouldShow =
-      mBraveRewardsNotificationsCount != null && !shownBefore && !rewardsEnabled;
-    mIsInitialNotificationPosted = shouldShow; // initial notification
+  private void updateNotificationBadgeForNewInstall() {
+      SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+      boolean shownBefore = sharedPref.getBoolean(
+              BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
+      boolean shouldShow = mBraveRewardsNotificationsCount != null && !shownBefore;
+      mIsInitialNotificationPosted = shouldShow; // initial notification
 
-    if (!shouldShow) return;
+      if (!shouldShow) return;
 
-    mBraveRewardsNotificationsCount.setText("");
-    mBraveRewardsNotificationsCount.setBackground(
-      getResources().getDrawable(R.drawable.brave_rewards_circle));
-    mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+      mBraveRewardsNotificationsCount.setText("");
+      mBraveRewardsNotificationsCount.setBackground(
+              getResources().getDrawable(R.drawable.brave_rewards_circle));
+      mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
   }
 
   @Override
