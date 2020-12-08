@@ -58,12 +58,13 @@ public class SearchEngineOnboardingFragment extends Fragment {
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.get();
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
-            templateUrlService.getDefaultSearchEngineTemplateUrl();
+            BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
 
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
                     && OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName())
                     != null) {
+                Log.e("NTP", templateUrl.getShortName());
                 SearchEngineEnum searchEngineEnum =
                     OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 
@@ -114,7 +115,7 @@ public class SearchEngineOnboardingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (selectedSearchEngine == null) {
-                    selectedSearchEngine = TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
+                    selectedSearchEngine = BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
                 }
                 if (selectedSearchEngine != null) {
                     BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, false);
