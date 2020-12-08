@@ -13,6 +13,7 @@ source_set("brave_ipfs_unit_tests") {
   if (ipfs_enabled) {
     sources = [
       "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
+      "//brave/components/ipfs/ipfs_gateway_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/ipfs_navigation_throttle_unittest.cc",
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",
@@ -28,6 +29,8 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/components/tor/buildflags",
       "//chrome:browser_dependencies",
       "//chrome/test:test_support",
+      "//components/prefs",
+      "//components/user_prefs",
       "//components/version_info",
       "//content/public/browser",
       "//content/test:test_support",
