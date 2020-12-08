@@ -2,16 +2,19 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="pa">
 <translation id="1008557486741366299">ਹੁਣ ਨਹੀਂ</translation>
+<translation id="100957008357583611">ਕੀ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਦੀ ਵਰਤੋਂ ਕਰਨੀ ਹੈ?</translation>
 <translation id="1010200102790553230">ਪੰਨਾ ਬਾਅਦ ਵਿੱਚ ਲੋਡ ਕਰੋ</translation>
 <translation id="1015730422737071372">ਵਾਧੂ ਵੇਰਵੇ ਮੁਹੱਈਆ ਕਰਵਾਓ</translation>
 <translation id="1019413721762100891">ਬੰਦ</translation>
 <translation id="1021110881106174305">ਮਨਜ਼ੂਰਸ਼ੁਦਾ ਕਾਰਡ</translation>
+<translation id="1024111578869940408">ਹਮਲਾਵਰ ਕਦੇ-ਕਦਾਈਂ ਵੈੱਬ ਪਤੇ ਵਿੱਚ ਮੁਸ਼ਕਲ ਨਾਲ ਪਤਾ ਲੱਗਣ ਵਾਲੀਆਂ ਨਿੱਕੀਆਂ ਤਬਦੀਲੀਆਂ ਕਰਕੇ ਸਾਈਟਾਂ ਦੀ ਨਕਲ ਤਿਆਰ ਕਰਦੇ ਹਨ।</translation>
 <translation id="1030706264415084469"><ph name="URL"/> ਦੀ ਤੁਹਾਡੇ ਡੀਵਾਈਸ 'ਤੇ ਸਥਾਈ ਤੌਰ 'ਤੇ ਬਹੁਤ ਜ਼ਿਆਦਾ ਡਾਟਾ ਸਟੋਰ ਕਰਨ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="1032854598605920125">ਕਲੌਕਵਾਈਜ ਰੋਟੇਟ ਕਰੋ</translation>
 <translation id="1036348656032585052">ਬੰਦ ਕਰੋ</translation>
 <translation id="1038106730571050514">ਸੁਝਾਅ ਦਿਖਾਓ</translation>
 <translation id="1038842779957582377">ਅਗਿਆਤ ਨਾਮ</translation>
 <translation id="1041998700806130099">ਕਾਰਵਾਈ ਸ਼ੀਟ ਸੁਨੇਹਾ</translation>
+<translation id="1048785276086539861">ਜਦੋਂ ਤੁਸੀਂ ਐਨੋਟੇਸ਼ਨਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰਦੇ ਹੋ, ਤਾਂ ਇਹ ਦਸਤਾਵੇਜ਼ ਇਕਹਿਰੇ ਪੰਨਾ-ਦ੍ਰਿਸ਼ 'ਤੇ ਵਾਪਸ ਆ ਜਾਵੇਗਾ</translation>
 <translation id="1050038467049342496">ਦੂਜੀਆਂ ਐਪਾਂ ਬੰਦ ਕਰੋ</translation>
 <translation id="1055184225775184556">&amp;ਜੋੜੋ ਨੂੰ ਅਨਡੂ ਕਰੋ</translation>
 <translation id="1056898198331236512">ਚਿਤਾਵਨੀ</translation>
@@ -19,6 +22,7 @@
 <translation id="10614374240317010">ਕਦੇ ਵੀ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤਾ</translation>
 <translation id="1062160989074299343">Prc10 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="106701514854093668">ਡੈਸਕਟਾਪ ਬੁੱਕਮਾਰਕ</translation>
+<translation id="1068672505746868501">ਕਦੇ ਵੀ ਪੰਨਿਆਂ ਦਾ ਅਨੁਵਾਦ <ph name="SOURCE_LANGUAGE"/> ਵਿੱਚ ਨਾ ਕਰੋ</translation>
 <translation id="1070901266639972381">ਰਾਤ</translation>
 <translation id="1074497978438210769">ਸੁਰੱਖਿਅਤ ਨਹੀਂ</translation>
 <translation id="1080116354587839789">ਚੁੜਾਈ ਤੱਕ ਫਿਟ</translation>
@@ -26,22 +30,25 @@
 <translation id="1088860948719068836">ਕਾਰਡ 'ਤੇ ਨਾਮ ਸ਼ਾਮਲ ਕਰੋ</translation>
 <translation id="1089439967362294234">ਪਾਸਵਰਡ ਬਦਲੋ</translation>
 <translation id="1096545575934602868">ਇਸ ਖੇਤਰ ਵਿੱਚ <ph name="MAX_ITEMS_LIMIT"/> ਤੋਂ ਵੱਧ ਇੰਦਰਾਜ ਨਹੀਂ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ। ਅਗਲੇ ਸਾਰੇ ਇੰਦਰਾਜ ਰੱਦ ਕੀਤੇ ਜਾਣਗੇ।</translation>
-<translation id="1920681928837417101">Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਪਾਸਵਰਡਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ</translation>
 <translation id="1101672080107056897">ਗੜਬੜ ਕਾਰਵਾਈ</translation>
 <translation id="1103523840287552314"><ph name="LANGUAGE"/> ਦਾ ਹਮੇਸ਼ਾਂ ਅਨੁਵਾਦ ਕਰੋ</translation>
 <translation id="1110994991967754504"><ph name="PERMISSION_NAME"/> ਲਈ ਇਜਾਜ਼ਤ ਚੁਣੋ</translation>
 <translation id="1113869188872983271">&amp;ਦੁਬਾਰਾ ਕ੍ਰਮ ਦੇਣ ਨੂੰ ਅਨਡੂ ਕਰੋ</translation>
 <translation id="1125573121925420732">ਵੈੱਬਸਾਈਟਾਂ ਵੱਲੋਂ ਉਹਨਾਂ ਦੀ ਸੁਰੱਖਿਆ ਅੱਪਡੇਟ ਕਰਨ ਵੇਲੇ ਚਿਤਾਵਨੀਆਂ ਦਾ ਦਿੱਸਣਾ ਆਮ ਹੈ। ਇਹ ਜਲਦ ਹੀ ਦਿੱਸਣੀਆਂ ਬੰਦ ਹੋ ਜਾਣਗੀਆਂ।</translation>
 <translation id="112840717907525620">ਨੀਤੀ ਕੈਸ਼ੇ OK</translation>
+<translation id="3186248837008742887">'ਪੰਨੇ ਦਾ ਅਨੁਵਾਦ ਕਰੋ' ਬਟਨ, Brave Translate ਨਾਲ ਇਸ ਪੰਨੇ ਦਾ ਅਨੁਵਾਦ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="1131264053432022307">ਤੁਹਾਡੇ ਵੱਲੋਂ ਕਾਪੀ ਕੀਤਾ ਚਿੱਤਰ</translation>
 <translation id="1150979032973867961">ਇਹ ਸਰਵਰ ਇਹ ਸਾਬਤ ਨਹੀਂ ਕਰ ਸਕਿਆ ਕਿ ਇਹ <ph name="DOMAIN"/> ਹੈ; ਇਸਦਾ ਸੁਰੱਖਿਆ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੇ ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ ਵੱਲੋਂ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਹੈ। ਇਹ ਇੱਕ ਗਲਤ ਸੰਰੂਪਣ ਕਾਰਨ ਹੋ ਸਕਦਾ ਹੈ ਜਾਂ ਕੋਈ ਹਮਲਾਵਰ ਤੁਹਾਡੇ ਕਨੈਕਸ਼ਨ ਨੂੰ ਰਾਹ ਵਿੱਚ ਰੋਕ ਰਿਹਾ ਹੈ।</translation>
 <translation id="1151972924205500581">ਪਾਸਵਰਡ ਲੋੜੀਂਦਾ</translation>
-<translation id="1152921474424827756"><ph name="URL"/> ਦੀ ਇੱਕ <ph name="BEGIN_LINK"/>ਕੈਸ਼ੇ ਕੀਤੀ ਕਾਪੀ<ph name="END_LINK"/> ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ</translation>
 <translation id="1156303062776767266">ਤੁਸੀਂ ਸਥਾਨਕ ਜਾਂ ਸਾਂਝੀ ਕੀਤੀ ਗਈ ਫ਼ਾਈਲ ਦੇਖ ਰਹੇ ਹੋ</translation>
 <translation id="1158211211994409885"><ph name="HOST_NAME"/> ਨੇ ਅਚਾਨਕ ਕਨੈਕਸ਼ਨ ਬੰਦ ਕੀਤਾ।</translation>
 <translation id="115926840831309955">ਆਪਣੇ CVC ਦੀ ਜਾਂਚ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜਾਂ ਮਿਆਦ ਸਮਾਪਤੀ ਦੀ ਤਾਰੀਖ ਅੱਪਡੇਟ ਕਰੋ</translation>
 <translation id="1161325031994447685">ਵਾਈ-ਫਾਈ ਨਾਲ ਦੁਬਾਰਾ ਕਨੈਕਟ ਕਰੋ</translation>
 <translation id="1165039591588034296">ਗੜਬੜ</translation>
+<translation id="1165174597379888365">ਪੰਨਾ ਦੇਖਿਆ ਗਿਆ</translation>
+<translation id="1174723505405632867">ਕੀ ਤੁਸੀਂ <ph name="EMBEDDED_URL"/> ਵੱਲੋਂ <ph name="TOP_LEVEL_URL"/> 'ਤੇ ਕੁਕੀਜ਼ ਅਤੇ ਸਾਈਟ ਡਾਟਾ ਵਰਤਣ ਨੂੰ ਮਨਜ਼ੂਰ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?
+
+ਨਹੀਂ ਤਾਂ ਤੁਹਾਡੀਆਂ ਪਰਦੇਦਾਰੀ ਸੈਟਿੰਗਾਂ ਵੱਲੋਂ ਇਸ ਨੂੰ ਬਲਾਕ ਕੀਤਾ ਜਾਵੇਗਾ। ਇਸ ਨਾਲ ਤੁਸੀਂ ਜਿਸ ਸਮੱਗਰੀ ਨਾਲ ਅੰਤਰਕਿਰਿਆ ਕੀਤੀ ਹੈ ਉਹ ਸਹੀ ਤਰ੍ਹਾਂ ਨਾਲ ਕੰਮ ਕਰੇਗੀ, ਪਰ <ph name="EMBEDDED_URL"/> ਵੱਲੋਂ ਤੁਹਾਡੀ ਸਰਗਰਮੀ ਨੂੰ ਟਰੈਕ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="1175364870820465910">&amp;ਪ੍ਰਿੰਟ...</translation>
 <translation id="1175875016430184367">ਸੱਜੇ ਪਾਸੇ ਤਿੰਨ ਪਿੰਨਾਂ</translation>
 <translation id="1178581264944972037">ਰੋਕੋ</translation>
@@ -60,6 +67,7 @@
 <translation id="1232569758102978740">ਬਿਨਾਂ ਸਿਰਲੇਖ ਦਾ</translation>
 <translation id="1236081509407217141">ਕੀ VR ਨੂੰ ਇਜਾਜ਼ਤ ਦੇਣੀ ਹੈ?</translation>
 <translation id="1240347957665416060">ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਦਾ ਨਾਮ</translation>
+<translation id="124116460088058876">ਹੋਰ ਭਾਸ਼ਾਵਾਂ</translation>
 <translation id="1052005765108026699">ਅਗਲੀ ਵਾਰ ਵਧੇਰੇ ਤੇਜ਼ੀ ਨਾਲ ਭੁਗਤਾਨ ਕਰਨ ਲਈ, ਆਪਣੇ 'Brave ਖਾਤੇ' ਵਿੱਚ ਆਪਣਾ ਕਾਰਡ, ਨਾਮ ਅਤੇ ਬਿਲਿੰਗ ਪਤਾ ਰੱਖਿਅਤ ਕਰੋ।</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (ਸਮਕਾਲੀਕਿਰਤ ਕੀਤੇ ਗਏ)</translation>
 <translation id="1256368399071562588">&lt;p&gt;ਜੇਕਰ ਤੁਸੀਂ ਇੱਕ ਵੈੱਬਸਾਈਟ 'ਤੇ ਜਾਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਹੋ ਅਤੇ ਉਹ ਨਹੀਂ ਖੁੱਲ੍ਹਦੀ, ਤਾਂ ਪਹਿਲਾਂ ਇਹਨਾਂ ਸਮੱਸਿਆ-ਨਿਪਟਾਰਾ ਪੜਾਵਾਂ ਨਾਲ ਗੜਬੜ ਠੀਕ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ:&lt;/p&gt;
@@ -79,7 +87,6 @@
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>ਆਪਣੀਆਂ ਕੁਕੀਜ਼ ਨੂੰ ਸਾਫ਼ ਕਰਨ ਨੂੰ ਅਜ਼ਮਾਓ<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">ਆਪਣੀਆਂ ਸੁਰੱਖਿਅਤ DNS ਸੈਟਿੰਗਾਂ ਦੀ ਜਾਂਚ ਕਰੋ</translation>
 <translation id="1307966114820526988">ਨਾਪਸੰਦ ਕੀਤੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ</translation>
-<translation id="1310581832770023220">ਇਸ ਫ਼ਾਰਮ ਵਿਚਲੇ ਡਾਟੇ ਨੂੰ ਅਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ ਰਾਹੀਂ ਭੇਜਿਆ ਜਾ ਰਿਹਾ ਹੈ</translation>
 <translation id="131405271941274527">ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੇ ਫ਼ੋਨ ਨੂੰ ਕਿਸੇ NFC ਡੀਵਾਈਸ 'ਤੇ ਟੈਪ ਕਰਦੇ ਹੋ ਤਾਂ <ph name="URL"/> ਜਾਣਕਾਰੀ ਭੇਜਣਾ ਅਤੇ ਪ੍ਰਾਪਤ ਕਰਨਾ ਚਾਹੁੰਦਾ ਹੈ</translation>
 <translation id="1314509827145471431">ਸੱਜੇ ਜਿਲਦਬੰਦ</translation>
 <translation id="1320233736580025032">Prc1 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
@@ -99,6 +106,8 @@
 <translation id="1348198688976932919">ਸਾਈਟ ਵਿੱਚ ਅੱਗੇ ਖਤਰਨਾਕ ਐਪਾਂ ਹਨ</translation>
 <translation id="1348779747280417563">ਨਾਮ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</translation>
 <translation id="1357195169723583938">ਹਾਲ ਵਿੱਚ ਹੀ ਇਹ ਡੀਵਾਈਸ ਕਿਸ ਨੇ ਅਤੇ ਕਦੋਂ ਵਰਤਿਆ ਹੈ</translation>
+<translation id="1360955481084547712">ਨਿੱਜੀ ਤੌਰ 'ਤੇ ਬ੍ਰਾਊਜ਼ ਕਰਨ ਲਈ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹੋ</translation>
+<translation id="1363819917331173092"><ph name="SOURCE_LANGUAGE"/> ਵਿਚਲੇ ਪੰਨਿਆਂ ਦਾ ਅਨੁਵਾਦ ਕਰਨ ਦੀ ਪੇਸ਼ਕਸ਼ ਨਾ ਕਰੋ</translation>
 <translation id="1364822246244961190">ਇਹ ਨੀਤੀ ਬਲਾਕ ਕੀਤੀ ਗਈ ਹੈ, ਇਸਦਾ ਮੁੱਲ ਅਣਡਿੱਠ ਕੀਤਾ ਜਾਵੇਗਾ।</translation>
 <translation id="1374468813861204354">ਸੁਝਾਅ</translation>
 <translation id="1374692235857187091">ਕ੍ਰਮ-ਸੂਚੀ-4x6 (ਪੋਸਟਕਾਰਡ)</translation>
@@ -108,6 +117,7 @@
 <translation id="1380591466760231819">ਚਿੱਠੀ ਵਾਲੀ ਤਹਿ</translation>
 <translation id="138218114945450791">ਹਲਕਾ ਨੀਲਾ</translation>
 <translation id="1382194467192730611">ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਦੀ ਮਨਜ਼ੂਰੀ ਵਾਲਾ USB ਡੀਵਾਈਸ</translation>
+<translation id="1386623374109090026">ਐਨੋਟੇਸ਼ਨਾਂ</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> ਨੇ ਕੋਈ ਵੀ  ਡਾਟਾ  ਨਹੀਂ ਭੇਜਿਆ।</translation>
 <translation id="1405567553485452995">ਹਲਕਾ ਹਰਾ</translation>
 <translation id="1407135791313364759">ਸਾਰੇ ਖੋਲ੍ਹੋ</translation>
@@ -118,9 +128,11 @@
 <translation id="1430915738399379752">ਪ੍ਰਿੰਟ ਕਰੋ</translation>
 <translation id="1442386063175183758">ਸੱਜੇ ਪੱਲੇ ਵਾਲੀ ਤਹਿ</translation>
 <translation id="1442987760062738829">ਮੋਰੀ</translation>
+<translation id="1447067628680007684">(x86_64)</translation>
 <translation id="7408760246081928496">ਤੁਹਾਡੇ ਵੱਲੋਂ ਪੇਸਟ ਜਾਂ ਨੱਥੀ ਕੀਤੀ ਲਿਖਤ ਨੂੰ ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ Brave ਕਲਾਊਡ ਜਾਂ ਤੀਜੀਆਂ ਧਿਰਾਂ ਨੂੰ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਉਦਾਹਰਨ ਲਈ, ਇਸਨੂੰ ਸੰਵੇਦਨਸ਼ੀਲ ਡਾਟੇ ਲਈ ਸਕੈਨ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="1455413310270022028">ਰਬੜ</translation>
 <translation id="1462245070427461050">JIS B9</translation>
+<translation id="1462951478840426066">ਆਪਣੇ ਕੰਪਿਊਟਰ 'ਤੇ ਫ਼ੌਂਟਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ ਤਾਂ ਜੋ ਤੁਸੀਂ ਉੱਚ ਵਾਸਤਵਿਕਤਾ ਸਮੱਗਰੀ ਬਣਾ ਸਕੋ</translation>
 <translation id="1463543813647160932">5x7</translation>
 <translation id="1467432559032391204">ਖੱਬੇ ਪਾਸੇ</translation>
 <translation id="1472675084647422956">ਹੋਰ ਦਿਖਾਓ</translation>
@@ -143,9 +155,11 @@
 <translation id="1531205177818805254">Exec</translation>
 <translation id="1532118530259321453">ਇਸ ਪੰਨੇ ਦੇ ਮੁਤਾਬਕ</translation>
 <translation id="153384715582417236">ਹੁਣ ਲਈ ਬੱਸ ਇੰਨਾ ਹੀ</translation>
+<translation id="1536390784834419204">ਪੰਨੇ ਦਾ ਅਨੁਵਾਦ ਕਰੋ</translation>
 <translation id="154408704832528245">ਡਿਲੀਵਰੀ ਪਤਾ ਚੁਣੋ</translation>
 <translation id="1549470594296187301">ਇਸ ਵਿਸ਼ੇਸ਼ਤਾ ਨੂੰ ਵਰਤਣ ਲਈ JavaScript ਨੂੰ ਸਮਰੱਥ ਬਣਾਇਆ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ।</translation>
 <translation id="155039086686388498">ਇੰਜੀਨੀਅਰਿੰਗ-D</translation>
+<translation id="1705567146636171298">Brave ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ</translation>
 <translation id="1555130319947370107">ਨੀਲਾ</translation>
 <translation id="1559447966090556585">ਕੀ ਸੂਚਨਾਵਾਂ ਪ੍ਰਾਪਤ ਕਰਨੀਆਂ ਹਨ?</translation>
 <translation id="1559528461873125649">ਅਜਿਹੀ ਕੋਈ ਫਾਈਲ ਜਾਂ ਡਾਇਰੈਕਟਰੀ ਨਹੀਂ</translation>
@@ -163,6 +177,7 @@
 <translation id="1620510694547887537">ਕੈਮਰਾ</translation>
 <translation id="1623104350909869708">ਇਸ ਸਫ਼ੇ ਨੂੰ ਵਾਧੂ ਡਾਇਲੌਗ ਬਣਾਉਣ ਤੋਂ ਰੋਕੋ</translation>
 <translation id="16338877384480380">Architecture-B</translation>
+<translation id="1634828734222219955">ਕੁੱਲ</translation>
 <translation id="1638780421120290329">ਕਾਰਡ ਨੂੰ ਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</translation>
 <translation id="1639239467298939599">ਲੋਡ ਕਰ ਰਿਹਾ ਹੈ</translation>
 <translation id="1640180200866533862">ਵਰਤੋਂਕਾਰ ਨੀਤੀਆਂ</translation>
@@ -203,15 +218,18 @@
 <translation id="17513872634828108">ਟੈਬਸ ਖੋਲ੍ਹੋ</translation>
 <translation id="1752021286346845558">ਮੇਲਬਾਕਸ 8</translation>
 <translation id="1753706481035618306">ਪੰਨਾ ਨੰਬਰ</translation>
+<translation id="1757773103848038814">ਮੋਨੋਸਪੇਸ ਫ਼ੌਂਟ</translation>
 <translation id="1763864636252898013">ਇਹ ਸਰਵਰ ਇਹ ਸਿੱਧ ਨਹੀਂ ਕਰ ਸਕਿਆ ਕਿ ਇਹ <ph name="DOMAIN"/> ਹੈ; ਇਸਦਾ ਸੁਰੱਖਿਆ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਤੁਹਾਡੀ ਡਿਵਾਈਸ ਦੇ ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ ਵੱਲੋਂ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਹੈ। ਇਸ ਦਾ ਕਾਰਨ ਗਲਤ ਸੰਰੂਪਣ ਹੋ ਸਕਦਾ ਹੈ ਜਾਂ ਕੋਈ ਹਮਲਾਵਰ ਤੁਹਾਡੇ ਕਨੈਕਸ਼ਨ ਦੇ ਰਾਹ ਨੂੰ ਰੋਕ ਰਿਹਾ ਹੈ।</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Windows ਨੈੱਟਵਰਕ ਤਸ਼ਖੀਸਾਂ ਨੂੰ ਚਲਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ<ph name="END_LINK"/>।</translation>
 <translation id="1772163372082567643">ਜਿਸ ਸਰਵਰ 'ਤੇ ਤੁਸੀਂ ਜਾ ਰਹੇ ਹੋ, <ph name="ORIGIN"/>, ਉਸਨੇ ਇੱਕ ਸਿਰਲੇਖ ਸੈੱਟ ਕੀਤਾ ਹੈ ਜਿਸ ਵਿੱਚ ਇਹ ਚੀਜ਼ ਲੋੜੀਂਦੀ ਹੈ ਕਿ ਮੂਲ ਨੀਤੀ ਨੂੰ ਇਸ 'ਤੇ ਕੀਤੀਆਂ ਗਈਆਂ ਸਾਰੀਆਂ ਬੇਨਤੀਆਂ 'ਤੇ ਲਾਗੂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਪਰ ਸਿਰਲੇਖ ਨੁਕਸਦਾਰ ਹੈ, ਜੋ ਬ੍ਰਾਊਜ਼ਰ ਨੂੰ <ph name="SITE"/> ਲਈ ਤੁਹਾਡੀ ਬੇਨਤੀ ਨੂੰ ਪੂਰਾ ਕਰਨ ਤੋਂ ਰੋਕਦਾ ਹੈ। ਮੂਲ ਸੰਬੰਧੀ ਨੀਤੀਆਂ ਨੂੰ ਕਿਸੇ ਸਾਈਟ ਦੀ ਸੁਰੱਖਿਆ ਅਤੇ ਹੋਰ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਦਾ ਸੰਰੂਪਣ ਕਰਨ ਲਈ ਸਾਈਟ ਓਪਰੇਟਰਾਂ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1783075131180517613">ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਸਿੰਕ ਪਾਸਫਰੇਜ਼ ਅੱਪਡੇਟ ਕਰੋ।</translation>
 <translation id="1787142507584202372">ਤੁਹਾਡੇ ਖੁੱਲ੍ਹੇ ਟੈਬ ਇੱਥੇ ਵਿਖਾਈ ਦੇਣਗੇ</translation>
-<translation id="3480410886581896628">Brave ਸਮਾਰਟ ਲੌਕ</translation>
+<translation id="3480410886581896628">Brave Smart Lock</translation>
+<translation id="1798447301915465742"><ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ਇੱਕ ਤੋਂ ਵੱਧ ਕਾਰਵਾਈਆਂ ਉਪਲਬਧ ਹਨ, ਉਹਨਾਂ ਵਿੱਚ ਚੱਕਰ ਲਗਾਉਣ ਲਈ Tab ਦਬਾਓ</translation>
 <translation id="1800473098294731951">B9</translation>
 <translation id="1803264062614276815">ਕਾਰਡਧਾਰਕ ਦਾ ਨਾਮ</translation>
+<translation id="1807246157184219062">ਹਲਕਾ</translation>
 <translation id="1807528111851433570">ਸ਼ੁਰੂਆਤੀ ਸ਼ੀਟ</translation>
 <translation id="1821930232296380041">ਬੇਨਤੀ ਜਾਂ ਬੇਨਤੀ ਮਾਪਦੰਡ ਅਵੈਧ ਹੈ</translation>
 <translation id="1822540298136254167">ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੀਆਂ ਜਾਂਦੀਆਂ ਵੈੱਬਸਾਈਟਾਂ ਅਤੇ ਉਹਨਾਂ ਦੀ ਵਰਤੋਂ ਦਾ ਸਮਾਂ</translation>
@@ -237,7 +255,6 @@
 <translation id="1919345977826869612">ਵਿਗਿਆਪਨ</translation>
 <translation id="1919367280705858090">ਇੱਕ ਖਾਸ ਗੜਬੜ-ਸੁਨੇਹਾ ਸੰਬੰਧੀ ਮਦਦ ਪ੍ਰਾਪਤ ਕਰੋ</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{ਕੋਈ ਨਹੀਂ}=1{1 ਸਾਈਟ}other{# ਸਾਈਟਾਂ}}</translation>
-<translation id="194030505837763158"><ph name="LINK"/> ਤੇ ਜਾਓ</translation>
 <translation id="1947454675006758438">ਉੱਪਰ ਸੱਜੇ ਪਾਸੇ ਪਿੰਨ</translation>
 <translation id="990584554013599191"><ph name="BEGIN_WHITEPAPER_LINK"/>ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੇ ਕੁਝ ਪੰਨਿਆਂ ਦੇ URL, ਸੀਮਤ ਸਿਸਟਮ ਜਾਣਕਾਰੀ ਅਤੇ ਕੁਝ ਪੰਨਾ ਸਮੱਗਰੀ<ph name="END_WHITEPAPER_LINK"/> Brave ਨੂੰ ਭੇਜ ਕੇ ਵੈੱਬ 'ਤੇ ਸੁਰੱਖਿਆ ਨੂੰ ਹਰੇਕ ਲਈ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰੋ। <ph name="BEGIN_PRIVACY_PAGE_LINK"/>ਪਰਦੇਦਾਰੀ ਨੀਤੀ<ph name="END_PRIVACY_PAGE_LINK"/></translation>
 <translation id="1962204205936693436"><ph name="DOMAIN"/> ਬੁੱਕਮਾਰਕਸ</translation>
@@ -245,20 +262,14 @@
 <translation id="1974060860693918893">ਉੱਨਤ</translation>
 <translation id="1975584088563498795">ਮੇਲਬਾਕਸ 10</translation>
 <translation id="1978555033938440688">ਫ਼ਰਮਵੇਅਰ ਵਰਜਨ</translation>
-<translation id="711418501679417607">Brave ਦਾ ਬ੍ਰਾਊਜ਼ਿੰਗ ਇਤਿਹਾਸ ਡਾਟਾ ਕਲੀਅਰ ਕਰੋ</translation>
+<translation id="1988881251331415125">ਜੇ ਸ਼ਬਦ-ਜੋੜ ਸਹੀ ਹੈ, ਤਾਂ <ph name="BEGIN_LINK"/>ਕਨੈਕਟੀਵਿਟੀ ਤਸ਼ਖੀਸਾਂ ਨੂੰ ਚਲਾ ਕੇ ਦੇਖੋ<ph name="END_LINK"/>।</translation>
 <translation id="1992331125980284532">JIS B3</translation>
-<translation id="1992796205810278279">ਕੁਕੀਜ਼ ਅਤੇ ਸਾਈਟ ਡਾਟਾ ਤੱਕ ਪਹੁੰਚ ਕਰੋ।
-
-ਕੀ ਤੁਸੀਂ <ph name="EMBEDDED_URL"/> ਵੱਲੋਂ <ph name="TOP_LEVEL_URL"/> 'ਤੇ ਕੁਕੀਜ਼ ਅਤੇ ਸਾਈਟ ਡਾਟਾ ਵਰਤਣ ਨੂੰ ਮਨਜ਼ੂਰ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?
-
-ਨਹੀਂ ਤਾਂ ਤੁਹਾਡੀਆਂ ਪਰਦੇਦਾਰੀ ਸੈਟਿੰਗਾਂ ਵੱਲੋਂ ਇਸ ਨੂੰ ਬਲਾਕ ਕੀਤਾ ਜਾਵੇਗਾ। ਇਸ ਨਾਲ ਤੁਸੀਂ ਜਿਸ ਸਮੱਗਰੀ ਨਾਲ ਅੰਤਰਕਿਰਿਆ ਕੀਤੀ ਹੈ ਉਹ ਸਹੀ ਤਰ੍ਹਾਂ ਨਾਲ ਕੰਮ ਕਰੇਗੀ, ਪਰ <ph name="EMBEDDED_URL"/> ਵੱਲੋਂ ਤੁਹਾਡੀ ਸਰਗਰਮੀ ਨੂੰ ਟਰੈਕ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="1997484222658892567"><ph name="URL"/> ਦੀ ਤੁਹਾਡੇ ਸਥਾਨਕ ਕੰਪਿਊਟਰ 'ਤੇ ਸਥਾਈ ਤੌਰ 'ਤੇ ਬਹੁਤ ਜ਼ਿਆਦਾ ਡਾਟਾ ਸਟੋਰ ਕਰਨ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{ਅਤੇ 1 ਹੋਰ}one{ਅਤੇ # ਹੋਰ}other{ਅਤੇ # ਹੋਰ}}</translation>
 <translation id="2003709556000175978">ਹੁਣੇ ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ</translation>
 <translation id="2003775180883135320">ਉੱਪਰ ਚਾਰ ਮੋਰੀਆਂ</translation>
 <translation id="2025115093177348061">ਆਗਮੈਂਟਿਡ ਰਿਐਲਿਟੀ</translation>
 <translation id="2025186561304664664">ਪ੍ਰੌਕਸੀ ਨੂੰ ਸਵੈ ਸੰਰੂਪਿਤ 'ਤੇ ਸੈਟ ਕੀਤਾ ਗਿਆ ਹੈ।</translation>
-<translation id="2030481566774242610">ਕੀ ਤੁਹਾਡਾ ਮਤਲਬ <ph name="LINK"/> ਤੋਂ ਸੀ?</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>ਪ੍ਰੌਕਸੀ ਅਤੇ ਫ਼ਾਇਰਵਾਲ ਦੀ ਜਾਂਚ ਕਰੋ<ph name="END_LINK"/></translation>
 <translation id="2042213636306070719">ਟ੍ਰੇਅ 7</translation>
 <translation id="3163988908275223348">ਆਪਣੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡ ਵਰਤਣ ਲਈ ਸਾਈਨ-ਇਨ ਕਰੋ</translation>
@@ -274,6 +285,7 @@
 <translation id="2099652385553570808">ਖੱਬੇ ਪਾਸੇ ਤਿੰਨ ਪਿੰਨਾਂ</translation>
 <translation id="2101225219012730419">ਵਰਜਨ:</translation>
 <translation id="2102134110707549001">ਮਜ਼ਬੂਤ ਪਾਸਵਰਡ ਸੁਝਾਓ…</translation>
+<translation id="2102495993840063010">Android ਐਪਾਂ</translation>
 <translation id="2107021941795971877">ਪ੍ਰਿੰਟ ਸੰਬੰਧੀ ਸਹਾਇਤਾਵਾਂ</translation>
 <translation id="2108755909498034140">ਆਪਣੇ ਕੰਪਿਊਟਰ ਨੂੰ ਮੁੜ-ਸ਼ੁਰੂ ਕਰੋ</translation>
 <translation id="2111256659903765347">Super-A</translation>
@@ -290,12 +302,14 @@
 <translation id="2154054054215849342">ਸਮਕਾਲੀਕਰਨ ਤੁਹਾਡੀ ਡੋਮੇਨ ਲਈ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</translation>
 <translation id="2154484045852737596">ਕਾਰਡ ਦਾ ਸੰਪਾਦਨ ਕਰੋ</translation>
 <translation id="2161656808144014275">ਲਿਖਤ</translation>
+<translation id="2164510882479075877">ਜਾਂਚ ਕਰੋ ਕਿ <ph name="HOST_NAME"/> ਵਿੱਚ ਕੋਈ ਟਾਈਪਿੰਗ ਸੰਬੰਧੀ ਗੜਬੜ ਤਾਂ ਨਹੀਂ ਹੈ।</translation>
 <translation id="2166049586286450108">ਪੂਰੀ ਪ੍ਰਸ਼ਾਸਕ ਪਹੁੰਚ</translation>
 <translation id="2166378884831602661">ਇਹ ਸਾਈਟ ਇੱਕ ਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ ਨਹੀਂ ਮੁਹੱਈਆ ਕਰਵਾ ਸਕਦੀ।</translation>
 <translation id="2169984857010174799">Kaku2 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="2181821976797666341">ਨੀਤੀਆਂ</translation>
 <translation id="2183608646556468874">ਫ਼ੋਨ ਨੰਬਰ</translation>
 <translation id="2184405333245229118">{COUNT,plural, =1{1 ਪਤਾ}one{# ਪਤੇ}other{# ਪਤੇ}}</translation>
+<translation id="2187243482123994665">ਵਰਤੋਂਕਾਰ ਦੀ ਮੌਜੂਦਗੀ</translation>
 <translation id="2187317261103489799">ਪਤਾ ਲਗਾਓ (ਪੂਰਵ-ਨਿਰਧਾਰਤ)</translation>
 <translation id="2188375229972301266">ਹੇਠਾਂ ਇੱਕ ਤੋਂ ਵੱਧ ਮੋਰੀਆਂ</translation>
 <translation id="2202020181578195191">ਇੱਕ ਵੈਧ ਮਿਆਦ ਸਮਾਪਤੀ ਸਾਲ ਦਾਖਲ ਕਰੋ</translation>
@@ -314,7 +328,6 @@
 <translation id="2258928405015593961">ਮਿਆਦ ਮੁੱਕਣ ਦੀ ਭਵਿੱਖੀ ਤਾਰੀਖ ਦਾਖਲ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</translation>
 <translation id="225943865679747347">ਅਸ਼ੁੱਧ ਕੋਡ: <ph name="ERROR_CODE"/></translation>
 <translation id="2262243747453050782">HTTP ਗੜਬੜ</translation>
-<translation id="112540507627099823">Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਕ੍ਰੈਡਿਟ ਕਾਰਡ ਆਟੋਫਿਲ ਜਾਣਕਾਰੀ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ</translation>
 <translation id="2267047181501709434">ਤੁਹਾਡੀ ਪਛਾਣ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਰਹੀ ਹੈ...</translation>
 <translation id="2270484714375784793">ਫ਼ੋਨ ਨੰਬਰ</translation>
 <translation id="2276057643614339130">ਪ੍ਰਿੰਟ ਆਧਾਰ</translation>
@@ -324,10 +337,10 @@
 <translation id="2289385804009217824">ਕਟਾਈ</translation>
 <translation id="2292556288342944218">ਤੁਹਾਡੀ ਇੰਟਰਨੈੱਟ ਪਹੁੰਚ ਨੂੰ ਬਲੌਕ ਕੀਤਾ ਗਿਆ ਹੈ</translation>
 <translation id="2293443924986248631">ਚਾਲੂ ਹੋਣ 'ਤੇ, ਸਾਈਟਾਂ ਉਹਨਾਂ ਕੁਕੀਜ਼ ਦੀ ਵਰਤੋਂ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ ਜੋ ਵੈੱਬ 'ਤੇ ਤੁਹਾਨੂੰ ਟਰੈਕ ਕਰਦੀਆਂ ਹਨ। ਸ਼ਾਇਦ ਕੁਝ ਸਾਈਟਾਂ 'ਤੇ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਠੀਕ ਤਰੀਕੇ ਨਾਲ ਕੰਮ ਨਾ ਕਰਨ।</translation>
+<translation id="6148139222908395733">ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੇ ਗਏ ਪੰਨਿਆਂ ਦੇ URL ਨੂੰ ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ Brave ਕਲਾਊਡ ਜਾਂ ਤੀਜੀਆਂ ਧਿਰਾਂ ਨੂੰ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਉਦਾਹਰਨ ਲਈ, ਅਸੁਰੱਖਿਅਤ ਵੈੱਬਸਾਈਟਾਂ ਦਾ ਪਤਾ ਲਗਾਉਣ ਲਈ ਉਹਨਾਂ ਨੂੰ ਸਕੈਨ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="2297722699537546652">B5 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="2300306941146563769">ਅੱਪਲੋਡ ਨਹੀਂ ਕੀਤੀ ਗਈ</translation>
 <translation id="2310021320168182093">Chou2 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
-<translation id="2315864634253056100">ਇਸ ਸਾਈਟ ਦਾ ਨਾਮ <ph name="LOOKALIKE_DOMAIN"/> ਵਰਗਾ ਲੱਗਦਾ ਹੈ। ਹਮਲਾਵਰ ਕਦੇ-ਕਦਾਈਂ ਵੈੱਬ ਪਤੇ ਵਿੱਚ ਮੁਸ਼ਕਲ ਨਾਲ ਪਤਾ ਲੱਗਣ ਵਾਲੀਆਂ ਨਿੱਕੀਆਂ ਤਬਦੀਲੀਆਂ ਕਰਕੇ ਸਾਈਟਾਂ ਦੀ ਨਕਲ ਤਿਆਰ ਕਰਦੇ ਹਨ।</translation>
 <translation id="2316887270356262533">1 MB ਤੋਂ ਘੱਟ ਜਗ੍ਹਾ ਖਾਲੀ ਕਰਦਾ ਹੈ। ਤੁਹਾਡੀ ਅਗਲੀ ਫੇਰੀ 'ਤੇ ਕੁਝ ਸਾਈਟਾਂ ਵਧੇਰੇ ਹੌਲੀ ਲੋਡ ਹੋ ਸਕਦੀਆਂ ਹਨ।</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> ਨੂੰ ਇੱਕ ਵਰਤੋਂਕਾਰ ਨਾਮ ਅਤੇ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ।</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, ਮਿਆਦ <ph name="EXPIRATION_DATE_ABBR"/> ਨੂੰ ਸਮਾਪਤ ਹੋਵੇਗੀ</translation>
@@ -344,21 +357,22 @@
 <translation id="2367567093518048410">ਪੱਧਰ</translation>
 <translation id="2380886658946992094">ਕਨੂੰਨੀ</translation>
 <translation id="2384307209577226199">ਐਂਟਰਪ੍ਰਾਈਜ਼ ਪੂਰਵ-ਨਿਰਧਾਰਤ</translation>
+<translation id="5244533701344680487">ਆਪਣੀਆਂ Brave ਸੈਟਿੰਗਾਂ ਤੋਂ Brave ਅੱਪਡੇਟ ਕਰੋ</translation>
 <translation id="2386255080630008482">ਸਰਵਰ ਦਾ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਰੱਦ ਕੀਤਾ ਗਿਆ ਹੈ।</translation>
 <translation id="2392959068659972793">ਕੋਈ ਵੈਲਯੂ ਸੈਟ ਨਾ ਹੋਣ ਵਾਲੀਆਂ ਨੀਤੀਆਂ ਦਿਖਾਓ</translation>
 <translation id="239429038616798445">ਇਹ ਸ਼ਿਪਿੰਗ ਵਿਧੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕੋਈ ਵੱਖਰੀ ਵਿਧੀ ਅਜ਼ਮਾਓ।</translation>
 <translation id="2396249848217231973">&amp;ਮਿਟਾਏ ਗਏ ਨੂੰ ਅਣਕੀਤਾ ਕਰੋ</translation>
 <translation id="2410754574180102685">ਸਰਕਾਰੀ-ਕਨੂੰਨੀ</translation>
 <translation id="2413528052993050574">ਇਹ ਸਰਵਰ ਇਹ ਸਿੱਧ ਨਹੀਂ ਕਰ ਸਕਿਆ ਕਿ ਇਹ <ph name="DOMAIN"/> ਹੈ; ਇਸਦਾ ਸੁਰੱਖਿਆ ਸਰਟੀਫਿਕੇਟ ਰੱਦ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਇਸ ਦਾ ਕਾਰਨ ਗਲਤ ਸੰਰੂਪਣ ਹੋ ਸਕਦਾ ਹੈ ਜਾਂ ਕੋਈ ਹਮਲਾਵਰ ਤੁਹਾਡੇ ਕਨੈਕਸ਼ਨ ਦੇ ਰਾਹ ਨੂੰ ਰੋਕ ਰਿਹਾ ਹੈ।</translation>
+<translation id="2414886740292270097">ਡਾਰਕ</translation>
 <translation id="2438874542388153331">ਸੱਜੇ ਪਾਸੇ ਚਾਰ ਮੋਰੀਆਂ</translation>
-<translation id="2463193859425327265">ਹੋਮ ਪੇਜ ਬਦਲੋ</translation>
 <translation id="2463739503403862330">ਭਰੋ</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
 <translation id="2465655957518002998">ਡਿਲੀਵਰੀ ਵਿਧੀ ਚੁਣੋ</translation>
 <translation id="2465688316154986572">ਪਿੰਨ</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>ਨੈੱਟਵਰਕ ਤਸ਼ਖੀਸਾਂ ਚਲਾਇਆ ਜਾ ਰਿਹਾ ਹੈ<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1-ਤੋਂ-N ਕ੍ਰਮ</translation>
-<translation id="2473195200299095979">ਇਸ ਸਫ਼ੇ ਦਾ ਅਨੁਵਾਦ ਕਰੋ</translation>
+<translation id="2470767536994572628">ਜਦੋਂ ਤੁਸੀਂ ਐਨੋਟੇਸ਼ਨਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰਦੇ ਹੋ, ਤਾਂ ਇਹ ਦਸਤਾਵੇਜ਼ ਇਕਹਿਰੇ ਪੰਨਾ-ਦ੍ਰਿਸ਼ ਅਤੇ ਆਪਣੇ ਮੂਲ ਘੁਮਾਅ 'ਤੇ ਵਾਪਸ ਆ ਜਾਵੇਗਾ</translation>
 <translation id="2479410451996844060">ਅਵੈਧ ਖੋਜ URL.</translation>
 <translation id="2482878487686419369">ਸੂਚਨਾਵਾਂ</translation>
 <translation id="248348093745724435">ਮਸ਼ੀਨ ਸੰਬੰਧੀ ਨੀਤੀਆਂ</translation>
@@ -391,21 +405,25 @@
 <translation id="2609632851001447353">ਵੈਰੀਏਸ਼ੰਸ</translation>
 <translation id="2618023639789766142">C10 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="2625385379895617796">ਤੁਹਾਡੀ ਘੜੀ ਅੱਗੇ ਹੈ</translation>
+<translation id="2915787201097107005">Brave ਦੀ ਉੱਚਤਮ ਪੱਧਰ ਦੀ ਸੁਰੱਖਿਆ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>ਵਿਸਤ੍ਰਿਤ ਸੁਰੱਖਿਆ ਨੂੰ ਚਾਲੂ ਕਰੋ<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
 <translation id="2634124572758952069"><ph name="HOST_NAME"/> ਦਾ ਸਰਵਰ IP ਪਤਾ ਨਹੀਂ ਲੱਭਿਆ।</translation>
 <translation id="2639739919103226564">ਸਥਿਤੀ:</translation>
 <translation id="2649204054376361687"><ph name="CITY"/>, <ph name="COUNTRY"/></translation>
+<translation id="9078005688100552065"><ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਿੰਗ ਇਤਿਹਾਸ, ਕੁਕੀਜ਼, ਕੈਸ਼ੇ ਅਤੇ ਹੋਰ ਬਹੁਤ ਕੁਝ ਨੂੰ ਕਲੀਅਰ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="2650446666397867134">ਫਾਈਲ ਤੱਕ ਪਹੁੰਚ ਅਸਵੀਕਾਰ ਕਰ ਦਿੱਤੀ ਗਈ ਸੀ</translation>
 <translation id="2653659639078652383">ਪ੍ਰਸਤੁਤ ਕਰੋ</translation>
 <translation id="2660779039299703961">ਇਵੈਂਟ</translation>
 <translation id="2664887757054927933">{COUNT,plural, =0{ਕੋਈ ਨਹੀਂ}=1{1 ਪਾਸਵਰਡ (<ph name="DOMAIN_LIST"/> ਲਈ)}=2{2 ਪਾਸਵਰਡ (<ph name="DOMAIN_LIST"/> ਲਈ)}other{# ਪਾਸਵਰਡ (<ph name="DOMAIN_LIST"/> ਲਈ)}}</translation>
 <translation id="2666092431469916601">ਟੌਪ</translation>
 <translation id="2666117266261740852">ਦੂਜੀਆਂ ਟੈਬਾਂ ਜਾਂ ਐਪਾਂ ਬੰਦ ਕਰੋ</translation>
+<translation id="2672201172023654893">ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਦਾ ਪ੍ਰਬੰਧਨ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।</translation>
 <translation id="2674170444375937751">ਕੀ ਤੁਸੀਂ ਪੱਕੇ ਤੌਰ 'ਤੇ ਇਹਨਾਂ ਪੰਨਿਆਂ ਨੂੰ ਆਪਣੇ ਇਤਿਹਾਸ ਵਿੱਚੋਂ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="2674804415323431591">ਸੁਝਾਅ ਲੁਕਾਓ</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">ਛੱਡੋ</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">ਪੂਰੀ ਤਰ੍ਹਾਂ ਫਿੱਟ</translation>
+<translation id="2688969097326701645">ਹਾਂ, ਜਾਰੀ ਰੱਖੋ</translation>
 <translation id="2691924980723297736">ਸੁਰੱਖਿਆ ਚਿਤਾਵਨੀ</translation>
 <translation id="2699302886720511147">ਮਨਜ਼ੂਰਸ਼ੁਦਾ ਕਾਰਡ</translation>
 <translation id="2701514975700770343">ਹੇਠਾਂ ਵੱਲ ਪਾਸਾ ਕੀਤੇ</translation>
@@ -414,7 +432,7 @@
 <translation id="2705137772291741111">ਇਸ ਸਾਈਟ ਦੀ ਰੱਖਿਅਤ (ਕੈਸ਼ੇ ਕੀਤੀ) ਕਾਪੀ ਪੜ੍ਹਨਯੋਗ ਨਹੀਂ ਸੀ।</translation>
 <translation id="2709516037105925701">ਆਟੋਫਿਲ</translation>
 <translation id="2713444072780614174">ਸਫ਼ੈਦ</translation>
-<translation id="2720342946869265578">ਨਜ਼ਦੀਕੀ</translation>
+<translation id="4131157740532436004"><ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਭੁਗਤਾਨਾਂ ਅਤੇ ਕ੍ਰੈਡਿਟ ਕਾਰਡ ਜਾਣਕਾਰੀ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="2721148159707890343">ਬੇਨਤੀ ਸਫਲ ਹੋਈ</translation>
 <translation id="272451190272506600">ਭੁਗਤਾਨ ਕਰਨ ਲਈ ਸੈਂਸਰ ਨੂੰ ਸਪਰਸ਼ ਕਰੋ</translation>
 <translation id="2728127805433021124">ਸਰਵਰ ਦਾ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਇੱਕ ਕਮਜ਼ੋਰ ਹਸਤਾਖਰ ਅਲਗੋਰਿਦਮ ਵਰਤਦੇ ਹੋਏ ਸਾਈਨ ਹੋਇਆ ਹੈ।</translation>
@@ -425,6 +443,7 @@
 <translation id="2738330467931008676">ਪਿਕਅੱਪ ਪਤਾ ਚੁਣੋ</translation>
 <translation id="2740531572673183784">ਠੀਕ</translation>
 <translation id="2742870351467570537">ਚੁਣੀਆਂ ਗਈਆਂ ਆਈਟਮਾਂ ਹਟਾਓ</translation>
+<translation id="2765217105034171413">ਛੋਟਾ</translation>
 <translation id="277133753123645258">ਸ਼ਿਪਿੰਗ ਵਿਧੀ</translation>
 <translation id="277499241957683684">ਡੀਵਾਈਸ ਰਿਕਾਰਡ ਮੌਜੂਦ ਨਹੀਂ ਹੈ</translation>
 <translation id="2775884851269838147">ਪਹਿਲਾ ਪ੍ਰਿੰਟ ਕੀਤਾ ਪੇਜ</translation>
@@ -435,10 +454,10 @@
 <translation id="2799223571221894425">ਰੀਲੌਂਚ ਕਰੋ</translation>
 <translation id="2803306138276472711">Brave ਸੁਰੱਖਿਅਤ ਬ੍ਰਾਊਜ਼ਿੰਗ ਨੇ <ph name="SITE"/> 'ਤੇ ਹੁਣੇ ਹੀ<ph name="BEGIN_LINK"/> ਮਲਵੇਅਰ ਖੋਜਿਆ<ph name="END_LINK"/> ਸੀ। ਜੋ ਵੈੱਬਸਾਈਟਾਂ ਆਮ ਤੌਰ ਤੇ ਸੁਰੱਖਿਅਤ ਹੁੰਦੀਆਂ ਹਨ, ਉਹ ਵੀ ਕਦੇ-ਕਦੇ ਮਲਵੇਅਰ ਨਾਲ ਸੰਕ੍ਰਮਿਤ ਹੋ ਜਾਂਦੀਆਂ ਹਨ।</translation>
 <translation id="2807052079800581569">ਚਿੱਤਰ Y ਸਥਿਤੀ</translation>
-<translation id="2824514415781424867">ਕੀ ਟਿਕਾਣਾ ਸਾਂਝਾ ਕਰਨਾ ਹੈ?</translation>
 <translation id="2824775600643448204">ਪਤਾ ਅਤੇ ਖੋਜ ਬਾਰ</translation>
 <translation id="2826760142808435982">ਕਨੈਕਸ਼ਨ <ph name="CIPHER"/> ਵਰਤਦੇ ਹੋਏ ਐਨਕ੍ਰਿਪਟ ਅਤੇ ਪ੍ਰਮਾਣਿਤ ਕੀਤਾ ਗਿਆ ਹੈ ਅਤੇ ਇਹ <ph name="KX"/> ਨੂੰ ਮੁੱਖ ਐਕਸਚੇਂਜ ਬਣਤਰ ਦੇ ਤੌਰ 'ਤੇ ਵਰਤਦਾ ਹੈ।</translation>
 <translation id="2835170189407361413">ਫ਼ਾਰਮ ਹਟਾਓ</translation>
+<translation id="2839501879576190149">ਅੱਗੇ ਨਕਲੀ ਸਾਈਟ ਹੈ</translation>
 <translation id="2850739647070081192">ਸੱਦਾ (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="2856444702002559011">ਹਮਲਾਵਰ <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> ਤੋਂ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਨੂੰ ਚੋਰੀ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹਨ (ਉਦਾਹਰਨ ਲਈ, ਪਾਸਵਰਡ, ਸੁਨੇਹੇ, ਜਾਂ ਕ੍ਰੈਡਿਟ ਕਾਰਡ)। <ph name="BEGIN_LEARN_MORE_LINK"/>ਹੋਰ ਜਾਣੋ<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">ਪੋਸਟਰ ਰੂਪੀ ਤਹਿ</translation>
@@ -458,6 +477,7 @@
 <translation id="2928905813689894207">ਬਿਲਿੰਗ ਪਤਾ</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> ਹੋਰ}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> ਹੋਰ}}</translation>
 <translation id="2930577230479659665">ਹਰ ਕਾਪੀ ਤੋਂ ਬਾਅਦ ਕਟਾਈ</translation>
+<translation id="2932085390869194046">ਪਾਸਵਰਡ ਸੁਝਾਓ...</translation>
 <translation id="2934466151127459956">ਸਰਕਾਰੀ ਚਿੱਠੀ</translation>
 <translation id="2941952326391522266">ਇਹ ਸਰਵਰ ਇਹ ਸਾਬਤ ਨਹੀਂ ਕਰ ਸਕਿਆ ਕਿ ਇਹ <ph name="DOMAIN"/> ਹੈ; ਇਸਦਾ ਸੁਰੱਖਿਆ ਪ੍ਰਮਾਣ-ਪੱਤਰ <ph name="DOMAIN2"/> ਵੱਲੋਂ ਹੈ। ਇਹ ਇੱਕ ਗਲਤ ਸੰਰੂਪਣ ਕਾਰਨ ਹੋ ਸਕਦਾ ਹੈ ਜਾਂ ਕੋਈ ਹਮਲਾਵਰ ਤੁਹਾਡੇ ਕਨੈਕਸ਼ਨ ਨੂੰ ਰਾਹ ਵਿੱਚ ਰੋਕ ਰਿਹਾ ਹੈ।</translation>
 <translation id="2943895734390379394">ਅੱਪਲੋਡ ਦਾ ਸਮਾਂ:</translation>
@@ -467,7 +487,6 @@
 <translation id="2955913368246107853">ਲੱਭੋ ਬਾਰ ਬੰਦ ਕਰੋ</translation>
 <translation id="2972581237482394796">&amp;ਰੀਡੂ</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, ਵਰਤਮਾਨ ਵਿੱਚ ਚੁਣਿਆ ਗਿਆ। <ph name="ROW_CONTENT"/></translation>
-<translation id="2982481275546140226">ਡਾਟਾ ਕਲੀਅਰ ਕਰੋ</translation>
 <translation id="2985398929374701810">ਕੋਈ ਵੈਧ ਪਤਾ ਦਾਖਲ ਕਰੋ</translation>
 <translation id="2986368408720340940">ਇਹ ਪਿਕਅੱਪ ਵਿਧੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕੋਈ ਵੱਖਰੀ ਵਿਧੀ ਅਜ਼ਮਾਓ।</translation>
 <translation id="2987034854559945715">ਮੇਲ ਖਾਂਦੀ ਕੋਈ ਵਿਸ਼ੇਸ਼ਤਾ ਨਹੀਂ ਹੈ</translation>
@@ -477,6 +496,7 @@
 <translation id="6683975920571472553">Brave ਵੱਲੋਂ ਸੁਝਾਅ</translation>
 <translation id="3002501248619246229">ਇਨਪੁੱਟ ਟ੍ਰੇਅ ਮੀਡੀਆ ਦੀ ਜਾਂਚ ਕਰੋ</translation>
 <translation id="3005723025932146533">ਰੱਖਿਅਤ ਕੀਤੀ ਕਾਪੀ ਦਿਖਾਓ</translation>
+<translation id="3007719053326478567">ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਵੱਲੋਂ ਇਸ ਸਮੱਗਰੀ ਨੂੰ ਪ੍ਰਿੰਟ ਕਰਨ ਦੀ ਸੁਵਿਧਾ ਨੂੰ ਬਲਾਕ ਕੀਤਾ ਗਿਆ ਹੈ</translation>
 <translation id="3008447029300691911"><ph name="CREDIT_CARD"/> ਦਾ CVC ਦਾਖਲ ਕਰੋ। ਤੁਹਾਡੇ ਵੱਲੋਂ ਪੁਸ਼ਟੀ ਕੀਤੇ ਜਾਣ 'ਤੇ, ਤੁਹਾਡੇ ਕਾਰਡ ਵੇਰਵੇ ਇਸ ਸਾਈਟ ਨਾਲ ਸਾਂਝੇ ਕੀਤੇ ਜਾਣਗੇ।</translation>
 <translation id="3010559122411665027">ਸੂਚੀ ਐਂਟਰੀ "<ph name="ENTRY_INDEX"/>": <ph name="ERROR"/></translation>
 <translation id="301521992641321250">ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਬਲੌਕ ਕੀਤੀ ਗਈ</translation>
@@ -487,6 +507,7 @@
 <translation id="3041612393474885105">ਪ੍ਰਮਾਣ-ਪੱਤਰ ਬਾਰੇ ਜਾਣਕਾਰੀ</translation>
 <translation id="3060227939791841287">C9 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="3061707000357573562">ਪੈਚ ਸੇਵਾ</translation>
+<translation id="3064966200440839136">ਕਿਸੇ ਬਾਹਰੀ ਐਪਲੀਕੇਸ਼ਨ ਰਾਹੀਂ ਭੁਗਤਾਨ ਕਰਨ ਲਈ ਇਨਕੋਗਨਿਟੋ ਮੋਡ ਤੋਂ ਬਾਹਰ ਜਾਇਆ ਜਾ ਰਿਹਾ ਹੈ। ਜਾਰੀ ਰੱਖੀਏ?</translation>
 <translation id="3080254622891793721">ਗ੍ਰਾਫ਼ਿਕ</translation>
 <translation id="3086579638707268289">ਵੈੱਬ 'ਤੇ ਤੁਹਾਡੀ ਸਰਗਰਮੀ ਦੀ ਨਿਗਰਾਨੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</translation>
 <translation id="3087734570205094154">ਹੇਠਲਾ</translation>
@@ -496,6 +517,7 @@
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>ਸੁਰੱਖਿਅਤ DNS ਦੇ ਸੰਰੂਪਣ ਦੀ ਜਾਂਚ ਕਰਨਾ<ph name="END_LINK"/></translation>
 <translation id="3109728660330352905">ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਪੰਨੇ ਨੂੰ ਦੇਖਣ ਦਾ ਅਧਿਕਾਰ ਨਹੀਂ ਹੈ।</translation>
 <translation id="3113284927548439113">ਤੀਜੀ ਸ਼ਿਫਟ</translation>
+<translation id="3115874930288085374"><ph name="ENROLLMENT_DOMAIN"/> ਲਈ ਤੁਹਾਨੂੰ ਆਪਣੇ ਡਾਟੇ ਦਾ ਬੈਕਅੱਪ ਲੈਣ ਅਤੇ ਇਸ <ph name="DEVICE_TYPE"/> ਨੂੰ ਵਾਪਸ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।</translation>
 <translation id="3116158981186517402">ਲੈਮੀਨੇਟ</translation>
 <translation id="3120730422813725195">Elo</translation>
 <translation id="31207688938192855"><ph name="BEGIN_LINK"/>ਕਨੈਕਟੀਵਿਟੀ ਨਿਦਾਨ ਨੂੰ ਚਲਾਉਣ ਦੁਆਰਾ ਅਜ਼ਮਾਓ<ph name="END_LINK"/>।</translation>
@@ -506,10 +528,12 @@
 <translation id="3154506275960390542">ਇਸ ਪੰਨੇ ਵਿੱਚ ਕੋਈ ਅਜਿਹਾ ਫ਼ਾਰਮ ਸ਼ਾਮਲ ਹੈ ਜਿਸਨੂੰ ਸ਼ਾਇਦ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਸਪੁਰਦ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਤੁਹਾਡੇ ਵੱਲੋਂ ਭੇਜੇ ਜਾਣ ਵਾਲੇ ਡਾਟੇ ਨੂੰ ਆਵਾਜਾਈ ਵਿੱਚ ਹੋਰਾਂ ਵੱਲੋਂ ਦੇਖਿਆ ਜਾ ਸਕਦਾ ਹੈ ਜਾਂ ਕੋਈ ਹਮਲਾਵਰ ਸਰਵਰ ਨੂੰ ਪ੍ਰਾਪਤ ਹੋਣ ਵਾਲੇ ਡਾਟੇ ਨਾਲ ਛੇੜਛਾੜ ਕਰਨ ਲਈ ਇਸਨੂੰ ਸੋਧ ਸਕਦਾ ਹੈ।</translation>
 <translation id="3157931365184549694">ਰੀਸਟੋਰ ਕਰੋ</translation>
 <translation id="3162559335345991374">ਤੁਹਾਡੇ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਵਾਈ-ਫਾਈ ਇਹ ਚਾਹ ਸਕਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਇਸਦੇ ਲੌਗ-ਇਨ ਪੰਨੇ 'ਤੇ ਜਾਓ।</translation>
+<translation id="3167968892399408617">ਜੋ ਪੰਨੇ ਤੁਸੀਂ ਇਨਕੋਗਨਿਟੋ ਟੈਬਾਂ ਵਿੱਚ ਦੇਖਦੇ ਹੋ, ਉਹ ਤੁਹਾਡੇ ਵੱਲੋਂ ਆਪਣੀਆਂ ਸਾਰੀਆਂ ਇਨਕੋਗਨਿਟੋ ਟੈਬਾਂ ਬੰਦ ਕਰਨ ਤੋਂ ਬਾਅਦ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਦੇ ਇਤਿਹਾਸ, ਕੁਕੀ ਸਟੋਰ ਜਾਂ ਖੋਜ ਇਤਿਹਾਸ ਵਿੱਚ ਨਹੀਂ ਰਹਿਣਗੇ। ਤੁਹਾਡੇ ਵੱਲੋਂ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਕੋਈ ਵੀ ਫ਼ਾਈਲਾਂ ਅਤੇ ਬਣਾਏ ਬੁੱਕਮਾਰਕ ਬਰਕਰਾਰ ਰਹਿਣਗੇ।</translation>
 <translation id="3169472444629675720">ਖੋਜੋ</translation>
 <translation id="3174168572213147020">ਟਾਪੂ</translation>
 <translation id="3176929007561373547">ਪ੍ਰੌਕਸੀ ਸਰਵਰ ਕੰਮ ਕਰ ਰਿਹਾ ਹੈ ਇਹ ਪੱਕਾ ਕਰੋ ਕਰਨ ਲਈ ਆਪਣੀਆਂ ਪ੍ਰੌਕਸੀ ਸੈਟਿੰਗਾਂ ਦੀ ਜਾਂਚ ਕਰੋ ਜਾਂ ਆਪਣੇ ਨੈੱਟਵਰਕ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਸੰਪਰਕ ਕਰੋ, ਜੇਕਰ ਤੁਸੀਂ ਪੱਕਾ ਨਹੀਂ ਕਰਦੇ ਤਾਂ ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰੌਕਸੀ ਸਰਵਰ ਦੀ ਵਰਤੋਂ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ:
       <ph name="PLATFORM_TEXT"/></translation>
+<translation id="3184534047932533456"><ph name="URL"/> ਤੁਹਾਡੀ ਮੌਜੂਦਗੀ ਬਾਰੇ ਜਾਣਨਾ ਚਾਹੁੰਦਾ ਹੈ</translation>
 <translation id="3188393374551744535">ਖਾਤਾ ਬਕਾਇਆ</translation>
 <translation id="3194737229810486521"><ph name="URL"/> ਦੀ ਤੁਹਾਡੇ ਡੀਵਾਈਸ 'ਤੇ ਸਥਾਈ ਤੌਰ 'ਤੇ ਡਾਟਾ ਸਟੋਰ ਕਰਨ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="3195213714973468956"><ph name="SERVER_NAME"/> 'ਤੇ <ph name="PRINTER_NAME"/></translation>
@@ -521,16 +545,17 @@
 <translation id="3218181027817787318">ਸੰਬੰਧਿਤ</translation>
 <translation id="3225919329040284222">ਸਰਵਰ ਨੇ ਇੱਕ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਪੇਸ਼ ਕੀਤਾ ਸੀ ਜੋ ਪਹਿਲਾਂ ਤੋਂ ਮੌਜੂਦ ਅਨੁਮਾਨਾਂ ਨਾਲ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ। ਇਹ ਅਨੁਮਾਨਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ ਹੈ ਤਾਂ ਕਿ ਉੱਚ-ਸੁਰੱਖਿਆ ਵਾਲੀਆਂ ਵੈੱਬਸਾਈਟਾਂ ਦੀ ਰੱਖਿਆ ਕੀਤੀ ਜਾਵੇ।</translation>
 <translation id="3226128629678568754">ਪੰਨਾ ਲੋਡ ਕਰਨ ਲਈ ਲੋੜੀਂਦਾ ਡਾਟਾ ਮੁੜ ਸਪੁਰਦ ਕਰਨ ਲਈ ਰੀਲੋਡ ਬਟਨ ਦਬਾਓ।</translation>
+<translation id="3226387218769101247">ਲਘੂ-ਚਿੱਤਰ</translation>
 <translation id="3227137524299004712">ਮਾਈਕ੍ਰੋਫੋਨ</translation>
 <translation id="3229041911291329567">ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਅਤੇ ਬ੍ਰਾਊਜ਼ਰ ਦੇ ਵਰਜਨ ਬਾਰੇ ਜਾਣਕਾਰੀ</translation>
 <translation id="323107829343500871"><ph name="CREDIT_CARD"/> ਦਾ CVC ਦਾਖਲ ਕਰੋ</translation>
 <translation id="3234666976984236645">ਇਸ ਸਾਈਟ 'ਤੇ ਹਮੇਸ਼ਾਂ ਆਯਾਤ ਸਮੱਗਰੀ ਖੋਜੋ</translation>
-<translation id="3262069459091978471"><ph name="LOOKALIKE_DOMAIN"/>, <ph name="SUGGESTED_DOMAIN"/> ਵਰਗਾ ਲੱਗਦਾ ਹੈ। ਹਮਲਾਵਰ ਕਦੇ-ਕਦਾਈਂ ਮਿਲਦੇ-ਜੁਲਦੇ URL ਵਰਤ ਕੇ ਸਾਈਟਾਂ ਦੀ ਨਕਲ ਤਿਆਰ ਕਰਦੇ ਹਨ।</translation>
 <translation id="3270847123878663523">&amp;ਦੁਬਾਰਾ ਕ੍ਰਮ ਦੇਣ ਨੂੰ ਅਨਡੂ ਕਰੋ</translation>
 <translation id="3274521967729236597">Pa-Kai</translation>
 <translation id="3282497668470633863">ਕਾਰਡ 'ਤੇ ਨਾਮ ਸ਼ਾਮਲ ਕਰੋ</translation>
 <translation id="3287510313208355388">ਆਨਲਾਈਨ ਹੋਣ 'ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ</translation>
 <translation id="3293642807462928945"><ph name="POLICY_NAME"/> ਨੀਤੀ ਬਾਰੇ ਹੋਰ ਜਾਣੋ</translation>
+<translation id="5894665462526421022">Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਪਾਸਵਰਡ ਦੇਖੋ ਅਤੇ ਉਹਨਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ</translation>
 <translation id="3303855915957856445">ਕੋਈ ਖੋਜ ਨਤੀਜੇ ਨਹੀਂ ਮਿਲੇ</translation>
 <translation id="3308006649705061278">ਸੰਸਥਾਈ ਯੂਨਿਟ (OU)</translation>
 <translation id="3320021301628644560">ਬਿਲਿੰਗ ਪਤਾ ਸ਼ਾਮਲ ਕਰੋ</translation>
@@ -543,6 +568,9 @@
 <translation id="3364869320075768271"><ph name="URL"/> ਦੀ ਤੁਹਾਡੇ ਆਭਾਸੀ ਵਾਸਤਵਿਕਤਾ ਡੀਵਾਈਸ ਅਤੇ ਡਾਟੇ ਨੂੰ ਵਰਤਣ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="3366477098757335611">ਕਾਰਡ ਦੇਖੋ</translation>
 <translation id="3369192424181595722">ਘੜੀ ਵਿੱਚ ਗੜਬੜ</translation>
+<translation id="3371076217486966826"><ph name="URL"/> ਇਹ ਕਰਨਾ ਚਾਹੁੰਦਾ ਹੈ:
+      • ਤੁਹਾਡੇ ਆਲੇ-ਦੁਆਲੇ ਦਾ 3D ਨਕਸ਼ਾ ਬਣਾਉਣਾ ਅਤੇ ਕੈਮਰਾ ਸਥਿਤੀ ਨੂੰ ਟਰੈਕ ਕਰਨਾ
+      • ਤੁਹਾਡੇ ਕੈਮਰੇ ਦੀ ਵਰਤੋਂ ਕਰਨਾ</translation>
 <translation id="337363190475750230">ਡੀਪ੍ਰੋਵਿਜ਼ਨਡ</translation>
 <translation id="3377144306166885718">ਸਰਵਰ ਨੇ TLS ਦਾ ਬਹੁਤ ਪੁਰਾਣਾ ਵਰਜਨ ਵਰਤਿਆ।</translation>
 <translation id="3377188786107721145">ਨੀਤੀ ਪਾਰਸ ਕਰਨ ਵਿੱਚ ਗੜਬੜ</translation>
@@ -554,6 +582,7 @@
 <translation id="3395827396354264108">ਪਿਕਅੱਪ ਵਿਧੀ</translation>
 <translation id="3399952811970034796">ਡਿਲੀਵਰੀ ਪਤਾ</translation>
 <translation id="3402261774528610252">ਕਨੈਕਸ਼ਨ ਨੇ ਇਸ ਸਾਈਟ ਨੂੰ ਲੋਡ ਕਰਨ ਲਈ TLS 1.0 ਜਾਂ TLS 1.1 ਨੂੰ ਵਰਤਿਆ, ਜਿਨ੍ਹਾਂ ਨੂੰ ਨਾਪਸੰਦ ਕੀਤਾ ਗਿਆ ਅਤੇ ਭਵਿੱਖ ਵਿੱਚ ਬੰਦ ਕੀਤਾ ਜਾਵੇਗਾ। ਬੰਦ ਕਰਨ 'ਤੇ, ਵਰਤੋਂਕਾਰਾਂ ਨੂੰ ਇਹ ਸਾਈਟ ਲੋਡ ਕਰਨ ਤੋਂ ਰੋਕਿਆ ਜਾਵੇਗਾ। ਸਰਵਰ ਨੂੰ TLS 1.2 ਜਾਂ ਬਾਅਦ ਵਾਲੇ ਵਰਜਨ ਨੂੰ ਵਰਤਣਾ ਚਾਹੀਦਾ ਹੈ।</translation>
+<translation id="3411120537985775570">ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਵੱਲੋਂ <ph name="ORIGIN_NAME"/> ਤੋਂ ਇਸ ਟਿਕਾਣੇ 'ਤੇ ਪੇਸਟ ਕਰਨ ਦੀ ਸੁਵਿਧਾ ਨੂੰ ਬਲਾਕ ਕੀਤਾ ਗਿਆ ਹੈ</translation>
 <translation id="3414952576877147120">ਆਕਾਰ:</translation>
 <translation id="25726459489263481">ਤੁਹਾਡੇ ਵੱਲੋਂ ਅੱਪਲੋਡ ਜਾਂ ਨੱਥੀ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਨੂੰ ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ Brave ਕਲਾਊਡ ਜਾਂ ਤੀਜੀਆਂ ਧਿਰਾਂ ਨੂੰ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਉਦਾਹਰਨ ਲਈ, ਉਹਨਾਂ ਨੂੰ ਸੰਵੇਦਨਸ਼ੀਲ ਡਾਟੇ ਜਾਂ ਮਾਲਵੇਅਰ ਲਈ ਸਕੈਨ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="3422248202833853650">ਮੈਮੋਰੀ ਖਾਲੀ ਕਰਨ ਲਈ ਦੂਜੇ ਪ੍ਰੋਗਰਾਮਾਂ ਵਿੱਚੋਂ ਬਾਹਰ ਨਿਕਲਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</translation>
@@ -590,6 +619,7 @@
 <translation id="3532844647053365774"><ph name="HOST"/> ਦੀ ਤੁਹਾਡੇ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਨੂੰ ਵਰਤਣ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="3533328374079021623">ਮੇਲਬਾਕਸ 5</translation>
 <translation id="3539171420378717834">ਇਸ ਡੀਵਾਈਸ 'ਤੇ ਇਸ ਕਾਰਡ ਦੀ ਇੱਕ ਕਾਪੀ ਰੱਖੋ</translation>
+<translation id="3552297013052089404">ਸਾਂਸ-ਸੈਰਿਫ ਫ਼ੌਂਟ</translation>
 <translation id="3558573058928565255">ਦਿਨ ਦਾ ਸਮਾਂ</translation>
 <translation id="3566021033012934673">ਤੁਹਾਡਾ ਕਨੈਕਸ਼ਨ ਨਿੱਜੀ ਨਹੀਂ ਹੈ</translation>
 <translation id="3567778190852720481">ਐਂਟਰਪ੍ਰਾਈਜ਼ ਖਾਤੇ ਨਾਲ ਦਰਜ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ (ਐਂਟਰਪ੍ਰਾਈਜ਼ ਖਾਤਾ ਯੋਗ ਨਹੀਂ ਹੈ)।</translation>
@@ -611,16 +641,18 @@
 <translation id="36224234498066874">ਬ੍ਰਾਊਜ਼ਿੰਗ  ਡਾਟਾ  ਸਾਫ਼ ਕਰੋ...</translation>
 <translation id="362276910939193118">ਪੂਰਾ ਇਤਿਹਾਸ ਦਿਖਾਓ</translation>
 <translation id="3630155396527302611">ਜੇਕਰ ਇਸ ਨੂੰ ਪਹਿਲਾਂ ਹੀ ਨੈੱਟਵਰਕ 'ਤੇ ਪਹੁੰਚ ਦੀ ਮਨਜ਼ੂਰੀ ਵਾਲੇ ਇੱਕ ਪ੍ਰੋਗਰਾਮ ਦੇ ਤੌਰ 'ਤੇ ਸੂਚੀਬੱਧ ਕੀਤਾ ਗਿਆ ਹੈ, ਇਸ ਨੂੰ ਸੂਚੀ ਵਿੱਚ ਹਟਾਉਣ ਅਤੇ ਦੁਬਾਰਾ ਸ਼ਾਮਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</translation>
+<translation id="3630699740441428070">ਇਸ ਡੀਵਾਈਸ ਦੇ ਪ੍ਰਸ਼ਾਸਕਾਂ ਨੇ ਤੁਹਾਡੇ ਨੈੱਟਵਰਕ ਕਨੈਕਸ਼ਨ ਦਾ ਸੰਰੂਪਣ ਕੀਤਾ ਹੈ, ਜਿਸ ਨਾਲ ਸ਼ਾਇਦ ਉਹ ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੀਆਂ ਜਾਂਦੀਆਂ ਵੈੱਬਸਾਈਟਾਂ ਸਮੇਤ ਤੁਹਾਡੇ ਨੈੱਟਵਰਕ ਟਰੈਫ਼ਿਕ ਨੂੰ ਦੇਖ ਸਕਦੇ ਹਨ।</translation>
 <translation id="3631244953324577188">ਬਾਇਓਮੈਟ੍ਰਿਕ</translation>
+<translation id="1367445511302842209">'Brave ਅੱਪਡੇਟ ਕਰੋ' ਬਟਨ, ਆਪਣੀਆਂ Brave ਸੈਟਿੰਗਾਂ ਤੋਂ Brave ਅੱਪਡੇਟ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="3634530185120165534">ਟ੍ਰੇਅ 5</translation>
 <translation id="3640766068866876100">Index-4x6-Ext</translation>
 <translation id="3650584904733503804">ਪ੍ਰਮਾਣੀਕਰਨ ਸਫਲ</translation>
 <translation id="3655670868607891010">ਜੇਕਰ ਤੁਸੀਂ ਇਸਨੂੰ ਵਾਰ-ਵਾਰ ਦੇਖ ਰਹੇ ਹੋ, ਇਹਨਾਂ <ph name="HELP_LINK"/> ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</translation>
 <translation id="3658742229777143148">ਸੁਧਾਈ</translation>
-<translation id="366077651725703012">ਕ੍ਰੈਡਿਟ ਕਾਰਡ ਅੱਪਡੇਟ ਕਰੋ</translation>
 <translation id="3676592649209844519">ਡੀਵਾਈਸ ਆਈ.ਡੀ.:</translation>
 <translation id="3677008721441257057">ਕੀ ਤੁਹਾਡਾ ਮਤਲਬ &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; ਤੋਂ ਹੈ?</translation>
 <translation id="3678029195006412963">ਬੇਨਤੀ ਹਸਤਾਖਰਿਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ</translation>
+<translation id="3678529606614285348">ਕਿਸੇ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਵਿੱਚ ਪੰਨਾ ਖੋਲ੍ਹੋ (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">ਪ੍ਰਮਾਣ-ਪੱਤਰ ਬਾਰੇ ਜਾਣਕਾਰੀ</translation>
 <translation id="3701427423622901115">ਰੀਸੈੱਟ ਪ੍ਰਵਾਨ ਹੋਇਆ।</translation>
 <translation id="3704162925118123524">ਤੁਹਾਡੇ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਨੈੱਟਵਰਕ ਇਹ ਚਾਹ ਸਕਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਇਸਦੇ ਲੌਗ-ਇਨ ਪੰਨੇ 'ਤੇ ਜਾਓ।</translation>
@@ -635,8 +667,8 @@
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>ਪ੍ਰੌਕਸੀ, ਫ਼ਾਇਰਵਾਲ, ਅਤੇ DNS ਸੰਰੂਪਣ ਦੀ ਜਾਂਚ ਕਰੋ<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">ਜਿਨ੍ਹਾਂ ਐਪਲੀਕੇਸ਼ਨਾਂ ਕਰਕੇ ਗੜਬੜ ਹੋ ਸਕਦੀ ਹੈ ਉਹਨਾਂ ਵਿੱਚ ਐਂਟੀਵਾਇਰਸ, ਫ਼ਾਇਰਵਾਲ, ਅਤੇ ਵੈੱਬ-ਫਿਲਟਰਿੰਗ ਜਾਂ ਪ੍ਰੌਕਸੀ ਸਾਫਟਵੇਅਰ ਸ਼ਾਮਲ ਹਨ।</translation>
 <translation id="373042150751172459">B4 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
-<translation id="3731873414101415120">ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੀਆਂ ਜਾਂਦੀਆਂ ਵੈੱਬਸਾਈਟਾਂ ਅਤੇ ਗੈਰ-ਸੁਰੱਖਿਅਤ ਪੰਨਿਆਂ ਦੀਆਂ ਸਮੱਗਰੀਆਂ</translation>
 <translation id="3736520371357197498">ਜੇਕਰ ਤੁਹਾਨੂੰ ਲੱਗਦਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਸੁਰੱਖਿਆ ਨੂੰ ਖਤਰਾ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਹਾਨੀਕਾਰਕ ਪ੍ਰੋਗਰਾਮਾਂ ਨੂੰ ਹਟਾਏ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ <ph name="BEGIN_LINK"/>ਇਸ ਅਸੁਰੱਖਿਅਤ ਸਾਈਟ 'ਤੇ ਜਾ ਸਕਦੇ ਹੋ<ph name="END_LINK"/>।</translation>
+<translation id="3738166223076830879">ਤੁਹਾਡਾ ਪ੍ਰਸ਼ਾਸਕ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਦਾ ਹੈ।</translation>
 <translation id="4098534208927606680">ਤੁਹਾਡੇ ਵੱਲੋਂ ਪੁਸ਼ਟੀ ਕੀਤੇ ਜਾਣ ਤੋਂ ਬਾਅਦ, ਤੁਹਾਡੇ Brave ਖਾਤੇ ਤੋਂ ਕਾਰਡ ਦੇ ਵੇਰਵੇ ਇਸ ਸਾਈਟ ਨਾਲ ਸਾਂਝੇ ਕੀਤੇ ਜਾਣਗੇ।</translation>
 <translation id="3748148204939282805"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> 'ਤੇ ਹਮਲਾਵਰ ਸਾਫ਼ਟਵੇਅਰ ਸਥਾਪਤ ਕਰਕੇ ਜਾਂ ਤੁਹਾਡੀ ਨਿੱਜੀ ਜਾਣਕਾਰੀ (ਉਦਾਹਰਨ ਲਈ, ਪਾਸਵਰਡ, ਫ਼ੋਨ ਨੰਬਰ, ਜਾਂ ਕ੍ਰੈਡਿਟ ਕਾਰਡ) ਦਾ ਖੁਲਾਸਾ ਕਰਨ ਵਰਗੇ ਖਤਰਨਾਕ ਕੰਮ ਕਰਕੇ ਤੁਹਾਡੇ ਨਾਲ ਚਾਲਬਾਜ਼ੀ ਕਰ ਸਕਦੇ ਹਨ। <ph name="BEGIN_LEARN_MORE_LINK"/>ਹੋਰ ਜਾਣੋ<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3754210790023674521">ਤਸਵੀਰ-ਵਿੱਚ-ਤਸਵੀਰ ਮੋਡ ਤੋਂ ਬਾਹਰ ਜਾਓ</translation>
@@ -696,10 +728,10 @@
 <translation id="3987940399970879459">1 MB ਤੋਂ ਘੱਟ</translation>
 <translation id="3990250421422698716">ਜੌਗ ਆਫ਼ਸੈੱਟ</translation>
 <translation id="3996311196211510766">ਸਾਈਟ <ph name="ORIGIN"/> ਨੇ ਬੇਨਤੀ ਕੀਤੀ ਹੈ ਕਿ ਮੂਲ ਸੰਬੰਧੀ ਨੀਤੀ ਨੂੰ ਉਸ ਦੀਆਂ ਸਾਰੀਆਂ ਬੇਨਤੀਆਂ 'ਤੇ ਲਾਗੂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਪਰ ਇਸ ਨੀਤੀ ਨੂੰ ਫਿਲਹਾਲ ਲਾਗੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।</translation>
-<translation id="40103911065039147">{URL_count,plural, =1{ਨੇੜੇ-ਤੇੜੇ 1 ਵੈੱਬ ਪੰਨਾ}one{ਨੇੜੇ-ਤੇੜੇ # ਵੈੱਬ ਪੰਨੇ}other{ਨੇੜੇ-ਤੇੜੇ # ਵੈੱਬ ਪੰਨੇ}}</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{PDF ਦਸਤਾਵੇਜ਼ ਵਿੱਚ {COUNT} ਪੰਨਾ ਹੈ}one{PDF ਦਸਤਾਵੇਜ਼ ਵਿੱਚ {COUNT} ਪੰਨਾ ਹੈ}other{PDF ਦਸਤਾਵੇਜ਼ ਵਿੱਚ {COUNT} ਪੰਨੇ ਹਨ}}</translation>
 <translation id="4030383055268325496">&amp;ਜੋੜਨਾ ਅਨਡੂ ਕਰੋ</translation>
 <translation id="4032320456957708163">ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਦਾ ਪ੍ਰਬੰਧਨ <ph name="ENROLLMENT_DOMAIN"/> ਵੱਲੋਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ</translation>
+<translation id="4056223980640387499">Sepia</translation>
 <translation id="4058922952496707368">ਕੁੰਜੀ "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="4067947977115446013">ਵੈਧ ਪਤਾ ਸ਼ਾਮਲ ਕਰੋ</translation>
@@ -708,11 +740,11 @@
 <translation id="4075941231477579656">ਸਪਰਸ਼ ਆਈਡੀ</translation>
 <translation id="4079302484614802869">ਪ੍ਰੌਕਸੀ ਸੰਰੂਪਿਤ ਇੱਕ .pac ਸਕ੍ਰਿਪਟ URL ਵਰਤਣ ਲਈ ਸੈੱਟ ਹੈ, ਸਥਿਰ ਪ੍ਰੌਕਸੀ ਸਰਵਰਾਂ ਨੂੰ ਨਹੀਂ।</translation>
 <translation id="4082393374666368382">ਸੈਟਿੰਗਾਂ - ਪ੍ਰਬੰਧਨ</translation>
+<translation id="4084120443451129199">ਖੋਜ ਮੋਡ, <ph name="KEYWORD_SUFFIX"/> ਨੂੰ ਖੋਜਣ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="4088981014127559358">ਸਾਈਡ 1 ਚਿੱਤਰ Y ਸ਼ਿਫਟ</translation>
 <translation id="4098354747657067197">ਅੱਗੇ ਧੋਖੇਬਾਜ਼ ਸਾਈਟ ਹੈ</translation>
 <translation id="4101413244023615925">ਲਿਖਤ ਅਤੇ ਗ੍ਰਾਫ਼ਿਕ</translation>
 <translation id="4103249731201008433">ਡੀਵਾਈਸ ਦਾ ਸੀਰੀਅਲ ਨੰਬਰ ਅਵੈਧ ਹੈ</translation>
-<translation id="4103763322291513355">ਬਲੈਕਲਿਸਟ ਕੀਤੇ URL ਅਤੇ ਤੁਹਾਡੇ ਸਿਸਟਮ ਪ੍ਰਬੰਧਕ ਵੱਲੋਂ ਲਾਗੂ ਕੀਤੀਆਂ ਹੋਰ ਨੀਤੀਆਂ ਦੀ ਸੂਚੀ ਦੇਖਣ ਲਈ &lt;strong&gt;chrome://policy&lt;/strong&gt; 'ਤੇ ਜਾਓ।</translation>
 <translation id="4110652170750985508">ਆਪਣੇ ਭੁਗਤਾਨ ਦੀ ਸਮੀਖਿਆ ਕਰੋ</translation>
 <translation id="4112140312785995938">ਪਿੱਛੇ ਕਰੋ</translation>
 <translation id="4116663294526079822">ਹਮੇਸ਼ਾਂ ਇਸ ਸਾਈਟ ਤੇ ਆਗਿਆ ਦਿਓ</translation>
@@ -740,6 +772,7 @@
 <translation id="4194250254487269611">ਤੁਹਾਡੇ ਕਾਰਡ ਨੂੰ ਫਿਲਹਾਲ ਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</translation>
 <translation id="4196861286325780578">&amp;ਮੂਵ ਨੂੰ ਰੀਡੂ ਕਰੋ</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>ਫ਼ਾਇਰਵਾਲ ਅਤੇ ਐਂਟੀਵਾਇਰਸ ਸੰਰੂਪਣਾਂ ਦੀ ਜਾਂਚ ਕਰੋ<ph name="END_LINK"/></translation>
+<translation id="4209092469652827314">ਵੱਡਾ</translation>
 <translation id="4209166701302774460">ਜਿਸ ਸਰਵਰ 'ਤੇ ਤੁਸੀਂ ਜਾ ਰਹੇ ਹੋ, <ph name="ORIGIN"/>, ਉਸਨੇ ਬੇਨਤੀ ਕੀਤੀ ਹੈ ਕਿ ਉਸ 'ਤੇ ਕੀਤੀਆਂ ਸਾਰੀਆਂ ਬੇਨਤੀਆਂ 'ਤੇ ਮੂਲ ਸੰਬੰਧੀ ਨੀਤੀ ਲਾਗੂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ। ਪਰ ਇਹ ਹੁਣ ਨੀਤੀ ਨਹੀਂ ਡਿਲੀਵਰ ਕਰ ਸਕਿਆ, ਜਿਸ ਕਰਕੇ ਬ੍ਰਾਊਜ਼ਰ ਨੂੰ <ph name="SITE"/> ਲਈ ਤੁਹਾਡੀ ਬੇਨਤੀ ਨੂੰ ਪੂਰਾ ਕਰਨ ਤੋਂ ਰੋਕਿਆ ਜਾਂਦਾ ਹੈ। ਮੂਲ ਸੰਬੰਧੀ ਨੀਤੀਆਂ ਨੂੰ ਕਿਸੇ ਸਾਈਟ ਦੀ ਸੁਰੱਖਿਆ ਅਤੇ ਹੋਰ ਵਿਸੇਸ਼ਤਾਵਾਂ ਦਾ ਸੰਰੂਪਣ ਕਰਨ ਲਈ ਸਾਈਟ ਓਪਰੇਟਰਾਂ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="421066178035138955">ਆਭਾਸੀ ਵਾਸਤਵਿਕਤਾ ਵਾਲੇ ਡੀਵਾਈਸਾਂ ਅਤੇ ਡਾਟੇ ਨੂੰ ਵਰਤੋ</translation>
 <translation id="4214357935346142455">ਸਾਈਨ-ਇਨ ਸਕ੍ਰੀਨ ਪ੍ਰੋਫਾਈਲ</translation>
@@ -761,9 +794,11 @@
 <translation id="4277028893293644418">ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ</translation>
 <translation id="4279811152705618813">ਤੁਹਾਡੇ <ph name="DEVICE_TYPE"/> ਦਾ ਪ੍ਰਬੰਧਨ <ph name="ENROLLMENT_DOMAIN"/> ਵੱਲੋਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ</translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{ਇਸ ਕਾਰਡ ਨੂੰ ਤੁਹਾਡੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਹੈ}one{ਇਸ ਕਾਰਡ ਨੂੰ ਤੁਹਾਡੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਹੈ}other{ਇਹਨਾਂ ਕਾਰਡਾਂ ਨੂੰ ਤੁਹਾਡੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਹੈ}}</translation>
+<translation id="4297502707443874121">ਪੰਨਾ <ph name="THUMBNAIL_PAGE"/> ਲਈ ਲਘੂ-ਚਿੱਤਰ</translation>
 <translation id="42981349822642051">ਵਿਸਤਾਰ ਕਰੋ</translation>
 <translation id="4300675098767811073">ਸੱਜੇ ਪਾਸੇ ਇੱਕ ਤੋਂ ਵੱਧ ਮੋਰੀਆਂ</translation>
 <translation id="4302965934281694568">Chou3 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
+<translation id="4305666528087210886">ਤੁਹਾਡੀ ਫ਼ਾਈਲ 'ਤੇ ਪਹੁੰਚ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ</translation>
 <translation id="4305817255990598646">ਸਵਿੱਚ ਕਰੋ</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">ਬਲਾਕ ਕਰੋ (ਪੂਰਵ-ਨਿਰਧਾਰਤ)</translation>
@@ -778,8 +813,9 @@
 <translation id="4346833872170306413">ROC 16K</translation>
 <translation id="4356973930735388585">ਇਸ ਸਾਈਟ 'ਤੇ ਹਮਲਾਵਰ ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ 'ਤੇ ਖਤਰਨਾਕ ਪ੍ਰੋਗਰਾਮ ਸਥਾਪਤ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਸਕਦੇ ਹਨ ਜੋ ਕਿ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ (ਉਦਾਹਰਨ ਲਈ ਫ਼ੋਟੋਆਂ, ਪਾਸਵਰਡ, ਸੁਨੇਹੇ, ਅਤੇ ਕ੍ਰੈਡਿਟ ਕਾਰਡ) ਨੂੰ ਚੋਰੀ ਕਰ ਸਕਦੇ ਹਨ ਜਾਂ ਮਿਟਾ ਸਕਦੇ ਹਨ।</translation>
 <translation id="4358059973562876591">ਤੁਹਾਡੇ ਵੱਲੋਂ ਨਿਰਧਾਰਤ ਕੀਤੇ ਟੈਮਪਲੇਟ DnsOverHttpsMode ਨੀਤੀ ਵਿੱਚ ਕਿਸੇ ਗੜਬੜ ਕਾਰਨ ਸ਼ਾਇਦ ਲਾਗੂ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕਦੇ।</translation>
-<translation id="327628984294957152">ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
+<translation id="4358461427845829800">ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
 <translation id="4367563149485757821">ਨੰਬਰ-12 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
+<translation id="7954571639479265338">{1,plural, =0{ਕਿਸੇ ਸਾਈਟ ਜਾਂ ਐਪ 'ਤੇ ਡਾਟਾ ਉਲੰਘਣਾ ਨੇ <ph name="ORIGIN"/> ਲਈ ਤੁਹਾਡੇ ਵੱਲੋਂ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡ ਨੂੰ ਉਜਾਗਰ ਕੀਤਾ ਹੈ। Brave <ph name="ORIGIN"/> ਦੇ ਤੁਹਾਡੇ ਪਾਸਵਰਡ ਨੂੰ ਹੁਣੇ ਬਦਲਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕਰਦਾ ਹੈ।}=1{ਕਿਸੇ ਸਾਈਟ ਜਾਂ ਐਪ 'ਤੇ ਡਾਟਾ ਉਲੰਘਣਾ ਨੇ <ph name="ORIGIN"/> ਅਤੇ ਇੱਕ ਹੋਰ ਸਾਈਟ ਲਈ ਤੁਹਾਡੇ ਵੱਲੋਂ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡ ਨੂੰ ਉਜਾਗਰ ਕੀਤਾ ਹੈ। Brave ਤੁਹਾਡੇ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡ ਦੀ ਹੁਣੇ ਜਾਂਚ ਕਰਨ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕਰਦਾ ਹੈ।}other{ਕਿਸੇ ਸਾਈਟ ਜਾਂ ਐਪ 'ਤੇ ਡਾਟਾ ਉਲੰਘਣਾ ਨੇ <ph name="ORIGIN"/> ਅਤੇ <ph name="SITES_COUNT"/> ਹੋਰ ਸਾਈਟਾਂ ਲਈ ਤੁਹਾਡੇ ਵੱਲੋਂ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡ ਨੂੰ ਉਜਾਗਰ ਕੀਤਾ ਹੈ। Brave ਤੁਹਾਡੇ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡਾਂ ਦੀ ਹੁਣੇ ਜਾਂਚ ਕਰਨ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕਰਦਾ ਹੈ।}}</translation>
 <translation id="437058704415269440">ਖਾਤਾ ਬਕਾਇਆ</translation>
 <translation id="4372516964750095882">ਫੈਨਫੋਲਡ-ਅਮਰੀਕਾ</translation>
 <translation id="4372948949327679948">ਸੰਭਾਵਿਤ <ph name="VALUE_TYPE"/> ਵੈਲਯੂ।</translation>
@@ -791,10 +827,12 @@
 <translation id="4415426530740016218">ਪਿਕਅੱਪ ਪਤਾ</translation>
 <translation id="443121186588148776">ਸੀਰੀਅਲ ਪੋਰਟ</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> ਨੇ ਤੁਹਾਡਾ ਲੌਗ-ਇਨ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤਾ, ਜਾਂ ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਕੋਈ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਮੁਹੱਈਆ ਨਾ ਕਰਵਾਇਆ ਗਿਆ ਹੋਵੇ।</translation>
+<translation id="4432792777822557199">ਹੁਣ ਤੋਂ <ph name="SOURCE_LANGUAGE"/> ਭਾਸ਼ਾ ਦੇ ਪੰਨੇ <ph name="TARGET_LANGUAGE"/> ਭਾਸ਼ਾ ਵਿੱਚ ਅਨੁਵਾਦ ਕੀਤੇ ਜਾਣਗੇ</translation>
 <translation id="4434045419905280838">ਪੌਪ-ਅੱਪ ਅਤੇ ਰੀਡਾਇਰੈਕਟ</translation>
 <translation id="4435702339979719576">ਪੋਸਟਕਾਰਡ)</translation>
 <translation id="443673843213245140">ਇੱਕ ਪ੍ਰੌਕਸੀ ਦੀ ਵਰਤੋਂ ਅਸਮਰਥਿਤ ਹੈ ਪਰੰਤੂ ਇੱਕ ਸਪਸ਼ਟ ਪ੍ਰੌਕਸੀ ਕੌਂਫਿਗਰੇਸ਼ਨ ਨਿਸ਼ਚਿਤ ਹੈ।</translation>
 <translation id="4466881336512663640">ਫ਼ਾਰਮ ਤਬਦੀਲੀਆਂ ਗੁਆਚ ਜਾਣਗੀਆਂ। ਕੀ ਤੁਸੀਂ ਪੱਕਾ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
+<translation id="4476953670630786061">ਇਹ ਫ਼ਾਰਮ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ। ਆਟੋਫਿਲ ਨੂੰ ਬੰਦ ਕੀਤਾ ਗਿਆ ਹੈ।</translation>
 <translation id="4477350412780666475">ਅਗਲਾ ਟਰੈਕ</translation>
 <translation id="4482953324121162758">ਇਸ ਸਾਈਟ ਦਾ ਅਨੁਵਾਦ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ।</translation>
 <translation id="4490717597759821841">A7</translation>
@@ -805,6 +843,7 @@
 <translation id="4506599922270137252">ਸਿਸਟਮ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਸੰਪਰਕ ਕਰੋ</translation>
 <translation id="450710068430902550">ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਸ਼ੇਅਰਿੰਗ</translation>
 <translation id="4508814173490746936">ਸਪਰਸ਼ ਆਈਡੀ ਨਹੀਂ ਵਰਤ ਸਕਦੇ</translation>
+<translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ Brave Translate ਨਾਲ ਇਸ ਪੰਨੇ ਦਾ ਅਨੁਵਾਦ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="4510487217173779431">Chou4 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="4892470328555495647">ਕਾਰਡ ਅਤੇ ਪਤੇ Brave ਅਤੇ ਤੁਹਾਡੇ Brave ਖਾਤੇ (<ph name="ACCOUNT_EMAIL"/>) ਤੋਂ ਹਨ। ਤੁਸੀਂ ਉਹਨਾਂ ਦਾ ਪ੍ਰਬੰਧਨ <ph name="BEGIN_LINK"/>ਸੈਟਿੰਗਾਂ<ph name="END_LINK"/> ਵਿੱਚ ਕਰ ਸਕਦੇ ਹੋ।</translation>
 <translation id="4517607026994743406">Comm-10 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
@@ -824,6 +863,7 @@
 <translation id="4597348597567598915">ਆਕਾਰ 8</translation>
 <translation id="4600854749408232102">C6/C5 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="4628948037717959914">ਫ਼ੋਟੋ</translation>
+<translation id="4631649115723685955">ਕੈਸ਼ਬੈਕ ਨੂੰ ਲਿੰਕ ਕੀਤਾ ਗਿਆ</translation>
 <translation id="464342062220857295">'ਖੋਜ' ਦੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ</translation>
 <translation id="4644670975240021822">ਉਲਟੇ ਕ੍ਰਮ ਵਿੱਚ ਪਾਸਾ ਹੇਠਾਂ ਕੀਤੇ ਹੋਏ</translation>
 <translation id="4646534391647090355">ਮੈਨੂੰ ਹੁਣੇ ਉੱਥੇ ਲੈ ਜਾਓ</translation>
@@ -861,14 +901,17 @@
 <translation id="4780900888022378816">ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਦਾ ਪ੍ਰਬੰਧਨ <ph name="ENROLLMENT_DOMAIN"/> ਵੱਲੋਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ ਅਤੇ ਤੁਹਾਡੇ ਖਾਤੇ ਦਾ ਪ੍ਰਬੰਧਨ <ph name="ACCOUNT_DOMAIN"/> ਵੱਲੋਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।</translation>
 <translation id="4785689107224900852">ਇਸ ਟੈਬ 'ਤੇ ਜਾਓ</translation>
 <translation id="4791134497475588553">Linux ਐਪਾਂ ਸਥਾਪਤ ਕਰਨ ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਵਰਤੇ ਜਾਣ ਦਾ ਸਮਾਂ</translation>
+<translation id="4792686369684665359">ਤੁਹਾਡੇ ਵੱਲੋਂ ਸਪੁਰਦ ਕੀਤੀ ਜਾਣ ਵਾਲੀ ਜਾਣਕਾਰੀ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ</translation>
 <translation id="4796594887379589189">ਕਾਰਵਾਈ ਖਾਤਾ ਆਈਡੀ</translation>
 <translation id="7110430050177876111">ਆਪਣੇ ਕਾਰਡ ਵੇਰਵਿਆਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਲਈ <ph name="CREDIT_CARD"/> ਦੀ ਮਿਆਦ ਸਮਾਪਤੀ ਦੀ ਤਾਰੀਖ ਅਤੇ CVC ਦਾਖਲ ਕਰੋ। ਤੁਹਾਡੇ ਵੱਲੋਂ ਪੁਸ਼ਟੀ ਕੀਤੇ ਜਾਣ ਤੋਂ ਬਾਅਦ, ਤੁਹਾਡੇ Brave ਖਾਤੇ ਤੋਂ ਕਾਰਡ ਦੇ ਵੇਰਵੇ ਇਸ ਸਾਈਟ ਨਾਲ ਸਾਂਝੇ ਕੀਤੇ ਜਾਣਗੇ।</translation>
 <translation id="4800132727771399293">ਆਪਣੀ ਮਿਆਦ ਸਮਾਪਤੀ ਦੀ ਤਾਰੀਖ ਤੇ CVC ਦੇਖੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</translation>
 <translation id="480334179571489655">ਮੂਲ ਨੀਤੀ ਸੰਬੰਧੀ ਗੜਬੜ</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="8896585555528145662">ਤੁਸੀਂ ਇਸ ਵੇਲੇ <ph name="SITE"/> 'ਤੇ ਨਹੀਂ ਜਾ ਸਕਦੇ ਹੋ ਕਿਉਂਕਿ ਵੈੱਬਸਾਈਟ ਨੇ ਅਜਿਹੇ ਖਿਲਰੇ ਕ੍ਰੀਡੈਂਸ਼ੀਅਲ ਭੇਜੇ ਸਨ ਜਿਨ੍ਹਾਂ 'ਤੇ Brave ਪ੍ਰਕਿਰਿਆ ਨਹੀਂ ਕਰ ਸਕਦਾ। ਨੈੱਟਵਰਕ ਗੜਬੜੀਆਂ ਅਤੇ ਹਮਲੇ ਆਮ ਤੌਰ 'ਤੇ ਅਸਥਾਈ ਹੁੰਦੇ ਹਨ, ਇਸਲਈ ਇਹ ਪੰਨਾ ਸ਼ਾਇਦ ਬਾਅਦ ਵਿੱਚ ਠੀਕ ਢੰਗ ਨਾਲ ਕੰਮ ਕਰੇਗਾ।</translation>
+<translation id="4809079943450490359">ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਪ੍ਰਸ਼ਾਸਕ ਵੱਲੋਂ ਹਿਦਾਇਤਾਂ:</translation>
 <translation id="4813512666221746211">ਨੈੱਟਵਰਕ ਗੜਬੜ</translation>
 <translation id="4816492930507672669">ਸਫ਼ੇ ਤੇ ਫਿਟ</translation>
+<translation id="4819347708020428563">ਕੀ ਪੂਰਵ-ਨਿਰਧਾਰਤ ਦ੍ਰਿਸ਼ ਵਿੱਚ ਐਨੋਟੇਸ਼ਨਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰਨਾ ਹੈ?</translation>
 <translation id="484462545196658690">ਸਵੈ</translation>
 <translation id="4850886885716139402">ਦੇਖੋ</translation>
 <translation id="4854362297993841467">ਇਹ ਅਦਾਇਗੀ ਵਿਧੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕੋਈ ਵੱਖਰੀ ਵਿਧੀ ਅਜ਼ਮਾਓ।</translation>
@@ -880,15 +923,16 @@
 <translation id="4879725228911483934">ਆਪਣੀਆਂ ਸਕ੍ਰੀਨਾਂ 'ਤੇ ਵਿੰਡੋ ਖੋਲ੍ਹੋ ਅਤੇ ਉਸਨੂੰ ਰੱਖੋ</translation>
 <translation id="4880827082731008257">ਖੋਜ ਇਤਿਹਾਸ</translation>
 <translation id="4881695831933465202">ਖੋਲ੍ਹੋ</translation>
+<translation id="4889420713887366944">'ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹੋ' ਬਟਨ, ਨਿੱਜੀ ਤੌਰ 'ਤੇ ਬ੍ਰਾਊਜ਼ ਕਰਨ ਲਈ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹਣ ਵਾਸਤੇ Enter ਦਬਾਓ</translation>
 <translation id="4892518386797173871">ਪਿਛਲਾ</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">ਰੱਖਿਅਤ ਕਰੋ...</translation>
 <translation id="4913987521957242411">ਉੱਪਰ ਖੱਬੇ ਪਾਸੇ ਮੋਰੀ</translation>
-<translation id="4914479371620770914">{URL_count,plural, =1{ਅਤੇ 1 ਹੋਰ ਵੈੱਬ ਪੰਨਾ}one{ਅਤੇ # ਹੋਰ ਵੈੱਬ ਪੰਨੇ}other{ਅਤੇ # ਹੋਰ ਵੈੱਬ ਪੰਨੇ}}</translation>
 <translation id="4923459931733593730">ਭੁਗਤਾਨ ਵਿਧੀ</translation>
 <translation id="4926049483395192435">ਨਿਰਦਿਸ਼ਟ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।</translation>
 <translation id="4926159001844873046"><ph name="SITE"/> ਦੇ ਮੁਤਾਬਕ</translation>
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
+<translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ ਖੋਜ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="4930153903256238152">ਵੱਧ ਸਮਰੱਥਾ</translation>
 <translation id="4943872375798546930">ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ</translation>
 <translation id="4950898438188848926">ਟੈਬ ਬਦਲਣ ਦਾ ਬਟਨ, ਖੁੱਲ੍ਹੀ ਟੈਬ, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/> 'ਤੇ ਜਾਣ ਲਈ ਐਂਟਰ ਦਬਾਓ</translation>
@@ -915,6 +959,7 @@
 <translation id="503069730517007720">"<ph name="SOFTWARE_NAME"/>" ਲਈ 'ਰੂਟ ਪ੍ਰਮਾਣ-ਪੱਤਰ' ਲੋੜੀਂਦਾ ਹੈ ਪਰ ਸਥਾਪਤ ਨਹੀਂ ਹੈ। ਇਸ ਸਮੱਸਿਆ ਨੂੰ ਠੀਕ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਆਈ.ਟੀ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ "<ph name="SOFTWARE_NAME"/>" ਲਈ ਰੂਪ-ਰੇਖਾ ਹਿਦਾਇਤਾਂ ਨੂੰ ਦੇਖਣਾ ਚਾਹੀਦਾ ਹੈ। <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="6425384654920630035">Brave ਅਨੁਵਾਦ ਬਾਰੇ</translation>
 <translation id="503498442187459473"><ph name="HOST"/> ਦੀ ਤੁਹਾਡਾ ਕੈਮਰਾ ਅਤੇ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਵਰਤਣ ਦੀ ਇੱਛਾ ਹੈ</translation>
+<translation id="5039762155821394373">ਫ਼ੌਂਟ ਆਕਾਰ</translation>
 <translation id="5039804452771397117">ਆਗਿਆ ਦਿਓ</translation>
 <translation id="5040262127954254034">ਪ੍ਰਾਈਵੇਸੀ</translation>
 <translation id="5043480802608081735">ਤੁਹਾਡੇ ਵੱਲੋਂ ਕਾਪੀ ਕੀਤਾ ਲਿੰਕ</translation>
@@ -940,7 +985,7 @@
 <translation id="5123063207673082822">ਵੀਕੈਂਡ</translation>
 <translation id="5125394840236832993">B-ਪਲੱਸ</translation>
 <translation id="5126510351761255129">ਆਪਣੇ ਕਾਰਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</translation>
-<translation id="6291230311289558881">ਪਤਿਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
+<translation id="5135404736266831032">ਪਤਿਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
 <translation id="5138227688689900538">ਘੱਟ ਦਿਖਾਓ</translation>
 <translation id="7186167407612593632">ਸਮਕਾਲੀਕਰਨ ਕੀਤੇ ਪਾਸਵਰਡਾਂ ਨੂੰ ਆਪਣੇ Brave ਕ੍ਰੈਡੈਂਸ਼ੀਅਲਸ ਨਾਲ ਐਨਕ੍ਰਿਪਟ ਕਰੋ</translation>
 <translation id="5145883236150621069">ਨੀਤੀ ਜਵਾਬ ਵਿੱਚ ਗੜਬੜ ਕੋਡ ਹੈ</translation>
@@ -948,6 +993,7 @@
 <translation id="5148809049217731050">ਉੱਪਰ ਵੱਲ ਪਾਸਾ ਕੀਤੇ</translation>
 <translation id="515292512908731282">C4 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="5158275234811857234">ਕਵਰ</translation>
+<translation id="5159010409087891077">ਕਿਸੇ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਵਿੱਚ ਪੰਨਾ ਖੋਲ੍ਹੋ (⇧⌘N)</translation>
 <translation id="5161506081086828129">ਸਟੈਕਰ 9</translation>
 <translation id="5164798890604758545">ਲਿਖਤ ਦਾਖਲ ਕੀਤੀ ਗਈ</translation>
 <translation id="2996889577833788807"><ph name="CREDIT_CARD"/> ਦਾ CVC ਦਾਖਲ ਕਰੋ। ਤੁਹਾਡੇ ਵੱਲੋਂ ਪੁਸ਼ਟੀ ਕੀਤੇ ਜਾਣ ਤੋਂ ਬਾਅਦ, ਤੁਹਾਡੇ Brave ਖਾਤੇ ਤੋਂ ਕਾਰਡ ਦੇ ਵੇਰਵੇ ਇਸ ਸਾਈਟ ਨਾਲ ਸਾਂਝੇ ਕੀਤੇ ਜਾਣਗੇ।</translation>
@@ -956,6 +1002,8 @@
 <translation id="5171689220826475070">ਫੈਨਫੋਲਡ-ਯੂਰਪੀ</translation>
 <translation id="5172758083709347301">ਮਸ਼ੀਨ</translation>
 <translation id="5179510805599951267">ਕੀ <ph name="ORIGINAL_LANGUAGE"/> ਵਿੱਚ ਨਹੀਂ ਹੈ? ਇਸ ਗੜਬੜ ਦੀ ਰਿਪੋਰਟ ਕਰੋ</translation>
+<translation id="5179740473595559246">ਆਪਣੀ ਮੌਜੂਦਗੀ ਬਾਰੇ ਜਾਣੋ</translation>
+<translation id="5190835502935405962">ਬੁੱਕਮਾਰਸ ਬਾਰ</translation>
 <translation id="519422657042045905">ਐਨੋਟੇਸ਼ਨ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</translation>
 <translation id="5201306358585911203">ਇਸ ਪੰਨੇ 'ਤੇ ਇੱਕ ਪਰੋਏ ਗਏ ਪੰਨੇ ਦੇ ਮੁਤਾਬਕ</translation>
 <translation id="5205222826937269299">ਨਾਮ ਲੋੜੀਂਦਾ ਹੈ</translation>
@@ -991,6 +1039,7 @@
 <translation id="5308380583665731573">ਕਨੈਕਟ ਕਰੋ</translation>
 <translation id="5308689395849655368">ਕ੍ਰੈਸ਼ ਰਿਪੋਰਟਿੰਗ ਬੰਦ ਹੈ।</translation>
 <translation id="5314967030527622926">ਬੁੱਕਲੈੱਟ ਮੇਕਰ</translation>
+<translation id="5316812925700871227">ਕਾਉਂਟਰਕਲੌਕਵਾਈਜ ਰੋਟੇਟ ਕਰੋ</translation>
 <translation id="5317780077021120954">ਰੱਖਿਅਤ ਕਰੋ</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="NUM_MATCHES"/> ਵਿੱਚੋਂ <ph name="MATCH_POSITION"/></translation>
 <translation id="5324080437450482387">ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਚੁਣੋ</translation>
@@ -1014,9 +1063,9 @@
 <translation id="5421136146218899937">ਬ੍ਰਾਊਜ਼ਿੰਗ ਡਾਟਾ ਹਟਾਓ</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ਤੁਹਾਨੂੰ ਸੂਚਨਾਵਾਂ ਭੇਜਣਾ ਚਾਹੁੰਦੀ ਹੈ।</translation>
 <translation id="5430298929874300616">ਬੁੱਕਮਾਰਕ ਹਟਾਓ</translation>
-<translation id="5431657950005405462">ਤੁਹਾਡੀ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ ਸੀ</translation>
 <translation id="5439770059721715174">"<ph name="ERROR_PATH"/>" ਤੇ Schema ਪ੍ਰਮਾਣੀਕਰਨ ਗੜਬੜ : <ph name="ERROR"/></translation>
 <translation id="5443468954631487277">ਉਲਟੇ ਕ੍ਰਮ ਵਿੱਚ ਪਾਸਾ ਉੱਪਰ ਕੀਤੇ ਹੋਏ</translation>
+<translation id="5447765697759493033">ਇਸ ਸਾਈਟ ਦਾ ਅਨੁਵਾਦ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ</translation>
 <translation id="5452270690849572955">ਇਸ <ph name="HOST_NAME"/> ਪੰਨੇ ਨੂੰ ਲੱਭਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ</translation>
 <translation id="5455374756549232013">ਖ਼ਰਾਬ ਨੀਤੀ ਟਾਈਮਸਟੈਂਪ</translation>
 <translation id="5457113250005438886">ਅਵੈਧ</translation>
@@ -1034,9 +1083,11 @@
 <translation id="5509780412636533143">ਵਿਵਸਥਿਤ ਕੀਤੇ ਬੁੱਕਮਾਰਕ</translation>
 <translation id="5510481203689988000">ਇਹ ਸੈਟਿੰਗ ਕੁਕੀਜ਼ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਕੰਟਰੋਲ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।</translation>
 <translation id="5510766032865166053">ਇਸ ਨੂੰ ਤਬਦੀਲ ਕੀਤਾ ਜਾਂ ਮਿਟਾਇਆ ਜਾ ਚੁੱਕਿਆ ਹੈ।</translation>
+<translation id="5519516356611866228">ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਨਾਲ</translation>
 <translation id="5523118979700054094">ਨੀਤੀ ਦਾ ਨਾਮ</translation>
 <translation id="55293785478302737">ਕਿਨਾਰੇ ਤੋਂ ਸਿਲਾਈ</translation>
 <translation id="553484882784876924">Prc6 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
+<translation id="6477838366754392112">'ਬ੍ਰਾਊਜ਼ਿੰਗ ਡਾਟਾ ਕਲੀਅਰ ਕਰੋ' ਬਟਨ, Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣਾ ਬ੍ਰਾਊਜ਼ਿੰਗ ਇਤਿਹਾਸ, ਕੁਕੀਜ਼, ਕੈਸ਼ੇ ਅਤੇ ਹੋਰ ਚੀਜ਼ਾਂ ਨੂੰ ਕਲੀਅਰ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="5536214594743852365">"<ph name="SECTION"/>" ਸੈਕਸ਼ਨ ਦਿਖਾਓ</translation>
 <translation id="5539243836947087108">ਰਾਫ਼ਟ</translation>
 <translation id="5540224163453853">ਬੇਨਤੀ ਕੀਤਾ ਲੇਖ ਨਹੀਂ ਲੱਭ ਸਕਿਆ।</translation>
@@ -1046,6 +1097,7 @@
 <translation id="6084314943327785510">Brave ਨਿਯਮਿਤ ਤੌਰ 'ਤੇ ਆਨਲਾਈਨ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤੀਆਂ ਗਈਆਂ ਸੂਚੀਆਂ ਨਾਲ ਤੁਹਾਡੇ ਪਾਸਵਰਡਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ। ਅਜਿਹਾ ਕਰਨ ਵੇਲੇ, ਤੁਹਾਡੇ ਪਾਸਵਰਡ ਅਤੇ ਵਰਤੋਂਕਾਰ ਨਾਮ ਇਨਕ੍ਰਿਪਟ ਕੀਤੇ ਜਾਂਦੇ ਹਨ, ਇਸ ਲਈ ਉਹ Brave ਸਮੇਤ ਕਿਸੇ ਵੱਲੋਂ ਵੀ ਪੜ੍ਹੇ ਨਹੀਂ ਜਾ ਸਕਦੇ।</translation>
 <translation id="5556459405103347317">ਰੀਲੋਡ ਕਰੋ</translation>
 <translation id="5560088892362098740">ਮਿਆਦ ਸਮਾਪਤੀ ਦੀ ਮਿਤੀ</translation>
+<translation id="55635442646131152">ਦਸਤਾਵੇਜ਼ ਰੂਪ-ਰੇਖਾ</translation>
 <translation id="5565735124758917034">ਸਕਿਰਿਆ</translation>
 <translation id="5570825185877910964">ਖਾਤੇ ਦੀ ਸੁਰੱਖਿਆ ਕਰੋ</translation>
 <translation id="5571083550517324815">ਇਸ ਪਤੇ ਤੋਂ ਪਿੱਕਅੱਪ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ। ਕਿਸੇ ਵੱਖਰੇ ਪਤੇ ਨੂੰ ਚੁਣੋ।</translation>
@@ -1059,8 +1111,10 @@
 <translation id="4067274479097837765">ਸਾਈਟ ਨਕਲੀ ਜਾਂ ਧੋਖਾਧੜੀ ਵਾਲੀ ਹੋ ਸਕਦੀ ਹੈ। Brave ਹੁਣੇ ਇਸਨੂੰ ਛੱਡਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕਰਦਾ ਹੈ।</translation>
 <translation id="5610142619324316209">ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ</translation>
 <translation id="5610807607761827392">ਤੁਸੀਂ <ph name="BEGIN_LINK"/>ਸੈਟਿੰਗਾਂ<ph name="END_LINK"/> ਵਿੱਚ ਕਾਰਡਾਂ ਅਤੇ ਪਤਿਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦੇ ਹੋ।</translation>
+<translation id="2012723355262040739">ਇਸ ਪੰਨੇ ਦਾ Brave Translate ਨਾਲ ਅਨੁਵਾਦ ਕਰੋ</translation>
 <translation id="5612720917913232150"><ph name="URL"/> ਦੀ ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ ਦੀ ਟਿਕਾਣਾ ਜਾਣਕਾਰੀ ਵਰਤਣ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="5617949217645503996"><ph name="HOST_NAME"/> ਨੇ ਤੁਹਾਨੂੰ ਕਈ ਵਾਰ ਰੀਡਾਇਰੈਕਟ ਕੀਤਾ।</translation>
+<translation id="5624120631404540903">ਪਾਸਵਰਡ ਵਿਵਸਥਿਤ ਕਰੋ</translation>
 <translation id="5629630648637658800">ਨੀਤੀ ਸੈਟਿੰਗਾਂ ਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ</translation>
 <translation id="5631439013527180824">ਅਵੈਧ ਡੀਵਾਈਸ ਪ੍ਰਬੰਧਨ ਟੋਕਨ</translation>
 <translation id="2590378115732684772">ਤੁਹਾਡਾ ਡਾਟਾ <ph name="TIME"/> ਵਜੇ ਤੁਹਾਡੇ <ph name="BEGIN_LINK"/>Brave ਪਾਸਵਰਡ<ph name="END_LINK"/> ਨਾਲ ਇਨਕ੍ਰਿਪਟ ਕੀਤਾ ਗਿਆ। ਸਮਕਾਲੀਕਰਨ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਇਸਨੂੰ ਦਾਖਲ ਕਰੋ।</translation>
@@ -1080,10 +1134,10 @@
 <translation id="5689516760719285838">ਟਿਕਾਣਾ</translation>
 <translation id="569000877158168851">DnsOverHttpsTemplates ਮੁੱਲ ਢੁਕਵਾਂ ਨਹੀਂ ਹੈ, ਅਤੇ ਇਸਦੀ ਵਰਤੋਂ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ, ਜਦੋਂ ਤੱਕ ਕਿ DnsOverHttpsMode ਨੀਤੀ <ph name="SECURE_DNS_MODE_AUTOMATIC"/> ਜਾਂ <ph name="SECURE_DNS_MODE_SECURE"/> 'ਤੇ ਸੈੱਟ ਨਹੀਂ ਕੀਤੀ ਜਾਂਦੀ।</translation>
 <translation id="5701381305118179107">ਕੇਂਦਰ</translation>
-<translation id="3655851112780233803">ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
-<translation id="5705882733397021510">ਪਿੱਛੇ ਜਾਓ</translation>
+<translation id="570530837424789914">ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
 <translation id="57094364128775171">ਮਜ਼ਬੂਤ ਪਾਸਵਰਡ ਸੁਝਾਓ…</translation>
 <translation id="5710435578057952990">ਇਸ ਵੈੱਬਸਾਈਟ ਦੀ ਪਛਾਣ ਦੀ ਪੁਸ਼ਟੀ ਨਹੀਂ ਕੀਤੀ ਗਈ ਹੈ।</translation>
+<translation id="571403275720188526">(arm64)</translation>
 <translation id="5720705177508910913">ਮੌਜੂਦਾ ਵਰਤੋਂਕਾਰ</translation>
 <translation id="5728056243719941842">C5 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="3006790309890592320">ਜੇਕਰ ਤੁਸੀਂ ਆਪਣੇ ਪਾਸਵਰਡ ਨੂੰ ਹੋਰ ਸਾਈਟਾਂ 'ਤੇ ਮੁੜ ਵਰਤਿਆ ਹੈ, ਤਾਂ Brave ਵੱਲੋਂ ਇਸਨੂੰ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।</translation>
@@ -1101,7 +1155,6 @@
 <translation id="5785756445106461925">ਅੱਗੇ, ਇਸ ਸਫ਼ੇ ਵਿੱਚ ਦੂਜੇ ਸ੍ਰੋਤ ਸ਼ਾਮਲ ਹਨ, ਜੋ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹਨ। ਇਹ ਸ੍ਰੋਤ ਟ੍ਰਾਂਜਿਟ ਵਿੱਚ ਹੋਣ ਵੇਲੇ ਦੂਜਿਆਂ ਵੱਲੋਂ ਦੇਖੇ ਜਾ ਸਕਦੇ ਹਨ ਅਤੇ ਸਫ਼ੇ ਦੇ ਰੂਪ ਨੂੰ ਬਦਲਣ ਲਈ ਇੱਕ ਹਮਲਾਵਰ ਵੱਲੋਂ ਸੰਸ਼ੋਧਿਤ ਕੀਤੇ ਜਾ ਸਕਦੇ ਹਨ।</translation>
 <translation id="5786044859038896871">ਕੀ ਤੁਸੀਂ ਆਪਣੀ ਕਾਰਡ ਜਾਣਕਾਰੀ ਭਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="5798290721819630480">ਕੀ ਤਬਦੀਲੀਆਂ ਨੂੰ ਖਾਰਜ ਕਰਨਾ ਹੈ?</translation>
-<translation id="2828698628112858998">Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਹੋਮ ਪੇਜ ਬਦਲੋ</translation>
 <translation id="5803412860119678065">ਕੀ ਤੁਸੀਂ ਆਪਣਾ <ph name="CARD_DETAIL"/> ਭਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="5804241973901381774">ਅਨੁਮਤੀਆਂ</translation>
 <translation id="5804427196348435412">NFC ਡੀਵਾਈਸ ਵਰਤੋ</translation>
@@ -1133,8 +1186,10 @@
 <translation id="2687595201721621314">ਕੀ ਕਾਰਡ ਨੂੰ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕਰਨਾ ਹੈ?</translation>
 <translation id="5922853866070715753">ਲਗਭਗ ਹੋ ਗਿਆ</translation>
 <translation id="5932224571077948991">ਸਾਈਟ ਦਖਲਅੰਦਾਜ਼ੀ ਜਾਂ ਗੁਮਰਾਹ ਕਰਨ ਵਾਲੇ ਵਿਗਿਆਪਨ ਦਿਖਾਉਂਦੀ ਹੈ</translation>
+<translation id="5938793338444039872">Troy</translation>
 <translation id="5946937721014915347"><ph name="SITE_NAME"/> ਸਾਈਟ ਖੁੱਲ੍ਹ ਰਹੀ ਹੈ…</translation>
 <translation id="5951495562196540101">ਖਪਤਕਾਰ ਖਾਤੇ ਨਾਲ ਦਰਜ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ (ਪੈਕੇਜਡ ਲਾਇਸੰਸ ਉਪਲਬਧ ਹਨ)।</translation>
+<translation id="5963413905009737549">ਭਾਗ</translation>
 <translation id="5967592137238574583">ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਦਾ ਸੰਪਾਦਨ ਕਰੋ</translation>
 <translation id="5967867314010545767">ਇਤਿਹਾਸ ਵਿੱਚੋਂ ਹਟਾਓ</translation>
 <translation id="5975083100439434680">ਜ਼ੂਮ ਘਟਾਓ</translation>
@@ -1170,6 +1225,8 @@
 <translation id="6049488691372270142">ਪੰਨਾ ਡਿਲੀਵਰੀ</translation>
 <translation id="6051221802930200923">ਤੁਸੀਂ ਇਸ ਵੇਲੇ <ph name="SITE"/> 'ਤੇ ਨਹੀਂ ਜਾ ਸਕਦੇ, ਕਿਉਂਕਿ ਵੈੱਬਸਾਈਟ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਪਿੰਨਿੰਗ ਦੀ ਵਰਤੋਂ ਕਰਦੀ ਹੈ।ਨੈੱਟਵਰਕ ਗੜਬੜੀਆਂ ਅਤੇ ਹਮਲੇ ਆਮ ਤੌਰ 'ਤੇ ਅਸਥਾਈ ਹੁੰਦੇ ਹਨ, ਇਸਲਈ ਇਹ ਪੰਨਾ ਸ਼ਾਇਦ ਬਾਅਦ ਵਿੱਚ ਠੀਕ ਢੰਗ ਨਾਲ ਕੰਮ ਕਰੇਗਾ।</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="6053328359599022071">ਕੀ ਆਪਣੀ ਮੌਜੂਦਗੀ ਨੂੰ ਸਾਂਝਾ ਕਰਨਾ ਹੈ?</translation>
+<translation id="6057359309778282021">ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਨੇ <ph name="ORIGIN_NAME"/> ਤੋਂ <ph name="VM_NAME"/> ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਦੀ ਸੁਵਿਧਾ ਨੂੰ ਬਲਾਕ ਕਰ ਦਿੱਤਾ ਹੈ</translation>
 <translation id="6058977677006700226">ਕੀ ਆਪਣੇ ਸਾਰੇ ਡੀਵਾਈਸਾਂ 'ਤੇ ਆਪਣੇ ਕਾਰਡਾਂ ਦੀ ਵਰਤੋਂ ਕਰਨੀ ਹੈ?</translation>
 <translation id="6059925163896151826">USB ਡੀਵਾਈਸਾਂ</translation>
 <translation id="6060009363608157444">ਅਵੈਧ DnsOverHttps ਮੋਡ।</translation>
@@ -1218,6 +1275,7 @@
         <ph name="END_LIST"/></translation>
 <translation id="6280223929691119688">ਇਸ ਪਤੇ 'ਤੇ ਅਦਾਇਗੀ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ। ਕੋਈ ਵੱਖਰਾ ਪਤਾ ਚੁਣੋ।</translation>
 <translation id="6282194474023008486">ਡਾਕ ਕੋਡ</translation>
+<translation id="6289939620939689042">ਪੰਨੇ ਦਾ ਰੰਗ</translation>
 <translation id="6290238015253830360">ਤੁਹਾਡੇ ਸੁਝਾਏ ਗਏ ਲੇਖ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="5880900081429361525">Brave ਵਿੱਚ 'Brave ਅਸਿਸਟੈਂਟ' ਨੂੰ ਬੰਦ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</translation>
@@ -1239,6 +1297,7 @@
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">ਇਸ ਸਾਈਟ 'ਤੇ ਜਾਣ ਕਰਕੇ ਸੰਭਾਵਿਤ ਤੌਰ 'ਤੇ ਖਰਚਾ ਪੈ ਸਕਦਾ ਹੈ।</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{1 ਹੋਰ ਸੁਝਾਅ}one{# ਹੋਰ ਸੁਝਾਅ}other{# ਹੋਰ ਸੁਝਾਅ}}</translation>
+<translation id="6387645831795005740">ਹਮਲਾਵਰ ਕਦੇ-ਕਦਾਈ URL ਵਿੱਚ ਮੁਸ਼ਕਲ ਨਾਲ ਪਤਾ ਲੱਗਣ ਵਾਲੀਆਂ ਨਿੱਕੀਆਂ ਤਬਦੀਲੀਆਂ ਕਰਕੇ ਸਾਈਟਾਂ ਦੀ ਨਕਲ ਤਿਆਰ ਕਰਦੇ ਹਨ।</translation>
 <translation id="6389470377220713856">ਕਾਰਡ ਤੇ ਨਾਮ</translation>
 <translation id="6390200185239044127">ਅੱਧੀ Z-ਤਹਿ</translation>
 <translation id="6390662030813198813">ਇੰਜੀਨੀਅਰਿੰਗ-E</translation>
@@ -1250,6 +1309,7 @@
 <translation id="6423385022588644828">ਹੁਣ ਤੋਂ ਸਪਰਸ਼ ਆਈਡੀ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਆਪਣੇ ਕਾਰਡਾਂ ਦੀ ਤੇਜ਼ੀ ਨਾਲ ਤਸਦੀਕ ਕਰੋ</translation>
 <translation id="6425092077175753609">ਮੈਟੀਰੀਅਲ</translation>
 <translation id="6427730057873428458">ਪੱਲੇਦਾਰ ਤਹਿ</translation>
+<translation id="6428450836711225518">ਆਪਣੇ ਫ਼ੋਨ ਨੰਬਰ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</translation>
 <translation id="6433490469411711332">ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਦਾ ਸੰਪਾਦਨ ਕਰੋ</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> ਨੇ ਕਨੈਕਟ ਹੋਣ ਤੋਂ ਇਨਕਾਰ ਕੀਤਾ।</translation>
 <translation id="6434309073475700221">ਬਰਖਾਸਤ</translation>
@@ -1260,17 +1320,18 @@
 <translation id="6447842834002726250">ਕੁਕੀਜ਼</translation>
 <translation id="6451458296329894277">ਫ਼ਾਰਮ ਨੂੰ ਮੁੜ ਸਪੁਰਦ ਕਰਨ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</translation>
 <translation id="6457206614190510200">ਪਰਤਦਾਰ ਸਿਲਾਈ</translation>
-<translation id="2275235756919172538">ਪਾਸਵਰਡਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
+<translation id="6465306955648956876">ਪਾਸਵਰਡਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ...</translation>
+<translation id="6468485451923838994">ਫੌਂਟ</translation>
 <translation id="647261751007945333">ਡੀਵਾਈਸ ਨੀਤੀਆਂ</translation>
 <translation id="6476284679642588870">ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ</translation>
 <translation id="6489534406876378309">ਕ੍ਰੈਸ਼ ਅਪਲੋਡ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰੋ</translation>
 <translation id="6499038740797743453">ਕੀ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨਾ ਹੈ?</translation>
+<translation id="6502991525169604759">ਤੁਹਾਡੀਆਂ ਤਬਦੀਲੀਆਂ ਤੋਂ ਬਿਨਾਂ</translation>
 <translation id="3960299545138990065">Brave ਨੂੰ ਮੁੜ-ਸ਼ੁਰੂ ਕਰੋ</translation>
 <translation id="6517596291481585650">ਚਿਤਾਵਨੀ: ਇਹ ਨੀਤੀ, ਨੀਤੀ ਵੱਲੋਂ ਨਿਰਧਾਰਤ ਕੀਤੇ ਮੁਤਾਬਕ ਸੂਚੀ ਵਜੋਂ ਵਿਲੀਨ ਨਹੀਂ ਕੀਤੀ ਗਈ ਕਿਉਂਕਿ ਇਹ ਸੂਚੀ ਨਹੀਂ ਹੈ।</translation>
 <translation id="6518133107902771759">ਪ੍ਰਮਾਣਿਤ ਕਰੋ</translation>
 <translation id="6521745193039995384">ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ</translation>
 <translation id="6529602333819889595">&amp;ਮਿਟਾਏ ਗਏ ਨੂੰ ਮੁੜ-ਓਹੀ ਕਰੋ</translation>
-<translation id="6534179046333460208">ਫਿਜ਼ੀਕਲ ਵੈੱਬ ਸੁਝਾਅ</translation>
 <translation id="6545864417968258051">ਬਲੂਟੁੱਥ ਸਕੈਨਿੰਗ</translation>
 <translation id="6547208576736763147">ਖੱਬੇ ਪਾਸੇ ਦੋ ਮੋਰੀਆਂ</translation>
 <translation id="6554795675067793129">ਤੁਹਾਡੇ ਖਾਤੇ ਦਾ ਪ੍ਰਬੰਧਨ <ph name="ENROLLMENT_DOMAIN"/> ਵੱਲੋਂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।</translation>
@@ -1295,15 +1356,18 @@
 <translation id="6631202559048444592">ਨੀਤੀ ਲਈ ਇੱਕ ਤੋਂ ਵੱਧ ਸਰੋਤ ਮੌਜੂਦ ਹਨ, ਪਰ ਮੁੱਲ ਇੱਕੋ ਹਨ।</translation>
 <translation id="663260587451432563">JIS B4</translation>
 <translation id="6643016212128521049">ਹਟਾਓ</translation>
+<translation id="6645291930348198241">ਕੁਕੀਜ਼ ਅਤੇ ਸਾਈਟ ਡਾਟਾ ਤੱਕ ਪਹੁੰਚ ਕਰੋ।</translation>
 <translation id="1375868315964791309">{COUNT,plural, =0{ਕੋਈ ਨਹੀਂ}=1{1 ਸਾਈਟ ਤੋਂ (ਤੁਸੀਂ ਆਪਣੇ 'Brave ਖਾਤੇ' ਤੋਂ ਸਾਈਨ-ਆਊਟ ਨਹੀਂ ਹੋਵੋਗੇ।)}other{# ਸਾਈਟਾਂ ਤੋਂ (ਤੁਸੀਂ ਆਪਣੇ 'Brave ਖਾਤੇ' ਤੋਂ ਸਾਈਨ-ਆਊਟ ਨਹੀਂ ਹੋਵੋਗੇ।)}}</translation>
+<translation id="6678472970290886941">ਤੁਹਾਡਾ ਪ੍ਰਸ਼ਾਸਕ ਦੂਰ-ਦੁਰਾਡੇ ਤੋਂ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਸੈੱਟਅੱਪ ਨੂੰ ਬਦਲ ਸਕਦਾ ਹੈ। ਇਸ ਡੀਵਾਈਸ ਦੀ ਸਰਗਰਮੀ ਦਾ ਪ੍ਰਬੰਧਨ Brave ਤੋਂ ਬਾਹਰ ਵੀ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।</translation>
+<translation id="6648524591329069940">ਸੈਰਿਫ ਫ਼ੌਂਟ</translation>
 <translation id="6652101503459149953">Windows Hello ਨੂੰ ਵਰਤੋ</translation>
 <translation id="6657585470893396449">ਪਾਸਵਰਡ</translation>
+<translation id="666259744093848177">(x86_64 ਅਨੁਵਾਦ ਕੀਤਾ ਗਿਆ)</translation>
 <translation id="6665553082534466207">ਸੱਜੇ ਤਿੰਨ ਮੋਰੀਆਂ</translation>
 <translation id="6685834062052613830">ਸਾਈਨ-ਆਊਟ ਕਰੋ ਅਤੇ ਸਥਾਪਨਾ ਨੂੰ ਪੂਰਾ ਕਰੋ</translation>
 <translation id="6687335167692595844">ਫ਼ੌਂਟ ਆਕਾਰ ਲਈ ਬੇਨਤੀ ਕੀਤੀ ਗਈ</translation>
 <translation id="6689249931105087298">ਕਾਲੇ ਬਿੰਦੂ ਨਪੀੜਨ ਨਾਲ ਸੰਬੰਧਿਤ</translation>
 <translation id="5406652219015697259">ਤੁਹਾਡੇ ਸਾਈਨ-ਇਨ ਹੋਣ ਕਰਕੇ Brave ਤੁਹਾਡੇ ਕਾਰਡਾਂ ਨੂੰ ਤੁਹਾਡੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕਰਨ ਦੀ ਪੇਸ਼ਕਸ਼ ਕਰ ਰਿਹਾ ਹੈ। ਤੁਸੀਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਇਸ ਵਤੀਰੇ ਨੂੰ ਬਦਲ ਸਕਦੇ ਹੋ। ਕਾਰਡਧਾਰਕ ਦੇ ਨਾਮ ਦੀ ਜਾਣਕਾਰੀ ਤੁਹਾਡੇ ਖਾਤੇ ਤੋਂ ਮਿਲਦੀ ਹੈ।</translation>
-<translation id="6704582573942289642">ਕੀ ਇਹ ਸਹੀ ਸਾਈਟ ਹੈ?</translation>
 <translation id="6710213216561001401">ਪਿਛਲਾ</translation>
 <translation id="6710594484020273272">&lt;ਖੋਜ ਸ਼ਬਦ ਟਾਈਪ ਕਰੋ&gt;</translation>
 <translation id="671076103358959139">ਦਰਜਾਬੰਦੀ ਟੋਕਨ:</translation>
@@ -1331,7 +1395,6 @@
 <translation id="6846340164947227603">ਕੋਈ ਆਭਾਸੀ ਕਾਰਡ ਨੰਬਰ ਵਰਤੋ...</translation>
 <translation id="6852204201400771460">ਕੀ ਐਪ ਰੀਲੋਡ ਕਰਨੀ ਹੈ?</translation>
 <translation id="6865412394715372076">ਇਸ ਕਾਰਡ ਦੀ ਫਿਲਹਾਲ ਪੁਸ਼ਟੀ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ।</translation>
-<translation id="6868206169573555318">ਅੱਪਡੇਟ ਕਰਨ ਲਈ ਮੁੜ-ਲਾਂਚ ਕਰੋ</translation>
 <translation id="6874604403660855544">&amp;ਜੋੜੋ ਨੂੰ ਰੀਡੂ ਕਰੋ</translation>
 <translation id="6884662655240309489">ਆਕਾਰ 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
@@ -1366,7 +1429,9 @@
 <translation id="6993898126790112050">6x9 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="6996312675313362352">ਹਮੇਸ਼ਾਂ <ph name="ORIGINAL_LANGUAGE"/> ਦਾ ਅਨੁਵਾਦ ਕਰੋ</translation>
 <translation id="7004583254764674281">ਕਾਰਡਾਂ ਦੀ ਤੇਜ਼ੀ ਨਾਲ ਤਸਦੀਕ ਕਰਨ ਲਈ Windows Hello ਵਰਤੋ</translation>
+<translation id="7006930604109697472">ਫੇਰ ਵੀ ਭੇਜੋ</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
+<translation id="7014741021609395734">ਜ਼ੂਮ ਪੱਧਰ</translation>
 <translation id="7016992613359344582">ਇਹ ਖਰਚੇ ਇੱਕ-ਵਾਰ ਜਾਂ ਵਾਰ-ਵਾਰ ਲਏ ਜਾ ਸਕਦੇ ਹਨ ਅਤੇ ਸ਼ਾਇਦ ਇਨ੍ਹਾਂ ਬਾਰੇ ਸਪੱਸ਼ਟ ਜਾਣਕਾਰੀ ਨਾ ਦਿੱਤੀ ਜਾਵੇ।</translation>
 <translation id="7029809446516969842">ਪਾਸਵਰਡ</translation>
 <translation id="7031646650991750659">ਤੁਸੀਂ ਕਿਹੜੀਆਂ Google Play ਐਪਾਂ ਸਥਾਪਤ ਕੀਤੀਆਂ ਹੋਈਆਂ ਹਨ</translation>
@@ -1384,7 +1449,6 @@
 <translation id="7083258188081898530">ਟ੍ਰੇਅ 9</translation>
 <translation id="7086090958708083563">ਵਰਤੋਂਕਾਰ ਵੱਲੋਂ ਅੱਪਲੋਡ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਗਈ</translation>
 <translation id="7087282848513945231">ਕਾਉਂਟੀ</translation>
-<translation id="5711818857380891233"><ph name="LINK"/> ਨੂੰ Brave 'ਤੇ ਖੋਜੋ</translation>
 <translation id="7108338896283013870">ਲੁਕਾਓ</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> ਦੀ ਤੁਹਾਡਾ ਕੈਮਰਾ ਵਰਤਣ ਦੀ ਇੱਛਾ ਹੈ</translation>
 <translation id="7108819624672055576">ਕਿਸੇ ਐਕਸਟੈਂਸ਼ਨ ਵੱਲੋਂ ਇਜਾਜ਼ਤ ਦਿੱਤੀ ਗਈ</translation>
@@ -1396,7 +1460,6 @@
 <translation id="7138472120740807366">ਅਦਾਇਗੀ ਵਿਧੀ</translation>
 <translation id="7139724024395191329">ਅਮੀਰਾਤ</translation>
 <translation id="714064300541049402">ਸਾਈਡ 2 ਚਿੱਤਰ X ਸ਼ਿਫਟ</translation>
-<translation id="7147693119324090759">ਫਿਰ ਵੀ ਸਪੁਰਦ ਕਰੋ</translation>
 <translation id="7152423860607593928">ਨੰਬਰ-14 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> ਹੋਰ}other{<ph name="PAYMENT_METHOD_PREVIEW"/> ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> ਹੋਰ}}</translation>
 <translation id="7153618581592392745">ਲਵਿੰਡਰ</translation>
@@ -1406,6 +1469,7 @@
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ਹੋਰ}other{<ph name="SHIPPING_OPTION_PREVIEW"/> ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ਹੋਰ}}</translation>
 <translation id="7179323680825933600">ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਰੱਖਿਅਤ ਕਰੋ ਅਤੇ ਭਰੋ</translation>
 <translation id="7180611975245234373">ਰਿਫ੍ਰੈਸ਼ ਕਰੋ</translation>
+<translation id="7181261019481237103">ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹੋ</translation>
 <translation id="7182878459783632708">ਕੋਈ ਨੀਤੀਆਂ ਸੈਟ ਨਹੀਂ ਕੀਤੀਆਂ</translation>
 <translation id="7186367841673660872">ਇਸ ਸਫ਼ੇ ਦਾ ਅਨੁਵਾਦ<ph name="ORIGINAL_LANGUAGE"/>ਤੋਂ<ph name="LANGUAGE_LANGUAGE"/> ਵਿੱਚ ਕੀਤਾ ਗਿਆ ਹੈ।</translation>
 <translation id="7192203810768312527"><ph name="SIZE"/> ਜਗ੍ਹਾ ਖਾਲੀ ਕਰਦਾ ਹੈ। ਤੁਹਾਡੀ ਅਗਲੀ ਫੇਰੀ 'ਤੇ ਕੁਝ ਸਾਈਟਾਂ ਵਧੇਰੇ ਹੌਲੀ ਲੋਡ ਹੋ ਸਕਦੀਆਂ ਹਨ।</translation>
@@ -1415,6 +1479,7 @@
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> ਸੁਰੱਖਿਆ ਪੈਮਾਨਿਆਂ ਦੀ ਪਾਲਣਾ ਨਹੀਂ ਕਰਦਾ ਹੈ।</translation>
 <translation id="7210993021468939304">ਕੰਟੇਨਰ ਵਿੱਚ Linux ਸਰਗਰਮੀ, ਅਤੇ ਕੰਨਟੇਨਰ ਵਿੱਚ Linux ਐਪਾਂ ਨੂੰ ਸਥਾਪਤ ਕੀਤਾ ਅਤੇ ਚਲਾਇਆ ਜਾ ਸਕਦਾ ਹੈ</translation>
 <translation id="721197778055552897">ਇਸ ਸਮੱਸਿਆ ਬਾਰੇ <ph name="BEGIN_LINK"/>ਹੋਰ ਜਾਣੋ<ph name="END_LINK"/>।</translation>
+<translation id="7217745192097460130">ਕੀ ਤੁਸੀਂ ਆਪਣੀਆਂ ਖਰੀਦਾਂ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਸਪਰਸ਼ ਆਈਡੀ ਵਰਤਣਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="7219179957768738017">ਕਨੈਕਸ਼ਨ <ph name="SSL_VERSION"/> ਵਰਤਦਾ ਹੈ।</translation>
 <translation id="7220786058474068424">ਪ੍ਰਕਿਰਿਆ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</translation>
 <translation id="7221855153210829124">ਸੂਚਨਾਵਾਂ ਦਿਖਾਓ</translation>
@@ -1452,6 +1517,7 @@
 <translation id="7372973238305370288">ਖੋਜ ਨਤੀਜਾ</translation>
 <translation id="3898257577441589237">ਇਹ ਸਮੱਸਿਆ ਤੁਹਾਡੇ ਡੀਵਾਈਸ 'ਤੇ ਤੁਹਾਡੇ ਵੱਲੋਂ ਜਾਂ ਕਿਸੇ ਹੋਰ ਵੱਲੋਂ ਸਥਾਪਤ ਕੀਤੇ ਕਿਸੇ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਕਰਕੇ ਆਈ। ਇਹ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਨੈੱਟਵਰਕਾਂ 'ਤੇ ਨਿਗਰਾਨੀ ਰੱਖਣ ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਰੋਕਣ ਲਈ ਜਾਣਿਆ ਜਾਂਦਾ ਹੈ, ਅਤੇ Brave ਵੱਲੋਂ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਹੈ। ਹਾਲਾਂਕਿ ਕੁਝ ਵੈਧ ਮਾਮਲਿਆਂ ਵਿੱਚ ਵੀ ਨਿਗਰਾਨੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਜਿਵੇਂ ਕਿ ਸਕੂਲ ਜਾਂ ਕੰਪਨੀ ਦੇ ਨੈੱਟਵਰਕ 'ਤੇ, Brave ਇਹ ਪੱਕਾ ਕਰਨਾ ਚਾਹੁੰਦਾ ਹੈ ਕਿ ਤੁਹਾਨੂੰ ਇਸ ਗੱਲ ਦੀ ਜਾਣਕਾਰੀ ਹੈ ਕਿ ਇਸ ਤਰ੍ਹਾਂ ਹੋ ਰਿਹਾ ਹੈ, ਭਾਵੇਂ ਤੁਸੀਂ ਇਸਨੂੰ ਰੋਕ ਨਹੀਂ ਸਕਦੇ। ਵੈੱਬ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਵਾਲੇ ਕਿਸੇ ਵੀ ਬ੍ਰਾਊਜ਼ਰ ਜਾਂ ਐਪਲੀਕੇਸ਼ਨ 'ਤੇ ਨਿਗਰਾਨੀ ਕੀਤੀ ਜਾ ਸਕਦੀ ਹੈ।</translation>
 <translation id="7375818412732305729">ਫ਼ਾਈਲ ਨੱਥੀ ਕੀਤੀ ਗਈ ਹੈ</translation>
+<translation id="5859172549848239531">Brave Enterprise Connectors ਵੱਲੋਂ ਸੁਰੱਖਿਆ ਇਵੈਂਟਾਂ ਨੂੰ ਫਲੈਗ ਕੀਤੇ ਜਾਣ 'ਤੇ ਇਵੈਂਟਾਂ ਸੰਬੰਧੀ ਢੁਕਵਾਂ ਡਾਟਾ ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਇਸ ਵਿੱਚ ਤੁਹਾਡੇ ਵੱਲੋਂ Brave 'ਚ ਦੇਖੇ ਜਾਂਦੇ ਪੰਨਿਆਂ ਦੇ URL, ਫ਼ਾਈਲਾਂ ਦੇ ਨਾਮ ਜਾਂ ਮੈਟਾਡਾਟਾ, ਅਤੇ ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਅਤੇ Brave ਵਿੱਚ ਸਾਈਨ-ਇਨ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾਣ ਵਾਲਾ ਵਰਤੋਂਕਾਰ ਨਾਮ ਸ਼ਾਮਲ ਹੋ ਸਕਦਾ ਹੈ।</translation>
 <translation id="7377249249140280793"><ph name="RELATIVE_DATE"/> - <ph name="FULL_DATE"/></translation>
 <translation id="7378594059915113390">ਮੀਡੀਆ ਕੰਟਰੋਲ</translation>
 <translation id="7378627244592794276">ਨੋਪ</translation>
@@ -1475,7 +1541,6 @@
 <translation id="7416351320495623771">ਪਾਸਵਰਡਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ…</translation>
 <translation id="7419106976560586862">ਪ੍ਰੋਫਾਈਲ ਪਾਥ</translation>
 <translation id="7437289804838430631">ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਸ਼ਾਮਲ ਕਰੋ</translation>
-<translation id="743897106051685947">ਮੂਲ</translation>
 <translation id="7438976808740265764">ਦਸੰਬਰ 2020 ਤੋਂ ਬਾਅਦ ਫਲੈਸ਼ ਪਲੇਅਰ ਦੀ ਸੁਵਿਧਾ ਨਹੀਂ ਦਿੱਤੀ ਜਾਵੇਗੀ।</translation>
 <translation id="7440140511386898319">ਆਫ਼ਲਾਈਨ ਹੋਣ ਵੇਲੇ ਪੜਚੋਲ ਕਰੋ</translation>
 <translation id="7441627299479586546">ਗਲਤ ਨੀਤੀ ਵਿਸ਼ਾ</translation>
@@ -1484,10 +1549,10 @@
 <translation id="7451311239929941790">ਇਸ ਸਮੱਸਿਆ ਬਾਰੇ <ph name="BEGIN_LINK"/>ਹੋਰ ਜਾਣੋ<ph name="END_LINK"/>।</translation>
 <translation id="7455133967321480974">ਗਲੋਬਲ ਪੂਰਵ-ਨਿਰਧਾਰਤ ਸੈਟਿੰਗ ਵਰਤੋ (ਬਲਾਕ ਕਰੋ)</translation>
 <translation id="7460618730930299168">ਜੋ ਤੁਸੀਂ ਚੁਣਿਆ ਹੈ, ਸਕ੍ਰੀਨਿੰਗ ਉਸ ਤੋਂ ਵੱਖਰੀ ਹੈ। ਕੀ ਜਾਰੀ ਰੱਖਣਾ ਹੈ?</translation>
+<translation id="7469935732330206581">ਫ਼ਾਰਮ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ</translation>
 <translation id="7473891865547856676">ਨਹੀਂ ਧੰਨਵਾਦ</translation>
 <translation id="7481312909269577407">ਅੱਗੇ ਭੇਜੋ</translation>
 <translation id="7485870689360869515">ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਮਿਲਿਆ।</translation>
-<translation id="7488762544858401571">ਸੰਪਾਦਨ ਕੀਤਾ ਗਿਆ</translation>
 <translation id="3692186536781145635">ਕਿਸੇ ਸਾਈਟ ਜਾਂ ਐਪ 'ਤੇ ਡਾਟਾ ਉਲੰਘਣਾ ਹੋਣ ਕਾਰਨ ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਉਜਾਗਰ ਹੋਇਆ। Brave ਤੁਹਾਡੇ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡਾਂ ਦੀ ਜਾਂਚ ਕਰਨ ਅਤੇ ਹੁਣੇ <ph name="ORIGIN"/> ਦਾ ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਦਲਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕਰਦਾ ਹੈ।</translation>
 <translation id="7495528107193238112">ਇਹ ਸਮੱਗਰੀ ਬਲਾਕ ਕੀਤੀ ਗਈ ਹੈ। ਸਮੱਸਿਆ ਨੂੰ ਠੀਕ ਕਰਨ ਲਈ ਸਾਈਟ ਦੇ ਮਾਲਕ ਨੂੰ ਸੰਪਰਕ ਕਰੋ।</translation>
 <translation id="7498234416455752244">ਸੰਪਾਦਨ ਕਰਦੇ ਰਹੋ</translation>
@@ -1498,6 +1563,7 @@
 <translation id="7518003948725431193">ਵੈਬ ਪਤੇ ਲਈ ਕੋਈ ਵੈਬਪੇਜ ਨਹੀਂ ਮਿਲਿਆ ਸੀ: <ph name="URL"/></translation>
 <translation id="7520302887438682816">C8 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7521825010239864438">"<ph name="SECTION"/>" ਸੈਕਸ਼ਨ ਲੁਕਾਇਆ ਗਿਆ</translation>
 <translation id="7526934274050461096">ਇਸ ਸਾਈਟ ਨਾਲ ਤੁਹਾਡਾ ਕਨੈਕਸ਼ਨ ਨਿੱਜੀ ਨਹੀਂ ਹੈ</translation>
 <translation id="7535087603100972091">ਵੈਲਯੂ</translation>
 <translation id="7537536606612762813">ਲਾਜ਼ਮੀ</translation>
@@ -1521,6 +1587,7 @@
 <translation id="7600965453749440009"><ph name="LANGUAGE"/> ਦਾ ਕਦੇ ਵੀ ਅਨੁਵਾਦ ਨਾ ਕਰੋ</translation>
 <translation id="7610193165460212391">ਵੈਲਯੂ <ph name="VALUE"/> ਰੇਂਜ ਤੋਂ ਬਾਹਰ ਹੈ।</translation>
 <translation id="7613889955535752492">ਮਿਆਦ ਸਮਾਪਤ: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
+<translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਪਾਸਵਰਡਾਂ ਨੂੰ ਦੇਖਣ ਅਤੇ ਉਹਨਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="6994126885316933886">ਤੁਹਾਡੇ ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਉਹ ਡਾਟਾ ਹੈ ਜੋ ਤੁਹਾਡੇ Brave ਖਾਤਾ ਪਾਸਵਰਡ ਦਾ ਇੱਕ ਵੱਖ ਵਰਜਨ ਵਰਤਦੇ ਹੋਏ ਇਨਕ੍ਰਿਪਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਇਸਨੂੰ ਹੇਠਾਂ ਦਰਜ ਕਰੋ।</translation>
 <translation id="8565825862287624454">ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਨੇ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ 'ਤੇ Brave Enterprise Connectors ਨੂੰ ਚਾਲੂ ਕੀਤਾ। ਇਹਨਾਂ ਕਨੈਕਟਰਾਂ ਦੀ ਤੁਹਾਡੇ ਕੁਝ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਹੈ।</translation>
 <translation id="7619838219691048931">ਆਖਰੀ ਸ਼ੀਟ</translation>
@@ -1533,6 +1600,7 @@
 <translation id="7647206758853451655">ਪ੍ਰਿੰਟ ਕੁਆਲਿਟੀ</translation>
 <translation id="7648992873808071793">ਇਸ ਡੀਵਾਈਸ 'ਤੇ ਫਾਈਲਾਂ ਸਟੋਰ ਕਰੋ</translation>
 <translation id="7653957176542370971">ਭੁਗਤਾਨ ਹੈਂਡਲਰ ਸ਼ੀਟ ਬੰਦ ਹੈ</translation>
+<translation id="7654909834015434372">ਜਦੋਂ ਤੁਸੀਂ ਐਨੋਟੇਸ਼ਨਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰਦੇ ਹੋ, ਤਾਂ ਇਹ ਦਸਤਾਵੇਜ਼ ਆਪਣੇ ਮੂਲ ਘੁਮਾਅ 'ਤੇ ਵਾਪਸ ਆ ਜਾਵੇਗਾ</translation>
 <translation id="765676359832457558">ਉੱਨਤ ਸੈਟਿੰਗਾਂ ਲੁਕਾਓ...</translation>
 <translation id="7658239707568436148">ਰੱਦ ਕਰੋ</translation>
 <translation id="7662298039739062396">ਸੈਟਿੰਗ ਕਿਸੇ ਐਕਸਟੈਂਸ਼ਨ ਵੱਲੋਂ ਕੰਟਰੋਲ ਕੀਤੀ ਗਈ</translation>
@@ -1542,7 +1610,6 @@
 <translation id="7669271284792375604">ਇਸ ਸਾਈਟ 'ਤੇ ਹਮਲਾਵਰ ਉਹਨਾਂ ਪ੍ਰੋਗਰਾਮਾਂ ਨੂੰ ਸਥਾਪਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਨਾਲ ਚਾਲਬਾਜ਼ੀ ਕਰ ਸਕਦੇ ਹਨ, ਜੋ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਿੰਗ ਅਨੁਭਵ ਨੂੰ ਹਾਨੀ ਪਹੁੰਚਾ ਸਕਦੇ ਹਨ (ਉਦਾਹਰਨ ਲਈ, ਤੁਹਾਡਾ ਮੁੱਖ ਪੰਨਾ ਬਦਲਦੇ ਹੋਏ ਜਾਂ ਉਹਨਾਂ ਸਾਈਟਾਂ 'ਤੇ ਵਾਧੂ ਵਿਗਿਆਪਨ ਵਿਖਾਉਂਦੇ ਹੋਏ, ਜਿਨ੍ਹਾਂ 'ਤੇ ਤੁਸੀਂ ਜਾਂਦੇ ਹੋ)</translation>
 <translation id="7673278391011283842">ਮੇਲਬਾਕਸ 6</translation>
 <translation id="7676643023259824263">ਕਲਿੱਪਬੋਰਡ ਲਿਖਤ, <ph name="TEXT"/> ਖੋਜੋ</translation>
-<translation id="7681101578153515023">ਖੋਜ ਇੰਜਣ ਬਦਲੋ</translation>
 <translation id="7682287625158474539">ਸ਼ਿਪਿੰਗ</translation>
 <translation id="7687186412095877299">ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਭੁਗਤਾਨ ਫ਼ਾਰਮਾਂ ਵਿੱਚ ਤੁਹਾਡੀਆਂ ਰੱਖਿਅਤ ਕੀਤੀਆਂ ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਦੀ ਜਾਣਕਾਰੀ ਭਰਦੀ ਹੈ</translation>
 <translation id="7687305263118037187">ਮੁੜ-ਕੋਸ਼ਿਸ਼ ਲਈ ਟਾਈਮ-ਆਊਟ</translation>
@@ -1557,6 +1624,7 @@
 <translation id="7716375162095500223">ਹਾਲੇ ਅੱਪਲੋਡ ਨਹੀਂ ਕੀਤੀ ਗਈ ਜਾਂ ਅਣਡਿੱਠ ਕਰ ਦਿੱਤੀ ਗਈ</translation>
 <translation id="7716424297397655342">ਇਸ ਸਾਈਟ ਨੂੰ ਕੈਸ਼ੇ ਤੋਂ ਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</translation>
 <translation id="7723047071702270851">ਕਾਰਡ ਦਾ ਸੰਪਾਦਨ ਕਰੋ</translation>
+<translation id="773466115871691567">ਪੰਨਿਆਂ ਦਾ ਅਨੁਵਾਦ ਹਮੇਸ਼ਾਂ <ph name="SOURCE_LANGUAGE"/> ਭਾਸ਼ਾ ਵਿੱਚ ਕਰੋ</translation>
 <translation id="7740996059027112821">ਸਟੈਂਡਰਡ</translation>
 <translation id="774634243536837715">ਖਤਰਨਾਕ ਸਮੱਗਰੀ ਬਲਾਕ ਕੀਤੀ ਗਈ।</translation>
 <translation id="7752995774971033316">ਬਿਨਾਂ ਵਿਵਸਥਿਤ ਕੀਤਾ</translation>
@@ -1579,7 +1647,6 @@
 <translation id="7802523362929240268">ਸਾਈਟ ਅਸਲੀ ਹੈ</translation>
 <translation id="780301667611848630">ਨਹੀਂ ਧੰਨਵਾਦ</translation>
 <translation id="7805768142964895445">ਸਥਿਤੀ</translation>
-<translation id="3350174497208615172">Brave ਵਿੱਚ ਖੋਜ ਇੰਜਣ ਸੰਬੰਧੀ ਸੈਟਿੰਗਾਂ ਬਦਲੋ</translation>
 <translation id="7812922009395017822">Mir</translation>
 <translation id="4670564340385807132">ਕੀ Brave ਤੋਂ ਫ਼ਾਰਮ ਸੰਬੰਧੀ ਸੁਝਾਅ ਨੂੰ ਮਿਟਾਉਣਾ ਹੈ?</translation>
 <translation id="781440967107097262">ਕੀ ਕਲਿੱਪਬੋਰਡ ਨੂੰ ਸਾਂਝਾ ਕਰਨਾ ਹੈ?</translation>
@@ -1587,6 +1654,7 @@
 <translation id="782886543891417279">ਤੁਹਾਡੇ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਵਾਈ-ਫਾਈ (<ph name="WIFI_NAME"/>) ਇਹ ਚਾਹ ਸਕਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਇਸਦੇ ਲੌਗ-ਇਨ ਪੰਨੇ 'ਤੇ ਜਾਓ।</translation>
 <translation id="7836231406687464395">Postfix (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{ਕੋਈ ਨਹੀਂ}=1{1 ਐਪ (<ph name="EXAMPLE_APP_1"/>)}=2{2 ਐਪਾਂ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# ਐਪਾਂ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
+<translation id="785549533363645510">ਜਦਕਿ, ਤੁਸੀਂ ਅੱਖੋਂ ਓਹਲੇ ਨਹੀਂ ਹੋ। incognito ਵਿੱਚ ਜਾਣਾ ਤੁਹਾਡੀ ਬ੍ਰਾਊਜ਼ਿੰਗ ਨੂੰ ਤੁਹਾਡੇ ਰੋਜ਼ਗਾਰਦਾਤੇ, ਤੁਹਾਡੇ ਇੰਟਰਨੈੱਟ ਸੇਵਾ ਪ੍ਰਦਾਤੇ, ਜਾਂ ਜਿਨ੍ਹਾਂ ਵੈੱਬਸਾਈਟਾਂ 'ਤੇ ਤੁਸੀਂ ਜਾਂਦੇ ਹੋ ਉਹਨਾਂ ਤੋਂ ਨਹੀਂ ਲੁਕਾਉਂਦਾ ਹੈ।</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">ਕੀ ਸਾਈਟ ਛੱਡਣੀ ਹੈ?</translation>
 <translation id="7865448901209910068">ਬਿਹਤਰੀਨ ਗਤੀ</translation>
@@ -1596,6 +1664,7 @@
 <translation id="7887683347370398519">ਆਪਣੇ CVC ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</translation>
 <translation id="7887885240995164102">ਤਸਵੀਰ-ਵਿੱਚ-ਤਸਵੀਰ ਦਾਖਲ ਕਰੋ</translation>
 <translation id="7888575728750733395">ਰੈਂਡਰਿੰਗ ਇੰਟੈਂਟ ਨੂੰ ਪ੍ਰਿੰਟ ਕਰੋ</translation>
+<translation id="7894280532028510793">ਜੇ ਸ਼ਬਦ-ਜੋੜ ਸਹੀ ਹੈ, ਤਾਂ <ph name="BEGIN_LINK"/>ਨੈੱਟਵਰਕ ਤਸ਼ਖੀਸਾਂ ਨੂੰ ਚਲਾ ਕੇ ਦੇਖੋ<ph name="END_LINK"/>।</translation>
 <translation id="7904208859782148177">C3 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="7932579305932748336">ਕੋਟ</translation>
 <translation id="79338296614623784">ਕੋਈ ਵੈਧ ਫ਼ੋਨ ਨੰਬਰ ਦਾਖਲ ਕਰੋ</translation>
@@ -1609,18 +1678,20 @@
 <translation id="7947285636476623132">ਆਪਣੀ ਮਿਆਦ ਸਮਾਪਤੀ ਦੇ ਸਾਲ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</translation>
 <translation id="7951415247503192394">(32-bit)</translation>
 <translation id="7953569069500808819">ਉੱਪਰ ਕਿਨਾਰੇ ਤੋਂ ਸਿਲਾਈ</translation>
+<translation id="7954523986259449736">ਕਿਉਂਕਿ ਸਾਈਟ ਅਜਿਹਾ ਕਨੈਕਸ਼ਨ ਵਰਤ ਰਹੀ ਹੈ ਜੋ ਪੂਰੀ ਤਰ੍ਹਾਂ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ, ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਹੋਰਾਂ ਨੂੰ ਦਿਸੇਗੀ।</translation>
 <translation id="7956713633345437162">ਮੋਬਾਈਲ ਬੁੱਕਮਾਰਕਸ</translation>
 <translation id="7961015016161918242">ਕਦੇ ਨਹੀਂ</translation>
 <translation id="7966803981046576691">ਕਾਰਵਾਈ ਖਾਤੇ ਦੀ ਕਿਸਮ</translation>
+<translation id="7976214039405368314">ਬਹੁਤ ਸਾਰੀਆਂ ਬੇਨਤੀਆਂ</translation>
 <translation id="7977538094055660992">ਆਊਟਪੁੱਟ ਡੀਵਾਈਸ</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="799149739215780103">ਜਿਲਦਬੰਦ</translation>
 <translation id="7995512525968007366">ਨਿਰਦਿਸ਼ਟ ਨਹੀਂ ਕੀਤਾ</translation>
 <translation id="800218591365569300">ਮੈਮੋਰੀ ਖਾਲੀ ਕਰਨ ਲਈ ਦੂਜੀਆਂ ਟੈਬਾਂ ਜਾਂ ਪ੍ਰੋਗਰਾਮਾਂ ਨੂੰ ਬੰਦ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</translation>
 <translation id="8004582292198964060">ਬ੍ਰਾਊਜ਼ਰ</translation>
-<translation id="8009225694047762179">ਪਾਸਵਰਡਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{ਇਸ ਕਾਰਡ ਅਤੇ ਇਸਦੇ ਬਿਲਿੰਗ ਪਤੇ ਨੂੰ ਰੱਖਿਅਤ ਕੀਤਾ ਜਾਵੇਗਾ। <ph name="USER_EMAIL"/> ਵਿੱਚ ਸਾਈਨ-ਇਨ ਹੋਣ 'ਤੇ ਤੁਸੀਂ ਇਸ ਨੂੰ ਵਰਤ ਸਕੋਗੇ।}one{ਇਸ ਕਾਰਡ ਅਤੇ ਇਸਦੇ ਬਿਲਿੰਗ ਪਤੇ ਨੂੰ ਰੱਖਿਅਤ ਕੀਤਾ ਜਾਵੇਗਾ। <ph name="USER_EMAIL"/> ਵਿੱਚ ਸਾਈਨ-ਇਨ ਹੋਣ 'ਤੇ ਤੁਸੀਂ ਇਸ ਨੂੰ ਵਰਤ ਸਕੋਗੇ।}other{ਇਹਨਾਂ ਕਾਰਡਾਂ ਅਤੇ ਇਹਨਾਂ ਦੇ ਬਿਲਿੰਗ ਪਤਿਆਂ ਨੂੰ ਰੱਖਿਅਤ ਕੀਤਾ ਜਾਵੇਗਾ। <ph name="USER_EMAIL"/> ਵਿੱਚ ਸਾਈਨ-ਇਨ ਹੋਣ 'ਤੇ ਤੁਸੀਂ ਇਹਨਾਂ ਨੂੰ ਵਰਤ ਸਕੋਗੇ।}}</translation>
 <translation id="8025119109950072390">ਇਸ ਸਾਈਟ 'ਤੇ ਹਮਲਾਵਾਰ ਸਾਫ਼ਟਵੇਅਰ ਸਥਾਪਤ ਕਰਕੇ ਜਾਂ ਤੁਹਾਡੀ ਨਿੱਜੀ ਜਾਣਕਾਰੀ (ਉਦਾਹਰਨ ਲਈ, ਪਾਸਵਰਡ, ਸੁਨੇਹੇ ਜਾਂ ਕ੍ਰੈਡਿਟ ਕਾਰਡ) ਦਾ ਖੁਲਾਸਾ ਕਰਨ ਵਰਗੇ ਖਤਰਨਾਕ ਕੰਮ ਕਰਕੇ ਤੁਹਾਡੇ ਨਾਲ ਚਾਲਬਾਜ਼ੀ ਕਰ ਸਕਦੇ ਹਨ।</translation>
+<translation id="8026334261755873520">ਬ੍ਰਾਊਜ਼ਿੰਗ ਡਾਟਾ ਹਟਾਓ</translation>
 <translation id="8028960012888758725">ਜੌਬ ਤੋਂ ਬਾਅਦ ਕਟਾਈ</translation>
 <translation id="8034522405403831421">ਇਹ ਸਫ਼ਾ <ph name="SOURCE_LANGUAGE"/> ਵਿੱਚ ਹੈ। ਕੀ ਇਸਦਾ ਅਨੁਵਾਦ <ph name="TARGET_LANGUAGE"/> ਵਿੱਚ ਕਰਨਾ ਹੈ?</translation>
 <translation id="8035152190676905274">ਪੈੱਨ</translation>
@@ -1658,7 +1729,6 @@
 <translation id="4351627595884993315">ਤੁਹਾਡੇ ਸਾਈਨ-ਇਨ ਹੋਣ ਕਰਕੇ Brave ਤੁਹਾਡੇ ਕਾਰਡਾਂ ਨੂੰ ਤੁਹਾਡੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕਰਨ ਦੀ ਪੇਸ਼ਕਸ਼ ਕਰ ਰਿਹਾ ਹੈ। ਤੁਸੀਂ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਇਸ ਵਤੀਰੇ ਨੂੰ ਬਦਲ ਸਕਦੇ ਹੋ।</translation>
 <translation id="8184538546369750125">ਗਲੋਬਲ ਪੂਰਵ-ਨਿਰਧਾਰਤ ਸੈਟਿੰਗ ਵਰਤੋ (ਇਜਾਜ਼ਤ ਦਿਓ)</translation>
 <translation id="8194797478851900357">&amp;ਮੂਵ ਨੂੰ ਅਨਡੂ ਕਰੋ</translation>
-<translation id="8197543752516192074">ਪੰਨੇ ਦਾ ਅਨੁਵਾਦ ਕਰੋ</translation>
 <translation id="8201077131113104583">"<ph name="EXTENSION_ID"/>" ਨਾਲ ਐਕਸਟੈਂਸ਼ਨ ਲਈ ਅਵੈਧ ਅੱਪਡੇਟ URL</translation>
 <translation id="8202097416529803614">ਆਰਡਰ ਸਾਰਾਂਸ਼</translation>
 <translation id="8202370299023114387">ਵਿਵਾਦ</translation>
@@ -1667,8 +1737,11 @@
 <translation id="8218327578424803826">ਅਸਾਈਨ ਕੀਤਾ ਗਿਆ ਨਿਰਧਾਰਿਤ ਸਥਾਨ:</translation>
 <translation id="8220146938470311105">C7/C6 (ਲਿਫ਼ਾਫ਼ਾ)</translation>
 <translation id="3272614036080146686">ਤੁਸੀਂ ਹੁਣੇ-ਹੁਣੇ ਕਿਸੇ ਭਰਮਪੂਰਨ ਸਾਈਟ 'ਤੇ ਆਪਣਾ ਪਾਸਵਰਡ ਦਾਖਲ ਕੀਤਾ ਹੈ। Brave ਵੱਲੋਂ <ph name="WEBSITE_1"/> ਅਤੇ ਉਹਨਾਂ ਹੋਰ ਸਾਈਟਾਂ 'ਤੇ ਜਾ ਕੇ ਆਪਣਾ ਪਾਸਵਰਡ ਬਦਲਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਜਿੱਥੇ ਤੁਸੀਂ ਆਪਣਾ ਪਾਸਵਰਡ ਵਰਤਿਆ ਹੈ।</translation>
+<translation id="8225771182978767009">ਜਿਸ ਵਿਅਕਤੀ ਨੇ ਇਸ ਕੰਪਿਊਟਰ ਦਾ ਸੈੱਟ ਅੱਪ ਕੀਤਾ ਹੈ ਉਸ ਵੱਲੋਂ ਇਸ ਸਾਈਟ ਨੂੰ ਬਲਾਕ ਕਰਨਾ ਚੁਣਿਆ ਗਿਆ ਹੈ।</translation>
+<translation id="8228419419708659934">ਦੋ ਪੰਨਾ-ਦ੍ਰਿਸ਼</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">ਪਲੇਟਫਾਰਮ ਦਾ ਤਾਪਮਾਨ</translation>
+<translation id="8238581221633243064">ਕਿਸੇ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਟੈਬ ਵਿੱਚ ਪੰਨਾ ਖੋਲ੍ਹੋ</translation>
 <translation id="8241707690549784388">ਪੰਨਾ ਜੋ ਤੁਸੀਂ ਵਰਤੀ ਗਈ ਜਾਣਕਾਰੀ ਲਈ ਖੋਜ ਰਹੇ ਹੋ, ਉਹ ਤੁਸੀਂ ਦਰਜ ਕੀਤਾ ਸੀ। ਉਸ ਪੰਨਾ 'ਤੇ ਵਾਪਸ ਜਾਣ ਨਾਲ ਤੁਹਾਡੇ ਵੱਲੋਂ ਕੀਤੀ ਗਈ ਕੋਈ ਵੀ ਕਾਰਵਾਈ ਦੁਹਰਾਈ ਜਾ ਸਕਦੀ ਹੈ। ਕੀ ਤੁਸੀਂ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="8241712895048303527">ਇਸ ਸਾਈਟ 'ਤੇ ਬਲਾਕ ਕਰੋ</translation>
 <translation id="8242426110754782860">ਜਾਰੀ ਰੱਖੋ</translation>
@@ -1681,6 +1754,8 @@
 <translation id="8265992338205884890">ਦਿਖਣਯੋਗ ਡਾਟਾ</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/> ਤੌਰ 'ਤੇ ਸਾਈਨ ਇਨ ਕਰੋ</translation>
 <translation id="8269242089528251720">ਵੱਖਰੇ ਦਸਤਾਵੇਜ਼/ਇਕੱਤਰ ਕਾਪੀਆਂ</translation>
+<translation id="8269981117540303696">ਹੁਣ ਤੁਸੀਂ ਨਿੱਜੀ ਤੌਰ 'ਤੇ ਬ੍ਰਾਊਜ਼ ਕਰ ਸਕਦੇ ਹੋ, ਅਤੇ ਇਸ ਡੀਵਾਈਸ ਨੂੰ ਵਰਤਣ ਵਾਲੇ ਹੋਰ ਲੋਕਾਂ ਨੂੰ ਤੁਹਾਡੀ ਸਰਗਰਮੀ ਨਹੀਂ ਦਿਸੇਗੀ। ਹਾਲਾਂਕਿ, ਡਾਊਨਲੋਡਾਂ ਅਤੇ ਬੁੱਕਮਾਰਕਾਂ ਨੂੰ ਰੱਖਿਅਤ ਕੀਤਾ ਜਾਵੇਗਾ।</translation>
+<translation id="8275952078857499577">ਇਸ ਸਾਈਟ ਦਾ ਅਨੁਵਾਦ ਕਰਨ ਦੀ ਪੇਸ਼ਕਸ਼ ਨਾ ਕਰੋ</translation>
 <translation id="8277900682056760511">ਭੁਗਤਾਨ ਹੈਂਡਲਰ ਸ਼ੀਟ ਖੁੱਲ੍ਹੀ ਹੋਈ ਹੈ</translation>
 <translation id="8281084378435768645">ਵੱਡੀ-ਫ਼ੋਟੋ</translation>
 <translation id="8282947398454257691">ਆਪਣੇ ਬੇਜੋੜ ਡੀਵਾਈਸ ਪਛਾਣਕਰਤਾ ਬਾਰੇ ਜਾਣੋ</translation>
@@ -1690,6 +1765,7 @@
 <translation id="8293206222192510085">ਬੁੱਕਮਾਰਕ ਸ਼ਾਮਿਲ ਕਰੋ</translation>
 <translation id="8294431847097064396">ਸ੍ਰੋਤ</translation>
 <translation id="8298115750975731693">ਜੋ Wi-Fi (<ph name="WIFI_NAME"/>) ਤੁਸੀਂ ਵਰਤ ਰਹੇ ਹੋ, ਉਸ ਲਈ ਤੁਹਾਨੂੰ <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> ਤੇ ਵਿਜਿਟ ਕਰਨ ਦੀ ਲੋੜ ਹੋ ਸਕਦੀ ਹੈ।</translation>
+<translation id="8303854710873047864">"<ph name="SECTION"/>" ਸੈਕਸ਼ਨ ਦਿਖਾਇਆ ਗਿਆ</translation>
 <translation id="830498451218851433">ਅੱਧੀ ਤਹਿ</translation>
 <translation id="8307358339886459768">ਛੋਟੀ-ਫ਼ੋਟੋ</translation>
 <translation id="8307888238279532626">ਸਥਾਪਤ ਐਪਾਂ ਅਤੇ ਐਪਾਂ ਵਰਤਣ ਦਾ ਸਮਾਂ</translation>
@@ -1697,12 +1773,13 @@
 <translation id="831997045666694187">ਸ਼ਾਮ</translation>
 <translation id="8332188693563227489"><ph name="HOST_NAME"/> 'ਤੇ ਪਹੁੰਚ ਨੂੰ ਇਨਕਾਰਿਆ ਗਿਆ ਸੀ</translation>
 <translation id="833262891116910667">ਉਜਾਗਰ ਕਰੋ</translation>
+<translation id="8339163506404995330"><ph name="LANGUAGE"/> ਭਾਸ਼ਾ ਵਾਲੇ ਪੰਨਿਆਂ ਦਾ ਅਨੁਵਾਦ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">ਜੇਕਰ ਤੁਹਾਨੂੰ ਲੱਗਦਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਸੁਰੱਖਿਆ ਨੂੰ ਖਤਰਾ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਹਾਨੀਕਾਰਕ ਪ੍ਰੋਗਰਾਮਾਂ ਨੂੰ ਹਟਾਏ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ <ph name="BEGIN_LINK"/>ਇਸ ਸਾਈਟ 'ਤੇ ਜਾ ਸਕਦੇ ਹੋ<ph name="END_LINK"/>।</translation>
+<translation id="8349305172487531364">ਬੁੱਕਮਾਰਕਸ ਬਾਰ</translation>
 <translation id="8355270400102541638">ਸਥਾਨਕ ਕ੍ਰੈਸ਼ ਸੰਦਰਭ:</translation>
 <translation id="8363502534493474904">ਜਹਾਜ਼ ਮੋਡ ਬੰਦ ਕਰੋ</translation>
 <translation id="8364627913115013041">ਸੈੱਟ ਨਹੀਂ ਕੀਤਾ।</translation>
-<translation id="8367477997601443248">ਅਸੁਰੱਖਿਅਤ ਫ਼ਾਰਮ</translation>
 <translation id="8368476060205742148">Google Play ਸੇਵਾਵਾਂ</translation>
 <translation id="8371889962595521444">ਵਿਉਂਤੇ ਰੂਟ ਪ੍ਰਮਾਣ-ਪੱਤਰ</translation>
 <translation id="8380941800586852976">ਖਤਰਨਾਕ</translation>
@@ -1713,11 +1790,11 @@
 ਵਧੀਕ ਵੇਰਵੇ:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
-<translation id="8425213833346101688">ਬਦਲੋ</translation>
 <translation id="8428213095426709021">ਸੈਟਿੰਗਾਂ</translation>
 <translation id="8433057134996913067">ਇਹ ਤੁਹਾਨੂੰ ਜ਼ਿਆਦਾਤਰ ਵੈੱਬਸਾਈਟਾਂ ਤੋਂ ਸਾਈਨ ਆਊਟ ਕਰ ਦੇਵੇਗਾ।</translation>
 <translation id="8437238597147034694">&amp;ਮੂਵ ਨੂੰ ਅਨਡੂ ਕਰੋ</translation>
 <translation id="8438786541497918448">ਕੀ ਕੈਮਰਾ ਅਤੇ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਵਰਤਣਾ ਹੈ?</translation>
+<translation id="8446884382197647889">ਹੋਰ ਜਾਣੋ</translation>
 <translation id="8457125768502047971">ਅਨਿਸ਼ਚਿਤ</translation>
 <translation id="8461694314515752532">ਆਪਣੇ ਖੁਦ ਦੇ ਸਮਕਾਲੀਕਰਨ ਪਾਸਫਰੇਜ਼ ਨਾਲ ਸਮਕਾਲੀਕਿਰਤ ਡਾਟੇ ਨੂੰ ਇਨਕ੍ਰਿਪਟ ਕਰੋ</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 ਕ੍ਰੈਡਿਟ ਕਾਰਡ}one{# ਕ੍ਰੈਡਿਟ ਕਾਰਡ}other{ # ਕ੍ਰੈਡਿਟ ਕਾਰਡ}}</translation>
@@ -1730,8 +1807,11 @@
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> ਨੇ ਪ੍ਰਤਿਕਿਰਿਆ ਦੇਣ ਵਿੱਚ ਬਹੁਤ ਜ਼ਿਆਦਾ ਸਮਾਂ ਲਗਾਇਆ।</translation>
 <translation id="230699814587342492">Brave ਪਾਸਵਰਡ</translation>
 <translation id="8503813439785031346">ਵਰਤੋਂਕਾਰ ਨਾਮ</translation>
+<translation id="8507227106804027148">ਕਮਾਂਡ ਲਾਈਨ</translation>
 <translation id="8508648098325802031">ਖੋਜ ਪ੍ਰਤੀਕ</translation>
 <translation id="1426902392270366682">Brave ਤੁਹਾਡੇ Brave ਖਾਤੇ ਦੀ ਸੁਰੱਖਿਆ ਕਰਨ ਅਤੇ ਪਾਸਵਰਡ ਬਦਲਣ ਵਿੱਚ ਤੁਹਾਡੀ ਮਦਦ ਕਰ ਸਕਦਾ ਹੈ।</translation>
+<translation id="1215802963054007211">ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਿੰਗ ਇਤਿਹਾਸ, ਕੁਕੀਜ਼, ਕੈਸ਼ੇ ਅਤੇ ਹੋਰ ਚੀਜ਼ਾਂ ਨੂੰ Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਕਲੀਅਰ ਕਰੋ</translation>
+<translation id="8533619373899488139">ਬਲਾਕ ਕੀਤੇ URL ਅਤੇ ਤੁਹਾਡੇ ਸਿਸਟਮ ਪ੍ਰਸ਼ਾਸਕ ਵੱਲੋਂ ਲਾਗੂ ਕੀਤੀਆਂ ਹੋਰ ਨੀਤੀਆਂ ਦੀ ਸੂਚੀ ਦੇਖਣ ਲਈ &lt;strong&gt;chrome://policy&lt;/strong&gt; 'ਤੇ ਜਾਓ।</translation>
 <translation id="8541158209346794904">ਬਲੂਟੁੱਥ ਡੀਵਾਈਸ</translation>
 <translation id="8542014550340843547">ਹੇਠਾਂ ਤਿੰਨ ਪਿੰਨਾਂ</translation>
 <translation id="8543181531796978784">ਤੁਸੀਂ <ph name="BEGIN_ERROR_LINK"/>ਇੱਕ ਖੋਜ ਸਮੱਸਿਆ ਦੀ ਰਿਪੋਰਟ ਕਰ ਸਕਦੇ ਹੋ<ph name="END_ERROR_LINK"/> ਜਾਂ ਜੇਕਰ ਤੁਹਾਨੂੰ ਲੱਗਦਾ ਹੈ ਕਿ ਤੁਹਾਡੀ ਸੁਰੱਖਿਆ ਨੂੰ ਖਤਰਾ ਹੈ, ਤਾਂ ਤੁਸੀਂ <ph name="BEGIN_LINK"/>ਇਸ ਅਸੁਰੱਖਿਅਤ ਸਾਈਟ 'ਤੇ ਜਾ<ph name="END_LINK"/>ਸਕਦੇ ਹੋ।</translation>
@@ -1747,6 +1827,7 @@
 <translation id="8622948367223941507">ਕਨੂੰਨੀ-ਵਾਧੂ</translation>
 <translation id="8623885649813806493">ਕੋਈ ਮੇਲ ਖਾਂਦਾ ਪਾਸਵਰਡ ਨਹੀਂ। ਸਾਰੇ ਰੱਖਿਅਤ ਕੀਤੇ ਪਾਸਵਰਡ ਦਿਖਾਓ।</translation>
 <translation id="8625384913736129811">ਇਸ ਕਾਰਡ ਨੂੰ ਇਸ ਡੀਵਾਈਸ 'ਤੇ ਰੱਖਿਅਤ ਕਰੋ</translation>
+<translation id="8657078576661269990">ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਨੇ <ph name="ORIGIN_NAME"/> ਤੋਂ <ph name="VM_NAME_1"/> ਅਤੇ <ph name="VM_NAME_2"/> ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਦੀ ਸੁਵਿਧਾ ਨੂੰ ਬਲਾਕ ਕਰ ਦਿੱਤਾ ਹੈ</translation>
 <translation id="8663226718884576429">ਆਰਡਰ ਸਾਰਾਂਸ਼, <ph name="TOTAL_LABEL"/>, ਹੋਰ ਵੇਰਵੇ</translation>
 <translation id="867224526087042813">ਹਸਤਾਖਰ</translation>
 <translation id="8676424191133491403">ਕੋਈ ਦੇਰੀ ਨਹੀਂ</translation>
@@ -1759,13 +1840,18 @@
 <translation id="8699041776323235191">HID ਡੀਵਾਈਸ</translation>
 <translation id="8703575177326907206"><ph name="DOMAIN"/> ਨਾਲ ਤੁਹਾਡਾ ਕਨੈਕਸ਼ਨ ਐਨਕ੍ਰਿਪਟ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ।</translation>
 <translation id="8705331520020532516">ਸੀਰੀਅਲ ਨੰਬਰ</translation>
+<translation id="8710842507289500830">ਫ਼ੌਂਟ ਸ਼ੈਲੀ</translation>
 <translation id="8718314106902482036">ਭੁਗਤਾਨ ਪੂਰਾ ਨਹੀਂ ਹੋਇਆ</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, ਖੋਜ ਸੁਝਾਅ</translation>
 <translation id="8719528812645237045">ਉੱਪਰ ਇੱਕ ਤੋਂ ਵੱਧ ਮੋਰੀਆਂ</translation>
 <translation id="8725066075913043281">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</translation>
+<translation id="8728672262656704056">ਤੁਸੀਂ ਗੁੰਮਨਾਮ ਮੋਡ ਵਿੱਚ ਚਲੇ ਗਏ ਹੋ</translation>
 <translation id="8730621377337864115">ਹੋ ਗਿਆ</translation>
+<translation id="1769647018144434441">'ਪਾਸਵਰਡ ਬਟਨ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ' ਬਟਨ, Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਪਾਸਵਰਡ ਦੇਖਣ ਅਤੇ ਉਹਨਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
+<translation id="8737134861345396036"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ ਨਿੱਜੀ ਤੌਰ 'ਤੇ ਬ੍ਰਾਊਜ਼ ਕਰਨ ਲਈ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹਣ ਵਾਸਤੇ Enter ਦਬਾਓ</translation>
 <translation id="6326805297893828864">ਇੱਕ ਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ ਸਥਾਪਿਤ ਕਰਨ ਲਈ, ਤੁਹਾਡੀ ਘੜੀ ਨੂੰ ਸਹੀ ਢੰਗ ਨਾਲ ਸੈੱਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ। ਅਜਿਹਾ ਇਸ ਲਈ ਕਿਉਂਕਿ ਪ੍ਰਮਾਣ-ਪੱਤਰ, ਜਿਸਨੂੰ ਵੈੱਬਸਾਈਟਾਂ ਖੁਦ ਦੀ ਪਛਾਣ ਕਰਨ ਲਈ ਵਰਤਦੀਆਂ ਹਨ, ਕੇਵਲ ਖ਼ਾਸ ਮਿਆਦ ਲਈ ਵੈਧ ਹੁੰਦੇ ਹਨ। ਕਿਉਂਕਿ ਤੁਹਾਡੀ ਡੀਵਾਈਸ ਦੀ ਘੜੀ ਦਾ ਸਮਾਂ ਗਲਤ ਹੈ, Brave ਇਹਨਾਂ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਦੀ ਜਾਂਚ ਨਹੀਂ ਕਰ ਸਕਦਾ।</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/> ਦਾ &lt;abbr id="dnsDefinition"&gt;DNS ਪਤਾ&lt;/abbr&gt; ਨਹੀਂ ਮਿਲ ਸਕਿਆ। ਸਮੱਸਿਆ ਦਾ ਨਿਦਾਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।</translation>
+<translation id="8742371904523228557"><ph name="ORIGIN"/> ਲਈ <ph name="ONE_TIME_CODE"/> ਤੁਹਾਡਾ ਕੋਡ ਹੈ</translation>
 <translation id="874918643257405732">ਇਹ ਟੈਬ ਬੁੱਕਮਾਰਕ ਕਰੋ</translation>
 <translation id="8751426954251315517">ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</translation>
 <translation id="8759274551635299824">ਇਸ ਕਾਰਡ ਦੀ ਮਿਆਦ ਸਮਾਪਤ ਹੋ ਗਈ ਹੈ</translation>
@@ -1777,15 +1863,16 @@
 <translation id="8790007591277257123">&amp;ਮਿਟਾਏ ਗਏ ਨੂੰ ਮੁੜ-ਓਹੀ ਕਰੋ</translation>
 <translation id="5304100303568917877">ਤੁਸੀਂ ਆਪਣੇ <ph name="ORG_NAME"/> ਖਾਤੇ 'ਤੇ ਪਹੁੰਚ ਗੁਆ ਸਕਦੇ ਹੋ ਜਾਂ ਤੁਹਾਡੀ ਪਛਾਣ ਚੋਰੀ ਹੋ ਸਕਦੀ ਹੈ। Brave ਵੱਲੋਂ ਹੁਣੇ ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਬਦਲਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।</translation>
 <translation id="9156291179464624174"><ph name="ENROLLMENT_DOMAIN"/> ਨੇ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ 'ਤੇ Brave Enterprise Connectors ਨੂੰ ਚਾਲੂ ਕਰ ਦਿੱਤਾ ਹੈ। ਇਹਨਾਂ ਕਨੈਕਟਰਾਂ ਦੀ ਤੁਹਾਡੇ ਕੁਝ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਹੈ।</translation>
-<translation id="8800988563907321413">ਤੁਹਾਡੇ ਨਜ਼ਦੀਕੀ ਸੁਝਾਅ ਇੱਥੇ ਵਿਖਾਈ ਦੇਣਗੇ</translation>
+<translation id="8798099450830957504">ਪੂਰਵ-ਨਿਰਧਾਰਤ</translation>
 <translation id="8805819170075074995">ਸੂਚੀ ਇੰਦਰਾਜ "<ph name="LANGUAGE_ID"/>": ਇੰਦਰਾਜ ਅਣਡਿੱਠ ਕਰ ਦਿੱਤਾ ਗਿਆ ਕਿਉਂਕਿ ਇਹ SpellcheckLanguage ਨੀਤੀ ਵਿੱਚ ਵੀ ਸ਼ਾਮਲ ਹੈ।</translation>
 <translation id="8807160976559152894">ਹਰ ਪੰਨੇ ਤੋਂ ਬਾਅਦ ਕਟਾਈ</translation>
-<translation id="8831512686168463822">ਇਹ ਫ਼ਾਰਮ ਇੱਕ ਅਸੁਰੱਖਿਅਤ ਕਨੈਕਸ਼ਨ 'ਤੇ ਸਪੁਰਦ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ, ਜਿਸ ਕਰਕੇ ਸ਼ਾਇਦ ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ (ਉਦਾਹਰਨ ਲਈ, ਪਾਸਵਰਡ, ਸੁਨੇਹੇ ਜਾਂ ਕ੍ਰੈਡਿਟ ਕਾਰਡ) ਇਸ ਸਾਈਟ 'ਤੇ ਭੇਜਣ ਵੇਲੇ ਉਜਾਗਰ ਹੋ ਜਾਵੇ।</translation>
+<translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab ਦਬਾਓ, ਫਿਰ ਆਪਣੀਆਂ Brave ਸੈਟਿੰਗਾਂ ਤੋਂ Brave ਅੱਪਡੇਟ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="883848425547221593">ਹੋਰ ਬੁੱਕਮਾਰਕ</translation>
 <translation id="884264119367021077">ਸ਼ਿਪਿੰਗ ਪਤਾ</translation>
 <translation id="884923133447025588">ਕੋਈ ਖੰਡਨ ਮਕੈਨਿਜ਼ਮ ਨਹੀਂ ਮਿਲਿਆ।</translation>
 <translation id="7487066225574140895">Brave ਨਾਲ ਸ਼ੇਅਰਿੰਗ</translation>
 <translation id="4764754838347156633">ਜੇਕਰ ਤੁਸੀਂ ਆਪਣੇ <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> ਪਾਸਵਰਡ ਨੂੰ ਹੋਰ ਸਾਈਟਾਂ 'ਤੇ ਮੁੜ ਵਰਤਿਆ ਹੈ, ਤਾਂ Brave ਵੱਲੋਂ ਇਸਨੂੰ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।</translation>
+<translation id="885906927438988819">ਜੇ ਸ਼ਬਦ-ਜੋੜ ਸਹੀ ਹੈ, ਤਾਂ <ph name="BEGIN_LINK"/>Windows ਨੈੱਟਵਰਕ ਤਸ਼ਖੀਸਾਂ ਨੂੰ ਚਲਾ ਕੇ ਦੇਖੋ<ph name="END_LINK"/>।</translation>
 <translation id="8866481888320382733">ਨੀਤੀ ਸੈਟਿੰਗਾਂ ਪਾਰਸ ਕਰਨ ਵਿੱਚ ਗੜਬੜ</translation>
 <translation id="8866928039507595380">ਤਹਿ</translation>
 <translation id="886872106311861689">B3</translation>
@@ -1797,15 +1884,17 @@
 <translation id="8903921497873541725">ਜ਼ੂਮ ਵਧਾਓ</translation>
 <translation id="890485472659500557">ਇੰਜੀਨੀਅਰਿੰਗ-C</translation>
 <translation id="890493561996401738">ਸੁਝਾਅ ਬਟਨ ਹਟਾਓ, ਹਟਾਉਣ ਲਈ ਐਂਟਰ ਦਬਾਓ, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="8910670906166981838">ਤੁਸੀਂ ਇਨਕੋਗਨਿਟੋ ਮੋਡ ਵਿੱਚ ਚਲੇ ਗਏ ਹੋ</translation>
 <translation id="2684652081942622950">Brave ਖਾਤਾ</translation>
+<translation id="4102271590580840789">'ਭੁਗਤਾਨ ਵਿਧੀਆਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ' ਬਟਨ, Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਭੁਗਤਾਨਾਂ ਅਤੇ ਕ੍ਰੈਡਿਟ ਕਾਰਡ ਜਾਣਕਾਰੀ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਨ ਲਈ Enter ਦਬਾਓ</translation>
 <translation id="8918231688545606538">ਇਹ ਪੰਨਾ ਸ਼ੱਕੀ ਹੈ</translation>
 <translation id="892588693504540538">ਉੱਪਰ ਸੱਜੇ ਪਾਸੇ ਮੋਰੀ</translation>
 <translation id="7757992844965332255">ਕੀ ਤੁਸੀਂ ਇਸ ਕਾਰਡ ਨੂੰ ਆਪਣੇ Brave ਖਾਤੇ ਵਿੱਚ ਰੱਖਿਅਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="8932102934695377596">ਤੁਹਾਡੀ ਘੜੀ ਪਿੱਛੇ ਹੈ</translation>
 <translation id="893332455753468063">ਨਾਮ ਸ਼ਾਮਲ ਕਰੋ</translation>
+<translation id="8942355029279167844">ਉਤਪਾਦ ਅਨੁਭਵ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਲਈ ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਨੇ <ph name="APP_NAME"/> ਨੂੰ ਤਸ਼ਖੀਸੀ ਡਾਟਾ ਇਕੱਤਰ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦੇ ਦਿੱਤੀ ਹੈ। ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> ਨੂੰ ਦੇਖੋ।</translation>
 <translation id="8943282376843390568">ਪੀਲਾ-ਹਰਾ</translation>
 <translation id="8957210676456822347">ਕੈਪਟਿਵ ਪੋਰਟਲ ਇਖਤਿਆਰੀਕਰਨ</translation>
-<translation id="109444839364056698">Brave Enterprise Connectors ਵੱਲੋਂ ਸੁਰੱਖਿਆ ਇਵੈਂਟਾਂ ਨੂੰ ਫਲੈਗ ਕੀਤੇ ਜਾਣ 'ਤੇ ਇਵੈਂਟ ਸੰਬੰਧੀ ਢੁਕਵਾਂ ਡਾਟਾ ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ। ਇਸ ਵਿੱਚ ਤੁਹਾਡੇ ਵੱਲੋਂ Brave 'ਚ ਦੇਖੇ ਜਾਂਦੇ ਪੰਨਿਆਂ ਦੇ URL, ਫ਼ਾਈਲਾਂ ਦੇ ਨਾਮ ਜਾਂ ਮੈਟਾਡਾਟਾ, ਅਤੇ ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਅਤੇ Brave ਵਿੱਚ ਸਾਈਨ-ਇਨ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਵੱਲੋਂ ਵਰਤਿਆ ਜਾਣ ਵਾਲਾ ਵਰਤੋਂਕਾਰ ਨਾਮ ਸ਼ਾਮਲ ਹੋ ਸਕਦਾ ਹੈ।</translation>
 <translation id="8962950042226115166">ਸ਼ੱਕੀ ਸਾਈਟ</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>ਸੁਝਾਅ:<ph name="MARKUP_2"/>ਯਕੀਨੀ ਬਣਾਓ ਕਿ ਤੁਹਾਡੇ ਕੋਲ ਇੱਕ ਡਾਟਾ ਕਨੈਕਸ਼ਨ ਹੈ<ph name="MARKUP_3"/>ਬਾਅਦ ਵਿੱਚ ਇਹ ਵੈਬਸਫ਼ਾ ਰੀਲੋਡ ਕਰੋ<ph name="MARKUP_4"/>ਉਸ ਪਤੇ ਦੀ ਜਾਂਚ ਕਰੋ, ਜੋ ਤੁਸੀਂ ਦਰਜ ਕੀਤਾ ਸੀ<ph name="MARKUP_5"/></translation>
 <translation id="8968766641738584599">ਕਾਰਡ ਰੱਖਿਅਤ ਕਰੋ</translation>
@@ -1834,6 +1923,8 @@
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619">ਤੁਸੀਂ <ph name="DOMAIN"/> ਤੱਕ ਪਹੁੰਚਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ, ਪਰ ਸਰਵਰ ਨੇ ਇੱਕ ਅਵੈਧ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਪੇਸ਼ ਕੀਤਾ।</translation>
 <translation id="9050666287014529139">ਪਾਸਫਰੇਜ਼</translation>
+<translation id="9056953843249698117">ਸਟੋਰ</translation>
+<translation id="9062620674789239642">ਸ਼ਾਇਦ ਇਸ ਨੂੰ ਬਾਹਰ ਲਿਜਾਇਆ, ਸੰਪਾਦਿਤ ਕੀਤਾ ਜਾਂ ਮਿਟਾਇਆ ਜਾ ਚੁੱਕਾ ਹੈ।</translation>
 <translation id="9065203028668620118">ਸੰਪਾਦਿਤ ਕਰੋ</translation>
 <translation id="9065745800631924235">ਇਤਿਹਾਸ ਤੋਂ <ph name="TEXT"/> ਖੋਜ</translation>
 <translation id="9069693763241529744">ਕਿਸੇ ਐਕਸਟੈਂਸ਼ਨ ਵੱਲੋਂ ਬਲਾਕ ਕੀਤਾ ਗਿਆ</translation>
@@ -1864,11 +1955,13 @@
 <translation id="9173282814238175921">ਇਕਹਿਰਾ ਦਸਤਾਵੇਜ਼/ਨਵੀਂ ਸ਼ੀਟ</translation>
 <translation id="917450738466192189">ਸਰਵਰ ਦਾ ਪ੍ਰਮਾਣ-ਪੱਤਰ ਅਵੈਧ ਹੈ।</translation>
 <translation id="9174917557437862841">ਟੈਬ ਬਦਲਣ ਦਾ ਬਟਨ, ਇਸ ਟੈਬ 'ਤੇ ਜਾਣ ਲਈ ਐਂਟਰ ਦਬਾਓ</translation>
+<translation id="5129795253416930127">Brave ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਆਪਣੇ ਭੁਗਤਾਨਾਂ ਅਤੇ ਕ੍ਰੈਡਿਟ ਕਾਰਡ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ</translation>
 <translation id="9183302530794969518">Brave ਡੌਕਸ</translation>
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> ਇੱਕ ਅਸਮਰਥਿਤ ਪ੍ਰੋਟੋਕੋਲ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ।</translation>
 <translation id="9191834167571392248">ਹੇਠਾਂ ਖੱਬੇ ਪਾਸੇ ਮੋਰੀ</translation>
 <translation id="9205078245616868884">ਤੁਹਾਡਾ ਡਾਟਾ ਤੁਹਾਡੇ ਸਮਕਾਲੀਕਰਨ ਪਾਸਫਰੇਜ਼ ਨਾਲ ਇਨਕ੍ਰਿਪਟ ਕੀਤਾ ਗਿਆ ਹੈ। ਸਮਕਾਲੀਕਰਨ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਇਸਨੂੰ ਦਾਖਲ ਕਰੋ।</translation>
 <translation id="9207861905230894330">ਲੇਖ ਜੋੜਨ ਵਿੱਚ ਅਸਫਲ।</translation>
+<translation id="9213433120051936369">ਦਿੱਖ ਨੂੰ ਵਿਉਂਤਬੱਧ ਕਰੋ</translation>
 <translation id="2206050430829841793">ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ Brave ਨੂੰ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਇਸ ਸਾਈਟ ਨਾਲ ਕਨੈਕਟ ਹੋਣ ਤੋਂ ਰੋਕ ਰਹੀ ਹੈ</translation>
 <translation id="9219103736887031265">ਚਿੱਤਰ</translation>
 <translation id="933712198907837967">Diners Club</translation>
@@ -1900,25 +1993,6 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Brave Pay ਤੋਂ</translation>
-<translation id="2586968635953373425">ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹੋ</translation>
-<translation id="3489858312836205593">ਨਵੀਂ Brave ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਖੋਲ੍ਹੋ</translation>
-<translation id="1426112902089905810">&lt;h4&gt;ਪੜਾਅ 1: ਪੋਰਟਲ ਵਿੱਚ ਸਾਈਨ-ਇਨ ਕਰੋ&lt;/h4&gt;
-    &lt;p&gt;ਕੈਫ਼ੇ ਜਾਂ ਹਵਾਈ ਅੱਡਿਆਂ ਵਰਗੀਆਂ ਥਾਂਵਾਂ 'ਤੇ ਵਾਈ-ਫਾਈ ਨੈੱਟਵਰਕ ਲਈ ਤੁਹਾਨੂੰ ਸਾਈਨ-ਇਨ ਕਰਨਾ ਪੈਂਦਾ ਹੈ। ਸਾਈਨ-ਇਨ ਪੰਨਾ ਦੇਖਣ ਲਈ, &lt;code&gt;http://&lt;/code&gt; ਦੀ ਵਰਤੋਂ ਕਰਨ ਵਾਲੇ ਪੰਨੇ 'ਤੇ ਜਾਓ।&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;&lt;code&gt;http://&lt;/code&gt; ਨਾਲ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲੀ ਕਿਸੇ ਵੀ ਵੈੱਬਸਾਈਟ 'ਤੇ ਜਾਓ, ਜਿਵੇਂ &lt;a href="http://example.com" target="_blank" rel="noopener noreferrer"&gt;http://example.com&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;ਸਾਈਨ-ਇਨ ਕਰਨ ਲਈ ਜੋ ਪੰਨਾ ਖੁੱਲ੍ਹੇਗਾ, ਉਸ 'ਤੇ ਇੰਟਰਨੈੱਟ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਾਈਨ-ਇਨ ਕਰੋ।&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;ਪੜਾਅ 2: ਇਨਕੋਗਨਿਟੋ ਮੋਡ ਵਿੱਚ ਪੰਨਾ ਖੋਲ੍ਹੋ (ਸਿਰਫ਼ ਕੰਪਿਊਟਰ)&lt;/h4&gt;
-    &lt;p&gt;ਉਸ ਪੰਨੇ ਨੂੰ ਖੋਲ੍ਹੋ ਜਿਸ ਨੂੰ ਤੁਸੀਂ ਕਿਸੇ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਵਿੱਚ ਦੇਖੇ ਰਹੇ ਸੀ।&lt;/p&gt;
-    &lt;p&gt;ਜੇਕਰ ਪੰਨਾ ਖੁੱਲ੍ਹਦਾ ਹੈ, ਤਾਂ Brave ਐਕਸਟੈਂਸ਼ਨ ਸਹੀ ਕੰਮ ਨਹੀਂ ਕਰ ਰਹੀ ਹੈ। ਗੜਬੜ ਠੀਕ ਕਰਨ ਲਈ, ਐਕਸਟੈਂਸ਼ਨ ਨੂੰ ਬੰਦ ਕਰੋ।&lt;/p&gt;
-    &lt;h4&gt;ਪੜਾਅ 3: ਆਪਣੇ ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।&lt;/h4&gt;
-    &lt;p&gt;ਪੱਕਾ ਕਰੋ ਕਿ ਤੁਹਾਡਾ ਡੀਵਾਈਸ ਅੱਪ-ਟੂ-ਡੇਟ ਹੈ।&lt;/p&gt;
-    &lt;h4&gt;ਪੜਾਅ 4: ਆਪਣਾ ਐਂਟੀਵਾਇਰਸ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਬੰਦ ਕਰੋ&lt;/h4&gt;
-    &lt;p&gt;ਜੇਕਰ ਤੁਹਾਡੇ ਕੋਲ "HTTPS ਸੁਰੱਖਿਆ" ਜਾਂ "HTTPS ਸਕੈਨਿੰਗ" ਮੁਹੱਈਆ ਕਰਵਾਉਣ ਵਾਲਾ ਐਂਟੀਵਾਇਰਸ ਸਾਫ਼ਟਵੇਅਰ ਹੈ ਤਾਂ ਤੁਹਾਨੂੰ ਇਹ ਗੜਬੜ ਦਿਖਾਈ ਦੇਵੇਗੀ। ਐਂਟੀਵਾਇਰਸ Brave ਨੂੰ ਸੁਰੱਖਿਆ ਮੁਹੱਈਆ ਕਰਵਾਉਣ ਤੋਂ ਰੋਕ ਰਿਹਾ ਹੈ।&lt;/p&gt;
-    &lt;p&gt;ਸਮੱਸਿਆ ਨੂੰ ਠੀਕ ਕਰਨ ਲਈ, ਆਪਣੇ ਐਂਟੀਵਾਇਰਸ ਸਾਫ਼ਟਵੇਅਰ ਨੂੰ ਬੰਦ ਕਰੋ। ਜੇਕਰ ਸਾਫ਼ਟਵੇਅਰ ਬੰਦ ਕਰਨ ਤੋਂ ਬਾਅਦ ਪੰਨਾ ਕੰਮ ਕਰਦਾ ਹੈ, ਤਾਂ ਸੁਰੱਖਿਅਤ ਸਾਈਟਾਂ ਦੀ ਵਰਤੋਂ ਕਰਨ ਵੇਲੇ ਇਹ ਸਾਫ਼ਟਵੇਅਰ ਬੰਦ ਕਰੋ।&lt;/p&gt;
-    &lt;p&gt;ਜਦੋਂ ਤੁਸੀਂ ਸਾਈਟਾਂ ਬ੍ਰਾਊਜ਼ ਕਰ ਲਵੋ ਤਾਂ ਆਪਣੇ ਐਂਟੀਵਾਇਰਸ ਪ੍ਰੋਗਰਾਮ ਨੂੰ ਮੁੜ ਚਾਲੂ ਕਰਨਾ ਯਾਦ ਰੱਖੋ।&lt;/p&gt;
-    &lt;h4&gt;ਪੜਾਅ 5: ਵਾਧੂ ਮਦਦ ਲਓ&lt;/h4&gt;
-    &lt;p&gt;ਜੇਕਰ ਤੁਹਾਨੂੰ ਹਾਲੇ ਵੀ ਗੜਬੜ ਦਿਖਾਈ ਦਿੰਦੀ ਹੈ, ਤਾਂ ਵੈੱਬਸਾਈਟ ਮਾਲਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।&lt;/p&gt;</translation>
 <translation id="8820817407110198400">ਬੁੱਕਮਾਰਕਸ</translation>
 <translation id="8362995731815961365">ਜਿਸ ਵਿਅਕਤੀ ਨੇ ਇਸ ਕੰਪਿਊਟਰ ਦਾ ਸੈੱਟ ਅੱਪ ਕੀਤਾ ਹੈ ਉਸ ਵੱਲੋਂ ਇਸ ਸਾਈਟ ਨੂੰ ਬਲਾਕ ਕਰਨਾ ਚੁਣਿਆ ਗਿਆ ਹੈ।</translation>
 <translation id="4075123085690634698">ਕਿਸੇ ਨਵੀਂ ਇਨਕੋਗਨਿਟੋ ਵਿੰਡੋ ਵਿੱਚ ਪੰਨਾ ਖੋਲ੍ਹੋ (⇧⌘N)</translation>
