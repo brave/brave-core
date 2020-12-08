@@ -18,6 +18,14 @@ import re
 import git_cl
 import git_common
 
+def HasFormatErrors():
+    print('Running git cl format and gn format')
+    # For more options, see vendor/depot_tools/git_cl.py
+    cmd = ['cl', 'format', '--diff']
+    diff = git_cl.RunGit(cmd)
+    print(diff)
+    return bool(diff)
+
 def main(args):
   """Runs cpplint on the current changelist."""
   """Adapted from git_cl.py CMDlint """
@@ -42,8 +50,22 @@ def main(args):
   settings = git_cl.settings
   previous_cwd = os.getcwd()
   os.chdir(settings.GetRoot())
+
+  # Check for clang/gn format errors.
+  cl = git_cl.Changelist()
   try:
-    cl = git_cl.Changelist()
+    if HasFormatErrors():
+      upstream_branch = cl.GetUpstreamBranch()
+      upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
+      print('Format check failed against commit %s. Run npm format to fix.' % upstream_commit)
+      return 1
+  except:
+    e = sys.exc_info()[1]
+    print('Error running format check: %s' % e.info)
+    return 1
+  print('Format check succeeded.')
+
+  try:
     files = cl.GetAffectedFiles(git_common.get_or_create_merge_base(cl.GetBranch(), options.base_branch))
     if not files:
       print('Cannot lint an empty CL')
