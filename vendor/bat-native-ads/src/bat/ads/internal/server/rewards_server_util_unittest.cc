@@ -12,7 +12,7 @@
 
 namespace ads {
 
-TEST(BatAdsAdsServerUtilTest,
+TEST(BatAdsRewardsServerUtilTest,
     Production) {
   // Arrange
   SetEnvironment(Environment::PRODUCTION);
@@ -25,7 +25,7 @@ TEST(BatAdsAdsServerUtilTest,
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsAdsServerUtilTest,
+TEST(BatAdsRewardsServerUtilTest,
     Staging) {
   // Arrange
   SetEnvironment(Environment::STAGING);
@@ -38,7 +38,7 @@ TEST(BatAdsAdsServerUtilTest,
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsAdsServerUtilTest,
+TEST(BatAdsRewardsServerUtilTest,
     Development) {
   // Arrange
   SetEnvironment(Environment::DEVELOPMENT);

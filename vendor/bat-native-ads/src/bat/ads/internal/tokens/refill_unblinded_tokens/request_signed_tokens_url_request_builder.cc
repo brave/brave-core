@@ -14,7 +14,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/security_util.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/confirmations_server_util.h"
 
 namespace ads {
 
@@ -48,7 +48,7 @@ UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/token/%s",
-      server::GetHost().c_str(), wallet_.id.c_str());
+      confirmations::server::GetHost().c_str(), wallet_.id.c_str());
 }
 
 std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(

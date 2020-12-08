@@ -16,7 +16,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/confirmations_server_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
 namespace ads {
@@ -47,7 +47,7 @@ UrlRequestPtr CreateConfirmationUrlRequestBuilder::Build() {
 
 std::string CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/%s/%s",
-      server::GetHost().c_str(), confirmation_.id.c_str(),
+      confirmations::server::GetHost().c_str(), confirmation_.id.c_str(),
           confirmation_.credential.c_str());
 }
 
