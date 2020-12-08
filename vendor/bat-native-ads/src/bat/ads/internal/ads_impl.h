@@ -41,6 +41,7 @@ class TextClassification;
 namespace processor {
 class PurchaseIntent;
 class TextClassification;
+class EpsilonGreedyBandit;
 }  // namespace processor
 
 namespace geographic {
@@ -206,6 +207,8 @@ class AdsImpl
       purchase_intent_resource_;
   std::unique_ptr<ad_targeting::processor::PurchaseIntent>
       purchase_intent_processor_;
+  std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_processor_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;
   std::unique_ptr<AdTargeting> ad_targeting_;

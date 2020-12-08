@@ -136,6 +136,8 @@ const PurchaseIntentSignalSegmentHistoryMap&
   return client_->purchase_intent_signal_history;
 }
 
+// TOOD(Moritz Haller): Get persisted bandit arms from prefs (not client.json)
+
 AdContentInfo::LikeAction Client::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,

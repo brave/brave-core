@@ -13,17 +13,33 @@
 namespace ads {
 namespace features {
 
+// TODO(Moritz Haller): Delete once updated on variation server
 extern const base::Feature kContextualAdsControl;
 
-bool IsPageProbabilitiesStudyActive();
+// TODO(Moritz Haller): Feature description
+extern const base::Feature kTextClassificationModel;
 
-std::string GetPageProbabilitiesStudy();
-
-std::string GetPageProbabilitiesFieldTrialGroup();
+bool IsTextClassificationModelEnabled();
 
 int GetPageProbabilitiesHistorySize();
 
-void LogPageProbabilitiesStudy();
+// TODO(Moritz Haller): Feature description
+extern const base::Feature kPurchaseIntentModel;
+
+bool IsPurchaseIntentModelEnabled();
+
+// TODO(Moritz Haller): Feature description
+extern const base::Feature kEpsilonGreedyBandit;
+
+bool IsEpsilonGreedyBanditEnabled();
+
+bool HasActiveStudy();
+
+std::string GetStudy();
+
+std::string GetGroup();
+
+void Log();
 
 }  // namespace features
 }  // namespace ads

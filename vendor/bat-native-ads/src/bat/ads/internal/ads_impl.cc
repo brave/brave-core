@@ -20,6 +20,7 @@
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_targeting/processors/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/ad_targeting/resources/purchase_intent/purchase_intent_resource.h"
@@ -403,6 +404,10 @@ void AdsImpl::set(
       std::make_unique<ad_targeting::processor::PurchaseIntent>(
           purchase_intent_resource_.get());
 
+  // TODO(Moritz Haller): Disable processors of disabled features
+  epsilon_greedy_bandit_processor_ =
+      std::make_unique<ad_targeting::processor::EpsilonGreedyBandit>();
+
   ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
       std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
@@ -516,7 +521,7 @@ void AdsImpl::InitializeStep6(
 
   ad_server_->MaybeFetch();
 
-  features::LogPageProbabilitiesStudy();
+  features::Log();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -572,6 +577,8 @@ void AdsImpl::OnTransactionsChanged() {
 void AdsImpl::OnAdNotificationViewed(
     const AdNotificationInfo& ad) {
   confirmations_->ConfirmAd(ad.creative_instance_id, ConfirmationType::kViewed);
+
+  epsilon_greedy_bandit_processor_->Process(ad);
 }
 
 void AdsImpl::OnAdNotificationClicked(
@@ -580,6 +587,8 @@ void AdsImpl::OnAdNotificationClicked(
 
   confirmations_->ConfirmAd(ad.creative_instance_id,
       ConfirmationType::kClicked);
+
+  epsilon_greedy_bandit_processor_->Process(ad);
 }
 
 void AdsImpl::OnAdNotificationDismissed(

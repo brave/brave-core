@@ -62,17 +62,12 @@ std::string CreateConfirmationRequestDTO(
     }
   }
 
-  if (!features::IsPageProbabilitiesStudyActive()) {
+  if (!features::HasActiveStudy()) {
     dto.SetKey("experiment", base::Value(base::Value::Type::DICTIONARY));
   } else {
-    std::string study = features::GetPageProbabilitiesStudy();
-    std::string group = features::GetPageProbabilitiesFieldTrialGroup();
-    std::string history_size =
-        base::NumberToString(features::GetPageProbabilitiesHistorySize());
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey("name", base::Value(study));
-    dictionary.SetKey("group", base::Value(group));
-    dictionary.SetKey("value", base::Value(history_size));
+    dictionary.SetKey("name", base::Value(features::GetStudy()));
+    dictionary.SetKey("group", base::Value(features::GetGroup()));
     dto.SetKey("experiment", std::move(dictionary));
   }
 

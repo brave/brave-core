@@ -16,10 +16,11 @@ namespace ad_targeting {
 namespace model {
 
 namespace {
+const size_t kMaximumSegments = 3;
+// TODO(Moritz Haller): pass as params from base::Feature
 const uint16_t kSignalLevel = 1;
 const uint16_t kThreshold = 3;
 const int64_t kTimeWindowInSeconds = 7 * (24 * base::Time::kSecondsPerHour);
-const size_t kMaximumSegments = 3;
 }  // namespace
 
 PurchaseIntent::PurchaseIntent() = default;

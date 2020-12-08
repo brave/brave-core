@@ -24,6 +24,7 @@ class AdTargeting {
  private:
   SegmentList GetTextClassificationSegments() const;
   SegmentList GetPurchaseIntentSegments() const;
+  SegmentList GetEpsilonGreedyBanditSegments() const;
 };
 
 }  // namespace ads
