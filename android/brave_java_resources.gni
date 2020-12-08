@@ -597,8 +597,6 @@ brave_java_resources = [
   "java/res/drawable-xxxhdpi/wallet_add.png",
   "java/res/drawable-xxxhdpi/wallet_withdraw.png",
   "java/res/drawable-xxxhdpi/yandex.png",
-  "java/res/drawable/bat_ads_close_button.xml",
-  "java/res/drawable/bat_ads_logo_button.xml",
   "java/res/drawable/bat_panel_gradient.xml",
   "java/res/drawable/bat_rewards_summary_gradient.xml",
   "java/res/drawable/binance_edittext.xml",
