@@ -19,6 +19,7 @@
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ads/result.h"
 
 #if defined(OS_ANDROID)
@@ -184,6 +185,54 @@ bool AdNotifications::Exists(
 uint64_t AdNotifications::Count() const {
   return ad_notifications_.size();
 }
+
+#if defined(OS_ANDROID)
+void AdNotifications::RemoveAllAfterReboot() {
+  if (brave::IsDevOrCanaryBuild()) {
+    return;
+  }
+  database::table::AdEvents database_table;
+  database_table.GetAll([=](
+      const Result result,
+      const AdEventList& ad_events) {
+    if (result != Result::SUCCESS) {
+      BLOG(1, "New tab page ad: Failed to get ad events");
+      return;
+    }
+
+    if (ad_events.empty()) {
+      return;
+    }
+
+    const AdEventInfo ad_event = ad_events.front();
+
+    const base::Time boot_time = base::Time::Now() - base::SysInfo::Uptime();
+    const int64_t boot_timestamp = boot_time.ToDoubleT();
+
+    if (ad_event.timestamp <= boot_timestamp) {
+      RemoveAll(false);
+    }
+  });
+}
+
+void AdNotifications::RemoveAllAfterUpdate() {
+  if (brave::IsDevOrCanaryBuild()) {
+    return;
+  }
+  const std::string current_version_code =
+      base::android::BuildInfo::GetInstance()->package_version_code();
+
+  const std::string last_version_code = Client::Get()->GetVersionCode();
+
+  if (last_version_code == current_version_code) {
+    return;
+  }
+
+  Client::Get()->SetVersionCode(current_version_code);
+
+  RemoveAll(false);
+}
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 

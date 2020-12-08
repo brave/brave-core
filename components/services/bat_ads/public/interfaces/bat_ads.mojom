@@ -24,6 +24,8 @@ interface BatAdsClient {
   [Sync]
   ShouldShowNotifications() => (bool should_show);
   [Sync]
+  CanShowBackgroundNotifications() => (bool can_show);
+  [Sync]
   LoadResourceForId(string id) => (string value);
   [Sync]
   GetBooleanPref(string path) => (bool value);

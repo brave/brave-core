@@ -62,6 +62,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveThemePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
+  "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveSetDefaultBrowserNotificationService.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveChannelDefinitions.java",

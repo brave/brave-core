@@ -39,6 +39,10 @@ class AdsClientMojoBridge
       bool* out_available) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
+  bool CanShowBackgroundNotifications(
+      bool* out_can_show) override;
+  void CanShowBackgroundNotifications(
+      CanShowBackgroundNotificationsCallback callback) override;
   bool ShouldShowNotifications(
       bool* out_should_show) override;
   void ShouldShowNotifications(
