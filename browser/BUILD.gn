@@ -106,7 +106,6 @@ source_set("browser_process") {
   deps = [
     ":sparkle_buildflags",
     ":version_info",
-    "autoplay",
     "brave_stats:stats_updater",
     "browsing_data",
     "content_settings",

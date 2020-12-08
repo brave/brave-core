@@ -21,12 +21,6 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "services/service_manager/public/cpp/interface_provider.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom-blink-forward.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -228,7 +222,6 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   }
 
   // respect user's site blocklist, if any
-  bool ask = false;
   if (content_setting_rules_) {
     ContentSetting setting =
         GetContentSettingFromRules(content_setting_rules_->autoplay_rules,
@@ -237,34 +230,10 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
       VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
       DidBlockContentType(ContentSettingsType::AUTOPLAY);
       return false;
-    } else if (setting == CONTENT_SETTING_ASK) {
-      VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
-      ask = true;
     } else if (setting == CONTENT_SETTING_ALLOW) {
       VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
       return true;
     }
-  }
-
-  if (ask) {
-    mojo::Remote<blink::mojom::PermissionService> permission_service;
-
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
-        permission_service.BindNewPipeAndPassReceiver());
-
-    if (permission_service.get()) {
-      // Request permission (asynchronously) but exit this function without
-      // allowing autoplay. Depending on settings and previous user choices,
-      // this may display visible permissions UI, or an "autoplay blocked"
-      // message, or nothing. In any case, we can't wait for it now.
-      auto request_permission_descriptor =
-          blink::mojom::PermissionDescriptor::New();
-      request_permission_descriptor->name =
-          blink::mojom::PermissionName::AUTOPLAY;
-      permission_service->RequestPermission(
-          std::move(request_permission_descriptor), true, base::DoNothing());
-    }
-    return false;
   }
 
   bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);

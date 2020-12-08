@@ -11,6 +11,8 @@ namespace content_settings {
 
 void ContentSettingsRegistry::BraveInit() {
   // Add CONTENT_SETTING_ASK for autoplay
+  // Note ASK has been deprecated, only keeping it for
+  // DiscardObsoleteAutoplayAsk test case
   content_settings_info_.erase(ContentSettingsType::AUTOPLAY);
   website_settings_registry_->UnRegister(ContentSettingsType::AUTOPLAY);
   Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_ALLOW,

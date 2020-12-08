@@ -19,3 +19,17 @@ source_set("content_settings") {
     "//content/public/browser",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_content_settings_default_provider_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/prefs",
+    "//content/test:test_support",
+  ]
+}

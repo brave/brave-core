@@ -124,7 +124,6 @@ test("brave_unit_tests") {
     "//brave/base:base_unittests",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources_grit",
-    "//brave/browser/autoplay",
     "//brave/browser:browser_process",
     "//brave/browser/browsing_data",
     "//brave/browser/download",
@@ -139,6 +138,7 @@ test("brave_unit_tests") {
     "//brave/browser/widevine:unittest",
     "//brave/common:network_constants",
     "//brave/common:pref_names",
+    "//brave/browser/content_settings:unit_tests",
     "//brave/browser/profiles:profiles",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_ads/test:brave_ads_unit_tests",
@@ -245,7 +245,6 @@ test("brave_unit_tests") {
       "//components/gcm_driver/gcm_driver_unittest.cc",
 
       # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-      "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
       "//brave/chromium_src/chrome/browser/external_protocol/external_protocol_handler_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
@@ -539,7 +538,6 @@ if (!is_android) {
     sources = [
       "//brave/app/brave_main_delegate_browsertest.cc",
       "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
-      "//brave/browser/autoplay/autoplay_permission_context_browsertest.cc",
       "//brave/browser/brave_content_browser_client_browsertest.cc",
       "//brave/browser/brave_profile_prefs_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
@@ -625,6 +623,7 @@ if (!is_android) {
     }
 
     deps = [
+      "//brave/browser/autoplay:browser_tests",
       "//brave/browser/tor:browser_tests",
       "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
       "//brave/components/ipfs/test:brave_ipfs_browser_tests",
