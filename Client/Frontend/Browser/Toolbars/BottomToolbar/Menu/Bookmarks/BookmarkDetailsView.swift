@@ -74,7 +74,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
         if url?.isBookmarklet == true {
             url = url?.removingPercentEncoding
         } else if let url = url, let favUrl = URL(string: url) {
-            faviconImageView.domain = Domain.getOrCreate(forUrl: favUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+            faviconImageView.loadFavicon(siteURL: favUrl)
         }
         
         titleTextField.text = title ?? Strings.newBookmarkDefaultName

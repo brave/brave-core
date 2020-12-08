@@ -102,7 +102,6 @@ class FavoriteCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         backgroundColor = UIColor.clear
-        imageView.domain = nil
     }
     
     @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {

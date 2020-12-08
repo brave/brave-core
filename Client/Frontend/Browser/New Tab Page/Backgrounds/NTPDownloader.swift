@@ -539,16 +539,13 @@ class NTPDownloader {
                         }
                         
                         do {
-                            guard let baseDomain = URL(string: topSite.destinationUrl)?.baseDomain else {
-                                throw "Can't cast to URL.baseDomain: \(topSite.destinationUrl)"
-                            }
-                               
+                            let name = topSite.destinationUrl.toBase64()
                             // FIXME: this saves even if error, should move to temp dir, and then move
-                            let file = saveLocation.appendingPathComponent(baseDomain)
+                            let file = saveLocation.appendingPathComponent(name)
                             try data.write(to: file, options: .atomicWrite)
                             
                             let topSiteBackgroundColorFileName =
-                                baseDomain + NTPDownloader.faviconOverridesBackgroundSuffix
+                                name + NTPDownloader.faviconOverridesBackgroundSuffix
                             let topSiteBackgroundColorURL = saveLocation.appendingPathComponent(topSiteBackgroundColorFileName)
                             
                             try topSite.backgroundColor.write(to: topSiteBackgroundColorURL,
