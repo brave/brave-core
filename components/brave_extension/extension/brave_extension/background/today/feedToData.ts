@@ -247,7 +247,8 @@ async function weightArticles (articles: BraveToday.FeedItem[]): Promise<BraveTo
     ? await new Promise(
         resolve => chrome.history.search({
           text: '',
-          startTime: Date.now() - (14 * MS_IN_DAY)
+          startTime: Date.now() - (14 * MS_IN_DAY),
+          maxResults: 2000
         }, resolve)
       )
     : []
