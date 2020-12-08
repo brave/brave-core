@@ -50,8 +50,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE =
             "show_brave_rewards_onboarding_once";
     private static final String PREF_SHOW_ONBOARDING_MINI_MODAL = "show_onboarding_mini_modal";
+    private static final String PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE =
+            "next_rewards_onboarding_modal_date";
     private static final String PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL =
-            "show_REWARDS_SETTINGS_ONBOARDING_MODAL";
+            "show_rewards_settings_onboarding_modal";
+    private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
     private static final int FAVICON_FETCH_INTERVAL = 1000; // In milliseconds
@@ -69,6 +72,44 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public static final int THANKYOU_STAY_DURATION = 2000; //ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
+
+    public static long getNextRewardsOnboardingModalDate() {
+        return ContextUtils.getAppSharedPreferences().getLong(
+                PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
+    }
+
+    public static void setNextRewardsOnboardingModalDate(long nextDate) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, nextDate);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static void setRewardsOnboardingModalShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ONBOARDING_MODAL, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean hasRewardsOnboardingModalShown() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_REWARDS_ONBOARDING_MODAL, false);
+    }
+
+    public static boolean shouldShowRewardsOnboardingModalOnDay4() {
+        if (!hasRewardsOnboardingModalShown()
+                && (getNextRewardsOnboardingModalDate() > 0
+                        && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())) {
+            if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                setRewardsOnboardingModalShown(true);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static int getBraveRewardsAppOpenCount() {
         return ContextUtils.getAppSharedPreferences().getInt(PREF_BRAVE_REWARDS_OPEN_COUNT, 0);
