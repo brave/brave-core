@@ -73,6 +73,8 @@ class ContentBlockerHelper {
     }
     
     var statsDidChange: ((TPPageStats) -> Void)?
+    
+    var blockedRequests: Set<URL> = []
 
     static private var blockImagesRule: WKContentRuleList?
     static var heavyInitHasRunOnce = false
