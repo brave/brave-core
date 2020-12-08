@@ -51,6 +51,12 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(
       ads::prefs::kShouldAllowConversionTracking, true);
 
+  // Diagnostics
+  registry->RegisterIntegerPref(ads::prefs::kEligibleAdsCount, -1);
+  registry->RegisterStringPref(ads::prefs::kFlaggedAds, "");
+  registry->RegisterStringPref(ads::prefs::kLastFilteredAds, "");
+  // End Diagnostics
+
   registry->RegisterUint64Pref(
       ads::prefs::kAdsPerHour, 2);
   registry->RegisterUint64Pref(

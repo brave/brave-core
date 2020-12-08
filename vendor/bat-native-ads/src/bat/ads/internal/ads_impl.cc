@@ -368,6 +368,11 @@ bool AdsImpl::ToggleFlagAd(
       creative_set_id, flagged);
   if (flag_ad) {
     confirmations_->ConfirmAd(creative_instance_id, ConfirmationType::kFlagged);
+    std::string previous_state = ads_client_->GetStringPref(prefs::kFlaggedAds);
+    ads_client_->SetStringPref(prefs::kFlaggedAds,
+        base::StringPrintf("%s%s,",
+          previous_state.c_str(),
+          creative_instance_id.c_str()));
   }
 
   return flag_ad;
@@ -485,7 +490,7 @@ void AdsImpl::InitializeStep6(
   is_initialized_ = true;
 
   BLOG(1, "Successfully initialized ads");
-
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kEligibleAdsCount, -1);
   AdsClientHelper::Get()->SetIntegerPref(prefs::kIdleThreshold,
       kIdleThresholdInSeconds);
 

@@ -174,7 +174,7 @@ void AdServing::MaybeServeAdForParentChildCategories(
     const CreativeAdNotificationList eligible_ads =
         eligible_ad_notifications.Get(ads,
             last_delivered_creative_ad_, ad_events);
-
+    ads_client_->SetIntegerPref(prefs::kEligibleAdsCount, eligible_ads.size());
     if (eligible_ads.empty()) {
       BLOG(1, "No eligible ads found for categories");
       MaybeServeAdForParentCategories(categories, ad_events, callback);
