@@ -9,43 +9,24 @@ import Data
 
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
-    var domain: Domain? {
-        didSet {
-            if let domain = domain, let url = domain.url?.asURL, !url.absoluteString.isEmpty {
-                // Use the base domain's first character, but if that isn't valid
-                // use the favorites title as the monogram instead
-                monogramFallbackLabel.text = FaviconFetcher.monogramLetter(
-                    for: url,
-                    fallbackCharacter: monogramFallbackCharacter
-                )
-                // Setup the favicon fetcher to pull a large icon for the given
-                // domain
-                fetcher = FaviconFetcher(siteURL: url, kind: .largeIcon, domain: domain)
-                fetcher?.load { [weak self] _, attributes in
-                    guard let self = self, self.domain?.url?.asURL == url else { return }
-                    self.monogramFallbackLabel.isHidden = attributes.image != nil
-                    self.imageView.image = attributes.image
-                    self.imageView.contentMode = attributes.contentMode
-                    self.backgroundColor = attributes.backgroundColor
-                    self.layoutMargins = .init(equalInset: attributes.includePadding ? 4 : 0)
-                    self.backgroundView.isHidden = !attributes.includePadding
-                }
-            } else {
-                fetcher = nil
-                monogramFallbackLabel.text = nil
-                monogramFallbackLabel.isHidden = true
-                imageView.image = nil
-            }
-        }
-    }
-    
-    /// The character that should be displayed if none can be assumed from
-    /// `domain`.
-    var monogramFallbackCharacter: Character? {
-        didSet {
-            if monogramFallbackLabel.text == nil {
-                monogramFallbackLabel.text = monogramFallbackCharacter?.uppercased()
-            }
+    func loadFavicon(siteURL: URL, domain: Domain? = nil, monogramFallbackCharacter: Character? = nil) {
+        // Use the base domain's first character, but if that isn't valid
+        // use the favorites title as the monogram instead
+        monogramFallbackLabel.text = FaviconFetcher.monogramLetter(
+            for: siteURL,
+            fallbackCharacter: monogramFallbackCharacter
+        )
+        // Setup the favicon fetcher to pull a large icon for the given
+        // domain
+        fetcher = FaviconFetcher(siteURL: siteURL, kind: .largeIcon, domain: domain)
+        fetcher?.load { [weak self] url, attributes in
+            guard let self = self, url == siteURL else { return }
+            self.monogramFallbackLabel.isHidden = attributes.image != nil
+            self.imageView.image = attributes.image
+            self.imageView.contentMode = attributes.contentMode
+            self.backgroundColor = attributes.backgroundColor
+            self.layoutMargins = .init(equalInset: attributes.includePadding ? 4 : 0)
+            self.backgroundView.isHidden = !attributes.includePadding
         }
     }
     

@@ -153,18 +153,18 @@ class FaviconFetcher {
     /// If the app does not contain a custom icon for the site provided `nil`
     /// will be returned
     var customIcon: FaviconAttributes? {
-        guard let folder = FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory),
-            let baseDomain = url.baseDomain else {
+        guard let folder = FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory) else {
                 return nil
         }
-        let backgroundName = baseDomain + NTPDownloader.faviconOverridesBackgroundSuffix
+        let fileName = url.absoluteString.toBase64()
+        let backgroundName = fileName + NTPDownloader.faviconOverridesBackgroundSuffix
         let backgroundPath = folder.appendingPathComponent(backgroundName)
         do {
             let colorString = try String(contentsOf: backgroundPath)
             let colorFromHex = UIColor(colorString: colorString)
             
-            if FileManager.default.fileExists(atPath: folder.appendingPathComponent(baseDomain).path) {
-                let imagePath = folder.appendingPathComponent(baseDomain)
+            if FileManager.default.fileExists(atPath: folder.appendingPathComponent(fileName).path) {
+                let imagePath = folder.appendingPathComponent(fileName)
                 if let image = UIImage(contentsOfFile: imagePath.path) {
                     return FaviconAttributes(
                         image: image,
