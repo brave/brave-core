@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index a7a88cf7c4503fa6a2ae8881a2f7ebc5cb401d4d..a3b991193680ad07fbee955db8fcbadea30c8e56 100644
+index b462833a618434afb05e4bdbbf4163f7079e5adb..5f702e3c0472446dbf7dfda4290466553324020a 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
 @@ -145,6 +145,7 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
-                              ResourceIdentifier(), &(rules->script_rules));
-   map->GetSettingsForOneType(ContentSettingsType::POPUPS, ResourceIdentifier(),
+                              &(rules->script_rules));
+   map->GetSettingsForOneType(ContentSettingsType::POPUPS,
                               &(rules->popup_redirect_rules));
 +  BRAVE_GET_RENDER_CONTENT_SETTING_RULES
  }

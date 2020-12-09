@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 7c91474fa32ce1780b2a9ceb8924a848a01187e1..0ecefb79f1c19fea87457b30323aec6cd21d4d8d 100644
+index 16c5e6132537cd576fdb6832d291f9413c578344..f2147c203b23b8ffd5a1437b643befa539c69766 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -255,6 +255,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {

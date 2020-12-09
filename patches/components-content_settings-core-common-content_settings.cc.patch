@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index c6f6ff7ca3714e9f13f6694d446a34b9d8e65ea3..74b4f7b1bbcdf1573e1269cadebc0d5c61fd936c 100644
+index 4de6d5608a08863a7948111394758d692af0c0d5..ccfd01c0ecfb789b441d045ebf3fbe581278f087 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
 @@ -179,6 +179,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(

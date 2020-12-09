@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index a1f8f46f3055f412aff2a883b5e8ca3d609468cf..3ffae4dcc3fb330c75b80ede23b26721c31746c4 100644
+index f721f1aff4781fa5936010dfb5b0c97587e81c05..8476c12cd97d3f01974b574a1ff137fdcc11969e 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -150,6 +150,10 @@ if (!is_android && !is_mac) {
@@ -73,7 +73,7 @@ index a1f8f46f3055f412aff2a883b5e8ca3d609468cf..3ffae4dcc3fb330c75b80ede23b26721
        extra_substitutions = [
          "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
          "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1019,6 +1028,10 @@ if (is_win) {
+@@ -1033,6 +1042,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -84,7 +84,7 @@ index a1f8f46f3055f412aff2a883b5e8ca3d609468cf..3ffae4dcc3fb330c75b80ede23b26721
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1176,6 +1189,7 @@ if (is_win) {
+@@ -1190,6 +1203,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -92,7 +92,7 @@ index a1f8f46f3055f412aff2a883b5e8ca3d609468cf..3ffae4dcc3fb330c75b80ede23b26721
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/app:shutdown_signal_handlers",
-@@ -1276,12 +1290,13 @@ group("child_dependencies") {
+@@ -1290,12 +1304,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -107,7 +107,7 @@ index a1f8f46f3055f412aff2a883b5e8ca3d609468cf..3ffae4dcc3fb330c75b80ede23b26721
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1335,6 +1350,7 @@ group("resources") {
+@@ -1349,6 +1364,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
