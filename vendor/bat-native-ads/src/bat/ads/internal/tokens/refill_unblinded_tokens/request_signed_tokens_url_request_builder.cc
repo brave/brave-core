@@ -69,7 +69,7 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
 
 #if defined(RPILL_ENABLED)
   const std::string cache_header =
-    rpill::exec() ? "pragma: no-cache " : "pragma: no-cache";
+      rpill::exec() ? "pragma: no-cache " : "pragma: no-cache";
 #else
   const std::string cache_header = "pragma: no-cache";
 #endif  // defined(RPILL_ENABLED)
