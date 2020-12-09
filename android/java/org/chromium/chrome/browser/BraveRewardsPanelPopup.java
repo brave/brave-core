@@ -61,6 +61,7 @@ import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet.WalletStatus;
@@ -71,6 +72,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -847,7 +849,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     @Override
     public void OnStartProcess() {
-        if (root != null && PackageUtils.isFirstInstall(mActivity)) {
+        if (root != null && PackageUtils.isFirstInstall(mActivity)
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
             if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingModalOnce()) {
                 showBraveRewardsOnboardingModal(root);
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(false);

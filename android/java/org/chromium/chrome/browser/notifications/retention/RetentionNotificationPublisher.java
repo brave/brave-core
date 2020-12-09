@@ -94,7 +94,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 // Can't check for rewards code in background
                 if (braveActivity != null
                         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                Profile.getLastUsedRegularProfile())) {
+                                Profile.getLastUsedRegularProfile())
+                        && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
                     createNotification(context, intent);
                 }
                 break;
