@@ -1,11 +1,11 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-index c14b33ba342b6875d87c790e491939b3355919b4..9bf5df2aa6b318bcf1cf7e574bda781aaa269d74 100644
+index 9b7797aa2d34c0c07d6dba304f619d7e499590e2..5f1121281a285d29d1489bc1fdf3d2b1c9a2908c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-@@ -566,7 +566,7 @@ public class RootUiCoordinator
-                     mActivity.getLifecycleDispatcher(), mActivity.getModalDialogManager(),
-                     () -> mToolbarManager.setUrlBarFocus(false, OmniboxFocusReason.UNFOCUS));
-             mButtonDataProviders = Arrays.asList(mIdentityDiscController, shareButtonController);
+@@ -601,7 +601,7 @@ public class RootUiCoordinator
+                             mActivity.getModalDialogManager(), voiceSearchDelegate);
+             mButtonDataProviders = Arrays.asList(
+                     mIdentityDiscController, shareButtonController, voiceToolbarButtonController);
 -            mToolbarManager = new ToolbarManager(mActivity, mActivity.getBrowserControlsManager(),
 +            mToolbarManager = new org.chromium.chrome.browser.toolbar.BraveToolbarManager(mActivity, mActivity.getBrowserControlsManager(),
                      mActivity.getFullscreenManager(), toolbarContainer,

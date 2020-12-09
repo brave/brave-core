@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index 4260e615cf9bc4bcc0fbabfc8a5fb5b236b8bd0f..99a3ebb76e9cdae8bde9b03d5dcb2aee19fb8b2f 100644
+index bfd8c85fbb1057ab8326fd48175c120468f44c02..ade81449e5173b5a00faf4067e8a3f98a2d9366c 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
-@@ -779,6 +779,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
-   GURL fixed_url =
-       url_formatter::FixupURL(url.possibly_invalid_spec(), std::string());
-   if (!fixed_url.SchemeIs(content::kChromeUIScheme))
-+  if (!fixed_url.SchemeIs(content::kBraveUIScheme))
+@@ -784,6 +784,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
+   };
+ 
+   if (!url.SchemeIs(content::kChromeUIScheme))
++  if (!url.SchemeIs(content::kBraveUIScheme))
      return false;
  
-   base::StringPiece fixed_host = fixed_url.host_piece();
+   return base::Contains(kill_hosts, url.host_piece());
