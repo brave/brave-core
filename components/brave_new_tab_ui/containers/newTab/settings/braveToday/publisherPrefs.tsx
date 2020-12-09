@@ -12,6 +12,7 @@ import {
   SettingsText
 } from '../../../../components/default'
 import { Toggle } from '../../../../components/toggle'
+import * as s from './style'
 
 export const DynamicListContext = React.createContext<
   Partial<{ setSize: (index: number, size: number) => void }>
@@ -60,7 +61,7 @@ function ListItem (props: ListItemProps) {
   }
 
   return (
-    <div style={props.style}>
+    <s.PublisherListItem style={props.style}>
       <SettingsRow innerRef={rowRoot} key={publisher.publisher_id} onClick={onChange} isInteractive={true}>
         <SettingsText>{publisher.publisher_name}</SettingsText>
         <Toggle
@@ -69,7 +70,7 @@ function ListItem (props: ListItemProps) {
           size='large'
         />
       </SettingsRow>
-    </div>
+    </s.PublisherListItem>
   )
 }
 

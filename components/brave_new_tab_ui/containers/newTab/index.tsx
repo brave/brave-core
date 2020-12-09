@@ -1106,6 +1106,7 @@ class NewTabPage extends React.Component<Props, State> {
           onRefresh={this.props.actions.today.refresh}
           onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
           onInteracting={this.onBraveTodayInteracting}
+          onFeedItemViewedCountChanged={this.props.actions.today.feedItemViewedCountChanged}
           // tslint:disable-next-line:jsx-no-lambda
           onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}
           onReadFeedItem={this.props.actions.today.readFeedItem}

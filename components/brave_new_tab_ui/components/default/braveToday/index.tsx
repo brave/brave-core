@@ -26,12 +26,15 @@ export type Props = {
   displayedPageCount: number
   onInteracting: (interacting: boolean) => any
   onReadFeedItem: OnReadFeedItem
+  onFeedItemViewedCountChanged: (feedItemsViewed: number) => any
   onSetPublisherPref: OnSetPublisherPref
   onAnotherPageNeeded: () => any
   onCustomizeBraveToday: () => any
   onRefresh: () => any
   onCheckForUpdate: () => any
 }
+
+export const attributeNameCardCount = 'data-today-card-count'
 
 class BraveToday extends React.PureComponent<Props, State> {
   braveTodayHitsViewportObserver: IntersectionObserver

@@ -38,6 +38,7 @@ export const ArticlesGroup = styled('section')`
 // Generics
 
 export const Block = styled('div')`
+  overflow: hidden;
   box-sizing: border-box;
   position: relative;
   width: 680px;

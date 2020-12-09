@@ -12,6 +12,8 @@ export type BraveTodayState = {
   isUpdateAvailable: boolean
   // How many pages have been displayed so far for the current data
   currentPageIndex: number
+  cardsViewed: number
+  cardsVisited: number
   // Feed data
   feed?: BraveToday.Feed
   publishers?: BraveToday.Publishers
@@ -27,14 +29,23 @@ function storeInHistoryState (data: Object) {
 const defaultState: BraveTodayState = {
   isFetching: true,
   isUpdateAvailable: false,
-  currentPageIndex: 0
+  currentPageIndex: 0,
+  cardsViewed: 0,
+  cardsVisited: 0
 }
 // Get previously-clicked article from history state
 if (history.state && history.state.todayArticle) {
+  // TODO(petemill): Type this history.state data and put in an API module
+  // see `async/today`.
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
   defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem
+  defaultState.cardsVisited = history.state.todayCardsVisited as number || 0
   // Clear history state now that we have the info on app state
-  storeInHistoryState({ todayArticle: null, todayPageIndex: null })
+  storeInHistoryState({
+    todayArticle: null,
+    todayPageIndex: null,
+    todayCardsVisited: null
+  })
 }
 
 // TODO(petemill): Make sure we don't keep scrolling to the scrolled-to article
@@ -79,6 +90,24 @@ reducer.on(Actions.anotherPageNeeded, (state) => {
   return {
     ...state,
     currentPageIndex: state.currentPageIndex + 1
+  }
+})
+
+reducer.on(Actions.readFeedItem, (state, payload) => {
+  return {
+    ...state,
+    cardsVisited: state.cardsVisited + 1
+  }
+})
+
+reducer.on(Actions.feedItemViewedCountChanged, (state, payload) => {
+  // Only care if we're scrolling to new depths
+  if (state.cardsViewed >= payload) {
+    return state
+  }
+  return {
+    ...state,
+    cardsViewed: payload
   }
 })
 

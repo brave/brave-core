@@ -8,9 +8,9 @@ import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardDeals from './cards/cardDeals'
-import CardsGroup from './cardsGroup'
+import CardsGroup, { groupItemCount } from './cardsGroup'
 import Customize from './options/customize'
-import { Props } from './'
+import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
 
 function getFeedHashForCache (feed?: BraveToday.Feed) {
@@ -99,6 +99,31 @@ export default function BraveTodayContent (props: Props) {
     }
   }, [])
 
+  // Report on how many cards have been viewed periodically
+  // (every 4 cards).
+  const latestCardDepth = React.useRef(0)
+  const intersectionObserver = React.useRef(new IntersectionObserver(entries => {
+    const inView = entries.filter(e => e.intersectionRatio > 0)
+    if (!inView.length) {
+      return
+    }
+    const counts = inView.map(i => Number(i.target.getAttribute(attributeNameCardCount)))
+    counts.sort((a, b) => b - a)
+    const count = counts[0]
+    // Handle not deeper than we've previously been this session
+    if (latestCardDepth.current >= count) {
+      return
+    }
+    console.debug(`Brave Today: viewed ${count} cards.`)
+    props.onFeedItemViewedCountChanged(count)
+  }))
+  const registerCardCountTriggerElement = React.useCallback((trigger: HTMLElement | null) => {
+    if (!trigger) {
+      return
+    }
+    intersectionObserver.current.observe(trigger)
+  }, [intersectionObserver.current])
+
   const hasContent = feed && publishers
   // Loading state
   if (props.isFetching && !hasContent) {
@@ -117,6 +142,7 @@ export default function BraveTodayContent (props: Props) {
   }
 
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
+  const introCount = feed.featuredDeals ? 2 : 1
   return (
     <>
     {/* featured item */}
@@ -128,13 +154,17 @@ export default function BraveTodayContent (props: Props) {
         onSetPublisherPref={props.onSetPublisherPref}
         onReadFeedItem={props.onReadFeedItem}
       />
+      <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
       {/* deals */}
       {feed.featuredDeals &&
-      <CardDeals
-        content={feed.featuredDeals}
-        articleToScrollTo={props.articleToScrollTo}
-        onReadFeedItem={props.onReadFeedItem}
-      />
+      <>
+        <CardDeals
+          content={feed.featuredDeals}
+          articleToScrollTo={props.articleToScrollTo}
+          onReadFeedItem={props.onReadFeedItem}
+        />
+        <div {...{ [attributeNameCardCount]: 2 }} ref={registerCardCountTriggerElement} />
+      </>
       }
       {
         /* Infinitely repeating collections of content. */
@@ -142,10 +172,12 @@ export default function BraveTodayContent (props: Props) {
           return (
             <CardsGroup
               key={index}
+              itemStartingDisplayIndex={introCount + (groupItemCount * index)}
               content={feed.pages[index]}
               publishers={publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
+              onPeriodicCardViews={registerCardCountTriggerElement}
               onSetPublisherPref={props.onSetPublisherPref}
             />
           )
