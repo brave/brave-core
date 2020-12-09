@@ -81,11 +81,15 @@ import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Brave's extension for ChromeActivity
@@ -112,6 +116,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
+
+    private static final List<String> yandexRegions =
+            Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -217,6 +224,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
+        if (PackageUtils.isFirstInstall(this) && appOpenCount == 0) {
+            checkForYandexSE();
+        }
+
         //set bg ads to off for existing and new installations
         setBgBraveAdsDefaultOff();
 
@@ -309,6 +320,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             } catch (JSONException e) {
                 Log.e("NTP", e.getMessage());
             }
+        }
+    }
+
+    private void checkForYandexSE() {
+        TemplateUrl yandexTemplateUrl =
+                BraveSearchEngineUtils.getTemplateUrlByShortName(OnboardingPrefManager.YANDEX);
+        String countryCode = Locale.getDefault().getCountry();
+        if (yandexRegions.contains(countryCode) && yandexTemplateUrl != null) {
+            BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, false);
+            BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, true);
         }
     }
 
