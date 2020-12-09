@@ -441,7 +441,7 @@ describe('braveShieldsPanelReducer', () => {
       shieldsPanelReducer(stateWithBlockStats, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'javascript',
+          blockType: 'bs_javascript',
           tabId: 2,
           subresource: 'https://a.com/index.js'
         }
@@ -453,7 +453,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'javascript',
+          blockType: 'bs_javascript',
           tabId: 2,
           subresource: 'https://test.brave.com/index.js'
         }
@@ -477,7 +477,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'javascript',
+          blockType: 'bs_javascript',
           tabId: 2,
           subresource: 'https://a.com/index.js'
         }
@@ -499,7 +499,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'javascript',
+          blockType: 'bs_javascript',
           tabId: 2,
           subresource: 'https://b.com/index.js'
         }
@@ -523,7 +523,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'fingerprinting',
+          blockType: 'bs_fingerprinting',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }
@@ -544,7 +544,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }
@@ -564,7 +564,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: 2,
           subresource: 'https://test2.brave.com'
         }
@@ -589,7 +589,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: tabId,
           subresource: 'https://test.brave.com'
         }
@@ -601,7 +601,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: tabId,
           subresource: 'https://test2.brave.com'
         }
@@ -616,7 +616,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: tabId,
           subresource: 'https://test2.brave.com'
         }
@@ -632,7 +632,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }
@@ -654,7 +654,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: 3,
           subresource: 'https://test.brave.com'
         }
@@ -688,7 +688,7 @@ describe('braveShieldsPanelReducer', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'ads',
+          blockType: 'bs_ads',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }
@@ -708,7 +708,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'trackers',
+          blockType: 'bs_trackers',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }
@@ -731,7 +731,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'httpUpgradableResources',
+          blockType: 'bs_httpUpgradableResources',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }
@@ -754,7 +754,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'javascript',
+          blockType: 'bs_javascript',
           tabId: 2,
           subresource: 'https://test.brave.com/index.js'
         }
@@ -781,7 +781,7 @@ describe('braveShieldsPanelReducer', () => {
       nextState = shieldsPanelReducer(nextState, {
         type: types.RESOURCE_BLOCKED,
         details: {
-          blockType: 'fingerprinting',
+          blockType: 'bs_fingerprinting',
           tabId: 2,
           subresource: 'https://test.brave.com'
         }

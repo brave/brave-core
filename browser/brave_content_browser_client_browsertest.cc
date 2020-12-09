@@ -24,6 +24,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
@@ -543,8 +544,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   // Allow referrers for certain URL.
   content_settings()->SetContentSettingCustomScope(
       ContentSettingsPattern::FromString(kDocumentUrl.GetOrigin().spec() + "*"),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::PLUGINS,
-      brave_shields::kReferrers, CONTENT_SETTING_ALLOW);
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_REFERRERS,
+      CONTENT_SETTING_ALLOW);
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
                               true, "GET", &referrer);

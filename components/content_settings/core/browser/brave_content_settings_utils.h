@@ -10,12 +10,15 @@
 #include <vector>
 
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 namespace content_settings {
 
-const std::vector<std::string>& GetShieldsResourceIDs();
+const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes();
 
-bool IsShieldsResourceID(const ResourceIdentifier& resource_identifier);
+std::string GetShieldsContentTypeName(const ContentSettingsType& content_type);
+
+bool IsShieldsContentSettingsType(const ContentSettingsType& content_type);
 
 base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern);

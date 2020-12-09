@@ -19,6 +19,7 @@
 #include "chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -89,18 +90,17 @@ TEST_F(BraveSiteSettingsCounterTest, Count) {
   const GURL kAbcURL("https://www.abc.com");
   // Check below four settings for different host are counted properly.
   map()->SetContentSettingDefaultScope(
-      kBraveURL, GURL(), ContentSettingsType::PLUGINS,
-      brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_ALLOW);
+      kBraveURL, GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+      CONTENT_SETTING_ALLOW);
   map()->SetContentSettingDefaultScope(
-      kBatURL, GURL(), ContentSettingsType::PLUGINS,
-      brave_shields::kFingerprintingV2, CONTENT_SETTING_ALLOW);
+      kBatURL, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      CONTENT_SETTING_ALLOW);
   map()->SetContentSettingCustomScope(
       brave_shields::GetPatternFromURL(kGoogleURL),
       ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
   map()->SetContentSettingDefaultScope(
-      kAbcURL, GURL(), ContentSettingsType::PLUGINS,
-      "", CONTENT_SETTING_ALLOW);
+      kAbcURL, GURL(), ContentSettingsType::PLUGINS, CONTENT_SETTING_ALLOW);
 
   counter()->Restart();
   EXPECT_EQ(4, GetResult());

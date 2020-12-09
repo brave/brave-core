@@ -14,15 +14,15 @@
 
 namespace content_settings {
 
-ContentSetting GetDefaultFromResourceIdentifier(
-    const std::string& resource_identifier,
+ContentSetting GetDefaultFromContentSettingsType(
+    const ContentSettingsType& content_type,
     const GURL& primary_url,
     const GURL& secondary_url);
 
 bool IsAllowContentSetting(const ContentSettingsForOneType& content_settings,
                            const GURL& primary_url,
                            const GURL& secondary_url,
-                           const std::string& resource_identifier);
+                           const ContentSettingsType& content_type);
 
 }  // namespace content_settings
 

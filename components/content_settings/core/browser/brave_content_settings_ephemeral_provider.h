@@ -16,6 +16,7 @@ namespace content_settings {
 class BraveEphemeralProvider : public EphemeralProvider {
  public:
   using EphemeralProvider::EphemeralProvider;
+  BraveEphemeralProvider(bool store_last_modified);
   ~BraveEphemeralProvider() override {}
 
  private:
@@ -24,7 +25,6 @@ class BraveEphemeralProvider : public EphemeralProvider {
       const ContentSettingsPattern& primary_pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
       std::unique_ptr<base::Value>&& value,
       const ContentSettingConstraints& constraints = {}) override;
 

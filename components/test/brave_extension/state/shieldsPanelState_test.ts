@@ -272,7 +272,7 @@ describe('shieldsPanelState test', () => {
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', () => {
       this.tabId = 2
-      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com')).toEqual({
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'bs_ads', 'https://test.brave.com')).toEqual({
         ...state,
         tabs: {
           ...state.tabs,
@@ -288,7 +288,7 @@ describe('shieldsPanelState test', () => {
     })
     it('can update tracking protection blocked count', () => {
       this.tabId = 2
-      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'trackers', 'https://test.brave.com'))
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'bs_trackers', 'https://test.brave.com'))
       .toEqual({
         ...state,
         tabs: {
@@ -305,7 +305,7 @@ describe('shieldsPanelState test', () => {
     })
     it('can update javascript blocked count and noScriptInfo', () => {
       this.tabId = 2
-      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'javascript', 'https://test.brave.com')).toEqual({
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'bs_javascript', 'https://test.brave.com')).toEqual({
         ...state,
         tabs: {
           ...state.tabs,

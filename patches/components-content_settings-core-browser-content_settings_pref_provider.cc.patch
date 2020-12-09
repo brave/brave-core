@@ -1,0 +1,22 @@
+diff --git a/components/content_settings/core/browser/content_settings_pref_provider.cc b/components/content_settings/core/browser/content_settings_pref_provider.cc
+index 9ffac847adcfb667277910430579d007be7cba09..1d0cc2a49439347e034b68283f4172b6b21f8f17 100644
+--- a/components/content_settings/core/browser/content_settings_pref_provider.cc
++++ b/components/content_settings/core/browser/content_settings_pref_provider.cc
+@@ -16,6 +16,7 @@
+ #include "base/metrics/histogram_macros.h"
+ #include "base/time/default_clock.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+ #include "build/build_config.h"
+ #include "components/content_settings/core/browser/content_settings_info.h"
+ #include "components/content_settings/core/browser/content_settings_pref.h"
+@@ -197,7 +198,8 @@ bool PrefProvider::SetWebsiteSetting(
+   // sites/origins defined by the |primary_pattern| and the |secondary_pattern|.
+   // Default settings are handled by the |DefaultProvider|.
+   if (primary_pattern == ContentSettingsPattern::Wildcard() &&
+-      secondary_pattern == ContentSettingsPattern::Wildcard()) {
++      secondary_pattern == ContentSettingsPattern::Wildcard()
++      && !content_settings::IsShieldsContentSettingsType(content_type)) {
+     return false;
+   }
+ 

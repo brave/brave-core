@@ -41,12 +41,10 @@ class BravePrefProvider : public PrefProvider,
   bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
-                         const ResourceIdentifier& resource_identifier,
                          std::unique_ptr<base::Value>&& value,
                          const ContentSettingConstraints& constraints) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
       bool incognito) const override;
 
  private:
@@ -56,8 +54,7 @@ class BravePrefProvider : public PrefProvider,
                            TestShieldsSettingsMigrationVersion);
   void MigrateShieldsSettings(bool incognito);
   void MigrateShieldsSettingsV1ToV2();
-  void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type,
-                                              const std::string& resource_id);
+  void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);
@@ -65,12 +62,8 @@ class BravePrefProvider : public PrefProvider,
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
                                const ContentSettingsPattern& secondary_pattern,
-                               ContentSettingsType content_type,
-                               const std::string& resource_identifier) override;
+                               ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
-
-  // PrefProvider::pref_change_registrar_ alreay has plugin type.
-  PrefChangeRegistrar brave_pref_change_registrar_;
 
   std::map<bool /* is_incognito */, std::vector<Rule>> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;

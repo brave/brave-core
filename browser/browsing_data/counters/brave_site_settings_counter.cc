@@ -32,8 +32,7 @@ int BraveSiteSettingsCounter::CountShieldsSettings() {
 
   auto iterate_content_settings_list =
       [&](ContentSettingsType content_type,
-          const ContentSettingsForOneType& content_settings_list,
-          const std::string& resource_identifier) {
+          const ContentSettingsForOneType& content_settings_list) {
         for (const auto& content_setting : content_settings_list) {
           // We don't care other source except preference because all shields
           // settings are stored in pref storage.
@@ -41,14 +40,13 @@ int BraveSiteSettingsCounter::CountShieldsSettings() {
             continue;
 
           base::Time last_modified;
-          DCHECK_EQ(ContentSettingsType::PLUGINS, content_type);
+          DCHECK(content_settings::IsShieldsContentSettingsType(content_type));
           // Fetching last time for specific resource ids.
           last_modified =
               map_->GetPrefProvider()->GetWebsiteSettingLastModified(
                   content_setting.primary_pattern,
                   content_setting.secondary_pattern,
-                  ContentSettingsType::PLUGINS,
-                  resource_identifier);
+                  content_type);
           if (last_modified >= period_start && last_modified < period_end) {
             if (content_setting.primary_pattern.GetHost().empty())
               empty_host_pattern++;
@@ -62,10 +60,10 @@ int BraveSiteSettingsCounter::CountShieldsSettings() {
   for (const content_settings::ContentSettingsInfo* info : *registry) {
     ContentSettingsType type = info->website_settings_info()->type();
     ContentSettingsForOneType content_settings_list;
-    if (type == ContentSettingsType::PLUGINS) {
-      for (const auto& id : content_settings::GetShieldsResourceIDs()) {
-        map_->GetSettingsForOneType(type, id, &content_settings_list);
-        iterate_content_settings_list(type, content_settings_list, id);
+    if (content_settings::IsShieldsContentSettingsType(type)) {
+      for (const auto& content_type : content_settings::GetShieldsContentSettingsTypes()) {
+        map_->GetSettingsForOneType(content_type, &content_settings_list);
+        iterate_content_settings_list(type, content_settings_list);
       }
       continue;
     }

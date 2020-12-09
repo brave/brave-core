@@ -1,8 +1,29 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index 4de6d5608a08863a7948111394758d692af0c0d5..ccfd01c0ecfb789b441d045ebf3fbe581278f087 100644
+index 4de6d5608a08863a7948111394758d692af0c0d5..a7e227c9638d7a54fab8fa404ee8d913b03ae842 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -179,6 +179,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
+@@ -93,6 +93,20 @@ constexpr HistogramValue kHistogramValue[] = {
+     {ContentSettingsType::FONT_ACCESS, 71},
+     {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, 72},
+     {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, 73},
++
++    // TODO: PUT THIS IN A CHROMIUM_SRC OVERRIDE AND KEEP PATCHING TO A MINIMUM.
++    {ContentSettingsType::BRAVE_ADS, 74},
++    {ContentSettingsType::BRAVE_COSMETIC_FILTERING, 75},
++    {ContentSettingsType::BRAVE_TRACKERS, 76},
++    {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, 77},
++    {ContentSettingsType::BRAVE_JAVASCRIPT, 78},
++    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, 79},
++    {ContentSettingsType::BRAVE_SHIELDS, 80},
++    {ContentSettingsType::BRAVE_REFERRERS, 81},
++    {ContentSettingsType::BRAVE_COOKIES, 82},
++    {ContentSettingsType::BRAVE_FACEBOOK_EMBEDS, 83},
++    {ContentSettingsType::BRAVE_TWITTER_EMBEDS, 84},
++    {ContentSettingsType::BRAVE_LINKEDIN_EMBEDS, 85},
+ };
+ 
+ }  // namespace
+@@ -179,6 +193,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
           content_type == ContentSettingsType::JAVASCRIPT ||
           content_type == ContentSettingsType::CLIENT_HINTS ||
           content_type == ContentSettingsType::POPUPS ||

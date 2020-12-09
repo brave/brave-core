@@ -16,6 +16,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -26,7 +27,7 @@ namespace content_settings {
 
 namespace {
 
-using GURLSourcePair = std::pair<GURL, const char*>;
+using GURLSourcePair = std::pair<GURL, ContentSettingsType>;
 
 ContentSettingsPattern SecondaryUrlToPattern(const GURL& gurl) {
   CHECK(gurl == GURL() || gurl == GURL("https://firstParty/*"));
@@ -48,8 +49,7 @@ class ShieldsSetting {
     for (const auto& url_source : urls_) {
       provider_->SetWebsiteSetting(
           pattern, SecondaryUrlToPattern(url_source.first),
-          ContentSettingsType::PLUGINS, url_source.second,
-          ContentSettingToValue(setting), {});
+          url_source.second, ContentSettingToValue(setting), {});
     }
   }
 
@@ -70,7 +70,6 @@ class ShieldsSetting {
     for (const auto& url_source : urls_) {
       EXPECT_EQ(setting,
                 TestUtils::GetContentSetting(provider_, url, url_source.first,
-                                             ContentSettingsType::PLUGINS,
                                              url_source.second, false));
     }
   }
@@ -83,45 +82,43 @@ class ShieldsCookieSetting : public ShieldsSetting {
  public:
   explicit ShieldsCookieSetting(BravePrefProvider* provider)
       : ShieldsSetting(provider,
-                       {{GURL(), brave_shields::kCookies},
-                        {GURL("https://firstParty/*"), brave_shields::kCookies},
-                        {GURL(), brave_shields::kReferrers}}) {}
+                       {{GURL(), ContentSettingsType::BRAVE_COOKIES},
+                        {GURL("https://firstParty/*"),
+                         ContentSettingsType::BRAVE_COOKIES},
+                        {GURL(), ContentSettingsType::BRAVE_REFERRERS}}) {}
 };
 
 class ShieldsFingerprintingSetting : public ShieldsSetting {
  public:
   explicit ShieldsFingerprintingSetting(BravePrefProvider* provider)
       : ShieldsSetting(provider,
-                       {{GURL(), brave_shields::kFingerprintingV2},
+                       {{GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2},
                        {GURL("https://firstParty/*"),
-                        brave_shields::kFingerprintingV2}}) {}
+                        ContentSettingsType::BRAVE_FINGERPRINTING_V2}}) {}
 };
 
 class ShieldsHTTPSESetting : public ShieldsSetting {
  public:
   explicit ShieldsHTTPSESetting(BravePrefProvider* provider)
       : ShieldsSetting(provider,
-                       {{GURL(), brave_shields::kHTTPUpgradableResources}}) {}
+                       {{GURL(),
+                         ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}})
+        {}
 };
 
 class ShieldsAdsSetting : public ShieldsSetting {
  public:
   explicit ShieldsAdsSetting(BravePrefProvider* provider)
       : ShieldsSetting(provider,
-                       {{GURL(), brave_shields::kAds},
-                        {GURL(), brave_shields::kTrackers}}) {}
+                       {{GURL(), ContentSettingsType::BRAVE_ADS},
+                        {GURL(), ContentSettingsType::BRAVE_TRACKERS}}) {}
 };
 
 class ShieldsEnabledSetting : public ShieldsSetting {
  public:
   explicit ShieldsEnabledSetting(BravePrefProvider* provider)
-      : ShieldsSetting(provider, {{GURL(), brave_shields::kBraveShields}}) {}
-};
-
-class ShieldsUnknownResourceIDSetting : public ShieldsSetting {
- public:
-  explicit ShieldsUnknownResourceIDSetting(BravePrefProvider* provider)
-      : ShieldsSetting(provider, {{GURL(), "test_resource_id"}}) {}
+      : ShieldsSetting(provider, {{GURL(), ContentSettingsType::BRAVE_SHIELDS}})
+        {}
 };
 
 class ShieldsScriptSetting : public ShieldsSetting {
@@ -132,7 +129,7 @@ class ShieldsScriptSetting : public ShieldsSetting {
   void SetPreMigrationSettings(const ContentSettingsPattern& pattern,
                                ContentSetting setting) override {
     provider_->SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
-                                 ContentSettingsType::JAVASCRIPT, "",
+                                 ContentSettingsType::JAVASCRIPT,
                                  ContentSettingToValue(setting), {});
   }
 
@@ -140,7 +137,7 @@ class ShieldsScriptSetting : public ShieldsSetting {
   void CheckSettings(const GURL& url, ContentSetting setting) const override {
     EXPECT_EQ(setting, TestUtils::GetContentSetting(
                            provider_, url, GURL(),
-                           ContentSettingsType::JAVASCRIPT, "", false));
+                           ContentSettingsType::JAVASCRIPT, false));
   }
 };
 
@@ -178,7 +175,6 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   ShieldsAdsSetting ads_settings(&provider);
   ShieldsEnabledSetting enabled_settings(&provider);
   ShieldsScriptSetting script_settings(&provider);
-  ShieldsUnknownResourceIDSetting unknown_resource_id_settings(&provider);
 
   GURL url("http://brave.com:8080/");
   GURL url2("http://allowed.brave.com:3030");
@@ -236,14 +232,6 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   // Check that settings would block brave.com:8080, but not brave.com:5555.
   script_settings.CheckSettingsWouldBlock(url);
   script_settings.CheckSettingsAreDefault(GURL("http://brave.com:5555"));
-
-  // Unknown resource_id.
-  unknown_resource_id_settings.SetPreMigrationSettings(pattern,
-                                                       CONTENT_SETTING_BLOCK);
-  // Check that settings would block brave.com:8080, but not brave.com:5555.
-  unknown_resource_id_settings.CheckSettingsWouldBlock(url);
-  unknown_resource_id_settings.CheckSettingsAreDefault(
-      GURL("http://brave.com:5555"));
 
   // Migrate settings.
   // ------------------------------------------------------
@@ -304,12 +292,6 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   script_settings.CheckSettingsWouldBlock(GURL("https://brave.com"));
   // Would not block a different domain.
   script_settings.CheckSettingsAreDefault(GURL("http://brave2.com"));
-
-  // Unknown resource_id - should not have been migrated.
-  // Check that settings would block brave.com:8080, but not brave.com:5555.
-  unknown_resource_id_settings.CheckSettingsWouldBlock(url);
-  unknown_resource_id_settings.CheckSettingsAreDefault(
-      GURL("http://brave.com:5555"));
 
   provider.ShutdownOnUIThread();
 }
