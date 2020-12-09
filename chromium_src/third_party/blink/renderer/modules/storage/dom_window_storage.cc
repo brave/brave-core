@@ -170,16 +170,14 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
   MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return storage;
-
-  if (!window->IsCrossSiteSubframe())
-    return storage;
-
   // If we were not able to create non-ephemeral session storage for this
   // window, then don't attempt to create an ephemeral version.
   if (!storage)
     return nullptr;
+
+  if (StorageController::CanAccessStorageAreaWithoutEphemeralStorage(
+          window->GetFrame(), StorageArea::StorageType::kSessionStorage))
+    return storage;
 
   return ephemeralSessionStorage();
 }
@@ -210,16 +208,14 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
   MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return storage;
-
-  if (!window->IsCrossSiteSubframe())
-    return storage;
-
   // If we were not able to create non-ephemeral localStorage for this Window,
   // then don't attempt to create an ephemeral version.
   if (!storage)
     return nullptr;
+
+  if (StorageController::CanAccessStorageAreaWithoutEphemeralStorage(
+          window->GetFrame(), StorageArea::StorageType::kSessionStorage))
+    return storage;
 
   return ephemeralLocalStorage();
 }

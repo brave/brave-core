@@ -7,22 +7,27 @@
 
 #include "net/base/features.h"
 #include "net/cookies/cookie_monster.h"
+#include "services/network/cookie_settings.h"
+
+namespace network {
 
 namespace {
 
-bool ShouldUseEphemeralStorage(const GURL& url,
+bool ShouldUseEphemeralStorage(const CookieSettings* cookie_settings,
+                               const GURL& url,
+                               const net::SiteForCookies& site_for_cookies,
                                const url::Origin& top_frame_origin) {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
-  if (url::Origin::Create(url) == top_frame_origin)
-    return false;
-  return true;
+  return !cookie_settings->IsCookieAccessAllowed(
+      url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
 }
 
 }  // namespace
 
+}  // namespace network
+
 #define BRAVE_GETALLFORURL                                                  \
-  if (ShouldUseEphemeralStorage(url, top_frame_origin)) {                   \
+  if (ShouldUseEphemeralStorage(cookie_settings_, url, site_for_cookies,    \
+                                top_frame_origin)) {                        \
     static_cast<net::CookieMonster*>(cookie_store_)                         \
         ->GetEphemeralCookieListWithOptionsAsync(                           \
             url, top_frame_origin.GetURL(), net_options,                    \
@@ -34,7 +39,8 @@ bool ShouldUseEphemeralStorage(const GURL& url,
   } else  // NOLINT
 
 #define BRAVE_SETCANONICALCOOKIE                                               \
-  if (ShouldUseEphemeralStorage(url, top_frame_origin)) {                      \
+  if (ShouldUseEphemeralStorage(cookie_settings_, url, site_for_cookies,       \
+                                top_frame_origin)) {                           \
     static_cast<net::CookieMonster*>(cookie_store_)                            \
         ->SetEphemeralCanonicalCookieAsync(                                    \
             std::move(sanitized_cookie), origin_.GetURL(),                     \
@@ -45,4 +51,8 @@ bool ShouldUseEphemeralStorage(const GURL& url,
                            std::move(callback)));                              \
   } else  // NOLINT
 
+#define IsCookieAccessAllowed IsCookieAccessOrEphemeralCookiesAccessAllowed
+
 #include "../../../../../services/network/restricted_cookie_manager.cc"
+
+#undef IsCookieAccessAllowed

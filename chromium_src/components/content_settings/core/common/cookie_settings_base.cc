@@ -11,6 +11,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
+#include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -169,6 +170,19 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
     return true;
 
   return IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+}
+
+bool CookieSettingsBase::IsCookieAccessOrEphemeralCookiesAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin) const {
+  if (IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin))
+    return true;
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
+    return false;
+  if (!top_frame_origin.has_value())
+    return false;
+  return *top_frame_origin != url::Origin::Create(url);
 }
 
 }  // namespace content_settings
