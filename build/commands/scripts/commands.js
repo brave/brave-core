@@ -107,6 +107,14 @@ program
   .arguments('[build_config]')
   .action(createDist)
 
+  program
+  .command('universalize')
+  .option('--x64_app_path <x64_app_path>', 'input folder containing x64 .app dir')
+  .option('--arm64_app_path <arm64_app_path>', 'input folder contains arm64 .app dir')
+  .option('--universal_app_path <universal_app_path>', 'output folder that will contain universal .app dir')
+  .arguments('[build_config]')
+  .action(createDist)
+
 program
   .command('upload')
   .option('--target_os <target_os>', 'target OS')

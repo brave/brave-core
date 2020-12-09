@@ -23,8 +23,8 @@ const run = (cmd, args = []) => {
 }
 
 // this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
-var packageConfig = function(key){
-  let packages = { config: {}}
+var packageConfig = function (key) {
+  let packages = { config: {} }
   if (fs.existsSync(path.join(rootDir, 'package.json'))) {
     packages = require(path.relative(__dirname, path.join(rootDir, 'package.json')))
   }
@@ -83,7 +83,7 @@ const Config = function () {
   this.targetArch = getNPMConfig(['target_arch']) || 'x64'
   this.targetOS = getNPMConfig(['target_os'])
   this.gypTargetArch = 'x64'
-  this.targetApkBase ='classic'
+  this.targetApkBase = 'classic'
   this.braveGoogleApiKey = getNPMConfig(['brave_google_api_key']) || 'AIzaSyAQfxPJiounkhOjODEO5ZieffeBv6yft2Q'
   this.googleApiEndpoint = getNPMConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
   this.googleDefaultClientId = getNPMConfig(['google_default_client_id']) || ''
@@ -244,6 +244,11 @@ Config.prototype.buildArgs = function () {
         args.notarize = true
         args.notary_user = this.notary_user
         args.notary_password = this.notary_password
+      }
+      if (this.universalize) {
+        args.x64_app_path = this.x64_app_path
+        args.arm64_app_path = this.arm64_app_path
+        args.universal_app_path = this.universal_app_path
       }
     } else if (this.targetOS === 'android') {
       args.brave_android_keystore_path = this.braveAndroidKeystorePath
@@ -579,6 +584,18 @@ Config.prototype.update = function (options) {
 
   if (options.skip_signing) {
     this.skip_signing = true
+  }
+
+  if (process.platform === 'darwin' && options.x64_app_path && options.arm64_app_path) {
+    this.universalize = true
+    this.x64_app_path = options.x64_app_path
+    this.arm64_app_path = options.arm64_app_path
+    if (options.universal_app_path) {
+      this.universal_app_path = options.universal_app_path
+    }
+    else {
+      this.universal_app_path = this.buildConfig + '_universal'
+    }
   }
 
   if (options.build_delta_installer) {

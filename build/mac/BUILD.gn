@@ -18,6 +18,10 @@ declare_args() {
   notary_asc_provider = chrome_mac_team_id
   notarize = false
   notarize_argument = "False"
+  universalize = false
+  x64_app_path = ""
+  arm64_app_path = ""
+  universal_app_path = ""
 }
 
 if (!skip_signing) {
@@ -409,7 +413,6 @@ if (skip_signing) {
   }
 
   copy("copy_notarize_script") {
-
     sources = [ "notarize_dmg_pkg.py" ]
 
     outputs = [
@@ -494,6 +497,33 @@ if (skip_signing) {
     outputs = [
       "$root_out_dir/{{source_file_part}}"
     ]
+  }
+    
+  action("universalize") {
+    if (universalize) {
+      script = "//chrome/installer/mac/universalizer.py"
 
+      inputs = [
+        script,
+        "$x64_app_path",
+        "$arm64_app_path",
+        "$universal_app_path",
+      ]
+
+      outputs = [
+        "$universal_app_path",
+      ]
+
+      args = [
+        "--x64_app_path", "$x64_app_path",
+        "--arm64_app_path", "$arm64_app_path",
+        "--universal_app_path", "$universal_app_path",
+      ]
+
+      deps = [
+        "//chrome:chrome_app",
+        "//chrome/installer/mac"
+      ]
+    }
   }
 }
