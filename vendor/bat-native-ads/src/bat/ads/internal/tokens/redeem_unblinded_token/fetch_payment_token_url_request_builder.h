@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/server/url_request_builder.h"
 
 namespace ads {

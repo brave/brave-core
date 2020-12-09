@@ -6,12 +6,13 @@
 #include "bat/ads/internal/account/account.h"
 
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmations.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/statement/statement.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/confirmations/confirmations_state.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
@@ -21,25 +22,20 @@
 namespace ads {
 
 Account::Account(
-    Confirmations* confirmations,
     privacy::TokenGeneratorInterface* token_generator)
-    : confirmations_(confirmations),
-      token_generator_(token_generator),
-      wallet_(std::make_unique<Wallet>()),
+    : token_generator_(token_generator),
       ad_rewards_(std::make_unique<AdRewards>()),
-      statement_(std::make_unique<Statement>(ad_rewards_.get())),
+      confirmations_(std::make_unique<
+          Confirmations>(token_generator, ad_rewards_.get())),
       redeem_unblinded_payment_tokens_(std::make_unique<
           RedeemUnblindedPaymentTokens>()),
       refill_unblinded_tokens_(std::make_unique<
-          RefillUnblindedTokens>(token_generator)) {
-  DCHECK(confirmations_);
+          RefillUnblindedTokens>(token_generator)),
+      statement_(std::make_unique<Statement>(ad_rewards_.get())),
+      wallet_(std::make_unique<Wallet>()) {
   DCHECK(token_generator_);
 
   confirmations_->AddObserver(this);
-
-  // TODO(https://github.com/brave/brave-browser/issues/12563): Decouple Brave
-  // Ads rewards state from confirmations
-  confirmations_->set_ad_rewards(ad_rewards_.get());
 
   ad_rewards_->set_delegate(this);
   redeem_unblinded_payment_tokens_->set_delegate(this);
@@ -70,7 +66,6 @@ bool Account::SetWallet(
 
   if (!wallet_->Set(id, seed)) {
     BLOG(0, "Invalid wallet");
-    NotifyWalletInvalid();
     return false;
   }
 
@@ -89,6 +84,17 @@ WalletInfo Account::GetWallet() const {
   return wallet_->Get();
 }
 
+void Account::SetCatalogIssuers(
+    const CatalogIssuersInfo& catalog_issuers) {
+  confirmations_->SetCatalogIssuers(catalog_issuers);
+}
+
+void Account::Deposit(
+    const std::string& creative_instance_id,
+    const ConfirmationType& confirmation_type) {
+  confirmations_->ConfirmAd(creative_instance_id, confirmation_type);
+}
+
 StatementInfo Account::GetStatement(
     const int64_t from_timestamp,
     const int64_t to_timestamp) const {
@@ -101,9 +107,10 @@ void Account::Reconcile() {
   ad_rewards_->MaybeReconcile(wallet);
 }
 
-void Account::ProcessUnclearedTransactions() {
-  const WalletInfo wallet = GetWallet();
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
+void Account::ProcessTransactions() {
+  confirmations_->RetryAfterDelay();
+
+  ProcessUnclearedTransactions();
 }
 
 void Account::TopUpUnblindedTokens() {
@@ -112,6 +119,11 @@ void Account::TopUpUnblindedTokens() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Account::ProcessUnclearedTransactions() {
+  const WalletInfo wallet = GetWallet();
+  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
+}
 
 void Account::NotifyWalletChanged(
     const WalletInfo& wallet) {
@@ -130,6 +142,13 @@ void Account::NotifyWalletRestored(
 void Account::NotifyWalletInvalid() {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletInvalid();
+  }
+}
+
+void Account::NotifyCatalogIssuersChanged(
+    const CatalogIssuersInfo& catalog_issuers) {
+  for (AccountObserver& observer : observers_) {
+    observer.OnCatalogIssuersChanged(catalog_issuers);
   }
 }
 

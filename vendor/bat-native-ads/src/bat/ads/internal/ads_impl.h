@@ -18,7 +18,6 @@
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
-#include "bat/ads/internal/confirmations/confirmations_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -60,7 +59,6 @@ class AdServer;
 class AdTargeting;
 class AdTransfer;
 class Client;
-class Confirmations;
 class ConfirmationsState;
 class Conversions;
 class NewTabPageAd;
@@ -70,7 +68,6 @@ struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
 struct CatalogIssuersInfo;
-struct ConfirmationInfo;
 struct NewTabPageAdInfo;
 
 class AdsImpl
@@ -194,7 +191,6 @@ class AdsImpl
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
-  std::unique_ptr<Confirmations> confirmations_;
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::contextual::PageClassifier> page_classifier_;
   std::unique_ptr<ad_targeting::behavioral::PurchaseIntentClassifier>

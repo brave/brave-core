@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/transaction_info.h"
 
@@ -26,18 +26,14 @@ class UnblindedTokens;
 
 class ConfirmationsState {
  public:
-  ConfirmationsState();
+  ConfirmationsState(
+      AdRewards* ad_rewards);
 
   ~ConfirmationsState();
 
   static ConfirmationsState* Get();
 
   static bool HasInstance();
-
-  // TODO(https://github.com/brave/brave-browser/issues/12563): Decouple Brave
-  // Ads rewards state from confirmations
-  void set_ad_rewards(
-      AdRewards* ad_rewards);
 
   void Initialize(
       InitializeCallback callback);

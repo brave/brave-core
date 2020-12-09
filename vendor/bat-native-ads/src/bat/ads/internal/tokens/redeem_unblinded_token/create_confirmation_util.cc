@@ -15,7 +15,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "wrapper.hpp"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/locale/country_code_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"

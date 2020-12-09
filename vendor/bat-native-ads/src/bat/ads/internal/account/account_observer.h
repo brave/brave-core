@@ -10,6 +10,7 @@
 
 namespace ads {
 
+struct CatalogIssuersInfo;
 struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
@@ -24,6 +25,10 @@ class AccountObserver : public base::CheckedObserver {
 
   // Invoked if the wallet is invalid
   virtual void OnWalletInvalid() {}
+
+  // Invoked when the catalog issuers have changed
+  virtual void OnCatalogIssuersChanged(
+      const CatalogIssuersInfo& catalog_issuers) {}
 
   // Invoked when ad rewards have changed
   virtual void OnAdRewardsChanged() {}

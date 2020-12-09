@@ -18,7 +18,7 @@
 #include "base/values.h"
 #include "tweetnacl.h"  // NOLINT
 #include "wrapper.hpp"
-#include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
