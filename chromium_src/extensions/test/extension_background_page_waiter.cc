@@ -5,6 +5,6 @@
 
 #include "extensions/common/manifest_handlers/incognito_info.h"
 
-#define IsSplitMode ForSplitModeCheck(browser_context->IsTor())->IsSplitMode
-#include "../../../../extensions/browser/task_queue_util.cc"
+#define IsSplitMode ForSplitModeCheck(browser_context_->IsTor())->IsSplitMode
+#include "../../../../extensions/test/extension_background_page_waiter.cc"
 #undef IsSplitMode

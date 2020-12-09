@@ -339,10 +339,11 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
   EXPECT_TRUE(extensions::util::IsIncognitoEnabled(id, tor_profile));
   EXPECT_TRUE(extensions::util::IsIncognitoEnabled(id, parent_profile));
   // Default mode is spanning but we force it to be split in Tor
-  EXPECT_FALSE(extensions::IncognitoInfo::IsSplitMode(
-      extension, primary_otr_profile->IsTor()));
-  EXPECT_TRUE(
-      extensions::IncognitoInfo::IsSplitMode(extension, tor_profile->IsTor()));
+  EXPECT_FALSE(
+      extensions::IncognitoInfo::ForSplitModeCheck(primary_otr_profile->IsTor())
+          ->IsSplitMode(extension));
+  EXPECT_TRUE(extensions::IncognitoInfo::ForSplitModeCheck(tor_profile->IsTor())
+                  ->IsSplitMode(extension));
 
   // Allow in Tor depends on Allow in private
   parent_extension_prefs->SetIsIncognitoEnabled(id, false);
