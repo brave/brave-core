@@ -1352,13 +1352,13 @@ extension Strings {
         public static let introCardTitle = NSLocalizedString(
             "today.introCardTitle",
             bundle: .braveShared,
-            value: "Today’s top stories in a completely private feed, just for you.",
+            value: "Brave Today shows top stories in a completely private feed, just for you.",
             comment: ""
         )
         public static let introCardBody = NSLocalizedString(
             "today.introCardBody",
             bundle: .braveShared,
-            value: "Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day.",
+            value: "Your interests are matched on your device so your personal information never leaves your browser. New content updated throughout the day.",
             comment: ""
         )
         public static let refresh = NSLocalizedString(
