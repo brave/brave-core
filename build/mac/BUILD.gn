@@ -49,6 +49,12 @@ if (arch2_app_path_prefix != "") {
       unsigned_app_path
     ]
 
+    args = [
+      "--x64_app_path", rebase_path(arch1_app_path)",
+      "--arm64_app_path", rebase_path(arch1_app_path),
+      "--universal_app_path", rebase_path(unsigned_app_path),
+    ]
+
     public_deps = [ ":fake_app" ]
   }
 
