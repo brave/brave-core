@@ -1,8 +1,26 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index fe4ed640fa87e7fca3d2cdad77a17a610b00d1d0..7ef7602c4be7536b2926576bc5dd86304c088e37 100644
+index 6e67b3720ea0971b38ffec7a45049f52431cdd3c..504d5346a48070c02ac7ffebf0edbf1bd1f64c7b 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -440,6 +440,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -12,6 +12,7 @@
+ #include "base/bind.h"
+ #include "base/memory/ptr_util.h"
+ #include "base/metrics/histogram_macros.h"
++#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+ #include "build/build_config.h"
+ #include "components/content_settings/core/browser/content_settings_info.h"
+ #include "components/content_settings/core/browser/content_settings_registry.h"
+@@ -283,6 +284,9 @@ std::unique_ptr<RuleIterator> DefaultProvider::GetRuleIterator(
+     return nullptr;
+ 
+   base::AutoLock lock(lock_);
++  if (content_settings::IsShieldsContentSettingsType(content_type))
++    return nullptr;
++
+   auto it = default_settings_.find(content_type);
+   if (it == default_settings_.end()) {
+     NOTREACHED();
+@@ -430,6 +434,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    }
    prefs_->ClearPref(kDeprecatedNativeFileSystemWriteGuardDefaultPref);
  #endif  // !defined(OS_ANDROID)

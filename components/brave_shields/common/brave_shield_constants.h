@@ -9,18 +9,18 @@
 
 namespace brave_shields {
 
-const char kAds[] = "ads";
-const char kCosmeticFiltering[] = "cosmeticFiltering";
-const char kTrackers[] = "trackers";
-const char kHTTPUpgradableResources[] = "httpUpgradableResources";
-const char kJavaScript[] = "javascript";
-const char kFingerprintingV2[] = "fingerprintingV2";
-const char kBraveShields[] = "braveShields";
-const char kReferrers[] = "referrers";
-const char kCookies[] = "cookies";
-const char kFacebookEmbeds[] = "fb-embeds";
-const char kTwitterEmbeds[] = "twitter-embeds";
-const char kLinkedInEmbeds[] = "linked-in-embeds";
+const char kAds[] = "bs_ads";
+const char kCosmeticFiltering[] = "bs_cosmeticFiltering";
+const char kTrackers[] = "bs_trackers";
+const char kHTTPUpgradableResources[] = "bs_httpUpgradableResources";
+const char kJavaScript[] = "bs_javascript";
+const char kFingerprintingV2[] = "bs_fingerprintingV2";
+const char kBraveShields[] = "bs_braveShields";
+const char kReferrers[] = "bs_referrers";
+const char kCookies[] = "bs_cookies";
+const char kFacebookEmbeds[] = "bs_fb-embeds";
+const char kTwitterEmbeds[] = "bs_twitter-embeds";
+const char kLinkedInEmbeds[] = "bs_linked-in-embeds";
 
 }  // namespace brave_shields
 

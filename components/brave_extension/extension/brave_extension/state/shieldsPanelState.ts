@@ -96,20 +96,20 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     ...tabs[tabId]
   }
 
-  if (blockType === 'ads') {
+  if (blockType === 'bs_ads') {
     tabs[tabId].adsBlockedResources = unique([ ...tabs[tabId].adsBlockedResources, subresource ])
     tabs[tabId].adsBlocked = tabs[tabId].adsBlockedResources.length
-  } else if (blockType === 'trackers') {
+  } else if (blockType === 'bs_trackers') {
     tabs[tabId].trackersBlockedResources = unique([ ...tabs[tabId].trackersBlockedResources, subresource ])
     tabs[tabId].trackersBlocked = tabs[tabId].trackersBlockedResources.length
-  } else if (blockType === 'httpUpgradableResources') {
+  } else if (blockType === 'bs_httpUpgradableResources') {
     tabs[tabId].httpsRedirectedResources = unique([ ...tabs[tabId].httpsRedirectedResources, subresource ])
     tabs[tabId].httpsRedirected = tabs[tabId].httpsRedirectedResources.length
-  } else if (blockType === 'javascript') {
+  } else if (blockType === 'bs_javascript') {
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
     tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
     tabs[tabId].javascriptBlocked = filterNoScriptInfoByWillBlockState(Object.entries(tabs[tabId].noScriptInfo), true).length
-  } else if (blockType === 'fingerprinting') {
+  } else if (blockType === 'bs_fingerprinting') {
     tabs[tabId].fingerprintingBlockedResources = unique([ ...tabs[tabId].fingerprintingBlockedResources, subresource ])
     tabs[tabId].fingerprintingBlocked = tabs[tabId].fingerprintingBlockedResources.length
   }

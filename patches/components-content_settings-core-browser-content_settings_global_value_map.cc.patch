@@ -1,0 +1,22 @@
+diff --git a/components/content_settings/core/browser/content_settings_global_value_map.cc b/components/content_settings/core/browser/content_settings_global_value_map.cc
+index b2cd549dee50f9d3b0c9b7c09a1af06420056817..5e241c6654b14bd5033c984b75a8920c8e5f120b 100644
+--- a/components/content_settings/core/browser/content_settings_global_value_map.cc
++++ b/components/content_settings/core/browser/content_settings_global_value_map.cc
+@@ -8,6 +8,7 @@
+ #include <utility>
+ 
+ #include "base/synchronization/lock.h"
++#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+ #include "components/content_settings/core/browser/content_settings_rule.h"
+ #include "components/content_settings/core/common/content_settings.h"
+ 
+@@ -44,6 +45,9 @@ GlobalValueMap::~GlobalValueMap() {}
+ 
+ std::unique_ptr<RuleIterator> GlobalValueMap::GetRuleIterator(
+     ContentSettingsType content_type) const {
++  if (content_settings::IsShieldsContentSettingsType(content_type))
++    return nullptr;
++
+   auto it = settings_.find(content_type);
+   if (it == settings_.end())
+     return nullptr;

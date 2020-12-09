@@ -229,7 +229,7 @@ declare namespace chrome.braveToday {
   }
 }
 
-type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
+type BlockTypes = 'bs_ads' | 'bs_trackers' | 'bs_httpUpgradableResources' | 'bs_javascript' | 'bs_fingerprinting'
 
 interface BlockDetails {
   blockType: BlockTypes

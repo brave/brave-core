@@ -10,6 +10,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/test/browser_test.h"
 
 const GURL& GetBraveURL() {
@@ -38,14 +39,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
                        WithoutWildcardContentSetting) {
   ContentSetting brave_url_shields_setting =
       content_settings()->GetContentSetting(
-          GetBraveURL(), GetBraveURL(), ContentSettingsType::PLUGINS,
-          brave_shields::kBraveShields);
+          GetBraveURL(), GetBraveURL(), ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, brave_url_shields_setting);
 
   ContentSetting brave_url_shields_setting_private =
       private_content_settings()->GetContentSetting(
-          GetBraveURL(), GetBraveURL(), ContentSettingsType::PLUGINS,
-          brave_shields::kBraveShields);
+          GetBraveURL(), GetBraveURL(), ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, brave_url_shields_setting_private);
 }
 
@@ -57,19 +56,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
   content_settings()->SetContentSettingCustomScope(
       brave_url_pattern,
       brave_url_pattern,
-      ContentSettingsType::PLUGINS,
-      brave_shields::kBraveShields,
+      ContentSettingsType::BRAVE_SHIELDS,
       CONTENT_SETTING_ALLOW);
 
   ContentSetting brave_url_shields_setting =
       content_settings()->GetContentSetting(
-          GetBraveURL(), GetBraveURL(), ContentSettingsType::PLUGINS,
-          brave_shields::kBraveShields);
+          GetBraveURL(), GetBraveURL(), ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting);
 
   ContentSetting brave_url_shields_setting_private =
       private_content_settings()->GetContentSetting(
-          GetBraveURL(), GetBraveURL(), ContentSettingsType::PLUGINS,
-          brave_shields::kBraveShields);
+          GetBraveURL(), GetBraveURL(), ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting_private);
 }

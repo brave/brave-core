@@ -1,0 +1,172 @@
+diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
+index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..e817b31ee0402f6dbe642c46d361e0a29e38a310 100644
+--- a/components/content_settings/core/browser/content_settings_pref.cc
++++ b/components/content_settings/core/browser/content_settings_pref.cc
+@@ -14,6 +14,7 @@
+ #include "base/metrics/histogram_macros.h"
+ #include "base/strings/string_number_conversions.h"
+ #include "base/strings/string_split.h"
++#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+ #include "components/content_settings/core/browser/content_settings_info.h"
+ #include "components/content_settings/core/browser/content_settings_registry.h"
+ #include "components/content_settings/core/browser/content_settings_rule.h"
+@@ -34,6 +35,8 @@ const char kExpirationPath[] = "expiration";
+ const char kSessionModelPath[] = "model";
+ const char kSettingPath[] = "setting";
+ const char kLastModifiedPath[] = "last_modified";
++const char kBraveShieldsDictionary[] = "brave_shields";
++
+ 
+ bool IsValueAllowedForType(const base::Value* value, ContentSettingsType type) {
+   const content_settings::ContentSettingsInfo* info =
+@@ -160,7 +163,8 @@ bool ContentSettingsPref::SetWebsiteSetting(
+   DCHECK(thread_checker_.CalledOnValidThread());
+   DCHECK(prefs_);
+   DCHECK(primary_pattern != ContentSettingsPattern::Wildcard() ||
+-         secondary_pattern != ContentSettingsPattern::Wildcard());
++         secondary_pattern != ContentSettingsPattern::Wildcard()
++         || content_settings::IsShieldsContentSettingsType(content_type_));
+ 
+   // At this point take the ownership of the |in_value|.
+   std::unique_ptr<base::Value> value(std::move(in_value));
+@@ -320,6 +324,29 @@ void ContentSettingsPref::ReadContentSettingsFromPref() {
+       continue;
+     }
+ 
++    if (content_type_ == ContentSettingsType::PLUGINS ||
++        content_settings::IsShieldsContentSettingsType(content_type_)) {
++      const base::DictionaryValue* resource_dictionary = nullptr;
++      if (settings_dictionary->GetDictionary(kBraveShieldsDictionary,
++                                             &resource_dictionary)) {
++        base::Time last_modified = GetTimeStamp(settings_dictionary);
++        for (base::DictionaryValue::Iterator j(*resource_dictionary);
++             !j.IsAtEnd(); j.Advance()) {
++          int setting = CONTENT_SETTING_DEFAULT;
++          bool is_integer = j.value().GetAsInteger(&setting);
++          DCHECK(is_integer);
++          DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
++          std::unique_ptr<base::Value> setting_ptr(new base::Value(setting));
++          DCHECK(IsValueAllowedForType(setting_ptr.get(), content_type_));
++          // Per resource settings store a single timestamps for all resources.
++          value_map_.SetValue(pattern_pair.first, pattern_pair.second,
++                              content_type_, last_modified,
++                              setting_ptr->Clone(),
++                              {expiration, session_model});
++        }
++      }
++    }
++
+     const base::Value* value = nullptr;
+     settings_dictionary->GetWithoutPathExpansion(kSettingPath, &value);
+     if (value) {
+@@ -401,36 +428,82 @@ void ContentSettingsPref::UpdatePref(
+     }
+ 
+     if (settings_dictionary) {
++      if (content_settings::IsShieldsContentSettingsType(content_type_)) {
++        std::unique_ptr<prefs::DictionaryValueUpdate> resource_dictionary;
++        found = settings_dictionary->GetDictionary(
++            kBraveShieldsDictionary, &resource_dictionary);
++        if (!found) {
++          if (value == nullptr)
++            return;  // Nothing to remove. Exit early.
++          resource_dictionary =
++              settings_dictionary->SetDictionaryWithoutPathExpansion(
++                  kBraveShieldsDictionary,
++                  std::make_unique<base::DictionaryValue>());
++        }
++        // Update resource dictionary.
++        if (value == nullptr) {
++          resource_dictionary->RemoveWithoutPathExpansion(
++              GetShieldsContentTypeName(content_type_), nullptr);
++          if (resource_dictionary->empty()) {
++            settings_dictionary->RemoveWithoutPathExpansion(
++                kBraveShieldsDictionary, nullptr);
++            settings_dictionary->RemoveWithoutPathExpansion(kLastModifiedPath,
++                                                            nullptr);
++            settings_dictionary->RemoveWithoutPathExpansion(kExpirationPath,
++                                                            nullptr);
++            settings_dictionary->RemoveWithoutPathExpansion(kSessionModelPath,
++                                                            nullptr);
++          }
++        } else {
++          resource_dictionary->SetWithoutPathExpansion(
++              GetShieldsContentTypeName(content_type_),
++              value->CreateDeepCopy());
++          // Update timestamp for whole resource dictionary.
++          settings_dictionary->SetKey(
++              kLastModifiedPath,
++              base::Value(base::NumberToString(
++                  last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
++          settings_dictionary->SetKey(
++              kExpirationPath,
++              base::Value(base::NumberToString(
++                  constraints.expiration.ToDeltaSinceWindowsEpoch()
++                      .InMicroseconds())));
++          settings_dictionary->SetKey(
++              kSessionModelPath,
++              base::Value(static_cast<int>(constraints.session_model)));
++        }
++      } else {
+       // Update settings dictionary.
+       if (value == nullptr) {
+-        settings_dictionary->RemoveWithoutPathExpansion(kSettingPath, nullptr);
+-        settings_dictionary->RemoveWithoutPathExpansion(kLastModifiedPath,
+-                                                        nullptr);
+-        settings_dictionary->RemoveWithoutPathExpansion(kExpirationPath,
+-                                                        nullptr);
+-        settings_dictionary->RemoveWithoutPathExpansion(kSessionModelPath,
+-                                                        nullptr);
+-      } else {
+-        settings_dictionary->SetWithoutPathExpansion(kSettingPath,
+-                                                     value->CreateDeepCopy());
+-        settings_dictionary->SetKey(
+-            kLastModifiedPath,
+-            base::Value(base::NumberToString(
+-                last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
+-        settings_dictionary->SetKey(
+-            kExpirationPath,
+-            base::Value(base::NumberToString(
+-                constraints.expiration.ToDeltaSinceWindowsEpoch()
+-                    .InMicroseconds())));
+-        settings_dictionary->SetKey(
+-            kSessionModelPath,
+-            base::Value(static_cast<int>(constraints.session_model)));
+-      }
+-
+-      // Remove the settings dictionary if it is empty.
+-      if (settings_dictionary->empty()) {
+-        pattern_pairs_settings->RemoveWithoutPathExpansion(pattern_str,
+-                                                           nullptr);
++          settings_dictionary->RemoveWithoutPathExpansion(kSettingPath, nullptr);
++          settings_dictionary->RemoveWithoutPathExpansion(kLastModifiedPath,
++                                                          nullptr);
++          settings_dictionary->RemoveWithoutPathExpansion(kExpirationPath,
++                                                          nullptr);
++          settings_dictionary->RemoveWithoutPathExpansion(kSessionModelPath,
++                                                          nullptr);
++        } else {
++          settings_dictionary->SetWithoutPathExpansion(kSettingPath,
++                                                       value->CreateDeepCopy());
++          settings_dictionary->SetKey(
++              kLastModifiedPath,
++              base::Value(base::NumberToString(
++                  last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
++          settings_dictionary->SetKey(
++              kExpirationPath,
++              base::Value(base::NumberToString(
++                  constraints.expiration.ToDeltaSinceWindowsEpoch()
++                      .InMicroseconds())));
++          settings_dictionary->SetKey(
++              kSessionModelPath,
++              base::Value(static_cast<int>(constraints.session_model)));
++        }
++
++        // Remove the settings dictionary if it is empty.
++        if (settings_dictionary->empty()) {
++          pattern_pairs_settings->RemoveWithoutPathExpansion(pattern_str,
++                                                             nullptr);
++        }
+       }
+     }
+   }

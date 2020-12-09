@@ -97,7 +97,7 @@ export const tabs: Tabs = {
 export const activeTabData = tabs[2]
 
 export const blockedResource: BlockDetails = {
-  blockType: 'ads',
+  blockType: 'bs_ads',
   tabId: 2,
   subresource: 'https://www.brave.com/test'
 }

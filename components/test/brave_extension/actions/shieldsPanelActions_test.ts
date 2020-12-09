@@ -60,7 +60,7 @@ describe('shieldsPanelActions', () => {
 
   it('resourceBlocked action', () => {
     const details: BlockDetails = {
-      blockType: 'ads',
+      blockType: 'bs_ads',
       tabId: 2,
       subresource: 'https://www.brave.com/test'
     }
