@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_protocols.cc b/extensions/browser/extension_protocols.cc
-index e4e1bf4054ad7f19a4e965d6a36c972484196307..1e95471d766a71b43e26807ddccddedc676357f1 100644
+index 1841283a1f846af6c8d40eacaba409c63766a2c1..6f6f66ada5ced358db6288fe0bdaff39249a21a8 100644
 --- a/extensions/browser/extension_protocols.cc
 +++ b/extensions/browser/extension_protocols.cc
-@@ -242,6 +242,7 @@ void ReadResourceFilePathAndLastModifiedTime(
+@@ -243,6 +243,7 @@ void ReadResourceFilePathAndLastModifiedTime(
  
  bool ExtensionCanLoadInIncognito(bool is_main_frame,
                                   const Extension* extension,
@@ -10,16 +10,7 @@ index e4e1bf4054ad7f19a4e965d6a36c972484196307..1e95471d766a71b43e26807ddccddedc
                                   bool extension_enabled_in_incognito) {
    if (!extension || !extension_enabled_in_incognito)
      return false;
-@@ -251,7 +252,7 @@ bool ExtensionCanLoadInIncognito(bool is_main_frame,
-   // Only allow incognito toplevel navigations to extension resources in
-   // split mode. In spanning mode, the extension must run in a single process,
-   // and an incognito tab prevents that.
--  return IncognitoInfo::IsSplitMode(extension);
-+  return IncognitoInfo::IsSplitMode(extension, is_tor);
- }
- 
- // Returns true if an chrome-extension:// resource should be allowed to load.
-@@ -264,6 +265,7 @@ bool AllowExtensionResourceLoad(const GURL& url,
+@@ -265,6 +266,7 @@ bool AllowExtensionResourceLoad(const GURL& url,
                                  ui::PageTransition page_transition,
                                  int child_id,
                                  bool is_incognito,
@@ -27,7 +18,7 @@ index e4e1bf4054ad7f19a4e965d6a36c972484196307..1e95471d766a71b43e26807ddccddedc
                                  const Extension* extension,
                                  bool extension_enabled_in_incognito,
                                  const ExtensionSet& extensions,
-@@ -272,6 +274,7 @@ bool AllowExtensionResourceLoad(const GURL& url,
+@@ -273,6 +275,7 @@ bool AllowExtensionResourceLoad(const GURL& url,
        resource_type == blink::mojom::ResourceType::kMainFrame;
    if (is_incognito &&
        !ExtensionCanLoadInIncognito(is_main_frame, extension,
@@ -35,7 +26,7 @@ index e4e1bf4054ad7f19a4e965d6a36c972484196307..1e95471d766a71b43e26807ddccddedc
                                     extension_enabled_in_incognito)) {
      return false;
    }
-@@ -555,6 +558,7 @@ class ExtensionURLLoaderFactory
+@@ -556,6 +559,7 @@ class ExtensionURLLoaderFactory
              static_cast<blink::mojom::ResourceType>(request.resource_type),
              static_cast<ui::PageTransition>(request.transition_type),
              render_process_id_, browser_context_->IsOffTheRecord(),
