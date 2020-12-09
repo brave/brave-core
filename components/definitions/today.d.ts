@@ -28,9 +28,8 @@ declare namespace BraveToday {
       // Boolean for explicit change, null for remove pref.
       enabled: boolean | null
     }
-    export type SetPublisherPrefResponse = GetPublishersResponse
     export type ClearPrefsPayload = {}
-    export type ClearPrefsResponse = SetPublisherPrefResponse
+    export type ClearPrefsResponse = GetPublishersResponse
     // isFeedUpdateAvailable
     export type IsFeedUpdateAvailablePayload = {
       hash: string
