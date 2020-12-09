@@ -26,7 +26,7 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
-import org.chromium.chrome.browser.toolbar.HomeButton;
+import org.chromium.chrome.browser.toolbar.BraveHomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonView;
@@ -47,7 +47,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final BrowsingModeBottomToolbarMediator mMediator;
 
     /** The home button that lives in the bottom toolbar. */
-    private final HomeButton mHomeButton;
+    private final BraveHomeButton mBraveHomeButton;
 
     /** The share button that lives in the bottom toolbar. */
     private final ShareButton mShareButton;
@@ -96,8 +96,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     BrowsingModeBottomToolbarCoordinator(View root, ActivityTabProvider tabProvider,
             OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
             ObservableSupplier<OnClickListener> shareButtonListenerSupplier,
-            OnLongClickListener tabSwitcherLongClickListener,
-            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+            OnLongClickListener tabSwitcherLongClickListener) {
         mModel = new BrowsingModeBottomToolbarModel();
         mToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
         mTabProvider = tabProvider;
@@ -107,9 +106,8 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mMediator = new BrowsingModeBottomToolbarMediator(mModel);
 
-        mHomeButton = mToolbarRoot.findViewById(R.id.bottom_home_button);
-        mHomeButton.setOnClickListener(homeButtonListener);
-        mHomeButton.setActivityTabProvider(mTabProvider);
+        mBraveHomeButton = mToolbarRoot.findViewById(R.id.bottom_home_button);
+        mBraveHomeButton.setOnClickListener(homeButtonListener);
 
         mNewTabButton = mToolbarRoot.findViewById(R.id.bottom_new_tab_button);
 
@@ -127,7 +125,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             mNewTabButton.setVisibility(View.VISIBLE);
         }
         if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
-            mHomeButton.setVisibility(View.VISIBLE);
+            mBraveHomeButton.setVisibility(View.VISIBLE);
         }
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
@@ -142,11 +140,6 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButton.setActivityTabProvider(mTabProvider);
             mShareButtonListenerSupplier.addObserver(mShareButtonListenerSupplierCallback);
         }
-
-        overviewModeBehaviorSupplier.onAvailable(
-                mCallbackController.makeCancelable((overviewModeBehavior) -> {
-                    setOverviewModeBehavior(overviewModeBehavior);
-                }));
 
         mBookmarkButton = mToolbarRoot.findViewById(R.id.bottom_bookmark_button);
         if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
@@ -199,12 +192,13 @@ public class BrowsingModeBottomToolbarCoordinator {
             mNewTabButton.setThemeColorProvider(themeColorProvider);
             mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
         }
-        if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
-            mHomeButton.setThemeColorProvider(themeColorProvider);
-        }
 
         if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
             mShareButton.setThemeColorProvider(themeColorProvider);
+        }
+
+        if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
+            mBraveHomeButton.setThemeColorProvider(themeColorProvider);
         }
 
         mSearchAccelerator.setThemeColorProvider(themeColorProvider);
@@ -224,19 +218,6 @@ public class BrowsingModeBottomToolbarCoordinator {
             assert menuButtonHelper != null;
             mMenuButton.setAppMenuButtonHelper(menuButtonHelper);
         });
-    }
-
-    private void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
-        assert overviewModeBehavior != null;
-
-        // If StartSurface is HomePage, BrowsingModeBottomToolbar is shown in browsing mode and in
-        // overview mode. We need to pass the OverviewModeBehavior to the buttons so they are
-        // disabled based on the overview state.
-        if (ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()) {
-            mShareButton.setOverviewModeBehavior(overviewModeBehavior);
-            // mTabSwitcherButtonCoordinator.setOverviewModeBehavior(overviewModeBehavior);
-            mHomeButton.setOverviewModeBehavior(overviewModeBehavior);
-        }
     }
 
     /**
@@ -278,8 +259,8 @@ public class BrowsingModeBottomToolbarCoordinator {
     /**
      * @return The browsing mode bottom toolbar's home button.
      */
-    HomeButton getHomeButton() {
-        return mHomeButton;
+    BraveHomeButton getHomeButton() {
+        return mBraveHomeButton;
     }
 
     /**
@@ -290,7 +271,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             mShareButtonListenerSupplier.removeObserver(mShareButtonListenerSupplierCallback);
         }
         mMediator.destroy();
-        mHomeButton.destroy();
+        mBraveHomeButton.destroy();
         mShareButton.destroy();
         mSearchAccelerator.destroy();
         mTabSwitcherButtonCoordinator.destroy();
@@ -307,7 +288,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     }
 
     View getNewTabButtonParent() {
-        return (View)mNewTabButton.getParent();
+        return (View) mNewTabButton.getParent();
     }
 
     BookmarksButton getBookmarkButton() {

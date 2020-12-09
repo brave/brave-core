@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index ca36c316828f3d5ab3fb511d73cb975a86286c5e..3e9139cf7b9986aeb9ff6089457784972c98330e 100644
+index 039035dce20878b29523ad7ebce2bf189eadfa0c..c08083fd5cef809ddff0e97f7c87df4c5a00b48d 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -127,6 +127,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
-   // Non-Primary OTR profiles are not supposed to create Browser windows.
-   // DevTools::BrowserContext is an exception to this ban.
+@@ -131,6 +131,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
+   // DevTools::BrowserContext and MediaRouter::Presentation are an
+   // exception to this ban.
    return *this == PrimaryID() ||
 +         BRAVE_ALLOWS_BROWSER_WINDOWS
           base::StartsWith(profile_id_, kDevToolsOTRProfileIDPrefix,
-                           base::CompareCase::SENSITIVE);
- }
-@@ -266,7 +267,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
+                           base::CompareCase::SENSITIVE) ||
+          base::StartsWith(profile_id_, kMediaRouterOTRProfileIDPrefix,
+@@ -277,7 +278,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(
        prefs::kSearchSuggestEnabled,

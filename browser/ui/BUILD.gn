@@ -69,8 +69,6 @@ source_set("ui") {
       "content_settings/brave_autoplay_blocked_image_model.h",
       "content_settings/brave_autoplay_content_setting_bubble_model.cc",
       "content_settings/brave_autoplay_content_setting_bubble_model.h",
-      "content_settings/brave_content_setting_bubble_model.cc",
-      "content_settings/brave_content_setting_bubble_model.h",
       "content_settings/brave_content_setting_image_models.cc",
       "content_settings/brave_content_setting_image_models.h",
       "omnibox/brave_omnibox_client_impl.cc",
@@ -178,7 +176,7 @@ source_set("ui") {
     }
   }
 
-  if (is_win || is_mac || is_desktop_linux) {
+  if (is_win || is_mac || is_linux) {
     sources += [
       "views/profiles/brave_incognito_menu_view.cc",
       "views/profiles/brave_incognito_menu_view.h",

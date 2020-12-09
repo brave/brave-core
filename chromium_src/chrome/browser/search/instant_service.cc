@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/search/instant_service.h"
-#include "chrome/browser/search/search_provider_observer.h"
+#include "components/search/search_provider_observer.h"
 
 class AlwaysGoogleSearchProviderObserver : public SearchProviderObserver {
  public:

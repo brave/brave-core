@@ -130,9 +130,8 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
-    : ChromeContentBrowserClient(startup_data),
-      session_token_(base::RandUint64()),
+BraveContentBrowserClient::BraveContentBrowserClient()
+    : session_token_(base::RandUint64()),
       incognito_session_token_(base::RandUint64()) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
@@ -286,7 +285,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
     base::Optional<int64_t> navigation_id,
-    base::UkmSourceId ukm_source_id,
+    ukm::SourceIdObj ukm_source_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
         header_client,

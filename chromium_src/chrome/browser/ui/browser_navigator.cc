@@ -26,8 +26,9 @@ bool HandleURLInParent(NavigateParams* params, Profile* profile) {
 // GetOrCreateBrowser is not accessible here
 Browser* BraveGetOrCreateBrowser(Profile* profile, bool user_gesture) {
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
-  return browser ? browser
-                 : new Browser(Browser::CreateParams(profile, user_gesture));
+  return browser
+             ? browser
+             : Browser::Create(Browser::CreateParams(profile, user_gesture));
 }
 
 void UpdateBraveScheme(NavigateParams* params) {

@@ -62,7 +62,8 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
                 0);
 
   auto dont_ask_button = std::make_unique<views::LabelButton>(
-      this,
+      base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
+                          base::Unretained(this), BUTTON_ID_ALWAYS_TRANSLATE),
       l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN));
   dont_ask_button->SetID(BUTTON_ID_ALWAYS_TRANSLATE);
 
@@ -73,12 +74,16 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   dont_ask_button->SetTextColor(views::Button::STATE_NORMAL, color);
 
   auto accept_button = std::make_unique<views::MdTextButton>(
-      this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
+      base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
+                          base::Unretained(this), BUTTON_ID_DONE),
+      l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
   accept_button->SetID(BUTTON_ID_DONE);
   accept_button->SetIsDefault(true);
 
   auto cancel_button = std::make_unique<views::MdTextButton>(
-      this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
+      base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
+                          base::Unretained(this), BUTTON_ID_CLOSE),
+      l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
   cancel_button->SetID(BUTTON_ID_CLOSE);
 
   layout->StartRowWithPadding(
@@ -128,9 +133,8 @@ void BraveTranslateBubbleView::DisableOfferTranslatePref() {
   prefs->SetBoolean(prefs::kOfferTranslateEnabled, false);
 }
 
-void BraveTranslateBubbleView::ButtonPressed(views::Button* sender,
-                                             const ui::Event& event) {
-  switch (static_cast<ButtonID>(sender->GetID())) {
+void BraveTranslateBubbleView::ButtonPressed(ButtonID button_id) {
+  switch (button_id) {
     case BUTTON_ID_DONE: {
       InstallGoogleTranslate();
       break;

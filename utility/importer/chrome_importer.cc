@@ -21,11 +21,12 @@
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_bridge.h"
+#include "chrome/common/importer/importer_data_types.h"
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/utility/importer/favicon_reencode.h"
-#include "components/autofill/core/common/password_form.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/password_manager/core/browser/login_database.h"
+#include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
@@ -147,6 +148,30 @@ base::string16 DecryptedCardFromColumn(const sql::Statement& s,
     OSCrypt::DecryptString16(encrypted_number, &credit_card_number);
   }
   return credit_card_number;
+}
+
+bool PasswordFormToImportedPasswordForm(
+    const password_manager::PasswordForm* form,
+    importer::ImportedPasswordForm* imported_form) {
+  if (form->scheme != password_manager::PasswordForm::Scheme::kHtml &&
+      form->scheme != password_manager::PasswordForm::Scheme::kBasic)
+    return false;
+
+  if (form->scheme == password_manager::PasswordForm::Scheme::kHtml) {
+    imported_form->scheme = importer::ImportedPasswordForm::Scheme::kHtml;
+  } else {
+    imported_form->scheme = importer::ImportedPasswordForm::Scheme::kBasic;
+  }
+
+  imported_form->signon_realm = form->signon_realm;
+  imported_form->url = form->url;
+  imported_form->action = form->action;
+  imported_form->username_element = form->username_element;
+  imported_form->username_value = form->username_value;
+  imported_form->password_element = form->password_element;
+  imported_form->password_value = form->password_value;
+  imported_form->blocked_by_user = form->blocked_by_user;
+  return true;
 }
 
 }  // namespace
@@ -440,18 +465,22 @@ void ChromeImporter::ImportPasswords() {
     return;
   }
 
-  std::vector<std::unique_ptr<autofill::PasswordForm>> forms;
+  std::vector<std::unique_ptr<password_manager::PasswordForm>> forms;
   bool success = database.GetAutofillableLogins(&forms);
   if (success) {
     for (size_t i = 0; i < forms.size(); ++i) {
-      bridge_->SetPasswordForm(*forms[i].get());
+      importer::ImportedPasswordForm form;
+      if (PasswordFormToImportedPasswordForm(forms[i].get(), &form))
+        bridge_->SetPasswordForm(form);
     }
   }
-  std::vector<std::unique_ptr<autofill::PasswordForm>> blacklist;
+  std::vector<std::unique_ptr<password_manager::PasswordForm>> blacklist;
   success = database.GetBlacklistLogins(&blacklist);
   if (success) {
     for (size_t i = 0; i < blacklist.size(); ++i) {
-      bridge_->SetPasswordForm(*blacklist[i].get());
+      importer::ImportedPasswordForm form;
+      if (PasswordFormToImportedPasswordForm(blacklist[i].get(), &form))
+        bridge_->SetPasswordForm(form);
     }
   }
 }

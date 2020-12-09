@@ -9,6 +9,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/omnibox/browser/vector_icons.h"
@@ -17,9 +18,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/button/button.h"
 
-BookmarkButton::BookmarkButton(views::ButtonListener* listener)
-    : ToolbarButton(listener) {
+BookmarkButton::BookmarkButton()
+    : ToolbarButton(views::Button::PressedCallback()) {
   SetID(VIEW_ID_STAR_BUTTON);
   set_tag(IDC_BOOKMARK_THIS_TAB);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));

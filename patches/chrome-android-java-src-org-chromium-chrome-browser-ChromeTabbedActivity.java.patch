@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b02ead17f 100644
+index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3dfdc2357 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -183,7 +183,7 @@ import java.util.Locale;
+@@ -186,7 +186,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
@@ -11,25 +11,16 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -998,7 +998,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
-         if (ReengagementNotificationController.isEnabled()) {
-             if (mCallbackController != null) {
-                 new OneShotCallback<>(
--                        mTabModelProfileSupplier, mCallbackController.makeCancelable(profile -> {
-+                        mTabModelProfileSupplier, mCallbackController.makeCancelable((Profile profile) -> {
-                             assert profile != null : "Unexpectedly null profile from TabModel.";
-                             if (profile == null) return;
- 
-@@ -1440,7 +1440,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1471,7 +1471,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      protected RootUiCoordinator createRootUiCoordinator() {
 -        return new TabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
 +        return new org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator(this, this::onOmniboxFocusChanged,
-                 mIntentWithEffectSupplier, getShareDelegateSupplier(), getActivityTabProvider(),
-                 mEphemeralTabCoordinatorSupplier, mTabModelProfileSupplier, mBookmarkBridgeSupplier,
-                 getOverviewModeBehaviorSupplier(), this::getContextualSearchManager,
-@@ -1601,7 +1601,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+                 mIntentMetadataOneshotSupplier, getShareDelegateSupplier(),
+                 getActivityTabProvider(), mEphemeralTabCoordinatorSupplier,
+                 mTabModelProfileSupplier, mBookmarkBridgeSupplier,
+@@ -1637,7 +1637,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -37,8 +28,8 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
 +        return new org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate(this, getActivityTabProvider(),
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
-                 mBookmarkBridgeSupplier);
-@@ -1625,10 +1625,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+                 mBookmarkBridgeSupplier, getModalDialogManager());
+@@ -1661,10 +1661,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -51,7 +42,7 @@ index 266a8fc9bf03d482799ef11b568b9ffb643edc19..1141e8f0fb13203d898f17fee996cb4b
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
                          AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -2018,7 +2018,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2058,7 +2058,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

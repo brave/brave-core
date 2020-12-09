@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/generated_in_modules.gni b/third_party/blink/renderer/bindings/generated_in_modules.gni
-index 6cf406aec26395d294bb6790799d97e2c609b22b..65978853971403df2793e625c83b09a8367557cb 100644
+index 65b05252161b271d28c0d4fc1c7b34617681163e..06f7676511274ed1ce53f254953c92eda93372ed 100644
 --- a/third_party/blink/renderer/bindings/generated_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/generated_in_modules.gni
-@@ -2230,6 +2230,7 @@ generated_interface_sources_in_modules = [
+@@ -2218,6 +2218,7 @@ generated_interface_sources_in_modules = [
    "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_xr_world_tracking_state.cc",
    "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_xr_world_tracking_state.h",
  ]
 +generated_interface_sources_in_modules += brave_generated_interface_sources_in_modules
  
- # Serial
- if (!is_android) {
+ generated_namespace_sources_in_modules = []
+ 

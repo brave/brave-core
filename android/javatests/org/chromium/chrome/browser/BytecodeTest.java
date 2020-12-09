@@ -55,6 +55,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/app/ChromeActivity"));
     }
 
     @Test
@@ -163,12 +164,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mShareDelegateSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mActivity"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mShowStartSurfaceSupplier"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
-                "mOverviewModeBehaviorSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mMenuButtonCoordinator"));
         Assert.assertTrue(fieldExists(
@@ -204,6 +201,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
                         "mShouldShowNewTabVariation"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/app/ChromeActivity", "mTabModelProfileSupplier"));
     }
 
     private boolean classExists(String className) {

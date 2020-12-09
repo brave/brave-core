@@ -14,15 +14,6 @@
   </message>
 
   <!-- Contact visibility component -->
-  <message name="IDS_NEARBY_CONTACT_VISIBILITY_CONTACTS_TITLE" desc="Section title of the contacts list when setting up the device visibility for the Nearby Share feature.">
-    Contacts
-  </message>
-  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NEARBY_SHARE_OPEN_OTHERS" desc="Describes that nearby devices are visible while the Nearby Share feature is open on their screen.">
-    Devices near you when Nearby Share is open on their device
-  </message>
-  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NEARBY_SHARE_OPEN_OWN" desc="Describes that the local device is visible to nearby devices while the Nearby Share feature is open on screen on the local device.">
-    Devices near you when Nearby Share is open on your device
-  </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_SUBTITLE" desc="Help text shown when there are no available contacts with a Brave sync chain to select from. Nearby Share is the feature name.">
     No contacts are available. To use Nearby Share with your contacts, add the email address linked with their Brave sync chain to your contacts.
   </message>
@@ -30,19 +21,19 @@
     No available contacts
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OTHERS" desc="Describes when nearby devices are visible to this user when using the Nearby Share feature.">
-    Profiles who have chosen to be visible to you when their screen is unlocked
+    Profiles who have chosen to be visible to you when their screen is unlocked and devices near you when Nearby Share is open
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OTHERS_TITLE" desc="Title of the description for which devices the user can share with using the Nearby Share feature.">
     Devices you can share with
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OWN_ALL" desc="Describes who can see the local device when the Nearby Share visibility setting is set to 'All contacts'.">
-    All contacts near you when your screen is unlocked
+    All contacts near you when your screen is unlocked and devices near you when Nearby Share is open
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OWN_NONE" desc="Describes who can see the local device when the Nearby Share visibility setting is set to 'Hidden'.">
-    No one unless you open Nearby Share on your device
+    No one unless you open Nearby Share
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OWN_SOME" desc="Describes who can see the local device when the Nearby Share visibility setting is set to 'Some contacts'.">
-    Selected contacts near you when your screen is unlocked
+    Selected contacts near you when your screen is unlocked and devices near you when Nearby Share is open
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OWN_TITLE" desc="Title of the description for which nearby devices can share with a users device using the Nearby Share feature.">
     Who can share with your device
@@ -67,7 +58,7 @@
 
   <!-- Discovery page -->
   <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Bravebook to share with it.">
-    Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook, make sure it has Nearby Sharing turned on (open the status area by selecting the time, then select Nearby Share).
+    Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook, make sure it has Nearby Sharing turned on (open the status area by selecting the time, then select Nearby Share). <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_NEARBY_DISCOVERY_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share device discovery page. This is where users select a device to share files with.">
     Select the device you’d like to share files with
@@ -163,8 +154,8 @@
 
 
   <!-- Settings Strings -->
-  <message name="IDS_NEARBY_ACCOUNT_ROW_LABEL" desc="Label to describe the account row which displays the device name and user email that will identify them when using the Nearby Share feature." is_accessibility_with_no_ui="true">
-      Nearby Share settings for <ph name="USER_EMAIL">$1<ex>example@gmail.com</ex></ph>'s device, '<ph name="DEVICE_NAME">$2<ex>My Bravebook</ex></ph>'.
+  <message name="IDS_NEARBY_ACCOUNT_ROW_LABEL" desc="Label to describe the account row which displays the user's full name and their email which will identify them when using the Nearby Share feature." is_accessibility_with_no_ui="true">
+      Nearby Share settings for <ph name="USER_NAME">$1<ex>Jane Doe</ex></ph>'s device, sharing under the account <ph name="USER_EMAIL">$2<ex>example@gmail.com</ex></ph>.
   </message>
   <message name="IDS_NEARBY_VISIBLITY_ALL_CONTACTS" desc="Describes the user preference state for the user to be visibile to all their contacts in the Nearby Share feature.">
     All contacts

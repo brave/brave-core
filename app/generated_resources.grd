@@ -441,12 +441,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HISTORY_SIGN_IN_PROMO_DESC" desc="Description of the sign-in promo. Further tells users to sign in to Brave to see synced tabs from other devices.">
         To get your tabs from your other devices, sign in to Brave.
       </message>
-      <message name="IDS_HISTORY_MENU_PROMO" desc="Text body of a promotional tooltip that shows up the first time a user runs the Material Design History UI in narrow mode to help find 'Clear Browsing Data' and the side navigation.">
-        You can clear your browsing data from this menu
-      </message>
-      <message name="IDS_HISTORY_CLOSE_MENU_PROMO" desc="Title text of the close button of a promotional tooltip that shows up the first time a user runs the Material Design History UI in narrow mode to help find 'Clear Browsing Data' and the side navigation.">
-        Close
-      </message>
 
       <!-- Generic terms -->
       <message name="IDS_EDIT" desc="Edit menu item">
@@ -2062,6 +2056,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_TOUCH_BAR_NEW_TAB_CUSTOMIZATION_LABEL" desc="Customization label for the new tab button in the touch bar.">
           New Tab
+        </message>
+        <message name="IDS_TOUCH_BAR_URL_CUSTOMIZATION_LABEL" desc="Customization label for the URL field in the touch bar.">
+          Page URL
         </message>
       </if>
 
@@ -3847,9 +3844,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORK_STATE" desc="Permission string for network list access.">
           Access list of network connections
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORKING_CONFIG" desc="Permission string for Networking Config API.">
-          Configure network connections
-        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_NETWORKING_PRIVATE" desc="Permission string for Networking Private API.">
           Manage network connections
         </message>
@@ -4208,6 +4202,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR" desc="The text for the menu item to unpin an extension from the toolbar (sentence case).">
             Unpin
           </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
+            Pinned by your administrator
+          </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The 'Manage extensions' text in the context menu for when right-clicking on extension icons (sentence case).">
             Manage extensions
           </message>
@@ -4257,6 +4254,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR" desc="The text for the menu item to unpin an extension from the toolbar (title case).">
             Unpin
+          </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (title case).">
+            Pinned by your Administrator
           </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The 'Manage Extensions' text in the context menu for when right-clicking on extension icons (title case).">
             Manage Extensions
@@ -4719,12 +4719,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_EVT_STATUS_UPDATING" desc="Service Status">
         Component updating
       </message>
-
-      <if expr="enable_plugins">
-        <message name="IDS_PLUGINS_DISABLED_PLUGIN" desc="Text that signifies that the plugin is currently disabled.">
-          (Disabled)
-        </message>
-      </if>
 
       <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_TITLE" desc="The title of the account chooser dialog.">
         Sign in as
@@ -5471,16 +5465,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
       </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_TITLE" desc="Title shown on the info dialog of the shopping tasks module.">
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_TITLE" desc="Title shown on the info dialog of a task module.">
         Why am I seeing this?
       </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_1" desc="First paragraph shown in the body of the info dialog of the shopping tasks module.">
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_1" desc="First paragraph shown in the body of the info dialog of a task module.">
         You’re seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_2" desc="Second paragraph shown in the body of the info dialog of the shopping tasks module.">
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_2" desc="Second paragraph shown in the body of the info dialog of a task module.">
         Learn about the data Brave collects and why at <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>policies.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
-      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of the shopping tasks module.">
+      <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
       </message>
       <!-- Extensions NTP Middle Slot Promo -->
@@ -5509,7 +5503,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Edit Bookmark
         </message>
         <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
-          Read Later
+          Add to Reading List
         </message>
         <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
           Mark as Read
@@ -5523,7 +5517,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Edit bookmark
         </message>
         <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
-          Read later
+          Add to reading list
         </message>
         <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
           Mark as read
@@ -5624,7 +5618,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Find
       </message>
       <message name="IDS_TOOLTIP_TAB_SEARCH" desc="The tooltip for the Tab Search bubble.">
-        Tab search
+        Search tabs
       </message>
 
       <!-- Strings for intent picker -->
@@ -5708,7 +5702,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Reset to default zoom level
       </message>
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
-        Tab search
+        Search tabs
       </message>
 
       <!-- Clipboard permission -->
@@ -5779,6 +5773,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_REOPEN_TAB_PROMO" desc="Text shown on promotional UI appearing next to the app menu button">
         Reopen a tab if you accidentally closed it
+      </message>
+      <message name="IDS_DESKTOP_PWA_INSTALL_PROMO" desc="Text shown on promotional UI appearing next to the PWA install icon">
+        To get back to here quickly, install this app
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
@@ -6128,6 +6125,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_FEEDBACK_CLOSE_BUTTON_LABEL" desc="Label of the app close button.">
           Close
         </message>
+        <message name="IDS_FEEDBACK_FREE_TEXT_LABEL" desc="Label of the text box where users can describe a problem they are having">
+          Describe the issue in detail
+        </message>
         <message name="IDS_FEEDBACK_REPORT_URL_LABEL" desc="Label showing the URL that will be reported">
           URL
         </message>
@@ -6193,7 +6193,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Go to the <ph name="BEGIN_LINK1">&lt;a href="#" id="legal-help-page-url"&gt;</ph>Legal Help page<ph name="END_LINK1">&lt;/a&gt;</ph> to request content changes for legal reasons.  Some account and system information may be sent to Brave.  We will use the information you give us to help address technical issues and to improve our services, subject to our <ph name="BEGIN_LINK2">&lt;a href="#" id="privacy-policy-url"&gt;</ph>Privacy Policy<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="#" id="terms-of-service-url"&gt;</ph>Terms of Service<ph name="END_LINK3">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_FEEDBACK_NO_DESCRIPTION" desc="Message shown when no text is entered before hitting send feedback">
-          Please tell us what is happening before sending the feedback.
+          Please describe the problem before sending feedback.
         </message>
         <message name="IDS_FEEDBACK_SEND_REPORT" desc="Text for OK button of the send feedback dialog">
           Send
@@ -6473,8 +6473,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_READ_LATER" desc="The label of the tab context menu item for adding one or more tabs to Read later.">
           {NUM_TABS, plural,
-          =1 {Read tab later}
-          other {Read tabs later}}
+          =1 {Add tab to reading list}
+          other {Add tabs to reading list}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural,
@@ -6545,8 +6545,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_READ_LATER" desc="In Title Case: The label of the tab context menu item for adding one or more tabs to Read later.">
           {NUM_TABS, plural,
-          =1 {Read Tab Later}
-          other {Read Tabs Later}}
+          =1 {Add Tab to Reading List}
+          other {Add Tabs to Reading List}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_GROUP" desc="In Title Case: The label of the tab context menu submenu for adding one or more tabs to either a new group or an existing tab group. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural,
@@ -6609,35 +6609,33 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- Tab Search -->
-      <if expr="enable_tab_search">
-        <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
-          Search Tabs
-        </message>
-        <message name="IDS_TAB_SEARCH_NO_RESULTS_FOUND" desc="Indicator when no tabs are found filtered by user search input.">
-          No Results Found
-        </message>
-        <message name="IDS_TAB_SEARCH_CLOSE_TAB" desc="Label of the close tab button in the tab list item.">
-          Close Tab
-        </message>
-        <message name="IDS_TAB_SEARCH_SUBMIT_FEEDBACK" desc="Label of the submit feedback button.">
-          Submit Feedback
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
-          Tab Closed
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
-          Found <ph name="NUM">$1<ex>1</ex></ph> Tab
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS" desc="Plural form of a11y message after user changes search field when search filed is empty.">
-          Found <ph name="NUM">$1<ex>2</ex></ph> Tabs
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB_FOR" desc="Singular form of a11y message after user changes search field when search filed is not empty.">
-          Found <ph name="NUM">$1<ex>1</ex></ph> Tab For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
-        </message>
-        <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
-          Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
-        </message>
-      </if>
+      <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
+        Search Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_NO_RESULTS_FOUND" desc="Indicator when no tabs are found filtered by user search input.">
+        No Results Found
+      </message>
+      <message name="IDS_TAB_SEARCH_CLOSE_TAB" desc="Label of the close tab button in the tab list item.">
+        Close Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_SUBMIT_FEEDBACK" desc="Label of the submit feedback button.">
+        Submit Feedback
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_TAB_CLOSED" desc="A11y message after user clicks on the close tab button in the list item.">
+        Tab Closed
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB" desc="Singular form of a11y message after user changes search field when search filed is empty.">
+        Found <ph name="NUM">$1<ex>1</ex></ph> Tab
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS" desc="Plural form of a11y message after user changes search field when search filed is empty.">
+        Found <ph name="NUM">$1<ex>2</ex></ph> Tabs
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TAB_FOR" desc="Singular form of a11y message after user changes search field when search filed is not empty.">
+        Found <ph name="NUM">$1<ex>1</ex></ph> Tab For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+      </message>
+      <message name="IDS_TAB_SEARCH_A11Y_FOUND_TABS_FOR" desc="Plural form of a11y message after user changes search field when search filed is not empty.">
+        Found <ph name="NUM">$1<ex>2</ex></ph> Tabs For '<ph name="SEARCH_TEXT">$2<ex>google</ex></ph>'
+      </message>
 
       <!-- Strings for Window Titles in Menus -->
       <if expr="not use_titlecase">
@@ -7611,6 +7609,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Split vertical
           </message>
         </if>
+        <message name="IDS_APP_CONTEXT_MENU_RUN_ON_OS_LOGIN" desc="Text for the button that toggles open app automatically at OS Login. (In sentence case.)">
+          Start app when you sign in
+        </message>
       </if>
 
       <if expr="use_titlecase">
@@ -7668,6 +7669,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Split Vertical
           </message>
         </if>
+        <message name="IDS_APP_CONTEXT_MENU_RUN_ON_OS_LOGIN" desc="Text for the button that toggles open app automatically at OS Login. (In title case.)">
+          Start App When You Sign In
+        </message>
       </if>
 
       <!--  Sync Confirmation section of the tab modal signin flow -->
@@ -7712,6 +7716,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
         </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_SWITCH_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble (profile switch variant)">
+          Cancel
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
+          Switch
+        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
           To keep your browsing separate, you can create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
         </message>
@@ -7726,6 +7736,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_TITLE" desc="Title for the profile switch interception bubble">
+          Switch to another profile?
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC" desc="Description for the profile switch interception bubble">
+          <ph name="EXISTING_USER">$2<ex>Bob</ex></ph>'s profile is already signed in to <ph name="NEW_USER">$1<ex>bob@gmail.com</ex></ph>
         </message>
       </if>
 
@@ -8326,6 +8342,33 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
         Send message
       </message>
+      <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification.">
+        Details are hidden while you share your screen
+      </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_NOTIFICATION_MUTED_TITLE" desc="Title of a notification showing how many new notifications are currently hidden. The number is always greater than zero.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {New notification}
+            other {# new notifications}}
+        </message>
+        <message name="IDS_NOTIFICATION_MUTED_ACTION_SHOW" desc="Action button text to show the content of previously muted notifications.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {Show}
+            other {Show all}}
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_NOTIFICATION_MUTED_TITLE" desc="In Title Case: Title of a notification showing how many new notifications are currently hidden. The number is always greater than zero.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {New Notification}
+            other {# New Notifications}}
+        </message>
+        <message name="IDS_NOTIFICATION_MUTED_ACTION_SHOW" desc="In Title Case: Action button text to show the content of previously muted notifications.">
+          {MUTED_NOTIFICATIONS_COUNT, plural,
+            =1 {Show}
+            other {Show All}}
+        </message>
+      </if>
       <if expr="is_android">
         <message name="IDS_NOTIFICATION_BUTTON_MANAGE" desc="Text of a button shown on notification permission requests, that opens the Brave notifications settings page. This allows users to edit notification settings when a site asks them to allow notifications.">
           Manage
@@ -9223,6 +9266,24 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
         Live Caption is not available right now
       </message>
+    <if expr="chromeos">
+      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on BraveOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
+        Live Caption visible, press Ctrl + Back or Ctrl + Forward to cycle focus
+      </message>
+    </if>
+    <if expr="is_macosx">
+      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on MacOS when the Live Caption bubble appears to inform users of how to focus the bubble.">
+        Live Caption visible, press ⌘ + Option + Up arrow or Down arrow to cycle focus
+      </message>
+    </if>
+    <if expr="is_win or desktop_linux">
+      <message name="IDS_LIVE_CAPTION_BUBBLE_APPEAR_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers on Windows or Linux when the Live Caption bubble appears to inform users of how to focus the bubble.">
+        Live Caption visible, press F6 to cycle focus
+      </message>
+    </if>
+      <message name="IDS_LIVE_CAPTION_BUBBLE_MOVE_SCREENREADER_ANNOUNCEMENT" desc="Announcement to screen readers when the Live Caption bubble moves.">
+        Moved caption bubble to <ph name="POSITION_ON_SCREEN_FROM_LEFT">$1<ex>20</ex></ph>% across, <ph name="POSITION_ON_SCREEN_FROM_TOP">$2<ex>80</ex></ph>% down
+      </message>
 
       <!-- Caret browsing. -->
       <if expr="not chromeos">
@@ -9945,18 +10006,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Ad Blocking UI strings. -->
-    <message name="IDS_ALWAYS_ALLOW_ADS" desc="Explanation associated with a toggle to allow ads after ads have been blocked on the page. To be used on pages where the ad blocking UI is governed by a persistent permissions-based allowlist.">
-      Always allow ads on this site
-    </message>
-    <message name="IDS_BLOCKED_ADS_INFOBAR_MESSAGE" desc="The mini infobar message shown to users on Android when Brave has blocked ads on the site because the site tends to show intrusive ads. Will be presented as a sentence, next to a Details link to expand the infobar.">
-      Ads blocked.
-    </message>
-    <message name="IDS_BLOCKED_ADS_PROMPT_TITLE" desc="Title of the prompt shown to users in the omnibox or infobar when Brave has blocked ads on the site because the site tends to show intrusive ads. The title will stand alone next to an icon so there is no need for a period." formatter_data="android_java">
-      Ads blocked
-    </message>
-    <message name="IDS_BLOCKED_ADS_PROMPT_EXPLANATION" desc="A warning that a site has, in the past, shown intrusive or misleading ads. To be shown in an expanded infobar / bubble">
-      This site shows intrusive or misleading ads.
-    </message>
     <message name="IDS_BLOCKED_ADS_PROMPT_TOOLTIP" desc="Explanation that Brave blocked ads on this site. To be shown as a tooltip on the Ads blocked desktop bubble">
       Ads blocked on this site
     </message>
@@ -10737,6 +10786,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_NAME_WINDOW_PROMPT_WINDOW_NAME" desc="Label of the textfield to choose a new name for a window.">
       Window name
+    </message>
+    <message name="IDS_COMMANDER_LABEL" desc="Label to identify the Commander feature in Task Manager">
+      Commander
     </message>
   </messages>
 </release>

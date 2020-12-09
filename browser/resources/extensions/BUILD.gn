@@ -1,19 +1,29 @@
 import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
+import("//tools/grit/preprocess_grit.gni")
 import("//tools/polymer/polymer.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 
 grit("resources") {
-  source = "extensions_resources.grd"
-
-  # The .grd contains references to generated files.
-  enable_input_discovery_for_gn_analyze = true
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    "-E",
+    "root_src_dir=" + rebase_path("//", root_build_dir),
   ]
 
-  deps = [ ":polymer3_elements" ]
+  defines = chrome_grit_defines
+
+  enable_input_discovery_for_gn_analyze = false
+  defines += [ "SHARED_INTERMEDIATE_DIR=" +
+               rebase_path(root_gen_dir, root_build_dir) ]
+  extensions_gen_dir = "$root_gen_dir/brave/browser/resources/extensions"
+  source = "$extensions_gen_dir/brave_extensions_resources.grd"
+  deps = [ ":build_grd" ]
 
   outputs = [
     "grit/brave_extensions_resources.h",
@@ -26,40 +36,22 @@ grit("resources") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-group("unpak") {
-  deps = [
-    ":unpak_brave_extensions_resources",
-  ]
+generate_grd("build_grd") {
+  grd_prefix = "brave_extensions"
+  out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
+  input_files = []
+  input_files_base_dir = rebase_path(".", "//")
+
+  deps = [ ":preprocess_generated" ]
+  manifest_files = [ "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_gen_manifest" ]
 }
 
-action("unpak_brave_extensions_resources") {
-  script = "//chrome/browser/resources/unpack_pak.py"
-
-  pak_file = "brave_extensions_resources.pak"
-  out_folder = "$root_gen_dir/chrome/browser/resources/extensions/preprocessed"
-
-  inputs = [
-    "$target_gen_dir/brave_extensions_resources.pak",
-  ]
-
-  outputs = [
-    "${out_folder}/brave_unpack.stamp",
-  ]
-
-  deps = [
-    ":resources",
-  ]
-
-  args = [
-    "--out_folder",
-    rebase_path(out_folder, root_build_dir),
-    "--pak_file",
-    rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
-  ]
-}
-
-group("polymer3_elements") {
+preprocess_grit("preprocess_generated") {
   deps = [ ":brave_item_list_more_items_module" ]
+  in_folder = target_gen_dir
+  out_folder = "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_folder"
+  out_manifest = "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_gen_manifest"
+  in_files = [ "brave_item_list_more_items.js" ]
 }
 
 polymer_modulizer("brave_item_list_more_items") {
@@ -67,4 +59,3 @@ polymer_modulizer("brave_item_list_more_items") {
   html_file = "brave_item_list_more_items.html"
   html_type = "v3-ready"
 }
-

@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.toolbar.menu_button;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.view.View;
 
 import androidx.annotation.IdRes;
 
@@ -42,6 +44,12 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     public MenuButton getMenuButton() {
         updateMenuButtonState();
         return isMenuFromBottom() ? null : super.getMenuButton();
+    }
+
+    @Override
+    public void drawTabSwitcherAnimationOverlay(View root, Canvas canvas, int alpha) {
+        if (isMenuFromBottom()) return;
+        super.drawTabSwitcherAnimationOverlay(root, canvas, alpha);
     }
 
     @Override

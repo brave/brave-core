@@ -90,9 +90,7 @@
     *** mAppThemeColorProvider;
     *** mShareDelegateSupplier;
     *** mScrimCoordinator;
-    *** mActivity;
     *** mShowStartSurfaceSupplier;
-    *** mOverviewModeBehaviorSupplier;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
     *** mLocationBar;
@@ -127,4 +125,8 @@
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
     *** canAutoOpenMimeType(...);
+}
+
+-keep class org.chromium.chrome.browser.app.ChromeActivity {
+    *** mTabModelProfileSupplier;
 }

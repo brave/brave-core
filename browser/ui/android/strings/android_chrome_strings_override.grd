@@ -155,6 +155,10 @@ In Private, your activity <ph name="BEGIN_BOLD1">&lt;b1&gt;</ph>might still be v
 
 Data from your Private session will only be cleared from Brave when you <ph name="BEGIN_BOLD2">&lt;b2&gt;</ph>close all Private tabs<ph name="END_BOLD2">&lt;/b2&gt;</ph>.
       </message>
+      <if expr="enable_feed_v1">
+        </if>
+      <if expr="enable_feed_v1">
+        </if>
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new private browser tab.">
         New private tab
       </message>

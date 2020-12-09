@@ -123,6 +123,7 @@ const base::FilePath::CharType kStatusTrayWindowClass[] =
 
 const char kInitialProfile[] = "Default";
 const char kMultiProfileDirPrefix[] = "Profile ";
+const char kEphemeralGuestProfileDirPrefix[] = "Guest ";
 const base::FilePath::CharType kGuestProfileDir[] = FPL("Guest Profile");
 const base::FilePath::CharType kSystemProfileDir[] = FPL("System Profile");
 
@@ -185,16 +186,6 @@ const base::FilePath::CharType kReportingAndNelStoreFilename[] =
 
 #if defined(OS_WIN)
 const base::FilePath::CharType kJumpListIconDirname[] = FPL("JumpListIcons");
-#endif
-
-// File name of the Pepper Flash plugin on different platforms.
-const base::FilePath::CharType kPepperFlashPluginFilename[] =
-#if defined(OS_MAC)
-    FPL("PepperFlashPlayer.plugin");
-#elif defined(OS_WIN)
-    FPL("pepflashplayer.dll");
-#else  // OS_LINUX, etc.
-    FPL("libpepflashplayer.so");
 #endif
 
 // directory names

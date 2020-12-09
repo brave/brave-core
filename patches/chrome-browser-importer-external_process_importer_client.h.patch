@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index e5f3b315b6f810ad4b334debb01a4da86567dc21..5f0f8ca4cb51019577d8e67f872b5ba20b5bbf26 100644
+index 4fbe0f4f068b138cf6f57e61f524f906e10db001..15d0315a248354ccd3957f138c7d8aba8570dc1a 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
-@@ -85,6 +85,7 @@ class ExternalProcessImporterClient
+@@ -83,6 +83,7 @@ class ExternalProcessImporterClient
        const std::vector<ImporterAutofillFormDataEntry>&
            autofill_form_data_entry_group) override;
  

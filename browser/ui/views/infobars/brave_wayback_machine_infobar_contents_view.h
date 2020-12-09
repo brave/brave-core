@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
-#include "ui/views/controls/button/button.h"
+#include "ui/views/view.h"
 
 namespace content {
 class WebContents;
@@ -26,7 +26,6 @@ class GURL;
 // Includes all view controls except close button that managed by InfoBarView.
 class BraveWaybackMachineInfoBarContentsView
     : public views::View,
-      public views::ButtonListener,
       public WaybackMachineURLFetcher::Client {
  public:
   explicit BraveWaybackMachineInfoBarContentsView(
@@ -44,7 +43,6 @@ class BraveWaybackMachineInfoBarContentsView
 
   // views::View overrides:
   void OnThemeChanged() override;
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
   // WaybackMachineURLFetcher::Client overrides:
   void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
@@ -56,6 +54,8 @@ class BraveWaybackMachineInfoBarContentsView
   void FetchWaybackURL();
   void LoadURL(const GURL& url);
   void HideInfobar();
+
+  void ButtonPressed();
 
   // Used for labels theme changing all together.
   Labels labels_;

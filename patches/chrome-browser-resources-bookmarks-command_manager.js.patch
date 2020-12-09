@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/bookmarks/command_manager.js b/chrome/browser/resources/bookmarks/command_manager.js
-index 380391c08d649e5c40c044fd98a54b8096ed49b0..91310adc0baf34e9d7cfd92f8db6232cc6ba1699 100644
+index de2338fb1e0dab8d18d2ceb8ab187c031bbacfa2..9bf23ac78836c58b56d56fa62ca40710bb9fb353 100644
 --- a/chrome/browser/resources/bookmarks/command_manager.js
 +++ b/chrome/browser/resources/bookmarks/command_manager.js
-@@ -442,7 +442,7 @@ export const CommandManager = Polymer({
+@@ -439,7 +439,7 @@ export const CommandManager = Polymer({
          chrome.bookmarks.export();
          break;
        case Command.HELP_CENTER:

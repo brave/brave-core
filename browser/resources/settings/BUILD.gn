@@ -10,26 +10,37 @@ import("//third_party/closure_compiler/compile_js.gni")
 import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
+import("//tools/grit/preprocess_grit.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_manifest = "brave_preprocessed_manifest.json"
+preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 
 grit("resources") {
-  source = "settings_resources.grd"
-
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    "-E",
+    "root_src_dir=" + rebase_path("//", root_build_dir),
   ]
 
-  deps = [ ":web_modules" ]
-  defines = [
+  defines = chrome_grit_defines
+  defines += [
     "is_release_channel=$is_release_channel",
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
   ]
 
-  enable_input_discovery_for_gn_analyze = optimize_webui
+  enable_input_discovery_for_gn_analyze = false
+  defines += [ "SHARED_INTERMEDIATE_DIR=" +
+               rebase_path(root_gen_dir, root_build_dir) ]
+  settings_gen_dir = "$root_gen_dir/brave/browser/resources/settings"
+  source = "$settings_gen_dir/brave_settings_resources.grd"
+  deps = [ ":build_grd" ]
 
   outputs = [
     "grit/brave_settings_resources.h",
@@ -42,38 +53,99 @@ grit("resources") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-if (optimize_webui) {
-  group("unpak") {
-    deps = [
-      ":unpak_brave_settings_resources",
-    ]
-  }
+generate_grd("build_grd") {
+  grd_prefix = "brave_settings"
+  out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
+  input_files = [
+    "brave_sync_page/device_computer.svg",
+    "brave_sync_page/device_mobile.svg",
+    "brave_sync_page/qr_scanning.svg",
+    "brave_sync_page/start_icon.svg",
+    "images/cookies_banner.svg",
+    "images/cookies_banner_dark.svg",
+    "images/permissions_banner.svg",
+    "images/permissions_banner_dark.svg",
+    "images/safe_browsing_banner.svg",
+    "images/safe_browsing_banner_dark.svg",
+  ]
+  input_files_base_dir = rebase_path(".", "//")
 
-  action("unpak_brave_settings_resources") {
-    script = "//chrome/browser/resources/unpack_pak.py"
+  deps = [
+    ":preprocess",
+    ":preprocess_generated",
+  ]
+  manifest_files = [
+    "$root_gen_dir/chrome/browser/resources/settings/$preprocess_manifest",
+    "$root_gen_dir/chrome/browser/resources/settings/$preprocess_gen_manifest",
+  ]
+}
 
-    pak_file = "brave_settings_resources.pak"
-    out_folder = "$root_gen_dir/chrome/browser/resources/settings/preprocessed"
+preprocess_grit("preprocess") {
+  in_folder = "./"
+  out_folder = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
+  out_manifest = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_manifest"
+  in_files = [
+    "brave_appearance_page/brave_appearance_browser_proxy.js",
+    "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js",
+    "brave_overrides/about_page.js",
+    "brave_overrides/appearance_page.js",
+    "brave_overrides/basic_page.js",
+    "brave_overrides/clear_browsing_data_dialog.js",
+    "brave_overrides/cookies_page.js",
+    "brave_overrides/default_browser_page.js",
+    "brave_overrides/icons.js",
+    "brave_overrides/import_data_dialog.js",
+    "brave_overrides/index.js",
+    "brave_overrides/page_visibility.js",
+    "brave_overrides/passwords_section.js",
+    "brave_overrides/payments_section.js",
+    "brave_overrides/people_page.js",
+    "brave_overrides/printing_page.js",
+    "brave_overrides/reset_profile_dialog.js",
+    "brave_overrides/safety_check_passwords_child.js",
+    "brave_overrides/security_page.js",
+    "brave_overrides/settings_menu.js",
+    "brave_overrides/settings_section.js",
+    "brave_overrides/settings_ui.js",
+    "brave_overrides/site_settings_page.js",
+    "brave_overrides/sync_account_control.js",
+    "brave_overrides/sync_controls.js",
+    "brave_sync_page/brave_sync_browser_proxy.js",
+  ]
+}
 
-    inputs = [
-      "$target_gen_dir/brave_settings_resources.pak",
-    ]
-
-    outputs = [
-      "${out_folder}/brave_unpack.stamp",
-    ]
-
-    deps = [
-      ":resources",
-    ]
-
-    args = [
-      "--out_folder",
-      rebase_path(out_folder, root_build_dir),
-      "--pak_file",
-      rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
-    ]
-  }
+preprocess_grit("preprocess_generated") {
+  deps = [ ":web_modules" ]
+  defines = [
+    "enable_tor=$enable_tor",
+    "enable_brave_wayback_machine=$enable_brave_wayback_machine",
+  ]
+  in_folder = target_gen_dir
+  out_folder = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
+  out_manifest = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_gen_manifest"
+  in_files = [
+    "brave_appearance_page/brave_theme.js",
+    "brave_appearance_page/super_referral.js",
+    "brave_appearance_page/toolbar.js",
+    "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js",
+    "brave_default_extensions_page/brave_default_extensions_browser_proxy.m.js",
+    "brave_default_extensions_page/brave_default_extensions_page.m.js",
+    "brave_help_tips_page/brave_help_tips_page.m.js",
+    "brave_icons.m.js",
+    "brave_new_tab_page/brave_new_tab_browser_proxy.m.js",
+    "brave_new_tab_page/brave_new_tab_page.m.js",
+    "brave_privacy_page/brave_personalization_options.m.js",
+    "brave_privacy_page/brave_privacy_page_browser_proxy.m.js",
+    "brave_sync_page/brave_sync_code_dialog.js",
+    "brave_sync_page/brave_sync_configure.js",
+    "brave_sync_page/brave_sync_page.js",
+    "brave_sync_page/brave_sync_setup.js",
+    "brave_sync_page/brave_sync_subpage.js",
+    "default_brave_shields_page/default_brave_shields_browser_proxy.m.js",
+    "default_brave_shields_page/default_brave_shields_page.m.js",
+    "getting_started_page/getting_started.js",
+    "social_blocking_page/social_blocking_page.m.js",
+  ]
 }
 
 group("web_modules") {
