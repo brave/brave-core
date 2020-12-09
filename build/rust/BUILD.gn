@@ -21,10 +21,6 @@ cargo_build("rust_lib") {
     "//brave/components/speedreader/rust/lib",
     "//brave/vendor/adblock_rust_ffi:rust_lib",
   ]
-
-  if (is_win) {
-    deps += [ "//brave/components/rpill" ]
-  }
 }
 
 brave_ffi_deps = [
@@ -34,12 +30,6 @@ brave_ffi_deps = [
 ]
 
 brave_rust_deps = brave_ffi_deps + [ ":rust_lib" ]
-
-if (is_win) {
-  brave_ffi_deps += [
-    "//brave/components/rpill/rust/ffi:rust_ffi",
-  ]
-}
 
 if (is_mac) {
   shared_library("brave_rust") {

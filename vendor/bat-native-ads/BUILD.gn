@@ -1,6 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+import("//brave/components/rpill/buildflags.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -540,7 +541,7 @@ source_set("ads") {
     rebase_path("brave_base", dep_base),
   ]
 
-  if (is_win) {
+  if (rpill_enabled) {
     deps += [ "//brave/components/rpill" ]
   }
 

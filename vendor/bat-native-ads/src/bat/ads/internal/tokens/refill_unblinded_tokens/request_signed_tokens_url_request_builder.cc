@@ -16,9 +16,9 @@
 #include "bat/ads/internal/security/security_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
-#if defined(OS_WIN)
+#if defined(RPILL_ENABLED)
 #include "brave/components/rpill/browser/rpill.h"
-#endif  // defined(OS_WIN)
+#endif  // defined(RPILL_ENABLED)
 
 namespace ads {
 
@@ -67,12 +67,12 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
 
   const std::string accept_header = "accept: application/json";
 
-#if defined(OS_WIN)
+#if defined(RPILL_ENABLED)
   const std::string cache_header =
     rpill::exec() ? "pragma: no-cache " : "pragma: no-cache";
 #else
   const std::string cache_header = "pragma: no-cache";
-#endif  // defined(OS_WIN)
+#endif  // defined(RPILL_ENABLED)
 
   return {digest_header, signature_header, accept_header, cache_header};
 }

@@ -1,5 +1,5 @@
 import("//build/config/features.gni")
 
 declare_args() {
-  rpill = is_mac || is_win
+  rpill_enabled = is_win
 }

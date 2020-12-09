@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
 #define BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
 
-#include "brave/components/rpill/rust/ffi/src/rpill.h"
+#include <string>
 
 namespace rpill {
 

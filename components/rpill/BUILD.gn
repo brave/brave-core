@@ -1,8 +1,12 @@
 import("//brave/components/rpill/buildflags.gni")
-import("//build/config/features.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "RPILL_ENABLED=$rpill_enabled" ]
+}
 
 source_set("rpill") {
-  # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
   check_includes = false
   public_deps = []
 
@@ -11,5 +15,7 @@ source_set("rpill") {
     "browser/rpill.h",
   ]
 
-  deps = []
+  deps = [ 
+    "//base",
+  ]
 }
