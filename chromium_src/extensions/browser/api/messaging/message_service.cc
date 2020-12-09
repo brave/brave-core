@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "content/public/browser/browser_context.h"
 #include "extensions/common/manifest_handlers/incognito_info.h"
 
-#define IsSplitMode ForSplitModeCheck(browser_context_->IsTor())->IsSplitMode
-#include "../../../../../extensions/browser/events/lazy_event_dispatcher.cc"
+#define IsSplitMode ForSplitModeCheck(context->IsTor())->IsSplitMode
+#include "../../../../../../extensions/browser/api/messaging/message_service.cc"
 #undef IsSplitMode

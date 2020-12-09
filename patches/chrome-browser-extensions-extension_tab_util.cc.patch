@@ -1,17 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index aaac6830f2da4b5b58dc5a2bf9ffada09647e44a..55087e16a3443c55fde82f2d618896ad1022a98b 100644
+index 4260e615cf9bc4bcc0fbabfc8a5fb5b236b8bd0f..84559e23b05b1ca28e4cc1cdbee48fa798b5dced 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
-@@ -260,7 +260,7 @@ base::DictionaryValue* ExtensionTabUtil::OpenTab(ExtensionFunction* function,
-   // uses split mode. Special case to fall back to a tabbed window.
-   if (url.SchemeIs(kExtensionScheme) &&
-       (!function->extension() ||
--       !IncognitoInfo::IsSplitMode(function->extension())) &&
-+       !IncognitoInfo::IsSplitMode(function->extension(), browser->profile()->IsTor())) &&
-       browser->profile()->IsOffTheRecord()) {
-     Profile* profile = browser->profile()->GetOriginalProfile();
- 
-@@ -766,6 +766,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
+@@ -779,6 +779,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
    GURL fixed_url =
        url_formatter::FixupURL(url.possibly_invalid_spec(), std::string());
    if (!fixed_url.SchemeIs(content::kChromeUIScheme))
@@ -19,21 +10,12 @@ index aaac6830f2da4b5b58dc5a2bf9ffada09647e44a..55087e16a3443c55fde82f2d618896ad
      return false;
  
    base::StringPiece fixed_host = fixed_url.host_piece();
-@@ -865,7 +866,7 @@ bool ExtensionTabUtil::OpenOptionsPageFromAPI(
+@@ -878,7 +879,7 @@ bool ExtensionTabUtil::OpenOptionsPageFromAPI(
    // initiated the command via chrome.runtime.openOptionsPage. For a spanning
    // mode extension, this API could only be called from a regular profile, since
    // that's the only place it's running.
 -  DCHECK(!profile->IsOffTheRecord() || IncognitoInfo::IsSplitMode(extension));
-+  DCHECK(!profile->IsOffTheRecord() || IncognitoInfo::IsSplitMode(extension, profile->IsTor()));
++  DCHECK(!profile->IsOffTheRecord() || IncognitoInfo::IsSplitMode2(extension, profile->IsTor()));
    Browser* browser = chrome::FindBrowserWithProfile(profile);
    if (!browser)
      browser = Browser::Create(Browser::CreateParams(profile, true));
-@@ -885,7 +886,7 @@ bool ExtensionTabUtil::OpenOptionsPage(const Extension* extension,
-   // the action menu, since that's not initiated by the extension.
-   std::unique_ptr<chrome::ScopedTabbedBrowserDisplayer> displayer;
-   if (browser->profile()->IsOffTheRecord() &&
--      !IncognitoInfo::IsSplitMode(extension)) {
-+      !IncognitoInfo::IsSplitMode(extension, browser->profile()->IsTor())) {
-     displayer.reset(new chrome::ScopedTabbedBrowserDisplayer(
-         browser->profile()->GetOriginalProfile()));
-     browser = displayer->browser();
