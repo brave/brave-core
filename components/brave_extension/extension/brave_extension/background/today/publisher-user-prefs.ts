@@ -12,7 +12,6 @@ type Prefs = {
 }
 
 let storageLock: Promise<void> | null = null
-let cache: Prefs | undefined
 const publisherPrefsEvents = new Events()
 const eventNameChanged = 'publisher-prefs-changed'
 
@@ -21,9 +20,8 @@ chrome.settingsPrivate.onPrefsChanged.addListener((prefs) => {
   if (pref) {
     console.debug('today sources pref changed', pref.value)
     const prefValue = pref.value as Prefs
-    cache = prefValue
     setImmediate(() => {
-      publisherPrefsEvents.dispatchEvent(eventNameChanged, cache)
+      publisherPrefsEvents.dispatchEvent(eventNameChanged, prefValue)
     })
   }
 })
@@ -64,7 +62,6 @@ async function doWithLock<T> (todo: () => Promise<T>): Promise<T> {
 export async function getPrefs (): Promise<Prefs> {
   return doWithLock(async function () {
     const prefs = await getPrefsFromStore()
-    cache = prefs
     return prefs
   })
 }
@@ -78,6 +75,8 @@ export async function setPublisherPref (publisherId: string, enabled: boolean | 
       prefs[publisherId] = enabled
     }
     await setPrefsToStore(prefs)
+    // Update cache in case we request an update before
+    // we get a notification from the prefs change handler.
     return prefs
   })
 }
