@@ -19,7 +19,7 @@ import git_cl
 import git_common
 
 def HasFormatErrors():
-    print('Running git cl format and gn format')
+    print('Running git cl format and gn format...')
     # For more options, see vendor/depot_tools/git_cl.py
     cmd = ['cl', 'format', '--diff']
     diff = git_cl.RunGit(cmd)
@@ -51,6 +51,8 @@ def main(args):
   previous_cwd = os.getcwd()
   os.chdir(settings.GetRoot())
 
+  exit_code = 0
+
   # Check for clang/gn format errors.
   cl = git_cl.Changelist()
   try:
@@ -58,13 +60,16 @@ def main(args):
       upstream_branch = cl.GetUpstreamBranch()
       upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
       print('Format check failed against commit %s. Run npm format to fix.' % upstream_commit)
-      return 1
+      exit_code = 1
   except:
     e = sys.exc_info()[1]
     print('Error running format check: %s' % e.info)
-    return 1
-  print('Format check succeeded.')
+    exit_code = 1
 
+  if exit_code == 0:
+    print('Format check succeeded.')
+
+  print('Running lint...')
   try:
     files = cl.GetAffectedFiles(git_common.get_or_create_merge_base(cl.GetBranch(), options.base_branch))
     if not files:
@@ -96,7 +101,7 @@ def main(args):
   print('Total errors found: %d\n' % cpplint._cpplint_state.error_count)
   if cpplint._cpplint_state.error_count != 0:
     return 1
-  return 0
+  return exit_code
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
