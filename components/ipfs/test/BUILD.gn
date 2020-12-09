@@ -39,9 +39,9 @@ source_set("brave_ipfs_unit_tests") {
       "//testing/gtest",
       "//url",
     ]
-  if (enable_tor) {
-    deps += [ "//brave/browser/tor", ]
-  }
+    if (enable_tor) {
+      deps += [ "//brave/browser/tor" ]
+    }
   }  # if (ipfs_enabled)
 }  # source_set("brave_ipfs_unit_tests")
 

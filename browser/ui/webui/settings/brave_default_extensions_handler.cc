@@ -17,9 +17,9 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -48,11 +48,9 @@
 #endif
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
-  : weak_ptr_factory_(this) {
-}
+    : weak_ptr_factory_(this) {}
 
-BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {
-}
+BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -77,9 +75,8 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setMediaRouterEnabled",
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
-          base::Unretained(this)));
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
+                          base::Unretained(this)));
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -89,9 +86,8 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setTorEnabled",
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::SetTorEnabled,
-          base::Unretained(this)));
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetTorEnabled,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "isTorEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorEnabled,
@@ -148,8 +144,7 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
   CHECK_EQ(args->GetSize(), 1U);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0],
-                            base::Value(IsRestartNeeded()));
+  ResolveJavascriptCallback(args->GetList()[0], base::Value(IsRestartNeeded()));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
@@ -191,8 +186,8 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
   if (enabled) {
     extensions::ComponentLoader* loader = service->component_loader();
     if (!loader->Exists(hangouts_extension_id)) {
-      static_cast<extensions::BraveComponentLoader*>(loader)->
-          ForceAddHangoutServicesExtension();
+      static_cast<extensions::BraveComponentLoader*>(loader)
+          ->ForceAddHangoutServicesExtension();
     }
     service->EnableExtension(hangouts_extension_id);
   } else {
@@ -204,15 +199,15 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
 
 bool BraveDefaultExtensionsHandler::IsExtensionInstalled(
     const std::string& extension_id) const {
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(
-          static_cast<content::BrowserContext*>(profile_));
+  extensions::ExtensionRegistry* registry = extensions::ExtensionRegistry::Get(
+      static_cast<content::BrowserContext*>(profile_));
   return registry && registry->GetInstalledExtension(extension_id);
 }
 
 void BraveDefaultExtensionsHandler::OnInstallResult(
     const std::string& pref_name,
-    bool success, const std::string& error,
+    bool success,
+    const std::string& error,
     extensions::webstore_install::Result result) {
   if (result != extensions::webstore_install::Result::SUCCESS &&
       result != extensions::webstore_install::Result::LAUNCH_IN_PROGRESS) {
@@ -222,8 +217,8 @@ void BraveDefaultExtensionsHandler::OnInstallResult(
 
 void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
   if (IsJavascriptAllowed()) {
-    FireWebUIListener(
-        "brave-needs-restart-changed", base::Value(IsRestartNeeded()));
+    FireWebUIListener("brave-needs-restart-changed",
+                      base::Value(IsRestartNeeded()));
   }
 }
 
@@ -251,8 +246,7 @@ void BraveDefaultExtensionsHandler::SetTorEnabled(const base::ListValue* args) {
 #endif
 }
 
-void BraveDefaultExtensionsHandler::IsTorEnabled(
-    const base::ListValue* args) {
+void BraveDefaultExtensionsHandler::IsTorEnabled(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -266,23 +260,22 @@ void BraveDefaultExtensionsHandler::IsTorEnabled(
 
 void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
   if (IsJavascriptAllowed()) {
-    FireWebUIListener(
-        "tor-enabled-changed",
+    FireWebUIListener("tor-enabled-changed",
 #if BUILDFLAG(ENABLE_TOR)
-        base::Value(!TorProfileServiceFactory::IsTorDisabled()));
+                      base::Value(!TorProfileServiceFactory::IsTorDisabled()));
 #else
-        base::Value(false));
+                      base::Value(false));
 #endif
   }
 }
 
-void BraveDefaultExtensionsHandler::IsTorManaged(
-    const base::ListValue* args) {
+void BraveDefaultExtensionsHandler::IsTorManaged(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
 
 #if BUILDFLAG(ENABLE_TOR)
-  const bool is_managed = g_brave_browser_process->local_state()->
-      FindPreference(tor::prefs::kTorDisabled)->IsManaged();
+  const bool is_managed = g_brave_browser_process->local_state()
+                              ->FindPreference(tor::prefs::kTorDisabled)
+                              ->IsManaged();
 #else
   const bool is_managed = false;
 #endif
@@ -299,7 +292,7 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
   args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
-  extensions::ExtensionSystem::Get(profile_)->extension_service();
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
     if (!IsExtensionInstalled(ipfs_companion_extension_id)) {
       // Using FindLastActiveWithProfile() here will be fine. Of course, it can
@@ -309,8 +302,9 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
       scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
           new extensions::WebstoreInstallWithPrompt(
               ipfs_companion_extension_id, profile_,
-              chrome::FindLastActiveWithProfile(profile_)->window()->
-                  GetNativeWindow(),
+              chrome::FindLastActiveWithProfile(profile_)
+                  ->window()
+                  ->GetNativeWindow(),
               base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
                              weak_ptr_factory_.GetWeakPtr(),
                              kIPFSCompanionEnabled));
@@ -343,7 +337,7 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
   args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
-  extensions::ExtensionSystem::Get(profile_)->extension_service();
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
     service->EnableExtension(ethereum_remote_client_extension_id);
   } else {

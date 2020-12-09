@@ -115,8 +115,8 @@ GURL GetGatewayURL(const std::string& cid,
                    bool ipfs) {
   GURL uri(base_gateway_url);
   GURL::Replacements replacements;
-  std::string host = base::StringPrintf("%s.%s.%s",
-      cid.c_str(), ipfs? "ipfs" : "ipns", uri.host().c_str());
+  std::string host = base::StringPrintf(
+      "%s.%s.%s", cid.c_str(), ipfs ? "ipfs" : "ipns", uri.host().c_str());
   replacements.SetHostStr(host);
   replacements.SetPathStr(path);
   return uri.ReplaceComponents(replacements);
