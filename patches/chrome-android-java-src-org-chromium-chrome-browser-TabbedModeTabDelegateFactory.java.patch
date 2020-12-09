@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java
-index 8d2a47311ce2f686cc343fc16c775008bffe855a..c05e6c020335951b421dcfd4c3918415ffe6bf79 100644
+index 882fc599e5542cd97ae1c4a157aacf60e9ad0c4f..9934e0594254921ed3692dfbfed889b410f6aa0e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/TabbedModeTabDelegateFactory.java
 @@ -56,7 +56,7 @@ public class TabbedModeTabDelegateFactory implements TabDelegateFactory {

@@ -1,5 +1,5 @@
 diff --git a/build/toolchain/win/setup_toolchain.py b/build/toolchain/win/setup_toolchain.py
-index 58bf3e8caf4e0a0fdcba03c5b8bf72b30ea8f075..b504e562355cc2468a1c661a4daec983e68dfb6a 100644
+index 47309866ca790e6753d20cdd097cce9ee2b3f57b..99e676117f6f60ef06fb84162ecea7d0efdf614b 100644
 --- a/build/toolchain/win/setup_toolchain.py
 +++ b/build/toolchain/win/setup_toolchain.py
 @@ -277,6 +277,7 @@ def main():

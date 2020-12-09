@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/BUILD.gn b/chrome/installer/mac/BUILD.gn
-index 2e1d52fd96771467f303936e042a8fda21fbe725..9af235bb7bd3fe460d14b4584f8be5d7fb3d34b8 100644
+index b3fc448575b68fbde67a57040896f88fb77cf54c..7be27ac9fd258c15f14d8805b1b3fee2134374af 100644
 --- a/chrome/installer/mac/BUILD.gn
 +++ b/chrome/installer/mac/BUILD.gn
-@@ -14,6 +14,7 @@ group("mac") {
+@@ -18,6 +18,7 @@ group("mac") {
  }
  
  _packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"

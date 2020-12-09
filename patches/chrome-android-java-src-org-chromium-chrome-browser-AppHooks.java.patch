@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/AppHooks.java b/chrome/android/java/src/org/chromium/chrome/browser/AppHooks.java
-index 7463c1449dae81fc33d1518c4a95d71b16072a5b..283cb6c535f16e5914305565862a6c789f2711d2 100644
+index ed15b5d777ae94b92e8dc36e138416243cdc7d39..e342cb1a60367f67ee99661bc55fee5bd92da372 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/AppHooks.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/AppHooks.java
-@@ -77,7 +77,7 @@ public abstract class AppHooks {
+@@ -78,7 +78,7 @@ public abstract class AppHooks {
  
      @CalledByNative
      public static AppHooks get() {
