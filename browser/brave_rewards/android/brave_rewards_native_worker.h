@@ -253,8 +253,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                       const base::android::JavaParamRef<jobject>& obj);
     void OnStartProcess(brave_rewards::RewardsService* rewards_service,
                         const ledger::type::Result result);
-
-   private:
+ private:
     std::string StdStrStrMapToJsonString(
         const base::flat_map<std::string, std::string>& args);
 
