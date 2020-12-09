@@ -11,9 +11,11 @@
 #include "net/cookies/cookie_monster.h"
 #include "net/url_request/url_request.h"
 
+namespace net {
+
 namespace {
 
-bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
+bool CanUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
@@ -30,8 +32,29 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
 
 }  // namespace
 
+bool URLRequestHttpJob::CanSetCookieIncludingEphemeral(
+    const net::CanonicalCookie& cookie,
+    CookieOptions* options) {
+  return CanUseEphemeralStorage(this) ||
+         CanSetNonEphemeralCookie(cookie, options);
+}
+
+bool URLRequestHttpJob::CanGetNonEphemeralCookies() {
+  // We cannot call CanGetCookies without first checking the privacy mode.
+  return request_info_.privacy_mode == PRIVACY_MODE_DISABLED && CanGetCookies();
+}
+
+bool URLRequestHttpJob::CanSetNonEphemeralCookie(
+    const net::CanonicalCookie& cookie,
+    CookieOptions* options) {
+  return CanSetCookie(cookie, options);
+}
+
+}  // namespace net
+
 #define BRAVE_ADDCOOKIEHEADERANDSTART                                          \
-  if (ShouldUseEphemeralStorage(this))                                         \
+  if (!CanGetNonEphemeralCookies()) {                                          \
+    DCHECK(request()->isolation_info().top_frame_origin().has_value());        \
     static_cast<CookieMonster*>(cookie_store)                                  \
         ->GetEphemeralCookieListWithOptionsAsync(                              \
             request_->url(),                                                   \
@@ -40,8 +63,13 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
                            weak_factory_.GetWeakPtr(), options));              \
   else
 
+#define BRAVE_SETCOOKIEHEADERANDSTART                   \
+  if (!can_get_cookies && CanUseEphemeralStorage(this)) \
+    can_get_cookies = true;
+
 #define BRAVE_SAVECOOKIESANDNOTIFYHEADERSCOMPLETE                              \
-  if (ShouldUseEphemeralStorage(this))                                         \
+  if (!CanSetNonEphemeralCookie(*cookie, &options)) {                          \
+    DCHECK(request()->isolation_info().top_frame_origin().has_value());        \
     static_cast<CookieMonster*>(request_->context()->cookie_store())           \
         ->SetEphemeralCanonicalCookieAsync(                                    \
             std::move(cookie), request_->url(),                                \
@@ -51,4 +79,8 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
                            cookie_to_return, cookie_string));                  \
   else
 
+#define CanSetCookie CanSetCookieIncludingEphemeral
+
 #include "../../../../../net/url_request/url_request_http_job.cc"
+
+#undef CanSetCookies
