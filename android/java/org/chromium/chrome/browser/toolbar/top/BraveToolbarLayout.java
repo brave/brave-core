@@ -595,6 +595,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private boolean checkForRewardsOnboarding() {
     return PackageUtils.isFirstInstall(getContext())
            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
            && !OnboardingPrefManager.getInstance().isOnboardingShown();
   }
 
