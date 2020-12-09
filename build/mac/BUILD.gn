@@ -18,19 +18,55 @@ declare_args() {
   notary_asc_provider = chrome_mac_team_id
   notarize = false
   notarize_argument = "False"
-  root_app_path_prefix = ""
+  arch2_app_path_prefix = ""
 }
 
-root_app_path = "$root_out_dir/$root_app_path_prefix"
-unsigned_app_path = "$root_app_path/$brave_exe"
+unsigned_app_path = "$root_our_dir/$brave_exe"
 if (is_release_channel) {
-  signed_app_path = "$root_app_path/$mac_signing_output_prefix/stable/$brave_exe"
+  signed_app_path = "$root_out_dir/$mac_signing_output_prefix/stable/$brave_exe"
 } else {
-  signed_app_path = "$root_app_path/$mac_signing_output_prefix/$brave_channel/$brave_exe"
+  signed_app_path = "$root_out_dir/$mac_signing_output_prefix/$brave_channel/$brave_exe"
 }
 packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
 keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
+
+if (arch2_app_path_prefix != "") {
+  arch1_app_path = unsigned_app_path
+  arch2_app_path = "$root_out_dir/$arch2_app_path_prefix/$brave_exe"
+  unsigned_app_path = "$root_out_dir/universal/$brave_exe"
+
+  action("universalize") {
+    script = "//chrome/installer/mac/universalizer.py"
+
+    intputs = [
+      script,
+      arch1_app_path,
+      arch2_app_path,
+    ]
+
+    outputs = [
+      unsigned_app_path
+    ]
+
+    public_deps = [ ":fake_app" ]
+  }
+
+  # placeholder script to allow manual copying of binary into output dir
+  action("fake_app") {
+    script = "//build/gn_run_binary.py"
+    args = [ "true" ]
+
+    outputs = [
+      arch1_app_path,
+      arch2_app_path,
+    ]
+  }
+} else {
+  group("universalize") {
+    public_deps = [ "//chrome:chrome_app" ]
+  }
+}
 
 if (skip_signing) {
   app_path = unsigned_app_path
@@ -175,43 +211,23 @@ action("generate_eddsa_sig_for_delta") {
   ]
 }
 
-if (root_app_path_prefix != "") {
-  # placeholder script to allow manual copying of binary into output dir
-  action("fake_app") {
-    script = "//build/gn_run_binary.py"
-    args = [ "true" ]
-
-    outputs = [
-      unsigned_app_path
-    ]
-  }
-}
-
-group("app") {
-  public_deps = []
-  if (root_app_path_prefix != "") {
-    public_deps += [ ":fake_app" ]
-  } else {
-    public_deps += [ "//chrome:chrome_app" ]
-  }
-}
-
 group("finalize_app") {
   public_deps = [
     "//chrome/installer/mac",
   ]
   if (skip_signing) {
-    public_deps += [ ":app" ]
+    public_deps += [ ":universalize" ]
   } else {
     public_deps += [ ":sign_app" ]
   }
 }
+
 action("sign_app") {
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
 
   deps = [
-    ":app",
+    ":universalize",
     "//chrome/installer/mac",
     ":copies",
   ]
