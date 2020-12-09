@@ -8,15 +8,14 @@
  * 'change-ipfs-gateway-dialog' provides a dialog to configure the public
  * IPFS gateway address.
  */
-import '../settings_shared_css.m.js';
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
+import '../settings_shared_css.m.js';
 
-import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions_browser_proxy.m.js';
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
+import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions_browser_proxy.m.js';
 
 Polymer({
   is: 'change-ipfs-gateway-dialog',
@@ -32,13 +31,19 @@ Polymer({
      * IPFS public gateway address input by the user.
      * @private
      */
-    url_: String,
+    url_: {
+      type: String,
+      observer: 'urlChanged_'
+    },
+
+    isUrlValid_: Boolean,
+    isSumitButtonEnabled_: Boolean,
 
     /**
      * IPFS public gateway address to be configured which is validated already.
      * @private
      */
-    gateway_url_: String,
+    gatewayUrl_: String,
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -49,40 +54,35 @@ Polymer({
     this.browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance();
   },
 
-  /**
-   * Validates whether the url entered is valid.
-   * @private
-   */
-  validate_: function() {
-    // Disable the submit button if input url is empty.
-    if (this.$.url.value.trim() === '') {
-      this.$.url.invalid = false;
-      this.$.submit.disabled = true;
+  /** @private */
+  urlChanged_: function() {
+    // Disable the submit button if input url is empty but don't show the URL
+    // invalid error message.
+    if (this.url_.trim() == '') {
+      this.isUrlValid_ = true;
+      this.isSubmitButtonEnabled_ = false;
       return;
     }
 
     let url;
-
     try {
-      url = new URL(this.$.url.value.trim());
+      url = new URL(this.url_.trim());
     } catch (e) {
-      this.$.url.invalid = true;
-      this.$.submit.disabled = true;
+      this.isUrlValid_ = false;
+      this.isSubmitButtonEnabled_ = false;
       return;
     }
 
-    let invalid = url.protocol !== "http:" && url.protocol !== "https:";
-    this.$.url.invalid = invalid;
-    this.$.submit.disabled = invalid;
-
-    if (!invalid) {
-      this.gateway_url_ = url.toString();
+    let valid = url.protocol === "http:" || url.protocol === "https:";
+    this.isUrlValid_ = valid;
+    this.isSubmitButtonEnabled_ = valid;
+    if (valid) {
+      this.gatewayUrl_ = url.toString();
     }
   },
 
   handleSubmit_: function() {
-    this.browserProxy_.setIPFSPublicGateway(this.gateway_url_);
+    this.browserProxy_.setIPFSPublicGateway(this.gatewayUrl_);
     this.fire('close');
   },
-
 });

@@ -5,14 +5,14 @@
   <div slot="body">
     <cr-input id="url" label="$i18n{changeIpfsGatewayDialogLabel}"
         type="url" placeholder="https://dweb.link"
-        value="{{url_}}" on-input="validate_"
+        value="{{url_}}" invalid="[[!isUrlValid_]]"
         error-message="$i18n{ipfsErrorInvalidAddress}" spellcheck="false"
         autofocus>
     </cr-input>
   </div>
   <div slot="button-container">
     <cr-button class="action-button" id="submit" on-click="handleSubmit_"
-        disabled>
+        disabled="[[!isSubmitButtonEnabled_]]">
     Submit
     </cr-button>
   </div>
