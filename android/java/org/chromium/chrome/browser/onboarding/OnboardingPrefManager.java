@@ -69,7 +69,7 @@ public class OnboardingPrefManager {
     private static final String BING = "Bing";
     private static final String STARTPAGE = "Startpage";
     private static final String YAHOO = "Yahoo";
-    private static final String YANDEX = "Yandex";
+    public static final String YANDEX = "Yandex";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
