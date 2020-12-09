@@ -36,6 +36,7 @@
 #include "ios/chrome/browser/chrome_paths.h"
 #import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger.h"
 #include "ios/chrome/browser/crash_report/breadcrumbs/breadcrumb_manager.h"
+#include "ios/chrome/browser/crash_report/breadcrumbs/breadcrumb_persistent_storage_manager.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/ios_chrome_io_thread.h"
 #include "ios/chrome/browser/policy/browser_policy_connector_ios.h"
@@ -307,6 +308,12 @@ ApplicationContextImpl::GetNetworkConnectionTracker() {
 }
 
 BrowserPolicyConnectorIOS* ApplicationContextImpl::GetBrowserPolicyConnector() {
+  DCHECK(thread_checker_.CalledOnValidThread());
+  return nullptr;
+}
+
+BreadcrumbPersistentStorageManager*
+ApplicationContextImpl::GetBreadcrumbPersistentStorageManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   return nullptr;
 }

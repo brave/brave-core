@@ -1,5 +1,6 @@
 import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
+import("//tools/grit/grit_rule.gni")
 
 action("sign_app") {
   script = "//brave/build/android/sign_apk.py"

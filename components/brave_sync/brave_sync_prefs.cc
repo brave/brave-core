@@ -10,7 +10,7 @@
 #include "base/base64.h"
 #include "base/logging.h"
 #include "components/os_crypt/os_crypt.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -64,7 +64,7 @@ Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 Prefs::~Prefs() {}
 
 // static
-void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+void Prefs::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSyncV2Seed, std::string());
   registry->RegisterBooleanPref(kSyncV1Migrated, false);
   registry->RegisterBooleanPref(kSyncV1MetaInfoCleared, false);

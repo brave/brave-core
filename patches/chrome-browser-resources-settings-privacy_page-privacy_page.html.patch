@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 58c5fe913a850a6ea11bb72056814350f78fe17e..34d86995e5439f4ef817c2d6f8b97b2c1e5cd6cb 100644
+index 3fec124468af55207ba36d15dd81c6ff81179c65..cc807af537103feb502a9864e56c8dce22ae0247 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -11,6 +11,7 @@
+@@ -29,6 +29,7 @@
      <settings-animated-pages id="pages" section="privacy"
          focus-config="[[focusConfig_]]">
        <div route-path="default">
@@ -10,40 +10,42 @@ index 58c5fe913a850a6ea11bb72056814350f78fe17e..34d86995e5439f4ef817c2d6f8b97b2c
          <cr-link-row id="clearBrowsingData"
              class="hr" start-icon="cr:delete"
              label="$i18n{clearBrowsingData}"
-@@ -114,6 +115,7 @@
-           </category-setting-exceptions>
+@@ -144,6 +145,7 @@
+           </template>
          </settings-subpage>
        </template>
 +<if expr="_google_chrome">
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -146,6 +148,7 @@
-           </category-setting-exceptions>
+@@ -185,6 +187,7 @@
+           </template>
          </settings-subpage>
        </template>
 +</if>
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -323,11 +326,13 @@
-             </settings-category-default-radio-group>
+@@ -402,6 +405,7 @@
+             </category-setting-exceptions>
            </template>
            <template is="dom-if" if="[[!enableContentSettingsRedesign_]]">
 +<if expr="_google_chrome">
              <category-default-setting
                  toggle-off-label="$i18n{siteSettingsBlocked}"
                  toggle-on-label="$i18n{siteSettingsAllowedRecommended}"
-                 category="[[ContentSettingsTypes.JAVASCRIPT]]">
-             </category-default-setting>
+@@ -413,6 +417,7 @@
+                 allow-header="$i18n{siteSettingsAllow}"
+                 search-filter="[[searchFilter_]]">
+             </category-setting-exceptions>
 +</if>
            </template>
-           <category-setting-exceptions
-               category="[[ContentSettingsTypes.JAVASCRIPT]]"
-@@ -475,6 +480,19 @@
-           </category-setting-exceptions>
          </settings-subpage>
        </template>
+@@ -706,6 +711,19 @@
+           </settings-subpage>
+        </template>
+      </template>
 +      <template is="dom-if" route-path="/content/autoplay" no-search>
 +        <settings-subpage page-title="$i18n{siteSettingsCategoryAutoplay}">
 +          <category-default-setting
@@ -57,6 +59,6 @@ index 58c5fe913a850a6ea11bb72056814350f78fe17e..34d86995e5439f4ef817c2d6f8b97b2c
 +          </category-setting-exceptions>
 +        </settings-subpage>
 +      </template>
-       <template is="dom-if" route-path="/content/flash" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsFlash}"
+      <template is="dom-if" route-path="/content/unsandboxedPlugins" no-search>
+         <settings-subpage page-title="$i18n{siteSettingsUnsandboxedPlugins}"
              search-label="$i18n{siteSettingsAllSitesSearch}"

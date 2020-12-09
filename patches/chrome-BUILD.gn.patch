@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d689dbb98a 100644
+index a1f8f46f3055f412aff2a883b5e8ca3d609468cf..3ffae4dcc3fb330c75b80ede23b26721c31746c4 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -154,6 +154,10 @@ if (!is_android && !is_mac) {
+@@ -150,6 +150,10 @@ if (!is_android && !is_mac) {
          "common/crash_keys.cc",
          "common/crash_keys.h",
        ]
@@ -13,7 +13,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
  
        deps += [
          ":chrome_dll",
-@@ -419,11 +423,12 @@ if (is_win) {
+@@ -418,11 +422,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -27,7 +27,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -441,6 +446,7 @@ if (is_win) {
+@@ -440,6 +445,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -35,7 +35,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
  
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
-@@ -509,7 +515,7 @@ if (is_win) {
+@@ -508,7 +514,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -44,7 +44,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -578,6 +584,7 @@ if (is_win) {
+@@ -577,6 +583,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -52,7 +52,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
      }
    }
  
-@@ -610,9 +617,11 @@ if (is_win) {
+@@ -609,9 +616,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -64,7 +64,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -633,7 +642,7 @@ if (is_win) {
+@@ -632,7 +641,7 @@ if (is_win) {
  
        output_name = chrome_helper_name + invoker.helper_name_suffix
  
@@ -73,7 +73,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
        extra_substitutions = [
          "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
          "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1020,6 +1029,10 @@ if (is_win) {
+@@ -1019,6 +1028,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -84,7 +84,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1177,6 +1190,7 @@ if (is_win) {
+@@ -1176,6 +1189,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -92,7 +92,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/app:shutdown_signal_handlers",
-@@ -1277,12 +1291,13 @@ group("child_dependencies") {
+@@ -1276,12 +1290,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -107,7 +107,7 @@ index 7913e9c6bd0a275543b2183761134826aa14a5c8..8b0c06a7e59f72848c980a6157fd69d6
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1336,6 +1351,7 @@ group("resources") {
+@@ -1335,6 +1350,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",

@@ -19,8 +19,7 @@ class WebContents;
 // distilled.
 class SpeedreaderButton : public ToolbarButton {
  public:
-  explicit SpeedreaderButton(views::ButtonListener* listener,
-                             PrefService* prefs);
+  explicit SpeedreaderButton(PrefService* prefs);
   ~SpeedreaderButton() override;
 
   SpeedreaderButton(const SpeedreaderButton&) = delete;

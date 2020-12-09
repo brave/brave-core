@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 0ba1fe7fa3a0739d3111b0acd2b248e03a85289a..dbbdac358f1e82ae7428e258219c10ea0e51bbe7 100644
+index c5a005ab6122a83f5e45e7c0c5e1825851db2255..04a93775a990d9b7b26ca6922e15b42fc63b8466 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
-@@ -563,5 +563,8 @@ def sign_all(orig_paths,
+@@ -628,5 +628,8 @@ def sign_all(orig_paths,
                          uuids_to_package_path.keys(), config):
                      package_path = uuids_to_package_path[result]
                      notarize.staple(package_path)

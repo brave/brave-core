@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index e8f221291df750046915055b427b68dc72b468e6..1d695673499ad788ddbbaf359646329761175d7f 100644
+index 2b737b6877a0bc78869b073e00db772c64de3445..114f4b8a5f62f4f41eae39489adfbf1e81e4a49d 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
 @@ -34,7 +34,7 @@ Polymer({
@@ -11,7 +11,7 @@ index e8f221291df750046915055b427b68dc72b468e6..1d695673499ad788ddbbaf3596463297
      // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
      // (but handled differently in C++).
      /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -80,7 +80,7 @@ Polymer({
+@@ -77,7 +77,7 @@ Polymer({
    ready() {
      this.browserProxy_ = settings.PrivacyPageBrowserProxyImpl.getInstance();
  
@@ -20,7 +20,7 @@ index e8f221291df750046915055b427b68dc72b468e6..1d695673499ad788ddbbaf3596463297
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -111,7 +111,7 @@ Polymer({
+@@ -108,7 +108,7 @@ Polymer({
      return /** @type {?CrToggleElement} */ (this.$$('#driveSuggestControl'));
    },
  
@@ -29,7 +29,7 @@ index e8f221291df750046915055b427b68dc72b468e6..1d695673499ad788ddbbaf3596463297
    /** @private */
    onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -161,6 +161,7 @@ Polymer({
+@@ -158,6 +158,7 @@ Polymer({
    },
    // </if>
  
@@ -37,7 +37,7 @@ index e8f221291df750046915055b427b68dc72b468e6..1d695673499ad788ddbbaf3596463297
    /**
     * @return {boolean}
     * @private
-@@ -209,6 +210,7 @@ Polymer({
+@@ -206,6 +207,7 @@ Polymer({
      }
      this.showSignoutDialog_ = false;
    },

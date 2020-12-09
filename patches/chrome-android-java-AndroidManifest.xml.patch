@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6055de769 100644
+index 2948f6a58cafde782ca2a7860d352ed56cf3cd20..c1cad83439f8da614abbd8c69db13e88d8d6e0ab 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -38,7 +38,9 @@ by a child template that "extends" this file.
@@ -37,7 +37,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -105,7 +114,9 @@ by a child template that "extends" this file.
+@@ -107,7 +116,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -47,7 +47,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -158,6 +169,7 @@ by a child template that "extends" this file.
+@@ -160,6 +171,7 @@ by a child template that "extends" this file.
            org.chromium.chrome.browser.ChromeApplication
            {%- endif -%}
            {% endblock %}"
@@ -55,19 +55,19 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -209,6 +221,7 @@ by a child template that "extends" this file.
-         <!-- ARCore APK integration -->
-         <!-- This tag indicates that this application optionally uses ARCore. -->
-         <meta-data android:name="com.google.ar.core" android:value="optional" />
-+        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
-         {% endif %}
- 
-         <!-- Cast support -->
-@@ -1171,6 +1184,7 @@ by a child template that "extends" this file.
+@@ -1166,6 +1178,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
-         <!-- Media route controllers to use for remote playback (cast).
-              This is here, rather than in code, since it varies between upstream and downstream,
+         {% endblock %}
+       {% endmacro %}
+@@ -1248,6 +1261,7 @@ by a child template that "extends" this file.
+       <!-- ARCore APK integration -->
+       <!-- This tag indicates that this application optionally uses ARCore. -->
+       <meta-data android:name="com.google.ar.core" android:value="optional" />
++        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
+       {% endif %}
+ 
+       <!-- Cast support -->

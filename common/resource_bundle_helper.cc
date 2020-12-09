@@ -101,7 +101,6 @@ bool SubprocessNeedsResourceBundle() {
       // Mac needs them too for scrollbar related images and for sandbox
       // profiles.
       process_type == switches::kPpapiPluginProcess ||
-      process_type == switches::kPpapiBrokerProcess ||
       process_type == switches::kGpuProcess ||
 #endif  // defined(OS_MAC)
       process_type == switches::kRendererProcess ||

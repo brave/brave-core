@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 687b4c8fd4014f38d5d9e7113b5be46bfe8782c3..5ebcbd958c904353b275fd928f10572a9d3f8ada 100644
+index fe4ed640fa87e7fca3d2cdad77a17a610b00d1d0..7ef7602c4be7536b2926576bc5dd86304c088e37 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -444,6 +444,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -440,6 +440,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    }
    prefs_->ClearPref(kDeprecatedNativeFileSystemWriteGuardDefaultPref);
  #endif  // !defined(OS_ANDROID)

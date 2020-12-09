@@ -263,6 +263,12 @@
   <message name="IDS_SETTINGS_ADDRESS_REMOVE" desc="Label for a context menu item that removes the selected address." meaning="Remove selected address.">
     Remove
   </message>
+  <message name="IDS_SETTINGS_ADDRESS_REMOVE_CONFIRMATION_DESCRIPTION" desc="Description of confirmation phrase before remove address.">
+    Are you sure you want to remove this address?
+  </message>
+  <message name="IDS_SETTINGS_ADDRESS_REMOVE_CONFIRMATION_TITLE" desc="Address remove dialog confirmation title.">
+    Remove address
+  </message>
   <message name="IDS_SETTINGS_CREDIT_CARD_REMOVE" desc="Label for a context menu item that removes the selected credit card." meaning="Remove selected credit card.">
     Remove
   </message>
@@ -917,9 +923,6 @@
   <message name="IDS_SETTINGS_CLEAR_COOKIES" desc="Checkbox for deleting Cookies and other site data">
     Cookies and other site data
   </message>
-  <message name="IDS_SETTINGS_CLEAR_COOKIES_FLASH" desc="Checkbox for deleting Cookies and other site data">
-    Cookies and other site and plugin data
-  </message>
   <message name="IDS_SETTINGS_CLEAR_PASSWORDS" desc="Checkbox for deleting Passwords and other sign-in data">
     Passwords and other sign-in data
   </message>
@@ -1290,13 +1293,54 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review their extensions settings.">
     Review extensions
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
-    Device software
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_BUTTON_ARIA_LABEL" desc="Accessiblity text for the button that allows users to review and remove harmful software found on their computer.">
-    Review device software
-  </message>
-
+  <if expr="is_win and _google_chrome">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
+      Device software
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_BUTTON_ARIA_LABEL" desc="Accessiblity text for the button that allows users to review and remove harmful software found on their computer.">
+      Review device software
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITHOUT_TIMESTAMP" desc="This text describes that Brave can check if any known harmful software is installed on the user's computer.">
+      Brave can check your computer for harmful software
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_SECONDS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+      Brave didn't find known harmful software on your computer. Last checked: a moment ago.
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_MINUTES" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+      {NUM_MINS, plural,
+       =1 {Brave didn't find known harmful software on your computer. Last checked: 1 minute ago.}
+       other {Brave didn't find known harmful software on your computer. Last checked: {NUM_MINS} minutes ago.}}
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_HOURS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+      {NUM_HOURS, plural,
+       =1 {Brave didn't find known harmful software on your computer. Last checked: 1 hour ago.}
+       other {Brave didn't find known harmful software on your computer. Last checked: {NUM_HOURS} hours ago.}}
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_YESTERDAY" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+      Brave didn't find known harmful software on your computer. Last checked: yesterday.
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_DAYS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+      {NUM_DAYS, plural,
+       =1 {Brave didn't find known harmful software on your computer. Last checked: 1 day ago.}
+       other {Brave didn't find known harmful software on your computer. Last checked: {NUM_DAYS} days ago.}}
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_INFECTED" desc="This text describes that Brave found harmful software on the computer.">
+      Brave found harmful software on your computer
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_SCANNING" desc="This text describes that Brave is currently checking the user's device for unwanted software. This takes a couple of minutes.">
+      Brave is checking your computer for harmful software...
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_REMOVING" desc="This text describes that Brave is currently removing unwanted software frrom the user.s device. This takes a couple of minutes.">
+      Brave is removing harmful software from your computer...
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_DISABLED_BY_ADMIN" desc="This text describes that Brave can't check for unwanted software because an administrator disabled the feature.">
+      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has disabled Brave's check for harmful software
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_ERROR" desc="This text describes that Brave can't check for unwanted software due to an error.">
+      An error occurred while Brave was checking your computer for harmful software
+    </message>
+  </if>
+  
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
     Preload pages for faster browsing and searching
   </message>
@@ -1636,6 +1680,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEFAULT_BEHAVIOR_DESCRIPTION" desc="Description for the site settings default behavior.">
     Sites automatically follow this setting when you visit them
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS" desc="Label for the site settings exceptions.">
+    Customized behaviors
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_DESCRIPTION" desc="Description of the ads content setting.">
     Sites usually show ads so they can provide content or services for free. But, some sites are known to show intrusive or misleading ads.
   </message>
@@ -1644,6 +1691,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCKED" desc="Label for the disabled option of the ads content setting.">
     Block ads on sites that show intrusive or misleading ads (recommended)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the ads content setting.">
+    Allowed to show any ads
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the ads content setting.">
+    Not allowed to show intrusive or misleading ads
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AR_DESCRIPTION" desc="Description of the augmented reality content setting.">
     Sites usually track your camera position for AR features, like games or heads-up directions
@@ -1654,6 +1707,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AR_BLOCKED" desc="Label for the disabled option of the augmented reality content setting.">
     Block sites from tracking your camera position
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AR_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the augmented reality content setting.">
+    Allowed to track your camera position
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AR_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the augmented reality content setting.">
+    Not allowed to track your camera position
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_DESCRIPTION" desc="Description of the automatic downloads content setting.">
     Sites might automatically download related files together to save you time
   </message>
@@ -1663,6 +1722,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_BLOCKED" desc="Label for the disabled option of the automatic downloads content setting.">
     Block sites from automatically downloading multiple files
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the automatic downloads content setting.">
+    Allowed to automatically download multiple files
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the automatic downloads content setting.">
+    Not allowed to automatically download multiple files
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_DESCRIPTION" desc="Description of the background sync content setting.">
     After you leave or go offline, sites usually keep syncing to finish tasks, like uploading photos or sending a chat message
   </message>
@@ -1671,6 +1736,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCKED" desc="Label for the disabled option of the background sync content setting.">
     Block closed sites from sending and receiving data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the background sync content setting.">
+    Allowed to finish sending and receiving data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the background sync content setting.">
+    Not allowed to finish sending or receiving data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_DESCRIPTION" desc="Description of the camera content setting.">
     Sites usually use your video camera for communication features like video chatting
@@ -1684,6 +1755,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_BLOCKED_SUB_LABEL" desc="Sub-label for the disabled option of the camera content setting.">
     Features that need a camera won't work
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the camera content setting.">
+    Allowed to use your camera
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the camera content setting.">
+    Not allowed to use your camera
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_DESCRIPTION" desc="Description of the clipboard content setting.">
     Sites usually read your clipboard for features like keeping the formatting of text you copied
   </message>
@@ -1693,6 +1770,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_BLOCKED" desc="Label for the disabled option of the clipboard content setting.">
     Block sites from seeing text and images on your clipboard
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the clipboard content setting.">
+    Allowed to see your clipboard
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the clipboard content setting.">
+    Not allowed to see your clipboard
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
   </message>
@@ -1701,6 +1784,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_BLOCKED" desc="Label for the disabled option of the file system write content setting.">
     Block sites from editing files and folders on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the file system write content setting.">
+    Not allowed to edit files and folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_DESCRIPTION" desc="Description of the location content setting.">
     Sites usually use your location for relevant features or info, like local news or nearby shops
@@ -1714,6 +1800,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_BLOCKED_SUB_LABEL" desc="Sub-label for the disabled option of the location content setting.">
     Features that need your location won't work
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the location content setting.">
+    Allowed to see your location
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_BLOCKED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the blocked content setting.">
+    Not allowed to see your location
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_DESCRIPTION" desc="Description of the images content setting.">
     Sites usually show images to provide illustration, like photos for online stores or news articles
   </message>
@@ -1723,6 +1815,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED" desc="Label for the disabled option of the images content setting.">
     Block images
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the images content setting.">
+    Allowed to show images
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the images content setting.">
+    Not allowed to show images
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_DESCRIPTION" desc="Description of the Javascript content setting.">
     Sites usually use Javascript to display interactive features, like video games or web forms
   </message>
@@ -1731,6 +1829,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED" desc="Label for the disabled option of the Javascript content setting.">
     Block Javascript
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the Javascript content setting.">
+    Allowed to use Javascript
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the Javascript content setting.">
+    Not allowed to use Javascript
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_DESCRIPTION" desc="Description of the microphone content setting.">
     Sites usually use your microphone for communication features like video chatting
@@ -1744,6 +1848,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_BLOCKED_SUB_LABEL" desc="Sub-label for the disabled option of the microphone content setting.">
     Features that need a microphone won't work
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the microphone content setting.">
+    Allowed to use your microphone
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the microphone content setting.">
+    Not allowed to use your microphone
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DESCRIPTION" desc="Description of the MIDI devices content setting.">
     Sites usually connect to MIDI devices for features for creating and editing music
   </message>
@@ -1752,6 +1862,42 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_BLOCKED" desc="Label for the disabled option of the MIDI devices content setting.">
     Block sites from connecting to MIDI devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the MIDI devices content setting.">
+    Allowed to connect to MIDI devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the MIDI devices content setting.">
+    Not allowed to connect to MIDI devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the insecure content content setting.">
+    Allowed to show insecure content
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the insecure content content setting.">
+    Not allowed to show insecure content
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_DESCRIPTION" desc="Description of the notifications content setting.">
+    Sites usually send notifications to let you know about breaking news or chat messages
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_ALLOWED" desc="Label for the enabled option of the notifications content setting.">
+    Sites can ask to send notifications
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_PARTIAL" desc="Label for the partial option of the notifications content setting.">
+    Use quieter messaging (recommended)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_PARTIAL_SUB_LABEL" desc="Sub-label for the partial option of the notifications content setting.">
+    Sites can't interrupt you by asking to send notifications
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_BLOCKED" desc="Label for the blocked option of the notifications content setting.">
+    Block notifications
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_BLOCKED_SUB_LABEL" desc="Sub-label for the blocked option of the notifications content setting.">
+    Features that need notifications won't work
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the notifications content setting.">
+    Allowed to send notifications
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the notifications content setting.">
+    Not allowed to send notifications
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_DESCRIPTION" desc="Description of the payment handlers content setting.">
     Sites usually install payment handlers for shopping features like easier checkout
@@ -1762,14 +1908,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_BLOCKED" desc="Label for the disabled option of the payment handlers content setting.">
     Block payment handlers
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_DESCRIPTION" desc="Description of the Flash content setting.">
-    Sites usually use Flash to play audio, video, or video games. Flash Player will no longer be supported after December 2020.
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the payment handlers content setting.">
+    Allowed to install payment handlers
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_ALLOWED" desc="Label for the enabled option of the Flash content setting.">
-    Sites can ask to use Flash
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_BLOCKED" desc="Label for the disabled option of the Flash content setting.">
-    Block Flash (recommended)
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the payment handlers content setting.">
+    Not allowed to install payment handlers
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_DESCRIPTION" desc="Description of the pop-ups content setting.">
     Sites might send pop-ups to show ads, or use redirects to lead you to websites you may not want to visit
@@ -1780,6 +1923,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_BLOCKED" desc="Label for the disabled option of the pop-ups content setting.">
     Block pop-ups and redirects (recommended)
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the pop-ups content setting.">
+    Allowed to send pop-ups and use redirects
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the pop-ups content setting.">
+    Not allowed to send pop-ups or use redirects
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_DESCRIPTION" desc="Description of the protected content content setting.">
     When a site plays content protected by copyright, it might ask to recognize your device
   </message>
@@ -1788,6 +1937,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED" desc="Label for the disabled option of the protected content content setting.">
     Block protected content
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the protected content content setting.">
+    Allowed to play protected content
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the protected content content setting.">
+    Not allowed to play protected content
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_DESCRIPTION" desc="Description of the motion sensors content setting.">
     Sites usually use your device's motion sensors for features like virtual reality or step counting
@@ -1800,6 +1955,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the motion sensors content setting.">
     Features that need motion sensors won't work
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the motion sensors content setting.">
+    Allowed to use motion sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the motion sensors content setting.">
+    Not allowed to use motion sensors
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_DESCRIPTION" desc="Description of the serial ports content setting.">
     Sites usually connect to serial devices for data transfer features, like setting up your network
@@ -1819,6 +1980,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED" desc="Label for the disabled option of the sound content setting.">
     Mute sound
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the sound content setting.">
+    Allowed to play sound
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the sound content setting.">
+    Not allowed to play sound
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_DESCRIPTION" desc="Description of the unsandboxed plugins content setting.">
     Sites usually use plugins for features like streaming videos or installing apps
   </message>
@@ -1827,6 +1994,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_BLOCKED" desc="Label for the disabled option of the unsandboxed plugins content setting.">
     Block plugins from accessing your computer
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the unsandboxed plugins content setting.">
+    Allowed to use a plugin to access your computer
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the unsandboxed plugins content setting.">
+    Not allowed to use a plugin to access your computer
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DESCRIPTION" desc="Description of the USB devices content setting.">
     Sites usually connect to USB devices for features like printing a document or saving to a storage device
@@ -1845,6 +2018,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_VR_BLOCKED" desc="Label for the disabled option of the virtual reality content setting.">
     Block sites from using virtual reality devices and data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the virtual reality content setting.">
+    Allowed to use virtual reality devices and data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the virtual reality content setting.">
+    Not allowed to use virtual reality devices and data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ZOOM_LEVELS_DESCRIPTION" desc="Description of the zoom levels content setting.">
     You can set how much you zoom in or out on certain websites
@@ -1989,9 +2168,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT" desc="Label for the javascript site settings.">
     JavaScript
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH" desc="Label for the Flash site settings.">
-    Flash
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER" desc="Label for the payment handler site settings.">
     Payment Handlers
@@ -2196,21 +2372,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW_SITES_RECOMMENDED" desc="The 'allow cookies' label in site settings -- the recommended setting for when sites want to read/write cookie information.">
     Allow sites to save and read cookie data (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_BLOCK" desc="The 'block' label for Flash in site settings.">
-    Block sites from running Flash
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_BLOCK_RECOMMENDED" desc="The 'block' label for Flash in site settings -- the recommended setting due to impending deprecation.">
-    Block sites from running Flash (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_PERMISSIONS_ARE_EPHEMERAL" desc="The notice that Flash permissions are ephemeral, at the top of the Flash settings page.">
-    Your Flash settings will be kept until you quit Brave.
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_WILDCARD_UNSUPPORTED" desc="The warning message for users that tells wildcard patterns are no longer allowed in Flash">
-    Settings with "*" wildcards are no longer supported. Contact the extension developer or your administrator to <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>change these settings<ph name="END_LINK">&lt;/a&gt;</ph>.
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_WILDCARD_UNSUPPORTED_IN_POLICIES" desc="The warning message for users that tells wildcard patterns are no longer allowed in Flash. mail.google.com is allowed whereas [*.]google.com is not.">
-    Settings with "*" wildcards are no longer supported. Contact your administrator to <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>change these settings<ph name="END_LINK">&lt;/a&gt;</ph>.
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_RECENTLY_CLOSED_SITES" desc="The allow label for background sync in site settings.">
     Allow recently closed sites to finish sending and receiving data
   </message>
@@ -2293,7 +2454,7 @@
     Block sites from using fonts installed on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION" desc="Label for the idle detection site settings.">
-    User presence
+    Your presence
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_ASK" desc="The ask label for the idle detection site settings.">
     Ask when a site wants to know when you're present
@@ -2538,9 +2699,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_SEARCH" desc="A placeholder label shown inside the Cookie Data filter textbox as a hint that the user can enter a substring to search for.">
     Search cookies
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ADOBE_FLASH_SETTINGS" desc="The text for the link that points the user to the Adobe Flash Player Storage settings on the web">
-    Adobe Flash Player Storage settings
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLER_IS_DEFAULT" desc="A label showing that a certain handler for a given protocol is the default.">
     Default
@@ -2998,6 +3156,9 @@
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_LOGS_PERMISSION_PREF" desc="A checkbox label for the 'Report harmful software removal details' preference.">
       Report details to Brave about harmful software, system settings, and processes that were found on your computer during this cleanup
+    </message>
+    <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANTION_NOTIFICATION_PERMISSION" desc="A checkbox label for showing a notification dialog to users once the Brave scan for harmful software completed.">
+      Notify me when Brave has finished searching for harmful software
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_CLEANUP_UNAVAILABLE" desc="Title of error message that could appear before the cleanup of harmful software because Brave failed to contact the server. This message will only appear on Windows desktop/laptop computers.">
       Cleanup is currently unavailable

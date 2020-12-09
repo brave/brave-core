@@ -15,6 +15,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
 class PrefChangeRegistrar;
@@ -25,7 +26,7 @@ class BrowserContext;
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
-  explicit BraveContentBrowserClient(StartupData* startup_data = nullptr);
+  BraveContentBrowserClient();
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:
@@ -68,7 +69,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       URLLoaderFactoryType type,
       const url::Origin& request_initiator,
       base::Optional<int64_t> navigation_id,
-      base::UkmSourceId ukm_source_id,
+      ukm::SourceIdObj ukm_source_id,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
       mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
           header_client,

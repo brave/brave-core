@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-index 86ef4706aa58eacbc62b738169ef60ea69aa3bdb..be460d37eb15a43ca08689a9f4d20cac96fd320b 100644
+index b7752eedeba7baa1f1db12264fd8e05a5359c7f1..f8fe6482d9a8934f081b2a718fc7b16c1c37700c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-@@ -90,7 +90,7 @@ public class NativePageFactory {
+@@ -85,7 +85,7 @@ public class NativePageFactory {
              NativePageHost nativePageHost = new TabShim(tab, mActivity);
              if (tab.isIncognito()) return new IncognitoNewTabPage(mActivity, nativePageHost);
  

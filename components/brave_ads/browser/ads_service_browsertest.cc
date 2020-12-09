@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"

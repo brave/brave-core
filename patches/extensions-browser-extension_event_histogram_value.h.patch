@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 8459d9d4007e5e7a879a2888634c28ff3dc71bd7..761254387ba1e5966366484071abf058373f0861 100644
+index ca31381d93f539e83db07477c613a5be6eddc971..160ca277ae00441bfbfe7ddd2cd468a1a05ca011 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -483,6 +483,20 @@ enum HistogramValue {
-   WINDOWS_ON_BOUNDS_CHANGED = 461,
-   WALLPAPER_PRIVATE_ON_CLOSE_PREVIEW_WALLPAPER = 462,
+@@ -485,6 +485,20 @@ enum HistogramValue {
    PASSWORDS_PRIVATE_ON_WEAK_CREDENTIALS_CHANGED = 463,
+   ACCESSIBILITY_PRIVATE_ON_MAGNIFIER_BOUNDS_CHANGED = 464,
+   FILE_MANAGER_PRIVATE_ON_PIN_TRANSFERS_UPDATED = 465,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

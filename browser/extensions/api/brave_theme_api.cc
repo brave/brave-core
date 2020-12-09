@@ -19,14 +19,14 @@ namespace api {
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
   std::string json_string;
   base::JSONWriter::Write(dark_mode::GetBraveDarkModeTypeList(), &json_string);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(json_string)));
+  return RespondNow(OneArgument(base::Value(json_string)));
 }
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
   const std::string theme_type =
       dark_mode::GetStringFromBraveDarkModeType(
           dark_mode::GetActiveBraveDarkModeType());
-  return RespondNow(OneArgument(std::make_unique<base::Value>(theme_type)));
+  return RespondNow(OneArgument(base::Value(theme_type)));
 }
 
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {

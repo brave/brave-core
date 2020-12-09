@@ -55,7 +55,7 @@ BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
         new views::Link(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_IMPORT_LINK),
                         kBookmarkBarTextContext);
     // We don't want the link to alter tab navigation.
-    import_link_->set_callback(
+    import_link_->SetCallback(
         base::BindRepeating(&BookmarkBarInstructionsView::LinkClicked,
                             base::Unretained(this)));
     import_link_->SetFocusBehavior(FocusBehavior::NEVER);

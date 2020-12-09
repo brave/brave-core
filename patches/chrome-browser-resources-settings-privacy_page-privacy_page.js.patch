@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.js b/chrome/browser/resources/settings/privacy_page/privacy_page.js
-index 4618929810b8dac6684faef7ee144dc52c5af228..25185fa31c26b668f617dd8a492ec39adf1abaaf 100644
+index acd4ee38374999a3fa45fbaf855e4cd9e37662c6..26b92a2316783bfff4703fc989b3ea980fc6739e 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.js
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.js
 @@ -18,6 +18,7 @@ import '../site_settings/settings_category_default_radio_group.js';

@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Callback;
@@ -22,12 +23,17 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.Invalidator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManager;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
+import org.chromium.chrome.browser.intent.IntentMetadata;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.night_mode.NightModeStateProvider;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -48,7 +54,12 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.system.StatusBarColorController;
+import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
 
@@ -60,9 +71,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private AppThemeColorProvider mAppThemeColorProvider;
     private ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
     private ScrimCoordinator mScrimCoordinator;
-    private ChromeActivity mActivity;
     private Supplier<Boolean> mShowStartSurfaceSupplier;
-    private OneshotSupplier<OverviewModeBehavior> mOverviewModeBehaviorSupplier;
     private MenuButtonCoordinator mMenuButtonCoordinator;
     private ToolbarTabControllerImpl mToolbarTabController;
     private LocationBar mLocationBar;
@@ -70,14 +79,17 @@ public class BraveToolbarManager extends ToolbarManager {
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
     private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
-    private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
 
     private boolean mIsBottomToolbarVisible;
     private View mRootBottomView;
+    private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
+    private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
+    private HomepageManager.HomepageStateListener mBraveHomepageStateListener;
+    private AppCompatActivity mActivity;
 
-    public BraveToolbarManager(ChromeActivity activity, BrowserControlsSizer controlsSizer,
+    public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
-            Invalidator invalidator, Callback<Boolean> urlFocusChangedCallback,
+            CompositorViewHolder compositorViewHolder, Callback<Boolean> urlFocusChangedCallback,
             ThemeColorProvider themeColorProvider, TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             IdentityDiscController identityDiscController,
@@ -86,19 +98,40 @@ public class BraveToolbarManager extends ToolbarManager {
             FindToolbarManager findToolbarManager, ObservableSupplier<Profile> profileSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
             @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
-            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean shouldShowUpdateBadge,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
-        super(activity, controlsSizer, fullscreenManager, controlContainer, invalidator,
+            OneshotSupplier<StartSurface> startSurfaceSupplier,
+            ObservableSupplier<Boolean> omniboxFocusStateSupplier,
+            OneshotSupplier<IntentMetadata> intentMetadataOneshotSupplier,
+            OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
+            Supplier<Boolean> isInOverviewModeSupplier, boolean isCustomTab,
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            NightModeStateProvider nightModeStateProvider,
+            StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
+            ActivityLifecycleDispatcher activityLifecycleDispatcher) {
+        super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, themeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
                 scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
                 bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
-                overviewModeBehaviorSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
-                tabModelSelectorSupplier, omniboxFocusStateSupplier);
+                layoutStateProviderSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
+                tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
+                intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
+                isInOverviewModeSupplier, isCustomTab, modalDialogManagerSupplier,
+                nightModeStateProvider, statusBarColorController, appMenuDelegate,
+                activityLifecycleDispatcher);
+
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
+        mLayoutStateProviderSupplier = layoutStateProviderSupplier;
+        mActivity = activity;
+
+        mBraveHomepageStateListener = () -> {
+            assert (mBottomControlsCoordinator instanceof BraveBottomControlsCoordinator);
+            ((BraveBottomControlsCoordinator) mBottomControlsCoordinator).updateHomeButtonState();
+        };
+        HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
     }
 
     @Override
@@ -109,16 +142,19 @@ public class BraveToolbarManager extends ToolbarManager {
             return;
         }
         viewStub.setOnInflateListener((stub, inflated) -> { mRootBottomView = inflated; });
-        mBottomControlsCoordinator = new BraveBottomControlsCoordinator(
-                BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
-                        id -> mActivity.onOptionsItemSelected(id, null)),
-                mBrowserControlsSizer, mFullscreenManager, viewStub, mActivityTabProvider,
-                mAppThemeColorProvider, mShareDelegateSupplier,
-                mMenuButtonCoordinator.getMenuButtonHelperSupplier(), mShowStartSurfaceSupplier,
-                mToolbarTabController::openHomepage,
-                (reason)
-                        -> setUrlBarFocus(true, reason),
-                mOverviewModeBehaviorSupplier, mScrimCoordinator, mOmniboxFocusStateSupplier);
+        assert (mActivity instanceof ChromeActivity);
+        mBottomControlsCoordinator =
+                new BraveBottomControlsCoordinator(mLayoutStateProviderSupplier,
+                        BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
+                                id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
+                        mBrowserControlsSizer, mFullscreenManager,
+                        mActivity.findViewById(R.id.bottom_controls_stub), mActivityTabProvider,
+                        mAppThemeColorProvider, mShareDelegateSupplier,
+                        mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
+                        mShowStartSurfaceSupplier, mToolbarTabController::openHomepage,
+                        (reason)
+                                -> setUrlBarFocus(true, reason),
+                        mScrimCoordinator, mOmniboxFocusStateSupplier);
         ((BraveBottomControlsCoordinator) mBottomControlsCoordinator).setRootView(mRootBottomView);
         boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && mActivity.getResources().getConfiguration().orientation
@@ -148,6 +184,13 @@ public class BraveToolbarManager extends ToolbarManager {
             return new View(mActivity);
         }
         return super.getMenuButtonView();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+
+        HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
     }
 
     protected void onOrientationChange(int newOrientation) {

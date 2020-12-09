@@ -8,6 +8,10 @@
     </message>
   </if>
 
+  <message name="IDS_UTILITY_PROCESS_PRINT_BACKEND_SERVICE_NAME" desc="The name of the utility process used for backend interactions with printer drivers.">
+    Print Backend Service
+  </message>
+
   <message name="IDS_PRINT_INVALID_PRINTER_SETTINGS" desc="Message to display when selected printer is not reachable or its settings are invalid.">
     The selected printer is not available or not installed correctly. Check your printer or try selecting another printer.
   </message>
@@ -16,6 +20,9 @@
   <if expr="enable_print_preview">
     <message name="IDS_PRINT_PREVIEW_TITLE" desc="Fallback title for print preview page.">
       Print
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DESCRIPTION" desc="Accessibility text: title/description of the Print Preview dialog Web Contents, read by screenreaders.">
+      Print preview dialog
     </message>
     <message name="IDS_PRINT_PREVIEW_LOADING" desc="Message to display while the print preview is still loading.">
       Loading preview
@@ -298,6 +305,9 @@
       These settings are enforced by your administrator
     </message>
     <if expr="chromeos">
+      <message name="IDS_PRINT_PREVIEW_SERVER_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a print server search box when user has not entered a search query.">
+        Print servers
+      </message>
       <message name="IDS_PRINT_PREVIEW_OPTION_PIN" desc="Option to print with pin.">
         Enable user pin
       </message>

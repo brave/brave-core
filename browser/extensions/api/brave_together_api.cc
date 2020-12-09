@@ -26,8 +26,7 @@ BraveTogetherIsSupportedFunction::Run() {
 
   bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), brave_together::unsupported_regions, false);
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(is_supported)));
+  return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
 }  // namespace api

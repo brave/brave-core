@@ -21,7 +21,6 @@ namespace brave_ads {
 
 PaddedButton::PaddedButton(views::ButtonListener* listener)
     : views::ImageButton(listener) {
-  SetFocusForPlatform();
   SetBackground(views::CreateSolidBackground(kControlButtonBackgroundColor));
   SetBorder(views::CreateEmptyBorder(gfx::Insets(kControlButtonBorderSize)));
   SetAnimateOnStateChange(false);

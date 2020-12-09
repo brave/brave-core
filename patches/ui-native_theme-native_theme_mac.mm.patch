@@ -1,5 +1,5 @@
 diff --git a/ui/native_theme/native_theme_mac.mm b/ui/native_theme/native_theme_mac.mm
-index 2ec658c00505725ececeeba4d12942125516c39c..912e40df68fe0c69b77f3c3988d20a1cb48dc693 100644
+index 58226be7e1fe29d5cb63bd4a6999d0ab232c5622..4c27b1306c3d6de7ddf4552e3c0e13c5bdfaa352 100644
 --- a/ui/native_theme/native_theme_mac.mm
 +++ b/ui/native_theme/native_theme_mac.mm
 @@ -200,6 +200,7 @@ base::Optional<SkColor> NativeThemeMac::GetOSColor(

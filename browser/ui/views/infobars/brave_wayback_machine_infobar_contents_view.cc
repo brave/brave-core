@@ -77,16 +77,6 @@ void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
                                 : IDR_BRAVE_WAYBACK_INFOBAR));
 }
 
-void BraveWaybackMachineInfoBarContentsView::ButtonPressed(
-    views::Button* sender,
-    const ui::Event& event) {
-  if (wayback_url_fetch_requested_)
-    return;
-  wayback_url_fetch_requested_ = true;
-
-  FetchWaybackURL();
-}
-
 void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
     const GURL& latest_wayback_url) {
   DCHECK(wayback_url_fetch_requested_);
@@ -118,6 +108,14 @@ void BraveWaybackMachineInfoBarContentsView::HideInfobar() {
       break;
     }
   }
+}
+
+void BraveWaybackMachineInfoBarContentsView::ButtonPressed() {
+  if (wayback_url_fetch_requested_)
+    return;
+  wayback_url_fetch_requested_ = true;
+
+  FetchWaybackURL();
 }
 
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
@@ -178,7 +176,9 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                   0));
   AddChildView(label);
 
-  button_ = new BraveWaybackMachineInfoBarButtonContainer(this);
+  button_ = new BraveWaybackMachineInfoBarButtonContainer(base::BindRepeating(
+      &BraveWaybackMachineInfoBarContentsView::ButtonPressed,
+      base::Unretained(this)));
   views_visible_before_checking_.push_back(button_);
   button_->SetProperty(
       views::kMarginsKey,
