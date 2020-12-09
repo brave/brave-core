@@ -28,4 +28,5 @@ bool exec() {
          manmod.find("xen") != std::string::npos ||
          manmod.find("amazon") != std::string::npos;
 }
+
 }  // namespace rpill

@@ -9,7 +9,6 @@
 #include <string>
 
 namespace rpill {
-
 bool exec();
 }
 
