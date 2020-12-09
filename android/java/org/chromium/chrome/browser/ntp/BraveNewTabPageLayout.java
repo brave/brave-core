@@ -498,7 +498,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
                 }
             }
-            checkForNonDistruptiveBanner(ntpImage);
+            checkForNonDisruptiveBanner(ntpImage);
             super.onConfigurationChanged(newConfig);
             showNTPImage(ntpImage);
         } else {
@@ -603,10 +603,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         });
     }
 
-    private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
-        int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
+    private void checkForNonDisruptiveBanner(NTPImage ntpImage) {
+        int brOption = NTPUtil.checkForNonDisruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()) {
-            NTPUtil.showNonDistruptiveBanner((BraveActivity) mActivity, this, brOption,
+            NTPUtil.showNonDisruptiveBanner((BraveActivity) mActivity, this, brOption,
                                              sponsoredTab, newTabPageListener);
         }
     }
@@ -621,7 +621,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             }
         }
-        checkForNonDistruptiveBanner(ntpImage);
+        checkForNonDisruptiveBanner(ntpImage);
         showNTPImage(ntpImage);
     }
 

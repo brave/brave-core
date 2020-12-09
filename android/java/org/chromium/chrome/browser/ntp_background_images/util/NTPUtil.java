@@ -149,7 +149,7 @@ public class NTPUtil {
         }
     }
 
-    public static int checkForNonDistruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
+    public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         Context context = ContextUtils.getApplicationContext();
         if(sponsoredTab.shouldShowBanner()) {
             if(PackageUtils.isFirstInstall(context)
@@ -165,52 +165,52 @@ public class NTPUtil {
         return SponsoredImageUtil.BR_INVALID_OPTION;
     }
 
-    public static void showNonDistruptiveBanner(ChromeActivity chromeActivity, View view, int ntpType, SponsoredTab sponsoredTab, NewTabPageListener newTabPageListener) {
-        final ViewGroup nonDistruptiveBannerLayout = (ViewGroup) view.findViewById(R.id.non_distruptive_banner);
-        nonDistruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
+    public static void showNonDisruptiveBanner(ChromeActivity chromeActivity, View view, int ntpType, SponsoredTab sponsoredTab, NewTabPageListener newTabPageListener) {
+        final ViewGroup nonDisruptiveBannerLayout = (ViewGroup) view.findViewById(R.id.non_disruptive_banner);
+        nonDisruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                             Profile.getLastUsedRegularProfile())) {
-                    clickOnBottomBanner(chromeActivity, ntpType, nonDistruptiveBannerLayout,
+                    clickOnBottomBanner(chromeActivity, ntpType, nonDisruptiveBannerLayout,
                             sponsoredTab, newTabPageListener);
                 } else {
                     if (BraveActivity.getBraveActivity() != null) {
-                        nonDistruptiveBannerLayout.setVisibility(View.GONE);
+                        nonDisruptiveBannerLayout.setVisibility(View.GONE);
                         BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(true);
                         BraveActivity.getBraveActivity().openRewardsPanel();
                     }
                 }
             }
         });
-        nonDistruptiveBannerLayout.setVisibility(View.GONE);
+        nonDisruptiveBannerLayout.setVisibility(View.GONE);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_SHOW_NON_DISTRUPTIVE_BANNER, false);
+                BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_SHOW_NON_DISRUPTIVE_BANNER, false);
 
                 boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(chromeActivity);
                 if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(chromeActivity))) {
-                    FrameLayout.LayoutParams nonDistruptiveBannerLayoutParams = new FrameLayout.LayoutParams(dpToPx(chromeActivity, 400), FrameLayout.LayoutParams.WRAP_CONTENT);
-                    nonDistruptiveBannerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                    nonDistruptiveBannerLayout.setLayoutParams(nonDistruptiveBannerLayoutParams);
+                    FrameLayout.LayoutParams nonDisruptiveBannerLayoutParams = new FrameLayout.LayoutParams(dpToPx(chromeActivity, 400), FrameLayout.LayoutParams.WRAP_CONTENT);
+                    nonDisruptiveBannerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                    nonDisruptiveBannerLayout.setLayoutParams(nonDisruptiveBannerLayoutParams);
                 } else {
-                    FrameLayout.LayoutParams nonDistruptiveBannerLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                    nonDistruptiveBannerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                    nonDistruptiveBannerLayout.setLayoutParams(nonDistruptiveBannerLayoutParams);
+                    FrameLayout.LayoutParams nonDisruptiveBannerLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                    nonDisruptiveBannerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                    nonDisruptiveBannerLayout.setLayoutParams(nonDisruptiveBannerLayoutParams);
                 }
-                nonDistruptiveBannerLayout.setVisibility(View.VISIBLE);
+                nonDisruptiveBannerLayout.setVisibility(View.VISIBLE);
 
-                TextView bannerHeader = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_header);
-                TextView bannerText = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_text);
-                Button turnOnAdsButton = nonDistruptiveBannerLayout.findViewById(R.id.btn_turn_on_ads);
-                ImageView bannerClose = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_close);
+                TextView bannerHeader = nonDisruptiveBannerLayout.findViewById(R.id.ntp_banner_header);
+                TextView bannerText = nonDisruptiveBannerLayout.findViewById(R.id.ntp_banner_text);
+                Button turnOnAdsButton = nonDisruptiveBannerLayout.findViewById(R.id.btn_turn_on_ads);
+                ImageView bannerClose = nonDisruptiveBannerLayout.findViewById(R.id.ntp_banner_close);
                 bannerClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        nonDistruptiveBannerLayout.setVisibility(View.GONE);
+                        nonDisruptiveBannerLayout.setVisibility(View.GONE);
                         sponsoredTab.updateBannerPref();
                     }
                 });
@@ -219,7 +219,7 @@ public class NTPUtil {
                     @Override
                     public void onClick(View view) {
                         NTPUtil.turnOnAds();
-                        nonDistruptiveBannerLayout.setVisibility(View.GONE);
+                        nonDisruptiveBannerLayout.setVisibility(View.GONE);
 
                         sponsoredTab.updateBannerPref();
                     }
@@ -230,14 +230,14 @@ public class NTPUtil {
                     bannerText.setText(chromeActivity.getResources().getString(R.string.get_paid_to_see_image));
                     break;
                 case SponsoredImageUtil.BR_ON_ADS_OFF:
-                    bannerText.setText(getBannerText(chromeActivity, ntpType, nonDistruptiveBannerLayout, sponsoredTab, newTabPageListener));
+                    bannerText.setText(getBannerText(chromeActivity, ntpType, nonDisruptiveBannerLayout, sponsoredTab, newTabPageListener));
                     break;
                 case SponsoredImageUtil.BR_ON_ADS_OFF_BG_IMAGE:
                     bannerText.setText(chromeActivity.getResources().getString(R.string.you_can_support_creators));
                     turnOnAdsButton.setVisibility(View.VISIBLE);
                     break;
                 case SponsoredImageUtil.BR_ON_ADS_ON:
-                    bannerText.setText(getBannerText(chromeActivity, ntpType, nonDistruptiveBannerLayout, sponsoredTab, newTabPageListener));
+                    bannerText.setText(getBannerText(chromeActivity, ntpType, nonDisruptiveBannerLayout, sponsoredTab, newTabPageListener));
                     break;
                 }
             }
