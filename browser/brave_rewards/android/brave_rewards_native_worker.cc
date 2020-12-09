@@ -277,14 +277,13 @@ void BraveRewardsNativeWorker::StartProcess(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->StartProcess(
-        base::BindOnce(&BraveRewardsNativeWorker::OnStartProcess,
-                       base::Unretained(this), brave_rewards_service_));
+    brave_rewards_service_->StartProcess(base::Bind(
+          &BraveRewardsNativeWorker::OnStartProcess,
+          weak_factory_.GetWeakPtr()));
   }
 }
 
 void BraveRewardsNativeWorker::OnStartProcess(
-    brave_rewards::RewardsService* rewards_service,
     const ledger::type::Result result) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnStartProcess(
