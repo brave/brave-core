@@ -52,7 +52,7 @@ function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
     case 'together':
       return ['rewards', 'binance', 'together']
     default:
-      return ['together', 'binance', 'rewards']
+      return ['together', 'binance', 'rewards', 'cryptoWallets']
   }
 }
 
