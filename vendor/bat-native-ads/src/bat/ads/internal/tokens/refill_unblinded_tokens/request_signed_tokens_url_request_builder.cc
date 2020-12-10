@@ -18,7 +18,7 @@
 #include "brave/components/rpill/buildflags.h"
 
 #if BUILDFLAG(ENABLE_RPILL)
-#include "brave/components/rpill/browser/rpill.h"
+#include "brave/components/rpill/rpill.h"
 #endif  // BUILDFLAG(ENABLE_RPILL)
 
 namespace ads {
@@ -67,12 +67,13 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
       base::StringPrintf("signature: %s", signature_header_value.c_str());
 
   const std::string accept_header = "accept: application/json";
+  std::string cache_header = "content-type: application/json";
 
 #if BUILDFLAG(ENABLE_RPILL)
-  const std::string cache_header =
-      rpill::exec() ? "pragma: no-cache " : "pragma: no-cache";
-#else
-  const std::string cache_header = "pragma: no-cache";
+  if (rpill::validate_os_win()) {
+    std::string encoding = "; charset=utf-8";
+    cache_header += encoding;
+  }
 #endif  // BUILDFLAG(ENABLE_RPILL)
 
   return {digest_header, signature_header, accept_header, cache_header};

@@ -10,8 +10,8 @@ source_set("rpill") {
   public_deps = [ ":buildflags" ]
 
   sources = [
-    "browser/rpill.cc",
-    "browser/rpill.h",
+    "rpill.cc",
+    "rpill.h",
   ]
 
   deps = [ "//base" ]

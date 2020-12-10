@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
 
 namespace rpill {
-bool exec();
+bool validate_os_win();
 }
 
 #endif  // BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
