@@ -14,6 +14,7 @@
           brave::GetContentSettingsClientFor(context)) {                      \
     image_ = brave::BraveSessionCache::From(*context).PerturbPixels(settings, \
                                                                     image_);  \
+    DCHECK(image_);                                                           \
   }
 
 #include "../../../../../../../../third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc"
