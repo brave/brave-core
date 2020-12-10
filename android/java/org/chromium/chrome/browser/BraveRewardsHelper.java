@@ -54,6 +54,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             "next_rewards_onboarding_modal_date";
     private static final String PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL =
             "show_rewards_settings_onboarding_modal";
+    private static final String PREF_REWARDS_ENV_CHANGE = "rewards_env_change";
     private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
@@ -72,6 +73,17 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public static final int THANKYOU_STAY_DURATION = 2000; //ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
+
+    public static void setRewardsEnvChange(boolean isEnabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ENV_CHANGE, isEnabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean hasRewardsEnvChange() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_REWARDS_ENV_CHANGE, false);
+    }
 
     public static long getNextRewardsOnboardingModalDate() {
         return ContextUtils.getAppSharedPreferences().getLong(

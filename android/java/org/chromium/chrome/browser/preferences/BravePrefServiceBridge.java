@@ -131,6 +131,10 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setUseRewardsStagingServer(enabled);
     }
 
+    public void resetPromotionLastFetchStamp() {
+        BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
+    }
+
     public boolean getUseRewardsStagingServer() {
         return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
     }
@@ -227,6 +231,7 @@ public class BravePrefServiceBridge {
         void setSafetynetStatus(String status);
 
         void setUseRewardsStagingServer(boolean enabled);
+        void resetPromotionLastFetchStamp();
         boolean getUseRewardsStagingServer();
         boolean getBooleanForContentSetting(int content_type);
 

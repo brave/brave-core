@@ -220,6 +220,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        if (BraveRewardsHelper.hasRewardsEnvChange()) {
+            BravePrefServiceBridge.getInstance().resetPromotionLastFetchStamp();
+            BraveRewardsHelper.setRewardsEnvChange(false);
+        }
+
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
