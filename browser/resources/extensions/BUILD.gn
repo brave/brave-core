@@ -20,8 +20,8 @@ grit("resources") {
   defines = chrome_grit_defines
 
   enable_input_discovery_for_gn_analyze = false
-  defines += [ "SHARED_INTERMEDIATE_DIR=" +
-               rebase_path(root_gen_dir, root_build_dir) ]
+  defines +=
+      [ "SHARED_INTERMEDIATE_DIR=" + rebase_path(root_gen_dir, root_build_dir) ]
   extensions_gen_dir = "$root_gen_dir/brave/browser/resources/extensions"
   source = "$extensions_gen_dir/brave_extensions_resources.grd"
   deps = [ ":build_grd" ]
@@ -55,8 +55,10 @@ generate_grd("build_grd") {
 
 preprocess_grit("preprocess") {
   in_folder = "./"
-  out_folder = "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_folder"
-  out_manifest = "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_manifest"
+  out_folder =
+      "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_folder"
+  out_manifest =
+      "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_manifest"
   in_files = [
     "brave_overrides/extensions_detail_view.js",
     "brave_overrides/index.js",
@@ -66,7 +68,8 @@ preprocess_grit("preprocess") {
 preprocess_grit("preprocess_generated") {
   deps = [ ":brave_item_list_more_items_module" ]
   in_folder = target_gen_dir
-  out_folder = "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_folder"
+  out_folder =
+      "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_folder"
   out_manifest = "$root_gen_dir/chrome/browser/resources/extensions/$preprocess_gen_manifest"
   in_files = [ "brave_item_list_more_items.js" ]
 }
