@@ -15,7 +15,7 @@ bool ExtensionPrefs::IsTorEnabled(const std::string& extension_id) const {
 }
 
 void ExtensionPrefs::SetIsTorEnabled(const std::string& extension_id,
-                                           bool enabled) {
+                                     bool enabled) {
   UpdateExtensionPref(extension_id, kPrefTorEnabled,
                       std::make_unique<base::Value>(enabled));
 }

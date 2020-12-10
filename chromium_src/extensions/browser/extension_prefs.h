@@ -10,7 +10,7 @@
   IsTorEnabled(const std::string& extension_id) const; \
   bool IsIncognitoEnabled
 
-#define SetIsIncognitoEnabled                                      \
+#define SetIsIncognitoEnabled                                     \
   SetIsTorEnabled(const std::string& extension_id, bool enabled); \
   void SetIsIncognitoEnabled
 
