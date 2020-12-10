@@ -54,6 +54,6 @@ public class SponsoredTab {
     }
 
     public void updateBannerPref() {
-        mShouldShowBanner = ContextUtils.getAppSharedPreferences().getBoolean(BackgroundImagesPreferences.PREF_SHOW_NON_DISTRUPTIVE_BANNER, true);
+        mShouldShowBanner = ContextUtils.getAppSharedPreferences().getBoolean(BackgroundImagesPreferences.PREF_SHOW_NON_DISRUPTIVE_BANNER, true);
     }
 }
