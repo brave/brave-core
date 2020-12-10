@@ -60,6 +60,7 @@ interface Props {
   saveShowCryptoDotCom: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   onReadBraveTodayIntroCard: () => any
+  saveSetAllStackWidgets: (value: boolean) => void
 }
 
 interface State {
@@ -722,11 +723,36 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleAllCards = (show: boolean) => {
-    this.props.saveShowTogether(show)
-    this.props.saveShowRewards(show)
-    this.props.saveShowBinance(show)
-    this.props.saveShowGemini(show)
-    this.props.saveShowCryptoDotCom(show)
+    if (!show) {
+      this.props.actions.saveWidgetStackOrder()
+      this.props.saveSetAllStackWidgets(false)
+      return
+    }
+
+    const saveShowProps = {
+      'binance': this.props.saveShowBinance,
+      'cryptoDotCom': this.props.saveShowCryptoDotCom,
+      'gemini': this.props.saveShowGemini,
+      'rewards': this.props.saveShowRewards,
+      'together': this.props.saveShowTogether
+    }
+
+    const setAllTrue = (list: NewTab.StackWidget[]) => {
+      list.forEach((widget: NewTab.StackWidget) => {
+        if (widget in saveShowProps) {
+          saveShowProps[widget](true)
+        }
+      })
+    }
+
+    const { savedWidgetStackOrder, widgetStackOrder } = this.props.newTabData
+    // When turning back on, all widgets should be set to shown
+    // in the case that all widgets were hidden previously.
+    setAllTrue(
+      !savedWidgetStackOrder.length ?
+      widgetStackOrder :
+      savedWidgetStackOrder
+    )
   }
 
   renderCryptoContent () {

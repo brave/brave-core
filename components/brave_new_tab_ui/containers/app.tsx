@@ -57,6 +57,7 @@ function DefaultPage (props: Props) {
         saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
         saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
+        saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
       />
     )
 }
