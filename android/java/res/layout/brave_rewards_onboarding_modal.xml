@@ -5,7 +5,8 @@
 <androidx.cardview.widget.CardView
 	xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:id="@+id/brave_rewards_onboarding_modal_layout"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:gravity="center"
@@ -22,7 +23,9 @@
 
 	    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical">
 
 	    <LinearLayout
 	        android:layout_width="match_parent"
