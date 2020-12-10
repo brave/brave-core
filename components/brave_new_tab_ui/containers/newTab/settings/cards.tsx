@@ -179,7 +179,8 @@ class CardsSettings extends React.PureComponent<Props, {}> {
                   {'FTX'}
                 </StyledSettingsTitle>
                 <StyledSettingsCopy>
-                  {getLocale('ftxWidgetDesc')}
+                  {/* TODO(jlamont): localize */}
+                  FTX widget description...
                 </StyledSettingsCopy>
               </StyledSettingsInfo>
               {this.renderToggleButton(showFTX, toggleShowFTX, false)}
