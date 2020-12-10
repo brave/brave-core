@@ -208,6 +208,7 @@ program
 
 program
   .command('format')
+  .option('--full', 'format all lines in changed files instead of only the changed lines')
   .action(util.format)
 
 program

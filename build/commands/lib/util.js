@@ -512,7 +512,7 @@ const util = {
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
     cmd_options = mergeWithDefault(cmd_options)
-    util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'format.py')], cmd_options)
+    util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'format.py'), options.full ? '--full' : ''], cmd_options)
   },
 
 

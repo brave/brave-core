@@ -18,8 +18,8 @@ import re
 import git_cl
 import git_common
 
-def HasFormatErrors():
-    print('Running git cl format and gn format...')
+def HasFormatErrors(base_commit):
+    print('Running git cl format and gn format on the diff from %s...' % base_commit)
     # For more options, see vendor/depot_tools/git_cl.py
     cmd = ['cl', 'format', '--diff']
     diff = git_cl.RunGit(cmd)
@@ -55,11 +55,11 @@ def main(args):
 
   # Check for clang/gn format errors.
   cl = git_cl.Changelist()
+  upstream_branch = cl.GetUpstreamBranch()
+  upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
   try:
-    if HasFormatErrors():
-      upstream_branch = cl.GetUpstreamBranch()
-      upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
-      print('Format check failed against commit %s. Run npm format to fix.' % upstream_commit)
+    if HasFormatErrors(upstream_commit):
+      print('Format check failed. Run npm format to fix.')
       exit_code = 1
   except:
     e = sys.exc_info()[1]
@@ -69,7 +69,7 @@ def main(args):
   if exit_code == 0:
     print('Format check succeeded.')
 
-  print('Running lint...')
+  print('Running cpplint...')
   try:
     files = cl.GetAffectedFiles(git_common.get_or_create_merge_base(cl.GetBranch(), options.base_branch))
     if not files:
@@ -98,7 +98,7 @@ def main(args):
         print('Skipping file %s' % filename)
   finally:
     os.chdir(previous_cwd)
-  print('Total errors found: %d\n' % cpplint._cpplint_state.error_count)
+  print('cpplint errors found: %d\n' % cpplint._cpplint_state.error_count)
   if cpplint._cpplint_state.error_count != 0:
     return 1
   return exit_code
