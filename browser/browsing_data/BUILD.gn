@@ -8,8 +8,6 @@ source_set("browsing_data") {
     "brave_browsing_data_remover_delegate.h",
     "brave_clear_browsing_data.cc",
     "brave_clear_browsing_data.h",
-    "counters/brave_site_settings_counter.cc",
-    "counters/brave_site_settings_counter.h",
   ]
 
   deps = [
