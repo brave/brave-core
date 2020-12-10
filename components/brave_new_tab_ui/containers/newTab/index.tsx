@@ -17,6 +17,7 @@ import {
   BinanceWidget as Binance,
   GeminiWidget as Gemini,
   CryptoDotComWidget as CryptoDotCom,
+  CryptoWalletsWidget as CryptoWallets,
   EditCards
 } from '../../components/default'
 import * as Page from '../../components/default/page'
@@ -270,6 +271,8 @@ class NewTabPage extends React.Component<Props, State> {
   toggleShowCryptoDotCom = () => {
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
   }
+
+  toggleShowCryptoWallets = () => { /* no-op */ }
 
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
@@ -675,6 +678,10 @@ class NewTabPage extends React.Component<Props, State> {
       'cryptoDotCom': {
         display: showCryptoDotCom && cryptoDotComSupported,
         render: this.renderCryptoDotComWidget.bind(this)
+      },
+      'cryptoWallets': {
+        display: true,
+        render: this.renderCryptoWalletsWidget.bind(this)
       }
     }
 
@@ -905,6 +912,29 @@ class NewTabPage extends React.Component<Props, State> {
         onCancelDisconnect={this.cancelGeminiDisconnect}
         onDisconnectGemini={this.disconnectGemini}
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
+      />
+    )
+  }
+
+  renderCryptoWalletsWidget (showContent: boolean, position: number) {
+    const { newTabData } = this.props
+    const { textDirection } = newTabData
+
+    return (
+      <CryptoWallets
+        isCrypto={true}
+        paddingType={'none'}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        hideMenu={true}
+        widgetTitle={'Crypto.com'}
+        isForeground={showContent}
+        stackPosition={position}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowCryptoWallets}
+        showContent={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'cryptoDotCom')}
       />
     )
   }
