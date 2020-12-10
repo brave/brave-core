@@ -67,16 +67,16 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
       base::StringPrintf("signature: %s", signature_header_value.c_str());
 
   const std::string accept_header = "accept: application/json";
-  std::string cache_header = "content-type: application/json";
+  std::string encoding_header = "content-type: application/json";
 
 #if BUILDFLAG(ENABLE_RPILL)
   if (rpill::validate_os_win()) {
     std::string encoding = "; charset=utf-8";
-    cache_header += encoding;
+    encoding_header += encoding;
   }
 #endif  // BUILDFLAG(ENABLE_RPILL)
 
-  return {digest_header, signature_header, accept_header, cache_header};
+  return {digest_header, signature_header, accept_header, encoding_header};
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildDigestHeaderValue(

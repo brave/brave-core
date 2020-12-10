@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
-#define BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
+#ifndef BRAVE_COMPONENTS_RPILL_RPILL_H_
+#define BRAVE_COMPONENTS_RPILL_RPILL_H_
 
 namespace rpill {
 bool validate_os_win();
 }
 
-#endif  // BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
+#endif  // BRAVE_COMPONENTS_RPILL_RPILL_H_
