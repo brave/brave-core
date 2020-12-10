@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/developer_private/developer_private_api.cc b/chrome/browser/extensions/api/developer_private/developer_private_api.cc
-index f6aa62ef25246bca0ab4e5eca1319a712e671692..636945bf0f24cb21d83b00738bc9f96c38bcc428 100644
+index 74e88bc6cfd786faee416e355150931001ec982d..4be553b5e4c0c2685de81b780bfc100e0998b0ba 100644
 --- a/chrome/browser/extensions/api/developer_private/developer_private_api.cc
 +++ b/chrome/browser/extensions/api/developer_private/developer_private_api.cc
-@@ -914,6 +914,7 @@ DeveloperPrivateUpdateExtensionConfigurationFunction::Run() {
+@@ -916,6 +916,7 @@ DeveloperPrivateUpdateExtensionConfigurationFunction::Run() {
      util::SetIsIncognitoEnabled(
          extension->id(), browser_context(), *update.incognito_access);
    }
