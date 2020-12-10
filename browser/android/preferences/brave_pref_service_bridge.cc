@@ -228,6 +228,11 @@ void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(
       brave_rewards::prefs::kUseRewardsStagingServer, enabled);
 }
 
+void JNI_BravePrefServiceBridge_ResetPromotionLastFetchStamp(JNIEnv* env) {
+  GetOriginalProfile()->GetPrefs()->SetUint64(
+      brave_rewards::prefs::kPromotionLastFetchStamp, 0);
+}
+
 jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kUseRewardsStagingServer);

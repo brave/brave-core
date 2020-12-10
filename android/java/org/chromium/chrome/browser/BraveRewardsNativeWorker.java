@@ -421,6 +421,19 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void StartProcess() {
+        synchronized (lock) {
+            nativeStartProcess(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    @CalledByNative
+    public void OnStartProcess() {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnStartProcess();
+        }
+    }
+
     @CalledByNative
     public void OnRefreshPublisher(int status, String publisherKey) {
         for (BraveRewardsObserver observer : mObservers) {
@@ -617,4 +630,5 @@ public class BraveRewardsNativeWorker {
     private native void nativeGetRewardsParameters(long nativeBraveRewardsNativeWorker);
     private native void nativeSetAutoContributeEnabled(long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
     private native void nativeSetAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
+    private native void nativeStartProcess(long nativeBraveRewardsNativeWorker);
 }

@@ -793,7 +793,7 @@ brave_java_resources = [
   "java/res/layout/new_tab_page_incognito.xml",
   "java/res/layout/new_tab_page_layout.xml",
   "java/res/layout/ntp_bottom_sheet.xml",
-  "java/res/layout/ntp_non_distruptive_banner.xml",
+  "java/res/layout/ntp_non_disruptive_banner.xml",
   "java/res/layout/ntp_widget_list_item_layout.xml",
   "java/res/layout/qa_code_check.xml",
   "java/res/layout/qa_command_line.xml",

@@ -42,6 +42,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveSyncReflectionUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
@@ -104,8 +106,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
     public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
     public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
+    public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
+    public static final String BRAVE_TERMS_PAGE =
+            "https://basicattentiontoken.org/user-terms-of-service/";
+    public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/#rewards";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String OPEN_URL = "open_url";
 
@@ -228,6 +234,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        if (BraveRewardsHelper.hasRewardsEnvChange()) {
+            BravePrefServiceBridge.getInstance().resetPromotionLastFetchStamp();
+            BraveRewardsHelper.setRewardsEnvChange(false);
+        }
+
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
@@ -254,27 +265,31 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
 
-        if (PackageUtils.isFirstInstall(this)
-                && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_4);
-            OnboardingPrefManager.getInstance().setNextOnboardingDate(
-                calender.getTimeInMillis());
-        }
+        // TODO commenting out below code as we may use it in next release
 
-        OnboardingActivity onboardingActivity = null;
-        for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof OnboardingActivity)) continue;
+        // if (PackageUtils.isFirstInstall(this)
+        //         &&
+        //         SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+        //         == 1) {
+        //     Calendar calender = Calendar.getInstance();
+        //     calender.setTime(new Date());
+        //     calender.add(Calendar.DATE, DAYS_4);
+        //     OnboardingPrefManager.getInstance().setNextOnboardingDate(
+        //         calender.getTimeInMillis());
+        // }
 
-            onboardingActivity = (OnboardingActivity) ref;
-        }
+        // OnboardingActivity onboardingActivity = null;
+        // for (Activity ref : ApplicationStatus.getRunningActivities()) {
+        //     if (!(ref instanceof OnboardingActivity)) continue;
 
-        if (onboardingActivity == null
-                && OnboardingPrefManager.getInstance().showOnboardingForSkip(this)) {
-            OnboardingPrefManager.getInstance().showOnboarding(this);
-            OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
-        }
+        //     onboardingActivity = (OnboardingActivity) ref;
+        // }
+
+        // if (onboardingActivity == null
+        //         && OnboardingPrefManager.getInstance().showOnboardingForSkip(this)) {
+        //     OnboardingPrefManager.getInstance().showOnboarding(this);
+        //     OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
+        // }
 
         if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
@@ -327,6 +342,21 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             } catch (JSONException e) {
                 Log.e("NTP", e.getMessage());
             }
+        }
+
+        if (PackageUtils.isFirstInstall(this)
+                && SharedPreferencesManager.getInstance().readInt(
+                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                        == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_4);
+            BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
+        }
+        if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(true);
+            openRewardsPanel();
+            BraveRewardsHelper.setRewardsOnboardingModalShown(true);
         }
     }
 

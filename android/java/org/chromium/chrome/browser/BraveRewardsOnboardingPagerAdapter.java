@@ -6,18 +6,21 @@
 package org.chromium.chrome.browser;
 
 import android.content.Context;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -108,7 +111,10 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                     } else if (checkedId == R.id.hour_5_radio) {
                         hour = 5;
                     }
-                    BraveRewardsNativeWorker.getInstance().SetAdsPerHour(hour);
+                    if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                Profile.getLastUsedRegularProfile())) {
+                        BraveRewardsNativeWorker.getInstance().SetAdsPerHour(hour);
+                    }
                 }
             });
 
@@ -128,7 +134,10 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                     } else if (checkedId == R.id.contribute_50_radio) {
                         contribute = 50;
                     }
-                    BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(contribute);
+                    if (BraveRewardsNativeWorker.getInstance().IsAutoContributeEnabled()) {
+                        BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(
+                                contribute);
+                    }
                 }
             });
         } else {
