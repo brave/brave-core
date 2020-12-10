@@ -21,7 +21,11 @@ declare_args() {
 }
 
 if (!skip_signing) {
-  target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
+  if (is_release_channel) {
+    target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/stable/$brave_exe"
+  } else {
+    target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/$brave_channel/$brave_exe"
+  }
   packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
   keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
   unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
