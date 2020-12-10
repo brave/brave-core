@@ -1,5 +1,6 @@
+import("//brave/build/config.gni")
 import("//build/config/features.gni")
 
 declare_args() {
-  rpill_enabled = is_win
+  enable_rpill = is_win
 }

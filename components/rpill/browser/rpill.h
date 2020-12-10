@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
 #define BRAVE_COMPONENTS_RPILL_BROWSER_RPILL_H_
 
-#include <string>
-
 namespace rpill {
 bool exec();
 }

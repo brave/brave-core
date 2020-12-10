@@ -15,10 +15,11 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/security_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
+#include "brave/components/rpill/buildflags.h"
 
-#if defined(RPILL_ENABLED)
+#if BUILDFLAG(ENABLE_RPILL)
 #include "brave/components/rpill/browser/rpill.h"
-#endif  // defined(RPILL_ENABLED)
+#endif  // BUILDFLAG(ENABLE_RPILL)
 
 namespace ads {
 
@@ -67,12 +68,12 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
 
   const std::string accept_header = "accept: application/json";
 
-#if defined(RPILL_ENABLED)
+#if BUILDFLAG(ENABLE_RPILL)
   const std::string cache_header =
       rpill::exec() ? "pragma: no-cache " : "pragma: no-cache";
 #else
   const std::string cache_header = "pragma: no-cache";
-#endif  // defined(RPILL_ENABLED)
+#endif  // BUILDFLAG(ENABLE_RPILL)
 
   return {digest_header, signature_header, accept_header, cache_header};
 }

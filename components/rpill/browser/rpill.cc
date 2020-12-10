@@ -2,19 +2,15 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include <locale>
 #include <string>
-
-#include "brave/components/rpill/browser/rpill.h"
 
 #include "base/strings/string_util.h"
 #include "base/win/wmi.h"
-#include "content/public/browser/browser_thread.h"
+#include "brave/components/rpill/browser/rpill.h"
 
 namespace rpill {
 
 bool exec() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   base::win::WmiComputerSystemInfo info =
       base::win::WmiComputerSystemInfo::Get();
   auto m = info.manufacturer();
