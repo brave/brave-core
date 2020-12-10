@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/rpill/rpill.h"
 #include "base/strings/string_util.h"
 #include "base/win/wmi.h"
-#include "brave/components/rpill/rpill.h"
 
 namespace rpill {
 
