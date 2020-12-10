@@ -187,7 +187,7 @@
       </cr-link-row>
     </div>
   <template is="dom-if" if="[[showChangeIPFSGatewayDialog_]]" restamp>
-    <change-ipfs-gateway-dialog on-close="onChangeIPFSGatewayDialogClosed_">
+    <change-ipfs-gateway-dialog prefs="{{prefs}}" on-close="onChangeIPFSGatewayDialogClosed_">
     </change-ipfs-gateway-dialog>
   </template>
   <template is="dom-if" if="{{ showRestartToast_ }}">
