@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/time/time.h"
+#include "url/gurl.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -19,11 +20,13 @@
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h"
-#include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_user_models.h"
-#include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
-#include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier_user_models.h"
+#include "bat/ads/internal/ad_targeting/data_types/purchase_intent/purchase_intent_components.h"
+#include "bat/ads/internal/ad_targeting/data_types/text_classification/text_classification_components.h"
 #include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_targeting/processors/purchase_intent/purchase_intent_processor.h"
+#include "bat/ads/internal/ad_targeting/processors/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/ad_targeting/resources/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/ad_targeting/resources/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
@@ -36,11 +39,14 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
+#include "bat/ads/internal/html_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/search_engine/search_providers.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
+#include "bat/ads/internal/url_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
@@ -117,8 +123,8 @@ void AdsImpl::Shutdown(
 void AdsImpl::ChangeLocale(
     const std::string& locale) {
   subdivision_targeting_->MaybeFetchForLocale(locale);
-  page_classifier_->LoadUserModelForLocale(locale);
-  purchase_intent_classifier_->LoadUserModelForLocale(locale);
+  text_classification_resource_->LoadForLocale(locale);
+  purchase_intent_resource_->LoadForLocale(locale);
 }
 
 void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
@@ -138,6 +144,11 @@ void AdsImpl::OnPageLoaded(
   const std::string original_url = redirect_chain.front();
   const std::string url = redirect_chain.back();
 
+  if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
+    BLOG(1, "Visited URL is not supported");
+    return;
+  }
+
   ad_transfer_->MaybeTransferAd(tab_id, original_url);
 
   conversions_->MaybeConvert(redirect_chain);
@@ -150,10 +161,17 @@ void AdsImpl::OnPageLoaded(
     last_visible_tab_url = last_visible_tab->url;
   }
 
-  purchase_intent_classifier_->MaybeExtractIntentSignal(url,
-      last_visible_tab_url);
+  if (!SameDomainOrHost(url, last_visible_tab_url)) {
+    purchase_intent_processor_->Process(GURL(url));
+  }
 
-  page_classifier_->MaybeClassifyPage(url, content);
+  if (SearchProviders::IsSearchEngine(url)) {
+    BLOG(1, "Search engine pages are not supported for text classification");
+  } else {
+    const std::string stripped_text =
+        StripHtmlTagsAndNonAlphaCharacters(content);
+    text_classification_processor_->Process(stripped_text);
+  }
 }
 
 void AdsImpl::OnIdle() {
@@ -226,12 +244,12 @@ void AdsImpl::OnWalletUpdated(
 
 void AdsImpl::OnUserModelUpdated(
     const std::string& id) {
-  if (kPageClassificationUserModelIds.find(id) !=
-      kPageClassificationUserModelIds.end()) {
-    page_classifier_->LoadUserModelForId(id);
-  } else if (kPurchaseIntentUserModelIds.find(id) !=
-      kPurchaseIntentUserModelIds.end()) {
-    purchase_intent_classifier_->LoadUserModelForId(id);
+  if (kTextClassificationComponentIds.find(id) !=
+      kTextClassificationComponentIds.end()) {
+    text_classification_resource_->LoadForId(id);
+  } else if (kPurchaseIntentComponentIds.find(id) !=
+      kPurchaseIntentComponentIds.end()) {
+    purchase_intent_resource_->LoadForId(id);
   } else {
     BLOG(0, "Unknown " << id << " user model");
   }
@@ -365,15 +383,21 @@ void AdsImpl::set(
   account_ = std::make_unique<Account>(token_generator_.get());
   account_->AddObserver(this);
 
-  page_classifier_ =
-      std::make_unique<ad_targeting::contextual::PageClassifier>();
-  purchase_intent_classifier_ =
-      std::make_unique<ad_targeting::behavioral::PurchaseIntentClassifier>();
+  text_classification_resource_ =
+      std::make_unique<ad_targeting::resource::TextClassification>();
+  text_classification_processor_ =
+      std::make_unique<ad_targeting::processor::TextClassification>(
+          text_classification_resource_.get());
+
+  purchase_intent_resource_ =
+      std::make_unique<ad_targeting::resource::PurchaseIntent>();
+  purchase_intent_processor_ =
+      std::make_unique<ad_targeting::processor::PurchaseIntent>(
+          purchase_intent_resource_.get());
+
+  ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
       std::make_unique<ad_targeting::geographic::SubdivisionTargeting>();
-  ad_targeting_ = std::make_unique<AdTargeting>(page_classifier_.get(),
-      purchase_intent_classifier_.get());
-
   ad_notification_serving_ = std::make_unique<ad_notifications::AdServing>(
       ad_targeting_.get(), subdivision_targeting_.get());
   ad_notification_ = std::make_unique<AdNotification>();

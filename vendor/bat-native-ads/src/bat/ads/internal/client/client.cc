@@ -11,6 +11,7 @@
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/category_content_info.h"
+#include "bat/ads/internal/ad_targeting/data_types/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/features.h"
 #include "bat/ads/internal/logging.h"
@@ -131,8 +132,8 @@ void Client::AppendToPurchaseIntentSignalHistoryForSegment(
   Save();
 }
 
-const PurchaseIntentSignalSegmentHistoryMap&
-    Client::GetPurchaseIntentSignalHistory() const {
+const PurchaseIntentSignalHistoryMap&
+Client::GetPurchaseIntentSignalHistory() const {
   return client_->purchase_intent_signal_history;
 }
 
@@ -412,20 +413,21 @@ base::Time Client::GetNextAdServingInterval() {
       client_->next_ad_serving_interval_timestamp_);
 }
 
-void Client::AppendPageProbabilitiesToHistory(
-    const ad_targeting::contextual::PageProbabilitiesMap& page_probabilities) {
-  client_->page_probabilities_history.push_front(page_probabilities);
+void Client::AppendTextClassificationProbabilitiesToHistory(
+    const TextClassificationProbabilitiesMap& probabilities) {
+  client_->text_classification_probabilities.push_front(probabilities);
+
   const size_t maximum_entries = features::GetPageProbabilitiesHistorySize();
-  if (client_->page_probabilities_history.size() > maximum_entries) {
-    client_->page_probabilities_history.resize(maximum_entries);
+  if (client_->text_classification_probabilities.size() > maximum_entries) {
+    client_->text_classification_probabilities.resize(maximum_entries);
   }
 
   Save();
 }
 
-const ad_targeting::contextual::PageProbabilitiesList&
-Client::GetPageProbabilitiesHistory() {
-  return client_->page_probabilities_history;
+const TextClassificationProbabilitiesList&
+Client::GetTextClassificationProbabilitiesHistory() {
+  return client_->text_classification_probabilities;
 }
 
 void Client::RemoveAllHistory() {

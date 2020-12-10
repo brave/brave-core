@@ -6,9 +6,9 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
 
 #include <string>
-#include <vector>
 
 #include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/client/client.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -16,86 +16,146 @@ namespace ads {
 namespace ad_targeting {
 
 TEST(BatAdsAdTargetingUtilTest,
-    SplitParentChildCategory) {
+    SplitParentChildSegment) {
   // Arrange
-  const std::string category = "parent-child";
+  const std::string segment = "parent-child";
 
   // Act
-  const std::vector<std::string> categories = SplitCategory(category);
+  const SegmentList segments = SplitSegment(segment);
 
   // Assert
-  const std::vector<std::string> expected_categories = {
+  const SegmentList expected_segments = {
     "parent",
     "child"
   };
 
-  EXPECT_EQ(expected_categories, categories);
+  EXPECT_EQ(expected_segments, segments);
 }
 
 TEST(BatAdsAdTargetingUtilTest,
-    SplitParentCategory) {
+    SplitParentSegment) {
   // Arrange
-  const std::string category = "parent";
+  const std::string segment = "parent";
 
   // Act
-  const std::vector<std::string> categories = SplitCategory(category);
+  const SegmentList segments = SplitSegment(segment);
 
   // Assert
-  const std::vector<std::string> expected_categories = {
+  const SegmentList expected_segments = {
     "parent"
   };
 
-  EXPECT_EQ(expected_categories, categories);
+  EXPECT_EQ(expected_segments, segments);
 }
 
 TEST(BatAdsAdTargetingUtilTest,
-    SplitEmptyCategory) {
+    SplitEmptySegment) {
   // Arrange
-  const std::string category = "";
+  const std::string segment = "";
 
   // Act
-  const std::vector<std::string> categories = SplitCategory(category);
+  const SegmentList segments = SplitSegment(segment);
 
   // Assert
-  const std::vector<std::string> expected_categories = {};
+  const SegmentList expected_segments = {};
 
-  EXPECT_EQ(expected_categories, categories);
+  EXPECT_EQ(expected_segments, segments);
 }
 
 TEST(BatAdsAdTargetingUtilTest,
-    GetParentCategories) {
+    GetParentSegments) {
   // Arrange
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "technology & computing-software",
     "personal finance-personal finance",
     "automobiles"
   };
 
   // Act
-  const CategoryList parent_categories = GetParentCategories(categories);
+  const SegmentList parent_segments = GetParentSegments(segments);
 
   // Assert
-  const std::vector<std::string> expected_parent_categories = {
+  const SegmentList expected_parent_segments = {
     "technology & computing",
     "personal finance",
     "automobiles"
   };
 
-  EXPECT_EQ(expected_parent_categories, parent_categories);
+  EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
 TEST(BatAdsAdTargetingUtilTest,
-    GetParentCategoriesForEmptyList) {
+    GetParentSegmentsForEmptyList) {
   // Arrange
-  const std::vector<std::string> categories = {};
+  const SegmentList segments;
 
   // Act
-  const CategoryList parent_categories = GetParentCategories(categories);
+  const SegmentList parent_segments = GetParentSegments(segments);
 
   // Assert
-  const std::vector<std::string> expected_parent_categories = {};
+  const SegmentList expected_parent_segments = {};
 
-  EXPECT_EQ(expected_parent_categories, parent_categories);
+  EXPECT_EQ(expected_parent_segments, parent_segments);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
+    ShouldFilterParentChildSegment) {
+  // Arrange
+  Client client;
+
+  Client::Get()->ToggleAdOptOutAction("parent-child",
+      CategoryContentInfo::OptAction::kNone);
+
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("parent-child");
+
+  // Assert
+  EXPECT_TRUE(should_filter_segment);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
+    ShouldFilterParentSegment) {
+  // Arrange
+  Client client;
+
+  Client::Get()->ToggleAdOptOutAction("parent",
+      CategoryContentInfo::OptAction::kNone);
+
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("parent");
+
+  // Assert
+  EXPECT_TRUE(should_filter_segment);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
+    ShouldNotFilterParentChildSegment) {
+  // Arrange
+  Client client;
+
+  Client::Get()->ToggleAdOptOutAction("parent-child",
+      CategoryContentInfo::OptAction::kNone);
+
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("foo-bar");
+
+  // Assert
+  EXPECT_FALSE(should_filter_segment);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
+    ShouldNotFilterParentSegment) {
+  // Arrange
+  Client client;
+
+  Client::Get()->ToggleAdOptOutAction("parent",
+      CategoryContentInfo::OptAction::kNone);
+
+  // Act
+  const bool should_filter_segment = ShouldFilterSegment("foo");
+
+  // Assert
+  EXPECT_FALSE(should_filter_segment);
 }
 
 }  // namespace ad_targeting

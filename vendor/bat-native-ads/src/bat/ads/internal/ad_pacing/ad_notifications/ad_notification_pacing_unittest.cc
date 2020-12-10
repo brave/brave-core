@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h"
-#include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
 #include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -35,12 +33,7 @@ Matcher<const AdNotificationInfo&> IsNotification(
 class BatAdsAdNotificationPacingTest : public UnitTestBase {
  protected:
   BatAdsAdNotificationPacingTest()
-      : page_classifier_(std::make_unique<
-            ad_targeting::contextual::PageClassifier>()),
-        purchase_intent_classifier_(std::make_unique<
-            ad_targeting::behavioral::PurchaseIntentClassifier>()),
-        ad_targeting_(std::make_unique<AdTargeting>(
-            page_classifier_.get(), purchase_intent_classifier_.get())),
+      : ad_targeting_(std::make_unique<AdTargeting>()),
         subdivision_targeting_(std::make_unique<
             ad_targeting::geographic::SubdivisionTargeting>()),
         ad_serving_(std::make_unique<ad_notifications::AdServing>(
@@ -71,7 +64,7 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
     ad_creative_1.priority = 1;
     ad_creative_1.per_day = 3;
     ad_creative_1.total_max = 4;
-    ad_creative_1.category = "Technology & Computing-Software";
+    ad_creative_1.segment = "Technology & Computing-Software";
     ad_creative_1.geo_targets = {"US"};
     ad_creative_1.target_url = "https://brave.com";
     ad_creative_1.title = "Test Ad 1 Title";
@@ -90,7 +83,7 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
     ad_creative_2.priority = 2;
     ad_creative_2.per_day = 3;
     ad_creative_2.total_max = 4;
-    ad_creative_2.category = "Food & Drink";
+    ad_creative_2.segment = "Food & Drink";
     ad_creative_2.geo_targets = {"US"};
     ad_creative_2.target_url = "https://brave.com";
     ad_creative_2.title = "Test Ad 2 Title";
@@ -99,9 +92,6 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
     test_creative_notifications_.push_back(ad_creative_2);
   }
 
-  std::unique_ptr<ad_targeting::contextual::PageClassifier> page_classifier_;
-  std::unique_ptr<ad_targeting::behavioral::PurchaseIntentClassifier>
-      purchase_intent_classifier_;
   std::unique_ptr<AdTargeting> ad_targeting_;
   std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_;

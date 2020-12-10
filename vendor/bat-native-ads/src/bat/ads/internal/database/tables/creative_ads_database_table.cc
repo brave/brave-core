@@ -62,11 +62,6 @@ void CreativeAds::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 3: {
-      MigrateToV3(transaction);
-      break;
-    }
-
     case 6: {
       MigrateToV6(transaction);
       break;
@@ -117,44 +112,6 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
-void CreativeAds::CreateTableV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
-          "(creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE "
-              "ON CONFLICT REPLACE, "
-          "conversion INTEGER NOT NULL DEFAULT 0, "
-          "per_day INTEGER NOT NULL DEFAULT 0, "
-          "total_max INTEGER NOT NULL DEFAULT 0, "
-          "target_url TEXT NOT NULL)",
-      get_table_name().c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void CreativeAds::CreateIndexV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "creative_set_id");
-}
-
-void CreativeAds::MigrateToV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Drop(transaction, get_table_name());
-
-  CreateTableV3(transaction);
-  CreateIndexV3(transaction);
-}
-
 void CreativeAds::CreateTableV6(
     DBTransaction* transaction) {
   DCHECK(transaction);
@@ -176,13 +133,6 @@ void CreativeAds::CreateTableV6(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::CreateIndexV6(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "creative_instance_id");
-}
-
 void CreativeAds::MigrateToV6(
     DBTransaction* transaction) {
   DCHECK(transaction);
@@ -190,7 +140,6 @@ void CreativeAds::MigrateToV6(
   util::Drop(transaction, get_table_name());
 
   CreateTableV6(transaction);
-  CreateIndexV6(transaction);
 }
 
 }  // namespace table

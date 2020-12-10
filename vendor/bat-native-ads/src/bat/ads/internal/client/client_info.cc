@@ -102,20 +102,20 @@ Result ClientInfo::FromJson(
         document["nextCheckServeAd"].GetUint64();
   }
 
-  if (document.HasMember("pageProbabilitiesHistory")) {
-    for (const auto& page_probabilities :
-        document["pageProbabilitiesHistory"].GetArray()) {
-      ad_targeting::contextual::PageProbabilitiesMap new_page_probabilities;
+  if (document.HasMember("textClassificationProbabilitiesHistory")) {
+    for (const auto& probabilities :
+        document["textClassificationProbabilitiesHistory"].GetArray()) {
+      TextClassificationProbabilitiesMap new_probabilities;
 
-      for (const auto& page_probability :
-          page_probabilities["pageProbabilities"].GetArray()) {
-        const std::string category = page_probability["category"].GetString();
-        const double page_score = page_probability["pageScore"].GetDouble();
+      for (const auto& probability :
+          probabilities["textClassificationProbabilities"].GetArray()) {
+        const std::string segment = probability["segment"].GetString();
+        const double page_score = probability["pageScore"].GetDouble();
 
-        new_page_probabilities.insert({category, page_score});
+        new_probabilities.insert({segment, page_score});
       }
 
-      page_probabilities_history.push_back(new_page_probabilities);
+      text_classification_probabilities.push_back(new_probabilities);
     }
   }
 
@@ -169,23 +169,23 @@ void SaveToJson(
   writer->String("nextCheckServeAd");
   writer->Uint64(state.next_ad_serving_interval_timestamp_);
 
-  writer->String("pageProbabilitiesHistory");
+  writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();
-  for (const auto& page_probabilities : state.page_probabilities_history) {
+  for (const auto& probabilities : state.text_classification_probabilities) {
     writer->StartObject();
 
-    writer->String("pageProbabilities");
+    writer->String("textClassificationProbabilities");
     writer->StartArray();
 
-    for (const auto& page_probability : page_probabilities) {
+    for (const auto& probability : probabilities) {
       writer->StartObject();
 
-      writer->String("category");
-      const std::string category = page_probability.first;
-      writer->String(category.c_str());
+      writer->String("segment");
+      const std::string segment = probability.first;
+      writer->String(segment.c_str());
 
       writer->String("pageScore");
-      const double page_score = page_probability.second;
+      const double page_score = probability.second;
       writer->Double(page_score);
 
       writer->EndObject();

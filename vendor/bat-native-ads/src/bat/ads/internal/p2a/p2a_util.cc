@@ -21,8 +21,7 @@ std::vector<std::string> CreateAdOpportunityQuestionList(
     const std::vector<std::string>& segments) {
   std::vector<std::string> questions;
 
-  std::vector<std::string> parent_segments =
-      ad_targeting::GetParentCategories(segments);
+  std::vector<std::string> parent_segments = GetParentSegments(segments);
 
   for (auto& segment : parent_segments) {
     segment.erase(std::remove_if(segment.begin(), segment.end(),
@@ -43,7 +42,7 @@ std::vector<std::string> CreateAdImpressionQuestionList(
     const std::string& segment) {
   std::vector<std::string> questions;
   if (!segment.empty()) {
-    std::string parent_segment = ad_targeting::SplitCategory(segment).front();
+    std::string parent_segment = SplitSegment(segment).front();
 
     parent_segment.erase(
         std::remove_if(parent_segment.begin(), parent_segment.end(),

@@ -1,1 +1,49 @@
-{"locale":"us","version":1,"timestamp":"2020-05-15 00:00:00","parameters":{"signal_level":1,"classification_threshold":10,"signal_decay_time_window_in_seconds":100},"segments":["segment 1","segment 2","segment 3"],"segment_keywords":{"segment keyword 1":[0],"segment keyword 2":[0,1]},"funnel_keywords":{"funnel keyword 1":2,"funnel keyword 2":3},"funnel_sites":[{"sites":["https://brave.com","https://crave.com"],"segments":[1,2]},{"sites":["https://frexample.org","https://example.org"],"segments":[0]}]}
+{
+  "locale": "us",
+  "version": 1,
+  "timestamp": "2020-05-15 00:00:00",
+  "parameters": {
+    "signal_level": 1,
+    "classification_threshold": 3,
+    "signal_decay_time_window_in_seconds": 86400
+  },
+  "segments": [
+    "segment 1",
+    "segment 2",
+    "segment 3"
+  ],
+  "segment_keywords": {
+    "segment keyword 1": [
+      0
+    ],
+    "segment keyword 2": [
+      0,
+      1
+    ]
+  },
+  "funnel_keywords": {
+    "funnel keyword 1": 2,
+    "funnel keyword 2": 3
+  },
+  "funnel_sites": [
+    {
+      "sites": [
+        "https://brave.com",
+        "https://basicattentiontoken.org"
+      ],
+      "segments": [
+        1,
+        2
+      ]
+    },
+    {
+      "sites": [
+        "https://frexample.org",
+        "https://example.org"
+      ],
+      "segments": [
+        0
+      ]
+    }
+  ]
+}

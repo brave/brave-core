@@ -139,13 +139,6 @@ void Dayparts::CreateTableV6(
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::CreateIndexV6(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "campaign_id");
-}
-
 void Dayparts::MigrateToV6(
     DBTransaction* transaction) {
   DCHECK(transaction);
@@ -153,7 +146,6 @@ void Dayparts::MigrateToV6(
   util::Drop(transaction, get_table_name());
 
   CreateTableV6(transaction);
-  CreateIndexV6(transaction);
 }
 
 }  // namespace table
