@@ -55,15 +55,10 @@ def main(args):
 
   # Check for clang/gn format errors.
   cl = git_cl.Changelist()
-  try:
-    if HasFormatErrors():
-      upstream_branch = cl.GetUpstreamBranch()
-      upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
-      print('Format check failed against commit %s. Run npm format to fix.' % upstream_commit)
-      exit_code = 1
-  except:
-    e = sys.exc_info()[1]
-    print('Error running format check: %s' % e.info)
+  if HasFormatErrors():
+    upstream_branch = cl.GetUpstreamBranch()
+    upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
+    print('Format check failed against commit %s. Run npm format to fix.' % upstream_commit)
     exit_code = 1
 
   if exit_code == 0:
