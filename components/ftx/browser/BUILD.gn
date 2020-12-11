@@ -1,0 +1,26 @@
+import("//brave/build/config.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
+
+assert(ftx_enabled)
+
+source_set("browser") {
+  public_deps = [
+    "buildflags"
+  ]
+  sources = [
+    "ftx_service.cc",
+    "ftx_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs:prefs",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
