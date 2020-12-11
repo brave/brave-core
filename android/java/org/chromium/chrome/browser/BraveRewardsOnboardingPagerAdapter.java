@@ -119,8 +119,8 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
             });
 
             RadioGroup contributeRadioGroup = view.findViewById(R.id.contribute_radio_group);
-            BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(15);
-            ((RadioButton)view.findViewById(R.id.contribute_15_radio)).setChecked(true);
+            BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(5);
+            ((RadioButton)view.findViewById(R.id.contribute_5_radio)).setChecked(true);
             contributeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -134,10 +134,8 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                     } else if (checkedId == R.id.contribute_50_radio) {
                         contribute = 50;
                     }
-                    if (BraveRewardsNativeWorker.getInstance().IsAutoContributeEnabled()) {
-                        BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(
+                    BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(
                                 contribute);
-                    }
                 }
             });
         } else {
