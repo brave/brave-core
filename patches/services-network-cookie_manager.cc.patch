@@ -1,0 +1,12 @@
+diff --git a/services/network/cookie_manager.cc b/services/network/cookie_manager.cc
+index 1d988375b00a73824341e46da45645d3d7e8c30e..bbb291a955e0c6397014a91b9ca0dff43f818384 100644
+--- a/services/network/cookie_manager.cc
++++ b/services/network/cookie_manager.cc
+@@ -295,6 +295,7 @@ CookieDeletionInfo DeletionFilterToInfo(mojom::CookieDeletionFilterPtr filter) {
+   delete_info.name = std::move(filter->cookie_name);
+   delete_info.url = std::move(filter->url);
+   delete_info.host = std::move(filter->host_name);
++  BRAVE_DELETIONFILTERTOINFO
+ 
+   switch (filter->session_control) {
+     case mojom::CookieDeletionSessionControl::IGNORE_CONTROL:

@@ -9,13 +9,14 @@
 #include <string>
 #include <utility>
 
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
-class WebContents;
 class BrowserContext;
+class WebContents;
 }  // namespace content
 
 namespace ephemeral_storage {
@@ -43,6 +44,7 @@ class EphemeralStorageTabHelper
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
   scoped_refptr<content::SessionStorageNamespace> local_storage_namespace_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
+  scoped_refptr<content::TLDEphemeralLifetime> tld_ephemeral_lifetime_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

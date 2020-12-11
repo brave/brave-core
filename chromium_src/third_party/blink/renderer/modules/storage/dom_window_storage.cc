@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
+#include "net/base/features.h"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"
-#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/exported/web_view_impl.h"
@@ -170,7 +170,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
   MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (!base::FeatureList::IsEnabled(features::kBraveEphemeralStorage))
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return storage;
 
   if (!window->IsCrossSiteSubframe())
@@ -210,7 +210,7 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
   MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (!base::FeatureList::IsEnabled(features::kBraveEphemeralStorage))
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return storage;
 
   if (!window->IsCrossSiteSubframe())
