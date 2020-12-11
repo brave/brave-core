@@ -42,6 +42,10 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.balanceReport = action.payload.report
       break
     }
+    case types.GET_CONTRIBUTION_AMOUNT: {
+      chrome.send('brave_rewards.getContributionAmount')
+      break
+    }
     case types.ON_CONTRIBUTION_AMOUNT: {
       state = { ...state }
       state.contributionMonthly = action.payload.amount
