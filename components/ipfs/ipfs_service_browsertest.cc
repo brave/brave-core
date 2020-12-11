@@ -20,8 +20,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/prefs/pref_service.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -477,8 +477,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOn) {
   browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
   GURL gateway = GetURL("b.com", "/");
   SetIPFSDefaultGatewayForTest(gateway);
-  ui_test_utils::NavigateToURL(browser(),
-      GetURL("a.com", "/simple.html"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html"));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(contents->GetURL().host(), gateway.host());
@@ -490,8 +489,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
   GURL other_gateway = GetURL("a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(),
-      GetURL("a.com", "/simple.html"));
+  ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html"));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(contents->GetURL().host(), other_gateway.host());

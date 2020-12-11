@@ -56,8 +56,7 @@ int OnHeadersReceived_IPFSRedirectWork(
   }
 
   std::string ipfs_path;
-  if (ctx->ipfs_auto_fallback &&
-      response_headers &&
+  if (ctx->ipfs_auto_fallback && response_headers &&
       response_headers->GetNormalizedHeader("x-ipfs-path", &ipfs_path) &&
       // Make sure we don't infinite redirect
       !ctx->request_url.DomainIs(ctx->ipfs_gateway_url.host())) {

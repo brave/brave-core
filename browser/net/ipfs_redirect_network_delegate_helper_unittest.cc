@@ -145,13 +145,14 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
-  GURL url("https://cloudflare-ipfs.com/ipfs/"
-           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+  GURL url(
+      "https://cloudflare-ipfs.com/ipfs/"
+      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->browser_context = browser_context();
   request_info->ipfs_gateway_url = GetPublicGateway();
-  request_info->initiator_url =
-      ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
+  request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(browser_context()));
   request_info->resource_type = blink::mojom::ResourceType::kImage;
   request_info->ipfs_auto_fallback = true;
 
@@ -177,13 +178,14 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
 }
 
 TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
-  GURL url("https://cloudflare-ipfs.com/ipfs/"
-           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+  GURL url(
+      "https://cloudflare-ipfs.com/ipfs/"
+      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   request_info->browser_context = browser_context();
   request_info->ipfs_gateway_url = GetPublicGateway();
-  request_info->initiator_url =
-      ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
+  request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(browser_context()));
   request_info->resource_type = blink::mojom::ResourceType::kImage;
   request_info->ipfs_auto_fallback = false;
 

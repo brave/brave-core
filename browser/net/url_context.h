@@ -101,9 +101,7 @@ struct BraveRequestInfo {
   GURL ipfs_gateway_url;
   bool ipfs_auto_fallback = false;
 
-  bool ShouldMockRequest() const {
-    return !mock_data_url.empty();
-  }
+  bool ShouldMockRequest() const { return !mock_data_url.empty(); }
 
   net::NetworkIsolationKey network_isolation_key = net::NetworkIsolationKey();
 
@@ -117,13 +115,13 @@ struct BraveRequestInfo {
 
   std::string upload_data;
 
-  static std::shared_ptr<brave::BraveRequestInfo>
-      MakeCTX(const network::ResourceRequest& request,
-              int render_process_id,
-              int frame_tree_node_id,
-              uint64_t request_identifier,
-              content::BrowserContext* browser_context,
-              std::shared_ptr<brave::BraveRequestInfo> old_ctx);
+  static std::shared_ptr<brave::BraveRequestInfo> MakeCTX(
+      const network::ResourceRequest& request,
+      int render_process_id,
+      int frame_tree_node_id,
+      uint64_t request_identifier,
+      content::BrowserContext* browser_context,
+      std::shared_ptr<brave::BraveRequestInfo> old_ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.
