@@ -171,7 +171,7 @@
   </message>
 
   <!-- Profiles (OS settings) -->
-  <message name="IDS_OS_SETTINGS_PEOPLE" desc="Name of a section in the OS settings page." meaning="Profiles and their accounts.">
+  <message name="IDS_OS_SETTINGS_PEOPLE" desc="Name of a section in the OS settings page." meaning="People and their accounts.">
     Profiles
   </message>
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL" desc="Label underneath the profile's real name, listing the email address and optionally the number of additional accounts">
@@ -659,10 +659,10 @@
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_DISABLED" desc="Sub label for the Brave Assistant button when Assistant is disabled.">
     Disabled
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Brave Assistant is on.">
+  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
     On
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Brave Assistant is off.">
+  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Google Assistant is off.">
     Off
   </message>
    <message name="IDS_SETTINGS_SEARCH_AND_ASSISTANT" desc="Name of the settings page which displays search engine and assistant preferences on Chrome OS.">
@@ -2654,7 +2654,7 @@
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_ALWAYS_ON" desc="Always-on label for hotword-enable dropdown without DSP support.">
     Always on
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_OFF" desc="Off label for hotword-enable dropdown without DSP support." meaning="Ok Brave hotwording is disabled.">
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_OFF" desc="Off label for hotword-enable dropdown without DSP support." meaning="Ok Google hotwording is disabled.">
     Off
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS" desc="Title for the Assistant voice settings.">

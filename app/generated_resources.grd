@@ -5895,7 +5895,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SAFE_STATE_BODY_MESSAGE" desc="The content of the bubble notifying that there are more problems to fix after the user changed a compromised password.">
           Successfully changed the compromised password. Check your passwords anytime in <ph name="SETTINGS">$1<ex>Settings</ex></ph>.
         </message>
-        <message name="IDS_PASSWORD_MANAGER_SAFE_STATE_SETTINGS" meaning="The hyperlink text referring to Brave settings. It replaces the placeholder in 'Check your passwords anytime in $1' string">
+        <message name="IDS_PASSWORD_MANAGER_SAFE_STATE_SETTINGS" meaning="The hyperlink text referring to Chrome settings. It replaces the placeholder in 'Check your passwords anytime in $1' string">
           Settings
         </message>
         <message name="IDS_PASSWORD_MANAGER_UNSAFE_STATE_BODY_MESSAGE" desc="The content of the bubble notifying that there are problems to fix after the user saved a password.">
