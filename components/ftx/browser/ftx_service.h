@@ -38,6 +38,9 @@ class SimpleURLLoader;
 
 class Profile;
 
+const char get_futures_data_path[] = "/api/futures";
+const char get_market_data_path[] = "/api/markets";
+
 class FTXService : public KeyedService {
  public:
   explicit FTXService(content::BrowserContext* context);
@@ -46,8 +49,18 @@ class FTXService : public KeyedService {
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
+  using URLRequestCallback =
+      base::OnceCallback<void(const int, const std::string&,
+                              const std::map<std::string, std::string>&)>;
 
   base::SequencedTaskRunner* io_task_runner();
+
+  bool NetworkRequest(const GURL& url, const std::string& method,
+      const std::string& post_data, URLRequestCallback callback);
+  void OnURLLoaderComplete(
+      SimpleURLLoaderList::iterator iter,
+      URLRequestCallback callback,
+      const std::unique_ptr<std::string> response_body);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 
