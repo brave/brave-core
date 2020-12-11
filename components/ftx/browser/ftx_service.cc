@@ -85,6 +85,33 @@ void FTXService::OnFuturesData(
   std::move(callback).Run(data);
 }
 
+bool FTXService::GetChartData(const std::string& symbol,
+                              const std::string& start,
+                              const std::string& end,
+                              GetChartDataCallback callback) {
+  auto internal_callback = base::BindOnce(&FTXService::OnChartData,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host,
+      std::string(get_market_data_path) + "/" + symbol + "/candles");
+  url = net::AppendQueryParameter(url, "resolution", "14400");
+  url = net::AppendQueryParameter(url, "limit", "42");
+  url = net::AppendQueryParameter(url, "start_time", start);
+  url = net::AppendQueryParameter(url, "end_time", end);
+  return NetworkRequest(
+      url, "GET", "", std::move(internal_callback));  
+}
+
+void FTXService::OnChartData(
+  GetChartDataCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  FTXChartData data;
+  if (status >= 200 && status <= 299) {
+    FTXJSONParser::GetChartDataFromJSON(body, &data);
+  }
+  std::move(callback).Run(data);
+}
+
 bool FTXService::NetworkRequest(const GURL &url,
                                   const std::string& method,
                                   const std::string& post_data,

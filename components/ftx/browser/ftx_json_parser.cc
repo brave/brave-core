@@ -67,3 +67,50 @@ bool FTXJSONParser::GetFuturesDataFromJSON(
 
   return true;
 }
+
+bool FTXJSONParser::GetChartDataFromJSON(
+    const std::string& json,
+    FTXChartData* data) {
+  if (!data) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* result = records_v->FindKey("result");
+  if (!result || !result->is_list()) {
+    return false;
+  }
+
+  bool success = true;
+
+  for (const base::Value &point : result->GetList()) {
+    std::map<std::string, std::string> data_point;
+    const base::Value* high = point.FindKey("high");
+    const base::Value* low = point.FindKey("low");
+    const base::Value* close = point.FindKey("close");
+
+    if (!(high && high->is_double()) ||
+        !(low && low->is_double()) ||
+        !(close && close->is_double())) {
+      success = false;
+      break;
+    }
+
+    data_point.insert({"high", std::to_string(high->GetDouble())});
+    data_point.insert({"low", std::to_string(low->GetDouble())});
+    data_point.insert({"close", std::to_string(close->GetDouble())});
+
+    data->push_back(data_point);
+  }
+
+  return success;
+}

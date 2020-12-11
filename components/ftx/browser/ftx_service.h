@@ -42,6 +42,7 @@ const char get_futures_data_path[] = "/api/futures";
 const char get_market_data_path[] = "/api/markets";
 const char futures_filter[] = "perpetual";
 
+typedef std::vector<std::map<std::string, std::string>> FTXChartData;
 typedef std::vector<std::map<std::string, std::string>> FTXFuturesData;
 
 class FTXService : public KeyedService {
@@ -51,8 +52,14 @@ class FTXService : public KeyedService {
 
   using GetFuturesDataCallback =
         base::OnceCallback<void(const FTXFuturesData&)>;
+  using GetChartDataCallback =
+        base::OnceCallback<void(const FTXChartData)>;
 
   bool GetFuturesData(GetFuturesDataCallback callback);
+  bool GetChartData(const std::string& symbol,
+                    const std::string& start,
+                    const std::string& end,
+                    GetChartDataCallback callback);
 
  private:
   using SimpleURLLoaderList =
@@ -62,6 +69,9 @@ class FTXService : public KeyedService {
                               const std::map<std::string, std::string>&)>;
 
   void OnFuturesData(GetFuturesDataCallback callback,
+                    const int status, const std::string& body,
+                    const std::map<std::string, std::string>& headers);
+  void OnChartData(GetChartDataCallback callback,
                     const int status, const std::string& body,
                     const std::map<std::string, std::string>& headers);
 
