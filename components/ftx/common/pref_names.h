@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../content/public/common/url_constants.cc"
+#ifndef BRAVE_COMPONENTS_FTX_COMMON_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_FTX_COMMON_PREF_NAMES_H_
 
-namespace content {
-const char kBraveUIScheme[] = "brave";
-const char kBinanceScheme[] = "com.brave.binance";
-const char kGeminiScheme[] = "com.brave.gemini";
-const char kFTXScheme[] = "com.brave.ftx";
-}
+extern const char kFTXNewTabPageShowFTX[];
+extern const char kFTXAccessToken[];
+extern const char kFTXOauthHost[];
 
+#endif  // BRAVE_COMPONENTS_FTX_COMMON_PREF_NAMES_H_

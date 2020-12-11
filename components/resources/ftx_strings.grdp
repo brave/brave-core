@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="ftx_enabled">
+    <message name="IDS_FTX_WIDGET_SITE" desc="">FTX.com</message>
+    <message name="IDS_FTX_WIDGET_DESCRIPTION" desc="">Connect an FTX account to view account balances, explore futures markets, and convert crypto.</message>
+    <message name="IDS_FTX_WIDGET_VIEW_MARKETS" desc="">View Futures Markets</message>
+    <message name="IDS_FTX_WIDGET_CONNECT_ACCOUNT" desc="">Connect Account</message>
+    <message name="IDS_FTX_WIDGET_MARKETS" desc="">Markets</message>
+    <message name="IDS_FTX_WIDGET_SUMMARY" desc="">Summary</message>
+    <message name="IDS_FTX_WIDGET_FUTURES" desc="">Futures</message>
+    <message name="IDS_FTX_WIDGET_MORE_MARKETS" desc="">More markets on</message>
+    <message name="IDS_FTX_WIDGET_SEVEN_DAY_GRAPH" desc="">7d Graph</message>
+    <message name="IDS_FTX_WIDGET_DAILY_VOLUME" desc="">24hr Volume</message>
+    <message name="IDS_FTX_WIDGET_LOGIN_OR_JOIN" desc="">Login or join to trade</message>
+    <message name="IDS_FTX_WIDGET_JOIN" desc="">Join FTX</message>
+    <message name="IDS_FTX_WIDGET_LOGIN" desc="">Login</message>
+    <message name="IDS_FTX_WIDGET_AVAILABLE" desc="">Available</message>
+    <message name="IDS_FTX_WIDGET_CONVERT" desc="">Convert</message>
+    <message name="IDS_FTX_WIDGET_CONVERT_PLACEHOLDER" desc="">I want to convert...</message>
+    <message name="IDS_FTX_WIDGET_PREVIEW_CONVERT" desc="">Preview Conversion</message>
+    <message name="IDS_FTX_WIDGET_PREVIEW_CANCEL" desc="">Cancel</message>
+    <message name="IDS_FTX_WIDGET_ACCOUNT_REQUIRED" desc="">Account Required</message>
+    <message name="IDS_FTX_WIDGET_DESCRIPTION_TWO" desc="">Connect or create a free FTX account to convert crypto and view your account summary</message>
+  </if>
+</grit-part>

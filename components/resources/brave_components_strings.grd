@@ -1115,6 +1115,7 @@
       <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
+      <part file="ftx_strings.grdp" />
     </messages>
   </release>
 </grit>

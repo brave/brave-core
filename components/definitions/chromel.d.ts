@@ -207,6 +207,23 @@ declare namespace chrome.cryptoDotCom {
   const onInteraction: () => void
 }
 
+declare namespace chrome.ftx {
+  const getFuturesData: (callback: (data: any[]) => void) => {}
+  const getChartData: (symbol: string, start: string, end: string, callback: (data: any[]) => void) => {}
+
+  type FTXOauthHost = 'ftx.us' | 'ftx.com'
+  const setOauthHost: (host: FTXOauthHost) => void
+  const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
+  const getClientUrl: (callback: (clientUrl: string) => void) => {}
+  const getAccessToken: (callback: (success: boolean) => void) => {}
+
+  const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
+  const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
+  const getConvertQuoteInfo: (quoteId: string, callback: (quote: any) => void) => {}
+  const executeConvertQuote: (quoteId: string, callback: (success: boolean) => void) => {}
+  const isSupported: (callback: (supported: boolean) => void) => {}
+}
+
 declare namespace chrome.braveTogether {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }

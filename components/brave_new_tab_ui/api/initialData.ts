@@ -77,6 +77,11 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
+        chrome.ftx.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
+      }),
+      new Promise((resolve) => {
         chrome.binance.isSupportedRegion((supported: boolean) => {
           resolve(supported)
         })
@@ -92,6 +97,7 @@ export async function getInitialData (): Promise<InitialData> {
       togetherSupported,
       geminiSupported,
       cryptoDotComSupported,
+      ftxSupported,
       binanceSupported
     } as InitialData
   } catch (e) {

@@ -1,0 +1,32 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
+
+brave_browser_ftx_sources = []
+brave_browser_ftx_deps = []
+
+if (ftx_enabled) {
+  brave_browser_ftx_sources += [
+      "//brave/browser/ftx/ftx_protocol_handler.cc",
+      "//brave/browser/ftx/ftx_protocol_handler.h",
+      "//brave/browser/ftx/ftx_service_factory.cc",
+      "//brave/browser/ftx/ftx_service_factory.h",
+  ]
+
+  brave_browser_ftx_deps += [
+    "//base",
+    "//brave/common",
+    "//brave/browser/profiles",
+    "//brave/components/ftx/browser",
+    "//brave/components/ftx/common",
+    "//chrome/browser/profiles:profile",
+    "//components/country_codes",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+  ]
+}

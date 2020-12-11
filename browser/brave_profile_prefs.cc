@@ -25,6 +25,7 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper.h"
@@ -89,6 +90,11 @@
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_pref_utils.h"
 #include "brave/components/crypto_dot_com/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(FTX_ENABLED)
+#include "brave/components/ftx/browser/ftx_pref_utils.h"
+#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -358,6 +364,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   crypto_dot_com::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(FTX_ENABLED)
+  ftx::RegisterPrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
