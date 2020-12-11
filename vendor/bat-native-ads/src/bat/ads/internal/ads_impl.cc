@@ -39,6 +39,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
+#include "bat/ads/internal/sys_info_helper.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
@@ -95,9 +96,11 @@ void AdsImpl::Initialize(
     return;
   }
 
-  const auto initialize_step_2_callback = std::bind(&AdsImpl::InitializeStep2,
-      this, std::placeholders::_1, std::move(callback));
-  database_->CreateOrOpen(initialize_step_2_callback);
+  SysInfoHelper::GetInstance()->Initialize();
+
+  SysInfoHelper::GetInstance()->ready().Post(
+      FROM_HERE, base::BindOnce(&AdsImpl::InitializeStep2,
+          base::Unretained(this), std::move(callback)));
 }
 
 void AdsImpl::Shutdown(
@@ -402,6 +405,13 @@ void AdsImpl::set(
 }
 
 void AdsImpl::InitializeStep2(
+    InitializeCallback callback) {
+  const auto initialize_step_3_callback = std::bind(&AdsImpl::InitializeStep3,
+      this, std::placeholders::_1, std::move(callback));
+  database_->CreateOrOpen(initialize_step_3_callback);
+}
+
+void AdsImpl::InitializeStep3(
     const Result result,
     InitializeCallback callback) {
   if (result != SUCCESS) {
@@ -410,22 +420,9 @@ void AdsImpl::InitializeStep2(
     return;
   }
 
-  const auto initialize_step_3_callback = std::bind(&AdsImpl::InitializeStep3,
-      this, std::placeholders::_1, std::move(callback));
-  Client::Get()->Initialize(initialize_step_3_callback);
-}
-
-void AdsImpl::InitializeStep3(
-    const Result result,
-    InitializeCallback callback) {
-  if (result != SUCCESS) {
-    callback(FAILED);
-    return;
-  }
-
   const auto initialize_step_4_callback = std::bind(&AdsImpl::InitializeStep4,
       this, std::placeholders::_1, std::move(callback));
-  ConfirmationsState::Get()->Initialize(initialize_step_4_callback);
+  Client::Get()->Initialize(initialize_step_4_callback);
 }
 
 void AdsImpl::InitializeStep4(
@@ -438,7 +435,7 @@ void AdsImpl::InitializeStep4(
 
   const auto initialize_step_5_callback = std::bind(&AdsImpl::InitializeStep5,
       this, std::placeholders::_1, std::move(callback));
-  ad_notifications_->Initialize(initialize_step_5_callback);
+  ConfirmationsState::Get()->Initialize(initialize_step_5_callback);
 }
 
 void AdsImpl::InitializeStep5(
@@ -451,10 +448,23 @@ void AdsImpl::InitializeStep5(
 
   const auto initialize_step_6_callback = std::bind(&AdsImpl::InitializeStep6,
       this, std::placeholders::_1, std::move(callback));
-  conversions_->Initialize(initialize_step_6_callback);
+  ad_notifications_->Initialize(initialize_step_6_callback);
 }
 
 void AdsImpl::InitializeStep6(
+    const Result result,
+    InitializeCallback callback) {
+  if (result != SUCCESS) {
+    callback(FAILED);
+    return;
+  }
+
+  const auto initialize_step_7_callback = std::bind(&AdsImpl::InitializeStep7,
+      this, std::placeholders::_1, std::move(callback));
+  conversions_->Initialize(initialize_step_7_callback);
+}
+
+void AdsImpl::InitializeStep7(
     const Result result,
     InitializeCallback callback) {
   if (result != SUCCESS) {

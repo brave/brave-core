@@ -62,6 +62,7 @@ class Client;
 class ConfirmationsState;
 class Conversions;
 class NewTabPageAd;
+class SysInfoHelper;
 class TabManager;
 class UserActivity;
 struct AdInfo;
@@ -214,7 +215,6 @@ class AdsImpl
       privacy::TokenGeneratorInterface* token_generator);
 
   void InitializeStep2(
-      const Result result,
       InitializeCallback callback);
   void InitializeStep3(
       const Result result,
@@ -226,6 +226,9 @@ class AdsImpl
       const Result result,
       InitializeCallback callback);
   void InitializeStep6(
+      const Result result,
+      InitializeCallback callback);
+  void InitializeStep7(
       const Result result,
       InitializeCallback callback);
 

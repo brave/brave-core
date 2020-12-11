@@ -491,6 +491,13 @@ void MockLocaleHelper(
       .WillByDefault(Return(locale));
 }
 
+void MockSysInfoHelper(
+    const std::unique_ptr<SysInfoHelperMock>& mock,
+    const base::SysInfo::HardwareInfo& hardware) {
+  ON_CALL(*mock, GetHardware())
+      .WillByDefault(Return(hardware));
+}
+
 void MockPlatformHelper(
     const std::unique_ptr<PlatformHelperMock>& mock,
     const PlatformType platform_type) {
@@ -543,6 +550,13 @@ void MockPlatformHelper(
 
   ON_CALL(*mock, GetPlatform())
       .WillByDefault(Return(platform_type));
+}
+
+void MockRPillHelper(
+    const std::unique_ptr<RPillHelperMock>& mock,
+    const bool is_uncertain_future) {
+  ON_CALL(*mock, IsUncertainFuture())
+      .WillByDefault(Return(is_uncertain_future));
 }
 
 void MockIsNetworkConnectionAvailable(

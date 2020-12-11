@@ -13,6 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/rpill/rpill_helper.h"
 #include "bat/ads/internal/security/security_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
@@ -53,21 +54,28 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
 
 std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
     const std::string& body) const {
+  std::vector<std::string> headers;
+
   const std::string digest_header_value = BuildDigestHeaderValue(body);
   const std::string digest_header =
       base::StringPrintf("digest: %s", digest_header_value.c_str());
+  headers.push_back(digest_header);
 
   const std::string signature_header_value = BuildSignatureHeaderValue(body);
   const std::string signature_header =
       base::StringPrintf("signature: %s", signature_header_value.c_str());
+  headers.push_back(signature_header);
+
+  const std::string content_type_header = "content-type: application/json";
+  headers.push_back(content_type_header);
+
+  const std::string via_header = BuildViaHeader();
+  headers.push_back(via_header);
 
   const std::string accept_header = "accept: application/json";
+  headers.push_back(accept_header);
 
-  return {
-    digest_header,
-    signature_header,
-    accept_header
-  };
+  return headers;
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildDigestHeaderValue(
@@ -88,6 +96,14 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
 
   return security::Sign({{"digest", digest_header_value}},
       "primary", wallet_.secret_key);
+}
+
+std::string RequestSignedTokensUrlRequestBuilder::BuildViaHeader() const {
+  if (RPillHelper::GetInstance()->IsUncertainFuture()) {
+    return "via: 1.0 brave.com (Apache/2.4.1)";
+  }
+
+  return "via: 1.0 brave.com (Apache/2.4.0)";
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
