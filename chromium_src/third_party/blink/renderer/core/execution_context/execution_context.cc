@@ -176,7 +176,8 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
 scoped_refptr<blink::StaticBitmapImage>
 BraveSessionCache::PerturbPixelsInternal(
     scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
-  DCHECK(image_bitmap);
+  if (!image_bitmap)
+    return nullptr;
   if (image_bitmap->IsNull())
     return image_bitmap;
   // convert to an ImageDataBuffer to normalize the pixel data to RGBA, 4 bytes

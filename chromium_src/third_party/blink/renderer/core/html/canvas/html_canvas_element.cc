@@ -15,6 +15,8 @@
             brave::GetContentSettingsClientFor(context)) {                   \
       image_bitmap = brave::BraveSessionCache::From(*context).PerturbPixels( \
           settings, image_bitmap);                                           \
+      if (!image_bitmap)                                                     \
+        return String("data:,");                                             \
     }                                                                        \
   }
 
