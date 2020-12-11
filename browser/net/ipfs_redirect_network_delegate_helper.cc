@@ -50,6 +50,11 @@ int OnHeadersReceived_IPFSRedirectWork(
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  if (!ctx->browser_context ||
+      IsIpfsResolveMethodDisabled(ctx->browser_context)) {
+    return net::OK;
+  }
+
   std::string ipfs_path;
   if (ctx->ipfs_auto_fallback &&
       response_headers &&
