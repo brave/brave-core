@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
 
+#include "brave/components/signin/public/identity_manager/brave_identity_manager.h"
+
 #define BRAVE_PROFILE_SYNC_SERVICE_H_ \
  private:                             \
   friend class BraveProfileSyncService;
