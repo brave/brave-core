@@ -4,79 +4,97 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_gravity="center"
 	android:background="@drawable/bat_rewards_summary_gradient"
-	android:visibility="gone"
-	android:padding="16dp"
-	android:orientation="vertical">
+	android:visibility="gone">
 
-	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginTop="8dp"
-	    android:layout_marginBottom="8dp"
-	    android:layout_gravity="center"
-	    android:gravity="center"
-	    android:drawableTop="@drawable/rewards_settings"
-	    android:drawablePadding="4dp"
-	    android:text="@string/welcome_to_brave_rewards"
-	    android:textSize="20sp"
-	    android:textStyle="bold"
-	    android:textColor="@android:color/black"/>
-
-	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="12dp"
-	    android:layout_gravity="center"
-	    android:gravity="center"
-	    android:text="@string/brave_rewards_welcome_layout_text"
-	    android:textSize="14sp"
-	    android:textColor="@color/brave_rewards_modal_text_color"/>
-
-	<TextView
-		android:id="@+id/quick_refresher_tour_button"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="24dp"
-	    android:layout_gravity="center"
-	    android:text="@string/quick_refresher_tour"
-	    android:textSize="14sp"
-	    android:textStyle="bold"
-	    android:textColor="@color/brave_rewards_modal_theme_color"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/brave_rewards_welcome_bg"
+		android:layout_gravity="center"
+		android:padding="16dp"
 		android:orientation="vertical">
 
 		<TextView
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="8dp"
-		    android:layout_marginBottom="4dp"
-		    android:layout_gravity="center"
-		    android:gravity="center"
-		    android:text="@string/rewards_payout"
-		    android:textSize="14sp"
-		    android:textColor="@android:color/white"/>
-
-		<TextView
-			android:id="@+id/payout_date_text"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="8dp"
 		    android:layout_gravity="center"
 		    android:gravity="center"
-		    android:text="@string/rewards_payout"
-		    android:textSize="24sp"
-		    android:textColor="@android:color/white"/>
+		    android:drawableTop="@drawable/ic_icon_bat_eta"
+		    android:drawablePadding="4dp"
+		    android:text="@string/welcome_to_brave_rewards"
+		    android:textSize="20sp"
+		    android:textStyle="bold"
+		    android:textColor="@android:color/black"/>
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="12dp"
+		    android:layout_gravity="center"
+		    android:gravity="center"
+		    android:text="@string/brave_rewards_welcome_layout_text"
+		    android:textSize="14sp"
+		    android:textColor="@color/brave_rewards_modal_text_color"/>
+
+		<TextView
+			android:id="@+id/quick_refresher_tour_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="24dp"
+		    android:layout_gravity="center"
+		    android:text="@string/quick_refresher_tour"
+		    android:textSize="14sp"
+		    android:textStyle="bold"
+		    android:textColor="@color/brave_rewards_modal_theme_color"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/brave_rewards_welcome_bg"
+			android:orientation="vertical">
+
+			<TextView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginTop="8dp"
+			    android:layout_marginBottom="4dp"
+			    android:layout_gravity="center"
+			    android:gravity="center"
+			    android:text="@string/rewards_payout"
+			    android:textSize="14sp"
+			    android:textColor="@android:color/white"/>
+
+			<TextView
+				android:id="@+id/payout_date_text"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="8dp"
+			    android:layout_gravity="center"
+			    android:gravity="center"
+			    android:text="@string/rewards_payout"
+			    android:textSize="24sp"
+			    android:textColor="@android:color/white"/>
+
+		</LinearLayout>
 
 	</LinearLayout>
 
-</LinearLayout>
+	<androidx.appcompat.widget.AppCompatImageView
+	        android:id="@+id/modal_close"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:contentDescription="@null"
+	        android:layout_gravity="end|top"
+	        android:tint="@color/brave_rewards_modal_close_button_color"
+	        android:padding="16dp"
+	        android:src="@drawable/btn_close"/>
+
+</FrameLayout>

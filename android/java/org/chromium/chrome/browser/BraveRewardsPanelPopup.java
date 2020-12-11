@@ -697,7 +697,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         Date currentTime = new Date();
         cal.setTime(currentTime);
         cal.add(Calendar.MONTH, 1);
-        cal.set(Calendar.DAY_OF_MONTH, 6);
+        cal.set(Calendar.DAY_OF_MONTH, 5);
         payoutDateText.setText(dateFormat.format(cal.getTime()));
         TextView btnQuickRefresherTour = braveRewardsWelcomeView.findViewById(R.id.quick_refresher_tour_button);
         btnQuickRefresherTour.setOnClickListener((new View.OnClickListener() {
@@ -813,20 +813,35 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void showLikePopDownMenu() {
         this.showLikePopDownMenu(0, 0);
-        // if (root!= null && PackageUtils.isFirstInstall(mActivity)) {
-        //     if (BraveRewardsHelper.shouldShowBraveRewardsOnboarding()) {
-        //         showBraveRewardsOnboarding(root);
-        //         BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
-        //     } else if ((BraveRewardsHelper.getBraveRewardsOpenCount() == 0 || BraveRewardsHelper.getBraveRewardsOpenCount() == 1)
-        //         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-        //         showBraveRewardsOnboardingModal(root);
-        //         BraveRewardsHelper.updateBraveRewardsOpenCount();
-        //     } else if (BraveRewardsHelper.getBraveRewardsOpenCount() == 1 
-        //         && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
-        //         showBraveRewardsWelcomeLayout(root);
-        //         BraveRewardsHelper.updateBraveRewardsOpenCount();
-        //     }
-        // }
+        BraveRewardsNativeWorker.getInstance().StartProcess();
+    }
+
+    @Override
+    public void OnStartProcess() {
+        if (root != null && PackageUtils.isFirstInstall(mActivity)
+                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                        Profile.getLastUsedRegularProfile())
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+            if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
+                showBraveRewardsOnboarding(root, false);
+                BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
+            } else if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
+                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
+                showBraveRewardsOnboardingModal(root);
+                BraveRewardsHelper.updateBraveRewardsAppOpenCount();
+                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+            } else if (SharedPreferencesManager.getInstance().readInt(
+                               BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                            > BraveRewardsHelper.getBraveRewardsAppOpenCount()
+                    && BraveRewardsHelper.shouldShowMiniOnboardingModal()) {
+                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                    showBraveRewardsWelcomeLayout(root);
+                } else {
+                    showBraveRewardsOptInLayout(root);
+                }
+                BraveRewardsHelper.setShowMiniOnboardingModal(false);
+            }
+        }
     }
 
     public void showLikePopDownMenu(int xOffset, int yOffset) {

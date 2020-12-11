@@ -170,12 +170,17 @@ public class NTPUtil {
         nonDistruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // clickOnBottomBanner(chromeActivity, ntpType, nonDistruptiveBannerLayout, sponsoredTab, newTabPageListener);
-                if (BraveActivity.getBraveActivity() != null) {
-                    nonDistruptiveBannerLayout.setVisibility(View.GONE);
-                    BraveRewardsHelper.setShowBraveRewardsOnboarding(true);
-                    BraveActivity.getBraveActivity().openRewardsPanel();
+                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                            Profile.getLastUsedRegularProfile())) {
+                    clickOnBottomBanner(chromeActivity, ntpType, nonDisruptiveBannerLayout,
+                            sponsoredTab, newTabPageListener);
+                } else {
+                    if (BraveActivity.getBraveActivity() != null) {
+                        nonDisruptiveBannerLayout.setVisibility(View.GONE);
+                        BraveActivity.getBraveActivity().openRewardsPanel();
+                    }
                 }
+                sponsoredTab.updateBannerPref();
             }
         });
         nonDistruptiveBannerLayout.setVisibility(View.GONE);
@@ -268,8 +273,6 @@ public class NTPUtil {
         rewardsBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
         rewardsBottomSheetDialogFragment.show(chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
         rewardsBottomSheetDialogFragment.setCancelable(false);
-
-        sponsoredTab.updateBannerPref();
     }
 
     public static Bitmap getWallpaperBitmap(NTPImage ntpImage, int layoutWidth, int layoutHeight) {

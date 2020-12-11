@@ -279,6 +279,41 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
         }
+        if (!TextUtils.isEmpty(BinanceWidgetManager.getInstance().getBinanceAccountBalance())) {
+            try {
+                BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
+                        BinanceWidgetManager.getInstance().getBinanceAccountBalance());
+            } catch (JSONException e) {
+                Log.e("NTP", e.getMessage());
+            }
+        }
+
+        if (PackageUtils.isFirstInstall(this)
+                && SharedPreferencesManager.getInstance().readInt(
+                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                        == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_4);
+            BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
+        }
+        if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(true);
+            openRewardsPanel();
+            BraveRewardsHelper.setRewardsOnboardingModalShown(true);
+        }
+    }
+
+    private void checkForYandexSE() {
+        String countryCode = Locale.getDefault().getCountry();
+        if (yandexRegions.contains(countryCode)) {
+            TemplateUrl yandexTemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(OnboardingPrefManager.YANDEX);
+            if (yandexTemplateUrl != null) {
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, false);
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, true);
+            }
+        }
     }
 
     private void checkForNotificationData() {
