@@ -8,13 +8,20 @@
 
 namespace syncer {
 
-class DeviceInfoSyncService;
+class BraveProfileSyncService;
 
 class ProfileSyncServiceDelegate {
  public:
   virtual ~ProfileSyncServiceDelegate() {}
   virtual void SuspendDeviceObserverForOwnReset() = 0;
   virtual void ResumeDeviceObserver() = 0;
+
+  void set_profile_sync_service(BraveProfileSyncService* profile_sync_service) {
+    profile_sync_service_ = profile_sync_service;
+  }
+
+ protected:
+  BraveProfileSyncService* profile_sync_service_;
 };
 
 }  // namespace syncer

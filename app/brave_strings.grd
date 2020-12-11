@@ -49,7 +49,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <output filename="chromium_strings_en-GB.pak" type="data_package" lang="en-GB" />
     <output filename="chromium_strings_en-US.pak" type="data_package" lang="en" />
     <output filename="chromium_strings_es.pak" type="data_package" lang="es" />
-    <output filename="chromium_strings_es-419.pak" type="data_package" lang="es-419" />
+    <if expr="is_ios">
+      <!-- iOS uses es-MX for es-419 -->
+      <output filename="chromium_strings_es-MX.pak" type="data_package" lang="es-419" />
+    </if>
+    <if expr="not is_ios">
+      <output filename="chromium_strings_es-419.pak" type="data_package" lang="es-419" />
+    </if>
     <output filename="chromium_strings_et.pak" type="data_package" lang="et" />
     <output filename="chromium_strings_fa.pak" type="data_package" lang="fa" />
     <output filename="chromium_strings_fake-bidi.pak" type="data_package" lang="fake-bidi" />

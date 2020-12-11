@@ -8,6 +8,8 @@ declare_args() {
   brave_sync_endpoint = ""
 }
 
+if (is_official_build) { assert(brave_sync_endpoint != "") }
+
 config("brave_sync_config") {
   defines = [
     "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\""

@@ -35,6 +35,9 @@
 #import "base/ios/ios_util.h"
 #import "base/base64.h"
 #import "base/command_line.h"
+#include "base/sequenced_task_runner.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 
 #import "RewardsLogging.h"
 
@@ -94,11 +97,30 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   BATLedgerDatabaseMigrationTypeNone
 };
 
+namespace {
+
+ledger::type::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::LedgerDatabase* database) {
+  auto response = ledger::type::DBCommandResponse::New();
+  if (!database) {
+    response->status = ledger::type::DBCommandResponse::Status::RESPONSE_ERROR;
+  } else {
+    database->RunTransaction(std::move(transaction), response.get());
+  }
+
+  return response;
+}
+
+}  // namespace
+
 @interface BATBraveLedger () <NativeLedgerClientBridge> {
   NativeLedgerClient *ledgerClient;
   ledger::Ledger *ledger;
   ledger::LedgerDatabase *rewardsDatabase;
+  scoped_refptr<base::SequencedTaskRunner> databaseQueue;
 }
+
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATRewardsParameters *rewardsParameters;
 @property (nonatomic) BATBalance *balance;
@@ -120,8 +142,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 @property (nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property (nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
 @property (nonatomic) BATLedgerDatabaseMigrationType migrationType;
-
-@property (nonatomic) dispatch_queue_t databaseQueue;
 
 /// Notifications
 
@@ -160,20 +180,16 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self savePrefs];
     }
 
-    const auto pathToICUDTL = [[NSBundle bundleForClass:[BATBraveLedger class]] pathForResource:@"icudtl" ofType:@"dat"];
-    base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
-    if (!base::i18n::InitializeICU()) {
-      BLOG(0, @"Failed to initialize ICU data");
-    }
-
     const auto args = [NSProcessInfo processInfo].arguments;
     const char *argv[args.count];
     for (NSInteger i = 0; i < args.count; i++) {
       argv[i] = args[i].UTF8String;
     }
-    base::CommandLine::Init(args.count, argv);
 
-    self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
+    databaseQueue = base::CreateSequencedTaskRunner(
+        {base::ThreadPool(), base::MayBlock(),
+         base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
     const auto* dbPath = [self rewardsDatabasePath].UTF8String;
     rewardsDatabase = ledger::LedgerDatabase::CreateInstance(base::FilePath(dbPath));
@@ -182,11 +198,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
 
     self.migrationType = BATLedgerDatabaseMigrationTypeDefault;
-    BOOL needsMigration = [self databaseNeedsMigration];
-    if (needsMigration) {
-      [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
-    }
-    [self initializeLedgerService:needsMigration];
+    [self databaseNeedsMigration:^(BOOL needsMigration) {
+      if (needsMigration) {
+        [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
+      }
+      [self initializeLedgerService:needsMigration];
+    }];
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -206,9 +223,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   [NSNotificationCenter.defaultCenter removeObserver:self];
   [self.notificationStartupTimer invalidate];
 
+  if (rewardsDatabase) {
+    databaseQueue->DeleteSoon(FROM_HERE, rewardsDatabase);
+  }
   delete ledger;
   delete ledgerClient;
-  delete rewardsDatabase;
 }
 
 - (void)initializeLedgerService:(BOOL)executeMigrateScript
@@ -264,20 +283,23 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   });
 }
 
-- (BOOL)databaseNeedsMigration
+- (void)databaseNeedsMigration:(void (^)(BOOL needsMigration))completion
 {
   // Check if we even have a DB to migrate
   if (!DataController.defaultStoreExists) {
-    return NO;
+    completion(NO);
+    return;
   }
   // Have we set the pref saying ledger has alaready initialized successfully?
   if ([self.prefs[kMigrationSucceeded] boolValue]) {
-    return NO;
+    completion(NO);
+    return;
   }
   // Can we even check the DB
   if (!rewardsDatabase) {
     BLOG(3, @"DB: No rewards database object");
-    return YES;
+    completion(YES);
+    return;
   }
   // Check integrity of the new DB. Safe to assume if `publisher_info` table
   // exists, then all the others do as well.
@@ -288,32 +310,33 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   command->record_bindings = { ledger::type::DBCommand::RecordBindingType::STRING_TYPE };
   transaction->commands.push_back(command->Clone());
 
-  auto response = ledger::type::DBCommandResponse::New();
-  rewardsDatabase->RunTransaction(std::move(transaction), response.get());
+  [self runDBTransaction:std::move(transaction) callback:^(ledger::type::DBCommandResponsePtr response){
+    // Failed to even run the check, tables probably don't exist,
+    // restart from scratch
+    if (response->status != ledger::type::DBCommandResponse::Status::RESPONSE_OK) {
+      [self resetRewardsDatabase];
+      BLOG(3, @"DB: Failed to run transaction with status: %d", response->status);
+      completion(YES);
+      return;
+    }
 
-  // Failed to even run the check, tables probably don't exist,
-  // restart from scratch
-  if (response->status != ledger::type::DBCommandResponse::Status::RESPONSE_OK) {
-    [self resetRewardsDatabase];
-    BLOG(3, @"DB: Failed to run transaction with status: %d", response->status);
-    return YES;
-  }
+    const auto record = std::move(response->result->get_records());
+    // sqlite_master table exists, but the publisher_info table doesn't exist?
+    // Restart from scratch
+    if (record.empty() || record.front()->fields.empty()) {
+      [self resetRewardsDatabase];
+      BLOG(3, @"DB: Migrate because we couldnt find tables in sqlite_master");
+      completion(YES);
+      return;
+    }
 
-  const auto record = std::move(response->result->get_records());
-  // sqlite_master table exists, but the publisher_info table doesn't exist?
-  // Restart from scratch
-  if (record.empty() || record.front()->fields.empty()) {
-    [self resetRewardsDatabase];
-    BLOG(3, @"DB: Migrate because we couldnt find tables in sqlite_master");
-    return YES;
-  }
+    // Tables exist so migration has happened already, but somehow the flag wasn't
+    // saved.
+    self.prefs[kMigrationSucceeded] = @(YES);
+    [self savePrefs];
 
-  // Tables exist so migration has happened already, but somehow the flag wasn't
-  // saved.
-  self.prefs[kMigrationSucceeded] = @(YES);
-  [self savePrefs];
-
-  return NO;
+    completion(NO);
+  }];
 }
 
 - (NSString *)rewardsDatabasePath
@@ -1825,20 +1848,17 @@ BATLedgerBridge(BOOL,
 - (void)runDBTransaction:(ledger::type::DBTransactionPtr)transaction
                 callback:(ledger::client::RunDBTransactionCallback)callback
 {
-  if (!rewardsDatabase || transaction.get() == nullptr) {
-    auto response = ledger::type::DBCommandResponse::New();
-    response->status = ledger::type::DBCommandResponse::Status::RESPONSE_ERROR;
-    callback(std::move(response));
-  } else {
-    __block auto transactionClone = transaction->Clone();
-    dispatch_async(self.databaseQueue, ^{
-      __block auto response = ledger::type::DBCommandResponse::New();
-      rewardsDatabase->RunTransaction(std::move(transactionClone), response.get());
-      dispatch_async(dispatch_get_main_queue(), ^{
-        callback(std::move(response));
-      });
-    });
-  }
+  __weak BATBraveLedger* weakSelf = self;
+  base::PostTaskAndReplyWithResult(
+      databaseQueue.get(),
+      FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnTaskRunner,
+          base::Passed(std::move(transaction)),
+          rewardsDatabase),
+      base::BindOnce(^(ledger::type::DBCommandResponsePtr response) {
+        if (weakSelf)
+          callback(std::move(response));
+      }));
 }
 
 - (void)pendingContributionSaved:(const ledger::type::Result)result
