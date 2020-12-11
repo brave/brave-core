@@ -12,6 +12,8 @@
 #undef Register
 #undef CRX3_WITH_PUBLISHER_PROOF
 
+#include "base/stl_util.h"
+
 namespace component_updater {
 
 void ComponentInstaller::Register(ComponentUpdateService* cus,
