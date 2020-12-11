@@ -71,7 +71,7 @@ bool FTXService::GetFuturesData(GetFuturesDataCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, get_futures_data_path);
   return NetworkRequest(
-      url, "GET", "", std::move(internal_callback));  
+      url, "GET", "", std::move(internal_callback));
 }
 
 void FTXService::OnFuturesData(
@@ -98,7 +98,7 @@ bool FTXService::GetChartData(const std::string& symbol,
   url = net::AppendQueryParameter(url, "start_time", start);
   url = net::AppendQueryParameter(url, "end_time", end);
   return NetworkRequest(
-      url, "GET", "", std::move(internal_callback));  
+      url, "GET", "", std::move(internal_callback));
 }
 
 void FTXService::OnChartData(

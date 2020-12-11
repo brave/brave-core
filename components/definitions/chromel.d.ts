@@ -206,6 +206,11 @@ declare namespace chrome.cryptoDotCom {
   const onInteraction: () => void
 }
 
+declare namespace chrome.ftx {
+  const getFuturesData: (callback: (data: any[]) => void) => {}
+  const getChartData: (symbol: string, start: string, end: string, callback: (data: any[]) => void) => {}
+}
+
 declare namespace chrome.braveTogether {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }

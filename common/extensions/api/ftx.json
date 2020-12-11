@@ -1,0 +1,75 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "ftx",
+    "description": "Use the <code>chrome.ftx</code> to interact with FTX services.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/ftx_api.h"
+    },
+    "events": [
+    ],
+    "functions": [
+      {
+        "name": "getFuturesData",
+        "type": "function",
+        "description": "Gets volume, price and change for perpetual futures",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "any" }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getChartData",
+        "type": "function",
+        "description": "Gets chart data for an asset pair",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "symbol"
+          },
+          {
+            "type": "string",
+            "name": "start"
+          },
+          {
+            "type": "string",
+            "name": "end"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "any" }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "types": [
+    ],
+    "properties": {
+    }
+  }
+]

@@ -53,7 +53,7 @@ class FTXService : public KeyedService {
   using GetFuturesDataCallback =
         base::OnceCallback<void(const FTXFuturesData&)>;
   using GetChartDataCallback =
-        base::OnceCallback<void(const FTXChartData)>;
+        base::OnceCallback<void(const FTXChartData&)>;
 
   bool GetFuturesData(GetFuturesDataCallback callback);
   bool GetChartData(const std::string& symbol,
