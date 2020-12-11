@@ -103,7 +103,7 @@ public class SafetyNetCheck {
                     return true;
                 }
                 byte[] nonce = nonceData.isEmpty() ? getRequestNonce() : nonceData.getBytes();
-                SafetyNetClient client = SafetyNet.getClient(activity);
+                SafetyNetClient client = SafetyNet.getClient(ContextUtils.getApplicationContext());
                 Task<SafetyNetApi.AttestationResponse> attestTask = client.attest(nonce, apiKey);
                 attestTask.addOnSuccessListener(activity,
                     new OnSuccessListener<SafetyNetApi.AttestationResponse>() {
