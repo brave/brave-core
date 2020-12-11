@@ -80,6 +80,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_ASK)));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSBinaryAvailable));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kIPFSAutoRedirectGateway));
 #endif
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
