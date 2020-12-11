@@ -7,7 +7,7 @@ index a710b52cd8dbd2973476e125b04736aada73ff1e..b63e282672e86eaa8a17011e348f61a6
              be in |paths.work|.
      """
 -    command = ['codesign', '--sign', config.identity]
-+    command = ['codesign', '--force', '--sign', config.identity]
++    command = ['codesign', '--force', '--verbose=4', '--sign', config.identity]
      path = os.path.join(paths.work, part.path)
      if _linker_signed_arm64_needs_force(path):
          command.append('--force')
