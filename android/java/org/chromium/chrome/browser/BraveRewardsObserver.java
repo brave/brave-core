@@ -30,4 +30,5 @@ public interface BraveRewardsObserver {
   default public void OnRecoverWallet(int errorCode) {};
   default public void OnRefreshPublisher(int status, String publisherKey){};
   default public void OnOneTimeTip(){};
+  default public void OnStartProcess(){};
 }

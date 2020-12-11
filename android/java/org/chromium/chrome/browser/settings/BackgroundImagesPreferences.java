@@ -32,7 +32,7 @@ public class BackgroundImagesPreferences
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
-    public static final String PREF_SHOW_NON_DISTRUPTIVE_BANNER = "show_non_distruptive_banner";
+    public static final String PREF_SHOW_NON_DISRUPTIVE_BANNER = "show_non_disruptive_banner";
     public static final String PREF_WIDGET_STACK = "widget_stack";
 
     private ChromeSwitchPreference showBackgroundImagesPref;
