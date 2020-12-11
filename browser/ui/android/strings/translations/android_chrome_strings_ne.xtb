@@ -8,7 +8,6 @@
 <translation id="1041308826830691739">वेबसाइटहरूबाट</translation>
 <translation id="1045899828449635435">यी साइटहरूको डेटा पनि मेटाउने हो?</translation>
 <translation id="586375142137960011">Brave ले तपाईंको जानकारी पुष्टि गर्न सकेन</translation>
-<translation id="1049743911850919806">इन्कोग्निटो</translation>
 <translation id="10614374240317010">कहिले पनि बचत नगर्नुहोस्</translation>
 <translation id="5428209950370661546">Brave का अन्य सेवाहरू</translation>
 <translation id="107147699690128016">तपाईंले फाइलको एक्स्टेन्सन परिवर्तन गर्नुभयो भने यो फाइल कुनै अर्को अनुप्रयोगमा खुल्न सक्छ जुन तपाईंको यन्त्रका लागि हानिकारक पनि हुन सक्छ।</translation>
@@ -108,7 +107,6 @@
 <translation id="1829244130665387512">पृष्ठमा फेला पार्नुहोस्</translation>
 <translation id="1830550083491357902">साइन इन भएको छैन</translation>
 <translation id="4056661250746096955">अझ राम्रो अनुवाद पाउन Brave खोजलाई हालको पृष्ठ प्रयोग गर्न दिनुहोस्</translation>
-<translation id="1853692000353488670">नयाँ इनकगनिटो ट्याब</translation>
 <translation id="1856325424225101786">लाइट मोड रिसेट गर्ने हो?</translation>
 <translation id="5817715962196959877">Brave ले अब फाइलहरू अझ छिटो डाउनलोड गर्छ</translation>
 <translation id="5173820533850252773">Brave को मिति समाप्त भएको छ</translation>
@@ -205,7 +203,7 @@
 <translation id="2497852260688568942">तपाईंको प्रशासकले सिंंक असक्षम पार्नुभएको छ।</translation>
 <translation id="7229462727772664332">तपाईं Brave मा आफ्नो <ph name="SITE_NAME"/> को साइन इनसम्बन्धी अवस्था, ब्राउजिङ डेटा र साइट डेटा देख्नु हुने छ</translation>
 <translation id="2512164632052122970">सामग्रीका भाषाहरू</translation>
-<translation id="2513403576141822879">गोपनीयता, सुरक्षा र डेटाको सङ्कलनसँग सम्बन्धित थप सेटिङहरूका लागि <ph name="BEGIN_LINK"/>सिंक तथा वैयक्तीकरण<ph name="END_LINK"/> नामक खण्ड हेर्नुहोस्</translation>
+<translation id="7222718784508482526">गोपनीयता, सुरक्षा र डेटाको सङ्कलनसँग सम्बन्धित थप सेटिङहरूका लागि <ph name="BEGIN_LINK"/>सिंक तथा वैयक्तीकरण<ph name="END_LINK"/> नामक खण्ड हेर्नुहोस्</translation>
 <translation id="2517472476991765520">स्क्यान गर्नुहोस्</translation>
 <translation id="7340390500800578919">लाइट मोडमा हुँदा Brave ले पृष्ठहरू अझ छिटो लोड गर्नाका साथै ६० प्रतिशतसम्म कम डेटा प्रयोग गर्छ। तपाईंले भ्रमण गर्ने पृष्ठहरू अप्टिमाइज गर्न, Brave ले तपाईंको वेबसम्बन्धी ट्राफिक Brave मा पठाउँछ। <ph name="BEGIN_LINK"/>थप जान्नुहोस्<ph name="END_LINK"/></translation>
 <translation id="284843628681142937">तपाईं जाने पृष्ठका URL हरू Brave मा पठाउँछ</translation>
@@ -259,14 +257,11 @@
 <translation id="2900528713135656174">कार्यक्रम सिर्जना गर्नुहोस्</translation>
 <translation id="2901411048554510387"><ph name="WEBSITE_TITLE"/> सम्बन्धी सुझावहरू देखाइँदै</translation>
 <translation id="2904414404539560095">ट्याब आदान प्रदान गरिनु पर्ने यन्त्रहरूको सूची पूर्ण उचाइमा खोलिएको छ।</translation>
-<translation id="2905036901251765993">वरपर रहेका मान्छेहरूसँग आदान प्रदान गर्न उनीहरूलाई यो QR कोड स्क्यान गर्न लगाउनुहोस्</translation>
 <translation id="7339921667754113786">Brave का सूचनाहरूको प्लेटफर्म</translation>
 <translation id="2923908459366352541">नाम मान्य छैन</translation>
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/> को भण्डारण</translation>
 <translation id="2942036813789421260">पूर्वावलोकन ट्याब बन्द छ</translation>
 <translation id="2956410042958133412">यो खाता <ph name="PARENT_NAME_1"/> र <ph name="PARENT_NAME_2"/> द्वारा व्यवस्थित गरिएको छ।</translation>
-<translation id="2962095958535813455">इन्कोग्निटो ट्याबहरूमा स्विच गरियो</translation>
-<translation id="2979025552038692506">चयन गरिएको इन्कोग्निटो ट्याब</translation>
 <translation id="2987620471460279764">अर्को यन्त्रबाट आदान प्रदान गरिएको पाठ सन्देश</translation>
 <translation id="2989523299700148168">भर्खरै हेरिएका</translation>
 <translation id="2996291259634659425">पासफ्रेज सिर्जना गर्नुहोस्</translation>
@@ -279,16 +274,14 @@
 <translation id="3058498974290601450">तपाईं सेटिङहरूमा गई जुनसुकै बेला सिंक सक्रिय गर्न सक्नुहुन्छ</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> पुस्तक चिन्ह}other{<ph name="BOOKMARKS_COUNT_MANY"/> पुस्तक चिन्हहरू}}</translation>
 <translation id="6153252609477956632">Brave मा तपाईंको रुचिका विषयसँग सम्बन्धित लेखहरू पढ्नुहोस्</translation>
-<translation id="3089395242580810162">इन्कोग्निटो ट्याबमा खोल्नुहोस्</translation>
 <translation id="3114507951000454849">आजको समाचार पढ्नुहोस् <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">घोषणाहरू</translation>
-<translation id="3137521801621304719">इनकगनिटो मोडलाई छोड्नुहोस्</translation>
 <translation id="3143515551205905069">सिंक रद्द गर्नुहोस्</translation>
 <translation id="5063487983358782016">Brave को गृहपृष्ठ</translation>
 <translation id="3157842584138209013">थप विकल्पहरू नामक बटनमार्फत आफूले सुरक्षित गरेको डेटाको मात्रा हेर्नुहोस्</translation>
 <translation id="3166827708714933426">ट्याब र विन्डोका सर्टकटहरू</translation>
 <translation id="3169472444629675720">पत्ता लगाउनुहोस्</translation>
-<translation id="3181954750937456830">सुरक्षित ब्राउजिङ (तपाईं र तपाईंको यन्त्रलाई खतरनाक साइटहरूबाट सुरक्षित राख्छ)</translation>
+<translation id="3201899458094819285">सुरक्षित ब्राउजिङ (तपाईं र तपाईंको यन्त्रलाई खतरनाक साइटहरूबाट सुरक्षित राख्छ)</translation>
 <translation id="3205824638308738187">लगभग समाप्त भयो!</translation>
 <translation id="3207960819495026254">बुकमार्क लगाइयो</translation>
 <translation id="3208584281581115441">अहिले नै जाँच्नुहोस्</translation>
@@ -315,7 +308,6 @@
 <translation id="3328801116991980348">साइट जानकारी</translation>
 <translation id="3334729583274622784">फाइलको एक्स्टेन्सन परिवर्तन गर्ने हो?</translation>
 <translation id="3341058695485821946">आफूले सुरक्षित गरेको डेटाको मात्रा हेर्नुहोस्</translation>
-<translation id="3350687908700087792">सबै इन्कग्निटो ट्याबहरू बन्द गर्नुहोस्</translation>
 <translation id="8134317863207426198">Brave ले प्रदान गरेको मूल पृष्ठको लाइट संस्करण। मूल पृष्ठ लोड गर्न मूल पृष्ठ लोड गर्नुहोस् नामक बटन ट्याप गर्नुहोस्।</translation>
 <translation id="3359667936385849800">तपाईंको हालको सेवा प्रदायक प्रयोग गर्नुहोस्</translation>
 <translation id="3367813778245106622">सिंक सुरु गर्न फेरि साइन इन गर्नुहोस्</translation>
@@ -329,7 +321,6 @@
 <translation id="3414952576877147120">आकार:</translation>
 <translation id="3443221991560634068">हालको पृष्ठलाई पुनःलोड गर्नुहोस्</translation>
 <translation id="3478363558367712427">तपाईं आफ्नो सर्च इन्जिन रोज्न सक्नुहुन्छ</translation>
-<translation id="3492207499832628349">नयाँ इन्कग्निटो ट्याब</translation>
 <translation id="3493531032208478708">सुझाव दिइएको सामग्रीको बारेमा <ph name="BEGIN_LINK"/>थप जान्नुहोस्<ph name="END_LINK"/></translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3507132249039706973">'मानक सुरक्षा' सक्रिय छ</translation>
@@ -346,7 +337,7 @@
 <translation id="3568688522516854065">आफ्ना अन्य यन्त्रहरूबाट आफ्ना ट्याबहरू प्राप्त गर्न साइन इन गरी सिंक गर्ने सुविधा सक्रिय गर्नुहोस्</translation>
 <translation id="3587482841069643663">सबै</translation>
 <translation id="3587596251841506391">वेब प्रयोग गर्ने सबै जनालाई सुरक्षित रहन मद्दत गर्नुहोस्</translation>
-<translation id="3598653140581545904">साइन इन गर्न इन्कोग्निटो मोड प्रयोग गर्नुहोस्</translation>
+<translation id="807110510029471880">साइन इन गर्न इन्कोग्निटो मोड प्रयोग गर्नुहोस्</translation>
 <translation id="3551285888947169900">साइन इन गरिएका सबै यन्त्रहरूबाट इतिहास खाली गर्दछ। तपाईंको Brave खाताको <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> मा अन्य किसिमका ब्राउजिङ इतिहास रहेका हुन सक्छन्।</translation>
 <translation id="3602290021589620013">पूर्वावलोकन</translation>
 <translation id="3616113530831147358">अडियो</translation>
@@ -366,7 +357,6 @@
 <translation id="3739899004075612870"><ph name="PRODUCT_NAME"/> मा पुस्तक चिन्ह लगाइयो</translation>
 <translation id="3749259744154402564">असमर्थित</translation>
 <translation id="3771001275138982843">अद्यावधिक डाउनलोड गर्न सकिएन</translation>
-<translation id="3771033907050503522">इन्कग्निटो ट्याबहरू</translation>
 <translation id="3771290962915251154">अभिभावकीय नियन्त्रणहरू सक्रिय गरिएका हुनाले यो सेटिङ असक्षम छ</translation>
 <translation id="1138681184697033370">Brave का सेवाका सर्तहरू</translation>
 <translation id="3773755127849930740">जोडा बनाउने प्रक्रियालाई अनुमति दिन <ph name="BEGIN_LINK"/>ब्लुटुथ<ph name="END_LINK"/> लाई सक्रिय गर्नुहोस्</translation>
@@ -546,7 +536,6 @@
 <translation id="5087580092889165836">कार्ड थप्नुहोस्</translation>
 <translation id="509429900233858213">त्रुटि भयो।</translation>
 <translation id="510275257476243843">१ घन्टा बाँकी छ</translation>
-<translation id="5123685120097942451">इन्कोग्निटो ट्याब</translation>
 <translation id="5127805178023152808">सिंक बन्द छ</translation>
 <translation id="5132942445612118989">सबै यन्त्रहरूमा आफ्ना पासवर्ड, इतिहास र थप कुरा सिंक गर्नुहोस्</translation>
 <translation id="5136035049889637840">उस्तै उत्पादनहरू किन्नुहोस् <ph name="BEGIN_NEW"/>नयाँ<ph name="END_NEW"/></translation>
@@ -600,7 +589,6 @@
 <translation id="5517095782334947753">तपाईंसँग <ph name="FROM_ACCOUNT"/> का पुस्तक चिन्ह, इतिहास, पासवर्ड र अन्य सेटिङहरू छन्।</translation>
 <translation id="5524843473235508879">रिडिरेक्ट गर्न रोक लगाइयो।</translation>
 <translation id="2367014990350929709">यन्त्रहरू स्क्यान गर्न Brave लाई स्थान माथिको पहुँच चाहिन्छ। <ph name="BEGIN_LINK1"/>अनुमतिहरूलाई अपडेट गर्नुहोस्<ph name="END_LINK1"/>। यो यन्त्रमा स्थान माथिको पहुँचलाई पनि <ph name="BEGIN_LINK2"/>निष्क्रिय पारिएको छ<ph name="END_LINK2"/>।</translation>
-<translation id="5530766185686772672">इनकगनिटो ट्याबहरू बन्द गर्नुहोस्</translation>
 <translation id="5534640966246046842">साइट प्रतिलिपि गरियो</translation>
 <translation id="5556459405103347317">पुन: लोड गर्नुहोस्</translation>
 <translation id="5561549206367097665">नेटवर्कको प्रतीक्षा गर्दै…</translation>
@@ -608,7 +596,6 @@
 <translation id="5578795271662203820">यस छविको लागि <ph name="SEARCH_ENGINE"/> खोज्नुहोस्</translation>
 <translation id="5581519193887989363">तपाईं जुनसुकै बेला <ph name="BEGIN_LINK1"/>सेटिङहरू<ph name="END_LINK1"/> मा गई सिंक गर्ने कुरा छनौट गर्न सक्नुहुन्छ।</translation>
 <translation id="5595485650161345191">ठेगाना सम्पादन गर्नुहोस्</translation>
-<translation id="5599455543593328020">इन्कोग्निटो मोड</translation>
 <translation id="5620163320393916465">कुनै पनि पासवर्ड सुरक्षित गरिएको छैन</translation>
 <translation id="5620928963363755975">थप विकल्पहरू नामक बटनमार्फत डाउनलोडरू नाम फोल्डरमा भएका आफ्ना फाइल र पृष्ठहरू भेट्टाउनुहोस्</translation>
 <translation id="5626134646977739690">नाम:</translation>
@@ -635,7 +622,6 @@
 <translation id="3088191967551450609">Braveलाई फाइलहरु डाउनलोड गर्न भण्डारणको पहुँच आवश्यक छ ।</translation>
 <translation id="5749237766298580851">अफ छ <ph name="SEPARATOR"/> सिफारिस गरिँदैन</translation>
 <translation id="5754350196967618083">Discover पुनः ताजा गर्न सकिएन</translation>
-<translation id="5763382633136178763">इनकग्निटो ट्याबहरू</translation>
 <translation id="5763514718066511291">यस एपको URL प्रतिलिपि गर्न ट्याप गर्नुहोस्</translation>
 <translation id="5765780083710877561">विवरण:</translation>
 <translation id="5776970333778123608">अमहत्त्वपूर्ण डेटा</translation>
@@ -673,7 +659,7 @@
 <translation id="7760665516427405230">यो पृष्ठ अर्को यन्त्रसँग आदान प्रदान गर्न Brave ब्राउजरको सेटिङमा गई सिंक गर्ने सुविधा सक्रिय गर्नुहोस्</translation>
 <translation id="5964869237734432770">फोटो विवरण पाउन छाड्नुहोस्</translation>
 <translation id="5979084224081478209">पासवर्डहरूको जाँच गर्नुहोस्</translation>
-<translation id="5982307838673692400">इन्कोग्निटो ट्याब खोल्नुहोस्</translation>
+<translation id="1455125811784733159">इन्कोग्निटो ट्याब खोल्नुहोस्</translation>
 <translation id="6456271171669383967">Brave लाई पूर्वनिर्धारित खोज इञ्जिनका रूपमा कायम राख्नुहोस्</translation>
 <translation id="6005538289190791541">सिफारिस गरिएको पासवर्ड</translation>
 <translation id="6014293228235665243">नपढिएको</translation>
@@ -815,7 +801,7 @@
 <translation id="6900532703269623216">उन्नत सुरक्षा</translation>
 <translation id="6903907808598579934">सिंकलाई सक्रिय गर्नुहोस्</translation>
 <translation id="6929699136511445623">Android सिस्टम सिंक गर्ने सुविधा सक्षम पार्नुहोस्</translation>
-<translation id="6941901516114974832">तपाईंले इन्कोग्निटो मोडमा इन्टरनेट चलाउँदा पनि तपाईंले खोल्ने वेबसाइट, तपाईंका रोजगारदाता वा स्कुल र तपाईंको इन्टरनेट सेवा प्रदायकले तपाईंका क्रियाकलाप <ph name="BEGIN_BOLD1"/>देख्न सक्छन्<ph name="END_BOLD1"/>।
+<translation id="7987056960390558517">तपाईंले इन्कोग्निटो मोडमा इन्टरनेट चलाउँदा पनि तपाईंले खोल्ने वेबसाइट, तपाईंका रोजगारदाता वा स्कुल र तपाईंको इन्टरनेट सेवा प्रदायकले तपाईंका क्रियाकलाप <ph name="BEGIN_BOLD1"/>देख्न सक्छन्<ph name="END_BOLD1"/>।
 
 तपाईंले <ph name="BEGIN_BOLD2"/>सबै इन्कोग्निटो ट्याब बन्द गरेपछि<ph name="END_BOLD2"/> मात्र तपाईंले इन्कोग्निटो मोडमा गर्नुभएका क्रियाकलापसम्बन्धी डेटा मेटाइने छ।</translation>
 <translation id="6942665639005891494">सेटिङहरू नामक मेनुको विकल्प प्रयोग गरी पूर्वनिर्धारित डाउनलोड स्थान जुनसुकै बेला परिवर्तन गर्नुहोस्</translation>
@@ -979,7 +965,6 @@
 <translation id="8073388330009372546">छविलाई नयाँ ट्याबमा खोल्नुहोस्</translation>
 <translation id="8076492880354921740">ट्याबहरू</translation>
 <translation id="8084114998886531721">सुरक्षित गरिएको पासवर्ड</translation>
-<translation id="8103578431304235997">इन्कोग्निटो ट्याब</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">आफ्ना सबै यन्त्रमा पुस्तक चिन्हहरू प्राप्त गर्न सिंक गर्ने सुविधा सक्रिय गर्नुहोस्</translation>
 <translation id="4565206163201411670">तपाईंले Brave मा गर्नुभएका क्रियाकलाप डिजिटल वेलबिइङमा देखाउने हो?</translation>
@@ -1034,7 +1019,6 @@
 <translation id="230699814587342492">Brave का पासवर्डहरू</translation>
 <translation id="8503813439785031346">एक-पटके पाठ सन्देश</translation>
 <translation id="133012818630824069">Brave मार्फत भण्डारण गरिएका पासवर्डहरू निर्यात गर्नुहोस्</translation>
-<translation id="8514577642972634246">इनकगनिटो मोड प्रविष्टि गर्नुहोस्</translation>
 <translation id="8516012719330875537">छवि सम्पादक</translation>
 <translation id="8523928698583292556">भण्डारण गरिएको पासवर्ड मेट्नुहोस्</translation>
 <translation id="8540136935098276800">सही ढाँचा भएको URL प्रविष्टि गर्नुहोस्</translation>
@@ -1091,7 +1075,6 @@
 <translation id="8972098258593396643">पूर्वनिर्धारित फोल्डरमा डाउनलोड गर्ने हो?</translation>
 <translation id="8988028529677883095">फोनलाई सुरक्षा साँचोका रूपमा प्रयोग गर्नुहोस्</translation>
 <translation id="8990209962746788689">QR कोड सिर्जना गर्न सकिएन</translation>
-<translation id="8993760627012879038">इनकोग्निटो मोडमा एउटा नयाँ ट्याब खोल्नुहोस्</translation>
 <translation id="8996847606757455498">अर्को सेवा प्रदायक छनौट गर्नुहोस्</translation>
 <translation id="3275122921244685452">तपाईं <ph name="MANAGED_DOMAIN"/> द्वारा व्यवस्थापन गरिएको खाता मार्फत साइन इन गर्दै हुनुहुन्छ र त्यसको प्रशासकलाई तपाईंको Brave को डेटालाई नियन्त्रण गर्न दिँदै हुनुहुन्छ। तपाईंको डेटा सदाका लागि यस खातामा बाँधिनेछ। Brave बाट साइन आउट गर्नाले तपाईंको डेटा यस यन्त्रबाट मेटिनेछ तर यो तपाईंको Brave खातामा भण्डारण गरिएको अवस्थामा रहनेछ।</translation>
 <translation id="9022774213089566801">बारम्बार हेरिएका</translation>

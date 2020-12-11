@@ -106,7 +106,7 @@
 <translation id="1348198688976932919">നിങ്ങൾ പോകുന്ന സൈറ്റിൽ അപകടകരമായ ആപ്പുകൾ ഉണ്ട്</translation>
 <translation id="1348779747280417563">പേര് സ്ഥിരീകരിക്കുക</translation>
 <translation id="1357195169723583938">അടുത്തിടെ ഉപകരണം ഉപയോഗിച്ചവരും ഉപയോഗിച്ച സമയവും</translation>
-<translation id="1360955481084547712">സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ, ഒരു പുതിയ അദൃശ്യ വിൻഡോ തുറക്കുക</translation>
+<translation id="5497977785983089120">സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ, ഒരു പുതിയ അദൃശ്യ വിൻഡോ തുറക്കുക</translation>
 <translation id="1363819917331173092"><ph name="SOURCE_LANGUAGE"/> എന്ന ഭാഷയിലെ പേജുകൾ വിവർത്തനം ചെയ്യേണ്ട</translation>
 <translation id="1364822246244961190">ഈ നയം ബ്ലോക്ക് ചെയ്‌തിരിക്കുന്നു, ഇതിൻ്റെ മൂല്യം അവഗണിക്കപ്പെടും.</translation>
 <translation id="1374468813861204354">നിർദ്ദേശങ്ങൾ</translation>
@@ -509,7 +509,6 @@
 <translation id="3041612393474885105">സര്‍‌ട്ടിഫിക്കറ്റ് വിവരങ്ങള്‍‌</translation>
 <translation id="3060227939791841287">C9 (എൻവലപ്പ്)</translation>
 <translation id="3061707000357573562">പാച്ച് സേവനം</translation>
-<translation id="3064966200440839136">ബാഹ്യ ആപ്പ് വഴി പണമടയ്‌ക്കാൻ അദൃശ്യ മോഡ് ഒഴിവാക്കുന്നു. തുടരണോ?</translation>
 <translation id="3080254622891793721">ഗ്രാഫിക്</translation>
 <translation id="3086579638707268289">വെബിലുള്ള നിങ്ങളുടെ ആക്റ്റിവിറ്റി നിരീക്ഷണത്തിലാണ്</translation>
 <translation id="3087734570205094154">താഴെ</translation>
@@ -530,7 +529,6 @@
 <translation id="3154506275960390542">സുരക്ഷിതമായി സമർപ്പിക്കാൻ സാധിക്കാത്ത ഒരു ഫോം ഈ പേജിൽ ഉ‌ണ്ട്. അയയ്ക്കുന്ന സമയത്ത് നിങ്ങളുടെ ഡാറ്റ മറ്റുള്ളവര്‍‌ക്ക് കാണാനാകും, അല്ലെങ്കിൽ സെർവറിലേക്ക് എത്തും ‌മുമ്പ് ‌ഒരു അക്രമിക്ക് പരിഷ്‌ക്കരിക്കാൻ കഴിയും.</translation>
 <translation id="3157931365184549694">പുനഃസ്ഥാപിക്കുക</translation>
 <translation id="3162559335345991374">നിങ്ങൾ ഉപയോഗിക്കുന്ന Wi-Fi അതിന്റെ ലോഗിൻ പേജ് സന്ദർശിക്കാൻ നിങ്ങളോട് ആവശ്യപ്പെടാം.</translation>
-<translation id="3167968892399408617">അദൃശ്യ ടാബുകളിൽ നിങ്ങൾ കാണുന്ന പേജുകൾ, അദൃശ്യ ടാബുകൾ എല്ലാം അടച്ചതിനുശേഷം ബ്രൗസർ ചരിത്രത്തിലോ കുക്കി സ്റ്റോറിലോ തിരയൽ ചരിത്രത്തിലോ ഉണ്ടാകില്ല. നിങ്ങൾ ഡൗൺലോഡ് ചെയ്യുന്ന ഫയലുകളോ സൃഷ്‌ടിക്കുന്ന ബുക്ക്‌മാർക്കുകളോ എല്ലാം സൂക്ഷിക്കും.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">ഐലന്‍ഡ്</translation>
 <translation id="3176929007561373547">പ്രോക്‌സി സെർവർ പ്രവർത്തിക്കുന്നുവെന്ന് ഉറപ്പാക്കാൻ
@@ -656,7 +654,6 @@
 <translation id="3676592649209844519">ഉപകരണ ഐഡി:</translation>
 <translation id="3677008721441257057">&lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; എന്നാണോ ഉദ്ദേശിച്ചത്?</translation>
 <translation id="3678029195006412963">അഭ്യർത്ഥന സൈൻ ചെയ്യാനായില്ല</translation>
-<translation id="3678529606614285348">പുതിയ അദൃശ്യ വിൻഡോയിൽ പേജ് തുറക്കുക (കൺട്രോൾ-ഷിഫ്റ്റ്-N)</translation>
 <translation id="3681007416295224113">സര്‍‌ട്ടിഫിക്കറ്റ് വിവരങ്ങള്‍‌</translation>
 <translation id="3701427423622901115">റീസെറ്റ് അംഗീകരിച്ചിരിക്കുന്നു</translation>
 <translation id="3704162925118123524">നിങ്ങൾ ഉപയോഗിക്കുന്ന നെറ്റ്‌വർക്കിനായി, ഇതിന്റെ ലോഗിൻ പേജ് സന്ദർശിക്കേണ്ടിവരാം.</translation>
@@ -930,7 +927,7 @@
 <translation id="4879725228911483934">നിങ്ങളുടെ വിൻഡോ തുറന്ന് സ്ക്രീനിൽ വെയ്ക്കണമെന്നുണ്ട്</translation>
 <translation id="4880827082731008257">തിരയൽ ചരിത്രം</translation>
 <translation id="4881695831933465202">തുറക്കുക</translation>
-<translation id="4889420713887366944">'അദൃശ്യ വിൻഡോ തുറക്കുക' ബട്ടൺ, സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ പുതിയ അദൃശ്യ വിൻഡോ തുറക്കുന്നതിന്, 'Enter' അമർത്തുക</translation>
+<translation id="2418728264526266844">'അദൃശ്യ വിൻഡോ തുറക്കുക' ബട്ടൺ, സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ പുതിയ അദൃശ്യ വിൻഡോ തുറക്കുന്നതിന്, 'Enter' അമർത്തുക</translation>
 <translation id="4892518386797173871">പിൻഭാഗം</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">സംരക്ഷിക്കുക...</translation>
@@ -1000,7 +997,6 @@
 <translation id="5148809049217731050">ഫേസ് അപ്പ്</translation>
 <translation id="515292512908731282">C4 (എൻവലപ്പ്)</translation>
 <translation id="5158275234811857234">കവർ</translation>
-<translation id="5159010409087891077">പുതിയൊരു അദൃശ്യ വിൻഡോയിൽ പേജ് തുറക്കുക (⇧⌘N)</translation>
 <translation id="5161506081086828129">സ്റ്റാക്കർ 9</translation>
 <translation id="5164798890604758545">ടെക്‌സ്‌റ്റ് നൽകുമ്പോൾ</translation>
 <translation id="2996889577833788807"><ph name="CREDIT_CARD"/>-ന്‍റെ CVC നൽകുക. സ്ഥിരീകരിച്ച് കഴിഞ്ഞാൽ, നിങ്ങളുടെ Brave അക്കൗണ്ടിൽ നിന്നുള്ള കാർഡ് വിശദാംശങ്ങൾ ഈ സൈറ്റുമായി പങ്കിടും.</translation>
@@ -1010,7 +1006,6 @@
 <translation id="5172758083709347301">മെഷീൻ</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/> എന്നതില്‍‌ ഇല്ലേ? ഈ പിശക് റിപ്പോര്‍‌ട്ട് ചെയ്യുക</translation>
 <translation id="5179740473595559246">നിങ്ങളുടെ സാന്നിധ്യം അറിയുക</translation>
-<translation id="5190835502935405962">ബുക്ക്‌മാര്‍‌ക്ക് ബാര്‍‌</translation>
 <translation id="519422657042045905">കുറിപ്പ് ലഭ്യമല്ല</translation>
 <translation id="5201306358585911203">ഈ പേജിലെ ഉൾച്ചേർത്ത പേജ് പറയുന്നത്:</translation>
 <translation id="5205222826937269299">പേര് ആവശ്യമാണ്</translation>
@@ -1477,7 +1472,7 @@
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> എന്നതും മറ്റ് <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> എണ്ണവും}other{<ph name="SHIPPING_OPTION_PREVIEW"/> എന്നതും മറ്റ് <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> എണ്ണവും}}</translation>
 <translation id="7179323680825933600">പേയ്‌മെന്റ് രീതികൾ സംരക്ഷിച്ച് പൂരിപ്പിക്കുക</translation>
 <translation id="7180611975245234373">പുതുക്കുക</translation>
-<translation id="7181261019481237103">അദൃശ്യ വിൻഡോ തുറക്കുക</translation>
+<translation id="5549245478906381817">അദൃശ്യ വിൻഡോ തുറക്കുക</translation>
 <translation id="7182878459783632708">നയങ്ങളൊന്നും സജ്ജമാക്കിയിട്ടില്ല</translation>
 <translation id="7186367841673660872">ഈ പേജ്<ph name="ORIGINAL_LANGUAGE"/>ല്‍‌ നിന്നും<ph name="LANGUAGE_LANGUAGE"/>ലേക്ക് വിവര്‍‌ത്തനം ചെയ്‌തു</translation>
 <translation id="7192203810768312527"><ph name="SIZE"/> ലാഭിക്കുക. നിങ്ങളുടെ അടുത്ത സന്ദർശനത്തിൽ ചില സൈറ്റുകൾ സാവധാനത്തിൽ ലോഡായേക്കാം.</translation>
@@ -1660,7 +1655,6 @@
 <translation id="782886543891417279">നിങ്ങൾ ഉപയോഗിക്കുന്ന Wi-Fi (<ph name="WIFI_NAME"/>) അതിന്റെ ലോഗിൻ പേജ് സന്ദർശിക്കാൻ ആവശ്യപ്പെടാം.</translation>
 <translation id="7836231406687464395">പോസ്‌റ്റ്ഫിക്‌സ് (എൻവലപ്പ്)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{ഒന്നുമില്ല}=1{ഒരു ആപ്പ് (<ph name="EXAMPLE_APP_1"/>)}=2{2 ആപ്പുകൾ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# ആപ്പുകൾ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">എന്നിരുന്നാലും നിങ്ങൾ അദൃശ്യനല്ല. ആൾമാറാട്ടത്തിലേയ്‌ക്ക് പോകുന്നത്, നിങ്ങളുടെ തൊഴിൽ ദാതാവിൽ നിന്നോ ഇന്റർനെറ്റ് സേവന ദാതാവിൽ നിന്നോ നിങ്ങൾ സന്ദർശിക്കുന്ന വെബ്‌സൈറ്റുകളിൽ നിന്നോ ഉള്ള ബ്രൗസിംഗിനെ മറയ്‌ക്കില്ല.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">സൈറ്റ് വിടണോ?</translation>
 <translation id="7865448901209910068">ഏറ്റവും മികച്ച വേഗത</translation>
@@ -1743,11 +1737,9 @@
 <translation id="8218327578424803826">നൽകിയിരിക്കുന്ന ലൊക്കേഷൻ:</translation>
 <translation id="8220146938470311105">C7/C6 (എൻവലപ്പ്)</translation>
 <translation id="3272614036080146686">വഞ്ചനാപരമായ സൈറ്റിൽ നിങ്ങൾ ഇപ്പോൾ പാസ്‍വേഡ് നൽകി. നിങ്ങൾ ഈ പാസ്‌വേഡ് ഉപയോഗിക്കുന്ന <ph name="WEBSITE_1"/> എന്നതിലേക്കും മറ്റ് സൈറ്റുകളിലേക്കും പോയി, ഇപ്പോൾ തന്നെ അത് മാറ്റാൻ Brave ശുപാർശ ചെയ്യുന്നു.</translation>
-<translation id="8225771182978767009">ഈ കമ്പ്യൂട്ടർ സജ്ജമാക്കിയ വ്യക്തി, ഈ സൈറ്റ് ബ്ലോക്ക് ചെയ്യാൻ തീരുമാനിച്ചിരുന്നു.</translation>
 <translation id="8228419419708659934">രണ്ട് പേജ് കാഴ്ച</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">പ്ലാറ്റ്‌ഫോം താപനില</translation>
-<translation id="8238581221633243064">പുതിയൊരു അദൃശ്യ ടാബിൽ പേജ് തുറക്കുക</translation>
 <translation id="8241707690549784388">നിങ്ങൾ തിരയുന്ന പേജ് നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ഉപയോഗിക്കുന്നു. ആ പേജിലേയ്‌ക്ക് തിരികെ പോകുന്നത് നിങ്ങളുടെ എല്ലാ പ്രവർത്തനങ്ങളും ആവർത്തിക്കുന്നതിന് ഇടയാക്കാം. തുടരണോ?</translation>
 <translation id="8241712895048303527">ഈ സൈറ്റിൽ ബ്ലോക്ക് ചെയ്യുക</translation>
 <translation id="8242426110754782860">തുടരുക</translation>
@@ -1760,7 +1752,6 @@
 <translation id="8265992338205884890">ദൃശ്യമാകുന്ന ഡാറ്റ</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/> എന്നയാളായി സൈൻ ഇൻ ചെയ്യുന്നു</translation>
 <translation id="8269242089528251720">വെവ്വേറെ ഡോക്യുമെന്റുകൾ/ക്രമത്തിലുള്ള പകർപ്പുകൾ</translation>
-<translation id="8269981117540303696">നിങ്ങൾക്ക് ഇപ്പോൾ സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാം, ഈ ഉപകരണം ഉപയോഗിക്കുന്ന മറ്റ് ആളുകൾ നിങ്ങളുടെ പ്രവൃത്തി കാണില്ല. എന്നിരുന്നാലും, ഡൗൺലോഡുകളും ബുക്ക്‌മാർക്കുകളും സംരക്ഷിക്കപ്പെടും.</translation>
 <translation id="8275952078857499577">ഈ സൈറ്റ് വിവർത്തനം ചെയ്യേണ്ട</translation>
 <translation id="8277900682056760511">പേയ്മെന്റ് കൈകാര്യം ചെയ്യുന്ന ഷീറ്റ് തുറന്നിരിക്കുന്നു</translation>
 <translation id="8281084378435768645">വലിയ-ഫോട്ടോ</translation>
@@ -1782,7 +1773,6 @@
 <translation id="8339163506404995330"><ph name="LANGUAGE"/> ഭാഷയിലുള്ള പേജുകൾ വിവർത്തനം ചെയ്യില്ല</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">നിങ്ങളുടെ സുരക്ഷയെ ബാധിക്കാനിടയുണ്ടെന്ന് മനസ്സിലാക്കുകയാണെങ്കിൽ, ദോഷകരമായ പ്രോഗ്രാമുകൾ നീക്കംചെയ്യുന്നതിനു മുമ്പ് <ph name="BEGIN_LINK"/>ഈ സൈറ്റ് നിങ്ങൾക്ക് സന്ദർശിക്കാം<ph name="END_LINK"/>.</translation>
-<translation id="8349305172487531364">ബുക്മാര്‍ക്ക് ബാര്‍</translation>
 <translation id="8355270400102541638">ലോക്കൽ ക്രാഷ് സന്ദർഭം:</translation>
 <translation id="8363502534493474904">ഫ്ലൈറ്റ് മോഡ് ഓഫാക്കുന്നു</translation>
 <translation id="8364627913115013041">സജ്ജമാക്കിയിട്ടില്ല.</translation>
@@ -1851,10 +1841,9 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, തിരയൽ നിർദ്ദേശം</translation>
 <translation id="8719528812645237045">മുകളിൽ ഒന്നിലധികം പഞ്ച് ചെയ്യുക</translation>
 <translation id="8725066075913043281">വീണ്ടും ശ്രമിക്കുക</translation>
-<translation id="8728672262656704056">നിങ്ങൾ അദൃശ്യ വിൻഡോയിലാണ്</translation>
 <translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
 <translation id="1769647018144434441">'പാസ്‌വേഡുകൾ മാനേജ് ചെയ്യുക' ബട്ടൺ, Brave ക്രമീകരണത്തിൽ നിങ്ങളുടെ പാസ്‌വേഡുകൾ കാണാനും മാനേജ് ചെയ്യാനും 'Enter' അമർത്തുക</translation>
-<translation id="8737134861345396036"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ ഒരു പുതിയ അദൃശ്യ വിൻഡോ തുറക്കുന്നതിന്, 'Tab' അമർത്തുക, തുടർന്ന് 'Enter' അമർത്തുക</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ ഒരു പുതിയ അദൃശ്യ വിൻഡോ തുറക്കുന്നതിന്, 'Tab' അമർത്തുക, തുടർന്ന് 'Enter' അമർത്തുക</translation>
 <translation id="6326805297893828864">സുരക്ഷിത കണക്ഷൻ സ്ഥാപിക്കുന്നതിന്, നിങ്ങളുടെ ക്ലോക്ക് ശരിയായി സജ്ജീകരിക്കേണ്ടതുണ്ട്. വെബ്‌സൈറ്റുകൾ സ്വയം തിരിച്ചറിയുന്നതിന് ഉപയോഗിക്കുന്ന സർട്ടിഫിക്കറ്റുകൾ, നിർദ്ദിഷ്‌ട സമയ പരിധിയ്‌ക്ക് മാത്രമായി സാധുതയുള്ളതിനാലാണിത്. നിങ്ങളുടെ ഉപകരണത്തിന്റെ ക്ലോക്ക് തെറ്റായിരിക്കുന്നതിനാൽ, Brave-ന് ഈ സർട്ടിഫിക്കറ്റുകൾ പരിശോധിച്ചുറപ്പിക്കാനാവില്ല.</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/> ഹോസ്‌റ്റിന്‍റെ &lt;abbr id="dnsDefinition"&gt;DNS വിലാസം&lt;/abbr&gt; കണ്ടെത്താനായില്ല. പ്രശ്‌നം നിർണ്ണയിക്കുന്നു.</translation>
 <translation id="8742371904523228557"><ph name="ORIGIN"/> എന്നതിന്റെ നിങ്ങളുടെ കോഡ് <ph name="ONE_TIME_CODE"/> ആണ്</translation>
@@ -1890,7 +1879,6 @@
 <translation id="8903921497873541725">സൂം ഇന്‍ ചെയ്യുക</translation>
 <translation id="890485472659500557">എഞ്ചിനീയറിംഗ്-C</translation>
 <translation id="890493561996401738">നിർദ്ദേശ ബട്ടൺ നീക്കം ചെയ്യുക, നീക്കം ചെയ്യാൻ എന്റർ അമർത്തുക, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">നിങ്ങൾ അദൃശ്യ മോഡിലേക്ക് പോയി</translation>
 <translation id="2684652081942622950">Brave അക്കൗണ്ട്</translation>
 <translation id="4102271590580840789">'പേയ്‌മെന്റ് രീതികൾ മാനേജ് ചെയ്യുക' ബട്ടൺ, Brave ക്രമീകരണത്തിൽ നിങ്ങളുടെ പേയ്‌മെന്റുകളും ക്രെഡിറ്റ് കാർഡ് വിവരങ്ങളും മാനേജ് ചെയ്യാൻ 'Enter' അമർത്തുക</translation>
 <translation id="8918231688545606538">ഈ പേജ് സംശയാസ്പദമാണ്</translation>
