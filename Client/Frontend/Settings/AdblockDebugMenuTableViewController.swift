@@ -22,6 +22,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
             if listNames.isEmpty { return }
             
             self.dataSource.sections = [self.actionsSection,
+                                        self.fetchSection,
                                         self.datesSection,
                                         self.bundledListsSection(names: listNames),
                                         self.downloadedListsSection(names: listNames)]
@@ -40,6 +41,19 @@ class AdblockDebugMenuTableViewController: TableViewController {
                 }
                 }, cellClass: ButtonCell.self)
         ]
+        
+        return section
+    }
+    
+    private var fetchSection: Section {
+        var section = Section(footer: "Last time we pinged the server for new data. If adblock list hasn't changed `Last Time Updated` section does not update.")
+        let dateFormatter = DateFormatter().then {
+            $0.dateStyle = .short
+            $0.timeStyle = .short
+        }
+
+        section.rows = [.init(text: "Last fetch time", detailText:
+                                dateFormatter.string(from: AdblockResourceDownloader.shared.lastFetchDate))]
         
         return section
     }

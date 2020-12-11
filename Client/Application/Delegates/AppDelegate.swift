@@ -478,6 +478,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         if let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo(), authInfo.isPasscodeRequiredImmediately {
             authenticator?.willEnterForeground()
         }
+        
+        AdblockResourceDownloader.shared.startLoading()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
