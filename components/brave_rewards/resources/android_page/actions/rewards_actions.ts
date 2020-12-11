@@ -82,6 +82,8 @@ export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUD
 
 export const restorePublishers = () => action(types.ON_RESTORE_PUBLISHERS)
 
+export const getContributionAmount = () => action(types.GET_CONTRIBUTION_AMOUNT)
+
 export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBUTION_AMOUNT, {
   amount
 })
