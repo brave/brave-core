@@ -116,6 +116,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
+  registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {

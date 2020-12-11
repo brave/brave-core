@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import './change_ipfs_gateway_dialog.js';
+
 (function() {
 'use strict';
 
@@ -21,6 +23,7 @@ Polymer({
     torEnabled_: Boolean,
     disableTorOption_: Boolean,
     ipfsEnabled_: Boolean,
+    showChangeIPFSGatewayDialog_: Boolean,
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -112,6 +115,14 @@ Polymer({
 
   shouldShowRestartForGoogleLogin_: function(value) {
     return this.browserProxy_.wasSignInEnabledAtStartup() != value;
+  },
+
+  onChangeIPFSGatewayDialogTapped_: function() {
+    this.showChangeIPFSGatewayDialog_ = true;
+  },
+
+  onChangeIPFSGatewayDialogClosed_: function() {
+    this.showChangeIPFSGatewayDialog_ = false;
   },
 
 });

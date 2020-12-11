@@ -19,9 +19,9 @@
 #include "net/base/isolation_info.h"
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -98,10 +98,9 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->network_isolation_key =
         request.trusted_params->isolation_info.network_isolation_key();
-    ctx->tab_origin = ctx->network_isolation_key
-            .GetTopFrameSite()
-            .value_or(url::Origin())
-            .GetURL();
+    ctx->tab_origin = ctx->network_isolation_key.GetTopFrameSite()
+                          .value_or(url::Origin())
+                          .GetURL();
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
@@ -123,8 +122,8 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->allow_brave_shields =
       brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin);
-  ctx->allow_ads = brave_shields::GetAdControlType(
-      map, ctx->tab_origin) == brave_shields::ControlType::ALLOW;
+  ctx->allow_ads = brave_shields::GetAdControlType(map, ctx->tab_origin) ==
+                   brave_shields::ControlType::ALLOW;
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
 
@@ -133,19 +132,19 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // stages of navigation, |tab_origin| changes and so does |allow_referrers|
   // flag, which is not what we want for determining referrers.
   ctx->allow_referrers = brave_shields::AllowReferrers(
-      map, ctx->redirect_source.is_empty() ? ctx->tab_origin :
-                                             ctx->redirect_source);
+      map,
+      ctx->redirect_source.is_empty() ? ctx->tab_origin : ctx->redirect_source);
   ctx->upload_data = GetUploadData(request);
 
   ctx->browser_context = browser_context;
 #if BUILDFLAG(IPFS_ENABLED)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   bool local = static_cast<ipfs::IPFSResolveMethodTypes>(
-      prefs->GetInteger(kIPFSResolveMethod)) ==
-          ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
-  ctx->ipfs_gateway_url = local ?
-      ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel()) :
-      ipfs::GetDefaultIPFSGateway();
+                   prefs->GetInteger(kIPFSResolveMethod)) ==
+               ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
+  ctx->ipfs_gateway_url =
+      local ? ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())
+            : ipfs::GetDefaultIPFSGateway(browser_context);
 #endif
 
   // TODO(fmarier): remove this once the hacky code in

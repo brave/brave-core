@@ -49,8 +49,7 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, const GURL& gateway_url) {
         }
         *new_url = GURL(gateway_empty_path +
                         (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
-        VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url
-                << ", and: " << GetDefaultIPFSGateway();
+        VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
       }
 
       return true;

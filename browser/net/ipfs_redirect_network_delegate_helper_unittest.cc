@@ -56,6 +56,8 @@ class IPFSRedirectNetworkDelegateHelperTest : public testing::Test {
     feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
     prefs_.registry()->RegisterIntegerPref(
         kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
+    prefs_.registry()->RegisterStringPref(kIPFSPublicGatewayAddress,
+                                          kDefaultIPFSGateway);
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
   }
 
@@ -101,8 +103,8 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPFSScheme) {
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = browser_context();
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
-  brave_request_info->initiator_url =
-      ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
+  brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(browser_context()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -132,8 +134,8 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = browser_context();
   brave_request_info->ipfs_gateway_url = GetPublicGateway();
-  brave_request_info->initiator_url =
-      ipfs::GetIPFSGatewayURL(initiator_cid, "", ipfs::GetDefaultIPFSGateway());
+  brave_request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(browser_context()));
   int rc = ipfs::OnBeforeURLRequest_IPFSRedirectWork(brave::ResponseCallback(),
                                                      brave_request_info);
   EXPECT_EQ(rc, net::OK);

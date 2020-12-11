@@ -6,15 +6,15 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//third_party/closure_compiler/compile_js.gni")
 import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
+import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/preprocess_grit.gni")
-import("//ui/webui/resources/tools/js_modulizer.gni")
 import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
+import("//ui/webui/resources/tools/js_modulizer.gni")
 
 preprocess_folder = "preprocessed"
 preprocess_manifest = "brave_preprocessed_manifest.json"
@@ -36,8 +36,8 @@ grit("resources") {
   ]
 
   enable_input_discovery_for_gn_analyze = false
-  defines += [ "SHARED_INTERMEDIATE_DIR=" +
-               rebase_path(root_gen_dir, root_build_dir) ]
+  defines +=
+      [ "SHARED_INTERMEDIATE_DIR=" + rebase_path(root_gen_dir, root_build_dir) ]
   settings_gen_dir = "$root_gen_dir/brave/browser/resources/settings"
   source = "$settings_gen_dir/brave_settings_resources.grd"
   deps = [ ":build_grd" ]
@@ -82,8 +82,10 @@ generate_grd("build_grd") {
 
 preprocess_grit("preprocess") {
   in_folder = "./"
-  out_folder = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
-  out_manifest = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_manifest"
+  out_folder =
+      "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
+  out_manifest =
+      "$root_gen_dir/chrome/browser/resources/settings/$preprocess_manifest"
   in_files = [
     "brave_appearance_page/brave_appearance_browser_proxy.js",
     "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js",
@@ -121,8 +123,10 @@ preprocess_grit("preprocess_generated") {
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
   ]
   in_folder = target_gen_dir
-  out_folder = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
-  out_manifest = "$root_gen_dir/chrome/browser/resources/settings/$preprocess_gen_manifest"
+  out_folder =
+      "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
+  out_manifest =
+      "$root_gen_dir/chrome/browser/resources/settings/$preprocess_gen_manifest"
   in_files = [
     "brave_appearance_page/brave_theme.js",
     "brave_appearance_page/super_referral.js",
@@ -130,6 +134,7 @@ preprocess_grit("preprocess_generated") {
     "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js",
     "brave_default_extensions_page/brave_default_extensions_browser_proxy.m.js",
     "brave_default_extensions_page/brave_default_extensions_page.m.js",
+    "brave_default_extensions_page/change_ipfs_gateway_dialog.js",
     "brave_help_tips_page/brave_help_tips_page.m.js",
     "brave_icons.m.js",
     "brave_new_tab_page/brave_new_tab_browser_proxy.m.js",
@@ -150,6 +155,9 @@ preprocess_grit("preprocess_generated") {
 
 group("web_modules") {
   public_deps = [
+    # local targets
+    ":icons_module",
+
     # Sub-folder targets
     "brave_appearance_page:web_modules",
     "brave_clear_browsing_data_dialog:web_modules",
@@ -161,8 +169,6 @@ group("web_modules") {
     "default_brave_shields_page:web_modules",
     "getting_started_page:web_modules",
     "social_blocking_page:web_modules",
-    # local targets
-    ":icons_module",
   ]
 }
 

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
@@ -13,6 +14,7 @@ group("web_modules") {
   public_deps = [
     ":brave_default_extensions_page_module",
     ":modules",
+    ":templatize",
   ]
 }
 
@@ -20,15 +22,15 @@ polymer_modulizer("brave_default_extensions_page") {
   js_file = "brave_default_extensions_page.js"
   html_file = "brave_default_extensions_page.html"
   html_type = "dom-module"
-  auto_imports = settings_auto_imports  + [
-    "brave/browser/resources/settings/brave_default_extensions_page/brave_default_extensions_browser_proxy.html|BraveDefaultExtensionsBrowserProxy, BraveDefaultExtensionsBrowserProxyImpl",
-  ]
+  auto_imports = settings_auto_imports + [ "brave/browser/resources/settings/brave_default_extensions_page/brave_default_extensions_browser_proxy.html|BraveDefaultExtensionsBrowserProxy, BraveDefaultExtensionsBrowserProxyImpl" ]
   namespace_rewrites = settings_namespace_rewrites
 }
 
 js_modulizer("modules") {
-  input_files = [
-    "brave_default_extensions_browser_proxy.js",
-  ]
+  input_files = [ "brave_default_extensions_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
+}
+
+html_to_js("templatize") {
+  js_files = [ "change_ipfs_gateway_dialog.js" ]
 }

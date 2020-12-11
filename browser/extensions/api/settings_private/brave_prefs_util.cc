@@ -174,6 +174,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kIPFSPublicGatewayAddress] =
+      settings_api::PrefType::PREF_TYPE_STRING;
 #endif
   // Media Router Pref
   (*s_brave_allowlist)[kBraveEnabledMediaRouter] =
