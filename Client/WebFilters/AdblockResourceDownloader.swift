@@ -34,9 +34,19 @@ class AdblockResourceDownloader {
         Preferences.Shields.useRegionAdBlock.observe(from: self)
     }
     
+    /// Initialized with year 1970 to force adblock fetch at first launch.
+    private(set) var lastFetchDate = Date(timeIntervalSince1970: 0)
+    
     func startLoading() {
-        AdblockResourceDownloader.shared.regionalAdblockResourcesSetup()
-        AdblockResourceDownloader.shared.generalAdblockResourcesSetup()
+        let now = Date()
+        let fetchInterval = AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
+        
+        if now.timeIntervalSince(lastFetchDate) >= fetchInterval {
+            lastFetchDate = now
+            
+            AdblockResourceDownloader.shared.regionalAdblockResourcesSetup()
+            AdblockResourceDownloader.shared.generalAdblockResourcesSetup()
+        }
     }
     
     func regionalAdblockResourcesSetup() {
