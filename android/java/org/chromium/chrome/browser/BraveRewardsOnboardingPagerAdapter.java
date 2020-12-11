@@ -51,13 +51,85 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
-        View view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
-        TextView titleView = view.findViewById(R.id.title_view);
-        titleView.setText(mHeaders.get(position));
-        TextView textView = view.findViewById(R.id.text_view);
-        textView.setText(mTexts.get(position));
-        AppCompatImageView imageView = view.findViewById(R.id.image_view);
-        imageView.setImageResource(mImages.get(position));
+        View view;
+        if (shouldShowMoreOptions
+            && position == (MORE_OPTIONS-2)) {
+            view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
+            RadioGroup hourRadioGroup = view.findViewById(R.id.hour_radio_group);
+            int adsPerHour = BraveRewardsNativeWorker.getInstance().GetAdsPerHour();
+            RadioButton defaultRadioButton;
+            switch(adsPerHour) {
+                case 1:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
+                break;
+                case 2:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_2_radio));
+                break;
+                case 3:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_3_radio));
+                break;
+                case 4:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_4_radio));
+                break;
+                case 5:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_5_radio));
+                break;
+                default:
+                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
+                break;
+            }
+            defaultRadioButton.setChecked(true);
+            hourRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                    int hour = adsPerHour;
+                    if (checkedId == R.id.hour_1_radio) {
+                        hour = 1;
+                    } else if (checkedId == R.id.hour_2_radio) {
+                        hour = 2;
+                    } else if (checkedId == R.id.hour_3_radio) {
+                        hour = 3;
+                    } else if (checkedId == R.id.hour_4_radio) {
+                        hour = 4;
+                    } else if (checkedId == R.id.hour_5_radio) {
+                        hour = 5;
+                    }
+                    if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                Profile.getLastUsedRegularProfile())) {
+                        BraveRewardsNativeWorker.getInstance().SetAdsPerHour(hour);
+                    }
+                }
+            });
+
+            RadioGroup contributeRadioGroup = view.findViewById(R.id.contribute_radio_group);
+            BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(5);
+            ((RadioButton)view.findViewById(R.id.contribute_5_radio)).setChecked(true);
+            contributeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                    double contribute = 15;
+                    if (checkedId == R.id.contribute_5_radio) {
+                        contribute = 5;
+                    } else if (checkedId == R.id.contribute_15_radio) {
+                        contribute = 15;
+                    } else if (checkedId == R.id.contribute_25_radio) {
+                        contribute = 25;
+                    } else if (checkedId == R.id.contribute_50_radio) {
+                        contribute = 50;
+                    }
+                    BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(
+                                contribute);
+                }
+            });
+        } else {
+            view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
+            TextView titleView = view.findViewById(R.id.title_view);
+            titleView.setText(mHeaders.get(position));
+            TextView textView = view.findViewById(R.id.text_view);
+            textView.setText(mTexts.get(position));
+            AppCompatImageView imageView = view.findViewById(R.id.image_view);
+            imageView.setImageResource(mImages.get(position));
+        }
         collection.addView(view);
         return view;
     }
