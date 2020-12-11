@@ -18,6 +18,8 @@ import {
   WidgetIcon,
   FlexItem,
   Header,
+  Filters,
+  FilterOption,
   List,
   ListItem,
   PlainButton,
@@ -152,7 +154,16 @@ class FTX extends React.PureComponent<Props, State> {
   }
 
   renderTopMoversView () {
-    return (
+    return <>
+      <BasicBox isFlex={true} justify="start">
+        <PlainButton $pl="0" weight={600} textColor="white">Markets</PlainButton>
+        <PlainButton weight={600} textColor="light">Convert</PlainButton>
+        <PlainButton weight={600} textColor="light">Summary</PlainButton>
+      </BasicBox>
+      <Filters>
+        <FilterOption isActive={true}>Futures</FilterOption>
+        <FilterOption>Special</FilterOption>
+      </Filters>
       <List>
         {this.topMovers.map(currency => {
           const { price = null } = null || { price: 1000 }
@@ -175,7 +186,7 @@ class FTX extends React.PureComponent<Props, State> {
           )
         })}
       </List>
-    )
+    </>
   }
 
   renderAssetDetailView () {
@@ -305,7 +316,7 @@ class FTX extends React.PureComponent<Props, State> {
       return this.renderAssetDetailView()
     }
 
-    if (optInMarkets) {
+    if (optInMarkets || true /* TODO: remove */) {
       return this.renderTopMoversView()
     }
 
