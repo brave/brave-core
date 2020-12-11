@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.22](https://github.com/brave/brave-ios/releases/tag/v1.22)
+
+ - Added Brave Today news feed on the New Tab Page. ([#2863](https://github.com/brave/brave-ios/issues/2863))
+ - Removed redundant rewards setting to address user confusion. ([#3009](https://github.com/brave/brave-ios/issues/3009))
+ - Updated default search engine to Yandex for new installations in certain regions. ([#3022](https://github.com/brave/brave-ios/issues/3022))
+ - Fixed crash when opening links from other applications while Brave set as default browser. ([#3041](https://github.com/brave/brave-ios/issues/3041))
+ - Fixed crash when adding or editing bookmarks in certain cases. ([#3032](https://github.com/brave/brave-ios/issues/3032))
+ - Fixed last bookmark location not being saved when revisiting bookmarks. ([#3045](https://github.com/brave/brave-ios/issues/3045))
+ - Fixed URL autocomplete not suggesting saved bookmarks. ([#3034](https://github.com/brave/brave-ios/issues/3034))
+
 ## [1.20](https://github.com/brave/brave-ios/releases/tag/v1.20)
 
  - Added ability to set Brave as the default browser. ([#2785](https://github.com/brave/brave-ios/issues/2785))
