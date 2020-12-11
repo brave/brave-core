@@ -9,15 +9,6 @@
   if (content_settings::IsShieldsContentSettingsType(content_type)) \
     return nullptr;
 
-#define BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES           \
-  const std::string& autoplay_pref =                            \
-      GetPrefName(ContentSettingsType::AUTOPLAY);               \
-  if (IntToContentSetting(prefs_->GetInteger(autoplay_pref)) == \
-      ContentSetting::CONTENT_SETTING_ASK) {                    \
-    prefs_->ClearPref(autoplay_pref);                           \
-  }
-
-#include "../../../../../../components/content_settings/core/browser/content_settings_default_provider.cc"
+#include "../../../../../../components/content_settings/core/browser/content_settings_global_value_map.cc"
 
 #undef BRAVE_EARLY_RETURN_ON_SHIELDS_CONTENT_SETTINGS_TYPE
-#undef BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES

@@ -1,29 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 0f5493f32679e17705f9b5d12346e83a36acfe01..5d993554a9f80b3eb39eba807c9c947a5420fc15 100644
+index 0f5493f32679e17705f9b5d12346e83a36acfe01..dbc7e70271f9069a5f53c64678bbe934b77451b9 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -149,6 +149,20 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -149,6 +149,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::INSECURE_PRIVATE_NETWORK, nullptr},
      {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, nullptr},
      {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, nullptr},
-+
-+    // TODO: PUT THIS IN A CHROMIUM_SRC OVERRIDE AND KEEP PATCHING TO A MINIMUM.
-+    {ContentSettingsType::BRAVE_ADS, nullptr},
-+    {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},
-+    {ContentSettingsType::BRAVE_TRACKERS, nullptr},
-+    {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr},
-+    {ContentSettingsType::BRAVE_JAVASCRIPT, nullptr},
-+    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},
-+    {ContentSettingsType::BRAVE_SHIELDS, nullptr},
-+    {ContentSettingsType::BRAVE_REFERRERS, nullptr},
-+    {ContentSettingsType::BRAVE_COOKIES, nullptr},
-+    {ContentSettingsType::BRAVE_FACEBOOK_EMBEDS, nullptr},
-+    {ContentSettingsType::BRAVE_TWITTER_EMBEDS, nullptr},
-+    {ContentSettingsType::BRAVE_LINKEDIN_EMBEDS, nullptr},
++    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  static_assert(base::size(kContentSettingsTypeGroupNames) ==
                    // ContentSettingsType starts at -1, so add 1 here.
-@@ -375,6 +389,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -375,6 +376,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(const std::string& name) {
