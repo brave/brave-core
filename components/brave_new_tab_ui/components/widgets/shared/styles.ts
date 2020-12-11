@@ -181,7 +181,7 @@ export const PlainButton = styled<StyleProps, 'button'>('button')`
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   color: white;
-  padding: 6px 20px 30px 20px;
+  padding: 6px 20px 13px 20px;
   border-radius: 6px;
   position: relative;
   font-family: ${p => p.theme.fontFamily.heading};
@@ -285,6 +285,14 @@ export const ActionAnchor = styled<StyleProps, 'span'>('span')`
   text-decoration: none;
 `
 
+export const PlainAnchor = styled<StyleProps, 'a'>('a')`
+  color: ${p => p.theme.primary};
+
+  &:hover {
+    opacity: 0.7;
+  }
+`
+
 export const UpperCaseText = styled<StyleProps, 'span'>('span')`
   text-transform: uppercase;
 `
@@ -310,4 +318,86 @@ export const Filters = styled<StyleProps>(BasicBox)`
   justify-content: center;
   width: max-content;
   margin: 11px auto;
+`
+
+export const InputField = styled<{}, 'input'>('input')`
+  display: inline-block;
+  min-width: 215px;
+  height: 30px;
+  vertical-align: top;
+  color: white;
+  background: #000;
+  padding-left: 5px;
+
+  &:focus {
+    outline: 0;
+  }
+`
+
+export const AmountInputField = styled(InputField)`
+  color: #fff;
+  width: 70%;
+  min-width: unset;
+  padding-left: 10px;
+  height: 29px;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid white;
+`
+
+export const Dropdown = styled<StyleProps, 'div'>('div')`
+  float: right;
+  width: 30%;
+  padding: 7px 5px 0px 7px;
+  border-left: none;
+  cursor: ${p => p.disabled ? 'auto' : 'pointer'};
+`
+
+export const DropdownIcon = styled<StyleProps, 'span'>('span')`
+  margin-right: 10px;
+`
+
+export const AssetDropdown = styled<StyleProps, 'div'>('div')`
+  height: 30px;
+  background: #000;
+  color: #fff;
+  border: 1px solid white;
+  padding: 7px 3px 0px 8px;
+  cursor: pointer;
+  border-bottom: ${p => p.itemsShowing ? 'none' : '1px solid white'};
+`
+export const AssetDropdownLabel = styled<{}, 'span'>('span')`
+  float: left;
+  margin-top: -5px;
+  font-weight: bold;
+`
+
+export const CaratDropdown = styled<StyleProps, 'div'>('div')`
+  width: 14px;
+  height: 14px;
+  float: right;
+  color: #fff;
+  visibility: ${p => p.hide ? 'hidden' : 'visible'};
+`
+
+export const AssetItems = styled<StyleProps, 'div'>('div')`
+  z-index: 1;
+  background: #000;
+  color: #fff;
+  overflow-y: scroll;
+  position: absolute;
+  min-width: 244px;
+  padding: 0px 8px;
+  max-height: 80px;
+  border: 1px solid white;
+  border-top: none;
+  height: 80px;
+  left: auto;
+`
+
+export const AssetItem = styled<StyleProps, 'div'>('div')`
+  padding: 3px 0px;
+  font-weight: bold;
+  cursor: pointer;
+  border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
 `
