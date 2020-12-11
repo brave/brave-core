@@ -2,6 +2,7 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import * as React from 'react'
+import { ThemeProvider } from 'styled-components'
 
 import createWidget from '../../default/widget/index'
 import { StyledTitleTab } from '../../default/widgetTitleTab'
@@ -22,27 +23,20 @@ import {
   PlainButton,
   StyledTitle,
   StyledTitleText,
-  SVG,
   Text,
   WidgetWrapper,
   UpperCaseText
 } from '../shared/styles'
+import { Chart } from '../shared'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
 import icons from '../shared/assets/icons'
+import ftxLogo from './ftx-logo.png'
+import ftxTheme from './theme'
 
 // Utils
 
 interface State {
   selectedAsset: string
-}
-
-interface ChartDataPoint {
-  c: number
-  h: number
-  l: number
-  o: number
-  t: number
-  v: number
 }
 
 interface Props {
@@ -51,11 +45,6 @@ interface Props {
   stackPosition: number
   onShowContent: () => void
 //  onOptInMarkets: (show: boolean) => void
-}
-interface ChartConfig {
-  data: Array<any>
-  chartHeight: number
-  chartWidth: number
 }
 
 class FTX extends React.PureComponent<Props, State> {
@@ -127,25 +116,6 @@ class FTX extends React.PureComponent<Props, State> {
     }).format(price)
   }
 
-  plotData ({ data, chartHeight, chartWidth }: ChartConfig) {
-    const pointsPerDay = 4
-    const daysInrange = 7
-    const yHighs = data.map((point: ChartDataPoint) => point.h)
-    const yLows = data.map((point: ChartDataPoint) => point.l)
-    const dataPoints = data.map((point: ChartDataPoint) => point.c)
-    const chartAreaY = chartHeight - 2
-    const max = Math.max(...yHighs)
-    const min = Math.min(...yLows)
-    const pixelsPerPoint = (max - min) / chartAreaY
-    return dataPoints
-      .map((v, i) => {
-        const y = (v - min) / pixelsPerPoint
-        const x = i * (chartWidth / (pointsPerDay * daysInrange))
-        return `${x},${chartAreaY - y}`
-      })
-      .join('\n')
-  }
-
   renderIconAsset = (key: string) => {
     if (!(key in icons)) {
       return null
@@ -161,27 +131,21 @@ class FTX extends React.PureComponent<Props, State> {
   renderIndexView () {
     return (
       <>
-        <Box isFlex={true} $height={48} hasPadding={true}>
-          <FlexItem textAlign='right' flex={1}>
-            I'm where the text used to be
-          </FlexItem>
-          <FlexItem $pl={5}>
-            <ActionButton small={true} light={true}>
-              {'ftxWidgetBuy'}
-            </ActionButton>
-          </FlexItem>
-        </Box>
-        <Text center={true} $p='1em 0 0.5em' $fontSize={15}>
-          {'ftxWidgetCopyOne'}
+        <BasicBox isFlex={true} justify='flex-end'>
+          <PlainButton weight={600}>.com</PlainButton>
+          <PlainButton weight={600} textColor='xlight'>.us</PlainButton>
+        </BasicBox>
+        <Text $fontSize={13} weight={600} $pb={6}>
+          FTX.com
         </Text>
-        <Text center={true} $fontSize={15}>
-          {'ftxWidgetCopyTwo'}
+        <Text $fontSize={13} textColor='light' lineHeight={1.5} $pb={21}>
+          Connect FTX account to view account balance, explore futures markets, & convert crypto.
         </Text>
         <ActionAnchor>
-          {'ftxWidgetBuyBtc'}
+          View Future Markets
         </ActionAnchor>
         <PlainButton textColor='light' onClick={this.handleViewMarketsClick} $m='0 auto'>
-          {'ftxWidgetViewMarkets'}
+          Connect Account
         </PlainButton>
       </>
     )
@@ -268,18 +232,7 @@ class FTX extends React.PureComponent<Props, State> {
             {this.formattedNum(price)} USDT
           </Text>}
           {(percentChange !== null) && <Text inline={true} textColor={percentChange > 0 ? 'green' : 'red'}>{percentChange}%</Text>}
-          <SVG viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
-            <polyline
-              fill='none'
-              stroke='#44B0FF'
-              strokeWidth='3'
-              points={this.plotData({
-                data: chartData,
-                chartHeight,
-                chartWidth
-              })}
-            />
-          </SVG>
+          <Chart width={chartWidth} height={chartHeight} data={chartData} />
         <Text small={true} textColor='xlight'>
           {'ftxWidgetGraph'}
         </Text>
@@ -317,7 +270,7 @@ class FTX extends React.PureComponent<Props, State> {
       <Header showContent={showContent}>
         <StyledTitle>
           <WidgetIcon>
-            {/* Logo */}
+            <img src={ftxLogo} alt="FTX logo"/>
           </WidgetIcon>
           <StyledTitleText>
             Widget Title
@@ -367,10 +320,12 @@ class FTX extends React.PureComponent<Props, State> {
     }
 
     return (
-      <WidgetWrapper tabIndex={0}>
-        {this.renderTitle()}
-        {this.renderSelectedView()}
-      </WidgetWrapper>
+      <ThemeProvider theme={ftxTheme}>
+        <WidgetWrapper tabIndex={0}>
+          {this.renderTitle()}
+          {this.renderSelectedView()}
+        </WidgetWrapper>
+      </ThemeProvider>
     )
   }
 }
