@@ -19,7 +19,7 @@ import git_cl
 def main(args):
   """Runs clang-format and gn format on the current changelist."""
   parser = git_cl.OptionParser()
-  options, args = parser.parse_args(args)
+  parser.parse_args([])
 
   # Change the current working directory before calling so that it
   # shows the correct base.
@@ -27,7 +27,8 @@ def main(args):
   previous_cwd = os.getcwd()
   os.chdir(settings.GetRoot())
   try:
-      cmd = ['cl', 'format', '--full'] + args
+      cmd = ['cl', 'format'] + args
+      print('git ' + ' '.join(cmd))
       git_cl.RunGit(cmd)
   except:
     e = sys.exc_info()[1]
