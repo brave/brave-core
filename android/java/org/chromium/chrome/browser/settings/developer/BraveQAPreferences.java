@@ -32,6 +32,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
@@ -317,6 +318,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
             BravePrefServiceBridge.getInstance().setUseRewardsStagingServer(mUseRewardsStagingServer);
+            BraveRewardsHelper.setRewardsEnvChange(true);
 
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else {

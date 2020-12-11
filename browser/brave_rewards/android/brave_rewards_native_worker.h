@@ -248,7 +248,9 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj,
         bool isAutoContributeEnabled);
-
+    void StartProcess(JNIEnv* env,
+                      const base::android::JavaParamRef<jobject>& obj);
+    void OnStartProcess(const ledger::type::Result result);
  private:
     std::string StdStrStrMapToJsonString(
         const std::map<std::string, std::string>& args);
