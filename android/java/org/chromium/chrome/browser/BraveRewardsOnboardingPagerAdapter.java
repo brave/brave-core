@@ -60,23 +60,23 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
             RadioButton defaultRadioButton;
             switch(adsPerHour) {
                 case 1:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_1_radio));
+                    break;
                 case 2:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_2_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_2_radio));
+                    break;
                 case 3:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_3_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_3_radio));
+                    break;
                 case 4:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_4_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_4_radio));
+                    break;
                 case 5:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_5_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_5_radio));
+                    break;
                 default:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_1_radio));
+                    break;
             }
             defaultRadioButton.setChecked(true);
             hourRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -103,7 +103,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
 
             RadioGroup contributeRadioGroup = view.findViewById(R.id.contribute_radio_group);
             BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(5);
-            ((RadioButton)view.findViewById(R.id.contribute_5_radio)).setChecked(true);
+            ((RadioButton) view.findViewById(R.id.contribute_5_radio)).setChecked(true);
             contributeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
