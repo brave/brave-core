@@ -8,6 +8,8 @@ source_set("browser") {
     "buildflags"
   ]
   sources = [
+    "ftx_json_parser.cc",
+    "ftx_json_parser.h",
     "ftx_service.cc",
     "ftx_service.h",
   ]

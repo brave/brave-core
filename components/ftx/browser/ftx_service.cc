@@ -10,6 +10,7 @@
 
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "brave/components/ftx/browser/ftx_json_parser.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
@@ -21,8 +22,8 @@
 namespace {
 
 const char api_host[] = "ftx.com";
-const char com_oauth_host[] = "ftx.com";
-const char us_oauth_host[] = "ftx.us";
+// const char com_oauth_host[] = "ftx.com";
+// const char us_oauth_host[] = "ftx.us";
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -63,6 +64,25 @@ FTXService::FTXService(content::BrowserContext* context)
 }
 
 FTXService::~FTXService() {
+}
+
+bool FTXService::GetFuturesData(GetFuturesDataCallback callback) {
+  auto internal_callback = base::BindOnce(&FTXService::OnFuturesData,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host, get_futures_data_path);
+  return NetworkRequest(
+      url, "GET", "", std::move(internal_callback));  
+}
+
+void FTXService::OnFuturesData(
+  GetFuturesDataCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  FTXFuturesData data;
+  if (status >= 200 && status <= 299) {
+    FTXJSONParser::GetFuturesDataFromJSON(body, &data, futures_filter);
+  }
+  std::move(callback).Run(data);
 }
 
 bool FTXService::NetworkRequest(const GURL &url,

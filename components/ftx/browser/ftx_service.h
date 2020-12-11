@@ -40,11 +40,19 @@ class Profile;
 
 const char get_futures_data_path[] = "/api/futures";
 const char get_market_data_path[] = "/api/markets";
+const char futures_filter[] = "perpetual";
+
+typedef std::vector<std::map<std::string, std::string>> FTXFuturesData;
 
 class FTXService : public KeyedService {
  public:
   explicit FTXService(content::BrowserContext* context);
   ~FTXService() override;
+
+  using GetFuturesDataCallback =
+        base::OnceCallback<void(const FTXFuturesData&)>;
+
+  bool GetFuturesData(GetFuturesDataCallback callback);
 
  private:
   using SimpleURLLoaderList =
@@ -52,6 +60,10 @@ class FTXService : public KeyedService {
   using URLRequestCallback =
       base::OnceCallback<void(const int, const std::string&,
                               const std::map<std::string, std::string>&)>;
+
+  void OnFuturesData(GetFuturesDataCallback callback,
+                    const int status, const std::string& body,
+                    const std::map<std::string, std::string>& headers);
 
   base::SequencedTaskRunner* io_task_runner();
 
