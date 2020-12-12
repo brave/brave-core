@@ -60,7 +60,6 @@ pub unsafe extern "C" fn engine_match(
     tab_host: *const c_char,
     third_party: bool,
     resource_type: *const c_char,
-    explicit_cancel: *mut bool,
     saved_from_exception: *mut bool,
     redirect: *mut *mut c_char,
 ) -> bool {
@@ -77,7 +76,6 @@ pub unsafe extern "C" fn engine_match(
         resource_type,
         Some(third_party),
     );
-    *explicit_cancel = blocker_result.explicit_cancel;
     *saved_from_exception = blocker_result.filter != None && blocker_result.exception != None;
     *redirect = match blocker_result.redirect {
         Some(x) => match CString::new(x) {
@@ -114,7 +112,7 @@ pub unsafe extern "C" fn engine_add_resource(
     key: *const c_char,
     content_type: *const c_char,
     data: *const c_char,
-) {
+) -> bool {
     let key = CStr::from_ptr(key).to_str().unwrap();
     let content_type = CStr::from_ptr(content_type).to_str().unwrap();
     let data = CStr::from_ptr(data).to_str().unwrap();
@@ -126,7 +124,7 @@ pub unsafe extern "C" fn engine_add_resource(
     };
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.add_resource(resource);
+    engine.add_resource(resource).is_ok()
 }
 
 /// Adds a list of `Resource`s from JSON format
@@ -161,7 +159,11 @@ pub unsafe extern "C" fn engine_deserialize(
     let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.deserialize(&data).is_ok()
+    let ok = engine.deserialize(&data).is_ok();
+    if !ok {
+        eprintln!("Error deserializing adblock engine");
+    }
+    ok
 }
 
 /// Destroy a `Engine` once you are done with it.
