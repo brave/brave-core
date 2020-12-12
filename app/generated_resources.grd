@@ -5892,7 +5892,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SAFE_STATE_BODY_MESSAGE" desc="The content of the bubble notifying that there are more problems to fix after the user changed a compromised password.">
           Successfully changed the compromised password. Check your passwords anytime in <ph name="SETTINGS">$1<ex>Settings</ex></ph>.
         </message>
-        <message name="IDS_PASSWORD_MANAGER_SAFE_STATE_SETTINGS" meaning="The hyperlink text referring to Brave settings. It replaces the placeholder in 'Check your passwords anytime in $1' string">
+        <message name="IDS_PASSWORD_MANAGER_SAFE_STATE_SETTINGS" meaning="The hyperlink text referring to Chrome settings. It replaces the placeholder in 'Check your passwords anytime in $1' string">
           Settings
         </message>
         <message name="IDS_PASSWORD_MANAGER_UNSAFE_STATE_BODY_MESSAGE" desc="The content of the bubble notifying that there are problems to fix after the user saved a password.">
@@ -10755,23 +10755,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ROSETTA" desc="Mac system-specific infobar link for Intel-on-Arm64." translateable="false">
         https://support.google.com/chrome/?p=mac_ARM
-      </message>
-
-      <!-- The Rosetta is required infobar -->
-      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_TEXT" desc="The infobar text when installation of Rosetta is required">
-        To play protected media on this page, you need to install Rosetta.
-      </message>
-      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_LINK_TEXT" desc="The learn more text when installation of Rosetta is required.">
-        Learn more
-      </message>
-      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_BUTTON_TEXT" desc="The button text when installation of Rosetta is required.">
-        Install Rosetta
-      </message>
-      <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG_NOW" desc="The 'restart now' button in the dialog once Rosetta is installed.">
-        Restart Now
-      </message>
-      <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG_LATER" desc="The 'restart later' button in the dialog once Rosetta is installed.">
-        Restart Later
       </message>
     </if>
 
