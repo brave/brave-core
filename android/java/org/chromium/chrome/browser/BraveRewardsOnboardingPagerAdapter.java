@@ -134,8 +134,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                     } else if (checkedId == R.id.contribute_50_radio) {
                         contribute = 50;
                     }
-                    BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(
-                                contribute);
+                    BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(contribute);
                 }
             });
         } else {

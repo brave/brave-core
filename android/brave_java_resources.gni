@@ -649,6 +649,7 @@ brave_java_resources = [
   "java/res/drawable/ic_ethereum.xml",
   "java/res/drawable/ic_help.xml",
   "java/res/drawable/ic_help_filled.xml",
+  "java/res/drawable/ic_icon_bat_eta.xml",
   "java/res/drawable/ic_litecoin.xml",
   "java/res/drawable/ic_more_horiz.xml",
   "java/res/drawable/ic_phone.xml",

@@ -703,7 +703,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         Date currentTime = new Date();
         cal.setTime(currentTime);
         cal.add(Calendar.MONTH, 1);
-        cal.set(Calendar.DAY_OF_MONTH, 6);
+        cal.set(Calendar.DAY_OF_MONTH, 5);
         payoutDateText.setText(dateFormat.format(cal.getTime()));
         TextView btnQuickRefresherTour =
                 braveRewardsWelcomeView.findViewById(R.id.quick_refresher_tour_button);
@@ -850,21 +850,17 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnStartProcess() {
         if (root != null && PackageUtils.isFirstInstall(mActivity)
+                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                        Profile.getLastUsedRegularProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-            if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingModalOnce()) {
-                showBraveRewardsOnboardingModal(root);
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(false);
-                BraveRewardsHelper.setShowBraveRewardsSettingsOnboardingModal(false);
-                BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-            } else if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
+            if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
                 showBraveRewardsOnboarding(root, false);
                 BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
-            } else if ((BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0)
-                    && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                            Profile.getLastUsedRegularProfile())) {
+            } else if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
+                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
                 showBraveRewardsOnboardingModal(root);
                 BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                BraveRewardsHelper.setShowBraveRewardsSettingsOnboardingModal(false);
+                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
             } else if (SharedPreferencesManager.getInstance().readInt(
                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                             > BraveRewardsHelper.getBraveRewardsAppOpenCount()
