@@ -21,6 +21,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "chrome/grit/chromium_strings.h"
 #endif
 
 namespace {
@@ -358,6 +359,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("welcome"), {
+#if !defined(OS_ANDROID)
+        { "headerText", IDS_WELCOME_HEADER },
+#endif
         { "welcome", IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE },
         { "whatIsBrave", IDS_BRAVE_WELCOME_PAGE_MAIN_DESC },
         { "letsGo", IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON },
