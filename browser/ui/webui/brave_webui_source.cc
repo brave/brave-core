@@ -8,10 +8,10 @@
 #include <map>
 #include <vector>
 
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
@@ -100,6 +100,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
   };
   AddResourcePaths(source, resources[name]);
 
+  // clang-format off
   static std::map<std::string, std::vector<WebUISimpleItem> >
                                                            localized_strings = {
     {
@@ -977,5 +978,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }
   };
+  // clang-format on
   AddLocalizedStringsBulk(source, localized_strings[name]);
 }  // NOLINT(readability/fn_size)
