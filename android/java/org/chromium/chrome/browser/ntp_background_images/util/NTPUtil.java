@@ -177,10 +177,10 @@ public class NTPUtil {
                 } else {
                     if (BraveActivity.getBraveActivity() != null) {
                         nonDisruptiveBannerLayout.setVisibility(View.GONE);
-                        BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(true);
                         BraveActivity.getBraveActivity().openRewardsPanel();
                     }
                 }
+                sponsoredTab.updateBannerPref();
             }
         });
         nonDisruptiveBannerLayout.setVisibility(View.GONE);
@@ -273,8 +273,6 @@ public class NTPUtil {
         rewardsBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
         rewardsBottomSheetDialogFragment.show(chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
         rewardsBottomSheetDialogFragment.setCancelable(false);
-
-        sponsoredTab.updateBannerPref();
     }
 
     public static Bitmap getWallpaperBitmap(NTPImage ntpImage, int layoutWidth, int layoutHeight) {

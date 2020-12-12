@@ -45,15 +45,13 @@ import java.util.Locale;
 
 public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final String PREF_BRAVE_REWARDS_APP_OPEN_COUNT = "brave_rewards_app_open_count";
-    private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL_ONCE =
-            "show_brave_rewards_onboarding_modal_once";
+    private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL =
+            "show_brave_rewards_onboarding_modal";
     private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE =
             "show_brave_rewards_onboarding_once";
     private static final String PREF_SHOW_ONBOARDING_MINI_MODAL = "show_onboarding_mini_modal";
     private static final String PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE =
             "next_rewards_onboarding_modal_date";
-    private static final String PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL =
-            "show_rewards_settings_onboarding_modal";
     private static final String PREF_REWARDS_ENV_CHANGE = "rewards_env_change";
     private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
@@ -112,7 +110,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public static boolean shouldShowRewardsOnboardingModalOnDay4() {
         if (!hasRewardsOnboardingModalShown()
                 && (getNextRewardsOnboardingModalDate() > 0
-                        && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())) {
+                        && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
+                && shouldShowBraveRewardsOnboardingModal()) {
             if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                 setRewardsOnboardingModalShown(true);
                 return false;
@@ -135,17 +134,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean shouldShowBraveRewardsSettingsOnboardingModal() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL, true);
-    }
-
-    public static void setShowBraveRewardsSettingsOnboardingModal(boolean enabled) {
-        SharedPreferences.Editor sharedPreferencesEditor = ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_REWARDS_SETTINGS_ONBOARDING_MODAL, enabled);
-        sharedPreferencesEditor.apply();
-    }
-
     public static boolean shouldShowMiniOnboardingModal() {
         return ContextUtils.getAppSharedPreferences().getBoolean(
                 PREF_SHOW_ONBOARDING_MINI_MODAL, true);
@@ -158,15 +146,15 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         sharedPreferencesEditor.apply();
     }
 
-    public static boolean shouldShowBraveRewardsOnboardingModalOnce() {
+    public static boolean shouldShowBraveRewardsOnboardingModal() {
         return ContextUtils.getAppSharedPreferences().getBoolean(
-                PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL_ONCE, false);
+                PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
     }
 
-    public static void setShowBraveRewardsOnboardingModalOnce(boolean enabled) {
+    public static void setShowBraveRewardsOnboardingModal(boolean enabled) {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL_ONCE, enabled);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, enabled);
         sharedPreferencesEditor.apply();
     }
 
