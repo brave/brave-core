@@ -17,6 +17,7 @@ const char kIPNSScheme[] = "ipns";
 const char kDefaultIPFSGateway[] = "https://dweb.link";
 const char kDefaultIPFSLocalGateway[] = "http://localhost";
 const char kIPFSLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360051406452";
+    "https://support.brave.com/hc/en-us/sections/"
+    "360010974932-InterPlanetary-File-System-IPFS-";
 
 }  // namespace ipfs
