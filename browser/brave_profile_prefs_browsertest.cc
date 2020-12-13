@@ -47,14 +47,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kHTTPSEVerywhereControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-        kShieldsAdvancedViewEnabled));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      kShieldsAdvancedViewEnabled));
   EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-        kShieldsStatsBadgeVisible));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
+      browser()->profile()->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kGoogleLoginControlType));
   EXPECT_TRUE(
@@ -63,23 +60,21 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kTwitterEmbedControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kLinkedInEmbedControlType));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->
-      GetBoolean(kBraveWaybackMachineEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      kBraveWaybackMachineEnabled));
 #endif
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-          brave_rewards::prefs::kHideButton));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kHideButton));
 #if BUILDFLAG(IPFS_ENABLED)
-  EXPECT_EQ(
-      browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod),
-      static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_ASK)));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod),
+            static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_ASK)));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSBinaryAvailable));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kIPFSAutoRedirectGateway));
 #endif
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
@@ -87,9 +82,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_EQ(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider),
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-          kLoadCryptoWalletsOnStartup));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      kLoadCryptoWalletsOnStartup));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets));
 #endif

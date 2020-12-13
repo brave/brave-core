@@ -144,4 +144,68 @@ TEST_F(IPFSRedirectNetworkDelegateHelperTest, TranslateIPFSURIIPNSScheme) {
       "https://dweb.link/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
 }
 
+TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkWithRedirect) {
+  GURL url(
+      "https://cloudflare-ipfs.com/ipfs/"
+      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->browser_context = browser_context();
+  request_info->ipfs_gateway_url = GetPublicGateway();
+  request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(browser_context()));
+  request_info->resource_type = blink::mojom::ResourceType::kImage;
+  request_info->ipfs_auto_fallback = true;
+
+  scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
+      new net::HttpResponseHeaders(std::string());
+  orig_response_headers->AddHeader("x-ipfs-path", "/test");
+  scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
+      new net::HttpResponseHeaders(std::string());
+  GURL allowed_unsafe_redirect_url;
+
+  int rc = ipfs::OnHeadersReceived_IPFSRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, brave::ResponseCallback(), request_info);
+
+  EXPECT_EQ(rc, net::OK);
+
+  std::string location;
+  EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
+                                                          &location));
+  GURL converted_url = GURL("https://dweb.link/test");
+  EXPECT_EQ(location, converted_url);
+  EXPECT_EQ(allowed_unsafe_redirect_url, converted_url);
+}
+
+TEST_F(IPFSRedirectNetworkDelegateHelperTest, HeadersIPFSWorkNoRedirect) {
+  GURL url(
+      "https://cloudflare-ipfs.com/ipfs/"
+      "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->browser_context = browser_context();
+  request_info->ipfs_gateway_url = GetPublicGateway();
+  request_info->initiator_url = ipfs::GetIPFSGatewayURL(
+      initiator_cid, "", ipfs::GetDefaultIPFSGateway(browser_context()));
+  request_info->resource_type = blink::mojom::ResourceType::kImage;
+  request_info->ipfs_auto_fallback = false;
+
+  scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
+      new net::HttpResponseHeaders(std::string());
+  orig_response_headers->AddHeader("x-ipfs-path", "/test");
+  scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
+      new net::HttpResponseHeaders(std::string());
+  GURL allowed_unsafe_redirect_url;
+
+  int rc = ipfs::OnHeadersReceived_IPFSRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, brave::ResponseCallback(), request_info);
+
+  EXPECT_EQ(rc, net::OK);
+
+  std::string location;
+  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
+                                                           &location));
+  EXPECT_TRUE(allowed_unsafe_redirect_url.is_empty());
+}
+
 }  // namespace ipfs
