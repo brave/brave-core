@@ -2,24 +2,24 @@
 <grit-part>
   <if expr="ipfs_enabled">
     <message name="IDS_IPFS_CONNECTED_PEERS_TITLE" desc="Number of peers connected">Connected peers:</message>
-    <message name="IDS_IPFS_ADDRESSES_CONFIG_TITLE" desc="Title of addresses config section">Addresses Config</message>
-    <message name="IDS_IPFS_DAEMON_STATUS_TITLE" desc="Title of daemon status section">Daemon Status</message>
+    <message name="IDS_IPFS_ADDRESSES_CONFIG_TITLE" desc="Title of addresses config section">Addresses</message>
+    <message name="IDS_IPFS_DAEMON_STATUS_TITLE" desc="Title of daemon status section">IPFS node status</message>
     <message name="IDS_IPFS_API" desc="Title of the API config">API</message>
     <message name="IDS_IPFS_GATEWAY" desc="Title of the gateway config">Gateway</message>
     <message name="IDS_IPFS_SWARM" desc="Title of the swarm config">Swarm</message>
     <message name="IDS_IPFS_LAUNCHED" desc="Title of the launched status">Launched</message>
-    <message name="IDS_IPFS_LAUNCH" desc="Text of launch action">Launch</message>
-    <message name="IDS_IPFS_SHUTDOWN" desc="Text of shutdown action">Shutdown</message>
+    <message name="IDS_IPFS_LAUNCH" desc="Text of launch action">Start</message>
+    <message name="IDS_IPFS_SHUTDOWN" desc="Text of shutdown action">Stop</message>
     <message name="IDS_IPFS_NOT_INSTALLED" desc="Text of not installed state">Not Installed</message>
     <message name="IDS_UTILITY_PROCESS_IPFS_NAME" desc="The utility process which manages IPFS daemon">IPFS Service</message>
     <message name="IDS_IPFS_NOT_CONNECTED_TITLE" desc="Title of IPFS not connected interstitial page.">
       IPFS Not Connected
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_HEADING" desc="Heading of IPFS not connected interstitial page.">
-      Can't connect to the IPFS content
+      Can't load IPFS resources using local node
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH" desc="Main paragraph of IPFS not connected interstitial page.">
-      Failed to connect to the IPFS content using the local IPFS node, click the proceed button below to connect through the public gateway this time and automatically fallback to the public gateway in the future.
+      Failed to use the local IPFS node to load the requested IPFS resources. Click the "Proceed" button to use the public gateway instead, and to fall back automatically to the public gateway in the future.
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_PRIMARY_BUTTON" desc="The text for the IPFS not connected interstitial primary button.">
       Proceed with Public Gateway
@@ -31,7 +31,7 @@
       Hide Advanced
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_EXPLANATION" desc="The text of the IPFS not connected interstitial that will be displayed when the user presses the 'Advanced' button for additional information.">
-      We cannot connect to the requested content using the local IPFS node because the local node didn't start or because there are no connected peers available at the moment. By proceeding, we will automatically fallback to the default public gateway in the future when we cannot connect to IPFS content using the local IPFS node. This can be turned off later in settings.
+      Brave cannot load the requested IPFS resources either because the local node did not start, or because there are no connected peers available at the moment. If you choose "Proceed", Brave will automatically fall back to the default public gateway whenever using the local node fails. You can change this behavior at any point in Brave settings.
     </message>
   </if>
 </grit-part>
