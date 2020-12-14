@@ -71,6 +71,7 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.share.ShareDelegateImpl.ShareOrigin;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -151,7 +152,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         // Handle items replaced by Brave.
         if (id == R.id.info_menu_id && currentTab != null) {
             ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
-            shareDelegate.share(currentTab, false);
+            shareDelegate.share(currentTab, false, ShareOrigin.OVERFLOW_MENU);
             return true;
         }
 

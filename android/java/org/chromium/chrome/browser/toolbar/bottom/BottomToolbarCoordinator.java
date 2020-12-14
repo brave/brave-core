@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.share.ShareDelegateImpl.ShareOrigin;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
@@ -329,7 +330,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             }
 
             Tab tab = mTabProvider.get();
-            shareDelegate.share(tab, /*shareDirectly=*/false);
+            shareDelegate.share(tab, /*shareDirectly=*/false, ShareOrigin.TOP_TOOLBAR);
         };
 
         mShareButtonListenerSupplier.set(shareButtonListener);
