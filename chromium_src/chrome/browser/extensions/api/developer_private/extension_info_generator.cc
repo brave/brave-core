@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define BRAVE_CREATE_EXTENSION_INFO_HELPER                        \
-  info->tor_access.is_enabled = info->incognito_access.is_active; \
-  info->tor_access.is_active =                                    \
-      util::IsTorEnabled(extension.id(), browser_context_);
+#include "extensions/common/manifest_handlers/incognito_info.h"
+
+#define BRAVE_CREATE_EXTENSION_INFO_HELPER \
+  info->is_split_mode = IncognitoInfo::IsSplitMode(&extension);
 #include "../../../../../../../chrome/browser/extensions/api/developer_private/extension_info_generator.cc"
 #undef BRAVE_CREATE_EXTENSION_INFO_HELPER

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index 4260e615cf9bc4bcc0fbabfc8a5fb5b236b8bd0f..84559e23b05b1ca28e4cc1cdbee48fa798b5dced 100644
+index 4260e615cf9bc4bcc0fbabfc8a5fb5b236b8bd0f..99a3ebb76e9cdae8bde9b03d5dcb2aee19fb8b2f 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
 @@ -779,6 +779,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
@@ -10,12 +10,3 @@ index 4260e615cf9bc4bcc0fbabfc8a5fb5b236b8bd0f..84559e23b05b1ca28e4cc1cdbee48fa7
      return false;
  
    base::StringPiece fixed_host = fixed_url.host_piece();
-@@ -878,7 +879,7 @@ bool ExtensionTabUtil::OpenOptionsPageFromAPI(
-   // initiated the command via chrome.runtime.openOptionsPage. For a spanning
-   // mode extension, this API could only be called from a regular profile, since
-   // that's the only place it's running.
--  DCHECK(!profile->IsOffTheRecord() || IncognitoInfo::IsSplitMode(extension));
-+  DCHECK(!profile->IsOffTheRecord() || IncognitoInfo::IsSplitMode2(extension, profile->IsTor()));
-   Browser* browser = chrome::FindBrowserWithProfile(profile);
-   if (!browser)
-     browser = Browser::Create(Browser::CreateParams(profile, true));

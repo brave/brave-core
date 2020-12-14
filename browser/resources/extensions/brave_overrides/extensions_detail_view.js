@@ -20,30 +20,20 @@ RegisterPolymerTemplateModifications({
       console.error('[Brave Extensions Overrides] Could not find incognitoTemplate')
       return
     }
-
-    incognitoTemplate.insertAdjacentHTML('afterend', `
-      <template is="dom-if"
-        if="[[data.torAccess.isEnabled]]">
-        <extensions-toggle-row id="allow-tor"
-            checked="[[data.torAccess.isActive]]"
-            class="hr"
-            on-change="onAllowTorChange_">
-          <div>
-            <div>${I18nBehavior.i18n('itemAllowInTor')}</div>
-            <div class="section-content">${I18nBehavior.i18n('torInfoWarning')}</div>
-          </div>
-        </extensions-toggle-row>
-        </template>
-     `)
+    let incognitoWarningDiv = incognitoTemplate.content.querySelector('.section-content')
+    if (!incognitoWarningDiv) {
+      console.error('[Brave Extensions Overrides] Could not find incognitoWarningDiv')
+      return
+    }
+    incognitoWarningDiv.innerText = I18nBehavior.i18n('privateInfoWarning')
+    const spanningWarningSpan = document.createElement('span')
+    spanningWarningSpan.setAttribute('class', 'section-content')
+    spanningWarningSpan.setAttribute('hidden', '[[data.isSplitMode]]')
+    spanningWarningSpan.innerText = ' ' +  I18nBehavior.i18n('spanningInfoWarning')
+    const privateAndTorWarningSpan = document.createElement('span')
+    privateAndTorWarningSpan.setAttribute('class', 'section-content')
+    privateAndTorWarningSpan.innerText = ' ' + I18nBehavior.i18n('privateAndTorInfoWarning')
+    incognitoWarningDiv.appendChild(spanningWarningSpan)
+    incognitoWarningDiv.appendChild(privateAndTorWarningSpan)
   }
-})
-
-RegisterPolymerComponentBehaviors({
-  'extensions-detail-view': [{
-    /** @private */
-    onAllowTorChange_: function() {
-      this.delegate.setItemAllowedTor(
-        this.data.id, this.$$('#allow-tor').checked);
-    },
-  }]
 })
