@@ -418,7 +418,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
 
   // Notify brave cookie changes as ContentSettingsType::COOKIES
-  if (initialized_ && content_type == ContentSettingsType::BRAVE_COOKIES) {
+  if (initialized_ && (content_type == ContentSettingsType::BRAVE_COOKIES ||
+                       content_type == ContentSettingsType::BRAVE_SHIELDS)) {
     // PostTask here to avoid content settings autolock DCHECK
     base::PostTask(
         FROM_HERE,
