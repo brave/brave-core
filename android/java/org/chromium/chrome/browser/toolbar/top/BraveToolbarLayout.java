@@ -354,14 +354,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             && !tab.isIncognito()) {
           mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
         }
-        if (tab.getUrlString() != null
+        if (PackageUtils.isFirstInstall(getContext()) && tab.getUrlString() != null
                 && (tab.getUrlString().equals(BraveActivity.REWARDS_SETTINGS_URL)
                         || tab.getUrlString().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && BraveRewardsHelper.shouldShowBraveRewardsSettingsOnboardingModal()) {
+                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
             showBraveRewardsOnboardingModal();
-            BraveRewardsHelper.setShowBraveRewardsSettingsOnboardingModal(false);
+            BraveRewardsHelper.updateBraveRewardsAppOpenCount();
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
         }
       }
 

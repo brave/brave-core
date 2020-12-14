@@ -328,19 +328,21 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
         }
         if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
-            BraveRewardsHelper.setShowBraveRewardsOnboardingModalOnce(true);
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(true);
             openRewardsPanel();
             BraveRewardsHelper.setRewardsOnboardingModalShown(true);
         }
     }
 
     private void checkForYandexSE() {
-        TemplateUrl yandexTemplateUrl =
-                BraveSearchEngineUtils.getTemplateUrlByShortName(OnboardingPrefManager.YANDEX);
         String countryCode = Locale.getDefault().getCountry();
-        if (yandexRegions.contains(countryCode) && yandexTemplateUrl != null) {
-            BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, false);
-            BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, true);
+        if (yandexRegions.contains(countryCode)) {
+            TemplateUrl yandexTemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(OnboardingPrefManager.YANDEX);
+            if (yandexTemplateUrl != null) {
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, false);
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, true);
+            }
         }
     }
 
