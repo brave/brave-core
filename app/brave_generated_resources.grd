@@ -689,7 +689,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Allow Google login for extensions
       </message>
       <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
-        Method to resolve IPFS locations
+        Method to resolve IPFS resources
       </message>
       <message name="IDS_IPFS_RESOLVE_OPTION_ASK" desc="Select control value for which IPFS resolve method to use">
         Ask
@@ -707,7 +707,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         IPFS public gateway fallback
       </message>
       <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
-        Automatically fallback to IPFS public gateway when the local node cannot be accessed.
+        Automatically fall back to public IPFS gateway if your local node cannot be reached.
       </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
@@ -722,7 +722,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Relaunch Now
       </message>
      <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
-        Uses IPFS companion extension to enhance IPFS support in the browser.
+        Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.
       </message>
       <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
         Manage extensions
@@ -925,7 +925,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- IPFS -->
       <message name="IDS_BRAVE_IPFS_INSTALL" desc="Install IPFS daemon infobar text">
-        Would you like to enable IPFS local daemon support in Brave?
+        IPFS resources detected. Would you like Brave to load them using a local IPFS node?
       </message>
       <message name="IDS_BRAVE_IPFS_SETTINGS" desc="Open IPFS settings">
         Settings
@@ -934,7 +934,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Enable IPFS
       </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
-        Learn more about privacy consequences
+        Learn more about IPFS and privacy
       </message>
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
