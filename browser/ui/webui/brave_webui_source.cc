@@ -8,10 +8,10 @@
 #include <map>
 #include <vector>
 
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
@@ -21,6 +21,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "chrome/grit/chromium_strings.h"
 #endif
 
 namespace {
@@ -99,6 +100,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
   };
   AddResourcePaths(source, resources[name]);
 
+  // clang-format off
   static std::map<std::string, std::vector<WebUISimpleItem> >
                                                            localized_strings = {
     {
@@ -358,6 +360,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("welcome"), {
+#if !defined(OS_ANDROID)
+        { "headerText", IDS_WELCOME_HEADER },
+#endif
         { "welcome", IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE },
         { "whatIsBrave", IDS_BRAVE_WELCOME_PAGE_MAIN_DESC },
         { "letsGo", IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON },
@@ -973,5 +978,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }
   };
+  // clang-format on
   AddLocalizedStringsBulk(source, localized_strings[name]);
 }  // NOLINT(readability/fn_size)
