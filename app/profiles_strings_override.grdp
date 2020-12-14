@@ -7,7 +7,7 @@
         other {# open private windows}
       }
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in private mode and there are more than one private windows open. The counter is not shown when there is only one private window open.">
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in incognito mode and there are more than one incognito windows open. The counter is not shown when there is only one incognito window open.">
     {0, plural,
       =1 {Private}
       other {Private (#)}

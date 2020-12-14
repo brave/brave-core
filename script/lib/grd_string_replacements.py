@@ -89,8 +89,6 @@ def generate_braveified_node(elem, is_comment, branding_replacements_only):
 
     if 'desc' in elem.keys():
         elem.attrib['desc'] = braveify_grd_text(elem.attrib['desc'], False, branding_replacements_only)
-    if 'meaning' in elem.keys():
-        elem.attrib['meaning'] = braveify_grd_text(elem.attrib['meaning'], False, branding_replacements_only)
     for child in elem:
         generate_braveified_node(child, is_comment, branding_replacements_only)
 
