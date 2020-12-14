@@ -104,7 +104,7 @@ ukm::UkmService* IOSChromeMetricsServiceClient::GetUkmService() {
   return nullptr;
 }
 
-void IOSChromeMetricsServiceClient::SetMetrFVicsClientId(
+void IOSChromeMetricsServiceClient::SetMetricsClientId(
     const std::string& client_id) {}
 
 int32_t IOSChromeMetricsServiceClient::GetProduct() {
