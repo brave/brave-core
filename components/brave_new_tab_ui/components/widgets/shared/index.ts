@@ -4,8 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
  import { Chart } from './chart'
+ import { TradingDropdown } from './tradingDropdown'
 
  export {
-   Chart
+   Chart,
+   TradingDropdown
  }
  

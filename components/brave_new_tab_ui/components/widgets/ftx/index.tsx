@@ -28,18 +28,10 @@ import {
   Text,
   WidgetWrapper,
   UpperCaseText,
-  PlainAnchor,
-  AmountInputField,
-  Dropdown,
-  AssetDropdown,
-  AssetDropdownLabel,
-  CaratDropdown,
-  DropdownIcon,
-  AssetItems,
-  AssetItem
+  PlainAnchor
 } from '../shared/styles'
-import { Chart } from '../shared'
-import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
+import { Chart, TradingDropdown } from '../shared'
+import { CaratLeftIcon } from 'brave-ui/components/icons'
 import icons from '../shared/assets/icons'
 import ftxLogo from './ftx-logo.png'
 import ftxTheme from './theme'
@@ -54,7 +46,6 @@ enum Views {
 interface State {
   currentView: Views
   selectedAsset: string
-  currentConversionQuantity: number
 }
 
 interface Props {
@@ -73,8 +64,7 @@ class FTX extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      currentConversionQuantity: 0,
-      currentView: Views.markets,
+      currentView: Views.convert,
       selectedAsset: ''
     }
   }
@@ -293,72 +283,14 @@ class FTX extends React.PureComponent<Props, State> {
       availableLabel: 'BTC'
     }
 
-    const { currentConversionQuantity } = this.state
-    const currentTradeAsset = 'BTC'
-
     return (
       <>
         <Text>
           {`Available ${availableAmount} ${availableLabel}`}
         </Text>
-        <BasicBox>
-          <BasicBox>
-            <AmountInputField
-              type={'text'}
-              placeholder={`I want to convert...`}
-              value={currentConversionQuantity}
-            />
-            <Dropdown
-              disabled={false}
-              itemsShowing={false}
-              className={'asset-dropdown'}
-            >
-              {currentTradeAsset}
-            </Dropdown>
-          </BasicBox>
-          <AssetDropdown
-            itemsShowing={false}
-            className={'asset-dropdown'}
-          >
-            <AssetDropdownLabel>
-              <DropdownIcon>
-                {this.renderIconAsset(currentTradeAsset.toLowerCase())}
-              </DropdownIcon>
-              {currentTradeAsset}
-            </AssetDropdownLabel>
-            <CaratDropdown>
-              <CaratDownIcon />
-            </CaratDropdown>
-          </AssetDropdown>
-          {
-            true
-            ? <AssetItems>
-                {['BTC', 'ETH'].map((asset: string, i: number) => {
-                  if (asset === currentTradeAsset) {
-                    return null
-                  }
-
-                  return (
-                    <AssetItem
-                      key={`choice-${asset}`}
-                      isLast={i === ['BTC', 'ETH'].length - 1}
-                    >
-                      <DropdownIcon>
-                        {this.renderIconAsset(asset.toLowerCase())}
-                      </DropdownIcon>
-                      {asset}
-                    </AssetItem>
-                  )
-                })}
-              </AssetItems>
-            : null
-          }
-        </BasicBox>
-        <BasicBox>
-          <ActionButton>
-            Preview Conversion
-          </ActionButton>
-        </BasicBox>
+        <TradingDropdown
+          assets={['BTC', 'ETH', 'BAT']}
+        />
       </>
     )
   }

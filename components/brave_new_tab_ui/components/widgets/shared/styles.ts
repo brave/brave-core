@@ -125,6 +125,7 @@ export const Text = styled<StyleProps, 'p'>('p')`
 `
 
 export const BasicBox = styled<StyleProps, 'div'>('div')`
+  width: ${p => p.isFullWidth ? '100%' : 'auto'};
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   ${(p) =>
     p.isFlex &&
@@ -320,13 +321,29 @@ export const Filters = styled<StyleProps>(BasicBox)`
   margin: 11px auto;
 `
 
+/**
+ * Dropdown styles
+ */
+
+export const InputWrapper = styled<StyleProps>(BasicBox)`
+  height: 30px;
+  color: #000;
+  background: #fff;
+  border: 1px solid white;
+  padding: 5px 5px;
+  cursor: pointer;
+  border-bottom: ${p => p.itemsShowing ? 'none' : '1px solid white'};
+  margin-top: 7px;
+  position: relative;
+`
+
 export const InputField = styled<{}, 'input'>('input')`
   display: inline-block;
   min-width: 215px;
+  border: 0;
   height: 30px;
   vertical-align: top;
-  color: white;
-  background: #000;
+  color: #000;
   padding-left: 5px;
 
   &:focus {
@@ -335,7 +352,7 @@ export const InputField = styled<{}, 'input'>('input')`
 `
 
 export const AmountInputField = styled(InputField)`
-  color: #fff;
+  color: #000;
   width: 70%;
   min-width: unset;
   padding-left: 10px;
@@ -346,10 +363,13 @@ export const AmountInputField = styled(InputField)`
 `
 
 export const Dropdown = styled<StyleProps, 'div'>('div')`
-  float: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #000;
   width: 30%;
-  padding: 7px 5px 0px 7px;
-  border-left: none;
+  padding-left: 1rem;
+  border-left: 1px solid #666767;
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
 
@@ -357,47 +377,47 @@ export const DropdownIcon = styled<StyleProps, 'span'>('span')`
   margin-right: 10px;
 `
 
-export const AssetDropdown = styled<StyleProps, 'div'>('div')`
-  height: 30px;
-  background: #000;
-  color: #fff;
-  border: 1px solid white;
-  padding: 7px 3px 0px 8px;
-  cursor: pointer;
-  border-bottom: ${p => p.itemsShowing ? 'none' : '1px solid white'};
-`
 export const AssetDropdownLabel = styled<{}, 'span'>('span')`
-  float: left;
-  margin-top: -5px;
   font-weight: bold;
 `
 
 export const CaratDropdown = styled<StyleProps, 'div'>('div')`
+  margin-left: auto;
   width: 14px;
   height: 14px;
-  float: right;
-  color: #fff;
+  color: rgba(94, 97, 117, 1);
   visibility: ${p => p.hide ? 'hidden' : 'visible'};
 `
 
 export const AssetItems = styled<StyleProps, 'div'>('div')`
   z-index: 1;
-  background: #000;
-  color: #fff;
+  background: #fff;
+  color: #000;
   overflow-y: scroll;
   position: absolute;
-  min-width: 244px;
-  padding: 0px 8px;
+  width: 244px;
+  padding: 0px 5px;
   max-height: 80px;
   border: 1px solid white;
   border-top: none;
   height: 80px;
-  left: auto;
+  left: -1px;
+  right: 0;
+  top: 100%;
 `
 
 export const AssetItem = styled<StyleProps, 'div'>('div')`
   padding: 3px 0px;
   font-weight: bold;
   cursor: pointer;
-  border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
+  border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70, 0.2)' : ''};
+`
+
+export const TradeWrapper = styled<{}, 'div'>('div')`
+  margin-bottom: 20px;
+`
+
+export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
+  margin-bottom: ${p => p.isAuth ? 20 : 5}px;
+  text-align: center;
 `
