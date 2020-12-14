@@ -4,15 +4,9 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled, { keyframes } from 'brave-ui/theme'
+import styled from 'brave-ui/theme'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
-
-const bounceAnimation = keyframes`
-  50% {
-    transform: translateY(-6px);
-  }
-`
 
 const Hint = styled('div')`
   display: flex;
@@ -30,11 +24,6 @@ const Hint = styled('div')`
 const Graphic = styled('div')`
   width: 16px;
   height: 16px;
-  animation-name: ${bounceAnimation};
-  animation-duration: 3200ms;
-  animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  animation-iteration-count: infinite;
-  animation-play-state: running;
 `
 
 export default function BraveTodayHint () {
