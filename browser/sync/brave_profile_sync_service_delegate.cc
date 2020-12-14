@@ -8,31 +8,19 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "base/threading/thread_task_runner_handle.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 namespace syncer {
 
-namespace {
-syncer::BraveProfileSyncService* GetSyncService(Profile* profile) {
-  return ProfileSyncServiceFactory::IsSyncAllowed(profile)
-             ? static_cast<syncer::BraveProfileSyncService*>(
-                   ProfileSyncServiceFactory::GetForProfile(profile))
-             : nullptr;
-}
-}  // namespace
-
 BraveProfileSyncServiceDelegate::BraveProfileSyncServiceDelegate(
-    Profile* profile)
-    : device_info_sync_service_(
-          DeviceInfoSyncServiceFactory::GetForProfile(profile)),
-      profile_(profile),
+    DeviceInfoSyncService* device_info_sync_service)
+    : device_info_sync_service_(device_info_sync_service),
       weak_ptr_factory_(this) {
   DCHECK(device_info_sync_service_);
 
@@ -48,7 +36,8 @@ BraveProfileSyncServiceDelegate::BraveProfileSyncServiceDelegate(
 BraveProfileSyncServiceDelegate::~BraveProfileSyncServiceDelegate() {}
 
 void BraveProfileSyncServiceDelegate::OnDeviceInfoChange() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(profile_sync_service_);
+
   const syncer::DeviceInfo* local_device_info =
       local_device_info_provider_->GetLocalDeviceInfo();
 
@@ -66,17 +55,16 @@ void BraveProfileSyncServiceDelegate::OnDeviceInfoChange() {
   if (!found_local_device) {
     // We can't call OnSelfDeviceInfoDeleted directly because we are on
     // remove device execution path, so posting task
-    base::PostTask(
-        FROM_HERE, {content::BrowserThread::UI},
+    base::ThreadTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE,
         base::BindOnce(
             &BraveProfileSyncServiceDelegate::OnSelfDeviceInfoDeleted,
             weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
-void BraveProfileSyncServiceDelegate::OnSelfDeviceInfoDeleted(void) {
-  syncer::BraveProfileSyncService* sync_service = GetSyncService(profile_);
-  sync_service->OnSelfDeviceInfoDeleted(base::DoNothing::Once());
+void BraveProfileSyncServiceDelegate::OnSelfDeviceInfoDeleted() {
+  profile_sync_service_->OnSelfDeviceInfoDeleted(base::DoNothing::Once());
 }
 
 void BraveProfileSyncServiceDelegate::SuspendDeviceObserverForOwnReset() {

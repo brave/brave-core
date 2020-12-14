@@ -33,6 +33,7 @@ BraveProfileSyncService::BraveProfileSyncService(
     StopImpl(CLEAR_DATA);
     brave_sync_prefs_.SetSyncV1Migrated(true);
   }
+  profile_service_delegate_->set_profile_sync_service(this);
 }
 
 BraveProfileSyncService::~BraveProfileSyncService() {

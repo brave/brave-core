@@ -20,8 +20,10 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
+#include "base/sequenced_task_runner.h"
 #import "base/strings/sys_string_conversions.h"
-#import "brave/base/containers/utils.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #import "base/base64.h"
 
 #import "RewardsLogging.h"
@@ -50,6 +52,23 @@ static NSString * const kAdsSubdivisionTargetingCodePrefKey = [NSString stringWi
 static NSString * const kAutoDetectedAdsSubdivisionTargetingCodePrefKey = [NSString stringWithUTF8String:ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode];
 static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
+namespace {
+
+ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
+    ads::DBTransactionPtr transaction,
+    ads::Database* database) {
+  auto response = ads::DBCommandResponse::New();
+  if (!database) {
+    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
+  } else {
+    database->RunTransaction(std::move(transaction), response.get());
+  }
+
+  return response;
+}
+
+}  // namespace
+
 @interface BATAdNotification ()
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
 @end
@@ -58,6 +77,7 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
   NativeAdsClient *adsClient;
   ads::Ads *ads;
   ads::Database *adsDatabase;
+  scoped_refptr<base::SequencedTaskRunner> databaseQueue;
 
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -67,7 +87,6 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) dispatch_queue_t prefsWriteThread;
 @property (nonatomic) NSMutableDictionary *prefs;
-@property (nonatomic) dispatch_queue_t databaseQueue;
 @property (nonatomic, copy) NSDictionary *userModelMetadata;
 @property (nonatomic) NSTimer *updateUserModelTimer;
 @property (nonatomic) int64_t userModelRetryCount;
@@ -101,6 +120,11 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
     self.userModelRetryCount = 1;
 
+    databaseQueue = base::CreateSequencedTaskRunner(
+        {base::ThreadPool(), base::MayBlock(),
+         base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -115,6 +139,11 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
   [NSNotificationCenter.defaultCenter removeObserver:self];
   if (networkMonitor) { nw_path_monitor_cancel(networkMonitor); }
+
+  if (adsDatabase) {
+    databaseQueue->DeleteSoon(FROM_HERE, adsDatabase);
+  }
+
   if (ads != nil) {
     delete ads;
     delete adsClient;
@@ -186,8 +215,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)initializeIfAdsEnabled
 {
   if (![self isAdsServiceRunning] && self.enabled) {
-    self.databaseQueue = dispatch_queue_create("com.rewards.ads.db-transactions", DISPATCH_QUEUE_SERIAL);
-    
     const auto* dbPath = [self adsDatabasePath].UTF8String;
     adsDatabase = new ads::Database(base::FilePath(dbPath));
 
@@ -985,22 +1012,20 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   self.autoDetectedSubdivisionTargetingCode = [NSString stringWithCString:subdivision_targeting_code.c_str() encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::DBTransactionPtr)transaction callback:(ads::RunDBTransactionCallback)callback
+- (void)runDBTransaction:(ads::DBTransactionPtr)transaction
+                callback:(ads::RunDBTransactionCallback)callback
 {
-  if (!adsDatabase || transaction.get() == nullptr) {
-    auto response = ads::DBCommandResponse::New();
-    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
-    callback(std::move(response));
-  } else {
-    __block auto transactionClone = transaction->Clone();
-    dispatch_async(self.databaseQueue, ^{
-      __block auto response = ads::DBCommandResponse::New();
-      adsDatabase->RunTransaction(std::move(transactionClone), response.get());
-      dispatch_async(dispatch_get_main_queue(), ^{
-        callback(std::move(response));
-      });
-    });
-  }
+  __weak BATBraveAds* weakSelf = self;
+  base::PostTaskAndReplyWithResult(
+      databaseQueue.get(),
+      FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnTaskRunner,
+          base::Passed(std::move(transaction)),
+          adsDatabase),
+      base::BindOnce(^(ads::DBCommandResponsePtr response) {
+        if (weakSelf)
+          callback(std::move(response));
+      }));
 }
 
 - (void)onAdRewardsChanged

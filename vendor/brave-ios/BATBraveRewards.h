@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Configuration around brave rewards for ads & ledger
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveRewardsConfiguration)
 @interface BATBraveRewardsConfiguration : NSObject <NSCopying>
 
@@ -48,6 +49,7 @@ NS_SWIFT_NAME(BraveRewardsConfiguration)
 
 @end
 
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveRewardsDelegate)
 @protocol BATBraveRewardsDelegate <NSObject>
 @required
@@ -69,6 +71,7 @@ NS_SWIFT_NAME(BraveRewardsDelegate)
 
 /// A container for handling Brave Rewards. Use `ads` to handle how many ads the users see,
 /// when to display them. Use `ledger` to manage interactions between the users wallet & publishers
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveRewards)
 @interface BATBraveRewards : NSObject
 
@@ -90,6 +93,7 @@ NS_SWIFT_NAME(BraveRewards)
 
 @end
 
+OBJC_EXPORT 
 @interface BATBraveRewards (Reporting)
 
 /// Report that a tab with a given id was updated
