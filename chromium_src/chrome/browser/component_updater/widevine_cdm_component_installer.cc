@@ -11,9 +11,10 @@
 #include "brave/browser/widevine/widevine_utils.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_service.h"
-#include "extensions/common/constants.h"
 
 namespace component_updater {
+
+const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
 
 void OnWidevineRegistered() {
   component_updater::BraveOnDemandUpdate(widevine_extension_id);
