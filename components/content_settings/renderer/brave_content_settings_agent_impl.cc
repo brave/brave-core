@@ -212,7 +212,7 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   }
 }
 
-bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
+bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetSecurityOrigin();
   // default allow local files
@@ -228,7 +228,8 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
                                    frame, url::Origin(origin).GetURL());
     if (setting == CONTENT_SETTING_BLOCK) {
       VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
-      DidBlockContentType(ContentSettingsType::AUTOPLAY);
+      if (play_requested)
+        DidBlockContentType(ContentSettingsType::AUTOPLAY);
       return false;
     } else if (setting == CONTENT_SETTING_ALLOW) {
       VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
@@ -236,12 +237,13 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
     }
   }
 
-  bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);
+  bool allow = ContentSettingsAgentImpl::AllowAutoplay(play_requested);
   if (allow) {
     VLOG(1) << "AllowAutoplay=true because "
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   } else {
-    DidBlockContentType(ContentSettingsType::AUTOPLAY);
+    if (play_requested)
+      DidBlockContentType(ContentSettingsType::AUTOPLAY);
     VLOG(1) << "AllowAutoplay=false because "
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   }

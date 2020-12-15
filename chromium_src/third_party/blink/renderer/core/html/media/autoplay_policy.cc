@@ -10,12 +10,11 @@
 namespace blink {
 namespace {
 
-bool IsAutoplayAllowedForFrame(LocalFrame* frame) {
+bool IsAutoplayAllowedForFrame(LocalFrame* frame, bool play_requested) {
   if (!frame)
     return false;
   if (auto* settings_client = frame->GetContentSettingsClient()) {
-    bool allow_autoplay =
-        settings_client->AllowAutoplay(true /* default_value */);
+    bool allow_autoplay = settings_client->AllowAutoplay(play_requested);
     // Clear it in order to block media when refresh or navigate
     if (!allow_autoplay) {
       frame->ClearUserActivation();
@@ -26,11 +25,11 @@ bool IsAutoplayAllowedForFrame(LocalFrame* frame) {
 }
 
 bool IsAutoplayAllowedForDocument(const Document& document) {
-  return IsAutoplayAllowedForFrame(document.GetFrame());
+  return IsAutoplayAllowedForFrame(document.GetFrame(), false);
 }
 
 bool IsAutoplayAllowedForElement(Member<HTMLMediaElement> element) {
-  return IsAutoplayAllowedForFrame(element->GetDocument().GetFrame());
+  return IsAutoplayAllowedForFrame(element->GetDocument().GetFrame(), true);
 }
 
 }  // namespace
