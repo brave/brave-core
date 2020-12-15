@@ -29,9 +29,11 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.ui.favicon.IconType;
@@ -111,7 +113,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         if (!hasRewardsOnboardingModalShown()
                 && (getNextRewardsOnboardingModalDate() > 0
                         && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
-                && shouldShowBraveRewardsOnboardingModal()) {
+                && shouldShowBraveRewardsOnboardingModal()
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
             if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                 setRewardsOnboardingModalShown(true);
                 return false;
