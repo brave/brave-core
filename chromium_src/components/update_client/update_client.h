@@ -6,9 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CLIENT_H_
 
-#define UpdateClientFactory    \
-  UpdateClientFactory_ChromiumImpl( \
-      scoped_refptr<Configurator> config); \
+#define UpdateClientFactory                                             \
+  UpdateClientFactory_ChromiumImpl(scoped_refptr<Configurator> config); \
   scoped_refptr<UpdateClient> UpdateClientFactory
 
 #include "../../../../components/update_client/update_client.h"

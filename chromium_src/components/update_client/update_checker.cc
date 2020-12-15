@@ -11,13 +11,13 @@ SequentialUpdateChecker::SequentialUpdateChecker(
     scoped_refptr<Configurator> config,
     PersistedData* metadata)
     : config_(config), metadata_(metadata) {
-      VLOG(3) << "SequentialUpdateChecker";
-    }
+  VLOG(3) << "SequentialUpdateChecker";
+}
 
 SequentialUpdateChecker::~SequentialUpdateChecker() {
-    VLOG(3) << "> ~SequentialUpdateChecker";
-    DCHECK(thread_checker_.CalledOnValidThread());
-    VLOG(3) << "< ~SequentialUpdateChecker";
+  VLOG(3) << "> ~SequentialUpdateChecker";
+  DCHECK(thread_checker_.CalledOnValidThread());
+  VLOG(3) << "< ~SequentialUpdateChecker";
 }
 
 void SequentialUpdateChecker::CheckForUpdates(
@@ -82,11 +82,12 @@ void SequentialUpdateChecker::UpdateResultAvailable(
 
   if (done)
     base::ThreadTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE,
-      base::BindOnce(std::move(update_check_callback_),
-                     error ? base::nullopt :
-                     base::make_optional<ProtocolParser::Results>(results_),
-                     error_category, error, retry_after_sec));
+        FROM_HERE,
+        base::BindOnce(
+            std::move(update_check_callback_),
+            error ? base::nullopt
+                  : base::make_optional<ProtocolParser::Results>(results_),
+            error_category, error, retry_after_sec));
   else
     CheckNext();
   VLOG(3) << "> UpdateResultAvailable(" << error << ")";
