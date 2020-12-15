@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
+#include "base/notreached.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -27,7 +28,9 @@
   }
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
+#define getImageData getImageData_Unused
 #include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
+#undef getImageData
 #undef BRAVE_GET_IMAGE_DATA_PARAMS
 #undef BRAVE_GET_IMAGE_DATA
 
@@ -45,13 +48,70 @@ bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
 
 namespace blink {
 
-ImageData* BaseRenderingContext2D::getImageDataUnused(
+ImageData* BaseRenderingContext2D::getImageData(
     int sx,
     int sy,
     int sw,
     int sh,
     ExceptionState& exception_state) {
+  NOTREACHED();
   return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageData(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataColorSettings* color_settings,
+    ExceptionState& exception_state) {
+  NOTREACHED();
+  return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageDataInternal(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataColorSettings* color_settings,
+    ExceptionState& exception_state) {
+  NOTREACHED();
+  return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataColorSettings* color_settings,
+    ExceptionState& exception_state) {
+  NOTREACHED();
+  return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageData(
+    ScriptState* script_state,
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ExceptionState& exception_state) {
+  return getImageDataInternal(script_state, sx, sy, sw, sh, nullptr,
+                              exception_state);
+}
+
+ImageData* BaseRenderingContext2D::getImageData(
+    ScriptState* script_state,
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataColorSettings* color_settings,
+    ExceptionState& exception_state) {
+  return getImageDataInternal(script_state, sx, sy, sw, sh, color_settings,
+                              exception_state);
 }
 
 bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
