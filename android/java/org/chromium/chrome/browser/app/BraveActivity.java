@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.json.JSONException;
 
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
@@ -250,7 +251,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         setBgBraveAdsDefaultOff();
 
         Context app = ContextUtils.getApplicationContext();
-        if (null != app && (this instanceof ChromeTabbedActivity)) {
+        if (null != app
+                && BraveReflectionUtil.EqualTypes(this.getClass(), ChromeTabbedActivity.class)) {
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
             BraveSyncReflectionUtils.getSyncWorker();
         }

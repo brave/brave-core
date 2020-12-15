@@ -130,3 +130,30 @@
 -keep class org.chromium.chrome.browser.app.ChromeActivity {
     *** mTabModelProfileSupplier;
 }
+
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity {
+    *** hideOverview(...);
+}
+
+-keep class org.chromium.chrome.browser.app.BraveActivity {
+    *** openNewOrSelectExistingTab(...);
+    *** selectExistingTab(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate {
+}
+
+-keep class org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate {
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.ChromeTabCreator {
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.BraveTabCreator {
+}

@@ -39,6 +39,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
@@ -960,11 +961,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomToolbarVisible);
   }
 
-  // Type is compatible after bytecode patching
-  @SuppressWarnings("EqualsIncompatibleType")
   @Override
   protected void onDraw(Canvas canvas) {
-      if (this.getClass().equals(CustomTabToolbar.class) || this instanceof ToolbarPhone) {
+      if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)
+              || this instanceof ToolbarPhone) {
           updateMenuButtonState();
       }
       super.onDraw(canvas);
