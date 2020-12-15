@@ -20,8 +20,8 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/controls/button/button.h"
 
-BookmarkButton::BookmarkButton()
-    : ToolbarButton(views::Button::PressedCallback()) {
+BookmarkButton::BookmarkButton(PressedCallback callback)
+    : ToolbarButton(std::move(callback)) {
   SetID(VIEW_ID_STAR_BUTTON);
   set_tag(IDC_BOOKMARK_THIS_TAB);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));

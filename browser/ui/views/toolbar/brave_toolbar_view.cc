@@ -11,18 +11,24 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/events/event.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/features.h"
@@ -131,7 +137,14 @@ void BraveToolbarView::Init() {
       base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
                  base::Unretained(this)));
 
-  bookmark_ = new BookmarkButton();
+  const auto callback = [](Browser* browser, int command,
+                           const ui::Event& event) {
+    chrome::ExecuteCommandWithDisposition(
+        browser, command, ui::DispositionFromEventFlags(event.flags()));
+  };
+
+  bookmark_ = new BookmarkButton(
+      base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   DCHECK(location_bar_);
@@ -141,7 +154,9 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader.
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    speedreader_ = new SpeedreaderButton(profile->GetPrefs());
+    speedreader_ = new SpeedreaderButton(
+        base::BindRepeating(callback, browser_, IDC_TOGGLE_SPEEDREADER),
+        profile->GetPrefs());
     speedreader_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                            ui::EF_MIDDLE_MOUSE_BUTTON);
   }
