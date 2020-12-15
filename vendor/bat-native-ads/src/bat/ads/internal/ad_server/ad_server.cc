@@ -159,7 +159,7 @@ void AdServer::OnRetry() {
 void AdServer::FetchAfterDelay() {
   retry_timer_.Stop();
 
-  const int64_t ping = _is_debug ? kDebugCatalogPing :
+  const int64_t ping = g_is_debug ? kDebugCatalogPing :
       AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogPing);
 
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(ping);

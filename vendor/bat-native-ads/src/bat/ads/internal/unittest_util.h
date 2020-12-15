@@ -83,6 +83,9 @@ base::FilePath GetResourcesPath();
 void SetEnvironment(
     const Environment environment);
 
+void SetSysInfo(
+    const SysInfo& sys_info);
+
 void SetBuildChannel(
     const bool is_release,
     const std::string& name);

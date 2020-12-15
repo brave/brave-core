@@ -45,7 +45,7 @@ void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
 
-  SetUpForTesting(/* end to end testing */ false);
+  SetUpForTesting(/* integration testing */ false);
 }
 
 void UnitTestBase::SetUpForTesting(
@@ -111,6 +111,8 @@ void UnitTestBase::Initialize() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 
   SetEnvironment(Environment::DEVELOPMENT);
+
+  SetSysInfo(SysInfo());
 
   SetBuildChannel(false, "test");
 
@@ -189,6 +191,8 @@ void UnitTestBase::InitializeAds() {
       const Result result) {
     ASSERT_EQ(Result::SUCCESS, result);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace ads
