@@ -37,11 +37,10 @@ namespace update_client {
 // separate update requests instead.
 class SequentialUpdateChecker : public UpdateChecker {
  public:
-  SequentialUpdateChecker(scoped_refptr<Configurator> config,
-                          PersistedData* metadata);
-  ~SequentialUpdateChecker() override;
+  static std::unique_ptr<UpdateChecker> Create(
+      scoped_refptr<Configurator> config,
+      PersistedData* persistent);
 
-  // Overrides for UpdateChecker.
   void CheckForUpdates(
       const std::string& session_id,
       const std::vector<std::string>& ids_checked,
@@ -50,11 +49,11 @@ class SequentialUpdateChecker : public UpdateChecker {
       bool enabled_component_updates,
       UpdateCheckCallback update_check_callback) override;
 
-  static std::unique_ptr<UpdateChecker> Create(
-      scoped_refptr<Configurator> config,
-      PersistedData* persistent);
+  ~SequentialUpdateChecker() override;
 
  private:
+  SequentialUpdateChecker(scoped_refptr<Configurator> config,
+                          PersistedData* metadata);
   void CheckNext();
   void UpdateResultAvailable(
       const base::Optional<ProtocolParser::Results>& results,
