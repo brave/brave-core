@@ -224,7 +224,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kPrivacySettingsRedesign.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kTabHoverCards.name,
-    features::kVideoPlaybackQuality.name,
     features::kWebOTP.name,
     network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kPasswordCheck.name,
