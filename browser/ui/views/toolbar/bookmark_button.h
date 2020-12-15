@@ -6,15 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 
-#include "base/scoped_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
-#include "ui/base/models/simple_menu_model.h"
-#include "ui/views/widget/widget.h"
-#include "ui/views/widget/widget_observer.h"
 
 class BookmarkButton : public ToolbarButton {
  public:
-    BookmarkButton();
+    BookmarkButton(PressedCallback callback);
     ~BookmarkButton() override;
 
     void SetToggled(bool on);
