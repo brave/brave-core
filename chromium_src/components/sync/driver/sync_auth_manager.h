@@ -21,7 +21,6 @@ class BraveSyncAuthManager;
 
 #include "../../../../../components/sync/driver/sync_auth_manager.h"
 
-#undef BRAVE_SYNC_AUTH_MANAGER_H_
 #undef RequestAccessToken
 #undef DetermineAccountToUse
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_SYNC_AUTH_MANAGER_H_

@@ -93,21 +93,6 @@ class BraveProfileSyncServiceTest : public testing::Test {
 
   brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
 
-  void UpdateCredentials() {
-    profile_sync_service_bundle_.identity_test_env()
-        ->SetRefreshTokenForPrimaryAccount();
-  }
-  void FastForwardUntilNoTasksRemain() {
-    task_environment_.FastForwardUntilNoTasksRemain();
-  }
-  DataTypeManagerMock* SetUpDataTypeManagerMock() {
-    auto data_type_manager = std::make_unique<NiceMock<DataTypeManagerMock>>();
-    DataTypeManagerMock* data_type_manager_raw = data_type_manager.get();
-    ON_CALL(*component_factory(), CreateDataTypeManager)
-        .WillByDefault(Return(ByMove(std::move(data_type_manager))));
-    return data_type_manager_raw;
-  }
-
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
   BraveProfileSyncService* brave_sync_service() { return sync_service_.get(); }

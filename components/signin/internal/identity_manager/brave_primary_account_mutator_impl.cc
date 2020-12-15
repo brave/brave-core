@@ -26,7 +26,7 @@ bool BravePrimaryAccountMutatorImpl::ClearPrimaryAccount(
     ClearAccountsAction action,
     signin_metrics::ProfileSignout source_metric,
     signin_metrics::SignoutDelete delete_metric) {
-  return false;
+  return true;
 }
 #endif
 

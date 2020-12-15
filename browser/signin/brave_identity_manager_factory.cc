@@ -9,7 +9,6 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/signin/public/identity_manager/brave_identity_manager.h"
-#include "brave/components/signin/public/identity_manager/brave_identity_manager_builder.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
@@ -31,7 +30,7 @@
 BraveIdentityManagerFactory::BraveIdentityManagerFactory()
     : IdentityManagerFactory() {}
 
-BraveIdentityManagerFactory::~BraveIdentityManagerFactory() = default;
+BraveIdentityManagerFactory::~BraveIdentityManagerFactory() {}
 
 // static
 signin::BraveIdentityManager* BraveIdentityManagerFactory::GetForProfile(
