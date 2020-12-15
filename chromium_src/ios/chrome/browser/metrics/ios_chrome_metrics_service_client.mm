@@ -6,15 +6,14 @@
 #include "ios/chrome/browser/metrics/ios_chrome_metrics_service_client.h"
 
 #include <stdint.h>
+#include <string>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-
 #include "base/metrics/persistent_histogram_allocator.h"
 #include "base/path_service.h"
 #include "base/process/process_metrics.h"
@@ -22,12 +21,12 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "components/metrics/metrics_log_uploader.h"
+#include "components/metrics/metrics_provider.h"
 #include "components/metrics/metrics_service.h"
 #include "components/metrics/metrics_service_client.h"
 #include "components/metrics/metrics_state_manager.h"
 #include "components/metrics/net/cellular_logic_helper.h"
 #include "components/metrics/net/net_metrics_log_uploader.h"
-#include "components/metrics/metrics_provider.h"
 #include "components/metrics/persistent_histograms.h"
 #include "components/metrics/url_constants.h"
 #include "components/metrics/version_utils.h"
@@ -53,15 +52,15 @@ void DeleteFileMetrics() {
   if (base::PathService::Get(ios::DIR_USER_DATA, &user_data_dir)) {
     base::FilePath browser_metrics_upload_dir =
         user_data_dir.AppendASCII(kBrowserMetricsName);
-      // When metrics reporting is not enabled, any existing files should be
-      // deleted in order to preserve user privacy.
-      base::ThreadPool::PostTask(
-          FROM_HERE,
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-          base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                         std::move(browser_metrics_upload_dir)));
-    }
+    // When metrics reporting is not enabled, any existing files should be
+    // deleted in order to preserve user privacy.
+    base::ThreadPool::PostTask(
+        FROM_HERE,
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+        base::BindOnce(base::GetDeletePathRecursivelyCallback(),
+                       std::move(browser_metrics_upload_dir)));
+  }
 }
 
 }  // namespace

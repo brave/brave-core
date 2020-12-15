@@ -21,15 +21,15 @@ void DeleteFileMetrics() {
   if (base::PathService::Get(ios::DIR_USER_DATA, &user_data_dir)) {
     base::FilePath browser_metrics_upload_dir =
         user_data_dir.AppendASCII(kBrowserMetricsName);
-      // When metrics reporting is not enabled, any existing files should be
-      // deleted in order to preserve user privacy.
-      base::ThreadPool::PostTask(
-          FROM_HERE,
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-          base::BindOnce(base::GetDeletePathRecursivelyCallback(),
-                         std::move(browser_metrics_upload_dir)));
-    }
+    // When metrics reporting is not enabled, any existing files should be
+    // deleted in order to preserve user privacy.
+    base::ThreadPool::PostTask(
+        FROM_HERE,
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+        base::BindOnce(base::GetDeletePathRecursivelyCallback(),
+                       std::move(browser_metrics_upload_dir)));
+  }
 }
 
 }  // namespace
