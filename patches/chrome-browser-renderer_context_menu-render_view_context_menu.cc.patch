@@ -7,6 +7,6 @@ index c5eaefcf1a7b3c7de221b10b6b1a2fffc60003a6..99e8462eefd6ccc624a433ded8f3002a
    if (!selection_navigation_url_.is_valid())
      return;
 +  BRAVE_APPEND_SEARCH_PROVIDER
-
+ 
    base::string16 printable_selection_text = PrintableSelectionText();
    EscapeAmpersands(&printable_selection_text);
