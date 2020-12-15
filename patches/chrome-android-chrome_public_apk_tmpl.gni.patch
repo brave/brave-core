@@ -1,16 +1,16 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 00fde4514a8ada64522943070470bbf008398d2b..d9aa12d5f6ca9032684eef0f849c3eba568acd84 100644
+index c45ff319f7d46c6f3b713b67396caab73dd6ef04..8841c44bdb8c3f578c63943e04e9546656717707 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -210,6 +210,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
-       "${_material_package}:[Ss]lider",
-       "${_material_package}:[Tt]oolbarLayout",
-     ]
+@@ -187,6 +187,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+ 
+     # Remove unneeded entries from material design values.xml files.
+     resource_values_filter_rules = [ "${_material_package}:[Tt]oolbarLayout" ]
 +    resource_exclusion_exceptions += brave_resources_exclusion_exceptions resource_values_filter_rules -= brave_resource_values_filter_rules_exclusions
  
      if (!_is_monochrome) {
        product_config_java_packages = [ "org.chromium.chrome.browser" ]
-@@ -319,6 +320,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -296,6 +297,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }

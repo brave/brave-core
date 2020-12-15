@@ -11,7 +11,7 @@ index 1157b22cd8be5934e8fce8d328ebe3e8db625123..46168878940065312a2a07d8b83fc61e
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-
+ 
 @@ -49,9 +51,13 @@ by a child template that "extends" this file.
      {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -39,11 +39,11 @@ index 1157b22cd8be5934e8fce8d328ebe3e8db625123..46168878940065312a2a07d8b83fc61e
 @@ -108,7 +116,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
-
+ 
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +-->
-
+ 
      {% block extra_uses_permissions %}
      {% endblock %}
 @@ -161,6 +171,7 @@ by a child template that "extends" this file.
@@ -57,7 +57,7 @@ index 1157b22cd8be5934e8fce8d328ebe3e8db625123..46168878940065312a2a07d8b83fc61e
 @@ -1162,6 +1173,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
-
+ 
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
          {% endblock %}
@@ -68,5 +68,5 @@ index 1157b22cd8be5934e8fce8d328ebe3e8db625123..46168878940065312a2a07d8b83fc61e
        <meta-data android:name="com.google.ar.core" android:value="optional" />
 +        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
        {% endif %}
-
+ 
        <!-- Cast support -->
