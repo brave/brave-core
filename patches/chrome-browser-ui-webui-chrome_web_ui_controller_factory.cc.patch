@@ -1,21 +1,12 @@
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-index 36103b6f487ead53d487a2056a4a7be46b0c18e2..e0eec060e4af91e84864a9dd96a6bdf51af04db5 100644
+index 968ab1f7e06a08f03aa15293e09a6d9365b0d1b6..3116c411cd75ea32230809ec409f2e9f6906c60b 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-@@ -12,6 +12,7 @@
- #include "base/location.h"
- #include "base/memory/ptr_util.h"
- #include "base/threading/thread_task_runner_handle.h"
-+#include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
- #include "build/build_config.h"
- #include "chrome/browser/about_flags.h"
- #include "chrome/browser/accessibility/accessibility_ui.h"
-@@ -1084,7 +1085,7 @@ void ChromeWebUIControllerFactory::GetFaviconForURL(
+@@ -1106,6 +1106,7 @@ void ChromeWebUIControllerFactory::GetFaviconForURL(
  
  // static
  ChromeWebUIControllerFactory* ChromeWebUIControllerFactory::GetInstance() {
--  return base::Singleton<ChromeWebUIControllerFactory>::get();
-+  return BraveWebUIControllerFactory::GetInstance();
++  BRAVE_CHROME_WEBUI_CONTROLLER_FACTORY
+   return base::Singleton<ChromeWebUIControllerFactory>::get();
  }
  
- // static
