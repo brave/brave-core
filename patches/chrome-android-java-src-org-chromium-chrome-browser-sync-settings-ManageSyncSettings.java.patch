@@ -11,7 +11,7 @@ index 17fdd205f79d564e4e31962937dd64d1f6749d85..096410cdca12075c96df9113f98a4a95
  import androidx.preference.Preference;
  import androidx.preference.PreferenceCategory;
  import androidx.preference.PreferenceFragmentCompat;
-@@ -367,7 +367,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+@@ -366,7 +366,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
                  IdentityServicesProvider.get()
                          .getIdentityManager(Profile.getLastUsedRegularProfile())
                          .getPrimaryAccountInfo(ConsentLevel.SYNC));

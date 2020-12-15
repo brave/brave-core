@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index cfed148d68be8d0880823b391b55936f942c22cc..2b2989f4ce45b6b74d25d3537865d7d09c54c19e 100644
+index ab35681b5caafaabd1e58cea225160e84bd398c2..b864a55bd6aea592d3127484c72a904802b7ea9a 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -57,6 +57,7 @@ generate_grd("build_grd") {
+@@ -58,6 +58,7 @@ generate_grd("build_grd") {
        "$target_gen_dir/$preprocess_gen_manifest",
      ]
    }
 +  deps += [ "//brave/browser/resources/extensions:resources" ]
  }
  
- preprocess_grit("preprocess") {
+ preprocess_if_expr("preprocess") {

@@ -3,9 +3,9 @@ index 5a93b1200b866b0cb0557cafcc5e7e9abc7fb35d..fd55a0ec8a16e8ae55cfa80a175d22a7
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -50,7 +50,7 @@ namespace {
-
+ 
  const int kPriorCountCap = 10;
-
+ 
 -std::string GetPermissionRequestString(PermissionRequestType type) {
 +std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type) {
    switch (type) {
