@@ -279,18 +279,32 @@ class FTX extends React.PureComponent<Props, State> {
 
   renderConvert () {
     const { availableAmount, availableLabel } = {
-      availableAmount: 300000,
+      availableAmount: 3.754,
       availableLabel: 'BTC'
     }
 
     return (
       <>
-        <Text>
-          {`Available ${availableAmount} ${availableLabel}`}
-        </Text>
+        <BasicBox isFlex={true} $mt={25}>
+          <Text>
+            Convert
+          </Text>
+          <Text small={true}>
+            {`Available ${availableAmount} ${availableLabel}`}
+          </Text>
+        </BasicBox>
         <TradingDropdown
           assets={['BTC', 'ETH', 'BAT']}
         />
+        <PlainButton
+          textAlign='center'
+          weight='600'
+          textColor='light'
+          isFullWidth={true}
+          $mt={10}
+        >
+          Cancel
+        </PlainButton>
       </>
     )
   }

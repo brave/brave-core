@@ -85,7 +85,8 @@ function getBoxStyle (p: StyleProps) {
     ['$mt', `margin-top: ${typeof p.$mt === 'number' ? `${p.$mt}px` : p.$mt};`],
     ['$mr', `margin-right: ${typeof p.$mr === 'number' ? `${p.$mr}px` : p.$mr};`],
     ['$mb', `margin-bottom: ${typeof p.$mb === 'number' ? `${p.$mb}px` : p.$mb};`],
-    ['$ml', `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml};`]
+    ['$ml', `margin-left: ${typeof p.$ml === 'number' ? `${p.$ml}px` : p.$ml};`],
+    ['isFullWidth', 'width: 100%;']
   ].reduce((aggr, v) => {
     return p[v[0]] ? `${aggr}${v[1]}` : aggr
   }, '')
@@ -125,7 +126,6 @@ export const Text = styled<StyleProps, 'p'>('p')`
 `
 
 export const BasicBox = styled<StyleProps, 'div'>('div')`
-  width: ${p => p.isFullWidth ? '100%' : 'auto'};
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   ${(p) =>
     p.isFlex &&
@@ -150,7 +150,6 @@ export const FlexItem = styled<StyleProps, 'div'>('div')`
   flex: ${p => p.flex || 'inherit'};
   text-align: ${p => p.textAlign || 'left'};
   padding: ${p => (p.hasPadding ? '0.5em' : '0px')};
-  width: ${p => (p.isFullWidth ? '100%' : 'auto')};
   border-bottom: ${p => (p.hasPadding ? '1px solid rgba(79, 86, 97, 0.7)' : 'none')};
 
   ${(p) =>
