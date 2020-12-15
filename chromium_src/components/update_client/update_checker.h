@@ -8,6 +8,10 @@
 
 #include "../../../../components/update_client/update_checker.h"
 
+#include <deque>
+#include <string>
+#include <vector>
+
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/optional.h"
@@ -16,10 +20,6 @@
 #include "components/update_client/configurator.h"
 #include "components/update_client/persisted_data.h"
 #include "components/update_client/update_client_errors.h"
-
-#include <deque>
-#include <string>
-#include <vector>
 
 namespace update_client {
 
