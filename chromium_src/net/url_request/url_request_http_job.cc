@@ -5,8 +5,11 @@
 
 #include "net/url_request/url_request_http_job.h"
 
+#include "base/bind.h"
 #include "net/base/features.h"
+#include "net/base/isolation_info.h"
 #include "net/cookies/cookie_monster.h"
+#include "net/url_request/url_request.h"
 
 namespace {
 
@@ -28,19 +31,17 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
 }  // namespace
 
 #define BRAVE_ADDCOOKIEHEADERANDSTART                                          \
-  if (ShouldUseEphemeralStorage(this)) {                                       \
-    DCHECK(request()->isolation_info().top_frame_origin().has_value());        \
+  if (ShouldUseEphemeralStorage(this))                                         \
     static_cast<CookieMonster*>(cookie_store)                                  \
         ->GetEphemeralCookieListWithOptionsAsync(                              \
             request_->url(),                                                   \
             request()->isolation_info().top_frame_origin()->GetURL(), options, \
             base::BindOnce(&URLRequestHttpJob::SetCookieHeaderAndStart,        \
                            weak_factory_.GetWeakPtr(), options));              \
-  } else  // NOLINT
+  else
 
 #define BRAVE_SAVECOOKIESANDNOTIFYHEADERSCOMPLETE                              \
-  if (ShouldUseEphemeralStorage(this)) {                                       \
-    DCHECK(request()->isolation_info().top_frame_origin().has_value());        \
+  if (ShouldUseEphemeralStorage(this))                                         \
     static_cast<CookieMonster*>(request_->context()->cookie_store())           \
         ->SetEphemeralCanonicalCookieAsync(                                    \
             std::move(cookie), request_->url(),                                \
@@ -48,6 +49,6 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
             base::BindOnce(&URLRequestHttpJob::OnSetCookieResult,              \
                            weak_factory_.GetWeakPtr(), options,                \
                            cookie_to_return, cookie_string));                  \
-  } else  // NOLINT
+  else
 
 #include "../../../../../net/url_request/url_request_http_job.cc"
