@@ -8,12 +8,12 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
-#define getImageData                                                          \
-  getImageData(ScriptState*, int sx, int sy, int sw, int sh, ExceptionState&) \
-      override;                                                               \
-  virtual ImageData* getImageDataUnused
+#define getImageDataInternal                                            \
+  getImageDataInternal(ScriptState*, int sx, int sy, int sw, int sh,    \
+                       ImageDataColorSettings*, ExceptionState&) final; \
+  ImageData* getImageDataInternal_Unused
 
 #include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
-#undef getImageData
+#undef getImageDataInternal
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_CANVAS_CANVAS2D_CANVAS_RENDERING_CONTEXT_2D_H_
