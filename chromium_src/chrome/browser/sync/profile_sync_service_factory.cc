@@ -16,10 +16,6 @@
       std::make_unique<syncer::BraveProfileSyncServiceDelegate>( \
           DeviceInfoSyncServiceFactory::GetForProfile(profile)));
 
-// Excluding src/chrome/browser/signin/identity_manager_factory.h, but this is
-// OK, because we are including brave_identity_manager_factory.h
-#define CHROME_BROWSER_SIGNIN_IDENTITY_MANAGER_FACTORY_H_
-
 #include "../../../../../chrome/browser/sync/profile_sync_service_factory.cc"
 
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR
