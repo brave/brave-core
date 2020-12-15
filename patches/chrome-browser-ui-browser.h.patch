@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index afd852999cd7716d246a31aa407fc262bb5dc128..e5d64b5d71718f1def54c0e4bf63560cee7064c6 100644
+index 923b9d25f98431c7d44c9abdd070d6358d2476a4..dff0a8ec3711f12b8599c4ead1cab2ffc5c52198 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -682,6 +682,7 @@ class Browser : public TabStripModelObserver,
-   // Sets the browser's user title. Setting it to an empty string clears it.
-   void SetWindowUserTitle(const std::string& user_title);
+@@ -686,6 +686,7 @@ class Browser : public TabStripModelObserver,
+ 
+   StatusBubble* GetStatusBubbleForTesting();
  
 +  BRAVE_BROWSER_H
   private:

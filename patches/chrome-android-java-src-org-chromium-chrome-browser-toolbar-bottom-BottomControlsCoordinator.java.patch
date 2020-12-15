@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index dd58bc81f065e0434d28f8ec665a3ae8e0ddd29b..8b8f3de73df0dc977bddc719a9805ff2353a2ef2 100644
+index 10d85063b9352f883757b2c275348f03080e6079..abad2c3980cd9ac8bec8f3ee39204714a7cbb397 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-@@ -94,7 +94,7 @@ public class BottomControlsCoordinator {
-         View container = root.findViewById(R.id.bottom_container_slot);
+@@ -96,7 +96,7 @@ public class BottomControlsCoordinator {
          ViewGroup.LayoutParams params = container.getLayoutParams();
          params.height = root.getResources().getDimensionPixelOffset(bottomControlsHeightId);
--        mMediator = new BottomControlsMediator(model, controlsSizer, fullscreenManager,
-+        mMediator = new BraveBottomControlsMediator(model, controlsSizer, fullscreenManager,
-                 root.getResources().getDimensionPixelOffset(bottomControlsHeightId));
+         mMediator =
+-                new BottomControlsMediator(windowAndroid, model, controlsSizer, fullscreenManager,
++                new BraveBottomControlsMediator(windowAndroid, model, controlsSizer, fullscreenManager,
+                         root.getResources().getDimensionPixelOffset(bottomControlsHeightId),
+                         overlayPanelVisibilitySupplier);
  
-         if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled()

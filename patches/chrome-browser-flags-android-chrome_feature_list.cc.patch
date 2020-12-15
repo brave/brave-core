@@ -4,7 +4,7 @@ index a64eac4a4c05b4f6690c1b130a884b3ca549315b..cde270d467e0481b2af6d28605555a72
 +++ b/chrome/browser/flags/android/chrome_feature_list.cc
 @@ -297,6 +297,7 @@ const base::Feature* kFeaturesExposedToJava[] = {
  };
-
+ 
  const base::Feature* FindFeatureExposedToJava(const std::string& feature_name) {
 +  BRAVE_FIND_FEATURE_EXPOSED_TO_JAVA
    for (const auto* feature : kFeaturesExposedToJava) {

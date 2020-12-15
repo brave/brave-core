@@ -1,19 +1,19 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index cc79a7320b12986756dfeed5cd9f3283373dd6f4..b4ed1441c1755eed3863ab28950ba3cbb0810d01 100644
+index a3fee5ea23d1d2fe9003f9def8923e9acca2c157..bed9d800eedb2f0e1feff3b42aa3882ceca3b334 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -149,6 +149,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -148,6 +148,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::INSECURE_PRIVATE_NETWORK, nullptr},
      {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, nullptr},
      {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
- static_assert(base::size(kContentSettingsTypeGroupNames) ==
-                   // ContentSettingsType starts at -1, so add 1 here.
-@@ -375,6 +376,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ 
+ // TODO(crbug.com/1149878): After removing ContentSettingsType::PLUGINS, remove
+@@ -377,6 +378,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
- ContentSettingsType ContentSettingsTypeFromGroupName(const std::string& name) {
+ ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
 +  BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
    for (size_t i = 0; i < base::size(kContentSettingsTypeGroupNames); ++i) {
      if (name == kContentSettingsTypeGroupNames[i].name)

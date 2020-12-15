@@ -4,16 +4,16 @@ index ecfe5cc0e922d9938ae62cebcee87308525d681a..13f69316561112089d7c552174f385d5
 +++ b/third_party/blink/renderer/modules/BUILD.gn
 @@ -16,6 +16,7 @@ if (is_android) {
  }
-
+ 
  visibility = [ "//third_party/blink/renderer/*" ]
 +visibility += brave_blink_renderer_modules_visibility
-
+ 
  config("modules_implementation") {
    defines = [ "BLINK_MODULES_IMPLEMENTATION=1" ]
 @@ -169,6 +170,7 @@ component("modules") {
      "//third_party/blink/renderer/modules/xr",
    ]
-
+ 
 +  sub_modules += brave_blink_sub_modules
    if (is_android) {
      sub_modules += [ "//third_party/blink/renderer/modules/remote_objects" ]

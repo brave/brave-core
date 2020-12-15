@@ -3,7 +3,7 @@ index 5935f8c959ddc0ba31f07929b0433c429b0c61bf..ab93125e9c507a2457750e027c62618c
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 @@ -948,6 +948,7 @@ String HTMLCanvasElement::ToDataURLInternal(
-
+ 
    scoped_refptr<StaticBitmapImage> image_bitmap = Snapshot(source_buffer);
    if (image_bitmap) {
 +    BRAVE_TO_DATA_URL_INTERNAL
