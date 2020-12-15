@@ -33,6 +33,7 @@ class BraveStatsUpdaterParams {
   std::string GetWeekOfInstallationParam() const;
   std::string GetDateOfInstallationParam() const;
   std::string GetReferralCodeParam() const;
+  std::string GetAdsEnabledParam() const;
 
   void SavePrefs();
 
