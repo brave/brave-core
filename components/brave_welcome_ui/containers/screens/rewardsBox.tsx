@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../components'
+import { Content, Title, Paragraph, TermsOfService, PrimaryButton } from '../../components'
 
 // Images
 import { WelcomeRewardsImage } from '../../components/images'
@@ -19,7 +19,55 @@ interface Props {
   onClick: () => void
 }
 
+function splitMessage (key: string) {
+  return getLocale(key).split(/\$\d+/g)
+}
+
 export default class PaymentsBox extends React.PureComponent<Props, {}> {
+  renderText () {
+    const [
+      before,
+      during,
+      after
+    ] = splitMessage('setupBraveRewards')
+
+    return <>{before}<strong>{during}</strong>{after}</>
+  }
+
+  renderTerms () {
+    const [
+      beforeLink1,
+      link1,
+      afterLink1,
+      link2,
+      afterLink2
+    ] = splitMessage('braveRewardsTerms')
+
+    return (
+      <>
+        {beforeLink1}
+        <a
+          href='https://basicattentiontoken.org/user-terms-of-service'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {link1}
+        </a>
+        {afterLink1}
+        <a
+          href='https://brave.com/privacy/#rewards'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {link2}
+        </a>
+        {afterLink2}
+        <br />
+        {getLocale('braveRewardsNote')}
+      </>
+    )
+  }
+
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
@@ -31,7 +79,8 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
       >
         <WelcomeRewardsImage />
         <Title>{getLocale('braveRewardsTitle')}</Title>
-        <Paragraph>{getLocale('setupBraveRewards')}</Paragraph>
+        <Paragraph>{this.renderText()}</Paragraph>
+        <TermsOfService>{this.renderTerms()}</TermsOfService>
         <PrimaryButton
           level='primary'
           type='accent'
