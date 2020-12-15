@@ -10,6 +10,11 @@ enum BraveAdsEnvironment {
   DEVELOPMENT
 };
 
+struct BraveAdsSysInfo {
+  string manufacturer;
+  string model;
+};
+
 struct BraveAdsBuildChannel {
   bool is_release;
   string name;

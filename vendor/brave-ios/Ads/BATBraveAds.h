@@ -65,6 +65,8 @@ NS_SWIFT_NAME(BraveAds)
 /// The environment that ads is communicating with. See ledger's BATEnvironment
 /// for appropriate values.
 @property (nonatomic, class) int environment;
+/// System info
+@property (nonatomic, class) BATBraveAdsSysInfo *sysInfo;
 /// The build channel that ads is configured for
 @property (nonatomic, class) BATBraveAdsBuildChannel *buildChannel;
 

@@ -474,14 +474,20 @@ base::FilePath GetResourcesPath() {
 
 void SetEnvironment(
     const Environment environment) {
-  _environment = environment;
+  g_environment = environment;
+}
+
+void SetSysInfo(
+    const SysInfo& sys_info) {
+  g_sys_info.manufacturer = sys_info.manufacturer;
+  g_sys_info.model = sys_info.model;
 }
 
 void SetBuildChannel(
     const bool is_release,
     const std::string& name) {
-  _build_channel.is_release = is_release;
-  _build_channel.name = name;
+  g_build_channel.is_release = is_release;
+  g_build_channel.name = name;
 }
 
 void MockLocaleHelper(

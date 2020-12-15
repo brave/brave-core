@@ -45,10 +45,10 @@ std::string CreateConfirmationRequestDTO(
   const std::string type = std::string(confirmation.type);
   dto.SetKey("type", base::Value(type));
 
-  DCHECK(!_build_channel.name.empty());
-  dto.SetKey("buildChannel", base::Value(_build_channel.name));
+  DCHECK(!g_build_channel.name.empty());
+  dto.SetKey("buildChannel", base::Value(g_build_channel.name));
 
-  if (_build_channel.is_release) {
+  if (g_build_channel.is_release) {
     const std::string locale =
         brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 

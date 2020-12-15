@@ -293,7 +293,7 @@ void Conversions::AddItemToQueue(
   ConversionQueueItemInfo queue_item;
 
   const uint64_t rand_delay = brave_base::random::Geometric(
-      _is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds);
+      g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds);
 
   const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 

@@ -19,7 +19,7 @@ const char kDevelopmentHost[] = "https://ads-serve.brave.software";
 }  // namespace
 
 std::string GetHost() {
-  switch (_environment) {
+  switch (g_environment) {
     case Environment::PRODUCTION: {
       return kProductionHost;
     }

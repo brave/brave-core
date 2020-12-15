@@ -198,7 +198,7 @@ base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
 
   uint64_t delay;
 
-  if (!_is_debug) {
+  if (!g_is_debug) {
     delay = kNextTokenRedemptionAfterSeconds;
   } else {
     delay = kDebugNextTokenRedemptionAfterSeconds;

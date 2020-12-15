@@ -24,7 +24,7 @@ Catalog::~Catalog() = default;
 bool Catalog::FromJson(
     const std::string& json) {
   auto json_schema =
-      AdsClientHelper::Get()->LoadResourceForId(_catalog_schema_resource_id);
+      AdsClientHelper::Get()->LoadResourceForId(g_catalog_schema_resource_id);
   auto result = LoadFromJson(catalog_state_.get(), json, json_schema);
   if (result != SUCCESS) {
     return false;

@@ -12,6 +12,7 @@ interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
          pending_associated_receiver<BatAds> database) => ();
   SetEnvironment(ads.mojom.BraveAdsEnvironment environment) => ();
+  SetSysInfo(ads.mojom.BraveAdsSysInfo sys_info) => ();
   SetBuildChannel(ads.mojom.BraveAdsBuildChannel build_channel) => ();
   SetDebug(bool is_debug) => ();
 };
