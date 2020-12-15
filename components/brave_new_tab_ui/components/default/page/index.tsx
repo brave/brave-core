@@ -80,24 +80,23 @@ const StyledPage = styled<PageProps, 'div'>('div')`
   min-height: 100vh;
   align-items: flex-start;
 
-  /* Blur out the content when Brave Today is interacted
-      with. We need the opacity to fade out our background image.
-      We need the background image to overcome the bug
-      where a backdrop-filter element's ancestor which has
-      a filter must also have a background. When this bug is
-      fixed then this element won't need the background.
-  */
-  filter: blur(var(--blur-amount));
-  opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
-  background: var(--default-bg-color);
-  ${getPageBackground}
-
   /* Fix the main NTP content so, when Brave Today is in-view,
   NTP items remain in the same place, and still allows NTP
   Page to scroll to the bottom before that starts happening. */
   .${CLASSNAME_PAGE_STUCK} & {
     position: fixed;
     bottom: 0;
+    /* Blur out the content when Brave Today is interacted
+      with. We need the opacity to fade out our background image.
+      We need the background image to overcome the bug
+      where a backdrop-filter element's ancestor which has
+      a filter must also have a background. When this bug is
+      fixed then this element won't need the background.
+    */
+    opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
+    filter: blur(var(--blur-amount));
+    background: var(--default-bg-color);
+    ${getPageBackground}
   }
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
@@ -125,7 +124,7 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
       const viewportHeight = window.innerHeight
       const scrollBottom = window.scrollY + viewportHeight
       const scrollPast = scrollBottom - element.clientHeight
-      if (scrollPast >= 0) {
+      if (scrollPast >= 1) {
         // Have blur effect amount follow scroll amount. Should
         // be fully blurred at 50% of viewport height
         const blurUpperLimit = viewportHeight * .65
