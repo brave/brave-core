@@ -8,5 +8,5 @@ index 6e67b3720ea0971b38ffec7a45049f52431cdd3c..7ae6a631d700d5af32aa9b09dfbde722
  #endif  // !defined(OS_ANDROID)
 +BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
- 
+
  }  // namespace content_settings

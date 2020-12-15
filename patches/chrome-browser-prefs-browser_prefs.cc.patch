@@ -7,14 +7,14 @@ index fd15cbf3a3b415b2787feeed3ca5d6a3716ba4e0..3aad5e6c71475142bb45c3bc81cd7ae7
    RegisterBrowserViewLocalPrefs(registry);
  #endif
 +  brave::RegisterLocalStatePrefs(registry);
-
+ 
    // This is intentionally last.
    RegisterLocalStatePrefsForMigration(registry);
 @@ -1074,6 +1075,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
-
+ 
    RegisterProfilePrefsForMigration(registry);
 +  brave::RegisterProfilePrefs(registry);
  }
-
+ 
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

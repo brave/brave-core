@@ -4,7 +4,7 @@ index efc376143b4a1b4d2ba0e36410377947ab35abce..138270b875d3312538f7cc7fff05a4e3
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -1596,6 +1596,7 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
- 
+
  ImageData* BaseRenderingContext2D::getImageData(
 +    BRAVE_GET_IMAGE_DATA_PARAMS
      int sx,
@@ -13,7 +13,7 @@ index efc376143b4a1b4d2ba0e36410377947ab35abce..138270b875d3312538f7cc7fff05a4e3
 @@ -1683,6 +1684,7 @@ ImageData* BaseRenderingContext2D::getImageData(
      return nullptr;
    }
- 
+
 +  BRAVE_GET_IMAGE_DATA
    bool may_have_stray_area =
        IsAccelerated()  // GPU readback may fail silently.
