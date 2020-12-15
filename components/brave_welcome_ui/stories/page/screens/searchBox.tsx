@@ -9,7 +9,7 @@ import * as React from 'react'
 import {
   Content,
   Title,
-  Paragraph,
+  Description,
   SelectGrid,
   PrimaryButton,
   SelectBox
@@ -60,22 +60,22 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
       >
         <WelcomeSearchImage />
         <Title>{locale.setDefaultSearchEngine}</Title>
-        <Paragraph>{bodyText}</Paragraph>
-          <SelectGrid>
-            <SelectBox onChange={this.onChangeDefaultSearchEngine}>
-              <option value=''>{locale.selectSearchEngine}</option>
-              <option value='DuckDuckGo'>{locale.fakeSearchProvider1}</option>
-              <option value='Google'>{locale.fakeSearchProvider2}</option>
-            </SelectBox>
-            <PrimaryButton
-              level='primary'
-              type='accent'
-              size='large'
-              text={locale.setDefault}
-              disabled={!searchEngineSelected}
-              onClick={onClick}
-            />
-          </SelectGrid>
+        <Description>{bodyText}</Description>
+        <SelectGrid>
+          <SelectBox onChange={this.onChangeDefaultSearchEngine}>
+            <option value=''>{locale.selectSearchEngine}</option>
+            <option value='DuckDuckGo'>{locale.fakeSearchProvider1}</option>
+            <option value='Google'>{locale.fakeSearchProvider2}</option>
+          </SelectBox>
+          <PrimaryButton
+            level='primary'
+            type='accent'
+            size='large'
+            text={locale.setDefault}
+            disabled={!searchEngineSelected}
+            onClick={onClick}
+          />
+        </SelectGrid>
       </Content>
     )
   }

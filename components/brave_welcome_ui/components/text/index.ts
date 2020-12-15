@@ -14,7 +14,7 @@ export const Title = styled.h1`
   font-weight: 600;
 `
 
-export const Paragraph = styled.p`
+export const Description = styled.div`
   color: ${p => p.theme.color.text};
   font-family: ${p => p.theme.fontFamily.body};
   display: block;
@@ -45,5 +45,11 @@ export const Paragraph = styled.p`
     &:active {
       outline: none;
     }
+  }
+
+  > .terms-of-service {
+    margin-top: 9px;
+    font-size: 13px;
+    line-height: 20px;
   }
 `

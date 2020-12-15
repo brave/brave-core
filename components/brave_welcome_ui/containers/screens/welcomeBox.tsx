@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../components'
+import { Content, Title, Description, PrimaryButton } from '../../components'
 
 // Shared components
 import { ArrowRightIcon } from 'brave-ui/components/icons'
@@ -34,7 +34,7 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
       >
         <WelcomeLionImage />
         <Title>{getLocale('welcome')}</Title>
-        <Paragraph>{getLocale('whatIsBrave')}</Paragraph>
+        <Description>{getLocale('whatIsBrave')}</Description>
         <PrimaryButton
           level='primary'
           type='accent'

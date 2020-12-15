@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   Content,
   Title,
-  Paragraph,
+  Description,
   PrimaryButton,
   SelectGrid,
   SelectBox
@@ -58,22 +58,22 @@ export default class ImportBox extends React.PureComponent<Props, State> {
       >
         <WelcomeImportImage />
         <Title>{locale.importFromAnotherBrowser}</Title>
-        <Paragraph>{locale.setupImport}</Paragraph>
-          <SelectGrid>
-              <SelectBox onChange={this.onChangeImportOption}>
-                <option value=''>{locale.importFrom}</option>
-                <option value='Chrome'>{locale.fakeBrowser1}</option>
-                <option value='Firefox'>{locale.fakeBrowser2}</option>
-              </SelectBox>
-              <PrimaryButton
-                level='primary'
-                type='accent'
-                size='large'
-                text={locale.import}
-                disabled={!importSelected}
-                onClick={this.onClickImport}
-              />
-            </SelectGrid>
+        <Description>{locale.setupImport}</Description>
+        <SelectGrid>
+          <SelectBox onChange={this.onChangeImportOption}>
+            <option value=''>{locale.importFrom}</option>
+            <option value='Chrome'>{locale.fakeBrowser1}</option>
+            <option value='Firefox'>{locale.fakeBrowser2}</option>
+          </SelectBox>
+          <PrimaryButton
+            level='primary'
+            type='accent'
+            size='large'
+            text={locale.import}
+            disabled={!importSelected}
+            onClick={this.onClickImport}
+          />
+        </SelectGrid>
       </Content>
     )
   }

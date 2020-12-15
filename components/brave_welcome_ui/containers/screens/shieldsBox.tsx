@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from '../../components'
+import { Content, Title, Description } from '../../components'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -32,7 +32,7 @@ export default class ShieldsBox extends React.PureComponent<Props> {
       >
         <WelcomeShieldsImage />
         <Title>{getLocale('privacyTitle')}</Title>
-        <Paragraph>
+        <Description>
           {text[0]}
           <a
             href='https://brave.com/p3a'
@@ -50,7 +50,7 @@ export default class ShieldsBox extends React.PureComponent<Props> {
             {text[3]}
           </a>
           {text[4]}
-        </Paragraph>
+        </Description>
       </Content>
     )
   }

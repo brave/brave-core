@@ -75,7 +75,7 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   onClickRewardsGetStarted = () => {
-    this.props.actions.goToTabRequested('chrome://rewards', '_blank')
+    this.props.actions.goToTabRequested('chrome://rewards/enable', '_blank')
   }
 
   onClickSlideBullet = (nextScreen: number) => {

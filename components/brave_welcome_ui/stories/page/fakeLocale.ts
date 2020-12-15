@@ -33,9 +33,11 @@ const locale = {
   p3aLink1: '#',
   p3aLink2: '#',
   // fifth screen
-  enableBraveRewards: 'Enable Brave Rewards',
-  setupBraveRewards: 'Your attention is valuable. Earn by viewing privacy-respecting ads while you browse, and pay it forward to support content creators you love.',
-  getStarted: 'Enable Rewards',
+  enableBraveRewards: 'Brave Rewards',
+  setupBraveRewards: '$1Earn tokens$2 by viewing Brave Private Ads and support content creators automatically.',
+  getStarted: 'Start using Rewards',
+  rewardsTerms: 'By clicking, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
+  rewardsSettingsNote: 'You can turn this off at any time in settings.',
   // footer
   skipWelcomeTour: 'Skip welcome tour',
   next: 'Next',

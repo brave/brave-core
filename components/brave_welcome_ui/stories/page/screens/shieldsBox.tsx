@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, Link } from '../../../components'
+import { Content, Title, Description, Link } from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
@@ -30,7 +30,9 @@ export default class ShieldsBox extends React.PureComponent<Props> {
       >
         <WelcomeShieldsImage />
         <Title>{locale.p3aHead}</Title>
-        <Paragraph>{locale.p3aBody}<Link>{locale.p3aSettings}</Link>.</Paragraph>
+        <Description>
+          {locale.p3aBody}<Link>{locale.p3aSettings}</Link>.
+        </Description>
       </Content>
     )
   }

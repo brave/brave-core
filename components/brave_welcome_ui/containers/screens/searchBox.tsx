@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from '../../components'
+import { Content, Title, Description, PrimaryButton, SelectGrid, SelectBox } from '../../components'
 
 // Images
 import { WelcomeSearchImage } from '../../components/images'
@@ -78,34 +78,34 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
       >
         <WelcomeSearchImage />
         <Title>{getLocale('setDefaultSearchEngine')}</Title>
-        <Paragraph>{bodyText}</Paragraph>
-          <SelectGrid>
-            <SelectBox
-              onChange={this.onChangeDefaultSearchEngine}
-            >
-              <option key={0} value=''>{getLocale('selectSearchEngine')}</option>
-              {
-                (searchProviders && Array.isArray(searchProviders) && searchProviders.length > 0)
-                ? searchProviders.map((provider, index) =>
-                  <option
-                    key={index + 1}
-                    value={provider.modelIndex.toString()}
-                  >
-                    {this.getProviderDisplayName(provider, defaultProvider)}
-                  </option>
-                )
-                : null
-              }
-            </SelectBox>
-            <PrimaryButton
-              level='primary'
-              type='accent'
-              size='large'
-              text={getLocale('setDefault')}
-              disabled={!searchEngineSelected}
-              onClick={onClick}
-            />
-          </SelectGrid>
+        <Description>{bodyText}</Description>
+        <SelectGrid>
+          <SelectBox
+            onChange={this.onChangeDefaultSearchEngine}
+          >
+            <option key={0} value=''>{getLocale('selectSearchEngine')}</option>
+            {
+              (searchProviders && Array.isArray(searchProviders) && searchProviders.length > 0)
+              ? searchProviders.map((provider, index) =>
+                <option
+                  key={index + 1}
+                  value={provider.modelIndex.toString()}
+                >
+                  {this.getProviderDisplayName(provider, defaultProvider)}
+                </option>
+              )
+              : null
+            }
+          </SelectBox>
+          <PrimaryButton
+            level='primary'
+            type='accent'
+            size='large'
+            text={getLocale('setDefault')}
+            disabled={!searchEngineSelected}
+            onClick={onClick}
+          />
+        </SelectGrid>
       </Content>
     )
   }

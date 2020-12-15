@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from '../../components'
+import { Content, Title, Description, PrimaryButton, SelectGrid, SelectBox } from '../../components'
 
 // Images
 import { WelcomeImportImage } from '../../components/images'
@@ -65,34 +65,34 @@ export default class ImportBox extends React.PureComponent<Props, State> {
       >
         <WelcomeImportImage />
         <Title>{getLocale('importFromAnotherBrowser')}</Title>
-        <Paragraph>{getLocale('setupImport')}</Paragraph>
-          <SelectGrid>
-            <SelectBox
-              onChange={this.onChangeImportSource}
-            >
-              <option key={0} value=''>{getLocale('importFrom')}</option>
-              {
-                isValidBrowserProfiles
-                ? browserProfiles.map((browserProfile, index) =>
-                  <option
-                    key={index + 1}
-                    value={browserProfile.index}
-                  >
-                    {browserProfile.name}
-                  </option>
-                )
-                : null
-              }
-            </SelectBox>
-            <PrimaryButton
-              level='primary'
-              type='accent'
-              size='large'
-              text={getLocale('import')}
-              disabled={!selectedBrowserProfile}
-              onClick={this.onHandleImport}
-            />
-          </SelectGrid>
+        <Description>{getLocale('setupImport')}</Description>
+        <SelectGrid>
+          <SelectBox
+            onChange={this.onChangeImportSource}
+          >
+            <option key={0} value=''>{getLocale('importFrom')}</option>
+            {
+              isValidBrowserProfiles
+              ? browserProfiles.map((browserProfile, index) =>
+                <option
+                  key={index + 1}
+                  value={browserProfile.index}
+                >
+                  {browserProfile.name}
+                </option>
+              )
+              : null
+            }
+          </SelectBox>
+          <PrimaryButton
+            level='primary'
+            type='accent'
+            size='large'
+            text={getLocale('import')}
+            disabled={!selectedBrowserProfile}
+            onClick={this.onHandleImport}
+          />
+        </SelectGrid>
       </Content>
     )
   }
