@@ -359,7 +359,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                         || tab.getUrlString().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
+                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
             showBraveRewardsOnboardingModal();
             BraveRewardsHelper.updateBraveRewardsAppOpenCount();
             BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);

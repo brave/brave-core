@@ -47,6 +47,10 @@ public class AppearancePreferences extends BravePreferenceFragment
         if (!NightModeUtils.isNightModeSupported()) {
             removePreferenceIfPresent(PREF_UI_THEME);
         }
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+            removePreferenceIfPresent(PREF_HIDE_BRAVE_REWARDS_ICON);
+        }
     }
 
     @Override
