@@ -6,24 +6,20 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_
 
-#include "base/scoped_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
-#include "ui/base/models/simple_menu_model.h"
-#include "ui/views/widget/widget.h"
-#include "ui/views/widget/widget_observer.h"
 
 class BookmarkButton : public ToolbarButton {
  public:
-    BookmarkButton();
-    ~BookmarkButton() override;
+  BookmarkButton(PressedCallback callback);
+  ~BookmarkButton() override;
 
-    void SetToggled(bool on);
-    void UpdateImage();
+  void SetToggled(bool on);
+  void UpdateImage();
 
-    // ToolbarButton:
-    base::string16 GetTooltipText(const gfx::Point& p) const override;
-    const char* GetClassName() const override;
-    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
+  // ToolbarButton:
+  base::string16 GetTooltipText(const gfx::Point& p) const override;
+  const char* GetClassName() const override;
+  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
  private:
     bool active_ = false;

@@ -25,8 +25,9 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/controls/button/button.h"
 
-SpeedreaderButton::SpeedreaderButton(PrefService* prefs)
-    : ToolbarButton(views::Button::PressedCallback()), prefs_(prefs) {
+SpeedreaderButton::SpeedreaderButton(PressedCallback callback,
+                                     PrefService* prefs)
+    : ToolbarButton(callback), prefs_(prefs) {
   SetID(BRAVE_VIEW_ID_SPEEDREADER_BUTTON);
   set_tag(IDC_TOGGLE_SPEEDREADER);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
