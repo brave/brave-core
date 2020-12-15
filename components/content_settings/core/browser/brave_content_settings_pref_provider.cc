@@ -121,20 +121,6 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
 
-  WebsiteSettingsRegistry* website_settings =
-      WebsiteSettingsRegistry::GetInstance();
-  // Makes BravePrefProvider handle Brave-specific types.
-  for (const WebsiteSettingsInfo* info : *website_settings) {
-    if (content_settings::IsShieldsContentSettingsType(info->type())) {
-      content_settings_prefs_.insert(std::make_pair(
-          info->type(),
-          std::make_unique<ContentSettingsPref>(
-              info->type(), prefs_, &pref_change_registrar_,
-              info->pref_name(), off_the_record_, restore_session,
-              base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
-    }
-  }
-
   MigrateShieldsSettings(off_the_record);
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
