@@ -21,6 +21,7 @@
 
 using testing::_;
 using testing::ByMove;
+using testing::NiceMock;
 using testing::Return;
 
 namespace syncer {
@@ -45,7 +46,8 @@ class ProfileSyncServiceDelegateMock : public ProfileSyncServiceDelegate {
 class BraveProfileSyncServiceTest : public testing::Test {
  public:
   BraveProfileSyncServiceTest()
-      : brave_sync_prefs_(profile_sync_service_bundle_.pref_service()) {
+      : brave_sync_prefs_(profile_sync_service_bundle_.pref_service()),
+        sync_prefs_(profile_sync_service_bundle_.pref_service()) {
     profile_sync_service_bundle_.identity_test_env()
         ->SetAutomaticIssueOfAccessTokens(true);
     brave_sync::Prefs::RegisterProfilePrefs(
@@ -73,6 +75,14 @@ class BraveProfileSyncServiceTest : public testing::Test {
         std::make_unique<ProfileSyncServiceDelegateMock>());
   }
 
+  MockSyncEngine* SetUpMockSyncEngine() {
+    auto sync_engine = std::make_unique<NiceMock<MockSyncEngine>>();
+    MockSyncEngine* sync_engine_raw = sync_engine.get();
+    ON_CALL(*component_factory(), CreateSyncEngine(_, _, _, _))
+        .WillByDefault(Return(ByMove(std::move(sync_engine))));
+    return sync_engine_raw;
+  }
+
   FakeSyncEngine* SetUpFakeSyncEngine() {
     auto sync_engine = std::make_unique<FakeSyncEngine>();
     FakeSyncEngine* sync_engine_raw = sync_engine.get();
@@ -82,6 +92,23 @@ class BraveProfileSyncServiceTest : public testing::Test {
   }
 
   brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
+
+  void UpdateCredentials() {
+    profile_sync_service_bundle_.identity_test_env()
+        ->SetRefreshTokenForPrimaryAccount();
+  }
+  void FastForwardUntilNoTasksRemain() {
+    task_environment_.FastForwardUntilNoTasksRemain();
+  }
+  DataTypeManagerMock* SetUpDataTypeManagerMock() {
+    auto data_type_manager = std::make_unique<NiceMock<DataTypeManagerMock>>();
+    DataTypeManagerMock* data_type_manager_raw = data_type_manager.get();
+    ON_CALL(*component_factory(), CreateDataTypeManager)
+        .WillByDefault(Return(ByMove(std::move(data_type_manager))));
+    return data_type_manager_raw;
+  }
+
+  SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
   BraveProfileSyncService* brave_sync_service() { return sync_service_.get(); }
 
@@ -93,6 +120,7 @@ class BraveProfileSyncServiceTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   ProfileSyncServiceBundle profile_sync_service_bundle_;
   brave_sync::Prefs brave_sync_prefs_;
+  SyncPrefs sync_prefs_;
   std::unique_ptr<BraveProfileSyncService> sync_service_;
 };
 
@@ -144,6 +172,41 @@ TEST_F(BraveProfileSyncServiceTest, ValidPassphraseLeadingTrailingWhitespace) {
   EXPECT_TRUE(set_code_result);
 
   EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveProfileSyncServiceTest, NoIdentityManagerCalls) {
+  OSCryptMocker::SetUp();
+
+  CreateSyncService(ProfileSyncService::MANUAL_START);
+  MockSyncEngine* sync_engine = SetUpMockSyncEngine();
+
+  brave_sync_service()->Initialize();
+
+  bool set_code_result = brave_sync_service()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(set_code_result);
+
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
+
+  ON_CALL(*sync_engine, IsInitialized()).WillByDefault(Return(true));
+
+  // We need to test that during `ProfileSyncService::OnEngineInitialized`
+  // the stubbed call identity_manager_->GetAccountsInCookieJar() is invoked.
+  // We can do it indirectly. The stubbed method returns result where
+  // `accounts_in_cookie_jar_info.accounts_are_fresh` is set to `false`,
+  // this makes following sequence of calls:
+  //   `ProfileSyncService::OnAccountsInCookieUpdated`,
+  //   `ProfileSyncService::OnAccountsInCookieUpdatedWithCallback`,
+  //   `engine_->OnCookieJarChanged`
+  // will not be invoked.
+  // So the indirect way to ensure is to see there is no call of
+  // `SyncEngine::OnCookieJarChanged`
+
+  EXPECT_CALL(*sync_engine, OnCookieJarChanged(_, _, _)).Times(0);
+  brave_sync_service()->OnEngineInitialized(
+      ModelTypeSet(BOOKMARKS), WeakHandle<JsBackend>(),
+      WeakHandle<DataTypeDebugInfoListener>(), "", "", true);
 
   OSCryptMocker::TearDown();
 }
