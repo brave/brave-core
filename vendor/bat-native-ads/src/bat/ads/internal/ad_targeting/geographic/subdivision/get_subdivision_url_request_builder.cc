@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/ads_serve_server_util.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -16,7 +16,7 @@ GetSubdivisionUrlRequestBuilder::GetSubdivisionUrlRequestBuilder() = default;
 
 GetSubdivisionUrlRequestBuilder::~GetSubdivisionUrlRequestBuilder() = default;
 
-// GET /v5/getstate
+// GET /v1/getstate
 
 UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
   UrlRequestPtr url_request = UrlRequest::New();
@@ -29,7 +29,7 @@ UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string GetSubdivisionUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v5/getstate", server::GetHost().c_str());
+  return base::StringPrintf("%s/v1/getstate", serve::server::GetHost().c_str());
 }
 
 }  // namespace geographic
