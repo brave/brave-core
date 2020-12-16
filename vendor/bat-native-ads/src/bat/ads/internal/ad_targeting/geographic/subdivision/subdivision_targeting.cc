@@ -166,7 +166,7 @@ bool SubdivisionTargeting::ShouldAutoDetect() const {
 
 void SubdivisionTargeting::Fetch() {
   BLOG(1, "Fetch subdivision target");
-  BLOG(2, "GET /v5/getstate");
+  BLOG(2, "GET /v1/getstate");
 
   GetSubdivisionUrlRequestBuilder url_request_builder;
   UrlRequestPtr url_request = url_request_builder.Build();
