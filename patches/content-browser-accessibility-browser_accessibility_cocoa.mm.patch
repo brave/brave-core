@@ -1,0 +1,12 @@
+diff --git a/content/browser/accessibility/browser_accessibility_cocoa.mm b/content/browser/accessibility/browser_accessibility_cocoa.mm
+index d792b573258714648c8ce66bedc2fbb4e7417028..76bf56f79848d72067cee0835611962dc791cc55 100644
+--- a/content/browser/accessibility/browser_accessibility_cocoa.mm
++++ b/content/browser/accessibility/browser_accessibility_cocoa.mm
+@@ -3164,6 +3164,7 @@ id content::AXTextMarkerRangeFrom(id anchor_textmarker, id focus_textmarker) {
+     endObject = range.focus()->GetAnchor();
+     startOffset = range.anchor()->text_offset();
+     endOffset = range.focus()->text_offset();
++    BRAVE_FORPARAMETER
+     DCHECK(startObject && endObject);
+     DCHECK_GE(startOffset, 0);
+     DCHECK_GE(endOffset, 0);
