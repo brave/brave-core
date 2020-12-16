@@ -5,8 +5,8 @@
 import * as React from 'react'
 
 // Components group
-import SimpleView from './components/simpleView'
-import AdvancedView from './components/advancedView'
+import SimpleView from './simpleView'
+import AdvancedView from './advancedView'
 
 interface Props {
   enabled: boolean

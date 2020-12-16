@@ -3,26 +3,31 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 import shieldsLightTheme from '../theme/shields-light'
 import shieldsDarkTheme from '../theme/shields-dark'
-import { withThemesProvider } from 'storybook-addon-styled-component-theme'
 // @ts-ignore
-import { withKnobs, boolean, number } from '@storybook/addon-knobs'
+import { boolean, number } from '@storybook/addon-knobs'
 import { withState } from '@dump247/storybook-state'
 import favicon from './images/fake_favicon.png'
 
 // Components
-import Shields from './index'
+import Shields from './components/index'
 import ShieldsReadOnlyView from './components/readOnlyView'
 
 // Themes
-const themes = [shieldsLightTheme, shieldsDarkTheme]
+// const themes = [shieldsLightTheme, shieldsDarkTheme];
 
-storiesOf('Shields', module)
-  .addDecorator(withThemesProvider(themes))
-  .addDecorator(withKnobs)
-  .add('Panel', withState({ enabled: true, advancedView: false, readOnlyView: false, firstAccess: true }, (store) => {
+export default {
+  title: 'Shields',
+  args: {
+    darkTheme: shieldsDarkTheme,
+    lightTheme: shieldsLightTheme
+  }
+}
+
+export const Panel = withState(
+  { enabled: true, advancedView: false, readOnlyView: false, firstAccess: true },
+  (store) => {
     const fakeOnChangeShieldsEnabled = () => {
       store.set({ enabled: !store.state.enabled })
     }
@@ -37,32 +42,30 @@ storiesOf('Shields', module)
     }
     return (
       <div style={{ margin: '120px' }}>
-        {
-          store.state.readOnlyView
-          ? (
-            <ShieldsReadOnlyView
-              favicon={favicon}
-              hostname={'buzzfeed.com'}
-              onClose={fakeOnChangeReadOnlyView}
-            />
-          ) : (
-            <Shields
-              enabled={boolean('Enabled?', store.state.enabled)}
-              firstAccess={boolean('First Access?', store.state.firstAccess)}
-              favicon={favicon}
-              hostname={'buzzfeed.com'}
-              advancedView={boolean('Show advanced view?', store.state.advancedView)}
-              adsTrackersBlocked={number('3rd-party trackers blocked', 80) || 0}
-              httpsUpgrades={number('Connections upgraded to HTTPS', 0) || 0}
-              scriptsBlocked={number('Scripts blocked', 11) || 0}
-              fingerprintingBlocked={number('3rd-party fingerprinting blocked', 0) || 0}
-              fakeOnChangeShieldsEnabled={fakeOnChangeShieldsEnabled}
-              fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
-              fakeOnChangeReadOnlyView={fakeOnChangeReadOnlyView}
-              fakeToggleFirstAccess={fakeToggleFirstAccess}
-            />
-          )
-        }
-    </div>
+        {store.state.readOnlyView ? (
+          <ShieldsReadOnlyView
+            favicon={favicon}
+            hostname={'buzzfeed.com'}
+            onClose={fakeOnChangeReadOnlyView}
+          />
+        ) : (
+          <Shields
+            enabled={boolean('Enabled?', store.state.enabled)}
+            firstAccess={boolean('First Access?', store.state.firstAccess)}
+            favicon={favicon}
+            hostname={'buzzfeed.com'}
+            advancedView={boolean('Show advanced view?', store.state.advancedView)}
+            adsTrackersBlocked={number('3rd-party trackers blocked', 80) || 0}
+            httpsUpgrades={number('Connections upgraded to HTTPS', 0) || 0}
+            scriptsBlocked={number('Scripts blocked', 11) || 0}
+            fingerprintingBlocked={number('3rd-party fingerprinting blocked', 0) || 0}
+            fakeOnChangeShieldsEnabled={fakeOnChangeShieldsEnabled}
+            fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
+            fakeOnChangeReadOnlyView={fakeOnChangeReadOnlyView}
+            fakeToggleFirstAccess={fakeToggleFirstAccess}
+          />
+        )}
+      </div>
     )
-  }))
+  }
+)
