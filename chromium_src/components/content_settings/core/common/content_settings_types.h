@@ -8,7 +8,6 @@
   BRAVE_COSMETIC_FILTERING,               \
   BRAVE_TRACKERS,                         \
   BRAVE_HTTP_UPGRADABLE_RESOURCES,        \
-  BRAVE_JAVASCRIPT,                       \
   BRAVE_FINGERPRINTING_V2,                \
   BRAVE_SHIELDS,                          \
   BRAVE_REFERRERS,                        \

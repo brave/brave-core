@@ -19,7 +19,6 @@ const std::vector<ContentSettingsType> kShieldsContentSettingsTypes {
     ContentSettingsType::BRAVE_COSMETIC_FILTERING,
     ContentSettingsType::BRAVE_TRACKERS,
     ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-    ContentSettingsType::BRAVE_JAVASCRIPT,
     ContentSettingsType::BRAVE_FINGERPRINTING_V2,
     ContentSettingsType::BRAVE_SHIELDS,
     ContentSettingsType::BRAVE_REFERRERS,
@@ -77,9 +76,6 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
     case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
       return brave_shields::kHTTPUpgradableResources;
       break;
-    case ContentSettingsType::BRAVE_JAVASCRIPT:
-      return brave_shields::kJavaScript;
-      break;
     case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
       return brave_shields::kFingerprintingV2;
       break;
@@ -98,7 +94,7 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
     case ContentSettingsType::BRAVE_TWITTER_EMBEDS:
       return brave_shields::kTwitterEmbeds;
       break;
-    case ContentSettingsType::BRAVE_LINKEDIN_EMBEDS   :
+    case ContentSettingsType::BRAVE_LINKEDIN_EMBEDS:
       return brave_shields::kLinkedInEmbeds;
       break;
     default:

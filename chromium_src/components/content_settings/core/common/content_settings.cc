@@ -8,14 +8,13 @@
     {ContentSettingsType::BRAVE_COSMETIC_FILTERING, 75},        \
     {ContentSettingsType::BRAVE_TRACKERS, 76},                  \
     {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, 77}, \
-    {ContentSettingsType::BRAVE_JAVASCRIPT, 78},                \
-    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, 79},         \
-    {ContentSettingsType::BRAVE_SHIELDS, 80},                   \
-    {ContentSettingsType::BRAVE_REFERRERS, 81},                 \
-    {ContentSettingsType::BRAVE_COOKIES, 82},                   \
-    {ContentSettingsType::BRAVE_FACEBOOK_EMBEDS, 83},           \
-    {ContentSettingsType::BRAVE_TWITTER_EMBEDS, 84},            \
-    {ContentSettingsType::BRAVE_LINKEDIN_EMBEDS, 85},
+    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, 78},         \
+    {ContentSettingsType::BRAVE_SHIELDS, 79},                   \
+    {ContentSettingsType::BRAVE_REFERRERS, 80},                 \
+    {ContentSettingsType::BRAVE_COOKIES, 81},                   \
+    {ContentSettingsType::BRAVE_FACEBOOK_EMBEDS, 82},           \
+    {ContentSettingsType::BRAVE_TWITTER_EMBEDS, 83},            \
+    {ContentSettingsType::BRAVE_LINKEDIN_EMBEDS, 84},
 
 #define BRAVE_IS_RENDERER_CONTENT_SETTING \
   content_type == ContentSettingsType::AUTOPLAY ||
