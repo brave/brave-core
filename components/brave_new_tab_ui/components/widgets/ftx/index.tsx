@@ -28,10 +28,16 @@ import {
   Text,
   WidgetWrapper,
   UpperCaseText,
-  PlainAnchor
+  PlainAnchor,
+  Balance,
+  BlurIcon
 } from '../shared/styles'
 import { Chart, TradingDropdown } from '../shared'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
+import {
+  ShowIcon,
+  HideIcon
+} from '../../default/exchangeWidget/shared-assets'
 import icons from '../shared/assets/icons'
 import ftxLogo from './ftx-logo.png'
 import ftxTheme from './theme'
@@ -46,6 +52,7 @@ enum Views {
 interface State {
   currentView: Views
   selectedAsset: string
+  hideBalance: boolean
 }
 
 interface Props {
@@ -64,8 +71,9 @@ class FTX extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      currentView: Views.convert,
-      selectedAsset: ''
+      currentView: Views.summary,
+      selectedAsset: '',
+      hideBalance: true
     }
   }
 
@@ -127,14 +135,14 @@ class FTX extends React.PureComponent<Props, State> {
     }).format(price)
   }
 
-  renderIconAsset = (key: string) => {
+  renderIconAsset = (key: string, size:number = 25) => {
     if (!(key in icons)) {
       return null
     }
 
     return (
       <>
-        <img width={25} src={icons[key]} />
+        <img width={size} src={icons[key]} />
       </>
     )
   }
@@ -277,6 +285,63 @@ class FTX extends React.PureComponent<Props, State> {
     </>
   }
 
+  // TODO: remove
+  toggleBalanceVisibility = () => {
+    this.setState({
+      hideBalance: !this.state.hideBalance
+    })
+  }
+
+  renderSummary () {
+    const { hideBalance } = this.state
+
+    const quantity = 140.0123434
+    const estimate = quantity * 4.02
+    const currency = 'BTC'
+
+    return (
+      <Box $mt={10}>
+        <FlexItem isFlex={true} $p={15} hasPadding={true} >
+          <FlexItem>
+            <Balance hideBalance={hideBalance}>
+              <Text lineHeight={1.15} $fontSize={21}>{quantity}<Text inline={true}>{currency}</Text></Text>
+              <Text lineHeight={1.2} textColor='light'>≈ {this.formattedNum(estimate)}</Text>
+            </Balance>
+          </FlexItem>
+          <FlexItem>
+            <BlurIcon onClick={this.toggleBalanceVisibility}>
+              {
+                hideBalance
+                ? <ShowIcon />
+                : <HideIcon />
+              }
+            </BlurIcon>
+          </FlexItem>
+        </FlexItem>
+        <List hasBorder={false}>
+          {this.topMovers.map(currency => {
+            return (
+              <ListItem key={currency} isFlex={true} $height={40}>
+                <FlexItem $pl={5} $pr={5}>
+                  {this.renderIconAsset(currency.toLowerCase(), 18)}
+                </FlexItem>
+                <FlexItem>
+                  <Text>{currency}</Text>
+                </FlexItem>
+                <FlexItem textAlign='right' flex={1}>
+                  <Balance hideBalance={hideBalance}>
+                    {(quantity !== null) && <Text lineHeight={1.15}>{quantity}</Text>}
+                    {(estimate !== null) && <Text textColor='light' small={true} lineHeight={1.15}>≈ {this.formattedNum(estimate)}</Text>}
+                  </Balance>
+                </FlexItem>
+              </ListItem>
+            )
+          })}
+        </List>
+      </Box>
+    )
+  }
+
   renderConvert () {
     const { availableAmount, availableLabel } = {
       availableAmount: 3.754,
@@ -316,6 +381,8 @@ class FTX extends React.PureComponent<Props, State> {
       return this.renderAssetDetailView()
     } else if (currentView === Views.convert) {
       return this.renderConvert()
+    } else if (currentView === Views.summary) {
+      return this.renderSummary()
     } else {
       return this.renderMarkets()
     }

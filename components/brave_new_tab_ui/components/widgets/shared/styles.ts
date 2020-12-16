@@ -65,7 +65,7 @@ function getTextStyle (p: StyleProps) {
   return [
     ["weight", `font-weight: ${p.weight || (p.small ? '500' : 'normal')};`],
     ["$fontSize", `font-size: ${(
-        (p.$fontSize && `${p.$fontSize}px`) || (p.small ? '11px' : (p.large ? '19px' : '14px'))
+        (p.$fontSize && `${p.$fontSize}px`) || (p.small ? '11px' : (p.large ? '19px' : '13px'))
     )};`],
     ["center", `text-align: ${p.center ? 'center' : 'inherit'};`],
     ["lineHeight", `line-height: ${p.lineHeight || 'normal'};]`]
@@ -121,6 +121,7 @@ export const Text = styled<StyleProps, 'p'>('p')`
   text-align: ${p => (p.center ? 'center' : 'inherit')};
   display: ${p => (p.inline ? 'inline-block' : 'block')};
   line-height: ${p => (p.lineHeight || 'normal')};
+  filter: inherit;
 
   ${getBoxStyle}
 `
@@ -228,6 +229,11 @@ export const List = styled<StyleProps>(Box)`
   height: 260px;
   padding: 0;
   margin: 0;
+
+  ${(p) =>
+    (p.hasBorder === false) && `
+    border: none;
+  `}
 `
 
 export const ListItem = styled<StyleProps, 'li'>('li')`
@@ -236,7 +242,7 @@ export const ListItem = styled<StyleProps, 'li'>('li')`
   border-radius: 2px;
   display: ${p => (p.isFlex ? 'flex' : 'block')};
   cursor: ${p => (p.onClick ? 'pointer' : 'initial')}
-  height: ${p => (p.$height ? p.$height : 'auto')};
+  height: ${p => (p.$height ? `${p.$height}px` : 'auto')};
   ${(p) =>
     p.isFlex && `
     justify-content: space-between;
@@ -419,4 +425,13 @@ export const TradeWrapper = styled<{}, 'div'>('div')`
 export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
   margin-bottom: ${p => p.isAuth ? 20 : 5}px;
   text-align: center;
+`
+
+export const Balance = styled<StyleProps, 'span'>('span')`
+  -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
+`
+
+export const BlurIcon = styled<{}, 'div'>('div')`
+  cursor: pointer;
+  color: rgb(70, 70, 70);
 `
