@@ -432,7 +432,7 @@ void MockDefaultPrefs(
   mock->SetBooleanPref(prefs::kEnabled, true);
 
   mock->SetUint64Pref(prefs::kAdsPerHour, 2);
-  mock->SetUint64Pref(prefs::kAdsPerDay, 20);
+  mock->SetUint64Pref(prefs::kAdsPerDay, 40);
 
   mock->SetIntegerPref(prefs::kIdleThreshold, 15);
 
