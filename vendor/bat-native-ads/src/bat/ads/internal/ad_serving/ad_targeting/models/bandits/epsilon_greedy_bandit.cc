@@ -14,15 +14,18 @@
 #include <vector>
 
 #include "base/rand_util.h"
-#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace model {
 
 namespace {
-// const size_t kMaximumSegments = 3;
+const size_t kMaximumSegments = 3;
+const double kEpsilon = 0.2;  // TOOD(Moritz Haller) add as param to feature
+// const int kIntMax = std::numeric_limits<int>::max();
 }  // namespace
 
 EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
@@ -30,47 +33,51 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 SegmentList EpsilonGreedyBandit::GetSegments() const {
-  // CategoryList winning_categories = ChooseArms(kArms,
-  //     kTopWinningCategoryCount, kEpsilon);  // TODO(Moritz Haller): inject epsilon NOLINT
-  SegmentList segments;
+  const std::string json = AdsClientHelper::Get()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
+  const EpsilonGreedyBanditArmList arms =
+      EpsilonGreedyBanditArms::FromJson(json);
+  SegmentList segments = ChooseAction(arms);
   return segments;
 }
 
+///////////////////////////////////////////////////////////////////////////////
 
-// TODO(Moritz Haller): make "actuator" private?
-// std::map<std::string, double> EpsilonGreedyBandit::ChooseArms(
-//     std::map<std::string, double> segments,  // TODO(Moritz Haller): pass by value since we shuffle in place NOLINT
-//     uint_16 arms,
-//     double epsilon) {
-//   // Explore
-//   if (base::RandDouble() < epsilon) {
-//       // Sample without replacement
-//       base::RandomShuffle(begin(segments), end(segments));
-//       return winning_categories(segments.begin(), segments.begin() + arms);
-//   }
+SegmentList EpsilonGreedyBandit::ChooseAction(
+    const EpsilonGreedyBanditArmList& arms) const {
+  SegmentList segments;
 
-//   // Exploit
-//   std::vector<std::pair<std::string, double>> top_segments(
-//       kTopWinningCategoryCount);
-//   std::partial_sort_copy(segments.begin(), segments.end(),
-//       top_segments.begin(), top_segments.end(), [](
-//     std::pair<const std::string, double> const& l,
-//     std::pair<const std::string, double> const& r) {
-//       if (l.second == r.second) {
-//         // TOOD(Moritz Haller): Break ties randomly
-//         // Find different impl since using LSB might lack entropy
-//         const int rand = 0;
-//         return (rand & 1) == 1;
-//       }
-//     return l.second > r.second;
-//   });
+  // Explore
+  if (base::RandDouble() < kEpsilon) {
+    BLOG(1, "Explore with eps=" << kEpsilon);
+    for (const auto& arm : arms) {
+      segments.push_back(arm.segment);
+    }
 
-//   std::map<std::string, double> winning_categories;
-//   for (const auto& pair in top_segments) {
-//     winning_categoris.insert(pair)
-//   }
-//   return winning_categories;
-// }
+    // Sample without replacement
+    base::RandomShuffle(begin(segments), end(segments));
+    segments.resize(kMaximumSegments);
+    return segments;
+  }
+
+  // Exploit
+  BLOG(1, "Exploit with 1-eps=" << 1-kEpsilon);
+  EpsilonGreedyBanditArmList arms_sorted(kMaximumSegments);
+  std::partial_sort_copy(arms.begin(), arms.end(), arms_sorted.begin(),
+      arms_sorted.end(), [](const EpsilonGreedyBanditArmInfo& l,
+          const EpsilonGreedyBanditArmInfo& r) {
+    // TOOD(Moritz Haller): Break ties randomly
+    // if (l.value == r.value) {
+      // return base::RandInt(0, kIntMax) % 2 == 1;
+    // }
+    return l.value > r.value;
+  });
+
+  for (const auto& arm : arms_sorted) {
+    segments.push_back(arm.segment);
+  }
+  return segments;
+}
 
 }  // namespace model
 }  // namespace ad_targeting

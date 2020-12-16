@@ -74,6 +74,9 @@ void AdsService::RegisterProfilePrefs(
       ads::prefs::kCatalogPing, 0);
   registry->RegisterInt64Pref(
       ads::prefs::kCatalogLastUpdated, 0);
+
+  registry->RegisterStringPref(
+      ads::prefs::kEpsilonGreedyBanditArms, "");
 }
 
 }  // namespace brave_ads

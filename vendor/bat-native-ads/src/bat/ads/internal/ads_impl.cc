@@ -577,8 +577,12 @@ void AdsImpl::OnTransactionsChanged() {
 void AdsImpl::OnAdNotificationViewed(
     const AdNotificationInfo& ad) {
   confirmations_->ConfirmAd(ad.creative_instance_id, ConfirmationType::kViewed);
+}
 
-  epsilon_greedy_bandit_processor_->Process(ad);
+void AdsImpl::OnAdNotificationTimedOut(
+    const AdNotificationInfo& ad) {
+  epsilon_greedy_bandit_processor_->Process({ad.segment,
+      ads::AdNotificationEventType::kTimedOut});
 }
 
 void AdsImpl::OnAdNotificationClicked(
@@ -588,13 +592,16 @@ void AdsImpl::OnAdNotificationClicked(
   confirmations_->ConfirmAd(ad.creative_instance_id,
       ConfirmationType::kClicked);
 
-  epsilon_greedy_bandit_processor_->Process(ad);
+  epsilon_greedy_bandit_processor_->Process({ad.segment,
+      ads::AdNotificationEventType::kClicked});
 }
 
 void AdsImpl::OnAdNotificationDismissed(
     const AdNotificationInfo& ad) {
   confirmations_->ConfirmAd(ad.creative_instance_id,
       ConfirmationType::kDismissed);
+  epsilon_greedy_bandit_processor_->Process({ad.segment,
+      ads::AdNotificationEventType::kDismissed});
 }
 
 void AdsImpl::OnCatalogUpdated(

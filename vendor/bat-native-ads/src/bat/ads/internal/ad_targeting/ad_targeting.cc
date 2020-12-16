@@ -24,6 +24,8 @@ SegmentList AdTargeting::GetSegments() const {
   // classifiers are still initialized but only categories of the enabled
   // feature gets slotted into winning categories >> SOLID refactor solves that
 
+  // TODO(Moritz Haller): how to enable/disable features via cli args?
+
   // Enabled by default
   SegmentList text_classification_segments;
   if (features::IsTextClassificationModelEnabled()) {

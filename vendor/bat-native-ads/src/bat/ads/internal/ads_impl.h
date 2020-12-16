@@ -261,6 +261,8 @@ class AdsImpl
       const AdNotificationInfo& ad) override;
   void OnAdNotificationDismissed(
       const AdNotificationInfo& ad) override;
+  void OnAdNotificationTimedOut(
+      const AdNotificationInfo& ad) override;
 
   // AdServerObserver implementation
   void OnCatalogUpdated(

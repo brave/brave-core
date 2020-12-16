@@ -6,86 +6,140 @@
 #include "bat/ads/internal/ad_targeting/processors/bandits/epsilon_greedy_bandit_processor.h"
 
 #include <algorithm>
+#include <vector>
+#include <utility>
 
-#include "bat/ads/internal/client/client.h"
+#include "base/strings/string_number_conversions.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/bandits/epsilon_greedy_bandit_arms.h"
+#include "bat/ads/internal/ad_targeting/resources/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace processor {
 
 namespace {
-// const uint16_t kPurchaseIntentDefaultSignalWeight = 1;
-
-// TODO(Moritz Haller): Use alias
-struct Arm {
-  std::string name;
-  double value;
-  uint64_t pulls;
-};
-
-// TODO(Moritz Haller): Init/read/write from DB
-// serialize/deser in here >> persist as string pref
-std::vector<Arm> kArms = {
-  {"architecture", 1.0, 0},
-  {"arts & entertainment", 1.0, 0},
-  {"automotive", 1.0, 0},
-  {"business", 1.0, 0},
-  {"careers", 1.0, 0},
-  {"cell phones", 1.0, 0},
-  {"drugs", 1.0, 0},
-  {"education", 1.0, 0},
-  {"family & parenting", 1.0, 0},
-  {"fashion", 1.0, 0},
-  {"folklore", 1.0, 0},
-  {"food & drink", 1.0, 0},
-  {"health & fitness", 1.0, 0},
-  {"history", 1.0, 0},
-  {"hobbies & interests", 1.0, 0},
-  {"home", 1.0, 0},
-  {"law", 1.0, 0},
-  {"military", 1.0, 0},
-  {"personal finance", 1.0, 0},
-  {"pets", 1.0, 0},
-  {"politics", 1.0, 0},
-  {"real estate", 1.0, 0},
-  {"religion", 1.0, 0},
-  {"science", 1.0, 0},
-  {"society", 1.0, 0},
-  {"sports", 1.0, 0},
-  {"technology & computing", 1.0, 0},
-  {"travel", 1.0, 0},
-  {"weather", 1.0, 0},
-  {"crypto", 1.0, 0},
-};
-
+const double kArmDefaultValue = 1.0;
+const uint64_t kArmDefaultPulls = 0;
 }  // namespace
 
-EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
+EpsilonGreedyBandit::EpsilonGreedyBandit() {
+  InitializeArms();
+}
 
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 void EpsilonGreedyBandit::Process(
-    const AdNotificationInfo& ad) {
-  BLOG(1, "Bandit Process executed");
+    const BanditFeedback& feedback) {
+  // TODO(Moritz Haller): extract top level segment
+  std::string segment = feedback.segment;
+  // TODO(Moritz Haller): switch/case to make type safe
+  if (feedback.ad_event_type == ads::AdNotificationEventType::kTimedOut ||
+      feedback.ad_event_type == ads::AdNotificationEventType::kDismissed) {
+    UpdateArm(/* reward */ 0, segment);
+  } else if (feedback.ad_event_type == ads::AdNotificationEventType::kClicked) {
+    UpdateArm(/* reward */ 1, segment);
+  }
 
-  // On view +1 to pulls for arm with name == arm_name
-  // should always be incremented before feedback
-
-  // On click
-  // keep public: "sensor 2"
-  // void EpsilonGreedyBandit::RegisterFeedback(
-  //     std::string arm_name) {
-  //   UpdateValueEstimates(arm_name)
-  // }
+  BLOG(1, "Processed ad event");
 }
 
-// private
-// void EpsilonGreedyBandit::UpdateValueEstimates(
-//     std::string arm_name) {
-//   // self.estimates[arm] = self.estimates[arm] + 1 / self.pulls[arm] * (reward - self.estimates[arm])
-//   return;
-// }
+///////////////////////////////////////////////////////////////////////////////
+
+void EpsilonGreedyBandit::InitializeArms() const {
+  std::string json = AdsClientHelper::Get()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
+  EpsilonGreedyBanditArmList arms = EpsilonGreedyBanditArms::FromJson(json);
+
+  for (auto& arm : arms) {
+    auto iter = std::find(resource::kSegments.begin(),
+        resource::kSegments.end(), arm.segment);
+
+    if (iter == resource::kSegments.end()) {
+      // TODO(Moritz Haller): Delete w/ e.g. arms.erase(arm);
+      BLOG(1, "DEBUG.1 ARM NOT IN kSegments - Deleted");
+    }
+  }
+
+  // TODO(Moritz Haller): make sure resource doesn't  contain duplicates
+
+  for (const auto& segment : resource::kSegments) {
+    auto iter = std::find_if(arms.begin(), arms.end(),
+        [&segment](const EpsilonGreedyBanditArmInfo& arm) {
+      return arm.segment == segment;
+    });
+
+    if (iter == arms.end()) {
+      EpsilonGreedyBanditArmInfo arm;
+      arm.segment = segment;
+      arm.value = kArmDefaultValue;
+      arm.pulls = kArmDefaultPulls;
+      arms.push_back(arm);
+      BLOG(1, "DIDN'T FIND arm but added: " << arm.segment);
+      continue;
+    }
+
+    if (!iter->IsValid()) {
+      EpsilonGreedyBanditArmInfo new_arm;
+      new_arm.segment = segment;
+      new_arm.value = kArmDefaultValue;
+      new_arm.pulls = kArmDefaultPulls;
+      *iter = new_arm;
+      BLOG(1, "FOUND INVALID arm and reset: " << new_arm.segment);
+      continue;
+    }
+
+    BLOG(1, "FOUND valid arm: " << iter->segment);
+  }
+
+  std::string json_out = EpsilonGreedyBanditArms::ToJson(arms);
+  AdsClientHelper::Get()->SetStringPref(
+      prefs::kEpsilonGreedyBanditArms, json_out);
+
+  BLOG(1, "Successfully initialized");
+  BLOG(1, "Arms pref " << json_out);
+}
+
+void EpsilonGreedyBandit::UpdateArm(
+    uint8_t reward,
+    const std::string& segment) const {
+  BLOG(1, "Update arms: pulls +1, reward +" << reward);
+  std::string json = AdsClientHelper::Get()->GetStringPref(
+      prefs::kEpsilonGreedyBanditArms);
+  EpsilonGreedyBanditArmList arms = EpsilonGreedyBanditArms::FromJson(json);
+
+  if (arms.empty()) {
+    return;
+  }
+
+  // TODO(Moritz Haller): ad DCHECK to catch during dev if duplicate segments
+  // exist - don't handle
+  // TODO(Moritz Haller): maybe use set
+  auto iter = std::find_if(arms.begin(), arms.end(),
+      [&segment](const EpsilonGreedyBanditArmInfo& arm) {
+    return arm.segment == segment;
+  });
+
+  // TODO(Moritz Haller): Add "untargeted" arm?
+  if (iter == arms.end()) {
+    BLOG(1, "Arm not found for segment " << segment);
+    return;
+  }
+
+  iter->pulls = iter->pulls + 1;
+  iter->value = iter->value + 1 / iter->pulls * (reward - iter->value);
+
+  // TODO(Moritz Haller): make reward uint64
+
+  std::string json_out = EpsilonGreedyBanditArms::ToJson(arms);
+  BLOG(1, "DEBUG arms " << json_out);
+  AdsClientHelper::Get()->SetStringPref(
+      prefs::kEpsilonGreedyBanditArms, json_out);
+
+  BLOG(1, "Arm updated for segment " << segment);
+}
 
 }  // namespace processor
 }  // namespace ad_targeting

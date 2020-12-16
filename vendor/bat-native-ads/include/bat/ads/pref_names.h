@@ -28,6 +28,8 @@ extern const char kCatalogVersion[];
 extern const char kCatalogPing[];
 extern const char kCatalogLastUpdated[];
 
+extern const char kEpsilonGreedyBanditArms[];
+
 }  // namespace prefs
 
 }  // namespace ads
