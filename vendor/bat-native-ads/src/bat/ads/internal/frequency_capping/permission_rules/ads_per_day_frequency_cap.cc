@@ -47,7 +47,7 @@ bool AdsPerDayFrequencyCap::DoesRespectCap(
       base::Time::kHoursPerDay;
 
   const uint64_t cap =
-      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
+      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerDay);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, cap);
