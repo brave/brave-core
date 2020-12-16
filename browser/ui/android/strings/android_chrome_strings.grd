@@ -463,6 +463,9 @@ CHAR-LIMIT guidelines:
      <message name="IDS_AUTOFILL_PROFILE_EDITOR_COUNTRY" desc="Label for a spinner input field containing a list of countries or regions [CHAR-LIMIT=32]">
         Country/Region
       </message>
+      <message name="IDS_AUTOFILL_PROFILE_EDITOR_HONORIFIC_PREFIX" desc="Label for text input field containing a title that can be auto-filled by Brave. [CHAR-LIMIT=32]" meaning="A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi.">
+        Title
+      </message>
       <message name="IDS_AUTOFILL_PROFILE_EDITOR_EMAIL_ADDRESS" desc="Label for text input field containing an e-mail address. [CHAR-LIMIT=32]">
         Email
       </message>
@@ -2592,6 +2595,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_AUTH_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when there is an authentication error with the credentials of the account selected.">
         Sorry, we couldn’t validate your credentials
       </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_DISMISS_BUTTON" desc="Dismiss button text of the account picker bottom sheet">
+        Skip
+      </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_BUTTON" desc="Button text of the account picker bottom sheet when something went wrong in the sign-in process. User can try again if they click it.">
         Try again
       </message>
@@ -3989,13 +3995,13 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_PREFS_WEB_ASSISTANCE_SECTION_TITLE" desc="Title for the web assistance section">
         Web Assistance
       </message>
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_TITLE" desc="Title for the switch toggling whether Autofill Assistant is enabled. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_TITLE" desc="Title for the switch toggling whether Autofill Assistant is enabled.">
         Get help with tasks on the web
       </message>
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_SUMMARY" desc="Description for the Autofill Assistant toggle.">
         To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant
       </message>
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_TITLE" desc="Title for the switch toggling whether proactive help is enabled. When turned on, the Assistant will be able to proactively show up (without explicit user prompt) and offer to help. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_TITLE" desc="Title for the switch toggling whether proactive help is enabled. When turned on, the Assistant will be able to proactively show up (without explicit user prompt) and offer to help.">
         Proactive Help
       </message>
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_SUMMARY" desc="Description for the proactive help toggle. It explains that the Assistant may appear proactively when it detects that it can help the user. ">
@@ -4112,6 +4118,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
 
       <message name="IDS_SHARING_SCREENSHOT" desc="Label for Screenshot button in the sharing hub.">
         Screenshot
+      </message>
+
+      <message name="IDS_SHARING_LONG_SCREENSHOT" desc="Label for Long Screenshot button in the sharing hub.">
+        Long Screenshot
       </message>
 
       <message name="IDS_SHARING_HIGHLIGHTS" desc="Label for Link-to-text button in the sharing hub.">
@@ -4316,6 +4326,18 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_USE_MOBILE_DATA_CONTENT" desc="Content of radio button to allow user to specify getting accessibility image descriptions while on mobile data.">
         Wi-Fi is used when available
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_OFF" desc="Content for a toast that will appear when a user disables the image descriptions feature to confirm to the user it is now off.">
+        Image descriptions are off
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_JUST_ONCE" desc="Content for a toast that will appear when a user chooses to get image descriptions just once for the current page.">
+        Image descriptions added for this page
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_ON" desc="Content for a toast that will appear when a user enables the image descriptions feature to confirm to the user it is now on.">
+        Image descriptions are on
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_ON_NO_WIFI" desc="Content for a toast that will appear when a user enables the image descriptions feature with the wifi only requirement while the user is not currently on a wifi connection.">
+        Image descriptions will resume when you connect to Wi-Fi
       </message>
 
       <!-- Assistant voice search consent ui. -->
