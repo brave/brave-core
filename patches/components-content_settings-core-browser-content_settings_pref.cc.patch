@@ -1,16 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
-index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..3a134fd261aa66f2d61b89dddbfb24a534d6e6a8 100644
+index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..c8b5a71c38dc3a9f5b508b3752f7379f463fc038 100644
 --- a/components/content_settings/core/browser/content_settings_pref.cc
 +++ b/components/content_settings/core/browser/content_settings_pref.cc
-@@ -34,6 +34,7 @@ const char kExpirationPath[] = "expiration";
- const char kSessionModelPath[] = "model";
- const char kSettingPath[] = "setting";
- const char kLastModifiedPath[] = "last_modified";
-+BRAVE_SHIELDS_DICTIONARY_NAME
- 
- bool IsValueAllowedForType(const base::Value* value, ContentSettingsType type) {
-   const content_settings::ContentSettingsInfo* info =
-@@ -160,6 +161,7 @@ bool ContentSettingsPref::SetWebsiteSetting(
+@@ -160,6 +160,7 @@ bool ContentSettingsPref::SetWebsiteSetting(
    DCHECK(thread_checker_.CalledOnValidThread());
    DCHECK(prefs_);
    DCHECK(primary_pattern != ContentSettingsPattern::Wildcard() ||
@@ -18,27 +10,3 @@ index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..3a134fd261aa66f2d61b89dddbfb24a5
           secondary_pattern != ContentSettingsPattern::Wildcard());
  
    // At this point take the ownership of the |in_value|.
-@@ -319,6 +321,7 @@ void ContentSettingsPref::ReadContentSettingsFromPref() {
-       expired_patterns_to_remove.push_back(pattern_str);
-       continue;
-     }
-+    BRAVE_READ_CONTENT_SETTINGS_FROM_PREF
- 
-     const base::Value* value = nullptr;
-     settings_dictionary->GetWithoutPathExpansion(kSettingPath, &value);
-@@ -401,6 +404,7 @@ void ContentSettingsPref::UpdatePref(
-     }
- 
-     if (settings_dictionary) {
-+      BRAVE_UPDATE_PREF_HANDLE_SHIELDS_TYPE
-       // Update settings dictionary.
-       if (value == nullptr) {
-         settings_dictionary->RemoveWithoutPathExpansion(kSettingPath, nullptr);
-@@ -432,6 +436,7 @@ void ContentSettingsPref::UpdatePref(
-         pattern_pairs_settings->RemoveWithoutPathExpansion(pattern_str,
-                                                            nullptr);
-       }
-+      BRAVE_UPDATE_PREF_HANDLE_SHIELDS_TYPE_END
-     }
-   }
- }
