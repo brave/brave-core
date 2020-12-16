@@ -15,7 +15,7 @@
 
   <!-- Contact visibility component -->
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_DOWNLOAD_FAILED" desc="Message shown when downloading contacts failed when trying to load contacts to show the user a list of who they will be able to share with.">
-      Unable to download contact list. Please check your network connection, or &lt;a href="#" id="tryAgainLink"&gt;try again&lt;/a&gt;.
+      Unable to download contact list. Please check your network connection, or <ph name="LINK_BEGIN">&lt;a&gt;</ph>try again<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_DOWNLOADING" desc="Message shown when contacts are being downloaded to show the user a list of who they will be able to share with.">
     Downloading contact list...
@@ -25,6 +25,12 @@
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_TITLE" desc="Title text shown when there are no reachable contacts with a Brave sync chain to select from.">
     No reachable contacts
+  </message>
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NUM_UNREACHABLE" desc="Informational message indicating that there are contacts that are not connectable for sharing with the Nearby Share feature.">
+    {COUNT, plural,
+      =1 {# contact is not available. To use Nearby Share with them, add the email address associated with their Brave sync chain to your contacts.}
+      other {# contacts are not available. To use Nearby Share with them, add the email addresses associated with their Brave sync chains to your contacts.}
+    }
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OTHERS" desc="Describes when nearby devices are visible to this user when using the Nearby Share feature.">
     Profiles who have chosen to be visible to you when their screen is unlocked and devices near you when Nearby Share is open
@@ -64,7 +70,7 @@
 
   <!-- Discovery page -->
   <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Bravebook to share with it.">
-    Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook, make sure it has Nearby Sharing turned on (open the status area by selecting the time, then select Nearby Share). <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook not in your contacts, make sure it has Nearby visibility turned on (open the status area by selecting the time, then select Nearby visibility). <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_NEARBY_DISCOVERY_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share device discovery page. This is where users select a device to share files with.">
     Select the device you’d like to share files with
@@ -79,6 +85,9 @@
   <!-- Onboarding page -->
   <message name="IDS_NEARBY_ONBOARDING_PAGE_DEVICE_NAME" desc="Label of the text input field to set the name of a users device which is shown to other devices for the Nearby Share feature.">
     Device name
+  </message>
+  <message name="IDS_NEARBY_ONBOARDING_PAGE_DEVICE_NAME_HELP" desc="Text that accompanies the device name input field to give some context about what the device name is and how it will be used.">
+    How your device appears to others
   </message>
   <message name="IDS_NEARBY_ONBOARDING_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share onboarding page that sets up the local device for the feature which provides a way for nearby devices to share files, text, and urls.">
     Share files with profiles around you
@@ -105,6 +114,9 @@
   <message name="IDS_NEARBY_ACTIONS_CANCEL" desc="Action button text to cancel the current step in the Nearby Share UI.">
     Cancel
   </message>
+  <message name="IDS_NEARBY_ACTIONS_CLOSE" desc="Action button text to close the dialog. Shown when the process is complete or failed due to error.">
+    Close
+  </message>
   <message name="IDS_NEARBY_ACTIONS_CONFIRM" desc="Action button text to confirm a transfer in the Nearby Share UI.">
     Confirm
   </message>
@@ -120,14 +132,17 @@
   <message name="IDS_NEARBY_ERROR_CANT_SHARE" desc="Notify user that the file wasn't able to be shared. Generic title text for displaying errors to the user. To be shown next to more specific error text.">
     Can't share
   </message>
-  <message name="IDS_NEARBY_ERROR_NO_RESPONSE" desc="Notify user that the file share failed because the receiver neither accepted nor declined the share.">
-    The device you're sharing with didn't respond
+  <message name="IDS_NEARBY_ERROR_NO_RESPONSE" desc="Notify user that the file share failed because the receiver neither accepted nor declined the share. Suggest trying again.">
+    The device you're sharing with didn't respond. Please try again.
+  </message>
+  <message name="IDS_NEARBY_ERROR_NOT_ENOUGH_SPACE" desc="Notify user that the file can't be shared because there isn't enough disk space to store it. Displayed as a subtitle under a more generic file-couldn't-be-shared message.">
+    Not enough disk space
   </message>
   <message name="IDS_NEARBY_ERROR_REJECTED" desc="Notify sender that receiver declined the file share.">
     The device you’re trying to share with did not accept
   </message>
-  <message name="IDS_NEARBY_ERROR_SOMETHING_WRONG" desc="Generic error text shown when the reason for the failure is unknown or too technical to explain.">
-    Something went wrong
+  <message name="IDS_NEARBY_ERROR_SOMETHING_WRONG" desc="Generic error text shown when the reason for the failure is unknown or too technical to explain. Suggest trying again.">
+    Something went wrong. Please try again.
   </message>
   <message name="IDS_NEARBY_ERROR_TIME_OUT" desc="Notify user that the file share failed because something didn't happen in time, e.g. the receiver neither accepted nor declined the share. Generic title text to be shown next to more specific error text describing the situation.">
     Time out
@@ -168,7 +183,13 @@
 
   <!-- High Visibility Page Strings -->
   <message name="IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE" desc="Describes to the user that their device is visible to nearby devices with a specific device name. This is used on the sub-title of the of high visibility receive dialog for the Nearby Share feature.">
-    Visible to nearby devices as <ph name="DEVICE_NAME">$1<ex>Rea’s Bravebook</ex></ph>
+    Visible to nearby devices as <ph name="DEVICE_NAME">$1<ex>Rea’s Bravebook</ex></ph> for <ph name="REMAINING_TIME">$2<ex>5 min</ex></ph>...
+  </message>
+  <message name="IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE_MINUTES" desc="A short string showing the nearest number of whole minutes until Nearby Share high visibility turns off. To be used with IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE. [CHAR_LIMIT=7]">
+    <ph name="MINUTES">$1<ex>2</ex></ph> min
+  </message>
+  <message name="IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE_SECONDS" desc="A short string showing the nearest number of whole seconds until Nearby Share high visibility turns off. To be used with IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE. [CHAR_LIMIT=7]">
+    <ph name="SECONDS">$1<ex>40</ex></ph> sec
   </message>
   <message name="IDS_NEARBY_HIGH_VISIBILITY_HELP_TEXT" desc="Describes to the user that their device is visible to nearby devices with a specific device name. This is used on the sub-title of the of high visibility receive dialog for the Nearby Share feature.">
     Make sure both devices are unlocked, close together, and have Bluetooth turned on. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -187,6 +208,9 @@
   <!-- Settings Strings -->
   <message name="IDS_NEARBY_ACCOUNT_ROW_LABEL" desc="Label to describe the account row which displays the user's full name and their email which will identify them when using the Nearby Share feature." is_accessibility_with_no_ui="true">
       Nearby Share settings for <ph name="USER_NAME">$1<ex>Jane Doe</ex></ph>'s device, sharing under the account <ph name="USER_EMAIL">$2<ex>example@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
+    To use Nearby Share, make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook that is not in your contacts, make sure it has Nearby visibility turned on (open the status area by selecting the time, then turn on Nearby visibility) <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_NEARBY_VISIBLITY_ALL_CONTACTS" desc="Describes the user preference state for the user to be visibile to all their contacts in the Nearby Share feature.">
     All contacts
