@@ -850,14 +850,14 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnStartProcess() {
         if (root != null && PackageUtils.isFirstInstall(mActivity)
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                        Profile.getLastUsedRegularProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
             if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
                 showBraveRewardsOnboarding(root, false);
                 BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
             } else if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
-                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
+                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+                    && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                        Profile.getLastUsedRegularProfile())) {
                 showBraveRewardsOnboardingModal(root);
                 BraveRewardsHelper.updateBraveRewardsAppOpenCount();
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
