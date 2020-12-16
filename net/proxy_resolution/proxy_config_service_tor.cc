@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "crypto/random.h"
 #include "net/base/network_isolation_key.h"
+#include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "url/origin.h"
@@ -140,10 +141,12 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   url::Origin url_origin = url::Origin::Create(url);
   net::NetworkIsolationKey network_isolation_key(url_origin, url_origin);
 
-  const base::Optional<url::Origin>& network_isolation_key_origin =
+  const base::Optional<net::SchemefulSite>& schemeful_site =
       network_isolation_key.GetTopFrameSite();
-  DCHECK(network_isolation_key_origin.has_value());
-  return network_isolation_key_origin->host();
+  DCHECK(schemeful_site.has_value());
+  std::string host = GURL(schemeful_site->Serialize()).host();
+  DCHECK(host == schemeful_site->GetInternalOriginForTesting().host());
+  return host;
 }
 
 void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
