@@ -1,12 +1,5 @@
 const path = require('path')
 
-const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
-  .default
-
-function getStyledComponentDisplay (filename, bindingName) {
-  return bindingName
-}
-
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
   // Make whatever fine-grained changes you need
@@ -17,15 +10,7 @@ module.exports = async ({ config, mode }) => {
     options: {
       configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
       allowTsInNodeModules: true,
-      getCustomTransformers: () => ({
-        before: [
-          createStyledComponentsTransformer({
-            options: {
-              getDisplayName: getStyledComponentDisplay
-            }
-          })
-        ]
-      })
+      getCustomTransformers: path.join(__dirname, '../components/webpack/webpack-ts-transformers.js'),
     }
   })
   config.module.rules.push({
