@@ -12,7 +12,6 @@
     {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},        \
     {ContentSettingsType::BRAVE_TRACKERS, nullptr},                  \
     {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr}, \
-    {ContentSettingsType::BRAVE_JAVASCRIPT, nullptr},                \
     {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},         \
     {ContentSettingsType::BRAVE_SHIELDS, nullptr},                   \
     {ContentSettingsType::BRAVE_REFERRERS, nullptr},                 \

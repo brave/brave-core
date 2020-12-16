@@ -24,8 +24,6 @@ const struct {
     ContentSettingsType::BRAVE_TRACKERS },
   { brave_shields::kHTTPUpgradableResources,
     ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES },
-  { brave_shields::kJavaScript,
-    ContentSettingsType::BRAVE_JAVASCRIPT },
   { brave_shields::kFingerprintingV2,
     ContentSettingsType::BRAVE_FINGERPRINTING_V2 },
   { brave_shields::kBraveShields,
