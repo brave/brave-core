@@ -10,7 +10,7 @@ import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/grit/grit_rule.gni")
-import("//tools/grit/preprocess_grit.gni")
+import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
@@ -80,7 +80,7 @@ generate_grd("build_grd") {
   ]
 }
 
-preprocess_grit("preprocess") {
+preprocess_if_expr("preprocess") {
   in_folder = "./"
   out_folder =
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
@@ -116,7 +116,7 @@ preprocess_grit("preprocess") {
   ]
 }
 
-preprocess_grit("preprocess_generated") {
+preprocess_if_expr("preprocess_generated") {
   deps = [ ":web_modules" ]
   defines = [
     "enable_tor=$enable_tor",
