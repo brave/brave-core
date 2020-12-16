@@ -56,6 +56,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
@@ -1323,7 +1324,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 @Override
                 public void onClick(View v) {
                     mBraveRewardsNativeWorker.DeleteNotification(currentNotificationId);
-                    mActivity.openNewOrSelectExistingTab (ChromeTabbedActivity.REWARDS_SETTINGS_URL);
+                    assert (BraveReflectionUtil.EqualTypes(
+                            mActivity.getClass(), BraveActivity.class));
+                    BraveReflectionUtil.InvokeMethod(BraveActivity.class, mActivity,
+                            "openNewOrSelectExistingTab", String.class,
+                            BraveActivity.REWARDS_SETTINGS_URL);
                     dismiss();
                 }
             });
