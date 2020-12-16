@@ -353,7 +353,6 @@ Config.prototype.buildArgs = function () {
     args.enable_dsyms = true
     args.enable_stripping = !this.isDebug()
     args.use_xcode_clang = false
-    args.use_xcode_clang = this.isOfficialBuild()
     args.use_clang_coverage = false
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
