@@ -70,9 +70,9 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       state = { ...state }
       state = {
         ...state,
+        binanceSupported: payload.supported,
         binanceState: {
           ...state.binanceState,
-          binanceSupported: payload.supported
         }
       }
       break
