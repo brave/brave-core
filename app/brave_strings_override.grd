@@ -273,6 +273,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="not chromeos and not is_android">
         </if>
 
+      <if expr="chromeos">
+        </if>
+
       <if expr="is_win">
         </if>
       <if expr="not is_android">
@@ -302,6 +305,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
           Use different profiles in Brave to separate work and personal browsing, or for different profiles who use this device
         </message>
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="chromeos">
         </if>
 
       <if expr="is_macosx">
