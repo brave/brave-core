@@ -32,21 +32,24 @@ using RemoveAllHistoryCallback = std::function<void(const Result)>;
 using GetStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
-// |_environment| indicates that URL requests should use production, staging or
+// |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
-extern Environment _environment;
+extern Environment g_environment;
 
-// |_build_channel| indicates the build channel
-extern BuildChannel _build_channel;
+// |g_sys_info| contains the hardware |manufacturer| and |model|
+extern SysInfo g_sys_info;
 
-// |_is_debug| indicates that the next catalog download should be reduced from
+// |g_build_channel| indicates the build channel
+extern BuildChannel g_build_channel;
+
+// |g_is_debug| indicates that the next catalog download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to false on production
 // builds and true on debug builds but can be overridden via command-line
 // arguments
-extern bool _is_debug;
+extern bool g_is_debug;
 
 // Catalog schema resource id
-extern const char _catalog_schema_resource_id[];
+extern const char g_catalog_schema_resource_id[];
 
 // Returns true if the locale is supported otherwise returns false
 bool IsSupportedLocale(

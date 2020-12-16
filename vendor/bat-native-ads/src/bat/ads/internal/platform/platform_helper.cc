@@ -15,7 +15,6 @@ PlatformHelper::~PlatformHelper() = default;
 
 void PlatformHelper::set_for_testing(
     PlatformHelper* platform_helper) {
-  DCHECK(platform_helper);
   g_platform_helper_for_testing = platform_helper;
 }
 

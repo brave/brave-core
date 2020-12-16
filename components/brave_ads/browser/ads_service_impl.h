@@ -17,6 +17,7 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/system/sys_info.h"
 #include "base/timer/timer.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
@@ -201,6 +202,10 @@ class AdsServiceImpl : public AdsService,
       const int32_t result);
   void OnResetAllState(
       const bool success);
+
+  void GetHardwareInfo();
+  void OnGetHardwareInfo(
+      base::SysInfo::HardwareInfo hardware);
 
   void EnsureBaseDirectoryExists();
   void OnEnsureBaseDirectoryExists(

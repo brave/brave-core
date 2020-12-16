@@ -184,31 +184,46 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
           locale.languageCode, locale.countryCode];
 }
 
-BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
+BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 + (int)environment
 {
-  return static_cast<int>(ads::_environment);
+  return static_cast<int>(ads::g_environment);
 }
 
 + (void)setEnvironment:(int)environment
 {
-  ads::_environment = static_cast<ads::Environment>(environment);
+  ads::g_environment = static_cast<ads::Environment>(environment);
+}
+
++ (BATBraveAdsSysInfo *)sysInfo
+{
+  auto sys_info = [[BATBraveAdsSysInfo alloc] init];
+  sys_info.manufacturer = [NSString stringWithUTF8String: ads::g_sys_info.manufacturer.c_str()];
+  sys_info.model = [NSString stringWithUTF8String: ads::g_sys_info.model.c_str()];
+
+  return sys_info;
+}
+
++ (void)setSysInfo:(BATBraveAdsSysInfo *)sysInfo
+{
+  ads::g_sys_info.manufacturer = sysInfo.manufacturer.UTF8String;
+  ads::g_sys_info.model = sysInfo.model.UTF8String;
 }
 
 + (BATBraveAdsBuildChannel *)buildChannel
 {
   auto build_channel = [[BATBraveAdsBuildChannel alloc] init];
-  build_channel.isRelease = ads::_build_channel.is_release;
-  build_channel.name = [NSString stringWithUTF8String: ads::_build_channel.name.c_str()];
+  build_channel.isRelease = ads::g_build_channel.is_release;
+  build_channel.name = [NSString stringWithUTF8String: ads::g_build_channel.name.c_str()];
 
   return build_channel;
 }
 
 + (void)setBuildChannel:(BATBraveAdsBuildChannel *)buildChannel
 {
-  ads::_build_channel.is_release = buildChannel.isRelease;
-  ads::_build_channel.name = buildChannel.name.UTF8String;
+  ads::g_build_channel.is_release = buildChannel.isRelease;
+  ads::g_build_channel.name = buildChannel.name.UTF8String;
 }
 
 #pragma mark - Initialization / Shutdown
@@ -768,7 +783,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   const auto __weak weakSelf = self;
 
   NSString *baseUrl;
-  if (ads::_environment == ads::Environment::PRODUCTION) {
+  if (ads::g_environment == ads::Environment::PRODUCTION) {
     baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
   } else {
     baseUrl = @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
