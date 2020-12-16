@@ -2,7 +2,7 @@ import 'emptykit.css'
 import { configure, addDecorator, addParameters } from '@storybook/react'
 import { initLocale } from 'brave-ui/helpers'
 import locale from './locale'
-import { withThemesProvider } from 'storybook-addon-styled-component-theme'
+// import { withThemesProvider } from 'storybook-addon-styled-component-theme'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import DefaultTheme from 'brave-ui/theme/brave-default'
 
@@ -10,8 +10,8 @@ import DefaultTheme from 'brave-ui/theme/brave-default'
 import '../ui/webui/resources/fonts/muli.css'
 import '../ui/webui/resources/fonts/poppins.css'
 
-const themes = [DefaultTheme, DarkTheme]
-addDecorator(withThemesProvider(themes))
+// const themes = [DefaultTheme, DarkTheme]
+// addDecorator(withThemesProvider(themes))
 
 addParameters({
   backgrounds: [
@@ -43,8 +43,8 @@ function loadStories() {
   chrome.extension = {
     inIncognitoContext: false
   }
-  const req = require.context('../components/', true, /\/stories\/.*\.tsx$/)
-  req.keys().forEach(filename => req(filename))
+  // const req = require.context('../components/', true, /\/stories\/.*\.tsx$/)
+  // req.keys().forEach(filename => req(filename))
 }
 
 configure(loadStories, module)

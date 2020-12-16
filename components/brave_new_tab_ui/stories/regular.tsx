@@ -5,12 +5,8 @@
 import * as React from 'react'
 import { Dispatch } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
-import { storiesOf } from '@storybook/react'
-import { withKnobs, select } from '@storybook/addon-knobs/react'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
-import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
-
+import { withKnobs } from '@storybook/addon-knobs'
+import ThemeProvider from '../../common/StorybookThemeProvider'
 // Components
 import NewTabPage from '../containers/newTab'
 import { getActionsForDispatch } from '../api/getActions'
@@ -42,26 +38,10 @@ window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mime
   // return dataUrl
 }
 
-function ThemeProvider ({ story }: any) {
-  return (
-    <BraveCoreThemeProvider
-      dark={DarkTheme}
-      light={Theme}
-      initialThemeType={select(
-        'Theme',
-        { ['Light']: 'Light', ['Dark']: 'Dark' },
-        'Light'
-      )}
-    >
-    {story}
-    </BraveCoreThemeProvider>
-  )
-}
-
-function StoreProvider ({ story }: any) {
+const StoreProvider: React.FunctionComponent = ({ children }) => {
   return (
     <ReduxProvider store={store}>
-     {story}
+     {children}
     </ReduxProvider>
   )
 }
@@ -70,33 +50,38 @@ function dismissBraveTodayIntroCard () {
   console.log('brave today intro card dismissed')
 }
 
-storiesOf('New Tab/Containers', module)
-  .addDecorator(withKnobs)
-  .addDecorator(story => <StoreProvider story={story()} />)
-  .addDecorator(story => <ThemeProvider story={story()} />)
-  .add('Default', () => {
-    const doNothing = (value: boolean) => value
-    const state = store.getState()
-    const newTabData = getNewTabData(state.newTabData)
-    const gridSitesData = getGridSitesData(state.gridSitesData)
-    const todayState = getTodayState()
-    return (
-      <NewTabPage
-        newTabData={newTabData}
-        todayData={todayState}
-        gridSitesData={gridSitesData}
-        actions={getActions()}
-        saveShowBackgroundImage={doNothing}
-        saveShowStats={doNothing}
-        saveShowToday={doNothing}
-        saveShowRewards={doNothing}
-        saveShowBinance={doNothing}
-        saveShowTogether={doNothing}
-        saveShowGemini={doNothing}
-        saveShowCryptoDotCom={doNothing}
-        saveBrandedWallpaperOptIn={doNothing}
-        onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
-        saveSetAllStackWidgets={doNothing}
-      />
-    )
-  })
+export default {
+  title: 'New Tab/Containers',
+  decorators: [
+    (Story: any) => <StoreProvider><Story /></StoreProvider>,
+    (Story: any) => <ThemeProvider><Story /></ThemeProvider>,
+    withKnobs
+  ]
+}
+
+export const Regular = () => {
+  const doNothing = (value: boolean) => value
+  const state = store.getState()
+  const newTabData = getNewTabData(state.newTabData)
+  const gridSitesData = getGridSitesData(state.gridSitesData)
+  const todayState = getTodayState()
+  return (
+    <NewTabPage
+      newTabData={newTabData}
+      todayData={todayState}
+      gridSitesData={gridSitesData}
+      actions={getActions()}
+      saveShowBackgroundImage={doNothing}
+      saveShowStats={doNothing}
+      saveShowToday={doNothing}
+      saveShowRewards={doNothing}
+      saveShowBinance={doNothing}
+      saveShowTogether={doNothing}
+      saveShowGemini={doNothing}
+      saveShowCryptoDotCom={doNothing}
+      saveBrandedWallpaperOptIn={doNothing}
+      saveSetAllStackWidgets={doNothing}
+      onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
+    />
+  )
+}
