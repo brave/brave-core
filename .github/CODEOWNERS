@@ -67,3 +67,7 @@ components/weekly_storage/ @iefremov
 
 # Perf predictor
 components/brave_perf_predictor/ @iefremov
+
+# Java patching
+build/android/bytecode/ @samartnik
+patches/*.java.patch @samartnik
