@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/isolation_info.h"
+#include "net/base/schemeful_site.h"
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -98,9 +99,9 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->network_isolation_key =
         request.trusted_params->isolation_info.network_isolation_key();
-    ctx->tab_origin = ctx->network_isolation_key.GetTopFrameSite()
-                          .value_or(url::Origin())
-                          .GetURL();
+    ctx->tab_origin = GURL(ctx->network_isolation_key.GetTopFrameSite()
+                               .value_or(net::SchemefulSite())
+                               .Serialize());
   }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
