@@ -54,7 +54,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterUint64Pref(
       ads::prefs::kAdsPerHour, 2);
   registry->RegisterUint64Pref(
-      ads::prefs::kAdsPerDay, 20);
+      ads::prefs::kAdsPerDay, 40);
 
   registry->RegisterIntegerPref(
       ads::prefs::kIdleThreshold, 15);
