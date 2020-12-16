@@ -81,8 +81,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {
     ...state.stats,
-    adsBlockedStat: number('Number of blocked items', 1337),
-    httpsUpgradesStat: number('Number of HTTPS upgrades', 1337)
+    adsBlockedStat: number('Number of blocked items', 1337)
   },
   // TODO(petemill): Support binance state when binance can be included without chrome.* APIs
   // binanceState: {
