@@ -513,7 +513,7 @@ uint64_t AdsServiceImpl::GetAdsPerHour() const {
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
   return base::ClampToRange(GetUint64Pref(ads::prefs::kAdsPerDay),
-      static_cast<uint64_t>(1), static_cast<uint64_t>(20));
+      static_cast<uint64_t>(1), static_cast<uint64_t>(40));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
@@ -1347,7 +1347,8 @@ bool AdsServiceImpl::MigratePrefs(
     {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
     {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
     {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
-    {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8}
+    {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
+    {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -1556,6 +1557,13 @@ void AdsServiceImpl::MigratePrefsVersion7To8() {
   if (!rewards_enabled) {
     SetEnabled(false);
   }
+}
+
+void AdsServiceImpl::MigratePrefsVersion8To9() {
+  // Unlike Muon, ads per day are not configurable in the UI so we can safely
+  // migrate to the new value
+
+  SetUint64Pref(ads::prefs::kAdsPerDay, 40);
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {

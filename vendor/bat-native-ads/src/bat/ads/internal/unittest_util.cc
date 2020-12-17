@@ -399,7 +399,7 @@ void MockClearPref(
 
 void MockDefaultPrefs(
     const std::unique_ptr<AdsClientMock>& mock) {
-  mock->SetUint64Pref(prefs::kAdsPerDay, 20);
+  mock->SetUint64Pref(prefs::kAdsPerDay, 40);
   mock->SetUint64Pref(prefs::kAdsPerHour, 2);
   mock->SetBooleanPref(prefs::kEnabled, true);
   mock->SetBooleanPref(prefs::kShouldAllowConversionTracking, true);
