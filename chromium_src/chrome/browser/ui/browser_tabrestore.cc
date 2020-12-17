@@ -45,7 +45,6 @@ WebContents* AddRestoredTab(
     base::Optional<tab_groups::TabGroupId> group,
     bool select,
     bool pin,
-    bool from_last_session,
     base::TimeTicks last_active_time,
     content::SessionStorageNamespace* session_storage_namespace,
     const sessions::SerializedUserAgentOverride& user_agent_override,
@@ -57,9 +56,9 @@ WebContents* AddRestoredTab(
       navigations.at(selected_navigation).original_request_url());
 #endif
 
-  return AddRestoredTab_ChromiumImpl(browser, navigations, tab_index,
-      selected_navigation, extension_app_id, group, select, pin,
-      from_last_session, last_active_time, session_storage_namespace,
+  return AddRestoredTab_ChromiumImpl(
+      browser, navigations, tab_index, selected_navigation, extension_app_id,
+      group, select, pin, last_active_time, session_storage_namespace,
       user_agent_override, from_session_restore);
 }
 
