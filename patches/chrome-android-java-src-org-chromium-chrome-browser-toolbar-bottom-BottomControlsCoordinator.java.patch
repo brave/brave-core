@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index 10d85063b9352f883757b2c275348f03080e6079..abad2c3980cd9ac8bec8f3ee39204714a7cbb397 100644
+index b39adab273373c9a6dd2e20cb53af3d07fdfb0a9..97c76c68f1d36d5b8d9b4699a7ab3e08221bcb58 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 @@ -96,7 +96,7 @@ public class BottomControlsCoordinator {

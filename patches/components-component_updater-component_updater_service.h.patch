@@ -1,8 +1,8 @@
 diff --git a/components/component_updater/component_updater_service.h b/components/component_updater/component_updater_service.h
-index 5a5f0d32ea458a33e5588ef99e45c2409508a555..4c71a4e0422a213929fd6085e5e0230b70fbf064 100644
+index 453d1fd4f51460d0ce390c43659cdbae0e7844e9..9e76b21bce9dfd392af44774f332e9f34772e506 100644
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
-@@ -162,6 +162,7 @@ class OnDemandUpdater {
+@@ -163,6 +163,7 @@ class OnDemandUpdater {
    enum class Priority { BACKGROUND = 0, FOREGROUND = 1 };
  
    virtual ~OnDemandUpdater() = default;
