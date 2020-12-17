@@ -119,7 +119,7 @@ void AdsTabHelper::DidFinishNavigation(
   }
 
   bool was_restored =
-      navigation_handle->GetRestoreType() != content::RestoreType::NONE;
+      navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
 
   run_distiller_ = !was_restored;
 }
