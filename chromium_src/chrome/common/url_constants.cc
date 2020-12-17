@@ -41,9 +41,6 @@ const char kChromeBetaForumURL[] =
 const char kChromeFixUpdateProblems[] =
     "https://support.brave.com/";
 
-const char kChromeReleaseNotesURL[] =
-    "https://brave.com/latest/";
-
 const char kChromeHelpViaKeyboardURL[] =
 #if defined(OS_CHROMEOS)
 #if defined(GOOGLE_CHROME_BUILD)
@@ -235,8 +232,6 @@ const char kUpgradeHelpCenterBaseURL[] =
 
 const char kWhoIsMyAdministratorHelpURL[] =
     "https://support.brave.com/";
-
-const char kChromeFlashRoadmapURL[] = "https://support.brave.com/";
 
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";
