@@ -186,10 +186,10 @@ GreaselionDownloadService::GreaselionDownloadService(
     resource_dir_ = forced_local_path;
     LoadDirectlyFromResourcePath();
     dev_mode_path_watcher_ = std::make_unique<base::FilePathWatcher>();
-    if (!dev_mode_path_watcher_->Watch(resource_dir_,
-        true /*recursive*/,
-        base::Bind(&GreaselionDownloadService::OnDevModeLocalFileChanged,
-            weak_factory_.GetWeakPtr()))) {
+    if (!dev_mode_path_watcher_->Watch(
+            resource_dir_, base::FilePathWatcher::Type::kRecursive,
+            base::Bind(&GreaselionDownloadService::OnDevModeLocalFileChanged,
+                       weak_factory_.GetWeakPtr()))) {
       LOG(ERROR) << "Greaselion could not watch filesystem for changes"
           << " at path " << resource_dir_.LossyDisplayName();
     }
