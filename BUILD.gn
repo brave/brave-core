@@ -212,7 +212,7 @@ group("create_dist") {
   deps = []
   if (is_android) {
     deps += [
-      "app/$target_os:create_dist_zips"
+      "build/brave/android:sign_app"
     ]
   } else if (is_linux) {
     # zip will be created along with installer

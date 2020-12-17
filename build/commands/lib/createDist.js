@@ -20,9 +20,6 @@ const createDist = (buildConfig = config.defaultBuildConfig, options) => {
   }
   config.buildTarget = 'create_dist'
   util.buildTarget()
-  if (config.targetOS === 'android') {
-    util.signApp()
-  }
 }
 
 module.exports = createDist
