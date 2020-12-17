@@ -5,6 +5,7 @@
 
 #include "third_party/blink/renderer/modules/storage/storage_controller.h"
 
+#include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
