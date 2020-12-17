@@ -15,7 +15,7 @@ class BrotliStreamDecoder {
  public:
   explicit BrotliStreamDecoder(size_t buffer_size) {
     brotli_state_ = BrotliDecoderCreateInstance(nullptr, nullptr, nullptr);
-    out_vector_.reserve(buffer_size);
+    out_vector_.resize(buffer_size);
   }
 
   BrotliStreamDecoder(const BrotliStreamDecoder&) = delete;
@@ -38,7 +38,7 @@ class BrotliStreamDecoder {
     }
 
     uint8_t* output_buffer = out_vector_.data();
-    size_t output_length = out_vector_.capacity();
+    size_t output_length = out_vector_.size();
 
     for (;;) {
       auto brotli_result = BrotliDecoderDecompressStream(
@@ -51,13 +51,13 @@ class BrotliStreamDecoder {
 
       switch (brotli_result) {
         case BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT: {
-          callback(out_vector_.data(), out_vector_.capacity() - output_length);
+          callback(out_vector_.data(), out_vector_.size() - output_length);
           output_buffer = out_vector_.data();
-          output_length = out_vector_.capacity();
+          output_length = out_vector_.size();
           break;
         }
         case BROTLI_DECODER_RESULT_SUCCESS: {
-          callback(out_vector_.data(), out_vector_.capacity() - output_length);
+          callback(out_vector_.data(), out_vector_.size() - output_length);
           return Result::Done;
         }
         case BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT: {
