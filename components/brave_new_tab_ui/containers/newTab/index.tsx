@@ -244,27 +244,38 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleShowBinance = () => {
-    const { showBinance } = this.props.newTabData
+    const { showBinance, binanceState } = this.props.newTabData
 
     this.props.saveShowBinance(!showBinance)
 
-    // If we are about to hide the widget, disconnect
-    if (showBinance) {
+    if (!showBinance) {
+      return
+    }
+
+    if (binanceState.userAuthed) {
       chrome.binance.revokeToken(() => {
         this.disconnectBinance()
       })
+    } else {
+      this.disconnectBinance()
     }
   }
 
   toggleShowGemini = () => {
-    const { showGemini } = this.props.newTabData
+    const { showGemini, geminiState } = this.props.newTabData
 
     this.props.saveShowGemini(!showGemini)
 
-    if (showGemini) {
+    if (!showGemini) {
+      return
+    }
+
+    if (geminiState.userAuthed) {
       chrome.gemini.revokeToken(() => {
         this.disconnectGemini()
       })
+    } else {
+      this.disconnectGemini()
     }
   }
 
