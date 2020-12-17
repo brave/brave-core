@@ -16,14 +16,14 @@ import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BraveShieldsContentSettings {
-    static public final String RESOURCE_IDENTIFIER_ADS = "ads";
+    static public final String RESOURCE_IDENTIFIER_ADS = "shieldsAds";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
     static public final String RESOURCE_IDENTIFIER_ADS_TRACKERS = "ads_trackers";
     static public final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
     static public final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = "httpUpgradableResources";
     static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
     static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
-    static public final String RESOURCE_IDENTIFIER_COOKIES = "cookies";
+    static public final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
     static public final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
     static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
 
