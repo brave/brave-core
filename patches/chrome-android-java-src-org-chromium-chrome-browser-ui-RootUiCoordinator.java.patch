@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-index 75ce9854d076692520a59e6e5322abe14ff146e5..83cd5afa9b4e1d66194b26474fc11e1973a89265 100644
+index 2e146bd3953436c8b4c5978417fe9c3d063323c7..359a4e3edfbf4e2b0c348fcaa39b3692e39933f4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-@@ -623,7 +623,7 @@ public class RootUiCoordinator
+@@ -644,7 +644,7 @@ public class RootUiCoordinator
                              mActivity.getModalDialogManager(), voiceSearchDelegate);
              mButtonDataProviders = Arrays.asList(
                      mIdentityDiscController, shareButtonController, voiceToolbarButtonController);
@@ -10,4 +10,4 @@ index 75ce9854d076692520a59e6e5322abe14ff146e5..83cd5afa9b4e1d66194b26474fc11e19
 +            mToolbarManager = new org.chromium.chrome.browser.toolbar.BraveToolbarManager(mActivity, mActivity.getBrowserControlsManager(),
                      mActivity.getFullscreenManager(), toolbarContainer,
                      mActivity.getCompositorViewHolder(), urlFocusChangedCallback,
-                     mTabThemeColorProvider, mTabObscuringHandler, mShareDelegateSupplier,
+                     mTopUiThemeColorProvider, mTabObscuringHandler, mShareDelegateSupplier,
