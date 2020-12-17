@@ -47,3 +47,14 @@ export const Paragraph = styled.p`
     }
   }
 `
+
+export const TermsOfService = styled(Paragraph)`
+  font-size: 13px;
+  line-height: 20px;
+  opacity: .8;
+
+  /* Collapse bottom margin of preceding Paragraph */
+  ${Paragraph} + & {
+    margin-top: -19px;
+  }
+`

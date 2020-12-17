@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../../components'
+import { Content, Title, Paragraph, TermsOfService, PrimaryButton } from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
@@ -31,7 +31,15 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
       >
         <WelcomeRewardsImage />
         <Title>{locale.enableBraveRewards}</Title>
-        <Paragraph>{locale.setupBraveRewards}</Paragraph>
+        <Paragraph>
+          <strong>Earn tokens</strong> by viewing Brave Private Ads and support
+          content creators automatically.
+        </Paragraph>
+        <TermsOfService>
+          By clicking, you agree to the <a href='javascript:void 0'>Terms of Service</a>&nbsp;
+          and <a href='javascript:void 0'>Privacy Policy</a>.<br />
+          You can turn this off at any time in settings.
+        </TermsOfService>
         <PrimaryButton
           level='primary'
           type='accent'
