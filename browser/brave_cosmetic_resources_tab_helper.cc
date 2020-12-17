@@ -233,29 +233,30 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     } else {
       std::string cosmeticFilterConsiderNewSelectors_script =
           "(function() {"
-            "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+            "let nextIndex = window.cosmeticStyleSheet.rules.length;"
+            "const selectors = [";
       for (size_t i = 0; i < hide_selectors_list->GetSize(); i++) {
-        std::string rule = hide_selectors_list->GetList()[i].GetString() +
-            "{display:none !important;}";
-        cosmeticFilterConsiderNewSelectors_script +=
-            "if (!window.allSelectorsToRules.has(`" +
-              hide_selectors_list->GetList()[i].GetString() + "`)) {"
-              "window.cosmeticStyleSheet.insertRule(`" + rule +
-                "`, nextIndex);"
-              "window.allSelectorsToRules.set(`" +
-                hide_selectors_list->GetList()[i].GetString() +
-                "`, nextIndex);"
-              "nextIndex++;"
-              "window.firstRunQueue.add(`" +
-                hide_selectors_list->GetList()[i].GetString() + "`);"
-            "}";
+        cosmeticFilterConsiderNewSelectors_script += "`" +
+            hide_selectors_list->GetList()[i].GetString() + "`";
+        if (i != hide_selectors_list->GetSize() - 1) {
+          cosmeticFilterConsiderNewSelectors_script += ",";
+        }
       }
-      cosmeticFilterConsiderNewSelectors_script +=
+      cosmeticFilterConsiderNewSelectors_script += "];"
+          "selectors.forEach(selector => {"
+            "if (!window.allSelectorsToRules.has(selector)) {"
+              "window.cosmeticStyleSheet.insertRule(selector + "
+                  "`{display:none !important;}`, nextIndex);"
+              "window.allSelectorsToRules.set(selector, nextIndex);"
+              "nextIndex++;"
+              "window.firstRunQueue.add(selector);"
+            "}"
+          "});"
           "if (!document.adoptedStyleSheets.includes("
                 "window.cosmeticStyleSheet)){"
               "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
-          "};";
-      cosmeticFilterConsiderNewSelectors_script += "})();";
+          "};"
+          "})();";
       if (hide_selectors_list->GetSize() != 0) {
         auto* frame_host = content::RenderFrameHost::FromID(frame_id);
         if (!frame_host)
@@ -345,7 +346,8 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
   } else {
     std::string cosmeticFilterConsiderNewSelectors_script =
         "(function() {"
-          "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+          "let nextIndex = window.cosmeticStyleSheet.rules.length;"
+          "const selectors = [";
     bool execute_script = false;
     for (size_t i = 0; i < selectors->GetSize(); i++) {
       base::ListValue* selectors_list = nullptr;
@@ -354,30 +356,30 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
         continue;
       }
       for (size_t j = 0; j < selectors_list->GetSize(); j++) {
-        std::string rule = selectors_list->GetList()[i].GetString() +
-            "{display:none !important;}";
-        cosmeticFilterConsiderNewSelectors_script +=
-          "if (!window.allSelectorsToRules.has(`" +
-            selectors_list->GetList()[i].GetString() + "`)) {"
-            "window.cosmeticStyleSheet.insertRule(`" + rule +
-              "`,nextIndex);"
-            "window.allSelectorsToRules.set(`" +
-              selectors_list->GetList()[i].GetString() +
-              "`, nextIndex);"
-            "nextIndex++;"
-            "window.firstRunQueue.add(`" +
-                selectors_list->GetList()[i].GetString() + "`);"
-          "}";
+        cosmeticFilterConsiderNewSelectors_script += "`" +
+            selectors_list->GetList()[i].GetString() + "`";
+        if (i != selectors_list->GetSize() - 1) {
+          cosmeticFilterConsiderNewSelectors_script += ",";
+        }
         execute_script = true;
       }
     }
     if (execute_script) {
-      cosmeticFilterConsiderNewSelectors_script +=
-          "if (!document.adoptedStyleSheets.includes("
-                "window.cosmeticStyleSheet)){"
-              "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
-          "};";
-      cosmeticFilterConsiderNewSelectors_script += "})();";
+      cosmeticFilterConsiderNewSelectors_script += "];"
+        "selectors.forEach(selector => {"
+          "if (!window.allSelectorsToRules.has(selector)) {"
+            "window.cosmeticStyleSheet.insertRule(selector + "
+                "`{display:none !important;}`, nextIndex);"
+            "window.allSelectorsToRules.set(selector, nextIndex);"
+            "nextIndex++;"
+            "window.firstRunQueue.add(selector);"
+          "}"
+        "});"
+        "if (!document.adoptedStyleSheets.includes("
+            "window.cosmeticStyleSheet)){"
+          "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
+        "};"
+        "})();";
       auto* frame_host = content::RenderFrameHost::FromID(frame_id);
       if (!frame_host)
         return;
