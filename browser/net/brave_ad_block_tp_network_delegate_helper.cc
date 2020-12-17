@@ -159,7 +159,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
       std::move(cb_).Run(
-          base::Optional<std::string>(resolved_addresses->canonical_name()));
+          base::Optional<std::string>(resolved_addresses->GetCanonicalName()));
     } else {
       std::move(cb_).Run(base::nullopt);
     }
