@@ -39,9 +39,8 @@ BraveProfileImpl::BraveProfileImpl(
   if (brave::IsSessionProfilePath(path) &&
       create_mode == CREATE_MODE_ASYNCHRONOUS) {
     auto* parent_profile = brave::CreateParentProfileData(this);
+    parent_profile->AddObserver(this);
 
-    notification_registrar_.Add(this, chrome::NOTIFICATION_PROFILE_DESTROYED,
-                                content::Source<Profile>(parent_profile));
     content::GetUIThreadTaskRunner({})->PostTaskAndReply(
         FROM_HERE, base::DoNothing(),
         base::BindOnce(&ProfileImpl::OnPrefsLoaded,
@@ -51,21 +50,9 @@ BraveProfileImpl::BraveProfileImpl(
 
 BraveProfileImpl::~BraveProfileImpl() {}
 
-void BraveProfileImpl::Observe(int type,
-                               const content::NotificationSource& source,
-                               const content::NotificationDetails& details) {
-  switch (type) {
-    case chrome::NOTIFICATION_PROFILE_DESTROYED: {
-      // this only happens when a profile is deleted because the profile manager
-      // ensures that session profiles are destroyed before their parents
-      // passing false for `success` removes the profile from the info cache
-      g_browser_process->profile_manager()->OnProfileCreated(this, false,
-                                                             false);
-      break;
-    }
-    default: {
-      NOTREACHED();  // Unexpected notification.
-      break;
-    }
-  }
+void BraveProfileImpl::OnProfileWillBeDestroyed(Profile* profile) {
+  // this only happens when a profile is deleted because the profile manager
+  // ensures that session profiles are destroyed before their parents
+  // passing false for `success` removes the profile from the info cache
+  g_browser_process->profile_manager()->OnProfileCreated(this, false, false);
 }
