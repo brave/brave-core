@@ -133,6 +133,13 @@ class EphemeralStorageBaseBrowserTest : public InProcessBrowserTest {
         content_settings, brave_shields::ControlType::ALLOW, GURL());
   }
 
+  void BlockThirdPartyCookies() {
+    auto* content_settings =
+        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    brave_shields::SetCookieControlType(
+        content_settings, brave_shields::ControlType::BLOCK_THIRD_PARTY, GURL());
+  }
+
   void SetValuesInFrame(RenderFrameHost* frame,
                         std::string storage_value,
                         std::string cookie_value) {
@@ -209,6 +216,8 @@ class EphemeralStorageBrowserTest : public EphemeralStorageBaseBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
+  BlockThirdPartyCookies();
+
   WebContents* first_party_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   WebContents* site_a_tab1 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
@@ -286,6 +295,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        NavigatingClearsEphemeralStorage) {
+  BlockThirdPartyCookies();
+
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -324,6 +335,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ClosingTabClearsEphemeralStorage) {
+  BlockThirdPartyCookies();
+
   WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
 
@@ -372,6 +385,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ReloadDoesNotClearEphemeralStorage) {
+  BlockThirdPartyCookies();
+
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -409,6 +424,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        EphemeralStorageDoesNotLeakBetweenProfiles) {
+  BlockThirdPartyCookies();
+
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -472,6 +489,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        NavigationCookiesArePartitioned) {
+  BlockThirdPartyCookies();
+
   GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
   GURL b_site_set_cookie_url = https_server_.GetURL(
@@ -523,6 +542,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        FirstPartyNestedInThirdParty) {
+  BlockThirdPartyCookies();
+
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   GURL a_site_set_cookie_url = https_server_.GetURL(
@@ -718,6 +739,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
                        ThirdPartyCookiesDisabled) {
+  BlockThirdPartyCookies();
+
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   // We set a value in the page where all the frames are first-party.
@@ -747,7 +770,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
                        ThirdPartyCookiesDisabledAndNavigateCookies) {
-  AllowAllCookies();
+  BlockThirdPartyCookies();
 
   GURL b_site_set_cookie_url = https_server_.GetURL(
       "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
