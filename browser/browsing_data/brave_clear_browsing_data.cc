@@ -11,7 +11,7 @@
 #include "base/scoped_observer.h"
 #include "base/trace_event/common/trace_event_common.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -65,14 +65,14 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
   *remove_mask = 0;
   *origin_mask = 0;
 
-  int site_data_mask = ChromeBrowsingDataRemoverDelegate::DATA_TYPE_SITE_DATA;
+  int site_data_mask = chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
   // Don't try to clear LSO data if it's not supported.
   if (!prefs->GetBoolean(prefs::kClearPluginLSODataEnabled))
-    site_data_mask &= ~ChromeBrowsingDataRemoverDelegate::DATA_TYPE_PLUGIN_DATA;
+    site_data_mask &= ~chrome_browsing_data_remover::DATA_TYPE_PLUGIN_DATA;
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteBrowsingHistoryOnExit) &&
       prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory))
-    *remove_mask |= ChromeBrowsingDataRemoverDelegate::DATA_TYPE_HISTORY;
+    *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_HISTORY;
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteDownloadHistoryOnExit) &&
       prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory))
@@ -87,10 +87,10 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
   }
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeletePasswordsOnExit))
-    *remove_mask |= ChromeBrowsingDataRemoverDelegate::DATA_TYPE_PASSWORDS;
+    *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_PASSWORDS;
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteFormDataOnExit))
-    *remove_mask |= ChromeBrowsingDataRemoverDelegate::DATA_TYPE_FORM_DATA;
+    *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_FORM_DATA;
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteHostedAppsDataOnExit)) {
     *remove_mask |= site_data_mask;
@@ -101,8 +101,7 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
   // Corresponds to "Content settings" checkbox in the Clear Browsing Data
   // dialog.
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit))
-    *remove_mask |=
-        ChromeBrowsingDataRemoverDelegate::DATA_TYPE_CONTENT_SETTINGS;
+    *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
 
   return (*remove_mask != 0);
 }

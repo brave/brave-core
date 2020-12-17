@@ -10,6 +10,7 @@
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
@@ -57,7 +58,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   // The reason is upstream assumes that plugins type only as empty string
   // resource ids with plugins type. but we use plugins type to store our
   // shields settings with non-empty resource ids.
-  if (remove_mask & DATA_TYPE_CONTENT_SETTINGS)
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS)
     ClearShieldsSettings(delete_begin, delete_end);
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -66,7 +67,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (remove_mask & DATA_TYPE_HISTORY) {
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
     auto* event_router = extensions::EventRouter::Get(profile_);
     if (event_router) {
       std::unique_ptr<base::ListValue> args(
