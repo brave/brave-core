@@ -13,9 +13,9 @@ unsigned_app_path = "$root_out_dir/$brave_exe"
 packaging_dir = "$brave_packaging_base_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
 keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
-x64_app_path_prefix = "x64"
 
 if (is_universal_binary) {
+  x64_app_path_prefix = "x64"
   arm64_arch_app_path = unsigned_app_path
   x64_arch_app_path = "$root_out_dir/$x64_app_path_prefix/$brave_exe"
   unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
