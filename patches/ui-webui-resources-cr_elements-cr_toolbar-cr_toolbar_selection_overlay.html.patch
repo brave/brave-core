@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html
-index 28243f0a16f655219d18ef2f780a74d343fdd395..88b1bc1563f91134f210a6bdefe900d8f9903bfe 100644
+index b0963a69baab5c2677b3edcd53ef140b654c9814..2b7e75c25886e2abf78b389e3e2528f4f96b6031 100644
 --- a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html
 +++ b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html
-@@ -7,6 +7,7 @@
+@@ -8,6 +8,7 @@
  
  <dom-module id="cr-toolbar-selection-overlay">
    <template>
