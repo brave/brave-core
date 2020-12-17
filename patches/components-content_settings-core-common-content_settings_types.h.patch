@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 61c2c4180add269ab85c8cfe4c1255dea773255d..3d513239267844e5e1b47b6d4ac5c88ca7736a48 100644
+index e641fcb80b70805ac6d83fb9e02e065d0f3bc59f..b311519bda1297e411baeb9dc16106ff4858914b 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -231,6 +231,7 @@ enum class ContentSettingsType : int32_t {
-   // by the File System Access API.
-   FILE_SYSTEM_LAST_PICKED_DIRECTORY,
+@@ -237,6 +237,7 @@ enum class ContentSettingsType : int32_t {
+   // register the PermissionContext.
+   DISPLAY_CAPTURE,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,
