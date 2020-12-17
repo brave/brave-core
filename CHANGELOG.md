@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.22.1](https://github.com/brave/brave-ios/releases/tag/v1.22.1)
+
+- Fixed Brave Core/Chromium framework causing increased storage usage. ([#3099](https://github.com/brave/brave-ios/issues/3099))
+- Fixed last visited bookmark view not being retained. ([#3123](https://github.com/brave/brave-ios/issues/3123))
+
 ## [1.22](https://github.com/brave/brave-ios/releases/tag/v1.22)
 
  - Added Brave Today news feed on the New Tab Page. ([#2863](https://github.com/brave/brave-ios/issues/2863))
