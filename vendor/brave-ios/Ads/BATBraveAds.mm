@@ -30,7 +30,7 @@
   + (__type)__objc_getter { return ads::__cpp_var; } \
   + (void)__objc_setter:(__type)newValue { ads::__cpp_var = newValue; }
 
-static const NSInteger kDefaultNumberOfAdsPerDay = 20;
+static const NSInteger kDefaultNumberOfAdsPerDay = 40;
 static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 
 static const int kCurrentUserModelManifestSchemaVersion = 1;
