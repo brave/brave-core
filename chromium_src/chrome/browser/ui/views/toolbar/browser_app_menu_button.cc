@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 
 #define AppMenuModel BraveAppMenuModel
 #include "../../../../../../../chrome/browser/ui/views/toolbar/browser_app_menu_button.cc"
