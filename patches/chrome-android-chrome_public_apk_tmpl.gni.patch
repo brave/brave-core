@@ -1,12 +1,12 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index c45ff319f7d46c6f3b713b67396caab73dd6ef04..8841c44bdb8c3f578c63943e04e9546656717707 100644
+index c45ff319f7d46c6f3b713b67396caab73dd6ef04..0eeef1471603f1d38fd613dbd174a33e225f07da 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -187,6 +187,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
  
      # Remove unneeded entries from material design values.xml files.
      resource_values_filter_rules = [ "${_material_package}:[Tt]oolbarLayout" ]
-+    resource_exclusion_exceptions += brave_resources_exclusion_exceptions resource_values_filter_rules -= brave_resource_values_filter_rules_exclusions
++    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
  
      if (!_is_monochrome) {
        product_config_java_packages = [ "org.chromium.chrome.browser" ]
