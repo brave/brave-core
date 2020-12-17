@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index a3fee5ea23d1d2fe9003f9def8923e9acca2c157..bed9d800eedb2f0e1feff3b42aa3882ceca3b334 100644
+index d01e50a81adc5e1596a1343b4f42ff2a57a731da..d1e9a4b7e92651afeb57b3c5aec2caaf6bb63a76 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -148,6 +148,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::INSECURE_PRIVATE_NETWORK, nullptr},
+@@ -149,6 +149,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, nullptr},
      {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, nullptr},
+     {ContentSettingsType::DISPLAY_CAPTURE, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  // TODO(crbug.com/1149878): After removing ContentSettingsType::PLUGINS, remove
-@@ -377,6 +378,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -378,6 +379,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
