@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 9b55c07dcf04214dd304b963c1c0981a8fcd924e..bf6ff3ff578366a7abcb03ba1869dd3a43c135a1 100644
+index 4e575a1d8984fbe5b13f42b866ef5c8236f44f5b..bec872a479f71443983f820a33cc0e7c1b3b287f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -85,7 +85,7 @@ import java.util.List;
@@ -25,7 +25,7 @@ index 9b55c07dcf04214dd304b963c1c0981a8fcd924e..bf6ff3ff578366a7abcb03ba1869dd3a
      }
  
      /**
-@@ -524,6 +526,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -526,6 +528,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -33,7 +33,7 @@ index 9b55c07dcf04214dd304b963c1c0981a8fcd924e..bf6ff3ff578366a7abcb03ba1869dd3a
      }
  
      @Override
-@@ -693,7 +696,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -695,7 +698,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -42,7 +42,7 @@ index 9b55c07dcf04214dd304b963c1c0981a8fcd924e..bf6ff3ff578366a7abcb03ba1869dd3a
      }
  
      private void updateToolbarBackground(int color) {
-@@ -2101,6 +2104,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2109,6 +2112,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }

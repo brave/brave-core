@@ -1,8 +1,8 @@
 diff --git a/services/network/public/mojom/cookie_manager.mojom b/services/network/public/mojom/cookie_manager.mojom
-index efb5fa353efa87c39de48c477c0bddd8dc4d4b19..f6a9a246963cbad38b66ae21ca06341f8675b277 100644
+index c95b843fc7ff1b50288df7ddf045f9a354dc948b..6dcecb2ccc849b7e9e8dcdf47e4015a3181f0801 100644
 --- a/services/network/public/mojom/cookie_manager.mojom
 +++ b/services/network/public/mojom/cookie_manager.mojom
-@@ -250,6 +250,7 @@ struct CookieDeletionFilter {
+@@ -256,6 +256,7 @@ struct CookieDeletionFilter {
  
    // Delete session/persistent cookies.
    CookieDeletionSessionControl session_control = IGNORE_CONTROL;
