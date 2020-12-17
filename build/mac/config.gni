@@ -15,4 +15,3 @@ brave_packaging_base_dir = root_out_dir
 if (is_universal_binary) {
   brave_packaging_base_dir = "$root_out_dir/universal"
 }
-
