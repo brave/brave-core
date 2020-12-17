@@ -98,14 +98,6 @@ const build = (buildConfig = config.defaultBuildConfig, options) => {
     util.generateXcodeWorkspace()
   } else {
     util.buildTarget()
-
-    if (config.shouldSign() && config.targetOS != 'android') {
-      util.signApp()
-    }
-
-    if (config.enableCDMHostVerification()) {
-      util.generateWidevineSigFiles()
-    }
   }
 }
 

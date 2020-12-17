@@ -388,18 +388,6 @@ const util = {
     fs.copySync(srcDir, dstDir)
   },
 
-  signApp: (options = config.defaultOptions) => {
-    console.log('signing ...')
-    if (process.platform === 'win32') {
-      // Sign binaries used for widevine sig file generation.
-      // Other binaries will be done during the create_dist.
-      // Then, both are merged when archive for installer is created.
-      util.signWinBinaries()
-    } else {
-      util.run('ninja', ['-C', config.outputDir, config.signTarget], options)
-    }
-  },
-
   // TODO(bridiver) - this should move to gn and windows should call signApp like other platforms
   signWinBinaries: () => {
     // Copy & sign only binaries for widevine sig file generation.
@@ -411,10 +399,10 @@ const util = {
     fs.copySync(path.join(config.outputDir, 'brave.exe'), path.join(dir, 'brave.exe'));
     fs.copySync(path.join(config.outputDir, 'chrome.dll'), path.join(dir, 'chrome.dll'));
 
-     const core_dir = config.braveCoreDir
-    util.run('python', [path.join(core_dir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
+    util.run('python', [path.join(config.braveCoreDir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
   },
 
+  // TODO(bridiver) - this should move to gn
   generateWidevineSigFiles: () => {
     if (process.platform !== 'win32')
       return
