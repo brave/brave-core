@@ -7,9 +7,10 @@
 
 #include <vector>
 
+#include "base/logging.h"
 #include "base/run_loop.h"
 #include "base/scoped_observer.h"
-#include "base/trace_event/common/trace_event_common.h"
+#include "base/trace_event/trace_event.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
