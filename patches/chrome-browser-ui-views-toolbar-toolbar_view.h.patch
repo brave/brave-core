@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index f8a88bbb523ced522951ab0b857b47fd27f4b3ee..59bf744dc6467935ddb13b8625ee27f06a2213f7 100644
+index 009d66aa0abcd19706c95d29b6755c5943d27b78..927bc9dc1791c7a5784ad403abd01db70497715d 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -93,12 +93,14 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -30,10 +30,10 @@ index f8a88bbb523ced522951ab0b857b47fd27f4b3ee..59bf744dc6467935ddb13b8625ee27f0
  
   protected:
 +  friend class BraveToolbarView;
-   // AccessiblePaneView:
-   bool SetPaneFocusAndFocusDefault() override;
- 
-@@ -240,6 +244,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   // This controls Toolbar, LocationBar and CustomTabBar visibility.
+   // If we don't set all three, tab navigation from the app menu breaks
+   // on Chrome OS.
+@@ -241,6 +245,7 @@ class ToolbarView : public views::AccessiblePaneView,
    views::View* GetViewForDrop() override;
  
    // Loads the images for all the child views.
