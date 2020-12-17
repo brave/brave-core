@@ -40,6 +40,7 @@ void IOSChromeFieldTrials::SetupFieldTrials() {
 
 void IOSChromeFieldTrials::SetupFeatureControllingFieldTrials(
     bool has_seed,
+    const base::FieldTrial::EntropyProvider& low_entropy_provider,
     base::FeatureList* feature_list) {
   // Add code here to enable field trials that are active at first run.
   // See http://crrev/c/1128269 for an example.
