@@ -1,17 +1,17 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 53abce6c5b1987cd7be5a9464b771f37a4199aae..3ae760db0f879e153912d161ed1ada8bab7c209b 100644
+index 3c7813a04d3c69dab0f12c7da03ee6adc82cce6e..038eff33936f5eacaae40ba1c50ee6d8f0829c4f 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -1637,6 +1637,7 @@ ImageData* BaseRenderingContext2D::getImageData(
+@@ -1628,6 +1628,7 @@ ImageData* BaseRenderingContext2D::getImageData(
  }
-
+ 
  ImageData* BaseRenderingContext2D::getImageDataInternal(
 +    BRAVE_GET_IMAGE_DATA_PARAMS
      int sx,
      int sy,
      int sw,
-@@ -1780,6 +1781,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
-
+@@ -1776,6 +1777,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+ 
    // Read pixels into |contents|.
    if (snapshot) {
 +    BRAVE_GET_IMAGE_DATA

@@ -1,5 +1,5 @@
 diff --git a/content/common/user_agent.cc b/content/common/user_agent.cc
-index 8315350e3f663976066e4bedee238997c0bccb97..6b45080472e8f18a68f58980dba89c4003ca599d 100644
+index cb27a7d6ef9200004e7364921d652d2c56300438..cbdb99412f1e1d57ca083175b8c16bd1363ce934 100644
 --- a/content/common/user_agent.cc
 +++ b/content/common/user_agent.cc
 @@ -232,7 +232,7 @@ std::string BuildUserAgentFromProduct(const std::string& product) {
