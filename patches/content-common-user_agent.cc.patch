@@ -1,0 +1,13 @@
+diff --git a/content/common/user_agent.cc b/content/common/user_agent.cc
+index a87ca565f8aa809a46086861c7057da013e9c911..ab271cb3020eb79fa34cd9d0c675aaecd01faad3 100644
+--- a/content/common/user_agent.cc
++++ b/content/common/user_agent.cc
+@@ -233,7 +233,7 @@ std::string BuildUserAgentFromProduct(const std::string& product) {
+   std::string os_info;
+   base::StringAppendF(&os_info, "%s%s", GetUserAgentPlatform().c_str(),
+                       BuildOSCpuInfo(IncludeAndroidBuildNumber::Exclude,
+-                                     IncludeAndroidModel::Include)
++                                     IncludeAndroidModel::Exclude)
+                           .c_str());
+   return BuildUserAgentFromOSAndProduct(os_info, product);
+ }
