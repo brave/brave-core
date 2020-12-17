@@ -147,6 +147,8 @@ source_set("browser_process") {
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",
     "//brave/components/resources",
+    "//brave/components/signin/internal/identity_manager",
+    "//brave/components/signin/public/identity_manager",
     "//brave/components/speedreader:buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
