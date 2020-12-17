@@ -15,6 +15,7 @@ source_set("browsing_data") {
     "//base",
     "//brave/components/ipfs/buildflags",
     "//chrome/common",
+    "//chrome/browser/browsing_data:constants",
     "//components/browsing_data/core",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
