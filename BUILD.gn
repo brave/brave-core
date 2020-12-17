@@ -238,7 +238,7 @@ group("create_dist") {
   if (is_mac) {
     if (skip_signing) {
       deps += [
-        "build/mac:unsigned_dmg"
+        "build/mac:create_dmg"
       ]
     } else {
       deps += [ "build/mac:finalize_dmg_pkg" ]
