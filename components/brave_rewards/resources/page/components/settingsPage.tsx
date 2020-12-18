@@ -19,6 +19,7 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import MonthlyContributionBox from './monthlyContributionBox'
+import QRBox from './qrBox'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -294,6 +295,7 @@ class SettingsPage extends React.Component<Props, State> {
               onTOSClick={this.openTOS}
               onPrivacyClick={this.openPrivacyPolicy}
             />
+            <QRBox />
             <AdsBox />
             <ContributeBox />
             <MonthlyContributionBox />
