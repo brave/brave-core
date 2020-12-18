@@ -12,6 +12,7 @@ interface WidgetInfo {
     title: string
     icon: string
     description: string
+    bannerImage: string
 }
 
 interface Props {
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export const NewWidgetTooltip = ({ widgetInfo }: Props) => {
-    const { title, icon, description } = widgetInfo;
+    const { title, icon, description, bannerImage } = widgetInfo;
 
     return (
         <ThemeProvider theme={{
@@ -31,6 +32,9 @@ export const NewWidgetTooltip = ({ widgetInfo }: Props) => {
                 <Tooltip.Content>
                     <Tooltip.Heading><Tooltip.Icon src={icon} /> {title}</Tooltip.Heading>
                     <Tooltip.Body>{description}</Tooltip.Body>
+                    <Tooltip.Banner>
+                        <img src={bannerImage} />
+                    </Tooltip.Banner>
                     <Tooltip.Button>Add {title}</Tooltip.Button>
                 </Tooltip.Content>
             </Tooltip.Wrapper>

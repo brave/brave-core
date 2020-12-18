@@ -9,6 +9,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 // Components
 import { NewWidgetTooltip } from '../shared/newWidgetTooltip'
 import ftxLogo from '../ftx/ftx-logo.png'
+import bannerImage from '../../../containers/newTab/settings/assets/crypto-dot-com.png'
 
 storiesOf('New Tab/Widgets', module)
   .addDecorator(withKnobs)
@@ -19,7 +20,8 @@ storiesOf('New Tab/Widgets', module)
           widgetInfo={{
             title: 'FTX',
             icon: ftxLogo,
-            description: 'Trade and sell cryptocurrency on this popular exchange.'
+            description: 'Trade and sell cryptocurrency on this popular exchange.',
+            bannerImage: bannerImage
           }}
         />
       </div>

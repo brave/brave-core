@@ -45,6 +45,29 @@ export const Heading = styled<{}, 'div'>('div')`
   letter-spacing: 0.01em;
 `
 
+export const Banner = styled<{}, 'div'>('div')`
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  position: relative;
+  
+  & img {
+    width: 100%;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 80%, #FFFFFF 100%);
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+  }
+`
+
 export const Icon = styled<StyledProps, 'img'>('img')`
   width: 15px;
   height: 15px;
