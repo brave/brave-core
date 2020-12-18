@@ -415,17 +415,17 @@ group("finalize_dmg_pkg") {
     } else {
       deps += [ ":copy_dmg_pkg" ]
       if (sparkle_dsa_private_key_file != "") {
-        deps += [ "build/mac:generate_dsa_sig_for_dmg" ]
+        deps += [ "generate_dsa_sig_for_dmg" ]
       }
 
       if (sparkle_eddsa_private_key != "") {
-        deps += [ "build/mac:generate_eddsa_sig_for_dmg" ]
+        deps += [ "generate_eddsa_sig_for_dmg" ]
       }
 
       if (build_delta_installer && last_chrome_installer != "") {
-        deps += [ "build/mac:build_delta_installer" ]
+        deps += [ "build_delta_installer" ]
         if (sparkle_eddsa_private_key != "") {
-          deps += [ "build/mac:generate_eddsa_sig_for_delta" ]
+          deps += [ "generate_eddsa_sig_for_delta" ]
         }
       }
     }
