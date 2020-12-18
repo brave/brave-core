@@ -3,11 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { action } from 'typesafe-actions'
-import { types } from './constants'
-
-export const onFTXInteraction = () => action(types.ON_INTERACTION)
-
-export const onFTXOptInMarkets = (show: boolean) => {
-  return action(types.ON_MARKETS_OPT_IN, { show })
-}
+export const enum types {
+    ON_INTERACTION = '@@ftx/ON_INTERACTION',
+    ON_MARKETS_OPT_IN = '@@ftx/ON_MARKETS_OPT_IN',
+  }
+  

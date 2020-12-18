@@ -58,10 +58,11 @@ interface State {
 interface Props {
   widgetTitle: string
   showContent: boolean
-  optInMarkets: boolean
+  optedIntoMarkets: boolean
   stackPosition: number
   onShowContent: () => void
-//  onOptInMarkets: (show: boolean) => void
+  onInteraction: () => void
+  onOptInMarkets: (show: boolean) => void
 }
 
 class FTX extends React.PureComponent<Props, State> {
@@ -71,16 +72,16 @@ class FTX extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      currentView: Views.summary,
+      currentView: Views.markets,
       selectedAsset: '',
       hideBalance: true
     }
   }
 
   componentDidMount () {
-    const { optInMarkets } = this.props
+    const { optedIntoMarkets } = this.props
 
-    if (optInMarkets) {
+    if (optedIntoMarkets) {
       this.checkSetRefreshInterval()
     }
   }
@@ -109,7 +110,8 @@ class FTX extends React.PureComponent<Props, State> {
   }
 
   handleViewMarketsClick = async () => {
-    // TODO: record click
+    this.props.onInteraction()
+    this.optInMarkets(true)
   }
 
   optInMarkets = (show: boolean) => {
@@ -119,7 +121,7 @@ class FTX extends React.PureComponent<Props, State> {
       this.setState({ selectedAsset: '' })
     }
 
-    // TODO: show markets
+    this.props.onOptInMarkets(show)
   }
 
   handleAssetDetailClick = async (asset: string) => {
@@ -160,10 +162,10 @@ class FTX extends React.PureComponent<Props, State> {
         <Text $fontSize={13} textColor='light' lineHeight={1.5} $pb={21}>
           Connect FTX account to view account balance, explore futures markets, & convert crypto.
         </Text>
-        <ActionAnchor>
+        <ActionAnchor onClick={this.handleViewMarketsClick}>
           View Future Markets
         </ActionAnchor>
-        <PlainButton textColor='light' onClick={this.handleViewMarketsClick} $m='0 auto'>
+        <PlainButton textColor='light' $m='0 auto'>
           Connect Account
         </PlainButton>
       </>
@@ -408,8 +410,8 @@ class FTX extends React.PureComponent<Props, State> {
 
   renderTitle () {
     const { selectedAsset } = this.state
-    const { optInMarkets, showContent, widgetTitle } = this.props
-    const shouldShowBackArrow = !selectedAsset && showContent && optInMarkets
+    const { optedIntoMarkets, showContent, widgetTitle } = this.props
+    const shouldShowBackArrow = !selectedAsset && showContent && optedIntoMarkets
 
     return (
       <Header showContent={showContent}>
@@ -443,7 +445,7 @@ class FTX extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { showContent, optInMarkets } = this.props
+    const { showContent, optedIntoMarkets } = this.props
 
     if (!showContent) {
       return this.renderTitleTab()
@@ -453,7 +455,7 @@ class FTX extends React.PureComponent<Props, State> {
       <ThemeProvider theme={ftxTheme}>
         <WidgetWrapper tabIndex={0}>
           {this.renderTitle()}
-          {(optInMarkets || true /* TODO: remove */) ? (
+          {(optedIntoMarkets) ? (
             this.renderIndex()
           ) : (
             this.renderPreOptIn()
