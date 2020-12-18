@@ -703,7 +703,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx or chromeos">
         </if>
 
-      <if expr="is_linux and not chromeos">
+      <if expr="is_linux and not chromeos and not lacros">
         </if>
 
       <if expr="use_titlecase">
