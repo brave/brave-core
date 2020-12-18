@@ -1194,7 +1194,7 @@ are declared in tools/grit/grit_rule.gni.
           R&amp;eopen closed window
         </message>
         <message name="IDS_NAME_WINDOW" desc="The text label of the Name Window menu item, used to give a user-specified name to a window.">
-          &amp;Name window...
+          Name &amp;window...
         </message>
       </if>
       <if expr="use_titlecase">
@@ -1229,7 +1229,7 @@ are declared in tools/grit/grit_rule.gni.
           R&amp;eopen Closed Window
         </message>
         <message name="IDS_NAME_WINDOW" desc="In Title Case: The text label of the Name Window menu item, used to give a user-specified name to a window.">
-          &amp;Name Window...
+          Name &amp;Window...
         </message>
       </if>
 
@@ -10725,6 +10725,23 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ROSETTA" desc="Mac system-specific infobar link for Intel-on-Arm64." translateable="false">
         https://support.google.com/chrome/?p=mac_ARM
+      </message>
+
+      <!-- The Rosetta is required infobar -->
+      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_TEXT" desc="The infobar text when installation of Rosetta is required">
+        To play protected media on this page, you need to install Rosetta.
+      </message>
+      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_LINK_TEXT" desc="The learn more text when installation of Rosetta is required.">
+        Learn more
+      </message>
+      <message name="IDS_ROSETTA_REQUIRED_INFOBAR_BUTTON_TEXT" desc="The button text when installation of Rosetta is required.">
+        Install Rosetta
+      </message>
+      <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG_NOW" desc="The 'restart now' button in the dialog once Rosetta is installed.">
+        Restart Now
+      </message>
+      <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG_LATER" desc="The 'restart later' button in the dialog once Rosetta is installed.">
+        Restart Later
       </message>
     </if>
 
