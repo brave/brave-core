@@ -6,8 +6,8 @@ index b3fc448575b68fbde67a57040896f88fb77cf54c..a6fc9619035d7c848667130f6a36b89d
    public_deps = [ ":copies" ]
  }
  
--_packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
-+_packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
+ _packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
++_packaging_dir = "$brave_packaging_base_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
  
  process_version_rc_template("sign_config") {
    visibility = [ ":copy_signing" ]

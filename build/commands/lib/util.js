@@ -388,71 +388,6 @@ const util = {
     fs.copySync(srcDir, dstDir)
   },
 
-  // To build w/o much modification of upstream file, bundling mode is used. To build with this mode,
-  // widevine header file and cdm lib is needed. So, we use fake cdm lib. It only used by gn checking.
-  // Real cdm lib is only downloaded and installed when user accepts via content settings bubble
-  // because we don't ship cdm lib by default.
-  // Latest version and download url are inserted to cdm header file and brave-core refers it.
-  prepareWidevineCdmBuild: () => {
-    const widevineDir = path.join(config.srcDir, 'third_party', 'widevine', 'cdm', 'linux', 'x64')
-    fs.ensureDirSync(widevineDir)
-
-    const widevineConfig = {
-      widevineDir,
-      headerFileContent: '',
-      configuredVersion: config.widevineVersion,
-      widevineCdmHeaderFilePath: path.join(widevineDir, 'widevine_cdm_version.h'),
-      fakeWidevineCdmLibFilePath: path.join(widevineDir, 'libwidevinecdm.so'),
-      fakeManifestJson: path.join(widevineDir, 'manifest.json')
-    }
-
-    widevineConfig.headerFileContent =
-`#ifndef WIDEVINE_CDM_VERSION_H_
-#define WIDEVINE_CDM_VERSION_H_
-#define WIDEVINE_CDM_VERSION_STRING \"${widevineConfig.configuredVersion}\"
-#define WIDEVINE_CDM_DOWNLOAD_URL_STRING \"https://redirector.gvt1.com/edgedl/widevine-cdm/${widevineConfig.configuredVersion}-linux-x64.zip\"
-#endif  // WIDEVINE_CDM_VERSION_H_`
-
-    // If version file or fake lib file aren't existed, create them.
-    if (!fs.existsSync(widevineConfig.widevineCdmHeaderFilePath) ||
-        !fs.existsSync(widevineConfig.fakeWidevineCdmLibFilePath) ||
-        !fs.existsSync(widevineConfig.fakeManifestJson)) {
-      util.doPrepareWidevineCdmBuild(widevineConfig)
-      return
-    }
-
-    // Check version file has latest version. If not create it.
-    // This can prevent unnecessary build by touched version file.
-    const installedHeaderFileContent = fs.readFileSync(widevineConfig.widevineCdmHeaderFilePath, 'utf8')
-    if (installedHeaderFileContent !== widevineConfig.headerFileContent) {
-      console.log("Current version file includes different version with latest")
-      util.doPrepareWidevineCdmBuild(widevineConfig)
-    }
-  },
-
-  doPrepareWidevineCdmBuild: (widevineConfig) => {
-    console.log('prepare widevine cdm build in linux')
-
-    fs.writeFileSync(widevineConfig.widevineCdmHeaderFilePath, widevineConfig.headerFileContent)
-    fs.writeFileSync(widevineConfig.fakeWidevineCdmLibFilePath, '')
-    fs.writeFileSync(widevineConfig.fakeManifestJson, '{}')
-
-    // During the create_dist, /usr/lib/rpm/elfdeps requires that binaries have an executable bit set.
-    fs.chmodSync(widevineConfig.fakeWidevineCdmLibFilePath, 0o755)
-  },
-
-  signApp: (options = config.defaultOptions) => {
-    console.log('signing ...')
-    if (process.platform === 'win32') {
-      // Sign binaries used for widevine sig file generation.
-      // Other binaries will be done during the create_dist.
-      // Then, both are merged when archive for installer is created.
-      util.signWinBinaries()
-    } else {
-      util.run('ninja', ['-C', config.outputDir, config.signTarget], options)
-    }
-  },
-
   // TODO(bridiver) - this should move to gn and windows should call signApp like other platforms
   signWinBinaries: () => {
     // Copy & sign only binaries for widevine sig file generation.
@@ -464,10 +399,10 @@ const util = {
     fs.copySync(path.join(config.outputDir, 'brave.exe'), path.join(dir, 'brave.exe'));
     fs.copySync(path.join(config.outputDir, 'chrome.dll'), path.join(dir, 'chrome.dll'));
 
-     const core_dir = config.braveCoreDir
-    util.run('python', [path.join(core_dir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
+    util.run('python', [path.join(config.braveCoreDir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
   },
 
+  // TODO(bridiver) - this should move to gn
   generateWidevineSigFiles: () => {
     if (process.platform !== 'win32')
       return
