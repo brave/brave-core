@@ -474,12 +474,12 @@ void ChromeImporter::ImportPasswords() {
         bridge_->SetPasswordForm(form);
     }
   }
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> blacklist;
-  success = database.GetBlacklistLogins(&blacklist);
+  std::vector<std::unique_ptr<password_manager::PasswordForm>> blocklist;
+  success = database.GetBlocklistLogins(&blocklist);
   if (success) {
-    for (size_t i = 0; i < blacklist.size(); ++i) {
+    for (size_t i = 0; i < blocklist.size(); ++i) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(blacklist[i].get(), &form))
+      if (PasswordFormToImportedPasswordForm(blocklist[i].get(), &form))
         bridge_->SetPasswordForm(form);
     }
   }
