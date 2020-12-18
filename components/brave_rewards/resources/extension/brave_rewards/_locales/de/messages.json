@@ -640,7 +640,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Durch Fortfahren stimmen Sie den $$1Nutzungsbedingungen$$2 und der $$3Datenschutzrichtlinie$$4 zu.",
+    "message": "Durch Fortfahren stimmen Sie den $$1 Nutzungsbedingungen$$2 und der $$3 Datenschutzrichtlinie$$4 zu.",
     "description": ""
   }
 }

@@ -640,7 +640,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Jätkamisega nõustute $$1teenusetingimuste$$2 ja $$3privaatsuspoliitikaga$$4.",
+    "message": "Jätkamisega nõustute $$1 teenusetingimuste$$2 ja $$3 privaatsuspoliitikaga$$4.",
     "description": ""
   }
 }

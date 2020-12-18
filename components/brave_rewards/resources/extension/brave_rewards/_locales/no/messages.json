@@ -640,7 +640,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Ved å fortsette samtykker du til $$1Tjenestevilkårene$$2 og $$3Personvernpolicyen$$4.",
+    "message": "Ved å fortsette samtykker du til $$1 Tjenestevilkårene$$2 og $$3 Personvernpolicyen$$4.",
     "description": ""
   }
 }

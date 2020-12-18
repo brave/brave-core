@@ -640,7 +640,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Jatkamalla ilmaiset hyväksyväsi $$1käyttöehdot$$2 sekä $$3tietosuojakäytännön$$4.",
+    "message": "Jatkamalla ilmaiset hyväksyväsi $$1 käyttöehdot$$2 sekä $$3 tietosuojakäytännön$$4.",
     "description": ""
   }
 }
