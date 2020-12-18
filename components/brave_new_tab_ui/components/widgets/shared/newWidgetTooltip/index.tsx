@@ -8,16 +8,18 @@ import { ThemeProvider } from 'styled-components'
 import * as Tooltip from './styles'
 // import * as Shared from '../styles'
 
-const tempProps = {
-    widgetInfo: {
-        title: 'Coinbase',
-        icon: '',
-        description: 'Trade and sell cryptocurrency on this popular exchange.'
-    }
+interface WidgetInfo {
+    title: string
+    icon: string
+    description: string
 }
 
-export const NewWidgetTooltip = (props: any) => {
-    const { title, description } = tempProps.widgetInfo;
+interface Props {
+    widgetInfo: WidgetInfo
+}
+
+export const NewWidgetTooltip = ({ widgetInfo }: Props) => {
+    const { title, icon, description } = widgetInfo;
 
     return (
         <ThemeProvider theme={{
@@ -27,7 +29,7 @@ export const NewWidgetTooltip = (props: any) => {
             <Tooltip.Wrapper>
                 <Tooltip.CornerLabel>New Card</Tooltip.CornerLabel>
                 <Tooltip.Content>
-                    <Tooltip.Heading>{title}</Tooltip.Heading>
+                    <Tooltip.Heading><Tooltip.Icon src={icon} /> {title}</Tooltip.Heading>
                     <Tooltip.Body>{description}</Tooltip.Body>
                     <Tooltip.Button>Add {title}</Tooltip.Button>
                 </Tooltip.Content>

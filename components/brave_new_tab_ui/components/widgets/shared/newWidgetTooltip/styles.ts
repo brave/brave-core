@@ -7,6 +7,10 @@ import styled from 'styled-components'
 import cornerBg from './corner-label-bg.svg'
 import plus from './plus.svg'
 
+interface StyledProps {
+  src?: string
+}
+
 export const Wrapper = styled<{}, 'aside'>('aside')`
   border-radius: 12px;
   position: relative;
@@ -39,6 +43,12 @@ export const Heading = styled<{}, 'div'>('div')`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
+`
+
+export const Icon = styled<StyledProps, 'img'>('img')`
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
 `
 
 export const Body = styled<{}, 'div'>('div')`
