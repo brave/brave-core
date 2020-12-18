@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "content/public/browser/global_routing_id.h"
 #include "brave/content/browser/mojom/cosmetic_filters_communication.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -36,7 +37,7 @@ class CosmeticFiltersCommunicationImpl final
   void SetObserver(CosmeticFiltersObserver* cosmetic_filters_observer);
 
  private:
-  content::RenderFrameHost* render_frame_host_;
+  content::GlobalFrameRoutingId frame_id_;
   CosmeticFiltersObserver* cosmetic_filters_observer_;
 };
 

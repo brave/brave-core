@@ -58,6 +58,12 @@
   if (window.observingHasStarted === undefined) {
     window.observingHasStarted = false;
   }
+  if (window._hasDelayOcurred === undefined) {
+    window._hasDelayOcurred = false;
+  }
+  if (window._startCheckingId === undefined) {
+    window._startCheckingId = 0;
+  }
 
   const fetchNewClassIdRules = function () {
     if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
@@ -503,12 +509,35 @@
     pumpIntervalMaxMs
   );
 
+  const scheduleQueuePump = (hide1pContent, generichide) => {
+    // Three states possible here.  First, the delay has already occurred.  If so,
+    // pass through to pumpCosmeticFilterQueues immediately.
+    if (_hasDelayOcurred === true) {
+      pumpCosmeticFilterQueuesOnIdle()
+      return
+    }
+    // Second possibility is that we're already waiting for the delay to pass /
+    // occur.  In this case, do nothing.
+    if (_startCheckingId !== 0) {
+      return
+    }
+    // Third / final possibility, this is this the first time this has been
+    // called, in which case set up a timmer and quit
+    _startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
+      _hasDelayOcurred = true
+      if (!generichide) {
+        startObserving()
+      }
+      if (!hide1pContent) {
+        pumpCosmeticFilterQueuesOnIdle()
+      }
+    }, { timeout: maxTimeMSBeforeStart })
+  }
+
   if (!window.observingHasStarted) {
     window.observingHasStarted = true;
-    window.requestIdleCallback(function ({ didTimeout }) {
-      startObserving();
-    }, { timeout: maxTimeMSBeforeStart })
+    scheduleQueuePump(window.hide1pContent, window.generichide);
   } else {
-    pumpCosmeticFilterQueuesOnIdle();
+    scheduleQueuePump(false, false);
   }
 })();

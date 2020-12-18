@@ -190,15 +190,52 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
     }
     std::string to_inject;
     resources_dict->GetString("injected_script", &to_inject);
+    auto* frame_host = content::RenderFrameHost::FromID(frame_id);
+    if (!frame_host)
+      return;
+    if (do_non_scriplets) {
+      Profile* profile = Profile::FromBrowserContext(
+          web_contents()->GetBrowserContext());
+      enabled_1st_party_cf_filtering_ =
+          brave_shields::IsFirstPartyCosmeticFilteringEnabled(
+              HostContentSettingsMapFactory::GetForProfile(profile),
+                  GURL(url));
+      bool generichide = false;
+      resources_dict->GetBoolean("generichide", &generichide);
+      std::string pre_init_script =
+        "(function() {"
+        "if (window.hide1pContent === undefined) {"
+          "window.hide1pContent = ";
+      if (enabled_1st_party_cf_filtering_) {
+        pre_init_script += "true";
+      } else {
+        pre_init_script += "false";
+      }
+      pre_init_script += ";"
+        "}"
+        "if (window.generichide === undefined) {"
+          "window.generichide = ";
+      if (generichide) {
+        pre_init_script += "true";
+      } else {
+        pre_init_script += "false";
+      }
+      pre_init_script += ";"
+        "}"
+        "})();";
+      frame_host->ExecuteJavaScriptInIsolatedWorld(
+        base::UTF8ToUTF16(pre_init_script),
+        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+      frame_host->ExecuteJavaScriptInIsolatedWorld(
+        base::UTF8ToUTF16(*BraveCosmeticResourcesTabHelper::observing_script_),
+        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+    }
     if (to_inject.length() > 1) {
-      auto* frame_host = content::RenderFrameHost::FromID(frame_id);
-      if (!frame_host)
-        return;
       frame_host->ExecuteJavaScriptInIsolatedWorld(
           base::UTF8ToUTF16(to_inject),
           base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
-    // Working on css rules
+    // Working on css rules, we do that on a main frame only
     if (!do_non_scriplets)
       return;
     CSSRulesRoutine(url, resources_dict, frame_id);
@@ -214,11 +251,6 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     return;
   }
 
-  Profile* profile = Profile::FromBrowserContext(
-    web_contents()->GetBrowserContext());
-  enabled_1st_party_cf_filtering_ =
-      brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-          HostContentSettingsMapFactory::GetForProfile(profile), url);
   base::ListValue* cf_exceptions_list;
   if (resources_dict->GetList("exceptions", &cf_exceptions_list)) {
     for (size_t i = 0; i < cf_exceptions_list->GetSize(); i++) {
@@ -418,14 +450,6 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
             url.spec(), do_non_scriplets));
-  if (!do_non_scriplets)
-    return;
-  // Non-scriptlet cosmetic filters are only applied on the top-level frame
-  if (web_contents()->GetMainFrame()) {
-    web_contents()->GetMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(*BraveCosmeticResourcesTabHelper::observing_script_),
-        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
-  }
 }
 
 void BraveCosmeticResourcesTabHelper::DidFinishNavigation(

@@ -8,6 +8,7 @@
 #include "base/json/json_reader.h"
 #include "brave/content/browser/cosmetic_filters_observer.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/render_process_host.h"
 
 namespace content {
 
@@ -28,7 +29,9 @@ void CosmeticFiltersCommunicationImpl::CreateInstance(
 CosmeticFiltersCommunicationImpl::CosmeticFiltersCommunicationImpl(
     content::RenderFrameHost* render_frame_host,
     CosmeticFiltersObserver* cosmetic_filters_observer)
-    : render_frame_host_(render_frame_host),
+    : frame_id_(content::GlobalFrameRoutingId(
+                  render_frame_host->GetProcess()->GetID(),
+                  render_frame_host->GetRoutingID())),
     cosmetic_filters_observer_(cosmetic_filters_observer) {
 }
 
@@ -73,8 +76,9 @@ void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
       ids.push_back(ids_list->GetList()[i].GetString());
     }
   }
-  if (cosmetic_filters_observer_) {
-    cosmetic_filters_observer_->HiddenClassIdSelectors(render_frame_host_,
+  auto* frame_host = content::RenderFrameHost::FromID(frame_id_);
+  if (cosmetic_filters_observer_ && frame_host) {
+    cosmetic_filters_observer_->HiddenClassIdSelectors(frame_host,
         classes, ids);
   }
 }
