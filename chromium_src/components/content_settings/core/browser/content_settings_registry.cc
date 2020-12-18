@@ -65,6 +65,7 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   // Change plugins default to CONTENT_SETTING_BLOCK
+/*
   content_settings_info_.erase(ContentSettingsType::PLUGINS);
   website_settings_registry_->UnRegister(ContentSettingsType::PLUGINS);
   Register(ContentSettingsType::PLUGINS, "plugins", CONTENT_SETTING_BLOCK,
@@ -79,6 +80,7 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EPHEMERAL,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+*/
 
   // Register Brave-specific types, defaulting them to CONTENT_SETTING_BLOCK.
   for (auto brave_type : kBraveContentSettingstypes)
