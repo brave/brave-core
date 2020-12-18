@@ -46,13 +46,13 @@ export const header = styled.div`
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-`
 
-export const batIcon = styled.div`
-  display: inline-block;
-  vertical-align: middle;
-  width: 26px;
-  margin-right: 7px;
+  .icon {
+    vertical-align: middle;
+    width: 26px;
+    margin-right: 5px;
+    margin-bottom: 3px;
+  }
 `
 
 export const text = styled.div`
@@ -62,15 +62,8 @@ export const text = styled.div`
   line-height: 24px;
 `
 
-export const enable = styled.div`
-  margin-top: 40px;
-`
-
-// NOTE: The "Add Funds" flow is currently disabled
-export const addFunds = styled.div`
-  display: none;
-
-  margin-top: 18px;
+export const takeTour = styled.div`
+  margin-top: 20px;
   color: var(--brave-color-brandBat);
 
   button {
@@ -85,17 +78,12 @@ export const addFunds = styled.div`
   }
 `
 
-export const addFundsIcon = styled.span`
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  vertical-align: middle;
-  margin-right: 5px;
-  margin-bottom: 2px;
+export const enable = styled.div`
+  margin-top: 25px;
 `
 
 export const terms = styled.div`
-  margin: 32px 14px 15px;
+  margin: 50px 14px 15px;
   color: var(--brave-palette-neutral600);
   font-size: 11px;
   line-height: 16px;
@@ -105,24 +93,4 @@ export const terms = styled.div`
     font-weight: 600;
     text-decoration: none;
   }
-`
-
-export const addFundsItem = styled.div`
-  margin-top: 24px;
-  color: var(--brave-palette-neutral900);
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-
-  .icon {
-    color: var(--brave-palette-neutral600);
-    width: 24px;
-    vertical-align: middle;
-    margin-right: 16px;
-    margin-bottom: 3px;
-  }
-`
-
-export const addFundsAction = styled.div`
-  margin-top: 31px;
 `

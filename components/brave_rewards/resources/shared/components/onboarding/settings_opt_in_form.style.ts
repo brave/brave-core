@@ -4,40 +4,53 @@
 
 import styled from 'styled-components'
 
+import modalBackground from './assets/opt_in_modal_bg.svg'
+
 export const root = styled.div`
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: var(--brave-palette-white);
+  width: 100%;
+  background-color: var(--brave-palette-white);
+  background-image: url('${modalBackground}');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: auto 220px;
+  border-radius: 4px;
   font-family: var(--brave-font-heading);
   text-align: center;
-`
+  padding: 90px 0;
 
-export const content = styled.div`
-  flex: 1 0 auto;
-  margin-top: 22px;
-  padding: 0 30px;
-`
-
-export const batIcon = styled.div`
-  .icon {
-    height: 55px;
+  a {
+    color: var(--brave-color-brandBat);
+    font-weight: 600;
+    text-decoration: none;
   }
 `
 
 export const heading = styled.div`
   font-weight: 600;
+  font-size: 36px;
+  line-height: 60px;
+
+  .icon {
+    height: 45px;
+    vertical-align: middle;
+    margin-bottom: 6px;
+    margin-right: 13px;
+  }
+`
+
+export const subHeading = styled.div`
   font-size: 18px;
-  line-height: 22px;
-  margin-top: 8px;
+  line-height: 24px;
+  color: var(--brave-palette-neutral600);
 `
 
 export const text = styled.div`
-  margin: 4px auto 0;
+  margin: 19px auto 0;
   color: var(--brave-palette-neutral700);
   font-size: 14px;
-  line-height: 24px;
-  max-width: 300px;
+  line-height: 22px;
+  max-width: 325px;
 `
 
 export const takeTour = styled.div`
@@ -57,34 +70,17 @@ export const takeTour = styled.div`
 `
 
 export const enable = styled.div`
-  margin-top: 32px;
-`
-
-export const dismiss = styled.div`
-  margin-top: 8px;
+  margin-top: 62px;
 
   button {
-    border: 0;
-    padding: 0;
-    background: none;
-    color: var(--brave-palette-neutral600);
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 22px;
-    cursor: pointer;
+    min-width: 330px;
   }
 `
 
 export const footer = styled.div`
-  flex: 0 0 auto;
-  padding: 30px 40px 20px;
+  width: 320px;
+  margin: 10px auto;
   color: var(--brave-palette-neutral600);
-  font-size: 11px;
-  line-height: 16px;
-
-  a {
-    color: var(--brave-color-brandBat);
-    font-weight: 600;
-    text-decoration: none;
-  }
+  font-size: 12px;
+  line-height: 18px;
 `

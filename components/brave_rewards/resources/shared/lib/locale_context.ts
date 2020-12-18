@@ -11,3 +11,12 @@ export interface Locale {
 export const LocaleContext = React.createContext<Locale>({
   getString: () => ''
 })
+
+// Splits |message| into parts using "$N" patterns as delimiters,
+// and calls |fn| with each part as a separate argument.
+export function formatMessageParts<T> (
+  message: string,
+  fn: (...parts: string[]) => T
+) {
+  return fn(...message.split(/\$\d/g))
+}

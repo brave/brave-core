@@ -443,10 +443,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_ONBOARDING_STATUS: {
-      const completed = onboardingCompletedStore.load()
+      let { showOnboarding } = action.payload
+      // Once the user has been onboarded (perhaps through another rewards
+      // UI entry point) and has viewed the settings page, do not hide the
+      // settings page with onboarding again.
+      if (!showOnboarding) {
+        onboardingCompletedStore.save()
+      }
       state = {
         ...state,
-        showOnboarding: action.payload.showOnboarding && !completed
+        showOnboarding: showOnboarding && !onboardingCompletedStore.load()
       }
       break
     }
