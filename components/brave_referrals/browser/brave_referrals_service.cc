@@ -23,6 +23,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/private_channel/buildflags/buildflags.h"
 #include "brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -49,11 +50,16 @@
 #include "chrome/browser/ui/browser.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
+#include "brave/components/private_channel/browser/private_channel_service.h"
+#endif
+
 // Fetch headers from the referral server once a day.
 const int kFetchReferralHeadersFrequency = 60 * 60 * 24;
 
 // Perform finalization checks once a day.
-const int kFinalizationChecksFrequency = 60 * 60 * 24;
+//const int kFinalizationChecksFrequency = 60 * 60 * 24;
+const int kFinalizationChecksFrequency = 15;
 
 // Report initialization once a day (after initial failure).
 const int kReportInitializationFrequency = 60 * 60 * 24;
@@ -95,8 +101,8 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service,
       pref_service_(pref_service),
       api_key_(api_key),
       platform_(platform),
-      weak_factory_(this) {
-}
+      private_channel_(new private_channel::PrivateChannel()),
+      weak_factory_(this) {}
 
 BraveReferralsService::~BraveReferralsService() {
 }
@@ -203,6 +209,13 @@ bool BraveReferralsService::GetMatchingReferralHeaders(
 }
 
 void BraveReferralsService::OnFinalizationChecksTimerFired() {
+#if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&BraveReferralsService::PerformPrivateAttestation,
+                     base::Unretained(this)));
+#endif
+
   PerformFinalizationChecks();
 }
 
@@ -397,6 +410,14 @@ void BraveReferralsService::GetFirstRunTimeDesktop() {
     return;
 #endif
   PerformFinalizationChecks();
+}
+
+void BraveReferralsService::PerformPrivateAttestation() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+#if BUILDFLAG(ENABLE_PRIVATE_CHANNEL)
+  private_channel_->PerformReferralAttestation(promo_code_);
+#endif
 }
 
 void BraveReferralsService::PerformFinalizationChecks() {

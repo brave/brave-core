@@ -1,0 +1,53 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/cargo.gni")
+import("//brave/build/rust/config.gni")
+
+config("external_config") {
+  if (is_mac) {
+    defines = [ "PRIVATE_CHANNEL_SHARED_LIBRARY" ]
+  }
+}
+
+# Generate FFI header from Rust source
+cargo_cbindgen("private_channel_ffi_header") {
+  visibility = [ ":*" ]
+  config = "cbindgen.toml"
+  output = "${target_gen_dir}/private_channel_ffi.h"
+
+  sources = [
+    "Cargo.lock",
+    "Cargo.toml",
+    "cbindgen.toml",
+    "private-channel/Cargo.lock",
+    "private-channel/Cargo.toml",
+    "private-channel/repsys-crypto/Cargo.lock",
+    "private-channel/repsys-crypto/Cargo.toml",
+    "private-channel/repsys-crypto/src/lib.rs",
+    "private-channel/src/lib.rs",
+    "src/lib.rs",
+  ]
+}
+
+source_set("ffi") {
+  public_configs = [ ":external_config" ]
+  visibility = [
+    "//brave/build/rust:*",
+    "//brave/components/brave_referrals/browser:browser",
+  ]
+  defines = [ "PRIVATE_CHANNEL_IMPLEMENTATION" ]
+
+  sources = [
+    "src/lib.h",
+    "src/private_channel.cc",
+    "src/private_channel.h",
+  ]
+
+  deps = [
+    ":private_channel_ffi_header",
+    "//base",
+  ]
+}

@@ -1,0 +1,39 @@
+import("//brave/components/private_channel/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+
+config("brave_private_channel_config") {
+  defines = [
+    "BRAVE_PRIVATE_CHANNEL_SERVER_URL=\"$brave_private_channel_server_url\""
+  ]
+}
+
+assert(private_channel_enabled)
+
+source_set("private_channel") {
+  # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
+  check_includes = false
+  public_deps = [ "//brave/components/private_channel/buildflags" ]
+
+  sources = [
+    "browser/constants.cc",
+    "browser/constants.h",
+    "browser/private_channel_ffi.cc",
+    "browser/private_channel_ffi.h",
+    "browser/private_channel_service.cc",
+    "browser/private_channel_service.h",
+    "browser/request_utils.cc",
+    "browser/request_utils.h",
+    "browser/utils.cc",
+    "browser/utils.h",
+  ]
+
+  deps = [
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}
+
+group("constants") {
+  public_configs = [ ":brave_private_channel_config" ]
+}
