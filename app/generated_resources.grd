@@ -1156,6 +1156,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
           Move window to <ph name="USER_NAME">$1<ex>User name</ex></ph> (<ph name="USER_EMAIL">$2<ex>john@google.com</ex></ph>)
         </message>
+        <message name="IDS_ASSIGN_TO_DESKS_MENU" desc="The text label of the Assign to Desks submenu">
+          Assign to desk
+        </message>
       </if>
 
       <message name="IDS_ACCNAME_ZOOM_PLUS2" desc="The accessible description of the Make Text Larger menu item in the merged menu">
@@ -5365,11 +5368,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
         Shortcuts are curated by you
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_HIDE_MODULES_LABEL" desc="The label for the option to hide modules in the customization menu on the New Tab Page">
-        Hide cards
-      </message>
-      <message name="IDS_NTP_CUSTOMIZE_HIDE_MODULES_DESC" desc="The description for the option to hide modules in the customization menu on the New Tab Page">
-        Don't show cards on this page
+      <message name="IDS_NTP_CUSTOMIZE_SHOW_MODULES_LABEL" desc="The label for the option to show modules in the customization menu on the New Tab Page">
+        Show cards
       </message>
       <message name="IDS_NTP_CUSTOMIZE_3PT_THEME_DESC" desc="The description for the installed third-party themes in the customization menu on the New Tab Page">
         Current theme you have installed
@@ -5705,6 +5705,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
         Search tabs
+      </message>
+      <message name="IDS_ACCNAME_TAB_STRIP" desc="The accessible name for the tab strip.">
+        Tab strip
+      </message>
+      <message name="IDS_ACCNAME_TOOLBAR" desc="The accessible name for the toolbar.">
+        Toolbar
       </message>
 
       <!-- Clipboard permission -->
@@ -7990,7 +7996,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Set as default
       </message>
 
-      <if expr="is_linux and not chromeos">
+      <if expr="is_linux and not chromeos and not lacros">
         <message name="IDS_MINIMIZE_WINDOW_MENU" desc="The Linux browser window menu item text for minimizing the window.">
           Minimize
         </message>
@@ -9276,20 +9282,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Swap with previous
         </message>
       </if>
-
-      <!-- High-contrast mode. -->
-      <message name="IDS_HIGH_CONTRAST_TITLE" desc="Text for the dialog asking if the user may be interested in a High-Contrast extension or a dark theme. Note to translators: this is the name of a feature in Windows, so please try to find the correct name of that feature in your region.">
-        Browse the web in high contrast mode
-      </message>
-      <message name="IDS_HIGH_CONTRAST_HEADER" desc="Section header for list of extensions or themes to try in conjunction with the High Contrast mode">
-        Try:
-      </message>
-      <message name="IDS_HIGH_CONTRAST_EXT" desc="The title of a link that will open the Web Store with a High Contrast extension the user can install.">
-        High Contrast Extension
-      </message>
-      <message name="IDS_DARK_THEME" desc="The title of a link that will open the Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
-        Dark Theme
-      </message>
 
       <!-- Live caption. -->
       <message name="IDS_LIVE_CAPTION_BUBBLE_TITLE" desc="Title of the Live Caption bubble">
@@ -10796,6 +10788,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_COMMANDER_LABEL" desc="Label to identify the Commander feature in Task Manager">
       Commander
+    </message>
+    <message name="IDS_SHOW_KALEIDOSCOPE" desc="Menu item to launch the Brave watch feature">
+      Watch
     </message>
   </messages>
 </release>
