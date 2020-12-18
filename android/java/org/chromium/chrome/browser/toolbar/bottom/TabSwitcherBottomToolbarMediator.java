@@ -6,8 +6,8 @@
 package org.chromium.chrome.browser.toolbar.bottom;
 
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
-import org.chromium.chrome.browser.toolbar.ThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.ThemeColorProvider.ThemeColorObserver;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
 
 /**
  * This class is responsible for reacting to events from the outside world, interacting with other
