@@ -10,11 +10,23 @@ import plus from './plus.svg'
 export const Wrapper = styled<{}, 'aside'>('aside')`
   border-radius: 12px;
   position: relative;
-  overflow: hidden;
   background: ${p => p.theme.secondary};
   color: #212529;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 11px;
+  position: relative;
+
+  &::after {
+    content: '';
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #FFFFFF;
+    position: absolute;
+    bottom: -20px;
+    left: 28px;
+  }
 `
 
 export const Content = styled<{}, 'div'>('div')`
@@ -34,6 +46,8 @@ export const Body = styled<{}, 'div'>('div')`
 `
 
 export const CornerLabel = styled<{}, 'div'>('div')`
+  max-width: max-content;
+  border-radius: 12px 0 0 0;
   background: url(${cornerBg});
   background-size: cover;
   background-position: right;
@@ -44,7 +58,6 @@ export const CornerLabel = styled<{}, 'div'>('div')`
   font-size: 12px;
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: 600;
-  max-width: max-content;
 `
 
 export const Button = styled<{}, 'button'>('button')`
