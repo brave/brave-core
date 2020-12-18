@@ -12,7 +12,8 @@ import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 
 import org.chromium.base.ApiCompatibilityUtils;
-import org.chromium.chrome.browser.toolbar.ThemeColorProvider.TintObserver;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
 
 /**
  * Brave's extension of HomeButton.
