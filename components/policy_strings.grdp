@@ -529,6 +529,9 @@ Additional details:
   <message name="IDS_POLICY_INVALID_VALUE" desc="Text explaining that the policy value is invalid">
     Policy value is not valid.
   </message>
+  <message name="IDS_POLICY_IGNORED_MANDATORY_REPORTING_POLICY" desc="Text explaining that the policy MetricsReportingEnabled can not be forced to enabled anymore">
+    This policy cannot be set to "True" and be mandatory, therefore it was changed to recommended.
+  </message>
   <if expr="not is_macosx">
     <message name="IDS_POLICY_SPELLCHECK_UNKNOWN_LANGUAGE" desc="Warning message in the policy summary page for the spellcheck policies when a language is unrecognized or unsupported.">
       List entry "<ph name="LANGUAGE_ID">$1<ex>xx-YY</ex></ph>": Unknown or unsupported language.
@@ -582,9 +585,6 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_CLIPBOARD_BLOCKED_ON_COPY_VM" desc="A toast informing the user that sharing clipboard data to VMs is blocked.">
     Your administrator has blocked sharing from <ph name="ORIGIN_NAME">$1<ex>corp.google.com</ex></ph> to <ph name="VM_NAME">$2<ex>Linux</ex></ph>
-  </message>
-  <message name="IDS_POLICY_DLP_CLIPBOARD_BLOCKED_ON_COPY_TWO_VMS" desc="A toast informing the user that sharing clipboard data to VMs is blocked.">
-    Your administrator has blocked sharing from <ph name="ORIGIN_NAME">$1<ex>corp.google.com</ex></ph> to <ph name="VM_NAME_1">$2<ex>Linux</ex></ph> and <ph name="VM_NAME_2">$3<ex>Parallels</ex></ph>
   </message>
   <message name="IDS_POLICY_DLP_ANDROID_APPS" desc="Name shown for ARC in data leak prevention toasts.">
     Android apps

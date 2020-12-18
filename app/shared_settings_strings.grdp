@@ -115,6 +115,12 @@
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ARIA_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current device name which is shown to other devices for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Bravebook</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_LABEL" desc="Label for the button that opens contacts management when configuring visibility of their device with their contacts for the Nearby Share feature.">
+    Manage Contacts
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_ROW_TITLE" desc="Text for row in settings that allows user to manage contacts for the Nearby Share feature.">
+    Contacts
+  </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_DATA_USAGE" desc="Label for the button that brings up a dialog to allow a user to edit the data usage setting for the Nearby Share feature.">
     Edit
   </message>
@@ -159,6 +165,21 @@
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_TITLE" desc="Title for the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
     Device visibility
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
+    Share files with profiles around you. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_TITLE" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
+    Visible to everyone
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_ON" desc="Subtitle shown indicating that the device is visible to all devices around it for the Nearby Share feature and the nearest number of whole minutes it is on until it is turned off.">
+    On, <ph name="MINUTES">$1<ex>5</ex></ph> min
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_OFF" desc="Label for the switch that toggles whether the device is visible to all devices around it for the Nearby Share feature.">
+    Off. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_HIGH_VISIBILITY_TOOLTIP" desc="Text for tooltip that explains that turning on high visibility mode will allow the device to visible to all devices around it for the Nearby Share feature for 5 minutes.">
+    Your Bravebook will be visible to everyone nearby for 5 min
   </message>
 
  <!-- Personalization Options SubPage (strings used by the <settings-personalization-options> element) -->

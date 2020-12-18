@@ -790,6 +790,23 @@ For example, some websites may respond to this request by showing you ads that a
         Access payment methods
       </message>
 
+      <!-- Privacy Sandbox Settings. Used by //chrome/browser/privacy/settings. -->
+      <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy sandbox' page.">
+        Privacy sandbox
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_TITLE" desc="Title for the Privacy Sandbox toggle.">
+        Web crowd and ad measurement
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_SUBTITLE" desc="Description for the privacy sandbox toggle.">
+        By joining a Web Crowd, you allow websites to make your web experience relevant without using personally identifiable information. Similar to a crowd in a concert, websites and advertisers can only know thousands of users share a similar interest.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_BULLET_ONE" desc="First bullet point of the Privacy Sandbox description.">
+        Allow websites and apps to give you a more relevant experience using a non-identifiable alias.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_BULLET_TWO" desc="Second bullet point of the Privacy Sandbox description">
+        Allow advertisers to study ad campaigns using non-identifiable information.
+      </message>
+
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
       <message name="IDS_SETTINGS_CUSTOM" desc="Label for a custom option in a dropdown menu.">
         Custom
@@ -1547,7 +1564,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Brave Terms of Service
       </message>
       <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
-        https://policies.google.com/terms
+        https://policies.google.com/terms/embedded
       </message>
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
         Brave &amp; Chrome OS Additional Terms of Service
@@ -2218,6 +2235,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION_TABLET" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on tablets.">
         Add this site to your tablet’s Home screen so you can get here more easily
+      </message>
+      <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_ACCESSIBILITY" desc="The content description for the bottom sheet install UI.">
+        Install this app
+      </message>
+      <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_CATEGORIES" desc="The content description for the bottom sheet install UI.">
+        Categories: <ph name="COMMA_SEPERATED_CATEGORY_LIST">%1$s<ex>cats, memes</ex></ph>.
       </message>
 
       <!-- Page info popup -->
@@ -4372,6 +4395,11 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_AVS_SETTING_ENABLED_DESCRIPTION" desc="Description of the Assistant voice search setting.">
       Brave Assistant provides a better voice experience for searching the web and engaging with sites you have open. Brave Assistant will receive the URL and contents of sites you use with it.
+      </message>
+
+      <!-- Continuous Search Navigation strings -->
+      <message name="IDS_CSN_AD_LABEL" desc="Label for identifying an ad in search results." translateable="false">
+      Ad
       </message>
     </messages>
   </release>
