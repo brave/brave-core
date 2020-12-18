@@ -992,21 +992,28 @@
     <ph name="DURATION">$1<ex>1.5</ex></ph>s
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_TITLE" desc="A title for a dialog to assign a switch key to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Assign switch <ph name="action">$1<ex>Select</ex></ph>
+    Assign switch: <ph name="action">$1<ex>Select</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_KEY_PROMPT" desc="A message shown to ask a user to press a switch key to be assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Please press a switch key to assign.
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_KEY_PROMPT_NO_SWITCHES" desc="A message shown to ask a user to press a new key to be assigned to an action. No switches are currently assigned to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Press a new switch to start assignment.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_KEY_PROMPT_AT_LEAST_ONE_SWITCH" desc="A message shown to ask a user to press a key to be assigned to an action, or press an assigned switch to remove assignment. One or more switches are currently assigned to this action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Press a new switch to start assignment.
+Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_CONFIRMATION_PROMPT" desc="A message shown to ask a user to confirm by pressing a switch key to be assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Press '<ph name="currentKey">$1<ex>backspace</ex></ph>' again to confirm and exit.
+    Press “<ph name="currentKey">$1<ex>backspace</ex></ph>” again to confirm assignment and exit.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_CONFIRMATION_REMOVAL_PROMPT" desc="A message to ask a user to confirm, by pressing a switch key, for removal of a switch key assignment. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    '<ph name="currentKey">$1<ex>backspace</ex></ph>' is already assigned. Press '<ph name="currentKey">$1<ex>backspace</ex></ph>' again to remove assignment and exit.
+    Press “<ph name="currentKey">$1<ex>backspace</ex></ph>” again to remove assignment and exit.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_NOT_CONFIRMED_PROMPT" desc="A message warning the user that the switch key pressed during confirmation did not match the initial switch key pressed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Keys do not match. '<ph name="unexpectedKey">$1<ex>enter</ex></ph>' was pressed. '<ph name="currentKey">$2<ex>backspace</ex></ph>' was pressed before. Press any key to exit.
+    Keys do not match. “<ph name="unexpectedKey">$1<ex>enter</ex></ph>” was pressed. “<ph name="currentKey">$2<ex>backspace</ex></ph>” was pressed before. Press any key to exit.
   </message>
-  <message name="IDS_SETTINGS_ASSIGN_SWITCH_SUB_LABEL_0_SWITCHES" desc="A sub-label for the link that brings up a dialog to assign a switch key to an action. Mentions no switches assigned. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_CANNOT_REMOVE_LAST_SELECT_SWITCH" desc="A message warning the user that they cannot remove the last switch for the Select action. The text for the 'Select' action should be the same as the text from IDS_SETTINGS_ASSIGN_SELECT_SWITCH_LABEL. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Couldn't remove the only switch assigned to Select. Press any key to exit.
+  </message>
+  <message name="IDS_SETTINGS_ASSIGN_SWITCH_SUB_LABEL_0_SWITCHES" desc="A sub-label for the link that brings up a dialog to assign a switch key to an action. Mentions zero switches assigned. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     0 switches assigned
   </message>
   <message name="IDS_SETTINGS_ASSIGN_SWITCH_SUB_LABEL_1_SWITCH" desc="A sub-label for the link that brings up a dialog to assign a switch key to an action. Includes currently assigned switch. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
@@ -1030,8 +1037,11 @@
   <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_UNRECOGNIZED_KEY_PROMPT" desc="A message warning the user that the switch key pressed is not recognized. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Unrecognized key. Press any key to exit.
   </message>
-  <message name="IDS_SETTINGS_NO_SWITCHES_ASSIGNED" desc="A label indicating no siwtches are assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    No switches assigned
+  <message name="IDS_SETTINGS_NO_SWITCHES_ASSIGNED" desc="A label indicating no switches are assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    No switch has been assigned yet
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_EXIT" desc="The label of the button to exit the switch access action assignment dialog without making any changes. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Exit
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_TEXT_TO_SPEECH_HEADING" desc="In the settings tab, the heading for accessibility features that enable the computer to speak text from the computer screen.">
     Text-to-Speech
@@ -1744,6 +1754,9 @@
   </message>
   <message name="IDS_SETTINGS_MOUSE_SWAP_BUTTONS_LABEL" desc="In Device Settings, the text next to the checkbox to set the primary mouse button to the right button instead of the left button.">
     Swap primary mouse button
+  </message>
+  <message name="IDS_SETTINGS_POINTING_STICK_PRIMARY_BUTTON_LABEL" desc="In Device Settings, the text next to the dropdown menu to set the primary pointing stick (a.k.a. TrackPoint) button. (TrackPoint is a trademark that's not translated.)">
+    Primary TrackPoint button
   </message>
   <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_LEFT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the left mouse button.">
     Left button
@@ -2494,7 +2507,7 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile.">
     Could not set up notifications syncing
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_SUMMARY" desc="The title of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_SUMMARY" desc="The text of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile.">
     Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with work profiles cannot opt into this feature.">
