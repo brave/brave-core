@@ -24,11 +24,12 @@ protocol_request::Request MakeProtocolRequest(
       session_id, prod_id, browser_version, lang, channel, os_long_name,
       download_preference, additional_attributes, updater_state_attributes,
       std::move(apps));
-#if defined(OS_APPLE) && !defined(__amd64__) && defined(__aarch64__)
+#if defined(OS_APPLE) && !defined(OS_IOS)
   // temporary workaround for google update server not returning widevine
   // for arm64
   request.arch = "x64";
   request.nacl_arch = "x64";
+  request.os.arch = "x64";
 #endif
   return request;
 }
