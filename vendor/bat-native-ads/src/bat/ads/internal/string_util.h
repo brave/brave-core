@@ -16,6 +16,12 @@ namespace ads {
 std::string BytesToHexString(
     const std::vector<uint8_t>& bytes);
 
+std::string StripNonAlphaCharacters(
+    const std::string& value);
+
+std::string StripNonAlphaNumericCharacters(
+    const std::string& value);
+
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_STRING_UTIL_H_

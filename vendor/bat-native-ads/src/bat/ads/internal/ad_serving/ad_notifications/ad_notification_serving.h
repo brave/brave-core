@@ -26,7 +26,7 @@ class SubdivisionTargeting;
 
 namespace ad_notifications {
 
-using MaybeServeAdForCategoriesCallback =
+using MaybeServeAdForSegmentsCallback =
     std::function<void(const Result, const AdNotificationInfo&)>;
 
 class AdServing {
@@ -64,41 +64,41 @@ class AdServing {
   base::Time MaybeServeAfter(
       const base::TimeDelta delay);
 
-  void MaybeServeAdForCategories(
-      const CategoryList& categories,
-      MaybeServeAdForCategoriesCallback callback);
+  void MaybeServeAdForSegments(
+      const SegmentList& segments,
+      MaybeServeAdForSegmentsCallback callback);
 
-  void MaybeServeAdForParentChildCategories(
-      const CategoryList& categories,
+  void MaybeServeAdForParentChildSegments(
+      const SegmentList& segments,
       const AdEventList& ad_events,
-      MaybeServeAdForCategoriesCallback callback);
+      MaybeServeAdForSegmentsCallback callback);
 
-  void MaybeServeAdForParentCategories(
-      const CategoryList& categories,
+  void MaybeServeAdForParentSegments(
+      const SegmentList& segments,
       const AdEventList& ad_events,
-      MaybeServeAdForCategoriesCallback callback);
+      MaybeServeAdForSegmentsCallback callback);
 
   void MaybeServeAdForUntargeted(
       const AdEventList& ad_events,
-      MaybeServeAdForCategoriesCallback callback);
+      MaybeServeAdForSegmentsCallback callback);
 
   void MaybeServeAd(
       const CreativeAdNotificationList& ads,
-      MaybeServeAdForCategoriesCallback callback);
+      MaybeServeAdForSegmentsCallback callback);
 
   CreativeAdNotificationList PaceAds(
       const CreativeAdNotificationList& ads);
 
   void MaybeDeliverAd(
       const CreativeAdNotificationInfo& ad,
-      MaybeServeAdForCategoriesCallback callback);
+      MaybeServeAdForSegmentsCallback callback);
 
   void FailedToDeliverAd();
 
   void DeliveredAd();
 
-  void RecordAdOpportunityForCategories(
-      const CategoryList& categories);
+  void RecordAdOpportunityForSegments(
+      const SegmentList& segments);
 
   Timer timer_;
 

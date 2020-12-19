@@ -61,7 +61,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.category = "Technology & Computing-Software";
+  info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = { "US" };
   info_1.target_url = "https://brave.com";
@@ -81,7 +81,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.priority = 2;
   info_2.per_day = 3;
   info_2.total_max = 4;
-  info_2.category = "Technology & Computing-Software";
+  info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = { "US" };
   info_2.target_url = "https://brave.com";
@@ -97,14 +97,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   const CreativeAdNotificationList expected_creative_ad_notifications =
       creative_ad_notifications;
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "Technology & Computing-Software"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -131,7 +131,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.category = "Technology & Computing-Software";
+  info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = { "US" };
   info_1.target_url = "https://brave.com";
@@ -151,7 +151,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.priority = 2;
   info_2.per_day = 3;
   info_2.total_max = 4;
-  info_2.category = "Technology & Computing-Software";
+  info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = { "US" };
   info_2.target_url = "https://brave.com";
@@ -171,7 +171,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.priority = 2;
   info_3.per_day = 3;
   info_3.total_max = 4;
-  info_3.category = "Technology & Computing-Software";
+  info_3.segment = "Technology & Computing-Software";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = { "US" };
   info_3.target_url = "https://brave.com";
@@ -187,14 +187,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   const CreativeAdNotificationList expected_creative_ad_notifications =
       creative_ad_notifications;
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "Technology & Computing-Software"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -219,7 +219,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.category = "Technology & Computing-Software";
+  info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = { "US" };
   info.target_url = "https://brave.com";
@@ -237,14 +237,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   const CreativeAdNotificationList expected_creative_ad_notifications =
       creative_ad_notifications;
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "Technology & Computing-Software"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -269,7 +269,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.category = "Technology & Computing-Software";
+  info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = { "US" };
   info_1.target_url = "https://brave.com";
@@ -289,7 +289,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.priority = 2;
   info_2.per_day = 3;
   info_2.total_max = 4;
-  info_2.category = "Technology & Computing-Software";
+  info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = { "US" };
   info_2.target_url = "https://brave.com";
@@ -306,14 +306,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   const CreativeAdNotificationList expected_creative_ad_notifications =
       creative_ad_notifications;
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "Technology & Computing-Software"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -338,7 +338,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.category = "Technology & Computing-Software";
+  info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = { "US" };
   info.target_url = "https://brave.com";
@@ -354,12 +354,12 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   // Assert
   const CreativeAdNotificationList expected_creative_ad_notifications = {};
 
-  const std::vector<std::string> categories = {};
+  const SegmentList segments = {};
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -384,7 +384,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.priority = 2;
   info.per_day = 3;
   info.total_max = 4;
-  info.category = "Technology & Computing-Software";
+  info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
   info.geo_targets = { "US" };
   info.target_url = "https://brave.com";
@@ -400,14 +400,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   // Assert
   const CreativeAdNotificationList expected_creative_ad_notifications = {};
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "Food & Drink"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -432,7 +432,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.category = "Technology & Computing-Software";
+  info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = { "US" };
   info_1.target_url = "https://brave.com";
@@ -452,7 +452,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.priority = 2;
   info_2.per_day = 3;
   info_2.total_max = 4;
-  info_2.category = "Food & Drink";
+  info_2.segment = "Food & Drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = { "US" };
   info_2.target_url = "https://brave.com";
@@ -472,7 +472,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.priority = 2;
   info_3.per_day = 3;
   info_3.total_max = 4;
-  info_3.category = "Automobiles";
+  info_3.segment = "Automobiles";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = { "US" };
   info_3.target_url = "https://brave.com";
@@ -490,15 +490,15 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   expected_creative_ad_notifications.push_back(info_1);
   expected_creative_ad_notifications.push_back(info_2);
 
-  const std::vector<std::string> categories = {
+  const std::vector<std::string> segments = {
     "Technology & Computing-Software",
     "Food & Drink"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -523,7 +523,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.category = "Technology & Computing-Software";
+  info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = { "US" };
   info_1.target_url = "https://brave.com";
@@ -543,7 +543,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.priority = 2;
   info_2.per_day = 3;
   info_2.total_max = 4;
-  info_2.category = "Technology & Computing-Software";
+  info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = { "US" };
   info_2.target_url = "https://brave.com";
@@ -561,14 +561,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   CreativeAdNotificationList expected_creative_ad_notifications;
   expected_creative_ad_notifications.push_back(info_2);
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "Technology & Computing-Software"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
@@ -593,7 +593,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.priority = 2;
   info_1.per_day = 3;
   info_1.total_max = 4;
-  info_1.category = "Technology & Computing-Software";
+  info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
   info_1.geo_targets = { "US" };
   info_1.target_url = "https://brave.com";
@@ -613,7 +613,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.priority = 2;
   info_2.per_day = 3;
   info_2.total_max = 4;
-  info_2.category = "Food & Drink";
+  info_2.segment = "Food & Drink";
   info_2.dayparts.push_back(daypart_info);
   info_2.geo_targets = { "US" };
   info_2.target_url = "https://brave.com";
@@ -630,14 +630,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   CreativeAdNotificationList expected_creative_ad_notifications;
   expected_creative_ad_notifications.push_back(info_2);
 
-  const std::vector<std::string> categories = {
+  const SegmentList segments = {
     "FoOd & DrInK"
   };
 
-  database_table_->GetForCategories(categories,
+  database_table_->GetForSegments(segments,
       [&expected_creative_ad_notifications](
           const Result result,
-          const CategoryList& categories,
+          const SegmentList& segments,
           const CreativeAdNotificationList& creative_ad_notifications) {
     EXPECT_EQ(Result::SUCCESS, result);
     EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,

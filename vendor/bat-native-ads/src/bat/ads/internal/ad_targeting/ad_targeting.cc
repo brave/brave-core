@@ -5,58 +5,40 @@
 
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 
-#include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h"
-#include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
-#include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/text_classification/text_classification_model.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/purchase_intent/purchase_intent_model.h"
 
 namespace ads {
 
 namespace {
-const uint16_t kMaximumPurchaseIntentSegments = 3;
+
+SegmentList GetTextClassificationSegments() {
+  ad_targeting::model::TextClassification model;
+  return model.GetSegments();
+}
+
+SegmentList GetPurchaseIntentSegments() {
+  ad_targeting::model::PurchaseIntent model;
+  return model.GetSegments();
+}
+
 }  // namespace
 
-AdTargeting::AdTargeting(
-    ad_targeting::contextual::PageClassifier* page_classifier,
-    ad_targeting::behavioral::PurchaseIntentClassifier*
-        purchase_intent_classifier)
-    : page_classifier_(page_classifier),
-      purchase_intent_classifier_(purchase_intent_classifier) {
-  DCHECK(page_classifier_);
-  DCHECK(purchase_intent_classifier_);
-}
+AdTargeting::AdTargeting() = default;
 
 AdTargeting::~AdTargeting() = default;
 
-CategoryList AdTargeting::GetCategories() const {
-  const CategoryList page_classification_categories =
-      GetPageClassificationCategories();
+SegmentList AdTargeting::GetSegments() const {
+  const SegmentList text_classification_segments =
+      GetTextClassificationSegments();
 
-  const CategoryList purchase_intent_categories = GetPurchaseIntentCategories();
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
 
-  CategoryList categories = page_classification_categories;
+  SegmentList segments = text_classification_segments;
+  segments.insert(segments.end(), purchase_intent_segments.begin(),
+      purchase_intent_segments.end());
 
-  categories.insert(categories.end(), purchase_intent_categories.begin(),
-      purchase_intent_categories.end());
-
-  return categories;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-CategoryList AdTargeting::GetPageClassificationCategories() const {
-  return page_classifier_->GetWinningCategories();
-}
-
-CategoryList AdTargeting::GetPurchaseIntentCategories() const {
-  const PurchaseIntentSignalSegmentHistoryMap purchase_intent_signal_history =
-      Client::Get()->GetPurchaseIntentSignalHistory();
-
-  const CategoryList categories =
-      purchase_intent_classifier_->GetWinningCategories(
-          purchase_intent_signal_history, kMaximumPurchaseIntentSegments);
-
-  return categories;
+  return segments;
 }
 
 }  // namespace ads

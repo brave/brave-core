@@ -9,18 +9,19 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_aliases.h"
 
 namespace ads {
-namespace ad_targeting {
 
-std::vector<std::string> SplitCategory(
-    const std::string& category);
+std::vector<std::string> SplitSegment(
+    const std::string& segment);
 
-CategoryList GetParentCategories(
-    const CategoryList& categories);
+SegmentList GetParentSegments(
+    const SegmentList& segments);
 
-}  // namespace ad_targeting
+bool ShouldFilterSegment(
+    const std::string& segment);
+
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_UTIL_H_

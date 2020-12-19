@@ -68,8 +68,8 @@ Result NewTabPageAdInfo::FromJson(
     campaign_id = document["campaign_id"].GetString();
   }
 
-  if (document.HasMember("category")) {
-    category = document["category"].GetString();
+  if (document.HasMember("segment")) {
+    segment = document["segment"].GetString();
   }
 
   if (document.HasMember("company_name")) {
@@ -108,8 +108,8 @@ void SaveToJson(
   writer->String("campaign_id");
   writer->String(info.campaign_id.c_str());
 
-  writer->String("category");
-  writer->String(info.category.c_str());
+  writer->String("segment");
+  writer->String(info.segment.c_str());
 
   writer->String("company_name");
   writer->String(info.company_name.c_str());

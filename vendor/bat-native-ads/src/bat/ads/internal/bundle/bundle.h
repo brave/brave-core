@@ -33,7 +33,7 @@ class Bundle {
   void DeleteCreativeAdNotifications();
   void DeleteCreativeNewTabPageAds();
   void DeleteCampaigns();
-  void DeleteCategories();
+  void DeleteSegments();
   void DeleteCreativeAds();
   void DeleteDayparts();
   void DeleteGeoTargets();

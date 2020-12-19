@@ -22,7 +22,7 @@ const int kDefaultHistorySize = 5;
 }  // namespace
 
 // Controls behavior of the contextual ad matching mechanism, e.g. by adjusting
-// the number of page classifications used to infer user interest
+// the number of text classifications used to infer user interest
 const base::Feature kContextualAdsControl { "ContextualAdsControl",
     base::FEATURE_DISABLED_BY_DEFAULT };
 

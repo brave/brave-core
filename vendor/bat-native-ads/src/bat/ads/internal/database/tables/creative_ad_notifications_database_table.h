@@ -15,10 +15,10 @@
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
-#include "bat/ads/internal/database/tables/categories_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
+#include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
 
@@ -43,8 +43,8 @@ class CreativeAdNotifications : public Table {
   void Delete(
       ResultCallback callback);
 
-  void GetForCategories(
-      const CategoryList& categories,
+  void GetForSegments(
+      const SegmentList& segments,
       GetCreativeAdNotificationsCallback callback);
 
   void GetAll(
@@ -72,9 +72,9 @@ class CreativeAdNotifications : public Table {
       DBCommand* command,
       const CreativeAdNotificationList& creative_ad_notifications);
 
-  void OnGetForCategories(
+  void OnGetForSegments(
       DBCommandResponsePtr response,
-      const CategoryList& categories,
+      const SegmentList& segments,
       GetCreativeAdNotificationsCallback callback);
 
   void OnGetAll(
@@ -84,14 +84,6 @@ class CreativeAdNotifications : public Table {
   CreativeAdNotificationInfo GetFromRecord(
       DBRecord* record) const;
 
-  void CreateTableV1(
-      DBTransaction* transaction);
-  void MigrateToV1(
-      DBTransaction* transaction);
-
-  void MigrateToV2(
-      DBTransaction* transaction);
-
   void CreateTableV3(
       DBTransaction* transaction);
   void MigrateToV3(
@@ -100,10 +92,10 @@ class CreativeAdNotifications : public Table {
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
-  std::unique_ptr<Categories> categories_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
+  std::unique_ptr<Segments> segments_database_table_;
 };
 
 }  // namespace table

@@ -15,7 +15,9 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_delivery/ad_notifications/ad_notification_delivery.h"
 #include "bat/ads/internal/ad_pacing/ad_notifications/ad_notification_pacing.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/text_classification/text_classification_model.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
 #include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
@@ -77,8 +79,9 @@ void AdServing::StopServing() {
 }
 
 void AdServing::MaybeServe() {
-  const CategoryList categories = ad_targeting_->GetCategories();
-  MaybeServeAdForCategories(categories, [&](
+  const SegmentList segments = ad_targeting_->GetSegments();
+
+  MaybeServeAdForSegments(segments, [&](
       const Result result,
       const AdNotificationInfo& ad) {
     if (result != Result::SUCCESS) {
@@ -92,7 +95,7 @@ void AdServing::MaybeServe() {
         << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
         << "  creativeSetId: " << ad.creative_set_id << "\n"
         << "  campaignId: " << ad.campaign_id << "\n"
-        << "  category: " << ad.category << "\n"
+        << "  segment: " << ad.segment << "\n"
         << "  title: " << ad.title << "\n"
         << "  body: " << ad.body << "\n"
         << "  targetUrl: " << ad.target_url);
@@ -122,9 +125,9 @@ base::Time AdServing::MaybeServeAfter(
       base::Unretained(this)));
 }
 
-void AdServing::MaybeServeAdForCategories(
-    const CategoryList& categories,
-    MaybeServeAdForCategoriesCallback callback) {
+void AdServing::MaybeServeAdForSegments(
+    const SegmentList& segments,
+    MaybeServeAdForSegmentsCallback callback) {
   database::table::AdEvents database_table;
   database_table.GetAll([=](
       const Result result,
@@ -143,31 +146,31 @@ void AdServing::MaybeServeAdForCategories(
       return;
     }
 
-    RecordAdOpportunityForCategories(categories);
+    RecordAdOpportunityForSegments(segments);
 
-    MaybeServeAdForParentChildCategories(categories, ad_events, callback);
+    MaybeServeAdForParentChildSegments(segments, ad_events, callback);
   });
 }
 
-void AdServing::MaybeServeAdForParentChildCategories(
-    const CategoryList& categories,
+void AdServing::MaybeServeAdForParentChildSegments(
+    const SegmentList& segments,
     const AdEventList& ad_events,
-    MaybeServeAdForCategoriesCallback callback) {
-  if (categories.empty()) {
-    BLOG(1, "No categories to serve targeted ads");
+    MaybeServeAdForSegmentsCallback callback) {
+  if (segments.empty()) {
+    BLOG(1, "No segments to serve targeted ads");
     MaybeServeAdForUntargeted(ad_events, callback);
     return;
   }
 
-  BLOG(1, "Serve ad for categories:");
-  for (const auto& category : categories) {
-    BLOG(1, "  " << category);
+  BLOG(1, "Serve ad for segments:");
+  for (const auto& segment : segments) {
+    BLOG(1, "  " << segment);
   }
 
   database::table::CreativeAdNotifications database_table;
-  database_table.GetForCategories(categories, [=](
+  database_table.GetForSegments(segments, [=](
       const Result result,
-      const CategoryList& categories,
+      const SegmentList& segments,
       const CreativeAdNotificationList& ads) {
     EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
@@ -176,8 +179,8 @@ void AdServing::MaybeServeAdForParentChildCategories(
             last_delivered_creative_ad_, ad_events);
 
     if (eligible_ads.empty()) {
-      BLOG(1, "No eligible ads found for categories");
-      MaybeServeAdForParentCategories(categories, ad_events, callback);
+      BLOG(1, "No eligible ads found for segments");
+      MaybeServeAdForParentSegments(segments, ad_events, callback);
       return;
     }
 
@@ -185,22 +188,21 @@ void AdServing::MaybeServeAdForParentChildCategories(
   });
 }
 
-void AdServing::MaybeServeAdForParentCategories(
-    const CategoryList& categories,
+void AdServing::MaybeServeAdForParentSegments(
+    const SegmentList& segments,
     const AdEventList& ad_events,
-    MaybeServeAdForCategoriesCallback callback) {
-  const CategoryList parent_categories =
-      ad_targeting::GetParentCategories(categories);
+    MaybeServeAdForSegmentsCallback callback) {
+  const SegmentList parent_segments = GetParentSegments(segments);
 
-  BLOG(1, "Serve ad for parent categories:");
-  for (const auto& parent_category : parent_categories) {
-    BLOG(1, "  " << parent_category);
+  BLOG(1, "Serve ad for parent segments:");
+  for (const auto& parent_segment : parent_segments) {
+    BLOG(1, "  " << parent_segment);
   }
 
   database::table::CreativeAdNotifications database_table;
-  database_table.GetForCategories(parent_categories, [=](
+  database_table.GetForSegments(parent_segments, [=](
       const Result result,
-      const CategoryList& categories,
+      const SegmentList& segments,
       const CreativeAdNotificationList& ads) {
     EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
@@ -209,7 +211,7 @@ void AdServing::MaybeServeAdForParentCategories(
             last_delivered_creative_ad_, ad_events);
 
     if (eligible_ads.empty()) {
-      BLOG(1, "No eligible ads found for parent categories");
+      BLOG(1, "No eligible ads found for parent segments");
       MaybeServeAdForUntargeted(ad_events, callback);
       return;
     }
@@ -220,17 +222,17 @@ void AdServing::MaybeServeAdForParentCategories(
 
 void AdServing::MaybeServeAdForUntargeted(
     const AdEventList& ad_events,
-    MaybeServeAdForCategoriesCallback callback) {
+    MaybeServeAdForSegmentsCallback callback) {
   BLOG(1, "Serve untargeted ad");
 
-  const std::vector<std::string> categories = {
-    ad_targeting::contextual::kUntargeted
+  const std::vector<std::string> segments = {
+    ad_targeting::kUntargeted
   };
 
   database::table::CreativeAdNotifications database_table;
-  database_table.GetForCategories(categories, [=](
+  database_table.GetForSegments(segments, [=](
       const Result result,
-      const CategoryList& categories,
+      const SegmentList& segments,
       const CreativeAdNotificationList& ads) {
     EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
@@ -239,7 +241,7 @@ void AdServing::MaybeServeAdForUntargeted(
             last_delivered_creative_ad_, ad_events);
 
     if (eligible_ads.empty()) {
-      BLOG(1, "No eligible ads found for untargeted category");
+      BLOG(1, "No eligible ads found for untargeted segment");
       BLOG(1, "Ad notification not served: No eligible ads found");
       callback(Result::FAILED, AdNotificationInfo());
       return;
@@ -251,7 +253,7 @@ void AdServing::MaybeServeAdForUntargeted(
 
 void AdServing::MaybeServeAd(
     const CreativeAdNotificationList& ads,
-    MaybeServeAdForCategoriesCallback callback) {
+    MaybeServeAdForSegmentsCallback callback) {
   CreativeAdNotificationList eligible_ads = PaceAds(ads);
   if (eligible_ads.empty()) {
     BLOG(1, "Ad notification not served: No eligible ads found");
@@ -280,14 +282,14 @@ CreativeAdNotificationList AdServing::PaceAds(
 
 void AdServing::MaybeDeliverAd(
     const CreativeAdNotificationInfo& ad,
-    MaybeServeAdForCategoriesCallback callback) {
+    MaybeServeAdForSegmentsCallback callback) {
   AdNotificationInfo ad_notification;
   ad_notification.type = AdType::kAdNotification;
   ad_notification.uuid = base::GenerateGUID();
   ad_notification.creative_instance_id = ad.creative_instance_id;
   ad_notification.creative_set_id = ad.creative_set_id;
   ad_notification.campaign_id = ad.campaign_id;
-  ad_notification.category = ad.category;
+  ad_notification.segment = ad.segment;
   ad_notification.title = ad.title;
   ad_notification.body = ad.body;
   ad_notification.target_url = ad.target_url;
@@ -336,10 +338,10 @@ void AdServing::DeliveredAd() {
   MaybeServeAfter(delay);
 }
 
-void AdServing::RecordAdOpportunityForCategories(
-    const CategoryList& categories) {
+void AdServing::RecordAdOpportunityForSegments(
+    const SegmentList& segments) {
   const std::vector<std::string> question_list =
-      p2a::CreateAdOpportunityQuestionList(categories);
+      p2a::CreateAdOpportunityQuestionList(segments);
 
   p2a::RecordEvent("ad_opportunity", question_list);
 }

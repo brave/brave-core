@@ -35,6 +35,14 @@ std::vector<std::vector<T>> SplitVector(
   return result;
 }
 
+template <typename T>
+bool CompareMaps(
+    const T &lhs,
+    const T &rhs) {
+  return lhs.size() == rhs.size() &&
+     std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+
 // Checks that |c1| and |c2| contain the same number of elements and each
 // element in |c1| is present in |c2| and vice-versa (Uses the == operator for
 // comparing). Returns true if it is the case. Note that this method will return
