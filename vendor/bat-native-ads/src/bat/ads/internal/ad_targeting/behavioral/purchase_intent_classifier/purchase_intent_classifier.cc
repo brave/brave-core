@@ -342,8 +342,7 @@ void PurchaseIntentClassifier::OnLoadUserModelForId(
 PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
     const std::string& url) {
   PurchaseIntentSignalInfo signal_info;
-  const std::string search_query =
-      SearchProviders::ExtractSearchQueryKeywords(url);
+  const std::string search_query = ExtractSearchQueryKeywords(url);
 
   if (!search_query.empty()) {
     auto keyword_segments = GetSegments(search_query);

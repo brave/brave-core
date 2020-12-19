@@ -5,85 +5,118 @@
 
 #include "bat/ads/internal/search_engine/search_providers.h"
 
+#include "base/optional.h"
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
+#include "bat/ads/internal/url_util.h"
 
 namespace ads {
 
-SearchProviders::SearchProviders() = default;
+namespace {
 
-SearchProviders::~SearchProviders() = default;
-
-bool SearchProviders::IsSearchEngine(
+base::Optional<SearchProviderInfo> GetSearchProviderForUrl(
     const std::string& url) {
-  const GURL visited_url = GURL(url);
-  if (!visited_url.is_valid()) {
-    return false;
+  if (!GURL(url).is_valid()) {
+    return base::nullopt;
   }
 
-  bool is_a_search = false;
-
   for (const auto& search_provider : _search_providers) {
-    const GURL search_provider_hostname = GURL(search_provider.hostname);
-    if (!search_provider_hostname.is_valid()) {
+    if (!GURL(search_provider.hostname).is_valid()) {
       continue;
     }
 
-    if (search_provider.is_always_classed_as_a_search &&
-        visited_url.DomainIs(search_provider_hostname.host_piece())) {
-      is_a_search = true;
-      break;
+    if (!SameDomainOrHost(url, search_provider.hostname)) {
+      continue;
     }
 
-    size_t index = search_provider.search_template.find('{');
-    std::string substring = search_provider.search_template.substr(0, index);
-    size_t href_index = url.find(substring);
-
-    if (index != std::string::npos && href_index != std::string::npos) {
-      is_a_search = true;
-      break;
-    }
+    return search_provider;
   }
 
-  return is_a_search;
+  return base::nullopt;
 }
 
-std::string SearchProviders::ExtractSearchQueryKeywords(
+}  // namespace
+
+bool IsSearchEngine(
+    const std::string& url) {
+  if (!GURL(url).is_valid()) {
+    return false;
+  }
+
+  const base::Optional<SearchProviderInfo> search_provider =
+      GetSearchProviderForUrl(url);
+  if (!search_provider) {
+    return false;
+  }
+
+  if (search_provider->is_always_classed_as_a_search) {
+    return true;
+  }
+
+  const size_t index = search_provider->search_template.find('{');
+  const std::string substring =
+      search_provider->search_template.substr(0, index);
+  const size_t href_index = url.find(substring);
+
+  if (index != std::string::npos && href_index != std::string::npos) {
+    return true;
+  }
+
+  return false;
+}
+
+bool IsSearchEngineResultsPages(
+    const std::string& url) {
+  if (!GURL(url).is_valid()) {
+    return false;
+  }
+
+  const base::Optional<SearchProviderInfo> search_provider =
+      GetSearchProviderForUrl(url);
+  if (!search_provider) {
+    return false;
+  }
+
+  const size_t index = search_provider->search_template.find('{');
+  const std::string substring =
+      search_provider->search_template.substr(0, index);
+  const size_t href_index = url.find(substring);
+
+  if (index != std::string::npos && href_index != std::string::npos) {
+    return true;
+  }
+
+  return false;
+}
+
+std::string ExtractSearchQueryKeywords(
     const std::string& url) {
   std::string search_query_keywords;
+
+  if (!GURL(url).is_valid()) {
+    return search_query_keywords;
+  }
 
   if (!IsSearchEngine(url)) {
     return search_query_keywords;
   }
 
-  const GURL visited_url = GURL(url);
-  if (!visited_url.is_valid()) {
+  const base::Optional<SearchProviderInfo> search_provider =
+      GetSearchProviderForUrl(url);
+  if (!search_provider) {
     return search_query_keywords;
   }
 
-  for (const auto& search_provider : _search_providers) {
-    GURL search_provider_hostname = GURL(search_provider.hostname);
-    if (!search_provider_hostname.is_valid()) {
-      continue;
-    }
-
-    if (!visited_url.DomainIs(search_provider_hostname.host_piece())) {
-      continue;
-    }
-
-    // Checking if search template in as defined in |search_providers.h|
-    // is defined, e.g. |https://searx.me/?q={searchTerms}&categories=general|
-    // matches |?q={|
-    std::string key;
-    if (!RE2::PartialMatch(
-        search_provider.search_template, "\\?(.*?)\\={", &key)) {
-      return search_query_keywords;
-    }
-
-    net::GetValueForKeyInQuery(GURL(url), key, &search_query_keywords);
-    break;
+  // Check if search template matches a search provider e.g.
+  // https://searx.me/?q={searchTerms}&categories=general matches ?q={
+  std::string key;
+  if (!RE2::PartialMatch(search_provider->search_template,
+      "\\?(.*?)\\={", &key)) {
+    return search_query_keywords;
   }
+
+  net::GetValueForKeyInQuery(GURL(url), key, &search_query_keywords);
 
   return search_query_keywords;
 }

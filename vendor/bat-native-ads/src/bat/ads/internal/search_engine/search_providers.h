@@ -49,12 +49,22 @@ const std::vector<SearchProviderInfo> _search_providers = {
       // TODO(https://github.com/brave/brave-browser/issues/8487): Brave Ads
       // search providers definition doesn't match all patterns
       "https://google.com",
-      "https://www.google.com/search?q={searchTerms}",
+      "https://www.google.com/search?{searchTerms}",
+      true),
+  SearchProviderInfo(
+      "Google",
+      "https://google.ca",
+      "https://www.google.ca/search?{searchTerms}",
+      true),
+  SearchProviderInfo(
+      "Google",
+      "https://google.co.uk",
+      "https://www.google.co.uk/search?{searchTerms}",
       true),
   SearchProviderInfo(
       "Google Japan",
       "https://google.co.jp",
-      "https://www.google.co.jp/search?q={searchTerms}",
+      "https://www.google.co.jp/search?{searchTerms}",
       true),
   SearchProviderInfo(
       "Stack Overflow",
@@ -142,16 +152,14 @@ const std::vector<SearchProviderInfo> _search_providers = {
       true)
 };
 
-class SearchProviders {
- public:
-  SearchProviders();
-  ~SearchProviders();
+bool IsSearchEngine(
+    const std::string& url);
 
-  static bool IsSearchEngine(
-      const std::string& url);
-  static std::string ExtractSearchQueryKeywords(
-      const std::string& url);
-};
+bool IsSearchEngineResultsPages(
+    const std::string& url);
+
+std::string ExtractSearchQueryKeywords(
+    const std::string& url);
 
 }  // namespace ads
 

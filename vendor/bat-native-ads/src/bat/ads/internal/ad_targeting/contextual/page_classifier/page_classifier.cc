@@ -59,8 +59,8 @@ std::string PageClassifier::MaybeClassifyPage(
     return "";
   }
 
-  if (SearchProviders::IsSearchEngine(url)) {
-    BLOG(1, "Search engine pages are not supported for page classification");
+  if (IsSearchEngine(url) && !IsSearchEngineResultsPages(url)) {
+    BLOG(1, "Visited URL is not supported for page classification");
     return "";
   }
 
