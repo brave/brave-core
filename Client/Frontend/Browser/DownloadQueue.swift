@@ -71,8 +71,11 @@ class HTTPDownload: Download {
     
     // Used to avoid name spoofing using Unicode RTL char to change file extension
     public static func stripUnicode(fromFilename string: String) -> String {
-        let allowed = CharacterSet.alphanumerics.union(CharacterSet.punctuationCharacters)
-        return string.components(separatedBy: allowed.inverted).joined()
+        let validFilenameSet = CharacterSet(charactersIn: ":/")
+                                .union(.newlines)
+                                .union(.controlCharacters)
+                                .union(.illegalCharacters)
+        return string.components(separatedBy: validFilenameSet).joined()
      }
     
     init(preflightResponse: URLResponse, request: URLRequest) {
