@@ -4,6 +4,7 @@
 
 import Foundation
 import XCTest
+@testable import Client
 
 class StringExtensionsTests: XCTestCase {
 
@@ -58,5 +59,12 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("tEST".capitalizeFirstLetter, "TEST")
         XCTAssertEqual("test test".capitalizeFirstLetter, "Test test")
     }
-
+    
+    func testRemoveUnicodeFromFilename() {
+        let file = "foo-\u{200F}cod.jpg" // Unicode RTL-switch code, becomes "foo-gpj.doc"
+        let nounicode = "foo-cod.jpg"
+        XCTAssert(file != nounicode)
+        let strip = HTTPDownload.stripUnicode(fromFilename: file)
+        XCTAssert(strip == nounicode)
+    }
 }
