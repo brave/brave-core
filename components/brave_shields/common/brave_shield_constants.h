@@ -22,6 +22,11 @@ const char kFacebookEmbeds[] = "fb-embeds";
 const char kTwitterEmbeds[] = "twitter-embeds";
 const char kLinkedInEmbeds[] = "linked-in-embeds";
 
+// Values used before the migration away from ResourceIdentifier, kept around
+// for migration purposes only.
+const char kObsoleteAds[] = "ads";
+const char kObsoleteCookies[] = "cookies";
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_BRAVE_SHIELD_CONSTANTS_H_

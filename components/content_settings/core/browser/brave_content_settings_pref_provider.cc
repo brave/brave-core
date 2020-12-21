@@ -24,6 +24,8 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "services/preferences/public/cpp/dictionary_value_update.h"
+#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace content_settings {
 
@@ -36,6 +38,58 @@ constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 // that we have a chance to migrate Shields' settings from old profiles.
 constexpr char kObsoletePluginsExceptionsPref[] =
     "profile.content_settings.exceptions.plugins";
+
+const char kExpirationPath[] = "expiration";
+const char kLastModifiedPath[] = "last_modified";
+const char kSessionModelPath[] = "model";
+const char kSettingPath[] = "setting";
+const char kPerResourcePath[] = "per_resource";
+
+std::string GetShieldsPreferenceName(const std::string& name) {
+  return std::string("profile.content_settings.exceptions.").append(name);
+}
+
+// Extract a timestamp from |dictionary[kLastModifiedPath]|.
+// Will return base::Time() if no timestamp exists.
+base::Time GetTimeStamp(const base::DictionaryValue* dictionary) {
+  std::string timestamp_str;
+  dictionary->GetStringWithoutPathExpansion(kLastModifiedPath, &timestamp_str);
+  int64_t timestamp = 0;
+  base::StringToInt64(timestamp_str, &timestamp);
+  base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
+      base::TimeDelta::FromMicroseconds(timestamp));
+  return last_modified;
+}
+
+// Extract a timestamp from |dictionary[kExpirationPath]|. Will return
+// base::Time() if no timestamp exists.
+base::Time GetExpiration(const base::DictionaryValue* dictionary) {
+  std::string expiration_timestamp_str;
+  dictionary->GetStringWithoutPathExpansion(kExpirationPath,
+                                            &expiration_timestamp_str);
+  int64_t expiration_timestamp = 0;
+  base::StringToInt64(expiration_timestamp_str, &expiration_timestamp);
+  base::Time expiration = base::Time::FromDeltaSinceWindowsEpoch(
+      base::TimeDelta::FromMicroseconds(expiration_timestamp));
+  return expiration;
+}
+
+// Extract a SessionModel from |dictionary[kSessionModelPath]|. Will return
+// SessionModel::Durable if no model exists.
+content_settings::SessionModel GetSessionModel(
+    const base::DictionaryValue* dictionary) {
+  int model_int = 0;
+  dictionary->GetIntegerWithoutPathExpansion(kSessionModelPath, &model_int);
+  if ((model_int >
+       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
+      (model_int < 0)) {
+    model_int = 0;
+  }
+
+  content_settings::SessionModel session_model =
+      static_cast<content_settings::SessionModel>(model_int);
+  return session_model;
+}
 
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   // brave plugin rules incorrectly use first party url as primary
@@ -156,10 +210,98 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // session, so also nothing to do.
   if (incognito)
     return;
+
+  // Prior to Chromium 88, we used the "plugins" ContentSettingsType along with
+  // ResourceIdentifiers to store our settings, which we need to migrate now
+  // first of all, before attempting any other migration.
+  MigrateShieldsSettingsFromResourceIds();
+
+  // Now carry on with any other migration that we might need.
   MigrateShieldsSettingsV1ToV2();
 
   // Finally clean this up now that Shields' settings have been migrated.
   prefs_->ClearPref(kObsoletePluginsExceptionsPref);
+}
+
+void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
+  const base::DictionaryValue* plugins_dictionary =
+      prefs_->GetDictionary(kObsoletePluginsExceptionsPref);
+  if (!plugins_dictionary)
+    return;
+
+  for (base::DictionaryValue::Iterator i(*plugins_dictionary); !i.IsAtEnd();
+       i.Advance()) {
+    const std::string& patterns_string(i.key());
+    const base::DictionaryValue* settings_dictionary = nullptr;
+    bool is_dictionary = i.value().GetAsDictionary(&settings_dictionary);
+    DCHECK(is_dictionary);
+
+    base::Time expiration = GetExpiration(settings_dictionary);
+    SessionModel session_model = GetSessionModel(settings_dictionary);
+
+    const base::DictionaryValue* resource_dictionary = nullptr;
+    if (settings_dictionary->GetDictionary(kPerResourcePath,
+                                           &resource_dictionary)) {
+      base::Time last_modified = GetTimeStamp(settings_dictionary);
+      for (base::DictionaryValue::Iterator j(*resource_dictionary);
+           !j.IsAtEnd(); j.Advance()) {
+        const std::string& resource_identifier(j.key());
+        int setting = CONTENT_SETTING_DEFAULT;
+        bool is_integer = j.value().GetAsInteger(&setting);
+        DCHECK(is_integer);
+        DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
+
+        // For "ads" and "cookies" we need to adapt the name to the new one,
+        // otherwise it will refer to upstream's "ads" and "cookies" settings.
+        std::string actual_name;
+        if (resource_identifier == brave_shields::kObsoleteAds)
+          actual_name = brave_shields::kAds;
+        else if (resource_identifier == brave_shields::kObsoleteCookies)
+          actual_name = brave_shields::kCookies;
+        else
+          actual_name = resource_identifier;
+
+        MigrateShieldsSettingsFromResourceIdsForOneType(
+            GetShieldsPreferenceName(actual_name), patterns_string,
+            expiration, last_modified, session_model, setting);
+      }
+    }
+  }
+}
+
+void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
+    const std::string& preference_name,
+    const std::string& patterns_string,
+    const base::Time& expiration,
+    const base::Time& last_modified,
+    SessionModel session_model,
+    int setting) {
+
+  prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_name);
+  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings = update.Get();
+
+  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings_dictionary;
+  bool found = shield_settings->GetDictionaryWithoutPathExpansion(
+      patterns_string, &shield_settings_dictionary);
+
+  if (!found) {
+    shield_settings_dictionary =
+        shield_settings->SetDictionaryWithoutPathExpansion(
+            patterns_string, std::make_unique<base::DictionaryValue>());
+  }
+  DCHECK(shield_settings_dictionary);
+
+  shield_settings_dictionary->SetKey(
+      kExpirationPath,
+      base::Value(base::NumberToString(
+          expiration.ToDeltaSinceWindowsEpoch().InMicroseconds())));
+  shield_settings_dictionary->SetKey(
+      kLastModifiedPath,
+      base::Value(base::NumberToString(
+          last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
+  shield_settings_dictionary->SetKey(
+      kSessionModelPath, base::Value(static_cast<int>(session_model)));
+  shield_settings_dictionary->SetKey(kSettingPath, base::Value(setting));
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
