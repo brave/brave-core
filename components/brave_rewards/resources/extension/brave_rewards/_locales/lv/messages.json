@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Turpinot jūs piekrītat $$1Terms of Service$$2 un $$3Privacy Policy$$4.",
-    "description": ""
+    "message": "Turpinot jūs piekrītat $tos_link_begin$Terms of Service$tos_link_end$ un $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

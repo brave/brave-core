@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Ao prosseguir, você concorda com os $$1Termos de Serviço$$2 e $$3Política de Privacidade$$4.",
-    "description": ""
+    "message": "Ao prosseguir, você concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e $pp_link_begin$Política de Privacidade$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

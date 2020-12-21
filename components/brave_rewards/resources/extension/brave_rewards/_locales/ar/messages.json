@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "بالمتابعة، فأنت توافق على $$1شروط الخدمة$$2 و$$3سياسة الخصوصية$$4.",
-    "description": ""
+    "message": "بالمتابعة، فأنت توافق على $tos_link_begin$شروط الخدمة$tos_link_end$ و$pp_link_begin$سياسة الخصوصية$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

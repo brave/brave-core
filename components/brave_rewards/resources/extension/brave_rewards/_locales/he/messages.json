@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "על ידי המשך הנך מסכימ/ה ל$$1תנאי השירות$$2 וכן $$3מדיניות הפרטיות$$4.",
-    "description": ""
+    "message": "על ידי המשך הנך מסכימ/ה ל$tos_link_begin$תנאי השירות$tos_link_end$ וכן $pp_link_begin$מדיניות הפרטיות$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

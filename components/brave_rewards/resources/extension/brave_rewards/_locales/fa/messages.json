@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "با ادامه دادن، با $$1شرایط خدمات$$2 و $$3خط مشی رازداری$$4 موافقت می‌کنید.",
-    "description": ""
+    "message": "با ادامه دادن، با $tos_link_begin$شرایط خدمات$tos_link_end$ و $pp_link_begin$خط مشی رازداری$pp_link_end$ موافقت می‌کنید.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }
