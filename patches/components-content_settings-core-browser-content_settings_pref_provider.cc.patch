@@ -1,8 +1,25 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref_provider.cc b/components/content_settings/core/browser/content_settings_pref_provider.cc
-index 9ffac847adcfb667277910430579d007be7cba09..ec4333838b5526350591a98ec92ef91c39ed5ef1 100644
+index 9ffac847adcfb667277910430579d007be7cba09..b9d9f014de464bd4dd6cb5f4e7c63ab40d8885aa 100644
 --- a/components/content_settings/core/browser/content_settings_pref_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_pref_provider.cc
-@@ -197,6 +197,7 @@ bool PrefProvider::SetWebsiteSetting(
+@@ -49,8 +49,6 @@ const char kObsoleteFullscreenExceptionsPref[] =
+ #if !defined(OS_ANDROID)
+ const char kObsoleteMouseLockExceptionsPref[] =
+     "profile.content_settings.exceptions.mouselock";
+-const char kObsoletePluginsExceptionsPref[] =
+-    "profile.content_settings.exceptions.plugins";
+ const char kObsoletePluginsDataExceptionsPref[] =
+     "profile.content_settings.exceptions.flash_data";
+ #endif  // !defined(OS_ANDROID)
+@@ -118,6 +116,7 @@ PrefProvider::PrefProvider(PrefService* prefs,
+       clock_(base::DefaultClock::GetInstance()) {
+   TRACE_EVENT_BEGIN0("startup", "PrefProvider::PrefProvider");
+   DCHECK(prefs_);
++
+   // Verify preferences version.
+   if (!prefs_->HasPrefPath(prefs::kContentSettingsVersion)) {
+     prefs_->SetInteger(prefs::kContentSettingsVersion,
+@@ -197,6 +196,7 @@ bool PrefProvider::SetWebsiteSetting(
    // sites/origins defined by the |primary_pattern| and the |secondary_pattern|.
    // Default settings are handled by the |DefaultProvider|.
    if (primary_pattern == ContentSettingsPattern::Wildcard() &&
@@ -10,3 +27,11 @@ index 9ffac847adcfb667277910430579d007be7cba09..ec4333838b5526350591a98ec92ef91c
        secondary_pattern == ContentSettingsPattern::Wildcard()) {
      return false;
    }
+@@ -281,7 +281,6 @@ void PrefProvider::DiscardOrMigrateObsoletePreferences() {
+   prefs_->ClearPref(kObsoleteFullscreenExceptionsPref);
+ #if !defined(OS_ANDROID)
+   prefs_->ClearPref(kObsoleteMouseLockExceptionsPref);
+-  prefs_->ClearPref(kObsoletePluginsExceptionsPref);
+   prefs_->ClearPref(kObsoletePluginsDataExceptionsPref);
+ #endif  // !defined(OS_ANDROID)
+ #endif  // !defined(OS_IOS)
