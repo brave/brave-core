@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "続行することで、あなたは$$1利用規約$$2と$$3プライバシーポリシー$$4に同意したことになります。",
-    "description": ""
+    "message": "続行することで、あなたは$tos_link_begin$利用規約$tos_link_end$と$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

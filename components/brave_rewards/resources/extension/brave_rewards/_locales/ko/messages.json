@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "계속하면, $$1서비스 약관$$2 및 $$3개인 정보 보호 정책$$4에 동의하는 것입니다.",
-    "description": ""
+    "message": "계속하면, $tos_link_begin$서비스 약관$tos_link_end$ 및 $pp_link_begin$개인 정보 보호 정책$pp_link_end$에 동의하는 것입니다.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

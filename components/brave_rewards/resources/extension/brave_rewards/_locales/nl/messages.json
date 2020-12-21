@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Door verder te gaan, gaat u akkoord met de $$1Servicevoorwaarden$$2 en het $$3Privacybeleid$$4.",
-    "description": ""
+    "message": "Door verder te gaan, gaat u akkoord met de $tos_link_begin$Servicevoorwaarden$tos_link_end$ en het $pp_link_begin$Privacybeleid$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Jätkamisega nõustute $$1teenusetingimuste$$2 ja $$3privaatsuspoliitikaga$$4.",
-    "description": ""
+    "message": "Jätkamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspoliitikaga$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

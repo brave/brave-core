@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Si continueu, esteu acceptant els $$1Termes de Servei$$2 i $$3Política de Privadesa$$4.",
-    "description": ""
+    "message": "Si continueu, esteu acceptant els $tos_link_begin$Termes de Servei$tos_link_end$ i $pp_link_begin$Política de Privadesa$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

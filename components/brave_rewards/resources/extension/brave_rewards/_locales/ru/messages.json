@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Продолжая, вы соглашаетесь с $$1Условиями предоставления услуг$$2 и $$3Политикой Конфиденциальности$$4.",
-    "description": ""
+    "message": "Продолжая, вы соглашаетесь с $tos_link_begin$Условиями предоставления услуг$tos_link_end$ и $pp_link_begin$Политикой Конфиденциальности$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }
