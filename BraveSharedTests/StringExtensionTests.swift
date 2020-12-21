@@ -42,4 +42,12 @@ class StringExtensionTests: XCTestCase {
         let wordsWithPunctuation = "\"It's a wonderful life—isn't it…\""
         XCTAssertEqual(wordsWithPunctuation.words, ["It's", "a", "wonderful", "life", "isn't", "it"])
     }
+    
+    func testRemoveUnicodeFromFilename() {
+        let file = "foo-\u{200F}cod.jpg" // Unicode RTL-switch code, becomes "foo-gpj.doc"
+        let nounicode = "foo-cod.jpg"
+        XCTAssert(file != nounicode)
+        let strip = HTTPDownload.stripUnicode(fromFilename: file)
+        XCTAssert(strip == nounicode)
+    }
 }
