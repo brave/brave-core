@@ -1,8 +1,8 @@
 diff --git a/net/url_request/url_request_http_job.cc b/net/url_request/url_request_http_job.cc
-index f5e754f4ea0288a685a6932b00f692e3c6638621..1679866f30664117311f0fbe5c32fa20f40bb7b8 100644
+index c9985fdde420aea6429fac17cbb1e695d2d311f1..57f4a32e9cce3d189c2987dca2eac9f83d737a54 100644
 --- a/net/url_request/url_request_http_job.cc
 +++ b/net/url_request/url_request_http_job.cc
-@@ -583,6 +583,7 @@ void URLRequestHttpJob::AddCookieHeaderAndStart() {
+@@ -577,6 +577,7 @@ void URLRequestHttpJob::AddCookieHeaderAndStart() {
          net::cookie_util::ComputeSameSiteContextForRequest(
              request_->method(), request_->url(), request_->site_for_cookies(),
              request_->initiator(), force_ignore_site_for_cookies));
@@ -10,15 +10,7 @@ index f5e754f4ea0288a685a6932b00f692e3c6638621..1679866f30664117311f0fbe5c32fa20
      cookie_store->GetCookieListWithOptionsAsync(
          request_->url(), options,
          base::BindOnce(&URLRequestHttpJob::SetCookieHeaderAndStart,
-@@ -600,6 +601,7 @@ void URLRequestHttpJob::SetCookieHeaderAndStart(
- 
-   bool can_get_cookies =
-       (request_info_.privacy_mode == PRIVACY_MODE_DISABLED && CanGetCookies());
-+  BRAVE_SETCOOKIEHEADERANDSTART
-   if (!cookies_with_access_result_list.empty() && can_get_cookies) {
-     std::string cookie_line =
-         CanonicalCookie::BuildCookieLine(cookies_with_access_result_list);
-@@ -770,6 +772,7 @@ void URLRequestHttpJob::SaveCookiesAndNotifyHeadersComplete(int result) {
+@@ -764,6 +765,7 @@ void URLRequestHttpJob::SaveCookiesAndNotifyHeadersComplete(int result) {
        continue;
      }
  

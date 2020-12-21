@@ -62,10 +62,6 @@ bool URLRequestHttpJob::CanSetNonEphemeralCookie(
                            weak_factory_.GetWeakPtr(), options));              \
   else
 
-#define BRAVE_SETCOOKIEHEADERANDSTART                   \
-  if (!can_get_cookies && CanUseEphemeralStorage(this)) \
-    can_get_cookies = true;
-
 #define BRAVE_SAVECOOKIESANDNOTIFYHEADERSCOMPLETE                              \
   if (!CanSetNonEphemeralCookie(*cookie, &options))                            \
     static_cast<CookieMonster*>(request_->context()->cookie_store())           \
@@ -78,7 +74,9 @@ bool URLRequestHttpJob::CanSetNonEphemeralCookie(
   else
 
 #define CanSetCookie CanSetCookieIncludingEphemeral
+#define CanGetCookies() (CanGetCookies() || CanUseEphemeralStorage(this))
 
 #include "../../../../../net/url_request/url_request_http_job.cc"
 
+#undef CanGetCookies
 #undef CanSetCookies

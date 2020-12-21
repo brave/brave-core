@@ -135,7 +135,8 @@ class EphemeralStorageBaseBrowserTest : public InProcessBrowserTest {
     auto* content_settings =
         HostContentSettingsMapFactory::GetForProfile(browser()->profile());
     brave_shields::SetCookieControlType(
-        content_settings, brave_shields::ControlType::BLOCK_THIRD_PARTY, GURL());
+        content_settings, brave_shields::ControlType::BLOCK_THIRD_PARTY,
+        GURL());
   }
 
   void SetValuesInFrame(RenderFrameHost* frame,
@@ -585,7 +586,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("name=third-party-a.com", third_party_values.cookies);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, ThirdPartyCookiesEnabled) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       UseNonEphmeralStorageWhenThirdPartyCookiesAllowed) {
   AllowAllCookies();
 
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
@@ -628,8 +630,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, ThirdPartyCookiesEnabled) {
   EXPECT_EQ("from=b.com", site_a_tab_values.iframe_2.cookies);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
-                       ThirdPartyCookiesEnabledAndNavigateCookies) {
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorageBrowserTest,
+    UseNonEphmeralNavigateCookiesWhenThirdPartyCookiesAllowed) {
   AllowAllCookies();
 
   GURL b_site_set_cookie_url = https_server_.GetURL(
@@ -666,7 +669,7 @@ class EphemeralStorageDisabledBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
-                       ThirdPartyCookiesEnabled) {
+                       UseNonEphmeralStorageWhenThirdPartyCookiesAllowed) {
   AllowAllCookies();
 
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
@@ -707,8 +710,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
   EXPECT_EQ("from=b.com", site_a_tab_values.iframe_2.cookies);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
-                       ThirdPartyCookiesEnabledAndNavigateCookies) {
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorageDisabledBrowserTest,
+    UseNonEphmeralNavigateCookiesWhenThirdPartyCookiesAllowed) {
   AllowAllCookies();
 
   GURL b_site_set_cookie_url = https_server_.GetURL(
@@ -736,7 +740,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
-                       ThirdPartyCookiesDisabled) {
+                       StorageNotAccessiableWhenThirdPartyCookiesBlocked) {
   BlockThirdPartyCookies();
 
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
@@ -766,8 +770,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
   AssertEmptyInSubframes(a_site_content);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
-                       ThirdPartyCookiesDisabledAndNavigateCookies) {
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorageDisabledBrowserTest,
+    NavigateCookiesNotAccessibleWhenThirdPartyCookiesBlocked) {
   BlockThirdPartyCookies();
 
   GURL b_site_set_cookie_url = https_server_.GetURL(
