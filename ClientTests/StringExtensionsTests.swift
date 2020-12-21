@@ -61,10 +61,20 @@ class StringExtensionsTests: XCTestCase {
     }
     
     func testRemoveUnicodeFromFilename() {
-        let file = "foo-\u{200F}cod.jpg" // Unicode RTL-switch code, becomes "foo-gpj.doc"
-        let nounicode = "foo-cod.jpg"
-        XCTAssert(file != nounicode)
-        let strip = HTTPDownload.stripUnicode(fromFilename: file)
-        XCTAssert(strip == nounicode)
+        let files = [
+            "foo-\u{200F}cod.jpg",
+            "regedt\u{202e}gpj.apk",
+        ]
+        
+        let nounicodes = [
+            "foo-cod.jpg",
+            "regedtgpj.apk"
+        ]
+        
+        for (file, nounicode) in zip(files, nounicodes) {
+            XCTAssert(file != nounicode)
+            let strip = HTTPDownload.stripUnicode(fromFilename: file)
+            XCTAssert(strip == nounicode)
+        }
     }
 }
