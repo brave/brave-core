@@ -32,6 +32,11 @@ namespace {
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 
+// We need to clear this preference here instead of doing it in PrefProvider so
+// that we have a chance to migrate Shields' settings from old profiles.
+constexpr char kObsoletePluginsExceptionsPref[] =
+    "profile.content_settings.exceptions.plugins";
+
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   // brave plugin rules incorrectly use first party url as primary
   auto primary_pattern = reverse_patterns ? rule.secondary_pattern
@@ -152,6 +157,9 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   if (incognito)
     return;
   MigrateShieldsSettingsV1ToV2();
+
+  // Finally clean this up now that Shields' settings have been migrated.
+  prefs_->ClearPref(kObsoletePluginsExceptionsPref);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
