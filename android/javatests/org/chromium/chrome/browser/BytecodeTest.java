@@ -335,7 +335,6 @@ public class BytecodeTest {
         Class c1 = getClassForPath(class1Name);
         Class c2 = getClassForPath(class2Name);
         if (c1 == null || c2 == null) {
-            Assert.assertTrue(false);
             return false;
         }
         try {
@@ -345,10 +344,8 @@ public class BytecodeTest {
                 return true;
             }
         } catch (NoSuchMethodException e) {
-            Assert.assertTrue(false);
             return false;
         }
-        Assert.assertTrue(false);
         return false;
     }
 }
