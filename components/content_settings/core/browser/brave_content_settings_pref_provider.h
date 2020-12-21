@@ -53,6 +53,14 @@ class BravePrefProvider : public PrefProvider,
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationVersion);
   void MigrateShieldsSettings(bool incognito);
+  void MigrateShieldsSettingsFromResourceIds();
+  void MigrateShieldsSettingsFromResourceIdsForOneType(
+      const std::string& preference_name,
+      const std::string& patterns_string,
+      const base::Time& expiration,
+      const base::Time& last_modified,
+      SessionModel session_model,
+      int setting);
   void MigrateShieldsSettingsV1ToV2();
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
