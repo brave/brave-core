@@ -898,11 +898,14 @@ if (is_android) {
       "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/browser/preferences:java",
       "//chrome/browser/tab:java",
+      "//chrome/browser/tabmodel:java",
+      "//chrome/browser/ui/android/appmenu:java",
       "//chrome/test/android:chrome_java_test_support",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
       "//third_party/android_support_test_runner:runner_java",
       "//third_party/junit",
+      "//ui/android:ui_no_recycler_view_java",
     ]
   }
 }  # if (is_android) {
