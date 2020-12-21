@@ -145,7 +145,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       base::BindLambdaForTesting([&]() { was_navigation_resumed = true; }));
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPFSURL();
-  service->SetIpfsLaunchedForTest(true);
+  service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
   EXPECT_TRUE(was_navigation_resumed);
 
@@ -155,13 +155,13 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   throttle->OnGetConnectedPeers(true, peers);
   EXPECT_TRUE(was_navigation_resumed);
 
-  service->SetIpfsLaunchedForTest(false);
+  service->SetAllowIpfsLaunchForTest(false);
 
   was_navigation_resumed = false;
   test_handle.set_url(GetIPNSURL());
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPNSURL();
-  service->SetIpfsLaunchedForTest(true);
+  service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
   EXPECT_TRUE(was_navigation_resumed);
 
