@@ -73,6 +73,8 @@ GURL GetUpdateURL(
       update_url, "dtoi", stats_updater_params.GetDateOfInstallationParam());
   update_url = net::AppendQueryParameter(
       update_url, "ref", stats_updater_params.GetReferralCodeParam());
+  update_url = net::AppendQueryParameter(
+      update_url, "adsEnabled", stats_updater_params.GetAdsEnabledParam());
   return update_url;
 }
 
