@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "หากดำเนินการต่อ จะถือว่าคุณยอมรับ $$1เงื่อนไขการใช้บริการ$$2 และ $$3นโยบายความเป็นส่วนตัว$$4",
-    "description": ""
+    "message": "หากดำเนินการต่อ จะถือว่าคุณยอมรับ $tos_link_begin$เงื่อนไขการใช้บริการ$tos_link_end$ และ $pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "এগিয়ে চলার মাধ্যমে, আপনি$$1পরিষেবার শর্তাদি $$2 এবং $$3 গোপনীয়তা নীতি $$4 এর সাথে সম্মত হন।",
-    "description": ""
+    "message": "এগিয়ে চলার মাধ্যমে, আপনি$tos_link_begin$পরিষেবার শর্তাদি $tos_link_end$ এবং $pp_link_begin$ গোপনীয়তা নীতি $pp_link_end$ এর সাথে সম্মত হন।",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

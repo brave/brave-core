@@ -28,7 +28,14 @@ const store: Store<RewardsExtension.State> = new Store({
 })
 
 const localeContext = {
-  getString: (key: string) => getMessage(key)
+  getString: (key: string) => {
+    // In order to normalize messages across extensions and WebUI, replace all
+    // chrome.i18n message placeholders with $N marker patterns. UI components
+    // are responsible for replacing these markers with appropriate text or
+    // using the markers to build HTML.
+    const subsitutions = ['$1', '$2', '$3', '$4', '$5', '$6', '$7', '$8', '$9']
+    return getMessage(key, subsitutions)
+  }
 }
 
 initLocale(getUIMessages())

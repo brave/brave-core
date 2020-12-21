@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Продовжуючи, ви приймаєте $$1Умови надання послуг$$2 та $$3Політику конфіденційності$$4.",
-    "description": ""
+    "message": "Продовжуючи, ви приймаєте $tos_link_begin$Умови надання послуг$tos_link_end$ та $pp_link_begin$Політику конфіденційності$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

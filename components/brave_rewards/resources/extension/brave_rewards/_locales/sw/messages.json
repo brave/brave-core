@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Kwa kuendelea, unakubali $$1Sheria na Masharti$$2 na $$3Sera ya Faragha$$4.",
-    "description": ""
+    "message": "Kwa kuendelea, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

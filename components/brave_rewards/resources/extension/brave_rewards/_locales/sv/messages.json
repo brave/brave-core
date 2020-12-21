@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Genom att fortsätta godkänner du $$1villkoren$$2 och $$3integritetspolicyn$$4.",
-    "description": ""
+    "message": "Genom att fortsätta godkänner du $tos_link_begin$villkoren$tos_link_end$ och $pp_link_begin$integritetspolicyn$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "En procédant, vous acceptez les $$1Conditions d'utilisation$$2 et la $$3Politique de Confidentialité$$4. ",
-    "description": ""
+    "message": "En procédant, vous acceptez les $tos_link_begin$Conditions d'utilisation$tos_link_end$ et la $pp_link_begin$Politique de Confidentialité$pp_link_end$. ",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

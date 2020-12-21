@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು $$1ಸೇವಾ ನಿಯಮಗಳು$$2 ಮತ್ತು $$3ಗೌಪ್ಯತೆ ನೀತಿ$$4 ಗೆ ಸಮ್ಮತಿಸುತ್ತೀರಿ.",
-    "description": ""
+    "message": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ ಗೆ ಸಮ್ಮತಿಸುತ್ತೀರಿ.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

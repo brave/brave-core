@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Durch Fortfahren stimmen Sie den $$1Nutzungsbedingungen$$2 und der $$3Datenschutzrichtlinie$$4 zu.",
-    "description": ""
+    "message": "Durch Fortfahren stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }
