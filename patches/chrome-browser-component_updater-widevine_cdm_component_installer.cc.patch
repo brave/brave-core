@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/component_updater/widevine_cdm_component_installer.cc b/chrome/browser/component_updater/widevine_cdm_component_installer.cc
-index 650e041feaaa0e83d71b4207fd10d5390845f476..c79bdd8ad18de00057594964b2447a251f736a15 100644
+index 650e041feaaa0e83d71b4207fd10d5390845f476..034c826afb20079611e53927787299d132fa1b81 100644
 --- a/chrome/browser/component_updater/widevine_cdm_component_installer.cc
 +++ b/chrome/browser/component_updater/widevine_cdm_component_installer.cc
-@@ -75,6 +75,7 @@ const char kWidevineCdmPlatform[] =
+@@ -75,6 +75,8 @@ const char kWidevineCdmPlatform[] =
  const char kWidevineCdmArch[] =
  #if defined(ARCH_CPU_X86)
      "x86";
-+#if defined(ARCH_CPU_ARM64) && defined(OS_APPLE) "x64";
++#elif defined(ARCH_CPU_ARM64) && defined(OS_APPLE)
++    "x64";
  #elif defined(ARCH_CPU_X86_64)
      "x64";
  #elif defined(ARCH_CPU_ARMEL)
