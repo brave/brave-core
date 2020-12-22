@@ -2,6 +2,8 @@ declare_args() {
   brave_variations_server_url = ""
 }
 
+if (is_official_build) { assert(brave_variations_server_url != "") }
+
 config("brave_variations_config") {
   defines = [
     "BRAVE_VARIATIONS_SERVER_URL=\"$brave_variations_server_url\""
