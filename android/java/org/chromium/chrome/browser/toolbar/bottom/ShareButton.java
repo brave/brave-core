@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
 import org.chromium.ui.widget.ChromeImageButton;
+import org.chromium.url.GURL;
 
 /**
  * The share button.
@@ -65,7 +66,7 @@ class ShareButton extends ChromeImageButton implements TintObserver {
             }
 
             @Override
-            public void onUpdateUrl(Tab tab, String url) {
+            public void onUpdateUrl(Tab tab, GURL url) {
                 updateButtonEnabledState(tab);
             }
         };

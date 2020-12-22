@@ -14,7 +14,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
-import org.chromium.base.BuildInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
@@ -50,7 +49,7 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
             (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
 
         int defaultThemePref = ThemeType.SYSTEM_DEFAULT;
-        if (!BuildInfo.isAtLeastQ()) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             defaultThemePref = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                                ? ThemeType.DARK
                                : ThemeType.LIGHT;
