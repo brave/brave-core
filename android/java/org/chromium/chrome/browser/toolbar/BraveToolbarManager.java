@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.tab.SadTab;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -95,7 +96,8 @@ public class BraveToolbarManager extends ToolbarManager {
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
             CompositorViewHolder compositorViewHolder, Callback<Boolean> urlFocusChangedCallback,
-            ThemeColorProvider themeColorProvider, TabObscuringHandler tabObscuringHandler,
+            TopUiThemeColorProvider topUiThemeColorProvider,
+            TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             IdentityDiscController identityDiscController,
             List<ButtonDataProvider> buttonDataProviders, ActivityTabProvider tabProvider,
@@ -113,12 +115,11 @@ public class BraveToolbarManager extends ToolbarManager {
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
             Supplier<Boolean> isInOverviewModeSupplier, boolean isCustomTab,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            NightModeStateProvider nightModeStateProvider,
             StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull Supplier<Tab> startSurfaceParentTabSupplier) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
-                urlFocusChangedCallback, themeColorProvider, tabObscuringHandler,
+                urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
                 scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
                 bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
@@ -126,8 +127,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
                 intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
                 isInOverviewModeSupplier, isCustomTab, modalDialogManagerSupplier,
-                nightModeStateProvider, statusBarColorController, appMenuDelegate,
-                activityLifecycleDispatcher, startSurfaceParentTabSupplier);
+                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
+                startSurfaceParentTabSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
