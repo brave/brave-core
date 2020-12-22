@@ -6,12 +6,13 @@
 package org.chromium.chrome.browser.night_mode.settings;
 
 import android.content.Context;
-import androidx.preference.PreferenceViewHolder;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.preference.PreferenceViewHolder;
+
 import org.chromium.chrome.R;
-import org.chromium.base.BuildInfo;
 
 public class BraveRadioButtonGroupThemePreference extends RadioButtonGroupThemePreference {
     public BraveRadioButtonGroupThemePreference(Context context, AttributeSet attrs) {
@@ -22,7 +23,7 @@ public class BraveRadioButtonGroupThemePreference extends RadioButtonGroupThemeP
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        if (!BuildInfo.isAtLeastQ()) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             holder.findViewById(R.id.system_default).setVisibility(View.GONE);
         }
     }
