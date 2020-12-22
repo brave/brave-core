@@ -12,7 +12,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 8;
+const int kBraveCurrentDataVersion = 9;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -62,6 +62,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE, &duckduckgo_au_nz_ie},
         {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
+        {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
@@ -151,6 +152,20 @@ const PrepopulatedEngine duckduckgo_lite = {
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
 };
 #endif
+
+const PrepopulatedEngine brave_ecosia =
+    ModifyEngineParams(ecosia,
+                       NULL,
+                       L":e",
+                       "https://www.ecosia.org/search?tt="
+#if defined(OS_ANDROID)
+                       "42b8ae98"
+#else
+                       "e8eb07a6"
+#endif
+                       "&q={{searchTerms}}",
+                       "https://ac.ecosia.org/?q={searchTerms}",
+                       PREPOPULATED_ENGINE_ID_ECOSIA);
 
 const PrepopulatedEngine qwant = {
     L"Qwant",
