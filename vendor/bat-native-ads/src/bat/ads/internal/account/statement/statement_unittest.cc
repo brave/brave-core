@@ -398,7 +398,7 @@ TEST_F(BatAdsStatementTest,
   const WalletInfo wallet = GetWallet();
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AdvanceClock(TimeFromDateString("21 October 2020"));
   AddTransactions(14);
   AdvanceClock(TimeFromDateString("18 November 2020"));
   AddTransactions(7);
@@ -549,7 +549,7 @@ TEST_F(BatAdsStatementTest,
 
   AdvanceClock(TimeFromDateString("12 September 2020"));
   AddTransactions(9);
-  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AdvanceClock(TimeFromDateString("21 October 2020"));
   AddTransactions(14);
   AdvanceClock(TimeFromDateString("18 November 2020"));
   AddTransactions(7);
@@ -634,7 +634,7 @@ TEST_F(BatAdsStatementTest,
 
   AdvanceClock(TimeFromDateString("12 September 2020"));
   AddTransactions(9);
-  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AdvanceClock(TimeFromDateString("21 October 2020"));
   AddTransactions(14);
   AdvanceClock(TimeFromDateString("18 November 2020"));
   AddTransactions(7);
@@ -710,7 +710,7 @@ TEST_F(BatAdsStatementTest,
   ad_rewards_->MaybeReconcile(wallet);
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AdvanceClock(TimeFromDateString("21 October 2020"));
   AddTransactions(35);
   AdvanceClock(TimeFromDateString("18 November 2020"));
   AddTransactions(7);
@@ -808,7 +808,7 @@ TEST_F(BatAdsStatementTest,
   ad_rewards_->MaybeReconcile(wallet);
   ad_rewards_->MaybeReconcile(wallet);
 
-  AdvanceClock(TimeFromDateString("31 October 2020"));
+  AdvanceClock(TimeFromDateString("21 October 2020"));
   AddTransactions(35);
   AdvanceClock(TimeFromDateString("18 November 2020"));
   AddTransactions(7);
