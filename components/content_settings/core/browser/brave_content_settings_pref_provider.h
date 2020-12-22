@@ -52,6 +52,8 @@ class BravePrefProvider : public PrefProvider,
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationVersion);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsSettingsMigrationFromResourceIDs);
   void MigrateShieldsSettings(bool incognito);
   void MigrateShieldsSettingsFromResourceIds();
   void MigrateShieldsSettingsFromResourceIdsForOneType(
