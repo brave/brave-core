@@ -22,7 +22,7 @@ public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     // next SyncController.updateSyncStateFromAndroid sync gets disabled, so
     // we act here as mChromeSyncEnabled would be true.
     // Following up issue https://github.com/brave/brave-browser/issues/10454
-    @Override
+    // @Override
     public boolean isSyncEnabled() {
         return mMasterSyncEnabled;
     }
