@@ -45,52 +45,6 @@ const char kSessionModelPath[] = "model";
 const char kSettingPath[] = "setting";
 const char kPerResourcePath[] = "per_resource";
 
-std::string GetShieldsPreferenceName(const std::string& name) {
-  return std::string("profile.content_settings.exceptions.").append(name);
-}
-
-// Extract a timestamp from |dictionary[kLastModifiedPath]|.
-// Will return base::Time() if no timestamp exists.
-base::Time GetTimeStamp(const base::DictionaryValue* dictionary) {
-  std::string timestamp_str;
-  dictionary->GetStringWithoutPathExpansion(kLastModifiedPath, &timestamp_str);
-  int64_t timestamp = 0;
-  base::StringToInt64(timestamp_str, &timestamp);
-  base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
-      base::TimeDelta::FromMicroseconds(timestamp));
-  return last_modified;
-}
-
-// Extract a timestamp from |dictionary[kExpirationPath]|. Will return
-// base::Time() if no timestamp exists.
-base::Time GetExpiration(const base::DictionaryValue* dictionary) {
-  std::string expiration_timestamp_str;
-  dictionary->GetStringWithoutPathExpansion(kExpirationPath,
-                                            &expiration_timestamp_str);
-  int64_t expiration_timestamp = 0;
-  base::StringToInt64(expiration_timestamp_str, &expiration_timestamp);
-  base::Time expiration = base::Time::FromDeltaSinceWindowsEpoch(
-      base::TimeDelta::FromMicroseconds(expiration_timestamp));
-  return expiration;
-}
-
-// Extract a SessionModel from |dictionary[kSessionModelPath]|. Will return
-// SessionModel::Durable if no model exists.
-content_settings::SessionModel GetSessionModel(
-    const base::DictionaryValue* dictionary) {
-  int model_int = 0;
-  dictionary->GetIntegerWithoutPathExpansion(kSessionModelPath, &model_int);
-  if ((model_int >
-       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
-      (model_int < 0)) {
-    model_int = 0;
-  }
-
-  content_settings::SessionModel session_model =
-      static_cast<content_settings::SessionModel>(model_int);
-  return session_model;
-}
-
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   // brave plugin rules incorrectly use first party url as primary
   auto primary_pattern = reverse_patterns ? rule.secondary_pattern
@@ -236,13 +190,16 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
     bool is_dictionary = i.value().GetAsDictionary(&settings_dictionary);
     DCHECK(is_dictionary);
 
-    base::Time expiration = GetExpiration(settings_dictionary);
-    SessionModel session_model = GetSessionModel(settings_dictionary);
+    base::Time expiration = GetTimeStampFromDictionary(settings_dictionary,
+                                                       kExpirationPath);
+    SessionModel session_model = GetSessionModelFromDictionary(
+        settings_dictionary, kSessionModelPath);
 
     const base::DictionaryValue* resource_dictionary = nullptr;
     if (settings_dictionary->GetDictionary(kPerResourcePath,
                                            &resource_dictionary)) {
-      base::Time last_modified = GetTimeStamp(settings_dictionary);
+      base::Time last_modified = GetTimeStampFromDictionary(settings_dictionary,
+                                                            kLastModifiedPath);
       for (base::DictionaryValue::Iterator j(*resource_dictionary);
            !j.IsAtEnd(); j.Advance()) {
         const std::string& resource_identifier(j.key());
@@ -262,7 +219,7 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           actual_name = resource_identifier;
 
         MigrateShieldsSettingsFromResourceIdsForOneType(
-            GetShieldsPreferenceName(actual_name), patterns_string,
+            GetShieldsSettingUserPrefsPath(actual_name), patterns_string,
             expiration, last_modified, session_model, setting);
       }
     }

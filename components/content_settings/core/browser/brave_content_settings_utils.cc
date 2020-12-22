@@ -8,7 +8,9 @@
 #include <algorithm>
 
 #include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/optional.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "url/gurl.h"
 
@@ -109,6 +111,42 @@ base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
   base::Optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
   return new_pattern;
+}
+
+// Returns the full path in the user preferences store to the Brave Shields
+// setting identified by it's name (i.e. |name|).
+std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
+  return std::string("profile.content_settings.exceptions.").append(name);
+}
+
+// Extract a timestamp from |dictionary[key]|. Will return base::Time() if no
+// timestamp exists.
+base::Time GetTimeStampFromDictionary(
+    const base::DictionaryValue* dictionary, const char* key) {
+  std::string timestamp_str;
+  dictionary->GetStringWithoutPathExpansion(key, &timestamp_str);
+  int64_t timestamp = 0;
+  base::StringToInt64(timestamp_str, &timestamp);
+  base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
+      base::TimeDelta::FromMicroseconds(timestamp));
+  return last_modified;
+}
+
+// Extract a SessionModel from |dictionary[key]|. Will return
+// SessionModel::Durable if no model exists.
+content_settings::SessionModel GetSessionModelFromDictionary(
+    const base::DictionaryValue* dictionary, const char* key) {
+  int model_int = 0;
+  dictionary->GetIntegerWithoutPathExpansion(key, &model_int);
+  if ((model_int >
+       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
+      (model_int < 0)) {
+    model_int = 0;
+  }
+
+  content_settings::SessionModel session_model =
+      static_cast<content_settings::SessionModel>(model_int);
+  return session_model;
 }
 
 }  // namespace content_settings
