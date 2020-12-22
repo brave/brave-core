@@ -111,6 +111,7 @@ import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -310,7 +311,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             }
 
             @Override
-            public void onPageLoadStarted(Tab tab, String url) {
+            public void onPageLoadStarted(Tab tab, GURL url) {
                 if (getToolbarDataProvider().getTab() == tab) {
                     updateBraveShieldsButtonState(tab);
                 }
@@ -319,9 +320,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             }
 
             @Override
-            public void onPageLoadFinished(final Tab tab, String url) {
+            public void onPageLoadFinished(final Tab tab, GURL url) {
                 if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsHandler.updateHost(url);
+                    mBraveShieldsHandler.updateHost(url.getHost());
                     updateBraveShieldsButtonState(tab);
 
                     Profile mProfile = Profile.getLastUsedRegularProfile();
@@ -1085,10 +1086,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     @Override
     protected void initialize(ToolbarDataProvider toolbarDataProvider,
-            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            Runnable tabOrModelChangeRunnable) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator,
-                tabOrModelChangeRunnable);
+            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator) {
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator);
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
     }
 
