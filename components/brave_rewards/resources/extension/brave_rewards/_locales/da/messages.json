@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Ved at fortsætte accepterer du $$1Servicevilkårene $$2 og $$Politikken om beskyttelse af persondata$$4.",
-    "description": ""
+    "message": "Ved at fortsætte accepterer du $tos_link_begin$Servicevilkårene$tos_link_end$ og $pp_link_begin$Politikken om beskyttelse af persondata$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Pokračováním souhlasíte s $$1Podmínkami služby$$2 a $$3Ochranou soukromí$$4.",
-    "description": ""
+    "message": "Pokračováním souhlasíte s $tos_link_begin$Podmínkami služby$tos_link_end$ a $pp_link_begin$Ochranou soukromí$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

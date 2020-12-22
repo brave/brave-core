@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Συνεχίζοντας, συμφωνείτε με τους $$1Όρους χρήσης$$2 και την $$3Πολιτική απορρήτου$$4.",
-    "description": ""
+    "message": "Συνεχίζοντας, συμφωνείτε με τους $tos_link_begin$Όρους χρήσης$tos_link_end$ και την $pp_link_begin$Πολιτική απορρήτου$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

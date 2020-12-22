@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "በመቀጠል እርስዎ በ $$1አገልግሎት ሁኔታዎች$$2 and $$3Privacy Policy$$4ተስማምተዋል።",
-    "description": ""
+    "message": "በመቀጠል እርስዎ በ $tos_link_begin$አገልግሎት ሁኔታዎች$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$ተስማምተዋል።",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

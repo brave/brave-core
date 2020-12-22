@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "आगे बढ़ने से, आप $$1सेवा की शर्तें$$2 और $$3गोपनीयता नीति$$4 से सहमत होते हैं।",
-    "description": ""
+    "message": "आगे बढ़ने से, आप $tos_link_begin$सेवा की शर्तें$tos_link_end$ और $pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं।",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

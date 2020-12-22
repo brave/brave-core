@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Tęsdami sutinkate su $$1paslaugų teikimo sąlygomis$$2 ir $$3privatumo politika$$4.",
-    "description": ""
+    "message": "Tęsdami sutinkate su $tos_link_begin$paslaugų teikimo sąlygomis$tos_link_end$ ir $pp_link_begin$privatumo politika$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }
