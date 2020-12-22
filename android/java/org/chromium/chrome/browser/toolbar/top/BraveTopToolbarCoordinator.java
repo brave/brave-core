@@ -48,7 +48,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> homeButtonVisibilitySupplier,
             ObservableSupplier<Boolean> identityDiscStateSupplier,
             Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
-            OneshotSupplier<StartSurface> startSurfaceSupplier, Runnable tabOrModelChangeRunnable,
+            OneshotSupplier<StartSurface> startSurfaceSupplier,
             Supplier<ResourceManager> resourceManagerSupplier) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
@@ -56,7 +56,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homeButtonVisibilitySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
-                startSurfaceSupplier, tabOrModelChangeRunnable, resourceManagerSupplier);
+                startSurfaceSupplier, resourceManagerSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
 

@@ -5,16 +5,20 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
 
 class BraveBottomControlsMediator extends BottomControlsMediator {
     private final PropertyModel mModel;
 
-    BraveBottomControlsMediator(PropertyModel model, BrowserControlsSizer controlsSizer,
-            FullscreenManager fullscreenManager, int bottomControlsHeight) {
-        super(model, controlsSizer, fullscreenManager, bottomControlsHeight);
+    BraveBottomControlsMediator(WindowAndroid windowAndroid, PropertyModel model,
+            BrowserControlsSizer controlsSizer, FullscreenManager fullscreenManager,
+            int bottomControlsHeight, ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
+        super(windowAndroid, model, controlsSizer, fullscreenManager, bottomControlsHeight,
+                overlayPanelVisibilitySupplier);
 
         mModel = model;
     }
