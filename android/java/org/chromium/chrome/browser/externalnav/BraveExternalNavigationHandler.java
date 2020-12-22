@@ -22,7 +22,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
         if (isUpholdOverride(params)) {
             CompleteUpholdVerification(params);
-            return OverrideUrlLoadingResult.OVERRIDE_WITH_CLOBBERING_TAB;
+            return OverrideUrlLoadingResult.forClobberingTab();
         }
         return super.shouldOverrideUrlLoading(params);
     }
@@ -38,12 +38,12 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     }
 
     public OverrideUrlLoadingResult clobberCurrentTabWithFallbackUrl(
-        String browserFallbackUrl, ExternalNavigationParams params) {
+            String browserFallbackUrl, ExternalNavigationParams params) {
         // Below is an actual code that was used prior to deletion of
         // clobberCurrentTabWithFallbackUrl introduced here
         // https://chromium.googlesource.com/chromium/src/+/37b5b744bc83f630d3121b46868818bb4e848c2a
         if (!params.isMainFrame()) {
-            return OverrideUrlLoadingResult.NO_OVERRIDE;
+            return OverrideUrlLoadingResult.forNoOverride();
         }
 
         if (params.getRedirectHandler() != null) {
