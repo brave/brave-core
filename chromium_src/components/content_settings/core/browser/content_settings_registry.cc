@@ -32,12 +32,6 @@ const struct {
     ContentSettingsType::BRAVE_REFERRERS },
   { brave_shields::kCookies,
     ContentSettingsType::BRAVE_COOKIES },
-  { brave_shields::kFacebookEmbeds,
-    ContentSettingsType::BRAVE_FACEBOOK_EMBEDS },
-  { brave_shields::kTwitterEmbeds,
-    ContentSettingsType::BRAVE_TWITTER_EMBEDS },
-  { brave_shields::kLinkedInEmbeds,
-    ContentSettingsType::BRAVE_LINKEDIN_EMBEDS },
 };
 
 }  // namespace
