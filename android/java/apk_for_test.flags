@@ -141,19 +141,25 @@
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.tabmodel.ChromeTabCreator {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.tabmodel.BraveTabCreator {
+    public <init>(...);
 }

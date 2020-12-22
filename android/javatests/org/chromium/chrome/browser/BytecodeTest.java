@@ -5,14 +5,33 @@
 
 package org.chromium.chrome.browser;
 
+import android.content.Context;
 import android.support.test.filters.SmallTest;
+import android.view.View;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.Callback;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.init.StartupTabPreloader;
+import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
+import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -130,11 +149,32 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ChromeTabbedActivity",
                 "hideOverview", true, void.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
-                "openNewOrSelectExistingTab", true, org.chromium.chrome.browser.tab.Tab.class,
-                String.class));
+                "openNewOrSelectExistingTab", true, Tab.class, String.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
-                "selectExistingTab", true, org.chromium.chrome.browser.tab.Tab.class,
-                String.class));
+                "selectExistingTab", true, Tab.class, String.class));
+    }
+
+    @Test
+    @SmallTest
+    public void testConstructorsExistAndMatch() throws Exception {
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
+                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator",
+                        ChromeActivity.class, Callback.class, OneshotSupplier.class,
+                        ObservableSupplier.class, ActivityTabProvider.class,
+                        ObservableSupplierImpl.class, ObservableSupplier.class,
+                        ObservableSupplier.class, OneshotSupplier.class, Supplier.class,
+                        ObservableSupplier.class, OneshotSupplier.class, OneshotSupplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
+                "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
+                Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
+                TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
+                OneshotSupplier.class, ObservableSupplier.class, ModalDialogManager.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
+                "org/chromium/chrome/browser/tabmodel/BraveTabCreator", ChromeActivity.class,
+                WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
+                ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class));
     }
 
     @Test
@@ -288,5 +328,24 @@ public class BytecodeTest {
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    private boolean constructorsMatch(
+            String class1Name, String class2Name, Class<?>... parameterTypes) {
+        Class c1 = getClassForPath(class1Name);
+        Class c2 = getClassForPath(class2Name);
+        if (c1 == null || c2 == null) {
+            return false;
+        }
+        try {
+            Constructor ctor1 = c1.getConstructor(parameterTypes);
+            Constructor ctor2 = c2.getConstructor(parameterTypes);
+            if (ctor1 != null && ctor2 != null) {
+                return true;
+            }
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+        return false;
     }
 }
