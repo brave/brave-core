@@ -16,6 +16,10 @@
   virtual BraveFarblingLevel GetBraveFarblingLevel() {          \
     return BraveFarblingLevel::OFF;                             \
   }                                                             \
+  virtual bool AllowStorageAccessWithoutEphemeralStorageSync(   \
+      StorageType storage_type) {                               \
+    return true;                                                \
+  }                                                             \
   virtual bool AllowStorageAccessSync
 
 #include "../../../../../../third_party/blink/public/platform/web_content_settings_client.h"

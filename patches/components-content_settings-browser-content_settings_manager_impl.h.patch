@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/browser/content_settings_manager_impl.h b/components/content_settings/browser/content_settings_manager_impl.h
+index 09a41c1061e1a150180abd22e8b99ea65306a531..a779dd2a7c4e7c16cc47982361f356767b387446 100644
+--- a/components/content_settings/browser/content_settings_manager_impl.h
++++ b/components/content_settings/browser/content_settings_manager_impl.h
+@@ -65,6 +65,7 @@ class ContentSettingsManagerImpl
+   void OnContentBlocked(int32_t render_frame_id,
+                         ContentSettingsType type) override;
+ 
++  BRAVE_COOKIE_SETTINGS_BASE_H
+  private:
+   ContentSettingsManagerImpl(content::RenderProcessHost* render_process_host,
+                              std::unique_ptr<Delegate> delegate);

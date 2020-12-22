@@ -1,0 +1,12 @@
+diff --git a/services/network/network_service_network_delegate.h b/services/network/network_service_network_delegate.h
+index 0926327d2a009550d91824ef87f06aa7c4482c64..52d9b8bcb10521adf5683631f763c37cfab94350 100644
+--- a/services/network/network_service_network_delegate.h
++++ b/services/network/network_service_network_delegate.h
+@@ -33,6 +33,7 @@ class COMPONENT_EXPORT(NETWORK_SERVICE) NetworkServiceNetworkDelegate
+     enable_referrers_ = enable_referrers;
+   }
+ 
++  BRAVE_NETWORK_SERVICE_NETWORK_DELEGATE_H
+  private:
+   // net::NetworkDelegateImpl implementation.
+   int OnBeforeURLRequest(net::URLRequest* request,

@@ -1,0 +1,18 @@
+diff --git a/components/content_settings/common/content_settings_manager.mojom b/components/content_settings/common/content_settings_manager.mojom
+index 45b62cf62ec7a1d9245b3341becc01495f0ef0cf..371669ddf73c586189a1f4c7b26a2855f9c17947 100644
+--- a/components/content_settings/common/content_settings_manager.mojom
++++ b/components/content_settings/common/content_settings_manager.mojom
+@@ -42,4 +42,13 @@ interface ContentSettingsManager {
+   // Tells the browser that content in the current page was blocked due to the
+   // user's content settings.
+   OnContentBlocked(int32 render_frame_id, ContentSettingsType type);
++
++  // Check whether storage access request is granted originally.
++  [Sync]
++  AllowStorageAccessWithoutEphemeralStorage(
++      int32 render_frame_id,
++      StorageType storage_type,
++      url.mojom.Origin origin,
++      url.mojom.Url site_for_cookies,
++      url.mojom.Origin top_frame_origin) => (bool allowed);
+ };

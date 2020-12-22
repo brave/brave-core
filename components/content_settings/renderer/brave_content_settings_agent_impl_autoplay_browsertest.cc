@@ -46,6 +46,14 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
     log_->on_content_blocked_type = type;
   }
 
+  void AllowStorageAccessWithoutEphemeralStorage(
+      int32_t render_frame_id,
+      StorageType storage_type,
+      const url::Origin& origin,
+      const GURL& site_for_cookies,
+      const url::Origin& top_frame_origin,
+      base::OnceCallback<void(bool)> callback) override {}
+
  private:
   Log* log_;
 };

@@ -29,6 +29,8 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
                                 bool should_whitelist,
                                 std::unique_ptr<Delegate> delegate);
   ~BraveContentSettingsAgentImpl() override;
+  bool AllowStorageAccessWithoutEphemeralStorageSync(
+      StorageType storage_type) override;
 
  protected:
   bool AllowScript(bool enabled_per_settings) override;

@@ -172,12 +172,26 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
   return IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
+bool CookieSettingsBase::IsAllCookiesBlocked(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin) const {
+  // Get content settings only - do not consider default 3rd-party blocking.
+  ContentSetting setting;
+  GetCookieSettingInternal(
+      url, top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies,
+      false, nullptr, &setting);
+  return setting == CONTENT_SETTING_BLOCK;
+}
+
 bool CookieSettingsBase::IsCookieAccessOrEphemeralCookiesAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
   if (IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin))
     return true;
+  if (IsAllCookiesBlocked(url, site_for_cookies, top_frame_origin))
+    return false;
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
   if (!top_frame_origin.has_value())

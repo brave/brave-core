@@ -139,6 +139,13 @@ class EphemeralStorageBaseBrowserTest : public InProcessBrowserTest {
         GURL());
   }
 
+  void BlockALLCookies() {
+    auto* content_settings =
+        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    brave_shields::SetCookieControlType(
+        content_settings, brave_shields::ControlType::BLOCK, GURL());
+  }
+
   void SetValuesInFrame(RenderFrameHost* frame,
                         std::string storage_value,
                         std::string cookie_value) {
@@ -659,6 +666,67 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ("name=bcom", GetCookiesInFrame(iframe_b));
 }
 
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       StoragesNotAccessiableWhenAllCookiesBlocked) {
+  BlockALLCookies();
+
+  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  // We set a value in the page where all the frames are first-party.
+  // SetValuesInFrames(web_contents, "b.com - first party", "from=b.com");
+  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  SetCookieInFrame(main_frame, "name=bcom");
+
+  // The storage in the first-party iframes should not be accessiable when all
+  // cookies are blocked.
+  AssertEmptyInSubframes(web_contents);
+
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  auto* a_site_content = browser()->tab_strip_model()->GetActiveWebContents();
+
+  RenderFrameHost* a_site_main_frame = a_site_content->GetMainFrame();
+  RenderFrameHost* a_site_iframe_a =
+      content::ChildFrameAt(a_site_main_frame, 0);
+  SetCookieInFrame(a_site_iframe_a, "name=acom");
+
+  // The storage in the third-party iframes should not accessiable when all
+  // cookies are blocked.
+  AssertEmptyInSubframes(a_site_content);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       NavigateCookiesNotAccessiableWhenAllCookiesBlocked) {
+  BlockALLCookies();
+
+  GURL b_site_set_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
+
+  ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  std::string a_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://a.com/"));
+  std::string b_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  EXPECT_EQ("", a_cookie);
+  EXPECT_EQ("", b_cookie);
+
+  // The third-party iframe should not access to any cookies.
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
+  RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
+  ASSERT_EQ("", GetCookiesInFrame(main_frame));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+
+  content::NavigateIframeToURL(web_contents, "third_party_iframe_a",
+                               b_site_set_cookie_url);
+
+  ASSERT_EQ("", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+}
+
 class EphemeralStorageDisabledBrowserTest
     : public EphemeralStorageBaseBrowserTest {
  public:
@@ -795,6 +863,67 @@ IN_PROC_BROWSER_TEST_F(
   RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
   RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
   ASSERT_EQ("", GetCookiesInFrame(main_frame));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
+                       StoragesNotAccessiableWhenAllCookiesBlocked) {
+  BlockALLCookies();
+
+  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  // We set a value in the page where all the frames are first-party.
+  // SetValuesInFrames(web_contents, "b.com - first party", "from=b.com");
+  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  SetCookieInFrame(main_frame, "name=bcom");
+
+  // The storage in the first-party iframes should not be accessiable when all
+  // cookies are blocked.
+  AssertEmptyInSubframes(web_contents);
+
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  auto* a_site_content = browser()->tab_strip_model()->GetActiveWebContents();
+
+  RenderFrameHost* a_site_main_frame = a_site_content->GetMainFrame();
+  RenderFrameHost* a_site_iframe_a =
+      content::ChildFrameAt(a_site_main_frame, 0);
+  SetCookieInFrame(a_site_iframe_a, "name=acom");
+
+  // The storage in the third-party iframes should not accessiable when all
+  // cookies are blocked.
+  AssertEmptyInSubframes(a_site_content);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageDisabledBrowserTest,
+                       NavigateCookiesNotAccessiableWhenAllCookiesBlocked) {
+  BlockALLCookies();
+
+  GURL b_site_set_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
+
+  ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  std::string a_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://a.com/"));
+  std::string b_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  EXPECT_EQ("", a_cookie);
+  EXPECT_EQ("", b_cookie);
+
+  // The third-party iframe should not access to any cookies.
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
+  RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
+  ASSERT_EQ("", GetCookiesInFrame(main_frame));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+
+  content::NavigateIframeToURL(web_contents, "third_party_iframe_a",
+                               b_site_set_cookie_url);
+
   ASSERT_EQ("", GetCookiesInFrame(iframe_a));
   ASSERT_EQ("", GetCookiesInFrame(iframe_b));
 }

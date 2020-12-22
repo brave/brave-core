@@ -1,0 +1,12 @@
+diff --git a/net/base/network_delegate.h b/net/base/network_delegate.h
+index c00f0ccd3b5a8bf8973b359cfc7880355292be03..6626c98567cc5c7bd2f48d63647e3ff5f96b1b6a 100644
+--- a/net/base/network_delegate.h
++++ b/net/base/network_delegate.h
+@@ -97,6 +97,7 @@ class NET_EXPORT NetworkDelegate {
+   bool CanUseReportingClient(const url::Origin& origin,
+                              const GURL& endpoint) const;
+ 
++  BRAVE_NETWORK_DELEGATE_H
+  protected:
+   THREAD_CHECKER(thread_checker_);
+ 

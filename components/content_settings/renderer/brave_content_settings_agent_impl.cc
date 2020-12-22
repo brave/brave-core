@@ -250,4 +250,16 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
   return allow;
 }
 
+bool BraveContentSettingsAgentImpl::
+    AllowStorageAccessWithoutEphemeralStorageSync(StorageType storage_type) {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  bool result = false;
+  GetContentSettingsManager().AllowStorageAccessWithoutEphemeralStorage(
+      routing_id(), ConvertToMojoStorageType(storage_type),
+      frame->GetSecurityOrigin(),
+      frame->GetDocument().SiteForCookies().RepresentativeUrl(),
+      frame->GetDocument().TopFrameOrigin(), &result);
+  return result;
+}
+
 }  // namespace content_settings

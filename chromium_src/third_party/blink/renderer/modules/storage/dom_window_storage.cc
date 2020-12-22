@@ -6,6 +6,7 @@
 #include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/exported/web_view_impl.h"
@@ -40,6 +41,22 @@ void MaybeClearAccessDeniedException(StorageArea* storage,
     // clear the access denied exception for better webcompat
     exception_state->ClearException();
   }
+}
+
+bool CanAccessStorageAreaWithoutEphemeralStorage(
+    LocalFrame* frame,
+    StorageArea::StorageType type) {
+  if (auto* settings_client = frame->GetContentSettingsClient()) {
+    switch (type) {
+      case StorageArea::StorageType::kLocalStorage:
+        return settings_client->AllowStorageAccessWithoutEphemeralStorageSync(
+            WebContentSettingsClient::StorageType::kLocalStorage);
+      case StorageArea::StorageType::kSessionStorage:
+        return settings_client->AllowStorageAccessWithoutEphemeralStorageSync(
+            WebContentSettingsClient::StorageType::kSessionStorage);
+    }
+  }
+  return true;
 }
 
 }  // namespace
@@ -175,7 +192,7 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   if (!storage)
     return nullptr;
 
-  if (StorageController::CanAccessStorageAreaWithoutEphemeralStorage(
+  if (CanAccessStorageAreaWithoutEphemeralStorage(
           window->GetFrame(), StorageArea::StorageType::kSessionStorage))
     return storage;
 
@@ -213,8 +230,8 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   if (!storage)
     return nullptr;
 
-  if (StorageController::CanAccessStorageAreaWithoutEphemeralStorage(
-          window->GetFrame(), StorageArea::StorageType::kSessionStorage))
+  if (CanAccessStorageAreaWithoutEphemeralStorage(
+          window->GetFrame(), StorageArea::StorageType::kLocalStorage))
     return storage;
 
   return ephemeralLocalStorage();

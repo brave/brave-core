@@ -13,6 +13,9 @@
   bool IsChromiumCookieAccessAllowed(                                    \
       const GURL& url, const GURL& site_for_cookies,                     \
       const base::Optional<url::Origin>& top_frame_origin) const;        \
+  bool IsAllCookiesBlocked(                                              \
+      const GURL& url, const GURL& site_for_cookies,                     \
+      const base::Optional<url::Origin>& top_frame_origin) const;        \
                                                                          \
  public:                                                                 \
   bool IsCookieAccessOrEphemeralCookiesAccessAllowed(                    \
