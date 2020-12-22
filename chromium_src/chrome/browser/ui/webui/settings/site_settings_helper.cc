@@ -15,10 +15,7 @@
     {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},         \
     {ContentSettingsType::BRAVE_SHIELDS, nullptr},                   \
     {ContentSettingsType::BRAVE_REFERRERS, nullptr},                 \
-    {ContentSettingsType::BRAVE_COOKIES, nullptr},                   \
-    {ContentSettingsType::BRAVE_FACEBOOK_EMBEDS, nullptr},           \
-    {ContentSettingsType::BRAVE_TWITTER_EMBEDS, nullptr},            \
-    {ContentSettingsType::BRAVE_LINKEDIN_EMBEDS, nullptr},
+    {ContentSettingsType::BRAVE_COOKIES, nullptr},
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
   if (name == "autoplay")                                                \

@@ -11,10 +11,7 @@
   BRAVE_FINGERPRINTING_V2,                \
   BRAVE_SHIELDS,                          \
   BRAVE_REFERRERS,                        \
-  BRAVE_COOKIES,                          \
-  BRAVE_FACEBOOK_EMBEDS,                  \
-  BRAVE_TWITTER_EMBEDS,                   \
-  BRAVE_LINKEDIN_EMBEDS
+  BRAVE_COOKIES
 
 #include "../../../../../../components/content_settings/core/common/content_settings_types.h"
 

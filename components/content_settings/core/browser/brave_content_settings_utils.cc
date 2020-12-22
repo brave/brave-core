@@ -22,10 +22,7 @@ const std::vector<ContentSettingsType> kShieldsContentSettingsTypes {
     ContentSettingsType::BRAVE_FINGERPRINTING_V2,
     ContentSettingsType::BRAVE_SHIELDS,
     ContentSettingsType::BRAVE_REFERRERS,
-    ContentSettingsType::BRAVE_COOKIES,
-    ContentSettingsType::BRAVE_FACEBOOK_EMBEDS,
-    ContentSettingsType::BRAVE_TWITTER_EMBEDS,
-    ContentSettingsType::BRAVE_LINKEDIN_EMBEDS
+    ContentSettingsType::BRAVE_COOKIES
 };
 
 bool CanPatternBeConvertedToWildcardSchemeAndPort(
@@ -87,15 +84,6 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
       break;
     case ContentSettingsType::BRAVE_COOKIES:
       return brave_shields::kCookies;
-      break;
-    case ContentSettingsType::BRAVE_FACEBOOK_EMBEDS:
-      return brave_shields::kFacebookEmbeds;
-      break;
-    case ContentSettingsType::BRAVE_TWITTER_EMBEDS:
-      return brave_shields::kTwitterEmbeds;
-      break;
-    case ContentSettingsType::BRAVE_LINKEDIN_EMBEDS:
-      return brave_shields::kLinkedInEmbeds;
       break;
     default:
       NOTREACHED();
