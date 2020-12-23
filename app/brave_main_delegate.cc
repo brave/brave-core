@@ -37,6 +37,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
+#include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/variations/variations_switches.h"
@@ -212,6 +213,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif
+      security_state::features::kSafetyTipUI.name,
   };
 
   // Disabled features.

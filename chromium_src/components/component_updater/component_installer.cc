@@ -23,7 +23,6 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
     "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
-    "jflookgnkcckhobaglndicnbbgbonegd",  // Safety Tips
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
 #if defined(OS_ANDROID)
