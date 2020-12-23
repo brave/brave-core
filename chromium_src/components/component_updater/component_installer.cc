@@ -35,17 +35,27 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
 #endif
   };
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  VLOG(1) << "Brave ComponentInstaller::Register is on valid thread.";
   if (installer_policy_) {
+    VLOG(1) << "Brave ComponentInstaller::Register has installer_policy_.";
     std::vector<uint8_t> hash;
     installer_policy_->GetHash(&hash);
     const std::string id = update_client::GetCrxIdFromPublicKeyHash(hash);
+    VLOG(1) << "Brave ComponentInstaller::Register component id: " << id;
     if (base::Contains(disallowed_components, id.c_str())) {
       VLOG(1) << "Skipping registration of Brave-unsupported component "
               << id << ".";
       return;
+    } else {
+      VLOG(1) << "Brave ComponentInstaller::Register " << id
+              << " is not blocked.";
     }
+  } else {
+    VLOG(1) << "Brave ComponentInstaller::Register has no installer_policy_.";
   }
+  VLOG(1) << "Brave ComponentInstaller::Register calling base implementation.";
   Register_ChromiumImpl(cus, std::move(callback));
+  VLOG(1) << "Brave ComponentInstaller::Register base implementation complete.";
 }
 
 }  // namespace component_updater
