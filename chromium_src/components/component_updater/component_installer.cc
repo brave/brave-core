@@ -12,7 +12,7 @@
 #undef Register
 #undef CRX3_WITH_PUBLISHER_PROOF
 
-#include "base/containers/contains.h"
+#include "base/stl_util.h"
 
 namespace component_updater {
 
