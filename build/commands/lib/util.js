@@ -451,7 +451,6 @@ const util = {
       util.copyRedirectCC()
       util.updateOmahaMidlFiles()
     }
-    if (process.platform === 'linux') util.prepareWidevineCdmBuild()
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
