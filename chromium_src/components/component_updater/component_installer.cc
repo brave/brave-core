@@ -18,6 +18,7 @@ namespace component_updater {
 
 void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
+  VLOG(1) << "Brave ComponentInstaller::Register override called.";
   static const char* disallowed_components[] = {
       "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
       "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
