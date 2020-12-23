@@ -41,7 +41,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ipfs_service_ =
         IpfsServiceFactory::GetInstance()->GetForContext(browser()->profile());
     ASSERT_TRUE(ipfs_service_);
-    ipfs_service_->SetIpfsLaunchedForTest(true);
+    ipfs_service_->SetAllowIpfsLaunchForTest(true);
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
   }

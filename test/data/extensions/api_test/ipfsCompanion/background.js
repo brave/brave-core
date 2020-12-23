@@ -42,6 +42,16 @@ function launchSuccess() {
   })
 }
 
+function launchFail() {
+  chrome.ipfs.launch((success) => {
+    if (success) {
+      chrome.test.fail();
+    } else {
+      chrome.test.succeed();
+    }
+  })
+}
+
 function shutdownSuccess() {
   chrome.ipfs.shutdown((success) => {
     if (success) {

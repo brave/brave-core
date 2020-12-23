@@ -313,9 +313,9 @@ void IpfsService::OnGetAddressesConfig(
 }
 
 bool IpfsService::IsDaemonLaunched() const {
-  if (is_ipfs_launched_for_test_)
+  if (allow_ipfs_launch_for_test_) {
     return true;
-
+  }
   return ipfs_pid_ > 0;
 }
 
@@ -323,10 +323,17 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
   // Reject if previous launch request in progress.
   if (launch_daemon_callback_) {
     std::move(callback).Run(false);
+    return;
+  }
+
+  if (allow_ipfs_launch_for_test_) {
+    std::move(callback).Run(true);
+    return;
   }
 
   if (IsDaemonLaunched()) {
     std::move(callback).Run(true);
+    return;
   }
 
   launch_daemon_callback_ = std::move(callback);
@@ -383,8 +390,8 @@ void IpfsService::RegisterIpfsClientUpdater() {
   }
 }
 
-void IpfsService::SetIpfsLaunchedForTest(bool launched) {
-  is_ipfs_launched_for_test_ = launched;
+void IpfsService::SetAllowIpfsLaunchForTest(bool launched) {
+  allow_ipfs_launch_for_test_ = launched;
 }
 
 void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
