@@ -49,7 +49,6 @@
 #include "content/public/browser/browser_url_handler.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/common/content_switches.h"
-#include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
