@@ -164,14 +164,14 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testConstructorsExistAndMatch() throws Exception {
-        Assert.assertTrue(
-                constructorsMatch("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
-                        "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator",
-                        ChromeActivity.class, Callback.class, OneshotSupplier.class,
-                        ObservableSupplier.class, ActivityTabProvider.class,
-                        ObservableSupplierImpl.class, ObservableSupplier.class,
-                        ObservableSupplier.class, OneshotSupplier.class, Supplier.class,
-                        ObservableSupplier.class, OneshotSupplier.class, OneshotSupplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
+                "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator",
+                ChromeActivity.class, Callback.class, OneshotSupplier.class,
+                ObservableSupplier.class, ActivityTabProvider.class, ObservableSupplierImpl.class,
+                ObservableSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
+                Supplier.class, ObservableSupplier.class, OneshotSupplier.class,
+                OneshotSupplier.class, Supplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
