@@ -303,6 +303,7 @@ source_set("browser_process") {
       "//base",
       "//brave/browser/profiles",
       "//brave/components/ftx/browser",
+      "//brave/components/ftx/common",
       "//components/keyed_service/content",
     ]
   }

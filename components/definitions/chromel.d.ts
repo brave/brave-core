@@ -209,6 +209,10 @@ declare namespace chrome.cryptoDotCom {
 declare namespace chrome.ftx {
   const getFuturesData: (callback: (data: any[]) => void) => {}
   const getChartData: (symbol: string, start: string, end: string, callback: (data: any[]) => void) => {}
+
+  type FTXOauthHost = 'ftx.us' | 'ftx.com'
+  const setOauthHost: (host: FTXOauthHost) => void
+  const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
 }
 
 declare namespace chrome.braveTogether {

@@ -65,6 +65,34 @@
             ]
           }
         ]
+      },
+      {
+        "name": "setOauthHost",
+        "type": "function",
+        "description": "Sets the FTX host the user will be authenticating to",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "host"
+          }
+        ]
+      },
+      {
+        "name": "getOauthHost",
+        "type": "function",
+        "description": "Gets the current FTX host",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "host",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

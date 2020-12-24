@@ -154,6 +154,7 @@ source_set("extensions") {
     ]
     deps += [
       "//brave/components/ftx/browser",
+      "//brave/components/ftx/common",
     ]
   }
 

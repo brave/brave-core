@@ -13,6 +13,7 @@
 #include "brave/common/extensions/api/ftx.h"
 #include "brave/browser/ftx/ftx_service_factory.h"
 #include "brave/components/ftx/browser/ftx_service.h"
+#include "brave/components/ftx/common/pref_names.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -111,6 +112,38 @@ void FtxGetChartDataFunction::OnChartData(
   }
 
   Respond(OneArgument(std::move(result)));
+}
+
+ExtensionFunction::ResponseAction
+FtxSetOauthHostFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<ftx::SetOauthHost::Params> params(
+      ftx::SetOauthHost::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  if (params->host != "ftx.us" && params->host != "ftx.com") {
+    return RespondNow(NoArguments());
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  profile->GetPrefs()->SetString(kFTXOauthHost, params->host);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+FtxGetOauthHostFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  const std::string host = profile->GetPrefs()->GetString(kFTXOauthHost);
+
+  return RespondNow(OneArgument(base::Value(host)));
 }
 
 }  // namespace api

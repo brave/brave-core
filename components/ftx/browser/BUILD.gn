@@ -12,6 +12,8 @@ source_set("browser") {
     "ftx_json_parser.h",
     "ftx_service.cc",
     "ftx_service.h",
+    "ftx_pref_utils.cc",
+    "ftx_pref_utils.h",
   ]
 
   deps = [

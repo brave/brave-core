@@ -43,6 +43,30 @@ class FtxGetChartDataFunction :
   ResponseAction Run() override;
 };
 
+class FtxSetOauthHostFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.setOauthHost", UNKNOWN)
+
+ protected:
+  ~FtxSetOauthHostFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class FtxGetOauthHostFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.getOauthHost", UNKNOWN)
+
+ protected:
+  ~FtxGetOauthHostFunction() override {}
+  void OnOauthHost(
+      const std::string& host);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
