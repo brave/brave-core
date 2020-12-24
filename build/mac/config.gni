@@ -1,0 +1,17 @@
+declare_args() {
+  # find with `security find-identity -v -p codesigning`
+  mac_signing_identifier = ""
+  mac_installer_signing_identifier = ""
+  mac_signing_keychain = "login"
+  mac_signing_output_prefix = "signing"
+  notary_user = ""
+  notary_password = ""
+  notarize = false
+  notarize_argument = "False"
+  is_universal_binary = false
+}
+
+brave_packaging_base_dir = root_out_dir
+if (is_universal_binary) {
+  brave_packaging_base_dir = "$root_out_dir/universal"
+}

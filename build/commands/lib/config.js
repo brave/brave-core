@@ -68,6 +68,7 @@ const Config = function () {
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
   this.rootDir = rootDir
+  this.isUniversalBinary = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
@@ -106,7 +107,6 @@ const Config = function () {
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
   this.mac_installer_signing_identifier = getNPMConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getNPMConfig(['mac_signing_keychain']) || 'login'
-  this.mac_signing_output_prefix = 'signing'
   this.sparkleDSAPrivateKeyFile = getNPMConfig(['sparkle_dsa_private_key_file']) || ''
   this.sparkleEdDSAPrivateKey = getNPMConfig(['sparkle_eddsa_private_key']) || ''
   this.sparkleEdDSAPublicKey = getNPMConfig(['sparkle_eddsa_public_key']) || ''
@@ -192,6 +192,7 @@ Config.prototype.buildArgs = function () {
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
+    is_universal_binary: this.isUniversalBinary,
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
@@ -240,7 +241,6 @@ Config.prototype.buildArgs = function () {
       args.mac_signing_identifier = this.mac_signing_identifier
       args.mac_installer_signing_identifier = this.mac_installer_signing_identifier
       args.mac_signing_keychain = this.mac_signing_keychain
-      args.mac_signing_output_prefix = this.mac_signing_output_prefix
       if (this.notarize) {
         args.notarize = true
         args.notary_user = this.notary_user
@@ -468,6 +468,11 @@ Config.prototype.getProjectRef = function (projectName) {
 }
 
 Config.prototype.update = function (options) {
+  if (options.universal) {
+    this.targetArch = 'arm64'
+    this.isUniversalBinary = true
+  }
+
   if (options.target_arch === 'x86') {
     this.targetArch = options.target_arch
     this.gypTargetArch = 'ia32'
