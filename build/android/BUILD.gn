@@ -6,7 +6,8 @@ action("sign_app") {
   _apksigner = "$android_sdk_build_tools/apksigner"
   _zipalign = "$android_sdk_build_tools/zipalign"
 
-  deps = []
+  deps = [ "//brave/app/android:create_dist_zips" ]
+
   target_sign_app_path = ""
   if (target_cpu == "arm64" || target_cpu == "x64" ||
       target_apk_base == "mono") {
