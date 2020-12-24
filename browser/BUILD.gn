@@ -293,6 +293,8 @@ source_set("browser_process") {
 
   if (ftx_enabled) {
     sources += [
+      "ftx/ftx_protocol_handler.cc",
+      "ftx/ftx_protocol_handler.h",
       "ftx/ftx_service_factory.cc",
       "ftx/ftx_service_factory.h",
     ]

@@ -19,6 +19,11 @@
   WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs( \
       gemini_scheme); \
                       \
+  WebString ftx_scheme(WebString::FromASCII(kFTXScheme)); \
+  WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(ftx_scheme); \
+  WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs( \
+      ftx_scheme); \
+                   \
   WebString ipfs_scheme(WebString::FromASCII("ipfs")); \
   WebSecurityPolicy::RegisterURLSchemeAsSupportingFetchAPI(ipfs_scheme); \
                     \

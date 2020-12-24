@@ -11,6 +11,7 @@ const char kBraveUIScheme[] = "brave";
 const char kMagnetScheme[] = "magnet";
 const char kBinanceScheme[] = "com.brave.binance";
 const char kGeminiScheme[] = "com.brave.gemini";
+const char kFTXScheme[] = "com.brave.ftx";
 const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
 const char kWidevineTOS[] = "https://policies.google.com/terms";
 const char kRewardsUpholdSupport[] = "https://uphold.com/en/brave/support";
