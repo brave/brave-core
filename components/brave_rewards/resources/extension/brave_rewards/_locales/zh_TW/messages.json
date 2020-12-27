@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "因繼續執行，即代表您同意 $$1服務條款$$2 與 $$3隱私權政策$$4。",
-    "description": ""
+    "message": "因繼續執行，即代表您同意 $tos_link_begin$服務條款$tos_link_end$ 與 $pp_link_begin$隱私權政策$pp_link_end$。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

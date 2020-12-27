@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Nastavljajući, pristajete na $$1Uslove korišćenja$$2 i $$3Pravila o privatnosti$$4.",
-    "description": ""
+    "message": "Nastavljajući, pristajete na $tos_link_begin$Uslove korišćenja$tos_link_end$ i $pp_link_begin$Pravila o privatnosti$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

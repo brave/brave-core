@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Kontynuując, zgadzają się Państwo na $$1Warunki świadczenia usług$$2 i $$3Politykę prywatności$$4.",
-    "description": ""
+    "message": "Kontynuując, zgadzają się Państwo na $tos_link_begin$Warunki świadczenia usług$tos_link_end$ i $pp_link_begin$Politykę prywatności$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

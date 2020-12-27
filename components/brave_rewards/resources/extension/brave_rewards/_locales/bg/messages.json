@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Продължавайки, вие приемате $$1Условията за ползване$$2 и $$3Политиката за поверителност$$4.",
-    "description": ""
+    "message": "Продължавайки, вие приемате $tos_link_begin$Условията за ползване$tos_link_end$ и $pp_link_begin$Политиката за поверителност$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }
