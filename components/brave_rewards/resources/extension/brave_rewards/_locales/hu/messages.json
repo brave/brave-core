@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "A folytatással elfogadja a $$1Szolgáltatás feltételeit$$2 és az $$3Adatvédelmi szabályzatot$$4.",
-    "description": ""
+    "message": "A folytatással elfogadja a $tos_link_begin$Szolgáltatás feltételeit$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

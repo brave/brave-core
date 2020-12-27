@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Dacă alegeți să continuați, sunteți de acord cu $$1Termenii și condițiile$$2 și $$3Politica de confidențialitate$$4.",
-    "description": ""
+    "message": "Dacă alegeți să continuați, sunteți de acord cu $tos_link_begin$Termenii și condițiile$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Dengan meneruskan, anda bersetuju dengan $$1Syarat Perkhidmatan$$2 dan $$3Dasar Privasi$$4.",
-    "description": ""
+    "message": "Dengan meneruskan, anda bersetuju dengan $tos_link_begin$Syarat Perkhidmatan$tos_link_end$ dan $pp_link_begin$Dasar Privasi$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

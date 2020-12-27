@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Z nadaljevanjem se strinjate s $$1Pogoji storitve$$2 in s $$3Politiko zasebnosti$$4.",
-    "description": ""
+    "message": "Z nadaljevanjem se strinjate s $tos_link_begin$Pogoji storitve$tos_link_end$ in s $pp_link_begin$Politiko zasebnosti$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

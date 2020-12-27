@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Pokračovaním vyjadrujete súhlas s $$1Zmluvnými podmienkami $$2 a $$3Pravidlá ochrany osobných údajov $$4.",
-    "description": ""
+    "message": "Pokračovaním vyjadrujete súhlas s $tos_link_begin$Zmluvnými podmienkami $tos_link_end$ a $pp_link_begin$Pravidlá ochrany osobných údajov $pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

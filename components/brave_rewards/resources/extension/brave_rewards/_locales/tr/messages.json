@@ -640,7 +640,21 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Devam ederek, $$1Hizmet Şartları'nı$$2 ve $$3Gizlilik Politikası'nı$$4 kabul etmiş olursunuz.",
-    "description": ""
+    "message": "Devam ederek, $tos_link_begin$Hizmet Şartları'nı$tos_link_end$ ve $pp_link_begin$Gizlilik Politikası'nı$pp_link_end$ kabul etmiş olursunuz.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }
