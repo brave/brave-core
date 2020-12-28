@@ -173,7 +173,7 @@ namespace brave_page_graph {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.2.1";
+constexpr char kPageGraphVersion[] = "0.2.2";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -258,8 +258,9 @@ static void OnBuiltInFuncResponse(v8::Isolate& isolate,
 }
 
 PageGraph::PageGraph(blink::ExecutionContext& execution_context,
-    const DOMNodeId node_id, const WTF::String& tag_name,
-    const blink::KURL& url) :
+    const WTF::String& frame_id, const DOMNodeId node_id,
+    const WTF::String& tag_name, const blink::KURL& url) :
+      frame_id_(frame_id.Utf8().data()),
       parser_node_(new NodeParser(this)),
       extensions_node_(new NodeExtensions(this)),
       shields_node_(new NodeShields(this)),
@@ -1294,6 +1295,8 @@ string PageGraph::ToGraphML() const {
       BAD_CAST html_root_node_->GetURL().c_str());
   xmlNewTextChild(desc_container_node, NULL, BAD_CAST "is_root",
       BAD_CAST (IsRootFrame() ? "true" : "false"));
+  xmlNewTextChild(desc_container_node, NULL, BAD_CAST "frame_id",
+      BAD_CAST frame_id_.c_str());
 
   xmlNodePtr time_container_node = xmlNewChild(desc_container_node, NULL,
       BAD_CAST "time", NULL);

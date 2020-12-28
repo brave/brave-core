@@ -85,8 +85,8 @@ friend NodeHTMLElement;
     blink::ExecutionContext& exec_context);
 
   PageGraph(blink::ExecutionContext& execution_context,
-            const blink::DOMNodeId node_id, const WTF::String& tag_name,
-            const blink::KURL& url);
+            const WTF::String& frame_id, const blink::DOMNodeId node_id,
+            const WTF::String& tag_name, const blink::KURL& url);
   ~PageGraph();
 
   void RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
@@ -264,6 +264,9 @@ friend NodeHTMLElement;
   // the graph's construction if needed.
   PageGraphId id_counter_ = 0;
 
+  // The blink assigned frame id for the local root's frame.
+  const std::string frame_id_;
+
   // These vectors own all of the items that are shared and indexed across
   // the rest of the graph.  All the other pointers (the weak pointers)
   // do not own their data.
@@ -275,7 +278,6 @@ friend NodeHTMLElement;
 
   // Non-owning references to singleton items in the graph. (the owning
   // references will be in the above vectors).
-
   NodeParser* const parser_node_;
   NodeExtensions* const extensions_node_;
 
