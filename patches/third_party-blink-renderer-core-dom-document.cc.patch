@@ -1,12 +1,13 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828592092b1 100644
+index f55c90df9969ace76a0813d02237edcb406e079c..bbc746715743d6088789877b92272eb740102a66 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -335,6 +335,14 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -335,6 +335,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/inspector/identifiers_factory.h"
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
 +
@@ -17,7 +18,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
  namespace blink {
  
  namespace {
-@@ -654,6 +662,11 @@ Document::Document(const DocumentInit& initializer,
+@@ -654,6 +663,11 @@ Document::Document(const DocumentInit& initializer,
                     DocumentClassFlags document_classes)
      : ContainerNode(nullptr, kCreateDocument),
        TreeScope(*this),
@@ -29,7 +30,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        window_agent_factory_(initializer.GetWindowAgentFactory()),
-@@ -865,8 +878,98 @@ Document::~Document() {
+@@ -865,8 +879,100 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -112,7 +113,9 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
 +    return nullptr;
 +  }
 +
++  const String frame_id = IdentifiersFactory::FrameId(GetFrame());
 +  page_graph_ = new ::brave_page_graph::PageGraph(*GetExecutionContext(),
++                                                  frame_id,
 +                                                  DOMNodeIds::IdForNode(this),
 +                                                  nodeName(), Url());
 +
@@ -128,7 +131,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
    DCHECK(position.IsNotNull());
-@@ -4205,6 +4308,15 @@ void Document::DispatchUnloadEvents(
+@@ -4205,6 +4311,15 @@ void Document::DispatchUnloadEvents(
    if (parser_)
      parser_->StopParsing();
  
@@ -144,7 +147,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
    if (load_event_progress_ == kLoadEventNotRun)
      return;
  
-@@ -5911,6 +6023,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5911,6 +6026,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (!cookie_jar_)
      return String();
  
@@ -167,7 +170,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
    return cookie_jar_->Cookies();
  }
  
-@@ -5937,6 +6065,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5937,6 +6068,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (!cookie_jar_)
      return;
  
@@ -189,7 +192,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828
    cookie_jar_->SetCookie(value);
  }
  
-@@ -5952,6 +6095,19 @@ bool Document::CookiesEnabled() const {
+@@ -5952,6 +6098,19 @@ bool Document::CookiesEnabled() const {
  }
  
  const AtomicString& Document::referrer() const {
