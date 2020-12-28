@@ -823,6 +823,8 @@ if (!is_android) {
       "//components/bookmarks/browser",
       "//components/browsing_data/core",
       "//components/content_settings/browser",
+      "//components/content_settings/core/browser",
+      "//components/content_settings/core/common",
       "//components/content_settings/renderer",
       "//components/crx_file",
       "//components/embedder_support",
