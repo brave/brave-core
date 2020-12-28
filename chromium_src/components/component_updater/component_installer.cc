@@ -18,7 +18,7 @@ namespace component_updater {
 
 void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback) {
-  static const char* disallowed_components[] = {
+  static std::string disallowed_components[] = {
       "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
       "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
       "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
@@ -38,7 +38,7 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
     std::vector<uint8_t> hash;
     installer_policy_->GetHash(&hash);
     const std::string id = update_client::GetCrxIdFromPublicKeyHash(hash);
-    if (base::Contains(disallowed_components, id.c_str())) {
+    if (base::Contains(disallowed_components, id)) {
       VLOG(1) << "Skipping registration of Brave-unsupported component "
               << id << ".";
       return;
