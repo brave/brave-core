@@ -10,7 +10,6 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/result.h"
-#include "bat/usermodel/user_model.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -18,13 +17,15 @@ namespace ad_targeting {
 namespace resource {
 
 TextClassification::TextClassification() {
-  user_model_.reset(usermodel::UserModel::CreateInstance());
+  text_processing_pipeline_.reset(
+      ml::pipeline::TextProcessing::CreateInstance());
 }
 
 TextClassification::~TextClassification() = default;
 
 bool TextClassification::IsInitialized() const {
-  return user_model_ && user_model_->IsInitialized();
+  return text_processing_pipeline_ &&
+         text_processing_pipeline_->IsInitialized();
 }
 
 void TextClassification::LoadForLocale(const std::string& locale) {
@@ -33,7 +34,8 @@ void TextClassification::LoadForLocale(const std::string& locale) {
   const auto iter = kTextClassificationLanguageCodes.find(language_code);
   if (iter == kTextClassificationLanguageCodes.end()) {
     BLOG(1, locale << " locale does not support text classification");
-    user_model_.reset(usermodel::UserModel::CreateInstance());
+    text_processing_pipeline_.reset(
+        ml::pipeline::TextProcessing::CreateInstance());
     return;
   }
 
@@ -43,7 +45,8 @@ void TextClassification::LoadForLocale(const std::string& locale) {
 void TextClassification::LoadForId(const std::string& id) {
   AdsClientHelper::Get()->LoadUserModelForId(id, [=](const Result result,
                                                      const std::string& json) {
-    user_model_.reset(usermodel::UserModel::CreateInstance());
+    text_processing_pipeline_.reset(
+        ml::pipeline::TextProcessing::CreateInstance());
 
     if (result != SUCCESS) {
       BLOG(1, "Failed to load " << id << " text classification resource");
@@ -52,7 +55,7 @@ void TextClassification::LoadForId(const std::string& id) {
 
     BLOG(1, "Successfully loaded " << id << " text classification resource");
 
-    if (!user_model_->InitializePageClassifier(json)) {
+    if (!text_processing_pipeline_->FromJson(json)) {
       BLOG(1, "Failed to initialize " << id << " text classification resource");
       return;
     }
@@ -62,8 +65,8 @@ void TextClassification::LoadForId(const std::string& id) {
   });
 }
 
-usermodel::UserModel* TextClassification::get() const {
-  return user_model_.get();
+ml::pipeline::TextProcessing* TextClassification::get() const {
+  return text_processing_pipeline_.get();
 }
 
 }  // namespace resource
