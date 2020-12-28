@@ -94,6 +94,16 @@ ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
   if (!IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
+
+  if (!GetIpfsService(browser_context())) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+
+  if (!GetIpfsService(browser_context())->IsIPFSExecutableAvailable()) {
+    return RespondNow(
+        OneArgument(std::make_unique<base::Value>(base::Value(false))));
+  }
+
   GetIpfsService(browser_context())
       ->LaunchDaemon(base::BindOnce(&IpfsLaunchFunction::OnLaunch, this));
   return RespondLater();
