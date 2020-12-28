@@ -261,26 +261,4 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, ShieldSettingsPersistTest) {
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 }
 
-// Checks flash configuration isn't persisted across the sessions.
-IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, PRE_FlashPersistTest) {
-  HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-      ->SetContentSettingDefaultScope(GetBraveURL(), GURL(),
-                                      ContentSettingsType::PLUGINS,
-                                      CONTENT_SETTING_ALLOW);
-
-  ContentSetting setting =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(GetBraveURL(), GURL(),
-                              ContentSettingsType::PLUGINS);
-  EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, FlashPersistTest) {
-  ContentSetting setting =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-          ->GetContentSetting(GetBraveURL(), GURL(),
-                              ContentSettingsType::PLUGINS);
-  EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
-}
-
 }  // namespace extensions
