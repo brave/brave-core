@@ -54,6 +54,8 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_YOUTUBE,          // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+
+  // Yahoo deprecated (12/2020)
   PREPOPULATED_ENGINE_ID_YAHOO,
   PREPOPULATED_ENGINE_ID_YAHOO_AR,
   PREPOPULATED_ENGINE_ID_YAHOO_AT,
@@ -99,42 +101,6 @@ extern const PrepopulatedEngine brave_ecosia;
 extern const PrepopulatedEngine qwant;
 extern const PrepopulatedEngine startpage;
 extern const PrepopulatedEngine brave_yandex;
-
-// Yahoo has unique URLs per region
-extern const PrepopulatedEngine brave_yahoo;
-extern const PrepopulatedEngine brave_yahoo_ar;
-extern const PrepopulatedEngine brave_yahoo_at;
-extern const PrepopulatedEngine brave_yahoo_au;
-extern const PrepopulatedEngine brave_yahoo_br;
-extern const PrepopulatedEngine brave_yahoo_ca;
-extern const PrepopulatedEngine brave_yahoo_ch;
-extern const PrepopulatedEngine brave_yahoo_cl;
-extern const PrepopulatedEngine brave_yahoo_co;
-extern const PrepopulatedEngine brave_yahoo_de;
-extern const PrepopulatedEngine brave_yahoo_dk;
-extern const PrepopulatedEngine brave_yahoo_es;
-extern const PrepopulatedEngine brave_yahoo_fi;
-extern const PrepopulatedEngine brave_yahoo_fr;
-extern const PrepopulatedEngine brave_yahoo_hk;
-extern const PrepopulatedEngine brave_yahoo_id;
-extern const PrepopulatedEngine brave_yahoo_ie;
-extern const PrepopulatedEngine brave_yahoo_in;
-extern const PrepopulatedEngine brave_yahoo_it;
-extern const PrepopulatedEngine brave_yahoo_mx;
-extern const PrepopulatedEngine brave_yahoo_my;
-extern const PrepopulatedEngine brave_yahoo_nl;
-extern const PrepopulatedEngine brave_yahoo_no;
-extern const PrepopulatedEngine brave_yahoo_nz;
-extern const PrepopulatedEngine brave_yahoo_pe;
-extern const PrepopulatedEngine brave_yahoo_ph;
-extern const PrepopulatedEngine brave_yahoo_qc;
-extern const PrepopulatedEngine brave_yahoo_se;
-extern const PrepopulatedEngine brave_yahoo_sg;
-extern const PrepopulatedEngine brave_yahoo_th;
-extern const PrepopulatedEngine brave_yahoo_tw;
-extern const PrepopulatedEngine brave_yahoo_uk;
-extern const PrepopulatedEngine brave_yahoo_ve;
-extern const PrepopulatedEngine brave_yahoo_vn;
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap();
