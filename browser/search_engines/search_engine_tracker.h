@@ -27,7 +27,6 @@ enum class SearchEngineP3A {
   kStartpage,
   kBing,
   kQwant,
-  kYahoo,
   kYandex,
   kEcosia,
   kMaxValue = kEcosia,
