@@ -49,11 +49,11 @@ class SequentialUpdateChecker : public UpdateChecker {
       bool enabled_component_updates,
       UpdateCheckCallback update_check_callback) override;
 
+  SequentialUpdateChecker(scoped_refptr<Configurator> config,
+                          PersistedData* metadata);
   ~SequentialUpdateChecker() override;
 
  private:
-  SequentialUpdateChecker(scoped_refptr<Configurator> config,
-                          PersistedData* metadata);
   void CheckNext();
   void UpdateResultAvailable(
       const base::Optional<ProtocolParser::Results>& results,
