@@ -1,16 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 6e67b3720ea0971b38ffec7a45049f52431cdd3c..64c33508a2de68234a88b64d94743c5e5eaa48e8 100644
+index 6e67b3720ea0971b38ffec7a45049f52431cdd3c..7ae6a631d700d5af32aa9b09dfbde722aa82aa5b 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -283,6 +283,7 @@ std::unique_ptr<RuleIterator> DefaultProvider::GetRuleIterator(
-     return nullptr;
- 
-   base::AutoLock lock(lock_);
-+  BRAVE_EARLY_RETURN_ON_SHIELDS_CONTENT_SETTINGS_TYPE
-   auto it = default_settings_.find(content_type);
-   if (it == default_settings_.end()) {
-     NOTREACHED();
-@@ -430,6 +431,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -430,6 +430,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    }
    prefs_->ClearPref(kDeprecatedNativeFileSystemWriteGuardDefaultPref);
  #endif  // !defined(OS_ANDROID)
