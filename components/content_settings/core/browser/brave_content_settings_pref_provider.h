@@ -34,6 +34,7 @@ class BravePrefProvider : public PrefProvider,
                     bool restore_session);
   ~BravePrefProvider() override;
 
+  static void CopyPluginSettingsForMigration(PrefService* prefs);
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // content_settings::PrefProvider overrides:

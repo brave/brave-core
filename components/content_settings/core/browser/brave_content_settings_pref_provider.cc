@@ -34,11 +34,6 @@ namespace {
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 
-// We need to clear this preference here instead of doing it in PrefProvider so
-// that we have a chance to migrate Shields' settings from old profiles.
-constexpr char kObsoletePluginsExceptionsPref[] =
-    "profile.content_settings.exceptions.plugins";
-
 const char kExpirationPath[] = "expiration";
 const char kLastModifiedPath[] = "last_modified";
 const char kSessionModelPath[] = "model";
@@ -122,6 +117,14 @@ bool IsActive(const Rule& cookie_rule,
 
 }  // namespace
 
+// static
+void BravePrefProvider::CopyPluginSettingsForMigration(PrefService* prefs) {
+  auto* plugins = prefs->GetDictionary(
+      "profile.content_settings.exceptions.plugins");
+  prefs->Set(
+      "brave.migrate.content_settings.exceptions.plugins", *plugins);
+}
+
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
                                      bool off_the_record,
                                      bool store_last_modified,
@@ -156,6 +159,10 @@ void BravePrefProvider::RegisterProfilePrefs(
   PrefProvider::RegisterProfilePrefs(registry);
   // Register shields settings migration pref.
   registry->RegisterIntegerPref(kBraveShieldsSettingsVersion, 1);
+
+  // migration of obsolete plugin prefs
+  registry->RegisterDictionaryPref(
+      "brave.migrate.content_settings.exceptions.plugins");
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -174,12 +181,12 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV1ToV2();
 
   // Finally clean this up now that Shields' settings have been migrated.
-  prefs_->ClearPref(kObsoletePluginsExceptionsPref);
+  prefs_->ClearPref("brave.migrate.content_settings.exceptions.plugins");
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
   const base::DictionaryValue* plugins_dictionary =
-      prefs_->GetDictionary(kObsoletePluginsExceptionsPref);
+      prefs_->GetDictionary("brave.migrate.content_settings.exceptions.plugins");
   if (!plugins_dictionary)
     return;
 
