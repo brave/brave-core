@@ -22,8 +22,9 @@ def copy_x64(x64_src_path, x64_dest_path):
     if (os.path.exists(x64_dest_path)):
         shutil.rmtree(x64_dest_path)
 
+    # TODO check why brave_resources.pak differs between x64 and arm64
     shutil.copytree(x64_src_path, x64_dest_path, symlinks=True,
-        ignore=shutil.ignore_patterns('Sparkle.framework'))
+        ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak'))
     # remove conflicting files
     os.remove(os.path.join(x64_dest_path, 'Contents', 'Info.plist'))
 
