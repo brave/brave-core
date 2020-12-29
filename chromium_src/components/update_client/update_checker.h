@@ -49,6 +49,7 @@ class SequentialUpdateChecker : public UpdateChecker {
       bool enabled_component_updates,
       UpdateCheckCallback update_check_callback) override;
 
+  // Needs to be public so std::make_unique(...) works in Create(...).
   SequentialUpdateChecker(scoped_refptr<Configurator> config,
                           PersistedData* metadata);
   ~SequentialUpdateChecker() override;
