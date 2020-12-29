@@ -27,8 +27,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
      * @param handler A handler for swipe events on this view.
      */
     public void setSwipeDetector(SwipeHandler handler) {
-        mSwipeGestureListener = new SwipeGestureListenerImpl(getContext());
-        mSwipeGestureListener.setSwipeHandler(handler);
+        mSwipeGestureListener = new SwipeGestureListener(getContext(), handler);
 
         // TODO(mdjones): This line of code makes it impossible to scroll through the bottom
         // toolbar. If the user accidentally swipes up on this view, the scroll no longer goes
@@ -47,7 +46,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean handledEvent = false;
-        if (SwipeGestureListener != null) handledEvent = mSwipeGestureListener.onTouchEvent(event);
+        if (mSwipeGestureListener != null) handledEvent = mSwipeGestureListener.onTouchEvent(event);
         return handledEvent || super.onTouchEvent(event);
     }
 }
