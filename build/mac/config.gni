@@ -9,9 +9,7 @@ declare_args() {
   mac_signing_keychain = "login"
   notary_user = ""
   notary_password = ""
-  notary_asc_provider = chrome_mac_team_id
   notarize = false
-  notarize_argument = "False"
   is_universal_binary = false
 }
 

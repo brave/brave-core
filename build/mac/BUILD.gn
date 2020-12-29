@@ -43,6 +43,12 @@ if (is_universal_binary) {
   action("universalize") {
     script = "//brave/installer/mac/universalizer.py"
 
+    args = [
+      rebase_path(arm64_arch_app_path),
+      rebase_path(x64_arch_app_path),
+      rebase_path(unsigned_app_path),
+    ]
+
     inputs = [
       script,
       arm64_arch_app_path,
@@ -50,12 +56,6 @@ if (is_universal_binary) {
     ]
 
     outputs = [ unsigned_app_path ]
-
-    args = [
-      rebase_path(arm64_arch_app_path),
-      rebase_path(x64_arch_app_path),
-      rebase_path(unsigned_app_path),
-    ]
 
     public_deps = [
       ":copy_x64",
@@ -70,14 +70,14 @@ if (is_universal_binary) {
     x64_root_out_dir = string_replace(root_out_dir, "_arm64", "")
     x64_arch_src_path = "$x64_root_out_dir/$brave_exe"
 
-    inputs = [
-      script,
-      x64_arch_src_path,
-    ]
-
     args = [
       rebase_path(x64_arch_src_path),
       rebase_path(x64_arch_app_path),
+    ]
+
+    inputs = [
+      script,
+      x64_arch_src_path,
     ]
 
     outputs = [ x64_arch_app_path ]
@@ -238,6 +238,7 @@ action("generate_eddsa_sig_for_delta") {
 
 group("finalize_app") {
   public_deps = [ "//chrome/installer/mac" ]
+
   if (skip_signing) {
     public_deps += [ ":universalize" ]
   } else {
@@ -248,11 +249,6 @@ group("finalize_app") {
 action("sign_app") {
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
-
-  deps = [
-    ":copies",
-    ":universalize",
-  ]
 
   if (is_official_build) {
     if (is_release_channel) {
@@ -267,22 +263,14 @@ action("sign_app") {
     provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
     is_development = "True"
   }
+
+  notarize_argument = "False"
   if (notarize) {
     notarize_argument = "True"
   }
 
-  inputs = [
-    script,
-    shell_script,
-    unsigned_app_path,
-    provisioning_profile,
-    "$packaging_dir/app-entitlements.plist",
-  ]
-
-  outputs = [ signed_app_path ]
   args = [
     rebase_path(shell_script, root_out_dir),
-
     # Use absolute paths needed by codesign
     rebase_path(get_path_info(unsigned_app_path, "dir")),
     rebase_path("$root_out_dir/$mac_signing_output_prefix"),
@@ -293,7 +281,22 @@ action("sign_app") {
     notarize_argument,
     notary_user,
     notary_password,
-    notary_asc_provider,
+    chrome_mac_team_id,
+  ]
+
+  inputs = [
+    script,
+    shell_script,
+    unsigned_app_path,
+    provisioning_profile,
+    "$packaging_dir/app-entitlements.plist",
+  ]
+
+  outputs = [ signed_app_path ]
+
+  deps = [
+    ":copies",
+    ":universalize",
   ]
 }
 
@@ -310,12 +313,7 @@ copy("copies") {
 action("create_pkg") {
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/create_pkg.sh"
-  inputs = [
-    script,
-    app_path,
-    shell_script,
-  ]
-  outputs = [ unsigned_pkg_path ]
+
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path(app_path, root_build_dir),
@@ -324,18 +322,21 @@ action("create_pkg") {
     "$mac_unsigned_output_prefix/$brave_pkg",
   ]
 
+  inputs = [
+    script,
+    app_path,
+    shell_script,
+  ]
+
+  outputs = [ unsigned_pkg_path ]
+
   deps = [ ":finalize_app" ]
 }
 
 action("sign_pkg") {
   script = "//build/gn_run_binary.py"
   shell_script = "sign_pkg.sh"
-  inputs = [
-    script,
-    shell_script,
-    unsigned_pkg_path,
-  ]
-  outputs = [ "${root_out_dir}/$mac_signed_output_prefix/$brave_pkg" ]
+
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path(unsigned_pkg_path),
@@ -344,18 +345,21 @@ action("sign_pkg") {
     mac_installer_signing_identifier,
   ]
 
+  inputs = [
+    script,
+    shell_script,
+    unsigned_pkg_path,
+  ]
+
+  outputs = [ "${root_out_dir}/$mac_signed_output_prefix/$brave_pkg" ]
+
   deps = [ ":create_pkg" ]
 }
 
 action("create_dmg") {
   script = "//build/gn_run_binary.py"
   shell_script = "//chrome/installer/mac/pkg-dmg"
-  inputs = [
-    script,
-    shell_script,
-    app_path,
-  ]
-  outputs = [ unsigned_dmg_path ]
+
   args = [
     rebase_path(shell_script, root_build_dir),
     "--source",
@@ -384,18 +388,21 @@ action("create_dmg") {
     "/Applications",
   ]
 
+  inputs = [
+    script,
+    shell_script,
+    app_path,
+  ]
+
+  outputs = [ unsigned_dmg_path ]
+
   deps = [ ":finalize_app" ]
 }
 
 action("sign_dmg") {
   script = "//build/gn_run_binary.py"
   shell_script = "sign_dmg.sh"
-  inputs = [
-    script,
-    shell_script,
-    unsigned_dmg_path,
-  ]
-  outputs = [ "${root_out_dir}/$mac_signed_output_prefix/$brave_dmg" ]
+
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path(unsigned_dmg_path),
@@ -404,6 +411,14 @@ action("sign_dmg") {
     mac_signing_identifier,
     "-r=designated => identifier \"$chrome_product_full_name\" and certificate leaf = H\"$mac_signing_identifier\"",
   ]
+
+  inputs = [
+    script,
+    shell_script,
+    unsigned_dmg_path,
+  ]
+
+  outputs = [ "${root_out_dir}/$mac_signed_output_prefix/$brave_dmg" ]
 
   deps = [ ":create_dmg" ]
 }
@@ -442,6 +457,8 @@ copy("copy_notarize_script") {
 }
 
 action("notarize_dmg_pkg") {
+  script = "$packaging_dir/notarize_dmg_pkg.py"
+
   if (is_official_build) {
     development_arg = ""
     if (is_release_channel) {
@@ -455,16 +472,6 @@ action("notarize_dmg_pkg") {
     provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
   }
 
-  script = "$packaging_dir/notarize_dmg_pkg.py"
-  inputs = [
-    script,
-    signed_dmg_path,
-    signed_pkg_path,
-  ]
-  outputs = [
-    notarized_dmg_path,
-    notarized_pkg_path,
-  ]
   args = [
     "--identity",
     mac_signing_identifier,
@@ -473,7 +480,7 @@ action("notarize_dmg_pkg") {
     "--notary-password",
     notary_password,
     "--notary-asc-provider",
-    notary_asc_provider,
+    chrome_mac_team_id,
     development_arg,
     "--dmg",
     rebase_path(signed_dmg_path),
@@ -488,6 +495,18 @@ action("notarize_dmg_pkg") {
     "--mac_provisioning_profile",
     rebase_path(provisioning_profile),
   ]
+
+  inputs = [
+    script,
+    signed_dmg_path,
+    signed_pkg_path,
+  ]
+
+  outputs = [
+    notarized_dmg_path,
+    notarized_pkg_path,
+  ]
+
   deps = [
     ":copy_notarize_script",
     ":sign_dmg",
@@ -525,5 +544,6 @@ copy("copy_dmg_pkg") {
       ":sign_pkg",
     ]
   }
+
   outputs = [ "$root_out_dir/{{source_file_part}}" ]
 }
