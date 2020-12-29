@@ -77,13 +77,6 @@ if (is_universal_binary) {
     x64_root_out_dir = string_replace(root_out_dir, "_arm64", "")
     x64_arch_src_path = "$x64_root_out_dir/$brave_exe"
 
-    if (is_release_channel) {
-      brave_channel_explicit = "release"
-    }
-    else {
-      brave_channel_explicit = brave_channel
-    }
-
     inputs = [
       script,
       x64_arch_src_path,
@@ -92,7 +85,6 @@ if (is_universal_binary) {
     args = [
       rebase_path(x64_arch_src_path),
       rebase_path(x64_arch_app_path),
-      rebase_path(brave_channel_explicit),
     ]
 
     outputs = [ x64_arch_app_path ]
@@ -116,6 +108,7 @@ if (!is_release_channel) {
   ds_store_file_name = "DS_Store.$brave_channel"
   dmg_icon_file_name = "dmg-$brave_channel"
 }
+
 dmg_background_image = rebase_path("//brave/build/mac/dmg-background.png")
 ds_store = rebase_path("//brave/build/mac/$ds_store_file_name")
 dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
