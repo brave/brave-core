@@ -120,14 +120,14 @@ bool BraveIsAllowedThirdParty(
             ContentSettingsPattern::FromString(kAtlassiannet),
             ContentSettingsPattern::FromString(kAtlassiancom)
           },
-	  {
-	    ContentSettingsPattern::FromString(kDoterra),
-	    ContentSettingsPattern::FromString(kGigya)
-	  },
-	  {
-	    ContentSettingsPattern::FromString(kGigya),
-	    ContentSettingsPattern::FromString(kDoterra)
-	  }
+          {
+            ContentSettingsPattern::FromString(kDoterra),
+            ContentSettingsPattern::FromString(kGigya)
+          },
+          {
+            ContentSettingsPattern::FromString(kGigya),
+            ContentSettingsPattern::FromString(kDoterra)
+          }
       });
 
   GURL first_party_url = site_for_cookies;
