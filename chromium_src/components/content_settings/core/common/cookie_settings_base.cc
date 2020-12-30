@@ -37,6 +37,8 @@ constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
 constexpr char kBitbucket[] = "https://[*.]bitbucket.org/*";
 constexpr char kAtlassiannet[] = "https://[*.]atlassian.net/*";
 constexpr char kAtlassiancom[] = "https://[*.]atlassian.com/*";
+constexpr char kDoterra[] = "https://[*.]doterra.com/*";
+constexpr char kGigya[] = "https://[*.]gigya.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -117,7 +119,15 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kAtlassiannet),
             ContentSettingsPattern::FromString(kAtlassiancom)
-          }
+          },
+	  {
+	    ContentSettingsPattern::FromString(kDoterra),
+	    ContentSettingsPattern::FromString(kGigya)
+	  },
+	  {
+	    ContentSettingsPattern::FromString(kGigya),
+	    ContentSettingsPattern::FromString(kDoterra)
+	  }
       });
 
   GURL first_party_url = site_for_cookies;
