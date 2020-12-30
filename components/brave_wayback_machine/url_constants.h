@@ -7,5 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_URL_CONSTANTS_H_
 
 extern const char kWaybackQueryURL[];
+extern const char kWaybackHost[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_URL_CONSTANTS_H_

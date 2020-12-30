@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 
@@ -19,6 +20,10 @@ bool IsWaybackMachineDisabledFor(const GURL& url) {
     return true;
 
   if (base::EndsWith(url.host(), ".onion", base::CompareCase::SENSITIVE))
+    return true;
+
+  // Disable on web.archive.org
+  if (url.host() == kWaybackHost)
     return true;
 
   return false;
