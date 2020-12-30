@@ -83,11 +83,11 @@ void InitializeBraveShieldsSettingInDictionary(
   const uint64_t last_modified_time_in_ms =
       last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
 
- dictionary->SetInteger(kExpirationPath, 0);
- dictionary->SetString(
-     kLastModifiedPath, base::NumberToString(last_modified_time_in_ms));
- dictionary->SetInteger(kSessionModelPath,
-     static_cast<int>(content_settings::SessionModel::Durable));
+  dictionary->SetInteger(kExpirationPath, 0);
+  dictionary->SetString(
+      kLastModifiedPath, base::NumberToString(last_modified_time_in_ms));
+  dictionary->SetInteger(kSessionModelPath,
+      static_cast<int>(content_settings::SessionModel::Durable));
 
   std::unique_ptr<prefs::DictionaryValueUpdate> brave_per_resource_dict =
       dictionary->SetDictionaryWithoutPathExpansion(

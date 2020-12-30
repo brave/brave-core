@@ -119,10 +119,9 @@ bool IsActive(const Rule& cookie_rule,
 
 // static
 void BravePrefProvider::CopyPluginSettingsForMigration(PrefService* prefs) {
-  auto* plugins = prefs->GetDictionary(
-      "profile.content_settings.exceptions.plugins");
-  prefs->Set(
-      "brave.migrate.content_settings.exceptions.plugins", *plugins);
+  auto* plugins =
+      prefs->GetDictionary("profile.content_settings.exceptions.plugins");
+  prefs->Set("brave.migrate.content_settings.exceptions.plugins", *plugins);
 }
 
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
@@ -131,6 +130,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
                                      bool restore_session)
     : PrefProvider(prefs, off_the_record, store_last_modified, restore_session),
       initialized_(false),
+      store_last_modified_(store_last_modified),
       weak_factory_(this) {
   pref_change_registrar_.Add(
       kGoogleLoginControlType,
@@ -185,8 +185,8 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
-  const base::DictionaryValue* plugins_dictionary =
-      prefs_->GetDictionary("brave.migrate.content_settings.exceptions.plugins");
+  const base::DictionaryValue* plugins_dictionary = prefs_->GetDictionary(
+      "brave.migrate.content_settings.exceptions.plugins");
   if (!plugins_dictionary)
     return;
 
@@ -240,7 +240,6 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
     const base::Time& last_modified,
     SessionModel session_model,
     int setting) {
-
   prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_name);
   std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings = update.Get();
 
@@ -312,11 +311,11 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
   DCHECK_EQ(old_rules.size(), new_rules.size());
   for (size_t i = 0; i < old_rules.size(); i++) {
     // Remove current setting.
-    PrefProvider::SetWebsiteSetting(
+    SetWebsiteSettingInternal(
         old_rules[i].first, old_rules[i].second, content_type,
         ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
     // Add new setting.
-    PrefProvider::SetWebsiteSetting(
+    SetWebsiteSettingInternal(
         new_rules[i].primary_pattern, new_rules[i].secondary_pattern,
         content_type,
         ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))),
@@ -353,15 +352,37 @@ bool BravePrefProvider::SetWebsiteSetting(
       }
 
       // change to type ContentSettingsType::BRAVE_COOKIES
-      return PrefProvider::SetWebsiteSetting(
+      return SetWebsiteSettingInternal(
           plugin_primary_pattern, plugin_secondary_pattern,
-          ContentSettingsType::BRAVE_COOKIES,
-          std::move(in_value), constraints);
+          ContentSettingsType::BRAVE_COOKIES, std::move(in_value), constraints);
     }
   }
 
+  return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
+                                   content_type, std::move(in_value),
+                                   constraints);
+}
+
+bool BravePrefProvider::SetWebsiteSettingInternal(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type,
+    std::unique_ptr<base::Value>&& in_value,
+    const ContentSettingConstraints& constraints) {
+  // PrefProvider ignores default settings so handle them here for shields
+  if (content_settings::IsShieldsContentSettingsType(content_type) &&
+      primary_pattern == ContentSettingsPattern::Wildcard() &&
+      secondary_pattern == ContentSettingsPattern::Wildcard()) {
+    base::Time modified_time =
+        store_last_modified_ ? base::Time::Now() : base::Time();
+
+    return GetPref(content_type)
+        ->SetWebsiteSetting(primary_pattern, secondary_pattern, modified_time,
+                            std::move(in_value), constraints);
+  }
+
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
-                                         content_type,std::move(in_value),
+                                         content_type, std::move(in_value),
                                          constraints);
 }
 

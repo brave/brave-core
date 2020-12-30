@@ -69,6 +69,12 @@ class BravePrefProvider : public PrefProvider,
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);
+  bool SetWebsiteSettingInternal(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type,
+    std::unique_ptr<base::Value>&& in_value,
+    const ContentSettingConstraints& constraints);
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
@@ -80,7 +86,7 @@ class BravePrefProvider : public PrefProvider,
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;
 
   bool initialized_;
-
+  bool store_last_modified_;
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrefProvider);

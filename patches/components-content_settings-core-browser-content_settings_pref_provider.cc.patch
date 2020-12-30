@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref_provider.cc b/components/content_settings/core/browser/content_settings_pref_provider.cc
-index 9ffac847adcfb667277910430579d007be7cba09..7cc0814a35efbcfcd38fcd9a2c9c85d2304672a1 100644
+index 9ffac847adcfb667277910430579d007be7cba09..b89a5e7636c6cbd3f8ffa6a546615e016f51c504 100644
 --- a/components/content_settings/core/browser/content_settings_pref_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_pref_provider.cc
 @@ -118,6 +118,7 @@ PrefProvider::PrefProvider(PrefService* prefs,
@@ -10,11 +10,3 @@ index 9ffac847adcfb667277910430579d007be7cba09..7cc0814a35efbcfcd38fcd9a2c9c85d2
    // Verify preferences version.
    if (!prefs_->HasPrefPath(prefs::kContentSettingsVersion)) {
      prefs_->SetInteger(prefs::kContentSettingsVersion,
-@@ -197,6 +198,7 @@ bool PrefProvider::SetWebsiteSetting(
-   // sites/origins defined by the |primary_pattern| and the |secondary_pattern|.
-   // Default settings are handled by the |DefaultProvider|.
-   if (primary_pattern == ContentSettingsPattern::Wildcard() &&
-+      BRAVE_SET_WEBSITE_SETTINGS
-       secondary_pattern == ContentSettingsPattern::Wildcard()) {
-     return false;
-   }
