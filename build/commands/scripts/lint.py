@@ -96,9 +96,11 @@ def main(args):
 
     # Run format checks
     upstream_branch = cl.GetUpstreamBranch()
-    if base_branch and base_branch != upstream_branch:
-      print('WARNING: clang/gn format runs against %s instead of %s' % (upstream_branch, base_branch))
-    format_output = RunFormatCheck(upstream_branch)
+    format_output = None
+    if base_branch and not (base_branch in upstream_branch):
+        print('Skipping clang/gn format check because base_branch is %s instead of %s' % (base_branch, upstream_branch))
+    else:
+        format_output = RunFormatCheck(upstream_branch)
   finally:
     os.chdir(previous_cwd)
 
