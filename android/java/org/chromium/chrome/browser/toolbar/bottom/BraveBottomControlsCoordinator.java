@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -52,16 +53,20 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
-            BrowserControlsSizer controlsSizer, FullscreenManager fullscreenManager, ViewStub stub,
+            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            /* Below are parameters from BottomControlsCoordinator */
+            Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
+            ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager, ViewStub stub,
             ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
-            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
             ScrimCoordinator scrimCoordinator,
-            ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
-        super(controlsSizer, fullscreenManager, stub, themeColorProvider, shareDelegateSupplier,
-                menuButtonHelperSupplier, openHomepageAction, setUrlBarFocusAction,
-                scrimCoordinator, omniboxFocusStateSupplier);
+            ObservableSupplier<Boolean> omniboxFocusStateSupplier,
+            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
+        super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
+                fullscreenManager, stub, themeColorProvider, shareDelegateSupplier,
+                scrimCoordinator, omniboxFocusStateSupplier, overlayPanelVisibilitySupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
@@ -78,16 +83,11 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         mRoot = (ScrollingBottomViewResourceFrameLayout) root;
     }
 
-    @Override
     public void initializeWithNative(Activity activity, ResourceManager resourceManager,
             LayoutManagerImpl layoutManager, OnClickListener tabSwitcherListener,
             OnClickListener newTabClickListener, WindowAndroid windowAndroid,
             TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
             ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
-        super.initializeWithNative(activity, resourceManager, layoutManager, tabSwitcherListener,
-                newTabClickListener, windowAndroid, tabCountProvider, incognitoStateProvider,
-                topToolbarRoot, closeAllTabsAction);
-
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             mBottomToolbarCoordinator = new BottomToolbarCoordinator(mRoot,
                     mRoot.findViewById(R.id.bottom_toolbar_stub), mTabProvider,

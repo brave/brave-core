@@ -85,6 +85,8 @@ public class BraveToolbarManager extends ToolbarManager {
     private LocationBarModel mLocationBarModel;
     private TopToolbarCoordinator mToolbar;
     private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
+    private LayoutManagerImpl mLayoutManager;
+    private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
 
     private boolean mIsBottomToolbarVisible;
     private View mRootBottomView;
@@ -92,6 +94,8 @@ public class BraveToolbarManager extends ToolbarManager {
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private HomepageManager.HomepageStateListener mBraveHomepageStateListener;
     private AppCompatActivity mActivity;
+    private WindowAndroid mWindowAndroid;
+    private CompositorViewHolder mCompositorViewHolder;
 
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
@@ -133,6 +137,8 @@ public class BraveToolbarManager extends ToolbarManager {
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;
+        mWindowAndroid = windowAndroid;
+        mCompositorViewHolder = compositorViewHolder;
 
         mBraveHomepageStateListener = () -> {
             assert (mBottomControlsCoordinatorSupplier != null);
@@ -157,12 +163,15 @@ public class BraveToolbarManager extends ToolbarManager {
                 mLayoutStateProviderSupplier,
                 BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
                         id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
-                mActivityTabProvider, mBrowserControlsSizer, mFullscreenManager,
-                mActivity.findViewById(R.id.bottom_controls_stub), mAppThemeColorProvider,
-                mShareDelegateSupplier, mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
-                mToolbarTabController::openHomepage,
+                mActivityTabProvider, mToolbarTabController::openHomepage,
                 mCallbackController.makeCancelable((reason) -> setUrlBarFocus(true, reason)),
-                mScrimCoordinator, mOmniboxFocusStateSupplier));
+                mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
+                /* Below are parameters for BottomControlsCoordinator */
+                mActivity, mWindowAndroid, mLayoutManager,
+                mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
+                mFullscreenManager, mActivity.findViewById(R.id.bottom_controls_stub),
+                mAppThemeColorProvider, mShareDelegateSupplier, mScrimCoordinator,
+                mOmniboxFocusStateSupplier, mOverlayPanelVisibilitySupplier));
         ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                 .setRootView(mRootBottomView);
         boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
