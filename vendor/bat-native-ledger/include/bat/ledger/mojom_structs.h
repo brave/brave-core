@@ -6,10 +6,10 @@
 #ifndef BAT_LEDGER_MOJOM_STRUCTS_
 #define BAT_LEDGER_MOJOM_STRUCTS_
 
-#include <map>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom.h"
 
@@ -109,7 +109,7 @@ using PendingContributionInfoList = std::vector<PendingContributionInfoPtr>;
 using Promotion = mojom::Promotion;
 using PromotionPtr = mojom::PromotionPtr;
 using PromotionList = std::vector<PromotionPtr>;
-using PromotionMap = std::map<std::string, PromotionPtr>;
+using PromotionMap = base::flat_map<std::string, PromotionPtr>;
 
 using PromotionType = mojom::PromotionType;
 

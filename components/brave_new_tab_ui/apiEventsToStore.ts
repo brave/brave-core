@@ -6,11 +6,12 @@
 import getActions from './api/getActions'
 import * as preferencesAPI from './api/preferences'
 import * as statsAPI from './api/stats'
+import * as topSitesAPI from './api/topSites'
 import * as privateTabDataAPI from './api/privateTabData'
 import * as torTabDataAPI from './api/torTabData'
-import { getInitialData, getRewardsInitialData, getRewardsPreInitialData, getBinanceBlackList } from './api/initialData'
+import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 
-async function updatePreferences (prefData: preferencesAPI.Preferences) {
+async function updatePreferences (prefData: NewTab.Preferences) {
   getActions().preferencesUpdated(prefData)
 }
 
@@ -26,10 +27,15 @@ async function updateTorTabData (data: torTabDataAPI.TorTabData) {
   getActions().torTabDataUpdated(data)
 }
 
-function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
+function onRewardsToggled (prefData: NewTab.Preferences): void {
   if (prefData.showRewards) {
     rewardsInitData()
   }
+}
+
+async function onMostVisitedInfoChanged (topSites: topSitesAPI.MostVisitedInfoChanged) {
+  getActions().tilesUpdated(topSites.tiles)
+  getActions().topSitesStateUpdated(topSites.visible, topSites.custom_links_enabled)
 }
 
 // Not marked as async so we don't return a promise
@@ -41,10 +47,13 @@ export function wireApiEventsToStore () {
     if (initialData.preferences.showRewards) {
       rewardsInitData()
     }
-    binanceInitData()
     getActions().setInitialData(initialData)
-    getActions().setFirstRenderGridSitesData(initialData)
+    if (initialData.preferences.showToday) {
+      getActions().today.todayInit()
+    }
     // Listen for API changes and dispatch to store
+    topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
+    topSitesAPI.updateMostVisitedInfo()
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)
     preferencesAPI.addChangeListener(onRewardsToggled)
@@ -60,54 +69,21 @@ export function rewardsInitData () {
   getRewardsPreInitialData()
   .then((preInitialRewardsData) => {
     getActions().setPreInitialRewardsData(preInitialRewardsData)
-
-    chrome.braveRewards.getWalletExists((exists: boolean) => {
-      getActions().onWalletExists(exists)
-      if (exists) {
-        if (!preInitialRewardsData.enabledMain) {
-          return
-        }
-
-        fetchCreatedWalletData()
-        setRewardsFetchInterval()
-      }
-    })
+    fetchRewardsData()
+    setRewardsFetchInterval()
   })
   .catch(e => {
     console.error('Error fetching pre-initial rewards data: ', e)
   })
 }
 
-function binanceInitData () {
-  getBinanceBlackList()
-  .then(({ isSupportedRegion, onlyAnonWallet }) => {
-    if (onlyAnonWallet || !isSupportedRegion) {
-      getActions().removeStackWidget('binance')
-    }
-    getActions().setOnlyAnonWallet(onlyAnonWallet)
-    getActions().setBinanceSupported(isSupportedRegion && !onlyAnonWallet)
-  })
-  .catch(e => {
-    console.error('Error fetching binance init data')
-  })
-}
-
 function setRewardsFetchInterval () {
   window.setInterval(() => {
-    chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
-      if (!enabledMain) {
-        return
-      }
-      chrome.braveRewards.getWalletExists((exists: boolean) => {
-        if (exists) {
-          fetchCreatedWalletData()
-        }
-      })
-    })
+    fetchRewardsData()
   }, 30000)
 }
 
-function fetchCreatedWalletData () {
+function fetchRewardsData () {
   chrome.braveRewards.isInitialized((initialized: boolean) => {
     if (!initialized) {
       return
@@ -123,26 +99,8 @@ function fetchCreatedWalletData () {
   })
 }
 
-chrome.braveRewards.walletCreated.addListener(() => {
-  getActions().onWalletInitialized(12)
-})
-
-chrome.braveRewards.walletCreationFailed.addListener((result: any | NewTab.RewardsResult) => {
-  getActions().onWalletInitialized(result)
-})
-
 chrome.braveRewards.initialized.addListener((result: any | NewTab.RewardsResult) => {
   rewardsInitData()
-})
-
-chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
-  if (enabledMain) {
-    chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
-      getActions().onEnabledMain(enabledMain, enabledAds)
-    })
-  } else {
-    getActions().onEnabledMain(false, false)
-  }
 })
 
 chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {

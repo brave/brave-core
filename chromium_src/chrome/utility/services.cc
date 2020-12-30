@@ -4,10 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "build/build_config.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/utility/importer/brave_profile_import_impl.h"
@@ -75,34 +75,29 @@ auto RunBatAdsService(
 #if defined(OS_ANDROID)
 #define BRAVE_PROFILE_IMPORTER
 #else
-#define BRAVE_PROFILE_IMPORTER \
-    RunBraveProfileImporter,
+#define BRAVE_PROFILE_IMPORTER services.Add(RunBraveProfileImporter);
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#define BRAVE_IPFS_SERVICE \
-  RunIpfsService,
+#define BRAVE_IPFS_SERVICE services.Add(RunIpfsService);
 #else
 #define BRAVE_IPFS_SERVICE
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#define BRAVE_TOR_LAUNCHER \
-  RunTorLauncher,
+#define BRAVE_TOR_LAUNCHER services.Add(RunTorLauncher);
 #else
 #define BRAVE_TOR_LAUNCHER
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#define BRAVE_BAT_LEDGER_SERVICE \
-  RunBatLedgerService,
+#define BRAVE_BAT_LEDGER_SERVICE services.Add(RunBatLedgerService);
 #else
 #define BRAVE_BAT_LEDGER_SERVICE
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-#define BRAVE_BAT_ADS_SERVICE \
-  RunBatAdsService,
+#define BRAVE_BAT_ADS_SERVICE services.Add(RunBatAdsService);
 #else
 #define BRAVE_BAT_ADS_SERVICE
 #endif

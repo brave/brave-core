@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/flat_map.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -32,6 +33,9 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    context_helper_ =
+        std::make_unique<RewardsBrowserTestContextHelper>(browser());
+
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.reset(new net::EmbeddedTestServer(
@@ -55,6 +59,8 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
             &RewardsPublisherBrowserTest::GetTestResponse,
             base::Unretained(this)));
     rewards_service_->SetLedgerEnvForTesting();
+
+    rewards_browsertest_util::SetOnboardingBypassed(browser());
   }
 
   void TearDown() override {
@@ -72,7 +78,7 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
       int32_t method,
       int* response_status_code,
       std::string* response,
-      std::map<std::string, std::string>* headers) {
+      base::flat_map<std::string, std::string>* headers) {
     response_->Get(
         url,
         method,
@@ -87,13 +93,13 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
+  std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 
+// https://github.com/brave/brave-browser/issues/12986
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    PanelShowsCorrectPublisherData) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
+    DISABLED_PanelShowsCorrectPublisherData) {
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
   rewards_browsertest_util::NavigateToPublisherPage(
@@ -103,7 +109,7 @@ IN_PROC_BROWSER_TEST_F(
 
   // Open the Rewards popup
   content::WebContents* popup_contents =
-      rewards_browsertest_helper::OpenRewardsPopup(browser());
+      context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   // Retrieve the inner text of the wallet panel and verify that it
@@ -130,29 +136,29 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitVerifiedPublisher) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_service_->SetAutoContributeEnabled(true);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       true);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_service_->SetAutoContributeEnabled(true);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
       false);
 }
 
 // Registered publishers without a wallet address are displayed as verified
 IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
-  rewards_browsertest_helper::EnableRewards(browser());
-
-  rewards_browsertest_helper::VisitPublisher(
-      browser(),
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_service_->SetAutoContributeEnabled(true);
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+  context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(
           https_server_.get(),
           "registeredsite.com"),
@@ -163,8 +169,6 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
     DISABLED_TwitterTipsInjectedOnTwitter) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
   // Navigate to Twitter in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -196,8 +200,6 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
     DISABLED_TwitterTipsInjectedOnOldTwitter) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
   // Navigate to Twitter in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -229,8 +231,6 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
     DISABLED_TwitterTipsNotInjectedOnNonTwitter) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
   // Navigate to a non-Twitter site in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -244,9 +244,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    RedditTipsInjectedOnReddit) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
+    DISABLED_RedditTipsInjectedOnReddit) {
   // Navigate to Reddit in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -261,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    RedditTipsNotInjectedWhenRewardsDisabled) {
+    DISABLED_RedditTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Reddit in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -276,9 +274,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    RedditTipsNotInjectedOnNonReddit) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
+    DISABLED_RedditTipsNotInjectedOnNonReddit) {
   // Navigate to Reddit in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -293,9 +289,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is injected when visiting GitHub
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    GitHubTipsInjectedOnGitHub) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
+    DISABLED_GitHubTipsInjectedOnGitHub) {
   // Navigate to GitHub in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -311,7 +305,7 @@ IN_PROC_BROWSER_TEST_F(
 // Rewards is disabled
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    GitHubTipsNotInjectedWhenRewardsDisabled) {
+    DISABLED_GitHubTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to GitHub in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),
@@ -326,9 +320,7 @@ IN_PROC_BROWSER_TEST_F(
 // Brave tip icon is not injected when not visiting GitHub
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,
-    GitHubTipsNotInjectedOnNonGitHub) {
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-
+    DISABLED_GitHubTipsNotInjectedOnNonGitHub) {
   // Navigate to GitHub in a new tab
   rewards_browsertest_util::NavigateToPublisherPage(
       browser(),

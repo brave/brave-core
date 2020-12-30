@@ -6,16 +6,14 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/client/preferences/flagged_ad.h"
+#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/client/preferences/flagged_ad_info.h"
 
 namespace ads {
 
-MarkedAsInappropriateFrequencyCap::MarkedAsInappropriateFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+MarkedAsInappropriateFrequencyCap::
+MarkedAsInappropriateFrequencyCap() = default;
 
 MarkedAsInappropriateFrequencyCap::
 ~MarkedAsInappropriateFrequencyCap() = default;
@@ -37,14 +35,14 @@ std::string MarkedAsInappropriateFrequencyCap::get_last_message() const {
 }
 
 bool MarkedAsInappropriateFrequencyCap::DoesRespectCap(
-      const CreativeAdInfo& ad) {
-  const FlaggedAdsList flagged_ads = ads_->get_client()->get_flagged_ads();
+    const CreativeAdInfo& ad) {
+  const FlaggedAdList flagged_ads = Client::Get()->get_flagged_ads();
   if (flagged_ads.empty()) {
     return true;
   }
 
   const auto iter = std::find_if(flagged_ads.begin(), flagged_ads.end(),
-      [&ad](const FlaggedAd& flagged_ad) {
+      [&ad](const FlaggedAdInfo& flagged_ad) {
     return flagged_ad.creative_set_id == ad.creative_set_id;
   });
 

@@ -46,15 +46,6 @@ class AdsBox extends React.Component<Props, State> {
     this.props.actions.getAdsHistory()
   }
 
-  componentDidUpdate (prevProps: Props) {
-    if (
-      prevProps.rewardsData.enabledMain &&
-      !this.props.rewardsData.enabledMain
-    ) {
-      this.setState({ settings: false })
-    }
-  }
-
   adsDisabled = () => {
     return (
       <DisabledContent
@@ -385,12 +376,11 @@ class AdsBox extends React.Component<Props, State> {
     let adsIsSupported = false
     let estimatedPendingRewards = 0
     let nextPaymentDate = ''
-    let adNotificationsReceivedThisMonth = 0
+    let adsReceivedThisMonth = 0
 
     const {
       adsData,
       adsHistory,
-      enabledMain,
       firstLoad,
       parameters,
       ui
@@ -404,11 +394,11 @@ class AdsBox extends React.Component<Props, State> {
       adsIsSupported = adsData.adsIsSupported
       estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
-      adNotificationsReceivedThisMonth = adsData.adsAdNotificationsReceivedThisMonth || 0
+      adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
     }
 
     const enabled = adsEnabled && adsIsSupported
-    const toggle = !(!enabledMain || !adsUIEnabled || !adsIsSupported)
+    const toggle = !(!adsUIEnabled || !adsIsSupported)
     const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
 
     const historyEntries = adsHistory || []
@@ -424,7 +414,7 @@ class AdsBox extends React.Component<Props, State> {
           description={getLocale('adsDesc', { currency: tokenString })}
           toggle={toggle}
           checked={enabled}
-          settingsChild={this.adsSettings(enabled && enabledMain)}
+          settingsChild={this.adsSettings(enabled)}
           testId={'braveAdsSettings'}
           disabledContent={showDisabled ? this.adsDisabled() : null}
           onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
@@ -446,7 +436,7 @@ class AdsBox extends React.Component<Props, State> {
           </List>
           <List title={getLocale('adsNotificationsReceived')}>
             <Tokens
-              value={adNotificationsReceivedThisMonth.toString()}
+              value={adsReceivedThisMonth.toString()}
               hideText={true}
             />
           </List>

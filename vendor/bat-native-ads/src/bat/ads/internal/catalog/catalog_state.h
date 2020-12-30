@@ -27,8 +27,8 @@ struct CatalogState {
       const std::string& json_schema);
 
   std::string catalog_id;
-  uint64_t version = 0;
-  uint64_t ping = 0;
+  int version = 0;
+  int64_t ping = 0;
   CatalogCampaignList campaigns;
   CatalogIssuersInfo catalog_issuers;
 };

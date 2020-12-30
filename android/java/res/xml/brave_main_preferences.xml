@@ -78,4 +78,9 @@
         android:key="brave_languages"
         android:order="23"
         android:title="@string/language_settings"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.download.settings.BraveDownloadSettings"
+        android:key="brave_downloads"
+        android:order="24"
+        android:title="@string/menu_downloads"/>
 </PreferenceScreen>

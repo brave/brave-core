@@ -7,10 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_BUTTON_CONTAINER_H_
 
 #include "ui/views/view.h"
-
-namespace views {
-class ButtonListener;
-}  // namespace views
+#include "ui/views/controls/button/button.h"
 
 class BraveWaybackMachineInfoBarThrobber;
 
@@ -21,7 +18,7 @@ class BraveWaybackMachineInfoBarThrobber;
 class BraveWaybackMachineInfoBarButtonContainer : public views::View {
  public:
   explicit BraveWaybackMachineInfoBarButtonContainer(
-      views::ButtonListener* listener);
+      views::Button::PressedCallback callback);
   ~BraveWaybackMachineInfoBarButtonContainer() override;
 
   BraveWaybackMachineInfoBarButtonContainer(

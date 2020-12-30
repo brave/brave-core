@@ -21,6 +21,7 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace {
 
@@ -58,6 +59,7 @@ namespace brave {
 
 const char kBraveSessionToken[] = "brave_session_token";
 const char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
+const int kFarbledUserAgentMaxExtraSpaces = 5;
 
 // acceptable letters for generating random strings
 const char kLettersForRandomStrings[] =
@@ -71,7 +73,10 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   if (!context)
     return settings;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
-    if (auto* frame = window->GetFrame())
+    auto* frame = window->GetFrame();
+    if (!frame)
+      frame = window->GetDisconnectedFrame();
+    if (frame)
       settings = frame->GetContentSettingsClient();
   } else if (context->IsWorkerGlobalScope()) {
     settings =
@@ -84,10 +89,15 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
   scoped_refptr<const blink::SecurityOrigin> origin;
-  if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context))
-    origin = window->document()->TopFrameOrigin();
-  else
+  if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
+    auto* frame = window->GetFrame();
+    if (!frame)
+      frame = window->GetDisconnectedFrame();
+    if (frame)
+      origin = frame->Tree().Top().GetSecurityContext()->GetSecurityOrigin();
+  } else {
     origin = context.GetSecurityContext().GetSecurityOrigin();
+  }
   if (!origin || origin->IsOpaque())
     return;
   const auto host = origin->Host();
@@ -166,13 +176,17 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
 scoped_refptr<blink::StaticBitmapImage>
 BraveSessionCache::PerturbPixelsInternal(
     scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
-  DCHECK(image_bitmap);
+  if (!image_bitmap)
+    return nullptr;
   if (image_bitmap->IsNull())
     return image_bitmap;
   // convert to an ImageDataBuffer to normalize the pixel data to RGBA, 4 bytes
   // per pixel
   std::unique_ptr<blink::ImageDataBuffer> data_buffer =
       blink::ImageDataBuffer::Create(image_bitmap);
+  if (!data_buffer) {
+    return nullptr;
+  }
   uint8_t* pixels = const_cast<uint8_t*>(data_buffer->Pixels());
   // This needs to be type size_t because we pass it to base::StringPiece
   // later for content hashing. This is safe because the maximum canvas
@@ -231,6 +245,16 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
     v = lfsr_next(v);
   }
   return value;
+}
+
+WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
+  std::mt19937_64 prng = MakePseudoRandomGenerator();
+  WTF::StringBuilder result;
+  result.Append(real_user_agent);
+  int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
+  for (int i = 0; i < extra; i++)
+    result.Append(" ");
+  return result.ToString();
 }
 
 std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {

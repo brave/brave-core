@@ -16,17 +16,9 @@ const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
 // "No Wallet".
 const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 
-// Stores ad view confirmation count
-const char kAdViewConfirmationCountPrefName[] =
-    "brave.weekly_storage.p2a_ad_view_confirmation_count";
-
-// Stores whether onboarding should be shown
-const char kShouldShowOnboarding[] =
-    "brave.brave_ads.should_show_first_launch_notification";
-
-// Stores the timestamp of when onboarding was shown
-const char kOnboardingTimestamp[] =
-    "brave.brave_ads.launch_notification_timestamp";
+// Prefix for preference names pertaining to p2a weekly metrics
+const char kP2AStoragePrefNamePrefix[] =
+    "brave.weekly_storage.";
 
 // Stores whether we should show the My First Ad notification
 const char kShouldShowMyFirstAdNotification[] =
@@ -42,7 +34,7 @@ const int kSupportedCountryCodesSchemaVersionNumber = 9;
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 7;
+const int kCurrentVersionNumber = 9;
 
 }  // namespace prefs
 

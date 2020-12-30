@@ -4,17 +4,30 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 /**
- * Waits until the viewport has been in view for a certain number of seconds
+ * Waits until the viewport (and an optional element) has been in view for a certain number of seconds
  * continuously before calling a provided function.
  */
 export default class VisibilityTimer {
+  private element?: HTMLElement
   private timerId?: number = undefined
+  private isIntersecting: boolean
   private viewTimeMs: number = 0
   private onTimerExpired: Function
+  private intersectionObserver?: IntersectionObserver
 
-  constructor (onTimerExpired: Function, viewTimeMs: number) {
+  constructor (onTimerExpired: Function, viewTimeMs: number, elementToObserve?: HTMLElement) {
+    this.element = elementToObserve
     this.onTimerExpired = onTimerExpired
     this.viewTimeMs = viewTimeMs
+    this.isIntersecting = elementToObserve ? false : true
+    if (elementToObserve) {
+      this.intersectionObserver = new IntersectionObserver(entries => {
+        this.isIntersecting = entries.some(entry => entry.isIntersecting)
+        this.handleVisibility()
+      }, {
+        threshold: 1.0
+      })
+    }
   }
 
   startTracking () {
@@ -22,6 +35,9 @@ export default class VisibilityTimer {
       'visiblitychange',
       this.handleVisibility
     )
+    if (this.intersectionObserver && this.element) {
+      this.intersectionObserver.observe(this.element)
+    }
     this.handleVisibility()
   }
 
@@ -32,10 +48,13 @@ export default class VisibilityTimer {
       'visiblitychange',
       this.handleVisibility
     )
+    if (this.intersectionObserver && this.element) {
+      this.intersectionObserver.unobserve(this.element)
+    }
   }
 
   private handleVisibility = () => {
-    if (document.visibilityState === 'visible') {
+    if (document.visibilityState === 'visible' && this.isIntersecting) {
       if (!this.timerId) {
         // Start the timer again
         this.startWaiting()

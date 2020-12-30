@@ -30,7 +30,8 @@ Wallet::Wallet(LedgerImpl* ledger) :
     create_(std::make_unique<WalletCreate>(ledger)),
     recover_(std::make_unique<WalletRecover>(ledger)),
     balance_(std::make_unique<WalletBalance>(ledger)),
-    claim_(std::make_unique<WalletClaim>(ledger)) {
+    claim_(std::make_unique<WalletClaim>(ledger)),
+    promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
 Wallet::~Wallet() = default;
@@ -91,7 +92,23 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
 
 void Wallet::ExternalWalletAuthorization(
     const std::string& wallet_type,
-    const std::map<std::string, std::string>& args,
+    const base::flat_map<std::string, std::string>& args,
+    ledger::ExternalWalletAuthorizationCallback callback) {
+  ledger_->wallet()->CreateWalletIfNecessary(
+    [this, wallet_type, args, callback](const type::Result result) {
+      if (result != type::Result::WALLET_CREATED) {
+        BLOG(0, "Wallet couldn't be created");
+        callback(type::Result::LEDGER_ERROR, {});
+        return;
+      }
+
+      AuthorizeWallet(wallet_type, args, callback);
+    });
+}
+
+void Wallet::AuthorizeWallet(
+    const std::string& wallet_type,
+    const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     ledger_->uphold()->WalletAuthorization(args, callback);
@@ -244,6 +261,22 @@ bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
   BLOG_IF(0, !success, "Can't encrypt brave wallet");
 
   return success;
+}
+
+void Wallet::LinkBraveWallet(
+    const std::string& destination_payment_id,
+    ledger::ResultCallback callback) {
+  promotion_server_->post_claim_brave()->Request(
+      destination_payment_id,
+      [this, callback](const type::Result result) {
+        if (result != type::Result::LEDGER_OK &&
+            result != type::Result::ALREADY_EXISTS) {
+          callback(result);
+          return;
+        }
+
+        ledger_->promotion()->TransferTokens(callback);
+      });
 }
 
 }  // namespace wallet

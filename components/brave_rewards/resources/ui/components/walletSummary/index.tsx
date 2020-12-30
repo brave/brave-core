@@ -137,6 +137,8 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
       return null
     }
 
+    console.log('show reserved', showReserved, reservedAmount)
+
     const amount = (reservedAmount && reservedAmount.toFixed(3)) || '0.000'
     const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 

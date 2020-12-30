@@ -16,15 +16,8 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
   }
 
   switch (action.type) {
-    case types.GET_REWARDS_ENABLED:
-      chrome.send('brave_rewards_internals.getRewardsEnabled')
-      break
     case types.GET_REWARDS_INTERNALS_INFO:
       chrome.send('brave_rewards_internals.getRewardsInternalsInfo')
-      break
-    case types.ON_GET_REWARDS_ENABLED:
-      state = { ...state }
-      state.isRewardsEnabled = action.payload.enabled
       break
     case types.ON_GET_REWARDS_INTERNALS_INFO:
       state = { ...state }

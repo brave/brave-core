@@ -22,7 +22,8 @@ import {
   StyledLeftSide,
   StyledRightSide,
   StyledContent,
-  StyledNote
+  StyledNote,
+  NoteText
 } from './style'
 
 import {
@@ -32,7 +33,7 @@ import {
   RewardsCheckIcon
 } from 'brave-ui/components/icons'
 import { Modal } from 'brave-ui/components'
-import { getLocaleTags } from '../../../../../common/locale'
+import { getLocaleWithTag } from '../../../../../common/locale'
 
 export interface Props {
   onVerifyClick: () => void
@@ -71,7 +72,7 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
   )
 
   getFooter = () => {
-    const tags = getLocaleTags('walletVerificationFooter')
+    const tags = getLocaleWithTag('walletVerificationFooter')
     return (
       <StyledFooter>
         <span>
@@ -121,6 +122,9 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
               </StyledNote>
             </StyledRightSide>
           </StyledContent>
+          <NoteText>
+            {getLocale('walletVerificationNote3')}
+          </NoteText>
         </StyledWrapper>
       </Modal>
     )

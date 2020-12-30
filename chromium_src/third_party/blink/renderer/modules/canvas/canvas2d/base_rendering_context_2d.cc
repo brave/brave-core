@@ -18,6 +18,11 @@
             brave::GetContentSettingsClientFor(context)) {                \
       snapshot = brave::BraveSessionCache::From(*context).PerturbPixels(  \
           settings, snapshot);                                            \
+      if (!snapshot) {                                                    \
+        exception_state.ThrowRangeError(                                  \
+            "Out of memory at ImageData creation");                       \
+        return nullptr;                                                   \
+      }                                                                   \
     }                                                                     \
   }
 

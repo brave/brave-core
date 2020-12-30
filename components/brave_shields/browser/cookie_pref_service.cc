@@ -46,10 +46,6 @@ void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
       static_cast<content_settings::CookieControlsMode>(
           prefs->GetInteger(prefs::kCookieControlsMode)));
 
-  if (prefs->GetBoolean(prefs::kBlockThirdPartyCookies)) {
-    control_type = ControlType::BLOCK_THIRD_PARTY;
-  }
-
   if (IntToContentSetting(prefs->GetInteger(
           "profile.default_content_setting_values.cookies")) ==
       ContentSetting::CONTENT_SETTING_BLOCK) {
@@ -72,8 +68,6 @@ content_settings::CookieControlsMode ControlTypeToCookieControlsMode(
 
 void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
   auto type = GetCookieControlType(map, GURL());
-  prefs->SetBoolean(prefs::kBlockThirdPartyCookies,
-                    type == ControlType::BLOCK_THIRD_PARTY);
 
   prefs->SetInteger(prefs::kCookieControlsMode,
                     static_cast<int>(ControlTypeToCookieControlsMode(type)));
@@ -120,10 +114,6 @@ CookiePrefService::CookiePrefService(
   SetCookiePrefDefaults(host_content_settings_map, prefs);
   host_content_settings_map_->AddObserver(this);
   pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(
-      prefs::kBlockThirdPartyCookies,
-      base::BindRepeating(&CookiePrefService::OnPreferenceChanged,
-                          base::Unretained(this)));
   pref_change_registrar_.Add(
       prefs::kCookieControlsMode,
       base::BindRepeating(&CookiePrefService::OnPreferenceChanged,

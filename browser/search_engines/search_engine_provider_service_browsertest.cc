@@ -10,9 +10,9 @@
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -26,21 +26,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/tor/tor_launcher_factory.h"
-#endif
-
-class SearchEngineProviderServiceTest : public InProcessBrowserTest {
- public:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-#if BUILDFLAG(ENABLE_TOR)
-    g_brave_browser_process->tor_client_updater()->SetExecutablePath(
-        base::FilePath(FILE_PATH_LITERAL("test")));
-#endif
-  }
-};
+using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -54,7 +40,7 @@ TemplateURLData CreateTestSearchEngine() {
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowPrefTestWithNonQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetOffTheRecordProfile();
+  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
 
   // This test case is only for non-qwant region.
   if (brave::IsRegionForQwant(profile))
@@ -103,7 +89,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowTestWithQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetOffTheRecordProfile();
+  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
 
   // This test case is only for qwant region.
   if (!brave::IsRegionForQwant(profile))
@@ -150,13 +136,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Checks the default search engine of the tor profile.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
+  EXPECT_TRUE(tor_profile->IsTor());
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
@@ -180,13 +164,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // sessions.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
-
   brave::NewOffTheRecordWindowTor(browser());
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
+  EXPECT_TRUE(tor_profile->IsTor());
 
   int default_provider_id =
       brave::IsRegionForQwant(tor_profile)

@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -126,7 +127,7 @@ class LedgerImpl : public ledger::Ledger {
   void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,
-      const std::map<std::string, std::string>& parts,
+      const base::flat_map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
       type::VisitDataPtr visit_data) override;
@@ -149,8 +150,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback) override;
 
-  void SetRewardsMainEnabled(bool enabled) override;
-
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
   void SetPublisherMinVisits(int visits) override;
@@ -164,8 +163,6 @@ class LedgerImpl : public ledger::Ledger {
   void SetAutoContributeEnabled(bool enabled) override;
 
   uint64_t GetReconcileStamp() override;
-
-  bool GetRewardsMainEnabled() override;
 
   int GetPublisherMinVisitTime() override;
 
@@ -216,8 +213,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void RestorePublishers(ledger::ResultCallback callback) override;
 
-  bool IsWalletCreated() override;
-
   void GetPublisherActivityFromUrl(
       uint64_t windowId,
       type::VisitDataPtr visit_data,
@@ -255,7 +250,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void SaveMediaInfo(
       const std::string& type,
-      const std::map<std::string, std::string>& data,
+      const base::flat_map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback) override;
 
   void UpdateMediaDuration(
@@ -285,7 +280,7 @@ class LedgerImpl : public ledger::Ledger {
       const type::InlineTipsPlatforms platform) override;
 
   std::string GetShareURL(
-      const std::map<std::string, std::string>& args) override;
+      const base::flat_map<std::string, std::string>& args) override;
 
   void GetPendingContributions(
       ledger::PendingContributionInfoListCallback callback) override;
@@ -306,7 +301,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback) override;
 
   void DisconnectWallet(
@@ -350,6 +345,16 @@ class LedgerImpl : public ledger::Ledger {
   void Shutdown(ledger::ResultCallback callback) override;
 
   void GetEventLogs(ledger::GetEventLogsCallback callback) override;
+
+  void GetBraveWallet(GetBraveWalletCallback callback) override;
+
+  std::string GetWalletPassphrase() const override;
+
+  void LinkBraveWallet(
+      const std::string& destination_payment_id,
+      ResultCallback callback) override;
+
+  void GetTransferableAmount(GetTransferableAmountCallback callback) override;
 
   // end ledger.h
 

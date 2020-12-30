@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -29,8 +30,10 @@ import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
@@ -40,11 +43,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
             AppMenuDelegate appMenuDelegate,
-            @Nullable ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
-            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
+            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
+            ModalDialogManager modalDialogManager) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier,
-                bookmarkBridgeSupplier);
+                bookmarkBridgeSupplier, modalDialogManager);
     }
 
     @Override
@@ -57,6 +61,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // To make logic simple, below three items are added whenever menu gets visible
         // and removed when menu is dismissed.
         if (!shouldShowPageMenu()) return;
+
+        if (isMenuButtonInBottomToolbar()) {
+            // Do not show icon row on top when menu itself is on bottom
+            menu.findItem(R.id.icon_row_menu_id).setVisible(false).setEnabled(false);
+        }
 
         // Brave donesn't show help menu item in app menu.
         menu.findItem(R.id.help_id).setVisible(false).setEnabled(false);
@@ -125,5 +134,29 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
             shareButton.setContentDescription(mContext.getString(R.string.share));
         }
+    }
+
+    @Override
+    public boolean shouldShowHeader(int maxMenuHeight) {
+        if (isMenuButtonInBottomToolbar()) return false;
+        return super.shouldShowHeader(maxMenuHeight);
+    }
+
+    @Override
+    public boolean shouldShowFooter(int maxMenuHeight) {
+        if (isMenuButtonInBottomToolbar()) return true;
+        return super.shouldShowFooter(maxMenuHeight);
+    }
+
+    @Override
+    public int getFooterResourceId() {
+        if (isMenuButtonInBottomToolbar()) {
+            return shouldShowPageMenu() ? R.layout.icon_row_menu_footer : 0;
+        }
+        return super.getFooterResourceId();
+    }
+
+    private boolean isMenuButtonInBottomToolbar() {
+        return BraveMenuButtonCoordinator.isMenuFromBottom();
     }
 }

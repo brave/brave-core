@@ -106,12 +106,8 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   }
 
   if (safebrowsingfilecheck_pattern.MatchesHost(request_url)) {
-    // TODO(@fmarier): Re-enable download protection once we have
-    // truncated the list of metadata that it sends to the server
-    // (brave/brave-browser#6267).
-    //
-    // replacements.SetHostStr(kBraveSafeBrowsingFileCheckProxy);
-    // *new_url = request_url.ReplaceComponents(replacements);
+    replacements.SetHostStr(kBraveSafeBrowsingFileCheckProxy);
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 

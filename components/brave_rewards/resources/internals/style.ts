@@ -37,10 +37,6 @@ export const ButtonWrapper = styled<{}, 'div'>('div')`
   justify-content: flex-end;
 `
 
-export const DisabledContent = styled<{}, 'div'>('div')`
-  text-align: center;
-`
-
 export const ButtonGroup = styled<{}, 'div'>('div')`
   display: flex;
 

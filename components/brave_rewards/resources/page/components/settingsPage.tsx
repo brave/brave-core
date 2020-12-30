@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 // Components
 import { Column, Grid } from 'brave-ui/components'
 import {
-  DisabledBox,
   MainToggle,
   SettingsPage as Page,
   ModalRedirect,
@@ -20,6 +19,9 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import MonthlyContributionBox from './monthlyContributionBox'
+import QRBox from './qrBox'
+import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
+import { TourPromoWrapper } from './style'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -32,6 +34,7 @@ interface Props extends Rewards.ComponentProps {
 
 interface State {
   redirectModalDisplayed: 'hide' | 'show'
+  showRewardsTour: boolean
 }
 
 class SettingsPage extends React.Component<Props, State> {
@@ -40,12 +43,9 @@ class SettingsPage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      redirectModalDisplayed: 'hide'
+      redirectModalDisplayed: 'hide',
+      showRewardsTour: false
     }
-  }
-
-  onToggle = () => {
-    this.actions.toggleEnableMain(!this.props.rewardsData.enabledMain)
   }
 
   get actions () {
@@ -58,15 +58,13 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getContributeList()
     this.actions.getPendingContributions()
     this.actions.getReconcileStamp()
-    this.actions.getTransactionHistory()
+    this.actions.getStatement()
     this.actions.getAdsData()
     this.actions.getExcludedSites()
     this.actions.getCountryCode()
   }
 
   componentDidMount () {
-    this.actions.getRewardsMainEnabled()
-
     if (this.props.rewardsData.firstLoad === null) {
       // First load ever
       this.actions.onSettingSave('firstLoad', true, false)
@@ -75,26 +73,17 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.onSettingSave('firstLoad', false, false)
     }
 
-    if (this.props.rewardsData.enabledMain &&
-        !this.props.rewardsData.initializing) {
+    if (!this.props.rewardsData.initializing) {
       this.startRewards()
     }
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
     if (
-      this.props.rewardsData.enabledMain &&
       prevProps.rewardsData.initializing &&
       !this.props.rewardsData.initializing
     ) {
       this.startRewards()
-    }
-
-    if (
-      prevProps.rewardsData.enabledMain &&
-      !this.props.rewardsData.enabledMain
-    ) {
-      this.stopRewards()
     }
 
     if (
@@ -121,6 +110,13 @@ class SettingsPage extends React.Component<Props, State> {
         redirectModalDisplayed: 'show'
       })
     }
+
+    if (
+      prevProps.rewardsData.externalWallet &&
+      !this.props.rewardsData.externalWallet
+    ) {
+      this.actions.getExternalWallet('uphold')
+    }
   }
 
   stopRewards () {
@@ -130,7 +126,10 @@ class SettingsPage extends React.Component<Props, State> {
 
   startRewards () {
     if (this.props.rewardsData.firstLoad) {
+      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
       this.actions.getAdsData()
+      this.actions.getPendingContributions()
+      this.actions.getCountryCode()
     } else {
       // normal load
       this.refreshActions()
@@ -146,9 +145,23 @@ class SettingsPage extends React.Component<Props, State> {
 
     this.actions.fetchPromotions()
     this.actions.getExternalWallet('uphold')
+    this.actions.getOnboardingStatus()
 
-    if (window.location.pathname.length > 1) {
-      const pathElements = window.location.pathname.split('/')
+    this.handleURL()
+  }
+
+  handleURL () {
+    const { pathname } = window.location
+
+    if (pathname === '/enable') {
+      this.actions.saveOnboardingResult('opted-in')
+      this.setState({ showRewardsTour: true })
+      window.history.replaceState({}, '', '/')
+      return
+    }
+
+    if (pathname.length > 1) {
+      const pathElements = pathname.split('/')
       if (pathElements.length > 2) {
         this.actions.processRewardsPageUrl(window.location.pathname, window.location.search)
       }
@@ -257,12 +270,40 @@ class SettingsPage extends React.Component<Props, State> {
     return null
   }
 
+  renderOnboardingPromo () {
+    const { adsData, showOnboarding, ui } = this.props.rewardsData
+    const { promosDismissed } = ui
+    const promoKey = 'rewards-tour'
+
+    if (showOnboarding ||
+        adsData && adsData.adsEnabled ||
+        promosDismissed && promosDismissed[promoKey]) {
+      return null
+    }
+
+    const onTakeTour = () => {
+      this.setState({ showRewardsTour: true })
+    }
+
+    const onClose = () => {
+      this.actions.dismissPromoPrompt(promoKey)
+      this.actions.saveOnboardingResult('dismissed')
+    }
+
+    return (
+      <TourPromoWrapper>
+        <RewardsTourPromo onTakeTour={onTakeTour} onClose={onClose} />
+      </TourPromoWrapper>
+    )
+  }
+
   renderPromos = () => {
     const { currentCountryCode, ui } = this.props.rewardsData
     const { promosDismissed } = ui
 
     return (
       <>
+        {this.renderOnboardingPromo()}
         {getActivePromos(this.props.rewardsData).map((key: PromoType) => {
           if (promosDismissed && promosDismissed[key]) {
             return null
@@ -288,45 +329,76 @@ class SettingsPage extends React.Component<Props, State> {
     )
   }
 
-  render () {
-    const { enabledMain } = this.props.rewardsData
+  renderRewardsTour () {
+    if (!this.state.showRewardsTour) {
+      return null
+    }
+
+    const { showOnboarding } = this.props.rewardsData
+
+    const onDone = () => {
+      this.setState({ showRewardsTour: false })
+    }
 
     return (
+      <RewardsTourModal
+        layout='wide'
+        rewardsEnabled={!showOnboarding}
+        onClose={onDone}
+        onDone={onDone}
+      />
+    )
+  }
+
+  renderSettings () {
+    const { showOnboarding } = this.props.rewardsData
+
+    if (showOnboarding) {
+      const onTakeTour = () => {
+        this.setState({ showRewardsTour: true })
+      }
+
+      const onEnable = () => {
+        this.actions.saveOnboardingResult('opted-in')
+        onTakeTour()
+      }
+
+      return (
+        <SettingsOptInForm onTakeTour={onTakeTour} onEnable={onEnable} />
+      )
+    }
+
+    return (
+      <>
+        <MainToggle
+          testId={'mainToggle'}
+          onTOSClick={this.openTOS}
+          onPrivacyClick={this.openPrivacyPolicy}
+        />
+        <QRBox />
+        <AdsBox />
+        <ContributeBox />
+        <MonthlyContributionBox />
+        <TipBox />
+      </>
+    )
+  }
+
+  render () {
+    return (
       <Page>
-        <Grid columns={3} customStyle={{ gridGap: '32px' }}>
-          <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            {
-              enabledMain
-              ? this.getRedirectModal()
-              : null
-            }
-            <MainToggle
-              onToggle={this.onToggle}
-              enabled={enabledMain}
-              testId={'enableMain'}
-              onTOSClick={this.openTOS}
-              onPrivacyClick={this.openPrivacyPolicy}
-            />
-            {
-              !enabledMain
-              ? <DisabledBox />
-              : null
-            }
-            <AdsBox />
-            <ContributeBox />
-            <MonthlyContributionBox />
-            <TipBox />
+        <Grid columns={3} customStyle={{ gridGap: '32px', alignItems: 'stretch' }}>
+          <Column size={2} customStyle={{ flexDirection: 'column' }}>
+            {this.getRedirectModal()}
+            {this.renderSettings()}
           </Column>
-          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            {
-              enabledMain
-              ? this.getPromotionsClaims()
-              : null
-            }
+          <Column size={1} customStyle={{ flexDirection: 'column' }}>
+            {this.getPromotionsClaims()}
             <PageWallet />
             {this.renderPromos()}
           </Column>
         </Grid>
+        {this.renderRewardsTour()}
       </Page>
     )
   }

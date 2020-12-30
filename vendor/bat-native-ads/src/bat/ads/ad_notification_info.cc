@@ -19,6 +19,19 @@ AdNotificationInfo::AdNotificationInfo(
 
 AdNotificationInfo::~AdNotificationInfo() = default;
 
+bool AdNotificationInfo::IsValid() const {
+  if (!AdInfo::IsValid()) {
+    return false;
+  }
+
+  if (title.empty() ||
+      body.empty()) {
+    return false;
+  }
+
+  return true;
+}
+
 std::string AdNotificationInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
@@ -35,16 +48,16 @@ Result AdNotificationInfo::FromJson(
     return FAILED;
   }
 
-  if (document.HasMember("id")) {
-    uuid = document["id"].GetString();
-  }
-
-  if (document.HasMember("parent_id")) {
-    parent_uuid = document["parent_id"].GetString();
+  if (document.HasMember("type")) {
+    type = AdType(document["type"].GetString());
   }
 
   if (document.HasMember("uuid")) {
-    creative_instance_id = document["uuid"].GetString();
+    uuid = document["uuid"].GetString();
+  }
+
+  if (document.HasMember("creative_instance_id")) {
+    creative_instance_id = document["creative_instance_id"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -55,24 +68,20 @@ Result AdNotificationInfo::FromJson(
     campaign_id = document["campaign_id"].GetString();
   }
 
-  if (document.HasMember("category")) {
-    category = document["category"].GetString();
+  if (document.HasMember("segment")) {
+    segment = document["segment"].GetString();
   }
 
-  if (document.HasMember("advertiser")) {
-    title = document["advertiser"].GetString();
+  if (document.HasMember("title")) {
+    title = document["title"].GetString();
   }
 
-  if (document.HasMember("text")) {
-    body = document["text"].GetString();
+  if (document.HasMember("body")) {
+    body = document["body"].GetString();
   }
 
-  if (document.HasMember("url")) {
-    target_url = document["url"].GetString();
-  }
-
-  if (document.HasMember("geo_target")) {
-    geo_target = document["geo_target"].GetString();
+  if (document.HasMember("target_url")) {
+    target_url = document["target_url"].GetString();
   }
 
   return SUCCESS;
@@ -83,13 +92,14 @@ void SaveToJson(
     const AdNotificationInfo& info) {
   writer->StartObject();
 
-  writer->String("id");
-  writer->String(info.uuid.c_str());
-
-  writer->String("parent_uuid");
-  writer->String(info.parent_uuid.c_str());
+  writer->String("type");
+  const std::string type = std::string(info.type);
+  writer->String(type.c_str());
 
   writer->String("uuid");
+  writer->String(info.uuid.c_str());
+
+  writer->String("creative_instance_id");
   writer->String(info.creative_instance_id.c_str());
 
   writer->String("creative_set_id");
@@ -98,20 +108,17 @@ void SaveToJson(
   writer->String("campaign_id");
   writer->String(info.campaign_id.c_str());
 
-  writer->String("category");
-  writer->String(info.category.c_str());
+  writer->String("segment");
+  writer->String(info.segment.c_str());
 
-  writer->String("advertiser");
+  writer->String("title");
   writer->String(info.title.c_str());
 
-  writer->String("text");
+  writer->String("body");
   writer->String(info.body.c_str());
 
-  writer->String("url");
+  writer->String("target_url");
   writer->String(info.target_url.c_str());
-
-  writer->String("geo_target");
-  writer->String(info.geo_target.c_str());
 
   writer->EndObject();
 }

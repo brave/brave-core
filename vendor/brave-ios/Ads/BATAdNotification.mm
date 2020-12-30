@@ -8,32 +8,28 @@
 
 @interface BATAdNotification ()
 @property (nonatomic, copy) NSString *uuid;
-@property (nonatomic, copy) NSString *parentUuid;
 @property (nonatomic, copy) NSString *creativeInstanceID;
 @property (nonatomic, copy) NSString *creativeSetID;
 @property (nonatomic, copy) NSString *campaignID;
-@property (nonatomic, copy) NSString *category;
+@property (nonatomic, copy) NSString *segment;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *body;
 @property (nonatomic, copy) NSString *targetURL;
-@property (nonatomic, copy) NSString *geoTarget;
 @end
 
 @implementation BATAdNotification
 
-- (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info
+- (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo &)info
 {
   if ((self = [super init])) {
     self.uuid = [NSString stringWithUTF8String:info.uuid.c_str()];
-    self.parentUuid = [NSString stringWithUTF8String:info.parent_uuid.c_str()];
     self.creativeInstanceID = [NSString stringWithUTF8String:info.creative_instance_id.c_str()];
     self.creativeSetID = [NSString stringWithUTF8String:info.creative_set_id.c_str()];
     self.campaignID = [NSString stringWithUTF8String:info.campaign_id.c_str()];
-    self.category = [NSString stringWithUTF8String:info.category.c_str()];
+    self.segment = [NSString stringWithUTF8String:info.segment.c_str()];
     self.title = [NSString stringWithUTF8String:info.title.c_str()];
     self.body = [NSString stringWithUTF8String:info.body.c_str()];
     self.targetURL = [NSString stringWithUTF8String:info.target_url.c_str()];
-    self.geoTarget = [NSString stringWithUTF8String:info.geo_target.c_str()];
   }
   return self;
 }

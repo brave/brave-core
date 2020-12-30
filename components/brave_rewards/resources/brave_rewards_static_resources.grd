@@ -21,9 +21,7 @@
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
 
       <!-- WebUI Brave Rewards Tip resources -->
-      <include name="IDR_BRAVE_REWARDS_TIP_BG_1" file="tip/img/tip_bg_1.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_TIP_BG_2" file="tip/img/tip_bg_2.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/brave_rewards_tip.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/index.html" type="BINDATA" />
     </includes>
   </release>
 </grit>

@@ -14,21 +14,26 @@ export const defaultState: NewTab.State = {
   featureFlagBraveNTPSponsoredImagesWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
   showBackgroundImage: false,
   showStats: false,
+  showToday: false,
   showClock: false,
   clockFormat: '',
   showTopSites: false,
+  customLinksEnabled: false,
   showRewards: false,
   showTogether: false,
   showBinance: false,
-  showAddCard: false,
   showGemini: false,
   showBitcoinDotCom: false,
+  showCryptoDotCom: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
+  isBraveTodayIntroDismissed: false,
   showEmptyPage: false,
   togetherSupported: false,
   geminiSupported: false,
+  binanceSupported: false,
   bitcoinDotComSupported: false,
+  cryptoDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   torCircuitEstablished: false,
@@ -50,14 +55,9 @@ export const defaultState: NewTab.State = {
     dismissedNotifications: [],
     enabledAds: false,
     adsSupported: false,
-    enabledMain: false,
     promotions: [],
     onlyAnonWallet: false,
     totalContribution: 0.0,
-    walletCreated: false,
-    walletCreating: false,
-    walletCreateFailed: false,
-    walletCorrupted: false,
     parameters: {
       rate: 0,
       monthlyTipChoices: []
@@ -66,14 +66,14 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['together', 'bitcoinDotCom', 'binance', 'gemini', 'rewards'],
+  widgetStackOrder: ['cryptoDotCom', 'binance', 'gemini', 'rewards'],
+  savedWidgetStackOrder: [],
   binanceState: {
     userTLD: 'com',
     initialFiat: 'USD',
     initialAmount: '',
     initialAsset: 'BTC',
     userTLDAutoSet: false,
-    binanceSupported: false,
     hideBalance: true,
     binanceClientUrl: '',
     userAuthed: false,
@@ -107,6 +107,15 @@ export const defaultState: NewTab.State = {
     accountBalances: {},
     disconnectInProgress: false,
     authInvalid: false
+  },
+  cryptoDotComState: {
+    optInTotal: false,
+    optInBTCPrice: false,
+    optInMarkets: false,
+    tickerPrices: {},
+    losersGainers: {},
+    supportedPairs: {},
+    charts: []
   }
 }
 
@@ -186,18 +195,18 @@ export const addNewStackWidget = (state: NewTab.State) => {
 // as a result of https://github.com/brave/brave-browser/issues/10067
 export const replaceStackWidgets = (state: NewTab.State) => {
   const {
-    binanceState,
     showBinance,
     showRewards,
     showTogether,
-    togetherSupported
+    togetherSupported,
+    binanceSupported
   } = state
   const displayLookup = {
     'rewards': {
       display: showRewards
     },
     'binance': {
-      display: binanceState.binanceSupported && showBinance
+      display: binanceSupported && showBinance
     },
     'together': {
       display: togetherSupported && showTogether
@@ -257,13 +266,16 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
+      binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
       geminiState: data.geminiState,
+      cryptoDotComState: data.cryptoDotComState,
       removedStackWidgets: data.removedStackWidgets,
-      widgetStackOrder: data.widgetStackOrder
+      widgetStackOrder: data.widgetStackOrder,
+      savedWidgetStackOrder: data.savedWidgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }

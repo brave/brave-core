@@ -11,13 +11,12 @@
 #include "base/path_service.h"
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -37,7 +36,6 @@
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -45,15 +43,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-#include "chrome/browser/notifications/notification_platform_bridge.h"
-#include "brave/browser/notifications/brave_notification_platform_bridge.h"
-#endif
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/browser/brave_referrals/brave_referrals_service_factory.h"
@@ -70,12 +59,12 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/common/tor/pref_names.h"
+#include "brave/components/tor/brave_tor_client_updater.h"
+#include "brave/components/tor/pref_names.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -87,6 +76,7 @@
 #include "chrome/browser/android/component_updater/background_task_update_scheduler.h"
 #else
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
@@ -135,7 +125,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(
-                     [](brave::BraveStatsUpdater* stats_updater) {
+                     [](brave_stats::BraveStatsUpdater* stats_updater) {
                        stats_updater->Start();
                      },
                      base::Unretained(brave_stats_updater())));
@@ -239,13 +229,9 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
     return nullptr;
 
   if (!ntp_background_images_service_) {
-    base::FilePath user_data_dir;
-    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
     ntp_background_images_service_ =
-        std::make_unique<NTPBackgroundImagesService>(
-            component_updater(),
-            local_state(),
-            user_data_dir);
+        std::make_unique<NTPBackgroundImagesService>(component_updater(),
+                                                     local_state());
     ntp_background_images_service_->Init();
   }
 
@@ -313,13 +299,16 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-extensions::BraveTorClientUpdater*
+tor::BraveTorClientUpdater*
 BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
     return tor_client_updater_.get();
 
-  tor_client_updater_ = extensions::BraveTorClientUpdaterFactory(
-      brave_component_updater_delegate());
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+
+  tor_client_updater_.reset(new tor::BraveTorClientUpdater(
+      brave_component_updater_delegate(), local_state(), user_data_dir));
   return tor_client_updater_.get();
 }
 
@@ -341,18 +330,9 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   return brave_p3a_service_.get();
 }
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-BraveWidevineBundleManager*
-BraveBrowserProcessImpl::brave_widevine_bundle_manager() {
-  if (!brave_widevine_bundle_manager_)
-    brave_widevine_bundle_manager_.reset(new BraveWidevineBundleManager);
-  return brave_widevine_bundle_manager_.get();
-}
-#endif
-
-brave::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
+brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)
-    brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
+    brave_stats_updater_ = brave_stats::BraveStatsUpdaterFactory(local_state());
   return brave_stats_updater_.get();
 }
 
@@ -363,31 +343,6 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
-}
-
-NotificationPlatformBridge*
-BraveBrowserProcessImpl::notification_platform_bridge() {
-#if !defined(OS_MAC)
-  return BrowserProcessImpl::notification_platform_bridge();
-#else
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-  if (!created_notification_bridge_)
-    CreateNotificationPlatformBridge();
-  return notification_bridge_.get();
-#else
-  return nullptr;
-#endif
-#endif
-}
-
-void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
-#if defined(OS_MAC)
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-  DCHECK(!notification_bridge_);
-  notification_bridge_ = BraveNotificationPlatformBridge::Create();
-  created_notification_bridge_ = true;
-#endif
-#endif
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -421,8 +376,11 @@ BraveBrowserProcessImpl::ipfs_client_updater() {
   if (ipfs_client_updater_)
     return ipfs_client_updater_.get();
 
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+
   ipfs_client_updater_ = ipfs::BraveIpfsClientUpdaterFactory(
-      brave_component_updater_delegate());
+      brave_component_updater_delegate(), user_data_dir);
   return ipfs_client_updater_.get();
 }
 #endif  // BUILDFLAG(IPFS_ENABLED)

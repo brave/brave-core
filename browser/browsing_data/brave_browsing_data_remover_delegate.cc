@@ -5,13 +5,20 @@
 
 #include "brave/browser/browsing_data/brave_browsing_data_remover_delegate.h"
 
+#include <memory>
 #include <utility>
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/buildflags.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/common/extensions/api/brave_today.h"
+#include "extensions/browser/event_router.h"
+#endif
 
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     content::BrowserContext* browser_context)
@@ -39,6 +46,20 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   // shields settings with non-empty resource ids.
   if (remove_mask & DATA_TYPE_CONTENT_SETTINGS)
     ClearShieldsSettings(delete_begin, delete_end);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (remove_mask & DATA_TYPE_HISTORY) {
+    auto* event_router = extensions::EventRouter::Get(profile_);
+    if (event_router) {
+      std::unique_ptr<base::ListValue> args(
+          extensions::api::brave_today::OnClearHistory::Create().release());
+      std::unique_ptr<extensions::Event> event(new extensions::Event(
+          extensions::events::BRAVE_START,
+          extensions::api::brave_today::OnClearHistory::kEventName,
+          std::move(args)));
+      event_router->BroadcastEvent(std::move(event));
+    }
+  }
+#endif
 }
 
 void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(

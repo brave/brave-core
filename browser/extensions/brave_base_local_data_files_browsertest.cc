@@ -11,8 +11,6 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"

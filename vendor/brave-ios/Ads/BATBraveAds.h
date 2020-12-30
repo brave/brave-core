@@ -13,10 +13,16 @@ typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
   BATAdNotificationEventTypeTimedOut      // = ads::AdNotificationEventType::kTimedOut
 } NS_SWIFT_NAME(AdNotificationEventType);
 
+typedef NS_ENUM(NSInteger, BATNewTabPageAdEventType) {
+  BATNewTabPageAdEventTypeViewed,       // = ads::AdNotificationEventType::kViewed
+  BATNewTabPageAdEventTypeClicked       // = ads::AdNotificationEventType::kClicked
+} NS_SWIFT_NAME(NewTabPageAdEventType);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class BATAdNotification, BATBraveAds, BATBraveLedger;
 
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveAdsNotificationHandler)
 @protocol BATBraveAdsNotificationHandler
 @required
@@ -30,6 +36,7 @@ NS_SWIFT_NAME(BraveAdsNotificationHandler)
 - (void)clearNotificationWithIdentifier:(NSString *)identifier;
 @end
 
+OBJC_EXPORT 
 NS_SWIFT_NAME(BraveAds)
 @interface BATBraveAds : NSObject
 
@@ -58,6 +65,8 @@ NS_SWIFT_NAME(BraveAds)
 /// The environment that ads is communicating with. See ledger's BATEnvironment
 /// for appropriate values.
 @property (nonatomic, class) int environment;
+/// System info
+@property (nonatomic, class) BATBraveAdsSysInfo *sysInfo;
 /// The build channel that ads is configured for
 @property (nonatomic, class) BATBraveAdsBuildChannel *buildChannel;
 
@@ -67,15 +76,12 @@ NS_SWIFT_NAME(BraveAds)
 - (void)initializeIfAdsEnabled;
 
 /// Shuts down the ads service if its running
-- (void)shutdown;
+- (void)shutdown:(nullable void (^)())completion;
 
 /// Whether or not the ads service is running
 - (BOOL)isAdsServiceRunning;
 
 #pragma mark - Configuration
-
-/// Whether or not Brave Ads is enabled
-@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 
 /// The max number of ads the user can see in an hour
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerHour NS_SWIFT_NAME(adsPerHour);
@@ -113,7 +119,9 @@ NS_SWIFT_NAME(BraveAds)
 
 /// Report that a page has loaded in the current browser tab, and the inner text
 /// within the page loaded for classification
-- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text tabId:(NSInteger)tabId;
+- (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
+                      innerText:(NSString *)text tabId:(NSInteger)tabId;
 
 /// Report that media has started on a tab with a given id
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportMediaStarted(tabId:));
@@ -127,9 +135,14 @@ NS_SWIFT_NAME(BraveAds)
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
 
-/// Report that a notification event type was triggered for a given id
-- (void)reportAdNotificationEvent:(NSString *)notificationUuid
+/// Report that an ad notification event type was triggered for a given id
+- (void)reportAdNotificationEvent:(NSString *)uuid
                         eventType:(BATAdNotificationEventType)eventType;
+
+/// Report that a new tab page ad event type was triggered for a given id
+- (void)reportNewTabPageAdEvent:(NSString *)wallpaperId
+             creativeInstanceId:(NSString *)creativeInstanceId
+                      eventType:(BATNewTabPageAdEventType)eventType;
 
 /// Reconcile ad rewards with server
 - (void)reconcileAdRewards;

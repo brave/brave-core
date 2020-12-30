@@ -6,58 +6,47 @@
 #ifndef BAT_ADS_INTERNAL_BUNDLE_BUNDLE_H_
 #define BAT_ADS_INTERNAL_BUNDLE_BUNDLE_H_
 
-#include <stdint.h>
-
-#include <memory>
-#include <string>
-
-#include "bat/ads/internal/bundle/bundle_state.h"
-#include "bat/ads/internal/catalog/catalog_creative_set_info.h"
-#include "bat/ads/internal/time_util.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 
 namespace ads {
 
-class AdsImpl;
 class Catalog;
+struct BundleState;
 
 class Bundle {
  public:
-  explicit Bundle(
-      AdsImpl* ads);
+  Bundle();
 
   ~Bundle();
 
-  bool UpdateFromCatalog(
+  void BuildFromCatalog(
       const Catalog& catalog);
 
-  std::string GetCatalogId() const;
-  uint64_t GetCatalogVersion() const;
-  uint64_t GetCatalogPing() const;
-
-  bool IsOlderThanOneDay() const;
-
-  bool Exists() const;
-
  private:
-  std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
+  BundleState FromCatalog(
+      const Catalog& catalog) const;
 
-  bool DoesOsSupportCreativeSet(
-      const CatalogCreativeSetInfo& creative_set);
+  void DeleteDatabaseTables();
 
-  void OnCreativeAdNotificationsSaved(
-      const Result result);
-  void OnPurgedExpiredAdConversions(
-      const Result result);
-  void OnAdConversionsSaved(
-      const Result result);
+  void DeleteCreativeAdNotifications();
+  void DeleteCreativeNewTabPageAds();
+  void DeleteCampaigns();
+  void DeleteSegments();
+  void DeleteCreativeAds();
+  void DeleteDayparts();
+  void DeleteGeoTargets();
 
-  std::string catalog_id_;
-  uint64_t catalog_version_ = 0;
-  uint64_t catalog_ping_ = 0;
-  base::Time catalog_last_updated_;
+  void SaveCreativeAdNotifications(
+      const CreativeAdNotificationList& creative_ad_notifications);
 
-  AdsImpl* ads_;  // NOT OWNED
+  void SaveCreativeNewTabPageAds(
+      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
+
+  void PurgeExpiredConversions();
+  void SaveConversions(
+      const ConversionList& conversions);
 };
 
 }  // namespace ads

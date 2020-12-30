@@ -228,7 +228,7 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
 
 
 void GitHub::ProcessMedia(
-    const std::map<std::string, std::string> parts,
+    const base::flat_map<std::string, std::string> parts,
     const ledger::type::VisitData& visit_data) {
   const std::string user_name = GetUserNameFromURL(visit_data.path);
   const std::string url = GetProfileAPIURL(user_name);
@@ -477,7 +477,7 @@ void GitHub::OnMetaDataGet(
 }
 
 void GitHub::SaveMediaInfo(
-    const std::map<std::string, std::string>& data,
+    const base::flat_map<std::string, std::string>& data,
     ledger::PublisherInfoCallback callback) {
   auto user_name = data.find("user_name");
   std::string url = GetProfileAPIURL(user_name->second);

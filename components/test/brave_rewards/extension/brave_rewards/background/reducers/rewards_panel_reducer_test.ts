@@ -23,9 +23,7 @@ describe('rewards panel reducer', () => {
     describe('persist publisher info', () => {
       it('url is the same', () => {
         const initState: Rewards.State = {
-          ...defaultState,
-          walletCreated: true,
-          enabledMain: true
+          ...defaultState
         }
         const payload = {
           tab: {
@@ -39,8 +37,6 @@ describe('rewards panel reducer', () => {
         // first visit
         const expectedState1: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabId: 1,
@@ -68,8 +64,6 @@ describe('rewards panel reducer', () => {
         // second visit
         const expectedState2: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabId: 1,
@@ -89,7 +83,7 @@ describe('rewards panel reducer', () => {
       })
 
       it('url is the same, but publisher was not saved correctly', () => {
-        const initState: Rewards.State = { ...defaultState, walletCreated: true }
+        const initState: Rewards.State = { ...defaultState }
         const payload = {
           tab: {
             url: 'https://clifton.io',
@@ -102,7 +96,6 @@ describe('rewards panel reducer', () => {
         // first visit
         const expectedState1: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
           publishers: {
             key_1: {
               tabId: 1,
@@ -128,9 +121,9 @@ describe('rewards panel reducer', () => {
         // second visit
         const expectedState2: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
           publishers: {
             key_1: {
+              tabId: 1,
               tabUrl: 'https://clifton.io'
             }
           }
@@ -146,16 +139,12 @@ describe('rewards panel reducer', () => {
 
       it('url is not the same', () => {
         const initState: Rewards.State = {
-          ...defaultState,
-          walletCreated: true,
-          enabledMain: true
+          ...defaultState
         }
 
         // first visit
         const expectedState1: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabId: 1,
@@ -190,8 +179,6 @@ describe('rewards panel reducer', () => {
         // second visit
         const expectedState2: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabId: 1,
@@ -215,39 +202,9 @@ describe('rewards panel reducer', () => {
         expect(state.rewardsPanelData).toEqual(expectedState2)
       })
 
-      it('rewards are disabled', () => {
-        const initState: Rewards.State = {
-          ...defaultState,
-          walletCreated: true,
-          enabledMain: false
-        }
-
-        const expectedState: Rewards.State = {
-          ...defaultState,
-          walletCreated: true,
-          enabledMain: false
-        }
-
-        let state = reducers({ rewardsPanelData: initState }, {
-          type: types.ON_TAB_RETRIEVED,
-          payload: {
-            tab: {
-              url: 'https://clifton.io',
-              incognito: false,
-              active: true,
-              id: 1
-            }
-          }
-        })
-
-        expect(state.rewardsPanelData).toEqual(expectedState)
-      })
-
       it('publisher is empty', () => {
         const initState: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabUrl: 'clifton.io',
@@ -258,8 +215,6 @@ describe('rewards panel reducer', () => {
 
         const expectedState: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabId: 1,
@@ -286,8 +241,6 @@ describe('rewards panel reducer', () => {
       it('switching between two tabs that have the same url', () => {
         const initState: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabUrl: 'https://clifton.io',
@@ -299,8 +252,6 @@ describe('rewards panel reducer', () => {
 
         const expectedState: Rewards.State = {
           ...defaultState,
-          walletCreated: true,
-          enabledMain: true,
           publishers: {
             key_1: {
               tabUrl: 'https://clifton.io',

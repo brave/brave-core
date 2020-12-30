@@ -25,6 +25,10 @@
 
 class GreaselionServiceTest;
 
+namespace base {
+class Version;
+}
+
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
 
@@ -41,6 +45,8 @@ struct GreaselionPreconditions {
   GreaselionPreconditionValue reddit_tips_enabled = kAny;
   GreaselionPreconditionValue github_tips_enabled = kAny;
   GreaselionPreconditionValue auto_contribution_enabled = kAny;
+  GreaselionPreconditionValue ads_enabled = kAny;
+  GreaselionPreconditionValue supports_minimum_brave_version = kAny;
 };
 
 class GreaselionRule {
@@ -50,11 +56,13 @@ class GreaselionRule {
              base::ListValue* urls_value,
              base::ListValue* scripts_value,
              const std::string& run_at_value,
+             const std::string& minimum_brave_version_value,
              const base::FilePath& messages_value,
              const base::FilePath& resource_dir);
   ~GreaselionRule();
 
-  bool Matches(GreaselionFeatures state) const;
+  bool Matches(
+      GreaselionFeatures state, const base::Version& browser_version) const;
   std::string name() const { return name_; }
   std::vector<std::string> url_patterns() const { return url_patterns_; }
   std::vector<base::FilePath> scripts() const { return scripts_; }
@@ -76,6 +84,7 @@ class GreaselionRule {
   std::vector<std::string> url_patterns_;
   std::vector<base::FilePath> scripts_;
   std::string run_at_;
+  std::string minimum_brave_version_;
   base::FilePath messages_;
   GreaselionPreconditions preconditions_;
   bool has_unknown_preconditions_ = false;

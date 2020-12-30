@@ -13,29 +13,24 @@
 
 namespace ads {
 
-class AdsImpl;
-
 class UserActivityFrequencyCap : public PermissionRule {
  public:
-  UserActivityFrequencyCap(
-      const AdsImpl* const ads);
+  UserActivityFrequencyCap();
 
   ~UserActivityFrequencyCap() override;
 
   UserActivityFrequencyCap(const UserActivityFrequencyCap&) = delete;
   UserActivityFrequencyCap& operator=(const UserActivityFrequencyCap&) = delete;
 
-  bool IsAllowed() override;
+  bool ShouldAllow() override;
 
   std::string get_last_message() const override;
 
  private:
-  const AdsImpl* const ads_;  // NOT OWNED
-
   std::string last_message_;
 
   bool DoesRespectCap(
-      const UserActivityHistoryMap& history);
+      const UserActivityEventHistoryMap& history);
 };
 
 }  // namespace ads

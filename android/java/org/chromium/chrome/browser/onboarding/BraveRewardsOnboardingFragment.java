@@ -29,9 +29,12 @@ import androidx.fragment.app.Fragment;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.profiles.Profile;
 
 public class BraveRewardsOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;
@@ -129,8 +132,8 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mBraveRewardsServiceIntent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsService.class);
-                ContextUtils.getApplicationContext().startService(mBraveRewardsServiceIntent);
+                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
+                BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
                 assert onViewPagerAction != null;
                 if (onViewPagerAction != null)
                     onViewPagerAction.onNext();

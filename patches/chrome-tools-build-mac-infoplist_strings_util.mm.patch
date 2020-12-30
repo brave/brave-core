@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/mac/infoplist_strings_util.mm b/chrome/tools/build/mac/infoplist_strings_util.mm
-index 85b3833a34bf7cc21b1869faa0f0423944e432f0..e108c44e4e14864f52e720ad3227a65bc33dba81 100644
+index 5a25e3663fb09d18ee8495c2dc9032dcbdc40120..f14cc47e47a76f827fecac0d6f48e9253ad77de9 100644
 --- a/chrome/tools/build/mac/infoplist_strings_util.mm
 +++ b/chrome/tools/build/mac/infoplist_strings_util.mm
 @@ -241,8 +241,7 @@ int main(int argc, char* const argv[]) {

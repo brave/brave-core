@@ -144,8 +144,8 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
   OSCryptMocker::SetUp();
 
-  autofill::PasswordForm autofillable_login;
-  autofill::PasswordForm blocked_login;
+  importer::ImportedPasswordForm autofillable_login;
+  importer::ImportedPasswordForm blocked_login;
 
   EXPECT_CALL(*bridge_, NotifyStarted());
   EXPECT_CALL(*bridge_, NotifyItemStarted(importer::PASSWORDS));

@@ -16,21 +16,25 @@ const char kLastCheckYMD[] = "brave.stats.last_check_ymd";
 const char kLastCheckWOY[] = "brave.stats.last_check_woy";
 const char kLastCheckMonth[] = "brave.stats.last_check_month";
 const char kFirstCheckMade[] = "brave.stats.first_check_made";
+// Set to true if the user met the threshold requirements and successfully
+// sent a ping to the stats-updater server.
+const char kThresholdCheckMade[] = "brave.stats.threshold_check_made";
+// Serialized query for to send to the stats-updater server. Needs to be saved
+// in the case that the user sends the standard usage ping, stops the browser,
+// meets the threshold requirements, and then starts the browser before the
+// threshold ping was sent.
+const char kThresholdQuery[] = "brave.stats.threshold_query";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kAdBlockCheckedDefaultRegion[] =
     "brave.ad_block.checked_default_region";
 const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
-const char kWidevineInstalledVersion[] = "brave.widevine_installed_version";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
-const char kBraveThemeType[] = "brave.theme.type";  // deprecated
-const char kUseOverriddenBraveThemeType[] =
-    "brave.theme.use_overridden_brave_theme_type";  // deprecated
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralDownloadID[] = "brave.referral.download_id";
 const char kReferralTimestamp[] = "brave.referral.timestamp";
@@ -56,13 +60,21 @@ const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageClockFormat[] = "brave.new_tab_page.clock_format";
-const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
+const char kNewTabPageShowToday[] = "brave.new_tab_page.show_brave_today";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
 const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
 const char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
 const char kNewTabPageShowTogether[] = "brave.new_tab_page.show_together";
-const char kNewTabPageShowAddCard[] = "brave.new_tab_page.show_addcard";
+const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
+const char kBraveTodaySources[] = "brave.today.sources";
+const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
+const char kBraveTodayWeeklySessionCount[] =
+    "brave.today.p3a_weekly_session_count";
+const char kBraveTodayWeeklyCardViewsCount[] =
+    "brave.today.p3a_weekly_card_views_count";
+const char kBraveTodayWeeklyCardVisitsCount[] =
+    "brave.today.p3a_weekly_card_visits_count";
 const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
@@ -80,6 +92,7 @@ const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 #endif
 const char kImportDialogExtensions[] = "import_dialog_extensions";
 const char kImportDialogPayments[] = "import_dialog_payments";
+const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
@@ -90,3 +103,11 @@ const char kBackgroundVideoPlaybackEnabled[] =
 const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 const char kSafetynetStatus[] = "safetynet.status";
 #endif
+
+const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
+
+// deprecated
+const char kBraveThemeType[] = "brave.theme.type";
+const char kUseOverriddenBraveThemeType[] =
+    "brave.theme.use_overridden_brave_theme_type";
+const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";

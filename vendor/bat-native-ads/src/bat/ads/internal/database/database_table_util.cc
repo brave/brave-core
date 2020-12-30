@@ -14,6 +14,7 @@
 namespace ads {
 namespace database {
 namespace table {
+namespace util {
 
 void Drop(
     DBTransaction* transaction,
@@ -180,6 +181,7 @@ void CreateIndex(
   transaction->commands.push_back(std::move(command));
 }
 
+}  // namespace util
 }  // namespace table
 }  // namespace database
 }  // namespace ads

@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -49,9 +50,8 @@ class BatAdsImpl :
 
   void OnPageLoaded(
       const int32_t tab_id,
-      const std::string& original_url,
-      const std::string& url,
-      const std::string& html) override;
+      const std::vector<std::string>& redirect_chain,
+      const std::string& content) override;
 
   void OnUnIdle() override;
   void OnIdle() override;
@@ -80,12 +80,17 @@ class BatAdsImpl :
       const std::string& uuid,
       const ads::AdNotificationEventType event_type) override;
 
+  void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const ads::NewTabPageAdEventType event_type) override;
+
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
 
   void OnWalletUpdated(
       const std::string& payment_id,
-      const std::string& recovery_seed_base64) override;
+      const std::string& seed) override;
 
   void ReconcileAdRewards() override;
 
@@ -94,8 +99,8 @@ class BatAdsImpl :
       const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
 
-  void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) override;
+  void GetStatement(
+      GetStatementCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -164,8 +169,8 @@ class BatAdsImpl :
       CallbackHolder<RemoveAllHistoryCallback>* holder,
       const int32_t result);
 
-  static void OnGetTransactionHistory(
-    CallbackHolder<GetTransactionHistoryCallback>* holder,
+  static void OnGetStatement(
+    CallbackHolder<GetStatementCallback>* holder,
     const bool success,
     const ads::StatementInfo& statement);
 

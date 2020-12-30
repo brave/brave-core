@@ -13,14 +13,11 @@
 #include "base/macros.h"
 #include "base/values.h"
 
+class PrefRegistrySimple;
 class PrefService;
 
 namespace base {
 class Time;
-}
-
-namespace user_prefs {
-class PrefRegistrySyncable;
 }
 
 namespace brave_sync {
@@ -30,7 +27,7 @@ class Prefs {
   explicit Prefs(PrefService* pref_service);
   virtual ~Prefs();
 
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   static std::string GetSeedPath();
 

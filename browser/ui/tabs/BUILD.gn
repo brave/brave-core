@@ -1,0 +1,21 @@
+source_set("tabs") {
+  # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
+  check_includes = false
+
+  if (!is_android) {
+    sources = [
+      "brave_tab_menu_model.cc",
+      "brave_tab_menu_model.h",
+      "brave_tab_strip_model.cc",
+      "brave_tab_strip_model.h",
+    ]
+
+    deps = [
+      "//brave/common/",
+      "//chrome/app:generated_resources",
+      "//components/prefs",
+      "//components/sessions",
+      "//content/public/browser",
+    ]
+  }
+}

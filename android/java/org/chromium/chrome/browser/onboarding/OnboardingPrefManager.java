@@ -7,6 +7,8 @@
 
 package org.chromium.chrome.browser.onboarding;
 
+import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,8 +69,9 @@ public class OnboardingPrefManager {
     private static final String DUCKDUCKGOLITE = "DuckDuckGo Lite";
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
-    private static final String STARTPAGE = "StartPage";
+    private static final String STARTPAGE = "Startpage";
     private static final String YAHOO = "Yahoo";
+    public static final String YANDEX = "Yandex";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -191,8 +194,8 @@ public class OnboardingPrefManager {
     public boolean showOnboardingForSkip(Context context) {
         boolean shouldShow = PackageUtils.isFirstInstall(context)
                              && !hasOnboardingShownForSkip()
-                             && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED))
                              && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+                             && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                              && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
         return shouldShow;
     }
@@ -208,7 +211,7 @@ public class OnboardingPrefManager {
 
     public void onboardingNotification(Context context) {
         if (!isOnboardingNotificationShown()) {
-            BraveOnboardingNotification.showOnboardingNotification(context);
+            BraveOnboardingNotification.showOnboardingNotification((Activity) context);
             setOnboardingNotificationShown(true);
         }
     }
@@ -250,6 +253,7 @@ public class OnboardingPrefManager {
             put(QWANT, SearchEngineEnum.QWANT);
             put(BING, SearchEngineEnum.BING);
             put(STARTPAGE, SearchEngineEnum.STARTPAGE);
+            put(YANDEX, SearchEngineEnum.YANDEX);
         }
     };
 

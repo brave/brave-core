@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/optional.h"
 #include "base/values.h"
 #include "bat/ads/internal/catalog/catalog_issuer_info.h"
 
@@ -29,7 +30,7 @@ struct CatalogIssuersInfo {
   bool PublicKeyExists(
       const std::string& public_key) const;
 
-  double GetEstimatedRedemptionValue(
+  base::Optional<double> GetEstimatedRedemptionValue(
       const std::string& public_key) const;
 
   std::string public_key;

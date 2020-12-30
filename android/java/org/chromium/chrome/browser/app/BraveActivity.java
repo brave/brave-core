@@ -23,33 +23,49 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import org.chromium.base.Log;
+import org.json.JSONException;
+
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveSyncReflectionUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.informers.BraveP3AInformers;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
@@ -64,22 +80,22 @@ import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
+import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
+import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.widget.Toast;
-import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.OnboardingActivity;
-import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
-import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
-import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.ntp.NewTabPage;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Brave's extension for ChromeActivity
@@ -91,8 +107,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
     public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
     public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
+    public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
+    public static final String BRAVE_TERMS_PAGE =
+            "https://basicattentiontoken.org/user-terms-of-service/";
+    public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/#rewards";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String OPEN_URL = "open_url";
 
@@ -106,6 +126,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
+
+    // Explicitly declare this variable to avoid build errors.
+    // It will be removed in asm and parent variable will be used instead.
+    protected ObservableSupplier<Profile> mTabModelProfileSupplier;
+
+    private static final List<String> yandexRegions =
+            Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -208,14 +235,24 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        if (BraveRewardsHelper.hasRewardsEnvChange()) {
+            BravePrefServiceBridge.getInstance().resetPromotionLastFetchStamp();
+            BraveRewardsHelper.setRewardsEnvChange(false);
+        }
+
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
+
+        if (PackageUtils.isFirstInstall(this) && appOpenCount == 0) {
+            checkForYandexSE();
+        }
 
         //set bg ads to off for existing and new installations
         setBgBraveAdsDefaultOff();
 
         Context app = ContextUtils.getApplicationContext();
-        if (null != app && (this instanceof ChromeTabbedActivity)) {
+        if (null != app
+                && BraveReflectionUtil.EqualTypes(this.getClass(), ChromeTabbedActivity.class)) {
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
             BraveSyncReflectionUtils.getSyncWorker();
         }
@@ -230,27 +267,31 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
 
-        if (PackageUtils.isFirstInstall(this)
-                && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_4);
-            OnboardingPrefManager.getInstance().setNextOnboardingDate(
-                calender.getTimeInMillis());
-        }
+        // TODO commenting out below code as we may use it in next release
 
-        OnboardingActivity onboardingActivity = null;
-        for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof OnboardingActivity)) continue;
+        // if (PackageUtils.isFirstInstall(this)
+        //         &&
+        //         SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+        //         == 1) {
+        //     Calendar calender = Calendar.getInstance();
+        //     calender.setTime(new Date());
+        //     calender.add(Calendar.DATE, DAYS_4);
+        //     OnboardingPrefManager.getInstance().setNextOnboardingDate(
+        //         calender.getTimeInMillis());
+        // }
 
-            onboardingActivity = (OnboardingActivity) ref;
-        }
+        // OnboardingActivity onboardingActivity = null;
+        // for (Activity ref : ApplicationStatus.getRunningActivities()) {
+        //     if (!(ref instanceof OnboardingActivity)) continue;
 
-        if (onboardingActivity == null
-                && OnboardingPrefManager.getInstance().showOnboardingForSkip(this)) {
-            OnboardingPrefManager.getInstance().showOnboarding(this);
-            OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
-        }
+        //     onboardingActivity = (OnboardingActivity) ref;
+        // }
+
+        // if (onboardingActivity == null
+        //         && OnboardingPrefManager.getInstance().showOnboardingForSkip(this)) {
+        //     OnboardingPrefManager.getInstance().showOnboarding(this);
+        //     OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
+        // }
 
         if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
@@ -266,6 +307,23 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         BraveSyncReflectionUtils.showInformers();
 
+        if (BraveConfig.P3A_ENABLED) {
+            // // P3A informer should be shown not for the updated users only
+            // if (!PackageUtils.isFirstInstall(this)) {
+            //     BraveP3AInformers.show();
+            // } else {
+            //     // On the first run P3A is must be set from the onboarding wizard
+            // }
+            // Uncomment ^ when onboarding UI step will be ready for P3A
+
+            // Until we don't have P3A onboarding, P3A will be disabled,
+            // but available for activating through settings
+            if (!BravePrefServiceBridge.getInstance().hasPathP3AEnabled()) {
+                BravePrefServiceBridge.getInstance().setP3AEnabled(false);
+            }
+            // Remove lines above ^ when onboarding UI step will be ready for P3A
+        }
+
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
                 && PackageUtils.isFirstInstall(this)) {
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
@@ -278,6 +336,41 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_2);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
+        }
+        if (!TextUtils.isEmpty(BinanceWidgetManager.getInstance().getBinanceAccountBalance())) {
+            try {
+                BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
+                        BinanceWidgetManager.getInstance().getBinanceAccountBalance());
+            } catch (JSONException e) {
+                Log.e("NTP", e.getMessage());
+            }
+        }
+
+        if (PackageUtils.isFirstInstall(this)
+                && SharedPreferencesManager.getInstance().readInt(
+                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                        == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_4);
+            BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
+        }
+        if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(true);
+            openRewardsPanel();
+            BraveRewardsHelper.setRewardsOnboardingModalShown(true);
+        }
+    }
+
+    private void checkForYandexSE() {
+        String countryCode = Locale.getDefault().getCountry();
+        if (yandexRegions.contains(countryCode)) {
+            TemplateUrl yandexTemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(OnboardingPrefManager.YANDEX);
+            if (yandexTemplateUrl != null) {
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, false);
+                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, true);
+            }
         }
     }
 
@@ -296,7 +389,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
             case RetentionNotificationUtil.BRAVE_STATS_DATA:
             case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                if (getActivityTab() != null
+                    && getActivityTab().getUrlString() != null
+                    && !UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
                     getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                 }
                 break;
@@ -313,7 +408,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+            if (!UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
                 OnboardingPrefManager.getInstance().setFromNotification(true);
                 getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
             } else {

@@ -36,22 +36,35 @@
 <translation id="867722069064361487">12-Stunden-Uhr</translation>
 <translation id="4064062743338217840">24-Stunden-Uhr</translation>
 <translation id="8643377320501056697">Die führenden Seiten anzeigen</translation>
+<translation id="7176563092712682575">Top-Seiten anpassen</translation>
 <translation id="3446024864193919737">Brave Rewards anzeigen</translation>
 <translation id="6274899614137380422">Binance anzeigen</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">Mehr Karten</translation>
+<translation id="5585019845078534178">Karten</translation>
 <translation id="3870475560794762985">Gesponserte Bilder anzeigen</translation>
 <translation id="2875302873837723333">führende Websites</translation>
 <translation id="8173998484743827990">Brave-Statistiken</translation>
 <translation id="383680190590774040">Uhr</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Hintergrundbild</translation>
+<translation id="385051799172605136">Zurück</translation>
+<translation id="7415602225677446066">Die wichtigsten Themen des Tages in einem absolut privaten Feed, nur für Sie zusammengestellt.</translation>
+<translation id="8607689491789524900">Brave Today gleicht Ihre Interesse auf Ihrem Gerät an, so dass Ihre persönlichen Daten niemals Ihren Browser verlassen. Neue Inhalte werden den Tag über geladen.</translation>
+<translation id="9164544612367905452">Wird abgerufen…</translation>
+<translation id="1276592121036104130">Neue Inhalte laden</translation>
+<translation id="4210987321913275328">Scrollen Sie, um Brave Today zu sehen</translation>
+<translation id="3122595178900736207">Quellen für Brave Today zurücksetzen</translation>
+<translation id="2197023915568148978">Möchten Sie Ihre gesamte Brave-Today-Publisherauswahl auf den Standard zurücksetzen?</translation>
+<translation id="954001034349395856">Alle Quellen</translation>
+<translation id="8890516388109605451">Quellen</translation>
+<translation id="5158129253322921540">Inhalte von <ph name="PUBLISHER_NAME"/> deaktivieren</translation>
 <translation id="1776831331757823105">Uhr</translation>
 <translation id="4643117005422448078">Führende Websites</translation>
 <translation id="7791543448312431591">Hinzufügen</translation>
 <translation id="7679334366167089823">Verdienen Sie Tokens für das Anschauen von Werbung, die die Privatsphäre respektiert.</translation>
 <translation id="1531133232292396145">Traden Sie Krypto auf Binance direkt in Ihrem Browser.</translation>
 <translation id="2166494527623220386">Traden Sie Krypto auf Gemini direkt in Ihrem Browser.</translation>
+<translation id="7191394989411626168">Nach Deaktivierung von Karten werden alle aktuell sichtbaren Karten verborgen. Sie werden jedoch noch immer über neue Karten benachrichtigt.</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="6248988683584659830">In Einstellungen suchen</translation>
@@ -91,9 +104,8 @@
 <translation id="2974339193389078578">Brave, das neue Internet</translation>
 <translation id="7735138632831241257">Genießen Sie ein schnelleres und sichereres Browsing-Erlebnis mit dem speziell für Ihre Sicherheit entwickelten Browser.</translation>
 <translation id="6001839398155993679">Los geht's</translation>
-<translation id="8050847734948770789">Brave Rewards aktivieren</translation>
-<translation id="2862598513212603756">Ihre Aufmerksamkeit ist wertvoll. Verdienen Sie beim Browsen durch das Anschauen von Werbung, die Ihre Privatsphäre respektiert, und zahlen Sie diese weiter, um die von Ihnen geliebten Inhaltsersteller zu unterstützen.</translation>
-<translation id="4942016616604700968">Rewards aktivieren</translation>
+<translation id="2835162985889791522">Verdienen Sie Token, indem Sie Werbeanzeigen ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie standardmäßig Ihre Lieblingswebsites und liebsten Inhaltsersteller.</translation>
+<translation id="2070991379950719711">Brave Rewards jetzt nutzen</translation>
 <translation id="3958088479270651626">Lesezeichen und Einstellungen importieren</translation>
 <translation id="2609701960545338618">Richten Sie Ihre übliche Browserumgebung ein, indem Sie Lesezeichen und Einstellungen aus Ihrem alten Browser importieren. In den Einstellungen stehen erweiterte Import-Optionen zur Verfügung.</translation>
 <translation id="8275038454117074363">Importieren</translation>
@@ -117,7 +129,7 @@
 <translation id="3742599705619405136">Dies ist eine Möglichkeit, wie Sie Herausgeber und Urheber automatisch unterstützen können. Wählen Sie eine monatlichen Zahlbetrag und surfen Sie normal im Internet. Webseiten mit "Brave"-Zertifikat, die Sie besuchen, erhalten automatisch einen bestimmten Betrag. Dieser ist abhängig von Ihrer Aufmerksamkeit, die Brave misst.</translation>
 <translation id="20281847067919078">Geschätzte ausstehende Vergütungen</translation>
 <translation id="8593551638387217772">Nächstes Auszahlungsdatum</translation>
-<translation id="319209088187794725">In diesem Monat (per Benachrichtigung) erhaltene Anzeigen</translation>
+<translation id="4428871418618312983">In diesem Monat empfangene Werbeanzeigen</translation>
 <translation id="4229016885653790965">Sorry! Werbung ist in Ihrer Region noch nicht verfügbar.</translation>
 <translation id="2539279826042558064">Brave Rewards und Ads stehen auf Ihrem Gerät derzeit nicht zur Verfügung</translation>
 <translation id="5421369907811917952">Weitere Einstellungen</translation>
@@ -135,6 +147,8 @@
 <translation id="8010081455002666927">Automatisch erkennen</translation>
 <translation id="4394049700291259645">Deaktivieren</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
+<translation id="4434663852465709809">QR-Code für iOS belohnt Nutzer, die BAT transferieren</translation>
+<translation id="2175927920773552910">QR-Code</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="6160106411363856968">BAP</translation>
 <translation id="1081826981536899387">BAT-Punkte</translation>
@@ -191,8 +205,6 @@
 <translation id="717952606991220586">Hoppla, etwas stimmt nicht. Bitte versuchen Sie es später erneut.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="7210234701206674260">Brave Rewards hat ein Problem. Bitte versuchen Sie es später erneut.</translation>
-<translation id="570208820610947248">Es gibt ein Problem mit Ihre Wallet. Sie müssen sie zunächst wiederherstellen, bevor weitere Transaktionen durchgeführt werden können.</translation>
-<translation id="7797604753681168055">Jetzt wiederherstellen!</translation>
 <translation id="5549059668721746831">Nächstes Datum für monatliche Spende</translation>
 <translation id="6231182869178328516">Ich habe gerade <ph name="NAME"/> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -201,6 +213,7 @@
 <translation id="7119308337584989771">Abgelehnt</translation>
 <translation id="6805660603861526473">Angesehen</translation>
 <translation id="2359865110462963929">BAT wird zurzeit nicht in Ihrer Region unterstützt. Neuigkeiten finden Sie <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/>.</translation>
+<translation id="6876377564500155963">Indem Sie {{title}} anstellen, stimmen Sie den <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzrichtlinien<ph name="END_LINK2"/> zu.</translation>
 <translation id="2564425876266960486">Fehler beim Erstellen der BAT-Karte des Brave-Browsers</translation>
 <translation id="6473583070570450185">Sie brauchen eine verifizierte Wallet, um sich einzuloggen</translation>
 <translation id="2106271389438168634">Sie brauchen ein Minimum von 25 BAT, um eine Uphold Wallet zu erstellen. Bitte versuchen Sie es erneut, nachdem Sie Ihre Wallet mit Uphold verifiziert haben.</translation>
@@ -259,7 +272,6 @@
 <translation id="3798449238516105146">Version</translation>
 <translation id="7180611975245234373">Aktualisieren</translation>
 <translation id="1456696701804096710">Wiederholungszählung:</translation>
-<translation id="5771119664738037159">Brave Rewards ist nicht aktiviert. Durch Besuch aktivieren</translation>
 <translation id="2152423226436243241">Automatischer Beitrag</translation>
 <translation id="2927922949538312364">Einmaliges Trinkgeld</translation>
 <translation id="3164105678355419142">Wiederkehrendes Trinkgeld</translation>
@@ -272,6 +284,7 @@
 <translation id="4235360514405112390">Gültig</translation>
 <translation id="3902084968737576005">Wallet-Adresse:</translation>
 <translation id="2326487656644542536">Wallet-Info</translation>
+<translation id="3506182299017414175">Wallet wurde noch nicht erstellt</translation>
 <translation id="8559420016582377654">Wallet-Zahlungsnr.:</translation>
 <translation id="438586487791444158">Wallet-Status:</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
@@ -279,6 +292,39 @@
 <translation id="922103963921062336">Getrennt (nicht verifiziert)</translation>
 <translation id="6521149675246672063">Getrennt (verifiziert)</translation>
 <translation id="3248185426436836442">Ausstehend</translation>
+<translation id="8441289448876571409">BAP-Fonds</translation>
+<translation id="5906820630265272615">BAT Fonds</translation>
+<translation id="5814098892838785557">Sind Sie sicher, dass Sie aufhören möchten, diesen Creator zu unterstützen?</translation>
+<translation id="3922777918343537463">Monatliches Abonnement beenden</translation>
+<translation id="9087994290002662101">Menge ändern</translation>
+<translation id="1969724076378550685">Beenden des monatlichen bestätigen</translation>
+<translation id="6238322297266927861">Beitragsmenge:</translation>
+<translation id="1723857724166389190">Ihr monatlicher Beitrag für diesen Creator wurde beendet.</translation>
+<translation id="534368327994110883">Sie’unterstützen aktuell diesen Creator</translation>
+<translation id="2621124276654521177">Aktueller monatlicher Beitrag</translation>
+<translation id="3084276630953238154">Ein ungebändigter Bug-Befall ist aufgetreten</translation>
+<translation id="3263379510325043678">Serververbindungsfehler</translation>
+<translation id="8994556588732085585">Bitte schließen Sie das Spendenbanner und öffnen Sie es erneut, um einen neuen Versuch zu starten.</translation>
+<translation id="4371618764691059036">Monatliche Unterstützung wurde festgelegt.</translation>
+<translation id="6356822617569064293">Nächstes Unterstützungsdatum:</translation>
+<translation id="4622723187300249546">Einmaliges Trinkgeld</translation>
+<translation id="5268142130226208198">Höhe des einmaligen Trinkgelds:</translation>
+<translation id="3669086939205397942">Momentchen mal, Sie können noch keine Spenden vergeben</translation>
+<translation id="1142440886533556131">{{user}}’s Post</translation>
+<translation id="3489551030916418665">{{user}}’s Tweet</translation>
+<translation id="5531915212947569943">Schade, dass Sie gehen…</translation>
+<translation id="1420756770787071946">Diesen Creator unterstützen</translation>
+<translation id="3473919203449000069">Indem Sie fortfahren, stimmen Sie den <ph name="LINK_BEGIN"/>Nutzungsbedingungen<ph name="LINK_END"/> und <ph name="LINK_BEGIN"/>Datenschutzrichtlinien<ph name="LINK_END"/> zu.</translation>
+<translation id="3271043362279673449">Danke für die Unterstützung!</translation>
+<translation id="379596083010863211">Ihr einmaliges Trinkgeld wurde gesendet.</translation>
+<translation id="5096821444729034955">für deren Post</translation>
+<translation id="2978223787436054634">Über Ihre Unterstützung twittern</translation>
+<translation id="1543259266592091784">Konto aufladen</translation>
+<translation id="7465614181960492526">Verdienen Sie Token &amp; förden Sie andere</translation>
+<translation id="2731539192954672606">Verdienen Sie Token, indem Sie Werbeanzeigen ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie automatisch Ihre Lieblingswebsites und liebsten Inhaltsersteller.</translation>
+<translation id="1275213816424141989">Vielleicht später</translation>
+<translation id="2404165674840145940">Über Brave Rewards spenden</translation>
+<translation id="5820285701794581330">Durch Nutzung von Brave Rewards verdienen Sie BAT, die Sie an Inhaltsersteller spenden können.</translation>
 <translation id="5094577350232361255">über</translation>
 <translation id="4918086044614829423">Annehmen</translation>
 <translation id="5916290544882167205">Brave Software. Brave ist ein eingetragenes Markenzeichen von Brave Software. Webseitennamen können Marken oder eingetragene Marken des Webseiteneigentümers sein.</translation>
@@ -296,23 +342,18 @@
 <translation id="8988332871810963281">Derzeit gibt es keinen Brave-Werbeverlauf</translation>
 <translation id="5345727496083327478">Sie erhalten keine Werbung mehr aus dieser Kategorie</translation>
 <translation id="5317780077021120954">Speichern</translation>
-<translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
 <translation id="2827387977307390755">Trinkgelder erlauben auf</translation>
 <translation id="3819257035322786455">Sichern</translation>
 <translation id="1312977698678162065">Werden Sie bezahlt, relevante Werbung zu sehen, die Ihre Privatsphäre respektieren.</translation>
 <translation id="4396256076373444156">Sammeln Sie Punkte, wenn Sie sich relevante Werbung ansehen, die Ihre Privatsphäre respektiert.</translation>
-<translation id="7655723274266132226">Jetzt können Sie durch das Anschauen von Werbung Geld verdienen.</translation>
 <translation id="2975780980638932742">Brave Werbung ist da!</translation>
 <translation id="3361548743396744457">Unterstützen Sie Ihre Lieblingsseiten einfach durchs Surfen – oder spendieren Sie Seiten ein Trinkgeld, wann immer Sie möchten.</translation>
 <translation id="718303546189503957">Automatische Beitragszahlung {{processor}}</translation>
 <translation id="4493850495402472953">und</translation>
 <translation id="8804164990146287819">Datenschutzerklärung</translation>
 <translation id="4281844954008187215">Nutzungsbedingungen</translation>
-<translation id="4405997465645469914">Indem Sie Brave Rewards aktivieren, bestätigen Sie, dass Sie Folgendes gelesen und akzeptiert haben:</translation>
 <translation id="8819542691525488940">Indem Sie auf ‘Ja, ich bin dabei!’klicken, signalisieren Sie, dass Sie Folgendes gelesen und akzeptiert haben:</translation>
 <translation id="8071424789698327147">Indem Sie auf ‘Ja, ich bin bereit!’ klicken, signalisieren Sie, dass Sie Folgendes gelesen und akzeptiert haben:</translation>
-<translation id="3745024317593003526">Beitrag festlegen</translation>
-<translation id="1386745271554473158">Teilen Sie diese guten Neuigkeiten mit anderen:</translation>
 <translation id="7530570094705720669">Wallet wird erstellt</translation>
 <translation id="2105596359439030979">Ihre Aufmerksamkeit ist wertvoll. Verdienen Sie durch das Anschauen von Werbung, die Ihre Privatsphäre respektieren, und zahlen Sie diese weiter, um die von Ihnen geliebten Inhaltsersteller zu unterstützen.</translation>
 <translation id="516395624550019162">Ja, ich bin dabei!</translation>
@@ -341,10 +382,8 @@
 <translation id="4805054577224376281">Ziel</translation>
 <translation id="1346059596910821859">Trinkgeld</translation>
 <translation id="245015745140252435">Höhe der Spende</translation>
-<translation id="4114667046481794032">Beitragshöhe</translation>
 <translation id="3520817231440482449">Dieser Seite monatlich ein Trinkgeld spendieren</translation>
 <translation id="1827184134638345603">Trinkgeld spendieren …</translation>
-<translation id="7928243298881209869">Ihre erste monatliche Spende erfolgt am:</translation>
 <translation id="6045860799501892362">Monatliche Spende festlegen</translation>
 <translation id="8003573781961874199">Als PDF herunterladen</translation>
 <translation id="298067735430872465">Einnahmen aus Werbung</translation>
@@ -362,7 +401,7 @@
 <translation id="7335371657242627509">In Auto-Beitrag aufnehmen</translation>
 <translation id="1864111464094315414">Anmeldung</translation>
 <translation id="4556504723624686474">Die Verifizierung der Wallet erlaubt Ihnen, Ihre Mittel effizienter zu verwalten.</translation>
-<translation id="5594737784294211654">Sie benötigen mindestens 25 BAT, um ein Uphold-Konto zu eröffnen. Bitte versuchen Sie es später noch einmal. <ph name="NEWLINE"/>Falls Sie bereits ein verifiziertes Uphold-Konto haben, loggen Sie sich ein.</translation>
+<translation id="5594737784294211654">Sie müssen mindestens 25 BAT haben, um ein Uphold-Konto zu erstellen. Bitte versuchen Sie es später erneut. <ph name="NEWLINE"/>Falls Sie bereits ein verifiziertes Uphold-Konto haben, fahren Sie mit der Anmeldung fort.</translation>
 <translation id="3250511771491660127">Monatlich wiederholen</translation>
 <translation id="6028954173739504682">Ihre Wallet verwalten</translation>
 <translation id="7886389832052393750">Apr</translation>
@@ -387,7 +426,6 @@
 <translation id="8304661078305276044">Werbe-Rewards</translation>
 <translation id="1770001816413426741">Rewards-Zeitraum</translation>
 <translation id="2280319752798785157">Monatlicher Beitrag</translation>
-<translation id="7627481505582641588">Nächster Beitrag</translation>
 <translation id="5736183007277264868">Derzeit ist keine Token-Zuteilung verfügbar.</translation>
 <translation id="8307851765167460403">Noch keine Aktivitäten…</translation>
 <translation id="8589748782214271192">Nein, danke</translation>
@@ -421,9 +459,6 @@
 <translation id="108052542935515756">Sie können beginnen mit der</translation>
 <translation id="194625454574835815">Wiederherstellungsschlüssel</translation>
 <translation id="6354568176665589146">Wiederkehrend</translation>
-<translation id="2391095793008133394">Geben Sie {{ user }} ein Trinkgeld für den Beitrag:</translation>
-<translation id="7557413530932469222">Geben Sie {{ user }} ein Trinkgeld für den Beitrag!</translation>
-<translation id="717513177896084801">An {{ user }} spenden</translation>
 <translation id="1110535155349301542">entfernen</translation>
 <translation id="8204292894173669182">Aus 'Gespeichert' entfernen</translation>
 <translation id="2160578257818656558">Sie haben {{reservedAmount}} {{currency}} für Urheber vorgesehen, die sich noch nicht bei uns angemeldet haben, um Beträge zu erhalten. Ihr Browser wird weiter versuchen, die Beträge zuzustellen, bis diese Urheber sich anmelden oder bis 90 Tage vergangen sind.</translation>
@@ -440,7 +475,6 @@
 <translation id="7934806082615382155">Es ist möglich, dass ein Teil des Guthabens von Brave kommt und nicht in der Sicherung enthalten ist, da dies nicht erforderlich ist. Es steht Ihnen ausschließlich zur Verwendung in diesem Browser zur Verfügung.</translation>
 <translation id="7354412786785889047">Sie können diesen Urheber von Inhalten unterstützen, indem Sie ein Trinkgeld senden. Es’ist eine Möglichkeit, ihm für die Erstellung seiner großartigen Inhalte zu danken. Verifizierte Urheber werden im Lauf der ersten Woche in jedem Kalendermonat für ihre Trinkgelder bezahlt.</translation>
 <translation id="972846019534552366">Sie können im Brave-Rewards-Tab auch einen Beitrag festlegen, der jeden Monat ausgezahlt wird.</translation>
-<translation id="121079855621707240">Sie können diesen Inhaltsurheber unterstützen, indem Sie eine monatliche Spende festlegen. Auf diese Weise können Sie ihm auf permanenter Basis dafür danken, dass er großartige Inhalte erstellt. Verifizierte Urheber werden in der ersten Woche jedes Kalendermonats für ihre Beiträge bezahlt.</translation>
 <translation id="3074127054582480056">Anteil</translation>
 <translation id="5010112177773747965">ohne Ihre Zustimmung.</translation>
 <translation id="7147673045905733351">Heute heißt Sie Brave im neuen Internet willkommen.</translation>
@@ -468,7 +502,6 @@
 <translation id="2028613172174411919">Ihre Rewards-Daten gehen durch Zurücksetzen Ihrer Wallet dauerhaft verloren.</translation>
 <translation id="4914597931214386232">Kostenlose Tokens erhalten</translation>
 <translation id="3494964159182650590">Übersicht der Spenden</translation>
-<translation id="63956545637156715">Warum Brave Rewards?</translation>
 <translation id="1738658589626889850">Als Datei speichern</translation>
 <translation id="259138486959961679">Alle {{numItems}} Artikel ansehen</translation>
 <translation id="7857284676033058221">Alle  {{numSites}} Seiten anschauen</translation>
@@ -477,11 +510,6 @@
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="1792148354504719133">Seite</translation>
 <translation id="5944430251223015324">Seiten</translation>
-<translation id="1834493631938747505">Erzählen Sie anderen von Ihrem Trinkgeld.</translation>
-<translation id="8826007068782654809">Vielen Dank</translation>
-<translation id="2305079019697905687">Trinkgeld gesendet!</translation>
-<translation id="4626192591707117844">Ihr monatlicher Beitrag wurde festgelegt!</translation>
-<translation id="6665366815203065060">Sie haben gerade Trinkgeld gesendet an:</translation>
 <translation id="6432779622695508363">Trinkgeld bei Like</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
@@ -495,13 +523,11 @@
 <translation id="1634828734222219955">Insgesamt</translation>
 <translation id="1726566769229204312">Gratis Token</translation>
 <translation id="1193434225710679930">Punkte-Förderbeträge</translation>
+<translation id="4395099108822007284">Bild wird geladen ...</translation>
 <translation id="3535654229833214438">Transaktionen</translation>
-<translation id="1605521356929094020">Brave Werbung aktivieren</translation>
+<translation id="2623808496299703826">Verdienen Sie Token, indem Sie sich Ads ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie Ihre Lieblings-Creator im Web.</translation>
 <translation id="8987812599455325915">Hierdurch werden sowohl Werbung als auch automatische Beiträge aktiviert. Sie können diese Optionen jederzeit separat ein- oder ausschalten.</translation>
 <translation id="1485484147452131556">Rewards aktivieren</translation>
-<translation id="3983104749597726322">Tweet</translation>
-<translation id="5636843789453098076">Trinkgeld @{{ user }} für den Tweet:</translation>
-<translation id="4242384385082203046">Geben Sie @{{ user }} ein Trinkgeld für den Tweet!</translation>
 <translation id="8772672608371898774">Brave Verifizierter Herausgeber</translation>
 <translation id="5050370287908180130">Monatlichen Kontoauszug für Details Anschauen</translation>
 <translation id="8615803647903750175">Wallet Umsätze</translation>
@@ -518,7 +544,7 @@
 <translation id="318487899513214296">Schauen Sie sich an, was’ verbessert wurde</translation>
 <translation id="4083384190339959182">Wir haben Brave Payments ein großes Upgrade spendiert.</translation>
 <translation id="5395851053710553429">Machen Sie sich darauf gefasst, das nächste Internet zu erleben.</translation>
-<translation id="2549982302631665116">Heute heißt Sie Brave im neuen Internet willkommen. Einem Internet, in dem Ihre Zeit gewürdigt wird, Ihre persönlichen Daten privat bleiben und Sie für Ihre Aufmerksamkeit sogar bezahlt werden.</translation>
+<translation id="63956545637156715">Warum Brave Rewards?</translation>
 <translation id="8494748383523030337">Ihr Kontostand</translation>
 <translation id="3780605330121608425">Ihre Wallet</translation>
 <translation id="6727483290601442544">Detaillierte Informationen anzeigen</translation>
@@ -559,32 +585,29 @@
 <translation id="3354315693758743702">Die Verifizierung Ihres Wallets ist optional.</translation>
 <translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
 <translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
+<translation id="7677480094678113476">Bemerkung: Ihre Transaktionen werden auf Uphold sichtbar sein, sobald Sie es autorisiert haben; zum Beispiel wird es möglich sein, den Empfänger und die Menge Ihrer Trinkgelder zu sehen.</translation>
 <translation id="7404779623219601861">BAT gegen Geschenkgutscheine eintauschen</translation>
 <translation id="6215565499749144110">Mithilfe des TAP Network können Sie Ihre BAT gegen Geschenkgutscheine beliebter Marken eintauschen.</translation>
 <translation id="6915065518766963119">* Erfordert Uphold-Verifizierung.</translation>
 <translation id="7703007724342399482">Erhalten Sie 2 % Cryptoback mit der Uphold-Karte</translation>
 <translation id="1109729143147368573">Geben Sie Ihre Krypto und andere Assets bei nahezu 50 Millionen Händlern und Geldautomaten weltweit aus. Geben Sie Krypto aus, um Krypto zu erhalten!</translation>
+<translation id="7840362246306242214">Handel mit U.S.-Dividendenpapieren auf Uphold verfügbar</translation>
+<translation id="3345432088196080137">Investieren Sie schon ab $1 in populäre Aktien und Exchange Transfer Funds wie AAPL, TSLA or AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Erfahren Sie mehr<ph name="LINK_END"/> über Brave Rewards</translation>
-<translation id="5826706758731195747">Indem Sie Rewards aktivieren, akzeptieren Sie die <ph name="LINK_BEGIN"/>Nutzungsbedingungen<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Durch Ihren Klick auf Brave Rewards jetzt nutzen stimmen Sie den <ph name="LINK_BEGIN"/>Nutzungsbedingungen<ph name="LINK_END"/> und der <ph name="LINK_BEGIN"/>Datenschutzrichtlinie<ph name="LINK_END"/> zu.</translation>
 <translation id="8344084848798035850">Geschätzter bisheriger Verdienst für diesen Monat</translation>
-<translation id="6778392839723468409">Verdienen Sie Token, indem Sie sich Werbung ansehen, die den Datenschutz respektiert.</translation>
 <translation id="5235444069025581717">Trinkgelder und Beiträge für diesen Monat</translation>
 <translation id="1210965535849006928">Meine Rewards einfordern</translation>
-<translation id="8315514906653279104">Wird aktiviert …</translation>
-<translation id="7307847920988946894">Rewards aktivieren</translation>
-<translation id="662631138774963814">Haben Sie heute die Spendierhosen an?</translation>
-<translation id="3264975266761862670">Bereit, mit dem Verdienen zu beginnen?</translation>
 <translation id="8092889639392847252">Werden Sie dafür bezahlt, sich dieses gesponserte Hintergrundbild anzusehen.</translation>
-<translation id="2542495049135486284">Testen Sie Brave Rewards erneut und lassen Sie andere von Ihren Verdiensten profitieren!</translation>
-<translation id="53513464591392992">Aktivieren Sie Brave Rewards und werden Sie dafür bezahlt, sich Werbung ansehen, die den Datenschutz respektiert.</translation>
-<translation id="8463996294416161140">Aktivieren Sie <ph name="PRODUCT_NAME"/>, um Ihren Anteil zu beanspruchen. Alternativ können Sie <ph name="LINK_BEGIN"/>gesponserte Bilder auch ausblenden<ph name="LINK_END"/>.</translation>
+<translation id="7914961605852877459">Schalten Sie Brave Ads ein, um Ihren Anteil zu beanspruchen. Sie können auch <ph name="LINK_BEGIN"/>gesponserte Bilder verbergen<ph name="LINK_END"/> auswählen.</translation>
 <translation id="8568666589217601917">Weiter so!</translation>
 <translation id="764235488372037377">Hier finden Sie Ihre Werbe-Rewards</translation>
 <translation id="7091215606170476659">Sie haben einen UGP-Förderbetrag von Brave erhalten.</translation>
 <translation id="6759185676704303656">Sie werden für das Ansehen dieses Hintergrundbildes bezahlt.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Erfahren Sie mehr<ph name="LINK_END"/> über gesponserte Bilder in Brave Rewards.</translation>
 <translation id="6113004497629356998">Gesponserte Bilder verbergen</translation>
-<translation id="2148613324460538318">Karte hinzufügen</translation>
+<translation id="3787061634640932557">Karten bearbeiten</translation>
+<translation id="4925543565930352284">Indem Sie auf {{title}} klicken, stimmen Sie den <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzrichtlinien<ph name="END_LINK2"/> zu.</translation>
 <translation id="5977237145327845546">Starten Sie einen privaten Videoanruf mit Ihren Freunden und Kollegen.</translation>
 <translation id="5850325887346946383">Videoanruf starten</translation>
 <translation id="3651550649176056334">Über ihre Daten</translation>
@@ -670,10 +693,22 @@
 <translation id="1895658205118569222">Herunterfahren</translation>
 <translation id="6762417584993757344">Nicht installiert</translation>
 <translation id="8428368469058794536">IPFS-Service</translation>
-<translation id="2901715907314796027">Kaufen Sie Krypto von Bitcoin.com.</translation>
-<translation id="4065681313949497252">Währung</translation>
-<translation id="3833315885381772739">Betrag eingeben</translation>
-<translation id="4011828592358027165">Sind Sie neu im Bereich der Kryptowährungen?</translation>
-<translation id="3358050091139900813">Legen Sie hier das Wallet an, um loszulegen</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5357895013476183089">IPFS Nicht Verbunden</translation>
+<translation id="8237116764941266924">Kann nicht mit dem IPFS-Inhalt verbinden</translation>
+<translation id="7602558611695320510">Verbindung mit den IPFS-Inhalten mittels des IPFS-Nodes fehlgeschlagen, klicken Sie auf den Fortfahren-Button unten, um dieses Mal das öffentliche Gateway zu nutzen und in der Zukunft automatisch auf das öffentliche Gateway zurückzugreifen.</translation>
+<translation id="3373798179786163193">Mit Öffentlichem Gateway fortfahren</translation>
+<translation id="1974060860693918893">Erweitert</translation>
+<translation id="9096577886148726047">Erweitert Verstecken</translation>
+<translation id="6334164481400727517">Wir konnten keine Verbindung mit dem angeforderten lokalen IPFS-Node aufbauen, weil der lokale Node nicht gestartet werden konnte oder weil es keine verbundenen Peers gibt, die aktuell verfügbar sind. Indem Sie fortfahren, werden wir automatisch in der Zukunft auf das öffentliche Standard-Gateway zurückgreifen, wenn wir keine Verbindung zum IPFS-Inhalt mit dem lokalen IPFS-Node aufbauen können. Dies kann später in den Einstellungen ausgeschaltet werden.</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Märkte anzeigen und Crypto kaufen auf Crypto.com</translation>
+<translation id="4292334826913000023">Preis anzeigen</translation>
+<translation id="5001098083058405168">Erhalten Sie 2% Bonus auf Einzahlungen</translation>
+<translation id="7336377875970208451">Zahlen Sie keine Trading-Gebühren</translation>
+<translation id="5889002303959545585">Bitcoin kaufen</translation>
+<translation id="7243082596932212589">Crypto.com Märkte ansehen</translation>
+<translation id="2258222996838418990">7d Graph</translation>
+<translation id="5337526542182802976">Unterstützte Paare</translation>
+<translation id="1164622162816276433">24-Stunden-Volumen</translation>
+<translation id="3155170474926428993">Tor-Startprogramm</translation>
 </translationbundle>

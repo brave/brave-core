@@ -122,8 +122,7 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
     if (process.platform === 'win32') {
       outputPath = outputPath + '.exe'
     } else if (process.platform === 'darwin') {
-      outputPath = outputPath + '_helper'
-      fs.chmodSync(outputPath, 0755)
+      outputPath = fs.readFileSync(outputPath + '_helper').toString().trim()
     }
   }
   util.run(outputPath, braveArgs, cmdOptions)

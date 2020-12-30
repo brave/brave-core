@@ -32,9 +32,6 @@ public class BraveRewardsResetPreferenceDialog extends PreferenceDialogFragmentC
     }
 
     @Override
-    public void onDialogClosed(boolean positive) {
-        if (positive) {
-            BraveRewardsNativeWorker.getInstance().SetRewardsMainEnabled(false);
-        }
-    }
+    public void onDialogClosed(boolean positive) {}
+    
 }

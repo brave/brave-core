@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "issuers": [
     {
       "name": "confirmation",
@@ -80,6 +80,77 @@
       "endAt": "<time:distant_future>",
       "dailyCap": 10,
       "advertiserId": "a437c7f3-9a48-4fe8-b37b-99321bea93fe",
+      "priority": 1,
+      "ptr": 1.0
+    },
+    {
+      "creativeSets": [
+        {
+          "creatives": [
+            {
+              "creativeInstanceId": "7ff400b9-7f8a-46a8-89f1-cb386612edcf",
+              "type": {
+                "code": "new_tab_page_all_v1",
+                "platform": "all",
+                "name": "new_tab_page",
+                "version": 1
+              },
+              "payload": {
+                "logo": {
+                  "alt": "This is a test NTP creative",
+                  "imageUrl": "https://brave.com/test.jpg",
+                  "companyName": "Brave",
+                  "destinationUrl": "https://brave.com"
+                },
+                "wallpapers": [
+                  {
+                    "focalPoint": {
+                      "x": 1200,
+                      "y": 1400
+                    },
+                    "imageUrl": "https://brave.com/test2.jpg"
+                  },
+                  {
+                    "focalPoint": {
+                      "x": 1200,
+                      "y": 1400
+                    },
+                    "imageUrl": "https://brave.com/test3.jpg"
+                  }
+                ]
+              }
+            }
+          ],
+          "segments": [
+            {
+              "code": "yNl0N-ers2",
+              "name": "Technology & Computing"
+            }
+          ],
+          "oses": [
+          ],
+          "conversions": [
+          ],
+          "channels": [
+          ],
+          "creativeSetId": "25a11ff2-5dd2-4629-95f0-b717454911e8",
+          "perDay": 5,
+          "totalMax": 100
+        }
+      ],
+      "dayParts": [
+      ],
+      "geoTargets": [
+        {
+          "code": "US",
+          "name": "United States"
+        }
+      ],
+      "campaignId": "630aef4b-ec12-4339-8df7-adc66926a4fa",
+      "startAt": "<time:now>",
+      "endAt": "<time:distant_future>",
+      "dailyCap": 10,
+      "advertiserId": "403127e2-dc50-4ece-b25d-c1ea3f7cb634",
       "priority": 1,
       "ptr": 1.0
     },

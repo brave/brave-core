@@ -5,6 +5,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -14,7 +15,7 @@
 namespace {
 
 bool HandleURLInParent(NavigateParams* params, Profile* profile) {
-  if (brave::IsTorProfile(profile) &&
+  if (profile->IsTor() &&
       !params->browser->profile()->IsOffTheRecord()) {
     return true;
   }
@@ -25,8 +26,9 @@ bool HandleURLInParent(NavigateParams* params, Profile* profile) {
 // GetOrCreateBrowser is not accessible here
 Browser* BraveGetOrCreateBrowser(Profile* profile, bool user_gesture) {
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
-  return browser ? browser
-                 : new Browser(Browser::CreateParams(profile, user_gesture));
+  return browser
+             ? browser
+             : Browser::Create(Browser::CreateParams(profile, user_gesture));
 }
 
 void UpdateBraveScheme(NavigateParams* params) {
@@ -43,7 +45,7 @@ void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
     if (!allow_in_incognito) {
       params->initiating_profile =
           profile->IsOffTheRecord()
-              ? brave::GetParentProfile(profile)->GetOffTheRecordProfile()
+              ? brave::GetParentProfile(profile)->GetPrimaryOTRProfile()
               : brave::GetParentProfile(profile);
     } else if (HandleURLInParent(params, profile)) {
       params->browser = BraveGetOrCreateBrowser(

@@ -15,11 +15,6 @@
 
 namespace ads {
 
-class AdsClient;
-
-void set_ads_client_for_logging(
-    AdsClient* ads_client);
-
 void Log(
     const char* file,
     const int line,

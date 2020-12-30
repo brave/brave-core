@@ -11,14 +11,14 @@
 #define DoFinalInitForServices virtual DoFinalInitForServices
 #define SetNonPersonalProfilePrefs virtual SetNonPersonalProfilePrefs
 #define IsAllowedProfilePath virtual IsAllowedProfilePath
-#define AddProfileToStorage virtual AddProfileToStorage
+#define LoadProfileByPath virtual LoadProfileByPath
 #define BRAVE_PROFILE_MANAGER_H     \
  private:                           \
   friend class BraveProfileManager; \
                                     \
  public:
 #include "../../../../../chrome/browser/profiles/profile_manager.h"
-#undef AddProfileToStorage
+#undef LoadProfileByPath
 #undef IsAllowedProfilePath
 #undef SetNonPersonalProfilePrefs
 #undef DoFinalInitForServices

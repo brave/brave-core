@@ -15,20 +15,13 @@ class BraveProfileManager : public ProfileManager {
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
   ~BraveProfileManager() override;
 
-  // Returns the full path to be used for tor profiles.
-  static base::FilePath GetTorProfilePath();
-
-  static void InitTorProfileUserPrefs(Profile* profile);
-
   void InitProfileUserPrefs(Profile* profile) override;
   std::string GetLastUsedProfileName() override;
   void SetNonPersonalProfilePrefs(Profile* profile) override;
   bool IsAllowedProfilePath(const base::FilePath& path) const override;
-  void AddProfileToStorage(Profile* profile) override;
-
-  void OnProfileCreated(Profile* profile,
-                        bool success,
-                        bool is_new_profile) override;
+  bool LoadProfileByPath(const base::FilePath& profile_path,
+                         bool incognito,
+                         ProfileLoadedCallback callback) override;
 
   void Observe(int type,
                const content::NotificationSource& source,

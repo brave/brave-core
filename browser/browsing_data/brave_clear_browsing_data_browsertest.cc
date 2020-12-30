@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/macros.h"
 #include "base/path_service.h"
@@ -113,14 +114,15 @@ class BraveClearDataOnExitTest
 
     // Take care of any remaining message loop work.
     content::RunAllPendingInMessageLoop();
-
-    // At this point, quit should be for real now.
-    ASSERT_EQ(0u, chrome::GetTotalBrowserCount());
   }
 
   void TearDownInProcessBrowserTestFixture() override {
     // Verify expected number of calls to remove browsing data.
     EXPECT_EQ(remove_data_call_count_, expected_remove_data_call_count_);
+
+    // At this point, quit should be for real now.
+    ASSERT_EQ(0u, chrome::GetTotalBrowserCount());
+
     BraveClearBrowsingData::SetOnExitTestingCallback(nullptr);
   }
 
@@ -317,7 +319,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTR) {
 
   // Open a second browser window with OTR profile.
   Browser* second_window =
-      NewBrowserWindow(browser()->profile()->GetOffTheRecordProfile());
+      NewBrowserWindow(browser()->profile()->GetPrimaryOTRProfile());
   // Close second browser window
   CloseBrowserWindow(second_window);
   EXPECT_EQ(0, remove_data_call_count());
@@ -334,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTRExitsLast) {
 
   // Open a second browser window with OTR profile.
   Browser* second_window =
-      NewBrowserWindow(browser()->profile()->GetOffTheRecordProfile());
+      NewBrowserWindow(browser()->profile()->GetPrimaryOTRProfile());
 
   // Close regular profile window.
   CloseBrowserWindow(browser());

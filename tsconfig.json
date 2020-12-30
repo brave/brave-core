@@ -35,8 +35,5 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
   },
-  "include": [
-    "./components/definitions/*",
-    "./components/brave_extension/extension/brave_extension/types/**/*"
-  ]
+  "include": []
 }

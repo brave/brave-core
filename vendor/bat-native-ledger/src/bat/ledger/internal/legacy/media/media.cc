@@ -21,7 +21,9 @@ bool HandledByGreaselion(const std::string media_type) {
 #if defined(OS_ANDROID) || defined(OS_IOS)
   return false;
 #else
-  return media_type == "twitter" || media_type == "youtube";
+  return media_type == "github" || media_type == "reddit" ||
+         media_type == "twitch" || media_type == "twitter" ||
+         media_type == "vimeo" || media_type == "youtube";
 #endif
 }
 
@@ -69,12 +71,10 @@ std::string Media::GetLinkType(
 }
 
 void Media::ProcessMedia(
-    const std::map<std::string, std::string>& parts,
+    const base::flat_map<std::string, std::string>& parts,
     const std::string& type,
     ledger::type::VisitDataPtr visit_data) {
-  if (parts.empty() ||
-      !ledger_->state()->GetRewardsMainEnabled() ||
-      !visit_data) {
+  if (parts.empty() || !visit_data) {
     return;
   }
 
@@ -172,8 +172,8 @@ void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
 }
 
 void Media::SaveMediaInfo(const std::string& type,
-                                const std::map<std::string, std::string>& data,
-                                ledger::PublisherInfoCallback callback) {
+                          const base::flat_map<std::string, std::string>& data,
+                          ledger::PublisherInfoCallback callback) {
   if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->SaveMediaInfo(data, callback);
     return;

@@ -35,37 +35,20 @@ declare namespace RewardsTip {
     description: string
     background: string
     logo: string
-    amounts: number[],
+    amounts: number[]
     provider: string
     links: Record<string, string>
     status: PublisherStatus
   }
 
   type MediaMetaData = {
-    mediaType: 'twitter',
+    mediaType: 'github' | 'reddit' | 'twitter'
     publisherKey: string
     publisherName: string
+    publisherScreenName: string
     postId: string
     postTimestamp: string
     postText: string
-  } | {
-    mediaType: 'reddit'
-    userName: string
-    postText: string
-    postRelDate: string
-  } | {
-    mediaType: 'github'
-    userName: string
-  }
-
-  interface GitHubMetaData {
-    userName: string
-  }
-
-  interface RedditMetaData {
-    userName: string
-    postText: string
-    postRelDate: string
   }
 
   export interface RewardsParameters {

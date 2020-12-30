@@ -8,8 +8,14 @@
   <message name="IDS_PAGE_INFO_MIXED_CONTENT_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is using mainly using a secure connection but has some insecure parts (like insecurely loaded images).">
     Your connection to this site is not fully secure
   </message>
+  <message name="IDS_PAGE_INFO_MIXED_CONTENT_SUMMARY_SHORT" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is using mainly using a secure connection but has some insecure parts (like insecurely loaded images).">
+    Connection is not fully secure
+  </message>
   <message name="IDS_PAGE_INFO_NOT_SECURE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is not secure.">
     Your connection to this site is not secure
+  </message>
+  <message name="IDS_PAGE_INFO_NOT_SECURE_SUMMARY_SHORT" desc="A shorter one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is not secure.">
+    Connection is not secure
   </message>
   <message name="IDS_PAGE_INFO_MALWARE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing malware.">
     This site contains malware
@@ -246,6 +252,9 @@
     <message name="IDS_PAGE_INFO_TYPE_BACKGROUND_SYNC" desc="The label used for the background sync permission controls in the Page Info popup.">
       Background Sync
     </message>
+    <message name="IDS_PAGE_INFO_TYPE_IDLE_DETECTION" desc="The label used for the idle detection permission controlls in the Page Info popup.">
+      Your presence
+    </message>
     <message name="IDS_PAGE_INFO_TYPE_IMAGES" desc="The label used for images permission controls in the Page Info popup.">
       Images
     </message>
@@ -316,7 +325,7 @@
       Window placement
     </message>
     <message name="IDS_PAGE_INFO_TYPE_FONT_ACCESS" desc="The label used for the Font Access permission controls in the Page Info popup.">
-      Local font access
+      Fonts
     </message>
     <message name="IDS_PAGE_INFO_TYPE_HID" desc="The label used for the HID permission controls in the Page Info popup.">
       HID devices
@@ -574,7 +583,7 @@
         Ignore
       </message>
     </if>
-    <message name="IDS_PAGE_INFO_ALLOWLIST_PASSWORD_REUSE_BUTTON" desc="The string used in the page info whitelist password reuse button.">
+    <message name="IDS_PAGE_INFO_ALLOWLIST_PASSWORD_REUSE_BUTTON" desc="The string used in the page info allowlist password reuse button.">
       Site is legitimate
     </message>
   </if>

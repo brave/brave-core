@@ -7,9 +7,9 @@
 #include "base/scoped_observer.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/ipfs/browser/features.h"
-#include "brave/components/ipfs/common/ipfs_constants.h"
-#include "brave/components/ipfs/common/pref_names.h"
+#include "brave/components/ipfs/features.h"
+#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -22,6 +22,24 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
+
+namespace {
+
+std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+    const net::test_server::HttpRequest& request) {
+  std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
+      new net::test_server::BasicHttpResponse());
+  http_response->set_code(net::HTTP_OK);
+  http_response->set_content_type("text/html");
+  http_response->set_content("test");
+  http_response->AddCustomHeader(
+      "x-ipfs-path", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  return std::move(http_response);
+}
+
+}  // namespace
 
 class IPFSTabHelperTest : public InProcessBrowserTest,
                           public infobars::InfoBarManager::Observer {
@@ -46,11 +64,11 @@ class IPFSTabHelperTest : public InProcessBrowserTest,
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    embedded_test_server()->RegisterRequestHandler(
+        base::BindRepeating(&HandleRequest));
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
@@ -131,7 +149,8 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithAccept) {
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
   EXPECT_TRUE(NavigateToURLUntilLoadStop(
-      "dweb.link", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+      "cloudflare-ipfs.com",
+      "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarAccept(ConfirmInfoBarDelegate::BUTTON_OK |
@@ -148,7 +167,8 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithSettings) {
       InfoBarService::FromWebContents(active_contents());
   AddInfoBarObserver(infobar_service);
   EXPECT_TRUE(NavigateToURLUntilLoadStop(
-      "dweb.link", "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
+      "cloudflare-ipfs.com",
+      "/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"));
 
   WaitForInfobarAdded();
   InfoBarCancel(ConfirmInfoBarDelegate::BUTTON_OK |

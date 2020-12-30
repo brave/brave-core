@@ -21,8 +21,8 @@ def check_args():
     transifex_info = (get_env_var('TRANSIFEX_USERNAME') and
                       get_env_var('TRANSIFEX_PASSWORD') or
                       get_env_var('TRANSIFEX_API_KEY'))
-    message = 'TRANSIFEX_USERNAME and TRANSIFEX_PASSWORD or '
-    'TRANSIFEX_API_KEY must be set'
+    message = 'TRANSIFEX_USERNAME and TRANSIFEX_PASSWORD or '\
+              'TRANSIFEX_API_KEY must be set'
     assert transifex_info, message
 
 

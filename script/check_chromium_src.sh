@@ -174,6 +174,7 @@ EXCLUDES=(
     '_\(unit\|browser\)test\(_mac\)\?.cc'
     'third_party/blink/renderer/modules/battery/navigator_batterytest.cc'
     'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc'
+    'third_party/blink/renderer/modules/quota/navigator_storagetest.cc'
     'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h'
     './chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml'
     './chrome/installer/linux/common/brave-browser/chromium-browser.info'

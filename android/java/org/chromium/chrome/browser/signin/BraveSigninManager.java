@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.signin;
 
 import org.chromium.base.annotations.CalledByNative;
+import org.chromium.chrome.browser.AppHooks;
 import org.chromium.chrome.browser.externalauth.ExternalAuthUtils;
 import org.chromium.chrome.browser.sync.AndroidSyncSettings;
 import org.chromium.components.signin.AccountTrackerService;
@@ -40,6 +41,6 @@ public class BraveSigninManager extends SigninManager {
         assert identityMutator != null;
         return new BraveSigninManager(nativeSigninManagerAndroid, accountTrackerService,
                 identityManager, identityMutator,
-                AndroidSyncSettings.get(), ExternalAuthUtils.getInstance());
+                AndroidSyncSettings.get(), AppHooks.get().getExternalAuthUtils());
     }
 }

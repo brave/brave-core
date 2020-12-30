@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/host_content_settings_map_factory.cc b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-index 3e2d1221d91eeefc24b66636a96fd7f97f4ebbe8..5dd0067dbe49f11367e632ab0c292cf35ddc2503 100644
+index f3b51e20cb9c84719947b6fbf779d8429e924570..27d78b367a8fb8505ee49c51fa17a033aca2b66a 100644
 --- a/chrome/browser/content_settings/host_content_settings_map_factory.cc
 +++ b/chrome/browser/content_settings/host_content_settings_map_factory.cc
 @@ -86,6 +86,7 @@ scoped_refptr<RefcountedKeyedService>
@@ -9,4 +9,4 @@ index 3e2d1221d91eeefc24b66636a96fd7f97f4ebbe8..5dd0067dbe49f11367e632ab0c292cf3
 +      BRAVE_BUILD_SERVICE_INSTANCE_FOR
        profile->IsOffTheRecord() || profile->IsGuestSession(),
        /*store_last_modified=*/true,
-       /*migrate_requesting_and_top_level_origin_settings=*/true,
+       profile->ShouldRestoreOldSessionCookies()));

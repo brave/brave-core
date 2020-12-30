@@ -8,14 +8,17 @@
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Een nieuw profiel maken</translation>
 <translation id="2666990579225592931">Gastvenster openen</translation>
+<translation id="8275068909952022340">Meer</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is in Brave niet toegestaan.</translation>
 <translation id="6786747875388722282">Extensies</translation>
 <translation id="984275831282074731">Betaalmethodes</translation>
 <translation id="3699882589215410581">Widevine installeren en uitvoeren</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="4726634924419692905">Vraag wanneer een site Widevine op je computer wilt installeren.</translation>
-<translation id="8760415064721320867">Privévenster met Tor</translation>
+<translation id="6241402707160226266">Privéscherm met Tor</translation>
 <translation id="8762452230727230396">Tor verbergt je IP-adres van de websites die je bezoekt.</translation>
+<translation id="1369311132025451972">Automatisch .onion-sites doorverwijzen</translation>
+<translation id="4341373692446027469">Brave zal oniondienst van de website openen in Torvenster wanneer beschikbaar</translation>
 <translation id="8053096063396012732">Widevine installeren</translation>
 <translation id="4840334696217618631">Start de browser opnieuw om Widevine in te schakelen</translation>
 <translation id="8410111618231938546">Google Widevine is een voorbeeld van Digital Rights Management (DRM) code die wij bij Brave Software niet bezitten en niet kunnen inspecteren. De Google Widevine code wordt geladen vna de Google-servers, en niet van die van ons. Het wordt alleen geladen als je deze optie aanzet. We raden het gebruik van DRM af, maar we respecteren de keuzes van onze gebruikers en begrijpen dat sommige Brave-gebruikers graag diensten willen gebruiken waarvoor DRM nodig is.
@@ -32,8 +35,8 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="2906510232093002459">brave standaardafbeeldingen</translation>
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
-<translation id="7635711399568194460">Verbergt de Brave Rewards-knop in de locatiebalk wanneer Brave Rewards niet is ingeschakeld</translation>
-<translation id="1520361618554057102">Altijd bladwijzers tonen op nieuwe tabbladpagina</translation>
+<translation id="1811404036171336214">Toon bladwijzers altijd op een nieuwe tabbladpagina</translation>
+<translation id="1643029991199044105">Ga door de meest  recent gebruikte tabbladen met Ctrl-Tab</translation>
 <translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
 <translation id="597020512043916976">Toon topsites in de 
 suggesties voor automatisch aanvullen</translation>
@@ -42,27 +45,29 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="814018970995616154">Vergelijkt ULS's met een lijst met onveilige sites die opgeslagen is in Brave.</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
-<translation id="2467749191278759605">Pas je Brave Dashboard aan</translation>
-<translation id="1717331825806276156">Achtergrondafbeeldingen</translation>
-<translation id="1820041496463124489">Gesponsorde afbeeldingen</translation>
-<translation id="8173998484743827990">Brave statistieken</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Top websites</translation>
-<translation id="1776831331757823105">Klok</translation>
+<translation id="1988804048511540801">Nieuw tabblad toont</translation>
+<translation id="2970343821770026391">Dashboard</translation>
+<translation id="3719826155360621982">Homepage</translation>
+<translation id="5448570825852364919">Blanco pagina</translation>
+<translation id="5919424224662539292">De achtergrondafbeelding en de widgets die verschijnen op de nieuwe tabbladpagina personaliseren</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
 <translation id="8511502469534942133">Nieuwe Tor-verbinding voor deze site</translation>
-<translation id="8784924142044142231">Sluit Tor af</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Open Tor-venster</translation>
+<translation id="4734294903299549345">Private Window afsluiten met Tor</translation>
+<translation id="8612763432858587652">Private Window afsluiten</translation>
+<translation id="8760415064721320867">Privévenster met Tor</translation>
+<translation id="2055363275850890030">Privévenster</translation>
+<translation id="8934172355414207733">Privé met Tor</translation>
+<translation id="1970435562892104727">Dit is een privévenster met Tor</translation>
+<translation id="1037341607922068025">Private Window openen met Tor</translation>
+<translation id="1725356094208762656">In Tor openen</translation>
+<translation id="1672270084584211506">Onion beschikbaar</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
 <translation id="3488584642074079080">Open Link met Brave Privévenster met Tor</translation>
 <translation id="6313675821927505581">Nieuw privévenster met Tor</translation>
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
-<translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -81,7 +86,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4978786495456601191">Vingerafdruk blokkeren</translation>
 <translation id="3570081523466826008">Waardeer verbindingen op naar HTTPS</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
-<translation id="519861640102428255">Look &amp; Feel</translation>
+<translation id="4395160081588457461">Bekijk &amp; voel</translation>
 <translation id="4800195524776354947">Toon het aantal geblokkeerde items op het schild-icoontje</translation>
 <translation id="7498695072878479744">Sta Google-inlogknoppen toe op sites van externe partijen</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
@@ -93,13 +98,13 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5770288601196774623">Alleen cross-site</translation>
 <translation id="3587482841069643663">Alles</translation>
 <translation id="5533533363827555308">Strikt, kan websites doen stukgaan</translation>
-<translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
+<translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
-<translation id="8502234992433094996">Gebruik Google-services voor pushberichten</translation>
+<translation id="3540231253392253941">Gebruik Google-diensten voor pushberichten</translation>
 <translation id="5565355416171743213">Start met het gebruik van synchronisatie</translation>
 <translation id="4332558599726753990">Synchronisatie-configuratie</translation>
 <translation id="2187778349654214731">Om te beginnen moet je Brave installeren op alle apparaten die je wilt synchroniseren, Dan kun je ze veilig aan elkaar koppelen met een synchronisatie code.</translation>
@@ -112,6 +117,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1313162974556054106">Naam van het Toestel</translation>
 <translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Dit Apparaat)</translation>
 <translation id="3686835020221422649">Laatst actief</translation>
+<translation id="1181037720776840403">Verwijderen</translation>
 <translation id="2569646144216067185">Woorden telling: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Gekopieerde!</translation>
 <translation id="8802630444265810662">Een QR-code die met een mobiel apparaat moet worden gescand om uw synchronisatiecode te verzenden</translation>
@@ -129,7 +135,8 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5086223971958279691">Synchronisatieketencode</translation>
 <translation id="2899261497479389619">Ga op je doelcomputer naar Brave Sync in de instellingen en klik op de knop</translation>
 <translation id="4827439149833241990">“Ik heb een synchronisatiecode”.</translation>
-<translation id="24067401253841795">Voer de hieronder weergegeven sync chain-codewoorden in. Behandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan deze persoon uw gesynchroniseerde gegevens bekijken en aanpassen.</translation>
+<translation id="8299617838343103908">Voer de codewoorden voor de synchronisatieketen die hieronder worden weergegeven in.</translation>
+<translation id="4485276108749547761">Behandel deze code als een wachtwoord. Als iemand hem in handen krijgt, kan diegene uw gesynchroniseerde gegevens lezen en bewerken.</translation>
 <translation id="3034163433136515805">QR-code bekijken</translation>
 <translation id="5373825572723282843">Een synchronisatiecode invoeren</translation>
 <translation id="5734745018569675530">Typ je verkregen codewoorden voor de synchronisatieketen in het onderstaande formulier.</translation>
@@ -139,9 +146,10 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4112587618563511470">Ongeldige synchronisatie code, check and probeer opnieuw.</translation>
 <translation id="2339730291919608488">Synchronisatieketen verlaten</translation>
 <translation id="115699408012835975">Als je de Synchronisatie opnieuw instelt, moet je een synchronisatie code van een ander apparaat opnieuw invoeren. Ben je er zeker van om door te gaan?</translation>
+<translation id="339086854515247923">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
 <translation id="3396347744975515056">Brave Sync is ge-update and vereist configuratie</translation>
 <translation id="7473245612074035141">Begin met de Configuratie</translation>
-<translation id="6696935187608454456">Hulptips</translation>
+<translation id="3411013544209536575">Hulptips</translation>
 <translation id="2775956301559569472">Bekijk Wayback Machine meteen op 404 pagina's</translation>
 <translation id="1807246157184219062">Licht</translation>
 <translation id="2414886740292270097">Donker</translation>
@@ -158,6 +166,8 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1365342176656744625">Methode om IPFS-locaties te vinden</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
+<translation id="585868419599255817">Terugvallen op de publieke IPFS-poort</translation>
+<translation id="8705871434289874898">Automatisch terugvallen op de openbare IPFS-poort wanneer de lokale modus niet toegankelijk is.</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
 <translation id="1765684547504191670">Gebruikt Media Router-component om Chromecast in de browser in te schakelen.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
@@ -225,6 +235,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8428213095426709021">Instellingen</translation>
 <translation id="1854270995641373652">Wilt u de ondersteuning voor IPFS local daemon in Brave inschakelen?</translation>
 <translation id="2366908098700680611">IPFS inschakelen</translation>
+<translation id="1556882415222118816">Lees meer over de privacyconsequenties</translation>
 <translation id="4552520379838695057">Sorry, deze pagina bestaat niet.</translation>
 <translation id="2609895996619941644">Wil je bekijken of er een opgeslagen versie beschikbaar is op de Wayback Machine?</translation>
 <translation id="8053093028263274061">Sorry, er is geen opgeslagen versie beschikbaar.</translation>
@@ -235,7 +246,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
 <translation id="796831669370432378">Om een bladwijzer toe te voegen, klik je op de bladwijzerknop naast de adresbalk</translation>
 <translation id="4989337484121655457">Volledige toegang tot de schijf vereist</translation>
-<translation id="5501596373144334003">Brave heeft volledige schijftoegang nodig om je bladwijzers en geschiedenis te importeren uit Safari.</translation>
+<translation id="8025559074845816210">Brave heeft volledige schijftoegang nodig om uw bladwijzers uit Safari te importeren.</translation>
 <translation id="8515328844674404333">Leer hoe je volledige schijftoegang verleent vanuit je systeemvoorkeuren.</translation>
 <translation id="6414878884710400018">Open systeemvoorkeuren</translation>
 <translation id="5570470519803062774">Site- en Shields-instellingen</translation>

@@ -4,19 +4,8 @@
     ]
   },
   "catalog_issuers": {
-    "issuers": [
-      {
-        "name": "0.05BAT",
-        "public_key": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
-      }
-    ],
-    "public_key": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw="
   },
   "unblinded_tokens": [
-    {
-      "public_key": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-      "unblinded_token": "VWKEdIb8nMwmT1eLtNLGufVe6NQBE/SXjBpylLYTVMJTT+fNHI2VBd2ztYqIpEWleazN+0bNc4avKfkcv2FL7oDtt5pyGLYEdainxd+EYcFCxzFt/8638aBxsyFcd+pY"
-    }
   ],
   "unblinded_payment_tokens": [
   ],
@@ -27,11 +16,6 @@
   "next_token_redemption_date_in_seconds": "2147483647",
   "ads_rewards": {
     "payments": [
-      {
-        "balance": 123,
-        "month": "2020-04",
-        "transaction_count": "7"
-      }
     ],
     "grants_balance": 0
   }

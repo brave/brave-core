@@ -6,24 +6,24 @@
 // #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 // clang-format on
 
-cr.define('settings', function() {
+cr.define('settings', function () {
   /** @interface */
   /* #export */ class BraveDefaultExtensionsBrowserProxy {
     /**
      * @param {boolean} value name.
      */
-    setWebTorrentEnabled(value) {}
-    setBraveWalletEnabled(value) {}
-    setHangoutsEnabled(value) {}
-    setIPFSCompanionEnabled(value) {}
-    setTorEnabled(value) {}
-    isTorEnabled() {}
-    isTorManaged() {}
-    getRestartNeeded() {}
-    getWeb3ProviderList() {}
-    wasSignInEnabledAtStartup() {}
-    getIPFSResolveMethodList() {}
-    getIPFSEnabled() {}
+    setWebTorrentEnabled (value) {}
+    setBraveWalletEnabled (value) {}
+    setHangoutsEnabled (value) {}
+    setIPFSCompanionEnabled (value) {}
+    setTorEnabled (value) {}
+    isTorEnabled () {}
+    isTorManaged () {}
+    getRestartNeeded () {}
+    getWeb3ProviderList () {}
+    wasSignInEnabledAtStartup () {}
+    getIPFSResolveMethodList () {}
+    getIPFSEnabled () {}
   }
 
   /**
@@ -31,52 +31,64 @@ cr.define('settings', function() {
    */
   /* #export */ class BraveDefaultExtensionsBrowserProxyImpl {
     /** @override */
-    setWebTorrentEnabled(value) {
-      chrome.send('setWebTorrentEnabled', [value]);
+    setWebTorrentEnabled (value) {
+      chrome.send('setWebTorrentEnabled', [value])
     }
-    setBraveWalletEnabled(value) {
-      chrome.send('setBraveWalletEnabled', [value]);
+
+    setBraveWalletEnabled (value) {
+      chrome.send('setBraveWalletEnabled', [value])
     }
-    setHangoutsEnabled(value) {
-      chrome.send('setHangoutsEnabled', [value]);
+
+    setHangoutsEnabled (value) {
+      chrome.send('setHangoutsEnabled', [value])
     }
-    setIPFSCompanionEnabled(value) {
-      chrome.send('setIPFSCompanionEnabled', [value]);
+
+    setIPFSCompanionEnabled (value) {
+      chrome.send('setIPFSCompanionEnabled', [value])
     }
-    setMediaRouterEnabled(value) {
-      chrome.send('setMediaRouterEnabled', [value]);
+
+    setMediaRouterEnabled (value) {
+      chrome.send('setMediaRouterEnabled', [value])
     }
-    setTorEnabled(value) {
-      chrome.send('setTorEnabled', [value]);
+
+    setTorEnabled (value) {
+      chrome.send('setTorEnabled', [value])
     }
-    isTorEnabled() {
-      return cr.sendWithPromise('isTorEnabled');
+
+    isTorEnabled () {
+      return cr.sendWithPromise('isTorEnabled')
     }
-    isTorManaged() {
-      return cr.sendWithPromise('isTorManaged');
+
+    isTorManaged () {
+      return cr.sendWithPromise('isTorManaged')
     }
-    getRestartNeeded() {
-      return cr.sendWithPromise('getRestartNeeded');
+
+    getRestartNeeded () {
+      return cr.sendWithPromise('getRestartNeeded')
     }
+
     /** @override */
-    getWeb3ProviderList() {
+    getWeb3ProviderList () {
       return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
     }
-    wasSignInEnabledAtStartup() {
-      return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue');
+
+    wasSignInEnabledAtStartup () {
+      return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
     }
+
     /** @override */
-    getIPFSResolveMethodList() {
+    getIPFSResolveMethodList () {
       return new Promise(resolve => {
         if (!chrome.ipfs) {
           resolve(false)
           return
         }
-        chrome.ipfs.getIPFSResolveMethodList(resolve)
+        chrome.ipfs.getResolveMethodList(resolve)
       })
     }
+
     /** @override */
-    getIPFSEnabled() {
+    getIPFSEnabled () {
       return new Promise(resolve => {
         if (!chrome.ipfs) {
           resolve(false)
@@ -87,11 +99,11 @@ cr.define('settings', function() {
     }
   }
 
-  cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl);
+  cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl)
 
   // #cr_define_end
   return {
     BraveDefaultExtensionsBrowserProxy,
     BraveDefaultExtensionsBrowserProxyImpl
-  };
-});
+  }
+})

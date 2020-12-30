@@ -14,8 +14,6 @@
 #include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/renderer_context_menu/render_view_context_menu_observer.h"
-#include "components/renderer_context_menu/render_view_context_menu_proxy.h"
 #include "content/public/browser/browser_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"

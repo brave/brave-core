@@ -5,9 +5,6 @@
 
 #include "bat/ads/internal/url_util.h"
 
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
@@ -16,7 +13,7 @@
 
 namespace ads {
 
-bool UrlMatchesPattern(
+bool DoesUrlMatchPattern(
     const std::string& url,
     const std::string& pattern) {
   if (url.empty() || pattern.empty()) {
@@ -29,40 +26,28 @@ bool UrlMatchesPattern(
   return RE2::FullMatch(url, quoted_pattern);
 }
 
-bool UrlHasScheme(
+bool DoesUrlHaveSchemeHTTPOrHTTPS(
     const std::string& url) {
   DCHECK(!url.empty());
 
   return GURL(url).SchemeIsHTTPOrHTTPS();
 }
 
-bool SameSite(
-      const std::string& url1,
-      const std::string& url2) {
-  return net::registry_controlled_domains::SameDomainOrHost(GURL(url1),
-      GURL(url2), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-}
-
-std::map<std::string, std::string> HeadersToMap(
-    const std::vector<std::string>& headers) {
-  std::map<std::string, std::string> normalized_headers;
-
-  for (const auto& header : headers) {
-    const std::vector<std::string> components = base::SplitString(header,
-        ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-
-    if (components.size() != 2) {
-      NOTREACHED();
-      continue;
-    }
-
-    const std::string key = components.at(0);
-    const std::string value = components.at(1);
-
-    normalized_headers[key] = value;
+std::string GetHostFromUrl(
+    const std::string& url) {
+  GURL gurl(url);
+  if (!gurl.is_valid()) {
+    return "";
   }
 
-  return normalized_headers;
+  return gurl.host();
+}
+
+bool SameDomainOrHost(
+    const std::string& url1,
+    const std::string& url2) {
+  return net::registry_controlled_domains::SameDomainOrHost(GURL(url1),
+      GURL(url2), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace ads

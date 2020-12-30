@@ -96,9 +96,6 @@ void RecordAdsState(AdsP3AState state) {
 
 void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
                                     const std::string& pref) {
-  using brave_rewards::AdsP3AState;
-  const bool rewards_enabled =
-      prefs->GetBoolean(brave_rewards::prefs::kEnabled);
   const bool ads_enabled = prefs->GetBoolean(ads::prefs::kEnabled);
   if (pref == ads::prefs::kEnabled) {
     if (ads_enabled) {
@@ -106,26 +103,9 @@ void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
       prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, false);
     } else {
       // Apparently, the pref was disabled.
-      // TODO(ifremov): DCHECK(rewards_enabled)?
       brave_rewards::RecordAdsState(
-          rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
-                            AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
+          AdsP3AState::kAdsEnabledThenDisabledRewardsOn);
       prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, true);
-    }
-  } else if (pref == brave_rewards::prefs::kEnabled) {
-    // Rewards pref was changed.
-    if (prefs->GetBoolean(brave_ads::prefs::kAdsWereDisabled)) {
-      DCHECK(!ads_enabled);
-      brave_rewards::RecordAdsState(
-          rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
-                            AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
-    } else if (!rewards_enabled) {
-      // Ads state had never been disabled, but the user has toggled rewards
-      // off.
-      brave_rewards::RecordAdsState(AdsP3AState::kRewardsDisabled);
-    } else {
-      RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled :
-                                   AdsP3AState::kAdsDisabled);
     }
   }
 }

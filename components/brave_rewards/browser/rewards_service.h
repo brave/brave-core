@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
@@ -49,9 +49,7 @@ using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
 using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
-using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
-using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(ledger::type::RewardsInternalsInfoPtr info)>;
 using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
@@ -87,7 +85,7 @@ using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const ledger::type::Result result,
     const std::string&,
     const std::string&,
-    const std::map<std::string, std::string>&)>;
+    const base::flat_map<std::string, std::string>&)>;
 using CreateWalletCallback =
     base::OnceCallback<void(const ledger::type::Result)>;
 using ClaimPromotionCallback = base::OnceCallback<void(
@@ -128,6 +126,19 @@ using SuccessCallback = base::OnceCallback<void(const bool success)>;
 
 using GetEventLogsCallback =
     base::OnceCallback<void(ledger::type::EventLogs logs)>;
+
+using GetBraveWalletCallback =
+    base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
+
+using StartProcessCallback =
+    base::OnceCallback<void(ledger::type::Result result)>;
+
+using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
+
+enum class OnboardingResult {
+  kOptedIn,
+  kDismissed
+};
 
 class RewardsService : public KeyedService {
  public:
@@ -178,7 +189,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetReconcileStamp(
       const GetReconcileStampCallback& callback) = 0;
-  virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) const = 0;
@@ -195,11 +205,12 @@ class RewardsService : public KeyedService {
   virtual void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) = 0;
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
+  virtual bool ShouldShowOnboarding() const = 0;
+  virtual void SaveOnboardingResult(OnboardingResult result) = 0;
   virtual void GetBalanceReport(
       const uint32_t month,
       const uint32_t year,
       GetBalanceReportCallback callback) = 0;
-  virtual void IsWalletCreated(const IsWalletCreatedCallback& callback) = 0;
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
       const std::string& url,
@@ -233,8 +244,6 @@ class RewardsService : public KeyedService {
     const GetAutoContributePropertiesCallback& callback) = 0;
   virtual void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) = 0;
-  virtual void GetRewardsMainEnabled(
-    const GetRewardsMainEnabledCallback& callback) const = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
   virtual void AddPrivateObserver(
@@ -268,7 +277,7 @@ class RewardsService : public KeyedService {
 
   virtual void SaveInlineMediaInfo(
       const std::string& media_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
 
   virtual void UpdateMediaDuration(
@@ -299,7 +308,7 @@ class RewardsService : public KeyedService {
       GetInlineTippingPlatformEnabledCallback callback) = 0;
 
   virtual void GetShareURL(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
@@ -353,6 +362,14 @@ class RewardsService : public KeyedService {
   virtual bool SetEncryptedStringState(
       const std::string& key,
       const std::string& value) = 0;
+
+  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+
+  virtual void StartProcess(StartProcessCallback callback) = 0;
+
+  virtual void GetWalletPassphrase(GetWalletPassphraseCallback callback) = 0;
+
+  virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

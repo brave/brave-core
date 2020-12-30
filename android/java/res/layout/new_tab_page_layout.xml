@@ -21,34 +21,6 @@
         android:contentDescription="@null"/>
 
     <FrameLayout
-        android:id="@+id/badge_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="-32dp"
-        android:layout_marginTop="-32dp"
-        android:layout_gravity="top|end">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/badge_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:gravity="center"
-            android:contentDescription="@null"
-            app:lottie_fileName="onboarding_ads.json"
-            app:lottie_autoPlay="true"
-            android:layout_gravity="center_horizontal" />
-
-        <ImageView
-            android:id="@+id/badge_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_stats_icon"/>
-
-    </FrameLayout>
-
-    <FrameLayout
         android:id="@+id/logo_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -86,24 +58,38 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- Brave stats -->
-            <include layout="@layout/brave_stats_layout"/>
-
             <LinearLayout
-                android:id="@+id/ntp_super_referral_sites_layout"
+                android:id="@+id/ntp_widget_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:weightSum="1.0"
-                android:orientation="horizontal"/>
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
-            <!-- Explore offline card -->
-            <ViewStub
-                android:id="@+id/explore_offline_card_stub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout="@layout/new_tab_page_offline_card"
-                android:inflatedId="@+id/explore_offline_card" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="12dp">
+
+                    <org.chromium.chrome.browser.custom_layout.VerticalViewPager
+                        android:id="@+id/ntp_widget_view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/indicator_layout"
+                    android:layout_width="12dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ntp_widget_indicator_bg"
+                    android:padding="2dp"
+                    android:orientation="vertical"/>
+
+            </LinearLayout>
 
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
@@ -115,6 +101,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:visibility="gone"/>
+
+            <!-- Video tutorial IPH card -->
+            <ViewStub
+                android:id="@+id/video_iph_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout="@layout/video_tutorial_iph_card"
+                android:inflatedId="@+id/video_iph_card"/>
 
             <!-- Middle spacer -->
             <View
@@ -181,7 +176,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/ntp_non_distruptive_banner"/>
+    <include layout="@layout/ntp_non_disruptive_banner"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/super_referral_logo"

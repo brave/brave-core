@@ -22,8 +22,7 @@ class IpfsServiceImpl : public mojom::IpfsService {
 
  private:
   // mojom::IpfsService
-  void Launch(mojom::IpfsConfigPtr config,
-              LaunchCallback callback) override;
+  void Launch(mojom::IpfsConfigPtr config, LaunchCallback callback) override;
   void Shutdown() override;
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
   void MonitorChild();

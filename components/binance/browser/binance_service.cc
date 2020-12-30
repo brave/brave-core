@@ -21,7 +21,9 @@
 #include "base/token.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/binance_json_parser.h"
+#include "brave/components/binance/browser/regions.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "components/country_codes/country_codes.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -32,6 +34,7 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 namespace {
 
@@ -125,6 +128,13 @@ bool BinanceService::GetAccessToken(GetAccessTokenCallback callback) {
       base_url, "POST", url.query(), std::move(internal_callback), true, true);
 }
 
+bool BinanceService::IsSupportedRegion() {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      prefs, ::binance::unsupported_regions, false);
+  return is_supported;
+}
+
 bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
   auto internal_callback = base::BindOnce(&BinanceService::OnGetAccountBalances,
       base::Unretained(this), std::move(callback));
@@ -172,7 +182,7 @@ bool BinanceService::OAuthRequest(const GURL &url,
                         net::LOAD_DISABLE_CACHE;
 
   if (!send_save_cookies) {
-    request->load_flags |= net::LOAD_DO_NOT_SEND_COOKIES;
+    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
     request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
   }
 

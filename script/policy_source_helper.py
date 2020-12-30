@@ -24,6 +24,23 @@ def AddBravePolicies(template_file_contents):
             'tags': [],
             'desc': '''This policy allows an admin to specify that tor feature must be disabled at startup.''',
         },
+        {
+            'name': 'IPFSEnabled',
+            'type': 'main',
+            'schema': {'type': 'boolean'},
+            'supported_on': ['chrome.*:87-'],
+            'features': {
+              'dynamic_refresh': False,
+              'per_profile': True,
+              'can_be_recommended': False,
+              'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 1,
+            'caption': '''Enable IPFS feature''',
+            'tags': [],
+            'desc': '''This policy allows an admin to specify whether IPFS feature can be enabled.''',
+        }
     ]
 
     """Our new polices are added with highest id"""

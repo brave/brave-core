@@ -8,11 +8,11 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
@@ -41,7 +41,7 @@ using UpholdWalletCallback =
     std::function<void(type::Result, type::UpholdWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
-    std::function<void(type::Result, std::map<std::string, std::string>)>;
+    std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
 
 using FetchPromotionCallback =
     std::function<void(type::Result, type::PromotionList)>;
@@ -98,6 +98,10 @@ using PublisherInfoCallback =
 using GetPublisherInfoCallback =
     std::function<void(const type::Result, type::PublisherInfoPtr)>;
 
+using GetBraveWalletCallback = std::function<void(type::BraveWalletPtr)>;
+
+using GetTransferableAmountCallback = std::function<void(double)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
@@ -118,7 +122,6 @@ class LEDGER_EXPORT Ledger {
       const bool execute_create_script,
       ResultCallback) = 0;
 
-  // returns false if wallet initialization is already in progress
   virtual void CreateWallet(ResultCallback callback) = 0;
 
   virtual void OneTimeTip(
@@ -143,7 +146,7 @@ class LEDGER_EXPORT Ledger {
   virtual void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,
-      const std::map<std::string, std::string>& parts,
+      const base::flat_map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
       type::VisitDataPtr visit_data) = 0;
@@ -165,8 +168,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
-  virtual void SetRewardsMainEnabled(bool enabled) = 0;
-
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
 
   virtual void SetPublisherMinVisits(int visits) = 0;
@@ -180,8 +181,6 @@ class LEDGER_EXPORT Ledger {
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
 
   virtual uint64_t GetReconcileStamp() = 0;
-
-  virtual bool GetRewardsMainEnabled() = 0;
 
   virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
 
@@ -255,8 +254,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RestorePublishers(ResultCallback callback) = 0;
 
-  virtual bool IsWalletCreated() = 0;
-
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
       type::VisitDataPtr visit_data,
@@ -294,7 +291,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SaveMediaInfo(
       const std::string& type,
-      const std::map<std::string, std::string>& data,
+      const base::flat_map<std::string, std::string>& data,
       PublisherInfoCallback callback) = 0;
 
   virtual void UpdateMediaDuration(
@@ -324,7 +321,7 @@ class LEDGER_EXPORT Ledger {
       const type::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
-      const std::map<std::string, std::string>& args) = 0;
+      const base::flat_map<std::string, std::string>& args) = 0;
 
   virtual void GetPendingContributions(
       PendingContributionInfoListCallback callback) = 0;
@@ -344,7 +341,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ExternalWalletAuthorizationCallback callback) = 0;
 
   virtual void DisconnectWallet(
@@ -387,6 +384,17 @@ class LEDGER_EXPORT Ledger {
   virtual void Shutdown(ResultCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
+
+  virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
+
+  virtual std::string GetWalletPassphrase() const = 0;
+
+  virtual void LinkBraveWallet(
+      const std::string& destination_payment_id,
+      ResultCallback callback) = 0;
+
+  virtual void GetTransferableAmount(
+      GetTransferableAmountCallback callback) = 0;
 };
 
 }  // namespace ledger

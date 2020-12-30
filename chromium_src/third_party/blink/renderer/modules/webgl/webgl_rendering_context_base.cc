@@ -53,9 +53,11 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
     return String();
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_GETSHADERINFOLOG \
-  range[0] = 0;                                             \
-  range[1] = 0;                                             \
-  precision = 0;
+  if (!AllowFingerprintingForHost(Host())) {                \
+    range[0] = 0;                                           \
+    range[1] = 0;                                           \
+    precision = 0;                                          \
+  }
 
 #define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER     \
   if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&  \

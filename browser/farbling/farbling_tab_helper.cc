@@ -115,7 +115,11 @@ FarblingTabHelper::FarblingTabHelper(content::WebContents* web_contents)
 
 void FarblingTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
+// TODO(samartnik): it breaks desktop mode on Android.
+// We need to figure out whether we need this functionality on Android.
+#if !defined(OS_ANDROID)
   UpdateUserAgent(navigation_handle);
+#endif
 }
 
 void FarblingTabHelper::UpdateUserAgent(

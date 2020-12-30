@@ -4,12 +4,10 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import { types } from '../../../../brave_rewards/resources/page/constants/rewards_types'
 import { rewardsInitialState } from '../../../testData'
 import {
   App,
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 } from '../../../../brave_rewards/resources/page/components/app'
 
 describe('rewardsPage component', () => {
@@ -19,35 +17,11 @@ describe('rewardsPage component', () => {
     })
   })
 
-  describe('mapDispatchToProps', () => {
-    it('should fire walletCreated', () => {
-      const dispatch = jest.fn()
-
-      mapDispatchToProps(dispatch).actions.onWalletCreated()
-      expect(dispatch.mock.calls[0][0]).toEqual({
-        type: types.WALLET_CREATED,
-        meta: undefined,
-        payload: undefined
-      })
-    })
-    it('should fire walletCreateFailed', () => {
-      const dispatch = jest.fn()
-
-      mapDispatchToProps(dispatch).actions.onWalletCreateFailed()
-      expect(dispatch.mock.calls[0][0]).toEqual({
-        type: types.WALLET_CREATE_FAILED,
-        meta: undefined,
-        payload: undefined
-      })
-    })
-  })
-
   describe('rewardsPage dumb component', () => {
     it('renders the component', () => {
       const wrapper = shallow(
         <App
           actions={{
-            checkWalletExistence: () => false,
             onlyAnonWallet: () => false,
             isInitialized: () => false
           }}

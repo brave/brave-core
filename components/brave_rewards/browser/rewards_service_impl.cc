@@ -16,7 +16,6 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
-#include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/i18n/time_formatting.h"
@@ -35,10 +34,7 @@
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_database.h"
-#include "bat/ledger/mojom_structs.h"
-#include "brave/base/containers/utils.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -332,14 +328,19 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
-  if (!profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-    BLOG(1, "Rewards not enabled");
-    return;
-  }
-
+  auto callback = base::BindOnce(&RewardsServiceImpl::OnConnectionClosed,
+      AsWeakPtr());
   base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
-      base::BindOnce(&RewardsServiceImpl::StartLedger, AsWeakPtr()),
+      base::BindOnce(&RewardsServiceImpl::StartLedger,
+          AsWeakPtr(),
+          std::move(callback)),
       base::TimeDelta::FromSeconds(1));
+}
+
+void RewardsServiceImpl::OnConnectionClosed(const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    BLOG(0, "Ledger process was not started successfully");
+  }
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -363,20 +364,13 @@ void RewardsServiceImpl::Init(
     private_observers_.AddObserver(private_observer_.get());
   }
 
-  if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-    StartLedger();
-  }
-
+  CheckPreferences();
   InitPrefChangeRegistrar();
+  EnableGreaseLion();
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
-  profile_pref_change_registrar_.Add(
-      prefs::kEnabled,
-      base::Bind(
-          &RewardsServiceImpl::OnPreferenceChanged,
-          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kInlineTipTwitterEnabled,
       base::Bind(
@@ -400,12 +394,34 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
-  EnableGreaseLion();
+  if (profile_->GetPrefs()->GetInteger(prefs::kVersion) == -1) {
+    return;
+  }
+
+  if (key == prefs::kAutoContributeEnabled) {
+    if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
+      StartLedger(base::DoNothing());
+    }
+
+    return;
+  }
 }
 
-void RewardsServiceImpl::StartLedger() {
+void RewardsServiceImpl::CheckPreferences() {
+  const bool is_ac_enabled = profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kAutoContributeEnabled);
+  const bool is_ads_enabled = profile_->GetPrefs()->GetBoolean(
+      ads::prefs::kEnabled);
+
+  if (is_ac_enabled || is_ads_enabled) {
+    StartLedger(base::DoNothing());
+  }
+}
+
+void RewardsServiceImpl::StartLedger(StartProcessCallback callback) {
   if (Connected()) {
     BLOG(1, "Ledger process is already running");
+    std::move(callback).Run(ledger::type::Result::LEDGER_OK);
     return;
   }
 
@@ -450,20 +466,24 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_->Create(
       bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ledger_.BindNewEndpointAndPassReceiver(),
-      base::BindOnce(&RewardsServiceImpl::OnCreate, AsWeakPtr()));
+      base::BindOnce(&RewardsServiceImpl::OnCreate,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
-void RewardsServiceImpl::OnCreate() {
+void RewardsServiceImpl::OnCreate(StartProcessCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
     return;
   }
 
   PrepareLedgerEnvForTesting();
 
-  auto callback = base::BindOnce(&RewardsServiceImpl::OnWalletInitialized,
-      AsWeakPtr());
+  auto init_callback = base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized,
+      AsWeakPtr(),
+      std::move(callback));
 
-  bat_ledger_->Initialize(false, std::move(callback));
+  bat_ledger_->Initialize(false, std::move(init_callback));
 }
 
 void RewardsServiceImpl::OnResult(
@@ -541,13 +561,6 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   }
 }
 
-void RewardsServiceImpl::OnCreateWallet(
-    CreateWalletCallback callback,
-    ledger::type::Result result) {
-  OnWalletInitialized(result);
-  std::move(callback).Run(result);
-}
-
 void RewardsServiceImpl::AddPrivateObserver(
     RewardsServicePrivateObserver* observer) {
   private_observers_.AddObserver(observer);
@@ -558,18 +571,15 @@ void RewardsServiceImpl::RemovePrivateObserver(
   private_observers_.RemoveObserver(observer);
 }
 
-void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
-  if (!ready_->is_signaled()) {
-    StartLedger();
-    ready_->Post(
-        FROM_HERE,
-        base::BindOnce(&brave_rewards::RewardsService::CreateWallet,
-            AsWeakPtr(),
-            std::move(callback)));
-    return;
-  }
+void RewardsServiceImpl::OnCreateWallet(
+    CreateWalletCallback callback,
+    ledger::type::Result result) {
+  std::move(callback).Run(result);
+}
 
+void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -577,40 +587,8 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
       AsWeakPtr(),
       std::move(callback));
 
-#if !defined(OS_ANDROID)
   bat_ledger_->CreateWallet(std::move(on_create));
-#else
-  safetynet_check::ClientAttestationCallback attest_callback =
-      base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
-          AsWeakPtr(),
-          std::move(on_create));
-  safetynet_check_runner_.performSafetynetCheck("",
-      std::move(attest_callback), true);
-#endif
 }
-
-#if defined(OS_ANDROID)
-void RewardsServiceImpl::CreateWalletAttestationResult(
-    bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
-    const bool token_received,
-    const std::string& result_string,
-    const bool attestation_passed) {
-  if (!Connected()) {
-    return;
-  }
-
-  if (!token_received) {
-    BLOG(0, "CreateWalletAttestationResult error: " << result_string);
-    OnWalletInitialized(ledger::type::Result::LEDGER_ERROR);
-    return;
-  }
-  if (!attestation_passed) {
-    OnWalletInitialized(ledger::type::Result::SAFETYNET_ATTESTATION_FAILED);
-    return;
-  }
-  bat_ledger_->CreateWallet(std::move(callback));
-}
-#endif
 
 void RewardsServiceImpl::GetActivityInfoList(
     uint32_t start,
@@ -763,7 +741,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
     return;
   }
 
-  std::map<std::string, std::string> parts;
+  base::flat_map<std::string, std::string> parts;
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
     parts[it.GetKey()] = it.GetUnescapedValue();
@@ -775,7 +753,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 
   bat_ledger_->OnXHRLoad(tab_id.id(),
                          url.spec(),
-                         base::MapToFlatMap(parts),
+                         parts,
                          first_party_url.spec(),
                          referrer.spec(),
                          std::move(data));
@@ -835,35 +813,17 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnWalletInitialized(ledger::type::Result result) {
-  if (result == ledger::type::Result::WALLET_CREATED ||
-      result == ledger::type::Result::LEDGER_OK) {
-    is_wallet_initialized_ = true;
+void RewardsServiceImpl::OnLedgerInitialized(
+    StartProcessCallback callback,
+    const ledger::type::Result result) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result);
+    is_ledger_initialized_ = true;
+    StartNotificationTimers();
   }
 
   if (!ready_->is_signaled()) {
     ready_->Signal();
-  }
-
-  if (is_wallet_initialized_) {
-    StartNotificationTimers(true);
-  }
-
-  if (result == ledger::type::Result::WALLET_CREATED) {
-    // Record P3A:
-    RecordWalletBalanceP3A(true, true, 0);
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-    const bool ads_enabled =
-        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
-    RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
-                               : AdsP3AState::kAdsDisabled);
-#endif
-  }
-
-  EnableGreaseLion();
-
-  for (auto& observer : observers_) {
-    observer.OnWalletInitialized(this, result);
   }
 }
 
@@ -944,10 +904,6 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   callback(data.empty() ? ledger::type::Result::NO_LEDGER_STATE
                         : ledger::type::Result::LEDGER_OK,
                         data);
-
-  bat_ledger_->GetRewardsMainEnabled(
-      base::BindOnce(&RewardsServiceImpl::StartNotificationTimers,
-        AsWeakPtr()));
 }
 
 void RewardsServiceImpl::LoadPublisherState(
@@ -993,7 +949,7 @@ void RewardsServiceImpl::LoadURL(
 
   if (test_response_callback_) {
     std::string test_response;
-    std::map<std::string, std::string> test_headers;
+    base::flat_map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(
         request->url,
@@ -1006,7 +962,7 @@ void RewardsServiceImpl::LoadURL(
     response.url = request->url;
     response.status_code = response_status_code;
     response.body = test_response;
-    response.headers = base::MapToFlatMap(test_headers);
+    response.headers = test_headers;
     callback(response);
     return;
   }
@@ -1084,7 +1040,6 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   const auto url = loader->GetFinalURL();
   response.url = url.spec();
 
-  std::map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     scoped_refptr<net::HttpResponseHeaders> headersList =
         loader->ResponseInfo()->headers;
@@ -1263,6 +1218,7 @@ void RewardsServiceImpl::ClaimPromotion(
     const std::string& promotion_id,
     ClaimPromotionCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, "", "", "");
     return;
   }
 
@@ -1277,6 +1233,7 @@ void RewardsServiceImpl::ClaimPromotion(
     const std::string& promotion_id,
     AttestPromotionCallback callback) {
   if (!Connected()) {
+    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1352,39 +1309,12 @@ void RewardsServiceImpl::GetReconcileStamp(
   bat_ledger_->GetReconcileStamp(callback);
 }
 
-void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
-  if (enabled) {
-    StartLedger();
-
-    if (!ready_->is_signaled()) {
-      ready_->Post(
-          FROM_HERE,
-          base::Bind(&brave_rewards::RewardsService::SetRewardsMainEnabled,
-              base::Unretained(this),
-              enabled));
-      return;
-    }
-  }
-
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->SetRewardsMainEnabled(enabled);
-  TriggerOnRewardsMainEnabled(enabled);
-
-  if (!enabled) {
-    RecordRewardsDisabledForSomeMetrics();
-    StopLedger(base::DoNothing());
-  }
-}
-
 void RewardsServiceImpl::EnableGreaseLion() {
   #if BUILDFLAG(ENABLE_GREASELION)
     if (greaselion_service_) {
       greaselion_service_->SetFeatureEnabled(
           greaselion::REWARDS,
-          profile_->GetPrefs()->GetBoolean(prefs::kEnabled));
+          true);
       greaselion_service_->SetFeatureEnabled(
           greaselion::TWITTER_TIPS,
           profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled));
@@ -1397,6 +1327,9 @@ void RewardsServiceImpl::EnableGreaseLion() {
       greaselion_service_->SetFeatureEnabled(
           greaselion::AUTO_CONTRIBUTION,
           profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
+      greaselion_service_->SetFeatureEnabled(
+          greaselion::ADS,
+          profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
     }
   #endif
 }
@@ -1484,23 +1417,12 @@ void RewardsServiceImpl::Reset() {
   bat_ledger_.reset();
   bat_ledger_client_receiver_.reset();
   bat_ledger_service_.reset();
-  is_wallet_initialized_ = false;
+  is_ledger_initialized_ = false;
   ready_ = std::make_unique<base::OneShotEvent>();
   bool success =
       file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
   BLOG_IF(1, !success, "Database was not released");
   BLOG(1, "Successfully reset rewards service");
-}
-
-void RewardsServiceImpl::GetRewardsMainEnabled(
-    const GetRewardsMainEnabledCallback& callback) const {
-  if (!Connected()) {
-    std::move(callback).Run(
-        profile_->GetPrefs()->GetBoolean(prefs::kEnabled));
-    return;
-  }
-
-  bat_ledger_->GetRewardsMainEnabled(callback);
 }
 
 void RewardsServiceImpl::SetBooleanState(const std::string& name, bool value) {
@@ -1714,16 +1636,39 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
   }
 }
 
-void RewardsServiceImpl::OnAdsEnabled(
-    bool ads_enabled) {
-  for (auto& observer : observers_)
-    observer.OnAdsEnabled(this, ads_enabled);
+bool RewardsServiceImpl::ShouldShowOnboarding() const {
+  const bool legacy_enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
+
+  bool ads_enabled = false;
+  bool ads_supported = true;
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service) {
+    ads_enabled = ads_service->IsEnabled();
+    ads_supported = ads_service->IsSupportedLocale();
+  }
+
+  return !legacy_enabled && !ads_enabled && ads_supported;
 }
 
-void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
-    bool rewards_main_enabled) {
-  for (auto& observer : observers_)
-    observer.OnRewardsMainEnabled(this, rewards_main_enabled);
+void RewardsServiceImpl::SaveOnboardingResult(OnboardingResult result) {
+  PrefService* prefs = profile_->GetPrefs();
+  prefs->SetTime(prefs::kOnboarded, base::Time::Now());
+  if (result == OnboardingResult::kOptedIn) {
+    SetAutoContributeEnabled(true);
+    SetAdsEnabled(true);
+  }
+}
+
+void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
+  #if BUILDFLAG(ENABLE_GREASELION)
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::ADS,
+      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+  #endif
+
+  for (auto& observer : observers_) {
+    observer.OnAdsEnabled(this, ads_enabled);
+  }
 }
 
 void RewardsServiceImpl::OnGetBalanceReport(
@@ -1748,18 +1693,6 @@ void RewardsServiceImpl::GetBalanceReport(
       base::BindOnce(&RewardsServiceImpl::OnGetBalanceReport,
         AsWeakPtr(),
         std::move(callback)));
-}
-
-void RewardsServiceImpl::IsWalletCreated(
-    const IsWalletCreatedCallback& callback) {
-  if (!Connected()) {
-    const auto stamp =
-        profile_->GetPrefs()->GetUint64(prefs::kCreationStamp);
-    callback.Run(stamp != 0u);
-    return;
-  }
-
-  bat_ledger_->IsWalletCreated(callback);
 }
 
 void RewardsServiceImpl::GetPublisherActivityFromUrl(
@@ -1948,7 +1881,7 @@ void RewardsServiceImpl::OnMediaInlineInfoSaved(
 
 void RewardsServiceImpl::SaveInlineMediaInfo(
     const std::string& media_type,
-    const std::map<std::string, std::string>& args,
+    const base::flat_map<std::string, std::string>& args,
     SaveMediaInfoCallback callback) {
   if (!Connected()) {
     return;
@@ -1956,7 +1889,7 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
 
   bat_ledger_->SaveMediaInfo(
       media_type,
-      base::MapToFlatMap(args),
+      args,
       base::BindOnce(&RewardsServiceImpl::OnMediaInlineInfoSaved,
                     AsWeakPtr(),
                     std::move(callback)));
@@ -1982,7 +1915,12 @@ void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    StartProcess(
+        base::BindOnce(
+            &RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
+            AsWeakPtr(),
+            publisher_key,
+            std::move(callback)));
     return;
   }
 
@@ -1991,6 +1929,18 @@ void RewardsServiceImpl::GetPublisherInfo(
       base::BindOnce(&RewardsServiceImpl::OnPublisherInfo,
           AsWeakPtr(),
           std::move(callback)));
+}
+
+void RewardsServiceImpl::OnStartProcessForGetPublisherInfo(
+    const std::string& publisher_key,
+    GetPublisherInfoCallback callback,
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result, nullptr);
+    return;
+  }
+
+  GetPublisherInfo(publisher_key, std::move(callback));
 }
 
 void RewardsServiceImpl::OnPublisherInfo(
@@ -2027,7 +1977,13 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::type::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
+    StartProcess(
+        base::BindOnce(
+            &RewardsServiceImpl::OnStartProcessForSavePublisherInfo,
+            AsWeakPtr(),
+            window_id,
+            std::move(publisher_info),
+            std::move(callback)));
     return;
   }
 
@@ -2037,6 +1993,19 @@ void RewardsServiceImpl::SavePublisherInfo(
       base::BindOnce(&RewardsServiceImpl::OnSavePublisherInfo,
           AsWeakPtr(),
           std::move(callback)));
+}
+
+void RewardsServiceImpl::OnStartProcessForSavePublisherInfo(
+    const uint64_t window_id,
+    ledger::type::PublisherInfoPtr publisher_info,
+    SavePublisherInfoCallback callback,
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result);
+    return;
+  }
+
+  SavePublisherInfo(window_id, std::move(publisher_info), std::move(callback));
 }
 
 void RewardsServiceImpl::OnSavePublisherInfo(
@@ -2137,9 +2106,7 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
   return notification_service_.get();
 }
 
-void RewardsServiceImpl::StartNotificationTimers(bool main_enabled) {
-  if (!main_enabled) return;
-
+void RewardsServiceImpl::StartNotificationTimers() {
   // Startup timer, begins after 30-second delay.
   PrefService* pref_service = profile_->GetPrefs();
   notification_startup_timer_ = std::make_unique<base::OneShotTimer>();
@@ -2594,7 +2561,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
 
   bat_ledger_service_->SetTesting();
 
-  profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
+  SetPublisherMinVisitTime(1);
   SetShortRetries(true);
 
   // this is needed because we are using braveledger_request_util::buildURL
@@ -2735,14 +2702,14 @@ void RewardsServiceImpl::OnInlineTipSetting(
 }
 
 void RewardsServiceImpl::GetShareURL(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       GetShareURLCallback callback) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->GetShareURL(
-      base::MapToFlatMap(args),
+      args,
       base::BindOnce(&RewardsServiceImpl::OnShareURL,
           AsWeakPtr(),
           std::move(callback)));
@@ -2916,12 +2883,12 @@ void RewardsServiceImpl::OnExternalWalletAuthorization(
     ExternalWalletAuthorizationCallback callback,
     const ledger::type::Result result,
     const base::flat_map<std::string, std::string>& args) {
-  std::move(callback).Run(result, base::FlatMapToMap(args));
+  std::move(callback).Run(result, args);
 }
 
 void RewardsServiceImpl::ExternalWalletAuthorization(
       const std::string& wallet_type,
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ExternalWalletAuthorizationCallback callback) {
   if (!Connected()) {
     return;
@@ -2929,7 +2896,7 @@ void RewardsServiceImpl::ExternalWalletAuthorization(
 
   bat_ledger_->ExternalWalletAuthorization(
       wallet_type,
-      base::MapToFlatMap(args),
+      args,
       base::BindOnce(&RewardsServiceImpl::OnExternalWalletAuthorization,
                      AsWeakPtr(),
                      wallet_type,
@@ -2941,7 +2908,7 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     const std::string& action,
     ProcessRewardsPageUrlCallback callback,
     const ledger::type::Result result,
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   std::move(callback).Run(result, wallet_type, action, args);
 }
 
@@ -2963,7 +2930,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
   const std::string action = path_items.at(1);
   const std::string wallet_type = path_items.at(0);
 
-  std::map<std::string, std::string> query_map;
+  base::flat_map<std::string, std::string> query_map;
 
   const auto url = GURL("brave:/" + path + query);
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
@@ -3260,10 +3227,6 @@ void RewardsServiceImpl::PendingContributionSaved(
   }
 }
 
-bool RewardsServiceImpl::IsWalletInitialized() {
-  return is_wallet_initialized_;
-}
-
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(
     GetTestResponseCallback callback) {
   test_response_callback_ = callback;
@@ -3357,11 +3320,23 @@ void RewardsServiceImpl::OnCompleteReset(
     const bool success) {
   resetting_rewards_ = false;
 
+  StartProcess(
+      base::BindOnce(
+          &RewardsServiceImpl::OnCompleteResetProcess,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnCompleteResetProcess(
+    SuccessCallback callback,
+    const ledger::type::Result result) {
+  const bool success = result == ledger::type::Result::LEDGER_OK;
+
   for (auto& observer : observers_) {
     observer.OnCompleteReset(success);
   }
 
-  std::move(callback).Run(true);
+  std::move(callback).Run(success);
 }
 
 void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
@@ -3439,6 +3414,10 @@ std::string RewardsServiceImpl::GetEncryptedStringState(
     return "";
   }
 
+  if (encrypted_value.empty()) {
+    return "";
+  }
+
   std::string value;
   if (!OSCrypt::DecryptString(encrypted_value, &value)) {
     BLOG(0, "Decrypting failed for " + name);
@@ -3446,6 +3425,83 @@ std::string RewardsServiceImpl::GetEncryptedStringState(
   }
 
   return value;
+}
+
+void RewardsServiceImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  if (!Connected()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  bat_ledger_->GetBraveWallet(
+    base::BindOnce(&RewardsServiceImpl::OnGetBraveWallet,
+        AsWeakPtr(),
+        std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetBraveWallet(
+    GetBraveWalletCallback callback,
+    ledger::type::BraveWalletPtr wallet) {
+  std::move(callback).Run(std::move(wallet));
+}
+
+void RewardsServiceImpl::StartProcess(StartProcessCallback callback) {
+  StartLedger(std::move(callback));
+}
+
+void RewardsServiceImpl::GetWalletPassphrase(
+    GetWalletPassphraseCallback callback) {
+  if (!Connected()) {
+    std::move(callback).Run("");
+    return;
+  }
+
+  bat_ledger_->GetWalletPassphrase(callback);
+}
+
+void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
+  if (!is_enabled) {
+    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+    if (ads_service) {
+      ads_service->SetEnabled(is_enabled);
+    }
+    return;
+  }
+
+  if (!Connected()) {
+    StartProcess(
+        base::BindOnce(
+            &RewardsServiceImpl::OnStartProcessForSetAdsEnabled,
+            AsWeakPtr()));
+    return;
+  }
+
+  CreateWallet(base::BindOnce(
+      &RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled,
+      AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnStartProcessForSetAdsEnabled(
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    BLOG(0, "Ledger process was not started successfully");
+    return;
+  }
+
+  SetAdsEnabled(true);
+}
+
+void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::WALLET_CREATED) {
+    BLOG(0,  "Failed to create a wallet");
+    return;
+  }
+
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service) {
+    ads_service->SetEnabled(true);
+  }
 }
 
 }  // namespace brave_rewards

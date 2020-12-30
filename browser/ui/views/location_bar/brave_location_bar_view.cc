@@ -20,6 +20,10 @@
 #include "components/version_info/channel.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/views/location_bar/onion_location_view.h"
+#endif
+
 namespace {
 
 class BraveLocationBarViewFocusRingHighlightPathGenerator
@@ -37,6 +41,20 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
 };
 
+base::Optional<SkColor> GetFocusRingColor(Profile* profile) {
+  constexpr SkColor kPrivateFocusRingColor = SkColorSetRGB(0xC6, 0xB3, 0xFF);
+  constexpr SkColor kTorPrivateFocusRingColor = SkColorSetRGB(0xCF, 0xAB, 0xE2);
+  if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
+    // Don't update color.
+    return base::nullopt;
+  }
+  if (profile->IsTor())
+    return kTorPrivateFocusRingColor;
+
+  // Private window.
+  return kPrivateFocusRingColor;
+}
+
 }  // namespace
 
 void BraveLocationBarView::Init() {
@@ -47,7 +65,13 @@ void BraveLocationBarView::Init() {
     focus_ring_->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
+    if (const auto color = GetFocusRingColor(profile()))
+      focus_ring_->SetColor(color.value());
   }
+#if BUILDFLAG(ENABLE_TOR)
+  onion_location_view_ = new OnionLocationView(browser_->profile());
+  AddChildView(onion_location_view_);
+#endif
   // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
@@ -60,16 +84,16 @@ void BraveLocationBarView::Init() {
     content_setting_view->disable_animation();
 }
 
-void BraveLocationBarView::Layout() {
-  LocationBarView::Layout(brave_actions_ ? brave_actions_ : nullptr);
-}
-
 void BraveLocationBarView::Update(content::WebContents* contents) {
   // base Init calls update before our Init is run, so our children
   // may not be initialized yet
   if (brave_actions_) {
     brave_actions_->Update();
   }
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_)
+    onion_location_view_->Update(contents);
+#endif
   LocationBarView::Update(contents);
 }
 
@@ -80,9 +104,26 @@ void BraveLocationBarView::OnChanged() {
         ShouldHidePageActionIcons() && !omnibox_view_->GetText().empty();
     brave_actions_->SetShouldHide(should_hide);
   }
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_)
+    onion_location_view_->Update(
+        browser_->tab_strip_model()->GetActiveWebContents());
+#endif
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();
+}
+
+std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
+  std::vector<views::View*> views;
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_)
+    views.push_back(onion_location_view_);
+#endif
+  if (brave_actions_)
+    views.push_back(brave_actions_);
+
+  return views;
 }
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
@@ -93,6 +134,13 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
                               GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_ && onion_location_view_->GetVisible()) {
+    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+        onion_location_view_->GetMinimumSize().width();
+    min_size.Enlarge(extra_width, 0);
+  }
+#endif
   return min_size;
 }
 
@@ -131,11 +179,3 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
 }
-
-// Provide base class implementation for Update override that has been added to
-// header via a patch. This should never be called as the only instantiated
-// implementation should be our |BraveLocationBarView|.
-void LocationBarView::Layout() {
-  Layout(nullptr);
-}
-

@@ -13,19 +13,36 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/metrics/histogram_macros.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/weekly_storage/weekly_storage.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
+namespace {
+
+constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
+constexpr char kSponsoredNewTabsCreated[] =
+    "brave.new_tab_page.p3a_sponsored_new_tabs_created";
+
+}  // namespace
+
 namespace ntp_background_images {
 
 // static
+void ViewCounterService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterListPref(kNewTabsCreated);
+  registry->RegisterListPref(kSponsoredNewTabsCreated);
+}
+
 void ViewCounterService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(
@@ -41,21 +58,26 @@ void ViewCounterService::RegisterProfilePrefs(
 }
 
 ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
+                                       brave_ads::AdsService* ads_service,
                                        PrefService* prefs,
+                                       PrefService* local_state,
                                        bool is_supported_locale)
     : service_(service),
+      ads_service_(ads_service),
       prefs_(prefs),
       is_supported_locale_(is_supported_locale) {
   DCHECK(service_);
   service_->AddObserver(this);
 
+  new_tab_count_state_ =
+      std::make_unique<WeeklyStorage>(local_state, kNewTabsCreated);
+  branded_new_tab_count_state_ =
+      std::make_unique<WeeklyStorage>(local_state, kSponsoredNewTabsCreated);
+
   if (auto* data = GetCurrentBrandedWallpaperData())
     model_.set_total_image_count(data->backgrounds.size());
 
   pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
-      base::Unretained(this)));
   pref_change_registrar_.Add(ads::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
@@ -67,6 +89,23 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
 }
 
 ViewCounterService::~ViewCounterService() = default;
+
+void ViewCounterService::BrandedWallpaperWillBeDisplayed(
+    const std::string& wallpaper_id) {
+  base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
+  DCHECK(!data.is_none());
+  const std::string creative_instance_id =
+      *data.FindStringKey(kCreativeInstanceIDKey);
+
+  if (!ads_service_)
+    return;
+
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
+      ads::mojom::BraveAdsNewTabPageAdEventType::kViewed);
+
+  branded_new_tab_count_state_->AddDelta(1);
+  UpdateP3AValues();
+}
 
 NTPBackgroundImagesData*
 ViewCounterService::GetCurrentBrandedWallpaperData() const {
@@ -94,15 +133,14 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
   return base::Value();
 }
 
-base::Value ViewCounterService::GetTopSites(bool for_webui) const {
+std::vector<TopSite> ViewCounterService::GetTopSitesVectorForWebUI() const {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-    if (data->IsSuperReferral())
-      return GetCurrentBrandedWallpaperData()->GetTopSites(for_webui);
+      return GetCurrentBrandedWallpaperData()->GetTopSitesForWebUI();
   }
 #endif
 
-  return base::Value();
+  return {};
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {
@@ -171,12 +209,26 @@ void ViewCounterService::ResetNotificationState() {
 }
 
 void ViewCounterService::RegisterPageView() {
+  new_tab_count_state_->AddDelta(1);
+  UpdateP3AValues();
+
   // Don't do any counting if we will never be showing the data
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.
   if (IsBrandedWallpaperActive()) {
     model_.RegisterPageView();
   }
+}
+
+void ViewCounterService::BrandedWallpaperLogoClicked(
+    const std::string& creative_instance_id,
+    const std::string& destination_url,
+    const std::string& wallpaper_id) {
+  if (!ads_service_)
+    return;
+
+  ads_service_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id,
+      ads::mojom::BraveAdsNewTabPageAdEventType::kClicked);
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {
@@ -226,6 +278,31 @@ std::string ViewCounterService::GetSuperReferralThemeName() const {
 
 std::string ViewCounterService::GetSuperReferralCode() const {
   return service_->GetSuperReferralCode();
+}
+
+void ViewCounterService::UpdateP3AValues() const {
+  uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
+  constexpr int kNewTabCount[] = {0, 3, 8, 20, 50, 100};
+  const int* it_count =
+      std::lower_bound(kNewTabCount, std::end(kNewTabCount), new_tab_count);
+  int answer = it_count - kNewTabCount;
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.NewTabsCreated", answer,
+                             base::size(kNewTabCount) + 1);
+
+  constexpr double kSponsoredRatio[] = {0, 10.0, 20.0, 30.0, 40.0, 50.0};
+  uint64_t branded_new_tab_count =
+      branded_new_tab_count_state_->GetHighestValueInWeek();
+  if (branded_new_tab_count == 0 || new_tab_count == 0) {
+    answer = 0;
+  } else {
+    double ratio = (branded_new_tab_count /
+                    static_cast<double>(new_tab_count)) * 100;
+    const double* it_ratio =
+        std::lower_bound(kSponsoredRatio, std::end(kSponsoredRatio), ratio);
+    answer = it_ratio - kSponsoredRatio;
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.SponsoredNewTabsCreated", answer,
+                             base::size(kSponsoredRatio) + 1);
 }
 
 }  // namespace ntp_background_images

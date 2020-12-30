@@ -11,17 +11,17 @@
   </message>
 
   <!-- Caption Subpage (strings used by the <settings-captions> element) -->
-  <message name="IDS_SETTINGS_CAPTIONS" desc="Name of the settings page which displays caption preferences.">
+  <message name="IDS_SETTINGS_CAPTIONS" desc="Title of the subpage for settings related to captions">
     Captions
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_SETTINGS" desc="Name of settings section of the caption settings page.">
-    Settings
+  <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_TITLE" desc="Section title for caption style setting that is supported by some apps and sites">
+    Caption preferences
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_PREVIEW" desc="Name of preview section of the caption settings page.">
-    Preview
+  <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_SUBTITLE" desc="Section subtitle for Caption preferences. Disclaimer that not all apps and sites support the system caption style. Some apps and sites don't use the web captioning standard and have their own captioning platform.">
+    Customize caption size and style for apps and sites that support this setting
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the caption text size preference.">
-    Text size
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the caption text size preference. Text size will apply to captions and alo Live Caption when it's enabled.">
+    Text size (Also applies to Live Caption)
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_TEXT_FONT" desc="Name of the caption text font preference.">
     Text font
@@ -103,11 +103,8 @@
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_DIALOG_TITLE" desc="Title for the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
     Device Name
   </message>
-  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_INPUT_LABEL" desc="Label for the input field which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    New device name
-  </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_DEVICE_NAME" desc="Label for the button that opens the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    Change name
+    Change device name
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ARIA_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current device name which is shown to other devices for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Bravebook</ex></ph>
@@ -147,6 +144,15 @@
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_EDIT_BUTTON_OFFLINE_DESCRIPTION" desc="Description for scren readers, not displayed in UI, specifying the current data usage setting where transfers will only take place offline for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current data usage setting is Without internet
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_CONTACT_VISIBILITY_ROW_TITLE" desc="Text for the row in settings which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
+    Device visibility
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_VISIBILITY" desc="Label for the button that opens the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
+    View device visibility
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_TITLE" desc="Title for the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
+    Device visibility
   </message>
 
  <!-- Personalization Options SubPage (strings used by the <settings-personalization-options> element) -->
@@ -270,6 +276,9 @@
   </message>
   <message name="IDS_SETTINGS_BOOKMARKS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing bookmarks between multiple browser instances.">
     Bookmarks
+  </message>
+  <message name="IDS_SETTINGS_READING_LIST_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing reading list between multiple browser instances.">
+    Reading List
   </message>
   <message name="IDS_SETTINGS_ENCRYPTION_OPTIONS" desc="Title for the section which includes options for encrypting sync settings.">
     Encryption options

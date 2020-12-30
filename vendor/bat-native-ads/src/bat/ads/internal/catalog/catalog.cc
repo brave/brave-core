@@ -5,47 +5,42 @@
 
 #include "bat/ads/internal/catalog/catalog.h"
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/catalog/catalog_state.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
-namespace {
-const char kCatalogFilename[] = "catalog.json";
-}  // namespace
-
-Catalog::Catalog(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+Catalog::Catalog()
+  : catalog_state_(std::make_unique<CatalogState>()) {
 }
 
 Catalog::~Catalog() = default;
 
 bool Catalog::FromJson(
     const std::string& json) {
-  auto catalog_state = std::make_unique<CatalogState>();
   auto json_schema =
-      ads_->get_ads_client()->LoadResourceForId(_catalog_schema_resource_id);
-  auto result = LoadFromJson(catalog_state.get(), json, json_schema);
+      AdsClientHelper::Get()->LoadResourceForId(g_catalog_schema_resource_id);
+  auto result = LoadFromJson(catalog_state_.get(), json, json_schema);
   if (result != SUCCESS) {
     return false;
   }
 
-  catalog_state_.reset(catalog_state.release());
-
   return true;
 }
 
-bool Catalog::HasChanged(const std::string& current_catalog_id) {
-  if (current_catalog_id.empty()) {
+bool Catalog::HasChanged(
+    const std::string& catalog_id) const {
+  if (catalog_id.empty()) {
     // First time the catalog has been downloaded, so does not match
     return true;
   }
 
-  if (current_catalog_id != catalog_state_->catalog_id) {
+  if (catalog_id != catalog_state_->catalog_id) {
     return true;
   }
 
@@ -56,12 +51,12 @@ std::string Catalog::GetId() const {
   return catalog_state_->catalog_id;
 }
 
-uint64_t Catalog::GetVersion() const {
+int Catalog::GetVersion() const {
   return catalog_state_->version;
 }
 
-uint64_t Catalog::GetPing() const {
-  return catalog_state_->ping;
+int64_t Catalog::GetPing() const {
+  return catalog_state_->ping / base::Time::kMillisecondsPerSecond;
 }
 
 CatalogCampaignList Catalog::GetCampaigns() const {
@@ -70,16 +65,6 @@ CatalogCampaignList Catalog::GetCampaigns() const {
 
 CatalogIssuersInfo Catalog::GetIssuers() const {
   return catalog_state_->catalog_issuers;
-}
-
-void Catalog::Save(
-    const std::string& json,
-    ResultCallback callback) {
-  ads_->get_ads_client()->Save(kCatalogFilename, json, callback);
-}
-
-const std::string& Catalog::get_last_message() const {
-  return last_message_;
 }
 
 }  // namespace ads

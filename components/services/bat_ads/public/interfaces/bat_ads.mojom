@@ -12,6 +12,7 @@ interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
          pending_associated_receiver<BatAds> database) => ();
   SetEnvironment(ads.mojom.BraveAdsEnvironment environment) => ();
+  SetSysInfo(ads.mojom.BraveAdsSysInfo sys_info) => ();
   SetBuildChannel(ads.mojom.BraveAdsBuildChannel build_channel) => ();
   SetDebug(bool is_debug) => ();
 };
@@ -26,8 +27,6 @@ interface BatAdsClient {
   [Sync]
   LoadResourceForId(string id) => (string value);
   [Sync]
-  CanShowBackgroundNotifications() => (bool can_show);
-  [Sync]
   GetBooleanPref(string path) => (bool value);
   [Sync]
   GetIntegerPref(string path) => (int32 value);
@@ -40,14 +39,15 @@ interface BatAdsClient {
   [Sync]
   GetUint64Pref(string path) => (uint64 value);
 
-  ShowNotification(string notification_info);
+  ShowNotification(string json);
   CloseNotification(string uuid);
   UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
-  LoadUserModelForId(string id) => (int32 result, string value);
   Load(string name) => (int32 result, string value);
+  LoadUserModelForId(string id) => (int32 result, string value);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
+  RecordP2AEvent(string name, ads.mojom.BraveAdsP2AEventType type, string value);
   Log(string file, int32 line, int32 verbose_level, string message);
   SetBooleanPref(string path, bool value);
   SetIntegerPref(string path, int32 value);
@@ -63,7 +63,7 @@ interface BatAds {
   Shutdown() => (int32 result);
   ChangeLocale(string locale);
   OnAdsSubdivisionTargetingCodeHasChanged();
-  OnPageLoaded(int32 tab_id, string original_url, string url, string html);
+  OnPageLoaded(int32 tab_id, array<string> redirect_chain, string content);
   OnUnIdle();
   OnIdle();
   OnForeground();
@@ -74,11 +74,12 @@ interface BatAds {
   OnTabClosed(int32 tab_id);
   GetAdNotification(string uuid) => (string json);
   OnAdNotificationEvent(string uuid, ads.mojom.BraveAdsAdNotificationEventType event_type);
+  OnNewTabPageAdEvent(string wallpaper_id, string creative_instance_id, ads.mojom.BraveAdsNewTabPageAdEventType event_type);
   RemoveAllHistory() => (int32 result);
-  OnWalletUpdated(string payment_id, string recovery_seed_base64);
+  OnWalletUpdated(string payment_id, string seed);
   ReconcileAdRewards();
   GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
-  GetTransactionHistory() => (bool success, string json);
+  GetStatement() => (bool success, string json);
   ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdThumbDown(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdOptInAction(string category, int32 action) => (string category, int32 action);

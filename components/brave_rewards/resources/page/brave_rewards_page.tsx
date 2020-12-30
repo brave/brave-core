@@ -9,6 +9,9 @@ import { initLocale } from 'brave-ui'
 import { bindActionCreators } from 'redux'
 require('emptykit.css')
 
+import { LocaleContext } from '../shared/lib/locale_context'
+import { WithThemeVariables } from '../shared/components/with_theme_variables'
+
 // Components
 import App from './components/app'
 require('../../../../ui/webui/resources/fonts/muli.css')
@@ -30,10 +33,18 @@ window.cr.define('brave_rewards', function () {
       initLocale(window.loadTimeData.data_)
     }
 
+    const localeContext = {
+      getString: (key: string) => self.loadTimeData.getString(key)
+    }
+
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
-          <App />
+          <LocaleContext.Provider value={localeContext}>
+            <WithThemeVariables>
+              <App />
+            </WithThemeVariables>
+          </LocaleContext.Provider>
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
@@ -49,14 +60,6 @@ window.cr.define('brave_rewards', function () {
     return newActions
   }
 
-  function walletCreated () {
-    getActions().onWalletCreated()
-  }
-
-  function walletCreateFailed () {
-    getActions().onWalletCreateFailed()
-  }
-
   function rewardsParameters (properties: Rewards.RewardsParameters) {
     getActions().onRewardsParameters(properties)
     // Get the current AC amount after rewards parameters have been
@@ -70,10 +73,6 @@ window.cr.define('brave_rewards', function () {
 
   function claimPromotion (properties: Rewards.Captcha) {
     getActions().onClaimPromotion(properties)
-  }
-
-  function walletPassphrase (pass: string) {
-    getActions().onWalletPassphrase(pass)
   }
 
   function recoverWalletData (result: number) {
@@ -98,10 +97,6 @@ window.cr.define('brave_rewards', function () {
 
   function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
     getActions().onBalanceReport(properties)
-  }
-
-  function walletExists (exists: boolean) {
-    getActions().onWalletExists(exists)
   }
 
   function contributionAmount (amount: number) {
@@ -155,19 +150,16 @@ window.cr.define('brave_rewards', function () {
   function onPendingContributionSaved (result: number) {
     if (result === 0) {
       getActions().getPendingContributions()
+      getActions().setFirstLoad(false)
     }
   }
 
-  function rewardsEnabled (enabled: boolean) {
-    getActions().onRewardsEnabled(enabled)
+  function statement (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) {
+    getActions().onStatement(data)
   }
 
-  function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
-    getActions().onTransactionHistory(data)
-  }
-
-  function transactionHistoryChanged () {
-    getActions().onTransactionHistoryChanged()
+  function statementChanged () {
+    getActions().onStatementChanged()
   }
 
   function recurringTipSaved (success: boolean) {
@@ -261,21 +253,29 @@ window.cr.define('brave_rewards', function () {
     getActions().onCompleteReset(success)
   }
 
+  function paymentId (paymentId: string) {
+    getActions().onPaymentId(paymentId)
+  }
+
+  function walletPassphrase (passphrase: string) {
+    getActions().onWalletPassphrase(passphrase)
+  }
+
+  function onboardingStatus (result: { showOnboarding: boolean }) {
+    getActions().onOnboardingStatus(result.showOnboarding)
+  }
+
   return {
     initialize,
-    walletCreated,
-    walletCreateFailed,
     rewardsParameters,
     promotions,
     claimPromotion,
-    walletPassphrase,
     recoverWalletData,
     promotionFinish,
     reconcileStamp,
     contributeList,
     excludedList,
     balanceReport,
-    walletExists,
     contributionAmount,
     recurringTips,
     currentTips,
@@ -290,9 +290,8 @@ window.cr.define('brave_rewards', function () {
     onToggleFlagAd,
     pendingContributions,
     onPendingContributionSaved,
-    rewardsEnabled,
-    transactionHistory,
-    transactionHistoryChanged,
+    statement,
+    statementChanged,
     recurringTipSaved,
     recurringTipRemoved,
     onRemovePendingContribution,
@@ -309,7 +308,10 @@ window.cr.define('brave_rewards', function () {
     monthlyReportIds,
     countryCode,
     initialized,
-    completeReset
+    completeReset,
+    paymentId,
+    walletPassphrase,
+    onboardingStatus
   }
 })
 

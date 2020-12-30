@@ -14,7 +14,7 @@ class PermissionRule {
  public:
   virtual ~PermissionRule() = default;
 
-  virtual bool IsAllowed() = 0;
+  virtual bool ShouldAllow() = 0;
 
   virtual std::string get_last_message() const = 0;
 };

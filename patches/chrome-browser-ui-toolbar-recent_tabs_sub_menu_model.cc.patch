@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
+index 8cdfc6fbdddcb13bcd5e198cd6ebf53abfb0269d..719d296a16ae05e6d8c897af91684b4efa3527fa 100644
+--- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
++++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
+@@ -479,6 +479,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+       BuildOtherDevicesTabItem(session_tag, *tabs_in_session[k]);
+     }  // for all tabs in one session
+ 
++    BRAVE_BUILD_TABS_FROM_OTHER_DEVICES
+     ++num_sessions_added;
+   }  // for all sessions
+ 

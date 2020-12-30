@@ -1,0 +1,12 @@
+diff --git a/tools/json_to_struct/json_to_struct.gni b/tools/json_to_struct/json_to_struct.gni
+index 29afcb2106c8366b62f783c6a590468025a84608..fc446fec551a75610ea419eab2fe72024e7c7834 100644
+--- a/tools/json_to_struct/json_to_struct.gni
++++ b/tools/json_to_struct/json_to_struct.gni
+@@ -57,6 +57,7 @@ template("json_to_struct") {
+     }
+ 
+     sources = get_target_outputs(":$action_name")
++    if (defined(invoker.additional_sources)) { sources += invoker.additional_sources }
+ 
+     deps = [ ":$action_name" ]
+ 

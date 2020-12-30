@@ -12,7 +12,7 @@ namespace prefs {
 
 extern const char kEnabled[];
 
-extern const char kShouldAllowAdConversionTracking[];
+extern const char kShouldAllowConversionTracking[];
 
 extern const char kAdsPerHour[];
 extern const char kAdsPerDay[];
@@ -22,6 +22,11 @@ extern const char kIdleThreshold[];
 extern const char kShouldAllowAdsSubdivisionTargeting[];
 extern const char kAdsSubdivisionTargetingCode[];
 extern const char kAutoDetectedAdsSubdivisionTargetingCode[];
+
+extern const char kCatalogId[];
+extern const char kCatalogVersion[];
+extern const char kCatalogPing[];
+extern const char kCatalogLastUpdated[];
 
 }  // namespace prefs
 

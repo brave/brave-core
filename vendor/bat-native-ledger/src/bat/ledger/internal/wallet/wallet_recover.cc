@@ -10,7 +10,9 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_split.h"
 #include "bat/ledger/internal/common/security_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 
 #include "wally_bip39.h"  // NOLINT
 
@@ -105,10 +107,12 @@ void WalletRecover::OnRecover(
 
   ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);
+  ledger_->state()->SetPromotionCorruptedMigrated(true);
   if (legacy_wallet) {
     ledger_->state()->SetFetchOldBalanceEnabled(true);
   }
-
+  ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
+  ledger_->database()->SaveEventLog(log::kWalletRecovered, payment_id);
   callback(type::Result::LEDGER_OK);
 }
 

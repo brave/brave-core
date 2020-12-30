@@ -20,7 +20,7 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "https://www.foo.com/";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -33,7 +33,7 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "https://www.foo.com/bar";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -46,7 +46,7 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "www.foo.com";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
@@ -59,7 +59,7 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "https://www.foo.com";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
@@ -72,7 +72,7 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "https://www.foo.com/bar*";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -85,7 +85,7 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_TRUE(does_match);
@@ -98,85 +98,85 @@ TEST(BatAdsUrlUtilTest,
   const std::string pattern = "https://www.foo.com/woo*hoo";
 
   // Act
-  const bool does_match = UrlMatchesPattern(url, pattern);
+  const bool does_match = DoesUrlMatchPattern(url, pattern);
 
   // Assert
   EXPECT_FALSE(does_match);
 }
 
 TEST(BatAdsUrlUtilTest,
-    SameSite) {
+    SameDomainOrHost) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
   const std::string url2 = "https://subdomain.foo.com/bar";
 
   // Act
-  const bool is_same_site = SameSite(url1, url2);
+  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
   EXPECT_TRUE(is_same_site);
 }
 
 TEST(BatAdsUrlUtilTest,
-    NotSameSite) {
+    NotSameDomainOrHost) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
   const std::string url2 = "https://subdomain.bar.com/foo";
 
   // Act
-  const bool is_same_site = SameSite(url1, url2);
+  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
   EXPECT_FALSE(is_same_site);
 }
 
 TEST(BatAdsUrlUtilTest,
-    SameSiteForUrlWithNoSubdomain) {
+    SameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
   const std::string url2 = "https://foo.com/bar";
 
   // Act
-  const bool is_same_site = SameSite(url1, url2);
+  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
   EXPECT_TRUE(is_same_site);
 }
 
 TEST(BatAdsUrlUtilTest,
-    NotSameSiteForUrlWithNoSubdomain) {
+    NotSameDomainOrHostForUrlWithNoSubdomain) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test";
   const std::string url2 = "https://bar.com/foo";
 
   // Act
-  const bool is_same_site = SameSite(url1, url2);
+  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
   EXPECT_FALSE(is_same_site);
 }
 
 TEST(BatAdsUrlUtilTest,
-    SameSiteForUrlWithRef) {
+    SameDomainOrHostForUrlWithRef) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test#ref";
   const std::string url2 = "https://foo.com/bar";
 
   // Act
-  const bool is_same_site = SameSite(url1, url2);
+  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
   EXPECT_TRUE(is_same_site);
 }
 
 TEST(BatAdsUrlUtilTest,
-    NotSameSiteForUrlWithRef) {
+    NotSameDomainOrHostForUrlWithRef) {
   // Arrange
   const std::string url1 = "https://foo.com?bar=test#ref";
   const std::string url2 = "https://bar.com/foo";
 
   // Act
-  const bool is_same_site = SameSite(url1, url2);
+  const bool is_same_site = SameDomainOrHost(url1, url2);
 
   // Assert
   EXPECT_FALSE(is_same_site);

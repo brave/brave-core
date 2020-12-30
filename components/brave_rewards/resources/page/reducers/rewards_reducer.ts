@@ -4,9 +4,13 @@
 
 import { Reducer } from 'redux'
 
+import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
+
 // Constant
 import { types } from '../constants/rewards_types'
 import { defaultState } from '../storage'
+
+const onboardingCompletedStore = new OnboardingCompletedStore()
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -16,20 +20,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
   switch (action.type) {
     case types.IS_INITIALIZED: {
       chrome.send('brave_rewards.isInitialized')
-      break
-    }
-    case types.TOGGLE_ENABLE_MAIN: {
-      if (state.initializing && state.enabledMain) {
-        break
-      }
-
-      state = { ...state }
-      const key = 'enabledMain'
-      const enable = action.payload.enable
-      state.initializing = true
-
-      state[key] = enable
-      chrome.send('brave_rewards.saveSetting', [key, enable.toString()])
       break
     }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
@@ -233,31 +223,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.ON_REWARDS_ENABLED: {
-      const enabled: boolean = action.payload.enabled
-      state = { ...state }
-      if (state.enabledMain && !enabled) {
-        state = defaultState
-        state.enabledMain = false
-        state.walletCreated = true
-        state.firstLoad = false
-        break
-      }
-
-      if (!enabled) {
-        state.balance = defaultState.balance
-        state.promotions = []
-      }
-
-      state.enabledMain = enabled
+    case types.GET_STATEMENT:
+    case types.ON_STATEMENT_CHANGED: {
+      chrome.send('brave_rewards.getStatement', [])
       break
     }
-    case types.GET_TRANSACTION_HISTORY:
-    case types.ON_TRANSACTION_HISTORY_CHANGED: {
-      chrome.send('brave_rewards.getTransactionHistory', [])
-      break
-    }
-    case types.ON_TRANSACTION_HISTORY: {
+    case types.ON_STATEMENT: {
       if (!action.payload.data) {
         break
       }
@@ -271,11 +242,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const data = action.payload.data
       state.adsData.adsEstimatedPendingRewards = data.adsEstimatedPendingRewards
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
-      state.adsData.adsAdNotificationsReceivedThisMonth = data.adsAdNotificationsReceivedThisMonth
-      break
-    }
-    case types.GET_REWARDS_MAIN_ENABLED: {
-      chrome.send('brave_rewards.getRewardsMainEnabled', [])
+      state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
       break
     }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
@@ -306,10 +273,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
-    case types.ON_ON_BOARDING_DISPLAYED: {
+    case types.ON_VERIFY_ONBOARDING_DISPLAYED: {
       let ui = state.ui
 
-      ui.onBoardingDisplayed = true
+      ui.verifyOnboardingDisplayed = true
       state = {
         ...state,
         ui
@@ -439,6 +406,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_INITIALIZED: {
+      chrome.send('brave_rewards.getReconcileStamp')
       state = {
         ...state,
         initializing: false
@@ -452,6 +420,49 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_COMPLETE_RESET: {
       if (action.payload.success) {
         return undefined
+      }
+      break
+    }
+    case types.GET_PAYMENT_ID: {
+      chrome.send('brave_rewards.getPaymentId')
+      break
+    }
+    case types.ON_PAYMENT_ID: {
+      state = {
+        ...state,
+        paymentId: action.payload.paymentId
+      }
+      break
+    }
+    case types.SET_FIRST_LOAD: {
+      state.firstLoad = action.payload.firstLoad
+      break
+    }
+    case types.GET_ONBOARDING_STATUS: {
+      chrome.send('brave_rewards.getOnboardingStatus')
+      break
+    }
+    case types.ON_ONBOARDING_STATUS: {
+      let { showOnboarding } = action.payload
+      // Once the user has been onboarded (perhaps through another rewards
+      // UI entry point) and has viewed the settings page, do not hide the
+      // settings page with onboarding again.
+      if (!showOnboarding) {
+        onboardingCompletedStore.save()
+      }
+      state = {
+        ...state,
+        showOnboarding: showOnboarding && !onboardingCompletedStore.load()
+      }
+      break
+    }
+    case types.SAVE_ONBOARDING_RESULT: {
+      chrome.send('brave_rewards.saveOnboardingResult', [action.payload.result])
+      chrome.send('brave_rewards.getAutoContributeProperties')
+      onboardingCompletedStore.save()
+      state = {
+        ...state,
+        showOnboarding: false
       }
       break
     }

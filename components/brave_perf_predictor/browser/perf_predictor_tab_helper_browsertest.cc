@@ -79,10 +79,10 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJsWithManualReply(contents,
-                                    "addImage('logo.png');"
-                                    "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "addImage('logo.png');"
+                         "setExpectations(0, 0, 1, 0);"
+                         "xhr('analytics.js')"));
   // Prediction triggered when web contents are closed
   contents->Close();
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
@@ -98,10 +98,10 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJsWithManualReply(contents,
-                                    "addImage('logo.png');"
-                                    "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "addImage('logo.png');"
+                         "setExpectations(0, 0, 0, 1);"
+                         "xhr('analytics.js')"));
 
   EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
   // Prediction triggered when web contents are closed
@@ -119,19 +119,19 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJsWithManualReply(contents,
-                                    "addImage('logo.png');"
-                                    "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "addImage('logo.png');"
+                         "setExpectations(0, 0, 0, 1);"
+                         "xhr('analytics.js')"));
   EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
   // Prediction triggered when web contents are closed
   GURL second_url =
       embedded_test_server()->GetURL("example.com", "/blocking.html");
   ui_test_utils::NavigateToURL(browser(), second_url);
-  EXPECT_EQ(true, EvalJsWithManualReply(contents,
-                                    "addImage('logo.png');"
-                                    "setExpectations(0, 0, 0, 0, 1, 0);"
-                                    "xhr('analytics.js')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "addImage('logo.png');"
+                         "setExpectations(0, 0, 0, 1);"
+                         "xhr('analytics.js')"));
 
   auto previous_nav_savings = getProfileBandwidthSaved(browser());
   EXPECT_NE(previous_nav_savings, 0ULL);

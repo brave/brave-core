@@ -83,11 +83,5 @@ type::ReportType ConvertPromotionTypeToReportType(
   }
 }
 
-std::vector<type::PromotionType> GetEligiblePromotions() {
-  return {
-    type::PromotionType::ADS
-  };
-}
-
 }  // namespace promotion
 }  // namespace ledger

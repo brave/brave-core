@@ -33,11 +33,6 @@ void AdsService::RegisterProfilePrefs(
       prefs::kHasAdsP3AState, false);
 
   registry->RegisterBooleanPref(
-      prefs::kShouldShowOnboarding, true);
-  registry->RegisterUint64Pref(
-      prefs::kOnboardingTimestamp, 0);
-
-  registry->RegisterBooleanPref(
       prefs::kShouldShowMyFirstAdNotification, true);
 
   registry->RegisterIntegerPref(
@@ -54,12 +49,12 @@ void AdsService::RegisterProfilePrefs(
       ads::prefs::kEnabled, false);
 
   registry->RegisterBooleanPref(
-      ads::prefs::kShouldAllowAdConversionTracking, true);
+      ads::prefs::kShouldAllowConversionTracking, true);
 
   registry->RegisterUint64Pref(
       ads::prefs::kAdsPerHour, 2);
   registry->RegisterUint64Pref(
-      ads::prefs::kAdsPerDay, 20);
+      ads::prefs::kAdsPerDay, 40);
 
   registry->RegisterIntegerPref(
       ads::prefs::kIdleThreshold, 15);
@@ -70,6 +65,15 @@ void AdsService::RegisterProfilePrefs(
       ads::prefs::kAdsSubdivisionTargetingCode, "AUTO");
   registry->RegisterStringPref(
       ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
+
+  registry->RegisterStringPref(
+      ads::prefs::kCatalogId, "");
+  registry->RegisterIntegerPref(
+      ads::prefs::kCatalogVersion, 0);
+  registry->RegisterInt64Pref(
+      ads::prefs::kCatalogPing, 0);
+  registry->RegisterInt64Pref(
+      ads::prefs::kCatalogLastUpdated, 0);
 }
 
 }  // namespace brave_ads

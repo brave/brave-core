@@ -41,18 +41,6 @@ void AdsClientMojoBridge::IsForeground(
   std::move(callback).Run(ads_client_->IsForeground());
 }
 
-bool AdsClientMojoBridge::CanShowBackgroundNotifications(
-    bool* out_can_show) {
-  DCHECK(out_can_show);
-  *out_can_show = ads_client_->CanShowBackgroundNotifications();
-  return true;
-}
-
-void AdsClientMojoBridge::CanShowBackgroundNotifications(
-    CanShowBackgroundNotificationsCallback callback) {
-  std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
-}
-
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(
     bool* out_is_available) {
   DCHECK(out_is_available);
@@ -121,6 +109,13 @@ void AdsClientMojoBridge::LoadUserModelForId(
       new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
   ads_client_->LoadUserModelForId(
       id, std::bind(AdsClientMojoBridge::OnLoadUserModelForId, holder, _1, _2));
+}
+
+void AdsClientMojoBridge::RecordP2AEvent(
+    const std::string& name,
+    const ads::P2AEventType type,
+    const std::string& out_value) {
+  ads_client_->RecordP2AEvent(name, type, out_value);
 }
 
 // static
@@ -196,13 +191,13 @@ void AdsClientMojoBridge::UrlRequest(
 
 // static
 void AdsClientMojoBridge::ShowNotification(
-    const std::string& notification_info) {
-  auto info = std::make_unique<ads::AdNotificationInfo>();
-  if (info->FromJson(notification_info) != ads::Result::SUCCESS) {
+    const std::string& json) {
+  ads::AdNotificationInfo ad_notification;
+  if (ad_notification.FromJson(json) != ads::Result::SUCCESS) {
     return;
   }
 
-  ads_client_->ShowNotification(std::move(info));
+  ads_client_->ShowNotification(ad_notification);
 }
 
 void AdsClientMojoBridge::CloseNotification(
@@ -249,7 +244,7 @@ void AdsClientMojoBridge::SetBooleanPref(
 void AdsClientMojoBridge::GetIntegerPref(
     const std::string& path,
     GetIntegerPrefCallback callback) {
-  std::move(callback).Run(ads_client_->GetBooleanPref(path));
+  std::move(callback).Run(ads_client_->GetIntegerPref(path));
 }
 
 void AdsClientMojoBridge::SetIntegerPref(

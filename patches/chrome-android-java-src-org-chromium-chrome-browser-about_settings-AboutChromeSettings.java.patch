@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
-index c12b88f7bd4cf7511382f4ae002a8d5d731b02d7..629d22a792ae10388419675120f6d36d4bdb58ea 100644
+index e984d4fe04e57dcb592c8e6295cc35cb3ebce7ae..278692c96b95b6faae9adde5142df2e38e696034 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/AboutChromeSettings.java
 @@ -25,7 +25,7 @@ import java.util.Calendar;

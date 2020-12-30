@@ -11,13 +11,9 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
 namespace {
-bool kWidevineOptedInTestValue = true;
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-char kWidevineInstalledVersionTestValue[] = "1.2.3.4";
-#endif
+constexpr bool kWidevineOptedInTestValue = true;
 }  // namespace
 
 using WidevinePrefsMigrationTest = InProcessBrowserTest;
@@ -26,20 +22,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
   g_browser_process->local_state()->ClearPref(kWidevineOptedIn);
   EXPECT_TRUE(g_browser_process->local_state()->
       FindPreference(kWidevineOptedIn)->IsDefaultValue());
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  g_browser_process->local_state()->ClearPref(kWidevineInstalledVersion);
-  EXPECT_TRUE(g_browser_process->local_state()->
-      FindPreference(kWidevineInstalledVersion)->IsDefaultValue());
-#endif
 
   // Set profile prefs explicitly for migration test.
   browser()->profile()->GetPrefs()->SetBoolean(kWidevineOptedIn,
                                                kWidevineOptedInTestValue);
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  browser()->profile()->GetPrefs()->SetString(
-      kWidevineInstalledVersion,
-      kWidevineInstalledVersionTestValue);
-#endif
 
   // Migrate and check it's done properly with previous profile prefs value.
   MigrateWidevinePrefs(browser()->profile());
@@ -47,11 +33,4 @@ IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
       FindPreference(kWidevineOptedIn)->IsDefaultValue());
   EXPECT_EQ(kWidevineOptedInTestValue,
             g_browser_process->local_state()->GetBoolean(kWidevineOptedIn));
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  EXPECT_FALSE(g_browser_process->local_state()->
-      FindPreference(kWidevineInstalledVersion)->IsDefaultValue());
-  EXPECT_EQ(
-      kWidevineInstalledVersionTestValue,
-      g_browser_process->local_state()->GetString(kWidevineInstalledVersion));
-#endif
 }

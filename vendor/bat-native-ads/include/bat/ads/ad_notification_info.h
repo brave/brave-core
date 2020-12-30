@@ -20,12 +20,12 @@ struct ADS_EXPORT AdNotificationInfo : AdInfo {
       const AdNotificationInfo& info);
   ~AdNotificationInfo();
 
+  bool IsValid() const;
+
   std::string ToJson() const;
   Result FromJson(
       const std::string& json);
 
-  std::string uuid;
-  std::string parent_uuid;
   std::string title;
   std::string body;
 };

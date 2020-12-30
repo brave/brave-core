@@ -15,15 +15,8 @@ import {
   TileFavicon
 } from '../../components/default'
 
-// Helpers
-import {
-  isGridSitePinned
-} from '../../helpers/newTabUtils'
-
 // Icons
 import {
-  PinIcon,
-  PinOIcon,
   CloseStrokeIcon
 } from 'brave-ui/components/icons'
 
@@ -34,16 +27,19 @@ import * as gridSitesActions from '../../actions/grid_sites_actions'
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
   siteData: NewTab.Site
+  disabled: boolean
+}
+
+function generateGridSiteFavicon (site: NewTab.Site): string {
+  if (site.favicon === '') {
+    return `chrome://favicon/size/64@1x/${site.url}`
+  }
+  return site.favicon
 }
 
 class TopSite extends React.PureComponent<Props, {}> {
-  onTogglePinnedTopSite (site: NewTab.Site) {
-    this.props.actions.toggleGridSitePinned(site)
-  }
-
   onIgnoredTopSite (site: NewTab.Site) {
-    this.props.actions.removeGridSite(site)
-    this.props.actions.showGridSiteRemovedNotification(true)
+    this.props.actions.tileRemoved(site.url)
   }
 
   render () {
@@ -53,46 +49,17 @@ class TopSite extends React.PureComponent<Props, {}> {
       <Tile
         title={siteData.title}
         tabIndex={0}
-        style={{
-          // Visually inform users that dragging a pinned site is not allowed.
-          cursor: isGridSitePinned(siteData) ? 'not-allowed' : 'grab'
-        }}
       >
-        <TileActionsContainer>
-          <TileAction onClick={this.onTogglePinnedTopSite.bind(this, siteData)}>
-            {isGridSitePinned(siteData) ? <PinIcon /> : <PinOIcon />}
-          </TileAction>
-          {
-            // Disallow removing a pinned site
-            isGridSitePinned(siteData)
-              ? (
-                <TileAction
-                  style={{ opacity: 0.25, cursor: 'not-allowed' }}
-                >
-                  <CloseStrokeIcon />
-                </TileAction>
-              ) : (
-                <TileAction
-                  onClick={this.onIgnoredTopSite.bind(this, siteData)}
-                >
-                  <CloseStrokeIcon />
-                </TileAction>
-              )
-          }
-        </TileActionsContainer>
         {
-          // Add the permanent pinned icon if site is pinned
-          isGridSitePinned(siteData)
-            ? (
-              <TileAction
-                onClick={this.onTogglePinnedTopSite.bind(this, siteData)}
-                standalone={true}
-              >
-                <PinIcon />
+          !siteData.defaultSRTopSite
+          ? <TileActionsContainer>
+              <TileAction onClick={this.onIgnoredTopSite.bind(this, siteData)}>
+                <CloseStrokeIcon />
               </TileAction>
-            ) : null
-          }
-          <a href={siteData.url}><TileFavicon src={siteData.favicon} /></a>
+            </TileActionsContainer>
+          : null
+        }
+        <a href={siteData.url}><TileFavicon src={generateGridSiteFavicon(siteData)} /></a>
       </Tile>
     )
   }

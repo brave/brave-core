@@ -17,6 +17,7 @@
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
+#include "ui/events/event.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/link.h"
@@ -54,7 +55,7 @@ BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
         new views::Link(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_IMPORT_LINK),
                         kBookmarkBarTextContext);
     // We don't want the link to alter tab navigation.
-    import_link_->set_callback(
+    import_link_->SetCallback(
         base::BindRepeating(&BookmarkBarInstructionsView::LinkClicked,
                             base::Unretained(this)));
     import_link_->SetFocusBehavior(FocusBehavior::NEVER);
@@ -111,8 +112,7 @@ void BookmarkBarInstructionsView::GetAccessibleNodeData(
   instructions_->GetAccessibleNodeData(node_data);
 }
 
-void BookmarkBarInstructionsView::LinkClicked(views::Link* source,
-                                              int event_flags) {
+void BookmarkBarInstructionsView::LinkClicked() {
   chrome::ShowImportDialog(browser_);
 }
 

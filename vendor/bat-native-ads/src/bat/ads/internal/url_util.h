@@ -6,25 +6,23 @@
 #ifndef BAT_ADS_INTERNAL_URL_UTIL_H_
 #define BAT_ADS_INTERNAL_URL_UTIL_H_
 
-#include <map>
 #include <string>
-#include <vector>
 
 namespace ads {
 
-bool UrlMatchesPattern(
+bool DoesUrlMatchPattern(
     const std::string& url,
     const std::string& pattern);
 
-bool UrlHasScheme(
+bool DoesUrlHaveSchemeHTTPOrHTTPS(
     const std::string& url);
 
-bool SameSite(
+std::string GetHostFromUrl(
+    const std::string& url);
+
+bool SameDomainOrHost(
     const std::string& url1,
     const std::string& url2);
-
-std::map<std::string, std::string> HeadersToMap(
-    const std::vector<std::string>& headers);
 
 }  // namespace ads
 

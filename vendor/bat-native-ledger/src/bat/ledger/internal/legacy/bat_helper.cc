@@ -48,7 +48,7 @@ bool getJSONValue(const std::string& fieldName,
 
 bool getJSONTwitchProperties(
     const std::string& json,
-    std::vector<std::map<std::string, std::string>>* parts) {
+    std::vector<base::flat_map<std::string, std::string>>* parts) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -57,7 +57,7 @@ bool getJSONTwitchProperties(
   if (!error) {
     for (auto & i : d.GetArray()) {
       const char * event_field = "event";
-      std::map<std::string, std::string> eventmap;
+      base::flat_map<std::string, std::string> eventmap;
 
       auto obj = i.GetObject();
       if (obj.HasMember(event_field)) {

@@ -7,12 +7,13 @@
 #define BRAVE_BROWSER_BRAVE_REWARDS_ANDROID_BRAVE_REWARDS_NATIVE_WORKER_H_
 
 #include <jni.h>
-#include <memory>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/android/jni_weak_ref.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -37,14 +38,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     ~BraveRewardsNativeWorker() override;
 
     void Destroy(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
-
-    void CreateWallet(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
-
-    void OnCreateWallet(const ledger::type::Result result);
-
-    void WalletExist(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
     void GetRewardsParameters(JNIEnv* env,
@@ -121,11 +114,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& publisher);
 
-    void SetRewardsMainEnabled(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj, bool enabled);
-    void GetRewardsMainEnabled(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
-
     void GetAutoContributeProperties(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
 
@@ -156,6 +144,10 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                        const base::android::JavaParamRef<jobject>& obj,
                        jint value);
 
+    void SetAutoContributionAmount(JNIEnv* env,
+                       const base::android::JavaParamRef<jobject>& obj,
+                       jdouble value);
+
     void GetExternalWallet(
         JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
@@ -185,15 +177,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetAutoContributeProperties(
         ledger::type::AutoContributePropertiesPtr properties);
 
-    void OnGetRewardsMainEnabled(bool enabled);
-
     void OnGetPendingContributionsTotal(double amount);
-
-    void OnIsWalletCreated(bool created);
-
-    void OnWalletInitialized(
-        brave_rewards::RewardsService* rewards_service,
-        const ledger::type::Result result) override;
 
     void OnPanelPublisherInfo(
         brave_rewards::RewardsService* rewards_service,
@@ -232,9 +216,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetRecurringTips(ledger::type::PublisherInfoList list);
 
-    void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
-        bool rewards_main_enabled) override;
-
     bool IsAnonWallet(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
 
@@ -255,7 +236,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const ledger::type::Result result,
         const std::string& wallet_type,
         const std::string& action,
-        const std::map<std::string, std::string>& args);
+        const base::flat_map<std::string, std::string>& args);
 
     void OnRecoverWallet(
         brave_rewards::RewardsService* rewards_service,
@@ -264,10 +245,16 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnRefreshPublisher(
         const ledger::type::PublisherStatus status,
         const std::string& publisher_key);
-
+    void SetAutoContributeEnabled(
+        JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj,
+        bool isAutoContributeEnabled);
+    void StartProcess(JNIEnv* env,
+                      const base::android::JavaParamRef<jobject>& obj);
+    void OnStartProcess(const ledger::type::Result result);
  private:
     std::string StdStrStrMapToJsonString(
-        const std::map<std::string, std::string>& args);
+        const base::flat_map<std::string, std::string>& args);
 
     void OnBalance(
         const ledger::type::Result result,

@@ -24,8 +24,6 @@ using ::testing::_;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
-  MOCK_METHOD2(OnWalletInitialized,
-      void(RewardsService*, const ledger::type::Result));
   MOCK_METHOD3(OnFetchPromotions, void(RewardsService*,
       const ledger::type::Result result,
       const ledger::type::PromotionList& list));

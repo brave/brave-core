@@ -15,50 +15,59 @@ import {
   RewardsWidget as Rewards,
   TogetherWidget as Together,
   BinanceWidget as Binance,
-  AddCardWidget as AddCard,
   GeminiWidget as Gemini,
-  BitcoinDotComWidget as BitcoinDotCom
+  CryptoDotComWidget as CryptoDotCom,
+  EditCards
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
+import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
+import BraveTodayHint from '../../components/default/braveToday/hint'
+import BraveToday from '../../components/default/braveToday'
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
-import arrayMove from 'array-move'
-import { isGridSitePinned } from '../../helpers/newTabUtils'
+import {
+  fetchCryptoDotComTickerPrices,
+  fetchCryptoDotComLosersGainers,
+  fetchCryptoDotComCharts,
+  fetchCryptoDotComSupportedPairs
+} from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
 
 // Types
-import { SortEnd } from 'react-sortable-hoc'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
+import { BraveTodayState } from '../../reducers/today'
 
 // NTP features
-import Settings from './settings'
+import Settings, { TabType as SettingsTabType } from './settings'
 
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
+  todayData: BraveTodayState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
-  saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
+  saveShowToday: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
-  saveShowAddCard: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
-  saveShowBitcoinDotCom: (value: boolean) => void
+  saveShowCryptoDotCom: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
+  onReadBraveTodayIntroCard: () => any
+  saveSetAllStackWidgets: (value: boolean) => void
 }
 
 interface State {
   onlyAnonWallet: boolean
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
-  focusMoreCards: boolean
+  activeSettingsTab: SettingsTabType | null
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -90,12 +99,13 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
 }
 
 class NewTabPage extends React.Component<Props, State> {
-  state = {
+  state: State = {
     onlyAnonWallet: false,
     showSettingsMenu: false,
     backgroundHasLoaded: false,
-    focusMoreCards: false
+    activeSettingsTab: null
   }
+  hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
@@ -105,12 +115,13 @@ class NewTabPage extends React.Component<Props, State> {
 
   componentDidMount () {
     // if a notification is open at component mounting time, close it
-    this.props.actions.showGridSiteRemovedNotification(false)
+    this.props.actions.showTilesRemovedNotice(false)
     this.imageSource = GetBackgroundImageSrc(this.props)
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
+    this.checkShouldOpenSettings()
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -134,39 +145,12 @@ class NewTabPage extends React.Component<Props, State> {
         !GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
     }
-
-    // Handles updates from brave://settings/newTab
-    const oldShowRewards = prevProps.newTabData.showRewards
-    const oldShowBinance = prevProps.newTabData.showBinance
-    const oldShowTogether = prevProps.newTabData.showTogether
-    const oldShowGemini = prevProps.newTabData.showGemini
-    const oldShowBitcoinDotCom = prevProps.newTabData.showBitcoinDotCom
-    const { showRewards, showBinance, showTogether, showGemini, showBitcoinDotCom } = this.props.newTabData
-
-    if (!oldShowRewards && showRewards) {
-      this.props.actions.setForegroundStackWidget('rewards')
-    } else if (!oldShowBinance && showBinance) {
-      this.props.actions.setForegroundStackWidget('binance')
-    } else if (!oldShowTogether && showTogether) {
-      this.props.actions.setForegroundStackWidget('together')
-    } else if (oldShowRewards && !showRewards) {
-      this.props.actions.removeStackWidget('rewards')
-    } else if (oldShowBinance && !showBinance) {
-      this.props.actions.removeStackWidget('binance')
-    } else if (oldShowTogether && !showTogether) {
-      this.props.actions.removeStackWidget('together')
-    } else if (oldShowGemini && !showGemini) {
-      this.props.actions.removeStackWidget('gemini')
-    } else if (!oldShowGemini && showGemini) {
-      this.props.actions.setForegroundStackWidget('gemini')
-    } else if (oldShowBitcoinDotCom && !showBitcoinDotCom) {
-      this.props.actions.removeStackWidget('bitcoinDotCom')
-    } else if (!oldShowBitcoinDotCom && showBitcoinDotCom) {
-      this.props.actions.setForegroundStackWidget('bitcoinDotCom')
-    }
   }
 
   trackCachedImage () {
+    if (this.state.backgroundHasLoaded) {
+      this.setState({ backgroundHasLoaded: false })
+    }
     if (this.imageSource) {
       const imgCache = new Image()
       imgCache.src = this.imageSource
@@ -186,20 +170,20 @@ class NewTabPage extends React.Component<Props, State> {
     this.visibilityTimer.startTracking()
   }
 
-  stopWaitingForBrandedWallpaperNotificationAutoDismiss () {
-    this.visibilityTimer.stopTracking()
+  checkShouldOpenSettings () {
+    const params = window.location.search
+    const urlParams = new URLSearchParams(params)
+    const openSettings = urlParams.get('openSettings')
+
+    if (openSettings) {
+      this.setState({ showSettingsMenu: true })
+      // Remove settings param so menu doesn't persist on reload
+      window.history.pushState(null, '', '/')
+    }
   }
 
-  onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    const { gridSitesData } = this.props
-    // Do not update topsites order if the drag
-    // destination is a pinned tile
-    const gridSite = gridSitesData.gridSites[newIndex]
-    if (!gridSite || isGridSitePinned(gridSite)) {
-      return
-    }
-    const items = arrayMove(gridSitesData.gridSites, oldIndex, newIndex)
-    this.props.actions.gridSitesDataUpdated(items)
+  stopWaitingForBrandedWallpaperNotificationAutoDismiss () {
+    this.visibilityTimer.stopTracking()
   }
 
   toggleShowBackgroundImage = () => {
@@ -235,101 +219,68 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  toggleShowTopSites = () => {
-    this.props.saveShowTopSites(
-      !this.props.newTabData.showTopSites
+  toggleShowToday = () => {
+    this.props.saveShowToday(
+      !this.props.newTabData.showToday
     )
   }
 
+  toggleShowTopSites = () => {
+    const { showTopSites, customLinksEnabled } = this.props.newTabData
+    this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
+  }
+
+  toggleCustomLinksEnabled = () => {
+    const { showTopSites, customLinksEnabled } = this.props.newTabData
+    this.props.actions.setMostVisitedSettings(showTopSites, !customLinksEnabled)
+  }
+
   toggleShowRewards = () => {
-    const { showRewards } = this.props.newTabData
-
-    if (showRewards) {
-      this.removeStackWidget('rewards')
-    } else {
-      this.setForegroundStackWidget('rewards')
-    }
-
-    if (!showRewards) {
-      this.props.saveShowAddCard(true)
-    }
-
-    this.props.saveShowRewards(!showRewards)
+    this.props.saveShowRewards(!this.props.newTabData.showRewards)
   }
 
   toggleShowTogether = () => {
-    const { showTogether } = this.props.newTabData
-
-    if (showTogether) {
-      this.removeStackWidget('together')
-    } else {
-      this.setForegroundStackWidget('together')
-    }
-
-    if (!showTogether) {
-      this.props.saveShowAddCard(true)
-    }
-
-    this.props.saveShowTogether(!showTogether)
+    this.props.saveShowTogether(!this.props.newTabData.showTogether)
   }
 
   toggleShowBinance = () => {
-    const { showBinance } = this.props.newTabData
-
-    if (showBinance) {
-      this.removeStackWidget('binance')
-    } else {
-      this.setForegroundStackWidget('binance')
-    }
-
-    if (!showBinance) {
-      this.props.saveShowAddCard(true)
-    }
+    const { showBinance, binanceState } = this.props.newTabData
 
     this.props.saveShowBinance(!showBinance)
 
-    // If we are about to hide the widget, disconnect
-    if (showBinance) {
+    if (!showBinance) {
+      return
+    }
+
+    if (binanceState.userAuthed) {
       chrome.binance.revokeToken(() => {
         this.disconnectBinance()
       })
+    } else {
+      this.disconnectBinance()
     }
-  }
-
-  disableAddCard = () => {
-    this.props.saveShowAddCard(false)
   }
 
   toggleShowGemini = () => {
-    const { showGemini } = this.props.newTabData
-
-    if (showGemini) {
-      this.removeStackWidget('gemini')
-    } else {
-      this.setForegroundStackWidget('gemini')
-    }
-
-    if (!showGemini) {
-      this.props.saveShowAddCard(true)
-    }
+    const { showGemini, geminiState } = this.props.newTabData
 
     this.props.saveShowGemini(!showGemini)
 
-    if (showGemini) {
+    if (!showGemini) {
+      return
+    }
+
+    if (geminiState.userAuthed) {
       chrome.gemini.revokeToken(() => {
         this.disconnectGemini()
       })
+    } else {
+      this.disconnectGemini()
     }
   }
 
-  toggleShowBitcoinDotCom = () => {
-    const { showBitcoinDotCom } = this.props.newTabData
-
-    if (!showBitcoinDotCom) {
-      this.props.saveShowAddCard(true)
-    }
-
-    this.props.saveShowBitcoinDotCom(!showBitcoinDotCom)
+  toggleShowCryptoDotCom = () => {
+    this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -400,14 +351,6 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  onBuyBitcoinDotComCrypto = () => {
-    this.props.actions.buyBitcoinDotComCrypto()
-  }
-
-  onInteractionBitcoinDotCom = () => {
-    this.props.actions.interactionBitcoinDotCom()
-  }
-
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
     this.props.actions.onBinanceUserTLD(userTLD)
   }
@@ -430,16 +373,9 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  enableAds = () => {
+  startRewards = () => {
     chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
-  }
-
-  enableRewards = () => {
-    chrome.braveRewards.saveSetting('enabledMain', '1')
-  }
-
-  createWallet = () => {
-    this.props.actions.createWallet()
+    chrome.braveRewards.setAutoContributeEnabled(true)
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
@@ -451,31 +387,30 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   closeSettings = () => {
-    this.setState({ showSettingsMenu: false })
-  }
-
-  toggleSettings = () => {
-    if (this.state.showSettingsMenu) {
-      this.setState({ focusMoreCards: false })
-    }
     this.setState({
-      showSettingsMenu: !this.state.showSettingsMenu
+      showSettingsMenu: false,
+      activeSettingsTab: null
     })
   }
 
-  toggleSettingsAddCard = () => {
+  openSettings = (activeTab?: SettingsTabType) => {
+    this.props.actions.customizeClicked()
     this.setState({
-      showSettingsMenu: true,
-      focusMoreCards: true
+      showSettingsMenu: !this.state.showSettingsMenu,
+      activeSettingsTab: activeTab || null
     })
+  }
+
+  onClickLogo = () => {
+    brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaperData)
+  }
+
+  openSettingsEditCards = () => {
+    this.openSettings(SettingsTabType.Cards)
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
     this.props.actions.setForegroundStackWidget(widget)
-  }
-
-  removeStackWidget = (widget: NewTab.StackWidget) => {
-    this.props.actions.removeStackWidget(widget)
   }
 
   setInitialAmount = (amount: string) => {
@@ -492,6 +427,13 @@ class NewTabPage extends React.Component<Props, State> {
 
   setUserTLDAutoSet = () => {
     this.props.actions.setUserTLDAutoSet()
+  }
+
+  onBraveTodayInteracting = (isInteracting: boolean) => {
+    if (isInteracting && !this.hasInitBraveToday) {
+      this.hasInitBraveToday = true
+      this.props.actions.today.interactionBegin()
+    }
   }
 
   learnMoreRewards = () => {
@@ -549,6 +491,61 @@ class NewTabPage extends React.Component<Props, State> {
         this.props.actions.setGeminiTickerPrice(asset, price)
       })
     })
+  }
+
+  onCryptoDotComMarketsRequested = async (assets: string[]) => {
+    const [tickerPrices, losersGainers] = await Promise.all([
+      fetchCryptoDotComTickerPrices(assets),
+      fetchCryptoDotComLosersGainers()
+    ])
+    this.props.actions.cryptoDotComMarketDataUpdate(tickerPrices, losersGainers)
+  }
+
+  onCryptoDotComAssetData = async (assets: string[]) => {
+    const [charts, pairs] = await Promise.all([
+      fetchCryptoDotComCharts(assets),
+      fetchCryptoDotComSupportedPairs()
+    ])
+    this.props.actions.setCryptoDotComAssetData(charts, pairs)
+  }
+
+  cryptoDotComUpdateActions = async () => {
+    const { supportedPairs, tickerPrices: prices } = this.props.newTabData.cryptoDotComState
+    const assets = Object.keys(prices)
+    const supportedPairsSet = Object.keys(supportedPairs).length
+
+    const [tickerPrices, losersGainers, charts] = await Promise.all([
+      fetchCryptoDotComTickerPrices(assets),
+      fetchCryptoDotComLosersGainers(),
+      fetchCryptoDotComCharts(assets)
+    ])
+
+    // These are rarely updated, so we only need to fetch them
+    // in the refresh interval if they aren't set yet (perhaps due to no connection)
+    if (!supportedPairsSet) {
+      const pairs = await fetchCryptoDotComSupportedPairs()
+      this.props.actions.setCryptoDotComSupportedPairs(pairs)
+    }
+
+    this.props.actions.onCryptoDotComRefreshData(tickerPrices, losersGainers, charts)
+  }
+
+  onBtcPriceOptIn = async () => {
+    this.props.actions.onBtcPriceOptIn()
+    this.props.actions.onCryptoDotComInteraction()
+    await this.onCryptoDotComMarketsRequested(['BTC'])
+  }
+
+  onCryptoDotComBuyCrypto = () => {
+    this.props.actions.onCryptoDotComBuyCrypto()
+  }
+
+  onCryptoDotComInteraction = () => {
+    this.props.actions.onCryptoDotComInteraction()
+  }
+
+  onCryptoDotComOptInMarkets = (show: boolean) => {
+    this.props.actions.onCryptoDotComOptInMarkets(show)
   }
 
   fetchGeminiBalances = () => {
@@ -660,15 +657,15 @@ class NewTabPage extends React.Component<Props, State> {
   getCryptoContent () {
     const {
       widgetStackOrder,
-      binanceState,
       togetherSupported,
       showRewards,
       showBinance,
       showTogether,
       showGemini,
-      showBitcoinDotCom,
       geminiSupported,
-      bitcoinDotComSupported
+      showCryptoDotCom,
+      cryptoDotComSupported,
+      binanceSupported
     } = this.props.newTabData
     const lookup = {
       'rewards': {
@@ -676,7 +673,7 @@ class NewTabPage extends React.Component<Props, State> {
         render: this.renderRewardsWidget.bind(this)
       },
       'binance': {
-        display: binanceState.binanceSupported && showBinance,
+        display: binanceSupported && showBinance,
         render: this.renderBinanceWidget.bind(this)
       },
       'together': {
@@ -687,13 +684,19 @@ class NewTabPage extends React.Component<Props, State> {
         display: showGemini && geminiSupported,
         render: this.renderGeminiWidget.bind(this)
       },
-      'bitcoinDotCom': {
-        display: showBitcoinDotCom && bitcoinDotComSupported,
-        render: this.renderBitcoinDotComWidget.bind(this)
+      'cryptoDotCom': {
+        display: showCryptoDotCom && cryptoDotComSupported,
+        render: this.renderCryptoDotComWidget.bind(this)
       }
     }
 
-    const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => lookup[widget].display)
+    const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => {
+      if (!lookup.hasOwnProperty(widget)) {
+        return false
+      }
+
+      return lookup[widget].display
+    })
 
     return (
       <>
@@ -701,7 +704,7 @@ class NewTabPage extends React.Component<Props, State> {
           const isForeground = i === widgetList.length - 1
           return (
             <div key={`widget-${widget}`}>
-              {lookup[widget].render(isForeground, (i + 1))}
+              {lookup[widget].render(isForeground, i)}
             </div>
           )
         })}
@@ -711,29 +714,62 @@ class NewTabPage extends React.Component<Props, State> {
 
   allWidgetsHidden = () => {
     const {
-      binanceState,
       togetherSupported,
       showRewards,
       showBinance,
       showTogether,
       geminiSupported,
       showGemini,
-      showBitcoinDotCom,
-      bitcoinDotComSupported
+      showCryptoDotCom,
+      cryptoDotComSupported,
+      binanceSupported
     } = this.props.newTabData
     return [
       showRewards,
       togetherSupported && showTogether,
-      binanceState.binanceSupported && showBinance,
+      binanceSupported && showBinance,
       geminiSupported && showGemini,
-      showBitcoinDotCom && bitcoinDotComSupported
+      cryptoDotComSupported && showCryptoDotCom
     ].every((widget: boolean) => !widget)
+  }
+
+  toggleAllCards = (show: boolean) => {
+    if (!show) {
+      this.props.actions.saveWidgetStackOrder()
+      this.props.saveSetAllStackWidgets(false)
+      return
+    }
+
+    const saveShowProps = {
+      'binance': this.props.saveShowBinance,
+      'cryptoDotCom': this.props.saveShowCryptoDotCom,
+      'gemini': this.props.saveShowGemini,
+      'rewards': this.props.saveShowRewards,
+      'together': this.props.saveShowTogether
+    }
+
+    const setAllTrue = (list: NewTab.StackWidget[]) => {
+      list.forEach((widget: NewTab.StackWidget) => {
+        if (widget in saveShowProps) {
+          saveShowProps[widget](true)
+        }
+      })
+    }
+
+    const { savedWidgetStackOrder, widgetStackOrder } = this.props.newTabData
+    // When turning back on, all widgets should be set to shown
+    // in the case that all widgets were hidden previously.
+    setAllTrue(
+      !savedWidgetStackOrder.length ?
+      widgetStackOrder :
+      savedWidgetStackOrder
+    )
   }
 
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { widgetStackOrder, textDirection } = newTabData
-    const shouldShowAddCard = !this.allWidgetsHidden()
+    const { widgetStackOrder } = newTabData
+    const allWidgetsHidden = this.allWidgetsHidden()
 
     if (!widgetStackOrder.length) {
       return null
@@ -741,20 +777,10 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <Page.GridItemWidgetStack>
-        {shouldShowAddCard &&
-          <AddCard
-            isCrypto={true}
-            paddingType={'none'}
-            menuPosition={'left'}
-            widgetTitle={getLocale('addCardWidgetTitle')}
-            textDirection={textDirection}
-            hideMenu={true}
-            hideWidget={this.disableAddCard}
-            onAddCard={this.toggleSettingsAddCard}
-            stackPosition={0}
-          />
-        }
         {this.getCryptoContent()}
+        {!allWidgetsHidden &&
+          <EditCards onEditCards={this.openSettingsEditCards} />
+        }
       </Page.GridItemWidgetStack>
     )
   }
@@ -790,9 +816,7 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowRewards}
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
-        onCreateWallet={this.createWallet}
-        onEnableAds={this.enableAds}
-        onEnableRewards={this.enableRewards}
+        onStartRewards={this.startRewards}
         isShowingBrandedWallpaper={isShowingBrandedWallpaper}
         showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
         onDisableBrandedWallpaper={this.disableBrandedWallpaper}
@@ -830,10 +854,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderBinanceWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
-    const { binanceState, showBinance, textDirection } = newTabData
+    const { binanceState, showBinance, textDirection, binanceSupported } = newTabData
     const menuActions = { onLearnMore: this.learnMoreBinance }
 
-    if (!showBinance || !binanceState.binanceSupported) {
+    if (!showBinance || !binanceSupported) {
       return null
     }
 
@@ -922,39 +946,44 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderBitcoinDotComWidget (showContent: boolean, position: number) {
+  renderCryptoDotComWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
-    const { showBitcoinDotCom, bitcoinDotComSupported, textDirection } = newTabData
+    const { cryptoDotComState, showCryptoDotCom, textDirection, cryptoDotComSupported } = newTabData
 
-    if (!showBitcoinDotCom || !bitcoinDotComSupported) {
+    if (!showCryptoDotCom || !cryptoDotComSupported) {
       return null
     }
 
-    return(
-      <BitcoinDotCom
+    return (
+      <CryptoDotCom
+        {...cryptoDotComState}
         isCrypto={true}
         paddingType={'none'}
         isCryptoTab={!showContent}
         menuPosition={'left'}
-        widgetTitle={'Bitcoin.com'}
+        widgetTitle={'Crypto.com'}
         isForeground={showContent}
         stackPosition={position}
         textDirection={textDirection}
         preventFocus={false}
-        hideWidget={this.toggleShowBitcoinDotCom}
+        hideWidget={this.toggleShowCryptoDotCom}
         showContent={showContent}
-        onShowContent={this.setForegroundStackWidget.bind(this, 'bitcoinDotCom')}
-        onBuyCrypto={this.onBuyBitcoinDotComCrypto}
-        onInteraction={this.onInteractionBitcoinDotCom}
-        lightWidget={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'cryptoDotCom')}
+        onViewMarketsRequested={this.onCryptoDotComMarketsRequested}
+        onSetAssetData={this.onCryptoDotComAssetData}
+        onUpdateActions={this.cryptoDotComUpdateActions}
+        onDisableWidget={this.toggleShowCryptoDotCom}
+        onBtcPriceOptIn={this.onBtcPriceOptIn}
+        onBuyCrypto={this.onCryptoDotComBuyCrypto}
+        onInteraction={this.onCryptoDotComInteraction}
+        onOptInMarkets={this.onCryptoDotComOptInMarkets}
       />
     )
   }
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu, focusMoreCards } = this.state
-    const { binanceState } = newTabData
+    const { showSettingsMenu } = this.state
 
     if (!newTabData) {
       return null
@@ -966,28 +995,22 @@ class NewTabPage extends React.Component<Props, State> {
     const cryptoContent = this.renderCryptoContent()
 
     return (
-      <Page.App dataIsReady={newTabData.initialDataLoaded}>
-        <Page.PosterBackground
-          hasImage={hasImage}
-          imageHasLoaded={this.state.backgroundHasLoaded}
-        >
-          {hasImage &&
-            <img src={this.imageSource} />
-          }
-        </Page.PosterBackground>
-        {hasImage &&
-          <Page.Gradient
-            imageHasLoaded={this.state.backgroundHasLoaded}
-          />
-        }
+      <Page.App
+        dataIsReady={newTabData.initialDataLoaded}
+        hasImage={hasImage}
+        imageSrc={this.imageSource}
+        imageHasLoaded={this.state.backgroundHasLoaded}
+      >
         <Page.Page
+            hasImage={hasImage}
+            imageSrc={this.imageSource}
+            imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
             showTogether={newTabData.showTogether && newTabData.togetherSupported}
             showBinance={newTabData.showBinance}
             showTopSites={showTopSites}
-            showAddCard={newTabData.showAddCard}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {newTabData.showStats &&
@@ -1022,6 +1045,7 @@ class NewTabPage extends React.Component<Props, State> {
                 <TopSitesGrid
                   actions={actions}
                   paddingType={'right'}
+                  customLinksEnabled={newTabData.customLinksEnabled}
                   widgetTitle={getLocale('topSitesTitle')}
                   gridSites={gridSitesData.gridSites}
                   menuPosition={'right'}
@@ -1049,50 +1073,86 @@ class NewTabPage extends React.Component<Props, State> {
                 menuPosition={'right'}
                 paddingType={'default'}
                 textDirection={newTabData.textDirection}
+                onClickLogo={this.onClickLogo}
                 data={newTabData.brandedWallpaperData.logo}
               />
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
-              onClickSettings={this.toggleSettings}
+              onClickSettings={this.openSettings}
               backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
             />
             </Page.FooterContent>
           </Page.Footer>
+          {newTabData.showToday &&
+          <Page.GridItemNavigationBraveToday>
+            <BraveTodayHint />
+          </Page.GridItemNavigationBraveToday>
+          }
         </Page.Page>
+        { newTabData.showToday &&
+        <BraveToday
+          feed={this.props.todayData.feed}
+          articleToScrollTo={this.props.todayData.articleScrollTo}
+          displayedPageCount={this.props.todayData.currentPageIndex}
+          publishers={this.props.todayData.publishers}
+          isFetching={this.props.todayData.isFetching === true}
+          isUpdateAvailable={this.props.todayData.isUpdateAvailable}
+          isIntroDismissed={this.props.newTabData.isBraveTodayIntroDismissed}
+          onRefresh={this.props.actions.today.refresh}
+          onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
+          onInteracting={this.onBraveTodayInteracting}
+          onFeedItemViewedCountChanged={this.props.actions.today.feedItemViewedCountChanged}
+          // tslint:disable-next-line:jsx-no-lambda
+          onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}
+          onReadFeedItem={this.props.actions.today.readFeedItem}
+          onSetPublisherPref={this.props.actions.today.setPublisherPref}
+          onCheckForUpdate={this.props.actions.today.checkForUpdate}
+          onReadCardIntro={this.props.onReadBraveTodayIntroCard}
+        />
+        }
         <Settings
           actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
-          onClickOutside={this.closeSettings}
+          onClose={this.closeSettings}
+          setActiveTab={this.state.activeSettingsTab || undefined}
+          onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
+          onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowClock={this.toggleShowClock}
           toggleShowStats={this.toggleShowStats}
+          toggleShowToday={this.toggleShowToday}
           toggleShowTopSites={this.toggleShowTopSites}
+          toggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
           showStats={newTabData.showStats}
+          showToday={newTabData.showToday}
           showTopSites={newTabData.showTopSites}
+          customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}
           showBinance={newTabData.showBinance}
           brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
           allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
           toggleShowRewards={this.toggleShowRewards}
           toggleShowBinance={this.toggleShowBinance}
-          binanceSupported={binanceState.binanceSupported}
+          binanceSupported={newTabData.binanceSupported}
           togetherSupported={newTabData.togetherSupported}
           toggleShowTogether={this.toggleShowTogether}
           showTogether={newTabData.showTogether}
           geminiSupported={newTabData.geminiSupported}
           toggleShowGemini={this.toggleShowGemini}
+          showCryptoDotCom={newTabData.showCryptoDotCom}
+          cryptoDotComSupported={newTabData.cryptoDotComSupported}
+          toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
           showGemini={newTabData.showGemini}
-          focusMoreCards={focusMoreCards}
-          bitcoinDotComSupported={newTabData.bitcoinDotComSupported}
-          showBitcoinDotCom={newTabData.showBitcoinDotCom}
-          toggleShowBitcoinDotCom={this.toggleShowBitcoinDotCom}
+          todayPublishers={this.props.todayData.publishers}
+          cardsHidden={this.allWidgetsHidden()}
+          toggleCards={this.toggleAllCards}
         />
       </Page.App>
     )

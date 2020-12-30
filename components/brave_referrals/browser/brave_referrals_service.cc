@@ -41,6 +41,7 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/android/service_tab_launcher.h"
@@ -555,10 +556,10 @@ void BraveReferralsService::FetchReferralHeaders() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url =
       GURL(BuildReferralEndpoint(kBraveReferralsHeadersPath));
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory();
@@ -596,10 +597,10 @@ void BraveReferralsService::InitReferral() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->method = "PUT";
   resource_request->url = GURL(BuildReferralEndpoint(kBraveReferralsInitPath));
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory();
@@ -664,10 +665,10 @@ void BraveReferralsService::CheckForReferralFinalization() {
   resource_request->method = "PUT";
   resource_request->url =
       GURL(BuildReferralEndpoint(kBraveReferralsActivityPath));
-  resource_request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
-      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-      net::LOAD_DO_NOT_SEND_AUTH_DATA;
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                                 net::LOAD_BYPASS_CACHE |
+                                 net::LOAD_DISABLE_CACHE;
   network::mojom::URLLoaderFactory* loader_factory =
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory();

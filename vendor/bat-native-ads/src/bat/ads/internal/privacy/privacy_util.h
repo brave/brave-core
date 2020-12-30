@@ -16,8 +16,6 @@ namespace privacy {
 using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
 
-std::vector<Token> GenerateTokens(const int count);
-
 std::vector<BlindedToken> BlindTokens(
     const std::vector<Token>& tokens);
 

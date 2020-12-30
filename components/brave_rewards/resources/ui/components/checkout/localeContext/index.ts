@@ -14,7 +14,7 @@ export const LocaleContext = React.createContext<LocaleData>({
   }
 })
 
-export const getLocaleTags = (text: string) => {
+export const getLocaleWithTag = (text: string) => {
   const actionIndex: number = text.indexOf('$1')
   const actionEndIndex: number = text.indexOf('$2')
   const beforeTag = text.substring(0, actionIndex)

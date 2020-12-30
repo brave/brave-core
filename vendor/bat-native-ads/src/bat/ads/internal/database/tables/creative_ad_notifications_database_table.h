@@ -11,11 +11,14 @@
 #include <vector>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/internal/database/tables/categories_database_table.h"
+#include "bat/ads/internal/database/tables/campaigns_database_table.h"
+#include "bat/ads/internal/database/tables/creative_ads_database_table.h"
+#include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
+#include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
 
@@ -24,15 +27,12 @@ namespace ads {
 using GetCreativeAdNotificationsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const CreativeAdNotificationList&)>;
 
-class AdsImpl;
-
 namespace database {
 namespace table {
 
 class CreativeAdNotifications : public Table {
  public:
-  explicit CreativeAdNotifications(
-      AdsImpl* ads);
+  CreativeAdNotifications();
 
   ~CreativeAdNotifications() override;
 
@@ -40,11 +40,14 @@ class CreativeAdNotifications : public Table {
       const CreativeAdNotificationList& creative_ad_notifications,
       ResultCallback callback);
 
-  void GetCreativeAdNotifications(
-      const classification::CategoryList& categories,
+  void Delete(
+      ResultCallback callback);
+
+  void GetForSegments(
+      const SegmentList& segments,
       GetCreativeAdNotificationsCallback callback);
 
-  void GetAllCreativeAdNotifications(
+  void GetAll(
       GetCreativeAdNotificationsCallback callback);
 
   void set_batch_size(
@@ -69,35 +72,30 @@ class CreativeAdNotifications : public Table {
       DBCommand* command,
       const CreativeAdNotificationList& creative_ad_notifications);
 
-  void OnGetCreativeAdNotifications(
+  void OnGetForSegments(
       DBCommandResponsePtr response,
-      const classification::CategoryList& categories,
+      const SegmentList& segments,
       GetCreativeAdNotificationsCallback callback);
 
-  void OnGetAllCreativeAdNotifications(
+  void OnGetAll(
       DBCommandResponsePtr response,
       GetCreativeAdNotificationsCallback callback);
 
-  CreativeAdNotificationInfo GetCreativeAdNotificationFromRecord(
+  CreativeAdNotificationInfo GetFromRecord(
       DBRecord* record) const;
 
-  void DeleteAllTables(
-      DBTransaction* transaction) const;
-
-  void CreateTableV1(
+  void CreateTableV3(
       DBTransaction* transaction);
-  void MigrateToV1(
-      DBTransaction* transaction);
-
-  void MigrateToV2(
+  void MigrateToV3(
       DBTransaction* transaction);
 
   int batch_size_;
 
-  AdsImpl* ads_;  // NOT OWNED
-
+  std::unique_ptr<Campaigns> campaigns_database_table_;
+  std::unique_ptr<CreativeAds> creative_ads_database_table_;
+  std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
-  std::unique_ptr<Categories> categories_database_table_;
+  std::unique_ptr<Segments> segments_database_table_;
 };
 
 }  // namespace table

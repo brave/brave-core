@@ -5,31 +5,35 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
 
+#include <stdint.h>
+
+#include <deque>
+
 #include "base/strings/stringprintf.h"
-#include "bat/ads/ad_history.h"
+#include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
+namespace {
+const uint64_t kPerHourFrequencyCap = 1;
+}  // namespace
+
 PerHourFrequencyCap::PerHourFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    const AdEventList& ad_events)
+    : ad_events_(ad_events) {
 }
 
 PerHourFrequencyCap::~PerHourFrequencyCap() = default;
 
 bool PerHourFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
-  const std::deque<AdHistory> history = ads_->get_client()->GetAdsHistory();
-  const std::deque<uint64_t> filtered_history =
-      FilterHistory(history, ad.creative_instance_id);
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
-  if (!DoesRespectCap(filtered_history, ad)) {
+  if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf("creativeInstanceId %s has exceeded the "
         "frequency capping for perHour", ad.creative_instance_id.c_str());
 
@@ -44,31 +48,31 @@ std::string PerHourFrequencyCap::get_last_message() const {
 }
 
 bool PerHourFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history,
-    const CreativeAdInfo& ad) {
+    const AdEventList& ad_events) {
+  const std::deque<uint64_t> history =
+      GetTimestampHistoryForAdEvents(ad_events);
+
   const uint64_t time_constraint = base::Time::kSecondsPerHour;
 
-  const uint64_t cap = 1;
-
-  return DoesHistoryRespectCapForRollingTimeConstraint(history,
-      time_constraint, cap);
+  return DoesHistoryRespectCapForRollingTimeConstraint(
+      history, time_constraint, kPerHourFrequencyCap);
 }
 
-std::deque<uint64_t> PerHourFrequencyCap::FilterHistory(
-    const std::deque<AdHistory>& history,
-    const std::string& creative_instance_id) const {
-  std::deque<uint64_t> filtered_history;
+AdEventList PerHourFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) const {
+  AdEventList filtered_ad_events = ad_events;
 
-  for (const auto& ad : history) {
-    if (ad.ad_content.creative_instance_id != creative_instance_id ||
-        ad.ad_content.ad_action != ConfirmationType::kViewed) {
-      continue;
-    }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
+    return ad_event.type == AdType::kNewTabPageAd ||
+        ad_event.creative_instance_id != ad.creative_instance_id ||
+        ad_event.confirmation_type != ConfirmationType::kViewed;
+  });
 
-    filtered_history.push_back(ad.timestamp_in_seconds);
-  }
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
 
-  return filtered_history;
+  return filtered_ad_events;
 }
 
 }  // namespace ads

@@ -8,13 +8,12 @@
 #include <algorithm>
 #include <vector>
 
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
@@ -197,6 +196,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   CheckCommandsAreDisabledInMenuModel(guest_browser,
                                       commands_disabled_for_guest_profile);
 
+#if BUILDFLAG(ENABLE_TOR)
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
       content::NotificationService::AllSources());
@@ -204,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   tor_browser_creation_observer.Wait();
   Browser* tor_browser = nullptr;
   for (Browser* browser : *browser_list) {
-    if (brave::IsTorProfile(browser->profile())) {
+    if (browser->profile()->IsTor()) {
       tor_browser = browser;
       break;
     }
@@ -215,9 +215,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_NEW_TOR_CONNECTION_FOR_SITE,
     IDC_NEW_WINDOW,
     IDC_NEW_INCOGNITO_WINDOW,
-#if BUILDFLAG(ENABLE_TOR)
     IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-#endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     IDC_SHOW_BRAVE_REWARDS,
 #endif
@@ -251,4 +249,5 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
                                      commands_in_order_for_tor_profile);
   CheckCommandsAreDisabledInMenuModel(tor_browser,
                                       commands_disabled_for_tor_profile);
+#endif
 }

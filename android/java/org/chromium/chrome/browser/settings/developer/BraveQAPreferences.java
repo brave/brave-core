@@ -32,6 +32,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
@@ -56,6 +57,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
         "qa_maximize_initial_ads_number";
     private static final String PREF_QA_DEBUG_NTP = "qa_debug_ntp";
     private static final String PREF_QA_VLOG_REWARDS = "qa_vlog_rewards";
+    private static final String PREF_QA_COMMAND_LINE = "qa_command_line";
 
     private static final String QA_ADS_PER_HOUR = "qa_ads_per_hour";
     private static final String QA_IMPORT_REWARDS_DB = "qa_import_rewards_db";
@@ -72,6 +74,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
     private ChromeSwitchPreference mVlogRewards;
+    private Preference mCommandLine;
     private Preference mRestoreWallet;
 
     private Preference mImportRewardsDb;
@@ -123,6 +126,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
         mRestoreWallet = findPreference(QA_RESTORE_WALLET);
         setRestoreClickListener();
+
+        mCommandLine = findPreference(PREF_QA_COMMAND_LINE);
+        setCommandLineClickListener();
 
         checkQACode();
     }
@@ -189,6 +195,67 @@ public class BraveQAPreferences extends BravePreferenceFragment
         }
     }
 
+    private void setCommandLineClickListener() {
+        if (mCommandLine == null) {
+            return;
+        }
+        mCommandLine.setOnPreferenceClickListener(preference -> {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.qa_command_line, null);
+            final EditText input = (EditText) view.findViewById(R.id.qa_command_line);
+
+            input.setText(getPreferenceString(PREF_QA_COMMAND_LINE));
+
+            DialogInterface.OnClickListener onClickListener =
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int button) {
+                            if (button == AlertDialog.BUTTON_POSITIVE) {
+                                // OK was pressed
+                                String newCommandLine = input.getText().toString();
+                                setPreferenceString(PREF_QA_COMMAND_LINE, newCommandLine);
+                                BraveRelaunchUtils.askForRelaunch(getActivity());
+                            }
+                        }
+                    };
+
+            input.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    input.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager inputMethodManager =
+                                    (InputMethodManager) getActivity().getSystemService(
+                                            Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.showSoftInput(
+                                    input, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                    });
+                }
+            });
+            input.requestFocus();
+
+            AlertDialog.Builder alert =
+                    new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
+            if (alert == null) {
+                return true;
+            }
+            AlertDialog.Builder alertDialog =
+                    alert.setTitle("Enter Command Line string")
+                            .setView(view)
+                            .setPositiveButton(R.string.ok, onClickListener)
+                            .setNegativeButton(R.string.cancel, onClickListener)
+                            .setCancelable(false);
+            Dialog dialog = alertDialog.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+
+            return true;
+        });
+    }
+
     @Override
     public void onStart() {
         BraveRewardsNativeWorker.getInstance().AddObserver(this);
@@ -229,6 +296,18 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static boolean getPreferenceValue(String preferenceName) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(preferenceName, false);
+    }
+
+    private static void setPreferenceString(String preferenceName, String newValue) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(preferenceName, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
+    private static String getPreferenceString(String preferenceName) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        return sharedPreferences.getString(preferenceName, "");
     }
 
     @CalledByNative
@@ -317,6 +396,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
             BravePrefServiceBridge.getInstance().setUseRewardsStagingServer(mUseRewardsStagingServer);
+            BraveRewardsHelper.setRewardsEnvChange(true);
 
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else {

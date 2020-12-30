@@ -109,11 +109,6 @@ class TipBox extends React.Component<Props, State> {
   }
 
   donationSettingsChild = () => {
-    const { enabledMain } = this.props.rewardsData
-    if (!enabledMain) {
-      return null
-    }
-
     let value = this.props.rewardsData.inlineTip
 
     if (!value) {
@@ -162,11 +157,10 @@ class TipBox extends React.Component<Props, State> {
     const {
       parameters,
       firstLoad,
-      enabledMain,
       ui,
       tipsList
     } = this.props.rewardsData
-    const showDisabled = firstLoad !== false || !enabledMain
+    const showDisabled = firstLoad !== false
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length

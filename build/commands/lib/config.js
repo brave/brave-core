@@ -42,7 +42,7 @@ var packageConfig = function(key){
 
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
+    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
@@ -68,6 +68,7 @@ const Config = function () {
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
   this.rootDir = rootDir
+  this.isUniversalBinary = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
@@ -93,6 +94,7 @@ const Config = function () {
   this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
   this.geminiClientId = getNPMConfig(['gemini_client_id']) || ''
   this.geminiClientSecret = getNPMConfig(['gemini_client_secret']) || ''
+  this.braveSyncEndpoint = getNPMConfig(['brave_sync_endpoint']) || ''
   this.safeBrowsingApiEndpoint = getNPMConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
@@ -105,16 +107,18 @@ const Config = function () {
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
   this.mac_installer_signing_identifier = getNPMConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getNPMConfig(['mac_signing_keychain']) || 'login'
-  this.mac_signing_output_prefix = 'signing'
+  this.sparkleDSAPrivateKeyFile = getNPMConfig(['sparkle_dsa_private_key_file']) || ''
+  this.sparkleEdDSAPrivateKey = getNPMConfig(['sparkle_eddsa_private_key']) || ''
+  this.sparkleEdDSAPublicKey = getNPMConfig(['sparkle_eddsa_public_key']) || ''
   this.notary_user = getNPMConfig(['notary_user']) || ''
   this.notary_password = getNPMConfig(['notary_password']) || ''
   this.channel = 'development'
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
+  this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
-  this.widevineVersion = getNPMConfig(['widevine', 'version'])
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
@@ -127,6 +131,7 @@ const Config = function () {
   this.braveAndroidKeystoreName = getNPMConfig(['brave_android_keystore_name'])
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
+  this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -186,6 +191,7 @@ Config.prototype.buildArgs = function () {
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
+    is_universal_binary: this.isUniversalBinary,
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
@@ -211,22 +217,21 @@ Config.prototype.buildArgs = function () {
     brave_version_build: version_parts[2],
     chrome_version_string: this.chromeVersion,
     chrome_version_major: chrome_version_parts[0],
+    brave_sync_endpoint: this.braveSyncEndpoint,
     safebrowsing_api_endpoint: this.safeBrowsingApiEndpoint,
+    brave_variations_server_url: this.braveVariationsServerUrl,
     updater_prod_endpoint: this.updaterProdEndpoint,
     updater_dev_endpoint: this.updaterDevEndpoint,
     webcompat_report_api_endpoint: this.webcompatReportApiEndpoint,
     brave_stats_api_key: this.braveStatsApiKey,
+    brave_stats_updater_url: this.braveStatsUpdaterUrl,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
     chrome_pgo_phase: this.chromePgoPhase,
-    // When enabled (see third_party/blink/renderer/config.gni), we end up with
-    // multiple files giving compilation error similar to:
-    // gen/third_party/blink/renderer/bindings/modules/v8/v8_shared_worker_global_scope.cc:4614:34:
-    // error: no member named 'isReportingObserversEnabled' in 'blink::ContextFeatureSettings'
-    // cs.chromium.org shows the same files not having any calls to isReportingObserversEnabled,
-    // which makes me think that Chromium also disables it in their builds.
-    use_blink_v8_binding_new_idl_interface: false,
+    sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
+    sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
+    sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     ...this.extraGnArgs,
   }
 
@@ -235,7 +240,6 @@ Config.prototype.buildArgs = function () {
       args.mac_signing_identifier = this.mac_signing_identifier
       args.mac_installer_signing_identifier = this.mac_installer_signing_identifier
       args.mac_signing_keychain = this.mac_signing_keychain
-      args.mac_signing_output_prefix = this.mac_signing_output_prefix
       if (this.notarize) {
         args.notarize = true
         args.notary_user = this.notary_user
@@ -254,7 +258,7 @@ Config.prototype.buildArgs = function () {
     args.tag_ap = this.tag_ap
   }
 
-  if (process.platform === 'win32' && this.build_delta_installer) {
+  if ((process.platform === 'win32' || process.platform === 'darwin') && this.build_delta_installer) {
     assert(this.last_chrome_installer, 'Need last_chrome_installer args for building delta installer')
     args.build_delta_installer = true
     args.last_chrome_installer = this.last_chrome_installer
@@ -323,6 +327,10 @@ Config.prototype.buildArgs = function () {
       args.symbol_level = 1
     }
 
+    // Feed is not used in Brave
+    args.enable_feed_v1 = false
+    args.enable_feed_v2 = false
+
     // TODO(fixme)
     args.enable_tor = false
 
@@ -335,7 +343,6 @@ Config.prototype.buildArgs = function () {
     // not have a default value for this. But we'll
     // eventually want it on Android, so keeping CI
     // unchanged and deleting here for now.
-    delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
   }
@@ -343,8 +350,8 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'ios') {
     args.target_os = 'ios'
     args.enable_dsyms = true
-    args.enable_stripping = args.enable_dsyms
-    args.use_xcode_clang = this.isOfficialBuild()
+    args.enable_stripping = !this.isDebug()
+    args.use_xcode_clang = false
     args.use_clang_coverage = false
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
@@ -356,6 +363,11 @@ Config.prototype.buildArgs = function () {
     // Can be removed when approprioate DCHECK's have been fixed:
     // https://github.com/brave/brave-browser/issues/10334
     args.dcheck_always_on = this.isDebug()
+
+    args.ios_enable_content_widget_extension = false
+    args.ios_enable_search_widget_extension = false
+    args.ios_enable_share_extension = false
+    args.ios_enable_credential_provider_extension = false
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
@@ -371,12 +383,15 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_api_key
+    delete args.brave_stats_updater_url
     delete args.brave_infura_project_id
     delete args.binance_client_id
     delete args.gemini_client_id
     delete args.gemini_client_secret
-    delete args.brave_services_key
     delete args.webcompat_report_api_endpoint
+    delete args.use_blink_v8_binding_new_idl_interface
+    delete args.v8_enable_verify_heap
+    delete args.brave_variations_server_url
   }
 
   if (process.platform === 'win32') {
@@ -456,6 +471,11 @@ Config.prototype.getProjectRef = function (projectName) {
 }
 
 Config.prototype.update = function (options) {
+  if (options.universal) {
+    this.targetArch = 'arm64'
+    this.isUniversalBinary = true
+  }
+
   if (options.target_arch === 'x86') {
     this.targetArch = options.target_arch
     this.gypTargetArch = 'ia32'
@@ -540,6 +560,10 @@ Config.prototype.update = function (options) {
 
   if (options.brave_stats_api_key) {
     this.braveStatsApiKey = options.brave_stats_api_key
+  }
+
+  if (options.brave_stats_updater_url) {
+    this.braveStatsUpdaterUrl = options.brave_stats_updater_url
   }
 
   if (options.channel) {

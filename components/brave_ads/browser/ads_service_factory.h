@@ -13,6 +13,7 @@ class Profile;
 
 namespace brave_ads {
 class AdsService;
+class AdsServiceImpl;
 
 // Singleton that owns all AdsService and associates them with Profiles.
 class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
@@ -21,6 +22,7 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   AdsServiceFactory& operator=(const AdsServiceFactory&) = delete;
 
   static brave_ads::AdsService* GetForProfile(Profile* profile);
+  static brave_ads::AdsServiceImpl* GetImplForProfile(Profile* profile);
 
   static AdsServiceFactory* GetInstance();
 

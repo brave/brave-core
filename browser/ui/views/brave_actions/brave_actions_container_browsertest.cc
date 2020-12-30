@@ -65,7 +65,6 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // By default the action should be shown.
-  EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kEnabled));
   EXPECT_FALSE(
       prefs_->GetBoolean(brave_rewards::prefs::kHideButton));
   CheckBraveRewardsActionShown(true);
@@ -77,29 +76,11 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // Set to show.
   prefs_->SetBoolean(brave_rewards::prefs::kHideButton, false);
   CheckBraveRewardsActionShown(true);
-
-  // Set to hide.
-  prefs_->SetBoolean(brave_rewards::prefs::kHideButton, true);
-  CheckBraveRewardsActionShown(false);
-
-  // Enable Brave Rewards.
-  prefs_->SetBoolean(brave_rewards::prefs::kEnabled, true);
-  CheckBraveRewardsActionShown(true);
-
-  // Toggle to show and back to hide.
-  prefs_->SetBoolean(brave_rewards::prefs::kHideButton, false);
-  prefs_->SetBoolean(brave_rewards::prefs::kHideButton, true);
-  CheckBraveRewardsActionShown(true);
-
-  // Disable Brave Rewards.
-  prefs_->SetBoolean(brave_rewards::prefs::kEnabled, false);
-  CheckBraveRewardsActionShown(false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
                        BraveRewardsActionHiddenInGuestSession) {
     // By default the action should be shown.
-  EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kEnabled));
   EXPECT_FALSE(
       prefs_->GetBoolean(brave_rewards::prefs::kHideButton));
   CheckBraveRewardsActionShown(true);

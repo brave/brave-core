@@ -1,0 +1,27 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_browser_new_tab_sources = []
+brave_browser_new_tab_deps = []
+
+if (!is_android) {
+  brave_browser_new_tab_sources += [
+    "//brave/browser/new_tab/new_tab_shows_navigation_throttle.cc",
+    "//brave/browser/new_tab/new_tab_shows_navigation_throttle.h",
+    "//brave/browser/new_tab/new_tab_shows_options.cc",
+    "//brave/browser/new_tab/new_tab_shows_options.h",
+  ]
+
+  brave_browser_new_tab_deps += [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/common:pref_names",
+    "//chrome/common",
+    "//components/prefs",
+    "//content/public/browser",
+    "//ui/base",
+    "//url",
+  ]
+}

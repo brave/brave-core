@@ -150,11 +150,55 @@ module.exports.allBravePaths = module.exports.braveNonGeneratedPaths.concat(modu
 // This is because only 1 xtb is created per grd per locale even if it has multiple grdp files.
 module.exports.braveTopLevelPaths = module.exports.allBravePaths.filter((x) => ['grd', 'json'].includes(x.split('.').pop()))
 
-// ethereum-remote-client path relative to the Brave paths
-module.exports.ethereumRemoteClientPaths = [
-  '../../../ethereum-remote-client/app/_locales/en/messages.json',
-  '../../../ethereum-remote-client/brave/app/_locales/en/messages.json'
-]
+// Helper function to retrieve ethereum-remote-client paths relative
+// to the Brave paths
+module.exports.getEthereumRemoteClientPaths = function (extensionPath) {
+  let basePath = extensionPath
+  if (!basePath) {
+    basePath = '../../../ethereum-remote-client'
+  }
+
+  return [
+    `${basePath}/app/_locales/en/messages.json`
+  ]
+}
+
+// Helper function to retrieve Greaselion script paths relative to the
+// Brave paths.
+//
+// Greaselion.json consists of an array of Greaselion rules,
+// specifying scripts to inject into given sites based on certain
+// preconditions. If the rule contains a "messages" key, then the
+// script contains user-visible strings that require translation. This
+// helper function gathers those messages.json files for transmission
+// to Transifex.
+module.exports.getGreaselionScriptPaths = function (extensionPath) {
+  let basePath = extensionPath
+  if (!basePath) {
+    basePath = '../../../brave-site-specific-scripts'
+  }
+
+  const jsonContent = fs.readFileSync(`${basePath}/Greaselion.json`, 'utf8')
+  if (!jsonContent) {
+    console.error('Missing Greaselion.json')
+    return []
+  }
+
+  const greaselionRules = JSON.parse(jsonContent)
+  if (!greaselionRules) {
+    console.error('Malformed Greaselion.json')
+    return []
+  }
+
+  let paths = []
+  greaselionRules.forEach((rule) => {
+    if (rule.messages) {
+      paths.push(`${basePath}/${rule.messages}/en_US/messages.json`)
+    }
+  })
+
+  return paths
+}
 
 // Helper functions that's, for a given pair of chromium to brave GRD mapping
 // from the supplied map, determines which GRDP parts are no longer present in
@@ -166,7 +210,7 @@ function getRemovedGRDParts(mapping) {
       const braveGRDPs = getGrdPartsFromGrd(destPath)
       const chromiumGRDPs = getGrdPartsFromGrd(sourcePath)
       let removed = new Set()
-      for (i = 0; i < braveGRDPs.length; i++) {
+      for (let i = 0; i < braveGRDPs.length; i++) {
         if (!chromiumGRDPs.includes(braveGRDPs[i])) {
           removed.add(braveGRDPs[i])
         }

@@ -50,7 +50,6 @@ void OverridePrefsForPrivateProfileUserPrefs(Profile* profile) {
   // rewards button should be hidden on guest and tor profile.
   PrefService* pref_service = profile->GetPrefs();
   pref_service->SetBoolean(brave_rewards::prefs::kHideButton, true);
-  pref_service->SetBoolean(brave_rewards::prefs::kEnabled, false);
 }
 #endif
 }  // namespace

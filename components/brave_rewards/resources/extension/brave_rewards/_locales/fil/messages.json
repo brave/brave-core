@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT Points",
+    "message": "Mga Puntos sa BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Na-claim na ang Grant para sa Puntos",
+    "message": "Na-claim na ang Mga Grant para sa Puntos",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Awtomatikong Pag-ambag",
+    "message": "Awtomatikong Mag-ambag",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -196,10 +196,6 @@
   "braveAdsLaunchMsg": {
     "message": "Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.",
     "description": "Message for ads launch notification"
-  },
-  "braveAdsLaunchTitle": {
-    "message": "Dumating na ang Brave Ads!",
-    "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
     "message": "Brave Ads",
@@ -352,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Subukang muli",
+    "message": "Muling subukan",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -420,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "I-on ang Ads",
+    "message": "I-on ang Mga Ad",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -508,7 +504,7 @@
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
-    "message": "Nakadiskonekta",
+    "message": "Nadiskonekta",
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
@@ -578,7 +574,7 @@
     "description": "BAT Token text"
   },
   "points":  {
-    "message": "puntos",
+    "message": "mga puntos",
     "description": "BAT Points text"
   },
   "tokenGrants":  {
@@ -603,6 +599,10 @@
     "message": "I-cancel",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Baguhin ang halaga",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Mag-login",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <br/> Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
+    "message": "Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. \n Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,39 @@
   "walletPending":  {
     "message": "Nakabinbin",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Tandaan: Makikita ang iyong mga transaksyon sa Uphold kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang recipient at halaga ng mga tip mo.",
+    "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Makakuha ng Mga Token at Gumanti ng Tulong",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Makakuha ng mga token sa pamamagitan ng pagtingin sa mga ad na gumagalang sa privacy at awtomatikong suportahan ang iyong mga paboritong site at creator ng content.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Simulang gamitin ang Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Sa pamamagitan ng pagpapatuloy, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

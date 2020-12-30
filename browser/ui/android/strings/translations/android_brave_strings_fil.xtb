@@ -12,6 +12,11 @@
 <translation id="6754976710186182237">Mga Paraang Gumagamit ng Fingerprint</translation>
 <translation id="2313532038420432247">Mga Pag-upgrade sa HTTPS</translation>
 <translation id="7461425058443653485">Mga Script na Na-block</translation>
+<translation id="6052725679982758334">Pag-block sa Social Media</translation>
+<translation id="7498695072878479744">Payagan ang mga Google login button sa mga third party na site</translation>
+<translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
+<translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
+<translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
 <translation id="3834924998750356151">Nagba-block na Monitor</translation>
 <translation id="1713450908129883784">Mga Indibidwal na Kontrol</translation>
 <translation id="6302422639282249274">Pamahalaan ang Brave Rewards</translation>
@@ -26,6 +31,8 @@
 <translation id="5787084571334399599">Pinagbabawalang kumuha ng fingerprint ang browser</translation>
 <translation id="7459000603787995422">Isara ang mga tab sa paglabas</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
+<translation id="6469509880167172749">Awtomatikong magpadala ng ganap na pribadong analytics ng produkto sa Brave</translation>
+<translation id="7090566321964540749">Pinapayagan lang ng hindi kilalang impormasyon na ito ang Brave na tantyahin ang kabuuang paggamit ng ilang partikular na feature.</translation>
 <translation id="453601949003770390">Na-block na Trackers at Ads</translation>
 <translation id="347604927162577559">Natipid na\nData</translation>
 <translation id="9008534313521214777">Tinatantyang Oras na\nNatipid</translation>
@@ -45,10 +52,7 @@
 <translation id="4150201353443180367">Display</translation>
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="2804710924397009224">Itago ang Icon ng Brave Rewards</translation>
-<translation id="7358991116457217836">Itinatago ang Icon ng Brave Rewards kapag hindi naka-enable ang Brave Rewards</translation>
 <translation id="8495235435594442882">I-enable ang toolbar sa ibaba</translation>
-<translation id="5916664084637901428">Naka-on</translation>
-<translation id="5860033963881614850">Naka-off</translation>
 <translation id="6587448235155023666">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave</translation>
 <translation id="8701563696941209024">ILUNSAD MULI NGAYON</translation>
 <translation id="834487290629916192">MAMAYA</translation>
@@ -57,7 +61,6 @@
 <translation id="986879628471635371">Pag-troubleshoot sa onboarding</translation>
 <translation id="5808759341041733958">Pumili ng default na search engine</translation>
 <translation id="1331593888918588693">Puwede mong baguhin kailanman ang iyong kagustuhan sa mga setting ng app.</translation>
-<translation id="5317780077021120954">I-save</translation>
 <translation id="7053983685419859001">I-block</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">mga ad at tracker na lumalabag sa privacy para makapag-browse ka nang hindi ka sinusundan sa web.</translation>
@@ -65,7 +68,6 @@
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="5870330605209713397">sa pamamagitan ng pagtingin sa mga ad na nagpapahalaga sa privacy at suportahan ang iyong mga paboritong site at creator bilang default.</translation>
 <translation id="821707262661492716">para sa pagtingin sa mga ad na nagpapahalaga sa privacy.</translation>
-<translation id="8267692331246948056">Sa pamamagitan ng pag-tap sa Makakuha at Magbigay, sumasang-ayon ka sa</translation>
 <translation id="4281844954008187215">Mga Tuntunin ng Serbisyo</translation>
 <translation id="6871397658902960384">Simulan ang pag-browse</translation>
 <translation id="454386012157232640">Hindi ako nakakita ng ad</translation>
@@ -74,10 +76,8 @@
 <translation id="6511854390690723657">Ito ang iyong unang ad sa Brave. I-tap para matuto pa.</translation>
 <translation id="4930714375720679147">I-on</translation>
 <translation id="2453860139492968684">Tapos na</translation>
-<translation id="7983303953939627894">Kumita at Magbigay</translation>
+<translation id="2070991379950719711">Simulang gamitin ang Brave Rewards</translation>
 <translation id="48520986898237073">Tumuloy sa wallet</translation>
-<translation id="2359808026110333948">Magpatuloy</translation>
-<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="3570367516044491911">Itakda bilang default na browser</translation>
 <translation id="7493053924837150477">Piliin ang Brave Browser mula sa listahan at i-tap ang 'Palagi'</translation>
 <translation id="3546439402724649282">Nakatakda na ang Brave bilang iyong default na browser.</translation>
@@ -183,7 +183,7 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8038539967102225446">Narito na ang Mga Ad sa Brave!</translation>
 <translation id="8985635554450124959">Hindi ma-set up ang Sync</translation>
 <translation id="222883304157347087">(ang device na ito)</translation>
-<translation id="8193724030871339658">IBA PANG DEVICE SA CHAIN</translation>
+<translation id="4157741509680155021">MGA DEVICE SA SYNC CHAIN</translation>
 <translation id="279635009973773843">NILO-LOAD ANG MGA DEVICE...</translation>
 <translation id="6394333525003604181">UMAALIS SA SYNC CHAIN...</translation>
 <translation id="2569646144216067185">Dami ng salita: <ph name="WORD_COUNT"/></translation>
@@ -193,11 +193,11 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Nagbibigay-daan sa iyo ang Brave Sync na pribadong mag-sync ng data ng mga bookmark sa pagitan ng iyong mga Brave Browser sa iba't ibang device mo.</translation>
 <translation id="3735228155296883311">I-scan lang ang code mula sa iyong chain ng pag-sync na ginawa mo sa isa pang device. O magsimula ng bagong chain ng pag-sync.</translation>
-<translation id="4690880825349994619">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; I-sync. Piliin ang "Idagdag ang Device" at i-scan ang QR Code na ipinapakita sa screen.</translation>
+<translation id="2614069607859982576">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; I-sync. Piliin ang "Magdagdag ng Bagong Device" at i-scan ang QR Code na ipinapakita sa screen.</translation>
 <translation id="5241263629636958324">Nakopya sa Clipboard</translation>
 <translation id="5817918615728894473">Ipares</translation>
-<translation id="3394474617110693560">Mga kategorya</translation>
-<translation id="2004365171440701679">Alisin ang device na ito</translation>
+<translation id="7090325819305486658">Mga Kagustuhan sa Data</translation>
+<translation id="728334460283296316">Alisin ang device</translation>
 <translation id="1178128181015923849">Sigurado ka bang gusto mong i-delete ang device na '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">I-scan o ilagay ang code ng pag-sync</translation>
 <translation id="1602067095281698985">Magsimula ng bagong chain ng pag-sync</translation>
@@ -216,9 +216,9 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8730621377337864115">Tapos na</translation>
 <translation id="6174119914106813304">I-SYNC SA DEVICE NA ITO</translation>
 <translation id="6776430845975754238">Ang data lang na ibinabahagi ng device na ito sa iba ang maaapektuhan kapag binago ang mga setting.</translation>
-<translation id="6450924769151530465">Magdagdag ng isa pang device</translation>
+<translation id="1061533051865606843">Magdagdag ng Bagong Device</translation>
 <translation id="7539985410310934287">Ilagay ang mga code word</translation>
-<translation id="6270614677029463366">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; Mag-sync. Piliin ang "Idagdag ang Device" at pagkatapos ay ang "Ipakita na lang ang mga code word."</translation>
+<translation id="2886391679017857869">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; Mag-sync. Piliin ang "Magdagdag ng Bagong Device" at pagkatapos ay ang "Ipakita na lang ang mga code word."</translation>
 <translation id="8131740175452115882">Kumpirmahin</translation>
 <translation id="4973653569293835178">Gagamitin ko ang aking camera...</translation>
 <translation id="326454632686131209">I-sync ang device</translation>
@@ -234,6 +234,10 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="6810078320346589989">Gumawa ng bookmark</translation>
 <translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
 <translation id="7473245612074035141">Simulan ang Setup</translation>
+<translation id="1872784258300710671">Gumagamit ang Brave ng ganap na pribadong analytics ng produkto upang tantyahin ang kabuuang paggamit ng ilang partikular na feature</translation>
+<translation id="8712637175834984815">Nakuha ko</translation>
+<translation id="4394049700291259645">Huwag paganahin</translation>
+<translation id="8446884382197647889">Matuto Pa</translation>
 <translation id="597993392929850353">Lisensya ng Brave</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="6199596294742117349">Pribadong Tab ito.</translation>
@@ -243,7 +247,6 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="844921671123185605">Naiproseso na ang iyong mga buwanang tip!</translation>
 <translation id="3124090095880236567">I-on ang Mga Ad</translation>
 <translation id="2975780980638932742">Narito na ang Mga Ad sa Brave!</translation>
-<translation id="7655723274266132226">Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.</translation>
 <translation id="7541582550122501404">Nakabinbing Kontribusyon</translation>
 <translation id="8520059774736886747">Nag-verify kamakailan ang creator na si <ph name="PUBLISHER_NAME"/></translation>
 <translation id="7924320838799747606">Ang iyong balanse</translation>
@@ -261,8 +264,7 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8522669544471808198">Ipakita ang Mga Larawan sa Background</translation>
 <translation id="3870475560794762985">Ipakita ang Mga Naka-sponsor na Larawan</translation>
 <translation id="8297488609722895137">Larawan ni <ph name="PHOTO_BY"/></translation>
-<translation id="1605521356929094020">I-on ang Mga Ad sa Brave</translation>
-<translation id="1873603368604736484">Sa pamamagitan ng pag-on sa Mga Reward, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="4761229094276239865">Sa pamamagitan ng pag-tap sa Simulang gamitin ang Brave Rewards, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Mabayaran para tingnan ang larawan sa background na ito.</translation>
 <translation id="7136586167396205364">Itago ang Mga Naka-sponsor na Larawan</translation>
 <translation id="2927095357213611519">Maaari mong suportahan ang mga creator sa web gamit ang mga token.\nMakakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy.</translation>
@@ -309,7 +311,7 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8851456134224363571">Magaling! Ayos lang bang bigyan mo kami ng rating sa Play Store?</translation>
 <translation id="8668962040900592974">Ipaalam sa amin kung paano kami puwedeng humusay pa</translation>
 <translation id="4406937629441301400">Kumita ng mga token para sa pagtingin sa larawang ito at ipasa ito sa mga creator. <ph name="LEARN_MORE"/></translation>
-<translation id="7894626572714595717">Makatanggap ng mga token para sa pagtingin sa larawang ito. I-on ang Mga Ad sa Brave para i-claim ang iyong porsyento.</translation>
+<translation id="1992363542751124282">Makakuha ng mga token sa pagtingin sa larawang ito. I-tap ang Simulang gamitin ang Brave Rewards para i-claim ang iyong bahagi.</translation>
 <translation id="6632345639591919543">Kumikita ka ng mga token para sa pagtingin sa larawang ito.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Kumikita ka ng mga token para sa pagtingin sa larawang ito.</translation>
 <translation id="7877201489035217175">Matuto pa tungkol sa mga sponsored na larawan</translation>
@@ -357,7 +359,6 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8903462729414407077">Makakuha ng mga lingguhang update</translation>
 <translation id="8029219208182772618">Malaman kung aling mga website na binibisita mo ang pinakananghihimasok sa privacy.\n\nIkaw lang ang makakakita sa mga istatistika ng privacy na ito. Walang personal na data o history ng pagba-browse na lumalabas ng Brave browser sa iyong device.</translation>
 <translation id="6170159749517116894">I-on ang mga ulat ng privacy</translation>
-<translation id="6165508094623778733">Matuto pa</translation>
 <translation id="5966707198760109579">Linggo</translation>
 <translation id="8987927404178983737">Buwan</translation>
 <translation id="4302754476737420523">3 Buwan</translation>
@@ -391,4 +392,79 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="2718046830255553131">Na-clear ang data ng mga ulat ng privacy.</translation>
 <translation id="7559243474426790340">I-refresh ang Status</translation>
 <translation id="8376263745431603066">I-enable ang "Night Mode" (Pang-eksperimento)</translation>
+<translation id="1383876407941801731">Search</translation>
+<translation id="1972589975368876259">I-edit ang Stack</translation>
+<translation id="2490330380242414851">Alisin ang Widget</translation>
+<translation id="7384441892795736634">I-refresh ang Data</translation>
+<translation id="4804818685124855865">I-disconnect</translation>
+<translation id="4789438578712143420">≈ $<ph name="USD_BALANCE"/></translation>
+<translation id="1080611582879541635"><ph name="COIN_ADDRESS"/> Address ng Deposito</translation>
+<translation id="4836242416604533644"><ph name="COIN_MEMO"/> Memo ng Deposito</translation>
+<translation id="5110244215256675209">Bumili ng Crypto</translation>
+<translation id="2271556362602437160">.com</translation>
+<translation id="3727077517986954867">.us</translation>
+<translation id="3414885529641505869">Bumili ng <ph name="COIN_NAME"/></translation>
+<translation id="558614325644656740"><ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/> ang available</translation>
+<translation id="6755546361496900700">I-preview ang Conversion</translation>
+<translation id="2882813124794301799">Stack ng Widget</translation>
+<translation id="13296465911709339">Nakopya ang iyong text sa clipboard.</translation>
+<translation id="7144878232160441200">I-retry</translation>
+<translation id="2977461003134694205">Mga Istatistika ng Privacy</translation>
+<translation id="4643117005422448078">Nangungunang Sites</translation>
+<translation id="6966052266404721769">Binance</translation>
+<translation id="1392658226187691544">Mga Na-block na Tracker at Ad, Natipid na Bandwidth, at Mga Tinatayang Natipid na Oras.</translation>
+<translation id="74417429503469271">Buksan ang mga nangungunang site na madalas mong bisitahin.</translation>
+<translation id="2956070106555335453">Buod</translation>
+<translation id="1366855498335432549">Deposit</translation>
+<translation id="1301340234286078471">I-convert</translation>
+<translation id="223536150967420869">Bumili</translation>
+<translation id="1714829281959608206">I-enable ang Binance connection para tingnan ang Binance account balance at mag-trade ng crypto.</translation>
+<translation id="4584930231524505442">Gusto kong mag-convert ng...</translation>
+<translation id="5749014321384313843">Gusto kong gumastos ng...</translation>
+<translation id="8688672835843460752">Available</translation>
+<translation id="2480674848181564169">Hindi sapat ang balanse para sa conversion</translation>
+<translation id="2215334405220411393">Ang minimum na halagang iko-convert ay : <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
+<translation id="6702658079816271889">Hindi makakonekta</translation>
+<translation id="7742417737698031726">Fee</translation>
+<translation id="2122225204180056042">Makakatanggap ka ng</translation>
+<translation id="6432284126416751397">I-confirm ang Conversion</translation>
+<translation id="5137723827757859599">Wala pang nakalagay rito sa mga nangungunang site.</translation>
+<translation id="3891414008432200754">Presyo</translation>
+<translation id="3733576242118819803">Kumpirmahin (<ph name="REMAINING_TIME"/>s)</translation>
+<translation id="1627064138060308910">Nabigo ang Conversion. Pakisubukan ulit.</translation>
+<translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
+<translation id="7465614181960492526">Makakuha ng Mga Token at Gumanti ng Tulong</translation>
+<translation id="244362569344671266">Makakuha ng mga token sa pamamagitan ng pagtingin sa Mga Pribadong Brave Ad at awtomatikong suportahan ang mga creator ng content.</translation>
+<translation id="631124996535890460">Sa pamamagitan ng pagpapatuloy, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/> at <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8804164990146287819">Patakaran sa Privacy</translation>
+<translation id="6318696841371191107">Mabilis na maglibot</translation>
+<translation id="7930505144430343145">Welcome sa Brave Rewards!</translation>
+<translation id="7909111626803226907">Bibigyan ka ng mga pribadong Brave ad ng mga token para suportahan ang mga creator ng content hindi tulad ng mga tradisyonal na ad, lahat habang pinapanatiling pribado ang iyong personal na impormasyon.</translation>
+<translation id="6973095375773523904">Saan lumalabas ang mga ad?</translation>
+<translation id="3867028444168159102">Lalabas ang mga pribadong Brave ad bilang karaniwang notification. Ikaw ang magkokontrol kung gaano kadalas mo makikita ang mga ad na ito sa mga setting.</translation>
+<translation id="5816125157889950051">Kailan ka makakatanggap ng mga reward</translation>
+<translation id="4649471244559455723">Darating ang nakuha mong mga token mula sa Brave ads sa kabuuan ng kasalukuyang buwan sa ika-5 ng susunod na buwan.</translation>
+<translation id="7712287524451429139">Ginawang walang kahirap-hirap ang pagganti ng tulong</translation>
+<translation id="105037569026952831">Awtomatikong matatanggap ng mga creator ang iyong mga token na ambag batay sa mga antas ng pakikipag-ugnayan mo na sinusukat namin bilang ‘Atensyon’.</translation>
+<translation id="5323267338679539010">Magpasalamat sa pamamagitan ng mga tip</translation>
+<translation id="6042317056594735519">Ang pagbibigay ng tip ay isang paraan para personal na himukin at suportahan ang content o mga creator na gusto mo. Magbigay ng tip!</translation>
+<translation id="7509452925943421624">Ano ang magagawa mo sa mga token?</translation>
+<translation id="7059157883171259940">Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng mga digital na produkto at giftcard na may cashback bonus.</translation>
+<translation id="1402530520078693620">Panghuli, tutulungan ka naming mag-set up sa mga basic na setting</translation>
+<translation id="3494356595346329740">Puwede mo itong baguhin sa ibang pagkakataon.</translation>
+<translation id="6462814326662189004">Gaano kadalas mo gustong makakita ng mga ad?\n(Mga ad bawat oras)</translation>
+<translation id="2134244432345596331">Gaano kalaking suporta ang gusto mong ibigay sa iyong mga paboritong creator?\n(mula sa iyong kita sa mga ad)</translation>
+<translation id="7456161272236175794">WOOOOHOOOOO!\nTapos ka na.</translation>
+<translation id="3895246934788932488">Sa pamamagitan ng paggamit sa Brave Rewards, pinoprotektahan mo ang iyong privacy at nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At ayos iyan!</translation>
+<translation id="5705882733397021510">Bumalik</translation>
+<translation id="5140321319944305531">Mabilis Tayong Maglibot</translation>
+<translation id="3808131693704413134">Pagkatapos mong matanggap ang iyong unang payout ng mga ad, puwede kang bumalik at bigyan ng tip ang creator na ito!</translation>
+<translation id="207242986925259074">Mabilis na pang-refresh na paglilibot</translation>
+<translation id="8342862030112839977">Darating ang iyong unang payout ng mga reward sa:</translation>
+<translation id="3769645103175790584">Makakuha ng mga token at bigyan ng reward ang mga creator para sa mahusay na content habang nagba-browse ka. <ph name="QUICK_TOUR"/>.</translation>
+<translation id="6912901278692845878">Mabilisang paglilibot</translation>
+<translation id="1080013038789678738">Gusto Ko Ito!</translation>
+<translation id="3604285424134705930">Nag-convert ka ng <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> sa <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="392587271502873865">Pakitingnan ang iyong koneksyon sa network.</translation>
+<translation id="7889432931837317731">Awtomatikong buksan kung posible</translation>
 </translationbundle>

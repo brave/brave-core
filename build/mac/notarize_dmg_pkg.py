@@ -32,7 +32,7 @@ def run_command(args, **kwargs):
     subprocess.check_call(args, **kwargs)
 
 
-def create_config(config_args, development, mac_provisioning_profile):
+def create_config(config_args, development, mac_provisioning_profile=None):
     """Creates the |model.CodeSignConfig| for the signing operations.
 
     If |development| is True, the config will be modified to not require

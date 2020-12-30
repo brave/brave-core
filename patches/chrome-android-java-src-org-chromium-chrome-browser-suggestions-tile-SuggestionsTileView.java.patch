@@ -1,13 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
-index 9f0358b4992c431e9d27811afe7277a17e98826e..617b2cecf1a3e9b76c646a92dfcafeab72dcc9ad 100644
+index 219aad30b54a4cdbd9530b7f908ec07c4910b174..0da272b2d5c151302c42a61b1fe24484f4a532ea 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
-@@ -16,7 +16,7 @@ import org.chromium.chrome.browser.suggestions.SiteSuggestion;
-  * The view for a site suggestion tile. Displays the title of the site beneath a large icon. If a
-  * large icon isn't available, displays a rounded rectangle with a single letter in its place.
-  */
--public class SuggestionsTileView extends TileWithTextView {
-+public class SuggestionsTileView extends org.chromium.chrome.browser.widget.tile.BraveTileWithTextView {
-     /** The data currently associated to this tile. */
-     private SiteSuggestion mData;
- 
+@@ -75,6 +75,7 @@ public class SuggestionsTileView extends TileView {
+             params.height = resources.getDimensionPixelSize(R.dimen.tile_view_icon_size_modern);
+             params.topMargin =
+                     resources.getDimensionPixelSize(R.dimen.tile_view_icon_margin_top_modern);
++            params.width = resources.getDimensionPixelSize(R.dimen.brave_tile_view_icon_size_modern);params.height=resources.getDimensionPixelSize(R.dimen.brave_tile_view_icon_size_modern);params.topMargin=resources.getDimensionPixelSize(R.dimen.brave_tile_view_icon_margin_top_modern);
+         }
+         mIconView.setLayoutParams(params);
+     }

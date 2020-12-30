@@ -70,6 +70,9 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_TITLE" desc="Title used for End of Life section on the About Page.">
     Update schedule
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME" desc="Title of the line item on the about page that allows the user to edit the device hostname.">
+    Device name
+  </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
     Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
   </message>
@@ -157,6 +160,15 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_SHOW_RELEASE_NOTES" desc="Text of the button which shows user the release notes.">
     See what's new
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_EDIT_DEVICE_NAME" desc="The title of the dialog that allows the user to edit the device hostname.">
+    Edit device name
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_INFO" desc="Label describing which areas of the Chrome OS system broadcast the device hostname to external networks.">
+    This name is visible to other devices for Bluetooth and network connections
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_CONSTRAINTS" desc="Label describing the requirements for the text of the device hostname.">
+    Name can use letters, numbers, and hyphens (-)
+  </message>
   <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
     Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is up to date
   </message>
@@ -171,7 +183,7 @@
   </message>
 
   <!-- Profiles (OS settings) -->
-  <message name="IDS_OS_SETTINGS_PEOPLE" desc="Name of a section in the OS settings page." meaning="Profiles and their accounts.">
+  <message name="IDS_OS_SETTINGS_PEOPLE" desc="Name of a section in the OS settings page." meaning="People and their accounts.">
     Profiles
   </message>
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL" desc="Label underneath the profile's real name, listing the email address and optionally the number of additional accounts">
@@ -242,53 +254,122 @@
   </message>
 
   <!-- Languages and Inputs (OS settings) -->
-  <message name="IDS_OS_SETTINGS_LANGUAGES_AND_INPUT_PAGE_TITLE" desc="Name of the OS settings page which displays language method preferences.">
-    Languages and input
+  <message name="IDS_OS_SETTINGS_LANGUAGES_AND_INPUT_PAGE_TITLE" desc="Name of the OS settings page which displays language and input method preferences.">
+    Languages and inputs
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can set system display language, web content language fallback and translation preference.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PAGE_TITLE" desc="A page under “Languages and inputs” section in the OS settings page that users can set system display language, web content language fallback and translation preference.">
     Languages
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can add, remove and manage input methods.">
-    Input
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" desc="A page under “Languages and inputs” section in the OS settings page that users can add, remove and manage input methods.">
+    Inputs
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SYSTEM_LANGUAGE_TITLE" translateable="false" desc="The label for the section where users can see their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
-    System display language
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DEVICE_LANGUAGE_TITLE" desc="The label for the section where users can see their device language. This language will be used for system surfaces (launcher, shelf, and notifications etc.).">
+    Device language
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SYSTEM_LANGUAGE_DESCRIPTION" translateable="false" desc="The description for the section where users can see their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
-    System features like launcher, Settings and Files will appear in this language.
-  </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_SYSTEM_LANGUAGE_BUTTON_LABEL" translateable="false" desc="The label for the button where users can change their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_BUTTON_LABEL" desc="The label for the button where users can change their device language. This language will be used for system surfaces (launcher, shelf, and notifications etc.).">
     Change
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_SYSTEM_LANGUAGE_BUTTON_DESCRIPTION" translateable="false" desc="The description read by screenreader for the button where users can change their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
-    Change system language. Current language is <ph name="LANGUAGE">$1<ex>English</ex></ph>. System features like launcher, Settings and Files will appear in the language you choose.
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_BUTTON_DESCRIPTION" desc="The description read by screenreader for the button where users can change their device language. This language will be used for system surfaces (launcher, shelf, and notifications etc.).">
+    Change device language. Current language is <ph name="LANGUAGE">$1<ex>English</ex></ph>.
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_TITLE" translateable="false" desc="The label of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
-    Languages you read
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_TITLE" desc="Title for the dialog to change device language.">
+    Change device language
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" translateable="false" desc="The description of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
-    Add and order languages you read. Apps and websites will be displayed in the most preferred language available. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_DESCRIPTION" desc="Description for the dialog to change device language.">
+    You need to restart your Bravebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_LABEL" translateable="false" desc="The label of the toggle that enables the prompt to translate a page to users.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SELECTED_DEVICE_LANGUAGE_INSTRUCTION" desc="Instruction read by screen reader when users can unselect a language.">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> selected. Press Search plus Space to unselect.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_NOT_SELECTED_DEVICE_LANGUAGE_INSTRUCTION" desc="Instruction read by screen reader when users can select a language.">
+    <ph name="LANGUAGE">$1<ex>English</ex></ph> not selected. Press Search plus Space to select.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_CONFIRM_BUTTON_LABEL" desc="Label for the button where users can confirm the selected language and restart the device.">
+    Confirm and restart
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_TITLE" desc="Title of section that lets users choose the language for web content. The web content languages will be served in the order of the list.">
+    Web content languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" desc="Description for section that lets users choose the language for web content. The web content languages will be served in the order of the list.">
+    Web content available in multiple languages will use the first supported language from this list. These preferences are synced with your browser settings. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_TRANSLATE_TARGET_LABEL" desc="The label of the toggle that enables the prompt to translate a page to users.">
+    Language used when translating pages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TO_TRANSLATE_THIS_LANGUAGE" desc="The label of the checkbox that enables the prompt to translate a page in the given language to users.">
+    Offer to translate pages in this language
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_LABEL" desc="Title for setting that allows the system to offer to translate websites that appear in other languages.">
    Translation suggestion
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_SUBLABEL" translateable="false" desc="The sublabel of the toggle that enables the prompt to translate a page to users.">
-    Allow the system to offer to translate web pages when it detects languages you don't read
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_SUBLABEL" desc="Description for setting that allows the system to offer to translate websites that appear in other languages.">
+    Offer to translate websites in other languages
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_METHOD_LIST_TITLE" translateable="false" desc="Title for the current input method in the header for the collapsible list of enabled input methods (keyboard layouts and input method editors).">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_METHOD_LIST_TITLE" desc="Title for the list of enabled input methods (keyboard layouts and input method editors).">
     Input methods
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_OPEN_OPTIONS_PAGE_LABEL" translateable="false" desc="Title for the button to open the options page for a input method (keyboard layout and input method editor).">
-      Open options page for <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OPEN_OPTIONS_PAGE_LABEL" desc="Description read by screenreader for the button to open the settings page for a input method (keyboard layout and input method editor).">
+    Open settings page for <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_INPUT_METHOD_LABEL" translateable="false" desc="Button under the list of input methods which opens a dialog that lets the user add keyboard layouts and input method editors.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_INPUT_METHOD_LABEL" desc="Button under the list of input methods which opens a dialog that lets the user add keyboard layouts and input method editors.">
     Add input methods
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" translateable="false" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
+  <message name="IDS_OS_SETTINGS_LANGUAGES_REMOVE_INPUT_METHOD_TOOLTIP" desc="Tooltip of the button that lets the user remove a given keyboard layout or input method editor.">
+    Remove <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SUGGESTED_INPUT_METHODS_LABEL" desc="Title of the list of keyboard layouts or input method editors suggested to users.">
+    Suggested
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ALL_INPUT_METHODS_LABEL" desc="Title of the list of all keyboard layouts or input method editors.">
+    All input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SEARCH_INPUT_METHODS_LABEL" desc="Placeholder in the input field to search keyboard layouts or input method editors, users can search by language or input method name.">
+    Search by language or input name
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_METHOD_NOT_ALLOWED" desc="Tooltip for policy icon when an keyboard layout or input method editor is not allowed.">
+    Your administrator doesn't allow this input method
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
     Spell check
   </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_DISABLED_REASON" translateable="false" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
-    Spell check isn’t supported for the languages you selected
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for enhanced spell check toggle, the type of spell check that sends the text the user types to Brave spelling service. It is important that it is communicated that the text the user types will be sent to Brave.">
+    Enhanced spell check in Brave browser (text is sent to Brave for spelling suggestions)
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_TITLE" desc="Title for the list of languages that support spell check, from which users can enable or disable spell check for.">
+    Spell check languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_DESCRIPTION" desc="Description for the list of languages that support spell check, from which users can enable or disable spell check for.">
+    Languages for spell check are based on your language preference
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" desc="Error message when spell check dictionary download fails.">
+    Couldn’t download spell check dictionary
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_RETRY_LABEL" desc="Label for the button to retry spell check dictionary download.">
+    Try again
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_RETRY_DESCRIPTION" desc="Description read by screenreader for the button to retry spell check dictionary download.">
+    Couldn’t download spell check dictionary for <ph name="LANGUAGE">$1<ex>English</ex></ph>. Try again.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_LABEL" desc="Label for the section for users to add words that they don’t want get flagged by the spell check.">
+    Customize spell check
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_DESCRIPTION" desc="Description for the section for users to add words that they don’t want get flagged by the spell check.">
+    Add words you want spell check to skip
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_BUTTON_LABEL" desc="Label for button to add a new word.">
+    Add word
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_DUPLICATE_ERROR" desc="Error message displayed to the user when the word is duplicated in the text input used to add a new word to the custom spell check dictionary.">
+    Word already added
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_LENGTH_ERROR" desc="Error message displayed to the user when the word is too long in the text input used to add a new word to the custom spell check dictionary.">
+    Use 99 letters or fewer for new words
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_DELETE_DICTIONARY_WORD_TOOLTIP" desc="Message shown over the button to delete a custom word.">
+    Delete word
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_NO_DICTIONARY_WORDS_LABEL" desc="Placeholder that is shown when there are no custom words in the list of saved custom words dictionary.">
+    Saved custom words will appear here
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
     Languages
@@ -430,13 +511,10 @@
 
   <!-- Device Page (OS Settings) -->
   <message name="IDS_OS_SETTINGS_TOUCHPAD_REVERSE_SCROLL_LABEL">
-    Reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_DEVICE_TITLE" desc="Name of the settings page which displays device and peripheral settings.">
     Device
-  </message>
-  <message name="IDS_SETTINGS_SCROLL_LABEL" desc="In Device Settings, the title above the radio buttons to choose the scrolling behavior.">
-    Scrolling
   </message>
 
   <!-- Personalization Page (OS settings) -->
@@ -581,8 +659,11 @@
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
   </message>
-  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_TOOLTIP" desc="Tooltip in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
-    Used by Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_BUTTON_LABEL" desc="Label in OS settings for the button to configure search engine behavior.">
+    Configure
+  </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
+    Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
   </message>
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT" desc="Label for the Brave Assistant button.">
     Brave Assistant
@@ -593,10 +674,10 @@
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_DISABLED" desc="Sub label for the Brave Assistant button when Assistant is disabled.">
     Disabled
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Brave Assistant is on.">
+  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
     On
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Brave Assistant is off.">
+  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Google Assistant is off.">
     Off
   </message>
    <message name="IDS_SETTINGS_SEARCH_AND_ASSISTANT" desc="Name of the settings page which displays search engine and assistant preferences on Chrome OS.">
@@ -893,6 +974,30 @@
   <message name="IDS_SETTINGS_DURATION_IN_SECONDS" desc="A duration in seconds. Should be short.">
     <ph name="DURATION">$1<ex>1.5</ex></ph>s
   </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_KEY_PROMPT" desc="A message shown to ask a suer to press a switch key to be assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Please press a switch key to assign.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_CONFIRMATION_PROMPT" desc="A message shown to ask a user to confirm by pressing a switch key to be assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Press '<ph name="currentKey">$1<ex>backspace</ex></ph>' again to confirm and exit.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WAIT_FOR_CONFIRMATION_REMOVAL_PROMPT" desc="A message to ask a user to confirm, by pressing a switch key, for removal of a switch key assignment. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    '<ph name="currentKey">$1<ex>backspace</ex></ph>' is already assigned. Press '<ph name="currentKey">$1<ex>backspace</ex></ph>' again to remove assignment and exit.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_NOT_CONFIRMED_PROMPT" desc="A message warning the user that the switch key pressed during confirmation did not match the initial switch key pressed. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Keys do not match. '<ph name="unexpectedKey">$1<ex>enter</ex></ph>' was pressed. '<ph name="currentKey">$2<ex>backspace</ex></ph>' was pressed before. Press any key to exit.
+  </message>
+  <message name="IDS_SETTINGS_ASSIGN_SWITCH_SUB_LABEL" desc="A sub-label for the link that brings up a dialog to assign a switch key to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Open a dialog to assign a switch key
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_ALREADY_ASSIGNED_ACTION_PROMPT" desc="A message warning the user that the switch key pressed is assigned to another action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    '<ph name="currentKey">$1<ex>enter</ex></ph>' is already assigned to the '<ph name="action">$2<ex>Select</ex></ph>' action. Press any key to exit.
+  </message>
+  <message name="IDS_SETTINGS_SWITCH_ACCESS_ACTION_ASSIGNMENT_DIALOG_WARN_UNRECOGNIZED_KEY_PROMPT" desc="A message warning the user that the switch key pressed is not recognized. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    Unrecognized key. Press any key to exit.
+  </message>
+  <message name="IDS_SETTINGS_NO_SWITCHES_ASSIGNED" desc="A label indicating no siwtches are assigned to an action. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
+    No switches assigned
+  </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_TEXT_TO_SPEECH_HEADING" desc="In the settings tab, the heading for accessibility features that enable the computer to speak text from the computer screen.">
     Text-to-Speech
   </message>
@@ -954,28 +1059,28 @@
     Rate
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech rate">
-    Slowest
+    Slow
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech rate">
-    Fastest
+    Fast
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH" desc="The pitch of speech in text-to-speech settings.">
     Pitch
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech pitch">
-    Lowest
+    Low
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech pitch">
-    Highest
+    High
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME" desc="The volume of speech compared to system volume in text-to-speech settings.">
     Volume
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech volume">
-    Quietest
+    Quiet
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech volume">
-    Loudest
+    Loud
   </message>
   <message name="IDS_SETTINGS_PERCENTAGE" desc="A number displayed as a percentage">
     <ph name="PERCENTAGE">$1<ex>120</ex></ph>%
@@ -1083,11 +1188,11 @@
   </message>
 
   <!-- Crostini -->
-  <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section.">
-    Linux (Beta)
+  <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section. It is meant to be used by software developers.">
+    Developers
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_LABEL" desc="The text associated with the primary section setting.">
-    Linux
+  <message name="IDS_SETTINGS_CROSTINI_LABEL" desc="The text associated with the primary section setting. This contains settings for a Linux container running in a virtual machine for use by software developers.">
+    Linux development environment
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS" desc="Label for managing shared folders in Crostini.">
     Manage shared folders
@@ -1144,7 +1249,7 @@
     Remove
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
-    USB preferences
+    Manage USB devices
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
     Give Linux apps permission to access USB devices. Linux won't remember a USB device after it's removed.
@@ -1154,6 +1259,12 @@
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
     Available USB devices will appear here.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_IN_USE" desc="Dialog title describing that a USB device is currently in use.">
+    Device in use
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_REASSIGN" desc="Confirmation explaining to users that reassigning a USB device from being attached from one VM to another could cause errors.">
+     "<ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph>" is in use. Reassigning the device while it's in use could cause errors. Are you sure you want to continue?
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_TITLE" desc="Title of ARC ADB sideloading section.">
     Develop Android apps
@@ -1539,6 +1650,9 @@
   <message name="IDS_SETTINGS_MOUSE_TITLE" desc="In Device Settings, the title of the mouse settings subpage.">
     Mouse
   </message>
+  <message name="IDS_SETTINGS_POINTING_STICK_TITLE" desc="In Device Settings, the title of the pointing stick settings subpage. In most cases this will just be 'TrackPoint', the brand name of the pointing sticks used on Bravebooks.">
+    TrackPoint
+  </message>
   <message name="IDS_SETTINGS_TOUCHPAD_TITLE" desc="In Device Settings, the title of the touchpad settings subpage.">
     Touchpad
   </message>
@@ -1566,8 +1680,14 @@
   <message name="IDS_SETTINGS_MOUSE_SWAP_BUTTONS_LABEL" desc="In Device Settings, the text next to the checkbox to set the primary mouse button to the right button instead of the left button.">
     Swap primary mouse button
   </message>
+  <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_LEFT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the left mouse button.">
+    Left button
+  </message>
+  <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_RIGHT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the right mouse button.">
+    Right button
+  </message>
   <message name="IDS_SETTINGS_MOUSE_REVERSE_SCROLL_LABEL" desc="In Device Settings, the text next to the checkbox to set reverse scrolling.">
-    Reverse scrolling
+    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MOUSE_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse acceleration.">
     Enable mouse acceleration
@@ -1972,6 +2092,12 @@
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT_CELLULAR" desc="Settings &gt; Internet &gt; Mobile Data details: Label for the checkbox determining whether to automatically connect to the cellular network.">
     Automatically connect to cellular network
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_REMOVE" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to remove an eSIM cellular network">
+    Remove profile
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_RENAME" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to rename an eSIM cellular network">
+    Rename
+  </message>
   <message name="IDS_SETTINGS_INTERNET_BUTTON_ACTIVATE" desc="Settings &gt; Internet &gt; Network details: The label for the button to activate a Cellular network.">
     Activate
   </message>
@@ -2174,6 +2300,9 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_DISABLED" desc="Text to tell user multidevice features are turned off">
     Disabled
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_SUITE_TOGGLE_A11Y_LABEL" desc="Accessibility label for toggle button that enables/disables connected phone features.">
+    Connected phone features enable.
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING" desc="Name of a feature. This feature automatically offers the user to tether to their phone if their Bravebook is offline and their phone supports tethering.">
     Instant Tethering
   </message>
@@ -2192,11 +2321,47 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications section on the settings page.">
     Notifications
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications Badge section on the settings page.">
-    Notifications Badge
-  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Task Continuation section on the settings page.">
     Task Continuation
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on Chrome OS by ensuring that their phones' apps, content, and connectivity are available on their Chrome OS device.">
+    Make the best of your Android phone on your your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
+    View your phones notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Task Continuation' setting. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
+    View your active Brave tabs in Phone Hub
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on.">
+    Turn on notifications on Android phone
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTING_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the feature that will mirror phone notifications to their Bravebook.">
+    Connecting to your Phone
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" translateable="false" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the Phone Hub 'Notifications' toggle is switched on, and when the user has confirmed to turn on the feature.">
+    Make sure your phone is nearby, unlocked and has Bluetooth and Wi-Fi turned on. Turn on notifications toggle under Google Play Services&gt;Bravebook Phone Hub from your phone.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
+    Notifications turned on
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_SUMMARY" translateable="false" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
+    You will receive your phone notifications on your Bravebook
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SECTION_TITLE" desc="The title of the Wifi Sync section on the settings page. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone.">
+    Wi-Fi Sync
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
+    Sync Wi-Fi networks with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_ENABLE_WIFI_SYNC_V1_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page when the prerequisite 'Brave Sync' setting is not activated. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone. The description contains a link that leads to the toggle where the prerequisite 'Brave Sync' feature can be turned on and a 'Learn More' link to learn more about the 'Wifi Sync' feature.">
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_CHROME_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Wifi Sync' feature to be enabled. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
+    Turn on Brave Sync to use Wi-Fi Sync
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_LEARN_MORE_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to a page with more information about the 'Wifi Sync' feature. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
+    Wi-Fi Sync, Learn More
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
@@ -2209,11 +2374,20 @@
   <message name="IDS_SETTINGS_PEOPLE_ENABLE_SCREENLOCK" desc="The text on the checkbox to enable screenlocker for current user.">
     Show lock screen when waking from sleep
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_SCREEN_LOCK_ENABLE_TITLE" desc="The title on the toggle to enable screen lock for current user.">
+    Screen lock
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SCREEN_LOCK_ENABLE_SUBTITLE" desc="The subtitle on the toggle to enable screen lock for current user.">
+    Require password to unlock device for added security
+  </message>
   <message name="IDS_ASH_SETTINGS_LOCK_SCREEN_NOTIFICATION_SHOW" desc="One of options of the lock screen notification mode to show all the notifications and its contents on the lock screen.">
     Show all notification content
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_OR_PASSWORD" desc="The account password or a custom PIN can be used to unlock the device.">
     PIN or password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_ENABLE_PIN" desc="Text on the toggle that allows the user to enable PIN in addition to password for the lock screen.">
+    Use PIN in addition to password
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT" desc="Option to enable PIN auto-submit">
     Unlock automatically once PIN is entered
@@ -2295,6 +2469,9 @@
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK" desc="Text on the profiles page which opens up the security and sign-in section.">
     Security and sign-in
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SCREEN_LOCK_TITLE" desc="Text on the profiles page which opens up the screen lock and sign-in section.">
+    Screen lock and sign-in
   </message>
   <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure these settings.">
     Enter your password to configure screen lock
@@ -2473,8 +2650,11 @@
   <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_ON" desc="In Device Settings &gt; Power, menu item for idle behavior that prevents the screen from turning off and prevents the device from sleeping. String must be short enough to fit in a drop-down menu.">
     Keep display on
   </message>
-  <message name="IDS_SETTINGS_POWER_IDLE_OTHER" desc="In Device Settings &gt; Power, menu item for custom idle behavior.">
-    Other
+  <message name="IDS_SETTINGS_POWER_IDLE_SHUT_DOWN" desc="In Device Settings &gt; Power, menu item for idle behavior that shuts the device down when idle.">
+    Shut down
+  </message>
+  <message name="IDS_SETTINGS_POWER_IDLE_STOP_SESSION" desc="In Device Settings &gt; Power, menu item for idle behavior that stops the session when idle.">
+    Sign out
   </message>
   <message name="IDS_SETTINGS_POWER_LID_CLOSED_SLEEP_LABEL" desc="In Device Settings &gt; Power, label for suspending when cover is closed.">
     Sleep when cover is closed
@@ -2534,7 +2714,7 @@
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_ALWAYS_ON" desc="Always-on label for hotword-enable dropdown without DSP support.">
     Always on
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_OFF" desc="Off label for hotword-enable dropdown without DSP support." meaning="Ok Brave hotwording is disabled.">
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_OFF" desc="Off label for hotword-enable dropdown without DSP support." meaning="Ok Google hotwording is disabled.">
     Off
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS" desc="Title for the Assistant voice settings.">
@@ -2902,6 +3082,9 @@
   <message name="IDS_SETTINGS_KEYBOARD_SHOW_LANGUAGE_AND_INPUT" desc="The link to navigate to the language and input method settings.">
     Change language and input settings
   </message>
+  <message name="IDS_SETTINGS_KEYBOARD_SHOW_INPUT_SETTINGS" desc="The link to navigate to input method settings.">
+    Change input settings
+  </message>
   <message name="IDS_SETTINGS_KEYBOARD_KEY_LAUNCHER" desc="In Device Settings, the label and dropdown list item for the Search key on keyboard layouts of newer Bravebooks.">
     Launcher
   </message>
@@ -2974,8 +3157,35 @@
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Parallels shared folder.">
     Stop sharing
   </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_FAILURE_DIALOG_MESSAGE" desc="Message to show user when unsharing a Parallels shared folder fails. Do not translate 'Parallels Desktop'">
+    Couldn't unshare because an application is using this folder. The folder will be unshared when Parallels Desktop is next shut down.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_FAILURE_DIALOG_TITLE" desc="Title of the error dialog shown to a user when unsharing a Parallels shared folder fails.">
+    Unshare failed
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_FAILURE_TRY_AGAIN" desc="Button text in the dialog shown when unsharing a Parallels shared folder fails.  Pressing this button will attempt to unshare the folder again.">
+    Try again
+  </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_EMPTY_MESSAGE" desc="Message shown when the user has not yet shared any folders in Parallels.">
     Shared folders will appear here
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
+    Manage USB devices
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'Parallels Desktop'.">
+    Give Parallels Desktop permission to access USB devices. Parallels Desktop won't remember a USB device after it's removed.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
+    Only supported devices are shown.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
+    Available USB devices will appear here.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_IN_USE" desc="Dialog title describing that a USB device is currently in use.">
+    Device in use
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_REASSIGN" desc="Confirmation explaining to users that reassigning a USB device from being attached from one VM to another could cause errors.">
+     "<ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph>" is in use. Reassigning the device while it's in use could cause errors. Are you sure you want to continue?
   </message>
 
   <!-- Storage -->

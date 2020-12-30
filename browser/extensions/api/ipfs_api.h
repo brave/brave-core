@@ -15,12 +15,12 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class IpfsGetIPFSResolveMethodListFunction : public ExtensionFunction {
+class IpfsGetResolveMethodListFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("ipfs.getIPFSResolveMethodList", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("ipfs.getResolveMethodList", UNKNOWN)
 
  protected:
-  ~IpfsGetIPFSResolveMethodListFunction() override {}
+  ~IpfsGetResolveMethodListFunction() override {}
   ResponseAction Run() override;
 };
 
@@ -30,6 +30,54 @@ class IpfsGetIPFSEnabledFunction : public ExtensionFunction {
 
  protected:
   ~IpfsGetIPFSEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsGetResolveMethodTypeFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getResolveMethodType", UNKNOWN)
+
+ protected:
+  ~IpfsGetResolveMethodTypeFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsLaunchFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.launch", UNKNOWN)
+
+ protected:
+  void OnLaunch(bool);
+  ~IpfsLaunchFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsShutdownFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.shutdown", UNKNOWN)
+
+ protected:
+  void OnShutdown(bool);
+  ~IpfsShutdownFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsGetConfigFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getConfig", UNKNOWN)
+
+ protected:
+  void OnGetConfig(bool, const std::string& config);
+  ~IpfsGetConfigFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsGetExecutableAvailableFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.getExecutableAvailable", UNKNOWN)
+
+ protected:
+  ~IpfsGetExecutableAvailableFunction() override {}
   ResponseAction Run() override;
 };
 

@@ -79,6 +79,7 @@ class BinanceService : public KeyedService {
         void(const BinanceCoinNetworks&)>;
 
   bool GetAccessToken(GetAccessTokenCallback callback);
+  bool IsSupportedRegion();
   bool GetConvertQuote(const std::string& from,
       const std::string& to,
       const std::string& amount,

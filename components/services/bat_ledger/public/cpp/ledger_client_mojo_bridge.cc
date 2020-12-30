@@ -6,7 +6,6 @@
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 
 #include "base/logging.h"
-#include "brave/base/containers/utils.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

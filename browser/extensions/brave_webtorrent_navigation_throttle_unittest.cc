@@ -11,8 +11,6 @@
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
-#include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/load_error_reporter.h"

@@ -5,38 +5,18 @@
 
 #include <random>
 
-#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
-#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
-using blink::LocalFrame;
-using WTF::String;
-using WTF::StringBuilder;
-
-namespace brave {
-
-const int kFarbledUserAgentMaxExtraSpaces = 5;
-
-String FarbledUserAgent(LocalFrame* frame, std::mt19937_64 prng) {
-  StringBuilder result;
-  result.Append(frame->Loader().UserAgent());
-  int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
-  for (int i = 0; i < extra; i++)
-    result.Append(" ");
-  return result.ToString();
-}
-
-}  // namespace brave
-
-#define BRAVE_NAVIGATOR_USERAGENT                                    \
-  if (!AllowFingerprinting(GetFrame()))                              \
-    return brave::FarbledUserAgent(                                  \
-        GetFrame(),                                                  \
-        brave::BraveSessionCache::From(*(GetFrame()->DomWindow()))   \
-            .MakePseudoRandomGenerator());
+#define BRAVE_NAVIGATOR_USERAGENT                                           \
+  if (blink::WebContentSettingsClient* settings =                           \
+          brave::GetContentSettingsClientFor(GetExecutionContext())) {      \
+    if (!settings->AllowFingerprinting(true)) {                             \
+      return brave::BraveSessionCache::From(*(GetExecutionContext()))       \
+          .FarbledUserAgent(DomWindow()->GetFrame()->Loader().UserAgent()); \
+    }                                                                       \
+  }
 
 #include "../../../../../../../third_party/blink/renderer/core/frame/navigator.cc"
 

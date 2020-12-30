@@ -137,10 +137,6 @@ void LedgerImpl::LoadURL(
 }
 
 void LedgerImpl::StartServices() {
-  if (!IsWalletCreated()) {
-    return;
-  }
-
   publisher()->SetPublisherServerListTimer();
   contribution()->SetReconcileTimer();
   promotion()->Refresh(false);
@@ -222,14 +218,7 @@ void LedgerImpl::OnStateInitialized(
 }
 
 void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
-  wallet()->CreateWalletIfNecessary([this, callback](
-      const type::Result result) {
-    if (result == type::Result::WALLET_CREATED) {
-      StartServices();
-    }
-
-    callback(result);
-  });
+  wallet()->CreateWalletIfNecessary(callback);
 }
 
 void LedgerImpl::OneTimeTip(
@@ -278,8 +267,7 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
-  if (!state()->GetRewardsMainEnabled() ||
-      !state()->GetAutoContributeEnabled()) {
+  if (!state()->GetAutoContributeEnabled()) {
     return;
   }
 
@@ -297,7 +285,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   last_tab_active_time_ = 0;
 
   if (type == GITHUB_MEDIA_TYPE) {
-      std::map<std::string, std::string> parts;
+      base::flat_map<std::string, std::string> parts;
       parts["duration"] = std::to_string(duration);
       media()->ProcessMedia(parts, type, iter->second.Clone());
     return;
@@ -326,7 +314,7 @@ void LedgerImpl::OnBackground(uint32_t tab_id, const uint64_t& current_time) {
 void LedgerImpl::OnXHRLoad(
     uint32_t tab_id,
     const std::string& url,
-    const std::map<std::string, std::string>& parts,
+    const base::flat_map<std::string, std::string>& parts,
     const std::string& first_party_url,
     const std::string& referrer,
     type::VisitDataPtr visit_data) {
@@ -359,7 +347,7 @@ void LedgerImpl::OnPostData(
   }
 
   if (type == TWITCH_MEDIA_TYPE) {
-    std::vector<std::map<std::string, std::string>> twitchParts;
+    std::vector<base::flat_map<std::string, std::string>> twitchParts;
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
       media()->ProcessMedia(twitchParts[i], type, std::move(visit_data));
@@ -368,7 +356,7 @@ void LedgerImpl::OnPostData(
   }
 
   if (type == VIMEO_MEDIA_TYPE) {
-    std::vector<std::map<std::string, std::string>> parts;
+    std::vector<base::flat_map<std::string, std::string>> parts;
     braveledger_media::GetVimeoParts(post_data, &parts);
 
     for (auto part = parts.begin(); part != parts.end(); part++) {
@@ -398,11 +386,6 @@ void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
   database()->GetExcludedList(callback);
 }
 
-void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
-  state()->SetRewardsMainEnabled(enabled);
-  publisher()->SetPublisherServerListTimer();
-}
-
 void LedgerImpl::SetPublisherMinVisitTime(int duration) {
   state()->SetPublisherMinVisitTime(duration);
 }
@@ -429,10 +412,6 @@ void LedgerImpl::SetAutoContributeEnabled(bool enabled) {
 
 uint64_t LedgerImpl::GetReconcileStamp() {
   return state()->GetReconcileStamp();
-}
-
-bool LedgerImpl::GetRewardsMainEnabled() {
-  return state()->GetRewardsMainEnabled();
 }
 
 int LedgerImpl::GetPublisherMinVisitTime() {
@@ -532,11 +511,6 @@ void LedgerImpl::RestorePublishers(ledger::ResultCallback callback) {
   database()->RestorePublishers(callback);
 }
 
-bool LedgerImpl::IsWalletCreated() {
-  const auto stamp = state()->GetCreationStamp();
-  return stamp != 0u;
-}
-
 void LedgerImpl::GetPublisherActivityFromUrl(
     uint64_t windowId,
     type::VisitDataPtr visit_data,
@@ -632,7 +606,7 @@ void LedgerImpl::StartMonthlyContribution() {
 
 void LedgerImpl::SaveMediaInfo(
     const std::string& type,
-    const std::map<std::string, std::string>& data,
+    const base::flat_map<std::string, std::string>& data,
     ledger::PublisherInfoCallback callback) {
   media()->SaveMediaInfo(type, data, callback);
 }
@@ -683,7 +657,7 @@ bool LedgerImpl::GetInlineTippingPlatformEnabled(
 }
 
 std::string LedgerImpl::GetShareURL(
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   return publisher()->GetShareURL(args);
 }
 
@@ -736,7 +710,7 @@ void LedgerImpl::GetUpholdWallet(ledger::UpholdWalletCallback callback) {
 
 void LedgerImpl::ExternalWalletAuthorization(
     const std::string& wallet_type,
-    const std::map<std::string, std::string>& args,
+    const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   wallet()->ExternalWalletAuthorization(
       wallet_type,
@@ -833,6 +807,29 @@ void LedgerImpl::GetEventLogs(ledger::GetEventLogsCallback callback) {
 
 bool LedgerImpl::IsShuttingDown() const {
   return shutting_down_;
+}
+
+void LedgerImpl::GetBraveWallet(GetBraveWalletCallback callback) {
+  callback(wallet()->GetWallet());
+}
+
+std::string LedgerImpl::GetWalletPassphrase() const {
+  const auto brave_wallet = wallet()->GetWallet();
+  if (!brave_wallet) {
+    return "";
+  }
+
+  return wallet()->GetWalletPassphrase(brave_wallet->Clone());
+}
+
+void LedgerImpl::LinkBraveWallet(
+    const std::string& destination_payment_id,
+    ResultCallback callback) {
+  wallet()->LinkBraveWallet(destination_payment_id, callback);
+}
+
+void LedgerImpl::GetTransferableAmount(GetTransferableAmountCallback callback) {
+  promotion()->GetTransferableAmount(callback);
 }
 
 }  // namespace ledger

@@ -128,3 +128,9 @@ export const StyledNote = styled<{}, 'div'>('div')`
   color: ${p => p.theme.palette.whiteFade30};
   margin-top: 15px;
 `
+
+export const NoteText = styled<{}, 'div'>('div')`
+  color: ${p => p.theme.palette.whiteFade15};
+  font-size: 12px;
+  margin-top: 15px;
+`

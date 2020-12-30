@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
+index fe4ed640fa87e7fca3d2cdad77a17a610b00d1d0..7ef7602c4be7536b2926576bc5dd86304c088e37 100644
+--- a/components/content_settings/core/browser/content_settings_default_provider.cc
++++ b/components/content_settings/core/browser/content_settings_default_provider.cc
+@@ -440,6 +440,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+   }
+   prefs_->ClearPref(kDeprecatedNativeFileSystemWriteGuardDefaultPref);
+ #endif  // !defined(OS_ANDROID)
++BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
+ }
+ 
+ }  // namespace content_settings

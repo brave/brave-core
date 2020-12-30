@@ -5,7 +5,6 @@
 package org.chromium.chrome.browser;
 
 public interface BraveRewardsObserver {
-  default public void OnWalletInitialized(int error_code) {};
   default public void OnRewardsParameters(int errorCode) {};
   default public void OnPublisherInfo(int tabId) {};
   default public void OnGetCurrentBalanceReport(double[] report) {};
@@ -15,14 +14,11 @@ public interface BraveRewardsObserver {
   default public void OnGetLatestNotification(String id, int type, long timestamp,
             String[] args) {};
   default public void OnNotificationDeleted(String id) {};
-  default public void OnIsWalletCreated(boolean created) {};
   default public void OnGetPendingContributionsTotal(double amount) {};
-  default public void OnGetRewardsMainEnabled(boolean enabled) {};
   default public void OnGetAutoContributeProperties() {};
   default public void OnGetReconcileStamp(long timestamp) {};
   default public void OnRecurringDonationUpdated() {};
   default public void OnResetTheWholeState(boolean success) {};
-  default public void OnRewardsMainEnabled(boolean enabled) {};
   default public void OnGrantFinish(int result) {};
   default public void OnGetExternalWallet(int error_code,
           String external_wallet) {};
@@ -33,4 +29,6 @@ public interface BraveRewardsObserver {
   default public void OnClaimPromotion(int error_code) {};
   default public void OnRecoverWallet(int errorCode) {};
   default public void OnRefreshPublisher(int status, String publisherKey){};
+  default public void OnOneTimeTip(){};
+  default public void OnStartProcess(){};
 }

@@ -1,0 +1,21 @@
+diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
+index 378c2895c6095940cf169183628eb38e6fad4f64..301c655b52ae73a2bafe2ab220b471b84d8349af 100644
+--- a/components/sync_device_info/device_info_sync_bridge.cc
++++ b/components/sync_device_info/device_info_sync_bridge.cc
+@@ -173,6 +173,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
+         GetSpecificsFieldNumberFromModelType(data_type));
+   }
+ 
++  BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
+   return specifics;
+ }
+ 
+@@ -308,7 +309,7 @@ base::Optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+     // Each device is the authoritative source for itself, ignore any remote
+     // changes that have a cache guid that is or was this local device.
+     if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {
+-      continue;
++      if (change->type() != EntityChange::ACTION_DELETE) continue;
+     }
+ 
+     if (change->type() == EntityChange::ACTION_DELETE) {

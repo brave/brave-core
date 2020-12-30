@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/BUILD.gn b/third_party/blink/renderer/BUILD.gn
+index e70d561c630d7ad8787543a591ad6c89d01ee743..8441c7667f1c0cac34ace195ede7036cc67b50e5 100644
+--- a/third_party/blink/renderer/BUILD.gn
++++ b/third_party/blink/renderer/BUILD.gn
+@@ -9,6 +9,7 @@ if (is_clang) {
+ }
+ 
+ visibility = [ "//third_party/blink/*" ]
++visibility += brave_blink_renderer_modules_visibility
+ 
+ # arguments --------------------------------------------------------------------
+ 

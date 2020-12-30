@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/brave_features.h"
 #include "brave/common/network_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -27,7 +26,6 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
  public:
   GlobalPrivacyControlNetworkDelegateBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(features::kGlobalPrivacyControl);
   }
 
   void SetUpOnMainThread() override {
@@ -70,9 +68,6 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
     return header_result_;
   }
 
- protected:
-  base::test::ScopedFeatureList feature_list_;
-
  private:
   net::test_server::EmbeddedTestServer https_server_;
   mutable base::Lock header_result_lock_;
@@ -105,22 +100,4 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
                                   "  navigator.globalPrivacyControl = false;"
                                   "  return navigator.globalPrivacyControl;"
                                   "})()"));
-}
-
-class DisabledGlobalPrivacyControlNetworkDelegateBrowserTest
-    : public GlobalPrivacyControlNetworkDelegateBrowserTest {
- public:
-  DisabledGlobalPrivacyControlNetworkDelegateBrowserTest() {
-    feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(features::kGlobalPrivacyControl);
-  }
-};
-
-// When kGlobalPrivacyControl is disabled, the Sec-GPC flag should not appear
-// on request headers.
-IN_PROC_BROWSER_TEST_F(DisabledGlobalPrivacyControlNetworkDelegateBrowserTest,
-                       ExcludesSecGPCHeader) {
-  const GURL target = https_server().GetURL("example.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
-  EXPECT_EQ(header_result(), GPCHeaderResult::kNoHeader);
 }

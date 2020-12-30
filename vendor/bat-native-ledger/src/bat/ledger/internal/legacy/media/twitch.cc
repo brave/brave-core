@@ -42,10 +42,10 @@ Twitch::~Twitch() {
 
 // static
 std::pair<std::string, std::string> Twitch::GetMediaIdFromParts(
-    const std::map<std::string, std::string>& parts) {
+    const base::flat_map<std::string, std::string>& parts) {
   std::string id;
   std::string user_id;
-  std::map<std::string, std::string>::const_iterator iter =
+  base::flat_map<std::string, std::string>::const_iterator iter =
         parts.find("event");
   if (iter != parts.end() && parts.find("properties") != parts.end()) {
     unsigned int size = _twitch_events.size();
@@ -292,7 +292,7 @@ void Twitch::OnMediaActivityError(const ledger::type::VisitData& visit_data,
   }
 }
 
-void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
+void Twitch::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                                const ledger::type::VisitData& visit_data) {
   std::pair<std::string, std::string> site_ids(GetMediaIdFromParts(parts));
   std::string media_id = site_ids.first;
@@ -305,7 +305,8 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
                                                          TWITCH_MEDIA_TYPE);
 
   ledger::type::MediaEventInfo twitch_info;
-  std::map<std::string, std::string>::const_iterator iter = parts.find("event");
+  base::flat_map<std::string, std::string>::const_iterator iter =
+      parts.find("event");
   if (iter != parts.end()) {
     twitch_info.event = iter->second;
   }
@@ -379,8 +380,8 @@ void Twitch::OnMediaPublisherInfo(
 
   if (publisher_info) {
     ledger::type::MediaEventInfo old_event;
-    std::map<std::string, ledger::type::MediaEventInfo>::const_iterator iter =
-        twitch_events.find(media_key);
+    base::flat_map<std::string, ledger::type::MediaEventInfo>::const_iterator
+        iter = twitch_events.find(media_key);
     if (iter != twitch_events.end()) {
       old_event = iter->second;
     }

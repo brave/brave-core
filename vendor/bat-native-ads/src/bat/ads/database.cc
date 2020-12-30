@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+#include "third_party/sqlite/sqlite3.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -105,8 +106,7 @@ DBRecordPtr CreateRecord(
 
 Database::Database(
     const base::FilePath& path)
-    : db_path_(path),
-      is_initialized_(false) {
+    : db_path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
   db_.set_error_callback(base::BindRepeating(&Database::OnErrorCallback,
@@ -203,9 +203,9 @@ DBCommandResponse::Status Database::Initialize(
     }
 
     is_initialized_ = true;
-    memory_pressure_listener_.reset(new base::MemoryPressureListener(
-        FROM_HERE,
-        base::Bind(&Database::OnMemoryPressure, base::Unretained(this))));
+    memory_pressure_listener_.reset(new base::MemoryPressureListener(FROM_HERE,
+        base::BindRepeating(
+            &Database::OnMemoryPressure, base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
@@ -229,11 +229,9 @@ DBCommandResponse::Status Database::Execute(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  bool result = db_.Execute(command->command.c_str());
-
-  if (!result) {
+  const int error = db_.ExecuteAndReturnErrorCode(command->command.c_str());
+  if (error != SQLITE_OK) {
     BLOG(0, "Database error: " << db_.GetErrorMessage());
-
     return DBCommandResponse::Status::COMMAND_ERROR;
   }
 
@@ -248,16 +246,18 @@ DBCommandResponse::Status Database::Run(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement;
+  statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
+  if (!statement.is_valid()) {
+    NOTREACHED();
+    return DBCommandResponse::Status::COMMAND_ERROR;
+  }
 
   for (const auto& binding : command->bindings) {
     Bind(&statement, *binding.get());
   }
 
   if (!statement.Run()) {
-    BLOG(0, "Database error: " << db_.GetErrorMessage() << " ("
-        << db_.GetErrorCode() << ")");
-
     return DBCommandResponse::Status::COMMAND_ERROR;
   }
 
@@ -274,7 +274,12 @@ DBCommandResponse::Status Database::Read(
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement;
+  statement.Assign(db_.GetUniqueStatement(command->command.c_str()));
+  if (!statement.is_valid()) {
+    NOTREACHED();
+    return DBCommandResponse::Status::COMMAND_ERROR;
+  }
 
   for (const auto& binding : command->bindings) {
     Bind(&statement, *binding.get());
@@ -309,7 +314,7 @@ DBCommandResponse::Status Database::Migrate(
 void Database::OnErrorCallback(
     const int error,
     sql::Statement* statement) {
-  BLOG(1, "Database error: " << db_.GetDiagnosticInfo(error, statement));
+  BLOG(0, "Database error: " << db_.GetDiagnosticInfo(error, statement));
 }
 
 void Database::OnMemoryPressure(

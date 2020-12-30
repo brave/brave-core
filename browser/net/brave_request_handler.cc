@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -21,7 +22,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -49,6 +50,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
+#include "brave/components/ipfs/features.h"
 #endif
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -92,9 +94,13 @@ void BraveRequestHandler::SetupCallbacks() {
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  callback =
-      base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
-  before_url_request_callbacks_.push_back(callback);
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
+    before_url_request_callbacks_.push_back(callback);
+    brave::OnHeadersReceivedCallback ipfs_headers_received_callback =
+        base::Bind(ipfs::OnHeadersReceived_IPFSRedirectWork);
+    headers_received_callbacks_.push_back(ipfs_headers_received_callback);
+  }
 #endif
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
@@ -240,10 +246,9 @@ void BraveRequestHandler::RunNextCallback(
            ctx->next_url_request_index) {
       brave::OnBeforeURLRequestCallback callback =
           before_url_request_callbacks_[ctx->next_url_request_index++];
-      brave::ResponseCallback next_callback = base::Bind(
-          &BraveRequestHandler::RunNextCallback,
-          weak_factory_.GetWeakPtr(),
-          ctx);
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveRequestHandler::RunNextCallback,
+                     weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -257,10 +262,9 @@ void BraveRequestHandler::RunNextCallback(
            ctx->next_url_request_index) {
       brave::OnBeforeStartTransactionCallback callback =
           before_start_transaction_callbacks_[ctx->next_url_request_index++];
-      brave::ResponseCallback next_callback = base::Bind(
-          &BraveRequestHandler::RunNextCallback,
-          weak_factory_.GetWeakPtr(),
-          ctx);
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveRequestHandler::RunNextCallback,
+                     weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->headers, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -273,10 +277,9 @@ void BraveRequestHandler::RunNextCallback(
     while (headers_received_callbacks_.size() != ctx->next_url_request_index) {
       brave::OnHeadersReceivedCallback callback =
           headers_received_callbacks_[ctx->next_url_request_index++];
-      brave::ResponseCallback next_callback = base::Bind(
-          &BraveRequestHandler::RunNextCallback,
-          weak_factory_.GetWeakPtr(),
-          ctx);
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveRequestHandler::RunNextCallback,
+                     weak_factory_.GetWeakPtr(), ctx);
       rv = callback.Run(ctx->original_response_headers,
                         ctx->override_response_headers,
                         ctx->allowed_unsafe_redirect_url, next_callback, ctx);
@@ -300,10 +303,11 @@ void BraveRequestHandler::RunNextCallback(
         IsRequestIdentifierValid(ctx->request_identifier)) {
       *ctx->new_url = GURL(ctx->new_url_spec);
     }
-    if (ctx->blocked_by == brave::kAdBlocked) {
-      if (ctx->cancel_request_explicitly) {
+    if (ctx->blocked_by == brave::kAdBlocked ||
+        ctx->blocked_by == brave::kOtherBlocked) {
+      if (!ctx->ShouldMockRequest()) {
         RunCallbackForRequestIdentifier(ctx->request_identifier,
-                                        net::ERR_ABORTED);
+                                        net::ERR_BLOCKED_BY_CLIENT);
         return;
       }
     }

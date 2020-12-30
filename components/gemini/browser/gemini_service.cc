@@ -32,6 +32,7 @@
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 namespace {
   const char oauth_host[] = "exchange.gemini.com";
@@ -442,9 +443,9 @@ bool GeminiService::OAuthRequest(const GURL &url,
                                   const std::string& payload) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags = net::LOAD_BYPASS_CACHE |
                         net::LOAD_DISABLE_CACHE |
-                        net::LOAD_DO_NOT_SEND_COOKIES |
                         net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = method;
 

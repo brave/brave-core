@@ -1,19 +1,20 @@
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_together/buildflags/buildflags.gni")
-import("//brave/components/moonpay/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
+import(
+    "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -22,30 +23,23 @@ import("//extensions/buildflags/buildflags.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-declare_args() {
-  brave_stats_api_key = ""
-}
-
 source_set("browser_process") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
   visibility = [
-    "//chrome/browser/*",
-    "//brave/browser/*",
     "//brave:browser_dependencies",
+    "//brave/browser/*",
     "//brave/components/brave_ads/test:*",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:*",
+    "//brave/components/ipfs/test:*",
     "//brave/test:*",
+    "//chrome/browser/*",
   ]
 
   sources = [
     "autocomplete/brave_autocomplete_scheme_classifier.cc",
     "autocomplete/brave_autocomplete_scheme_classifier.h",
-    "brave_shields/ad_block_pref_service_factory.cc",
-    "brave_shields/ad_block_pref_service_factory.h",
-    "brave_shields/cookie_pref_service_factory.cc",
-    "brave_shields/cookie_pref_service_factory.h",
     "brave_browser_main_extra_parts.cc",
     "brave_browser_main_extra_parts.h",
     "brave_browser_main_parts.cc",
@@ -58,6 +52,10 @@ source_set("browser_process") {
     "brave_local_state_prefs.h",
     "brave_profile_prefs.cc",
     "brave_profile_prefs.h",
+    "brave_shields/ad_block_pref_service_factory.cc",
+    "brave_shields/ad_block_pref_service_factory.h",
+    "brave_shields/cookie_pref_service_factory.cc",
+    "brave_shields/cookie_pref_service_factory.h",
     "brave_tab_helpers.cc",
     "brave_tab_helpers.h",
     "browser_context_keyed_service_factories.cc",
@@ -76,6 +74,8 @@ source_set("browser_process") {
     "search_engines/guest_window_search_engine_provider_service.h",
     "search_engines/private_window_search_engine_provider_service.cc",
     "search_engines/private_window_search_engine_provider_service.h",
+    "search_engines/search_engine_provider_service.cc",
+    "search_engines/search_engine_provider_service.h",
     "search_engines/search_engine_provider_service_factory.cc",
     "search_engines/search_engine_provider_service_factory.h",
     "search_engines/search_engine_provider_util.cc",
@@ -84,8 +84,6 @@ source_set("browser_process") {
     "search_engines/search_engine_tracker.h",
     "search_engines/tor_window_search_engine_provider_service.cc",
     "search_engines/tor_window_search_engine_provider_service.h",
-    "search_engines/search_engine_provider_service.cc",
-    "search_engines/search_engine_provider_service.h",
     "update_util.cc",
     "update_util.h",
   ]
@@ -107,25 +105,28 @@ source_set("browser_process") {
 
   deps = [
     ":sparkle_buildflags",
-    ":stats_updater",
     ":version_info",
-    "autoplay",
+    "brave_stats:stats_updater",
+    "browsing_data",
     "content_settings",
     "download",
+    "ephemeral_storage",
     "farbling",
     "net",
+    "ntp_background_images",
     "profiles",
     "renderer_context_menu",
+    "search",
+    "sync",
+    "themes",
     "ui",
     "//base",
+    "//brave/browser/brave_ads/notifications",
     "//brave/browser/net",
-    "//brave/browser/notifications",
-    "//brave/browser/tor:buildflags",
     "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/binance/browser/buildflags",
-    "//brave/components/gemini/browser/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_referrals/buildflags",
@@ -133,31 +134,35 @@ source_set("browser_process") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync",
     "//brave/components/brave_together/browser",
-    "//brave/components/brave_wallet/browser/buildflags",
+    "//brave/components/brave_wallet/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/crypto_dot_com/browser/buildflags",
+    "//brave/components/gemini/browser/buildflags",
     "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/ipfs/browser/buildflags",
+    "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/browser",
-    "//brave/components/moonpay/browser/buildflags",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
+    "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
+    "//brave/ui/brave_ads",
+    "//brave/ui/brave_ads/public/cpp",
     "//chrome/common",
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
     "//components/content_settings/browser",
-    "//components/content_settings/core/common",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//components/embedder_support",
-    "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/gcm_driver:gcm_driver",
     "//components/keyed_service/content",
     "//components/metrics",
     "//components/password_manager/core/common",
@@ -170,39 +175,24 @@ source_set("browser_process") {
     "//components/services/unzip/content",
     "//components/sessions",
     "//components/spellcheck/browser",
+    "//components/sync_device_info",
     "//components/unified_consent",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
-    "//brave/chromium_src:browser",
-    "browsing_data",
-    "themes",
-    "ntp_background_images",
+    "//services/metrics/public/cpp:metrics_cpp",
     "//services/network/public/cpp",
-    "//services/service_manager/embedder",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
   ]
 
-  if (enable_tor) {
-    sources += [
-      # TODO(bridiver) - change the directory for these
-      "extensions/brave_tor_client_updater.cc",
-      "extensions/brave_tor_client_updater.h",
-    ]
-    deps += [
-      "//third_party/re2",
-    ]
-  }
-
   if (brave_wallet_enabled) {
     deps += [
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/common",
       "brave_wallet",
+      "//brave/components/brave_wallet",
     ]
   }
 
@@ -214,9 +204,7 @@ source_set("browser_process") {
   }
 
   if (enable_brave_sync) {
-    deps += [
-      "//brave/components/brave_sync",
-    ]
+    deps += [ "//brave/components/brave_sync" ]
   }
 
   if (!is_android) {
@@ -231,37 +219,41 @@ source_set("browser_process") {
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {
-    deps += [
-      "android:android_browser_process",
-    ]
+    deps += [ "android:android_browser_process" ]
   }
 
   if (binance_enabled) {
     sources += [
-      "binance/binance_service_factory.cc",
-      "binance/binance_service_factory.h",
       "binance/binance_protocol_handler.cc",
       "binance/binance_protocol_handler.h",
+      "binance/binance_service_factory.cc",
+      "binance/binance_service_factory.h",
     ]
 
     deps += [
       "//brave/components/binance/browser",
       "//components/country_codes",
     ]
+
+    if (is_android) {
+      sources += [
+        "binance/android/binance_native_worker.cc",
+        "binance/android/binance_native_worker.h",
+      ]
+    }
   }
 
   if (gemini_enabled) {
     sources += [
-      "gemini/gemini_service_factory.cc",
-      "gemini/gemini_service_factory.h",
       "gemini/gemini_protocol_handler.cc",
       "gemini/gemini_protocol_handler.h",
+      "gemini/gemini_service_factory.cc",
+      "gemini/gemini_service_factory.h",
     ]
 
     deps += [
       "//base",
       "//brave/common",
-      "//brave/browser/profiles",
       "//brave/components/gemini/browser",
       "//components/country_codes",
       "//components/keyed_service/content",
@@ -269,6 +261,21 @@ source_set("browser_process") {
       "//content/public/browser",
       "//ui/base",
       "//url",
+    ]
+  }
+
+  if (crypto_dot_com_enabled) {
+    sources += [
+      "crypto_dot_com/crypto_dot_com_service_factory.cc",
+      "crypto_dot_com/crypto_dot_com_service_factory.h",
+    ]
+
+    deps += [
+      "//base",
+      "//brave/browser/profiles",
+      "//brave/components/crypto_dot_com/browser",
+      "//brave/components/crypto_dot_com/common",
+      "//components/keyed_service/content",
     ]
   }
 
@@ -284,31 +291,22 @@ source_set("browser_process") {
 
     deps += [
       "//brave/browser/infobars",
-      "//brave/components/ipfs/browser",
-      "//brave/components/ipfs/common",
+      "//brave/components/ipfs",
       "//brave/components/services/ipfs/public/mojom",
+      "//components/user_prefs",
       "//extensions/browser",
       "//extensions/common",
     ]
   }
 
   if (brave_together_enabled) {
-    deps += [
-      "//brave/components/brave_together/browser",
-    ]
-  }
-
-  if (moonpay_enabled) {
-    deps += [
-      "//brave/components/moonpay/browser",
-      "//brave/components/moonpay/common",
-    ]
+    deps += [ "//brave/components/brave_together/browser" ]
   }
 
   if (enable_tor) {
     deps += [
       "//brave/browser/tor",
-      "//brave/common/tor:pref_names",
+      "//brave/components/tor",
     ]
   }
 
@@ -317,7 +315,6 @@ source_set("browser_process") {
       "extensions",
       "//extensions/common:common_constants",
     ]
-
   }
 
   if (enable_brave_referrals) {
@@ -328,6 +325,7 @@ source_set("browser_process") {
     deps += [
       "//brave/components/brave_referrals/browser",
       "//brave/components/brave_referrals/common",
+      "//brave/components/brave_stats/browser",
     ]
   }
 
@@ -341,18 +339,18 @@ source_set("browser_process") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "brave_rewards/rewards_tab_helper.cc",
-      "brave_rewards/rewards_tab_helper.h",
       "brave_rewards/rewards_service_factory.cc",
       "brave_rewards/rewards_service_factory.h",
+      "brave_rewards/rewards_tab_helper.cc",
+      "brave_rewards/rewards_tab_helper.h",
     ]
 
     if (enable_extensions) {
       sources += [
-        "brave_rewards/extension_rewards_service_observer.cc",
-        "brave_rewards/extension_rewards_service_observer.h",
         "brave_rewards/extension_rewards_notification_service_observer.cc",
         "brave_rewards/extension_rewards_notification_service_observer.h",
+        "brave_rewards/extension_rewards_service_observer.cc",
+        "brave_rewards/extension_rewards_service_observer.h",
       ]
     }
 
@@ -375,15 +373,11 @@ source_set("browser_process") {
   }
 
   if (enable_brave_webtorrent) {
-    deps += [
-      "//brave/components/brave_webtorrent/browser",
-    ]
+    deps += [ "//brave/components/brave_webtorrent/browser" ]
   }
 
   if (enable_brave_wayback_machine) {
-    deps += [
-      "//brave/components/brave_wayback_machine",
-    ]
+    deps += [ "//brave/components/brave_wayback_machine" ]
   }
 
   if (enable_widevine) {
@@ -395,9 +389,7 @@ source_set("browser_process") {
   }
 
   if (enable_brave_perf_predictor) {
-    deps += [
-      "//brave/components/brave_perf_predictor/browser",
-    ]
+    deps += [ "//brave/components/brave_perf_predictor/browser" ]
   }
 
   if (enable_speedreader) {
@@ -418,25 +410,19 @@ source_set("browser_process") {
       "//chrome/browser/google/switches.h",
     ]
 
-    deps += [
-      "//google_update",
-    ]
+    deps += [ "//google_update" ]
   }
 }
 
 buildflag_header("sparkle_buildflags") {
   header = "sparkle_buildflags.h"
-  flags = [
-    "ENABLE_SPARKLE=$enable_sparkle",
-  ]
+  flags = [ "ENABLE_SPARKLE=$enable_sparkle" ]
 }
 
 source_set("version_info") {
   # these are only for version_info.cc and should not be exposed as public configs
   configs += [ "//brave/build:version" ]
-  defines = [
-    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
-  ]
+  defines = [ "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
 
   sources = [
     "version_info.cc",
@@ -444,48 +430,16 @@ source_set("version_info") {
   ]
 }
 
-source_set("stats_updater") {
-  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
-  check_includes = false
-  defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
-
-  sources = [
-    "brave_stats_updater.cc",
-    "brave_stats_updater.h",
-    "brave_stats_updater_params.cc",
-    "brave_stats_updater_params.h",
-    "brave_stats_updater_util.cc",
-    "brave_stats_updater_util.h",
-  ]
-
-  deps = [
-    ":version_info",
-    "//brave/common:pref_names",
-    "//brave/components/brave_referrals/buildflags",
-    "//chrome/common",
-  ]
-
-  if (enable_brave_referrals) {
-    deps += [
-      "//brave/components/brave_referrals/common",
-    ]
-  }
-}
-
 source_set("browser") {
   visibility = [
-    "//chrome/browser/*",
-    "//brave/browser/*",
     "//brave:browser_dependencies",
-    "//brave/test:*"
+    "//brave/browser/*",
+    "//brave/test:*",
+    "//chrome/browser/*",
   ]
 
-  deps = [
-    "//chrome/browser",
-  ]
+  deps = [ "//chrome/browser" ]
   if (enable_sparkle) {
-    deps += [
-      "//brave/vendor/sparkle:sparkle_framework_bundle_data"
-    ]
+    deps += [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
   }
 }

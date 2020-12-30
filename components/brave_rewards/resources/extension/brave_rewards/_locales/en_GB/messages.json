@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
+    "message": "Point Grants claimed",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Monthly Contributions",
+    "message": "Monthly contributions",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -196,10 +196,6 @@
   "braveAdsLaunchMsg": {
     "message": "Now you can earn by viewing ads.",
     "description": "Message for ads launch notification"
-  },
-  "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
-    "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
     "message": "Brave Ads",
@@ -466,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Pending contribution",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -603,6 +599,10 @@
     "message": "Cancel",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Change amount",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Login",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "You need to have minimum 25 BAT to create an Uphold account. Please try again later. <br/> If you already have a verified Uphold account, continue to login.",
+    "message": "You need to have minimum 25 BAT to create an Uphold account. Please try again later. \n If you already have a verified Uphold account, continue to login.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,39 @@
   "walletPending":  {
     "message": "Pending",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Note: Your transactions will be visible to Uphold once you authorise; for instance, they will be able to see the recipient of your tips and the amount.",
+    "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Earn Tokens & Give Back",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Start using Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "By proceeding, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

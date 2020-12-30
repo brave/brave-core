@@ -15,6 +15,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -22,9 +23,11 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
 
 using brave_ads::AdsService;
@@ -34,29 +37,6 @@ using brave_rewards::RewardsServiceFactory;
 
 namespace extensions {
 namespace api {
-
-BraveRewardsCreateWalletFunction::BraveRewardsCreateWalletFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsCreateWalletFunction::~BraveRewardsCreateWalletFunction() {
-}
-
-void BraveRewardsCreateWalletFunction::OnCreateWallet(
-    const ledger::type::Result result) {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->CreateWallet(
-        base::Bind(
-            &BraveRewardsCreateWalletFunction::OnCreateWallet,
-            weak_factory_.GetWeakPtr()));
-  }
-  return RespondNow(NoArguments());
-}
 
 BraveRewardsOpenBrowserActionUIFunction::
 ~BraveRewardsOpenBrowserActionUIFunction() {
@@ -134,24 +114,21 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     const ledger::type::Result result,
     ledger::type::PublisherInfoPtr info) {
   if (!info) {
-    Respond(
-        OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
+    Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
   }
 
-  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  dict->SetStringKey("publisherKey", info->id);
-  dict->SetStringKey("name", info->name);
-  dict->SetIntKey("percentage", info->percent);
-  dict->SetIntKey("status", static_cast<int>(info->status));
-  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
-  dict->SetStringKey("url", info->url);
-  dict->SetStringKey("provider", info->provider);
-  dict->SetStringKey("favIconUrl", info->favicon_url);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("publisherKey", info->id);
+  dict.SetStringKey("name", info->name);
+  dict.SetIntKey("percentage", info->percent);
+  dict.SetIntKey("status", static_cast<int>(info->status));
+  dict.SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict.SetStringKey("url", info->url);
+  dict.SetStringKey("provider", info->provider);
+  dict.SetStringKey("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(result)),
-      std::move(dict)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
 }
 
 BraveRewardsGetPublisherPanelInfoFunction::
@@ -184,24 +161,21 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     const ledger::type::Result result,
     ledger::type::PublisherInfoPtr info) {
   if (!info) {
-    Respond(
-        OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
+    Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
   }
 
-  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  dict->SetStringKey("publisherKey", info->id);
-  dict->SetStringKey("name", info->name);
-  dict->SetIntKey("percentage", info->percent);
-  dict->SetIntKey("status", static_cast<int>(info->status));
-  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
-  dict->SetStringKey("url", info->url);
-  dict->SetStringKey("provider", info->provider);
-  dict->SetStringKey("favIconUrl", info->favicon_url);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("publisherKey", info->id);
+  dict.SetStringKey("name", info->name);
+  dict.SetIntKey("percentage", info->percent);
+  dict.SetIntKey("status", static_cast<int>(info->status));
+  dict.SetIntKey("excluded", static_cast<int>(info->excluded));
+  dict.SetStringKey("url", info->url);
+  dict.SetStringKey("provider", info->provider);
+  dict.SetStringKey("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(result)),
-      std::move(dict)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(dict)));
 }
 
 BraveRewardsSavePublisherInfoFunction::
@@ -241,7 +215,7 @@ BraveRewardsSavePublisherInfoFunction::Run() {
 
 void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
     const ledger::type::Result result) {
-  Respond(OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
+  Respond(OneArgument(base::Value(static_cast<int>(result))));
 }
 
 BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() {
@@ -274,7 +248,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   auto params_dict = std::make_unique<base::DictionaryValue>();
   params_dict->SetString("publisherKey", params->publisher_key);
-  params_dict->SetBoolean("monthly", params->monthly);
+  params_dict->SetString("entryPoint", params->entry_point);
   params_dict->SetString(
       "url", contents ? contents->GetLastCommittedURL().spec() : std::string());
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
@@ -306,15 +280,47 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
+  extensions::ExtensionService* extension_service =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+  if (!extension_service) {
+    return RespondNow(Error("Extension service is not initialized"));
+  }
+
   AddRef();
 
-  rewards_service->GetPublisherInfo(
-      params->publisher_key,
-      base::Bind(
-          &BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
-          this));
+  extensions::ComponentLoader* component_loader =
+      extension_service->component_loader();
+  static_cast<extensions::BraveComponentLoader*>(component_loader)
+      ->AddRewardsExtension();
+
+  rewards_service->StartProcess(
+      base::BindOnce(
+          &BraveRewardsTipUserFunction::OnTipUserStartProcess,
+          this,
+          params->publisher_key));
 
   return RespondNow(NoArguments());
+}
+
+void BraveRewardsTipUserFunction::OnTipUserStartProcess(
+    const std::string& publisher_key,
+    ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
+    Release();
+    return;
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    Release();
+    return;
+  }
+
+  rewards_service->GetPublisherInfo(
+      publisher_key,
+      base::Bind(&BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo,
+                 this));
 }
 
 void BraveRewardsTipUserFunction::OnTipUserGetPublisherInfo(
@@ -394,6 +400,9 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   media_meta_data_dict.SetStringKey("mediaType", params->media_type);
   media_meta_data_dict.SetStringKey("publisherKey", params->publisher_key);
   media_meta_data_dict.SetStringKey("publisherName", params->publisher_name);
+  media_meta_data_dict.SetStringKey(
+      "publisherScreenName",
+      params->publisher_screen_name);
   media_meta_data_dict.SetStringKey("postId", params->post_id);
   media_meta_data_dict.SetStringKey("postTimestamp", params->post_timestamp);
   media_meta_data_dict.SetStringKey("postText", params->post_text);
@@ -404,175 +413,6 @@ void BraveRewardsTipUserFunction::ShowTipDialog() {
   params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
-}
-
-BraveRewardsTipRedditUserFunction::BraveRewardsTipRedditUserFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsTipRedditUserFunction::~BraveRewardsTipRedditUserFunction() {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsTipRedditUserFunction::Run() {
-  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
-      brave_rewards::TipRedditUser::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  if (!brave::IsRegularProfile(browser_context())) {
-    return RespondNow(
-        Error("Cannot tip Reddit user in a private context"));
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service = RewardsServiceFactory::GetForProfile(
-      profile);
-
-  if (rewards_service) {
-    AddRef();
-    std::map<std::string, std::string> args;
-    args["user_name"] = params->media_meta_data.user_name;
-    args["post_text"] = params->media_meta_data.post_text;
-    args["post_rel_date"] = params->media_meta_data.post_rel_date;
-    rewards_service->SaveInlineMediaInfo(
-        params->media_meta_data.media_type,
-        args,
-        base::Bind(
-            &BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved,
-            weak_factory_.GetWeakPtr()));
-  }
-
-  return RespondNow(NoArguments());
-}
-
-void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
-    ledger::type::PublisherInfoPtr publisher) {
-  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
-      brave_rewards::TipRedditUser::Params::Create(*args_));
-
-  if (!publisher) {
-    Release();
-    return;
-  }
-
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        false,
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    Release();
-    return;
-  }
-
-  std::unique_ptr<base::DictionaryValue> params_dict =
-      std::make_unique<base::DictionaryValue>();
-  params_dict->SetStringKey("publisherKey", publisher->id);
-  params_dict->SetStringKey("url", publisher->url);
-
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("name", publisher->name);
-  media_meta_data_dict.SetStringKey(
-      "userName", params->media_meta_data.user_name);
-  media_meta_data_dict.SetStringKey(
-      "postText", params->media_meta_data.post_text);
-  media_meta_data_dict.SetStringKey(
-      "postRelDate", params->media_meta_data.post_rel_date);
-  media_meta_data_dict.SetStringKey(
-      "mediaType", params->media_meta_data.media_type);
-  params_dict->SetPath(
-      "mediaMetaData", std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(
-      contents, std::move(params_dict));
-
-  Release();
-}
-
-BraveRewardsTipGitHubUserFunction::BraveRewardsTipGitHubUserFunction()
-    : weak_factory_(this) {
-}
-
-BraveRewardsTipGitHubUserFunction::~BraveRewardsTipGitHubUserFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsTipGitHubUserFunction::Run() {
-  std::unique_ptr<brave_rewards::TipGitHubUser::Params> params(
-      brave_rewards::TipGitHubUser::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  // Sanity check: don't allow tips in private / tor contexts,
-  // although the command should not have been enabled in the first place.
-  if (!brave::IsRegularProfile(browser_context())) {
-    return RespondNow(
-        Error("Cannot tip Twitter user in a private context"));
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    AddRef();
-    std::map<std::string, std::string> args;
-    args["user_name"] = params->media_meta_data.user_name;
-    if (args["user_name"].empty()) {
-      LOG(ERROR) << "Cannot tip user without username";
-    } else {
-      rewards_service->SaveInlineMediaInfo(
-          params->media_meta_data.media_type,
-          args,
-          base::Bind(&BraveRewardsTipGitHubUserFunction::
-                     OnGitHubPublisherInfoSaved,
-                     weak_factory_.GetWeakPtr()));
-    }
-  }
-  return RespondNow(NoArguments());
-}
-
-
-void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
-    ledger::type::PublisherInfoPtr publisher) {
-  std::unique_ptr<brave_rewards::TipGitHubUser::Params> params(
-      brave_rewards::TipGitHubUser::Params::Create(*args_));
-
-  if (!publisher) {
-    // TODO(nejczdovc): what should we do in this case?
-    Release();
-    return;
-  }
-
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        false,
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    Release();
-    return;
-  }
-
-  auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", publisher->id);
-  params_dict->SetString("url", publisher->url);
-
-  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
-  media_meta_data_dict.SetStringKey("mediaType",
-                                  params->media_meta_data.media_type);
-  media_meta_data_dict.SetStringKey("name", publisher->name);
-  media_meta_data_dict.SetStringKey("userName",
-                                  params->media_meta_data.user_name);
-  params_dict->SetPath("mediaMetaData",
-                       std::move(media_meta_data_dict));
-
-  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
-
-  Release();
 }
 
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
@@ -619,7 +459,7 @@ BraveRewardsGetRewardsParametersFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    base::Value data(base::Value::Type::DICTIONARY);
     return RespondNow(OneArgument(std::move(data)));
   }
 
@@ -631,18 +471,18 @@ BraveRewardsGetRewardsParametersFunction::Run() {
 
 void BraveRewardsGetRewardsParametersFunction::OnGet(
     ledger::type::RewardsParametersPtr parameters) {
-  auto data = std::make_unique<base::DictionaryValue>();
+  base::DictionaryValue data;
 
   if (!parameters) {
     return Respond(OneArgument(std::move(data)));
   }
 
-  data->SetDouble("rate", parameters->rate);
+  data.SetDouble("rate", parameters->rate);
   auto monthly_choices = std::make_unique<base::ListValue>();
   for (auto const& item : parameters->monthly_tip_choices) {
     monthly_choices->Append(base::Value(item));
   }
-  data->SetList("monthlyTipChoices", std::move(monthly_choices));
+  data.SetList("monthlyTipChoices", std::move(monthly_choices));
 
   Respond(OneArgument(std::move(data)));
 }
@@ -654,7 +494,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    base::Value data(base::Value::Type::DICTIONARY);
     return RespondNow(OneArgument(std::move(data)));
   }
 
@@ -673,16 +513,16 @@ ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
 void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
     const ledger::type::Result result,
     ledger::type::BalanceReportInfoPtr report) {
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  base::Value data(base::Value::Type::DICTIONARY);
   if (!report) {
     Respond(OneArgument(std::move(data)));
     return;
   }
-  data->SetDoubleKey("ads", report->earning_from_ads);
-  data->SetDoubleKey("contribute", report->auto_contribute);
-  data->SetDoubleKey("grant", report->grants);
-  data->SetDoubleKey("tips", report->one_time_donation);
-  data->SetDoubleKey("monthly", report->recurring_donation);
+  data.SetDoubleKey("ads", report->earning_from_ads);
+  data.SetDoubleKey("contribute", report->auto_contribute);
+  data.SetDoubleKey("grant", report->grants);
+  data.SetDoubleKey("tips", report->one_time_donation);
+  data.SetDoubleKey("monthly", report->recurring_donation);
   Respond(OneArgument(std::move(data)));
 }
 
@@ -709,8 +549,8 @@ ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-    data->SetIntKey("result", 1);
+    base::Value data(base::Value::Type::DICTIONARY);
+    data.SetIntKey("result", 1);
     return RespondNow(OneArgument(std::move(data)));
   }
 
@@ -729,13 +569,12 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
     const std::string& captcha_image,
     const std::string& hint,
     const std::string& captcha_id) {
-
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  data->SetIntKey("result", static_cast<int>(result));
-  data->SetStringKey("promotionId", promotion_id);
-  data->SetStringKey("captchaImage", captcha_image);
-  data->SetStringKey("captchaId", captcha_id);
-  data->SetStringKey("hint", hint);
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetIntKey("result", static_cast<int>(result));
+  data.SetStringKey("promotionId", promotion_id);
+  data.SetStringKey("captchaImage", captcha_image);
+  data.SetStringKey("captchaId", captcha_id);
+  data.SetStringKey("hint", hint);
   Respond(OneArgument(std::move(data)));
 }
 
@@ -749,7 +588,7 @@ ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(std::make_unique<base::Value>(1)));
+    return RespondNow(OneArgument(base::Value(1)));
   }
 
   rewards_service->AttestPromotion(params->promotion_id, params->solution,
@@ -764,23 +603,19 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
     const std::string& promotion_id,
     const ledger::type::Result result,
     ledger::type::PromotionPtr promotion) {
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  data->SetStringKey("promotionId", promotion_id);
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey("promotionId", promotion_id);
 
   if (!promotion) {
     Respond(
-        TwoArguments(
-            std::make_unique<base::Value>(static_cast<int>(result)),
-            std::move(data)));
+        TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
     return;
   }
 
-  data->SetIntKey("expiresAt", promotion->expires_at);
-  data->SetDoubleKey("amount", promotion->approximate_value);
-  data->SetIntKey("type", static_cast<int>(promotion->type));
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(result)),
-      std::move(data)));
+  data.SetIntKey("expiresAt", promotion->expires_at);
+  data.SetDoubleKey("amount", promotion->approximate_value);
+  data.SetIntKey("type", static_cast<int>(promotion->type));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
 }
 
 BraveRewardsGetPendingContributionsTotalFunction::
@@ -794,8 +629,7 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
     RewardsServiceFactory::GetForProfile(profile);
 
   if (!rewards_service) {
-    return RespondNow(OneArgument(
-          std::make_unique<base::Value>(0.0)));
+    return RespondNow(OneArgument(base::Value(0.0)));
   }
 
   rewards_service->GetPendingContributionsTotal(base::Bind(
@@ -806,32 +640,7 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
 
 void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
     double amount) {
-  Respond(OneArgument(std::make_unique<base::Value>(amount)));
-}
-
-BraveRewardsGetRewardsMainEnabledFunction::
-~BraveRewardsGetRewardsMainEnabledFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetRewardsMainEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetRewardsMainEnabled(base::Bind(
-        &BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled(
-    bool enabled) {
-  Respond(OneArgument(std::make_unique<base::Value>(enabled)));
+  Respond(OneArgument(base::Value(amount)));
 }
 
 BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() {
@@ -841,14 +650,40 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   std::unique_ptr<brave_rewards::SaveAdsSetting::Params> params(
       brave_rewards::SaveAdsSetting::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
   AdsService* ads_service_ = AdsServiceFactory::GetForProfile(profile);
-  if (ads_service_) {
-    if (params->key == "adsEnabled") {
-      const auto is_enabled =
-          params->value == "true" && ads_service_->IsSupportedLocale();
-      ads_service_->SetEnabled(is_enabled);
-    }
+
+  if (!rewards_service || !ads_service_) {
+    return RespondNow(Error("Service is not initialized"));
   }
+
+  if (params->key == "adsEnabled") {
+    const auto is_enabled =
+        params->value == "true" && ads_service_->IsSupportedLocale();
+    rewards_service->SetAdsEnabled(is_enabled);
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsSetAutoContributeEnabledFunction::
+~BraveRewardsSetAutoContributeEnabledFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsSetAutoContributeEnabledFunction::Run() {
+  std::unique_ptr<brave_rewards::SetAutoContributeEnabled::Params> params(
+      brave_rewards::SetAutoContributeEnabled::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->SetAutoContributeEnabled(params->enabled);
   return RespondNow(NoArguments());
 }
 
@@ -873,28 +708,7 @@ BraveRewardsGetACEnabledFunction::Run() {
 }
 
 void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
-  Respond(OneArgument(std::make_unique<base::Value>(enabled)));
-}
-
-BraveRewardsSaveSettingFunction::~BraveRewardsSaveSettingFunction() {
-}
-
-ExtensionFunction::ResponseAction BraveRewardsSaveSettingFunction::Run() {
-  std::unique_ptr<brave_rewards::SaveSetting::Params> params(
-      brave_rewards::SaveSetting::Params::Create(*args_));
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (rewards_service) {
-    if (params->key == "enabledMain") {
-      rewards_service->SetRewardsMainEnabled(
-          std::stoi(params->value.c_str()));
-    }
-  }
-
-  return RespondNow(NoArguments());
+  Respond(OneArgument(base::Value(enabled)));
 }
 
 BraveRewardsSaveRecurringTipFunction::
@@ -974,7 +788,7 @@ BraveRewardsGetRecurringTipsFunction::Run() {
 
 void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
     ledger::type::PublisherInfoList list) {
-  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  base::DictionaryValue result;
   auto recurringTips = std::make_unique<base::ListValue>();
 
   if (!list.empty()) {
@@ -986,7 +800,7 @@ void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
     }
   }
 
-  result->SetList("recurringTips", std::move(recurringTips));
+  result.SetList("recurringTips", std::move(recurringTips));
   Respond(OneArgument(std::move(result)));
 }
 
@@ -1017,29 +831,29 @@ BraveRewardsGetPublisherBannerFunction::Run() {
 
 void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
     ledger::type::PublisherBannerPtr banner) {
-  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  base::DictionaryValue result;
 
   if (banner) {
-    result->SetString("publisherKey", banner->publisher_key);
-    result->SetString("title", banner->title);
-    result->SetString("name", banner->name);
-    result->SetString("description", banner->description);
-    result->SetString("background", banner->background);
-    result->SetString("logo", banner->logo);
-    result->SetString("provider", banner->provider);
-    result->SetInteger("verified", static_cast<int>(banner->status));
+    result.SetString("publisherKey", banner->publisher_key);
+    result.SetString("title", banner->title);
+    result.SetString("name", banner->name);
+    result.SetString("description", banner->description);
+    result.SetString("background", banner->background);
+    result.SetString("logo", banner->logo);
+    result.SetString("provider", banner->provider);
+    result.SetInteger("verified", static_cast<int>(banner->status));
 
     auto amounts = std::make_unique<base::ListValue>();
     for (auto const& value : banner->amounts) {
       amounts->AppendInteger(value);
     }
-    result->SetList("amounts", std::move(amounts));
+    result.SetList("amounts", std::move(amounts));
 
     auto links = std::make_unique<base::DictionaryValue>();
     for (auto const& item : banner->links) {
       links->SetString(item.first, item.second);
     }
-    result->SetDictionary("links", std::move(links));
+    result.SetDictionary("links", std::move(links));
   }
 
   Respond(OneArgument(std::move(result)));
@@ -1056,9 +870,8 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(TwoArguments(
-        std::make_unique<base::Value>(false),
-        std::make_unique<base::Value>(std::string())));
+    return RespondNow(
+        TwoArguments(base::Value(false), base::Value(std::string())));
   }
   rewards_service->RefreshPublisher(
       params->publisher_key,
@@ -1071,9 +884,8 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
 void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
     const ledger::type::PublisherStatus status,
     const std::string& publisher_key) {
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(static_cast<int>(status)),
-      std::make_unique<base::Value>(publisher_key)));
+  Respond(TwoArguments(base::Value(static_cast<int>(status)),
+                       base::Value(publisher_key)));
 }
 
 BraveRewardsGetAllNotificationsFunction::
@@ -1086,7 +898,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
 
-  auto list = std::make_unique<base::ListValue>();
+  base::ListValue list;
 
   if (!rewards_service) {
     return RespondNow(OneArgument(std::move(list)));
@@ -1106,7 +918,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
     }
 
     item->SetList("args", std::move(args));
-    list->Append(std::move(item));
+    list.Append(std::move(item));
   }
 
   return RespondNow(OneArgument(std::move(list)));
@@ -1126,7 +938,7 @@ BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(std::make_unique<base::Value>(false)));
+    return RespondNow(OneArgument(base::Value(false)));
   }
 
   rewards_service->GetInlineTippingPlatformEnabled(
@@ -1140,7 +952,7 @@ BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
 
 void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
     bool value) {
-  Respond(OneArgument(std::make_unique<base::Value>(value)));
+  Respond(OneArgument(base::Value(value)));
 }
 
 BraveRewardsFetchBalanceFunction::
@@ -1153,7 +965,7 @@ BraveRewardsFetchBalanceFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    auto balance_value = std::make_unique<base::DictionaryValue>();
+    base::DictionaryValue balance_value;
     return RespondNow(OneArgument(std::move(balance_value)));
   }
 
@@ -1167,20 +979,19 @@ BraveRewardsFetchBalanceFunction::Run() {
 void BraveRewardsFetchBalanceFunction::OnBalance(
     const ledger::type::Result result,
     ledger::type::BalancePtr balance) {
-  auto balance_value = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+  base::Value balance_value(base::Value::Type::DICTIONARY);
   if (result == ledger::type::Result::LEDGER_OK && balance) {
-    balance_value->SetDoubleKey("total", balance->total);
+    balance_value.SetDoubleKey("total", balance->total);
 
     base::Value wallets(base::Value::Type::DICTIONARY);
     for (auto const& rate : balance->wallets) {
       wallets.SetDoubleKey(rate.first, rate.second);
     }
-    balance_value->SetKey("wallets", std::move(wallets));
+    balance_value.SetKey("wallets", std::move(wallets));
   } else {
-    balance_value->SetDoubleKey("total", 0.0);
+    balance_value.SetDoubleKey("total", 0.0);
     base::Value wallets(base::Value::Type::DICTIONARY);
-    balance_value->SetKey("wallets", std::move(wallets));
+    balance_value.SetKey("wallets", std::move(wallets));
   }
 
   Respond(OneArgument(std::move(balance_value)));
@@ -1196,8 +1007,7 @@ BraveRewardsGetExternalWalletFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-  auto data = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    base::Value data(base::Value::Type::DICTIONARY);
     return RespondNow(OneArgument(std::move(data)));
   }
 
@@ -1215,25 +1025,22 @@ void BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet(
     const ledger::type::Result result,
     ledger::type::UpholdWalletPtr wallet) {
   if (!wallet) {
-    Respond(OneArgument(
-        std::make_unique<base::Value>(static_cast<int>(result))));
+    Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
   }
 
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  data->SetStringKey("token", wallet->token);
-  data->SetStringKey("address", wallet->address);
-  data->SetIntKey("status", static_cast<int>(wallet->status));
-  data->SetStringKey("verifyUrl", wallet->verify_url);
-  data->SetStringKey("addUrl", wallet->add_url);
-  data->SetStringKey("withdrawUrl", wallet->withdraw_url);
-  data->SetStringKey("userName", wallet->user_name);
-  data->SetStringKey("accountUrl", wallet->account_url);
-  data->SetStringKey("loginUrl", wallet->login_url);
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey("token", wallet->token);
+  data.SetStringKey("address", wallet->address);
+  data.SetIntKey("status", static_cast<int>(wallet->status));
+  data.SetStringKey("verifyUrl", wallet->verify_url);
+  data.SetStringKey("addUrl", wallet->add_url);
+  data.SetStringKey("withdrawUrl", wallet->withdraw_url);
+  data.SetStringKey("userName", wallet->user_name);
+  data.SetStringKey("accountUrl", wallet->account_url);
+  data.SetStringKey("loginUrl", wallet->login_url);
 
-  Respond(TwoArguments(
-        std::make_unique<base::Value>(static_cast<int>(result)),
-        std::move(data)));
+  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
 }
 
 BraveRewardsDisconnectWalletFunction::
@@ -1266,11 +1073,11 @@ BraveRewardsOnlyAnonWalletFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(std::make_unique<base::Value>(false)));
+    return RespondNow(OneArgument(base::Value(false)));
   }
 
   const auto only = rewards_service->OnlyAnonWallet();
-  return RespondNow(OneArgument(std::make_unique<base::Value>(only)));
+  return RespondNow(OneArgument(base::Value(only)));
 }
 
 BraveRewardsGetAdsEnabledFunction::
@@ -1288,8 +1095,7 @@ BraveRewardsGetAdsEnabledFunction::Run() {
   }
 
   const bool enabled = ads_service_->IsEnabled();
-  return RespondNow(
-      OneArgument(std::make_unique<base::Value>(enabled)));
+  return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 BraveRewardsGetAdsEstimatedEarningsFunction::
@@ -1306,7 +1112,7 @@ BraveRewardsGetAdsEstimatedEarningsFunction::Run() {
     return RespondNow(Error("Ads service is not initialized"));
   }
 
-  ads_service_->GetTransactionHistory(base::Bind(
+  ads_service_->GetStatement(base::Bind(
       &BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings,
       this));
   return RespondLater();
@@ -1315,35 +1121,11 @@ BraveRewardsGetAdsEstimatedEarningsFunction::Run() {
 void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
     const bool success,
     const double estimated_pending_rewards,
-    const uint64_t next_payment_date_in_seconds,
-    const uint64_t ad_notifications_received_this_month) {
-  Respond(OneArgument(
-      std::make_unique<base::Value>(estimated_pending_rewards)));
-}
-
-BraveRewardsGetWalletExistsFunction::
-~BraveRewardsGetWalletExistsFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetWalletExistsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->IsWalletCreated(base::Bind(
-        &BraveRewardsGetWalletExistsFunction::OnGetWalletExists,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetWalletExistsFunction::OnGetWalletExists(
-    const bool exists) {
-  Respond(OneArgument(std::make_unique<base::Value>(exists)));
+    const uint64_t next_payment_date,
+    const uint64_t ads_received_this_month,
+    const double earnings_this_month,
+    const double earnings_last_month) {
+  Respond(OneArgument(base::Value(estimated_pending_rewards)));
 }
 
 BraveRewardsGetAdsSupportedFunction::
@@ -1361,8 +1143,7 @@ BraveRewardsGetAdsSupportedFunction::Run() {
   }
 
   const bool supported = ads_service_->IsSupportedLocale();
-  return RespondNow(
-      OneArgument(std::make_unique<base::Value>(supported)));
+  return RespondNow(OneArgument(base::Value(supported)));
 }
 
 BraveRewardsGetAnonWalletStatusFunction::
@@ -1386,7 +1167,7 @@ BraveRewardsGetAnonWalletStatusFunction::Run() {
 
 void BraveRewardsGetAnonWalletStatusFunction::OnGetAnonWalletStatus(
     const ledger::type::Result result) {
-  Respond(OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
+  Respond(OneArgument(base::Value(static_cast<int>(result))));
 }
 
 BraveRewardsIsInitializedFunction::
@@ -1403,8 +1184,50 @@ BraveRewardsIsInitializedFunction::Run() {
   }
 
   const bool initialized = rewards_service->IsInitialized();
-  return RespondNow(
-      OneArgument(std::make_unique<base::Value>(initialized)));
+  return RespondNow(OneArgument(base::Value(initialized)));
+}
+
+BraveRewardsShouldShowOnboardingFunction::
+~BraveRewardsShouldShowOnboardingFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsShouldShowOnboardingFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  const bool should_show = rewards_service->ShouldShowOnboarding();
+  return RespondNow(OneArgument(base::Value(should_show)));
+}
+
+BraveRewardsSaveOnboardingResultFunction::
+~BraveRewardsSaveOnboardingResultFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsSaveOnboardingResultFunction::Run() {
+  using ::brave_rewards::OnboardingResult;
+
+  std::unique_ptr<brave_rewards::SaveOnboardingResult::Params> params(
+      brave_rewards::SaveOnboardingResult::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  if (params->result == "opted-in") {
+    rewards_service->SaveOnboardingResult(OnboardingResult::kOptedIn);
+  } else if (params->result == "dismissed") {
+    rewards_service->SaveOnboardingResult(OnboardingResult::kDismissed);
+  } else {
+    NOTREACHED();
+  }
+
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api

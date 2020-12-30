@@ -36,17 +36,22 @@ declare namespace chrome.settingsPrivate {
     type: PrefType.STRING,
     value: string
   }
+  type PrefDictValue = {
+    type: PrefType.DICTIONARY
+    value: Object
+  }
   // TODO(petemill): implement other types as needed
 
   type PrefObject = {
     key: string
-  } & (PrefBooleanValue)
+  } & (PrefBooleanValue | PrefDictValue | SettingsNumberValue | SettingsStringValue)
 
   type GetPrefCallback = (pref: PrefObject) => void
   function getPref (key: string, callback: GetPrefCallback): void
 
   type SetPrefCallback = (success: boolean) => void
   function setPref (key: string, value: any, pageId?: string | null, callback?: SetPrefCallback): void
+  function setPref (key: string, value: any, callback?: SetPrefCallback): void
 
   type GetAllPrefsCallback = (prefs: PrefObject[]) => void
   function getAllPrefs (callback: GetAllPrefsCallback): void
@@ -63,24 +68,15 @@ declare namespace chrome.settingsPrivate {
 }
 
 declare namespace chrome.braveRewards {
-  const createWallet: () => {}
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
   const getPublisherPanelInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
   const savePublisherInfo: (windowId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string, callback: (result: RewardsExtension.Result) => void) => {}
-  const tipSite: (tabId: number, publisherKey: string, monthly: boolean) => {}
-  const tipUser: (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, favIconUrl: string, postId: string, postTimestamp: string, postText: string) => {}
-  const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
-  const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
+  const tipSite: (tabId: number, publisherKey: string, entryPoint: RewardsExtension.TipDialogEntryPoint) => {}
+  const tipUser: (tabId: number, mediaType: string, url: string, publisherKey: string, publisherName: string, publisherScreenName: string, favIconUrl: string, postId: string, postTimestamp: string, postText: string) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
-  const walletCreated: {
-    addListener: (callback: () => void) => void
-  }
-  const walletCreationFailed: {
-    addListener: (callback: (result: RewardsExtension.Result) => void) => void
-  }
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
@@ -95,19 +91,15 @@ declare namespace chrome.braveRewards {
   const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
   const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
-  const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
   const onAdsEnabled: {
     addListener: (callback: (enabled: boolean) => void) => void
-  }
-  const onEnabledMain: {
-    addListener: (callback: (enabledMain: boolean) => void) => void
   }
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
   const getAdsEstimatedEarnings: (callback: (amount: number) => void) => {}
-  const getRewardsMainEnabled: (callback: (enabled: boolean) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
   const saveAdsSetting: (key: string, value: string) => {}
+  const setAutoContributeEnabled: (enabled: boolean) => {}
   const onPendingContributionSaved: {
     addListener: (callback: (result: number) => void) => void
   }
@@ -162,6 +154,8 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
+  const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
+  const saveOnboardingResult: (result: 'opted-in' | 'dismissed') => {}
 }
 
 declare namespace chrome.binance {
@@ -191,15 +185,18 @@ declare namespace chrome.gemini {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
-declare namespace chrome.braveTogether {
+declare namespace chrome.cryptoDotCom {
+  const getTickerInfo: (asset: string, callback: (info: any) => void) => {}
+  const getChartData: (asset: string, callback: (data: any[]) => void) => {}
+  const getSupportedPairs: (callback: (pairs: any[]) => void) => {}
+  const getAssetRankings: (callback: (assets: any) => void) => {}
   const isSupported: (callback: (supported: boolean) => void) => {}
+  const onBuyCrypto: () => void
+  const onInteraction: () => void
 }
 
-declare namespace chrome.moonpay {
-  const isBitcoinDotComSupported: (callback: (supported: boolean) => void) => {}
-  const onBuyBitcoinDotComCrypto: () => void
-  const onInteractionBitcoinDotCom: () => void
-  const getBitcoinDotComInteractions: (callback: (interactions: Record<string, string>) => void) => {}
+declare namespace chrome.braveTogether {
+  const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {
@@ -224,6 +221,12 @@ declare namespace chrome.rewardsNotifications {
 
 declare namespace chrome.greaselion {
   const isGreaselionExtension: (id: string, callback: (valid: boolean) => void) => {}
+}
+
+declare namespace chrome.braveToday {
+  const onClearHistory: {
+    addListener: (callback: () => any) => void
+  }
 }
 
 type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'

@@ -19,8 +19,7 @@ class NativeAdsClient : public ads::AdsClient {
 
   bool IsNetworkConnectionAvailable() const override;
   bool IsForeground() const override;
-  bool CanShowBackgroundNotifications() const override;
-  void ShowNotification(std::unique_ptr<ads::AdNotificationInfo> info) override;
+  void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(const std::string & uuid) override;
   void UrlRequest(ads::UrlRequestPtr url_request, ads::UrlRequestCallback callback) override;
@@ -44,4 +43,5 @@ class NativeAdsClient : public ads::AdsClient {
   void SetUint64Pref(const std::string & path, const uint64_t value) override;
   uint64_t GetUint64Pref(const std::string & path) const override;
   void ClearPref(const std::string & path) override;
+  void RecordP2AEvent(const std::string& name, const ads::P2AEventType type, const std::string& value) override;
 };

@@ -323,7 +323,7 @@ you're looking for a little extra spice and adventure in your browsing.'''
 Install Brave-Browser{channel_capitalized_dashed}.dmg on your system.
 
 # Linux install instructions
-http://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux
+https://brave.com/linux
 
 # Windows
 {win} will fetch and install the latest available version from our \

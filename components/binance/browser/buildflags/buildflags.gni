@@ -1,5 +1,5 @@
 import("//build/config/features.gni")
 
 declare_args() {
-  binance_enabled = is_mac || is_linux || is_win
+  binance_enabled = is_mac || is_linux || is_win || is_android
 }

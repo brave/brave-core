@@ -7,23 +7,22 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "base/bind.h"
-#include "base/threading/sequenced_task_runner_handle.h"
-#endif
+// static
+bool WidevinePermissionRequest::is_test_ = false;
 
 WidevinePermissionRequest::WidevinePermissionRequest(
-    content::WebContents* web_contents)
-    : web_contents_(web_contents) {
+    content::WebContents* web_contents,
+    bool for_restart)
+    : web_contents_(web_contents),
+      for_restart_(for_restart) {
 }
 
-WidevinePermissionRequest::~WidevinePermissionRequest() {
-}
+WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
 permissions::PermissionRequest::IconId WidevinePermissionRequest::GetIconId()
     const {
@@ -32,7 +31,7 @@ permissions::PermissionRequest::IconId WidevinePermissionRequest::GetIconId()
 
 base::string16 WidevinePermissionRequest::GetMessageTextFragment() const {
   return l10n_util::GetStringUTF16(
-      GetWidevinePermissionRequestTextFrangmentResourceId());
+      GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
 }
 
 GURL WidevinePermissionRequest::GetOrigin() const {
@@ -40,16 +39,15 @@ GURL WidevinePermissionRequest::GetOrigin() const {
 }
 
 void WidevinePermissionRequest::PermissionGranted() {
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-  EnableWidevineCdmComponent(web_contents_);
+#if defined(OS_LINUX)
+  // Prevent relaunch during the browser test.
+  // This will cause abnormal termination during the test.
+  if (for_restart_ && !is_test_) {
+    chrome::AttemptRelaunch();
+  }
 #endif
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Run next commands at the next loop turn to prevent this is destroyed
-  // by restarting process. This should be destroyed by RequestFinished().
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(&InstallBundleOrRestartBrowser));
-#endif
+  if (!for_restart_)
+    EnableWidevineCdmComponent(web_contents_);
 }
 
 void WidevinePermissionRequest::PermissionDenied() {

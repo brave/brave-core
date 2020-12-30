@@ -61,7 +61,7 @@ NS_INLINE NSArray<NSNumber *> *NSArrayFromVector(std::vector<T> v) {
   const auto method = class_getClassMethod(NSNumber.class, selector);
   typedef NSNumber *(*NSNumberCall)(id,SEL,T);
   NSNumberCall call = (NSNumberCall)method_getImplementation(method);
-  
+
   for (auto t : v) {
     NSNumber *number = (NSNumber *)call(NSNumber.class, selector, t);
     [a addObject:number];
@@ -82,7 +82,7 @@ NS_INLINE std::vector<T> VectorFromNSArray(NSArray<NSNumber *> *a) {
   const auto method = class_getInstanceMethod(NSNumber.class, selector);
   typedef T(*NSNumberCall)(id,SEL);
   NSNumberCall call = (NSNumberCall)method_getImplementation(method);
-  
+
   for (NSNumber *number in a) {
     v.push_back(call(number, selector));
   }
@@ -260,9 +260,9 @@ NS_INLINE NSDictionary<KObjC, VObjC> *NSDictionaryFromMap(base::flat_map<K, V> m
   return d;
 }
 
-/// Converts an NSDictionary that has NSString keys & values to a C++ map with std::string keys & values
-NS_INLINE std::map<std::string, std::string> MapFromNSDictionary(NSDictionary<NSString *, NSString *> *d) {
-  std::map<std::string, std::string> map;
+/// Converts an NSDictionary that has NSString keys & values to a base::flat_map with std::string keys & values
+NS_INLINE base::flat_map<std::string, std::string> MapFromNSDictionary(NSDictionary<NSString *, NSString *> *d) {
+  base::flat_map<std::string, std::string> map;
   for (NSString *key in d) {
     map.insert(std::make_pair(key.UTF8String, d[key].UTF8String));
   }

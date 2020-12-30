@@ -17,14 +17,12 @@
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
-#include "brave/common/brave_features.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
@@ -34,14 +32,14 @@
 #include "components/embedder_support/switches.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/language/core/common/language_experiments.h"
+#include "components/network_time/network_time_tracker.h"
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
-#include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
-#include "components/version_info/channel.h"
+#include "components/variations/variations_switches.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
@@ -49,12 +47,7 @@
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
-#include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/common/brave_paths.h"
-#endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "components/dom_distiller/core/dom_distiller_switches.h"
@@ -70,15 +63,6 @@ namespace {
 // switches::kSyncServiceURL manually
 const char kBraveSyncServiceStagingURL[] =
     "https://sync-v2.bravesoftware.com/v2";
-#if defined(OFFICIAL_BUILD)
-// production
-const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
-#else
-// For local server development "http://localhost:8295/v2 can also be overriden
-// by switches::kSyncServiceURL
-// dev
-const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
-#endif
 }  // namespace
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
@@ -112,10 +96,8 @@ BraveMainDelegate::CreateContentBrowserClient() {
   return NULL;
 #else
   if (chrome_content_browser_client_ == nullptr) {
-    DCHECK(!startup_data_);
-    startup_data_ = std::make_unique<StartupData>();
     chrome_content_browser_client_ =
-        std::make_unique<BraveContentBrowserClient>(startup_data_.get());
+        std::make_unique<BraveContentBrowserClient>();
   }
   return chrome_content_browser_client_.get();
 #endif
@@ -163,6 +145,13 @@ void BraveMainDelegate::PreSandboxStartup() {
   base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
       native_messaging_dir, false, true);
 #endif  // defined(OS_LINUX) || defined(OS_MAC)
+
+#if defined(OS_POSIX) && !defined(OS_MAC)
+  base::PathService::Override(
+      chrome::DIR_POLICY_FILES,
+      base::FilePath(FILE_PATH_LITERAL("/etc/brave/policies")));
+#endif
+
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
@@ -190,7 +179,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
                                    kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = kBraveSyncServiceURL;
+  std::string brave_sync_service_url = BRAVE_SYNC_ENDPOINT;
 #if defined(OS_ANDROID)
   AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
 #endif  // defined(OS_ANDROID)
@@ -201,66 +190,66 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
+#if defined(OFFICIAL_BUILD)
+  // Brave variations
+  std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
+  command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
+      kVariationsServerURL.c_str());
+  CHECK(!kVariationsServerURL.empty());
+#endif
+
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {
       // Upgrade all mixed content
       blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
       net::features::kLegacyTLSEnforced.name,
-      // Remove URL bar mixed control and allow site specific override instead
-      features::kMixedContentSiteSetting.name,
-      // Warn about Mixed Content optionally blockable content
-      security_state::features::kPassiveMixedContentWarning.name,
       // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
-      // on
-      // this feature.
+      // on this feature.
       features::kWebUIDarkMode.name,
       blink::features::kPrefetchPrivacyChanges.name,
       blink::features::kReducedReferrerGranularity.name,
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif
-      omnibox::kOmniboxContextMenuShowFullUrls.name,
   };
 
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableDnsOverHttps)) {
-    enabled_features.insert(features::kDnsOverHttps.name);
-  }
-
-  if (chrome::GetChannel() == version_info::Channel::CANARY) {
-    enabled_features.insert(features::kGlobalPrivacyControl.name);
-  }
-
   // Disabled features.
-  const std::unordered_set<const char*> disabled_features = {
+  std::unordered_set<const char*> disabled_features = {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kTextFragmentAnchor.name,
-    features::kAllowPopupsDuringPageUnload.name,
+    features::kIdleDetection.name,
     features::kNotificationTriggers.name,
     features::kPrivacySettingsRedesign.name,
-    features::kSmsReceiver.name,
-    features::kVideoPlaybackQuality.name,
+    features::kSignedExchangeSubresourcePrefetch.name,
     features::kTabHoverCards.name,
+    features::kWebOTP.name,
+    network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kPasswordCheck.name,
     safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
-    translate::kTranslateUI.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
+    translate::kTranslate.name,
 #endif
   };
+
+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_ANDROID)
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    disabled_features.insert(features::kDnsOverHttps.name);
+  }
+#else
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableDnsOverHttps)) {
+    enabled_features.insert(features::kDnsOverHttps.name);
+  }
+#endif
+
   command_line.AppendFeatures(enabled_features, disabled_features);
 
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Override chrome::DIR_BUNDLED_WIDEVINE_CDM path because we install it in
-  // user data dir. Must call after ChromeMainDelegate::BasicStartupComplete()
-  // to use chrome paths.
-  brave::OverridePath();
-#endif
 
   return ret;
 }

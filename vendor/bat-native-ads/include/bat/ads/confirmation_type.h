@@ -15,11 +15,11 @@ class ConfirmationType {
   enum Value {
     // When adding new confirmation types they must be added with highest
     // priority at the top so that ads history can be filtered
-    kNone,
+    kUndefined,
     kClicked,
     kDismissed,
     kViewed,
-    kLanded,
+    kTransferred,
     kFlagged,
     kUpvoted,
     kDownvoted,
@@ -33,7 +33,7 @@ class ConfirmationType {
       const Value& value)
       : value_(value) {}
 
-  explicit ConfirmationType(
+  ConfirmationType(
       const std::string& value);
 
   Value value() const;

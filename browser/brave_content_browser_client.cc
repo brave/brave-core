@@ -10,17 +10,13 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -30,11 +26,11 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -43,7 +39,7 @@
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
-#include "content/browser/frame_host/render_frame_host_impl.h"
+#include "content/browser/renderer_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -77,7 +73,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/browser/ipfs_navigation_throttle.h"
+#include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -85,7 +81,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_navigation_throttle.h"
+#include "brave/browser/tor/onion_location_navigation_throttle_delegate.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -104,8 +103,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/brave_wallet_service.h"
+#endif
+
+#if !defined(OS_ANDROID)
+#include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #endif
 
 namespace {
@@ -127,9 +130,8 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
-    : ChromeContentBrowserClient(startup_data),
-      session_token_(base::RandUint64()),
+BraveContentBrowserClient::BraveContentBrowserClient()
+    : session_token_(base::RandUint64()),
       incognito_session_token_(base::RandUint64()) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
@@ -154,11 +156,9 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
                           &webtorrent::HandleTorrentURLReverseRewrite);
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    handler->AddHandlerPair(
-        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
-        &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
-  }
+  handler->AddHandlerPair(
+      &ipfs::HandleIPFSURLRewrite,
+      &ipfs::HandleIPFSURLReverseRewrite);
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
@@ -187,16 +187,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
                                      page_transition, has_user_gesture,
                                      initiating_origin);
-    return true;
-  }
-#endif
-#if BUILDFLAG(IPFS_ENABLED)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature) &&
-      ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url)) {
-    ipfs::ContentBrowserClientHelper::HandleIPFSProtocol(url,
-        std::move(web_contents_getter),
-        page_transition, has_user_gesture,
-        initiating_origin);
     return true;
   }
 #endif
@@ -295,6 +285,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
     base::Optional<int64_t> navigation_id,
+    ukm::SourceIdObj ukm_source_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
         header_client,
@@ -310,7 +301,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
 
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
-      std::move(navigation_id), factory_receiver, header_client,
+      std::move(navigation_id), ukm_source_id, factory_receiver, header_client,
       bypass_redirect_checks, disable_secure_dns, factory_override);
 
   return use_proxy;
@@ -359,10 +350,15 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     blink::mojom::ReferrerPtr* referrer) {
   DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (document_url.SchemeIs(kChromeExtensionScheme)) {
+  if (document_url.SchemeIs(kChromeExtensionScheme) ||
+      request_url.SchemeIs(kChromeExtensionScheme)) {
     return;
   }
 #endif
+  if (document_url.SchemeIs(content::kChromeUIScheme) ||
+      request_url.SchemeIs(content::kChromeUIScheme)) {
+    return;
+  }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AllowReferrers(
@@ -371,22 +367,20 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   const bool shields_up = brave_shields::GetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile),
       document_url);
+
   // Some top-level navigations get empty referrers (brave/brave-browser#3422).
   network::mojom::ReferrerPolicy policy = (*referrer)->policy;
-  if (is_main_frame) {
-    if ((method == "GET" || method == "HEAD") &&
-        !net::registry_controlled_domains::SameDomainOrHost(
-            (*referrer)->url, request_url,
-            net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-      policy = network::mojom::ReferrerPolicy::kNever;
-    }
+  if (is_main_frame &&
+      brave_shields::ShouldCleanReferrerForTopLevelNavigation(method,
+                                                              (*referrer)->url,
+                                                              request_url)) {
+    policy = network::mojom::ReferrerPolicy::kNever;
   }
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-      allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
-      policy,
-      &new_referrer)) {
+          allow_referrers, shields_up, (*referrer)->url, request_url, policy,
+          &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }
@@ -450,25 +444,48 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
 
+#if !defined(OS_ANDROID)
+  std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
+      NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
+  if (ntp_shows_navigation_throttle)
+    throttles.push_back(std::move(ntp_shows_navigation_throttle));
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   throttles.push_back(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
+#if BUILDFLAG(ENABLE_TOR) ||BUILDFLAG(IPFS_ENABLED)
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
-    tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
+    tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle,
+        TorProfileServiceFactory::GetForContext(context),
+        context->IsTor());
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));
+  std::unique_ptr<tor::OnionLocationNavigationThrottleDelegate>
+      onion_location_navigation_throttle_delegate =
+          std::make_unique<tor::OnionLocationNavigationThrottleDelegate>();
+  std::unique_ptr<content::NavigationThrottle>
+      onion_location_navigation_throttle =
+          tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
+              handle, TorProfileServiceFactory::IsTorDisabled(),
+              std::move(onion_location_navigation_throttle_delegate),
+              context->IsTor());
+  if (onion_location_navigation_throttle)
+    throttles.push_back(std::move(onion_location_navigation_throttle));
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
   std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
-    ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
-        ipfs::IpfsServiceFactory::GetForContext(context),
-        brave::IsRegularProfile(context));
+      ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(handle,
+          ipfs::IpfsServiceFactory::GetForContext(context),
+          g_brave_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
 #endif

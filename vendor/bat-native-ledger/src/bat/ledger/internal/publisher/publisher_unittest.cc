@@ -6,6 +6,7 @@
 #include <utility>
 #include <iostream>
 
+#include "base/containers/flat_map.h"
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
@@ -179,7 +180,7 @@ TEST_F(PublisherTest, synopsisNormalizerInternal) {
 }
 
 TEST_F(PublisherTest, GetShareURL) {
-  std::map<std::string, std::string> args;
+  base::flat_map<std::string, std::string> args;
 
   // Ensure that missing args results in no output
   EXPECT_EQ(Publisher::GetShareURL(args), "");

@@ -13,7 +13,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
-import org.chromium.chrome.browser.feed.FeedProcessScopeFactory;
+import org.chromium.chrome.browser.feed.shared.FeedFeatures;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -52,7 +52,7 @@ public class BraveNewTabPage extends NewTabPage {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
-        assert !FeedProcessScopeFactory.isFeedProcessEnabled();
+        assert !FeedFeatures.isFeedEnabled();
         mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
                 tabModelSelector, tabProvider,
                 new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,

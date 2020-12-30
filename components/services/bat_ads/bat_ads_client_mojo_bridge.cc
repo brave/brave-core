@@ -33,15 +33,6 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
 
-bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
-  if (!connected())
-    return false;
-
-  bool can_show;
-  bat_ads_client_->CanShowBackgroundNotifications(&can_show);
-  return can_show;
-}
-
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
   if (!connected()) {
     return false;
@@ -63,12 +54,12 @@ bool BatAdsClientMojoBridge::IsForeground() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
-    std::unique_ptr<ads::AdNotificationInfo> info) {
+    const ads::AdNotificationInfo& ad_notification) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ShowNotification(info->ToJson());
+  bat_ads_client_->ShowNotification(ad_notification.ToJson());
 }
 
 bool BatAdsClientMojoBridge::ShouldShowNotifications() {
@@ -159,6 +150,17 @@ void BatAdsClientMojoBridge::LoadUserModelForId(
 
   bat_ads_client_->LoadUserModelForId(id,
       base::BindOnce(&OnLoadUserModelForId, std::move(callback)));
+}
+
+void BatAdsClientMojoBridge::RecordP2AEvent(
+    const std::string& name,
+    const ads::P2AEventType type,
+    const std::string& value) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->RecordP2AEvent(name, type, value);
 }
 
 void OnLoad(

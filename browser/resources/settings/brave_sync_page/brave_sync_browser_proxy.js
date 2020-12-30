@@ -21,6 +21,9 @@ export class BraveSyncBrowserProxy {
   resetSyncChain() {
     return sendWithPromise('SyncSetupReset');
   }
+  deleteDevice(deviceId) {
+    return sendWithPromise('SyncDeleteDevice', deviceId);
+  }
 }
 
 addSingletonGetter(BraveSyncBrowserProxy);

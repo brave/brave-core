@@ -18,7 +18,6 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/one_shot_event.h"
 #include "base/sequenced_task_runner.h"
@@ -27,10 +26,13 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/values.h"
+#include "base/version.h"
+#include "brave/browser/version_info.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
@@ -45,18 +47,19 @@ using extensions::Manifest;
 
 namespace {
 
-// Wraps a Greaselion rule in a component. The component is stored as an
-// unpacked extension in the system temp dir. Returns a valid extension that the
-// caller should take ownership of, or nullptr.
+// Wraps a Greaselion rule in a component. The component is stored as
+// an unpacked extension in the user data dir. Returns a valid
+// extension that the caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
 // NOTE: The caller takes ownership of the directory at extension->path() on the
 // returned object.
 scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
     greaselion::GreaselionRule* rule,
-    const base::FilePath& extensions_dir) {
+    const base::FilePath& install_dir,
+    std::vector<base::ScopedTempDir>* extension_dirs) {
   base::FilePath install_temp_dir =
-      extensions::file_util::GetInstallTempDir(extensions_dir);
+      extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
     return nullptr;
@@ -172,7 +175,12 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
     return nullptr;
   }
 
-  temp_dir.Take();  // The caller takes ownership of the directory.
+  // Take ownership of this temporary directory so it's deleted when
+  // the service exits
+  if (extension_dirs) {
+    extension_dirs->push_back(std::move(temp_dir));
+  }
+
   return extension;
 }
 }  // namespace
@@ -195,10 +203,14 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       update_pending_(false),
       pending_installs_(0),
       task_runner_(std::move(task_runner)),
+      browser_version_(
+          version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       weak_factory_(this) {
   extension_registry_->AddObserver(this);
   for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)
     state_[static_cast<GreaselionFeature>(i)] = false;
+  // Static-value features
+  state_[GreaselionFeature::SUPPORTS_MINIMUM_BRAVE_VERSION] = true;
 }
 
 GreaselionServiceImpl::~GreaselionServiceImpl() {
@@ -249,7 +261,8 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
   std::vector<std::unique_ptr<GreaselionRule>>* rules =
       download_service_->rules();
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_) && rule->has_unknown_preconditions() == false) {
+    if (rule->Matches(state_, browser_version_) &&
+        rule->has_unknown_preconditions() == false) {
       pending_installs_ += 1;
     }
   }
@@ -259,13 +272,14 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
     return;
   }
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_) && rule->has_unknown_preconditions() == false) {
+    if (rule->Matches(state_, browser_version_) &&
+        rule->has_unknown_preconditions() == false) {
       // Convert script file to component extension. This must run on extension
       // file task runner, which was passed in in the constructor.
       base::PostTaskAndReplyWithResult(
           task_runner_.get(), FROM_HERE,
           base::BindOnce(&ConvertGreaselionRuleToExtensionOnTaskRunner,
-                         rule.get(), install_directory_),
+                         rule.get(), install_directory_, &extension_dirs_),
           base::BindOnce(&GreaselionServiceImpl::PostConvert,
                          weak_factory_.GetWeakPtr()));
     }
@@ -335,11 +349,12 @@ void GreaselionServiceImpl::RemoveObserver(Observer* observer) {
 void GreaselionServiceImpl::MaybeNotifyObservers() {
   if (!pending_installs_) {
     update_in_progress_ = false;
-    for (Observer& observer : observers_)
-      observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     if (update_pending_) {
       update_pending_ = false;
       UpdateInstalledExtensions();
+    } else {
+      for (Observer& observer : observers_)
+        observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     }
   }
 }
@@ -353,6 +368,13 @@ void GreaselionServiceImpl::SetFeatureEnabled(GreaselionFeature feature,
 
 bool GreaselionServiceImpl::ready() {
   return !update_in_progress_;
+}
+
+void GreaselionServiceImpl::SetBrowserVersionForTesting(
+    const base::Version& version) {
+  CHECK(version.IsValid());
+  browser_version_ = version;
+  UpdateInstalledExtensions();
 }
 
 }  // namespace greaselion

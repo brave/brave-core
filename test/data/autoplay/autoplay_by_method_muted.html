@@ -6,23 +6,26 @@
   </head>
   <body onload="autoplay()">
 
-    <video id="autoplay" width="320" height="240" controls onplay="onPlay()" muted>
+    <video id="autoplay" width="320" height="240" controls muted onplay="onPlay()"
+                                                                 oncanplay="onCanPlay()">
       <source src="autoplay.mp4" type="video/mp4">
     </video>
 
     <div id='status'>Video not playing</div>
 
     <script>
-      function onPlay () {
+      function onPlay() {
         let status = document.getElementById('status')
         status.textContent = 'Video playing'
-        window.playing = true;
-        if (window.notifyBrowser)
-          notifyWhenPlaying();
       }
-      function notifyWhenPlaying() {
-        if (window.playing)
-          window.domAutomationController.send("PLAYING");
+      function onCanPlay() {
+        window.canPlay = true;
+        if (window.notifyBrowser)
+          notifyWhenCanPlay();
+      }
+      function notifyWhenCanPlay() {
+        if (window.canPlay)
+          window.domAutomationController.send("CANPLAY");
         else
           window.notifyBrowser = true;
       }

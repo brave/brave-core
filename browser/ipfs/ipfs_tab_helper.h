@@ -29,24 +29,17 @@ class IPFSTabHelper : public content::WebContentsObserver,
   IPFSTabHelper(const IPFSTabHelper&) = delete;
   IPFSTabHelper& operator=(IPFSTabHelper&) = delete;
 
-  bool IsActiveForMainFrame() const { return active_; }
-
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
+  static bool MaybeCreateForWebContents(content::WebContents* web_contents);
 
  private:
   friend class content::WebContentsUserData<IPFSTabHelper>;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
-  void UpdateActiveState(content::NavigationHandle* handle);
-
   // content::WebContentsObserver
-  void DidStartNavigation(
-      content::NavigationHandle* navigation_handle) override;
-  void DidRedirectNavigation(
+  void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
   PrefService* pref_service_ = nullptr;
-  bool active_ = false;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

@@ -7,12 +7,14 @@ import("//components/vector_icons/vector_icons.gni")
 aggregate_vector_icons("brave_vector_icons") {
   icon_directory = "."
 
-  icons = [
+  sources = [
+    "brave_ads_close_button.icon",
+    "brave_ads_info.icon",
     "download_unlock.icon",
+    "open_in_tor.icon",
     "speedreader.icon",
     "speedreader_on_active.icon",
     "speedreader_on_inactive.icon",
-    "tor_profile.icon",
   ]
 }
 

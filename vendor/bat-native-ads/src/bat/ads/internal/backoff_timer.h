@@ -11,8 +11,8 @@
 #include <memory>
 
 #include "base/callback_forward.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/timer.h"
 
 namespace ads {
@@ -46,6 +46,10 @@ class BackoffTimer {
 
   // Returns true if the timer is running (i.e., not stopped)
   bool IsRunning() const;
+
+  // Run the scheduled task immediately, and stop the timer. The timer needs to
+  // be running
+  void FireNow();
 
   // Call this method to stop the timer if running and to reset the exponential
   // backoff delay

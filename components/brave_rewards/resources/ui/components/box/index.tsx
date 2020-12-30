@@ -17,7 +17,8 @@ import {
   StyledSettingTitleWrapper,
   StyledContentWrapper,
   StyledFlip,
-  StyledSettingsToggleContainer
+  StyledSettingsToggleContainer,
+  StyledTOS
 } from './style'
 import { Tooltip } from '../'
 import Toggle from 'brave-ui/components/formControls/toggle/index'
@@ -41,6 +42,7 @@ export interface Props {
   type: Type
   onSettingsClick?: () => void
   settingsOpened?: boolean
+  tos?: React.ReactNode
 }
 
 /*
@@ -85,7 +87,6 @@ export default class Box extends React.PureComponent<Props, {}> {
                   {
                     settingsChild && ((toggle && checked) || !toggle) ?
                       <Tooltip
-                        id={'brave-ads-tip'}
                         content={this.getSettingsTitle(title)}
                       >
                         <StyledSettingsIcon onClick={onSettingsClick}>
@@ -101,6 +102,11 @@ export default class Box extends React.PureComponent<Props, {}> {
                   }
                 </StyledSettingsToggleContainer>
               </StyledSettingTitleWrapper>
+              {
+                disabledContent && toggle ?
+                  <StyledTOS title={title} />
+                  : null
+              }
               <StyledDescription>
                 {description}
               </StyledDescription>

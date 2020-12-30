@@ -26,10 +26,6 @@ bool IsSessionProfile(content::BrowserContext* context);
 
 bool IsSessionProfilePath(const base::FilePath& path);
 
-bool IsTorProfilePath(const base::FilePath& path);
-
-bool IsTorProfile(content::BrowserContext* context);
-
 Profile* GetParentProfile(content::BrowserContext* context);
 
 Profile* GetParentProfile(const base::FilePath& path);
@@ -49,6 +45,22 @@ bool IsRegularProfile(content::BrowserContext* profile);
 
 bool IsTorDisabledForProfile(Profile* profile);
 
+// Specifically used to record if sponsored images are enabled.
+// Called from BraveAppearanceHandler and BraveNewTabMessageHandler
+void RecordSponsoredImagesEnabledP3A(Profile* profile);
+
+// Records default values for some histograms.
+//
+// For profile agnostic values (ex: local_state) see
+// browser/brave_browser_main_extra_parts.cc
+void RecordInitialP3AValues(Profile* profile);
+
+// Used for capturing the value of kBraveCurrentDataVersion so that the
+// default search engine for that version can be determined. New profiles
+// will get locked into newer versions when created. Existing profiles
+// missing this value are backfilled to the first version introduced.
+void SetDefaultSearchVersion(Profile* profile, bool is_new_profile);
+
 }  // namespace brave
 
 namespace chrome {
@@ -66,7 +78,7 @@ content::BrowserContext* GetBrowserContextRedirectedInIncognitoOverride(
   if (brave::IsSessionProfile(context)) {                                      \
     auto* parent = brave::GetParentProfile(context);                           \
     context =                                                                  \
-        context->IsOffTheRecord() ? parent->GetOffTheRecordProfile() : parent; \
+        context->IsOffTheRecord() ? parent->GetPrimaryOTRProfile() : parent; \
   }
 
 #endif  // BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_

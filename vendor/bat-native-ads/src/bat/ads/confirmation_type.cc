@@ -13,37 +13,37 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state
-const char kConfirmationTypeNone[] = "";
-const char kConfirmationTypeClicked[] = "click";
-const char kConfirmationTypeDismissed[] = "dismiss";
-const char kConfirmationTypeViewed[] = "view";
-const char kConfirmationTypeLanded[] = "landed";
-const char kConfirmationTypeFlagged[] = "flag";
-const char kConfirmationTypeUpvoted[] = "upvote";
-const char kConfirmationTypeDownvoted[] = "downvote";
-const char kConfirmationTypeConversion[] = "conversion";
+const char kUndefinedConfirmationType[] = "";
+const char kClickedConfirmationType[] = "click";
+const char kDismissedConfirmationType[] = "dismiss";
+const char kViewedConfirmationType[] = "view";
+const char kTransferredConfirmationType[] = "landed";
+const char kFlaggedConfirmationType[] = "flag";
+const char kUpvotedConfirmationType[] = "upvote";
+const char kDownvotedConfirmationType[] = "downvote";
+const char kConversionConfirmationType[] = "conversion";
 
 }  // namespace
 
 ConfirmationType::ConfirmationType(
     const std::string& value) {
-  if (value == kConfirmationTypeNone) {
-    value_ = kNone;
-  } else if (value == kConfirmationTypeClicked) {
+  if (value == kUndefinedConfirmationType) {
+    value_ = kUndefined;
+  } else if (value == kClickedConfirmationType) {
     value_ = kClicked;
-  } else if (value == kConfirmationTypeDismissed) {
+  } else if (value == kDismissedConfirmationType) {
     value_ = kDismissed;
-  } else if (value == kConfirmationTypeViewed) {
+  } else if (value == kViewedConfirmationType) {
     value_ = kViewed;
-  } else if (value == kConfirmationTypeLanded) {
-    value_ = kLanded;
-  } else if (value == kConfirmationTypeFlagged) {
+  } else if (value == kTransferredConfirmationType) {
+    value_ = kTransferred;
+  } else if (value == kFlaggedConfirmationType) {
     value_ = kFlagged;
-  } else if (value == kConfirmationTypeUpvoted) {
+  } else if (value == kUpvotedConfirmationType) {
     value_ = kUpvoted;
-  } else if (value == kConfirmationTypeDownvoted) {
+  } else if (value == kDownvotedConfirmationType) {
     value_ = kDownvoted;
-  } else if (value == kConfirmationTypeConversion) {
+  } else if (value == kConversionConfirmationType) {
     value_ = kConversion;
   } else {
     NOTREACHED();
@@ -56,40 +56,40 @@ ConfirmationType::Value ConfirmationType::value() const {
 
 ConfirmationType::operator std::string() const {
   switch (value_) {
-    case kNone: {
-      return kConfirmationTypeNone;
+    case kUndefined: {
+      return kUndefinedConfirmationType;
     }
 
     case kClicked: {
-      return kConfirmationTypeClicked;
+      return kClickedConfirmationType;
     }
 
     case kDismissed: {
-      return kConfirmationTypeDismissed;
+      return kDismissedConfirmationType;
     }
 
     case kViewed: {
-      return kConfirmationTypeViewed;
+      return kViewedConfirmationType;
     }
 
-    case kLanded: {
-      return kConfirmationTypeLanded;
+    case kTransferred: {
+      return kTransferredConfirmationType;
     }
 
     case kFlagged: {
-      return kConfirmationTypeFlagged;
+      return kFlaggedConfirmationType;
     }
 
     case kUpvoted: {
-      return kConfirmationTypeUpvoted;
+      return kUpvotedConfirmationType;
     }
 
     case kDownvoted: {
-      return kConfirmationTypeDownvoted;
+      return kDownvotedConfirmationType;
     }
 
     case kConversion: {
-      return kConfirmationTypeConversion;
+      return kConversionConfirmationType;
     }
   }
 }

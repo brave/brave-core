@@ -40,24 +40,17 @@ WeeklyStorage::WeeklyStorage(PrefService* prefs,
 WeeklyStorage::~WeeklyStorage() = default;
 
 void WeeklyStorage::AddDelta(uint64_t delta) {
-  base::Time now_midnight = clock_->Now().LocalMidnight();
-  base::Time last_saved_midnight;
+  FilterToWeek();
+  daily_values_.front().value += delta;
+  Save();
+}
 
-  if (!daily_values_.empty()) {
-    last_saved_midnight = daily_values_.front().day;
+void WeeklyStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
+  FilterToWeek();
+  DailyValue& today = daily_values_.front();
+  if (today.value < value) {
+    today.value = value;
   }
-
-  if (now_midnight - last_saved_midnight > base::TimeDelta()) {
-    // Day changed. Since we consider only small incoming intervals, lets just
-    // save it with a new timestamp.
-    daily_values_.push_front({now_midnight, delta});
-    if (daily_values_.size() > kDaysInWeek) {
-      daily_values_.pop_back();
-    }
-  } else {
-    daily_values_.front().value += delta;
-  }
-
   Save();
 }
 
@@ -76,10 +69,51 @@ uint64_t WeeklyStorage::GetWeeklySum() const {
                          });
 }
 
+uint64_t WeeklyStorage::GetHighestValueInWeek() const {
+  // We record only value for last N days.
+  const base::Time n_days_ago =
+      clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  std::list<DailyValue> last_weeks_daily_values(daily_values_.size());
+  auto copied_it =
+      std::copy_if(daily_values_.begin(), daily_values_.end(),
+                   last_weeks_daily_values.begin(),
+                   [n_days_ago](auto i) { return i.day > n_days_ago; });
+  last_weeks_daily_values.resize(
+      std::distance(last_weeks_daily_values.begin(), copied_it));
+
+  auto highest_it = std::max_element(last_weeks_daily_values.begin(),
+                                     last_weeks_daily_values.end(),
+                                     [](const auto& left, const auto& right) {
+                                       return left.value < right.value;
+                                     });
+  if (highest_it == last_weeks_daily_values.end()) {
+    return 0;
+  }
+  return highest_it->value;
+}
+
 bool WeeklyStorage::IsOneWeekPassed() const {
   // TODO(iefremov): This is not true 100% (if the browser was launched once
   // per week just after installation, for example).
   return daily_values_.size() == kDaysInWeek;
+}
+
+void WeeklyStorage::FilterToWeek() {
+  base::Time now_midnight = clock_->Now().LocalMidnight();
+  base::Time last_saved_midnight;
+
+  if (!daily_values_.empty()) {
+    last_saved_midnight = daily_values_.front().day;
+  }
+
+  if (now_midnight - last_saved_midnight > base::TimeDelta()) {
+    // Day changed. Since we consider only small incoming intervals, lets just
+    // save it with a new timestamp.
+    daily_values_.push_front({now_midnight, 0});
+    if (daily_values_.size() > kDaysInWeek) {
+      daily_values_.pop_back();
+    }
+  }
 }
 
 void WeeklyStorage::Load() {

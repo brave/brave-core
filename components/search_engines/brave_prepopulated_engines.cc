@@ -12,7 +12,57 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 6;
+const int kBraveCurrentDataVersion = 8;
+// DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
+const int kBraveFirstTrackedDataVersion = 6;
+
+namespace {
+
+// Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
+const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
+    brave_engines_map = {
+        {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
+        {PREPOPULATED_ENGINE_ID_YAHOO, &brave_yahoo},
+        {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
+        {PREPOPULATED_ENGINE_ID_YAHOO_AR, &brave_yahoo_ar},
+        {PREPOPULATED_ENGINE_ID_YAHOO_AT, &brave_yahoo_at},
+        {PREPOPULATED_ENGINE_ID_YAHOO_AU, &brave_yahoo_au},
+        {PREPOPULATED_ENGINE_ID_YAHOO_BR, &brave_yahoo_br},
+        {PREPOPULATED_ENGINE_ID_YAHOO_CA, &brave_yahoo_ca},
+        {PREPOPULATED_ENGINE_ID_YAHOO_CH, &brave_yahoo_ch},
+        {PREPOPULATED_ENGINE_ID_YAHOO_CL, &brave_yahoo_cl},
+        {PREPOPULATED_ENGINE_ID_YAHOO_CO, &brave_yahoo_co},
+        {PREPOPULATED_ENGINE_ID_YAHOO_DE, &brave_yahoo_de},
+        {PREPOPULATED_ENGINE_ID_YAHOO_DK, &brave_yahoo_dk},
+        {PREPOPULATED_ENGINE_ID_YAHOO_ES, &brave_yahoo_es},
+        {PREPOPULATED_ENGINE_ID_YAHOO_FI, &brave_yahoo_fi},
+        {PREPOPULATED_ENGINE_ID_YAHOO_FR, &brave_yahoo_fr},
+        {PREPOPULATED_ENGINE_ID_YAHOO_HK, &brave_yahoo_hk},
+        {PREPOPULATED_ENGINE_ID_YAHOO_ID, &brave_yahoo_id},
+        {PREPOPULATED_ENGINE_ID_YAHOO_IE, &brave_yahoo_ie},
+        {PREPOPULATED_ENGINE_ID_YAHOO_IN, &brave_yahoo_in},
+        {PREPOPULATED_ENGINE_ID_YAHOO_IT, &brave_yahoo_it},
+        {PREPOPULATED_ENGINE_ID_YAHOO_MX, &brave_yahoo_mx},
+        {PREPOPULATED_ENGINE_ID_YAHOO_MY, &brave_yahoo_my},
+        {PREPOPULATED_ENGINE_ID_YAHOO_NL, &brave_yahoo_nl},
+        {PREPOPULATED_ENGINE_ID_YAHOO_NO, &brave_yahoo_no},
+        {PREPOPULATED_ENGINE_ID_YAHOO_NZ, &brave_yahoo_nz},
+        {PREPOPULATED_ENGINE_ID_YAHOO_PE, &brave_yahoo_pe},
+        {PREPOPULATED_ENGINE_ID_YAHOO_PH, &brave_yahoo_ph},
+        {PREPOPULATED_ENGINE_ID_YAHOO_SE, &brave_yahoo_se},
+        {PREPOPULATED_ENGINE_ID_YAHOO_SG, &brave_yahoo_sg},
+        {PREPOPULATED_ENGINE_ID_YAHOO_TH, &brave_yahoo_th},
+        {PREPOPULATED_ENGINE_ID_YAHOO_TW, &brave_yahoo_tw},
+        {PREPOPULATED_ENGINE_ID_YAHOO_UK, &brave_yahoo_uk},
+        {PREPOPULATED_ENGINE_ID_YAHOO_VE, &brave_yahoo_ve},
+        {PREPOPULATED_ENGINE_ID_YAHOO_VN, &brave_yahoo_vn},
+        {PREPOPULATED_ENGINE_ID_BING, &bing},
+        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO, &duckduckgo},
+        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE, &duckduckgo_de},
+        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE, &duckduckgo_au_nz_ie},
+        {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
+        {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
+};
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
                                       const wchar_t* const name,
@@ -39,6 +89,8 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.type,
           id > 0 ? id : engine.id};
 }
+
+}  // namespace
 
 const PrepopulatedEngine duckduckgo = {
     L"DuckDuckGo",
@@ -122,11 +174,11 @@ const PrepopulatedEngine qwant = {
 };
 
 const PrepopulatedEngine startpage = {
-    L"StartPage",
+    L"Startpage",
     L":sp",
     "https://www.startpage.com/favicon.ico",
     "https://www.startpage.com/do/"
-    "dsearch?query={searchTerms}&cat=web&pl=opensearch",
+    "search?q={searchTerms}&segment=startpage.brave",
     "UTF-8",
     "https://www.startpage.com/cgi-bin/"
     "csuggest?query={searchTerms}&limit=10&format=json",
@@ -143,6 +195,21 @@ const PrepopulatedEngine startpage = {
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
+
+const PrepopulatedEngine brave_yandex =
+    ModifyEngineParams(yandex_com,
+                       L"Yandex",
+                       NULL,
+                       "https://yandex.ru/search/?clid="
+#if defined(OS_ANDROID)
+                       "2423859"
+#else
+                       "2353835"
+#endif
+                       "&text={searchTerms}",
+                       "https://suggest.yandex.ru/suggest-ff.cgi?"
+                       "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
+                       PREPOPULATED_ENGINE_ID_YANDEX);
 
 #define kBraveYahooName L"Yahoo"
 #define kBraveYahooKeyword L":y"
@@ -455,5 +522,10 @@ const PrepopulatedEngine brave_yahoo_vn =
                        BRAVE_YAHOO_SEARCH_URL("vn"),
                        BRAVE_YAHOO_SUGGEST_URL("vn"),
                        PREPOPULATED_ENGINE_ID_YAHOO_VN);
+
+const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
+GetBraveEnginesMap() {
+  return brave_engines_map;
+}
 
 }  // namespace TemplateURLPrepopulateData

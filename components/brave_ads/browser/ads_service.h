@@ -14,13 +14,14 @@
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "build/build_config.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
 
 namespace ads {
-struct AdsHistory;
+struct AdsHistoryInfo;
 }
 
 namespace base {
@@ -49,8 +50,9 @@ using OnToggleSaveAdCallback =
 using OnToggleFlagAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
 
-using GetTransactionHistoryCallback = base::OnceCallback<void(
-    const bool, const double, const uint64_t, const uint64_t)>;
+using GetStatementCallback = base::OnceCallback<void(
+    const bool, const double, const uint64_t, const uint64_t,
+        const double, const double)>;
 
 class AdsService : public KeyedService {
  public:
@@ -60,6 +62,11 @@ class AdsService : public KeyedService {
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
 
+  void AddObserver(
+      AdsServiceObserver* observer);
+  void RemoveObserver(
+      AdsServiceObserver* observer);
+
   virtual bool IsSupportedLocale() const = 0;
   virtual bool IsNewlySupportedLocale() = 0;
 
@@ -67,7 +74,7 @@ class AdsService : public KeyedService {
   virtual void SetEnabled(
       const bool is_enabled) = 0;
 
-  virtual void SetAllowAdConversionTracking(
+  virtual void SetAllowConversionTracking(
       const bool should_allow) = 0;
 
   virtual uint64_t GetAdsPerHour() const = 0;
@@ -77,13 +84,10 @@ class AdsService : public KeyedService {
   virtual uint64_t GetAdsPerDay() const = 0;
 
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
-
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
-
-  virtual std::string
-  GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
+  virtual std::string GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
@@ -92,9 +96,8 @@ class AdsService : public KeyedService {
 
   virtual void OnPageLoaded(
       const SessionID& tab_id,
-      const GURL& original_url,
-      const GURL& url,
-      const std::string& html) = 0;
+      const std::vector<GURL>& redirect_chain,
+      const std::string& content) = 0;
 
   virtual void OnMediaStart(
       const SessionID& tab_id) = 0;
@@ -106,8 +109,17 @@ class AdsService : public KeyedService {
       const GURL& url,
       const bool is_active,
       const bool is_browser_active) = 0;
+
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
+
+  virtual void OnUserModelUpdated(
+      const std::string& id) = 0;
+
+  virtual void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const ads::mojom::BraveAdsNewTabPageAdEventType event_type) = 0;
 
   virtual void ReconcileAdRewards() = 0;
 
@@ -116,8 +128,8 @@ class AdsService : public KeyedService {
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) = 0;
 
-  virtual void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) = 0;
+  virtual void GetStatement(
+      GetStatementCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -150,14 +162,6 @@ class AdsService : public KeyedService {
 
   virtual void ResetAllState(
       const bool should_shutdown) = 0;
-
-  virtual void OnUserModelUpdated(
-      const std::string& id) = 0;
-
-  void AddObserver(
-      AdsServiceObserver* observer);
-  void RemoveObserver(
-      AdsServiceObserver* observer);
 
   // static
   static void RegisterProfilePrefs(

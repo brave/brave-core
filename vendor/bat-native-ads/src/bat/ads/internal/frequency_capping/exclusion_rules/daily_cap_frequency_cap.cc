@@ -5,31 +5,30 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 
+#include <stdint.h>
+
+#include <deque>
+
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
 DailyCapFrequencyCap::DailyCapFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    const AdEventList& ad_events)
+    : ad_events_(ad_events) {
 }
 
 DailyCapFrequencyCap::~DailyCapFrequencyCap() = default;
 
 bool DailyCapFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
-  const std::map<std::string, std::deque<uint64_t>> history =
-      ads_->get_client()->GetCampaignHistory();
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
-  const std::deque<uint64_t> filtered_history =
-      FilterHistory(history, ad.campaign_id);
-
-  if (!DoesRespectCap(filtered_history, ad)) {
+  if (!DoesRespectCap(filtered_ad_events, ad)) {
     last_message_ = base::StringPrintf("campaignId %s has exceeded the "
         "frequency capping for dailyCap", ad.campaign_id.c_str());
 
@@ -44,27 +43,33 @@ std::string DailyCapFrequencyCap::get_last_message() const {
 }
 
 bool DailyCapFrequencyCap::DoesRespectCap(
-      const std::deque<uint64_t>& history,
-      const CreativeAdInfo& ad) {
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) {
+  const std::deque<uint64_t> history =
+      GetTimestampHistoryForAdEvents(ad_events);
+
   const uint64_t time_constraint =
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
-  const uint64_t cap = ad.daily_cap;
-
   return DoesHistoryRespectCapForRollingTimeConstraint(
-      history, time_constraint, cap);
+      history, time_constraint, ad.daily_cap);
 }
 
-std::deque<uint64_t> DailyCapFrequencyCap::FilterHistory(
-    const std::map<std::string, std::deque<uint64_t>>& history,
-    const std::string& campaign_id) {
-  std::deque<uint64_t> filtered_history;
+AdEventList DailyCapFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) const {
+  AdEventList filtered_ad_events = ad_events;
 
-  if (history.find(campaign_id) != history.end()) {
-    filtered_history = history.at(campaign_id);
-  }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
+    return ad_event.type == AdType::kNewTabPageAd ||
+        ad_event.campaign_id != ad.campaign_id ||
+        ad_event.confirmation_type != ConfirmationType::kViewed;
+  });
 
-  return filtered_history;
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
+
+  return filtered_ad_events;
 }
 
 }  // namespace ads

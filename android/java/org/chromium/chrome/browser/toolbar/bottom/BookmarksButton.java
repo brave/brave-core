@@ -1,6 +1,7 @@
-// Copyright 2019 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
@@ -14,16 +15,17 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.ThemeColorProvider;
-import org.chromium.chrome.browser.ThemeColorProvider.ThemeColorObserver;
-import org.chromium.chrome.browser.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.toolbar.ThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ThemeColorProvider.ThemeColorObserver;
+import org.chromium.chrome.browser.toolbar.ThemeColorProvider.TintObserver;
+import org.chromium.ui.widget.ChromeImageButton;
 
 /**
  * The bookmarks button.
  */
-public class BookmarksButton extends ShareButton implements ThemeColorObserver, TintObserver {
+public class BookmarksButton extends ChromeImageButton implements ThemeColorObserver, TintObserver {
     /** A provider that notifies components when the theme color changes.*/
     private ThemeColorProvider mThemeColorProvider;
     private ColorStateList mCurrentTint;
@@ -33,7 +35,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_bookmark));
     }
 
-    @Override
     public void destroy() {
         if (mThemeColorProvider != null) {
             mThemeColorProvider.removeThemeColorObserver(this);
@@ -42,7 +43,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         }
     }
 
-    @Override
     public void setThemeColorProvider(ThemeColorProvider themeColorProvider) {
         mThemeColorProvider = themeColorProvider;
         mThemeColorProvider.addThemeColorObserver(this);
@@ -72,17 +72,10 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
         }
         setEnabled(editingAllowed);
     }
-
-    @Override
-    public void setActivityTabProvider(ActivityTabProvider activityTabProvider) {
-        // sergz: Do nothing here, was added just to avoid extra patching
-    }
     
-    @Override
     public void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
     }
     
-    @Override
     public void updateButtonEnabledState(Tab tab) {
     }
 }

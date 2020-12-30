@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2020 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="automatically_open_when_possible"
+        android:title="@string/automatically_open_when_possible_title"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+</PreferenceScreen>

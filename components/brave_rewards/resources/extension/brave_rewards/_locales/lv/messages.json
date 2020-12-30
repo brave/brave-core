@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Uzzināt vairāk",
+    "message": "Uzziniet vairāk",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Automātiskā ziedošana",
+    "message": "Automātiska ziedošana",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Ikmēneša ieguldījums",
+    "message": "Ikmēneša ziedojumi",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -194,12 +194,8 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Tagad Jūs varat pelnīt, skatoties reklāmas.",
+    "message": "Tagad jūs varat nopelnīt, skatoties reklāmas.",
     "description": "Message for ads launch notification"
-  },
-  "braveAdsLaunchTitle": {
-    "message": "Brave reklāmas ir klāt!",
-    "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
     "message": "Brave reklāmas",
@@ -392,7 +388,7 @@
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Pakalpojuma noteikumi",
+    "message": "Pakalpojuma noteikumiem",
     "description": "Terms of Service"
   },
   "welcomeBack": {
@@ -420,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Ieslēgt reklāmas",
+    "message": "Ieslēdziet reklāmas",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -603,6 +599,10 @@
     "message": "Atcelt",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Mainīt summu",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Pieteikties",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. <br/> Ja jums jau ir verificēts Uphold konts, turpiniet pieteikties. ",
+    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. \nJa jums jau ir verificēts Uphold konts, turpiniet pieteikties.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,39 @@
   "walletPending":  {
     "message": "Gaida",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Piezīme: jūsu darījumi būs redzami Uphold, kad autorizēsieties; piemēram, būs redzami jūsu dzeramnaudu saņēmēji un summas.",
+    "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Pelnīt žetonus un Atdot atpakaļ",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Nopelniet žetonus, apskatot konfidencialitāti cienošas reklāmas, un automātiski atbalstiet savas iecienītākās vietnes un veidotājus.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Sākt izmantot Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Turpinot jūs piekrītat $tos_link_begin$Terms of Service$tos_link_end$ un $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

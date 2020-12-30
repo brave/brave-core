@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/browser/addresses_config.h"
-#include "brave/components/ipfs/browser/ipfs_service.h"
+#include "brave/components/ipfs/addresses_config.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"
@@ -21,9 +21,8 @@
 namespace {
 
 void CallOnGetDaemonStatus(content::WebUI* web_ui) {
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(
-          web_ui->GetWebContents()->GetBrowserContext());
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
@@ -32,7 +31,7 @@ void CallOnGetDaemonStatus(content::WebUI* web_ui) {
   value.SetBoolKey("installed", service->IsIPFSExecutableAvailable());
   value.SetBoolKey("launched", service->IsDaemonLaunched());
   web_ui->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                         std::move(value));
+                                       std::move(value));
 }
 
 }  // namespace
@@ -65,38 +64,35 @@ void IPFSDOMHandler::RegisterMessages() {
 }
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kIpfsGenerated,
-        kIpfsGeneratedSize, IDR_IPFS_HTML) {
+    : BasicUI(web_ui, name, kIpfsGenerated, kIpfsGeneratedSize, IDR_IPFS_HTML) {
   web_ui->AddMessageHandler(std::make_unique<IPFSDOMHandler>());
 }
 
-IPFSUI::~IPFSUI() {
-}
+IPFSUI::~IPFSUI() {}
 
 void IPFSDOMHandler::HandleGetConnectedPeers(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
 
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
 
-  service->GetConnectedPeers(
-      base::BindOnce(&IPFSDOMHandler::OnGetConnectedPeers,
-                     weak_ptr_factory_.GetWeakPtr()));
+  service->GetConnectedPeers(base::BindOnce(
+      &IPFSDOMHandler::OnGetConnectedPeers, weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IPFSDOMHandler::OnGetConnectedPeers(bool success,
+void IPFSDOMHandler::OnGetConnectedPeers(
+    bool success,
     const std::vector<std::string>& peers) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetConnectedPeers",
-      base::Value(static_cast<int>(peers.size())));
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "ipfs.onGetConnectedPeers", base::Value(static_cast<int>(peers.size())));
 }
 
 void IPFSDOMHandler::HandleGetAddressesConfig(const base::ListValue* args) {
@@ -104,20 +100,18 @@ void IPFSDOMHandler::HandleGetAddressesConfig(const base::ListValue* args) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
 
-  service->GetAddressesConfig(
-      base::BindOnce(&IPFSDOMHandler::OnGetAddressesConfig,
-                     weak_ptr_factory_.GetWeakPtr()));
+  service->GetAddressesConfig(base::BindOnce(
+      &IPFSDOMHandler::OnGetAddressesConfig, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IPFSDOMHandler::OnGetAddressesConfig(bool success,
-    const ipfs::AddressesConfig& config) {
+                                          const ipfs::AddressesConfig& config) {
   if (!web_ui()->CanCallJavascript())
     return;
 
@@ -146,16 +140,14 @@ void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
 
-  service->LaunchDaemon(
-      base::BindOnce(&IPFSDOMHandler::OnLaunchDaemon,
-                     weak_ptr_factory_.GetWeakPtr()));
+  service->LaunchDaemon(base::BindOnce(&IPFSDOMHandler::OnLaunchDaemon,
+                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IPFSDOMHandler::OnLaunchDaemon(bool success) {
@@ -170,16 +162,14 @@ void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
 
-  service->ShutdownDaemon(
-      base::BindOnce(&IPFSDOMHandler::OnShutdownDaemon,
-                     weak_ptr_factory_.GetWeakPtr()));
+  service->ShutdownDaemon(base::BindOnce(&IPFSDOMHandler::OnShutdownDaemon,
+                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IPFSDOMHandler::OnShutdownDaemon(bool success) {

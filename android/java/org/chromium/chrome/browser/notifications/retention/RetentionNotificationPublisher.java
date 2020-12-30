@@ -17,19 +17,19 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
-import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.user_prefs.UserPrefs;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -56,7 +56,9 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
                 case RetentionNotificationUtil.BRAVE_STATS_DATA:
                 case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                    if (!NewTabPage.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
+                    if (braveActivity.getActivityTab() != null 
+                        && braveActivity.getActivityTab().getUrlString() != null
+                        && !UrlUtilities.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
                         braveActivity.getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                     }
                     break;
@@ -91,8 +93,9 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.DAY_35:
                 // Can't check for rewards code in background
                 if (braveActivity != null
-                        && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED))
-                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                Profile.getLastUsedRegularProfile())
+                        && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
                     createNotification(context, intent);
                 }
                 break;

@@ -5,6 +5,7 @@
 #include <limits>
 
 #import "BATBraveAds.h"
+#import "BATBraveAds+Private.h"
 #import "BATAdNotification.h"
 #import "BATBraveLedger.h"
 
@@ -20,8 +21,11 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
+#include "base/sequenced_task_runner.h"
 #import "base/strings/sys_string_conversions.h"
-#import "brave/base/containers/utils.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
+#import "base/base64.h"
 
 #import "RewardsLogging.h"
 
@@ -29,7 +33,7 @@
   + (__type)__objc_getter { return ads::__cpp_var; } \
   + (void)__objc_setter:(__type)newValue { ads::__cpp_var = newValue; }
 
-static const NSInteger kDefaultNumberOfAdsPerDay = 20;
+static const NSInteger kDefaultNumberOfAdsPerDay = 40;
 static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 
 static const int kCurrentUserModelManifestSchemaVersion = 1;
@@ -49,6 +53,23 @@ static NSString * const kAdsSubdivisionTargetingCodePrefKey = [NSString stringWi
 static NSString * const kAutoDetectedAdsSubdivisionTargetingCodePrefKey = [NSString stringWithUTF8String:ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode];
 static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
+namespace {
+
+ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
+    ads::DBTransactionPtr transaction,
+    ads::Database* database) {
+  auto response = ads::DBCommandResponse::New();
+  if (!database) {
+    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
+  } else {
+    database->RunTransaction(std::move(transaction), response.get());
+  }
+
+  return response;
+}
+
+}  // namespace
+
 @interface BATAdNotification ()
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
 @end
@@ -57,6 +78,7 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
   NativeAdsClient *adsClient;
   ads::Ads *ads;
   ads::Database *adsDatabase;
+  scoped_refptr<base::SequencedTaskRunner> databaseQueue;
 
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -66,7 +88,6 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) dispatch_queue_t prefsWriteThread;
 @property (nonatomic) NSMutableDictionary *prefs;
-@property (nonatomic) dispatch_queue_t databaseQueue;
 @property (nonatomic, copy) NSDictionary *userModelMetadata;
 @property (nonatomic) NSTimer *updateUserModelTimer;
 @property (nonatomic) int64_t userModelRetryCount;
@@ -100,6 +121,11 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
     self.userModelRetryCount = 1;
 
+    databaseQueue = base::CreateSequencedTaskRunner(
+        {base::ThreadPool(), base::MayBlock(),
+         base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -114,6 +140,11 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
   [NSNotificationCenter.defaultCenter removeObserver:self];
   if (networkMonitor) { nw_path_monitor_cancel(networkMonitor); }
+
+  if (adsDatabase) {
+    databaseQueue->DeleteSoon(FROM_HERE, adsDatabase);
+  }
+
   if (ads != nil) {
     delete ads;
     delete adsClient;
@@ -143,34 +174,56 @@ static NSString * const kUserModelMetadataPrefKey = @"BATUserModelMetadata";
 
 + (BOOL)isCurrentLocaleSupported
 {
-  return [self isSupportedLocale:[[NSLocale preferredLanguages] firstObject]];
+  return [self isSupportedLocale:[self currentLocaleCode]];
 }
 
-BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
++ (NSString *)currentLocaleCode
+{
+  const auto locale = NSLocale.currentLocale;
+  return [NSString stringWithFormat:@"%@_%@",
+          locale.languageCode, locale.countryCode];
+}
+
+BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 + (int)environment
 {
-  return static_cast<int>(ads::_environment);
+  return static_cast<int>(ads::g_environment);
 }
 
 + (void)setEnvironment:(int)environment
 {
-  ads::_environment = static_cast<ads::Environment>(environment);
+  ads::g_environment = static_cast<ads::Environment>(environment);
+}
+
++ (BATBraveAdsSysInfo *)sysInfo
+{
+  auto sys_info = [[BATBraveAdsSysInfo alloc] init];
+  sys_info.manufacturer = [NSString stringWithUTF8String: ads::g_sys_info.manufacturer.c_str()];
+  sys_info.model = [NSString stringWithUTF8String: ads::g_sys_info.model.c_str()];
+
+  return sys_info;
+}
+
++ (void)setSysInfo:(BATBraveAdsSysInfo *)sysInfo
+{
+  ads::g_sys_info.manufacturer = sysInfo.manufacturer.UTF8String;
+  ads::g_sys_info.model = sysInfo.model.UTF8String;
 }
 
 + (BATBraveAdsBuildChannel *)buildChannel
 {
   auto build_channel = [[BATBraveAdsBuildChannel alloc] init];
-  build_channel.isRelease = ads::_build_channel.is_release;
-  build_channel.name = [NSString stringWithUTF8String: ads::_build_channel.name.c_str()];
+  build_channel.isRelease = ads::g_build_channel.is_release;
+  build_channel.name = [NSString stringWithUTF8String: ads::g_build_channel.name.c_str()];
 
   return build_channel;
 }
 
 + (void)setBuildChannel:(BATBraveAdsBuildChannel *)buildChannel
 {
-  ads::_build_channel.is_release = buildChannel.isRelease;
-  ads::_build_channel.name = buildChannel.name.UTF8String;
+  ads::g_build_channel.is_release = buildChannel.isRelease;
+  ads::g_build_channel.name = buildChannel.name.UTF8String;
 }
 
 #pragma mark - Initialization / Shutdown
@@ -178,20 +231,28 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (void)initializeIfAdsEnabled
 {
   if (![self isAdsServiceRunning] && self.enabled) {
-    self.databaseQueue = dispatch_queue_create("com.rewards.ads.db-transactions", DISPATCH_QUEUE_SERIAL);
-    
     const auto* dbPath = [self adsDatabasePath].UTF8String;
     adsDatabase = new ads::Database(base::FilePath(dbPath));
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize(^(bool) {
-      [self periodicallyCheckForUserModelUpdates];
 
-      NSString *localeIdentifier = [[NSLocale preferredLanguages] firstObject];
-      NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
-      [self registerUserModels:locale];
-    });
+    if (!self.ledger) { return; }
+    [self.ledger currentWalletInfo:^(BATBraveWallet * _Nullable wallet) {
+      if (!wallet || wallet.recoverySeed.count == 0) {
+        BLOG(0, @"Failed to obtain wallet information to initialize ads");
+        return;
+      }
+      std::vector<uint8_t> seed;
+      for (NSNumber *number in wallet.recoverySeed) {
+        seed.push_back(static_cast<uint8_t>(number.unsignedCharValue));
+      }
+      ads->OnWalletUpdated(wallet.paymentId.UTF8String, base::Base64Encode(seed));
+      ads->Initialize(^(bool) {
+        [self periodicallyCheckForUserModelUpdates];
+        [self registerUserModels];
+      });
+    }];
   }
 }
 
@@ -209,16 +270,30 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   adsDatabase = new ads::Database(base::FilePath(dbPath.UTF8String));
 }
 
-- (void)shutdown
+- (void)shutdown:(nullable void (^)())completion
 {
   if ([self isAdsServiceRunning]) {
     ads->Shutdown(^(bool) {
-      delete ads;
-      delete adsClient;
-      delete adsDatabase;
+      if (ads != nil) {
+        delete ads;
+      }
+      if (adsClient != nil) {
+        delete adsClient;
+      }
+      if (adsDatabase != nil) {
+        delete adsDatabase;
+      }
       ads = nil;
       adsClient = nil;
+      adsDatabase = nil;
+      if (completion) {
+        completion();
+      }
     });
+  } else {
+    if (completion) {
+      completion();
+    }
   }
 }
 
@@ -241,8 +316,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
   if (enabled) {
     [self initializeIfAdsEnabled];
-  } else {
-    [self shutdown];
   }
 }
 
@@ -318,8 +391,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)savePrefs
 {
+  NSDictionary *prefs = [self.prefs copy];
+  NSString *path = [[self prefsPath] copy];
   dispatch_async(self.prefsWriteThread, ^{
-    [self.prefs writeToFile:[self prefsPath] atomically:YES];
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
   });
 }
 
@@ -404,13 +479,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   const uint64_t from_timestamp = 0;
   const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
 
-  const auto history = ads->GetAdsHistory(ads::AdsHistory::FilterType::kNone,
-      ads::AdsHistory::SortType::kNone, from_timestamp, to_timestamp);
+  const auto history = ads->GetAdsHistory(ads::AdsHistoryInfo::FilterType::kNone,
+      ads::AdsHistoryInfo::SortType::kNone, from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate *> alloc] init];
-  for (const auto& entry : history.entries) {
+  for (const auto& item : history.items) {
     const auto date = [NSDate dateWithTimeIntervalSince1970:
-        entry.timestamp_in_seconds];
+        item.timestamp_in_seconds];
     [dates addObject:date];
   }
 
@@ -436,11 +511,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 #pragma mark - Reporting
 
-- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text tabId:(NSInteger)tabId
+- (void)reportLoadedPageWithURL:(NSURL *)url redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs innerText:(NSString *)text tabId:(NSInteger)tabId
 {
   if (![self isAdsServiceRunning]) { return; }
   const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  ads->OnPageLoaded((int32_t)tabId, urlString, urlString, base::SysNSStringToUTF8(text));
+  std::vector<std::string> urls;
+  for (NSURL *redirectURL in redirectionURLs) {
+    urls.push_back(base::SysNSStringToUTF8(redirectURL.absoluteString));
+  }
+  urls.push_back(urlString);
+  ads->OnPageLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(text));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId
@@ -468,11 +548,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportAdNotificationEvent:(NSString *)notificationUuid eventType:(BATAdNotificationEventType)eventType
+- (void)reportAdNotificationEvent:(NSString *)uuid eventType:(BATAdNotificationEventType)eventType
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->OnAdNotificationEvent(notificationUuid.UTF8String,
+  ads->OnAdNotificationEvent(uuid.UTF8String,
                              static_cast<ads::AdNotificationEventType>(eventType));
+}
+
+- (void)reportNewTabPageAdEvent:(NSString *)wallpaperId creativeInstanceId:(NSString *)creativeInstanceId eventType:(BATNewTabPageAdEventType)eventType
+{
+  if (![self isAdsServiceRunning]) { return; }
+  ads->OnNewTabPageAdEvent(wallpaperId.UTF8String,
+                           creativeInstanceId.UTF8String,
+                           static_cast<ads::NewTabPageAdEventType>(eventType));
 }
 
 - (void)reconcileAdRewards
@@ -483,17 +571,18 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
-  ads->GetTransactionHistory(^(bool success, ads::StatementInfo list) {
+  if (![self isAdsServiceRunning]) { return; }
+  ads->GetStatement(^(bool success, ads::StatementInfo list) {
     if (!success) {
       completion(0, 0, nil);
       return;
     }
 
     NSDate *nextPaymentDate = nil;
-    if (list.next_payment_date_in_seconds > 0) {
-      nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list.next_payment_date_in_seconds];
+    if (list.next_payment_date > 0) {
+      nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list.next_payment_date];
     }
-    completion(list.ad_notifications_received_this_month,
+    completion(list.ads_received_this_month,
                list.estimated_pending_rewards,
                nextPaymentDate);
   });
@@ -504,7 +593,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbUp(creativeInstanceId.UTF8String,
                        creativeSetID.UTF8String,
-                       ads::AdContent::LikeAction::kThumbsUp);
+                       ads::AdContentInfo::LikeAction::kThumbsUp);
 }
 
 - (void)toggleThumbsDownForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
@@ -512,7 +601,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbDown(creativeInstanceId.UTF8String,
                          creativeSetID.UTF8String,
-                         ads::AdContent::LikeAction::kThumbsDown);
+                         ads::AdContentInfo::LikeAction::kThumbsDown);
 }
 
 #pragma mark - Configuration
@@ -537,11 +626,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return UIApplication.sharedApplication.applicationState == UIApplicationStateActive;
 }
 
-- (bool)canShowBackgroundNotifications
-{
-  return false;
-}
-
 - (bool)isNetworkConnectionAvailable
 {
   return self.networkConnectivityAvailable;
@@ -563,13 +647,15 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
   const auto copiedURL = [NSString stringWithUTF8String:url_request->url.c_str()];
 
-  return [self.commonOps loadURLRequest:url_request->url headers:url_request->headers content:url_request->content content_type:url_request->content_type method:methodMap[url_request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  const auto __weak weakSelf = self;
+  return [self.commonOps loadURLRequest:url_request->url headers:url_request->headers content:url_request->content content_type:url_request->content_type method:methodMap[url_request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
+    const auto strongSelf = weakSelf;
+    if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
     ads::UrlResponse url_response;
     url_response.url = copiedURL.UTF8String;
     url_response.status_code = statusCode;
     url_response.body = response;
-    url_response.headers = base::MapToFlatMap(headers);
-
+    url_response.headers = headers;
     callback(url_response);
   }];
 }
@@ -589,6 +675,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (BOOL)registerUserModelsForLanguageCode:(NSString *)languageCode
 {
+  if (!languageCode) {
+    return NO;
+  }
+
   NSString *isoLanguageCode = [@"iso_639_1_" stringByAppendingString:[languageCode lowercaseString]];
 
   NSArray *languageCodeUserModelIds = [self.userModelPaths allKeysForObject:isoLanguageCode];
@@ -608,6 +698,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (BOOL)registerUserModelsForCountryCode:(NSString *)countryCode
 {
+  if (!countryCode) {
+    return NO;
+  }
+
   NSString *isoCountryCode = [@"iso_3166_1_" stringByAppendingString:[countryCode lowercaseString]];
 
   NSArray *countryCodeUserModelIds = [self.userModelPaths allKeysForObject:isoCountryCode];
@@ -625,14 +719,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return YES;
 }
 
-- (void)registerUserModels:(NSLocale *)locale
+- (void)registerUserModels
 {
-  if (![self registerUserModelsForLanguageCode:locale.languageCode]) {
-    BLOG(1, @"%@ not supported for user model installer", locale.languageCode);
+  const auto currentLocale = [NSLocale currentLocale];
+
+  if (![self registerUserModelsForLanguageCode:currentLocale.languageCode]) {
+    BLOG(1, @"%@ not supported for user model installer", currentLocale.languageCode);
   }
 
-  if (![self registerUserModelsForCountryCode:locale.countryCode]) {
-    BLOG(1, @"%@ not supported for user model installer", locale.countryCode);
+  if (![self registerUserModelsForCountryCode:currentLocale.countryCode]) {
+    BLOG(1, @"%@ not supported for user model installer", currentLocale.countryCode);
   }
 }
 
@@ -687,7 +783,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   const auto __weak weakSelf = self;
 
   NSString *baseUrl;
-  if (ads::_environment == ads::Environment::PRODUCTION) {
+  if (ads::g_environment == ads::Environment::PRODUCTION) {
     baseUrl = @"https://brave-user-model-installer-input.s3.brave.com";
   } else {
     baseUrl = @"https://brave-user-model-installer-input-dev.s3.bravesoftware.com";
@@ -697,9 +793,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   baseUrl = [baseUrl stringByAppendingPathComponent:userModelPath];
 
   NSString *manifestUrl = [baseUrl stringByAppendingPathComponent:@"models.json"];
-  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
     const auto strongSelf = weakSelf;
-    if (!strongSelf) { return; }
+    if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
 
     if (statusCode == 404) {
       BLOG(1, @"%@ user model manifest not found", id);
@@ -757,9 +853,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
       BLOG(1, @"Downloading %@ user model version %@", modelId, version);
 
-      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const base::flat_map<std::string, std::string> &headers) {
         const auto strongSelf = weakSelf;
-        if (!strongSelf) { return; }
+        if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
 
         if (statusCode == 404) {
           BLOG(1, @"%@ user model not found", id);
@@ -806,7 +902,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   const auto __weak weakSelf = self;
   [self downloadUserModelForId:bridgedId completion:^(BOOL success, BOOL shouldRetry) {
     const auto strongSelf = weakSelf;
-    if (!strongSelf) { return; }
+    if (!strongSelf || ![strongSelf isAdsServiceRunning]) { return; }
 
     const auto contents = [strongSelf.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
     if (!success || contents.empty()) {
@@ -825,7 +921,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
         BLOG(1, @"Retry loading %@ user model on %@", bridgedId, [formatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:delay]]);
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-          [strongSelf loadUserModelForId:bridgedId.UTF8String callback:callback];
+          const auto strongSelf2 = weakSelf;
+          if (!strongSelf2 || ![strongSelf2 isAdsServiceRunning]) { return; }
+          [strongSelf2 loadUserModelForId:bridgedId.UTF8String callback:callback];
         });
       }
 
@@ -905,12 +1003,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   return [self.notificationsHandler shouldShowNotifications];
 }
 
-- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info
+- (void)showNotification:(const ads::AdNotificationInfo &)info
 {
-  if (info.get() == nullptr) {
-    return;
-  }
-  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:*info];
+  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:info];
   [self.notificationsHandler showNotification:notification];
 }
 
@@ -949,22 +1044,23 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   self.autoDetectedSubdivisionTargetingCode = [NSString stringWithCString:subdivision_targeting_code.c_str() encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::DBTransactionPtr)transaction callback:(ads::RunDBTransactionCallback)callback
+- (void)runDBTransaction:(ads::DBTransactionPtr)transaction
+                callback:(ads::RunDBTransactionCallback)callback
 {
-  if (!adsDatabase || transaction.get() == nullptr) {
-    auto response = ads::DBCommandResponse::New();
-    response->status = ads::DBCommandResponse::Status::RESPONSE_ERROR;
-    callback(std::move(response));
-  } else {
-    __block auto transactionClone = transaction->Clone();
-    dispatch_async(self.databaseQueue, ^{
-      __block auto response = ads::DBCommandResponse::New();
-      adsDatabase->RunTransaction(std::move(transactionClone), response.get());
-      dispatch_async(dispatch_get_main_queue(), ^{
+  __weak BATBraveAds* weakSelf = self;
+  base::PostTaskAndReplyWithResult(
+      databaseQueue.get(),
+      FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnTaskRunner,
+          base::Passed(std::move(transaction)),
+          adsDatabase),
+      base::BindOnce(^(ads::DBCommandResponsePtr response) {
+        const auto strongSelf = weakSelf;
+        if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
+          return;
+        }
         callback(std::move(response));
-      });
-    });
-  }
+      }));
 }
 
 - (void)onAdRewardsChanged
@@ -1504,6 +1600,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   });
 
   return  _paths;
+}
+
+- (void)recordP2AEvent:(const std::string&)name type:(const ads::P2AEventType)type value:(const std::string&)value
+{
+  // Not needed on iOS
 }
 
 @end

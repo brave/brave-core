@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<script>
+  function clickAutoplayByAttr() {
+    document.getElementById("gotoAutoplayByAttr").click();
+    window.domAutomationController.send(true);
+  }
+  function clickAutoplayByMethod() {
+    document.getElementById("gotoAutoplayByMethod").click();
+    window.domAutomationController.send(true);
+  }
+  function clickAutoplayByAttrMuted() {
+    document.getElementById("gotoAutoplayByAttrMuted").click();
+    window.domAutomationController.send(true);
+  }
+  function clickAutoplayByMethodMuted() {
+    document.getElementById("gotoAutoplayByMethodMuted").click();
+    window.domAutomationController.send(true);
+  }
+</script>
+
+<body>
+  <a href="./autoplay_by_attr.html" id="gotoAutoplayByAttr">Autoplay by attr</a>
+  <a href="./autoplay_by_method.html" id="gotoAutoplayByMethod">Autoplay by method</a>
+  <a href="./autoplay_by_attr_muted.html" id="gotoAutoplayByAttrMuted">Autoplay by attr muted</a>
+  <a href="./autoplay_by_method_muted.html" id="gotoAutoplayByMethodMuted">Autoplay by method muted</a>
+</body>
+</html>

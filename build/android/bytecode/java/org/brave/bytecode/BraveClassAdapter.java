@@ -20,6 +20,17 @@ public class BraveClassAdapter {
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
+        chain = new BraveAppMenuClassAdapter(chain);
+        chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
+        chain = new BraveToolbarManagerClassAdapter(chain);
+        chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
+        chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
+        chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
+        chain = new BraveToolbarLayoutClassAdapter(chain);
+        chain = new BraveTileViewClassAdapter(chain);
+        chain = new BraveMimeUtilsClassAdapter(chain);
+        chain = new BraveActivityClassAdapter(chain);
+        chain = new BraveTabbedActivityClassAdapter(chain);
         return chain;
     }
 }

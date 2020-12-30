@@ -22,7 +22,9 @@ const std::vector<std::string> kOnlyAnonWalletCountries = {
 };
 
 #if defined(OS_ANDROID)
-  const std::map<std::string, bool> kBoolOptions = {};
+  const std::map<std::string, bool> kBoolOptions = {
+      {ledger::option::kClaimUGP, false}
+  };
 
   const std::map<std::string, int> kIntegerOptions = {};
 
@@ -36,7 +38,9 @@ const std::vector<std::string> kOnlyAnonWalletCountries = {
       {ledger::option::kPublisherListRefreshInterval,
        7* base::Time::kHoursPerDay * base::Time::kSecondsPerHour}};
 #else
-  const std::map<std::string, bool> kBoolOptions = {};
+  const std::map<std::string, bool> kBoolOptions = {
+      {ledger::option::kClaimUGP, false}
+  };
 
   const std::map<std::string, int> kIntegerOptions = {};
 

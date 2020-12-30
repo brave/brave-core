@@ -17,11 +17,9 @@
 
 namespace rewards_browsertest_util {
 
-enum class ContributionType { OneTimeTip, MonthlyTip };
+enum class TipAction { OneTime, SetMonthly, ChangeMonthly, ClearMonthly };
 
 void GetTestDataDir(base::FilePath* test_data_dir);
-
-double IsRewardsEnabled(Browser* browser, const bool private_window = false);
 
 GURL GetRewardsUrl();
 
@@ -29,9 +27,7 @@ GURL GetRewardsInternalsUrl();
 
 GURL GetNewTabUrl();
 
-void EnableRewardsViaCode(
-    Browser* browser,
-    brave_rewards::RewardsServiceImpl* rewards_service);
+void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service);
 
 GURL GetUrl(
     net::EmbeddedTestServer* https_server,
@@ -51,6 +47,10 @@ void NavigateToPublisherPage(
     const std::string& path = "");
 
 void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
+
+void CreateWallet(brave_rewards::RewardsServiceImpl* rewards_service);
+
+void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 
 }  // namespace rewards_browsertest_util
 

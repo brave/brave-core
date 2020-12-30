@@ -2,13 +2,14 @@ const path = require('path')
 
 const config = require('../lib/config')
 const util = require('../lib/util')
+const assert = require('assert')
 
 const getTestBinary = (suite) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
 const getTestsToRun = (config, suite) => {
-  testsToRun = [suite]
+  let testsToRun = [suite]
   if (suite === 'brave_unit_tests') {
     if (config.targetOS !== 'android') {
       testsToRun.push('brave_installer_unittests')
@@ -80,6 +81,11 @@ const test = (suite, buildConfig = config.defaultBuildConfig, options) => {
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
       }
       if (config.targetOS === 'android') {
+        assert(
+            config.targetArch === 'x86' || options.manual_android_test_device,
+            'Only x86 build can be run automatically. For other builds please run test device manually and specify manual_android_test_device flag.')
+      }
+      if (config.targetOS === 'android' && !options.manual_android_test_device) {
         // Specify emulator to run tests on
         braveArgs.push(`--avd-config tools/android/avd/proto/generic_android28.textpb`)
       }

@@ -39,6 +39,8 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean) {
     return {
       wallpaperImageUrl: '',
       isSponsored: false,
+      creativeInstanceId: '12345abcde',
+      wallpaperId: 'abcde12345',
       logo: { image: '', companyName: '', alt: '', destinationUrl: '' }
     }
   }
@@ -54,7 +56,7 @@ function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   }
 }
 
-export const getNewTabData = (state: NewTab.State = defaultState) => ({
+export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State => ({
   ...state,
   brandedWallpaperData: shouldShowBrandedWallpaperData(
     boolean('Show branded background image?', true)
@@ -66,14 +68,16 @@ export const getNewTabData = (state: NewTab.State = defaultState) => ({
   ),
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),
+  showToday: boolean('Show today?', true),
   showClock: boolean('Show clock?', true),
   showTopSites: boolean('Show top sites?', true),
   showRewards: boolean('Show rewards?', true),
   showTogether: boolean('Show together?', true),
   togetherSupported: boolean('Together supported?', true),
   geminiSupported: boolean('Gemini Supported?', true),
+  cryptoDotComSupported: boolean('Crypto.com supported?', true),
   showBinance: boolean('Show Binance?', true),
-  showAddCard: true,
+  isBraveTodayIntroDismissed: boolean('Brave Today intro dismissed?', false),
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {
     ...state.stats,

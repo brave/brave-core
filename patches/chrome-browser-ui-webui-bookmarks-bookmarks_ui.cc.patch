@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 60ec5a0f6002cf8547aa6dae4c6b0a036d535d5f..4e6c7d7ec8c5345a69332010de1846b75e3511de 100644
+index a1b0b5ed94d7845bcba52bf3fed4d2eda224de6c..845f321f4466095f917acd10180f24fcf284b371 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -134,6 +134,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
+@@ -127,6 +127,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
    for (const auto& str : kStrings)
      AddLocalizedString(source, str.name, str.id);
  

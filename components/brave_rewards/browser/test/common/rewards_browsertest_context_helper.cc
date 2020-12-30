@@ -20,13 +20,20 @@
 #include "extensions/common/constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace rewards_browsertest_helper {
+namespace rewards_browsertest {
 
-void OpenRewardsPopupRewardsEnabled(Browser* browser) {
+RewardsBrowserTestContextHelper::RewardsBrowserTestContextHelper(
+    Browser* browser) {
+  browser_ = browser;
+}
+
+RewardsBrowserTestContextHelper::~RewardsBrowserTestContextHelper() = default;
+
+void RewardsBrowserTestContextHelper::OpenPopup() {
   // Ask the popup to open
   std::string error;
   bool popup_shown = extensions::BraveActionAPI::ShowActionUI(
-    browser,
+    browser_,
     brave_rewards_extension_id,
     nullptr,
     &error);
@@ -36,9 +43,8 @@ void OpenRewardsPopupRewardsEnabled(Browser* browser) {
   EXPECT_TRUE(popup_shown);
 }
 
-void OpenRewardsPopupRewardsDisabled(Browser* browser) {
-  BrowserView* browser_view =
-    BrowserView::GetBrowserViewForBrowser(browser);
+void RewardsBrowserTestContextHelper::OpenPopupFirstTime() {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   BraveLocationBarView* brave_location_bar_view =
       static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
   ASSERT_NE(brave_location_bar_view, nullptr);
@@ -46,9 +52,10 @@ void OpenRewardsPopupRewardsDisabled(Browser* browser) {
   ASSERT_NE(brave_actions, nullptr);
 
   brave_actions->OnRewardsStubButtonClicked();
+  loaded_ = true;
 }
 
-content::WebContents* OpenRewardsPopup(Browser* browser) {
+content::WebContents* RewardsBrowserTestContextHelper::OpenRewardsPopup() {
   // Construct an observer to wait for the popup to load
   content::WebContents* popup_contents = nullptr;
   auto check_load_is_rewards_panel =
@@ -70,56 +77,59 @@ content::WebContents* OpenRewardsPopup(Browser* browser) {
       content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
       base::BindLambdaForTesting(check_load_is_rewards_panel));
 
-  bool rewards_enabled = browser->profile()->GetPrefs()->
-      GetBoolean(brave_rewards::prefs::kEnabled);
+  bool ac_enabled = browser_->profile()->GetPrefs()->
+      GetBoolean(brave_rewards::prefs::kAutoContributeEnabled);
 
-  if (rewards_enabled) {
-    OpenRewardsPopupRewardsEnabled(browser);
+  if (loaded_ || ac_enabled) {
+    OpenPopup();
   } else {
-    OpenRewardsPopupRewardsDisabled(browser);
+    OpenPopupFirstTime();
   }
 
   // Wait for the popup to load
   popup_observer.Wait();
   rewards_browsertest_util::WaitForElementToAppear(
       popup_contents,
-      "[data-test-id='rewards-panel']");
+      "#rewards-panel");
 
   return popup_contents;
 }
 
-void EnableRewards(Browser* browser, const bool use_new_tab) {
-  // Load rewards page
-  GURL page_url = use_new_tab
-      ? rewards_browsertest_util::GetNewTabUrl()
-      : rewards_browsertest_util::GetRewardsUrl();
-  LoadURL(browser, page_url);
-
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
-  // Opt in and create wallet to enable rewards
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents,
-      "[data-test-id='optInAction']");
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents,
-      "[data-test-id2='enableMain']");
-}
-
-content::WebContents* OpenSiteBanner(
-    Browser* browser,
-    rewards_browsertest_util::ContributionType banner_type) {
-  content::WebContents* popup_contents =
-      rewards_browsertest_helper::OpenRewardsPopup(browser);
+content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
+    rewards_browsertest_util::TipAction tip_action) {
+  content::WebContents* popup_contents = OpenRewardsPopup();
 
   // Construct an observer to wait for the site banner to load.
   content::WindowedNotificationObserver site_banner_observer(
       content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
       content::NotificationService::AllSources());
 
-  const std::string button_selector =
-      banner_type == rewards_browsertest_util::ContributionType::MonthlyTip
-      ? "[type='tip-monthly']"
-      : "[type='tip']";
+  std::string button_selector;
+  bool open_tip_actions = false;
+
+  switch (tip_action) {
+    case rewards_browsertest_util::TipAction::OneTime:
+      button_selector = "[type=tip]";
+      break;
+    case rewards_browsertest_util::TipAction::SetMonthly:
+      button_selector = "[type=tip-monthly]";
+      break;
+    case rewards_browsertest_util::TipAction::ChangeMonthly:
+      button_selector = "[data-test-id=change-monthly-amount]";
+      open_tip_actions = true;
+      break;
+    case rewards_browsertest_util::TipAction::ClearMonthly:
+      button_selector = "[data-test-id=clear-monthly-amount]";
+      open_tip_actions = true;
+      break;
+  }
+
+  // If necessary, show the monthly tip actions menu.
+  if (open_tip_actions) {
+    rewards_browsertest_util::WaitForElementThenClick(
+        popup_contents,
+        "[data-test-id=toggle-monthly-actions]");
+  }
 
   // Click button to initiate sending a tip.
   rewards_browsertest_util::WaitForElementThenClick(
@@ -144,14 +154,13 @@ content::WebContents* OpenSiteBanner(
   return site_banner_source.ptr();
 }
 
-void VisitPublisher(
-    Browser* browser,
+void RewardsBrowserTestContextHelper::VisitPublisher(
     const GURL& url,
     const bool verified,
     const bool last_add) {
   const std::string publisher = url.host();
   ui_test_utils::NavigateToURLWithDisposition(
-      browser,
+      browser_,
       url,
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
@@ -160,10 +169,10 @@ void VisitPublisher(
   // granularity is seconds), so wait for just over 2 seconds to elapse
   base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(2100));
 
-  // Activate the Rewards settings page tab
-  rewards_browsertest_util::ActivateTabAtIndex(browser, 0);
+  // Load rewards page
+  rewards_browsertest_util::ActivateTabAtIndex(browser_, 0);
 
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
   // Make sure site appears in auto-contribute table
   rewards_browsertest_util::WaitForElementToEqual(
       contents,
@@ -193,17 +202,16 @@ void VisitPublisher(
   }
 }
 
-void LoadURL(Browser* browser, GURL url) {
-  DCHECK(browser);
-  ui_test_utils::NavigateToURL(browser, url);
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+void RewardsBrowserTestContextHelper::LoadURL(GURL url) {
+  ui_test_utils::NavigateToURL(browser_, url);
+  auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 }
 
-void ReloadCurrentSite(Browser* browser) {
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+void RewardsBrowserTestContextHelper::ReloadCurrentSite() {
+  auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
   contents->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(contents));
 }
 
-}  // namespace rewards_browsertest_helper
+}  // namespace rewards_browsertest

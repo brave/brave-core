@@ -15,18 +15,19 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/features.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -41,6 +42,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ui/webui/ipfs_ui.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
 using content::WebUI;
@@ -68,7 +70,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
   } else if (host == kIPFSHost &&
-      base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+             ipfs::IsIpfsEnabled(
+                 web_ui->GetWebContents()->GetBrowserContext())) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

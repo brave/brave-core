@@ -13,14 +13,11 @@
 
 namespace ads {
 
-class AdsImpl;
-
 namespace database {
 
 class Initialize {
  public:
-  explicit Initialize(
-      AdsImpl* ads);
+  Initialize();
 
   ~Initialize();
 
@@ -35,8 +32,6 @@ class Initialize {
       ResultCallback callback);
 
   std::string last_message_;
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace database

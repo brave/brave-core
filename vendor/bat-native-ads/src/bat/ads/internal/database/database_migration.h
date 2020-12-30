@@ -7,19 +7,17 @@
 #define BAT_ADS_INTERNAL_DATABASE_DATABASE_MIGRATION_H_
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/mojom.h"
 
 namespace ads {
 
-class AdsImpl;
+class DatabaseUtil;
 
 namespace database {
 
 class Migration {
  public:
-  explicit Migration(
-      AdsImpl* ads);
+  Migration();
 
   ~Migration();
 
@@ -31,8 +29,6 @@ class Migration {
   void ToVersion(
       DBTransaction* transaction,
       const int to_version);
-
-  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace database

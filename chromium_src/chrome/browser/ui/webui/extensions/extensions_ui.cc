@@ -17,7 +17,7 @@ namespace {
 
 #if !BUILDFLAG(OPTIMIZE_WEBUI)
 constexpr char kBraveGeneratedPath[] =
-    "@out_folder@/gen/brave/browser/resources/extensions/";
+    "@out_folder@/gen/brave/browser/resources/extensions/preprocessed";
 #endif
 
 // Called from the original extension_ui.cc's CreateMdExtensionsSource via a
@@ -33,6 +33,12 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source) {
   }
 #endif
   NavigationBarDataProvider::Initialize(source);
+  source->AddLocalizedString("privateInfoWarning",
+                             IDS_EXTENSIONS_BRAVE_PRIVATE_WARNING);
+  source->AddLocalizedString("spanningInfoWarning",
+                             IDS_EXTENSIONS_BRAVE_SPANNING_WARNING);
+  source->AddLocalizedString("privateAndTorInfoWarning",
+                             IDS_EXTENSIONS_BRAVE_PRIVATE_AND_TOR_WARNING);
 }
 
 }  // namespace

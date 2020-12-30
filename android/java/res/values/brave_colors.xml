@@ -94,12 +94,14 @@
     <color name="shield_rounded_button_color">#C2C4CF</color>
     <color name="shield_thank_you_icon_color">#212529</color>
 
-    <color name="brave_stats_ads_color">#FB542B</color>
-    <color name="brave_stats_data_saved_color">#4C54D2</color>
-    <color name="brave_state_time_count_color">#212529</color>
+    <color name="brave_stats_ads_color">#FF7654</color>
+    <color name="brave_stats_data_saved_color">#737ADE</color>
+    <color name="brave_state_time_count_color">#FFFFFF</color>
 
     <color name="brave_stats_title_color">#868E96</color>
     <color name="brave_stats_text_color">#212529</color>
+    <color name="ntp_stats_bg_color">#212529</color>
+    <color name="ntp_stats_text_color">#C2C4CF</color>
 
     <color name="brave_stats_bg_color">#FFFFFF</color>
     <color name="brave_stats_bg_color_20_alpha">#33212529</color>
@@ -110,4 +112,24 @@
     <color name="brave_stats_empty_border_color">#5DB5FC</color>
     <color name="brave_stats_badge_tint_color">#495057</color>
     <color name="brave_stats_radio_button_active">@android:color/white</color>
+
+    <color name="topsite_bg_color">#DADCE8</color>
+    <color name="spinner_bg_color">#DADCE8</color>
+
+    <color name="binance_theme_color">#F0B90B</color>
+    <color name="binance_theme_color_alpha_50">#80F0B90B</color>
+    <color name="binance_text_color">#F8F9FA</color>
+    <color name="binance_bottom_sheet_bg_color">#1F1F1F</color>
+    <color name="binance_widget_bg_color">#17171F</color>
+    <color name="white_alpha_50">#80FFFFFF</color>
+    <color name="binance_divider_color">#C0C0C0</color>
+
+    <color name="brave_rewards_modal_title_color">#212529</color>
+    <color name="brave_rewards_modal_text_color">#495057</color>
+    <color name="brave_rewards_modal_theme_color">#4C54D2</color>
+    <color name="brave_rewards_modal_close_button_color">#5E5F6C</color>
+    <color name="brave_rewards_tos_color">#868E96</color>
+    <color name="brave_rewards_opt_in_bg_color">#E7E9FE</color>
+    <color name="brave_rewards_opt_in_text_color">#474958</color>
+    
 </resources>

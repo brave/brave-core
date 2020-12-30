@@ -24,6 +24,8 @@ interface Props {
 }
 
 class Clock extends React.PureComponent<Props, ClockState> {
+  private updateInterval: number
+
   constructor (props: any) {
     super(props)
     this.state = this.getClockState(new Date())
@@ -75,7 +77,11 @@ class Clock extends React.PureComponent<Props, ClockState> {
   }
 
   componentDidMount () {
-    window.setInterval(this.maybeUpdateClock.bind(this), 2000)
+    this.updateInterval = window.setInterval(this.maybeUpdateClock.bind(this), 2000)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.updateInterval)
   }
 
   onDoubleClick = () => {

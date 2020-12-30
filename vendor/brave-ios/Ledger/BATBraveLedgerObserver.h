@@ -15,15 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Creating a LedgerObserver alone will not respond to any events. Set
 /// each closure that you wish to watch based on the data being displayed on
 /// screen
+OBJC_EXPORT 
 NS_SWIFT_NAME(LedgerObserver)
 @interface BATBraveLedgerObserver : NSObject
 
 @property (nonatomic, readonly, weak) BATBraveLedger *ledger;
 
 - (instancetype)initWithLedger:(BATBraveLedger *)ledger;
-
-/// Rewards was enabled or disabled globally
-@property (nonatomic, copy, nullable) void (^rewardsEnabledStateUpdated)(BOOL enabled);
 
 /// Executed when the wallet is first initialized
 @property (nonatomic, copy, nullable) void (^walletInitalized)(BATResult result);

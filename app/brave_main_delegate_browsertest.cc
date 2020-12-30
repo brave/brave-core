@@ -14,12 +14,13 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/embedder_support/switches.h"
 #include "components/language/core/common/language_experiments.h"
+#include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
-#include "content/public/common/web_preferences.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "net/base/features.h"
@@ -46,7 +47,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
       base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kNoPings));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  const content::WebPreferences prefs =
+  const blink::web_pref::WebPreferences prefs =
       contents->GetOrCreateWebPreferences();
   EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
 }
@@ -64,12 +65,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableAccountWalletStorage,
       &autofill::features::kAutofillServerCommunication,
       &blink::features::kTextFragmentAnchor,
-      &features::kAllowPopupsDuringPageUnload,
+      &features::kIdleDetection,
       &features::kNotificationTriggers,
       &features::kPrivacySettingsRedesign,
-      &features::kSmsReceiver,
-      &features::kVideoPlaybackQuality,
+      &features::kSignedExchangeSubresourcePrefetch,
       &features::kTabHoverCards,
+      &features::kWebOTP,
+      &network_time::kNetworkTimeServiceQuerying,
       &password_manager::features::kPasswordCheck,
       &safe_browsing::kEnhancedProtection,
   };
@@ -86,7 +88,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
-    &omnibox::kOmniboxContextMenuShowFullUrls,
     &net::features::kLegacyTLSEnforced,
   };
 

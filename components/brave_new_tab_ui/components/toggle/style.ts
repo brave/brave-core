@@ -4,7 +4,6 @@
 
 import styled, { css } from 'brave-ui/theme'
 import { Props } from './index'
-import palette from 'brave-ui/theme/colors'
 
 export const StyledCheckbox = styled<{}, 'input'>('input')`
   -webkit-appearance: none;
@@ -14,9 +13,17 @@ export const StyledCheckbox = styled<{}, 'input'>('input')`
   height: 100%;
   top: 0;
   left: 0;
-  outline-offset: -3px;
-  outline-color: ${palette.orange400};
-  outline-width: 2px;
+
+  &:active {
+    outline: none;
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+    outline-offset: -1px;
+  }
 `
 
 export const StyledWrapper = styled<Props, 'div'>('div')`

@@ -15,17 +15,12 @@ const mergeReducers = (state: RewardsExtension.State | undefined, action: any) =
     state = storage.load()
     setBadgeText(state)
   }
-  const startingState = state
 
   state = rewardsPanelReducer(state, action)
   state = promotionPanelReducer(state, action)
 
   if (!state) {
     state = storage.defaultState
-  }
-
-  if (state !== startingState) {
-    storage.debouncedSave(state)
   }
 
   return state

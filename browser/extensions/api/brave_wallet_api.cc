@@ -12,10 +12,9 @@
 #include "base/values.h"
 #include "brave/browser/extensions/brave_wallet_util.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -27,7 +26,7 @@
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/brave_wallet_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -57,9 +56,8 @@ BraveWalletPromptToEnableWalletFunction::Run() {
       brave_wallet::PromptToEnableWallet::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (browser_context()->IsTor()) {
+    return RespondNow(Error("Not available in Tor context"));
   }
 
   // Get web contents for this tab
@@ -94,9 +92,8 @@ BraveWalletPromptToEnableWalletFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletReadyFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (browser_context()->IsTor()) {
+    return RespondNow(Error("Not available in Tor context"));
   }
 
   auto* service = GetBraveWalletService(browser_context());
@@ -137,15 +134,14 @@ BraveWalletShouldPromptForSetupFunction::Run() {
   auto* service = BraveWalletServiceFactory::GetForProfile(profile);
   bool should_prompt = !service->IsCryptoWalletsSetup() &&
       !profile->GetPrefs()->GetBoolean(kOptedIntoCryptoWallets);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(should_prompt)));
+  return RespondNow(OneArgument(base::Value(should_prompt)));
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletShouldCheckForDappsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(OneArgument(
-        std::make_unique<base::Value>(false)));
+  if (browser_context()->IsTor()) {
+    return RespondNow(OneArgument(base::Value(false)));
   }
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
@@ -159,8 +155,7 @@ BraveWalletShouldCheckForDappsFunction::Run() {
       (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS &&
        !service->IsCryptoWalletsReady());
 
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(dappDetection)));
+  return RespondNow(OneArgument(base::Value(dappDetection)));
 }
 
 ExtensionFunction::ResponseAction
@@ -183,8 +178,7 @@ BraveWalletGetWalletSeedFunction::Run() {
 
   blob.assign(derived.begin(), derived.end());
 
-  return RespondNow(OneArgument(
-    std::make_unique<base::Value>(blob)));
+  return RespondNow(OneArgument(base::Value(blob)));
 }
 
 ExtensionFunction::ResponseAction
@@ -207,22 +201,19 @@ BraveWalletGetBitGoSeedFunction::Run() {
 
   blob.assign(derived.begin(), derived.end());
 
-  return RespondNow(OneArgument(
-    std::make_unique<base::Value>(blob)));
+  return RespondNow(OneArgument(base::Value(blob)));
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletGetProjectIDFunction::Run() {
   std::string project_id = extensions::GetInfuraProjectID();
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(project_id)));
+  return RespondNow(OneArgument(base::Value(project_id)));
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletGetBraveKeyFunction::Run() {
   std::string brave_key = extensions::GetBraveKey();
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(brave_key)));
+  return RespondNow(OneArgument(base::Value(brave_key)));
 }
 
 ExtensionFunction::ResponseAction
@@ -243,8 +234,7 @@ BraveWalletGetWeb3ProviderFunction::Run() {
   } else if (provider == BraveWalletWeb3ProviderTypes::METAMASK) {
     extension_id = metamask_extension_id;
   }
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(extension_id)));
+  return RespondNow(OneArgument(base::Value(extension_id)));
 }
 
 ExtensionFunction::ResponseAction
@@ -268,7 +258,7 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
   }
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(json_string)));
+  return RespondNow(OneArgument(base::Value(json_string)));
 }
 
 }  // namespace api

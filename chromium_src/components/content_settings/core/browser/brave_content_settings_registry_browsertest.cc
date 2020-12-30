@@ -27,7 +27,7 @@ class BraveContentSettingsRegistryBrowserTest : public InProcessBrowserTest {
 
   HostContentSettingsMap* private_content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(
-        browser()->profile()->GetOffTheRecordProfile());
+        browser()->profile()->GetPrimaryOTRProfile());
   }
 
  private:

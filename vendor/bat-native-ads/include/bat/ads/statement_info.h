@@ -22,27 +22,45 @@ struct ADS_EXPORT StatementInfo {
       const StatementInfo& info);
   ~StatementInfo();
 
+  bool operator==(
+      const StatementInfo& rhs) const;
+  bool operator!=(
+      const StatementInfo& rhs) const;
+
   std::string ToJson() const;
   bool FromJson(
       const std::string& json);
 
   double estimated_pending_rewards = 0.0;
-  uint64_t next_payment_date_in_seconds = 0;
-  uint64_t ad_notifications_received_this_month = 0;
+  uint64_t next_payment_date = 0;
+  uint64_t ads_received_this_month = 0;
+  double earnings_this_month = 0.0;
+  double earnings_last_month = 0.0;
   TransactionList transactions;
+  TransactionList uncleared_transactions;
 
  private:
   double GetEstimatedPendingRewardsFromDictionary(
       base::DictionaryValue* dictionary) const;
 
-  uint64_t GetNextPaymentDateInSecondsFromDictionary(
+  uint64_t GetNextPaymentDateFromDictionary(
       base::DictionaryValue* dictionary) const;
 
-  uint64_t GetAdNotificationsReceivedThisMonthFromDictionary(
+  uint64_t GetAdsReceivedThisMonthFromDictionary(
+      base::DictionaryValue* dictionary) const;
+
+  double GetEarningsThisMonthFromDictionary(
+      base::DictionaryValue* dictionary) const;
+
+  double GetEarningsLastMonthFromDictionary(
       base::DictionaryValue* dictionary) const;
 
   base::Value GetTransactionsAsList() const;
   TransactionList GetTransactionsFromDictionary(
+      base::DictionaryValue* dictionary) const;
+
+  base::Value GetUnclearedTransactionsAsList() const;
+  TransactionList GetUnclearedTransactionsFromDictionary(
       base::DictionaryValue* dictionary) const;
 };
 

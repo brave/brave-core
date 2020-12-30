@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,6 +24,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+#include "brave/components/p3a/pref_names.h"
 #endif
 
 using base::android::ConvertUTF8ToJavaString;
@@ -50,6 +55,34 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
       enabled,
       GURL(),
       g_browser_process->local_state());
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyGoogleLoginEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kGoogleLoginControlType, enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyFacebookEmbedEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kFBEmbedControlType, enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyTwitterEmbedEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kTwitterEmbedControlType, enabled);
+}
+
+void JNI_BravePrefServiceBridge_SetThirdPartyLinkedinEmbedEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kLinkedInEmbedControlType, enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetAdBlockEnabled(
@@ -195,6 +228,11 @@ void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(
       brave_rewards::prefs::kUseRewardsStagingServer, enabled);
 }
 
+void JNI_BravePrefServiceBridge_ResetPromotionLastFetchStamp(JNIEnv* env) {
+  GetOriginalProfile()->GetPrefs()->SetUint64(
+      brave_rewards::prefs::kPromotionLastFetchStamp, 0);
+}
+
 jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kUseRewardsStagingServer);
@@ -250,6 +288,56 @@ void JNI_BravePrefServiceBridge_SetReferralDownloadId(
   return g_browser_process->local_state()->SetString(
       kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
 }
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+void JNI_BravePrefServiceBridge_SetP3AEnabled(
+    JNIEnv* env,
+    jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(
+      brave::kP3AEnabled, value);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(
+    JNIEnv* env) {
+  return g_browser_process->local_state()->GetBoolean(
+      brave::kP3AEnabled);
+}
+
+jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(
+    JNIEnv* env) {
+  return g_browser_process->local_state()->HasPrefPath(brave::kP3AEnabled);
+}
+
+void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(
+    JNIEnv* env,
+    jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(
+      brave::kP3ANoticeAcknowledged, value);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(
+    JNIEnv* env) {
+  return g_browser_process->local_state()->GetBoolean(
+      brave::kP3ANoticeAcknowledged);
+}
+
+#else
+
+void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {}
+
+jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
+  return false;
+}
+
+jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {}
+
+void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
+    jboolean value) {}
+
+jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
+  return false;
+}
+#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
 }  // namespace android
 }  // namespace chrome

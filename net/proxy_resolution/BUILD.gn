@@ -1,0 +1,22 @@
+import("//brave/components/tor/buildflags/buildflags.gni")
+
+source_set("unit_tests") {
+  testonly = true
+  if (enable_tor) {
+    sources = [
+      "configured_proxy_resolution_service_unittest.cc",
+      "proxy_config_service_tor_unittest.cc",
+    ]
+
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//net",
+      "//net:test_support",
+      "//testing/gtest",
+      "//url",
+    ]
+  }
+}

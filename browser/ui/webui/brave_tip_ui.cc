@@ -5,285 +5,547 @@
 
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "bat/ledger/mojom_structs.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/basic_ui.h"
-#include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_tip_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
-#include "chrome/common/pref_names.h"
-#include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "bat/ledger/mojom_structs.h"
 
+using brave_rewards::RewardsService;
+using brave_rewards::RewardsServiceFactory;
+using brave_rewards::RewardsServiceObserver;
 using content::WebUIMessageHandler;
 
 namespace {
 
-// The handler for Javascript messages for Brave about: pages
-class RewardsTipDOMHandler : public WebUIMessageHandler,
-                             public brave_rewards::RewardsServiceObserver {
+class TipMessageHandler : public WebUIMessageHandler,
+                          public RewardsServiceObserver {
  public:
-  RewardsTipDOMHandler();
-  ~RewardsTipDOMHandler() override;
+  TipMessageHandler();
+  ~TipMessageHandler() override;
 
-  void Init();
+  TipMessageHandler(const TipMessageHandler&) = delete;
+  TipMessageHandler operator=(const TipMessageHandler&) = delete;
 
-  // WebUIMessageHandler implementation.
+  // WebUIMessageHandler:
   void RegisterMessages() override;
 
- private:
-  void GetPublisherTipData(const base::ListValue* args);
-  void GetRewardsParameters(const base::ListValue* args);
-  void OnTip(const base::ListValue* args);
-  void GetRecurringTips(const base::ListValue* args);
-  void GetReconcileStamp(const base::ListValue* args);
-  void OnReconcileStamp(uint64_t reconcile_stamp);
-  void OnGetRecurringTips(ledger::type::PublisherInfoList list);
-  void TweetTip(const base::ListValue *args);
-  void OnlyAnonWallet(const base::ListValue* args);
-  void GetUpholdWallet(const base::ListValue* args);
-  void OnGetUpholdWallet(
-      const ledger::type::Result result,
-      ledger::type::UpholdWalletPtr wallet);
+  // RewardsServiceObserver:
+  void OnRecurringTipSaved(
+      RewardsService* rewards_service,
+      bool success) override;
 
-  void OnPublisherBanner(ledger::type::PublisherBannerPtr banner);
-
-  void OnGetShareURL(const std::string& url);
-
-  void FetchBalance(const base::ListValue* args);
-  void OnFetchBalance(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance);
-
-  void OnGetRewardsParameters(ledger::type::RewardsParametersPtr parameters);
-
-  // RewardsServiceObserver implementation
-  void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
-                           bool success) override;
-
-  void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
-                             bool success) override;
+  void OnRecurringTipRemoved(
+      RewardsService* rewards_service,
+      bool success) override;
 
   void OnReconcileComplete(
-      brave_rewards::RewardsService* rewards_service,
+      RewardsService* rewards_service,
       const ledger::type::Result result,
       const std::string& contribution_id,
       const double amount,
       const ledger::type::RewardsType type,
       const ledger::type::ContributionProcessor processor) override;
 
-  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  base::WeakPtrFactory<RewardsTipDOMHandler> weak_factory_;
+  void OnUnblindedTokensReady(RewardsService* rewards_service) override;
 
-  DISALLOW_COPY_AND_ASSIGN(RewardsTipDOMHandler);
+ private:
+  // Message handlers
+  void DialogReady(const base::ListValue* args);
+  void GetPublisherBanner(const base::ListValue* args);
+  void GetRewardsParameters(const base::ListValue* args);
+  void GetOnboardingStatus(const base::ListValue* args);
+  void SaveOnboardingResult(const base::ListValue* args);
+  void OnTip(const base::ListValue* args);
+  void GetRecurringTips(const base::ListValue* args);
+  void GetReconcileStamp(const base::ListValue* args);
+  void TweetTip(const base::ListValue* args);
+  void GetOnlyAnonWallet(const base::ListValue* args);
+  void GetExternalWallet(const base::ListValue* args);
+  void FetchBalance(const base::ListValue* args);
+
+  // Rewards service callbacks
+  void GetReconcileStampCallback(uint64_t reconcile_stamp);
+
+  void GetRecurringTipsCallback(ledger::type::PublisherInfoList list);
+
+  void GetUpholdWalletCallback(
+      const ledger::type::Result result,
+      ledger::type::UpholdWalletPtr wallet);
+
+  void GetPublisherBannerCallback(ledger::type::PublisherBannerPtr banner);
+
+  void GetShareURLCallback(const std::string& url);
+
+  void FetchBalanceCallback(
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance);
+
+  void GetRewardsParametersCallback(
+    ledger::type::RewardsParametersPtr parameters);
+
+  RewardsService* rewards_service_ = nullptr;  // NOT OWNED
+  base::WeakPtrFactory<TipMessageHandler> weak_factory_{this};
 };
 
-RewardsTipDOMHandler::RewardsTipDOMHandler() : weak_factory_(this) {}
+TipMessageHandler::TipMessageHandler() = default;
 
-RewardsTipDOMHandler::~RewardsTipDOMHandler() {
-  if (rewards_service_)
+TipMessageHandler::~TipMessageHandler() {
+  if (rewards_service_) {
     rewards_service_->RemoveObserver(this);
+  }
 }
 
-void RewardsTipDOMHandler::Init() {
-  Profile* profile = Profile::FromWebUI(web_ui());
-  rewards_service_ =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_)
-    rewards_service_->AddObserver(this);
-}
-
-void RewardsTipDOMHandler::RegisterMessages() {
+void TipMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.getPublisherBanner",
-      base::BindRepeating(&RewardsTipDOMHandler::GetPublisherTipData,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.getRewardsParameters",
-      base::BindRepeating(&RewardsTipDOMHandler::GetRewardsParameters,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.onTip",
-       base::BindRepeating(&RewardsTipDOMHandler::OnTip,
-                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.getRecurringTips",
-      base::BindRepeating(&RewardsTipDOMHandler::GetRecurringTips,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.getReconcileStamp",
-      base::BindRepeating(&RewardsTipDOMHandler::GetReconcileStamp,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.tweetTip",
-      base::BindRepeating(&RewardsTipDOMHandler::TweetTip,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.fetchBalance",
-      base::BindRepeating(&RewardsTipDOMHandler::FetchBalance,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.getExternalWallet",
+      "dialogReady",
       base::BindRepeating(
-          &RewardsTipDOMHandler::GetUpholdWallet,
+          &TipMessageHandler::DialogReady,
           base::Unretained(this)));
+
   web_ui()->RegisterMessageCallback(
-      "brave_rewards_tip.onlyAnonWallet",
+      "getPublisherBanner",
       base::BindRepeating(
-          &RewardsTipDOMHandler::OnlyAnonWallet,
+          &TipMessageHandler::GetPublisherBanner,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getRewardsParameters",
+      base::BindRepeating(
+          &TipMessageHandler::GetRewardsParameters,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getOnboardingStatus",
+      base::BindRepeating(
+          &TipMessageHandler::GetOnboardingStatus,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "saveOnboardingResult",
+      base::BindRepeating(
+          &TipMessageHandler::SaveOnboardingResult,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "onTip",
+       base::BindRepeating(
+           &TipMessageHandler::OnTip,
+           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getRecurringTips",
+      base::BindRepeating(
+          &TipMessageHandler::GetRecurringTips,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getReconcileStamp",
+      base::BindRepeating(
+          &TipMessageHandler::GetReconcileStamp,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "tweetTip",
+      base::BindRepeating(
+          &TipMessageHandler::TweetTip,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "fetchBalance",
+      base::BindRepeating(
+          &TipMessageHandler::FetchBalance,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getExternalWallet",
+      base::BindRepeating(
+          &TipMessageHandler::GetExternalWallet,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getOnlyAnonWallet",
+      base::BindRepeating(
+          &TipMessageHandler::GetOnlyAnonWallet,
           base::Unretained(this)));
 }
 
-void RewardsTipDOMHandler::GetPublisherTipData(
-    const base::ListValue* args) {
+void TipMessageHandler::OnRecurringTipRemoved(
+    RewardsService* rewards_service,
+    bool success) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  FireWebUIListener("recurringTipRemoved", base::Value(success));
+}
+
+void TipMessageHandler::OnRecurringTipSaved(
+    RewardsService* rewards_service,
+    bool success) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  FireWebUIListener("recurringTipSaved", base::Value(success));
+}
+
+void TipMessageHandler::OnReconcileComplete(
+    RewardsService* rewards_service,
+    const ledger::type::Result result,
+    const std::string& contribution_id,
+    const double amount,
+    const ledger::type::RewardsType type,
+    const ledger::type::ContributionProcessor processor) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetIntKey("result", static_cast<int>(result));
+  data.SetIntKey("type", static_cast<int>(type));
+
+  FireWebUIListener("reconcileCompleted", data);
+}
+
+void TipMessageHandler::OnUnblindedTokensReady(
+    RewardsService* rewards_service) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  FireWebUIListener("unblindedTokensReady");
+}
+
+void TipMessageHandler::DialogReady(const base::ListValue* args) {
+  // Initialize rewards service pointer on first "dialogReady" message
+  if (!rewards_service_) {
+    Profile* profile = Profile::FromWebUI(web_ui());
+    rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+    if (rewards_service_) {
+      rewards_service_->AddObserver(this);
+    }
+  }
+  AllowJavascript();
+  if (rewards_service_ && rewards_service_->IsInitialized()) {
+    FireWebUIListener("rewardsInitialized");
+  }
+}
+
+void TipMessageHandler::GetOnlyAnonWallet(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  const bool only_anon = rewards_service_->OnlyAnonWallet();
+  FireWebUIListener("onlyAnonWalletUpdated", base::Value(only_anon));
+}
+
+void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const std::string publisher_key = args->GetList()[0].GetString();
-  rewards_service_->GetPublisherBanner(
-      publisher_key,
-      base::Bind(&RewardsTipDOMHandler::OnPublisherBanner,
-                 weak_factory_.GetWeakPtr()));
-}
 
-void RewardsTipDOMHandler::GetRewardsParameters(const base::ListValue* args) {
-  if (!rewards_service_)
-    return;
-
-  rewards_service_->GetRewardsParameters(
-      base::Bind(&RewardsTipDOMHandler::OnGetRewardsParameters,
-                 weak_factory_.GetWeakPtr()));
-}
-
-static std::unique_ptr<base::ListValue> CreateListOfDoubles(
-    const std::vector<double>& items) {
-  auto result = std::make_unique<base::ListValue>();
-  for (double const& item : items) {
-    result->AppendDouble(item);
-  }
-  return result;
-}
-
-void RewardsTipDOMHandler::OnGetRewardsParameters(
-    ledger::type::RewardsParametersPtr parameters) {
-  if (!web_ui()->CanCallJavascript()) {
+  if (publisher_key.empty() || !rewards_service_) {
     return;
   }
 
-  base::DictionaryValue data;
-
-  if (parameters) {
-    data.SetDouble("rate", parameters->rate);
-    data.SetList("tipChoices",
-        CreateListOfDoubles(parameters->tip_choices));
-    data.SetList("monthlyTipChoices",
-        CreateListOfDoubles(parameters->monthly_tip_choices));
-  }
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.rewardsParameters", data);
+  rewards_service_->GetPublisherBanner(publisher_key, base::Bind(
+      &TipMessageHandler::GetPublisherBannerCallback,
+      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {
-  if (!rewards_service_ || !args) {
+void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
+  if (!rewards_service_) {
     return;
   }
 
+  rewards_service_->GetRewardsParameters(base::Bind(
+      &TipMessageHandler::GetRewardsParametersCallback,
+      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  AllowJavascript();
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetBoolKey("showOnboarding", rewards_service_->ShouldShowOnboarding());
+  FireWebUIListener("onboardingStatusUpdated", data);
+}
+
+void TipMessageHandler::SaveOnboardingResult(const base::ListValue* args) {
+  using brave_rewards::OnboardingResult;
+
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string result_type = args->GetList()[0].GetString();
+  if (result_type == "opted-in") {
+    rewards_service_->SaveOnboardingResult(OnboardingResult::kOptedIn);
+  } else if (result_type == "dismissed") {
+    rewards_service_->SaveOnboardingResult(OnboardingResult::kDismissed);
+  } else {
+    NOTREACHED();
+  }
+}
+
+void TipMessageHandler::OnTip(const base::ListValue* args) {
   CHECK_EQ(3U, args->GetSize());
-
   const std::string publisher_key = args->GetList()[0].GetString();
   const double amount = args->GetList()[1].GetDouble();
   const bool recurring = args->GetList()[2].GetBool();
 
-  if (publisher_key.empty() || amount < 1) {
-    // TODO(nejczdovc) add error
+  if (publisher_key.empty() || !rewards_service_) {
     return;
   }
 
-  rewards_service_->OnTip(publisher_key, amount, recurring);
-}
-
-void RewardsTipDOMHandler::GetRecurringTips(
-    const base::ListValue *args) {
-  if (rewards_service_) {
-    rewards_service_->GetRecurringTips(base::BindOnce(
-          &RewardsTipDOMHandler::OnGetRecurringTips,
-          weak_factory_.GetWeakPtr()));
+  if (recurring && amount <= 0) {
+    rewards_service_->RemoveRecurringTip(publisher_key);
+  } else if (amount >= 1) {
+    rewards_service_->OnTip(publisher_key, amount, recurring);
   }
 }
 
-void RewardsTipDOMHandler::OnGetRecurringTips(
+void TipMessageHandler::GetReconcileStamp(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetReconcileStamp(base::Bind(
+      &TipMessageHandler::GetReconcileStampCallback,
+      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::TweetTip(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 2U);
+  const std::string name = args->GetList()[0].GetString();
+  const std::string tweet_id = args->GetList()[1].GetString();
+
+  if (name.empty() || !rewards_service_) {
+    return;
+  }
+
+  const std::string comment = l10n_util::GetStringFUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET,
+      base::UTF8ToUTF16(name));
+
+  const std::string hashtag = l10n_util::GetStringUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG);
+
+  base::flat_map<std::string, std::string> share_url_args;
+  share_url_args["comment"] = comment;
+  share_url_args["hashtag"] = hashtag;
+  share_url_args["name"] = name.substr(1);
+  share_url_args["tweet_id"] = tweet_id;
+
+  rewards_service_->GetShareURL(
+      share_url_args,
+      base::BindOnce(
+          &TipMessageHandler::GetShareURLCallback,
+          base::Unretained(this)));
+}
+
+void TipMessageHandler::FetchBalance(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  rewards_service_->FetchBalance(base::BindOnce(
+      &TipMessageHandler::FetchBalanceCallback,
+      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetExternalWallet(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  rewards_service_->GetUpholdWallet(base::BindOnce(
+      &TipMessageHandler::GetUpholdWalletCallback,
+      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetRecurringTips(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+  rewards_service_->GetRecurringTips(base::BindOnce(
+      &TipMessageHandler::GetRecurringTipsCallback,
+      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetRewardsParametersCallback(
+    ledger::type::RewardsParametersPtr parameters) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  base::Value data(base::Value::Type::DICTIONARY);
+  if (parameters) {
+    base::Value tip_choices(base::Value::Type::LIST);
+    for (const auto& item : parameters->tip_choices) {
+      tip_choices.Append(item);
+    }
+
+    base::Value monthly_choices(base::Value::Type::LIST);
+    for (const auto& item : parameters->monthly_tip_choices) {
+      monthly_choices.Append(item);
+    }
+
+    data.SetDoubleKey("rate", parameters->rate);
+    data.SetKey("tipChoices", std::move(tip_choices));
+    data.SetKey("monthlyTipChoices", std::move(monthly_choices));
+  }
+
+  FireWebUIListener("rewardsParametersUpdated", data);
+}
+
+void TipMessageHandler::GetRecurringTipsCallback(
     ledger::type::PublisherInfoList list) {
-  if (!web_ui()->CanCallJavascript()) {
+  if (!IsJavascriptAllowed()) {
     return;
   }
 
-  auto publishers = std::make_unique<base::ListValue>();
-  for (auto const& item : list) {
-    auto publisher = std::make_unique<base::DictionaryValue>();
-    publisher->SetString("publisherKey", item->id);
-    publisher->SetInteger("monthlyDate", item->reconcile_stamp);
-    publishers->Append(std::move(publisher));
+  base::Value publishers(base::Value::Type::LIST);
+  for (const auto& item : list) {
+    base::Value publisher(base::Value::Type::DICTIONARY);
+    publisher.SetStringKey("publisherKey", item->id);
+    publisher.SetDoubleKey("amount", item->weight);
+    publishers.Append(std::move(publisher));
   }
 
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.recurringTips",
-      *publishers);
+  FireWebUIListener("recurringTipsUpdated", publishers);
 }
 
-void RewardsTipDOMHandler::OnPublisherBanner(
+void TipMessageHandler::GetPublisherBannerCallback(
     ledger::type::PublisherBannerPtr banner) {
-  if (!web_ui()->CanCallJavascript()) {
-     return;
+  if (!IsJavascriptAllowed()) {
+    return;
   }
 
-  base::DictionaryValue result;
+  base::Value result(base::Value::Type::DICTIONARY);
+
   if (banner) {
-    result.SetString("publisherKey", banner->publisher_key);
-    result.SetString("title", banner->title);
-    result.SetString("name", banner->name);
-    result.SetString("description", banner->description);
-    result.SetString("background", banner->background);
-    result.SetString("logo", banner->logo);
-    result.SetString("provider", banner->provider);
-    result.SetInteger("status", static_cast<int>(banner->status));
+    result.SetStringKey("publisherKey", banner->publisher_key);
+    result.SetStringKey("title", banner->title);
+    result.SetStringKey("name", banner->name);
+    result.SetStringKey("description", banner->description);
+    result.SetStringKey("background", banner->background);
+    result.SetStringKey("logo", banner->logo);
+    result.SetStringKey("provider", banner->provider);
+    result.SetIntKey("status", static_cast<int>(banner->status));
 
-    auto amounts = std::make_unique<base::ListValue>();
-    for (auto const& value : banner->amounts) {
-      amounts->AppendInteger(value);
+    base::Value amounts(base::Value::Type::LIST);
+    for (const auto& value : banner->amounts) {
+      amounts.Append(value);
     }
-    result.SetList("amounts", std::move(amounts));
+    result.SetKey("amounts", std::move(amounts));
 
-    auto links = std::make_unique<base::DictionaryValue>();
-    for (auto const& item : banner->links) {
-      links->SetString(item.first, item.second);
+    base::Value links(base::Value::Type::DICTIONARY);
+    for (const auto& item : banner->links) {
+      links.SetStringKey(item.first, item.second);
     }
-    result.SetDictionary("links", std::move(links));
+    result.SetKey("links", std::move(links));
   }
 
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.publisherBanner", result);
+  FireWebUIListener("publisherBannerUpdated", result);
+}
+
+void TipMessageHandler::GetReconcileStampCallback(uint64_t reconcile_stamp) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  const std::string stamp = base::NumberToString(reconcile_stamp);
+  FireWebUIListener("reconcileStampUpdated", base::Value(stamp));
+}
+
+void TipMessageHandler::GetShareURLCallback(const std::string& url) {
+  GURL gurl(url);
+  if (!gurl.is_valid()) {
+    return;
+  }
+
+  // Open a new tab with the prepopulated tweet ready to share.
+  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
+      Profile::FromWebUI(web_ui()));
+
+  browser_displayer.browser()->OpenURL(content::OpenURLParams(
+      gurl,
+      content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
+      false));
+}
+
+void TipMessageHandler::FetchBalanceCallback(
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetIntKey("status", static_cast<int>(result));
+
+  if (result == ledger::type::Result::LEDGER_OK && balance) {
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    for (const auto& wallet : balance->wallets) {
+      wallets.SetDoubleKey(wallet.first, wallet.second);
+    }
+
+    base::Value balance_value(base::Value::Type::DICTIONARY);
+    balance_value.SetDoubleKey("total", balance->total);
+    balance_value.SetKey("wallets", std::move(wallets));
+
+    data.SetKey("balance", std::move(balance_value));
+  }
+
+  FireWebUIListener("balanceUpdated", data);
+}
+
+void TipMessageHandler::GetUpholdWalletCallback(
+    const ledger::type::Result result,
+    ledger::type::UpholdWalletPtr wallet) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  base::Value data(base::Value::Type::DICTIONARY);
+
+  if (wallet) {
+    data.SetStringKey("token", wallet->token);
+    data.SetStringKey("address", wallet->address);
+    data.SetStringKey("verifyUrl", wallet->verify_url);
+    data.SetStringKey("addUrl", wallet->add_url);
+    data.SetStringKey("withdrawUrl", wallet->withdraw_url);
+    data.SetStringKey("userName", wallet->user_name);
+    data.SetStringKey("accountUrl", wallet->account_url);
+    data.SetStringKey("loginUrl", wallet->login_url);
+    data.SetIntKey("status", static_cast<int>(wallet->status));
+  }
+
+  FireWebUIListener("externalWalletUpdated", data);
 }
 
 }  // namespace
@@ -291,209 +553,19 @@ void RewardsTipDOMHandler::OnPublisherBanner(
 BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
     : ConstrainedWebDialogUI(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
-  // Show error for non-supported contexts
   if (!brave::IsRegularProfile(profile)) {
     return;
   }
-  content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(profile,
-                                              name,
-                                              kBraveRewardsTipGenerated,
-                                              kBraveRewardsTipGeneratedSize,
-                                              IDR_BRAVE_REWARDS_TIP_HTML);
+
+  content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(
+      profile,
+      name,
+      kBraveRewardsTipGenerated,
+      kBraveRewardsTipGeneratedSize,
+      IDR_BRAVE_REWARDS_TIP_HTML);
+
   content::WebUIDataSource::Add(profile, data_source);
-
-  auto handler_owner = std::make_unique<RewardsTipDOMHandler>();
-  RewardsTipDOMHandler * handler = handler_owner.get();
-  web_ui->AddMessageHandler(std::move(handler_owner));
-  handler->Init();
+  web_ui->AddMessageHandler(std::make_unique<TipMessageHandler>());
 }
 
-BraveTipUI::~BraveTipUI() {
-}
-
-void RewardsTipDOMHandler::GetReconcileStamp(const base::ListValue *args) {
-  if (rewards_service_) {
-    rewards_service_->GetReconcileStamp(base::Bind(
-          &RewardsTipDOMHandler::OnReconcileStamp,
-          weak_factory_.GetWeakPtr()));
-  }
-}
-
-void RewardsTipDOMHandler::OnReconcileStamp(uint64_t reconcile_stamp) {
-  if (!web_ui()->CanCallJavascript()) {
-     return;
-  }
-
-  const std::string stamp = std::to_string(reconcile_stamp);
-  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.reconcileStamp",
-      base::Value(stamp));
-}
-
-void RewardsTipDOMHandler::OnRecurringTipRemoved(
-    brave_rewards::RewardsService* rewards_service,
-    bool success) {
-  if (!web_ui()->CanCallJavascript()) {
-     return;
-  }
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.recurringTipRemoved", base::Value(success));
-}
-
-void RewardsTipDOMHandler::OnRecurringTipSaved(
-    brave_rewards::RewardsService* rewards_service,
-    bool success) {
-  if (!web_ui()->CanCallJavascript()) {
-     return;
-  }
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.recurringTipSaved", base::Value(success));
-}
-
-void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
-  DCHECK_EQ(args->GetSize(), 2U);
-
-  if (!rewards_service_)
-    return;
-
-  // Retrieve the relevant metadata from arguments.
-  std::string name;
-  if (!args->GetString(0, &name))
-    return;
-  std::string tweet_id;
-  if (!args->GetString(1, &tweet_id))
-    return;
-
-  // Share the tip comment/compliment on Twitter.
-  std::string comment = l10n_util::GetStringFUTF8(
-      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
-  std::string hashtag = l10n_util::GetStringUTF8(
-      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG);
-  std::map<std::string, std::string> share_url_args;
-  share_url_args["comment"] = comment;
-  share_url_args["hashtag"] = hashtag;
-  share_url_args["name"] = name.erase(0, 1);
-  share_url_args["tweet_id"] = tweet_id;
-  rewards_service_->GetShareURL(
-      share_url_args,
-      base::BindOnce(&RewardsTipDOMHandler::OnGetShareURL,
-                     base::Unretained(this)));
-}
-
-void RewardsTipDOMHandler::OnGetShareURL(const std::string& url) {
-  GURL gurl(url);
-  if (!gurl.is_valid())
-    return;
-
-  // Open a new tab with the prepopulated tweet ready to share.
-  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
-      Profile::FromWebUI(web_ui()));
-  content::OpenURLParams open_url_params(
-      gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-  browser_displayer.browser()->OpenURL(open_url_params);
-}
-
-void RewardsTipDOMHandler::OnFetchBalance(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
-  if (!web_ui()->CanCallJavascript()) {
-    return;
-  }
-
-  base::DictionaryValue data;
-  data.SetInteger("status", static_cast<int>(result));
-  auto balance_value = std::make_unique<base::DictionaryValue>();
-
-  if (result == ledger::type::Result::LEDGER_OK && balance) {
-    balance_value->SetDouble("total", balance->total);
-
-    auto wallets = std::make_unique<base::DictionaryValue>();
-    for (auto const& wallet : balance->wallets) {
-      wallets->SetDouble(wallet.first, wallet.second);
-    }
-    balance_value->SetDictionary("wallets", std::move(wallets));
-
-    data.SetDictionary("balance", std::move(balance_value));
-  }
-
-  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.balance", data);
-}
-
-void RewardsTipDOMHandler::FetchBalance(const base::ListValue* args) {
-  if (rewards_service_) {
-    rewards_service_->FetchBalance(base::BindOnce(
-          &RewardsTipDOMHandler::OnFetchBalance,
-          weak_factory_.GetWeakPtr()));
-  }
-}
-
-void RewardsTipDOMHandler::GetUpholdWallet(
-    const base::ListValue* args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  rewards_service_->GetUpholdWallet(
-     base::BindOnce(
-         &RewardsTipDOMHandler::OnGetUpholdWallet,
-         weak_factory_.GetWeakPtr()));
-}
-
-void RewardsTipDOMHandler::OnGetUpholdWallet(
-    const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
-  if (!web_ui()->CanCallJavascript()) {
-    return;
-  }
-
-  base::DictionaryValue data;
-
-  if (wallet) {
-    data.SetString("token", wallet->token);
-    data.SetString("address", wallet->address);
-    data.SetString("verifyUrl", wallet->verify_url);
-    data.SetString("addUrl", wallet->add_url);
-    data.SetString("withdrawUrl", wallet->withdraw_url);
-    data.SetString("userName", wallet->user_name);
-    data.SetString("accountUrl", wallet->account_url);
-    data.SetString("loginUrl", wallet->login_url);
-    data.SetInteger("status", static_cast<int>(wallet->status));
-  }
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.externalWallet", data);
-}
-
-void RewardsTipDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
-  if (!rewards_service_ || !web_ui()->CanCallJavascript()) {
-    return;
-  }
-
-  const bool allow = rewards_service_->OnlyAnonWallet();
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.onlyAnonWallet",
-      base::Value(allow));
-}
-
-void RewardsTipDOMHandler::OnReconcileComplete(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::type::Result result,
-    const std::string& contribution_id,
-    const double amount,
-    const ledger::type::RewardsType type,
-    const ledger::type::ContributionProcessor processor) {
-  if (!web_ui()->CanCallJavascript()) {
-     return;
-  }
-
-  base::DictionaryValue complete;
-  complete.SetKey("result", base::Value(static_cast<int>(result)));
-  complete.SetKey("type", base::Value(static_cast<int>(result)));
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.reconcileComplete",
-      complete);
-}
+BraveTipUI::~BraveTipUI() = default;

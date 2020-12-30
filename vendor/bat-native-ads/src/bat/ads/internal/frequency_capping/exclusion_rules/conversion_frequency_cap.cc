@@ -5,17 +5,22 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 
+#include <stdint.h>
+
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_conversions/ad_conversions.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 
+namespace {
+const uint64_t kConversionFrequencyCap = 1;
+}  // namespace
+
 ConversionFrequencyCap::ConversionFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    const AdEventList& ad_events)
+    : ad_events_(ad_events) {
 }
 
 ConversionFrequencyCap::~ConversionFrequencyCap() = default;
@@ -29,13 +34,9 @@ bool ConversionFrequencyCap::ShouldExclude(
     return true;
   }
 
-  const std::map<std::string, std::deque<uint64_t>> history =
-      ads_->get_client()->GetAdConversionHistory();
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
-  const std::deque<uint64_t> filtered_history =
-      FilterHistory(history, ad.creative_set_id);
-
-  if (!DoesRespectCap(filtered_history, ad)) {
+  if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf("creativeSetId %s has exceeded the "
         "frequency capping for conversions", ad.creative_set_id.c_str());
 
@@ -51,7 +52,8 @@ std::string ConversionFrequencyCap::get_last_message() const {
 
 bool ConversionFrequencyCap::ShouldAllow(
     const CreativeAdInfo& ad) {
-  if (ad.conversion && !ads_->get_ad_conversions()->IsAllowed()) {
+  if (ad.conversion && !AdsClientHelper::Get()->GetBooleanPref(
+      prefs::kShouldAllowConversionTracking)) {
     return false;
   }
 
@@ -59,25 +61,29 @@ bool ConversionFrequencyCap::ShouldAllow(
 }
 
 bool ConversionFrequencyCap::DoesRespectCap(
-      const std::deque<uint64_t>& history,
-      const CreativeAdInfo& ad) {
-  if (history.size() >= 1) {
+    const AdEventList& ad_events) {
+  if (ad_events.size() >= kConversionFrequencyCap) {
     return false;
   }
 
   return true;
 }
 
-std::deque<uint64_t> ConversionFrequencyCap::FilterHistory(
-    const std::map<std::string, std::deque<uint64_t>>& history,
-    const std::string& creative_set_id) {
-  std::deque<uint64_t> filtered_history;
+AdEventList ConversionFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) const {
+  AdEventList filtered_ad_events = ad_events;
 
-  if (history.find(creative_set_id) != history.end()) {
-    filtered_history = history.at(creative_set_id);
-  }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
+    return ad_event.type == AdType::kNewTabPageAd ||
+        ad_event.creative_set_id != ad.creative_set_id ||
+        ad_event.confirmation_type != ConfirmationType::kConversion;
+  });
 
-  return filtered_history;
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
+
+  return filtered_ad_events;
 }
 
 }  // namespace ads

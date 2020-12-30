@@ -8,9 +8,9 @@
 
 #include <string>
 #include <vector>
-#include <map>
 #include <functional>
 
+#include "base/containers/flat_map.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/constants.h"
 #include "bat/ledger/ledger.h"
@@ -23,7 +23,7 @@ bool getJSONValue(const std::string& fieldName,
 
 bool getJSONTwitchProperties(
     const std::string& json,
-    std::vector<std::map<std::string, std::string>>* parts);
+    std::vector<base::flat_map<std::string, std::string>>* parts);
 
 std::string getBase64(const std::vector<uint8_t>& in);
 

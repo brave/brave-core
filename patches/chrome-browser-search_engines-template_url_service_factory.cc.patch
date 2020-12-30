@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/search_engines/template_url_service_factory.cc b/chrome/browser/search_engines/template_url_service_factory.cc
-index 7cd204e65e0caafb30a850ef0365e6ef51281934..cb7b7bd2cf80be24b3e0ff7541d63ac260ae5ed5 100644
+index b3f207c4d728b68fa725654e916f0d8d1e3b0c49..d93ca1e804bb0b7a83def669fa66c2ae6289982a 100644
 --- a/chrome/browser/search_engines/template_url_service_factory.cc
 +++ b/chrome/browser/search_engines/template_url_service_factory.cc
 @@ -82,7 +82,12 @@ void TemplateURLServiceFactory::RegisterProfilePrefs(

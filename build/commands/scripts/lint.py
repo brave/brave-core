@@ -14,9 +14,30 @@
 import os
 import sys
 import re
+import traceback
 
 import git_cl
 import git_common
+
+def HasFormatErrors():
+  # For more options, see vendor/depot_tools/git_cl.py
+  cmd = ['cl', 'format', '--diff']
+  diff = git_cl.RunGit(cmd)
+  print(diff)
+  return bool(diff)
+
+def RunFormatCheck(upstream_branch):
+  # XXX: upstream_branch is hard-coded in git_cl and is not changed
+  # by the --base_branch arg
+  upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
+  print('Running git cl/gn format on the diff from %s...' % upstream_commit)
+  try:
+    if HasFormatErrors():
+      return 'Format check failed. Run npm format to fix.'
+  except:
+    e = traceback.format_exc()
+    return 'Error running format check:\n' + e
+
 
 def main(args):
   """Runs cpplint on the current changelist."""
@@ -42,9 +63,12 @@ def main(args):
   settings = git_cl.settings
   previous_cwd = os.getcwd()
   os.chdir(settings.GetRoot())
+  cl = git_cl.Changelist()
+  base_branch = options.base_branch
+
   try:
-    cl = git_cl.Changelist()
-    files = cl.GetAffectedFiles(git_common.get_or_create_merge_base(cl.GetBranch(), options.base_branch))
+    print('Running cpplint...')
+    files = cl.GetAffectedFiles(git_common.get_or_create_merge_base(cl.GetBranch(), base_branch))
     if not files:
       print('Cannot lint an empty CL')
       return 0
@@ -69,12 +93,25 @@ def main(args):
                               extra_check_functions)
       else:
         print('Skipping file %s' % filename)
+
+    # Run format checks
+    upstream_branch = cl.GetUpstreamBranch()
+    if base_branch and base_branch != upstream_branch:
+      print('WARNING: clang/gn format runs against %s instead of %s' % (upstream_branch, base_branch))
+    format_output = RunFormatCheck(upstream_branch)
   finally:
     os.chdir(previous_cwd)
-  print('Total errors found: %d\n' % cpplint._cpplint_state.error_count)
+
+  if format_output:
+      print(format_output)
+      return 1
   if cpplint._cpplint_state.error_count != 0:
+    print('cpplint errors found: %d\n' % cpplint._cpplint_state.error_count)
     return 1
+
+  print('lint and format checks succeeded')
   return 0
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

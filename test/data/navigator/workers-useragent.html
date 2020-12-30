@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- navigator.userAgent test from workers -->
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <script>
+    var worker = function() {
+        postMessage(navigator.userAgent);
+    }
+
+    var workerBlob = new Blob(['(' + worker.toString() + ')()'], {
+        type: "text/javascript"
+    });
+
+    worker = new Worker(window.URL.createObjectURL(workerBlob));
+    worker.onmessage = function (e) {
+      if (navigator.userAgent == e.data) {
+        document.title = "pass";
+      } else {
+        document.title = "fail";
+      }
+    };
+  </script>
+</body>
+</html>

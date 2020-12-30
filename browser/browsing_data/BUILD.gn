@@ -1,3 +1,5 @@
+import("//extensions/buildflags/buildflags.gni")
+
 source_set("browsing_data") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
@@ -19,4 +21,11 @@ source_set("browsing_data") {
     "//components/prefs",
     "//content/public/browser",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//brave/common/extensions/api",
+      "//extensions/browser",
+    ]
+  }
 }

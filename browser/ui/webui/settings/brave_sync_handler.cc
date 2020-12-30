@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/profile_sync_service_helper.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/sync_device_info/brave_device_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
@@ -49,6 +50,11 @@ void BraveSyncHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
                                             base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "SyncDeleteDevice",
+      base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,
+                          base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
@@ -183,6 +189,33 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
                                        std::move(callback_id_arg)));
 }
 
+void BraveSyncHandler::HandleDeleteDevice(const base::ListValue* args) {
+  AllowJavascript();
+  CHECK_EQ(2U, args->GetSize());
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
+  const base::Value* device_id_value;
+  CHECK(args->Get(1, &device_id_value));
+
+  std::string device_guid = device_id_value->GetString();
+  if (device_guid.empty()) {
+    LOG(ERROR) << "No device id to remove!";
+    RejectJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
+
+  auto* sync_service = GetSyncService();
+  if (!sync_service) {
+    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    return;
+  }
+
+  base::Value callback_id_arg(callback_id->Clone());
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  brave_sync::DeleteDevice(sync_service, device_info_sync_service, device_guid);
+}
+
 syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
   return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
              ? static_cast<syncer::BraveProfileSyncService*>(
@@ -216,13 +249,19 @@ base::Value BraveSyncHandler::GetSyncDeviceList() {
 
   base::Value device_list(base::Value::Type::LIST);
 
-  for (const auto& device : tracker->GetAllDeviceInfo()) {
+  for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
     auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
     bool is_current_device =
         local_device_info ? local_device_info->guid() == device->guid() : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
+    device_value.SetStringKey("guid", device->guid());
+    device_value.SetBoolKey(
+        "supportsSelfDelete",
+        !is_current_device && device->is_self_delete_supported());
+
     device_list.Append(std::move(device_value));
   }
+
   return device_list;
 }
 

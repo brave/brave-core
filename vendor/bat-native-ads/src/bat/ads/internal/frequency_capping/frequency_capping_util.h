@@ -10,7 +10,12 @@
 
 #include <deque>
 
+#include "bat/ads/internal/ad_events/ad_event_info.h"
+
 namespace ads {
+
+std::deque<uint64_t> GetTimestampHistoryForAdEvents(
+    const AdEventList& ad_events);
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
     const std::deque<uint64_t> history,
@@ -18,8 +23,8 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
     const uint64_t cap);
 
 int OccurrencesForRollingTimeConstraint(
-    const std::deque<uint64_t> history,
-    const uint64_t time_constraint_in_seconds);
+    const std::deque<int64_t> history,
+    const int64_t time_constraint_in_seconds);
 
 }  // namespace ads
 

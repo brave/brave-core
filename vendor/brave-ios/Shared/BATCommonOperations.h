@@ -7,6 +7,8 @@
 #import <string>
 #import <map>
 
+#import "base/containers/flat_map.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// A standard network completion block. Matches the native-ads/native-rewards signature, but
@@ -14,9 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^BATNetworkCompletionBlock)(const std::string& errorDescription,
                                           int statusCode,
                                           const std::string& response,
-                                          const std::map<std::string, std::string>& headers);
+                                          const base::flat_map<std::string, std::string>& headers);
 
 /// A set of common operations that accept and return C++ types
+OBJC_EXPORT
 @interface BATCommonOperations : NSObject
 
 - (instancetype)initWithStoragePath:(nullable NSString *)storagePath NS_DESIGNATED_INITIALIZER;

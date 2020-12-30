@@ -5,37 +5,27 @@
 
 #include "bat/ads/internal/privacy/privacy_util.h"
 
-#include <vector>
-
 #include "testing/gtest/include/gtest/gtest.h"
+#include "bat/ads/internal/privacy/tokens/token_generator.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
-
-TEST(BatAdsSecurityUtilsTest,
-    GenerateTokens) {
-  // Arrange
-
-  // Act
-  const std::vector<privacy::Token> tokens = privacy::GenerateTokens(5);
-
-  // Assert
-  const size_t count = tokens.size();
-  EXPECT_EQ(5UL, count);
-}
+namespace privacy {
 
 TEST(BatAdsSecurityUtilsTest,
     BlindTokens) {
   // Arrange
-  const std::vector<privacy::Token> tokens = privacy::GenerateTokens(7);
+  TokenGenerator token_generator;
+  const std::vector<Token> tokens = token_generator.Generate(7);
 
   // Act
-  const std::vector<privacy::BlindedToken> blinded_tokens =
-      privacy::BlindTokens(tokens);
+  const std::vector<BlindedToken> blinded_tokens =
+      BlindTokens(tokens);
 
   // Assert
   EXPECT_EQ(tokens.size(), blinded_tokens.size());
 }
 
+}  // namespace privacy
 }  // namespace ads

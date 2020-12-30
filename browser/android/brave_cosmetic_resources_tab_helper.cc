@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/browser/web_contents/web_contents_impl.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/renderer/render_frame.h"
 
@@ -64,7 +65,7 @@ std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
   return result_list;
 }
 
-void GetUrlCosmeticResourcesOnUI(content::RenderFrameHost* render_frame_host,
+void GetUrlCosmeticResourcesOnUI(content::GlobalFrameRoutingId frame_id,
   std::unique_ptr<base::ListValue> resources) {
   if (!resources) {
     return;
@@ -78,7 +79,10 @@ void GetUrlCosmeticResourcesOnUI(content::RenderFrameHost* render_frame_host,
     std::string to_inject;
     resources_dict->GetString("injected_script", &to_inject);
     if (to_inject.length() > 1) {
-      render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      auto* frame_host = content::RenderFrameHost::FromID(frame_id);
+      if (!frame_host)
+        return;
+      frame_host->ExecuteJavaScriptInIsolatedWorld(
           base::UTF8ToUTF16(to_inject),
           base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
@@ -98,13 +102,16 @@ BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() {
 void BraveCosmeticResourcesTabHelper::ProcessURL(
     content::WebContents* contents,
     content::RenderFrameHost* render_frame_host, const GURL& url) {
-  if (!ShouldDoCosmeticFiltering(contents, url)) {
+  if (!render_frame_host || !ShouldDoCosmeticFiltering(contents, url)) {
     return;
   }
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->
       PostTaskAndReplyWithResult(FROM_HERE,
           base::BindOnce(&GetUrlCosmeticResourcesOnTaskRunner, url.spec()),
-          base::BindOnce(&GetUrlCosmeticResourcesOnUI, render_frame_host));
+          base::BindOnce(&GetUrlCosmeticResourcesOnUI,
+              content::GlobalFrameRoutingId(
+                  render_frame_host->GetProcess()->GetID(),
+                  render_frame_host->GetRoutingID())));
 }
 
 void BraveCosmeticResourcesTabHelper::DidFinishNavigation(

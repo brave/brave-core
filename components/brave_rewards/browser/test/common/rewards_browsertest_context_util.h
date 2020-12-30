@@ -59,7 +59,7 @@ void IsMediaTipsInjected(content::WebContents* contents, bool should_appear);
 
 std::vector<double> GetSiteBannerTipOptions(content::WebContents* site_banner);
 
-std::vector<double> GetRewardsPopupTipOptions(content::WebContents* popup);
+double GetRewardsPopupMonthlyTipValue(content::WebContents* context);
 
 }  // namespace rewards_browsertest_util
 

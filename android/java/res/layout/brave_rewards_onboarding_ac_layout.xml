@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp" >
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:text="@string/basic_settings"
+        android:textColor="@color/brave_rewards_modal_title_color"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="14sp"
+        android:text="@string/you_can_change_this_later"
+        android:textColor="@color/brave_rewards_modal_theme_color"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/how_often_do_you_see_ads"
+        android:textColor="@color/brave_rewards_modal_text_color"/>
+
+      <RadioGroup
+            android:id="@+id/hour_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ac_radio_group_bg"
+            android:padding="2dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/hour_1_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:checked="true"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/hour_2_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="2" />
+
+              <RadioButton
+                android:id="@+id/hour_3_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="3" />
+
+              <RadioButton
+                android:id="@+id/hour_4_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="4" />
+
+              <RadioButton
+                android:id="@+id/hour_5_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="5" />
+
+            </RadioGroup>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/how_much_support"
+        android:textColor="@color/brave_rewards_modal_text_color"/>
+
+      <RadioGroup
+            android:id="@+id/contribute_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ac_radio_group_bg"
+            android:padding="2dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/contribute_5_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="5 BAT" />
+
+            <RadioButton
+                android:id="@+id/contribute_15_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:checked="true"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="15 BAT" />
+
+              <RadioButton
+                android:id="@+id/contribute_25_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="25 BAT" />
+
+              <RadioButton
+                android:id="@+id/contribute_50_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ac_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@drawable/ac_text_selector"
+                android:button="@null"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="50 BAT" />
+
+            </RadioGroup>
+
+</LinearLayout>

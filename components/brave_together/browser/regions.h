@@ -11,9 +11,8 @@
 
 namespace brave_together {
 
-const std::vector<std::string> supported_regions = {
-  "CA",  // Canada
-  "US"   // United States
+// Brave Together is supported for all :)
+const std::vector<std::string> unsupported_regions = {
 };
 
 }  // namespace brave_together

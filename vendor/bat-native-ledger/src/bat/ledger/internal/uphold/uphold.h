@@ -12,6 +12,7 @@
 #include <map>
 #include <memory>
 
+#include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
@@ -62,7 +63,7 @@ class Uphold {
       client::TransactionCallback callback);
 
   void WalletAuthorization(
-      const std::map<std::string, std::string>& args,
+      const base::flat_map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void GenerateWallet(ledger::ResultCallback callback);

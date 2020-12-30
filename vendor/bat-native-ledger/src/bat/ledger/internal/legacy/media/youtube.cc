@@ -30,9 +30,9 @@ YouTube::~YouTube() {
 
 // static
 std::string YouTube::GetMediaIdFromParts(
-    const std::map<std::string, std::string>& parts) {
+    const base::flat_map<std::string, std::string>& parts) {
   std::string result;
-  std::map<std::string, std::string>::const_iterator iter =
+  base::flat_map<std::string, std::string>::const_iterator iter =
         parts.find("docid");
   if (iter != parts.end()) {
     result = iter->second;
@@ -43,11 +43,13 @@ std::string YouTube::GetMediaIdFromParts(
 
 // static
 uint64_t YouTube::GetMediaDurationFromParts(
-    const std::map<std::string, std::string>& data,
+    const base::flat_map<std::string, std::string>& data,
     const std::string& media_key) {
   uint64_t duration = 0;
-  std::map<std::string, std::string>::const_iterator iter_st = data.find("st");
-  std::map<std::string, std::string>::const_iterator iter_et = data.find("et");
+  base::flat_map<std::string, std::string>::const_iterator iter_st =
+      data.find("st");
+  base::flat_map<std::string, std::string>::const_iterator iter_et =
+      data.find("et");
   if (iter_st != data.end() && iter_et != data.end()) {
     const auto start_time = base::SplitString(
       iter_st->second,
@@ -338,8 +340,9 @@ void YouTube::OnMediaActivityError(const ledger::type::VisitData& visit_data,
   }
 }
 
-void YouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
-                                const ledger::type::VisitData& visit_data) {
+void YouTube::ProcessMedia(
+    const base::flat_map<std::string, std::string>& parts,
+    const ledger::type::VisitData& visit_data) {
   std::string media_id = GetMediaIdFromParts(parts);
   if (media_id.empty()) {
     return;

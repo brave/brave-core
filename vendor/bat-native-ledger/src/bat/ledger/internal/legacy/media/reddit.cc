@@ -349,7 +349,7 @@ void Reddit::SavePublisherInfo(
 }
 
 void Reddit::SaveMediaInfo(
-    const std::map<std::string, std::string>& data,
+    const base::flat_map<std::string, std::string>& data,
     ledger::PublisherInfoCallback callback) {
   auto user_name = data.find("user_name");
   if (user_name == data.end()) {

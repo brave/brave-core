@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
+index 4f7fd86c5e6edd387254d0eab6aa399db5e42105..1edf51b8e80c967e275e327d8143973ec4881871 100644
+--- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
++++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
+@@ -554,6 +554,7 @@ void CheckClientDownloadRequestBase::SendRequest() {
+   request->set_archive_directory_count(directory_count_);
+   request->set_request_ap_verdicts(is_under_advanced_protection_);
+ 
++  BRAVE_SEND_REQUEST_FILTER
+   if (!request->SerializeToString(&client_download_request_data_)) {
+     FinishRequest(DownloadCheckResult::UNKNOWN, REASON_INVALID_REQUEST_PROTO);
+     return;

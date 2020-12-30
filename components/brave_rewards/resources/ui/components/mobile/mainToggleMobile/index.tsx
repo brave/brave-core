@@ -6,38 +6,27 @@ import * as React from 'react'
 import {
   StyledWrapper,
   StyledTitle,
-  StyledLeft,
-  StyledRight,
   StyledLogoWrapper
 } from './style'
-import Toggle from 'brave-ui/components/formControls/toggle/index'
 import { getLocale } from 'brave-ui/helpers'
 import { BatColorIcon } from 'brave-ui/components/icons'
 
 export interface Props {
-  enabled: boolean
-  onToggle: () => void
-  id?: string
   testId?: string
 }
 
 export default class MainToggleMobile extends React.PureComponent<Props, {}> {
   render () {
-    const { id, enabled, onToggle, testId } = this.props
+    const { testId } = this.props
 
     return (
-      <StyledWrapper id={id}>
-        <StyledLeft>
+      <StyledWrapper data-test-id={testId}>
           <StyledLogoWrapper>
             <BatColorIcon />
           </StyledLogoWrapper>
           <StyledTitle>
             {getLocale('braveRewards')}
           </StyledTitle>
-        </StyledLeft>
-        <StyledRight>
-          <Toggle checked={enabled} onToggle={onToggle} testId={testId} />
-        </StyledRight>
       </StyledWrapper>
     )
   }

@@ -42,7 +42,7 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
     const { id, errorText, titleText } = this.props
     let tags = null
     if (errorText && errorText.includes('$1')) {
-      tags = splitStringForTag(errorText, '$1', '$2')
+      tags = splitStringForTag(errorText)
     }
 
     return (

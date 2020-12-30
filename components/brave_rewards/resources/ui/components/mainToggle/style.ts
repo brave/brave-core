@@ -33,26 +33,6 @@ export const StyledLogotypeWrapper = styled('div')`
   align-items: center;
 `
 
-export const StyledTOSWrapper = styled<{}, 'div'>('div')`
-  display: block;
-  margin-top: 20px;
-  font-family: Muli, sans-serif;
-`
-
-export const StyledServiceText = styled<{}, 'span'>('span')`
-  color: ${p => p.theme.palette.grey800};
-  font-size: 14px;
-  font-weight: normal;
-  letter-spacing: 0;
-  line-height: 18px;
-`
-
-export const StyledServiceLink = styled<{}, 'a'>('a')`
-  cursor: pointer;
-  color: ${p => p.theme.palette.blurple500};
-  font-weight: 600;
-`
-
 export const StyledLogoWrapper = styled<{}, 'div'>('div')`
 width: 48px;
 height: 48px;

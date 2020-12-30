@@ -23,11 +23,15 @@ public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiv
     public void onReceive(final Context context, Intent intent) {
         if (!Intent.ACTION_MY_PACKAGE_REPLACED.equals(intent.getAction())) return;
         BraveUpgradeJobIntentService.maybePerformUpgradeTasks(context);
-        SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
         try {
-            NotificationIntent.fireNotificationIfNecessary(context);
+            SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
         } catch (Exception exc) {
-            // Just ignore if we could not send a notification
+            // Sometimes the pref is not registered yet in the app
         }
+        // try {
+        //     NotificationIntent.fireNotificationIfNecessary(context);
+        // } catch (Exception exc) {
+        //     // Just ignore if we could not send a notification
+        // }
     }
 }

@@ -22,15 +22,10 @@
           $i18n{webRTCPolicySubLabel}
         </a>
       </div>
-      <select id="webRTCPolicy" class="md-select"
-          on-change="onWebRTCPolicyChange_">
-        <template is="dom-repeat" items="[[webRTCPolicies_]]">
-          <option value="[[item.value]]"
-              selected="[[webRTCPolicyEqual_(item.value, webRTCPolicy_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
+      <settings-dropdown-menu label="$i18n{webRTCLearnMoreURL}"
+          pref="{{prefs.webrtc.ip_handling_policy}}"
+          menu-options="[[webRTCPolicies_]]">
+      </settings-dropdown-menu>
     </div>
     <settings-toggle-button id="p3aEnabled"
         class="cr-row"

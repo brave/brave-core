@@ -104,6 +104,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
   .option('--is_asan', 'is asan enabled')
+  .option('--universal', 'build a universal binary distribution')
   .arguments('[build_config]')
   .action(createDist)
 
@@ -152,6 +153,7 @@ program
 program
   .command('push_l10n')
   .option('--extension <extension>', 'Scope this command to localize a Brave extension such as ethereum-remote-client')
+  .option('--extension_path <extension_path>', 'Local path for extension')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .action(pushL10n)
 
@@ -185,6 +187,7 @@ program
 
 program
   .command('test <suite>')
+  .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--v [log_level]', 'set log level to [log_level]', parseInt, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
@@ -195,6 +198,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--run_disabled_tests', 'run disabled tests')
+  .option('--manual_android_test_device', 'indicates that Android test device is run manually')
   .arguments('[build_config]')
   .action(test)
 
@@ -202,6 +206,11 @@ program
   .command('lint')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .action(util.lint)
+
+program
+  .command('format')
+  .option('--full', 'format all lines in changed files instead of only the changed lines')
+  .action(util.format)
 
 program
   .parse(process.argv)

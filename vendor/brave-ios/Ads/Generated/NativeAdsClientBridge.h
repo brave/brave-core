@@ -15,7 +15,6 @@
 - (bool)isAdsEnabled;
 - (bool)shouldAllowAdConversionTracking;
 - (bool)isForeground;
-- (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
 - (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback;
@@ -24,7 +23,7 @@
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::ResultCallback)callback;
 - (void)setIdleThreshold:(const int)threshold;
-- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info;
+- (void)showNotification:(const ads::AdNotificationInfo &)info;
 - (void)closeNotification:(const std::string&)id;
 - (void)UrlRequest:(ads::UrlRequestPtr)url_request callback:(ads::UrlRequestCallback)callback;
 - (bool)shouldAllowAdsSubdivisionTargeting;
@@ -48,5 +47,6 @@
 - (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value;
 - (uint64_t)getUint64Pref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
+- (void)recordP2AEvent:(const std::string&)name type:(const ads::P2AEventType)type value:(const std::string&)value;
 
 @end

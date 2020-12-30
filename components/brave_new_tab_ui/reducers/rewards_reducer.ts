@@ -11,40 +11,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
   const payload = action.payload
 
   switch (action.type) {
-    case types.CREATE_WALLET:
-      chrome.braveRewards.createWallet()
-      state = { ...state }
-      state.rewardsState.walletCreating = true
-      break
-
-    case types.ON_ENABLED_MAIN:
-      state = { ...state }
-      state.rewardsState.enabledMain = payload.enabledMain
-      if (payload.enabledAds !== undefined) {
-        state.rewardsState.enabledAds = payload.enabledAds
-      }
-      break
-
-    case types.ON_WALLET_INITIALIZED: {
-      const result: NewTab.RewardsResult = payload.result
-      state = { ...state }
-
-      switch (result) {
-        case NewTab.RewardsResult.WALLET_CORRUPT:
-          state.rewardsState.walletCorrupted = true
-          break
-        case NewTab.RewardsResult.WALLET_CREATED:
-          state.rewardsState.enabledMain = true
-          state.rewardsState.walletCreated = true
-          state.rewardsState.walletCreateFailed = false
-          state.rewardsState.walletCreating = false
-          state.rewardsState.walletCorrupted = false
-          chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
-          break
-      }
-      break
-    }
-
     case types.ON_ADS_ENABLED:
       state = { ...state }
       state.rewardsState.enabledAds = payload.enabled
@@ -98,8 +64,8 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
           return
         }
 
-        const hasPromotion = state.rewardsState.promotions.find((promotion: NewTab.Promotion) => {
-          return promotion.promotionId === promotion.promotionId
+        const hasPromotion = state.rewardsState.promotions.find((promo: NewTab.Promotion) => {
+          return promo.promotionId === promotion.promotionId
         })
         if (hasPromotion) {
           return
@@ -142,10 +108,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       state.rewardsState.balance = payload.balance
       break
 
-    case types.ON_WALLET_EXISTS:
-      state.rewardsState.walletCreated = payload.exists
-      break
-
     case types.SET_PRE_INITIAL_REWARDS_DATA:
       const preInitialRewardsDataPayload = payload as PreInitialRewardsData
       state = {
@@ -153,8 +115,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         rewardsState: {
           ...state.rewardsState,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
-          adsSupported: preInitialRewardsDataPayload.adsSupported,
-          enabledMain: preInitialRewardsDataPayload.enabledMain
+          adsSupported: preInitialRewardsDataPayload.adsSupported
         }
       }
       break
@@ -193,12 +154,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
-          enabledMain: false,
-          enabledAds: false,
-          walletCreated: false,
-          walletCreating: false,
-          walletCreateFailed: false,
-          walletCorrupted: false
+          enabledAds: false
         }
       }
       break

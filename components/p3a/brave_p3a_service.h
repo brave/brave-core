@@ -49,7 +49,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   // BraveP3ALogStore::Delegate
   std::string Serialize(base::StringPiece histogram_name,
-                        uint64_t value) const override;
+                        uint64_t value) override;
 
   // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
@@ -62,14 +62,18 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void InitPyxisMeta();
 
+  // Updates things that change over time: week of survey, etc.
+  void UpdatePyxisMeta();
+
   void StartScheduledUpload();
 
   // Invoked by callbacks registered by our service. Since these callbacks
   // can fire on any thread, this method reposts everything to UI thread.
-  void OnHistogramChanged(base::StringPiece histogram_name,
+  void OnHistogramChanged(const char* histogram_name,
+                          uint64_t name_hash,
                           base::HistogramBase::Sample sample);
 
-  void OnHistogramChangedOnUI(base::StringPiece histogram_name,
+  void OnHistogramChangedOnUI(const char* histogram_name,
                               base::HistogramBase::Sample sample,
                               size_t bucket);
 

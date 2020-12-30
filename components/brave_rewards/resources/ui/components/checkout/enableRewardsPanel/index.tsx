@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext, getLocaleTags } from '../localeContext'
+import { LocaleContext, getLocaleWithTag } from '../localeContext'
 
 import {
   Container,
@@ -22,7 +22,7 @@ interface EnableRewardsPanelProps {
 export function EnableRewardsPanel (props: EnableRewardsPanelProps) {
   const locale = React.useContext(LocaleContext)
   const handleClick = () => { props.onEnableRewards() }
-  const tags = getLocaleTags(locale.get('enableRewardsTerms'))
+  const tags = getLocaleWithTag(locale.get('enableRewardsTerms'))
 
   return (
     <Container>

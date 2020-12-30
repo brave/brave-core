@@ -305,7 +305,8 @@ void Vimeo::OnMediaActivityError(uint64_t window_id) {
                                        "");
 }
 
-void Vimeo::ProcessMedia(const std::map<std::string, std::string>& parts) {
+void Vimeo::ProcessMedia(
+    const base::flat_map<std::string, std::string>& parts) {
   auto iter = parts.find("video_id");
   std::string media_id;
   if (iter != parts.end()) {

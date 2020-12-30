@@ -12,7 +12,6 @@
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
@@ -44,15 +43,6 @@ BravePrivacyHandler::~BravePrivacyHandler() {
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
 
-  web_ui()->RegisterMessageCallback(
-      "getWebRTCPolicy",
-      base::BindRepeating(&BravePrivacyHandler::GetWebRTCPolicy,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setWebRTCPolicy",
-      base::BindRepeating(&BravePrivacyHandler::SetWebRTCPolicy,
-                          base::Unretained(this)));
-
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   web_ui()->RegisterMessageCallback(
       "setP3AEnabled", base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
@@ -77,26 +67,6 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean("pushMessagingEnabledAtStartup",
                           gcm_channel_status->IsGCMEnabled());
 #endif
-}
-
-void BravePrivacyHandler::SetWebRTCPolicy(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(profile_);
-
-  std::string policy;
-  args->GetString(0, &policy);
-  profile_->GetPrefs()->SetString(prefs::kWebRTCIPHandlingPolicy, policy);
-}
-
-void BravePrivacyHandler::GetWebRTCPolicy(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(profile_);
-
-  std::string policy =
-      profile_->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy);
-
-  AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(policy));
 }
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)

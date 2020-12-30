@@ -334,19 +334,25 @@ const util = {
 
       const androidIconSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet)
       const androidIconDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium')
+      const androidIconBaseSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet + '_base')
+      const androidIconBaseDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium_base')
       const androidResSource = path.join(config.braveCoreDir, 'android', 'java', 'res')
       const androidResDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
       const androidResTemplateSource = path.join(config.braveCoreDir, 'android', 'java', 'res_template')
       const androidResTemplateDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_template')
       const androidContentPublicResSource = path.join(config.braveCoreDir, 'content', 'public', 'android', 'java', 'res')
       const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
+      const androidTouchtoFillResSource = path.join(config.braveCoreDir, 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
+      const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
         [androidIconSource]: [androidIconDest],
+        [androidIconBaseSource]: [androidIconBaseDest],
         [androidResSource]: [androidResDest],
         [androidResTemplateSource]: [androidResTemplateDest],
-        [androidContentPublicResSource]: [androidContentPublicResDest]
+        [androidContentPublicResSource]: [androidContentPublicResDest],
+        [androidTouchtoFillResSource]: [androidTouchtoFillResDest]
       }
 
       console.log('copy Android app icons and app resources')
@@ -382,71 +388,6 @@ const util = {
     fs.copySync(srcDir, dstDir)
   },
 
-  // To build w/o much modification of upstream file, bundling mode is used. To build with this mode,
-  // widevine header file and cdm lib is needed. So, we use fake cdm lib. It only used by gn checking.
-  // Real cdm lib is only downloaded and installed when user accepts via content settings bubble
-  // because we don't ship cdm lib by default.
-  // Latest version and download url are inserted to cdm header file and brave-core refers it.
-  prepareWidevineCdmBuild: () => {
-    const widevineDir = path.join(config.srcDir, 'third_party', 'widevine', 'cdm', 'linux', 'x64')
-    fs.ensureDirSync(widevineDir)
-
-    const widevineConfig = {
-      widevineDir,
-      headerFileContent: '',
-      configuredVersion: config.widevineVersion,
-      widevineCdmHeaderFilePath: path.join(widevineDir, 'widevine_cdm_version.h'),
-      fakeWidevineCdmLibFilePath: path.join(widevineDir, 'libwidevinecdm.so'),
-      fakeManifestJson: path.join(widevineDir, 'manifest.json')
-    }
-
-    widevineConfig.headerFileContent =
-`#ifndef WIDEVINE_CDM_VERSION_H_
-#define WIDEVINE_CDM_VERSION_H_
-#define WIDEVINE_CDM_VERSION_STRING \"${widevineConfig.configuredVersion}\"
-#define WIDEVINE_CDM_DOWNLOAD_URL_STRING \"https://redirector.gvt1.com/edgedl/widevine-cdm/${widevineConfig.configuredVersion}-linux-x64.zip\"
-#endif  // WIDEVINE_CDM_VERSION_H_`
-
-    // If version file or fake lib file aren't existed, create them.
-    if (!fs.existsSync(widevineConfig.widevineCdmHeaderFilePath) ||
-        !fs.existsSync(widevineConfig.fakeWidevineCdmLibFilePath) ||
-        !fs.existsSync(widevineConfig.fakeManifestJson)) {
-      util.doPrepareWidevineCdmBuild(widevineConfig)
-      return
-    }
-
-    // Check version file has latest version. If not create it.
-    // This can prevent unnecessary build by touched version file.
-    const installedHeaderFileContent = fs.readFileSync(widevineConfig.widevineCdmHeaderFilePath, 'utf8')
-    if (installedHeaderFileContent !== widevineConfig.headerFileContent) {
-      console.log("Current version file includes different version with latest")
-      util.doPrepareWidevineCdmBuild(widevineConfig)
-    }
-  },
-
-  doPrepareWidevineCdmBuild: (widevineConfig) => {
-    console.log('prepare widevine cdm build in linux')
-
-    fs.writeFileSync(widevineConfig.widevineCdmHeaderFilePath, widevineConfig.headerFileContent)
-    fs.writeFileSync(widevineConfig.fakeWidevineCdmLibFilePath, '')
-    fs.writeFileSync(widevineConfig.fakeManifestJson, '{}')
-
-    // During the create_dist, /usr/lib/rpm/elfdeps requires that binaries have an executable bit set.
-    fs.chmodSync(widevineConfig.fakeWidevineCdmLibFilePath, 0o755)
-  },
-
-  signApp: (options = config.defaultOptions) => {
-    console.log('signing ...')
-    if (process.platform === 'win32') {
-      // Sign binaries used for widevine sig file generation.
-      // Other binaries will be done during the create_dist.
-      // Then, both are merged when archive for installer is created.
-      util.signWinBinaries()
-    } else {
-      util.run('ninja', ['-C', config.outputDir, config.signTarget], options)
-    }
-  },
-
   // TODO(bridiver) - this should move to gn and windows should call signApp like other platforms
   signWinBinaries: () => {
     // Copy & sign only binaries for widevine sig file generation.
@@ -458,10 +399,10 @@ const util = {
     fs.copySync(path.join(config.outputDir, 'brave.exe'), path.join(dir, 'brave.exe'));
     fs.copySync(path.join(config.outputDir, 'chrome.dll'), path.join(dir, 'chrome.dll'));
 
-     const core_dir = config.braveCoreDir
-    util.run('python', [path.join(core_dir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
+    util.run('python', [path.join(config.braveCoreDir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
   },
 
+  // TODO(bridiver) - this should move to gn
   generateWidevineSigFiles: () => {
     if (process.platform !== 'win32')
       return
@@ -510,7 +451,6 @@ const util = {
       util.copyRedirectCC()
       util.updateOmahaMidlFiles()
     }
-    if (process.platform === 'linux') util.prepareWidevineCdmBuild()
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
@@ -546,7 +486,7 @@ const util = {
 
   lint: (options = {}) => {
     if (!options.base) {
-      options.base = 'origin/master';
+      options.base = 'origin/master'
     }
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
@@ -555,6 +495,14 @@ const util = {
         '--project_root=' + config.srcDir,
         '--base_branch=' + options.base], cmd_options)
   },
+
+  format: (options = {}) => {
+    let cmd_options = config.defaultOptions
+    cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
+    util.run('vpython', [path.join(config.braveCoreDir, 'build', 'commands', 'scripts', 'format.py'), options.full ? '--full' : ''], cmd_options)
+  },
+
 
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
     const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)

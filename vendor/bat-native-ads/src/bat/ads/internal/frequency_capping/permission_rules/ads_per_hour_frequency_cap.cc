@@ -5,33 +5,33 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 
-#include "bat/ads/internal/ads_impl.h"
+#include <stdint.h>
+
+#include <deque>
+
+#include "base/time/time.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
 
 AdsPerHourFrequencyCap::AdsPerHourFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    const AdEventList& ad_events)
+    : ad_events_(ad_events) {
 }
 
 AdsPerHourFrequencyCap::~AdsPerHourFrequencyCap() = default;
 
-bool AdsPerHourFrequencyCap::IsAllowed() {
+bool AdsPerHourFrequencyCap::ShouldAllow() {
   if (PlatformHelper::GetInstance()->IsMobile()) {
     return true;
   }
 
-  const std::deque<AdHistory> history = ads_->get_client()->GetAdsHistory();
-  const std::deque<uint64_t> filtered_history = FilterHistory(history);
-
-  if (!DoesRespectCap(filtered_history)) {
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_);
+  if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = "You have exceeded the allowed ads per hour";
-
     return false;
   }
 
@@ -43,28 +43,32 @@ std::string AdsPerHourFrequencyCap::get_last_message() const {
 }
 
 bool AdsPerHourFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history) {
+    const AdEventList& ad_events) {
+  const std::deque<uint64_t> history =
+      GetTimestampHistoryForAdEvents(ad_events);
+
   const uint64_t time_constraint = base::Time::kSecondsPerHour;
 
-  const uint64_t cap = ads_->GetAdsPerHourPref();
+  const uint64_t cap =
+      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
 
-  return DoesHistoryRespectCapForRollingTimeConstraint(history,
-      time_constraint, cap);
+  return DoesHistoryRespectCapForRollingTimeConstraint(
+      history, time_constraint, cap);
 }
 
-std::deque<uint64_t> AdsPerHourFrequencyCap::FilterHistory(
-    const std::deque<AdHistory>& history) const {
-  std::deque<uint64_t> filtered_history;
+AdEventList AdsPerHourFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events) const {
+  AdEventList filtered_ad_events = ad_events;
 
-  for (const auto& ad : history) {
-    if (ad.ad_content.ad_action != ConfirmationType::kViewed) {
-      continue;
-    }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [](const AdEventInfo& ad_event) {
+    return ad_event.type != AdType::kAdNotification ||
+        ad_event.confirmation_type != ConfirmationType::kViewed;
+  });
 
-    filtered_history.push_back(ad.timestamp_in_seconds);
-  }
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
 
-  return filtered_history;
+  return filtered_ad_events;
 }
 
 }  // namespace ads

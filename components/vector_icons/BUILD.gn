@@ -8,7 +8,7 @@ import("//components/vector_icons/vector_icons.gni")
 aggregate_vector_icons("brave_components_vector_icons") {
   icon_directory = "."
 
-  icons = [ "autoplay_status.icon" ]
+  sources = [ "autoplay_status.icon" ]
 }
 
 static_library("vector_icons") {

@@ -51,8 +51,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
   }
 }
 
-const SkColor kDarkToolbar = SkColorSetRGB(0x39, 0x39, 0x39);
-const SkColor kDarkFrame = SkColorSetRGB(0x22, 0x22, 0x22);
+const SkColor kDarkToolbar = SkColorSetRGB(0x30, 0x34, 0x43);
+const SkColor kDarkFrame = SkColorSetRGB(0x0C, 0x0C, 0x17);
 const SkColor kDarkToolbarIcon = SkColorSetRGB(0xed, 0xed, 0xed);
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
@@ -93,8 +93,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
   }
 }
 
-const SkColor kPrivateFrame = SkColorSetRGB(0x1b, 0x0e, 0x2c);
-const SkColor kPrivateToolbar = SkColorSetRGB(0x3d, 0x28, 0x41);
+const SkColor kPrivateFrame = SkColorSetRGB(0x19, 0x16, 0x2F);
+const SkColor kPrivateToolbar = SkColorSetRGB(0x32, 0x25, 0x60);
 
 base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
   switch (id) {
@@ -133,6 +133,37 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
   }
 }
 
+const SkColor kPrivateTorFrame = SkColorSetRGB(0x19, 0x0E, 0x2A);
+const SkColor kPrivateTorToolbar = SkColorSetRGB(0x49, 0x2D, 0x58);
+base::Optional<SkColor> MaybeGetDefaultColorForPrivateTorUi(int id) {
+  switch (id) {
+    // Applies when the window is active, tabs and also tab bar everywhere
+    // except active tab
+    case ThemeProperties::COLOR_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_ACTIVE:
+      return kPrivateTorFrame;
+    // Window when the window is innactive, tabs and also tab bar everywhere
+    // except active tab
+    case ThemeProperties::COLOR_FRAME_INACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_INACTIVE_FRAME_INACTIVE:
+      return color_utils::HSLShift(kPrivateTorFrame, { -1, -1, 0.55 });
+    // Active tab and also the URL toolbar
+    // Parts of this color show up as you hover over innactive tabs too
+    case ThemeProperties::COLOR_TOOLBAR:
+    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_INACTIVE:
+      return kPrivateTorToolbar;
+    case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
+      return color_utils::AlphaBlend(kDarkToolbarIcon,
+                                     kPrivateTorToolbar,
+                                     0.3f);
+    // The rest is covered by a private value
+    default:
+      return MaybeGetDefaultColorForPrivateUi(id);
+  }
+}
+
 }  // namespace
 
 namespace BraveThemeProperties {
@@ -145,13 +176,18 @@ bool IsBraveThemeProperties(int id) {
 }  // namespace BraveThemeProperties
 // Returns a |nullopt| if the UI color is not handled by Brave.
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
-    int id, bool incognito, dark_mode::BraveDarkModeType dark_mode) {
+    int id, bool incognito,
+    bool is_tor, dark_mode::BraveDarkModeType dark_mode) {
   // Consistent (and stable) values across all themes
   switch (id) {
     case ThemeProperties::COLOR_TAB_THROBBER_SPINNING:
       return SkColorSetRGB(0xd7, 0x55, 0x26);
     default:
       break;
+  }
+
+  if (is_tor) {
+    return MaybeGetDefaultColorForPrivateTorUi(id);
   }
 
   // Allow Private Window theme to override dark vs light

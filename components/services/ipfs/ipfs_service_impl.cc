@@ -13,6 +13,8 @@
 #include <sys/wait.h>
 #endif
 
+#include <initializer_list>
+#include <string>
 #include <utility>
 
 #include "base/command_line.h"
@@ -74,18 +76,47 @@ static void TearDownPipeHack() {
 }
 #endif
 
+bool LaunchProcessAndExit(const base::FilePath& path,
+                          std::initializer_list<std::string> args,
+                          const base::LaunchOptions& options) {
+  bool shutdown = false;
+  base::CommandLine cmdline(path);
+  for (auto arg : args) {
+    if (arg == "shutdown")
+      shutdown = true;
+    cmdline.AppendArg(arg);
+  }
+  base::Process process = base::LaunchProcess(cmdline, options);
+  if (!process.IsValid()) {
+    return false;
+  }
+
+  int exit_code = 0;
+  if (!process.WaitForExit(&exit_code)) {
+    VLOG(0) << "Failed to wait the process, cmd: "
+            << cmdline.GetCommandLineString();
+    process.Close();
+    return false;
+  }
+
+  // `ipfs shutdown` could return error if daemon is not running.
+  if (exit_code && !shutdown) {
+    VLOG(0) << "Failed at running cmd: " << cmdline.GetCommandLineString();
+    return false;
+  }
+
+  return true;
+}
+
 }  // namespace
 
 namespace ipfs {
 
 IpfsServiceImpl::IpfsServiceImpl(
     mojo::PendingReceiver<mojom::IpfsService> receiver)
-  : receiver_(this, std::move(receiver)) {
+    : receiver_(this, std::move(receiver)) {
   receiver_.set_disconnect_handler(
       base::BindOnce(&IpfsServiceImpl::Cleanup, base::Unretained(this)));
-#if defined(OS_POSIX)
-  SetupPipeHack();
-#endif
 }
 
 IpfsServiceImpl::~IpfsServiceImpl() {
@@ -93,7 +124,8 @@ IpfsServiceImpl::~IpfsServiceImpl() {
 }
 
 void IpfsServiceImpl::Cleanup() {
-  if (in_shutdown_) return;
+  if (in_shutdown_)
+    return;
   in_shutdown_ = true;
 
   int64_t pid = -1;
@@ -109,8 +141,8 @@ void IpfsServiceImpl::Cleanup() {
     std::move(crash_handler_callback_).Run(pid);
 }
 
-void IpfsServiceImpl::Launch(
-    mojom::IpfsConfigPtr config, LaunchCallback callback) {
+void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
+                             LaunchCallback callback) {
   if (in_shutdown_) {
     if (callback)
       std::move(callback).Run(false, -1);
@@ -139,37 +171,53 @@ void IpfsServiceImpl::Launch(
   base::FilePath config_path = config->config_path;
   if (!base::PathExists(config_path)) {
     // run ipfs init to gen config
-    base::CommandLine args(config->binary_path);
-    args.AppendArg("init");
-    base::Process init_process = base::LaunchProcess(args, options);
-    if (!init_process.IsValid()) {
-      std::move(callback).Run(false, init_process.Pid());
-      return;
-    }
-
-    int exit_code = 0;
-    if (!init_process.WaitForExit(&exit_code)) {
-      VLOG(0) << "Failed to wait init process";
-      init_process.Close();
-      std::move(callback).Run(false, init_process.Pid());
-      return;
-    }
-    if (exit_code) {
-      VLOG(0) << "Failed at running init";
-      std::move(callback).Run(false, init_process.Pid());
+    if (!LaunchProcessAndExit(config->binary_path, {"init"}, options)) {
+      std::move(callback).Run(false, -1);
       return;
     }
   }
+
+  std::initializer_list<std::initializer_list<std::string>> config_args = {
+      {"shutdown"},  // Cleanup left-over daemon process.
+      {"config", "Addresses.API", "/ip4/127.0.0.1/tcp/" + config->api_port},
+      {"config", "Addresses.Gateway",
+       "/ip4/127.0.0.1/tcp/" + config->gateway_port},
+      {"config", "--json", "Addresses.Swarm",
+       "[\"/ip4/0.0.0.0/tcp/" + config->swarm_port + "\", \"/ip6/::/tcp/" +
+           config->swarm_port + "\"]"},
+      {"config", "Datastore.GCPeriod", "1h"},
+      {"config", "Datastore.StorageMax", "1GB"}};
+
+  for (auto args : config_args) {
+    if (!LaunchProcessAndExit(config->binary_path, args, options)) {
+      std::move(callback).Run(false, -1);
+      return;
+    }
+  }
+
+#if defined(OS_POSIX)
+  // Setup pipe hack here to monitor the daemon process and exclude other child
+  // processes created above.
+  SetupPipeHack();
+#endif
 
   // Launch IPFS daemon.
   base::CommandLine args(config->binary_path);
   args.AppendArg("daemon");
   args.AppendArg("--migrate=true");
+  args.AppendArg("--enable-gc");
+  args.AppendArg("--routing=dhtclient");
   ipfs_process_ = base::LaunchProcess(args, options);
   bool result = ipfs_process_.IsValid();
 
   if (callback)
     std::move(callback).Run(result, ipfs_process_.Pid());
+
+  // No need to proceed if we fail to launch the daemon, Shutdown will be
+  // called after IPFS service in browser process received failed result.
+  if (!result) {
+    return;
+  }
 
   if (!child_monitor_thread_.get()) {
     child_monitor_thread_.reset(new base::Thread("child_monitor_thread"));
@@ -178,8 +226,8 @@ void IpfsServiceImpl::Launch(
     }
 
     child_monitor_thread_->task_runner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&IpfsServiceImpl::MonitorChild, base::Unretained(this)));
+        FROM_HERE,
+        base::BindOnce(&IpfsServiceImpl::MonitorChild, base::Unretained(this)));
   }
 }
 
@@ -188,36 +236,36 @@ void IpfsServiceImpl::MonitorChild() {
   char buf[PIPE_BUF];
 
   while (1) {
-      if (read(pipehack[0], buf, sizeof(buf)) > 0) {
-        pid_t pid;
-        int status;
+    if (read(pipehack[0], buf, sizeof(buf)) > 0) {
+      pid_t pid;
+      int status;
 
-        if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
-          if (WIFSIGNALED(status)) {
-            VLOG(0) << "ipfs got terminated by signal " << WTERMSIG(status);
-          } else if (WCOREDUMP(status)) {
-            VLOG(0) << "ipfs coredumped";
-          } else if (WIFEXITED(status)) {
-            VLOG(0) << "ipfs exit (" << WEXITSTATUS(status) << ")";
-          }
-          ipfs_process_.Close();
-          if (receiver_.is_bound() && crash_handler_callback_) {
-            base::ThreadTaskRunnerHandle::Get()->PostTask(
-              FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
-                                        pid));
-          }
+      if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
+        if (WIFSIGNALED(status)) {
+          VLOG(0) << "ipfs got terminated by signal " << WTERMSIG(status);
+        } else if (WCOREDUMP(status)) {
+          VLOG(0) << "ipfs coredumped";
+        } else if (WIFEXITED(status)) {
+          VLOG(0) << "ipfs exit (" << WEXITSTATUS(status) << ")";
         }
-      } else {
-        // pipes closed
-        break;
+        ipfs_process_.Close();
+        if (receiver_.is_bound() && crash_handler_callback_) {
+          base::ThreadTaskRunnerHandle::Get()->PostTask(
+              FROM_HERE,
+              base::BindOnce(std::move(crash_handler_callback_), pid));
+        }
       }
+    } else {
+      // pipes closed
+      break;
+    }
   }
 #elif defined(OS_WIN)
   WaitForSingleObject(ipfs_process_.Handle(), INFINITE);
   if (receiver_.is_bound() && crash_handler_callback_)
     base::ThreadTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
-                                base::GetProcId(ipfs_process_.Handle())));
+        FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
+                                  base::GetProcId(ipfs_process_.Handle())));
 #else
 #error unsupported platforms
 #endif

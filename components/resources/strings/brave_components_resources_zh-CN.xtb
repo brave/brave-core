@@ -36,22 +36,35 @@
 <translation id="867722069064361487">12 小时制</translation>
 <translation id="4064062743338217840">24 小时制</translation>
 <translation id="8643377320501056697">显示热门网站</translation>
+<translation id="7176563092712682575">自定义热门网站</translation>
 <translation id="3446024864193919737">显示 Brave 奖励</translation>
 <translation id="6274899614137380422">显示 Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">更多卡片</translation>
+<translation id="5585019845078534178">卡</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
 <translation id="2875302873837723333">热门网站</translation>
 <translation id="8173998484743827990">Brave 统计数据</translation>
 <translation id="383680190590774040">时钟</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
 <translation id="3159285901314605198">背景图片</translation>
+<translation id="385051799172605136">后退</translation>
+<translation id="7415602225677446066">完全私密的今日热门新闻，专为您打造。</translation>
+<translation id="8607689491789524900">Brave Today 符合您设备上显示的兴趣，因此您的个人信息永远不会离开浏览器。全天更新新内容。</translation>
+<translation id="9164544612367905452">正在提取…</translation>
+<translation id="1276592121036104130">加载新内容</translation>
+<translation id="4210987321913275328">滚动查找 Brave Today</translation>
+<translation id="3122595178900736207">重置 Brave Today 源</translation>
+<translation id="2197023915568148978">是否要将 Brave Today 发布者的所有选项重置为默认设置？</translation>
+<translation id="954001034349395856">所有源</translation>
+<translation id="8890516388109605451">来源</translation>
+<translation id="5158129253322921540">禁用来自<ph name="PUBLISHER_NAME"/>的内容</translation>
 <translation id="1776831331757823105">时钟</translation>
 <translation id="4643117005422448078">热门网站</translation>
 <translation id="7791543448312431591">添加</translation>
 <translation id="7679334366167089823">通过观看尊重隐私的广告赢得代币。</translation>
 <translation id="1531133232292396145">在浏览器中直接在 Binance 上进行加密货币交易。</translation>
 <translation id="2166494527623220386">在浏览器中直接在 Gemini 上进行加密货币交易。</translation>
+<translation id="7191394989411626168">关闭卡后，所有当前可见的卡都会被隐藏。但是，有新卡时，可能仍会通知您。</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="8730621377337864115">已完成</translation>
 <translation id="6248988683584659830">搜索设置</translation>
@@ -91,9 +104,8 @@
 <translation id="2974339193389078578">使用 Brave 浏览新的互联网</translation>
 <translation id="7735138632831241257">使用以保护您的隐私为目的的浏览器，准备享受更快捷、更安全的浏览体验。</translation>
 <translation id="6001839398155993679">开始吧</translation>
-<translation id="8050847734948770789">启用 Brave 奖励</translation>
-<translation id="2862598513212603756">您的注意力很有价值。在浏览期间通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
-<translation id="4942016616604700968">启用奖励</translation>
+<translation id="2835162985889791522">通过查看尊重隐私的广告来赚取代币和支持您在默认情况下支持您最喜欢的网站和创作者。</translation>
+<translation id="2070991379950719711">开始使用 Brave Rewards</translation>
 <translation id="3958088479270651626">导入书签和设置</translation>
 <translation id="2609701960545338618">通过导入旧浏览器的书签和设置来设置常用浏览环境。“设置”中还提供了高级导入选项。</translation>
 <translation id="8275038454117074363">导入</translation>
@@ -117,7 +129,7 @@
 <translation id="3742599705619405136">这是一种自动支持发布者和内容创建者的方式。设置每月付款并正常地进行浏览。您访问的、经 Brave 验证的网站会根据 Brave 测量出的您的关注度自动收到您的捐款。</translation>
 <translation id="20281847067919078">估计将获得的奖励</translation>
 <translation id="8593551638387217772">下一次支付日期</translation>
-<translation id="319209088187794725">本月收到的广告通知</translation>
+<translation id="4428871418618312983">本月收到的广告</translation>
 <translation id="4229016885653790965">抱歉! 您所在的地区尚未提供广告。</translation>
 <translation id="2539279826042558064">目前无法在您的设备上使用 Brave Rewards 和 Brave Ads 功能。</translation>
 <translation id="5421369907811917952">其他设置</translation>
@@ -135,6 +147,8 @@
 <translation id="8010081455002666927">自动检测</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="4176463684765177261">已停用</translation>
+<translation id="4434663852465709809">供 iOS 奖励用户转移 BAT 的 QR 码</translation>
+<translation id="2175927920773552910">二维码</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="6160106411363856968">BAP</translation>
 <translation id="1081826981536899387">BAT 点数</translation>
@@ -191,8 +205,6 @@
 <translation id="717952606991220586">哎呀，有些不对劲。请稍后再试。</translation>
 <translation id="6965382102122355670">确定</translation>
 <translation id="7210234701206674260">Brave 奖励出现了问题。请稍后再试。</translation>
-<translation id="570208820610947248">我们检测到您的钱包出错了。您必须还原备份钱包，然后方可处理任何交易。</translation>
-<translation id="7797604753681168055">立即还原！</translation>
 <translation id="5549059668721746831">下一个每月捐赠日期</translation>
 <translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
@@ -201,6 +213,7 @@
 <translation id="7119308337584989771">已放弃</translation>
 <translation id="6805660603861526473">已查看</translation>
 <translation id="2359865110462963929">您所在地区目前不支持 BAT。若需更新，请参考 <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>。</translation>
+<translation id="6876377564500155963">开启{{title}}即表示您同意<ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/> 和 <ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
 <translation id="2564425876266960486">创建 Brave 浏览器 BAT 卡出错</translation>
 <translation id="6473583070570450185">您需要有已验证的钱包才能登录：</translation>
 <translation id="2106271389438168634">您需要至少有 25 个 BAT 才能创建一个“Uphold”钱包。 请先验证您的“Uphold” 钱包，然后重试。</translation>
@@ -259,7 +272,6 @@
 <translation id="3798449238516105146">版本</translation>
 <translation id="7180611975245234373">刷新</translation>
 <translation id="1456696701804096710">重试次数：</translation>
-<translation id="5771119664738037159">未启用 Brave 奖励。 请通过访问启用</translation>
 <translation id="2152423226436243241">自动捐献</translation>
 <translation id="2927922949538312364">一次性赏金</translation>
 <translation id="3164105678355419142">重复打赏</translation>
@@ -272,6 +284,7 @@
 <translation id="4235360514405112390">有效</translation>
 <translation id="3902084968737576005">钱包地址：</translation>
 <translation id="2326487656644542536">钱包信息</translation>
+<translation id="3506182299017414175">钱包尚未创建</translation>
 <translation id="8559420016582377654">钱包付款 ID：</translation>
 <translation id="438586487791444158">钱包的状态：</translation>
 <translation id="8874184842967597500">未连接</translation>
@@ -279,6 +292,39 @@
 <translation id="922103963921062336">断开连接（未验证）</translation>
 <translation id="6521149675246672063">断开连接（已验证）</translation>
 <translation id="3248185426436836442">等待审批</translation>
+<translation id="8441289448876571409">BAP 基金</translation>
+<translation id="5906820630265272615">BAT 基金</translation>
+<translation id="5814098892838785557">您确定要停止支持这个创作者吗？</translation>
+<translation id="3922777918343537463">取消每月供款</translation>
+<translation id="9087994290002662101">更改金额</translation>
+<translation id="1969724076378550685">确认每月取消</translation>
+<translation id="6238322297266927861">捐款金额：</translation>
+<translation id="1723857724166389190">您给该创作者的每月捐款已被取消。</translation>
+<translation id="534368327994110883">您目前在支持此创作者</translation>
+<translation id="2621124276654521177">目前每月捐款</translation>
+<translation id="3084276630953238154">出现了意料之外的错误</translation>
+<translation id="3263379510325043678">服务器连接错误</translation>
+<translation id="8994556588732085585">请关闭并重新打开打赏横幅，然后重试。</translation>
+<translation id="4371618764691059036">每月供款已设置。</translation>
+<translation id="6356822617569064293">下一个捐款日期：</translation>
+<translation id="4622723187300249546">一次性打赏</translation>
+<translation id="5268142130226208198">一次性打赏金额：</translation>
+<translation id="3669086939205397942">等等，您还不能打赏呢</translation>
+<translation id="1142440886533556131">{{user}}’的贴文</translation>
+<translation id="3489551030916418665">{{user}}’的推文</translation>
+<translation id="5531915212947569943">很遗憾看见您离开…</translation>
+<translation id="1420756770787071946">支持此创作者</translation>
+<translation id="3473919203449000069">继续操作即表示您同意<ph name="LINK_BEGIN"/>服务条款<ph name="LINK_END"/> 和 <ph name="LINK_BEGIN"/>隐私政策<ph name="LINK_END"/>。</translation>
+<translation id="3271043362279673449">感谢您的支持！</translation>
+<translation id="379596083010863211">您的一次性打赏金额已发送。</translation>
+<translation id="5096821444729034955">（针对它们的帖子）</translation>
+<translation id="2978223787436054634">与您的支持相关的推文</translation>
+<translation id="1543259266592091784">添加资金</translation>
+<translation id="7465614181960492526">赚取代币和回报</translation>
+<translation id="2731539192954672606">通过查看尊重隐私的广告来赚取代币和自动支持您最喜欢的网站和内容创作者。</translation>
+<translation id="1275213816424141989">可能在稍后</translation>
+<translation id="2404165674840145940">通过 Brave rewards 打赏</translation>
+<translation id="5820285701794581330">启用 Brave Rewards，即表示您将开始赚取可以用来打赏创作者的 BAT 币。</translation>
 <translation id="5094577350232361255">关于</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="5916290544882167205">Brave Software。Brave 是 Brave Software 的注册商标。网站名称可能是网站所有者的商标或注册商标。</translation>
@@ -296,23 +342,18 @@
 <translation id="8988332871810963281">当前没有 Brave 广告历史记录</translation>
 <translation id="5345727496083327478">您将不会收到此类广告</translation>
 <translation id="5317780077021120954">保存</translation>
-<translation id="5441565662498481293">您正在自动发送打赏至：</translation>
 <translation id="2827387977307390755">允许打赏</translation>
 <translation id="3819257035322786455">备份</translation>
 <translation id="1312977698678162065">付费浏览尊重您隐私的相关广告。</translation>
 <translation id="4396256076373444156">在观看尊重您的隐私的相关广告的同时收集积分。</translation>
-<translation id="7655723274266132226">现在您可以通过看广告来赚钱。</translation>
 <translation id="2975780980638932742">Brave 广告来啦！</translation>
 <translation id="3361548743396744457">浏览 – 或随时给您喜欢的网站打赏以支持您的站点。</translation>
 <translation id="718303546189503957">自动贡献 {{processor}}</translation>
 <translation id="4493850495402472953">和</translation>
 <translation id="8804164990146287819">隐私政策</translation>
 <translation id="4281844954008187215">服务条款</translation>
-<translation id="4405997465645469914">启用“Brave奖励”，即表示您已阅读并同意服务条款</translation>
 <translation id="8819542691525488940">点击“好的，我要加入了！“，表示您已阅读并同意</translation>
 <translation id="8071424789698327147">单击“是的，我准备好了”，即表示您已阅读并同意</translation>
-<translation id="3745024317593003526">设置捐款</translation>
-<translation id="1386745271554473158">分享好消息：</translation>
 <translation id="7530570094705720669">正在创建钱包</translation>
 <translation id="2105596359439030979">您的注意力很有价值。通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
 <translation id="516395624550019162">确认！</translation>
@@ -341,10 +382,8 @@
 <translation id="4805054577224376281">目标</translation>
 <translation id="1346059596910821859">打赏</translation>
 <translation id="245015745140252435">赏金</translation>
-<translation id="4114667046481794032">捐款金额</translation>
 <translation id="3520817231440482449">每月打赏本站点</translation>
 <translation id="1827184134638345603">发送赏金</translation>
-<translation id="7928243298881209869">你的首个每月捐赠将被发送于:</translation>
 <translation id="6045860799501892362">设定每月捐赠</translation>
 <translation id="8003573781961874199">下载为PDF</translation>
 <translation id="298067735430872465">从广告中赚取的收益</translation>
@@ -387,7 +426,6 @@
 <translation id="8304661078305276044">广告奖励</translation>
 <translation id="1770001816413426741">奖励期</translation>
 <translation id="2280319752798785157">每月捐款</translation>
-<translation id="7627481505582641588">下一捐款</translation>
 <translation id="5736183007277264868">当前没有可用的令牌授权。</translation>
 <translation id="8307851765167460403">还没有活动…</translation>
 <translation id="8589748782214271192">不用了，谢谢</translation>
@@ -421,9 +459,6 @@
 <translation id="108052542935515756">您可以开始</translation>
 <translation id="194625454574835815">恢复密钥</translation>
 <translation id="6354568176665589146">再次发生</translation>
-<translation id="2391095793008133394">对 @{{ user }} 的博文打赏：</translation>
-<translation id="7557413530932469222">对 @{{ user }} 的博文打赏喽！</translation>
-<translation id="717513177896084801">提示 {{ user }}</translation>
 <translation id="1110535155349301542">删除</translation>
 <translation id="8204292894173669182">从已保存项中移除</translation>
 <translation id="2160578257818656558">您为尚未注册接收酬谢款的创建者设立了 {{reservedAmount}} {{currency}} 的捐款。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过 90 天。</translation>
@@ -440,7 +475,6 @@
 <translation id="7934806082615382155">接收自 Brave 的部分资金可能并不包含在备份中，因为并不需要。它仅能供您在本浏览器中使用。</translation>
 <translation id="7354412786785889047">您可以通过打赏支持内容创建者。这’是为了表示对优质内容提供者的感谢。每个月的第一个星期，已验证的创建者将获得他们的赏金。</translation>
 <translation id="972846019534552366">您还可以在“Brave Rewards”面板中设置每月定期捐款。</translation>
-<translation id="121079855621707240">您可以通过设定一个每月捐助来支持这个内容创建者。这是对质内容提供者表示感谢的一种方式。已验证的创建者将会在每个月的第一周获得他们的捐款。</translation>
 <translation id="3074127054582480056">精力</translation>
 <translation id="5010112177773747965">未经您同意。</translation>
 <translation id="7147673045905733351">现在，Brave欢迎您进入新的互联网。</translation>
@@ -468,7 +502,6 @@
 <translation id="2028613172174411919">如果您重置钱包，则将永久失去您的奖励数据。</translation>
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
-<translation id="63956545637156715">为什么选择 Brave 奖励？</translation>
 <translation id="1738658589626889850">保存为文件</translation>
 <translation id="259138486959961679">查看所有 {{numItems}} 项目</translation>
 <translation id="7857284676033058221">查看所有 {{numSites}} 站点</translation>
@@ -477,11 +510,6 @@
 <translation id="8428213095426709021">设置</translation>
 <translation id="1792148354504719133">站点</translation>
 <translation id="5944430251223015324">站点</translation>
-<translation id="1834493631938747505">告知他人你的赏金。</translation>
-<translation id="8826007068782654809">谢谢</translation>
-<translation id="2305079019697905687">赏金已发送！</translation>
-<translation id="4626192591707117844">已设定每月捐款！</translation>
-<translation id="6665366815203065060">您刚刚已发送打赏至：</translation>
 <translation id="6432779622695508363">给喜欢的内容打赏</translation>
 <translation id="8424370624815730676">注意力币（BTA）</translation>
 <translation id="4588241643143931775">比特币 (BTC)</translation>
@@ -495,13 +523,11 @@
 <translation id="1634828734222219955">总额</translation>
 <translation id="1726566769229204312">代币发放</translation>
 <translation id="1193434225710679930">积分奖励</translation>
+<translation id="4395099108822007284">正在载入图片...</translation>
 <translation id="3535654229833214438">交易</translation>
-<translation id="1605521356929094020">开启 Brave Ad</translation>
+<translation id="2623808496299703826">通过查看尊重隐私的广告来赚取令牌和支持您在默认情况下支持的网站内容创建者。</translation>
 <translation id="8987812599455325915">支持广告和自动投稿。您可以随时分别打开或关闭它们。</translation>
 <translation id="1485484147452131556">激活奖励</translation>
-<translation id="3983104749597726322">推文</translation>
-<translation id="5636843789453098076">对 @{{ user }} 的推文打赏：</translation>
-<translation id="4242384385082203046">对 @{{ user }} 的推文打赏！</translation>
 <translation id="8772672608371898774">Brave 经验证的发布者</translation>
 <translation id="5050370287908180130">查看每月声明的详细信息</translation>
 <translation id="8615803647903750175">钱包活动</translation>
@@ -518,7 +544,7 @@
 <translation id="318487899513214296">查看改进的方面</translation>
 <translation id="4083384190339959182">我们升级了 Brave 付款。</translation>
 <translation id="5395851053710553429">做好准备体验新一代网络。</translation>
-<translation id="2549982302631665116">欢迎您今天使用新网络。在这里，您的时间十分宝贵，个人资料将保密，您的注意力获得收益。</translation>
+<translation id="63956545637156715">为什么选择 Brave 奖励？</translation>
 <translation id="8494748383523030337">您的余额</translation>
 <translation id="3780605330121608425">您的钱包</translation>
 <translation id="6727483290601442544">查看详情</translation>
@@ -559,32 +585,29 @@
 <translation id="3354315693758743702">验证您的钱包为可选项。</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
 <translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
+<translation id="7677480094678113476">注意：授权后，您的交易将对“Uphold”可见；例如，他们将能够看到收件人和您的打赏金额。</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
 <translation id="7703007724342399482">使用 Uphold 卡获得 2％ 的加密返还</translation>
 <translation id="1109729143147368573">在全球近 5000  万个商家和 ATM 上花费您的加密货币和其他资产。赶快通过花费加密货币来获得加密货币吧！</translation>
+<translation id="7840362246306242214">可以在 Uphold 进行的美国股票交易</translation>
+<translation id="3345432088196080137">只需投资 $1 即可买入热门股票和交易所买卖基金，例如 AAPL、TSLA 或 AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>详细了解<ph name="LINK_END"/> 有关 Brave Rewards 的信息</translation>
-<translation id="5826706758731195747">启用“奖励”即表示您同意<ph name="LINK_BEGIN"/>服务条款<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">点击开始使用 Brave Rewards，即表示您同意<ph name="LINK_BEGIN"/>服务条款<ph name="LINK_END"/> 和<ph name="LINK_BEGIN"/>隐私政策<ph name="LINK_END"/>。</translation>
 <translation id="8344084848798035850">本月到目前为止的估计收入</translation>
-<translation id="6778392839723468409">通过查看尊重隐私的广告来赚取令牌。</translation>
 <translation id="5235444069025581717">本月小费和捐款</translation>
 <translation id="1210965535849006928">领取我的奖励</translation>
-<translation id="8315514906653279104">开启...</translation>
-<translation id="7307847920988946894">开启奖励</translation>
-<translation id="662631138774963814">感觉很慷概？</translation>
-<translation id="3264975266761862670">准备开始赚钱了吗？</translation>
 <translation id="8092889639392847252">获得报酬以查看此赞助背景图片。</translation>
-<translation id="2542495049135486284">再次尝试 Brave Rewards，并且一边赚一边支付！</translation>
-<translation id="53513464591392992">启用“Brave Rewards”以通过查看尊重隐私的广告获得报酬。</translation>
-<translation id="8463996294416161140">启用 <ph name="PRODUCT_NAME"/> 领取您的那一份。您也可以选择 <ph name="LINK_BEGIN"/> 隐藏赞助商图像 <ph name="LINK_END"/>。</translation>
+<translation id="7914961605852877459">开启“Brave Ads”领取您的份额。您也可以选择 <ph name="LINK_BEGIN"/>隐藏赞助商图片<ph name="LINK_END"/>。</translation>
 <translation id="8568666589217601917">加油！</translation>
 <translation id="764235488372037377">您从广告中获得的奖励</translation>
 <translation id="7091215606170476659">您获得了 Brave 的 UGP 奖励。</translation>
 <translation id="6759185676704303656">您查看此背景图片将获得报酬。</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>详细了解<ph name="LINK_END"/> 与“Brave Rewards”中的赞助图片有关的信息。</translation>
 <translation id="6113004497629356998">隐藏赞助图片</translation>
-<translation id="2148613324460538318">添加支付卡</translation>
+<translation id="3787061634640932557">编辑卡</translation>
+<translation id="4925543565930352284">点击{{title}}即表示您同意<ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/>和<ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
 <translation id="5977237145327845546">与朋友和同事进行私人视频通话。</translation>
 <translation id="5850325887346946383">开始视频通话</translation>
 <translation id="3651550649176056334">关于您的数据</translation>
@@ -670,10 +693,22 @@
 <translation id="1895658205118569222">关机</translation>
 <translation id="6762417584993757344">未安装</translation>
 <translation id="8428368469058794536">IPFS 服务</translation>
-<translation id="2901715907314796027">从 Bitcoin.com 购买加密货币。</translation>
-<translation id="4065681313949497252">货币</translation>
-<translation id="3833315885381772739">输入金额</translation>
-<translation id="4011828592358027165">加密货币新手？</translation>
-<translation id="3358050091139900813">从这里获取钱包开始</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5357895013476183089">未与 IPFS 连接</translation>
+<translation id="8237116764941266924">无法连接到 IPFS 内容</translation>
+<translation id="7602558611695320510">无法使用本地 IPFS 节点连接到 IPFS 内容，请单击下面的“继续”按钮以便这次能够通过公共网关进行连接，并在将来自动回退到公共网关。</translation>
+<translation id="3373798179786163193">继续使用公共网关</translation>
+<translation id="1974060860693918893">高级</translation>
+<translation id="9096577886148726047">隐藏高级功能</translation>
+<translation id="6334164481400727517">因为本地节点未启动，或因为目前没有可用的连接对等体，我们无法使用本地 IPFS 节点连接到请求的内容。继续操作即表示将来当我们无法使用本地 IPFS 节点连接到 IPFS 内容时，我们将自动回退到默认的公共网关（以后可以在设置中将其关闭）。</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">查看市场并从 crypto.com 购买加密货币。</translation>
+<translation id="4292334826913000023">显示价格</translation>
+<translation id="5001098083058405168">获得存款的 2％ 作为奖金</translation>
+<translation id="7336377875970208451">停止支付交易费</translation>
+<translation id="5889002303959545585">购买比特币</translation>
+<translation id="7243082596932212589">查看 Crypto.com 市场</translation>
+<translation id="2258222996838418990">7d 图形</translation>
+<translation id="5337526542182802976">受支持的货币对</translation>
+<translation id="1164622162816276433">24HR 音量</translation>
+<translation id="3155170474926428993">Tor 启动器</translation>
 </translationbundle>

@@ -5,12 +5,11 @@
 
 #include "bat/ads/internal/logging_util.h"
 
-#include <map>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "brave/base/containers/utils.h"
 #include "bat/ads/internal/url_util.h"
 
 namespace ads {
@@ -57,7 +56,7 @@ std::string HeadersToString(
 }
 
 std::string HeadersToString(
-    const std::map<std::string, std::string>& headers,
+    const base::flat_map<std::string, std::string>& headers,
     const int indent = 4) {
   std::vector<std::string> formatted_headers;
 
@@ -115,7 +114,7 @@ std::string UrlRequestHeadersToString(
 std::string UrlResponseToString(
     const UrlResponse& url_response) {
   const std::string formatted_headers =
-      HeadersToString(base::FlatMapToMap(url_response.headers));
+      HeadersToString(url_response.headers);
 
   return base::StringPrintf("URL Response:\n  URL: %s\n  Response "
       "Status Code: %d\n  Response: %s", url_response.url.c_str(),
@@ -125,7 +124,7 @@ std::string UrlResponseToString(
 std::string UrlResponseHeadersToString(
     const UrlResponse& url_response) {
   const std::string formatted_headers =
-      HeadersToString(base::FlatMapToMap(url_response.headers));
+      HeadersToString(url_response.headers);
 
   return base::StringPrintf("  Headers:\n%s", formatted_headers.c_str());
 }

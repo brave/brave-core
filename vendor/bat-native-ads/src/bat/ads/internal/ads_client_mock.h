@@ -10,7 +10,6 @@
 
 #include <stdint.h>
 
-#include <memory>
 #include <string>
 
 #include "testing/gmock/include/gmock/gmock.h"
@@ -20,20 +19,17 @@ namespace ads {
 class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
-  ~AdsClientMock() override;
 
-  MOCK_CONST_METHOD0(GetLocale, std::string());
+  ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
   MOCK_CONST_METHOD0(IsForeground, bool());
 
-  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
+  MOCK_METHOD0(ShouldShowNotifications, bool());
 
   MOCK_METHOD1(ShowNotification, void(
-      std::unique_ptr<AdNotificationInfo> info));
-
-  MOCK_METHOD0(ShouldShowNotifications, bool());
+      const AdNotificationInfo& ad_notification));
 
   MOCK_METHOD1(CloseNotification, void(
       const std::string& uuid));
@@ -47,12 +43,12 @@ class AdsClientMock : public AdsClient {
       const std::string& value,
       ResultCallback callback));
 
-  MOCK_METHOD2(LoadUserModelForId, void(
-      const std::string& id,
-      LoadCallback callback));
-
   MOCK_METHOD2(Load, void(
       const std::string& name,
+      LoadCallback callback));
+
+  MOCK_METHOD2(LoadUserModelForId, void(
+      const std::string& id,
       LoadCallback callback));
 
   MOCK_METHOD1(LoadResourceForId, std::string(
@@ -63,6 +59,11 @@ class AdsClientMock : public AdsClient {
       RunDBTransactionCallback));
 
   MOCK_METHOD0(OnAdRewardsChanged, void());
+
+  MOCK_METHOD3(RecordP2AEvent, void(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value));
 
   MOCK_METHOD4(Log, void(
       const char* file,

@@ -14,20 +14,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
-    case types.TOGGLE_ENABLE_MAIN: {
-      if (state.initializing && state.enabledMain) {
-        break
-      }
-
-      state = { ...state }
-      const key = 'enabledMain'
-      const enable = action.payload.enable
-      state.initializing = true
-
-      state[key] = enable
-      chrome.send('brave_rewards.saveSetting', [key, enable.toString()])
-      break
-    }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
       chrome.send('brave_rewards.getAutoContributeProperties')
       break
@@ -150,31 +136,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.ON_REWARDS_ENABLED: {
-      const enabled: boolean = action.payload.enabled
-      state = { ...state }
-      if (state.enabledMain && !enabled) {
-        state = defaultState
-        state.enabledMain = false
-        state.walletCreated = true
-        state.firstLoad = false
-        break
-      }
-
-      if (!enabled) {
-        state.balance = defaultState.balance
-        state.promotions = []
-      }
-
-      state.enabledMain = enabled
+    case types.GET_STATEMENT:
+    case types.ON_STATEMENT_CHANGED: {
+      chrome.send('brave_rewards.getStatement', [])
       break
     }
-    case types.GET_TRANSACTION_HISTORY:
-    case types.ON_TRANSACTION_HISTORY_CHANGED: {
-      chrome.send('brave_rewards.getTransactionHistory', [])
-      break
-    }
-    case types.ON_TRANSACTION_HISTORY: {
+    case types.ON_STATEMENT: {
       if (!action.payload.data) {
         break
       }
@@ -188,11 +155,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const data = action.payload.data
       state.adsData.adsEstimatedPendingRewards = data.adsEstimatedPendingRewards
       state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
-      state.adsData.adsAdNotificationsReceivedThisMonth = data.adsAdNotificationsReceivedThisMonth
-      break
-    }
-    case types.GET_REWARDS_MAIN_ENABLED: {
-      chrome.send('brave_rewards.getRewardsMainEnabled', [])
+      state.adsData.adsReceivedThisMonth = data.adsReceivedThisMonth
       break
     }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
@@ -243,6 +206,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ...state,
         initializing: false
       }
+      chrome.send('brave_rewards.getReconcileStamp')
       break
     }
   }

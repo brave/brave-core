@@ -181,10 +181,9 @@ class AdsBox extends React.Component<Props, {}> {
     let adsIsSupported = false
     let estimatedPendingRewards = 0
     let nextPaymentDate = ''
-    let adNotificationsReceivedThisMonth = 0
+    let adsReceivedThisMonth = 0
     const {
       adsData,
-      enabledMain,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
@@ -196,12 +195,12 @@ class AdsBox extends React.Component<Props, {}> {
       adsIsSupported = adsData.adsIsSupported
       estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
-      adNotificationsReceivedThisMonth = adsData.adsAdNotificationsReceivedThisMonth || 0
+      adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
     }
 
     // disabled / alert state
     const isDisabled = safetyNetFailed || !adsIsSupported || !adsUIEnabled
-    const toggle = !isDisabled && enabledMain
+    const toggle = !isDisabled
     // Sanity-check: ensure no action can be performed if the box isn't allowed
     // to be enabled
     const toggleAction = toggle
@@ -230,7 +229,7 @@ class AdsBox extends React.Component<Props, {}> {
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc', { currency : tokenString })}
-        settingsChild={this.adsSettings(adsEnabled && enabledMain)}
+        settingsChild={this.adsSettings(adsEnabled)}
         {...boxPropsExtra}
       >
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
@@ -253,7 +252,7 @@ class AdsBox extends React.Component<Props, {}> {
           <StyledListContent>
             <Tokens
               onlyAnonWallet={onlyAnonWallet}
-              value={adNotificationsReceivedThisMonth.toString()}
+              value={adsReceivedThisMonth.toString()}
               hideText={true}
             />
           </StyledListContent>

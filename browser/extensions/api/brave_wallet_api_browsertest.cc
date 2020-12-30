@@ -8,8 +8,8 @@
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -186,8 +186,34 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, DappDetectionTestAccept) {
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
   ASSERT_EQ(provider, BraveWalletWeb3ProviderTypes::ASK);
-  CryptoWalletsInfoBarAccept(ConfirmInfoBarDelegate::BUTTON_OK);
+  CryptoWalletsInfoBarAccept(
+      ConfirmInfoBarDelegate::BUTTON_OK |
+      ConfirmInfoBarDelegate::BUTTON_CANCEL);
   WaitForTabCount(2);
+  RemoveInfoBarObserver(infobar_service);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, InfoBarDontAsk) {
+  // Navigate to dapp
+  WaitForBraveExtensionAdded();
+  InfoBarService* infobar_service =
+      InfoBarService::FromWebContents(active_contents());
+  AddInfoBarObserver(infobar_service);
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/dapp.html"));
+  WaitForCryptoWalletsInfobarAdded();
+  // Provider type should be Ask by default
+  auto provider_before = static_cast<BraveWalletWeb3ProviderTypes>(
+      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+  ASSERT_EQ(provider_before, BraveWalletWeb3ProviderTypes::ASK);
+  // Click "Don't ask again"
+  CryptoWalletsInfoBarCancel(
+      ConfirmInfoBarDelegate::BUTTON_OK |
+      ConfirmInfoBarDelegate::BUTTON_CANCEL);
+  // Provider type should now be none
+  auto provider_after = static_cast<BraveWalletWeb3ProviderTypes>(
+      browser()->profile()->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+  ASSERT_EQ(provider_after, BraveWalletWeb3ProviderTypes::NONE);
   RemoveInfoBarObserver(infobar_service);
 }
 

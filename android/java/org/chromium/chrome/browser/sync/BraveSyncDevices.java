@@ -100,8 +100,10 @@ public class BraveSyncDevices {
     public class SyncDeviceInfo {
         public String mName;
         public boolean mIsCurrentDevice;
+        public boolean mSupportsSelfDelete;
         public String mType;
         public Date mLastUpdatedTimestamp;
+        public String mGuid;
     }
 
     public ArrayList<SyncDeviceInfo> GetSyncDeviceList() {
@@ -121,18 +123,25 @@ public class BraveSyncDevices {
                 deviceInfo.mType = device.getString("type");
                 long lastUpdatedTimestamp = device.getLong("lastUpdatedTimestamp");
                 deviceInfo.mLastUpdatedTimestamp = new Date(lastUpdatedTimestamp);
+                deviceInfo.mGuid = device.getString("guid");
+                deviceInfo.mSupportsSelfDelete = device.getBoolean("supportsSelfDelete");
                 deviceList.add(deviceInfo);
             }
         } catch (JSONException e) {
-            Log.e(TAG, "GetDeviceNameByObjectId JSONException error " + e);
+            Log.e(TAG, "GetSyncDeviceList JSONException error " + e);
         } catch (IllegalStateException e) {
-            Log.e(TAG, "GetDeviceNameByObjectId IllegalStateException error " + e);
+            Log.e(TAG, "GetSyncDeviceList IllegalStateException error " + e);
         }
         return deviceList;
+    }
+
+    public void DeleteDevice(String deviceGuid) {
+        nativeDeleteDevice(mNativeBraveSyncDevicesAndroid, deviceGuid);
     }
 
     private native void nativeInit();
     private native void nativeDestroy(long nativeBraveSyncDevicesAndroid);
 
     private native String nativeGetSyncDeviceListJson(long nativeBraveSyncDevicesAndroid);
+    private native void nativeDeleteDevice(long nativeBraveSyncDevicesAndroid, String deviceGuid);
 }

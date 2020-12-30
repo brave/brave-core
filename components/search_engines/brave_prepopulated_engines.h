@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SEARCH_ENGINES_BRAVE_PREPOPULATED_ENGINES_H_
 
 #include <cstddef>
+#include <map>
 
 #include "build/build_config.h"
 #include "components/search_engines/prepopulated_engines.h"
@@ -14,6 +15,7 @@
 namespace TemplateURLPrepopulateData {
 
 extern const int kBraveCurrentDataVersion;
+extern const int kBraveFirstTrackedDataVersion;
 
 // See comments on prepopulated engines ids in
 // components/search_engines/prepopulated_engines_schema.json above the
@@ -28,6 +30,7 @@ enum BravePrepopulatedEngineID : unsigned int {
   // These engine IDs are already defined in prepopulated_engines.json
   PREPOPULATED_ENGINE_ID_GOOGLE = 1,
   PREPOPULATED_ENGINE_ID_BING = 3,
+  PREPOPULATED_ENGINE_ID_YANDEX = 15,
   // These engine IDs are not defined in Chromium
   BRAVE_PREPOPULATED_ENGINES_START = 500,
   PREPOPULATED_ENGINE_ID_AMAZON = 500,     // No longer in defaults (2/2019).
@@ -94,6 +97,7 @@ extern const PrepopulatedEngine duckduckgo_lite;
 #endif
 extern const PrepopulatedEngine qwant;
 extern const PrepopulatedEngine startpage;
+extern const PrepopulatedEngine brave_yandex;
 
 // Yahoo has unique URLs per region
 extern const PrepopulatedEngine brave_yahoo;
@@ -130,6 +134,9 @@ extern const PrepopulatedEngine brave_yahoo_tw;
 extern const PrepopulatedEngine brave_yahoo_uk;
 extern const PrepopulatedEngine brave_yahoo_ve;
 extern const PrepopulatedEngine brave_yahoo_vn;
+
+const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
+GetBraveEnginesMap();
 
 }  // namespace TemplateURLPrepopulateData
 

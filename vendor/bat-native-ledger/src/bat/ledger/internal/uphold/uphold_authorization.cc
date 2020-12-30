@@ -29,7 +29,7 @@ UpholdAuthorization::UpholdAuthorization(LedgerImpl* ledger) :
 UpholdAuthorization::~UpholdAuthorization() = default;
 
 void UpholdAuthorization::Authorize(
-    const std::map<std::string, std::string>& args,
+    const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   auto wallet = GetWallet(ledger_);
 
@@ -166,7 +166,7 @@ void UpholdAuthorization::OnGetUser(
     const User& user,
     ledger::ExternalWalletAuthorizationCallback callback) {
   auto wallet_ptr = GetWallet(ledger_);
-  std::map<std::string, std::string> args;
+  base::flat_map<std::string, std::string> args;
 
   if (user.bat_not_allowed || !wallet_ptr) {
     BLOG(0, "BAT not allowed");
@@ -223,7 +223,7 @@ void UpholdAuthorization::OnCardCreate(
             address.substr(0, 5));
   }
 
-  std::map<std::string, std::string> args;
+  base::flat_map<std::string, std::string> args;
   if (wallet_ptr->status != type::WalletStatus::VERIFIED) {
     args["redirect_url"] = GetSecondStepVerify();
   }

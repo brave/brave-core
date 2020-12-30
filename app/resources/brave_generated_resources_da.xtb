@@ -8,14 +8,17 @@
 <translation id="5655621391922317800">Crypto-tegnebøger</translation>
 <translation id="2445484935443597917">Opret en ny profil</translation>
 <translation id="2666990579225592931">Åbn gæstevindue</translation>
+<translation id="8275068909952022340">Mere…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tilladt i Brave.</translation>
 <translation id="6786747875388722282">Internetadresser</translation>
 <translation id="984275831282074731">Betalingsmetoder</translation>
 <translation id="3699882589215410581">Installer og kør Widevine</translation>
 <translation id="8926389886865778422">Spørg ikke igen</translation>
 <translation id="4726634924419692905">Spørg når en side vil installere Widevine på din computer.</translation>
-<translation id="8760415064721320867">Privat vindue med Tor</translation>
+<translation id="6241402707160226266">Privat vindue med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler din IP-adresse fra de sider du besøger.</translation>
+<translation id="1369311132025451972">Omdiriger automatisk .onion-hjemmesider</translation>
+<translation id="4341373692446027469">Brave åbner onion-tjenesten på hjemmesiden i Tor-vinduet, når det er tilgængeligt</translation>
 <translation id="8053096063396012732">Installér Widevine</translation>
 <translation id="4840334696217618631">Genstart browser for at slå Widevine til</translation>
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
@@ -32,8 +35,8 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="2906510232093002459">Brave standardbilleder</translation>
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
-<translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
-<translation id="1520361618554057102">Altid vis mine bogmærker på Ny Fane siden</translation>
+<translation id="1811404036171336214">Vis altid bogmærker i den nye fane</translation>
+<translation id="1643029991199044105">Gennemse de senest anvendte faner med Ctrl-Tab</translation>
 <translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
 <translation id="597020512043916976">Vis øverste sider i forslag til automatisk udfyldning</translation>
 <translation id="264150068416846820">Vis Braves foreslåede sider i forslag fra automatisk udfyldning</translation>
@@ -41,20 +44,22 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="814018970995616154">Kontrollerer URL'er med en liste over usikre websteder, der er gemt i Brave.</translation>
 <translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
 <translation id="7781069478569868053">Side på ny fane</translation>
-<translation id="2467749191278759605">Tilpas dit Brave Dashboard</translation>
-<translation id="1717331825806276156">Baggrundsbilleder</translation>
-<translation id="1820041496463124489">Sponsorerede billeder</translation>
-<translation id="8173998484743827990">Brave Stats</translation>
-<translation id="5551238871320268996">Brave Together</translation>
-<translation id="6966052266404721769">Binance</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="4643117005422448078">Topsider</translation>
-<translation id="1776831331757823105">Ur</translation>
+<translation id="1988804048511540801">Ny faneside viser</translation>
+<translation id="2970343821770026391">Instrumentbræt</translation>
+<translation id="3719826155360621982">Forside</translation>
+<translation id="5448570825852364919">Blank side</translation>
+<translation id="5919424224662539292">Tilpas baggrundsbilledet og widgets, der vises på den nye faneside</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-forbindelse til dette websted</translation>
-<translation id="8784924142044142231">Afslut Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
-<translation id="3696187925156352769">Åbn Tor-vindue</translation>
+<translation id="4734294903299549345">Afslut privat vindue med Tor</translation>
+<translation id="8612763432858587652">Afslut privat vindue</translation>
+<translation id="8760415064721320867">Privat vindue med Tor</translation>
+<translation id="2055363275850890030">Privat Vindue</translation>
+<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="1970435562892104727">Dette er et privat vindue med Tor</translation>
+<translation id="1037341607922068025">Åbn privat vindue med Tor</translation>
+<translation id="1725356094208762656">Åbn i Tor</translation>
+<translation id="1672270084584211506">Onion tilgængelig</translation>
 <translation id="1434416574322382019">Nyt privat vindue med Tor</translation>
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
@@ -62,7 +67,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="2638041073279639246">Åbn link i privat
 vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
-<translation id="3155170474926428993">Tor Startprogram</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
@@ -81,7 +86,7 @@ vindue med Tor</translation>
 <translation id="4978786495456601191">Blokering af fingeraftryk</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
-<translation id="519861640102428255">Se &amp; Føl</translation>
+<translation id="4395160081588457461">Se og mærk</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
 <translation id="7498695072878479744">Tillad Google login-knapper på tredjeparts sider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
@@ -93,13 +98,13 @@ vindue med Tor</translation>
 <translation id="5770288601196774623">Kun cross-site</translation>
 <translation id="3587482841069643663">Alle</translation>
 <translation id="5533533363827555308">Streng, kan ødelægge sider</translation>
-<translation id="8942080017911802454">WebRTC IP håndteringspolitik</translation>
+<translation id="8792121506918889955">WebRTC IP-håndteringspolitik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
-<translation id="8502234992433094996">Brug Google-tjenester til Push-beskeder</translation>
+<translation id="3540231253392253941">Brug Google-tjenester til push-beskeder</translation>
 <translation id="5565355416171743213">Begynd at bruge synkronisering</translation>
 <translation id="4332558599726753990">Synkroniseringsopsætning</translation>
 <translation id="2187778349654214731">For at begynde skal Brave være installeret på alle de enheder, du planlægger at synkronisere. Derefter skal du forbinde dem sikkert til hinanden med en synkroniseringskode.</translation>
@@ -112,6 +117,7 @@ vindue med Tor</translation>
 <translation id="1313162974556054106">Enhedsnavn</translation>
 <translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Denne enhed)</translation>
 <translation id="3686835020221422649">Sidst aktiv</translation>
+<translation id="1181037720776840403">Fjern</translation>
 <translation id="2569646144216067185">Ordtælling: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopieret!</translation>
 <translation id="8802630444265810662">En QR-kode som skal scannes med en mobil enhed for at transmittere din synkroniseringskode</translation>
@@ -129,7 +135,8 @@ vindue med Tor</translation>
 <translation id="5086223971958279691">Kode for Synkroniseringskæde</translation>
 <translation id="2899261497479389619">Gå til Brave Synkronisering i din målcomputers indstillinger og klik på knappen</translation>
 <translation id="4827439149833241990">“Jeg har en Synkroniseringskode”.</translation>
-<translation id="24067401253841795">Indtast kædekodeordene for synkronisering vist nedenfor. Behandl denne kode som en adgangskode. Hvis nogen får fingre i den, kan de læse og ændre dine synkroniserede data.</translation>
+<translation id="8299617838343103908">Angiv synkroniseringskædens kodeord vist herunder.</translation>
+<translation id="4485276108749547761">Behandl denne kode som en adgangskode. Hvis nogen får fat i den, kan de læse og ændre dine synkroniserede data.</translation>
 <translation id="3034163433136515805">Se QR-Kode</translation>
 <translation id="5373825572723282843">Indtast en synkroniseringskode</translation>
 <translation id="5734745018569675530">Skriv din synkroniseringskædes angivne kodeord i formularen herunder.</translation>
@@ -139,9 +146,10 @@ vindue med Tor</translation>
 <translation id="4112587618563511470">Ugyldig synkroniseringskode, kontrollér venligst og prøv igen.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
 <translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
+<translation id="339086854515247923">Er du sikker på, at du vil slette den valgte enhed fra synkroniseringskæden?</translation>
 <translation id="3396347744975515056">Brave Sync er blevet opgraderet og kræver opsætning</translation>
 <translation id="7473245612074035141">Begynd opsætning</translation>
-<translation id="6696935187608454456">Hjælpdonationer</translation>
+<translation id="3411013544209536575">Hjælperåd</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-forespørgsel på 404-sider</translation>
 <translation id="1807246157184219062">Lys</translation>
 <translation id="2414886740292270097">Mørk</translation>
@@ -158,6 +166,8 @@ vindue med Tor</translation>
 <translation id="1365342176656744625">Metode til håndtering af IPFS-placeringer</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
+<translation id="585868419599255817">Falder tilbage til offentlig IPFS-gateway</translation>
+<translation id="8705871434289874898">Automatisk tilbagefald til offentlig IPFS-gateway, når den lokale node ikke kan tilgås.</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="1765684547504191670">Bruger Media Router-komponent til at aktivere Chromecast i browseren.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
@@ -225,6 +235,7 @@ vindue med Tor</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
 <translation id="1854270995641373652">Vil du aktivere IPFS lokal daemon-support i Brave?</translation>
 <translation id="2366908098700680611">Aktivér IPFS</translation>
+<translation id="1556882415222118816">Få mere at vide om konsekvenserne for dine persondata</translation>
 <translation id="4552520379838695057">Beklager, den side mangler.</translation>
 <translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>
 <translation id="8053093028263274061">Beklager, der er ingen gemt version til rådighed.</translation>
@@ -235,7 +246,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
 <translation id="796831669370432378">Klik på bogmærkeknappen for at tilføje et bogmærke ved siden af adresselinjen</translation>
 <translation id="4989337484121655457">Fuld Diskadgang kræves</translation>
-<translation id="5501596373144334003">Brave har brug for Fuld Disk-adgang for at importere dine bogmærker og historik fra Safari.</translation>
+<translation id="8025559074845816210">Brave behøver Fuld Diskadgang for at importere dine bogmærker fra Safari.</translation>
 <translation id="8515328844674404333">Lær hvordan du giver Fuld Diskadgang fra dine Systempræferencer.</translation>
 <translation id="6414878884710400018">Åbn Systempræferencer</translation>
 <translation id="5570470519803062774">Indstillinger for side og skjold</translation>

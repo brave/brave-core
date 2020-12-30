@@ -7,7 +7,6 @@ const defaultState: RewardsInternals.State = {
     total: 0.0,
     wallets: {}
   },
-  isRewardsEnabled: false,
   info: {
     isKeyInfoSeedValid: false,
     walletPaymentId: '',

@@ -5,7 +5,6 @@
 
 #include "brave/browser/gemini/gemini_service_factory.h"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/gemini/browser/gemini_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,8 +17,7 @@ GeminiServiceFactory* GeminiServiceFactory::GetInstance() {
 
 // static
 GeminiService* GeminiServiceFactory::GetForProfile(Profile* profile) {
-  if (brave::IsTorProfile(profile) ||
-      profile->IsIncognitoProfile() ||
+  if (profile->IsIncognitoProfile() ||
       profile->IsGuestSession()) {
     return nullptr;
   }

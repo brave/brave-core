@@ -9,18 +9,12 @@
 #include <string>
 #include <utility>
 
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace privacy {
 
-UnblindedTokens::UnblindedTokens(
-    AdsImpl* ads)
-    : ads_(ads) {
-  DCHECK(ads_);
-}
+UnblindedTokens::UnblindedTokens() = default;
 
 UnblindedTokens::~UnblindedTokens() = default;
 
@@ -53,7 +47,6 @@ base::Value UnblindedTokens::GetTokensAsList() {
 void UnblindedTokens::SetTokens(
     const UnblindedTokenList& unblinded_tokens) {
   unblinded_tokens_ = unblinded_tokens;
-  ads_->get_confirmations()->Save();
 }
 
 void UnblindedTokens::SetTokensFromList(
@@ -113,15 +106,13 @@ void UnblindedTokens::AddTokens(
 
     unblinded_tokens_.push_back(unblinded_token);
   }
-
-  ads_->get_confirmations()->Save();
 }
 
 bool UnblindedTokens::RemoveToken(
     const UnblindedTokenInfo& unblinded_token) {
   auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_token](const UnblindedTokenInfo& value) {
-    return (unblinded_token == value);
+    return unblinded_token == value;
   });
 
   if (iter == unblinded_tokens_.end()) {
@@ -130,21 +121,18 @@ bool UnblindedTokens::RemoveToken(
 
   unblinded_tokens_.erase(iter);
 
-  ads_->get_confirmations()->Save();
-
   return true;
 }
 
 void UnblindedTokens::RemoveAllTokens() {
   unblinded_tokens_.clear();
-  ads_->get_confirmations()->Save();
 }
 
 bool UnblindedTokens::TokenExists(
     const UnblindedTokenInfo& unblinded_token) {
   auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_token](const UnblindedTokenInfo& value) {
-    return (unblinded_token == value);
+    return unblinded_token == value;
   });
 
   if (iter == unblinded_tokens_.end()) {

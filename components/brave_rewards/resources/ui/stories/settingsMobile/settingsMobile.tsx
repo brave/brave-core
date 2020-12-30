@@ -44,10 +44,7 @@ class SettingsMobile extends React.PureComponent<{}, State> {
   render () {
     return (
       <SettingsPageMobile>
-        <MainToggleMobile
-          onToggle={this.onMainToggle}
-          enabled={this.state.mainToggle}
-        />
+        <MainToggleMobile/>
         {
           !this.state.mainToggle
           ? <StyledDisabledContent>

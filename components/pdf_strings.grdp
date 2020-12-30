@@ -2,11 +2,11 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <if expr="enable_plugins">
-    <message name="IDS_PDF_DOWNLOAD_ORIGINAL" desc="The label for the menu option to download the original, unedited PDF document.">
-      Original
+    <message name="IDS_PDF_DOWNLOAD_ORIGINAL" desc="The label for the menu option to download the original, unedited PDF document (without user's changes).">
+      Without your changes
     </message>
-    <message name="IDS_PDF_DOWNLOAD_EDITED" desc="The label for the menu option to download the edited PDF document.">
-      Edited
+    <message name="IDS_PDF_DOWNLOAD_EDITED" desc="The label for the menu option to download the edited PDF document (with user's changes).">
+      With your changes
     </message>
     <message name="IDS_PDF_NEED_PASSWORD" desc="A message asking the user for a password to open a PDF file.">
       This document is password protected.  Please enter a password.
@@ -37,6 +37,9 @@
     <message name="IDS_PDF_BOOKMARKS" desc="Label for the bookmarks (table of contents) of a PDF document. Used as a heading for the bookmarks menu, and as a tooltip to open that menu">
       Bookmarks
     </message>
+    <message name="IDS_PDF_BOOKMARK_EXPAND_ICON_ARIA_LABEL" desc="aria-label describing the icon button that expands/collapses a bookmark entry that has children">
+      Section
+    </message>
 
     <message name="IDS_PDF_TOOLTIP_ROTATE_CW" desc="Button tooltip for the button which rotates a PDF document clockwise">
       Rotate clockwise
@@ -59,11 +62,11 @@
     <message name="IDS_PDF_TWO_UP_VIEW_ENABLE" desc="Button text for the button which enables displaying two pages of a PDF on the screen horizontally">
       Two page view
     </message>
-    <message name="IDS_PDF_TWO_UP_VIEW_DISABLE" desc="Button text for the button which stops displaying two pages of a PDF on the screen horizontally">
-      Single page view
-    </message>
     <message name="IDS_PDF_ANNOTATIONS_SHOW_TOGGLE" desc="Button text for toggling showing annotations on the PDF document">
-      Show annotations
+      Annotations
+    </message>
+    <message name="IDS_PDF_ZOOM_TEXT_INPUT_ARIA_LABEL" desc="aria-label describing the zoom level text input">
+      Zoom level
     </message>
     <message name="IDS_PDF_TOOLTIP_ZOOM_IN" desc="Button tooltip for the button which zooms in a PDF, so that the document appears larger">
       Zoom in
@@ -90,6 +93,9 @@
       =1 {PDF document containing {COUNT} page}
       other {PDF document containing {COUNT} pages}}
     </message>
+    <message name="IDS_PDF_THUMBNAIL_PAGE_ARIA_LABEL" desc="aria-label describing a thumbnail by its corresponding PDF page number">
+      Thumbnail for page <ph name="THUMBNAIL_PAGE"><ex>1</ex>$1</ph>
+    </message>
     <if expr="chromeos">
       <message name="IDS_PDF_DISCARD_FORM_CHANGES" desc="Title for a dialog that informs the user that the changes they have made to a form will be lost if they continue">
         Discard changes?
@@ -108,6 +114,18 @@
       </message>
       <message name="IDS_PDF_ANNOTATION_UNAVAILABLE" desc="Button tooltip to explain that 'Annotation mode' which allows writing, drawing and highlighting of the PDF document is not available">
         Annotation not available
+      </message>
+      <message name="IDS_PDF_ANNOTATION_EDIT_IN_DEFAULT_VIEW" desc="Title of a dialog asking the user if they want to annotate the document in default view">
+        Edit annotations in default view?
+      </message>
+      <message name="IDS_PDF_ANNOTATION_RESET_ROTATE" desc="Text in a dialog informing the user that rotation will be reset to default if they continue to annotation mode">
+        When you edit annotations, this document will return to its original rotation
+      </message>
+      <message name="IDS_PDF_ANNOTATION_RESET_TWO_PAGE_VIEW" desc="Text in a dialog informing the user that the view will reset to single page if they continue to annotation mode">
+        When you edit annotations, this document will return to single page view
+      </message>
+      <message name="IDS_PDF_ANNOTATION_RESET_ROTATE_AND_TWO_PAGE_VIEW" desc="Text in a dialog informing the user that rotation will be reset to default and the view will reset to single page if they continue to annotation mode">
+        When you edit annotations, this document will return to single page view and its original rotation
       </message>
       <message name="IDS_PDF_ANNOTATION_DOCUMENT_TOO_LARGE" desc="Button tooltip to indicate why 'Annotation mode' which allows writing, drawing and highlighting of the PDF document is not available due to the document being too large">
         Document is too large to be annotated

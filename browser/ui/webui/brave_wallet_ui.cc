@@ -40,8 +40,12 @@ void WalletDOMHandler::RegisterMessages() {
 }  // namespace
 
 BraveWalletUI::BraveWalletUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kBraveWalletGenerated,
-        kBraveWalletGeneratedSize, IDR_BRAVE_WALLET_HTML) {
+    : BasicUI(web_ui,
+              name,
+              kBraveWalletGenerated,
+              kBraveWalletGeneratedSize,
+              IDR_BRAVE_WALLET_HTML,
+              /*disable_trusted_types_csp=*/true) {
   web_ui->AddMessageHandler(std::make_unique<WalletDOMHandler>());
 }
 

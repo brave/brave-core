@@ -6,10 +6,10 @@
 #ifndef BRAVELEDGER_MEDIA_YOUTUBE_H_
 #define BRAVELEDGER_MEDIA_YOUTUBE_H_
 
-#include <map>
 #include <memory>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
@@ -26,7 +26,7 @@ class YouTube {
 
   ~YouTube();
 
-  void ProcessMedia(const std::map<std::string, std::string>& parts,
+  void ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                     const ledger::type::VisitData& visit_data);
 
   static std::string GetLinkType(const std::string& url);
@@ -36,10 +36,10 @@ class YouTube {
 
  private:
   static std::string GetMediaIdFromParts(
-      const std::map<std::string, std::string>& parts);
+      const base::flat_map<std::string, std::string>& parts);
 
   static uint64_t GetMediaDurationFromParts(
-      const std::map<std::string, std::string>& data,
+      const base::flat_map<std::string, std::string>& data,
       const std::string& media_key);
 
   static std::string GetVideoUrl(const std::string& media_id);

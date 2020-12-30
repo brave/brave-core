@@ -29,7 +29,8 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resouece_map_size,
-    int html_resource_id);
+    int html_resource_id,
+    bool disable_trusted_types_csp = false);
 
 class BasicUI : public content::WebUIController {
  public:
@@ -37,7 +38,8 @@ class BasicUI : public content::WebUIController {
           const std::string& host,
           const GritResourceMap* resource_map,
           size_t resouece_map_size,
-          int html_resource_id);
+          int html_resource_id,
+          bool disable_trusted_types_csp = false);
   ~BasicUI() override;
 
   // Called when subclass can set its webui properties.

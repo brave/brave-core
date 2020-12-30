@@ -53,6 +53,7 @@ const locale: Record<string, string> = {
   captchaTarget: 'target.',
   captchaMissedTarget: 'Hmm… Not Quite. Try Again.',
   category: 'Category',
+  changeAmount: 'Change amount',
   claim: 'Claim',
   click: 'Clicked',
   closeBalance: 'Closing Balance',
@@ -344,7 +345,9 @@ const locale: Record<string, string> = {
   showClock: 'Show Clock',
   showTopSites: 'Show Top Sites',
   showRewards: 'Show Rewards',
-  rewardsWidgetEnableBrandedWallpaperTitle: 'Get paid to view this sponsored background image.'
+  rewardsWidgetEnableBrandedWallpaperTitle: 'Get paid to view this sponsored background image.',
+  tosAndPp: 'By turning on {{title}}, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
+  braveTodayDisableSourceCommand: 'Disable content from $1',
 }
 
 export default locale

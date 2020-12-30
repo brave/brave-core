@@ -13,16 +13,17 @@
 
 namespace ads {
 
-enum class UserActivityType {
+enum class UserActivityEventType {
   kOpenedNewOrFocusedOnExistingTab,
   kClosedTab,
-  kStartedPlayingMedia,
+  kPlayedMedia,
   kBrowserWindowDidBecomeActive,
   kBrowserWindowDidEnterBackground
 };
 
-using UserActivityHistory = std::deque<uint64_t>;
-using UserActivityHistoryMap = std::map<UserActivityType, UserActivityHistory>;
+using UserActivityEventHistory = std::deque<int64_t>;
+using UserActivityEventHistoryMap =
+    std::map<UserActivityEventType, UserActivityEventHistory>;
 
 class UserActivity {
  public:
@@ -30,13 +31,20 @@ class UserActivity {
 
   ~UserActivity();
 
-  void RecordActivityForType(
-      const UserActivityType type);
+  UserActivity(const UserActivity&) = delete;
+  UserActivity& operator=(const UserActivity&) = delete;
 
-  const UserActivityHistoryMap& get_history() const;
+  static UserActivity* Get();
+
+  static bool HasInstance();
+
+  void RecordEvent(
+      const UserActivityEventType event);
+
+  const UserActivityEventHistoryMap& get_history() const;
 
  private:
-  UserActivityHistoryMap history_;
+  UserActivityEventHistoryMap history_;
 };
 
 }  // namespace ads

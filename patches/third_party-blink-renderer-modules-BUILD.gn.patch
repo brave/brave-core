@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
-index 66d3b97751e09baf818f5087b3f4b77bce2a3e93..6da4958849aa2173e29df70213fc8aa73664da26 100644
+index 5ec5105955c7261f940835d62244e4e818797c98..5438cb50a28058b22c99d9bc35335dfa5dc7cc4e 100644
 --- a/third_party/blink/renderer/modules/BUILD.gn
 +++ b/third_party/blink/renderer/modules/BUILD.gn
 @@ -16,6 +16,7 @@ if (is_android) {
@@ -17,4 +17,4 @@ index 66d3b97751e09baf818f5087b3f4b77bce2a3e93..6da4958849aa2173e29df70213fc8aa7
 +  sub_modules += brave_blink_sub_modules
    if (is_android) {
      sub_modules += [ "//third_party/blink/renderer/modules/remote_objects" ]
-   }
+   } else {

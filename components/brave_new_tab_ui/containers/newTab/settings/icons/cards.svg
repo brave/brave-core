@@ -1,0 +1,7 @@
+<!--
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+<svg width="14" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.666 0H2.333c-1.133 0-2 .867-2 2v11.933c0 1.134.867 2 2 2h9.333c1.134 0 2-.866 2-2V2c0-1.133-.866-2-2-2zM2.333 1.333h9.333c.4 0 .667.267.667.667v.8c-.2-.067-.4-.133-.667-.133H2.333c-.267 0-.467.066-.667.133V2c0-.4.267-.667.667-.667zm-.667 3.334c0-.4.267-.667.667-.667h9.333c.4 0 .667.267.667.667V5.4c-.2-.067-.4-.133-.667-.133H2.333c-.267 0-.467.066-.667.133v-.733zM12.333 8v5.933c0 .4-.267.667-.667.667H2.333c-.4 0-.667-.267-.667-.667V7.267c0-.4.267-.667.667-.667h9.333c.4 0 .667.267.667.667V8z" fill="url(#paint0_linear)"/><defs><linearGradient id="paint0_linear" x1=".333" y1="0" x2="17.329" y2="9.073" gradientUnits="userSpaceOnUse"><stop stop-color="#4C54D2"/><stop offset=".563" stop-color="#BF14A2"/><stop offset="1" stop-color="#F73A1C"/></linearGradient></defs></svg>

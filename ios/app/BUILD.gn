@@ -1,0 +1,47 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("app") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_core_main.h",
+    "brave_core_main.mm",
+    "brave_main_delegate.h",
+    "brave_main_delegate.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common:pref_names",
+    "//brave/components/brave_sync:constants",
+    "//brave/ios/browser",
+    "//components/browser_sync",
+    "//components/sync/driver",
+    "//components/sync/base",
+    "//ios/chrome/app:app_internal",
+    "//ios/chrome/app/startup:startup_basic",
+    "//ios/chrome/app/startup:startup",
+    "//ios/chrome/app:tests_fake_hook",
+    "//ios/chrome/browser",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/providers:provider_factory",
+    "//ios/chrome/common",
+    "//ios/public/provider/chrome/browser",
+    "//ios/web/public/init",
+  ]
+
+  deps += [
+    "//ios/third_party/material_components_ios:material_components_ios+link",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+  ]
+}

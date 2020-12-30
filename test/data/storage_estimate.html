@@ -1,0 +1,13 @@
+<script>
+  function getStorageEstimateIs2Gb() {
+    return new Promise(resolve => {
+      try {
+        navigator.storage.estimate().then(function(estimate) {
+          resolve(estimate.quota == 2147483648);
+        });
+      } catch (err) {
+        resolve(false);
+      }
+    })
+  }
+</script>

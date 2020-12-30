@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="crypto_dot_com_enabled">
+    <message name="IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM" desc="The label for Crypto.com show/hide feature toggle">Crypto.com</message>
+    <message name="IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC" desc="crypto.com widget description">View markets and buy crypto from crypto.com.</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE" desc="">Show Price</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE" desc="">Get 2% bonus on deposits</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_TWO" desc="">Stop paying trading fees</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC" desc="">Buy Bitcoin</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_VIEW_MARKETS" desc="">View Crypto.com Markets</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_GRAPH" desc="">7d Graph</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_PAIRS" desc="">Supported Pairs</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_VOLUME" desc="">24HR Volume</message>
+  </if>
+</grit-part>

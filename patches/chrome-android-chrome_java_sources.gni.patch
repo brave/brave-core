@@ -1,10 +1,10 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index ea7a83b636a33fa7bf6380e857c4288fdb6f276f..0b187965ba4954970e5c2e6e97a83fc99b81b31d 100644
+index f8040f5bf4374f5eb81bc264282fb56562b2cc80..984762215631a61efadf6b0094cfb957fbc9068b 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1741,3 +1741,4 @@ chrome_java_sources = [
+@@ -1682,3 +1682,4 @@ chrome_java_sources = [
+   "java/src/org/chromium/chrome/browser/webauth/authenticator/CableAuthenticatorActivity.java",
    "java/src/org/chromium/chrome/browser/webshare/ShareServiceImplementationFactory.java",
-   "java/src/org/chromium/chrome/browser/widget/DateDividedAdapter.java",
  ]
 +chrome_java_sources -= ["java/src/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",]
 \ No newline at end of file

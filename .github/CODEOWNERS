@@ -1,5 +1,5 @@
-patches/ @bridiver
-chromium_src/ @bridiver
+patches/ @brave/patch-reviewers
+chromium_src/ @brave/patch-reviewers
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
@@ -7,16 +7,16 @@ vendor/brave-ios/ @kylehickinson
 Jenkinsfile @mihaiplesa
 
 # Rewards
-browser/brave_rewards/ @NejcZdovc
-browser/extensions/api/brave_rewards_api.cc @NejcZdovc
-browser/extensions/api/brave_rewards_api.h @NejcZdovc
-browser/ui/webui/brave_rewards_page_ui.cc @NejcZdovc
-browser/ui/webui/brave_rewards_page_ui.h @NejcZdovc
-browser/ui/webui/brave_rewards_ui.cc @NejcZdovc
-browser/ui/webui/brave_rewards_ui.h @NejcZdovc
-components/brave_rewards/ @NejcZdovc
-components/services/bat_ledger/ @NejcZdovc
-vendor/bat-native-ledger/ @NejcZdovc
+browser/brave_rewards/ @brave/rewards
+browser/extensions/api/brave_rewards_api.cc @brave/rewards
+browser/extensions/api/brave_rewards_api.h @brave/rewards
+browser/ui/webui/brave_rewards_page_ui.cc @brave/rewards
+browser/ui/webui/brave_rewards_page_ui.h @brave/rewards
+browser/ui/webui/brave_rewards_ui.cc @brave/rewards
+browser/ui/webui/brave_rewards_ui.h @brave/rewards
+components/brave_rewards/ @brave/rewards
+components/services/bat_ledger/ @brave/rewards
+vendor/bat-native-ledger/ @brave/rewards
 
 # Ads
 vendor/bat-native-ads/ @tmancey
@@ -43,17 +43,17 @@ script/check_npm_licenses.py @fmarier
 script/generate_licenses.py @fmarier
 
 # Crypto Wallets
-browser/brave_wallet/ @bbondy @ryanml
-components/brave_wallet/ @bbondy @ryanml
+browser/brave_wallet/ @brave/crypto-wallets
+components/brave_wallet/ @brave/crypto-wallets
 
 # Brave Referrals Service
 components/brave_referrals/browser/brave_referrals_service* @simonhong
 
 # Brave Sync
-components/brave_sync/ @darkdh
-components/sync/driver/ @darkdh
-chromium_src/components/sync/ @darkdh
-chromium_src/components/sync_device_info/device_info_sync_bridge.cc @darkdh
+components/brave_sync/ @brave/sync-reviewers
+components/sync/driver/ @brave/sync-reviewers
+chromium_src/components/sync/ @brave/sync-reviewers
+chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-reviewers
 
 # Speedreader
 browser/speedreader/ @iefremov
@@ -67,3 +67,7 @@ components/weekly_storage/ @iefremov
 
 # Perf predictor
 components/brave_perf_predictor/ @iefremov
+
+# Java patching
+build/android/bytecode/ @samartnik
+patches/*.java.patch @samartnik

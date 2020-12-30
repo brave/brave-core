@@ -40,17 +40,13 @@
 <translation id="4150201353443180367">ડિસ્પ્લે</translation>
 <translation id="2433507940547922241">દેખાવ</translation>
 <translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
-<translation id="7358991116457217836">જ્યારે Brave પુરસ્કારો સક્ષમ ન હોય ત્યારે Brave પુરસ્કારો ચિહ્ન છુપાવી દે છે</translation>
 <translation id="8495235435594442882">નીચેના ટૂલબારને સક્ષમ કરો</translation>
-<translation id="5916664084637901428">ચાલુ</translation>
-<translation id="5860033963881614850">બંધ</translation>
 <translation id="6587448235155023666">આગલા વખતે જ્યારે તમે Brave ને ફરીથી લોન્ચ કરો ત્યારે તમારા ફેરફારો પ્રભાવમાં આવશે</translation>
 <translation id="8701563696941209024">હમણાં ફરીથી લોન્ચ કરો</translation>
 <translation id="834487290629916192">પછીની</translation>
 <translation id="8281886186245836920">છોડો</translation>
 <translation id="316832010181763471">શોધ એન્જિન ઑનબોર્ડિંગ</translation>
 <translation id="986879628471635371">સમસ્યાનિવારણ ઑનબોર્ડિંગ</translation>
-<translation id="5317780077021120954">સાચવો</translation>
 <translation id="7053983685419859001">અવરોધિત કરો</translation>
 <translation id="5806601733251372221">Brave શિલ્ડ્સ</translation>
 <translation id="2880356288762235261">ગોપનીયતા-આક્રમણ કરતી જાહેરાતો અને ટ્રેકર્સ જેથી તમે વેબની આસપાસ અનુસર્યા વિના બ્રાઉઝ કરી શકો.</translation>
@@ -63,8 +59,6 @@
 <translation id="6511854390690723657">આ તમારી પહેલી Brave જાહેરાત છે. વધુ જાણવા ટૅપ કરો.</translation>
 <translation id="4930714375720679147">ચાલુ કરો</translation>
 <translation id="2453860139492968684">સમાપ્ત</translation>
-<translation id="2359808026110333948">આગળ વધો</translation>
-<translation id="7658239707568436148">રદ કરો</translation>
 <translation id="3570367516044491911">ડિફૉલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
 <translation id="7493053924837150477">સૂચિમાંથી Brave બ્રાઉઝર પસંદ કરો અને 'હંમેશાં' ને ટૅપ કરો</translation>
 <translation id="3546439402724649282">Brave પહેલીથી તમારું ડિફૉલ્ટ બ્રાઉઝર છે.</translation>
@@ -159,17 +153,14 @@
 <translation id="8038539967102225446">Brave જાહેરાતો અહીં છે!</translation>
 <translation id="8985635554450124959">સિંક્રનાઇઝ સેટ થઈ શક્યું નથી</translation>
 <translation id="222883304157347087">(આ ઉપકરણ)</translation>
-<translation id="8193724030871339658">ચેન પર અન્ય  ઉપકરણો</translation>
 <translation id="279635009973773843">ઉપકરણો લોડ થઈ રહ્યા છીએ...</translation>
 <translation id="2569646144216067185">શબ્દ ગણના: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">શબ્દોની ખોટી સંખ્યા</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave સિંક્રનાઇઝ તમને તમારા વિવિધ ઉપકરણો પર તમારા Brave બ્રાઉઝર્સ વચ્ચે ડેટાને બુકમાર્ક કરીને ખાનગી રીતે સિંક્રનાઇઝ કરવાની પરવાનગી આપે છે.</translation>
 <translation id="3735228155296883311">ફક્ત તમારી સિંક્રનાઇઝ ચેનમાંથી કોડને સ્કૅન કરો કે જે તમે બીજા ઉપકરણ પર બનાવ્યો છે. અથવા નવી સિંક્રનાઇઝ ચેન શરૂ કરો.</translation>
-<translation id="4690880825349994619">અસ્તિત્વમાં સિંક્રનાઇઝ ઉપકરણનો ઉપયોગ કરીને, Brave સેટિંગ ખોલો અને સેટિંગ &gt; Sync પર નેવિગેટ કરો. "ઉપકરણ ઉમેરો" પસંદ કરો અને સ્ક્રીન પર પ્રદર્શિત QR કોડને સ્કૅન કરો.</translation>
 <translation id="5241263629636958324">ક્લિપબોર્ડ પર પ્રતિલિપિ બનાવી</translation>
 <translation id="5817918615728894473">જોડી કરો</translation>
-<translation id="2004365171440701679">આ ઉપકરણ કાઢી નાખો</translation>
 <translation id="1178128181015923849">શું તમે ખરેખર ઉપકરણ '<ph name="DEVICE_NAME"/>' ને હટાવી નાખવા માંગો છો?</translation>
 <translation id="7745082336226088126">સિંક્રનાઇઝ કોડ સ્કૅન અથવા દાખલ કરો</translation>
 <translation id="1602067095281698985">નવી સિંક્રનાઇઝ ચેન પ્રારંભ કરો</translation>
@@ -188,9 +179,7 @@
 <translation id="8730621377337864115">થઈ ગયું</translation>
 <translation id="6174119914106813304">આ ઉપકરણને સિંક્રનાઇઝ કરો</translation>
 <translation id="6776430845975754238">સેટિંગો બદલવાથી ફક્ત આ ડેટાને અસર કરશે જે આ ઉપકરણ અન્ય લોકો સાથે શેર કરે છે.</translation>
-<translation id="6450924769151530465">બીજું ઉપકરણ ઉમેરો</translation>
 <translation id="7539985410310934287">કોડ શબ્દો દાખલ કરો</translation>
-<translation id="6270614677029463366">અસ્તિત્વમાં સિંક્રનાઇઝ ઉપકરણનો ઉપયોગ કરીને, Brave સેટિંગ ખોલો અને સેટિંગ &gt; Sync પર નેવિગેટ કરો. "ઉપકરણ ઉમેરો" પસંદ કરો પછી "તેના બદલે કોડ શબ્દો દર્શાવો".</translation>
 <translation id="8131740175452115882">પુષ્ટિ કરો</translation>
 <translation id="4973653569293835178">હું મારા કૅમેરાનો ઉપયોગ કરીશ...</translation>
 <translation id="326454632686131209">સિંક્રનાઇઝ ઉપકરણ</translation>
@@ -203,12 +192,19 @@
 <translation id="3349204812119681938">Brave પુરસ્કારો રીસેટ કરો</translation>
 <translation id="8782039523249932839">આ તમારા Brave વૉલેટને હટાવી નાખશે અને તમારા બધા Brave પુરસ્કારો ડેટાને રીસેટ કરશે</translation>
 <translation id="6810078320346589989">એક બુકમાર્ક બનાવો</translation>
+<translation id="8712637175834984815">સમજાઈ ગયું</translation>
+<translation id="4394049700291259645">બંધ કરો</translation>
+<translation id="8446884382197647889">વધુ જાણો</translation>
 <translation id="6336451774241870485">નવું ખાનગી ટૅબ</translation>
 <translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
 <translation id="3368922792935385530">કનેક્ટેડ</translation>
+<translation id="3248185426436836442">બાકી</translation>
 <translation id="6680650203439190394">રેટ કરો</translation>
 <translation id="7961015016161918242">ક્યારેય નહીં</translation>
 <translation id="5657156137487675418">બધી કૂકીઝને મંજૂરી આપો</translation>
-<translation id="6165508094623778733">વધુ જાણો</translation>
 <translation id="8987927404178983737">મહિનો</translation>
+<translation id="1383876407941801731">શોધો</translation>
+<translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
+<translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
+<translation id="8688672835843460752">ઉપલબ્ધ</translation>
 </translationbundle>

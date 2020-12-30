@@ -6,15 +6,16 @@
 
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
@@ -73,7 +74,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
-             !brave::IsTorProfile(GetProfile());
+             !GetProfile()->IsTor();
 #else
       return false;
 #endif
@@ -85,11 +86,12 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      profiles::SwitchToTorProfile(
+      TorProfileManager::SwitchToTorProfile(
+          GetProfile(),
           base::Bind(
               OnProfileCreated, params_.link_url,
               content::Referrer(
-                GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
+                  GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
@@ -115,10 +117,12 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+#if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  int index = -1;
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
-  int index = -1;
-  if (!tor::TorProfileService::IsTorDisabled() &&
+  if (!TorProfileServiceFactory::IsTorDisabled() &&
       !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();
     const bool is_app = browser && browser->is_type_app();

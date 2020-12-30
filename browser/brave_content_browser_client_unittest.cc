@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -17,7 +17,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "content/public/common/content_client.h"
 

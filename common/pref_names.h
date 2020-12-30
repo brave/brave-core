@@ -18,12 +18,13 @@ extern const char kLastCheckYMD[];
 extern const char kLastCheckWOY[];
 extern const char kLastCheckMonth[];
 extern const char kFirstCheckMade[];
+extern const char kThresholdCheckMade[];
+extern const char kThresholdQuery[];
 extern const char kWeekOfInstallation[];
 extern const char kAdBlockCheckedDefaultRegion[];
 extern const char kAdBlockCustomFilters[];
 extern const char kAdBlockRegionalFilters[];
 extern const char kWidevineOptedIn[];
-extern const char kWidevineInstalledVersion[];
 extern const char kAskWidevineInstall[];
 extern const char kUseAlternativeSearchEngineProvider[];
 extern const char kAlternativeSearchEngineProviderInTor[];
@@ -52,11 +53,17 @@ extern const char kNewTabPageShowClock[];
 extern const char kNewTabPageClockFormat[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
+extern const char kNewTabPageShowToday[];
 extern const char kNewTabPageShowRewards[];
 extern const char kNewTabPageShowBinance[];
 extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowTogether[];
-extern const char kNewTabPageShowAddCard[];
+extern const char kNewTabPageShowsOptions[];
+extern const char kBraveTodaySources[];
+extern const char kBraveTodayIntroDismissed[];
+extern const char kBraveTodayWeeklySessionCount[];
+extern const char kBraveTodayWeeklyCardViewsCount[];
+extern const char kBraveTodayWeeklyCardVisitsCount[];
 extern const char kBraveEnabledMediaRouter[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kAutocompleteEnabled[];
@@ -72,6 +79,7 @@ extern const char kBraveGCMChannelStatus[];
 #endif
 extern const char kImportDialogExtensions[];
 extern const char kImportDialogPayments[];
+extern const char kMRUCyclingEnabled[];
 
 #if defined(OS_ANDROID)
 extern const char kDesktopModeEnabled[];
@@ -80,5 +88,7 @@ extern const char kBackgroundVideoPlaybackEnabled[];
 extern const char kSafetynetCheckFailed[];
 extern const char kSafetynetStatus[];
 #endif
+
+extern const char kBraveDefaultSearchVersion[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

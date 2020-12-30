@@ -10,10 +10,80 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_view.h"
 #include "content/public/test/render_view_test.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 
 namespace content_settings {
+namespace {
+
+class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
+ public:
+  struct Log {
+    int on_content_blocked_count = 0;
+    ContentSettingsType on_content_blocked_type = ContentSettingsType::DEFAULT;
+  };
+
+  explicit MockContentSettingsManagerImpl(Log* log) : log_(log) {}
+  ~MockContentSettingsManagerImpl() override = default;
+
+  // mojom::ContentSettingsManager methods:
+  void Clone(
+      mojo::PendingReceiver<mojom::ContentSettingsManager> receiver) override {
+    ADD_FAILURE() << "Not reached";
+  }
+
+  void AllowStorageAccess(int32_t render_frame_id,
+                          StorageType storage_type,
+                          const url::Origin& origin,
+                          const GURL& site_for_cookies,
+                          const url::Origin& top_frame_origin,
+                          base::OnceCallback<void(bool)> callback) override {}
+
+  void OnContentBlocked(int32_t render_frame_id,
+                        ContentSettingsType type) override {
+    ++log_->on_content_blocked_count;
+    log_->on_content_blocked_type = type;
+  }
+
+ private:
+  Log* log_;
+};
+
+class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
+ public:
+  explicit MockContentSettingsAgentImpl(content::RenderFrame* render_frame);
+  ~MockContentSettingsAgentImpl() override {}
+
+  // ContentSettingAgentImpl methods:
+  void BindContentSettingsManager(
+      mojo::Remote<mojom::ContentSettingsManager>* manager) override;
+
+  int on_content_blocked_count() const { return log_.on_content_blocked_count; }
+  ContentSettingsType on_content_blocked_type() const {
+    return log_.on_content_blocked_type;
+  }
+
+ private:
+  MockContentSettingsManagerImpl::Log log_;
+
+  DISALLOW_COPY_AND_ASSIGN(MockContentSettingsAgentImpl);
+};
+
+MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
+    content::RenderFrame* render_frame)
+    : BraveContentSettingsAgentImpl(
+          render_frame,
+          false,
+          std::make_unique<ContentSettingsAgentImpl::Delegate>()) {}
+
+void MockContentSettingsAgentImpl::BindContentSettingsManager(
+    mojo::Remote<mojom::ContentSettingsManager>* manager) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<MockContentSettingsManagerImpl>(&log_),
+      manager->BindNewPipeAndPassReceiver());
+}
+}  // namespace
 
 class BraveContentSettingsAgentImplAutoplayBrowserTest
     : public content::RenderViewTest {
@@ -47,11 +117,12 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
       std::string(), false));
 
-  BraveContentSettingsAgentImpl agent(
-      view_->GetMainRenderFrame(), false,
-      std::make_unique<ContentSettingsAgentImpl::Delegate>());
+  MockContentSettingsAgentImpl agent(view_->GetMainRenderFrame());
   agent.SetContentSettingRules(&content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(1, agent.on_content_blocked_count());
+  EXPECT_EQ(ContentSettingsType::AUTOPLAY, agent.on_content_blocked_type());
 
   // Create an exception which allows the autoplay.
   autoplay_setting_rules.insert(
@@ -79,9 +150,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
       std::string(), false));
 
-  BraveContentSettingsAgentImpl agent(
-      view_->GetMainRenderFrame(), false,
-      std::make_unique<ContentSettingsAgentImpl::Delegate>());
+  MockContentSettingsAgentImpl agent(view_->GetMainRenderFrame());
   agent.SetContentSettingRules(&content_setting_rules);
   EXPECT_TRUE(agent.AllowAutoplay(true));
 
@@ -95,6 +164,9 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
               content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
           std::string(), false));
   EXPECT_FALSE(agent.AllowAutoplay(true));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(1, agent.on_content_blocked_count());
+  EXPECT_EQ(ContentSettingsType::AUTOPLAY, agent.on_content_blocked_type());
 }
 
 }  // namespace content_settings

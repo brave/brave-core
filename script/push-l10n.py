@@ -27,8 +27,8 @@ def check_args():
     transifex_info = (get_env_var('TRANSIFEX_USERNAME') and
                       get_env_var('TRANSIFEX_PASSWORD') or
                       get_env_var('TRANSIFEX_API_KEY'))
-    message = 'BRAVE_TRANSIFEX_USERNAME and BRAVETRANSIFEX_PASSWORD or '
-    'BRAVE_TRANSIFEX_API_KEY must be set in npm config'
+    message = 'TRANSIFEX_USERNAME and TRANSIFEX_PASSWORD or '\
+              'TRANSIFEX_API_KEY must be set in npm config'
     assert transifex_info, message
 
 
@@ -58,7 +58,8 @@ def main():
         check_for_chromium_upgrade(SOURCE_ROOT, source_string_path)
         check_missing_source_grd_strings_to_transifex(source_string_path)
     upload_source_strings_desc(source_string_path, filename)
-    if 'ethereum-remote-client' in source_string_path:
+    if ('ethereum-remote-client' in source_string_path or
+            'brave-site-specific-scripts' in source_string_path):
         upload_missing_json_translations_to_transifex(source_string_path)
 
 

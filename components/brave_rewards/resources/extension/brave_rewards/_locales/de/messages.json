@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Spenden",
+    "message": "Spenden Aktivieren",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Punkte-Förderbeträge eingefordert",
+    "message": "Punkteförderbeträge beansprucht",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -194,12 +194,8 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Jetzt können Sie verdienen, indem Sie Werbung anschauen.",
+    "message": "Jetzt können Sie am Ansehen von Werbung verdienen.",
     "description": "Message for ads launch notification"
-  },
-  "braveAdsLaunchTitle": {
-    "message": "Brave Werbung ist da!",
-    "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
     "message": "Brave-Werbung",
@@ -248,7 +244,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Wallet erstellen",
+    "message": "Wallet wird erstellt",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -296,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "OK",
+    "message": "Ok",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +324,7 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Mehr hierzu",
+    "message": "Mehr hierzu.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -348,7 +344,7 @@
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Walleterstellung fehlgeschlagen",
+    "message": "Die Wallet konnte nicht erstellt werden",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
@@ -384,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Datenschutzerklärung",
+    "message": "Datenschutzrichtlinie",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -420,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Werbung anschalten",
+    "message": "Werbung aktivieren",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -466,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Ausstehender Beitrag",
+    "message": "Offener Beitrag",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -488,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Kostenloser Punkte-Förderbetrag",
+    "message": "Gratis-Punkteförderbetrag",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -504,7 +500,7 @@
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
-    "message": "verifizieren",
+    "message": "verifiziert",
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
@@ -524,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Die Verbindung zu Brave Rewards trennen",
+    "message": "Verbindung zu Brave Rewards trennen",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -603,6 +599,10 @@
     "message": "Abbrechen",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Betrag ändern",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Anmeldung",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Sie brauchen ein Minimum von 25 BAT, um eine Uphold Wallet zu erstellen. Bitte versuchen Sie es später erneut. <br/>Wenn Sie schon ein verifiziertes Uphold-Konto haben, fahren Sie mit dem Login fort.",
+    "message": "Sie müssen mindestens 25 BAT haben, um ein Uphold-Konto zu eröffnen. Bitte versuchen sie es später erneut. Falls Sie bereits ein verifiziertes Uphold-Konto haben, fahren Sie mit der Anmeldung fort.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,39 @@
   "walletPending":  {
     "message": "Ausstehend",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Bemerkung: Ihre Transaktionen werden auf Uphold sichtbar sein, sobald Sie es autorisiert haben; zum Beispiel wird es möglich sein, den Empfänger und die Menge Ihrer Trinkgelder zu sehen.",
+    "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Token verdienen & andere fördern",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Verdienen Sie Token, indem Sie Werbeanzeigen ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie automatisch Ihre Lieblingswebsites und liebsten Inhaltsersteller.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Brave Rewards jetzt nutzen",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Durch Fortfahren stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

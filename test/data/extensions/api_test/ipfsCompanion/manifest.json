@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "Brave",
+  "manifest_version": 2,
+  "description": "API test for ipfs companion",
+  "web_accessible_resources": [
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [ "contentSettings", "tabs", "storage", "webNavigation" ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi+PCLMME8x15VZQqUn+vBUJH8oqGqNiUX6lYLBi5w3HwSGcknEyCF5LDJv7tR3yeSxD8PhohQVJd2+5WB4BJkvzVR3F6uHS7hrgZ0lcq+xa+q4c1At35332C//ahX+ZvK3/n9v20jzJ8xdesQmfG8coFIyOZfOQ/owTno+QoPrUO9syXeG6nbYQnyfDip+UXe663zfBiNmwuVPo8R58zAOmpz7yAlCH+yEmj1YjQYpqbtYHwJwvN4elGF9wthgFNxoIZiqbe0wTUZiNjC1bZPiAed3+WftK0/P6czFpIP4SzjXszVps93l+yI15OB7VoeFu6oQk5G0d1/38W7GotUwIDAQAB"
+}

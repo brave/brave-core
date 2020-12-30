@@ -5,44 +5,27 @@
 
 // Utils
 import { debounce } from '../../common/debounce'
-import { keyName as newTabKeyName } from './new_tab_storage'
-import { generateGridSitesFromLegacyEntries } from '../helpers/newTabUtils'
-const keyName = 'grid-sites-data-v1'
+const oldkeyName = 'grid-sites-data-v1'
+const newkeyName = 'grid-sites-data-v2'
 const defaultSuperReferralTopSitesKeyName = 'default-super-referral-top-sites'
-
-const newTabData: any = window.localStorage.getItem(newTabKeyName)
-const parsedNewTabData = JSON.parse(newTabData)
-
-const getNewTabData = () => {
-  if (parsedNewTabData == null) {
-    return {
-      pinnedTopSites: [],
-      ignoredTopSites: []
-    }
-  }
-  return parsedNewTabData
-}
 
 export const initialGridSitesState: NewTab.GridSitesState = {
   gridSites: [],
   removedSites: [],
-  shouldShowSiteRemovedNotification: false,
-  legacy: {
-    // Store legacy pinnedTopSites so users
-    // migrating to this new storage won't lose
-    // data. Once this change hits the release channel
-    // we are safe to remove this bridge
-    pinnedTopSites: generateGridSitesFromLegacyEntries(
-      getNewTabData().pinnedTopSites
-    ),
-    ignoredTopSites: generateGridSitesFromLegacyEntries(
-      getNewTabData().ignoredTopSites
-    )
-  }
+  shouldShowSiteRemovedNotification: false
 }
 
 export const load = (): NewTab.GridSitesState => {
-  const data: string | null = window.localStorage.getItem(keyName)
+  // Cleanup legacy localStorage (not needed anymore)
+  if (window.localStorage.getItem(oldkeyName)) {
+    window.localStorage.removeItem(oldkeyName)
+  }
+  if (window.localStorage.getItem(defaultSuperReferralTopSitesKeyName)) {
+    window.localStorage.removeItem(defaultSuperReferralTopSitesKeyName)
+  }
+
+  // updated logic using sessionStorage
+  const data: string | null = window.sessionStorage.getItem(newkeyName)
   let state = initialGridSitesState
   let storedState: NewTab.GridSitesState
 
@@ -61,16 +44,11 @@ export const load = (): NewTab.GridSitesState => {
   return state
 }
 
+// Saving the state is useful so that something will show when opening
+// a new tab. There is a delay before MostVisitedInfoChanged() is called.
+// Using `sessionStorage` won't persist to disk.
 export const debouncedSave = debounce<NewTab.GridSitesState>((data: NewTab.GridSitesState) => {
   if (data) {
-    window.localStorage.setItem(keyName, JSON.stringify(data))
+    window.sessionStorage.setItem(newkeyName, JSON.stringify(data))
   }
 }, 50)
-
-export const isDefaultSuperReferralTopSitesAddedToPinnedSites = (): boolean => {
-  return window.localStorage.getItem(defaultSuperReferralTopSitesKeyName) !== null
-}
-
-export const setDefaultSuperReferralTopSitesAddedToPinnedSites = () => {
-  window.localStorage.setItem(defaultSuperReferralTopSitesKeyName, 'set')
-}

@@ -11,8 +11,11 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
+#include "base/path_service.h"
+#include "base/version.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "extensions/common/extension_id.h"
 #include "url/gurl.h"
@@ -59,6 +62,7 @@ class GreaselionServiceImpl : public GreaselionService {
                            extensions::UnloadedExtensionReason reason) override;
 
  private:
+  void SetBrowserVersionForTesting(const base::Version& version) override;
   void CreateAndInstallExtensions();
   void PostConvert(scoped_refptr<extensions::Extension> extension);
   void Install(scoped_refptr<extensions::Extension> extension);
@@ -77,6 +81,8 @@ class GreaselionServiceImpl : public GreaselionService {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::ObserverList<Observer> observers_;
   std::vector<extensions::ExtensionId> greaselion_extensions_;
+  std::vector<base::ScopedTempDir> extension_dirs_;
+  base::Version browser_version_;
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(GreaselionServiceImpl);

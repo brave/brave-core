@@ -15,14 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^BATFaviconFetcher)(NSURL *pageURL, void (^completion)(NSURL * _Nullable faviconURL));
 
 /// The error domain for ledger related errors
-extern NSString * const BATBraveLedgerErrorDomain NS_SWIFT_NAME(BraveLedgerErrorDomain);
+OBJC_EXPORT NSString * const BATBraveLedgerErrorDomain NS_SWIFT_NAME(BraveLedgerErrorDomain);
 
-extern NSNotificationName const BATBraveLedgerNotificationAdded NS_SWIFT_NAME(BraveLedger.NotificationAdded);
+OBJC_EXPORT NSNotificationName const BATBraveLedgerNotificationAdded NS_SWIFT_NAME(BraveLedger.NotificationAdded);
 
 typedef NSString *BATBraveGeneralLedgerNotificationID NS_SWIFT_NAME(GeneralLedgerNotificationID) NS_STRING_ENUM;
-extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified;
-extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected;
+OBJC_EXPORT BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified;
+OBJC_EXPORT BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected;
 
+OBJC_EXPORT 
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
@@ -81,11 +82,11 @@ NS_SWIFT_NAME(BraveLedger)
 /// Whether or not the wallet is currently in the process of being created
 @property (nonatomic, readonly, getter=isInitializingWallet) BOOL initializingWallet;
 
-/// Whether or not the wallet has been created
-@property (nonatomic, readonly, getter=isWalletCreated) BOOL walletCreated;
-
 /// Creates a cryptocurrency wallet
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
+
+/// Get the brave wallet's payment ID and seed for ads confirmations
+- (void)currentWalletInfo:(void (^)(BATBraveWallet *_Nullable wallet))completion;
 
 /// Get parameters served from the server
 - (void)getRewardsParameters:(nullable void (^)(BATRewardsParameters * _Nullable))completion;
@@ -112,6 +113,14 @@ NS_SWIFT_NAME(BraveLedger)
 
 /// Returns reserved amount of pending contributions to publishers.
 - (void)pendingContributionsTotal:(void (^)(double amount))completion NS_SWIFT_NAME(pendingContributionsTotal(completion:));
+
+/// Links a desktop brave wallet given some payment ID
+- (void)linkBraveWalletToPaymentId:(NSString *)paymentId
+                        completion:(void (^)(BATResult result))completion
+    NS_SWIFT_NAME(linkBraveWallet(paymentId:completion:));
+
+/// Get the amount of BAT that is transferrable via wallet linking
+- (void)transferrableAmount:(void (^)(double amount))completion;
 
 #pragma mark - User Wallets
 
@@ -274,8 +283,6 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Preferences
 
-/// Whether or not brave rewards is enabled
-@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 /// The number of seconds before a publisher is added.
 @property (nonatomic, assign) int minimumVisitDuration;
 /// The minimum number of visits before a publisher is added

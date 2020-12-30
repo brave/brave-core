@@ -102,16 +102,16 @@
     if (error) {
       errorDescription = error.localizedDescription.UTF8String;
     }
-    // For some reason I couldn't just do `std::map<std::string, std::string> responseHeaders;` due to std::map's
-    // non-const key insertion
-    auto* responseHeaders = new std::map<std::string, std::string>();
+    // For some reason I couldn't just do `base::flat_map<std::string, std::string>
+    // responseHeaders;` due to base::flat_map's non-const key insertion
+    auto* responseHeaders = new base::flat_map<std::string, std::string>();
     [response.allHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
       if (![key isKindOfClass:NSString.class] || ![obj isKindOfClass:NSString.class]) { return; }
       std::string stringKey(key.UTF8String);
       std::string stringValue(obj.UTF8String);
       responseHeaders->insert(std::make_pair(stringKey, stringValue));
     }];
-    auto copiedHeaders = std::map<std::string, std::string>(*responseHeaders);
+    auto copiedHeaders = base::flat_map<std::string, std::string>(*responseHeaders);
     const auto __weak weakSelf2 = strongSelf;
     dispatch_async(dispatch_get_main_queue(), ^{
       if (!weakSelf2) { return; }

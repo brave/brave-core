@@ -10,29 +10,14 @@ cr.define('settings', function() {
   /** @interface */
   /* #export */ class BraveNewTabBrowserProxy {
     /**
-     * @return {!Promise<Boolean>}
+     * @return {!Promise<Array>}
      */
-    getIsSuperReferralActive() {}
+    getNewTabShowsOptionsList() {}
 
     /**
      * @return {!Promise<Boolean>}
      */
-    getIsBinanceSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsBraveTogetherSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsGeminiSupported() {}
-
-    /**
-     * @return {!Promise<Boolean>}
-     */
-    getIsBitcoinDotComSupported() {}
+    shouldShowNewTabDashboardSettings() {}
   }
 
   /**
@@ -40,28 +25,13 @@ cr.define('settings', function() {
    */
   /* #export */ class BraveNewTabBrowserProxyImpl {
     /** @override */
-    getIsSuperReferralActive() {
-      return cr.sendWithPromise('getIsSuperReferralActive');
+    getNewTabShowsOptionsList() {
+      return cr.sendWithPromise('getNewTabShowsOptionsList')
     }
 
     /** @override */
-    getIsBinanceSupported() {
-      return cr.sendWithPromise('getIsBinanceSupported')
-    }
-
-    /** @override */
-    getIsBraveTogetherSupported() {
-      return cr.sendWithPromise('getIsBraveTogetherSupported')
-    }
-
-    /** @override */
-    getIsGeminiSupported() {
-      return cr.sendWithPromise('getIsGeminiSupported')
-    }
-
-    /** @override */
-    getIsBitcoinDotComSupported() {
-      return cr.sendWithPromise('getIsBitcoinDotComSupported')
+    shouldShowNewTabDashboardSettings() {
+      return cr.sendWithPromise('shouldShowNewTabDashboardSettings')
     }
   }
 

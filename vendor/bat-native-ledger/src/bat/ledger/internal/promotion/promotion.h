@@ -48,6 +48,8 @@ class Promotion {
 
   void TransferTokens(ledger::ResultCallback callback);
 
+  void GetTransferableAmount(ledger::GetTransferableAmountCallback callback);
+
  private:
   void OnFetch(
       const type::Result result,

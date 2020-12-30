@@ -23,12 +23,8 @@ bool NativeAdsClient::IsForeground() const {
   return [bridge_ isForeground];
 }
 
-bool NativeAdsClient::CanShowBackgroundNotifications() const {
-    return [bridge_ canShowBackgroundNotifications];
-}
-
-void NativeAdsClient::ShowNotification(std::unique_ptr<ads::AdNotificationInfo> info) {
-  [bridge_ showNotification:std::move(info)];
+void NativeAdsClient::ShowNotification(const ads::AdNotificationInfo & info) {
+  [bridge_ showNotification:info];
 }
 
 bool NativeAdsClient::ShouldShowNotifications() {
@@ -121,4 +117,8 @@ uint64_t NativeAdsClient::GetUint64Pref(const std::string& path) const {
 
 void NativeAdsClient::ClearPref(const std::string & path) {
   [bridge_ clearPref:path];
+}
+
+void NativeAdsClient::RecordP2AEvent(const std::string& name, const ads::P2AEventType type, const std::string& value) {
+  [bridge_ recordP2AEvent:name type:type value:value];
 }

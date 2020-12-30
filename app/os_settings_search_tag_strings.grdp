@@ -105,6 +105,18 @@
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_DISCONNECT" desc="Text for search result item which, when clicked, navigates the user to Cellular network settings, with a button to disconnect from the currently-connected Celluar network.">
     Disconnect Cellular network
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_REMOVE_PROFILE" desc="Text for search result item which, when clicked, navigates the user to the Cellular eSIM network settings, with a menu containing a button to remove the currently-connected Cellular eSIM network. Alternate phrase for: 'Delete Cellular network eSIM profile'">
+    Remove eSIM Cellular network
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_REMOVE_PROFILE_ALT1" desc="Text for search result item which, when clicked, navigates the user to the Cellular eSIM network settings, with a menu containing a button to remove the currently-connected eSIM Cellular network. Alternate phrase for: 'Remove Cellular network eSIM profile">
+    Remove eSIM profile
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_RENAME_PROFILE" desc="Text for search result item which, when clicked, navigates the user to the Cellular eSIM network settings, with a menu containing a button to rename the currently-connected eSIM Cellular network. Alternate phrase for: 'Rename eSIM profile">
+    Rename eSIM Cellular network
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_RENAME_PROFILE_ALT1" desc="Text for search result item which, when clicked, navigates the user to the Cellular eSIM network settings, with a menu containing a button to rename the currently-connected eSIM Cellular network. Alternate phrase for: 'Rename eSIM Cellular network">
+    Rename eSIM profile
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_INSTANT_MOBILE_NETWORKS" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Bravebook to use mobile connection from phone).">
     Mobile networks
   </message>
@@ -250,11 +262,11 @@
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Notifications mirrors all standard notifications currently being shown on connected phone device.">
     Phone Hub notifications
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications badge settings, with a toggle to enable/disable the feature. Phone Hub Notifications Badge mirrors notifications count currently being shown on connected device.">
-    Phone Hub notifications badge
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications badge settings, with a toggle to enable/disable the feature. Phone Hub Task Continuation allows user to continue a task between connected device and Chrome OS">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Task Continuation allows user to continue a task between connected device and Chrome OS">
     Phone Hub task continuation
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_WIFI_SYNC" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi Sync V2 settings, with a toggle to enable/disable the feature. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone">
+    Wi-Fi Sync
   </message>
 
 
@@ -307,10 +319,10 @@
   <message name="IDS_OS_SETTINGS_TAG_RESTRICT_SIGN_IN_ALT1" desc="Text for search result item which, when clicked, navigates the user to account settings, with a toggle to restrict sign-in to a particular set of users. Alternate phrase for: 'Restrict sign-in'">
     Limit sign-in
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_RESTRICT_SIGN_IN_ADD" desc="Text for search result item which, when clicked, navigates the user to account settings, with an option to add to the whitelist of restricted users.">
+  <message name="IDS_OS_SETTINGS_TAG_RESTRICT_SIGN_IN_ADD" desc="Text for search result item which, when clicked, navigates the user to account settings, with an option to add to the allow list of restricted users.">
     Add restricted user
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_RESTRICT_SIGN_IN_REMOVE" desc="Text for search result item which, when clicked, navigates the user to account settings, with an option to remove from the whitelist of restricted users.">
+  <message name="IDS_OS_SETTINGS_TAG_RESTRICT_SIGN_IN_REMOVE" desc="Text for search result item which, when clicked, navigates the user to account settings, with an option to remove from the allow list of restricted users.">
     Remove restricted user
   </message>
   <message name="IDS_OS_SETTINGS_TAG_SYNC_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to turn off syncing. Alternate phrase for: 'Disable sync'">
@@ -740,11 +752,14 @@
   </message>
 
   <!-- Crostini section. -->
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Crostini, Developers'">
     Linux
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux, Developers'">
     Crostini
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux, Crostini'">
+    Developers
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Bravebook. Alternate phrase for: 'Linux shared directories', 'Crostini shared folders', 'Crostini shared directories'">
     Linux shared folders
@@ -864,28 +879,31 @@
 
   <!-- Languages and Input section. -->
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT" desc="Text for search result item which, when clicked, navigates the user to languages and input settings.">
-    Languages and input
+    Languages and inputs
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES" translateable="false" desc="Text for search result item which, when clicked, navigates the user to languages settings.">
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES" desc="Text for search result item which, when clicked, navigates the user to languages settings.">
     Languages
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INPUT" translateable="false" desc="Text for search result item which, when clicked, navigates the user to input settings.">
-    Input
+  <message name="IDS_OS_SETTINGS_TAG_INPUT" desc="Text for search result item which, when clicked, navigates the user to input settings.">
+    Inputs
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_CHANGE_SYSTEM_LANGUAGE" translateable="false" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with allows users to change system display language.">
-    Change system language
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_CHANGE_DEVICE_LANGUAGE" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with allows users to change device language.">
+    Change device language
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_OFFER_TRANSLATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable translation prompts.">
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_OFFER_TRANSLATION" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable translation prompts.">
     Translation suggestion
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_ADD_LANGUAGE" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with an option to add a new language.">
     Add languages
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_ADD_INPUT_METHOD" translateable="false" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to add input methods (keyboard layouts and input method editors).">
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_ADD_INPUT_METHOD" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to add input methods (keyboard layouts and input method editors).">
     Add input methods
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_SPELL_CHECK" translateable="false" desc="Text for search result item which, when clicked, navigates the user to input settings, with all the options for spell check settings">
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_SPELL_CHECK" desc="Text for search result item which, when clicked, navigates the user to input settings, with all the options for spell check settings">
     Spell check
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EDIT_DICTIONARY" desc="Text for search result item which, when clicked, navigates the user to edit dictionary page.">
+    Customize spell check
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_METHODS" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to enable/disable input in supported languages.">
     Manage input methods
@@ -1049,11 +1067,11 @@
   <message name="IDS_OS_SETTINGS_TAG_A11Y_STARTUP_SOUND" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable playing a sound upon device startup.">
     Startup sound
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_CAPTIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility captions settings.">
-    Captions
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_CAPTIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility caption preferences.">
+    Caption preferences
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_A11Y_LIVE_CAPTIONS" desc="Text for a search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable live captions.">
-    Live Captions
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_LIVE_CAPTION" desc="Text for a search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable Live Caption.">
+    Live Caption
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_ENABLE_SWITCH_ACCESS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable switch access, which allows users to control the computer with just one or two switches.">
     Switch access
@@ -1091,6 +1109,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_CHANNEL" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to change to another channel (stable vs. beta vs. dev).">
     Change channel
+  </message>
+    <message name="IDS_OS_SETTINGS_TAG_ABOUT_CHROME_OS_COPY_DETAILED_BUILD" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to copy the build details (e.g., OS version number) to the clipboard.">
+    Copy build details
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_OS_UPDATE" desc="Text for search result item which, when clicked, navigates the user to 'About Chrome OS' settings, with a section to check for the latest OS update.">
     Check for update

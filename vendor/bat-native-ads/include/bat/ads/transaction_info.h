@@ -22,7 +22,12 @@ struct ADS_EXPORT TransactionInfo {
         const TransactionInfo& info);
   ~TransactionInfo();
 
-  uint64_t timestamp_in_seconds = 0;
+  bool operator==(
+    const TransactionInfo& rhs) const;
+  bool operator!=(
+      const TransactionInfo& rhs) const;
+
+  int64_t timestamp = 0;
   double estimated_redemption_value = 0.0;
   std::string confirmation_type;
 

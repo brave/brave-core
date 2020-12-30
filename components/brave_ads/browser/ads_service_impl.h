@@ -17,18 +17,18 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/system/sys_info.h"
 #include "base/timer/timer.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
 #include "bat/ads/mojom.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
-#include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_user_model/browser/user_model_file_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -40,7 +40,6 @@
 using brave_rewards::RewardsNotificationService;
 using brave_user_model::UserModelFileService;
 
-class NotificationDisplayService;
 class Profile;
 
 namespace base {
@@ -66,6 +65,8 @@ class AdsServiceImpl : public AdsService,
                        public brave_user_model::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
+  void OnWalletUpdated();
+
   // AdsService implementation
   explicit AdsServiceImpl(Profile* profile);
   ~AdsServiceImpl() override;
@@ -80,6 +81,9 @@ class AdsServiceImpl : public AdsService,
   void SetEnabled(
       const bool is_enabled) override;
 
+  void SetAllowConversionTracking(
+      const bool should_allow) override;
+
   uint64_t GetAdsPerHour() const override;
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
@@ -90,23 +94,17 @@ class AdsServiceImpl : public AdsService,
   std::string GetAdsSubdivisionTargetingCode() const override;
   void SetAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
-  std::string
-  GetAutoDetectedAdsSubdivisionTargetingCode() const override;
+  std::string GetAutoDetectedAdsSubdivisionTargetingCode() const override;
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
-  void SetAllowAdConversionTracking(
-      const bool should_allow) override;
-
-  // AdsClient implementation
   void ChangeLocale(
       const std::string& locale) override;
 
   void OnPageLoaded(
       const SessionID& tab_id,
-      const GURL& original_url,
-      const GURL& url,
-      const std::string& html) override;
+      const std::vector<GURL>& redirect_chain,
+      const std::string& content) override;
 
   void OnMediaStart(
       const SessionID& tab_id) override;
@@ -118,10 +116,17 @@ class AdsServiceImpl : public AdsService,
       const GURL& url,
       const bool is_active,
       const bool is_browser_active) override;
+
   void OnTabClosed(
       const SessionID& tab_id) override;
 
-  void OnWalletUpdated();
+  void OnUserModelUpdated(
+      const std::string& id) override;
+
+  void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const ads::NewTabPageAdEventType event_type) override;
 
   void ReconcileAdRewards() override;
 
@@ -130,8 +135,8 @@ class AdsServiceImpl : public AdsService,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) override;
 
-  void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) override;
+  void GetStatement(
+      GetStatementCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -165,15 +170,10 @@ class AdsServiceImpl : public AdsService,
   void ResetAllState(
       const bool should_shutdown) override;
 
-  // BraveUserModelInstaller::Observer implementation
-  void OnUserModelUpdated(
-      const std::string& id) override;
-
   // KeyedService implementation
   void Shutdown() override;
 
  private:
-  // AdsService implementation
   friend class AdsNotificationHandler;
 
   void MaybeInitialize();
@@ -202,6 +202,10 @@ class AdsServiceImpl : public AdsService,
       const int32_t result);
   void OnResetAllState(
       const bool success);
+
+  void GetHardwareInfo();
+  void OnGetHardwareInfo(
+      base::SysInfo::HardwareInfo hardware);
 
   void EnsureBaseDirectoryExists();
   void OnEnsureBaseDirectoryExists(
@@ -238,9 +242,6 @@ class AdsServiceImpl : public AdsService,
   void RetryViewingAdNotification(
       const std::string& uuid);
 
-  void SetAdsServiceForNotificationHandler();
-  void ClearAdsServiceForNotificationHandler();
-
   void OpenNewTabWithUrl(
       const std::string& url);
 
@@ -259,12 +260,15 @@ class AdsServiceImpl : public AdsService,
       ads::UrlRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
+  void OnGetBraveWallet(
+      ledger::type::BraveWalletPtr wallet);
+
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
       const std::string& json);
 
-  void OnGetTransactionHistory(
-      GetTransactionHistoryCallback callback,
+  void OnGetStatement(
+      GetStatementCallback callback,
       const bool success,
       const std::string& json);
 
@@ -318,6 +322,8 @@ class AdsServiceImpl : public AdsService,
   void MigratePrefsVersion4To5();
   void MigratePrefsVersion5To6();
   void MigratePrefsVersion6To7();
+  void MigratePrefsVersion7To8();
+  void MigratePrefsVersion8To9();
   int GetPrefsVersion() const;
 
   bool IsUpgradingFromPreBraveAdsBuild();
@@ -326,19 +332,8 @@ class AdsServiceImpl : public AdsService,
   void DisableAdsForUnsupportedCountryCodes(
       const std::string& country_code,
       const std::vector<std::string>& country_codes);
-  void MayBeShowOnboardingForSupportedCountryCode(
-      const std::string& country_code,
-      const std::vector<std::string>& country_codes);
   uint64_t MigrateTimestampToDoubleT(
       const uint64_t timestamp_in_seconds) const;
-
-  void MaybeShowOnboarding();
-  bool ShouldShowOnboarding();
-  void ShowOnboarding();
-  void RemoveOnboarding();
-  void MaybeStartRemoveOnboardingTimer();
-  bool ShouldRemoveOnboarding() const;
-  void StartRemoveOnboardingTimer();
 
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;
@@ -353,6 +348,11 @@ class AdsServiceImpl : public AdsService,
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
 
+  void StartNotificationTimeoutTimer(
+      const std::string& uuid);
+  bool StopNotificationTimeoutTimer(
+      const std::string& uuid);
+
   bool connected();
 
   // AdsClient implementation
@@ -360,17 +360,13 @@ class AdsServiceImpl : public AdsService,
 
   bool IsForeground() const override;
 
-  void ShowNotification(
-      std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
-  void StartNotificationTimeoutTimer(
-      const std::string& uuid);
-  bool StopNotificationTimeoutTimer(
-      const std::string& uuid);
+
+  void ShowNotification(
+      const ads::AdNotificationInfo& ad_notification) override;
+
   void CloseNotification(
       const std::string& uuid) override;
-
-  bool CanShowBackgroundNotifications() const override;
 
   void UrlRequest(
       ads::UrlRequestPtr url_request,
@@ -380,11 +376,13 @@ class AdsServiceImpl : public AdsService,
       const std::string& name,
       const std::string& value,
       ads::ResultCallback callback) override;
-  void LoadUserModelForId(
-      const std::string& id,
-      ads::LoadCallback callback) override;
+
   void Load(
       const std::string& name,
+      ads::LoadCallback callback) override;
+
+  void LoadUserModelForId(
+      const std::string& id,
       ads::LoadCallback callback) override;
 
   std::string LoadResourceForId(
@@ -395,6 +393,11 @@ class AdsServiceImpl : public AdsService,
       ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
+
+  void RecordP2AEvent(
+      const std::string& name,
+      const ads::P2AEventType type,
+      const std::string& value) override;
 
   void DiagnosticLog(
       const std::string& file,
@@ -461,7 +464,7 @@ class AdsServiceImpl : public AdsService,
 
   Profile* profile_;  // NOT OWNED
 
-  bool is_initialized_;
+  bool is_initialized_ = false;
 
   bool is_upgrading_from_pre_brave_ads_build_;
 
@@ -486,7 +489,6 @@ class AdsServiceImpl : public AdsService,
 
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
-  NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>

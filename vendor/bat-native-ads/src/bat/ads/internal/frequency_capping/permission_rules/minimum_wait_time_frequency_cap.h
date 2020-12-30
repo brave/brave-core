@@ -6,22 +6,17 @@
 #ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_MINIMUM_WAIT_TIME_FREQUENCY_CAP_H_  // NOLINT
 #define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_MINIMUM_WAIT_TIME_FREQUENCY_CAP_H_  // NOLINT
 
-#include <stdint.h>
-
-#include <deque>
 #include <string>
 
-#include "bat/ads/ad_history.h"
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
 
 namespace ads {
 
-class AdsImpl;
-
 class MinimumWaitTimeFrequencyCap : public PermissionRule {
  public:
   MinimumWaitTimeFrequencyCap(
-      const AdsImpl* const ads);
+      const AdEventList& ad_events);
 
   ~MinimumWaitTimeFrequencyCap() override;
 
@@ -29,20 +24,20 @@ class MinimumWaitTimeFrequencyCap : public PermissionRule {
   MinimumWaitTimeFrequencyCap& operator=(
       const MinimumWaitTimeFrequencyCap&) = delete;
 
-  bool IsAllowed() override;
+  bool ShouldAllow() override;
 
   std::string get_last_message() const override;
 
  private:
-  const AdsImpl* const ads_;  // NOT OWNED
+  AdEventList ad_events_;
 
   std::string last_message_;
 
   bool DoesRespectCap(
-      const std::deque<uint64_t>& history);
+      const AdEventList& ad_events);
 
-  std::deque<uint64_t> FilterHistory(
-      const std::deque<AdHistory>& history) const;
+  AdEventList FilterAdEvents(
+      const AdEventList& ad_events) const;
 };
 
 }  // namespace ads

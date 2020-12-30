@@ -24,8 +24,8 @@
 <translation id="8427933533533814946">Foto autorilt</translation>
 <translation id="7108338896283013870">Peida</translation>
 <translation id="7115515527894388910">Muuda eelistusi</translation>
-<translation id="7606029853066610626">Vaata ja halda järjehoidjaid</translation>
-<translation id="5550994254534676787">Vaata oma sirvimisajalugu</translation>
+<translation id="7606029853066610626">Järjehoidjate haldamine ja kuvamine</translation>
+<translation id="5550994254534676787">Sirvimisajaloo kuvamine</translation>
 <translation id="985862351129593673">Töölaua kohandamine</translation>
 <translation id="7180865173735832675">Kohanda</translation>
 <translation id="8522669544471808198">Kuva taustapildid</translation>
@@ -36,42 +36,55 @@
 <translation id="867722069064361487">12 tunni kell</translation>
 <translation id="4064062743338217840">24 tunni kell</translation>
 <translation id="8643377320501056697">Kuva popid saidid</translation>
+<translation id="7176563092712682575">Poppide saitide kohandamine</translation>
 <translation id="3446024864193919737">Kuva Brave Rewards</translation>
 <translation id="6274899614137380422">Näita Binance'i</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">Veel kaarte</translation>
-<translation id="3870475560794762985">Näita esiletõstetavaid pilte</translation>
+<translation id="5585019845078534178">Kaardid</translation>
+<translation id="3870475560794762985">Kuva esiletõstetavad pildid</translation>
 <translation id="2875302873837723333">popid saidid</translation>
 <translation id="8173998484743827990">Brave'i statistika</translation>
 <translation id="383680190590774040">kell</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Taustapilt</translation>
+<translation id="385051799172605136">Tagasi</translation>
+<translation id="7415602225677446066">Tänase päeva olulised lood täiesti privaatses kanalis, ainult teile.</translation>
+<translation id="8607689491789524900">Brave Today leiab teie huvidele vastava teabe teie seadmes, nii et isikuandmed ei jõua  brauserist kaugemale. Sisu uuendatakse päev läbi.</translation>
+<translation id="9164544612367905452">Toomine…</translation>
+<translation id="1276592121036104130">Laadi uut sisu</translation>
+<translation id="4210987321913275328">Brave Today jaoks kerige</translation>
+<translation id="3122595178900736207">Lähtesta Brave Today allikad</translation>
+<translation id="2197023915568148978">Kas lähtestada Brave Today väljaandjate valik vaikeväärtustele?</translation>
+<translation id="954001034349395856">Kõik allikad</translation>
+<translation id="8890516388109605451">Allikad</translation>
+<translation id="5158129253322921540">Keela sisu väljaandjalt <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">Kell</translation>
 <translation id="4643117005422448078">Popid saidid</translation>
 <translation id="7791543448312431591">Lisa</translation>
-<translation id="7679334366167089823">Teeni tokeneid privaatsust austavate reklaamide vaatamise eest.</translation>
-<translation id="1531133232292396145">Kauple krüptoga Binance'is otse oma brauseris.</translation>
-<translation id="2166494527623220386">Kauple krüptoga Geminis otse oma brauseris.</translation>
+<translation id="7679334366167089823">Teenite tokeneid privaatsust austavate reklaamide vaatamise eest.</translation>
+<translation id="1531133232292396145">Saate otse oma brauseris Binance'is krüptoga kaubelda.</translation>
+<translation id="2166494527623220386">Saate otse oma brauseris Geminis krüptoga kaubelda.</translation>
+<translation id="7191394989411626168">Kaartide väljalülitamine peidab kõik praegu nähtavad kaardid. Võite siiski saada teateid uutest kaartidest.</translation>
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="6248988683584659830">Otsinguseaded</translation>
 <translation id="730042046912793465">See on</translation>
 <translation id="2055363275850890030">privaatne aken</translation>
-<translation id="9133213713928851646">Brave ei jäta meelde, mida sa privaatses aknas teed. Saidid, mida külastad ei ilmu ajaloos ning kõik küpsised kaovad, kui oled lõpetanud. Samas ei muuda privaatne aken sind veebis täielikult anonüümseks.</translation>
+<translation id="9133213713928851646">Brave ei jäta meelde, mida privaatses aknas teete. Külastatud saidid ei ilmu ajaloos ning kõik küpsised kaovad pärast lõpetamist. Samas ei muuda privaatne aken teid veebis täiesti anonüümseks.</translation>
 <translation id="8760415064721320867">Tor'iga privaatne aken</translation>
-<translation id="4844209912525464363">Brave ei jäta kunagi meelde, mida sa privaatses aknas teed. Tor'iga on su sirvimine varjatud ka interneti teenusepakkuja või tööandja eest ning su IP-aadress on varjatud külastatavate saitide eest.</translation>
-<translation id="778096729652828897">Loe lisaks Tor'iga privaatsete akende kohta</translation>
+<translation id="4844209912525464363">Brave ei jäta kunagi meelde, mida privaatses aknas teete. Tor'iga on sirvimine varjatud ka interneti teenusepakkuja või tööandja eest ning IP-aadress on varjatud külastatavate saitide eest.</translation>
+<translation id="778096729652828897">Lisateave Tor'iga privaatsete akende kohta</translation>
 <translation id="7919374705736538787">Otsi privaatselt</translation>
 <translation id="3135655280958284640">DuckDuckGo-ga</translation>
-<translation id="218839872518145456">Privaatse otsinguga kasutab Brave privaatsetes akendes DuckDuckGo otsingumootorit. DuckDuckGo ei jälgi sinu otsinguajalugu, seega saad otsida privaatselt.</translation>
-<translation id="1925197199485958903">Tor'iga privaatsetes akendes on vaikimisi otsingumootoriks DuckDuckGo. Mõned teised populaarsed otsingumootorid on Tor'iga raskemini kasutatavad. DuckDuckGo ei jälgi sinu otsinguajalugu, Tor'iga ei tea nad isegi su IP-aadressi.</translation>
+<translation id="218839872518145456">Privaatse otsingu korral kasutab Brave privaatsetes akendes DuckDuckGo otsingumootorit. DuckDuckGo ei jälgi otsinguajalugu, seega saab otsida privaatselt.</translation>
+<translation id="1925197199485958903">Tor'iga privaatsetes akendes on vaikimisi otsingumootoriks DuckDuckGo. Mõnda teist populaarset otsingumootorit on Tor'iga raskem kasutada. DuckDuckGo ei jälgi otsinguajalugu, Tor'iga ei tea keegi isegi IP-aadressi.</translation>
 <translation id="4371533307685765155">Otsi DuckDuckGo-ga</translation>
 <translation id="5576876180131651996">Muuda privaatsed aknad palju privaatsemaks</translation>
 <translation id="1129265576134014816">See privaatne aken on palju privaatsem</translation>
 <translation id="805807983419360524">Tor'i abil</translation>
 <translation id="8958799246752641148">See peidab teie IP-aadressi saitide eest, mida külastate, juhtides teie sirvimise läbi mitme Tor'i serveri, enne kui see jõuab sihtkohta. Need ühendused on krüpteeritud, nii et teie Interneti-teenuse pakkuja või tööandja ei näe, milliseid saite külastate. Tor võib aeglustada sirvimist ja mõned saidid võivad üldse mitte töötada.</translation>
-<translation id="520608572871993342">Privaatsete akende kasutamine muudab vaid seda, mida Brave teeb sinu seadmes, see ei muuda kellegi teise käitumist. Tor peidab sinu IP-aadressi külastatavate saitide eest ning peidab külastatavad saidid interneti teenusepakkuja või tööandja eest. Ava Tor'iga privaatne aken menüüst või nupust {{ key }}.</translation>
-<translation id="6975708438781948564">Loe lisaks Tor'i kohta Brave'is</translation>
+<translation id="520608572871993342">Privaatsete akende kasutamine muudab vaid seda, mida Brave teeb teie seadmes, see ei muuda kellegi teise käitumist. Tor peidab IP-aadressi külastatud saitide eest ja külastatud saidid interneti teenusepakkuja või tööandja eest. Avage Tor'iga privaatne aken menüüst või nupust {{ key }}.</translation>
+<translation id="6975708438781948564">Lisateave Tor'i kohta Brave'is</translation>
 <translation id="4712050378540986986">Tor-i olek</translation>
 <translation id="3368922792935385530">Ühendatud</translation>
 <translation id="8030169304546394654">Ühendus katkestatud</translation>
@@ -91,9 +104,8 @@
 <translation id="2974339193389078578">Brave'i uus Internet</translation>
 <translation id="7735138632831241257">Valmistuge nautima kiiremat ja turvalisemat sirvimiskogemust veebilehitsejaga, mis on loodud kaitsma teie privaatsust.</translation>
 <translation id="6001839398155993679">Läksime</translation>
-<translation id="8050847734948770789">Luba Brave Rewards</translation>
-<translation id="2862598513212603756">Teie tähelepanu on väärtuslik. Saage preemiaid privaatsust austavate reklaamide vaatamise eest ning toetage nendega oma lemmiksisuloojaid.</translation>
-<translation id="4942016616604700968">Luba Rewards</translation>
+<translation id="2835162985889791522">Teenite tokeneid, vaadates privaatsust austavaid reklaame ja toetate vaikimisi oma lemmiksaite ja -loojaid.</translation>
+<translation id="2070991379950719711">Alusta Brave Rewardsi kasutamist</translation>
 <translation id="3958088479270651626">Järjehoidjate ja seadete importimine</translation>
 <translation id="2609701960545338618">Seadistage oma tavapärane sirvimiskeskkond, importides järjehoidjad ja seadistused oma vanast brauserist. Täpsemad impordivalikud leiate seadete alt.</translation>
 <translation id="8275038454117074363">Impordi</translation>
@@ -117,7 +129,7 @@
 <translation id="3742599705619405136">Automaatne viis toetada väljaandjaid ja sisuloojaid. Määrake igakuine panus ja jätkake oma tavapärast sirvimist. Külastatavad Brave’i kinnitatud veebisaidid saavad teie panused automaatselt ja see põhineb teie aktiivsusel, mida mõõdab Brave.</translation>
 <translation id="20281847067919078">Eeldatavad ootel preemiad</translation>
 <translation id="8593551638387217772">Järgmine maksekuupäev</translation>
-<translation id="319209088187794725">Sellel kuul saadud reklaamteated</translation>
+<translation id="4428871418618312983">Sel kuul saadud reklaamid</translation>
 <translation id="4229016885653790965">Vabandame! Reklaamid ei ole veel teie piirkonnas saadaval.</translation>
 <translation id="2539279826042558064">Brave Rewards ja reklaamid pole teie seadmes praegu saadaval.</translation>
 <translation id="5421369907811917952">Muud seaded</translation>
@@ -135,6 +147,8 @@
 <translation id="8010081455002666927">Automaatne tuvastus</translation>
 <translation id="4394049700291259645">Keela</translation>
 <translation id="4176463684765177261">Keelatud</translation>
+<translation id="4434663852465709809">QR-kood iOS Rewardsi kasutajatele, kes kannavad BAT-i üle</translation>
+<translation id="2175927920773552910">QR-kood</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="6160106411363856968">BAP</translation>
 <translation id="1081826981536899387">BAT-punktid</translation>
@@ -191,8 +205,6 @@
 <translation id="717952606991220586">Ups, midagi on valesti. Palun proovi hiljem uuesti.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="7210234701206674260">Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.</translation>
-<translation id="570208820610947248">Avastasime vea teie rahakotis. Enne tehingute töötlemist peate taastama oma varundatud rahakoti.</translation>
-<translation id="7797604753681168055">Taasta kohe!</translation>
 <translation id="5549059668721746831">Järgmine igakuise panustamise kuupäev</translation>
 <translation id="6231182869178328516">Premeerisin Brave Browseriga just kasutajat <ph name="NAME"/>. Uuri selle kohta lehelt https://brave.com/tips.</translation>
 <translation id="8404935570206006581">Premeeri Brave’iga</translation>
@@ -201,6 +213,7 @@
 <translation id="7119308337584989771">Suletud</translation>
 <translation id="6805660603861526473">Vaadatud</translation>
 <translation id="2359865110462963929">BAT pole sinu piirkonnas praegu saadaval. Uuenduste puhul vt <ph name="BEGIN_LINK"/>siia<ph name="END_LINK"/> for updates.</translation>
+<translation id="6876377564500155963">Teenuse {{title}} sisselülitamisel nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
 <translation id="2564425876266960486">Brave’i veebilehitseja BAT kaardi loomisel ilmnes viga</translation>
 <translation id="6473583070570450185">Sisselogimiseks on sul vaja kinnitatud rahakotti</translation>
 <translation id="2106271389438168634">Upholdi rahakoti loomiseks peab sul olema vähemalt 25 BATi. Proovi uuesti pärast Upholdi konto kinnitamist.</translation>
@@ -259,7 +272,6 @@
 <translation id="3798449238516105146">Versioon</translation>
 <translation id="7180611975245234373">Värskenda</translation>
 <translation id="1456696701804096710">Proovi uuesti arvutust:</translation>
-<translation id="5771119664738037159">Brave Rewards ei ole lubatud. Lubage see rakendust külastades</translation>
 <translation id="2152423226436243241">Automaatne sissemakse</translation>
 <translation id="2927922949538312364">Ühekordne tipp</translation>
 <translation id="3164105678355419142">Korduv tipp</translation>
@@ -272,6 +284,7 @@
 <translation id="4235360514405112390">Kehtiv</translation>
 <translation id="3902084968737576005">Rahakoti aadress:</translation>
 <translation id="2326487656644542536">Rahakoti andmed</translation>
+<translation id="3506182299017414175">Rahakotti pole veel loodud</translation>
 <translation id="8559420016582377654">Rahakotimakse ID:</translation>
 <translation id="438586487791444158">Rahakoti olek:</translation>
 <translation id="8874184842967597500">Ühendus puudub</translation>
@@ -279,6 +292,39 @@
 <translation id="922103963921062336">Ühendus katkestatud (kinnitamata)</translation>
 <translation id="6521149675246672063">Ühendus katkestatud (kinnitatud)</translation>
 <translation id="3248185426436836442">Ootel</translation>
+<translation id="8441289448876571409">BAP vahendid</translation>
+<translation id="5906820630265272615">BAT vahendid</translation>
+<translation id="5814098892838785557">Kas soovite kindlasti selle looja toetamise lõpetada?</translation>
+<translation id="3922777918343537463">Tühista igakuised panused</translation>
+<translation id="9087994290002662101">Muuda summat</translation>
+<translation id="1969724076378550685">Kinnita igakuiste panuste tühistamine</translation>
+<translation id="6238322297266927861">Panuse summa:</translation>
+<translation id="1723857724166389190">Teie igakuised panused sellele loojale on tühistatud.</translation>
+<translation id="534368327994110883">Toetate praegu seda loojat</translation>
+<translation id="2621124276654521177">Praegune igakuine panus</translation>
+<translation id="3084276630953238154">Ilmnes ootamatu viga</translation>
+<translation id="3263379510325043678">Serveriühenduse tõrge</translation>
+<translation id="8994556588732085585">Uuesti proovimiseks sulgege ja avage panustamisriba.</translation>
+<translation id="4371618764691059036">Igakuised panused on määratud.</translation>
+<translation id="6356822617569064293">Järgmine panustamise kuupäev:</translation>
+<translation id="4622723187300249546">Ühekordne preemia</translation>
+<translation id="5268142130226208198">Ühekordse preemia summa:</translation>
+<translation id="3669086939205397942">Oodake, te ei saa veel preemiat maksta</translation>
+<translation id="1142440886533556131">Kasutaja {{user}} postitus</translation>
+<translation id="3489551030916418665">Kasutaja {{user}} säuts</translation>
+<translation id="5531915212947569943">Väga kahju, et lahkute…</translation>
+<translation id="1420756770787071946">Toeta seda loojat</translation>
+<translation id="3473919203449000069">Jätkates nõustute <ph name="LINK_BEGIN"/>teenusetingimuste<ph name="LINK_END"/> ja <ph name="LINK_BEGIN"/>privaatsuspoliitikaga<ph name="LINK_END"/>.</translation>
+<translation id="3271043362279673449">Täname toetuse eest!</translation>
+<translation id="379596083010863211">Teie ühekordne preemia on saadetud.</translation>
+<translation id="5096821444729034955">tema postituse eest</translation>
+<translation id="2978223787436054634">Andke säutsuga oma toetusest teada</translation>
+<translation id="1543259266592091784">Lisa vahendeid</translation>
+<translation id="7465614181960492526">Teenige ja annetage tokeneid</translation>
+<translation id="2731539192954672606">Teenite tokeneid, vaadates privaatsust austavaid reklaame ja toetate automaatselt oma lemmiksaite ja -loojaid.</translation>
+<translation id="1275213816424141989">Ehk hiljem</translation>
+<translation id="2404165674840145940">Makske preemiat Brave Rewardsiga</translation>
+<translation id="5820285701794581330">Brave Rewardsi kasutades hakkate saama BAT-e, millega saate loojatele preemiat maksta.</translation>
 <translation id="5094577350232361255">teave</translation>
 <translation id="4918086044614829423">Nõustu</translation>
 <translation id="5916290544882167205">Brave Software. Brave on ettevõttele Brave Software kuuluv registreeritud kaubamärk. Veebisaidi nimed võivad olla veebisaidi omanikule kuuluvad kaubamärgid või registreeritud kaubamärgid.</translation>
@@ -296,23 +342,18 @@
 <translation id="8988332871810963281">Brave’i i reklaamide ajalugu praegu pole</translation>
 <translation id="5345727496083327478">Te ei saa enam sellest kategooriast reklaame</translation>
 <translation id="5317780077021120954">Salvesta</translation>
-<translation id="5441565662498481293">Saadad automaatselt preemiaid:</translation>
 <translation id="2827387977307390755">Luba preemiad saidil</translation>
 <translation id="3819257035322786455">Varunda</translation>
 <translation id="1312977698678162065">Saage preemiaid privaatsust austavate reklaamide vaatamise eest.</translation>
 <translation id="4396256076373444156">Koguge punkte privaatsust austavate reklaamide vaatamise eest.</translation>
-<translation id="7655723274266132226">Nüüd võite teenida reklaamide vaatamisega.</translation>
 <translation id="2975780980638932742">Brave’i reklaamid on lisandunud!</translation>
 <translation id="3361548743396744457">Toetage oma lemmikveebisaite, sirvides või premeerides neid endale sobival hetkel.</translation>
 <translation id="718303546189503957">Automaatse panustamise {{processor}}</translation>
 <translation id="4493850495402472953">ja</translation>
 <translation id="8804164990146287819">privaatsuspoliitika</translation>
 <translation id="4281844954008187215">teenusetingimustega</translation>
-<translation id="4405997465645469914">Lubades „Brave Rewards“ kinnitate, et olete lugenud ning nõustute</translation>
 <translation id="8819542691525488940">Klõpsates ‘YJah, sobib!’, kinnitate, et olete lugenud ning nõustute</translation>
 <translation id="8071424789698327147">Klõpsates ‘YJah, olen valmis!’, kinnitate, et olete lugenud ning nõustute</translation>
-<translation id="3745024317593003526">Määra panus</translation>
-<translation id="1386745271554473158">Jagage häid uudiseid:</translation>
 <translation id="7530570094705720669">Rahakoti loomine</translation>
 <translation id="2105596359439030979">Teie aktiivsus on oluline. Saage preemiaid selle eest, et vaatate reklaame, mis austavad teie privaatsust, ja edastage neid, et toetada oma lemmiksisuloojaid.</translation>
 <translation id="516395624550019162">Jah, olen käsi!</translation>
@@ -341,10 +382,8 @@
 <translation id="4805054577224376281">siht</translation>
 <translation id="1346059596910821859">Premeeri</translation>
 <translation id="245015745140252435">Premeeri summa</translation>
-<translation id="4114667046481794032">Panuse summa</translation>
 <translation id="3520817231440482449">Premeeri seda veebisaiti igakuiselt</translation>
 <translation id="1827184134638345603">Saada preemia…</translation>
-<translation id="7928243298881209869">Esimene igakuine panus saadetakse:</translation>
 <translation id="6045860799501892362">Määra igakuine panus</translation>
 <translation id="8003573781961874199">Laadi alla PDFna</translation>
 <translation id="298067735430872465">Reklaamidest saadud tulu</translation>
@@ -362,7 +401,7 @@
 <translation id="7335371657242627509">Kaasa automaatsesse panustamisse</translation>
 <translation id="1864111464094315414">Sisselogimine</translation>
 <translation id="4556504723624686474">Rahakoti kinnitamine võimaldab sul hallata oma raha tõhusamalt.</translation>
-<translation id="5594737784294211654">Upholdi konto loomiseks peab sul olema vähemalt 25 BATi. Proovi hiljem uuesti.<ph name="NEWLINE"/>Kui sul on juba kinnitatud Upholdi konto, jätka sisselogimisega.</translation>
+<translation id="5594737784294211654">Upholdi konto loomiseks peab teil olema vähemalt 25 BATi. Proovige hiljem uuesti. <ph name="NEWLINE"/>Kui teil on juba kinnitatud Upholdi konto, jätkake sisselogimisega.</translation>
 <translation id="3250511771491660127">Muuda see igakuiseks</translation>
 <translation id="6028954173739504682">Hallake oma rahakotti</translation>
 <translation id="7886389832052393750">aprill</translation>
@@ -387,7 +426,6 @@
 <translation id="8304661078305276044">Reklaamide preemiad</translation>
 <translation id="1770001816413426741">Preemiate periood</translation>
 <translation id="2280319752798785157">Igakuised panused</translation>
-<translation id="7627481505582641588">Järgmine panus</translation>
 <translation id="5736183007277264868">Hetkel ei ole ühtegi tokenivõimalust saadaval.</translation>
 <translation id="8307851765167460403">Tegevusi veel pole…</translation>
 <translation id="8589748782214271192">Tänan, ei</translation>
@@ -421,9 +459,6 @@
 <translation id="108052542935515756">Võite alustada siit:</translation>
 <translation id="194625454574835815">Taastusvõti</translation>
 <translation id="6354568176665589146">Korduv</translation>
-<translation id="2391095793008133394">Premeeri kasutajat {{ user }} tema postituse eest:</translation>
-<translation id="7557413530932469222">Premeeri kasutajat {{ user }} tema postituse eest!</translation>
-<translation id="717513177896084801">Premeeri kasutajat {{ user }}</translation>
 <translation id="1110535155349301542">eemalda</translation>
 <translation id="8204292894173669182">Eemalda salvestatute hulgast</translation>
 <translation id="2160578257818656558">Olete määranud {{reservedAmount}} {{currency}}-i autorile, kes pole tasu vastuvõtmiseks veel registreerunud. Teie arvuti üritab tasu maksta kuni kinnituse saamiseni või kuni möödub 90 päeva.</translation>
@@ -440,7 +475,6 @@
 <translation id="7934806082615382155">Osasid vaheneid võib saada Brave'lt ja need pole varundatud, sest see pole vajalik. Vahendeid saab kasutada ainult selles brauseris.</translation>
 <translation id="7354412786785889047">Võite anda tippi, et seda sisuloojat toetada. Nii saate autoreid tunnustada saidile suurepärase sisu loomise eest. Saadud tipp makstakse verifitseeritud sisu autoritele välja iga kalendrikuu esimesel nädalal.</translation>
 <translation id="972846019534552366">Saate Brave Rewardsi paneelil määrata ka korduvad igakuised panused.</translation>
-<translation id="121079855621707240">Määrake igakuine panus, et seda sisuloojat toetada. Nii saate autoreid tunnustada saidile suurepärase sisu loomise eest. Saadud panus makstakse verifitseeritud sisu autoritele välja iga kalendrikuu esimesel nädalal.</translation>
 <translation id="3074127054582480056">Tähelepanu</translation>
 <translation id="5010112177773747965">ilma teie nõusolekuta.</translation>
 <translation id="7147673045905733351">Täna tervitab Brave teid uut internetti kasutama.</translation>
@@ -468,7 +502,6 @@
 <translation id="2028613172174411919">Sinu Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma.</translation>
 <translation id="4914597931214386232">Kasutatud tokenivõimalused</translation>
 <translation id="3494964159182650590">Preemiate kokkuvõte</translation>
-<translation id="63956545637156715">Milleks Brave Rewards?</translation>
 <translation id="1738658589626889850">Salvesta failina</translation>
 <translation id="259138486959961679">Vaata kõiki objekte ({{numItems}})</translation>
 <translation id="7857284676033058221">Vaata kõiki veebisaite ({{numItems}})</translation>
@@ -477,11 +510,6 @@
 <translation id="8428213095426709021">Seaded</translation>
 <translation id="1792148354504719133">sait</translation>
 <translation id="5944430251223015324">saidid</translation>
-<translation id="1834493631938747505">Räägi teistele oma reisist.</translation>
-<translation id="8826007068782654809">Täname</translation>
-<translation id="2305079019697905687">Preemia saadetud!</translation>
-<translation id="4626192591707117844">Igakuised panused on määratud!</translation>
-<translation id="6665366815203065060">Saatsid just preemia:</translation>
 <translation id="6432779622695508363">Premeeri meeldivaid</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
@@ -495,13 +523,11 @@
 <translation id="1634828734222219955">Kokku</translation>
 <translation id="1726566769229204312">Tokenivõimalused</translation>
 <translation id="1193434225710679930">Punktivõimalused</translation>
+<translation id="4395099108822007284">Kujutise laadimine…</translation>
 <translation id="3535654229833214438">Tehingud</translation>
-<translation id="1605521356929094020">Lülita sisse Brave'i reklaamid</translation>
+<translation id="2623808496299703826">Teenige tokeneid privaatsust austavate reklaamide vaatamise eest ja toetage vaikimisi oma veebisisu lemmikloojaid.</translation>
 <translation id="8987812599455325915">See lubab nii reklaamid kui ka automaatsed panustamised. Saate neid lubada või keelata ka eraldi.</translation>
 <translation id="1485484147452131556">Aktiveeri premeerimine</translation>
-<translation id="3983104749597726322">Säutsu</translation>
-<translation id="5636843789453098076">Anna kasutajale @{{ user }} tippi, et ta säutsus:</translation>
-<translation id="4242384385082203046">Anna kasutajale @{{ user }} tippi, et ta säutsus!</translation>
 <translation id="8772672608371898774">Brave'i kinnitatud väljaandja</translation>
 <translation id="5050370287908180130">Vaata igakuiste maksete üksikasju</translation>
 <translation id="8615803647903750175">Rahakotiga seotud toimingud</translation>
@@ -518,7 +544,7 @@
 <translation id="318487899513214296">Vaadake, mis on uus</translation>
 <translation id="4083384190339959182">Brave Payments on läbinud suure värskenduskuuri.</translation>
 <translation id="5395851053710553429">Kogege internetti uuel moel.</translation>
-<translation id="2549982302631665116">Nüüd kutsub Brave teid uude veebiruumi. Ruumi, kus teie aega hinnatakse, teie isikuandmeid hoitakse privaatsena ja reklaamide vaatamise eest antakse preemiat.</translation>
+<translation id="63956545637156715">Milleks Brave Rewards?</translation>
 <translation id="8494748383523030337">Teie saldo</translation>
 <translation id="3780605330121608425">Teie rahakott</translation>
 <translation id="6727483290601442544">Vaata andmeid</translation>
@@ -559,32 +585,29 @@
 <translation id="3354315693758743702">Rahakoti kinnitamine on valikuline.</translation>
 <translation id="8465442795593991224">Uphold võib olenevalt taotletud teenustest nõuda teie identiteedi kinnitamist</translation>
 <translation id="723054503945711909">Brave Software Inc. ei töötle, talleta ega pääse juurde isikuandmetele, mille annata Upholdile, kui loote selle juures konto.</translation>
+<translation id="7677480094678113476">Märkus. Kui annate volituse, näeb Uphold teie tehinguid. Näiteks näeb ta saajat ja preemiate summat.</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6915065518766963119">* Vajalik hoidmise kinnitus.</translation>
 <translation id="7703007724342399482">Saa Upholdi kaardiga 2% krüptoraha tagasi</translation>
 <translation id="1109729143147368573">Kasuta krüptot ja muid vahendeid umbes 50 miljoni kaupmehe ja sularahaautomaadi juures ülemaailmselt. Kuluta krüptot, et teenida krüptot!</translation>
+<translation id="7840362246306242214">Upholdis on saadaval USA aktsiakauplemine</translation>
+<translation id="3345432088196080137">Investeerige soovi korral kasvõi 1 dollar populaarsetesse aktsiatesse või börsil kaubeldavatesse fondidesse AAPL, TSLA või AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/> Brave Rewardsi kohta</translation>
-<translation id="5826706758731195747">Rewardsi lubamisel nõustute <ph name="LINK_BEGIN"/>teenusetingimustega<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Klõpsates valikul "Alusta Brave Rewardsi kasutamist" nõustute <ph name="LINK_BEGIN"/>teenusetingimuste<ph name="LINK_END"/> ja <ph name="LINK_BEGIN"/>privaatsuspoliitikaga<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Selle kuu eeldatav senine tulu</translation>
-<translation id="6778392839723468409">Teenige tokeneid privaatsust austavate reklaamide vaatamise eest.</translation>
 <translation id="5235444069025581717">Preemiad ja panused sellel kuul</translation>
 <translation id="1210965535849006928">Hangi my preemiad</translation>
-<translation id="8315514906653279104">Sisselülitamine …</translation>
-<translation id="7307847920988946894">Lülita Rewards sisse</translation>
-<translation id="662631138774963814">Kas tunnete end heldena?</translation>
-<translation id="3264975266761862670">Kas olete valmis teenimist alustama?</translation>
 <translation id="8092889639392847252">Saage selle esiletõstetud taustapildi vaatamise eest raha.</translation>
-<translation id="2542495049135486284">Proovige Brave Rewardsi uuesti ja edastage preemaid teenimise käigus!</translation>
-<translation id="53513464591392992">Lülitage Brave Rewards sisse ja saage privaatsust austavate reklaamide vaatamise eest preemiaid.</translation>
-<translation id="8463996294416161140">Oma osa saamiseks lülita sisse <ph name="PRODUCT_NAME"/>. Sa võid ka valida <ph name="LINK_BEGIN"/>sponsoreeritud piltide peitmise<ph name="LINK_END"/>.</translation>
+<translation id="7914961605852877459">Oma osa saamiseks lülitage sisse Brave Ads. Saate ka <ph name="LINK_BEGIN"/>peita sponsoreeritud kujutised<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Väga tubli!</translation>
 <translation id="764235488372037377">Teie preemiad reklaamide vaatamise eest on siin</translation>
 <translation id="7091215606170476659">Teid ootab Brave’ilt UGP preemia.</translation>
 <translation id="6759185676704303656">Saate selle taustapildi vaatamise eest raha.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/> Brave Rewardsi esiletõstetud piltide kohta.</translation>
 <translation id="6113004497629356998">Peida esiletõstetavad pildid</translation>
-<translation id="2148613324460538318">Lisa kaart</translation>
+<translation id="3787061634640932557">Kaartide muutmine</translation>
+<translation id="4925543565930352284">Klõpsates {{title}}, nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Alustage isiklikku videokõnet oma sõprade ja kaastöötajatega.</translation>
 <translation id="5850325887346946383">Alustage videokõnet</translation>
 <translation id="3651550649176056334">Teie andmete teave</translation>
@@ -670,10 +693,22 @@
 <translation id="1895658205118569222">Sulgemine</translation>
 <translation id="6762417584993757344">Pole paigaldatud</translation>
 <translation id="8428368469058794536">IPFS-teenus</translation>
-<translation id="2901715907314796027">Osta saidilt Bitcoin.com krüptoraha.</translation>
-<translation id="4065681313949497252">Valuuta</translation>
-<translation id="3833315885381772739">Sisesta summa</translation>
-<translation id="4011828592358027165">Kas on vaja krüptoraha?</translation>
-<translation id="3358050091139900813">Alustamiseks hangi siit rahakott</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="5357895013476183089">IPFS pole ühendatud</translation>
+<translation id="8237116764941266924">IPFS-sisuga ei saa ühendust luua</translation>
+<translation id="7602558611695320510">Kohaliku IPFS-sõlme abil IPFS-sisuga ühenduse loomine ebaõnnestus, klõpsake allpool jätkamise nuppu, et luua seekord ühendus avaliku lüüsi kaudu ja laskuda edaspidi automaatselt avalikku lüüsi.</translation>
+<translation id="3373798179786163193">Jätka avaliku lüüsiga</translation>
+<translation id="1974060860693918893">Täpsemad</translation>
+<translation id="9096577886148726047">Peida täpsemad</translation>
+<translation id="6334164481400727517">Me ei saanud kohaliku IPFS-sõlme kaudu taotletud sisuga ühendust, sest kohalik sõlm ei käivitunud või sest ühendatud partnereid pole praegu saadaval. Jätkates laskume tulevikus automaatselt tagasi vaikimisi avalikku lüüsi, kui me ei saa kohaliku IPFS-sõlme abil IPFS-sisuga ühendust luua. Selle saab seadetes hiljem välja lülitada.</translation>
+<translation id="2880025073956220119">Crypto.com</translation>
+<translation id="8237504256665975959">Vaadake turgusid ja ostke krüptot aadressilt crypto.com.</translation>
+<translation id="4292334826913000023">Kuva hind</translation>
+<translation id="5001098083058405168">Saage sissemaksetelt 2% boonust</translation>
+<translation id="7336377875970208451">Lõpetage kauplemistasude maksmine</translation>
+<translation id="5889002303959545585">Osta Bitcoini</translation>
+<translation id="7243082596932212589">Vaadake turgusid aadressil Crypto.com</translation>
+<translation id="2258222996838418990">7d graafika</translation>
+<translation id="5337526542182802976">Toetatud paarid</translation>
+<translation id="1164622162816276433">24 h maht</translation>
+<translation id="3155170474926428993">Tor'i käivitaja</translation>
 </translationbundle>

@@ -18,7 +18,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "crypto/random.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "net/base/network_isolation_key.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "url/origin.h"
@@ -137,13 +137,13 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   //
   // In particular, we need not isolate by the scheme,
   // username/password, port, path, or query part of the URL.
-  url::Origin origin = url::Origin::Create(url);
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (domain.size() == 0)
-    domain = origin.host();
-  return domain;
+  url::Origin url_origin = url::Origin::Create(url);
+  net::NetworkIsolationKey network_isolation_key(url_origin, url_origin);
+
+  const base::Optional<url::Origin>& network_isolation_key_origin =
+      network_isolation_key.GetTopFrameSite();
+  DCHECK(network_isolation_key_origin.has_value());
+  return network_isolation_key_origin->host();
 }
 
 void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {

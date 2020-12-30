@@ -3,21 +3,17 @@ declare namespace RewardsExtension {
     balance: Balance
     currentNotification?: string
     enabledAC: boolean
-    enabledMain: boolean
     notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
     balanceReport: BalanceReport
     promotions?: Promotion[]
     pendingContributionTotal: number
-    walletCorrupted: boolean
-    walletCreated: boolean
-    walletCreating: boolean
-    walletCreateFailed: boolean
     parameters: RewardsParameters
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet
     initializing: boolean
+    showOnboarding: boolean
   }
 
   interface ApplicationState {
@@ -158,6 +154,8 @@ declare namespace RewardsExtension {
     social: Record<string, string>
     status: PublisherStatus
   }
+
+  export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
 
   export interface Balance {
     total: number

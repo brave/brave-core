@@ -26,8 +26,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     auto* registry = local_pref_.registry();
     NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
-    service_.reset(new NTPBackgroundImagesService(
-        nullptr, &local_pref_, base::FilePath()));
+    service_.reset(new NTPBackgroundImagesService(nullptr, &local_pref_));
     source_.reset(new NTPBackgroundImagesSource(service_.get()));
     local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));

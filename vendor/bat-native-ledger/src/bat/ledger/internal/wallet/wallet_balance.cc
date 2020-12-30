@@ -38,8 +38,10 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
 
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR, nullptr);
+    BLOG(1, "Wallet is not created");
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
+    auto balance = type::Balance::New();
+    callback(type::Result::LEDGER_OK, std::move(balance));
     return;
   }
 

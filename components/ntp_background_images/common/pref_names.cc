@@ -21,8 +21,6 @@ const char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
 const char kNewTabPageCachedSuperReferralComponentData[] =
     "brave.new_tab_page.cached_super_referral_component_data";
-const char kNewTabPageCachedSuperReferralFaviconList[] =
-    "brave.new_tab_page.cached_super_referral_favicon_list";
 const char kNewTabPageGetInitialSRComponentInProgress[] =
     "brave.new_tab_page.get_initial_sr_component_in_progress";
 const char kNewTabPageCachedSuperReferralCode[] =

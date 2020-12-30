@@ -9,10 +9,11 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/ad_conversions/ad_conversion_info.h"
 #include "bat/ads/internal/catalog/catalog_creative_ad_notification_info.h"
+#include "bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/catalog/catalog_os_info.h"
 #include "bat/ads/internal/catalog/catalog_segment_info.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
 
 namespace ads {
 
@@ -28,7 +29,8 @@ struct CatalogCreativeSetInfo {
   CatalogSegmentList segments;
   CatalogOsList oses;
   CatalogCreativeAdNotificationList creative_ad_notifications;
-  AdConversionList ad_conversions;
+  CatalogCreativeNewTabPageAdList creative_new_tab_page_ads;
+  ConversionList conversions;
 };
 
 using CatalogCreativeSetList = std::vector<CatalogCreativeSetInfo>;

@@ -8,8 +8,8 @@ import { withKnobs, object, text, select, boolean, number } from '@storybook/add
 import centered from '@storybook/addon-centered'
 
 // Components
-import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
-import { AlertWallet, Notification, WalletState } from '../components/walletWrapper'
+import { WalletSummary, WalletEmpty, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
+import { AlertWallet, WalletState } from '../components/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
 import { WalletInfoHeader } from '../components/mobile'
 
@@ -31,12 +31,6 @@ storiesOf('Rewards/Wallet/Desktop', module)
       type: 'success',
       onAlertClose: doNothing
     }
-    const adsLaunchNotification: Notification = {
-      id: '001',
-      type: 'ads-launch',
-      onCloseNotification: doNothing,
-      text: <span>Now you can earn by viewing ads.</span>
-    }
     const showAlert = boolean('Show alert', false)
 
     const state: WalletState = select('wallet status', {
@@ -51,7 +45,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
         compact={false}
         contentPadding={false}
         onNotificationClick={onEnableAds}
-        notification={boolean('Show notification', true) ? adsLaunchNotification : undefined}
+        notification={undefined}
         showCopy={boolean('Show Uphold', false)}
         onlyAnonWallet={boolean('Anon Wallet Only', false)}
         showSecActions={boolean('Show secondary actions', true)}
@@ -116,47 +110,20 @@ storiesOf('Rewards/Wallet/Desktop', module)
           platform={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo', github: 'github' }, 'youtube')}
           publisherImg={favicon}
           publisherName={'Jonathan Doe'}
-          monthlyAmount={'10.0'}
+          monthlyAmount={'10.000'}
           isVerified={boolean('Verified', true)}
           tipsEnabled={boolean('Tips Enabled', true)}
           includeInAuto={boolean('Include in monthly', true)}
           acEnabled={boolean('AC enabled?', true)}
           attentionScore={'15'}
-          donationAmounts={
-            [
-              {
-                tokens: '0.0',
-                converted: '0.00'
-              },
-              {
-                tokens: '1.0',
-                converted: '0.50'
-              },
-              {
-                tokens: '5.0',
-                converted: '2.50'
-              },
-              {
-                tokens: '10.0',
-                converted: '5.00'
-              }
-            ]
-          }
           onToggleTips={doNothing}
           setMonthlyAction={doNothing}
+          cancelMonthlyAction={doNothing}
           donationAction={doNothing}
-          onAmountChange={doNothing}
           onIncludeInAuto={doNothing}
           showUnVerified={boolean('Show unverified content', true)}
           onRefreshPublisher={doNothing}
         />
-      </div>
-    )
-  })
-  .add('Off', () => {
-    return (
-      <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <WalletOff />
       </div>
     )
   })

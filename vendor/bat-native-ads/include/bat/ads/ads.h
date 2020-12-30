@@ -10,12 +10,13 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
-#include "bat/ads/ad_content.h"
+#include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/ads_history.h"
-#include "bat/ads/category_content.h"
+#include "bat/ads/ads_history_info.h"
+#include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
@@ -28,30 +29,33 @@ using ShutdownCallback = std::function<void(const Result)>;
 
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
-using GetTransactionHistoryCallback =
+using GetStatementCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
-// |_environment| indicates that URL requests should use production, staging or
+// |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
-extern Environment _environment;
+extern Environment g_environment;
 
-// |_build_channel| indicates the build channel
-extern BuildChannel _build_channel;
+// |g_sys_info| contains the hardware |manufacturer| and |model|
+extern SysInfo g_sys_info;
 
-// |_is_debug| indicates that the next catalog download should be reduced from
-// ~1 hour to ~25 seconds. This value should be set to |false| on production
-// builds and |true| on debug builds but can be overridden via command-line
+// |g_build_channel| indicates the build channel
+extern BuildChannel g_build_channel;
+
+// |g_is_debug| indicates that the next catalog download should be reduced from
+// ~1 hour to ~25 seconds. This value should be set to false on production
+// builds and true on debug builds but can be overridden via command-line
 // arguments
-extern bool _is_debug;
+extern bool g_is_debug;
 
 // Catalog schema resource id
-extern const char _catalog_schema_resource_id[];
+extern const char g_catalog_schema_resource_id[];
 
-// Returns |true| if the locale is supported; otherwise returns |false|
+// Returns true if the locale is supported otherwise returns false
 bool IsSupportedLocale(
     const std::string& locale);
 
-// Returns |true| if the locale is newly supported; otherwise returns |false|
+// Returns true if the locale is newly supported otherwise returns false
 bool IsNewlySupportedLocale(
     const std::string& locale,
     const int last_schema_version);
@@ -64,74 +68,65 @@ class ADS_EXPORT Ads {
   static Ads* CreateInstance(
       AdsClient* ads_client);
 
-  // Should be called to initialize ads, i.e. when launching the browser or when
-  // ads is implicitly enabled by a user on the client. The callback takes one
-  // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
-  // should be set to |FAILED|
+  // Should be called to initialize ads when launching the browser or when ads
+  // is enabled by a user. The callback takes one argument — |Result| should be
+  // set to |SUCCESS| if successful otherwise should be set to |FAILED|
   virtual void Initialize(
       InitializeCallback callback) = 0;
 
-  // Should be called to shutdown ads when a user implicitly disables ads.
-  // Shutting down ads will call |CloseNotification| for each ad notification in
-  // the Notification Center on the client. The callback takes one argument —
-  // |Result| should be set to |SUCCESS| if successful; otherwise, should be set
-  // to |FAILED|
+  // Should be called to shutdown ads when a user disables ads. The callback
+  // takes one argument — |Result| should be set to |SUCCESS| if successful
+  // otherwise should be set to |FAILED|
   virtual void Shutdown(
       ShutdownCallback callback) = 0;
 
-  // Should be called when the user implicitly changes the locale of their
-  // operating system. This call is not required if the operating system
-  // restarts the browser when changing locale. |locale| should be specified in
-  // any of the following formats:
-  //
-  //     <language>-<REGION> i.e. en-US
-  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
-  //     <language>_<REGION> i.e. en_US
-  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
+  // Should be called when the user changes the locale of their operating
+  // system. This call is not required if the operating system restarts the
+  // browser when changing the locale. |locale| should be specified in either
+  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format
   virtual void ChangeLocale(
       const std::string& locale) = 0;
 
   // Should be called when the ads subdivision targeting code has changed
   virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
 
-  // Should be called when a page has loaded in a browser tab, and the HTML is
-  // available for analysis
+  // Should be called when a page has loaded and the content is available for
+  // analysis. |redirect_chain| contains the chain of redirects, incuding
+  // client-side redirect and the current URL. |content| will contain the HTML
+  // page content
   virtual void OnPageLoaded(
-    const int32_t tab_id,
-      const std::string& original_url,
-      const std::string& url,
-      const std::string& html) = 0;
+      const int32_t tab_id,
+      const std::vector<std::string>& redirect_chain,
+      const std::string& content) = 0;
 
   // Should be called when a user is no longer idle. This call is optional for
   // mobile devices
   virtual void OnUnIdle() = 0;
 
-  // Should be called when a user is idle for the specified threshold set in
+  // Should be called when a user is idle for the threshold set in
   // |SetIdleThreshold|. This call is optional for mobile devices
   virtual void OnIdle() = 0;
 
-  // Should be called when the browser enters the foreground
+  // Should be called when the browser becomes active
   virtual void OnForeground() = 0;
 
   // Should be called when the browser enters the background
   virtual void OnBackground() = 0;
 
-  // Should be called to report when the media has started playing on the
-  // browser tab specified by |tab_id|
+  // Should be called when media starts playing on a browser tab
   virtual void OnMediaPlaying(
       const int32_t tab_id) = 0;
 
-  // Should be called to report when the media has stopped playing on the
-  // browser tab specified by |tab_id|
+  // Should be called when media stops playing on a browser tab
   virtual void OnMediaStopped(
       const int32_t tab_id) = 0;
 
-  // Should be called to report user activity on a browser tab specified by
-  // |tab_id|. |is_active| should be set to |true| if |tab_id| refers to the
-  // currently active tab; otherwise, should be set to |false|.
-  // |is_browser_active| should be set to |true| if the current browser window
-  // is active; otherwise, should be set to |false|. |is_incognito| should be
-  // set to |true| if the tab is private; otherwise, should be set to |false|
+  // Should be called when a browser tab is updated. |is_active| should be set
+  // to true if |tab_id| refers to the currently active tab otherwise should be
+  // set to false. |is_browser_active| should be set to true if the current
+  // browser window is active otherwise should be set to false. |is_incognito|
+  // should be set to true if the tab is private otherwise should be set to
+  // false
   virtual void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
@@ -139,31 +134,41 @@ class ADS_EXPORT Ads {
       const bool is_browser_active,
       const bool is_incognito) = 0;
 
-  // Should be called to report when a browser tab has been closed as specified
-  // by |tab_id|
+  // Should be called when a browser tab is closed
   virtual void OnTabClosed(
       const int32_t tab_id) = 0;
 
-  // Should be called to report when the wallet has been updated
+  // Should be called when the users wallet has been updated
   virtual void OnWalletUpdated(
       const std::string& payment_id,
-      const std::string& recovery_seed_base64) = 0;
+      const std::string& seed) = 0;
 
-  // Should be called to get the notification specified by |uuid|. Returns
-  // |true| and |info| if the notification exists; otherwise, should return
-  // |false|
+  // Should be called when the user model has been updated by
+  // |BraveUserModelInstaller| component
+  virtual void OnUserModelUpdated(
+      const std::string& id) = 0;
+
+  // Should be called to get the ad notification specified by |uuid|. Returns
+  // true if the ad notification exists otherwise returns false.
+  // |ad_notification| contains the ad notification for uuid
   virtual bool GetAdNotification(
       const std::string& uuid,
-      AdNotificationInfo* info) = 0;
+      AdNotificationInfo* ad_notification) = 0;
 
-  // Should be called when a user implicitly views, clicks or dismisses a
-  // notification; or a notification times out
+  // Should be called when a user views, clicks or dismisses an ad notification
+  // or an ad notification times out
   virtual void OnAdNotificationEvent(
       const std::string& uuid,
       const AdNotificationEventType event_type) = 0;
 
+  // Should be called when a user views or clicks a new tab page ad
+  virtual void OnNewTabPageAdEvent(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type) = 0;
+
   // Should be called to remove all cached history. The callback takes one
-  // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
+  // argument — |Result| should be set to |SUCCESS| if successful otherwise
   // should be set to |FAILED|
   virtual void RemoveAllHistory(
       RemoveAllHistoryCallback callback) = 0;
@@ -172,67 +177,64 @@ class ADS_EXPORT Ads {
   // ad grant is claimed
   virtual void ReconcileAdRewards() = 0;
 
-  // Should be called to get ads history. Returns |AdsHistory|
-  virtual AdsHistory GetAdsHistory(
-      const AdsHistory::FilterType filter_type,
-      const AdsHistory::SortType sort_type,
+  // Should be called to get ads history for a specified date range. Returns
+  // |AdsHistoryInfo|
+  virtual AdsHistoryInfo GetAdsHistory(
+      const AdsHistoryInfo::FilterType filter_type,
+      const AdsHistoryInfo::SortType sort_type,
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) = 0;
 
-  // Should be called to get transaction history. The callback takes one
-  // argument — |StatementInfo| which contains a list of |TransactionInfo|
-  // transactions and associated earned ad rewards
-  virtual void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) = 0;
+  // Should be called to get the statement of accounts. The callback takes one
+  // argument — |StatementInfo| which contains estimated pending rewards, next
+  // payment date, ads received this month, pending rewards, cleared
+  // transactions and uncleared transactions
+  virtual void GetStatement(
+      GetStatementCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state
-  virtual AdContent::LikeAction ToggleAdThumbUp(
+  virtual AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const AdContent::LikeAction& action) = 0;
+      const AdContentInfo::LikeAction& action) = 0;
 
   // Should be called to indicate a lack of interest in the specified ad. This
   // is a toggle, so calling it again returns the setting to the neutral state
-  virtual AdContent::LikeAction ToggleAdThumbDown(
+  virtual AdContentInfo::LikeAction ToggleAdThumbDown(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const AdContent::LikeAction& action) = 0;
+      const AdContentInfo::LikeAction& action) = 0;
 
   // Should be called to opt-in to the specified ad category. This is a toggle,
   // so calling it again neutralizes the ad category. Returns |OptAction" with
   // the current status
-  virtual CategoryContent::OptAction ToggleAdOptInAction(
+  virtual CategoryContentInfo::OptAction ToggleAdOptInAction(
       const std::string& category,
-      const CategoryContent::OptAction& action) = 0;
+      const CategoryContentInfo::OptAction& action) = 0;
 
   // Should be called to opt-out of the specified ad category. This is a toggle,
   // so calling it again neutralizes the ad category. Returns |OptAction" with
   // the current status
-  virtual CategoryContent::OptAction ToggleAdOptOutAction(
+  virtual CategoryContentInfo::OptAction ToggleAdOptOutAction(
       const std::string& category,
-      const CategoryContent::OptAction& action) = 0;
+      const CategoryContentInfo::OptAction& action) = 0;
 
   // Should be called to save an ad for later viewing. This is a toggle, so
-  // calling it again removes the ad from the saved list. Returns |true| if the
-  // ad was saved; otherwise, should return |false|
+  // calling it again removes the ad from the saved list. Returns true if the ad
+  // was saved otherwise should return false
   virtual bool ToggleSaveAd(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool saved) = 0;
 
   // Should be called to flag an ad as inappropriate. This is a toggle, so
-  // calling it again unflags the ad. Returns |true| if the ad was flagged;
-  // otherwise returns |false|
+  // calling it again unflags the ad. Returns true if the ad was flagged
+  // otherwise returns false
   virtual bool ToggleFlagAd(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged) = 0;
-
-  // Should be called when user model has been updated in the
-  // |BraveUserModelInstaller| component
-  virtual void OnUserModelUpdated(
-      const std::string& id) = 0;
 
  private:
   // Not copyable, not assignable

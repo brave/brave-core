@@ -73,3 +73,93 @@
 -keep class org.chromium.base.CommandLineInitUtil {
     *** initCommandLine(...);
 }
+
+-keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
+    *** getPopupPosition(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator {
+    *** mMediator;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
+    *** mBottomControlsCoordinator;
+    *** mBrowserControlsSizer;
+    *** mFullscreenManager;
+    *** mActivityTabProvider;
+    *** mAppThemeColorProvider;
+    *** mShareDelegateSupplier;
+    *** mScrimCoordinator;
+    *** mShowStartSurfaceSupplier;
+    *** mMenuButtonCoordinator;
+    *** mToolbarTabController;
+    *** mLocationBar;
+    *** mActionModeController;
+    *** mLocationBarModel;
+    *** mToolbar;
+    *** mBookmarkBridgeSupplier;
+    *** onOrientationChange(...);
+    *** updateButtonStatus(...);
+    *** updateBookmarkButtonStatus(...);
+    *** updateReloadState(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
+    *** mTabSwitcherModeCoordinatorPhone;
+    *** mOptionalButtonController;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {
+    *** mTabSwitcherModeToolbar;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTPhone {
+    *** mNewTabViewButton;
+    *** mNewTabImageButton;
+    *** mToggleTabStackButton;
+    *** mMenuButton;
+    *** mShouldShowNewTabVariation;
+    *** updateNewTabButtonVisibility(...);
+    *** shouldShowIncognitoToggle(...);
+}
+
+-keep class org.chromium.chrome.browser.download.MimeUtils {
+    *** canAutoOpenMimeType(...);
+}
+
+-keep class org.chromium.chrome.browser.app.ChromeActivity {
+    *** mTabModelProfileSupplier;
+}
+
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity {
+    *** hideOverview(...);
+}
+
+-keep class org.chromium.chrome.browser.app.BraveActivity {
+    *** openNewOrSelectExistingTab(...);
+    *** selectExistingTab(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.ChromeTabCreator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.BraveTabCreator {
+    public <init>(...);
+}

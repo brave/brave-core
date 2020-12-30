@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/brave_rewards_widget_gradient"
+    android:padding="8dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_brave_rewards_widget"
+            android:drawablePadding="4dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="@string/brave_ui_brave_rewards"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/widget_more_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_more_horiz"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.0118121BTC"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="4dp"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="≈ $9,345.21"
+                android:textColor="#FFFFFF"
+                android:alpha="0.6"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_polygon_1"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="1.01%"
+                android:textColor="#5DFF43"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="4dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24h Change"
+                android:textColor="#FFFFFF"
+                android:alpha="0.4"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -106,7 +106,7 @@ bool CatalogIssuersInfo::PublicKeyExists(
   }
 
   const auto iter = std::find_if(issuers.begin(), issuers.end(),
-      [&public_key] (const auto& issuer) {
+      [&public_key](const CatalogIssuerInfo& issuer) {
     return issuer.public_key == public_key;
   });
 
@@ -117,32 +117,34 @@ bool CatalogIssuersInfo::PublicKeyExists(
   return true;
 }
 
-
-double CatalogIssuersInfo::GetEstimatedRedemptionValue(
+base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
     const std::string& public_key) const {
   const auto iter = std::find_if(issuers.begin(), issuers.end(),
-      [&public_key] (const auto& issuer) {
+      [&public_key](const auto& issuer) {
     return issuer.public_key == public_key;
   });
 
   if (iter == issuers.end()) {
-    return 0.0;
+    return base::nullopt;
   }
 
   const CatalogIssuerInfo catalog_issuer = *iter;
+
   std::string name = catalog_issuer.name;
 
   if (!re2::RE2::Replace(&name, "BAT", "")) {
-    BLOG(1, "Failed to estimate redemption value due to invalid catalog "
+    BLOG(1, "Failed to get estimated redemption value due to invalid catalog "
         "issuer name");
-    return 0.0;
+
+    return base::nullopt;
   }
 
   double estimated_redemption_value;
   if (!base::StringToDouble(name, &estimated_redemption_value)) {
-    BLOG(1, "Failed to estimate redemption value due to invalid catalog "
+    BLOG(1, "Failed to get estimated redemption value due to invalid catalog "
         "issuer name");
-    return 0.0;
+
+    return base::nullopt;
   }
 
   return estimated_redemption_value;

@@ -28,9 +28,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   ~ExtensionRewardsServiceObserver() override;
 
   // RewardsServiceObserver implementation
-  void OnWalletInitialized(
-      RewardsService* rewards_service,
-      const ledger::type::Result result) override;
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
       ledger::type::PublisherInfoList list) override;
@@ -79,9 +76,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       RewardsService* rewards_service,
       const ledger::type::Result result,
       ledger::type::PromotionPtr promotion) override;
-
-  void OnRewardsMainEnabled(RewardsService* rewards_service,
-                            bool rewards_main_enabled) override;
 
   void OnPendingContributionSaved(
       RewardsService* rewards_service,

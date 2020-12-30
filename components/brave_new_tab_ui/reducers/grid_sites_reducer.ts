@@ -12,6 +12,15 @@ import { types } from '../constants/grid_sites_types'
 // API
 import * as gridSitesState from '../state/gridSitesState'
 import * as storage from '../storage/grid_sites_storage'
+import {
+  deleteMostVisitedTile,
+  reorderMostVisitedTile,
+  restoreMostVisitedDefaults,
+  undoMostVisitedTileAction
+} from '../api/topSites'
+
+// Utils
+import arrayMove from 'array-move'
 
 const initialState = storage.load()
 
@@ -27,81 +36,56 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
   const startingState = state
 
   switch (action.type) {
-    case types.GRID_SITES_SET_FIRST_RENDER_DATA: {
-      // Update existing default SR top sites in gridSites.
-      if (payload.defaultSuperReferralTopSites) {
-        state = gridSitesState
-            .gridSitesReducerUpdateDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
+    case types.TILES_UPDATED: {
+      const { gridSites } = payload
+      state = gridSitesState.tilesUpdated(state, gridSites)
+      break
+    }
+
+    case types.TILE_REMOVED: {
+      const { url } = payload
+      deleteMostVisitedTile(url)
+      state = gridSitesState.showTilesRemovedNotice(state, true)
+      break
+    }
+
+    case types.TILES_REORDERED: {
+      const { gridSites, oldPos, newPos } = payload
+      // "Super referral" entries (if present) are always at the beginning
+      // Skip these indices when determining the new position for Chromium
+      let offset: number = 0
+      for (let i: number = 0; i < gridSites.length; i++) {
+        if (!gridSites[i].defaultSRTopSite) {
+          break
+        }
+        offset++
       }
-
-      // If there are legacy values from a previous
-      // storage, update first render data with it
-      state = gridSitesState
-        .gridSitesReducerSetFirstRenderDataFromLegacy(
-          state,
-          startingState.legacy
-        )
-      // Now that we stored the legacy reference, delete it
-      // so it won't override gridSites in further updates
-      if (startingState.legacy) {
-        delete startingState.legacy
-      }
-
-      // New profiles just store what comes from Chromium
-      state = gridSitesState
-        .gridSitesReducerSetFirstRenderData(state, payload.topSites)
-
-      // Handle default top sites data only once.
-      if (payload.defaultSuperReferralTopSites && !storage.isDefaultSuperReferralTopSitesAddedToPinnedSites()) {
-        state = gridSitesState
-          .gridSitesReducerSetDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
-        storage.setDefaultSuperReferralTopSitesAddedToPinnedSites()
-      }
-
-      // Cached gridSites can be updated when history has modified.
-      state = gridSitesState.gridSitesReducerDataUpdated(state, state.gridSites)
+      // Change the order in Chromium
+      reorderMostVisitedTile(gridSites[oldPos].url, (newPos - offset))
+      // Change the order that user sees. Chromium will overwrite this
+      // when `MostVisitedInfoChanged` is called- but changing BEFORE that
+      // avoids a flicker for the user where (for a second or so), tiles would
+      // have the wrong order.
+      const reorderedGridSites: NewTab.Site[] =
+          arrayMove(gridSites, oldPos, newPos)
+      state = gridSitesState.tilesUpdated(state, reorderedGridSites)
       break
     }
 
-    case types.GRID_SITES_DATA_UPDATED: {
-      state = gridSitesState
-        .gridSitesReducerDataUpdated(state, payload.gridSites)
+    case types.RESTORE_DEFAULT_TILES: {
+      restoreMostVisitedDefaults()
+      state = gridSitesState.showTilesRemovedNotice(state, false)
       break
     }
 
-    case types.GRID_SITES_TOGGLE_SITE_PINNED: {
-      state = gridSitesState
-        .gridSitesReducerToggleSitePinned(state, payload.pinnedSite)
+    case types.SHOW_TILES_REMOVED_NOTICE: {
+      state = gridSitesState.showTilesRemovedNotice(state, payload.shouldShow)
       break
     }
 
-    case types.GRID_SITES_REMOVE_SITE: {
-      state = gridSitesState
-        .gridSitesReducerRemoveSite(state, payload.removedSite)
-      break
-    }
-
-    case types.GRID_SITES_UNDO_REMOVE_SITE: {
-      state = gridSitesState
-        .gridSitesReducerUndoRemoveSite(state)
-      break
-    }
-
-    case types.GRID_SITES_UNDO_REMOVE_ALL_SITES: {
-      state = gridSitesState
-        .gridSitesReducerUndoRemoveAllSites(state)
-      break
-    }
-
-    case types.GRID_SITES_ADD_SITES: {
-      state = gridSitesState.gridSitesReducerAddSiteOrSites(state, payload.site)
-      break
-    }
-
-    case types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION: {
-      state = gridSitesState
-        .gridSitesReducerShowSiteRemovedNotification(state, payload.shouldShow)
-      break
+    case types.UNDO_REMOVE_TILE: {
+      undoMostVisitedTileAction()
+      state = gridSitesState.showTilesRemovedNotice(state, false)
     }
   }
 

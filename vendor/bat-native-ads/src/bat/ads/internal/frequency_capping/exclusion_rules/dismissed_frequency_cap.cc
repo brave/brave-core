@@ -8,28 +8,24 @@
 #include <stdint.h>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/sorts/ads_history/ads_history_sort_factory.h"
-#include "bat/ads/internal/time_util.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/ads_history/sorts/ads_history_sort_factory.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 
 namespace ads {
 
 DismissedFrequencyCap::DismissedFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    const AdEventList& ad_events)
+    : ad_events_(ad_events) {
 }
 
 DismissedFrequencyCap::~DismissedFrequencyCap() = default;
 
 bool DismissedFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
-  const std::deque<AdHistory> history = ads_->get_client()->GetAdsHistory();
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
-  const std::deque<AdHistory> filtered_history =
-      FilterHistory(history, ad.campaign_id);
-
-  if (!DoesRespectCap(filtered_history, ad)) {
+  if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf("campaignId %s has exceeded the "
         "frequency capping for dismissed", ad.campaign_id.c_str());
     return true;
@@ -43,13 +39,13 @@ std::string DismissedFrequencyCap::get_last_message() const {
 }
 
 bool DismissedFrequencyCap::DoesRespectCap(
-    const std::deque<AdHistory>& history,
-    const CreativeAdInfo& ad) {
+    const AdEventList& ad_events) {
   int count = 0;
-  for (const auto& ad : history) {
-    if (ad.ad_content.ad_action == ConfirmationType::kClicked) {
+
+  for (const auto& ad_event : ad_events) {
+    if (ad_event.confirmation_type == ConfirmationType::kClicked) {
       count = 0;
-    } else if (ad.ad_content.ad_action == ConfirmationType::kDismissed) {
+    } else if (ad_event.confirmation_type == ConfirmationType::kDismissed) {
       count++;
     }
   }
@@ -63,32 +59,26 @@ bool DismissedFrequencyCap::DoesRespectCap(
   return true;
 }
 
-std::deque<AdHistory> DismissedFrequencyCap::FilterHistory(
-    const std::deque<AdHistory>& history,
-    const std::string& campaign_id) {
-  std::deque<AdHistory> filtered_history;
-
-  const uint64_t time_constraint =
+AdEventList DismissedFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) const {
+  const int64_t time_constraint =
       2 * base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
-  const uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+  const int64_t now = static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  for (const auto& ad : history) {
-    if (ad.ad_content.campaign_id != campaign_id ||
-        now_in_seconds - ad.timestamp_in_seconds >= time_constraint) {
-      continue;
-    }
+  AdEventList filtered_ad_events = ad_events;
 
-    filtered_history.push_back(ad);
-  }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [&ad, now](const AdEventInfo& ad_event) {
+    return ad_event.type == AdType::kNewTabPageAd ||
+        ad_event.campaign_id != ad.campaign_id ||
+        now - ad_event.timestamp >= time_constraint;
+  });
 
-  const auto sort = AdsHistorySortFactory::Build(
-      AdsHistory::SortType::kAscendingOrder);
-  DCHECK(sort);
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
 
-  filtered_history = sort->Apply(filtered_history);
-
-  return filtered_history;
+  return filtered_ad_events;
 }
 
 }  // namespace ads

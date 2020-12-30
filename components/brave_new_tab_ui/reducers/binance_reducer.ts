@@ -91,8 +91,7 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
     case types.DISCONNECT_BINANCE:
       state = { ...state }
       state.binanceState = {
-        ...storage.defaultState.binanceState,
-        binanceSupported: true
+        ...storage.defaultState.binanceState
       }
       break
 

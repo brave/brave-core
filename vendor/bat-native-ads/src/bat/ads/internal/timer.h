@@ -11,8 +11,8 @@
 #include <memory>
 
 #include "base/callback_forward.h"
+#include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -45,6 +45,10 @@ class Timer {
 
   // Returns true if the timer is running (i.e., not stopped)
   bool IsRunning() const;
+
+  // Run the scheduled task immediately, and stop the timer. The timer needs to
+  // be running
+  void FireNow();
 
   // Call this method to stop the timer. It is a no-op if the timer is not
   // running

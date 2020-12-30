@@ -5,15 +5,16 @@
 
 package org.chromium.chrome.browser.sync;
 
+import android.accounts.Account;
+
 import org.chromium.chrome.browser.sync.ProfileSyncService;
-import org.chromium.components.sync.SyncContentResolverDelegate;
 
 // see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     private boolean mMasterSyncEnabled;
 
-    public BraveAndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate) {
-        super(syncContentResolverDelegate);
+    public BraveAndroidSyncSettings(Account account) {
+        super(account);
     }
 
     // Chromium's AndroidSyncSettings.mChromeSyncEnabled is never set to true

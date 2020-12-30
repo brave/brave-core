@@ -20,10 +20,6 @@ const char kDisableBraveRewardsExtension[] = "disable-brave-rewards-extension";
 // This switch disables update module(Sparkle).
 const char kDisableBraveUpdate[] = "disable-brave-update";
 
-// Allows disabling the Tor client updater extension.
-const char kDisableTorClientUpdaterExtension[] =
-    "disable-tor-client-updater-extension";
-
 // Allows disabling the WebTorrent extension.
 const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 

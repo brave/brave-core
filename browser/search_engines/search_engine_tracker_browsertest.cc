@@ -8,8 +8,8 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -27,7 +27,7 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
-                       DefaultSearchEngineP3A) {
+                       DISABLED_DefaultSearchEngineP3A) {
   // Check that the metric is reported on startup.
   histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
                                         SearchEngineP3A::kGoogle, 1);
@@ -47,8 +47,9 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
 
   // Check that incognito or TOR profiles do not emit the metric.
   CreateIncognitoBrowser();
-  ScopedTorLaunchPreventerForTest prevent_tor_process;
+#if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
+#endif
 
   histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 2);
 }

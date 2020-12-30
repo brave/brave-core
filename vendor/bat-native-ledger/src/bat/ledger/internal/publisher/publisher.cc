@@ -71,15 +71,11 @@ void Publisher::RefreshPublisher(
 }
 
 void Publisher::SetPublisherServerListTimer() {
-  if (ledger_->state()->GetRewardsMainEnabled()) {
-    prefix_list_updater_->StartAutoUpdate([this]() {
-      // Attempt to reprocess any contributions for previously
-      // unverified publishers that are now verified.
-      ledger_->contribution()->ContributeUnverifiedPublishers();
-    });
-  } else {
-    prefix_list_updater_->StopAutoUpdate();
-  }
+  prefix_list_updater_->StartAutoUpdate([this]() {
+    // Attempt to reprocess any contributions for previously
+    // unverified publishers that are now verified.
+    ledger_->contribution()->ContributeUnverifiedPublishers();
+  });
 }
 
 void Publisher::CalcScoreConsts(const int min_duration_seconds) {
@@ -131,10 +127,6 @@ void Publisher::SaveVisit(
     const bool first_visit,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
-  if (!ledger_->state()->GetRewardsMainEnabled()) {
-    return;
-  }
-
   if (publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
     return;
@@ -623,7 +615,7 @@ void Publisher::GetPublisherActivityFromUrl(
     uint64_t windowId,
     type::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
-  if (!ledger_->state()->GetRewardsMainEnabled() || !visit_data) {
+  if (!visit_data) {
     return;
   }
 
@@ -946,7 +938,7 @@ void Publisher::OnGetPublisherBannerForSavePublisherInfo(
 
 // static
 std::string Publisher::GetShareURL(
-    const std::map<std::string, std::string>& args) {
+    const base::flat_map<std::string, std::string>& args) {
   auto comment = args.find("comment");
   auto name = args.find("name");
   auto tweet_id = args.find("tweet_id");

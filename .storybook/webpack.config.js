@@ -28,6 +28,10 @@ module.exports = async ({ config, mode }) => {
       })
     }
   })
+  config.module.rules.push({
+    test: /\.avif$/,
+    loader: 'file-loader'
+  })
   config.resolve.alias = {
     ...config.resolve.alias,
     'brave-ui': path.resolve(__dirname, '../node_modules/brave-ui/src')

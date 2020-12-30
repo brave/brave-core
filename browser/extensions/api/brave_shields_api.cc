@@ -243,9 +243,8 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
   auto enabled = ::brave_shields::GetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
-  auto result = std::make_unique<base::Value>(enabled);
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 ExtensionFunction::ResponseAction
@@ -266,7 +265,7 @@ BraveShieldsShouldDoCosmeticFilteringFunction::Run() {
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
 
-  return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
+  return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 ExtensionFunction::ResponseAction
@@ -312,12 +311,10 @@ BraveShieldsIsFirstPartyCosmeticFilteringEnabledFunction::Run() {
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto result = std::make_unique<base::Value>(
-      ::brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-          HostContentSettingsMapFactory::GetForProfile(profile),
-          url));
+  const bool enabled = ::brave_shields::IsFirstPartyCosmeticFilteringEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile), url);
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 ExtensionFunction::ResponseAction BraveShieldsSetAdControlTypeFunction::Run() {
@@ -361,9 +358,8 @@ ExtensionFunction::ResponseAction BraveShieldsGetAdControlTypeFunction::Run() {
   auto type = ::brave_shields::GetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
-  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(ControlTypeToString(type))));
 }
 
 ExtensionFunction::ResponseAction
@@ -409,9 +405,8 @@ BraveShieldsGetCookieControlTypeFunction::Run() {
   auto type = ::brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
-  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(ControlTypeToString(type))));
 }
 
 ExtensionFunction::ResponseAction
@@ -457,10 +452,8 @@ BraveShieldsGetFingerprintingControlTypeFunction::Run() {
   auto type = ::brave_shields::GetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
-  auto result =
-      std::make_unique<base::Value>(ControlTypeToString(type));
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(ControlTypeToString(type))));
 }
 
 ExtensionFunction::ResponseAction
@@ -501,9 +494,8 @@ BraveShieldsGetHTTPSEverywhereEnabledFunction::Run() {
   auto type = ::brave_shields::GetHTTPSEverywhereEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
-  auto result = std::make_unique<base::Value>(type);
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(type)));
 }
 
 ExtensionFunction::ResponseAction
@@ -549,9 +541,8 @@ BraveShieldsGetNoScriptControlTypeFunction::Run() {
   auto type = ::brave_shields::GetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile),
       url);
-  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
 
-  return RespondNow(OneArgument(std::move(result)));
+  return RespondNow(OneArgument(base::Value(ControlTypeToString(type))));
 }
 
 ExtensionFunction::ResponseAction

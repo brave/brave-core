@@ -40,7 +40,13 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   wallet = type::BraveWallet::New();
   const auto key_info_seed = util::Security::GenerateSeed();
   wallet->recovery_seed = key_info_seed;
-  ledger_->wallet()->SetWallet(std::move(wallet));
+  const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
+
+  if (!success) {
+    BLOG(0, "Wallet couldn't be set");
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
 
   auto url_callback = std::bind(&WalletCreate::OnCreate,
       this,
@@ -69,10 +75,6 @@ void WalletCreate::OnCreate(
     return;
   }
 
-  ledger_->state()->SetRewardsMainEnabled(true);
-  ledger_->state()->SetAutoContributeEnabled(true);
-  ledger_->publisher()->CalcScoreConsts(
-      ledger_->state()->GetPublisherMinVisitTime());
   ledger_->state()->ResetReconcileStamp();
   if (!ledger::is_testing) {
     ledger_->state()->SetFetchOldBalanceEnabled(false);
@@ -80,15 +82,6 @@ void WalletCreate::OnCreate(
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::REDDIT,
-      true);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::TWITTER,
-      true);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      type::InlineTipsPlatforms::GITHUB,
-      true);
   callback(type::Result::WALLET_CREATED);
 }
 

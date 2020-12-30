@@ -20,7 +20,6 @@
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/permissions/permission_request.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"

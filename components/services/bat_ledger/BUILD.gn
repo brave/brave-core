@@ -19,8 +19,6 @@ static_library("lib") {
   ]
 
   deps = [
-    "//brave/base:base",
     "//mojo/public/cpp/system",
   ]
 }
-

@@ -432,11 +432,20 @@ void DispatchBlockedEvent(const GURL& request_url,
 #endif
 }
 
+bool ShouldCleanReferrerForTopLevelNavigation(const std::string& method,
+                                              const GURL& referrer_url,
+                                              const GURL& request_url) {
+  // See https://github.com/brave/brave-browser/issues/8696
+  return ((method == "GET" || method == "HEAD") &&
+      !net::registry_controlled_domains::SameDomainOrHost(
+          referrer_url, request_url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
+}
+
 bool MaybeChangeReferrer(
     bool allow_referrers,
     bool shields_up,
     const GURL& current_referrer,
-    const GURL& tab_origin,
     const GURL& target_url,
     network::mojom::ReferrerPolicy policy,
     Referrer* output_referrer) {

@@ -21,7 +21,7 @@ std::string GetMediaKey(const std::string& mediaId, const std::string& type) {
 
 void GetTwitchParts(
     const std::string& query,
-    std::vector<std::map<std::string, std::string>>* parts) {
+    std::vector<base::flat_map<std::string, std::string>>* parts) {
   size_t pos = query.find("data=");
 
   if (std::string::npos == pos || query.length() <= 5) {
@@ -70,7 +70,7 @@ std::string ExtractData(const std::string& data,
 
 void GetVimeoParts(
     const std::string& query,
-    std::vector<std::map<std::string, std::string>>* parts) {
+    std::vector<base::flat_map<std::string, std::string>>* parts) {
   base::Optional<base::Value> data = base::JSONReader::Read(query);
   if (!data || !data->is_list()) {
     return;
@@ -78,7 +78,7 @@ void GetVimeoParts(
 
   for (const auto& item : data->GetList()) {
     if (item.is_dict()) {
-      std::map<std::string, std::string> part;
+      base::flat_map<std::string, std::string> part;
       const auto* name = item.FindStringKey("name");
       if (name) {
         part.emplace("event", *name);

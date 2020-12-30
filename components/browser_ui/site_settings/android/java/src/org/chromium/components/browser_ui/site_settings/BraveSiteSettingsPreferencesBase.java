@@ -20,6 +20,7 @@ public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFrag
     private static final String BACKGROUND_SYNC_KEY = "background_sync";
     private static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
     private static final String DESKTOP_MODE_KEY = "desktop_mode";
+    private static final String IDLE_DETECTION = "idle_detection";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -65,6 +66,7 @@ public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFrag
     }
 
     private void configureBravePreferences() {
+        removePreferenceIfPresent(IDLE_DETECTION);
         removePreferenceIfPresent(ADS_KEY);
         removePreferenceIfPresent(BACKGROUND_SYNC_KEY);
     }

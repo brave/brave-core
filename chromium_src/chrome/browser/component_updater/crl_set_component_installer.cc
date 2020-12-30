@@ -23,8 +23,7 @@ void OnCRLSetRegistered() {
 #endif
 }
 
-void RegisterCRLSetComponent(ComponentUpdateService* cus,
-                             const base::FilePath& user_data_dir) {
+void RegisterCRLSetComponent(ComponentUpdateService* cus) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<CRLSetPolicy>());
   installer->Register(g_browser_process->component_updater(),

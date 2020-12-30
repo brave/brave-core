@@ -12,8 +12,8 @@ namespace prefs {
 // Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
 
-// Stores whether Brave ads should allow ad conversion tracking
-const char kShouldAllowAdConversionTracking[] =
+// Stores whether Brave ads should allow conversion tracking
+const char kShouldAllowConversionTracking[] =
     "brave.brave_ads.should_allow_ad_conversion_tracking";
 
 // Stores the maximum amount of ads per hour
@@ -36,6 +36,22 @@ const char kAdsSubdivisionTargetingCode[] =
 // Stores the automatically detected ads subdivision targeting code
 const char kAutoDetectedAdsSubdivisionTargetingCode[] =
     "brave.brave_ads.automatically_detected_ads_subdivision_targeting_code";
+
+// Stores catalog id
+const char kCatalogId[] =
+    "brave.brave_ads.catalog_id";
+
+// Stores catalog version
+const char kCatalogVersion[] =
+    "brave.brave_ads.catalog_version";
+
+// Stores catalog ping
+const char kCatalogPing[] =
+    "brave.brave_ads.catalog_ping";
+
+// Stores catalog last updated
+const char kCatalogLastUpdated[] =
+    "brave.brave_ads.catalog_last_updated";
 
 }  // namespace prefs
 

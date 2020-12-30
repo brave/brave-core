@@ -9,13 +9,12 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -144,7 +143,7 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
 void BraveBrowserCommandController::UpdateCommandForTor() {
   // Enable new tor connection only for tor profile.
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE,
-                       brave::IsTorProfile(browser_->profile()));
+                       browser_->profile()->IsTor());
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR,
                        !brave::IsTorDisabledForProfile(browser_->profile()));
 }
@@ -173,17 +172,17 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
   switch (id) {
     case IDC_NEW_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!brave::IsTorProfile(browser_->profile()))
+      if (!browser_->profile()->IsTor())
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
-      NewEmptyWindow(brave::GetParentProfile(browser_->profile()));
+      NewEmptyWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!brave::IsTorProfile(browser_->profile()))
+      if (!browser_->profile()->IsTor())
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
-      NewIncognitoWindow(brave::GetParentProfile(browser_->profile()));
+      NewIncognitoWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(browser_);

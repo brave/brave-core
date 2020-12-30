@@ -11,6 +11,7 @@ import { Provider } from '../../../ui/components/profile'
 import { NotificationType, WalletState } from '../../../ui/components/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from '../../../ui/components/alert'
+import { RewardsOptInModal, RewardsTourModal } from '../../../shared/components/onboarding'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
@@ -25,6 +26,7 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   showSummary: boolean
+  showRewardsTour: boolean
   publisherKey: string | null
   refreshingPublisher: boolean
   publisherRefreshed: boolean
@@ -38,6 +40,7 @@ export class Panel extends React.Component<Props, State> {
     super(props)
     this.state = {
       showSummary: true,
+      showRewardsTour: false,
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
@@ -83,12 +86,6 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
-    if (!prevProps.rewardsPanelData.enabledMain &&
-        this.props.rewardsPanelData.enabledMain &&
-        !this.props.rewardsPanelData.initializing) {
-      this.actions.fetchPromotions()
-    }
-
     if (prevProps.rewardsPanelData.initializing &&
         !this.props.rewardsPanelData.initializing) {
       this.startRewards()
@@ -98,6 +95,10 @@ export class Panel extends React.Component<Props, State> {
   startRewards () {
     chrome.braveRewards.getACEnabled((enabled: boolean) => {
       this.props.actions.onEnabledAC(enabled)
+    })
+
+    chrome.braveRewards.shouldShowOnboarding((showOnboarding: boolean) => {
+      this.props.actions.onShouldShowOnboarding(showOnboarding)
     })
 
     this.actions.fetchPromotions()
@@ -285,7 +286,7 @@ export class Panel extends React.Component<Props, State> {
     utils.handleUpholdLink(balance, externalWallet)
   }
 
-  showTipSiteDetail = (monthly: boolean) => {
+  showTipSiteDetail = (entryPoint: RewardsExtension.TipDialogEntryPoint) => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const tabId = this.props.tabId
 
@@ -293,7 +294,7 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    chrome.braveRewards.tipSite(tabId, publisher.publisherKey, monthly)
+    chrome.braveRewards.tipSite(tabId, publisher.publisherKey, entryPoint)
     window.close()
   }
 
@@ -325,9 +326,6 @@ export class Panel extends React.Component<Props, State> {
         break
       case 'backupWallet':
         clickEvent = this.onBackupWallet.bind(this, id)
-        break
-      case 'ads-launch':
-        clickEvent = this.openRewardsPage.bind(this, id)
         break
       case 'insufficientFunds':
         clickEvent = this.onAddFunds.bind(this, id)
@@ -410,10 +408,6 @@ export class Panel extends React.Component<Props, State> {
       case RewardsNotificationType.REWARDS_NOTIFICATION_TIPS_PROCESSED:
         type = 'tipsProcessed'
         text = getMessage('tipsProcessedNotification')
-        break
-      case RewardsNotificationType.REWARDS_NOTIFICATION_ADS_ONBOARDING:
-        type = 'ads-launch'
-        text = getMessage('braveAdsLaunchMsg')
         break
       case RewardsNotificationType.REWARDS_NOTIFICATION_VERIFIED_PUBLISHER: {
         let name = ''
@@ -511,39 +505,8 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  generateAmounts = (publisher?: RewardsExtension.Publisher) => {
-    const { tipAmounts, parameters } = this.props.rewardsPanelData
-
-    const publisherKey = publisher && publisher.publisherKey
-    let publisherAmounts = null
-    if (publisherKey && tipAmounts && tipAmounts[publisherKey] && tipAmounts[publisherKey].length) {
-      publisherAmounts = tipAmounts[publisherKey]
-    }
-
-    // Prefer the publisher amounts, then the wallet's defaults. Fall back to defaultTipAmounts.
-    let initialAmounts = this.defaultTipAmounts
-    if (publisherAmounts) {
-      initialAmounts = publisherAmounts
-    } else if (parameters) {
-      const walletAmounts = parameters.monthlyTipChoices
-      if (walletAmounts.length) {
-        initialAmounts = walletAmounts
-      }
-    }
-
-    const amounts = [0, ...initialAmounts]
-
-    return amounts.map((value: number) => {
-      return {
-        tokens: value.toFixed(3),
-        converted: utils.convertBalance(value, parameters.rate),
-        selected: false
-      }
-    })
-  }
-
   getContribution = (publisher?: RewardsExtension.Publisher) => {
-    let defaultContribution = '0.000'
+    let defaultContribution = ''
     const { recurringTips } = this.props.rewardsPanelData
 
     if (!recurringTips ||
@@ -552,7 +515,7 @@ export class Panel extends React.Component<Props, State> {
     }
 
     recurringTips.map((tip: any) => {
-      if (tip.publisherKey === publisher.publisherKey) {
+      if (tip && tip.publisherKey === publisher.publisherKey && tip.amount > 0) {
         defaultContribution = tip.amount.toFixed(3)
       }
     })
@@ -691,6 +654,56 @@ export class Panel extends React.Component<Props, State> {
     return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
   }
 
+  showOnboarding () {
+    const { showOnboarding } = this.props.rewardsPanelData
+
+    if (this.state.showRewardsTour) {
+      const onDone = () => {
+        this.setState({ showRewardsTour: false })
+      }
+
+      const onClose = () => {
+        onDone()
+        if (showOnboarding) {
+          this.actions.saveOnboardingResult('dismissed')
+        }
+      }
+
+      return (
+        <RewardsTourModal
+          rewardsEnabled={!showOnboarding}
+          onClose={onClose}
+          onDone={onDone}
+        />
+      )
+    }
+
+    if (!showOnboarding) {
+      return null
+    }
+
+    const onTakeTour = () => {
+      this.setState({ showRewardsTour: true })
+    }
+
+    const onEnable = () => {
+      this.actions.saveOnboardingResult('opted-in')
+      onTakeTour()
+    }
+
+    const onClose = () => {
+      this.actions.saveOnboardingResult('dismissed')
+    }
+
+    return (
+      <RewardsOptInModal
+        onTakeTour={onTakeTour}
+        onEnable={onEnable}
+        onClose={onClose}
+      />
+    )
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance, parameters } = this.props.rewardsPanelData
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
@@ -702,16 +715,7 @@ export class Panel extends React.Component<Props, State> {
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
-    const tipAmounts = defaultContribution !== '0.000'
-      ? this.generateAmounts(publisher)
-      : undefined
     const { onlyAnonWallet } = this.props
-
-    if (notification &&
-        notification.notification &&
-        notificationType === 'ads-launch') {
-      delete notification.notification['date']
-    }
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(3))
@@ -735,6 +739,7 @@ export class Panel extends React.Component<Props, State> {
 
     return (
       <WalletWrapper
+        id={'rewards-panel'}
         compact={true}
         contentPadding={false}
         gradientTop={this.gradientColor}
@@ -774,17 +779,16 @@ export class Panel extends React.Component<Props, State> {
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               onToggleTips={this.doNothing}
-              donationAction={this.showTipSiteDetail.bind(this, false)}
-              onAmountChange={this.onContributionAmountChange}
+              donationAction={this.showTipSiteDetail.bind(this, 'one-time')}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={this.shouldShowConnectedMessage()}
               acEnabled={enabledAC}
-              donationAmounts={tipAmounts}
               moreLink={'https://brave.com/faq/#unclaimed-funds'}
               onRefreshPublisher={this.refreshPublisher}
               refreshingPublisher={this.state.refreshingPublisher}
               publisherRefreshed={this.state.publisherRefreshed}
-              setMonthlyAction={this.showTipSiteDetail.bind(this, true)}
+              setMonthlyAction={this.showTipSiteDetail.bind(this, 'set-monthly')}
+              cancelMonthlyAction={this.showTipSiteDetail.bind(this, 'clear-monthly')}
               onlyAnonWallet={onlyAnonWallet}
             />
             : null
@@ -797,6 +801,7 @@ export class Panel extends React.Component<Props, State> {
             {...this.getWalletSummary()}
           />
         </WalletSummarySlider>
+        {this.showOnboarding()}
       </WalletWrapper>
     )
   }

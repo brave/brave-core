@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index d029559d9d1fcf131531df53d45d01f46c8a7fba..f1ef434f59c61146e2fb6604072c2fc3343ad6da 100644
+index 45b925f5df82cb1ed624ca357a49b8d044df1c6f..fd06f89a8ff95f6c96601de59a6762ac58b04bc6 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -216,6 +216,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -207,6 +207,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        "${_material_package}:[Ss]lider",
        "${_material_package}:[Tt]oolbarLayout",
      ]
@@ -10,7 +10,7 @@ index d029559d9d1fcf131531df53d45d01f46c8a7fba..f1ef434f59c61146e2fb6604072c2fc3
  
      if (!_is_monochrome) {
        product_config_java_packages = [ "org.chromium.chrome.browser" ]
-@@ -325,6 +326,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -316,6 +317,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }

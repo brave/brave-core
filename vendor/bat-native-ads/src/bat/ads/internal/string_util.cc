@@ -8,7 +8,37 @@
 #include <iomanip>
 #include <sstream>
 
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
+#include "third_party/re2/src/re2/re2.h"
+
 namespace ads {
+
+namespace {
+
+std::string Strip(
+    const std::string& value,
+    const std::string& pattern) {
+  DCHECK(!pattern.empty());
+
+  if (value.empty()) {
+    return "";
+  }
+
+  std::string stripped_value = value;
+
+  RE2::GlobalReplace(&stripped_value, pattern, " ");
+
+  base::string16 stripped_value_string16 = base::UTF8ToUTF16(stripped_value);
+
+  stripped_value_string16 =
+      base::CollapseWhitespace(stripped_value_string16, true);
+
+  return base::UTF16ToUTF8(stripped_value_string16);
+}
+
+}  // namespace
 
 std::string BytesToHexString(
     const std::vector<uint8_t>& bytes) {
@@ -20,6 +50,30 @@ std::string BytesToHexString(
   }
 
   return hex_string.str();
+}
+
+std::string StripNonAlphaCharacters(
+    const std::string& value) {
+  const std::string escaped_characters =
+      RE2::QuoteMeta("!\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~");
+
+  const std::string pattern = base::StringPrintf("[[:cntrl:]]|"
+      "\\\\(t|n|v|f|r)|[\\t\\n\\v\\f\\r]|\\\\x[[:xdigit:]][[:xdigit:]]|"
+          "[%s]|\\S*\\d+\\S*", escaped_characters.c_str());
+
+  return Strip(value, pattern);
+}
+
+std::string StripNonAlphaNumericCharacters(
+    const std::string& value) {
+  const std::string escaped_characters =
+      RE2::QuoteMeta("!\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~");
+
+  const std::string pattern = base::StringPrintf("[[:cntrl:]]|"
+      "\\\\(t|n|v|f|r)|[\\t\\n\\v\\f\\r]|\\\\x[[:xdigit:]][[:xdigit:]]|"
+          "[%s]", escaped_characters.c_str());
+
+  return Strip(value, pattern);
 }
 
 }  // namespace ads

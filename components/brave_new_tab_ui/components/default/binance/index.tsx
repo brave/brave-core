@@ -1265,11 +1265,13 @@ class Binance extends React.PureComponent<Props, State> {
           <FiatInputWrapper>
             <FiatInputField
               type={'text'}
+              isFiat={true}
               placeholder={getLocale('binanceWidgetBuyDefault')}
               value={initialAmount}
               onChange={this.setInitialAmount}
             />
             <FiatDropdown
+              isFiat={true}
               disabled={isUS}
               itemsShowing={fiatShowing}
               className={'asset-dropdown'}

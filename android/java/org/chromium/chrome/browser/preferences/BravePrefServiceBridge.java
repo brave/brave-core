@@ -35,6 +35,34 @@ public class BravePrefServiceBridge {
     }
 
     /**
+     * @param whether google login is enabled on third party sites.
+     */
+    public void setThirdPartyGoogleLoginEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyGoogleLoginEnabled(enabled);
+    }
+
+    /**
+     * @param whether facebook embeds are allowed on third party sites.
+     */
+    public void setThirdPartyFacebookEmbedEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyFacebookEmbedEnabled(enabled);
+    }
+
+    /**
+     * @param whether twitter embeds are allowed on third party sites.
+     */
+    public void setThirdPartyTwitterEmbedEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyTwitterEmbedEnabled(enabled);
+    }
+
+    /**
+     * @param whether linkedin embeds are allowed on third party sites.
+     */
+    public void setThirdPartyLinkedinEmbedEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setThirdPartyLinkedinEmbedEnabled(enabled);
+    }
+
+    /**
      * @param whether AdBlock should be enabled.
      */
     public void setAdBlockEnabled(boolean enabled) {
@@ -103,6 +131,10 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setUseRewardsStagingServer(enabled);
     }
 
+    public void resetPromotionLastFetchStamp() {
+        BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
+    }
+
     public boolean getUseRewardsStagingServer() {
         return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
     }
@@ -143,11 +175,36 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
     }
 
+    public void setP3AEnabled(boolean value) {
+        BravePrefServiceBridgeJni.get().setP3AEnabled(value);
+    }
+
+    public boolean getP3AEnabled() {
+        return BravePrefServiceBridgeJni.get().getP3AEnabled();
+    }
+
+    public boolean hasPathP3AEnabled() {
+        return BravePrefServiceBridgeJni.get().hasPathP3AEnabled();
+    }
+
+    public void setP3ANoticeAcknowledged(boolean value) {
+        BravePrefServiceBridgeJni.get().setP3ANoticeAcknowledged(value);
+    }
+
+    public boolean getP3ANoticeAcknowledged() {
+        return BravePrefServiceBridgeJni.get().getP3ANoticeAcknowledged();
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
         void setFingerprintingProtectionEnabled(boolean enabled);
+
+        void setThirdPartyGoogleLoginEnabled(boolean enabled);
+        void setThirdPartyFacebookEmbedEnabled(boolean enabled);
+        void setThirdPartyTwitterEmbedEnabled(boolean enabled);
+        void setThirdPartyLinkedinEmbedEnabled(boolean enabled);
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
         boolean getPlayYTVideoInBrowserEnabled();
@@ -174,6 +231,7 @@ public class BravePrefServiceBridge {
         void setSafetynetStatus(String status);
 
         void setUseRewardsStagingServer(boolean enabled);
+        void resetPromotionLastFetchStamp();
         boolean getUseRewardsStagingServer();
         boolean getBooleanForContentSetting(int content_type);
 
@@ -182,5 +240,11 @@ public class BravePrefServiceBridge {
         void setReferralInitialization(boolean value);
         void setReferralPromoCode(String promoCode);
         void setReferralDownloadId(String downloadId);
+
+        void setP3AEnabled(boolean value);
+        boolean getP3AEnabled();
+        boolean hasPathP3AEnabled();
+        void setP3ANoticeAcknowledged(boolean value);
+        boolean getP3ANoticeAcknowledged();
     }
 }

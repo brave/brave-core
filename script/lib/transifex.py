@@ -9,6 +9,7 @@ import HTMLParser
 import io
 import json
 import os
+import re
 import requests
 import tempfile
 import lxml.etree
@@ -22,12 +23,20 @@ transifex_handled_slugs = [
     'brave_generated_resources',
     'brave_components_resources',
     'brave_extension',
-    'rewards_extension'
+    'rewards_extension',
+    'ethereum_remote_client_extension'
 ]
 # List of HTML tags that we allowed to be present inside the translated text.
 allowed_html_tags = [
-  'a', 'abbr', 'b', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
+  'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'h4', 'learnmore', 'li', 'ol', 'p', 'span', 'strong', 'ul'
 ]
+
+
+def transifex_name_from_greaselion_script_name(script_name):
+    match = re.search('brave-site-specific-scripts/scripts/(.*)/_locales/en_US/messages.json$', script_name)
+    if match:
+        return 'greaselion_' + match.group(1).replace('-', '_').replace('/', '_')
+    return ''
 
 
 def transifex_name_from_filename(source_file_path, filename):
@@ -36,12 +45,12 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_components_resources'
     elif ext == '.grd':
         return filename
+    elif 'brave-site-specific-scripts/scripts/' in source_file_path:
+        return transifex_name_from_greaselion_script_name(source_file_path)
     elif 'brave_extension' in source_file_path:
         return 'brave_extension'
     elif 'brave_rewards' in source_file_path:
         return 'rewards_extension'
-    elif 'ethereum-remote-client/brave/app' in source_file_path:
-        return 'brave_ethereum_remote_client_extension'
     elif 'ethereum-remote-client/app' in source_file_path:
         return 'ethereum_remote_client_extension'
     assert False, ('JSON files should be mapped explicitly, this '
@@ -69,8 +78,8 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
     string_tag = lxml.etree.Element('translation')
     string_tag.set('id', str(fingerprint))
     if string_value.count('<') != string_value.count('>'):
-        assert False, 'Warning: Unmatched < character, consider fixing on '
-        ' Trasifex, force encoding the following string:' + string_value
+        assert False, 'Warning: Unmatched < character, consider fixing on ' \
+                      ' Trasifex, force encoding the following string:' + string_value
     string_tag.text = string_value
     string_tag.tail = '\n'
     return string_tag
@@ -205,7 +214,7 @@ def validate_tags_in_one_string(string_tag):
         string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
     except lxml.etree.XMLSyntaxError as e:
         errors = ("\n--------------------\n"
-                  "{0}\nERROR: {1}\n").format(string_text, str(e))
+                  "{0}\nERROR: {1}\n").format(string_text.encode('utf-8'), str(e))
         print errors
         cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
@@ -249,7 +258,7 @@ def fix_links_with_target_blank_in_ph_text(text):
         return text[:target] + ' rel="noopener noreferrer"' + text[target:]
 
     rel += 5
-    rel_end = text[rel:].find('"')
+    rel_end = rel + text[rel:].find('"')
     rel_value = text[rel:rel_end]
     rel_add = ''
     if rel_value.find('noopener') == -1:
@@ -748,7 +757,7 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
     filename = os.path.basename(grd_file_path).split('.')[0]
     x_grd_extra_strings = grd_string_names - transifex_string_ids
     assert len(x_grd_extra_strings) == 0, (
-        'GRD has extra strings over Transifex %' %
+        'GRD has extra strings over Transifex %s' %
         list(x_grd_extra_strings))
     x_transifex_extra_strings = transifex_string_ids - grd_string_names
     assert len(x_transifex_extra_strings) == 0, (
@@ -893,7 +902,7 @@ def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
 
 def should_use_transifex(source_string_path, filename):
     slug = transifex_name_from_filename(source_string_path, filename)
-    return slug in transifex_handled_slugs
+    return slug in transifex_handled_slugs or slug.startswith('greaselion_')
 
 
 def pull_xtb_without_transifex(grd_file_path, brave_source_root):
@@ -928,26 +937,17 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
         xml_tree = lxml.etree.parse(chromium_xtb_file)
 
         for node in xml_tree.xpath('//translation'):
-            pre_text_node = textify(node)
-            pre_meaning = node.get('meaning') if 'meaning' in node.attrib else ''
-            pre_desc = node.get('desc') if 'desc' in node.attrib else ''
-
             generate_braveified_node(node, False, True)
-
-            meaning = node.get('meaning') if 'meaning' in node.attrib else ''
-            desc = node.get('desc') if 'desc' in node.attrib else ''
-
-            # A node's fingerprint changes if the desc or the meaning change
-            if (pre_text_node != textify(node) or
-                    pre_meaning != meaning or
-                    pre_desc != desc):
-                old_fp = node.attrib['id']
-                # It's possible for an xtb string to not be in our GRD
-                # This happens for exmaple with Chrome OS strings which
-                #  we don't process files for
-                # print 'old fp: ', old_fp
-                if old_fp in fp_map:
-                    node.attrib['id'] = fp_map.get(old_fp)
+            # Use our fp, when exists.
+            old_fp = node.attrib['id']
+            # It's possible for an xtb string to not be in our GRD.
+            # This happens, for exmaple, with Chrome OS strings which
+            # we don't process files for.
+            if old_fp in fp_map:
+                new_fp = fp_map.get(old_fp)
+                if new_fp != old_fp:
+                    node.attrib['id'] = new_fp
+                    # print('fp: {0} -> {1}').format(old_fp, new_fp)
 
         fix_links_with_target_blank_in_xtb_tree(xml_tree)
         transformed_content = ('<?xml version="1.0" ?>\n' +

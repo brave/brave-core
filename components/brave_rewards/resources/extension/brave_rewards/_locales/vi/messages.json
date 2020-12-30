@@ -36,7 +36,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Hãy sẵn sàng trải nghiệm Internet thế hệ kế tiếp.",
+    "message": "Hãy sẵn sàng để trải nghiệm Internet tiếp theo.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -48,7 +48,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Chi tiết",
+    "message": "Thông tin chi tiết",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -120,7 +120,7 @@
     "description": "Month"
   },
   "monthJul": {
-    "message": "Tháng bảy",
+    "message": "Tháng 7",
     "description": "Month"
   },
   "monthJun": {
@@ -132,7 +132,7 @@
     "description": "Month"
   },
   "monthMay": {
-    "message": "Tháng năm",
+    "message": "Tháng 5",
     "description": "Month"
   },
   "monthNov": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Đã nhận điểm tài trợ",
+    "message": "Điểm Tặng Đã Nhận",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Tự động-Đóng góp",
+    "message": "Tự động Đóng góp",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,7 +182,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Khoản đóng góp hàng tháng",
+    "message": "Khoản đóng góp Hàng tháng",
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
@@ -196,10 +196,6 @@
   "braveAdsLaunchMsg": {
     "message": "Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.",
     "description": "Message for ads launch notification"
-  },
-  "braveAdsLaunchTitle": {
-    "message": "Brave Ads đã xuất hiện!",
-    "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
     "message": "Quảng cáo Brave",
@@ -320,7 +316,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Tìm hiểu thêm.",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -328,7 +324,7 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Tìm hiểu thêm.",
+    "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -384,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Chính sách Quyền riêng tư",
+    "message": "Privacy Policy",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -396,7 +392,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Chào mừng bạn trở lại!",
+    "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -420,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Bật Quảng cáo",
+    "message": "Bật Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -466,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Đóng góp Đang chờ xử lý",
+    "message": "Khoản đóng góp Chưa xử lý",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -488,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Điểm tài trợ miễn phí",
+    "message": "Tặng Điểm Miễn phí",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -496,7 +492,7 @@
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Điểm thưởng đang được gửi đến ví Brave Rewards của bạn.",
+    "message": "Điểm thưởng của bạn đang được gửi đến ví Brave Rewards.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
@@ -516,7 +512,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Ví đã được xác thực",
+    "message": "Ví đã được xác thực.",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -603,6 +599,10 @@
     "message": "Hủy",
     "description": "Text for cancel button"
   },
+  "changeAmount":  {
+    "message": "Thay đổi số lượng",
+    "description": "Button text for changing monthly contribution amount"
+  },
   "login":  {
     "message": "Đăng nhập",
     "description": "Text for login button"
@@ -612,7 +612,7 @@
     "description": "Text for login button"
   },
   "loginMessageText":  {
-    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Vui lòng thử lại sau. <br/> Nếu bạn đã có tài khoản Uphold đã xác minh, hãy tiếp tục đăng nhập.",
+    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Xin vui lòng thử lại sau.\nNếu bạn đã có tài khoản Uphold được xác minh, hãy tiếp tục đăng nhập.",
     "description": "Text for login button"
   },
   "walletConnected":  {
@@ -622,5 +622,39 @@
   "walletPending":  {
     "message": "Đang chờ xử lý",
     "description": "Status button that tells user that he is currently pending"
+  },
+  "walletVerificationNote3":  {
+    "message": "Lưu ý: Các giao dịch của bạn sẽ hiển thị với Uphold khi bạn cho phép; chẳng hạn, họ sẽ có thể thấy người nhận và số tiền tip của bạn.",
+    "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Kiếm Token & Tặng Lại",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư, đồng thời tự động hỗ trợ các website và người sáng tạo nội dung mà bạn yêu thích.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Bắt đầu sử dụng Brave Rewards",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Bằng cách tiếp tục, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách Quyền riêng tư$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
   }
 }

@@ -50,6 +50,8 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
                       base::Optional<std::string> input);
   bool IsValidPath(const std::string& path) const;
   bool IsLogoPath(const std::string& path) const;
+  bool IsDefaultLogoPath(const std::string& path) const;
+  int GetLogoIndexFromPath(const std::string& path) const;
   bool IsWallpaperPath(const std::string& path) const;
   int GetWallpaperIndexFromPath(const std::string& path) const;
   bool IsTopSiteFaviconPath(const std::string& path) const;

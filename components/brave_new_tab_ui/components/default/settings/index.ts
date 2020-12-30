@@ -117,7 +117,8 @@ export const SettingsSidebarButtonText = styled<{ isActive: boolean }, 'span'>('
   text-transform: capitalize;
 
   transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
-              color var(--sidebar-button-transition-timing) ease-in-out;
+              color var(--sidebar-button-transition-timing) ease-in-out,
+              font-weight var(--sidebar-button-transition-timing) ease-in-out;
 
   &:hover {
     color: ${p => p.theme.color.brandBrave};
@@ -183,11 +184,16 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
     }
   }
 
-  &:active {
+  &:active,
+  &:focus {
     outline: none;
   }
 
-  &:focus {
+  &:active {
+    --active-opacity: 1;
+  }
+
+  &:focus-visible {
     outline-style: solid;
     outline-color: ${p => p.theme.color.brandBrave};
     outline-width: 1px;
@@ -195,9 +201,10 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
 `
 
 export const SettingsFeatureBody = styled<{}, 'section'>('section')`
-  padding: 10px 0;
+  padding: 10px 16px;
   height: 360px;
-  overflow-y: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
 `
 
 export const SettingsTitle = styled<{}, 'div'>('div')`
@@ -226,27 +233,53 @@ export const SettingsCloseIcon = styled<{}, 'button'>('button')`
   height: 20px;
   cursor: pointer;
   background: inherit;
+  outline: none;
+
+  &:active {
+    color: ${p => p.theme.color.brandBraveActive};
+  }
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 2px;
+  }
 `
 
 interface SettingsRowProps {
   isChildSetting?: boolean
+  isInteractive?: boolean
 }
 
 export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   box-sizing: border-box;
+  margin-bottom: 10px;
   display: grid;
   grid-template-columns: auto max-content;
   align-items: center;
   width: 100%;
-  height: 28px;
+  font-weight: normal;
   ${p => p.isChildSetting && css`
     padding-left: 36px;
   `}
+  ${p => p.isInteractive && css`
+    cursor: pointer;
+    &:focus-visible {
+      outline: solid 1px ${p => p.theme.color.brandBrave};
+    }
+    &:hover {
+      color: ${p => p.theme.color.brandBraveInteracting}
+    }
+    &:active {
+      color: ${p => p.theme.color.brandBraveActive}
+    }
+  `}
 
   /* TODO(petemill): Use specific Component for Content and Control sides */
-  :last-child
+  :last-child:not(:first-child)
   {
     justify-self: end;
+    margin-bottom: 0;
   }
 `
 
@@ -254,11 +287,17 @@ export const SettingsText = styled<{}, 'span'>('span')`
   display: flex;
   align-items: center;
   font-style: normal;
-  font-weight: normal;
   font-size: 13px;
   line-height: 24px;
   letter-spacing: 0.01em;
   font-family: ${p => p.theme.fontFamily.heading};
+`
+
+export const SettingsSectionTitle = styled('h3')`
+  margin: 0 0 8px 0;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 24px;
 `
 
 interface SettingsWrapperProps {
@@ -266,12 +305,12 @@ interface SettingsWrapperProps {
 }
 
 export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -291,21 +330,21 @@ export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
 `
 
 export const SettingsWidget = styled<{}, 'div'>('div')`
-  float: left;
-  width: 48%;
-  margin-top: 20px;
+  width: calc(50% - var(--widget-gap));
+  margin-top: calc(20px - var(--widget-gap));
+  padding: 0px 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
-interface WidgetSettingsProps {
-  hasFeatured: boolean
-}
-
-export const StyledWidgetSettings = styled<WidgetSettingsProps, 'div'>('div')`
+export const StyledWidgetSettings = styled('div')`
+  --widget-gap: 17px;
   font-family: ${p => p.theme.fontFamily.heading};
-
-  ${SettingsWidget}:nth-child(${p => p.hasFeatured ? 'odd' : 'even'}) {
-    margin-left: 17px;
-  }
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--widget-gap);
 `
 
 export const FeaturedSettingsWidget = styled<{}, 'div'>('div')`
@@ -320,6 +359,7 @@ export const StyledBannerImage = styled<{}, 'img'>('img')`
 export const StyledSettingsInfo = styled<{}, 'div'>('div')`
   float: left;
   max-width: 250px;
+  flex-grow: 1;
 `
 
 export const StyledSettingsTitle = styled<{}, 'div'>('div')`
@@ -348,23 +388,67 @@ export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
   float: ${p => p.float ? 'right' : 'none'};
   margin-right: ${p => p.float ? 10 : 0}px;
   border: none;
-  margin-top: 8px;
+  margin-top: 15px;
   cursor: pointer;
-  background: ${p => p.isAdd ? '#FB542B' : '#212529'};
+  background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
+  width: fit-content;
+  display: flex;
+  align-items: center;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
 `
 
 export const StyledButtonIcon = styled<{}, 'div'>('div')`
   display: inline-block;
-  vertical-align: sub;
   margin-right: 5px;
-  height: 20px;
-  width: 20px;
+  width: 19px;
+  height: 17px;
+`
+
+export const StyledAddButtonIcon = styled(StyledButtonIcon)`
+  width: 19px;
+  height: 19px;
+`
+
+export const StyledHideButtonIcon = styled(StyledButtonIcon)`
+  width: 19px;
+  height: 17px;
 `
 
 export const StyledButtonLabel = styled<{}, 'span'>('span')`
   max-width: 100px;
   text-overflow: ellipsis;
   display: inline-block;
-  overflow: hidden;
   white-space: nowrap;
+`
+
+export const ToggleCardsWrapper = styled<{}, 'div'>('div')`
+  padding: 15px 15px 5px 15px;
+  clear: both;
+  border-radius: 10px;
+  background: ${p => isDarkTheme(p) ? '#3B3F4E' : '#F3F3FE'};
+  color: ${p => isDarkTheme(p) ? '#FFF' : 'rgb(59, 62, 79)'};
+`
+
+export const ToggleCardsText = styled<{}, 'div'>('div')`
+  text-align: left;
+  max-width: 325px;
+`
+
+export const ToggleCardsTitle = styled<{}, 'span'>('span')`
+  font-weight: bold;
+`
+
+export const ToggleCardsCopy = styled<{}, 'p'>('p')`
+  line-height: 18px;
+  font-weight: normal;
+`
+
+export const ToggleCardsSwitch = styled<{}, 'div'>('div')`
+  float: right;
+  margin: -65px -10px 0 0;
 `

@@ -49,24 +49,12 @@ window.cr.define('brave_rewards', function () {
     return newActions
   }
 
-  function walletCreated () {
-    getActions().onWalletCreated()
-  }
-
-  function walletCreateFailed () {
-    getActions().onWalletCreateFailed()
-  }
-
   function rewardsParameters (properties: Rewards.RewardsParameters) {
     getActions().onRewardsParameters(properties)
   }
 
   function promotions (properties: Rewards.PromotionResponse) {
     getActions().onPromotions(properties)
-  }
-
-  function walletPassphrase (pass: string) {
-    getActions().onWalletPassphrase(pass)
   }
 
   function promotionFinish (properties: Rewards.PromotionFinish) {
@@ -87,10 +75,6 @@ window.cr.define('brave_rewards', function () {
 
   function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
     getActions().onBalanceReport(properties)
-  }
-
-  function walletExists (exists: boolean) {
-    getActions().onWalletExists(exists)
   }
 
   function contributionAmount (amount: number) {
@@ -119,16 +103,12 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function rewardsEnabled (enabled: boolean) {
-    getActions().onRewardsEnabled(enabled)
+  function statement (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsReceivedThisMonth: number}) {
+    getActions().onStatement(data)
   }
 
-  function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
-    getActions().onTransactionHistory(data)
-  }
-
-  function transactionHistoryChanged () {
-    getActions().onTransactionHistoryChanged()
+  function statementChanged () {
+    getActions().onStatementChanged()
   }
 
   function recurringTipSaved (success: boolean) {
@@ -184,17 +164,13 @@ window.cr.define('brave_rewards', function () {
 
   return {
     initialize,
-    walletCreated,
-    walletCreateFailed,
     rewardsParameters,
     promotions,
-    walletPassphrase,
     promotionFinish,
     reconcileStamp,
     contributeList,
     excludedList,
     balanceReport,
-    walletExists,
     contributionAmount,
     recurringTips,
     currentTips,
@@ -202,9 +178,8 @@ window.cr.define('brave_rewards', function () {
     adsData,
     pendingContributions,
     onPendingContributionSaved,
-    rewardsEnabled,
-    transactionHistory,
-    transactionHistoryChanged,
+    statement,
+    statementChanged,
     recurringTipSaved,
     recurringTipRemoved,
     onRemovePendingContribution,

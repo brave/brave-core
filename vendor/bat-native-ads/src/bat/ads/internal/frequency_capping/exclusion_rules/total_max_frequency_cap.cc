@@ -6,29 +6,23 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 TotalMaxFrequencyCap::TotalMaxFrequencyCap(
-    const AdsImpl* const ads)
-    : ads_(ads) {
-  DCHECK(ads_);
+    const AdEventList& ad_events)
+    : ad_events_(ad_events) {
 }
 
 TotalMaxFrequencyCap::~TotalMaxFrequencyCap() = default;
 
 bool TotalMaxFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
-  const std::map<std::string, std::deque<uint64_t>> history =
-      ads_->get_client()->GetCreativeSetHistory();
+  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
-  const std::deque<uint64_t> filtered_history =
-      FilterHistory(history, ad.creative_set_id);
-
-  if (!DoesRespectCap(filtered_history, ad)) {
+  if (!DoesRespectCap(filtered_ad_events, ad)) {
     last_message_ = base::StringPrintf("creativeSetId %s has exceeded the "
         "frequency capping for totalMax", ad.creative_set_id.c_str());
 
@@ -43,25 +37,30 @@ std::string TotalMaxFrequencyCap::get_last_message() const {
 }
 
 bool TotalMaxFrequencyCap::DoesRespectCap(
-    const std::deque<uint64_t>& history,
+    const AdEventList& ad_events,
     const CreativeAdInfo& ad) {
-  if (history.size() >= ad.total_max) {
+  if (ad_events.size() >= ad.total_max) {
     return false;
   }
 
   return true;
 }
 
-std::deque<uint64_t> TotalMaxFrequencyCap::FilterHistory(
-    const std::map<std::string, std::deque<uint64_t>>& history,
-    const std::string& creative_set_id) {
-  std::deque<uint64_t> filtered_history;
+AdEventList TotalMaxFrequencyCap::FilterAdEvents(
+    const AdEventList& ad_events,
+    const CreativeAdInfo& ad) const {
+  AdEventList filtered_ad_events = ad_events;
 
-  if (history.find(creative_set_id) != history.end()) {
-    filtered_history = history.at(creative_set_id);
-  }
+  const auto iter = std::remove_if(filtered_ad_events.begin(),
+      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
+    return ad_event.type == AdType::kNewTabPageAd ||
+        ad_event.creative_set_id != ad.creative_set_id ||
+        ad_event.confirmation_type != ConfirmationType::kViewed;
+  });
 
-  return filtered_history;
+  filtered_ad_events.erase(iter, filtered_ad_events.end());
+
+  return filtered_ad_events;
 }
 
 }  // namespace ads

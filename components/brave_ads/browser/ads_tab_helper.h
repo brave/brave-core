@@ -12,12 +12,15 @@
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
+
+#if !defined(OS_ANDROID)
+#include "chrome/browser/ui/browser_list_observer.h"
+#endif
 
 class Browser;
 
@@ -85,7 +88,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   AdsService* ads_service_;  // NOT OWNED
   bool is_active_;
   bool is_browser_active_;
-  std::vector<GURL> urls_;
+  std::vector<GURL> redirect_chain_;
 
   bool run_distiller_;
 

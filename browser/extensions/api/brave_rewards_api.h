@@ -17,20 +17,6 @@
 namespace extensions {
 namespace api {
 
-class BraveRewardsCreateWalletFunction : public ExtensionFunction {
- public:
-  BraveRewardsCreateWalletFunction();
-  DECLARE_EXTENSION_FUNCTION("braveRewards.createWallet", UNKNOWN)
-
- protected:
-  ~BraveRewardsCreateWalletFunction() override;
-
-  ResponseAction Run() override;
- private:
-  base::WeakPtrFactory<BraveRewardsCreateWalletFunction> weak_factory_;
-  void OnCreateWallet(const ledger::type::Result result);
-};
-
 class BraveRewardsOpenBrowserActionUIFunction :
     public ExtensionFunction {
  public:
@@ -116,6 +102,9 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
+  void OnTipUserStartProcess(
+      const std::string& publisher_key,
+      ledger::type::Result result);
   void OnTipUserGetPublisherInfo(
       const ledger::type::Result result,
       ledger::type::PublisherInfoPtr info);
@@ -123,34 +112,6 @@ class BraveRewardsTipUserFunction : public ExtensionFunction {
   void ShowTipDialog();
 
   base::WeakPtrFactory<BraveRewardsTipUserFunction> weak_factory_;
-};
-
-class BraveRewardsTipGitHubUserFunction : public ExtensionFunction {
- public:
-  BraveRewardsTipGitHubUserFunction();
-  DECLARE_EXTENSION_FUNCTION("braveRewards.tipGitHubUser", UNKNOWN)
-
- protected:
-  ~BraveRewardsTipGitHubUserFunction() override;
-
-  ResponseAction Run() override;
- private:
-  base::WeakPtrFactory<BraveRewardsTipGitHubUserFunction> weak_factory_;
-  void OnGitHubPublisherInfoSaved(ledger::type::PublisherInfoPtr publisher);
-};
-
-class BraveRewardsTipRedditUserFunction : public ExtensionFunction {
- public:
-  BraveRewardsTipRedditUserFunction();
-  DECLARE_EXTENSION_FUNCTION("braveRewards.tipRedditUser", UNKNOWN)
-
- protected:
-  ~BraveRewardsTipRedditUserFunction() override;
-
-  ResponseAction Run() override;
- private:
-  base::WeakPtrFactory<BraveRewardsTipRedditUserFunction> weak_factory_;
-  void OnRedditPublisherInfoSaved(ledger::type::PublisherInfoPtr publisher);
 };
 
 class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
@@ -260,26 +221,22 @@ class BraveRewardsGetPendingContributionsTotalFunction
   void OnGetPendingTotal(double amount);
 };
 
-class BraveRewardsGetRewardsMainEnabledFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsMainEnabled", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetRewardsMainEnabledFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetRewardsMainEnabled(bool enabled);
-};
-
 class BraveRewardsSaveAdsSettingFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveAdsSetting", UNKNOWN)
 
  protected:
   ~BraveRewardsSaveAdsSettingFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsSetAutoContributeEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.setAutoContributeEnabled", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSetAutoContributeEnabledFunction() override;
 
   ResponseAction Run() override;
 };
@@ -295,16 +252,6 @@ class BraveRewardsGetACEnabledFunction : public ExtensionFunction {
 
  private:
   void OnGetACEnabled(bool enabled);
-};
-
-class BraveRewardsSaveSettingFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveSetting", UNKNOWN)
-
- protected:
-  ~BraveRewardsSaveSettingFunction() override;
-
-  ResponseAction Run() override;
 };
 
 class BraveRewardsSaveRecurringTipFunction : public ExtensionFunction {
@@ -473,22 +420,10 @@ class BraveRewardsGetAdsEstimatedEarningsFunction
   void OnAdsEstimatedEarnings(
       const bool success,
       const double estimated_pending_rewards,
-      const uint64_t next_payment_date_in_seconds,
-      const uint64_t ad_notifications_received_this_month);
-};
-
-class BraveRewardsGetWalletExistsFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletExists", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetWalletExistsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetWalletExists(const bool exists);
+      const uint64_t next_payment_date,
+      const uint64_t ads_received_this_month,
+      const double earnings_this_month,
+      const double earnings_last_month);
 };
 
 class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {
@@ -521,6 +456,26 @@ class BraveRewardsIsInitializedFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsIsInitializedFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsShouldShowOnboardingFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.shouldShowOnboarding", UNKNOWN)
+
+ protected:
+  ~BraveRewardsShouldShowOnboardingFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsSaveOnboardingResultFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.saveOnboardingResult", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSaveOnboardingResultFunction() override;
 
   ResponseAction Run() override;
 };

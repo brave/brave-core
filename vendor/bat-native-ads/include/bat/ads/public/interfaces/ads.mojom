@@ -10,9 +10,20 @@ enum BraveAdsEnvironment {
   DEVELOPMENT
 };
 
+struct BraveAdsSysInfo {
+  string manufacturer;
+  string model;
+};
+
 struct BraveAdsBuildChannel {
   bool is_release;
   string name;
+};
+
+enum BraveAdsAdType {
+  kUndefined = 0,
+  kAdNotification,
+  kNewTabPageAd
 };
 
 enum BraveAdsAdNotificationEventType {
@@ -22,10 +33,19 @@ enum BraveAdsAdNotificationEventType {
   kTimedOut
 };
 
+enum BraveAdsNewTabPageAdEventType {
+  kViewed = 0,
+  kClicked
+};
+
 enum BraveAdsUrlRequestMethod {
   GET = 0,
   PUT,
   POST
+};
+
+enum BraveAdsP2AEventType {
+  kListType = 0
 };
 
 struct BraveAdsUrlRequest {

@@ -12,7 +12,6 @@ import {
   ModalActivity,
   ModalBackupRestore,
   WalletEmpty,
-  WalletOff,
   WalletSummary,
   WalletWrapper
 } from '../../components'
@@ -262,9 +261,6 @@ class PageWallet extends React.Component<Props, State> {
                 onlyAnonWallet={false}
               />
               : null
-          }
-          {
-            content === 'off' ? <WalletOff /> : null
           }
         </WalletWrapper>
         {

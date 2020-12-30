@@ -6,11 +6,15 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
         android:key="close_tabs_on_exit"
         android:title="@string/close_tabs_on_exit_title"
         android:summary="@string/close_tabs_on_exit_summary"
+        android:defaultValue="false" />
+    <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
+        android:key="send_p3a_analytics"
+        android:title="@string/send_p3a_analytics_title"
+        android:summary="@string/send_p3a_analytics_summary"
         android:defaultValue="false" />
     <org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference
         android:key="httpse"
@@ -40,4 +44,25 @@
         android:key="autocomplete_brave_suggested_sites"
         android:title="@string/autocomplete_brave_suggested_sites_title"
         android:persistent="false"/>
+    <PreferenceCategory
+        android:key="brave_shields_social_blocking"
+        android:title="@string/brave_shields_social_blocking_title">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="social_blocking_google"
+            android:title="@string/brave_shields_social_blocking_google"
+            android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="social_blocking_facebook"
+            android:title="@string/brave_shields_social_blocking_facebook"
+            android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="social_blocking_twitter"
+            android:title="@string/brave_shields_social_blocking_twitter"
+            android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="social_blocking_linkedin"
+            android:title="@string/brave_shields_social_blocking_linkedin"
+            android:defaultValue="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

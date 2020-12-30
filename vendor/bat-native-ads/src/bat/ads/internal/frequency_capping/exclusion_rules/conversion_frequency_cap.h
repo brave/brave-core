@@ -6,23 +6,20 @@
 #ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_CONVERSION_FREQUENCY_CAP_H_  // NOLINT
 #define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_CONVERSION_FREQUENCY_CAP_H_  // NOLINT
 
-#include <stdint.h>
-
-#include <deque>
-#include <map>
 #include <string>
 
+#include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
-class AdsImpl;
+struct CreativeAdInfo;
 
-class ConversionFrequencyCap : public ExclusionRule {
+class ConversionFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
   ConversionFrequencyCap(
-      const AdsImpl* const ads);
+      const AdEventList& ad_events);
 
   ~ConversionFrequencyCap() override;
 
@@ -35,7 +32,7 @@ class ConversionFrequencyCap : public ExclusionRule {
   std::string get_last_message() const override;
 
  private:
-  const AdsImpl* const ads_;  // NOT OWNED
+  AdEventList ad_events_;
 
   std::string last_message_;
 
@@ -43,12 +40,11 @@ class ConversionFrequencyCap : public ExclusionRule {
       const CreativeAdInfo& ad);
 
   bool DoesRespectCap(
-      const std::deque<uint64_t>& history,
-      const CreativeAdInfo& ad);
+      const AdEventList& ad_events);
 
-  std::deque<uint64_t> FilterHistory(
-      const std::map<std::string, std::deque<uint64_t>>& history,
-      const std::string& creative_set_id);
+  AdEventList FilterAdEvents(
+      const AdEventList& ad_events,
+      const CreativeAdInfo& ad) const;
 };
 
 }  // namespace ads

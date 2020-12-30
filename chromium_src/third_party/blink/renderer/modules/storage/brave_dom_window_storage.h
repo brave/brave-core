@@ -6,20 +6,37 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_STORAGE_BRAVE_DOM_WINDOW_STORAGE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_STORAGE_BRAVE_DOM_WINDOW_STORAGE_H_
 
+#include "third_party/blink/renderer/platform/supplementable.h"
+
 namespace blink {
 
 class ExceptionState;
 class LocalDOMWindow;
 class StorageArea;
 
-class BraveDOMWindowStorage {
+class BraveDOMWindowStorage final
+    : public GarbageCollected<BraveDOMWindowStorage>,
+      public Supplement<LocalDOMWindow> {
  public:
+  static const char kSupplementName[];
+
+  static BraveDOMWindowStorage& From(LocalDOMWindow&);
   static StorageArea* sessionStorage(LocalDOMWindow&, ExceptionState&);
   static StorageArea* localStorage(LocalDOMWindow&, ExceptionState&);
 
+  StorageArea* sessionStorage(ExceptionState&);
+  StorageArea* localStorage(ExceptionState&);
+
+  explicit BraveDOMWindowStorage(LocalDOMWindow&);
+
+  void Trace(Visitor*) const override;
+
  private:
-  BraveDOMWindowStorage();
-  ~BraveDOMWindowStorage();
+  StorageArea* ephemeralSessionStorage();
+  StorageArea* ephemeralLocalStorage();
+
+  mutable Member<StorageArea> ephemeral_session_storage_;
+  mutable Member<StorageArea> ephemeral_local_storage_;
 };
 
 }  // namespace blink

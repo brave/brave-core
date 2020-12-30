@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/strings/string16.h"
@@ -19,13 +20,15 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/base/containers/utils.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/logging.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 #include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/time_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/pref_names.h"
 
@@ -113,18 +116,30 @@ bool ParseTimeTag(
   return true;
 }
 
-void ParseAndReplaceTags(
+std::vector<std::string> ParseTagsForText(
     std::string* text) {
   DCHECK(text);
 
   re2::StringPiece text_string_piece(*text);
   RE2 r("<(.*)>");
 
-  std::string tag;
+  std::vector<std::string> tags;
 
+  std::string tag;
   while (RE2::FindAndConsume(&text_string_piece, r, &tag)) {
     tag = base::ToLowerASCII(tag);
+    tags.push_back(tag);
+  }
 
+  return tags;
+}
+
+void ReplaceTagsForText(
+    std::string* text,
+    const std::vector<std::string>& tags) {
+  DCHECK(text);
+
+  for (const auto& tag : tags) {
     const std::vector<std::string> components = base::SplitString(tag, ":",
         base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
@@ -153,6 +168,14 @@ void ParseAndReplaceTags(
   }
 }
 
+void ParseAndReplaceTagsForText(
+    std::string* text) {
+  DCHECK(text);
+
+  const std::vector<std::string> tags = ParseTagsForText(text);
+  ReplaceTagsForText(text, tags);
+}
+
 std::string GetUuid(
     const std::string& name) {
   const ::testing::TestInfo* const test_info =
@@ -177,8 +200,8 @@ bool GetNextUrlEndpointResponse(
     const std::string& url,
     const URLEndpoints& endpoints,
     URLEndpointResponse* url_endpoint_response) {
-  DCHECK(!url.empty());
-  DCHECK(!endpoints.empty());
+  DCHECK(!url.empty()) << "Empty URL";
+  DCHECK(!endpoints.empty()) << "Missing endpoints";
   DCHECK(url_endpoint_response);
 
   const std::string path = GURL(url).PathForRequest();
@@ -190,10 +213,9 @@ bool GetNextUrlEndpointResponse(
     return false;
   }
 
-  const std::string uuid = GetUuid(path);
-
   uint16_t url_endpoint_response_index = 0;
 
+  const std::string uuid = GetUuid(path);
   const auto url_endpoint_response_indexes_iter =
       g_url_endpoint_indexes.find(uuid);
 
@@ -201,21 +223,46 @@ bool GetNextUrlEndpointResponse(
     // uuid does not exist so insert a new index set to 0 for the endpoint
     g_url_endpoint_indexes.insert({uuid, url_endpoint_response_index});
   } else {
-    url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
-    if (url_endpoint_response_index == url_endpoint_responses.size()) {
-      // Fail due to missing url endpoint responses
-      NOTREACHED();
+    if (url_endpoint_response_indexes_iter->second ==
+        url_endpoint_responses.size() - 1) {
+      NOTREACHED() << "Missing MockUrlRequest endpoint response for " << url;
       return false;
     }
 
-    // uuid exists so increment endpoint index
     url_endpoint_response_indexes_iter->second++;
+
+    url_endpoint_response_index = url_endpoint_response_indexes_iter->second;
   }
+
+  DCHECK_GE(url_endpoint_response_index, 0);
+  DCHECK_LT(url_endpoint_response_index, url_endpoint_responses.size());
 
   *url_endpoint_response =
       url_endpoint_responses.at(url_endpoint_response_index);
 
   return true;
+}
+
+base::flat_map<std::string, std::string> UrlRequestHeadersToMap(
+    const std::vector<std::string>& headers) {
+  base::flat_map<std::string, std::string> normalized_headers;
+
+  for (const auto& header : headers) {
+    const std::vector<std::string> components = base::SplitString(header,
+        ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+
+    if (components.size() != 2) {
+      NOTREACHED();
+      continue;
+    }
+
+    const std::string key = components.at(0);
+    const std::string value = components.at(1);
+
+    normalized_headers[key] = value;
+  }
+
+  return normalized_headers;
 }
 
 void MockGetBooleanPref(
@@ -382,14 +429,23 @@ void MockClearPref(
 
 void MockDefaultPrefs(
     const std::unique_ptr<AdsClientMock>& mock) {
-  mock->SetUint64Pref(prefs::kAdsPerDay, 20);
-  mock->SetUint64Pref(prefs::kAdsPerHour, 2);
   mock->SetBooleanPref(prefs::kEnabled, true);
-  mock->SetBooleanPref(prefs::kShouldAllowAdConversionTracking, true);
+
+  mock->SetUint64Pref(prefs::kAdsPerHour, 0);
+  mock->SetUint64Pref(prefs::kAdsPerDay, 0);
+
+  mock->SetIntegerPref(prefs::kIdleThreshold, 15);
+
+  mock->SetBooleanPref(prefs::kShouldAllowConversionTracking, true);
+
   mock->SetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting, false);
   mock->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
   mock->SetStringPref(prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
-  mock->SetIntegerPref(prefs::kIdleThreshold, 15);
+
+  mock->SetStringPref(prefs::kCatalogId, "");
+  mock->SetIntegerPref(prefs::kCatalogVersion, 1);
+  mock->SetInt64Pref(prefs::kCatalogPing, 7200000);
+  mock->SetInt64Pref(prefs::kCatalogLastUpdated, DistantPast());
 }
 
 }  // namespace
@@ -418,19 +474,32 @@ base::FilePath GetResourcesPath() {
 
 void SetEnvironment(
     const Environment environment) {
-  _environment = environment;
+  g_environment = environment;
+}
+
+void SetSysInfo(
+    const SysInfo& sys_info) {
+  g_sys_info.manufacturer = sys_info.manufacturer;
+  g_sys_info.model = sys_info.model;
 }
 
 void SetBuildChannel(
     const bool is_release,
     const std::string& name) {
-  _build_channel.is_release = is_release;
-  _build_channel.name = name;
+  g_build_channel.is_release = is_release;
+  g_build_channel.name = name;
+}
+
+void MockLocaleHelper(
+    const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
+    const std::string& locale) {
+  ON_CALL(*mock, GetLocale())
+      .WillByDefault(Return(locale));
 }
 
 void MockPlatformHelper(
     const std::unique_ptr<PlatformHelperMock>& mock,
-    PlatformType platform_type) {
+    const PlatformType platform_type) {
   bool is_mobile;
   std::string platform_name;
 
@@ -480,6 +549,43 @@ void MockPlatformHelper(
 
   ON_CALL(*mock, GetPlatform())
       .WillByDefault(Return(platform_type));
+}
+
+void MockIsNetworkConnectionAvailable(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool is_available) {
+  ON_CALL(*mock, IsNetworkConnectionAvailable())
+      .WillByDefault(Return(is_available));
+}
+
+void MockIsForeground(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool is_foreground) {
+  ON_CALL(*mock, IsForeground())
+      .WillByDefault(Return(is_foreground));
+}
+
+void MockShouldShowNotifications(
+    const std::unique_ptr<AdsClientMock>& mock,
+    const bool should_show) {
+  ON_CALL(*mock, ShouldShowNotifications())
+      .WillByDefault(Return(should_show));
+}
+
+void MockShowNotification(
+    const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, ShowNotification(_))
+      .WillByDefault(Invoke([](
+          const AdNotificationInfo& ad_notification) {
+      }));
+}
+
+void MockCloseNotification(
+    const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, CloseNotification(_))
+      .WillByDefault(Invoke([](
+          const std::string& uuid) {
+      }));
 }
 
 void MockSave(
@@ -558,8 +664,8 @@ void MockUrlRequest(
 
         std::string body;
 
-        const std::map<std::string, std::string> headers_as_map =
-            HeadersToMap(url_request->headers);
+        const base::flat_map<std::string, std::string> headers_as_map =
+            UrlRequestHeadersToMap(url_request->headers);
 
         URLEndpointResponse url_endpoint_response;
         if (GetNextUrlEndpointResponse(url_request->url, endpoints,
@@ -577,7 +683,7 @@ void MockUrlRequest(
               ASSERT_TRUE(base::ReadFileToString(path, &body));
             }
 
-            ParseAndReplaceTags(&body);
+            ParseAndReplaceTagsForText(&body);
           }
         }
 
@@ -585,7 +691,7 @@ void MockUrlRequest(
         url_response.url = url_request->url;
         url_response.status_code = status_code;
         url_response.body = body;
-        url_response.headers = base::MapToFlatMap(headers_as_map);
+        url_response.headers = headers_as_map;
         callback(url_response);
       }));
 }
@@ -634,8 +740,24 @@ void MockPrefs(
   MockDefaultPrefs(mock);
 }
 
+base::Time TimeFromDateString(
+    const std::string& date) {
+  const std::string utc_date = date + " 23:59:59.999 +00:00";
+
+  base::Time time;
+  if (!base::Time::FromString(utc_date.c_str(), &time)) {
+    return base::Time();
+  }
+
+  return time;
+}
+
 int64_t DistantPast() {
   return 0;  // Thursday, 1 January 1970 00:00:00 UTC
+}
+
+int64_t Now() {
+  return static_cast<int64_t>(base::Time::Now().ToDoubleT());
 }
 
 int64_t DistantFuture() {

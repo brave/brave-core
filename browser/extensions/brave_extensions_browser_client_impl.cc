@@ -9,9 +9,7 @@
 
 #include "base/macros.h"
 #include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
-#include "components/prefs/pref_service.h"
 
 namespace extensions {
 
@@ -23,16 +21,6 @@ BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
   // regard).
   ignore_result(GetComponentExtensionResourceManager()
                     ->GetTemplateReplacementsForExtension(""));
-}
-
-bool BraveExtensionsBrowserClientImpl::AreExtensionsDisabled(
-    const base::CommandLine& command_line,
-    content::BrowserContext* context) {
-  if (brave::IsTorProfile(context))
-    return true;
-
-  return ChromeExtensionsBrowserClient::AreExtensionsDisabled(command_line,
-                                                              context);
 }
 
 }  // namespace extensions

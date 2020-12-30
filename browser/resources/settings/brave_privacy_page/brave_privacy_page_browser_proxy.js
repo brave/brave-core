@@ -12,14 +12,6 @@ cr.define('settings', function() {
     /**
      * @return {!Promise<string>}
      */
-    getWebRTCPolicy() {}
-    /**
-     * @param {string} policy name.
-     */
-    setWebRTCPolicy(policy) {}
-    /**
-     * @return {!Promise<string>}
-     */
     getP3AEnabled() {}
     /**
      * @param {boolean} enabled (true/false).
@@ -36,14 +28,6 @@ cr.define('settings', function() {
    */
   /* #export */ class BravePrivacyBrowserProxyImpl {
     /** @overrides */
-    getWebRTCPolicy() {
-      return cr.sendWithPromise('getWebRTCPolicy');
-    }
-
-    setWebRTCPolicy(policy) {
-      chrome.send('setWebRTCPolicy', [policy]);
-    }
-
     getP3AEnabled() {
       return cr.sendWithPromise('getP3AEnabled');
     }

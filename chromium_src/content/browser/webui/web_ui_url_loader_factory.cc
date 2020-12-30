@@ -5,9 +5,9 @@
 
 #include "content/public/browser/web_ui_url_loader_factory.h"
 
-#define CreateWebUIURLLoader CreateWebUIURLLoader_ChromiumImpl
+#define CreateWebUIURLLoaderFactory CreateWebUIURLLoaderFactory_ChromiumImpl
 #include "../../../../../content/browser/webui/web_ui_url_loader_factory.cc"
-#undef CreateWebUIURLLoader
+#undef CreateWebUIURLLoaderFactory
 
 namespace {
 constexpr char kBraveUIResourceHost[] = "brave-resources";
@@ -15,16 +15,16 @@ constexpr char kBraveUIResourceHost[] = "brave-resources";
 
 namespace content {
 
-std::unique_ptr<network::mojom::URLLoaderFactory> CreateWebUIURLLoader(
-    RenderFrameHost* render_frame_host,
-    const std::string& scheme,
-    base::flat_set<std::string> allowed_hosts) {
+mojo::PendingRemote<network::mojom::URLLoaderFactory>
+CreateWebUIURLLoaderFactory(RenderFrameHost* render_frame_host,
+                            const std::string& scheme,
+                            base::flat_set<std::string> allowed_hosts) {
   if (allowed_hosts.find(kChromeUIResourcesHost) != allowed_hosts.end()) {
     allowed_hosts.emplace(kBraveUIResourceHost);
   }
 
-  return CreateWebUIURLLoader_ChromiumImpl(render_frame_host, scheme,
-                                           allowed_hosts);
+  return CreateWebUIURLLoaderFactory_ChromiumImpl(render_frame_host, scheme,
+                                                  allowed_hosts);
 }
 
 }  // namespace content

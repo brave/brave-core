@@ -4,6 +4,8 @@ import brandingImageUrl from '../../../../img/newtab/dummy-branded-wallpaper/log
 export default {
   wallpaperImageUrl,
   isSponsored: true,
+  creativeInstanceId: '12345abcde',
+  wallpaperId: 'abcde12345',
   logo: {
     image: brandingImageUrl,
     companyName: 'Technikke',

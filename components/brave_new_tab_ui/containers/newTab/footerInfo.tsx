@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
+  Label,
   Link,
   Navigation,
   IconButton,
@@ -29,7 +30,7 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   textDirection: string
-  onClickSettings: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClickSettings: () => any
   backgroundImageInfo: any
   showPhotoInfo: boolean
 }
@@ -49,9 +50,12 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
           <S.GridItemCredits>
             <PhotoName>
               {`${getLocale('photoBy')} `}
-              <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
-                {backgroundImageInfo.author}
-              </Link>
+              { backgroundImageInfo.link
+                  ? <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
+                      {backgroundImageInfo.author}
+                    </Link>
+                  : <Label> {backgroundImageInfo.author} </Label>
+              }
             </PhotoName>
           </S.GridItemCredits>
         }

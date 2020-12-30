@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/flat_map.h"
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
@@ -74,7 +76,7 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
       int32_t method,
       int* response_status_code,
       std::string* response,
-      std::map<std::string, std::string>* headers) {
+      base::flat_map<std::string, std::string>* headers) {
     response_->Get(
         url,
         method,
@@ -175,6 +177,8 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
         &db_,
         version,
         ledger::database::GetCompatibleVersion()));
+    rewards_browsertest_util::StartProcess(rewards_service_);
+    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
   }
 
   std::string GetExpectedSchemaString() {
@@ -244,8 +248,6 @@ IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, SchemaCheck_2) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
     const std::string schema = GetSchema();
     EXPECT_EQ(schema, GetExpectedSchemaString());
     ASSERT_EQ(
@@ -258,8 +260,6 @@ IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, Migration_4_ActivityInfo) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     ledger::type::PublisherInfoList list;
     const std::string query =
@@ -284,8 +284,6 @@ IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, Migration_5_ActivityInfo) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     ledger::type::PublisherInfoList list;
     const std::string query = "SELECT publisher_id, visits FROM activity_info";
@@ -310,8 +308,6 @@ IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, Migration_6_ActivityInfo) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     ledger::type::PublisherInfoList list;
     const std::string query =
@@ -364,8 +360,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     auto pending_contribution = ledger::type::PendingContribution::New();
     pending_contribution->publisher_key = "reddit.com";
@@ -399,8 +393,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("contribution_info"), 5);
     EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
@@ -449,8 +441,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("pending_contribution"), 4);
 
@@ -483,8 +473,6 @@ IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, Migration_13_Promotion) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("promotion"), 1);
   }
@@ -496,8 +484,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("unblinded_tokens"), 5);
 
@@ -534,8 +520,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("contribution_info"), 5);
 
@@ -560,8 +544,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("promotion"), 2);
 
@@ -592,8 +574,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("creds_batch"), 2);
 
@@ -647,8 +627,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("unblinded_tokens"), 80);
 
@@ -677,8 +655,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
 
@@ -724,8 +700,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("contribution_queue"), 1);
 
@@ -776,8 +750,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("contribution_queue"), 1);
 
@@ -811,8 +783,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 
@@ -849,8 +819,6 @@ IN_PROC_BROWSER_TEST_F(
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     InitDB();
-    rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-    rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
 
     EXPECT_EQ(CountTableRows("unblinded_tokens"), 10);
 
@@ -912,8 +880,6 @@ IN_PROC_BROWSER_TEST_F(
     Migration_28_ServerPublisherInfoCleared) {
   base::ScopedAllowBlockingForTesting allow_blocking;
   InitDB();
-  rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-  rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
   EXPECT_EQ(CountTableRows("server_publisher_info"), 1);
   EXPECT_EQ(CountTableRows("server_publisher_banner"), 1);
   EXPECT_EQ(CountTableRows("server_publisher_amounts"), 3);

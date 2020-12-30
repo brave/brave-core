@@ -297,7 +297,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long getTotalSavedBandwidthWithDate(String thresholdTime, String currentTime) {
-        int sum = 0;
+        long sum = 0;
         String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "
                              + SavedBandwidthTable.TABLE_NAME
                              + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP
@@ -307,14 +307,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst())
-            sum = cursor.getInt(cursor.getColumnIndex("total"));
+            sum = cursor.getLong(cursor.getColumnIndex("total"));
 
         cursor.close();
         return sum;
     }
 
     public long getTotalSavedBandwidth() {
-        int sum = 0;
+        long sum = 0;
         String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "
                              + SavedBandwidthTable.TABLE_NAME;
 
@@ -322,7 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst())
-            sum = cursor.getInt(cursor.getColumnIndex("total"));
+            sum = cursor.getLong(cursor.getColumnIndex("total"));
 
         cursor.close();
         return sum;

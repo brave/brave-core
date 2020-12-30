@@ -10,7 +10,7 @@ namespace rewards_browsertest_util {
 
 static const char kWaitForElementToAppearScript[] = R"(
     const waitForElementToAppear = (selector) => {
-      const TIMEOUT_SECONDS = 5;
+      const TIMEOUT_SECONDS = 10;
 
       return new Promise((resolve, reject) => {
         let element = document.querySelector(selector);
@@ -418,15 +418,16 @@ void IsMediaTipsInjected(content::WebContents* context, bool should_appear) {
 
 std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
   DCHECK(context);
-  WaitForElementToAppear(context, "[data-test-id=amount-wrapper] div span");
+  WaitForElementToAppear(context, "[data-test-id=tip-amount-options]");
   auto options = content::EvalJs(
       context,
       R"(
           const delay = t => new Promise(resolve => setTimeout(resolve, t));
-          delay(500).then(() => Array.prototype.map.call(
-              document.querySelectorAll(
-                  "[data-test-id=amount-wrapper] div span"),
-              node => parseFloat(node.innerText)))
+          delay(500).then(() => Array.from(
+            document.querySelectorAll(
+              "[data-test-id=tip-amount-options] [data-option-value]"
+            )
+          ).map(node => parseFloat(node.dataset.optionValue)))
       )",
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
@@ -438,26 +439,20 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
   return result;
 }
 
-std::vector<double> GetRewardsPopupTipOptions(content::WebContents* context) {
+double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
   DCHECK(context);
-  WaitForElementToAppear(context, "option:not(:disabled)");
-  auto options = content::EvalJs(
+  WaitForElementToAppear(context, "[data-test-id=toggle-monthly-actions]");
+  return content::EvalJs(
       context,
       R"_(
-        const delay = t => new Promise(resolve => setTimeout(resolve, t));
-        delay(0).then(() =>
-            Array.prototype.map.call(
-                document.querySelectorAll("option:not(:disabled)"),
-                node => parseFloat(node.value)))
+        new Promise(resolve => setTimeout(resolve, 0)).then(() => {
+          const elem = document.querySelector(
+            '[data-test-id=toggle-monthly-actions]')
+          return elem && parseFloat(elem.innerText) || 0
+        })
       )_",
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
-
-  std::vector<double> result;
-  for (const auto& value : options.GetList()) {
-    result.push_back(value.GetDouble());
-  }
-  return result;
+      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractDouble();
 }
 
 }  // namespace rewards_browsertest_util

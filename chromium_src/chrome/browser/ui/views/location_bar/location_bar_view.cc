@@ -5,11 +5,18 @@
 
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 
-#define BRAVE_LAYOUT_TRAILING_DECORATIONS     \
-  if (right_most && right_most->GetVisible()) \
-    trailing_decorations.AddDecoration(0, height(), false, 0, 0, right_most);
+#define BRAVE_LAYOUT_TRAILING_DECORATIONS                                \
+  auto right_most = GetTrailingViews();                                  \
+  for (auto it = right_most.rbegin(); it != right_most.rend(); it++) {   \
+    if ((*it)->GetVisible())                                             \
+      trailing_decorations.AddDecoration(0, height(), false, 0, 0, *it); \
+  }
 
 #define ChromeOmniboxClient BraveOmniboxClientImpl
 #include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.cc"
 #undef ChromeOmniboxClient
 #undef BRAVE_LAYOUT_TRAILING_DECORATIONS
+
+std::vector<views::View*> LocationBarView::GetTrailingViews() {
+  return std::vector<views::View*>();
+}

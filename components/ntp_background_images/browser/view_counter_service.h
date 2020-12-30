@@ -11,10 +11,11 @@
 #include <vector>
 
 #include "base/values.h"
-#include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_change_registrar.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
@@ -26,6 +27,8 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
+class WeeklyStorage;
+
 namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
@@ -35,13 +38,16 @@ class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
  public:
   ViewCounterService(NTPBackgroundImagesService* service,
+                     brave_ads::AdsService* ads_service,
                      PrefService* prefs,
+                     PrefService* local_state,
                      bool is_supported_locale);
   ~ViewCounterService() override;
 
   ViewCounterService(const ViewCounterService&) = delete;
   ViewCounterService& operator=(const ViewCounterService&) = delete;
 
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // Lets the counter know that a New Tab Page view has occured.
@@ -49,14 +55,20 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
+  void BrandedWallpaperLogoClicked(const std::string& creative_instance_id,
+                                   const std::string& destination_url,
+                                   const std::string& wallpaper_id);
+
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
-  base::Value GetTopSites(bool for_webui = false) const;
+  std::vector<TopSite> GetTopSitesVectorForWebUI() const;
   std::vector<TopSite> GetTopSitesVectorData() const;
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
+
+  void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
 
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
@@ -108,11 +120,19 @@ class ViewCounterService : public KeyedService,
 
   void ResetModel();
 
+  void UpdateP3AValues() const;
+
   NTPBackgroundImagesService* service_ = nullptr;  // not owned
+  brave_ads::AdsService* ads_service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
+
+  // If P3A is enabled, these will track number of tabs created
+  // and the ratio of those which are branded images.
+  std::unique_ptr<WeeklyStorage> new_tab_count_state_;
+  std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
 };
 
 }  // namespace ntp_background_images

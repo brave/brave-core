@@ -115,5 +115,16 @@ Polymer({
     this.syncCode = undefined
     const router = Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_SYNC);
+  },
+
+  onDeleteDevice_: async function(e) {
+    const messageText = this.i18n('braveSyncDeleteDeviceConfirmation')
+    const shouldDeleteDevice = confirm(messageText)
+    if (!shouldDeleteDevice) {
+      return
+    }
+
+    const deviceGuid = e.currentTarget.arg
+    await this.browserProxy_.deleteDevice(deviceGuid);
   }
 });

@@ -5,8 +5,11 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+#include "base/command_line.h"
+#include "base/feature_list.h"
+#include "brave/browser/brave_stats/brave_stats_tab_helper.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/farbling/farbling_tab_helper.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -15,9 +18,12 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -56,7 +62,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_tab_helper.h"
+#include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/tor_tab_helper.h"
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -114,7 +121,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorTabHelper::MaybeCreateForWebContents(web_contents);
+  tor::TorTabHelper::MaybeCreateForWebContents(
+      web_contents, web_contents->GetBrowserContext()->IsTor());
+  tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
@@ -122,6 +131,13 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
   FarblingTabHelper::CreateForWebContents(web_contents);
+
+  brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
+
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+        web_contents);
+  }
 }
 
 }  // namespace brave

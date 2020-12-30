@@ -11,7 +11,7 @@
 namespace ads {
 namespace server {
 
-std::string GetDomain();
+std::string GetHost();
 
 }  // namespace server
 }  // namespace ads

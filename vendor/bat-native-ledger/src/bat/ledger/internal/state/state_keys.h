@@ -11,7 +11,6 @@
 namespace ledger {
 namespace state {
 
-const char kEnabled[] = "enabled";
 const char kServerPublisherListStamp[] = "publisher_prefix_list_stamp";
 const char kUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
 const char kPromotionLastFetchStamp[] = "promotion_last_fetch_stamp";

@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import <XCTest/XCTest.h>
+
+#import "base/containers/flat_map.h"
 #import "CppTransformations.h"
 #import "test_foo.h"
 
@@ -77,7 +79,7 @@
     @"1": @"2",
     @"3": @"4"
   };
-  std::map<std::string, std::string> map = MapFromNSDictionary(d);
+  base::flat_map<std::string, std::string> map = MapFromNSDictionary(d);
   XCTAssert(map["1"] == "2");
   XCTAssert(map["3"] == "4");
   XCTAssert(map.find("5") == map.end());

@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Configuration around brave rewards for ads & ledger
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveRewardsConfiguration)
 @interface BATBraveRewardsConfiguration : NSObject <NSCopying>
 
@@ -48,6 +49,7 @@ NS_SWIFT_NAME(BraveRewardsConfiguration)
 
 @end
 
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveRewardsDelegate)
 @protocol BATBraveRewardsDelegate <NSObject>
 @required
@@ -69,10 +71,13 @@ NS_SWIFT_NAME(BraveRewardsDelegate)
 
 /// A container for handling Brave Rewards. Use `ads` to handle how many ads the users see,
 /// when to display them. Use `ledger` to manage interactions between the users wallet & publishers
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveRewards)
 @interface BATBraveRewards : NSObject
 
 @property (nonatomic, readonly) BATBraveAds *ads;
+/// Whether or not Brave Ads is enabled
+@property (nonatomic, assign, getter=isAdsEnabled) BOOL adsEnabled;
 @property (nonatomic, readonly) BATBraveLedger *ledger;
 @property (nonatomic, weak) id<BATBraveRewardsDelegate> delegate;
 
@@ -90,6 +95,7 @@ NS_SWIFT_NAME(BraveRewards)
 
 @end
 
+OBJC_EXPORT 
 @interface BATBraveRewards (Reporting)
 
 /// Report that a tab with a given id was updated
@@ -103,6 +109,7 @@ NS_SWIFT_NAME(BraveRewards)
 /// @note Send nil for `adsInnerText` if the load happened due to tabs restoring
 ///       after app launch
 - (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
