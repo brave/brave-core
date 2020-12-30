@@ -309,9 +309,7 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
     return;
   }
 
-  if (service->GetUserSettings()->IsEncryptEverythingAllowed()) {
-    ProfileMetrics::LogProfileSyncInfo(ProfileMetrics::SYNC_ENCRYPT);
-  } else {
+  if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
     // Don't allow "encrypt all" if the SyncService doesn't allow it.
     // The UI is hidden, but the user may have enabled it e.g. by fiddling with
     // the web inspector.
@@ -352,9 +350,6 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
       service->GetUserSettings()->IsPassphraseRequiredForPreferredDataTypes()) {
     VLOG(1) << __func__ << " setup passphrase failed";
   }
-
-  if (!configuration.set_new_passphrase && !configuration.passphrase.empty())
-    ProfileMetrics::LogProfileSyncInfo(ProfileMetrics::SYNC_PASSPHRASE);
 }
 
 static void JNI_BraveSyncWorker_Init(
