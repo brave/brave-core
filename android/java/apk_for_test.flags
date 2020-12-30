@@ -99,6 +99,11 @@
     *** mLocationBarModel;
     *** mToolbar;
     *** mBookmarkBridgeSupplier;
+    *** mLayoutManager;
+    *** mOverlayPanelVisibilitySupplier;
+    *** mTabModelSelector;
+    *** mIncognitoStateProvider;
+    *** mTabCountProvider;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
