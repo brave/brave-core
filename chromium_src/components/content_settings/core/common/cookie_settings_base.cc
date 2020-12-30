@@ -34,6 +34,8 @@ constexpr char kGoogle[] = "https://[*.]google.com/*";
 constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
 constexpr char kOrigin[] = "https://[*.]origin.com/*";
 constexpr char kEA[] = "https://[*.]ea.com/*";
+constexpr char kDoterra[] = "https://[*.]doterra.com/*";
+constexpr char kGigya[] = "https://[*.]gigya.com/*";
 
 bool BraveIsAllowedThirdParty(
     const GURL& url,
@@ -102,6 +104,14 @@ bool BraveIsAllowedThirdParty(
           {
             ContentSettingsPattern::FromString(kEA),
             ContentSettingsPattern::FromString(kOrigin)
+          },
+          {
+            ContentSettingsPattern::FromString(kDoterra),
+            ContentSettingsPattern::FromString(kGigya)
+          },
+          {
+            ContentSettingsPattern::FromString(kGigya),
+            ContentSettingsPattern::FromString(kDoterra)
           }
       });
 
