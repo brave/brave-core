@@ -8,6 +8,8 @@
 #include "url/gurl.h"
 
 TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
+  EXPECT_TRUE(
+      IsWaybackMachineDisabledFor(GURL("https://web.archive.org/foobar.html")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://localhost/index.html")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://abcd.local")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://abcd.onion")));
@@ -18,4 +20,6 @@ TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.local-news.com")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.onion-news.com")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.brave.com")));
+  EXPECT_FALSE(
+      IsWaybackMachineDisabledFor(GURL("https://archive.org/foobar.html")));
 }

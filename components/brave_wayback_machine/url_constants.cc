@@ -7,3 +7,4 @@
 
 const char kWaybackQueryURL[] =
     "https://brave-api.archive.org/wayback/available?url=";
+const char kWaybackHost[] = "web.archive.org";
