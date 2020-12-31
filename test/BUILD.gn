@@ -193,6 +193,7 @@ test("brave_unit_tests") {
     "//mojo/core/embedder",
     "//services/network:test_support",
     "//services/network/public/cpp",
+    "//services/preferences/public/cpp",
   ]
 
   if (toolkit_views) {

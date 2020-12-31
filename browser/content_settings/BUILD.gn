@@ -32,6 +32,7 @@ source_set("unit_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/content_settings/core/browser",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
     "//components/prefs",
