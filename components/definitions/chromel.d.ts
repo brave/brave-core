@@ -213,6 +213,7 @@ declare namespace chrome.ftx {
   type FTXOauthHost = 'ftx.us' | 'ftx.com'
   const setOauthHost: (host: FTXOauthHost) => void
   const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
+  const getClientUrl: (callback: (clientUrl: string) => void) => {}
 }
 
 declare namespace chrome.braveTogether {

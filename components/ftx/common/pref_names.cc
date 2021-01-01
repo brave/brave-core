@@ -5,9 +5,6 @@
 
 #include "brave/components/ftx/common/pref_names.h"
 
-const char kFTXNewTabPageShowFTX[] =
-    "ftx.new_tab_page.show_ftx";
-const char kFTXAccessToken[] =
-    "brave.ftx.access_token";
-const char kFTXOauthHost[] =
-    "brave.ftx.oauth_host";
+const char kFTXNewTabPageShowFTX[] = "ftx.new_tab_page.show_ftx";
+const char kFTXAccessToken[] = "brave.ftx.access_token";
+const char kFTXOauthHost[] = "brave.ftx.oauth_host";

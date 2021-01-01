@@ -15,10 +15,9 @@
 class FTXJSONParser {
  public:
   static bool GetFuturesDataFromJSON(const std::string& json,
-      FTXFuturesData* data,
-      const std::string& filter);
-  static bool GetChartDataFromJSON(const std::string& json,
-      FTXChartData* data);
+                                     FTXFuturesData* data,
+                                     const std::string& filter);
+  static bool GetChartDataFromJSON(const std::string& json, FTXChartData* data);
 };
 
 #endif  // BRAVE_COMPONENTS_FTX_BROWSER_FTX_JSON_PARSER_H_

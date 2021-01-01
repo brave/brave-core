@@ -40,6 +40,7 @@ class Profile;
 
 const char get_futures_data_path[] = "/api/futures";
 const char get_market_data_path[] = "/api/markets";
+const char oauth_path[] = "/oauth";
 const char futures_filter[] = "perpetual";
 
 typedef std::vector<std::map<std::string, std::string>> FTXChartData;
@@ -51,40 +52,48 @@ class FTXService : public KeyedService {
   ~FTXService() override;
 
   using GetFuturesDataCallback =
-        base::OnceCallback<void(const FTXFuturesData&)>;
-  using GetChartDataCallback =
-        base::OnceCallback<void(const FTXChartData&)>;
+      base::OnceCallback<void(const FTXFuturesData&)>;
+  using GetChartDataCallback = base::OnceCallback<void(const FTXChartData&)>;
 
   bool GetFuturesData(GetFuturesDataCallback callback);
   bool GetChartData(const std::string& symbol,
                     const std::string& start,
                     const std::string& end,
                     GetChartDataCallback callback);
+  std::string GetOAuthClientUrl();
 
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
   using URLRequestCallback =
-      base::OnceCallback<void(const int, const std::string&,
+      base::OnceCallback<void(const int,
+                              const std::string&,
                               const std::map<std::string, std::string>&)>;
 
   void OnFuturesData(GetFuturesDataCallback callback,
-                    const int status, const std::string& body,
-                    const std::map<std::string, std::string>& headers);
+                     const int status,
+                     const std::string& body,
+                     const std::map<std::string, std::string>& headers);
   void OnChartData(GetChartDataCallback callback,
-                    const int status, const std::string& body,
-                    const std::map<std::string, std::string>& headers);
+                   const int status,
+                   const std::string& body,
+                   const std::map<std::string, std::string>& headers);
+  GURL GetOAuthURL(const std::string& path);
 
   base::SequencedTaskRunner* io_task_runner();
 
-  bool NetworkRequest(const GURL& url, const std::string& method,
-      const std::string& post_data, URLRequestCallback callback);
-  void OnURLLoaderComplete(
-      SimpleURLLoaderList::iterator iter,
-      URLRequestCallback callback,
-      const std::unique_ptr<std::string> response_body);
+  bool NetworkRequest(const GURL& url,
+                      const std::string& method,
+                      const std::string& post_data,
+                      URLRequestCallback callback);
+  void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
+                           URLRequestCallback callback,
+                           const std::unique_ptr<std::string> response_body);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
+
+  std::string client_id_;
+  std::string client_secret_;
 
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

@@ -57,13 +57,13 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
 
   // FTX
   URLPattern ftx_us_auth_pattern(URLPattern::SCHEME_HTTPS,
-      "https://ftx.us/oauth*");
+                                 "https://ftx.us/oauth*");
   URLPattern ftx_us_token_pattern(URLPattern::SCHEME_HTTPS,
-      "https://ftx.us/api/oauth/token*");
+                                  "https://ftx.us/api/oauth/token*");
   URLPattern ftx_com_auth_pattern(URLPattern::SCHEME_HTTPS,
-      "https://ftx.com/oauth*");
+                                  "https://ftx.com/oauth*");
   URLPattern ftx_com_token_pattern(URLPattern::SCHEME_HTTPS,
-      "https://ftx.com/api/oauth/token*");
+                                   "https://ftx.com/api/oauth/token*");
 
   if (ftx_us_auth_pattern.MatchesURL(request.url) ||
       ftx_us_token_pattern.MatchesURL(request.url) ||

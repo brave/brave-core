@@ -12,10 +12,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 
-bool FTXJSONParser::GetFuturesDataFromJSON(
-    const std::string& json,
-    FTXFuturesData* data,
-    const std::string& filter) {
+bool FTXJSONParser::GetFuturesDataFromJSON(const std::string& json,
+                                           FTXFuturesData* data,
+                                           const std::string& filter) {
   if (!data) {
     return false;
   }
@@ -35,7 +34,7 @@ bool FTXJSONParser::GetFuturesDataFromJSON(
     return false;
   }
 
-  for (const base::Value &asset : result->GetList()) {
+  for (const base::Value& asset : result->GetList()) {
     std::map<std::string, std::string> sub_data;
     const base::Value* group = asset.FindKey("group");
 
@@ -50,8 +49,7 @@ bool FTXJSONParser::GetFuturesDataFromJSON(
     const base::Value* day_change = asset.FindKey("change24h");
     const base::Value* day_volume = asset.FindKey("volumeUsd24h");
 
-    if (!(bid && bid->is_double()) ||
-        !(name && name->is_string()) ||
+    if (!(bid && bid->is_double()) || !(name && name->is_string()) ||
         !(day_change && day_change->is_double()) ||
         !(day_volume && day_volume->is_double())) {
       continue;
@@ -59,8 +57,7 @@ bool FTXJSONParser::GetFuturesDataFromJSON(
 
     sub_data.insert({"price", std::to_string(bid->GetDouble())});
     sub_data.insert({"symbol", name->GetString()});
-    sub_data.insert({"percentChange",
-        std::to_string(day_change->GetDouble())});
+    sub_data.insert({"percentChange", std::to_string(day_change->GetDouble())});
     sub_data.insert({"dayVolume", std::to_string(day_volume->GetDouble())});
     data->push_back(sub_data);
   }
@@ -68,9 +65,8 @@ bool FTXJSONParser::GetFuturesDataFromJSON(
   return true;
 }
 
-bool FTXJSONParser::GetChartDataFromJSON(
-    const std::string& json,
-    FTXChartData* data) {
+bool FTXJSONParser::GetChartDataFromJSON(const std::string& json,
+                                         FTXChartData* data) {
   if (!data) {
     return false;
   }
@@ -92,14 +88,13 @@ bool FTXJSONParser::GetChartDataFromJSON(
 
   bool success = true;
 
-  for (const base::Value &point : result->GetList()) {
+  for (const base::Value& point : result->GetList()) {
     std::map<std::string, std::string> data_point;
     const base::Value* high = point.FindKey("high");
     const base::Value* low = point.FindKey("low");
     const base::Value* close = point.FindKey("close");
 
-    if (!(high && high->is_double()) ||
-        !(low && low->is_double()) ||
+    if (!(high && high->is_double()) || !(low && low->is_double()) ||
         !(close && close->is_double())) {
       success = false;
       break;

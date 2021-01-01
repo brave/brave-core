@@ -17,8 +17,7 @@ FTXServiceFactory* FTXServiceFactory::GetInstance() {
 }
 
 // static
-FTXService*FTXServiceFactory::GetForProfile(
-    Profile* profile) {
+FTXService* FTXServiceFactory::GetForProfile(Profile* profile) {
   if (!brave::IsRegularProfile(profile)) {
     return nullptr;
   }
@@ -30,11 +29,9 @@ FTXService*FTXServiceFactory::GetForProfile(
 FTXServiceFactory::FTXServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "FTXService",
-          BrowserContextDependencyManager::GetInstance()) {
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
-FTXServiceFactory::~FTXServiceFactory() {
-}
+FTXServiceFactory::~FTXServiceFactory() {}
 
 KeyedService* FTXServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
@@ -42,6 +39,6 @@ KeyedService* FTXServiceFactory::BuildServiceInstanceFor(
 }
 
 content::BrowserContext* FTXServiceFactory::GetBrowserContextToUse(
-      content::BrowserContext* context) const {
+    content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

@@ -334,9 +334,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
 #if BUILDFLAG(FTX_ENABLED)
   if (ftx::IsFTXProtocol(url)) {
-    ftx::HandleFTXProtocol(url, std::move(web_contents_getter),
-                           page_transition, has_user_gesture,
-                           initiating_origin);
+    ftx::HandleFTXProtocol(url, std::move(web_contents_getter), page_transition,
+                           has_user_gesture, initiating_origin);
     return true;
   }
 #endif

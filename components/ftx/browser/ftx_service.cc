@@ -11,6 +11,10 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ftx/browser/ftx_json_parser.h"
+#include "brave/components/ftx/common/pref_names.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
@@ -22,8 +26,7 @@
 namespace {
 
 const char api_host[] = "ftx.com";
-// const char com_oauth_host[] = "ftx.com";
-// const char us_oauth_host[] = "ftx.us";
+const char oauth_callback[] = "com.brave.ftx://authorization";
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -56,28 +59,28 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
 }  // namespace
 
 FTXService::FTXService(content::BrowserContext* context)
-    : context_(context),
+    : client_id_(FTX_CLIENT_ID),
+      client_secret_(FTX_CLIENT_SECRET),
+      context_(context),
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context_)
               ->GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {
-}
+      weak_factory_(this) {}
 
-FTXService::~FTXService() {
-}
+FTXService::~FTXService() {}
 
 bool FTXService::GetFuturesData(GetFuturesDataCallback callback) {
-  auto internal_callback = base::BindOnce(&FTXService::OnFuturesData,
-      base::Unretained(this), std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &FTXService::OnFuturesData, base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, get_futures_data_path);
-  return NetworkRequest(
-      url, "GET", "", std::move(internal_callback));
+  return NetworkRequest(url, "GET", "", std::move(internal_callback));
 }
 
 void FTXService::OnFuturesData(
-  GetFuturesDataCallback callback,
-  const int status, const std::string& body,
-  const std::map<std::string, std::string>& headers) {
+    GetFuturesDataCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
   FTXFuturesData data;
   if (status >= 200 && status <= 299) {
     FTXJSONParser::GetFuturesDataFromJSON(body, &data, futures_filter);
@@ -89,22 +92,22 @@ bool FTXService::GetChartData(const std::string& symbol,
                               const std::string& start,
                               const std::string& end,
                               GetChartDataCallback callback) {
-  auto internal_callback = base::BindOnce(&FTXService::OnChartData,
-      base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host,
-      std::string(get_market_data_path) + "/" + symbol + "/candles");
+  auto internal_callback = base::BindOnce(
+      &FTXService::OnChartData, base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(
+      api_host, std::string(get_market_data_path) + "/" + symbol + "/candles");
   url = net::AppendQueryParameter(url, "resolution", "14400");
   url = net::AppendQueryParameter(url, "limit", "42");
   url = net::AppendQueryParameter(url, "start_time", start);
   url = net::AppendQueryParameter(url, "end_time", end);
-  return NetworkRequest(
-      url, "GET", "", std::move(internal_callback));
+  return NetworkRequest(url, "GET", "", std::move(internal_callback));
 }
 
 void FTXService::OnChartData(
-  GetChartDataCallback callback,
-  const int status, const std::string& body,
-  const std::map<std::string, std::string>& headers) {
+    GetChartDataCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
   FTXChartData data;
   if (status >= 200 && status <= 299) {
     FTXJSONParser::GetChartDataFromJSON(body, &data);
@@ -112,15 +115,31 @@ void FTXService::OnChartData(
   std::move(callback).Run(data);
 }
 
-bool FTXService::NetworkRequest(const GURL &url,
-                                  const std::string& method,
-                                  const std::string& post_data,
-                                  URLRequestCallback callback) {
+GURL FTXService::GetOAuthURL(const std::string& path) {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  std::string oauth_host = prefs->GetString(kFTXOauthHost);
+  return GURL(std::string(url::kHttpsScheme) + "://" + oauth_host)
+      .Resolve(path);
+}
+
+std::string FTXService::GetOAuthClientUrl() {
+  GURL url = GetOAuthURL(oauth_path);
+  url = net::AppendQueryParameter(url, "response_type", "code");
+  url = net::AppendQueryParameter(url, "client_id", client_id_);
+  url = net::AppendQueryParameter(
+      url, "state", ntp_widget_utils::GetCryptoRandomString(false));
+  url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
+  return url.spec();
+}
+
+bool FTXService::NetworkRequest(const GURL& url,
+                                const std::string& method,
+                                const std::string& post_data,
+                                URLRequestCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags = net::LOAD_BYPASS_CACHE |
-                        net::LOAD_DISABLE_CACHE |
+  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
                         net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = method;
 
@@ -129,7 +148,7 @@ bool FTXService::NetworkRequest(const GURL &url,
 
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data,
-        "application/x-www-form-urlencoded");
+                                      "application/x-www-form-urlencoded");
   }
 
   url_loader->SetRetryOptions(
@@ -143,9 +162,9 @@ bool FTXService::NetworkRequest(const GURL &url,
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory, base::BindOnce(
-          &FTXService::OnURLLoaderComplete,
-          base::Unretained(this), std::move(iter), std::move(callback)));
+      url_loader_factory,
+      base::BindOnce(&FTXService::OnURLLoaderComplete, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
 
   return true;
 }
@@ -173,8 +192,8 @@ void FTXService::OnURLLoaderComplete(
 
   url_loaders_.erase(iter);
 
-  std::move(callback).Run(
-      response_code, response_body ? *response_body : "", headers);
+  std::move(callback).Run(response_code, response_body ? *response_body : "",
+                          headers);
 }
 
 base::SequencedTaskRunner* FTXService::io_task_runner() {

@@ -9,9 +9,9 @@
 #include <string>
 #include <utility>
 
+#include "brave/browser/ftx/ftx_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/ftx.h"
-#include "brave/browser/ftx/ftx_service_factory.h"
 #include "brave/components/ftx/browser/ftx_service.h"
 #include "brave/components/ftx/common/pref_names.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -24,8 +24,8 @@
 namespace {
 
 FTXService* GetFTXService(content::BrowserContext* context) {
-  return FTXServiceFactory::GetInstance()
-      ->GetForProfile(Profile::FromBrowserContext(context));
+  return FTXServiceFactory::GetInstance()->GetForProfile(
+      Profile::FromBrowserContext(context));
 }
 
 bool IsFTXAPIAvailable(content::BrowserContext* context) {
@@ -37,32 +37,27 @@ bool IsFTXAPIAvailable(content::BrowserContext* context) {
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction
-FtxGetFuturesDataFunction::Run() {
+ExtensionFunction::ResponseAction FtxGetFuturesDataFunction::Run() {
   if (!IsFTXAPIAvailable(browser_context())) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetFTXService(browser_context());
   bool data_request = service->GetFuturesData(
-      base::BindOnce(
-          &FtxGetFuturesDataFunction::OnFuturesData, this));
+      base::BindOnce(&FtxGetFuturesDataFunction::OnFuturesData, this));
 
   if (!data_request) {
-    return RespondNow(
-        Error("Could not make request for futures data"));
+    return RespondNow(Error("Could not make request for futures data"));
   }
 
   return RespondLater();
 }
 
-void FtxGetFuturesDataFunction::OnFuturesData(
-    const FTXFuturesData& data) {
+void FtxGetFuturesDataFunction::OnFuturesData(const FTXFuturesData& data) {
   base::ListValue result;
 
   for (const auto& data_point : data) {
-    auto point = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    auto point = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
     for (const auto& att : data_point) {
       point->SetStringKey(att.first, att.second);
     }
@@ -72,8 +67,7 @@ void FtxGetFuturesDataFunction::OnFuturesData(
   Respond(OneArgument(std::move(result)));
 }
 
-ExtensionFunction::ResponseAction
-FtxGetChartDataFunction::Run() {
+ExtensionFunction::ResponseAction FtxGetChartDataFunction::Run() {
   if (!IsFTXAPIAvailable(browser_context())) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
@@ -84,27 +78,21 @@ FtxGetChartDataFunction::Run() {
 
   auto* service = GetFTXService(browser_context());
   bool data_request = service->GetChartData(
-      params->symbol,
-      params->start,
-      params->end,
-      base::BindOnce(
-          &FtxGetChartDataFunction::OnChartData, this));
+      params->symbol, params->start, params->end,
+      base::BindOnce(&FtxGetChartDataFunction::OnChartData, this));
 
   if (!data_request) {
-    return RespondNow(
-        Error("Could not make request for chart data"));
+    return RespondNow(Error("Could not make request for chart data"));
   }
 
   return RespondLater();
 }
 
-void FtxGetChartDataFunction::OnChartData(
-    const FTXChartData& data) {
+void FtxGetChartDataFunction::OnChartData(const FTXChartData& data) {
   base::ListValue result;
 
   for (const auto& data_point : data) {
-    auto point = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+    auto point = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
     for (const auto& att : data_point) {
       point->SetStringKey(att.first, att.second);
     }
@@ -114,8 +102,7 @@ void FtxGetChartDataFunction::OnChartData(
   Respond(OneArgument(std::move(result)));
 }
 
-ExtensionFunction::ResponseAction
-FtxSetOauthHostFunction::Run() {
+ExtensionFunction::ResponseAction FtxSetOauthHostFunction::Run() {
   if (!IsFTXAPIAvailable(browser_context())) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
@@ -134,8 +121,7 @@ FtxSetOauthHostFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction
-FtxGetOauthHostFunction::Run() {
+ExtensionFunction::ResponseAction FtxGetOauthHostFunction::Run() {
   if (!IsFTXAPIAvailable(browser_context())) {
     return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
@@ -144,6 +130,13 @@ FtxGetOauthHostFunction::Run() {
   const std::string host = profile->GetPrefs()->GetString(kFTXOauthHost);
 
   return RespondNow(OneArgument(base::Value(host)));
+}
+
+ExtensionFunction::ResponseAction FtxGetClientUrlFunction::Run() {
+  auto* service = GetFTXService(browser_context());
+  const std::string client_url = service->GetOAuthClientUrl();
+
+  return RespondNow(OneArgument(base::Value(client_url)));
 }
 
 }  // namespace api

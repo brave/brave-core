@@ -5,8 +5,8 @@
 
 #include "brave/browser/ftx/ftx_protocol_handler.h"
 
-#include <string>
 #include <map>
+#include <string>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -24,12 +24,11 @@
 
 namespace {
 
-void LoadNewTabURL(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+void LoadNewTabURL(const GURL& url,
+                   content::WebContents::OnceGetter web_contents_getter,
+                   ui::PageTransition page_transition,
+                   bool has_user_gesture,
+                   const base::Optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -43,10 +42,13 @@ void LoadNewTabURL(
   GURL allowed_origin_one("https://ftx.us");
   GURL allowed_origin_two("https://ftx.com");
 
-  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_one ||
-      web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_two ||
-      !initiating_origin.has_value() ||
-      initiating_origin.value().GetURL() != allowed_origin_one ||
+  if (!initiating_origin.has_value()) {
+    return;
+  }
+
+  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_one &&
+      web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_two &&
+      initiating_origin.value().GetURL() != allowed_origin_one &&
       initiating_origin.value().GetURL() != allowed_origin_two) {
     return;
   }
@@ -67,7 +69,8 @@ void LoadNewTabURL(
   }
 
   web_contents->GetController().LoadURL(GURL("chrome://newtab?ftxAuth=1"),
-      content::Referrer(), page_transition, std::string());
+                                        content::Referrer(), page_transition,
+                                        std::string());
 }
 
 }  // namespace
@@ -75,10 +78,10 @@ void LoadNewTabURL(
 namespace ftx {
 
 void HandleFTXProtocol(const GURL& url,
-                           content::WebContents::OnceGetter web_contents_getter,
-                           ui::PageTransition page_transition,
-                           bool has_user_gesture,
-                           const base::Optional<url::Origin>& initiator) {
+                       content::WebContents::OnceGetter web_contents_getter,
+                       ui::PageTransition page_transition,
+                       bool has_user_gesture,
+                       const base::Optional<url::Origin>& initiator) {
   DCHECK(IsFTXProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

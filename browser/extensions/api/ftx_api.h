@@ -17,34 +17,29 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class FtxGetFuturesDataFunction :
-    public ExtensionFunction {
+class FtxGetFuturesDataFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ftx.getFuturesData", UNKNOWN)
 
  protected:
   ~FtxGetFuturesDataFunction() override {}
-  void OnFuturesData(
-      const FTXFuturesData& data);
+  void OnFuturesData(const FTXFuturesData& data);
 
   ResponseAction Run() override;
 };
 
-class FtxGetChartDataFunction :
-    public ExtensionFunction {
+class FtxGetChartDataFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ftx.getChartData", UNKNOWN)
 
  protected:
   ~FtxGetChartDataFunction() override {}
-  void OnChartData(
-      const FTXChartData& data);
+  void OnChartData(const FTXChartData& data);
 
   ResponseAction Run() override;
 };
 
-class FtxSetOauthHostFunction :
-    public ExtensionFunction {
+class FtxSetOauthHostFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ftx.setOauthHost", UNKNOWN)
 
@@ -54,16 +49,23 @@ class FtxSetOauthHostFunction :
   ResponseAction Run() override;
 };
 
-class FtxGetOauthHostFunction :
-    public ExtensionFunction {
+class FtxGetOauthHostFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ftx.getOauthHost", UNKNOWN)
 
  protected:
   ~FtxGetOauthHostFunction() override {}
-  void OnOauthHost(
-      const std::string& host);
+  void OnOauthHost(const std::string& host);
 
+  ResponseAction Run() override;
+};
+
+class FtxGetClientUrlFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.getClientUrl", UNKNOWN)
+
+ protected:
+  ~FtxGetClientUrlFunction() override {}
   ResponseAction Run() override;
 };
 
