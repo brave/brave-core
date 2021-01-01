@@ -109,3 +109,33 @@ bool FTXJSONParser::GetChartDataFromJSON(const std::string& json,
 
   return success;
 }
+
+bool FTXJSONParser::GetAccessTokenFromJSON(const std::string& json,
+                                           std::string* value) {
+  if (!value) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* result = records_v->FindKey("result");
+  if (!result) {
+    return false;
+  }
+
+  const base::Value* token = result->FindKey("access_token");
+  if (!(token || token->is_string())) {
+    return false;
+  }
+
+  *value = token->GetString();
+
+  return true;
+}

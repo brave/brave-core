@@ -69,6 +69,17 @@ class FtxGetClientUrlFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class FtxGetAccessTokenFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.getAccessToken", UNKNOWN)
+
+ protected:
+  ~FtxGetAccessTokenFunction() override {}
+  void OnCodeResult(bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

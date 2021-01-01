@@ -8,11 +8,13 @@
 #include <string>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/components/ftx/browser/ftx_json_parser.h"
 #include "brave/components/ftx/common/pref_names.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
+#include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -73,7 +75,7 @@ bool FTXService::GetFuturesData(GetFuturesDataCallback callback) {
   auto internal_callback = base::BindOnce(
       &FTXService::OnFuturesData, base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, get_futures_data_path);
-  return NetworkRequest(url, "GET", "", std::move(internal_callback));
+  return NetworkRequest(url, "GET", "", std::move(internal_callback), false);
 }
 
 void FTXService::OnFuturesData(
@@ -100,7 +102,7 @@ bool FTXService::GetChartData(const std::string& symbol,
   url = net::AppendQueryParameter(url, "limit", "42");
   url = net::AppendQueryParameter(url, "start_time", start);
   url = net::AppendQueryParameter(url, "end_time", end);
-  return NetworkRequest(url, "GET", "", std::move(internal_callback));
+  return NetworkRequest(url, "GET", "", std::move(internal_callback), false);
 }
 
 void FTXService::OnChartData(
@@ -122,6 +124,14 @@ GURL FTXService::GetOAuthURL(const std::string& path) {
       .Resolve(path);
 }
 
+std::string FTXService::GetTokenHeader() {
+  if (access_token_.empty()) {
+    return "Basic " + client_id_ + ":" + client_secret_;
+  } else {
+    return "";
+  }
+}
+
 std::string FTXService::GetOAuthClientUrl() {
   GURL url = GetOAuthURL(oauth_path);
   url = net::AppendQueryParameter(url, "response_type", "code");
@@ -132,10 +142,60 @@ std::string FTXService::GetOAuthClientUrl() {
   return url.spec();
 }
 
+bool FTXService::GetAccessToken(GetAccessTokenCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&FTXService::OnGetAccessToken, base::Unretained(this),
+                     std::move(callback));
+  GURL url = GetOAuthURL(oauth_token_path);
+  url = net::AppendQueryParameter(url, "grant_type", "code");
+  url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
+  url = net::AppendQueryParameter(url, "code", auth_token_);
+  auth_token_.clear();
+  access_token_.clear();
+  return NetworkRequest(url, "POST", url.query(), std::move(internal_callback),
+                        true);
+}
+
+void FTXService::OnGetAccessToken(
+    GetAccessTokenCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string access_token;
+  if (status >= 200 && status <= 299) {
+    FTXJSONParser::GetAccessTokenFromJSON(body, &access_token);
+    SetAccessToken(access_token);
+  }
+  std::move(callback).Run(!access_token.empty());
+}
+
+void FTXService::SetAuthToken(const std::string& auth_token) {
+  auth_token_ = auth_token;
+}
+
+bool FTXService::SetAccessToken(const std::string& access_token) {
+  access_token_ = access_token;
+  std::string encrypted_access_token;
+
+  if (!OSCrypt::EncryptString(access_token, &encrypted_access_token)) {
+    LOG(ERROR) << "Could not encrypt and save Binance token info";
+    return false;
+  }
+
+  std::string encoded_encrypted_access_token;
+  base::Base64Encode(encrypted_access_token, &encoded_encrypted_access_token);
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  prefs->SetString(kFTXAccessToken, encoded_encrypted_access_token);
+
+  return true;
+}
+
 bool FTXService::NetworkRequest(const GURL& url,
                                 const std::string& method,
                                 const std::string& post_data,
-                                URLRequestCallback callback) {
+                                URLRequestCallback callback,
+                                bool set_auth_header) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
@@ -149,6 +209,12 @@ bool FTXService::NetworkRequest(const GURL& url,
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data,
                                       "application/x-www-form-urlencoded");
+  }
+
+  if (set_auth_header) {
+    std::string header = GetTokenHeader();
+    request->headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
+                               base::StringPrintf("%s", header.c_str()));
   }
 
   url_loader->SetRetryOptions(

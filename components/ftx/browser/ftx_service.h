@@ -41,6 +41,7 @@ class Profile;
 const char get_futures_data_path[] = "/api/futures";
 const char get_market_data_path[] = "/api/markets";
 const char oauth_path[] = "/oauth";
+const char oauth_token_path[] = "/api/oauth/token";
 const char futures_filter[] = "perpetual";
 
 typedef std::vector<std::map<std::string, std::string>> FTXChartData;
@@ -54,6 +55,7 @@ class FTXService : public KeyedService {
   using GetFuturesDataCallback =
       base::OnceCallback<void(const FTXFuturesData&)>;
   using GetChartDataCallback = base::OnceCallback<void(const FTXChartData&)>;
+  using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
 
   bool GetFuturesData(GetFuturesDataCallback callback);
   bool GetChartData(const std::string& symbol,
@@ -61,6 +63,8 @@ class FTXService : public KeyedService {
                     const std::string& end,
                     GetChartDataCallback callback);
   std::string GetOAuthClientUrl();
+  bool GetAccessToken(GetAccessTokenCallback callback);
+  void SetAuthToken(const std::string& auth_token);
 
  private:
   using SimpleURLLoaderList =
@@ -79,19 +83,28 @@ class FTXService : public KeyedService {
                    const std::string& body,
                    const std::map<std::string, std::string>& headers);
   GURL GetOAuthURL(const std::string& path);
+  std::string GetTokenHeader();
+  bool SetAccessToken(const std::string& access_token);
 
   base::SequencedTaskRunner* io_task_runner();
 
   bool NetworkRequest(const GURL& url,
                       const std::string& method,
                       const std::string& post_data,
-                      URLRequestCallback callback);
+                      URLRequestCallback callback,
+                      bool set_auth_header);
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
                            URLRequestCallback callback,
                            const std::unique_ptr<std::string> response_body);
+  void OnGetAccessToken(GetAccessTokenCallback callback,
+                        const int status,
+                        const std::string& body,
+                        const std::map<std::string, std::string>& headers);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 
+  std::string auth_token_;
+  std::string access_token_;
   std::string client_id_;
   std::string client_secret_;
 

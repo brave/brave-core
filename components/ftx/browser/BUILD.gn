@@ -27,6 +27,7 @@ source_set("browser") {
     "//components/prefs:prefs",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/os_crypt:os_crypt",
     "//components/user_prefs",
     "//content/public/browser",
     "//net",

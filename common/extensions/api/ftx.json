@@ -110,6 +110,24 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getAccessToken",
+        "type": "function",
+        "description": "Facilitates access token creation given a temporary code",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean",
+                "description": "Indicates the access token was retrieved successfully"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

@@ -59,13 +59,10 @@ void LoadNewTabURL(const GURL& url,
   }
   if (parts.find("code") != parts.end()) {
     std::string auth_token = parts["code"];
-    /*
     Profile* profile =
         Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    FTXServiceFactory::GetInstance()
-      ->GetForProfile(profile)
-      ->SetAuthToken(auth_token);
-    */
+    FTXServiceFactory::GetInstance()->GetForProfile(profile)->SetAuthToken(
+        auth_token);
   }
 
   web_contents->GetController().LoadURL(GURL("chrome://newtab?ftxAuth=1"),

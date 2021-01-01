@@ -133,10 +133,34 @@ ExtensionFunction::ResponseAction FtxGetOauthHostFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction FtxGetClientUrlFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
   auto* service = GetFTXService(browser_context());
   const std::string client_url = service->GetOAuthClientUrl();
 
   return RespondNow(OneArgument(base::Value(client_url)));
+}
+
+ExtensionFunction::ResponseAction FtxGetAccessTokenFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetFTXService(browser_context());
+  bool token_request = service->GetAccessToken(
+      base::BindOnce(&FtxGetAccessTokenFunction::OnCodeResult, this));
+
+  if (!token_request) {
+    return RespondNow(Error("Could not make request for access token"));
+  }
+
+  return RespondLater();
+}
+
+void FtxGetAccessTokenFunction::OnCodeResult(bool success) {
+  Respond(OneArgument(base::Value(success)));
 }
 
 }  // namespace api
