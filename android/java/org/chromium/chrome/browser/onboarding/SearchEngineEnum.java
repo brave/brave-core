@@ -15,7 +15,7 @@ public enum SearchEngineEnum {
     DUCKDUCKGO(R.drawable.search_engine_duckduckgo, SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_ID, R.string.ddg_desc),
     QWANT(R.drawable.search_engine_qwant, SearchEngineEnumConstants.SEARCH_QWANT_ID, R.string.qwant_desc),
     BING(R.drawable.search_engine_bing, SearchEngineEnumConstants.SEARCH_BING_ID, R.string.bing_desc),
-    YANDEX(R.drawable.yandex, SearchEngineEnumConstants.SEARCH_YANDEX_ID, R.string.bing_desc),
+    YANDEX(R.drawable.yandex, SearchEngineEnumConstants.SEARCH_YANDEX_ID, R.string.yandex_desc),
     STARTPAGE(R.drawable.search_engine_startpage, SearchEngineEnumConstants.SEARCH_STARTPAGE_ID, R.string.startpage_desc);
 
     private int icon;

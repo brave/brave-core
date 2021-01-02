@@ -1576,6 +1576,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BING_DESC" desc="Onboarding SE text">
         Second most popular
       </message>
+      <message name="IDS_YANDEX_DESC" desc="Onboarding SE text">
+        A leading search engine in Russia
+      </message>
       <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
         Some search engines protect your privacy better than others when you search the web.
       </message>
