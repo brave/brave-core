@@ -40,12 +40,15 @@ class Profile;
 
 const char get_futures_data_path[] = "/api/futures";
 const char get_market_data_path[] = "/api/markets";
-const char oauth_path[] = "/oauth";
+// To do, ask FTX to make response_type a property query param
+const char oauth_path[] = "/oauth/response_type=code";
 const char oauth_token_path[] = "/api/oauth/token";
+const char oauth_balances_path[] = "/api/wallet/balances";
 const char futures_filter[] = "perpetual";
 
 typedef std::vector<std::map<std::string, std::string>> FTXChartData;
 typedef std::vector<std::map<std::string, std::string>> FTXFuturesData;
+typedef std::map<std::string, std::string> FTXAccountBalances;
 
 class FTXService : public KeyedService {
  public:
@@ -56,12 +59,15 @@ class FTXService : public KeyedService {
       base::OnceCallback<void(const FTXFuturesData&)>;
   using GetChartDataCallback = base::OnceCallback<void(const FTXChartData&)>;
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
+  using GetAccountBalancesCallback =
+      base::OnceCallback<void(const FTXAccountBalances&, bool)>;
 
   bool GetFuturesData(GetFuturesDataCallback callback);
   bool GetChartData(const std::string& symbol,
                     const std::string& start,
                     const std::string& end,
                     GetChartDataCallback callback);
+  bool GetAccountBalances(GetAccountBalancesCallback callback);
   std::string GetOAuthClientUrl();
   bool GetAccessToken(GetAccessTokenCallback callback);
   void SetAuthToken(const std::string& auth_token);
@@ -82,6 +88,10 @@ class FTXService : public KeyedService {
                    const int status,
                    const std::string& body,
                    const std::map<std::string, std::string>& headers);
+  void OnGetAccountBalances(GetAccountBalancesCallback callback,
+                            const int status,
+                            const std::string& body,
+                            const std::map<std::string, std::string>& headers);
   GURL GetOAuthURL(const std::string& path);
   std::string GetTokenHeader();
   bool SetAccessToken(const std::string& access_token);

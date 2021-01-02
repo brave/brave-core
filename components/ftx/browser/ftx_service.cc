@@ -117,6 +117,27 @@ void FTXService::OnChartData(
   std::move(callback).Run(data);
 }
 
+bool FTXService::GetAccountBalances(GetAccountBalancesCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&FTXService::OnGetAccountBalances, base::Unretained(this),
+                     std::move(callback));
+  GURL url = GetOAuthURL(oauth_balances_path);
+  return NetworkRequest(url, "GET", "", std::move(internal_callback), true);
+}
+
+void FTXService::OnGetAccountBalances(
+    GetAccountBalancesCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  FTXAccountBalances balances;
+  bool auth_invalid = status == 401;
+  if (status >= 200 && status <= 299) {
+    FTXJSONParser::GetAccountBalancesFromJSON(body, &balances);
+  }
+  std::move(callback).Run(balances, auth_invalid);
+}
+
 GURL FTXService::GetOAuthURL(const std::string& path) {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   std::string oauth_host = prefs->GetString(kFTXOauthHost);
@@ -128,13 +149,12 @@ std::string FTXService::GetTokenHeader() {
   if (access_token_.empty()) {
     return "Basic " + client_id_ + ":" + client_secret_;
   } else {
-    return "";
+    return "Bearer " + access_token_;
   }
 }
 
 std::string FTXService::GetOAuthClientUrl() {
   GURL url = GetOAuthURL(oauth_path);
-  url = net::AppendQueryParameter(url, "response_type", "code");
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(
       url, "state", ntp_widget_utils::GetCryptoRandomString(false));

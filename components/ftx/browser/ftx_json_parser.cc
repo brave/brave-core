@@ -139,3 +139,41 @@ bool FTXJSONParser::GetAccessTokenFromJSON(const std::string& json,
 
   return true;
 }
+
+bool FTXJSONParser::GetAccountBalancesFromJSON(const std::string& json,
+                                               FTXAccountBalances* balances) {
+  if (!balances) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* result = records_v->FindKey("result");
+  if (!result || !result->is_list()) {
+    return false;
+  }
+
+  for (const base::Value& val : result->GetList()) {
+    const base::Value* coin = val.FindKey("coin");
+    const base::Value* free = val.FindKey("free");
+
+    bool has_coin = coin && coin->is_string();
+    bool has_free = free && free->is_string();
+
+    if (!has_coin || !has_free) {
+      continue;
+    }
+
+    balances->insert({coin->GetString(), free->GetString()});
+  }
+
+  return true;
+}

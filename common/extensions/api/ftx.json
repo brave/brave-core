@@ -128,6 +128,27 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getAccountBalances",
+        "type": "function",
+        "description": "Retrieves user asset balances",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "balances",
+                "type": "any"
+              }, {
+                "name": "authInvalid",
+                "type": "boolean",
+                "description": "Indicates whether the auth token has expired"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

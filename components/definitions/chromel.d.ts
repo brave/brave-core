@@ -215,6 +215,8 @@ declare namespace chrome.ftx {
   const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
   const getClientUrl: (callback: (clientUrl: string) => void) => {}
   const getAccessToken: (callback: (success: boolean) => void) => {}
+
+  const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
 }
 
 declare namespace chrome.braveTogether {

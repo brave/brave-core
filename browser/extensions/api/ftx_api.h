@@ -80,6 +80,18 @@ class FtxGetAccessTokenFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class FtxGetAccountBalancesFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.getAccountBalances", UNKNOWN)
+
+ protected:
+  ~FtxGetAccountBalancesFunction() override {}
+  void OnGetAccountBalances(const FTXAccountBalances& balances,
+                            bool auth_invalid);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

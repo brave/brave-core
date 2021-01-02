@@ -163,5 +163,33 @@ void FtxGetAccessTokenFunction::OnCodeResult(bool success) {
   Respond(OneArgument(base::Value(success)));
 }
 
+ExtensionFunction::ResponseAction FtxGetAccountBalancesFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetFTXService(browser_context());
+  bool balance_success = service->GetAccountBalances(base::BindOnce(
+      &FtxGetAccountBalancesFunction::OnGetAccountBalances, this));
+
+  if (!balance_success) {
+    return RespondNow(Error("Could not send request to get balance"));
+  }
+
+  return RespondLater();
+}
+
+void FtxGetAccountBalancesFunction::OnGetAccountBalances(
+    const FTXAccountBalances& balances,
+    bool auth_invalid) {
+  base::Value result(base::Value::Type::DICTIONARY);
+
+  for (const auto& balance : balances) {
+    result.SetStringKey(balance.first, balance.second);
+  }
+
+  Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
+}
+
 }  // namespace api
 }  // namespace extensions
