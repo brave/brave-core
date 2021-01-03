@@ -42,12 +42,8 @@ public class HighlightDialogFragment extends DialogFragment {
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews = Arrays.asList(
-                R.id.brave_stats_ads,
-                R.id.brave_stats_data_saved,
-                R.id.brave_stats_time,
-                R.id.brave_stats_time
-            );
+    private static final List<Integer> highlightViews = Arrays.asList(R.id.brave_stats_ads,
+            R.id.brave_stats_data_saved, R.id.brave_stats_time, R.id.widget_cardview);
 
     private HighlightItem item;
     private HighlightView highlightView;

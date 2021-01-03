@@ -49,19 +49,19 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.chromium.base.SysUtils;
 import org.chromium.base.Log;
+import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
-import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.tab.Tab;
 
 import java.util.Collections;
@@ -414,7 +414,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
         mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
-        mPrivacyReportIcon.setColorFilter(mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+        mPrivacyReportIcon.setColorFilter(
+                mContext.getResources().getColor(R.color.default_icon_color_tint_list));
         TextView mViewPrivacyReportText = mPrivacyReportLayout.findViewById(R.id.toggle_text);
         mViewPrivacyReportText.setText(R.string.view_full_privacy_report);
         mPrivacyReportLayout.setOnClickListener(new View.OnClickListener() {

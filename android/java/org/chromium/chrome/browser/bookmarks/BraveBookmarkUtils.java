@@ -12,13 +12,13 @@ import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge.BookmarkItem;
+import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
-import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
 
 /**
  * A class holding static util functions for bookmark.
@@ -58,14 +58,15 @@ public class BraveBookmarkUtils {
         Snackbar snackbar = null;
         if (bookmarkId == null) {
             snackbar = Snackbar.make(activity.getString(R.string.bookmark_page_failed),
-                    new SnackbarController() {
-                        @Override
-                        public void onDismissNoAction(Object actionData) { }
+                                       new SnackbarController() {
+                                           @Override
+                                           public void onDismissNoAction(Object actionData) {}
 
-                        @Override
-                        public void onAction(Object actionData) { }
-                    }, Snackbar.TYPE_NOTIFICATION, Snackbar.UMA_BOOKMARK_ADDED)
-                    .setSingleLine(false);
+                                           @Override
+                                           public void onAction(Object actionData) {}
+                                       },
+                                       Snackbar.TYPE_NOTIFICATION, Snackbar.UMA_BOOKMARK_ADDED)
+                               .setSingleLine(false);
             RecordUserAction.record("EnhancedBookmarks.AddingFailed");
         } else {
             String folderName = bookmarkModel.getBookmarkTitle(
@@ -85,11 +86,12 @@ public class BraveBookmarkUtils {
                 }
             } else {
                 snackbar = Snackbar.make(folderName, snackbarController, Snackbar.TYPE_ACTION,
-                        Snackbar.UMA_BOOKMARK_ADDED)
-                        .setTemplateText(activity.getString(R.string.bookmark_page_saved_folder));
+                                           Snackbar.UMA_BOOKMARK_ADDED)
+                                   .setTemplateText(
+                                           activity.getString(R.string.bookmark_page_saved_folder));
             }
-            snackbar.setSingleLine(false).setAction(activity.getString(R.string.bookmark_item_edit),
-                    null);
+            snackbar.setSingleLine(false).setAction(
+                    activity.getString(R.string.bookmark_item_edit), null);
         }
         snackbarManager.showSnackbar(snackbar);
 

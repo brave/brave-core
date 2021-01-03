@@ -9,10 +9,12 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveBookmarkUtilsClassAdapter extends BraveClassVisitor {
     static String sBookmarkUtilsClassName = "org/chromium/chrome/browser/bookmarks/BookmarkUtils";
-    static String sBraveBookmarkUtilsClassName = "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils";
+    static String sBraveBookmarkUtilsClassName =
+            "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils";
 
     public BraveBookmarkUtilsClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeMethodOwner(sBookmarkUtilsClassName, "addOrEditBookmark", sBraveBookmarkUtilsClassName);
+        changeMethodOwner(
+                sBookmarkUtilsClassName, "addOrEditBookmark", sBraveBookmarkUtilsClassName);
     }
 }
