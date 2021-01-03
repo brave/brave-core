@@ -33,8 +33,8 @@ class Catalog {
   std::string GetId() const;
   int GetVersion() const;
   int64_t GetPing() const;
-  CatalogCampaignList GetCampaigns() const;
   CatalogIssuersInfo GetIssuers() const;
+  CatalogCampaignList GetCampaigns() const;
 
  private:
   std::unique_ptr<CatalogState> catalog_state_;

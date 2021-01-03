@@ -18,6 +18,11 @@ struct CatalogCreativeInfo {
       const CatalogCreativeInfo& info);
   ~CatalogCreativeInfo();
 
+  bool operator==(
+      const CatalogCreativeInfo& rhs) const;
+  bool operator!=(
+      const CatalogCreativeInfo& rhs) const;
+
   std::string creative_instance_id;
   CatalogTypeInfo type;
 };

@@ -12,6 +12,16 @@
 namespace ads {
 
 struct CatalogGeoTargetInfo {
+  CatalogGeoTargetInfo();
+  CatalogGeoTargetInfo(
+      const CatalogGeoTargetInfo& info);
+  ~CatalogGeoTargetInfo();
+
+  bool operator==(
+      const CatalogGeoTargetInfo& rhs) const;
+  bool operator!=(
+      const CatalogGeoTargetInfo& rhs) const;
+
   std::string code;
   std::string name;
 };

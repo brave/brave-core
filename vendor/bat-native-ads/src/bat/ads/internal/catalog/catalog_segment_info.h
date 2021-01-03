@@ -12,6 +12,16 @@
 namespace ads {
 
 struct CatalogSegmentInfo {
+  CatalogSegmentInfo();
+  CatalogSegmentInfo(
+      const CatalogSegmentInfo& info);
+  ~CatalogSegmentInfo();
+
+  bool operator==(
+      const CatalogSegmentInfo& rhs) const;
+  bool operator!=(
+      const CatalogSegmentInfo& rhs) const;
+
   std::string code;
   std::string name;
 };

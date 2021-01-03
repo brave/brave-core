@@ -59,12 +59,12 @@ int64_t Catalog::GetPing() const {
   return catalog_state_->ping / base::Time::kMillisecondsPerSecond;
 }
 
-CatalogCampaignList Catalog::GetCampaigns() const {
-  return catalog_state_->campaigns;
-}
-
 CatalogIssuersInfo Catalog::GetIssuers() const {
   return catalog_state_->catalog_issuers;
+}
+
+CatalogCampaignList Catalog::GetCampaigns() const {
+  return catalog_state_->campaigns;
 }
 
 }  // namespace ads

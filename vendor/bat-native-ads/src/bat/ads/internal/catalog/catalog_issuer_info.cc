@@ -14,4 +14,15 @@ CatalogIssuerInfo::CatalogIssuerInfo(
 
 CatalogIssuerInfo::~CatalogIssuerInfo() = default;
 
+bool CatalogIssuerInfo::operator==(
+    const CatalogIssuerInfo& rhs) const {
+  return name == rhs.name &&
+      public_key == rhs.public_key;
+}
+
+bool CatalogIssuerInfo::operator!=(
+    const CatalogIssuerInfo& rhs) const {
+  return !(*this == rhs);
+}
+
 }  // namespace ads

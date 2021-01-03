@@ -45,7 +45,7 @@ void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
 
-  SetUpForTesting(/* integration testing */ false);
+  SetUpForTesting(/* integration_test */ false);
 }
 
 void UnitTestBase::SetUpForTesting(

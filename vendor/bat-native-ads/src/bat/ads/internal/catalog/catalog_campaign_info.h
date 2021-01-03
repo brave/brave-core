@@ -21,10 +21,14 @@ struct CatalogCampaignInfo {
       const CatalogCampaignInfo& info);
   ~CatalogCampaignInfo();
 
+  bool operator==(
+      const CatalogCampaignInfo& rhs) const;
+  bool operator!=(
+      const CatalogCampaignInfo& rhs) const;
+
   std::string campaign_id;
   unsigned int priority = 0;
   double ptr = 0.0;
-  std::string name;
   std::string start_at;
   std::string end_at;
   unsigned int daily_cap = 0;

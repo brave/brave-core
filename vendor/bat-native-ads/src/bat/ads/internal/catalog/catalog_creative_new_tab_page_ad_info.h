@@ -14,6 +14,16 @@
 namespace ads {
 
 struct CatalogCreativeNewTabPageAdInfo : CatalogCreativeInfo {
+  CatalogCreativeNewTabPageAdInfo();
+  CatalogCreativeNewTabPageAdInfo(
+      const CatalogCreativeNewTabPageAdInfo& info);
+  ~CatalogCreativeNewTabPageAdInfo();
+
+  bool operator==(
+      const CatalogCreativeNewTabPageAdInfo& rhs) const;
+  bool operator!=(
+      const CatalogCreativeNewTabPageAdInfo& rhs) const;
+
   CatalogNewTabPageAdPayloadInfo payload;
 };
 

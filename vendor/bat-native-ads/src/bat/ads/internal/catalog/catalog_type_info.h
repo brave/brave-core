@@ -18,6 +18,11 @@ struct CatalogTypeInfo {
       const CatalogTypeInfo& info);
   ~CatalogTypeInfo();
 
+  bool operator==(
+      const CatalogTypeInfo& rhs) const;
+  bool operator!=(
+      const CatalogTypeInfo& rhs) const;
+
   std::string code;
   std::string name;
   std::string platform;
