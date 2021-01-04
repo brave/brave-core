@@ -41,6 +41,18 @@ void AdsClientMojoBridge::IsForeground(
   std::move(callback).Run(ads_client_->IsForeground());
 }
 
+bool AdsClientMojoBridge::CanShowBackgroundNotifications(
+    bool* out_can_show) {
+  DCHECK(out_can_show);
+  *out_can_show = ads_client_->CanShowBackgroundNotifications();
+  return true;
+}
+
+void AdsClientMojoBridge::CanShowBackgroundNotifications(
+    CanShowBackgroundNotificationsCallback callback) {
+  std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
+}
+
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(
     bool* out_is_available) {
   DCHECK(out_is_available);

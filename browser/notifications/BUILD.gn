@@ -1,0 +1,31 @@
+source_set("notifications") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
+  if (is_mac) {
+    sources = [
+      "brave_alert_dispatcher_mac.mm",
+      "brave_alert_dispatcher_mac.h",
+      "brave_notification_platform_bridge_mac.mm",
+      "brave_notification_platform_bridge.h",
+    ]
+
+    deps = [
+      "//base",
+      "//chrome/browser/ui/cocoa/notifications:common",
+      "//ui/message_center/public/cpp",
+      "//skia",
+    ]
+
+    frameworks = [ "Foundation.framework" ]
+  } else if (is_android) {
+    sources = [
+      "brave_notification_platform_bridge_helper_android.cc",
+      "brave_notification_platform_bridge_helper_android.h",
+    ]
+
+    deps = [
+      "//base",
+      "//chrome/common",
+    ]
+  }
+}

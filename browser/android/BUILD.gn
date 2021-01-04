@@ -28,6 +28,18 @@ source_set("android_browser_process") {
     "//components/translate/core/browser",
   ]
 
+  if (brave_ads_enabled) {
+    sources += [
+      "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
+    ]
+
+    deps += [
+      "//brave/browser/brave_ads/android:jni_headers",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/l10n/browser",
+    ]
+  }
+
   if (enable_brave_sync) {
     sources += [
       "brave_sync_worker.cc",

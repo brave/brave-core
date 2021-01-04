@@ -6,6 +6,7 @@
 #include "brave/common/brave_channel_info.h"
 
 #include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 
 namespace brave {
 
@@ -20,6 +21,12 @@ std::string GetChannelName() {
 #else  // OFFICIAL_BUILD
   return "developer";
 #endif  // !OFFICIAL_BUILD
+}
+
+bool IsDevOrCanaryBuild() {
+  return chrome::GetChannel() == version_info::Channel::DEV ||
+    chrome::GetChannel() == version_info::Channel::CANARY ||
+    chrome::GetChannel() == version_info::Channel::UNKNOWN;
 }
 
 }  // namespace brave

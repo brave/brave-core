@@ -19,6 +19,7 @@ import android.net.Uri;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
+import org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -40,11 +41,12 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static String BRAVE_ONBOARDING_ORIGIN_DE = "https://brave.com/de/my-first-ad/";
     private static String BRAVE_ONBOARDING_ORIGIN_FR = "https://brave.com/fr/my-first-ad/";
     public static final String DEEP_LINK = "deep_link";
+    public static final String USE_CUSTOM_NOTIFICATION = "use_custom_notification";
 
     private static final String COUNTRY_CODE_DE = "de_DE";
     private static final String COUNTRY_CODE_FR = "fr_FR";
 
-    public static void showOnboardingNotification(Activity activity) {
+    public static void showOnboardingDialog(Activity activity) {
         Context context = activity.getApplicationContext();
         BraveAdsNotificationDialog.displayAdsNotification(
             activity,
@@ -53,6 +55,31 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
             context.getString(R.string.brave_ui_brave_rewards),
             context.getString(R.string.this_is_your_first_ad)
         );
+    }
+
+    public static void showOnboardingNotification(Activity activity) {
+        Context context = activity.getApplicationContext();
+        if (context == null) return;
+        NotificationManagerProxyImpl notificationManager =
+            new NotificationManagerProxyImpl(context);
+
+        NotificationBuilderBase notificationBuilder =
+            new BraveAdsNotificationBuilder(context)
+        .setTitle(context.getString(R.string.brave_ui_brave_rewards))
+        .setBody(context.getString(R.string.this_is_your_first_ad))
+        .setSmallIconId(R.drawable.ic_chrome)
+        .setPriority(Notification.PRIORITY_HIGH)
+        .setDefaults(Notification.DEFAULT_ALL)
+        .setContentIntent(getDeepLinkIntent(context))
+        .setOrigin(getNotificationUrl());
+
+        NotificationWrapper notification = notificationBuilder.build(new NotificationMetadata(
+                                              NotificationUmaTracker.SystemNotificationType
+                                              .UNKNOWN /* Underlying code doesn't track UNKNOWN */,
+                                              BRAVE_ONBOARDING_NOTIFICATION_TAG /* notificationTag */,
+                                              BRAVE_ONBOARDING_NOTIFICATION_ID /* notificationId */
+                                          ));
+        notificationManager.notify(notification);
     }
 
     public static PendingIntentProvider getDeepLinkIntent(Context context) {
@@ -79,7 +106,11 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                 RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
             }
         } else {
-            showOnboardingNotification(braveActivity);
+            if (intent.getBooleanExtra(USE_CUSTOM_NOTIFICATION, false)) {
+              showOnboardingDialog(braveActivity);
+            } else {
+              showOnboardingNotification(braveActivity);
+            }
             if (braveActivity != null) {
                 braveActivity.hideRewardsOnboardingIcon();
             }
@@ -96,5 +127,12 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         default:
             return BRAVE_ONBOARDING_ORIGIN_EN;
         }
+    }
+
+    public static void cancelOnboardingNotification(Context context) {
+        NotificationManagerProxyImpl notificationManager =
+            new NotificationManagerProxyImpl(context);
+        notificationManager.cancel(
+            BRAVE_ONBOARDING_NOTIFICATION_TAG, BRAVE_ONBOARDING_NOTIFICATION_ID);
     }
 }

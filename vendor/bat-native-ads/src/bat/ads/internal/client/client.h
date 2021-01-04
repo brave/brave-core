@@ -101,6 +101,10 @@ class Client {
   const TextClassificationProbabilitiesList&
       GetTextClassificationProbabilitiesHistory();
 
+  std::string GetVersionCode() const;
+  void SetVersionCode(
+      const std::string& value);
+
   void RemoveAllHistory();
 
  private:
