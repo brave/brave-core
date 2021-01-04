@@ -99,8 +99,7 @@ ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
   }
 
   if (!GetIpfsService(browser_context())->IsIPFSExecutableAvailable()) {
-    return RespondNow(
-        OneArgument(std::make_unique<base::Value>(base::Value(false))));
+    return RespondNow(OneArgument(base::Value(false)));
   }
 
   GetIpfsService(browser_context())
