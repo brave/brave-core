@@ -227,8 +227,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   void AllowReferrers() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::BRAVE_REFERRERS,
-        CONTENT_SETTING_ALLOW);
+        ContentSettingsType::BRAVE_REFERRERS, CONTENT_SETTING_ALLOW);
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
         ContentSettingsType::BRAVE_REFERRERS, &settings);

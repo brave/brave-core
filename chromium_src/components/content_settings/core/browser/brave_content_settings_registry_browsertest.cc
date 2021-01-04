@@ -38,8 +38,8 @@ class BraveContentSettingsRegistryBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
                        WithoutWildcardContentSetting) {
   ContentSetting brave_url_shields_setting =
-      content_settings()->GetContentSetting(
-          GetBraveURL(), GetBraveURL(), ContentSettingsType::BRAVE_SHIELDS);
+      content_settings()->GetContentSetting(GetBraveURL(), GetBraveURL(),
+                                            ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, brave_url_shields_setting);
 
   ContentSetting brave_url_shields_setting_private =
@@ -54,14 +54,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
       ContentSettingsPattern::FromURL(GetBraveURL());
 
   content_settings()->SetContentSettingCustomScope(
-      brave_url_pattern,
-      brave_url_pattern,
-      ContentSettingsType::BRAVE_SHIELDS,
+      brave_url_pattern, brave_url_pattern, ContentSettingsType::BRAVE_SHIELDS,
       CONTENT_SETTING_ALLOW);
 
   ContentSetting brave_url_shields_setting =
-      content_settings()->GetContentSetting(
-          GetBraveURL(), GetBraveURL(), ContentSettingsType::BRAVE_SHIELDS);
+      content_settings()->GetContentSetting(GetBraveURL(), GetBraveURL(),
+                                            ContentSettingsType::BRAVE_SHIELDS);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting);
 
   ContentSetting brave_url_shields_setting_private =

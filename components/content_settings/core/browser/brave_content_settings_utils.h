@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_constraints.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/content_settings/core/common/content_settings.h"
 
 namespace content_settings {
 
@@ -27,11 +27,12 @@ base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
 
 std::string GetShieldsSettingUserPrefsPath(const std::string& name);
 
-base::Time GetTimeStampFromDictionary(
-    const base::DictionaryValue* dictionary, const char* key);
+base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
+                                      const char* key);
 
 content_settings::SessionModel GetSessionModelFromDictionary(
-    const base::DictionaryValue* dictionary, const char* key);
+    const base::DictionaryValue* dictionary,
+    const char* key);
 
 }  // namespace content_settings
 

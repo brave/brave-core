@@ -31,9 +31,8 @@ class NotificationHeaderView;
 // list) except the custom notification. Future notification types may be
 // handled by other classes, in which case instances of those classes would be
 // returned by the Create() factory method below.
-class AdNotificationViewMD
-    : public NotificationView,
-      public views::InkDropObserver {
+class AdNotificationViewMD : public NotificationView,
+                             public views::InkDropObserver {
  public:
   explicit AdNotificationViewMD(const Notification& notification);
   ~AdNotificationViewMD() override;

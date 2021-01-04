@@ -73,8 +73,8 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
       CONTENT_SETTING_ALLOW);
   map()->SetContentSettingCustomScope(
       brave_shields::GetPatternFromURL(kGoogleURL),
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT,
+      CONTENT_SETTING_BLOCK);
   map()->SetContentSettingDefaultScope(
       kAbcURL, GURL(), ContentSettingsType::PLUGINS, CONTENT_SETTING_ALLOW);
 

@@ -70,11 +70,11 @@ class BravePrefProvider : public PrefProvider,
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);
   bool SetWebsiteSettingInternal(
-    const ContentSettingsPattern& primary_pattern,
-    const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsType content_type,
-    std::unique_ptr<base::Value>&& in_value,
-    const ContentSettingConstraints& constraints);
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsType content_type,
+      std::unique_ptr<base::Value>&& in_value,
+      const ContentSettingConstraints& constraints);
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,

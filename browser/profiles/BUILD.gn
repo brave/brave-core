@@ -44,8 +44,6 @@ source_set("profiles") {
   ]
 
   if (enable_tor) {
-    deps += [
-      "//brave/browser/tor",
-    ]
+    deps += [ "//brave/browser/tor" ]
   }
 }

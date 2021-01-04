@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
+#include "base/test/scoped_feature_list.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "ui/events/keycodes/dom/dom_code.h"
 #include "ui/views/controls/button/button.h"

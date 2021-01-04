@@ -8,15 +8,15 @@
 #include <algorithm>
 
 #include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/optional.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "url/gurl.h"
 
 namespace {
 
-const std::vector<ContentSettingsType> kShieldsContentSettingsTypes {
+const std::vector<ContentSettingsType> kShieldsContentSettingsTypes{
     ContentSettingsType::BRAVE_ADS,
     ContentSettingsType::BRAVE_COSMETIC_FILTERING,
     ContentSettingsType::BRAVE_TRACKERS,
@@ -24,8 +24,7 @@ const std::vector<ContentSettingsType> kShieldsContentSettingsTypes {
     ContentSettingsType::BRAVE_FINGERPRINTING_V2,
     ContentSettingsType::BRAVE_SHIELDS,
     ContentSettingsType::BRAVE_REFERRERS,
-    ContentSettingsType::BRAVE_COOKIES
-};
+    ContentSettingsType::BRAVE_COOKIES};
 
 bool CanPatternBeConvertedToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
@@ -96,8 +95,7 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
   return std::string();
 }
 
-bool IsShieldsContentSettingsType(
-    const ContentSettingsType& content_type) {
+bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
   return std::find(kShieldsContentSettingsTypes.begin(),
                    kShieldsContentSettingsTypes.end(),
                    content_type) != kShieldsContentSettingsTypes.end();
@@ -121,8 +119,8 @@ std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
 
 // Extract a timestamp from |dictionary[key]|. Will return base::Time() if no
 // timestamp exists.
-base::Time GetTimeStampFromDictionary(
-    const base::DictionaryValue* dictionary, const char* key) {
+base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
+                                      const char* key) {
   std::string timestamp_str;
   dictionary->GetStringWithoutPathExpansion(key, &timestamp_str);
   int64_t timestamp = 0;
@@ -135,7 +133,8 @@ base::Time GetTimeStampFromDictionary(
 // Extract a SessionModel from |dictionary[key]|. Will return
 // SessionModel::Durable if no model exists.
 content_settings::SessionModel GetSessionModelFromDictionary(
-    const base::DictionaryValue* dictionary, const char* key) {
+    const base::DictionaryValue* dictionary,
+    const char* key) {
   int model_int = 0;
   dictionary->GetIntegerWithoutPathExpansion(key, &model_int);
   if ((model_int >

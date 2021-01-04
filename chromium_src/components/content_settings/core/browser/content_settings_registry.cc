@@ -16,30 +16,26 @@ const struct {
   const char* name;
   ContentSettingsType type;
 } kBraveContentSettingstypes[] = {
-  { brave_shields::kAds,
-    ContentSettingsType::BRAVE_ADS },
-  { brave_shields::kCosmeticFiltering,
-    ContentSettingsType::BRAVE_COSMETIC_FILTERING },
-  { brave_shields::kTrackers,
-    ContentSettingsType::BRAVE_TRACKERS },
-  { brave_shields::kHTTPUpgradableResources,
-    ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES },
-  { brave_shields::kFingerprintingV2,
-    ContentSettingsType::BRAVE_FINGERPRINTING_V2 },
-  { brave_shields::kBraveShields,
-    ContentSettingsType::BRAVE_SHIELDS },
-  { brave_shields::kReferrers,
-    ContentSettingsType::BRAVE_REFERRERS },
-  { brave_shields::kCookies,
-    ContentSettingsType::BRAVE_COOKIES },
+    {brave_shields::kAds, ContentSettingsType::BRAVE_ADS},
+    {brave_shields::kCosmeticFiltering,
+     ContentSettingsType::BRAVE_COSMETIC_FILTERING},
+    {brave_shields::kTrackers, ContentSettingsType::BRAVE_TRACKERS},
+    {brave_shields::kHTTPUpgradableResources,
+     ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES},
+    {brave_shields::kFingerprintingV2,
+     ContentSettingsType::BRAVE_FINGERPRINTING_V2},
+    {brave_shields::kBraveShields, ContentSettingsType::BRAVE_SHIELDS},
+    {brave_shields::kReferrers, ContentSettingsType::BRAVE_REFERRERS},
+    {brave_shields::kCookies, ContentSettingsType::BRAVE_COOKIES},
 };
 
 }  // namespace
 
 void ContentSettingsRegistry::RegisterBraveContentSettingsTypes(
-    const ContentSettingsType& type, const std::string& name) {
-  Register(type, name, CONTENT_SETTING_BLOCK,
-           WebsiteSettingsInfo::SYNCABLE, AllowlistedSchemes(kChromeUIScheme, kChromeDevToolsScheme),
+    const ContentSettingsType& type,
+    const std::string& name) {
+  Register(type, name, CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::SYNCABLE,
+           AllowlistedSchemes(kChromeUIScheme, kChromeDevToolsScheme),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
                          CONTENT_SETTING_ASK,
                          CONTENT_SETTING_DETECT_IMPORTANT_CONTENT),

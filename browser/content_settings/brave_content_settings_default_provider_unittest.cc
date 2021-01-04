@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/test/base/testing_profile.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_default_provider.h"
+#include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"

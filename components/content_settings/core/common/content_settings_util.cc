@@ -25,7 +25,8 @@ ContentSetting GetDefaultFromContentSettingsType(
         : CONTENT_SETTING_BLOCK;
   } else if (content_type == ContentSettingsType::BRAVE_TRACKERS) {
     return CONTENT_SETTING_BLOCK;
-  } else if (content_type == ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES) {
+  } else if (content_type ==
+             ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES) {
     return CONTENT_SETTING_BLOCK;
   } else if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
     return CONTENT_SETTING_ALLOW;
@@ -43,9 +44,8 @@ bool IsAllowContentSetting(const ContentSettingsForOneType& content_settings,
                            const GURL& primary_url,
                            const GURL& secondary_url,
                            const ContentSettingsType& content_type) {
-  ContentSetting setting =
-      GetDefaultFromContentSettingsType(content_type,
-                                        primary_url, secondary_url);
+  ContentSetting setting = GetDefaultFromContentSettingsType(
+      content_type, primary_url, secondary_url);
 
   for (const auto& entry : content_settings) {
     if (entry.primary_pattern.Matches(primary_url) &&

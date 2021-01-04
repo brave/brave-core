@@ -6,15 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_TYPES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_TYPES_H_
 
-#define BRAVE_CONTENT_SETTINGS_TYPES_LIST \
-  BRAVE_ADS,                              \
-  BRAVE_COSMETIC_FILTERING,               \
-  BRAVE_TRACKERS,                         \
-  BRAVE_HTTP_UPGRADABLE_RESOURCES,        \
-  BRAVE_FINGERPRINTING_V2,                \
-  BRAVE_SHIELDS,                          \
-  BRAVE_REFERRERS,                        \
-  BRAVE_COOKIES
+#define BRAVE_CONTENT_SETTINGS_TYPES_LIST                                      \
+  BRAVE_ADS, BRAVE_COSMETIC_FILTERING, BRAVE_TRACKERS,                         \
+      BRAVE_HTTP_UPGRADABLE_RESOURCES, BRAVE_FINGERPRINTING_V2, BRAVE_SHIELDS, \
+      BRAVE_REFERRERS, BRAVE_COOKIES
 
 #include "../../../../../../components/content_settings/core/common/content_settings_types.h"
 

@@ -65,9 +65,8 @@ void NotificationControlButtonsView::ShowInfoButton(bool show) {
 void NotificationControlButtonsView::ShowCloseButton(bool show) {
   if (show && !close_button_) {
     close_button_ = std::make_unique<PaddedButton>(
-        base::BindRepeating(
-          &NotificationView::OnCloseButtonPressed,
-          base::Unretained(message_view_)));
+        base::BindRepeating(&NotificationView::OnCloseButtonPressed,
+                            base::Unretained(message_view_)));
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,

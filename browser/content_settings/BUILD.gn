@@ -17,6 +17,7 @@ source_set("content_settings") {
     "//base",
     "//brave/components/brave_shields/browser",
     "//brave/components/content_settings/core/browser",
+
     # "//chrome/browser" # dep cycle
     "//components/content_settings/common:mojom",
     "//components/content_settings/core/browser",

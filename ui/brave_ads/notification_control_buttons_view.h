@@ -29,8 +29,7 @@ class NotificationView;
 class PaddedImage;
 class PaddedButton;
 
-class NotificationControlButtonsView
-    : public views::View {
+class NotificationControlButtonsView : public views::View {
  public:
   // String to be returned by GetClassName() method.
   static const char kViewClassName[];

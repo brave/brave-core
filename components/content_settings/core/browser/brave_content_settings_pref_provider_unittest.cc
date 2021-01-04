@@ -17,8 +17,8 @@
 #include "components/content_settings/core/browser/content_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -55,17 +55,18 @@ void InitializeAllShieldSettingsInDictionary(
     const base::Time& last_modified_time,
     const int& value) {
   const uint64_t last_modified_time_in_ms =
-       last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
+      last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
 
   dictionary->SetInteger(kExpirationPath, 0);
-  dictionary->SetString(
-      kLastModifiedPath, base::NumberToString(last_modified_time_in_ms));
-  dictionary->SetInteger(kSessionModelPath,
+  dictionary->SetString(kLastModifiedPath,
+                        base::NumberToString(last_modified_time_in_ms));
+  dictionary->SetInteger(
+      kSessionModelPath,
       static_cast<int>(content_settings::SessionModel::Durable));
 
-    std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
-        dictionary->SetDictionaryWithoutPathExpansion(
-            kPerResourcePath, std::make_unique<base::DictionaryValue>());
+  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
+      dictionary->SetDictionaryWithoutPathExpansion(
+          kPerResourcePath, std::make_unique<base::DictionaryValue>());
 
   per_resource_dict->SetInteger(brave_shields::kAds, value);
   per_resource_dict->SetInteger(brave_shields::kCookies, value);
@@ -84,9 +85,10 @@ void InitializeBraveShieldsSettingInDictionary(
       last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
 
   dictionary->SetInteger(kExpirationPath, 0);
-  dictionary->SetString(
-      kLastModifiedPath, base::NumberToString(last_modified_time_in_ms));
-  dictionary->SetInteger(kSessionModelPath,
+  dictionary->SetString(kLastModifiedPath,
+                        base::NumberToString(last_modified_time_in_ms));
+  dictionary->SetInteger(
+      kSessionModelPath,
       static_cast<int>(content_settings::SessionModel::Durable));
 
   std::unique_ptr<prefs::DictionaryValueUpdate> brave_per_resource_dict =
@@ -126,8 +128,8 @@ class ShieldsSetting {
                                        ContentSetting setting) {
     for (const auto& url_source : urls_) {
       provider_->SetWebsiteSetting(
-          pattern, SecondaryUrlToPattern(url_source.first),
-          url_source.second, ContentSettingToValue(setting), {});
+          pattern, SecondaryUrlToPattern(url_source.first), url_source.second,
+          ContentSettingToValue(setting), {});
     }
   }
 
@@ -159,11 +161,11 @@ class ShieldsSetting {
 class ShieldsCookieSetting : public ShieldsSetting {
  public:
   explicit ShieldsCookieSetting(BravePrefProvider* provider)
-      : ShieldsSetting(provider,
-                       {{GURL(), ContentSettingsType::BRAVE_COOKIES},
-                        {GURL("https://firstParty/*"),
-                         ContentSettingsType::BRAVE_COOKIES},
-                        {GURL(), ContentSettingsType::BRAVE_REFERRERS}}) {}
+      : ShieldsSetting(
+            provider,
+            {{GURL(), ContentSettingsType::BRAVE_COOKIES},
+             {GURL("https://firstParty/*"), ContentSettingsType::BRAVE_COOKIES},
+             {GURL(), ContentSettingsType::BRAVE_REFERRERS}}) {}
 };
 
 class ShieldsFingerprintingSetting : public ShieldsSetting {
@@ -171,17 +173,16 @@ class ShieldsFingerprintingSetting : public ShieldsSetting {
   explicit ShieldsFingerprintingSetting(BravePrefProvider* provider)
       : ShieldsSetting(provider,
                        {{GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2},
-                       {GURL("https://firstParty/*"),
-                        ContentSettingsType::BRAVE_FINGERPRINTING_V2}}) {}
+                        {GURL("https://firstParty/*"),
+                         ContentSettingsType::BRAVE_FINGERPRINTING_V2}}) {}
 };
 
 class ShieldsHTTPSESetting : public ShieldsSetting {
  public:
   explicit ShieldsHTTPSESetting(BravePrefProvider* provider)
-      : ShieldsSetting(provider,
-                       {{GURL(),
-                         ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}})
-        {}
+      : ShieldsSetting(
+            provider,
+            {{GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES}}) {}
 };
 
 class ShieldsAdsSetting : public ShieldsSetting {
@@ -195,8 +196,8 @@ class ShieldsAdsSetting : public ShieldsSetting {
 class ShieldsEnabledSetting : public ShieldsSetting {
  public:
   explicit ShieldsEnabledSetting(BravePrefProvider* provider)
-      : ShieldsSetting(provider, {{GURL(), ContentSettingsType::BRAVE_SHIELDS}})
-        {}
+      : ShieldsSetting(provider,
+                       {{GURL(), ContentSettingsType::BRAVE_SHIELDS}}) {}
 };
 
 class ShieldsScriptSetting : public ShieldsSetting {
@@ -398,9 +399,9 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
 
 TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
   PrefService* pref_service = testing_profile()->GetPrefs();
-  BravePrefProvider provider(
-      pref_service, false /* incognito */, true /* store_last_modified */,
-      false /* restore_session */);
+  BravePrefProvider provider(pref_service, false /* incognito */,
+                             true /* store_last_modified */,
+                             false /* restore_session */);
 
   // Manually write settings under the PLUGINS type using the no longer existing
   // ResourceIdentifier names, and then perform the migration.
@@ -448,15 +449,15 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
     const base::DictionaryValue* brave_shields_dict =
-    pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
-          GetShieldsContentTypeName(content_type)));
+        pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
+            GetShieldsContentTypeName(content_type)));
     EXPECT_NE(brave_shields_dict, nullptr);
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
       // We only changed the value of BRAVE_SHIELDS in www.brave.com.
       CheckMigrationFromResourceIdentifierForDictionary(
-      brave_shields_dict, "www.brave.com,*", expected_last_modified,
-      expected_brave_com_settings_value);
+          brave_shields_dict, "www.brave.com,*", expected_last_modified,
+          expected_brave_com_settings_value);
     } else {
       // All the other settings we changed them globally and in www.example.com.
       CheckMigrationFromResourceIdentifierForDictionary(

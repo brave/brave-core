@@ -5,8 +5,8 @@
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
-#define BRAVE_SET_WEBSITE_SETTING                                        \
-         content_settings::IsShieldsContentSettingsType(content_type_) ||
+#define BRAVE_SET_WEBSITE_SETTING \
+  content_settings::IsShieldsContentSettingsType(content_type_) ||
 
 #include "../../../../../../components/content_settings/core/browser/content_settings_pref.cc"
 

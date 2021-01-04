@@ -7,15 +7,15 @@
 #define ContentSettingsTypeToGroupName \
   ContentSettingsTypeToGroupName_ChromiumImpl
 
-#define BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST                 \
-    {ContentSettingsType::BRAVE_ADS, nullptr},                       \
-    {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},        \
-    {ContentSettingsType::BRAVE_TRACKERS, nullptr},                  \
-    {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr}, \
-    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},         \
-    {ContentSettingsType::BRAVE_SHIELDS, nullptr},                   \
-    {ContentSettingsType::BRAVE_REFERRERS, nullptr},                 \
-    {ContentSettingsType::BRAVE_COOKIES, nullptr},
+#define BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST                   \
+  {ContentSettingsType::BRAVE_ADS, nullptr},                           \
+      {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},        \
+      {ContentSettingsType::BRAVE_TRACKERS, nullptr},                  \
+      {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr}, \
+      {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},         \
+      {ContentSettingsType::BRAVE_SHIELDS, nullptr},                   \
+      {ContentSettingsType::BRAVE_REFERRERS, nullptr},                 \
+      {ContentSettingsType::BRAVE_COOKIES, nullptr},
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
   if (name == "autoplay")                                                \

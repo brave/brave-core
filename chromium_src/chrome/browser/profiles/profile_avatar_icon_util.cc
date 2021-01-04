@@ -44,7 +44,7 @@ size_t GetBraveAvatarIconStartIndex();
 
 // Override some functions (see implementations for details).
 #define GetCustomProfileAvatarIconsAndLabels \
-    GetCustomProfileAvatarIconsAndLabels_ChromiumImpl
+  GetCustomProfileAvatarIconsAndLabels_ChromiumImpl
 #define IsDefaultAvatarIconUrl IsDefaultAvatarIconUrl_ChromiumImpl
 #define GetGuestAvatar GetGuestAvatar_ChromiumImpl
 

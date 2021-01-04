@@ -87,8 +87,8 @@ class TorProfileManagerTest : public InProcessBrowserTest {
 
   ContentSetting GetScriptSetting(HostContentSettingsMap* content_settings,
                                   const GURL& primary_url) {
-    return content_settings->GetContentSetting(
-        primary_url, GURL(), ContentSettingsType::JAVASCRIPT);
+    return content_settings->GetContentSetting(primary_url, GURL(),
+                                               ContentSettingsType::JAVASCRIPT);
   }
 
   MockTorLauncherFactory* GetTorLauncherFactory() {

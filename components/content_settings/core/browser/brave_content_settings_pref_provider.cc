@@ -197,16 +197,16 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
     bool is_dictionary = i.value().GetAsDictionary(&settings_dictionary);
     DCHECK(is_dictionary);
 
-    base::Time expiration = GetTimeStampFromDictionary(settings_dictionary,
-                                                       kExpirationPath);
-    SessionModel session_model = GetSessionModelFromDictionary(
-        settings_dictionary, kSessionModelPath);
+    base::Time expiration =
+        GetTimeStampFromDictionary(settings_dictionary, kExpirationPath);
+    SessionModel session_model =
+        GetSessionModelFromDictionary(settings_dictionary, kSessionModelPath);
 
     const base::DictionaryValue* resource_dictionary = nullptr;
     if (settings_dictionary->GetDictionary(kPerResourcePath,
                                            &resource_dictionary)) {
-      base::Time last_modified = GetTimeStampFromDictionary(settings_dictionary,
-                                                            kLastModifiedPath);
+      base::Time last_modified =
+          GetTimeStampFromDictionary(settings_dictionary, kLastModifiedPath);
       for (base::DictionaryValue::Iterator j(*resource_dictionary);
            !j.IsAtEnd(); j.Advance()) {
         const std::string& resource_identifier(j.key());
@@ -453,8 +453,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   chromium_cookies_iterator.reset();
 
   auto brave_shields_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::BRAVE_SHIELDS,
-      incognito);
+      ContentSettingsType::BRAVE_SHIELDS, incognito);
 
   // collect shield rules
   std::vector<Rule> shield_rules;
@@ -466,8 +465,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // add brave cookies after checking shield status
   auto brave_cookies_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::BRAVE_COOKIES,
-      incognito);
+      ContentSettingsType::BRAVE_COOKIES, incognito);
 
   // Matching cookie rules against shield rules.
   while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
@@ -554,8 +552,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 void BravePrefProvider::NotifyChanges(const std::vector<Rule>& rules,
                                       bool incognito) {
   for (const auto& rule : rules) {
-    Notify(rule.primary_pattern,
-           rule.secondary_pattern,
+    Notify(rule.primary_pattern, rule.secondary_pattern,
            ContentSettingsType::COOKIES);
   }
 }
