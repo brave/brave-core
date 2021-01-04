@@ -100,7 +100,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionDomain) {
+                       OnionDomain_AutoOnionRedirect) {
+  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
+                                               true);
   BrowserList* browser_list = BrowserList::GetInstance();
   ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
   EXPECT_EQ(1U, browser_list->size());
@@ -119,8 +121,22 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       AutoOnionLocationPref) {
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionLocation,
+                       OnionDomain_AutoOnionRedirect_OffByDefault) {
+  BrowserList* browser_list = BrowserList::GetInstance();
+  ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
+
+  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  EXPECT_EQ(1U, browser_list->size());
+  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+
+  content::WebContents* web_contents =
+      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       OnionLocationHeader_AutoOnionRedirect) {
+  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
@@ -180,7 +196,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   EXPECT_EQ(1U, browser_list->size());
 
   // AutoOnionLocationPref
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionLocation,
+  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
   ui_test_utils::NavigateToURL(browser(), url);
   EXPECT_EQ(1U, browser_list->size());
