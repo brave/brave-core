@@ -198,7 +198,8 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   }
 
   void PressButton(TranslateBubbleView::ButtonID id) {
-    views::LabelButton button(views::Button::PressedCallback(), base::ASCIIToUTF16("dummy"));
+    views::LabelButton button(views::Button::PressedCallback(),
+                              base::ASCIIToUTF16("dummy"));
     button.SetID(id);
 
     bubble_->ButtonPressed(id);

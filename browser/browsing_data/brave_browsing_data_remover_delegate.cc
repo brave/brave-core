@@ -75,7 +75,8 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
   auto* provider =
       static_cast<content_settings::BravePrefProvider*>(map->GetPrefProvider());
-  for (const auto& content_type : content_settings::GetShieldsContentSettingsTypes()) {
+  for (const auto& content_type :
+       content_settings::GetShieldsContentSettingsTypes()) {
     ContentSettingsForOneType settings;
     map->GetSettingsForOneType(content_type, &settings);
     for (const ContentSettingPatternSource& setting : settings) {
