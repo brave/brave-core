@@ -1652,7 +1652,7 @@ extension Strings {
         public static let walletTransferCompleteTitle = NSLocalizedString(
             "rewards.walletTransferCompleteTitle",
             bundle: .braveShared,
-            value: "Balance trasfer has initiated",
+            value: "Balance transfer has initiated",
             comment: "Title shown above the confirmation message after completing a wallet transfer successfully"
         )
         public static let walletTransferCompleteBody = NSLocalizedString(
