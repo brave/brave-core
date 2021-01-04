@@ -231,8 +231,26 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
         base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
     if (to_inject.length() > 1) {
+      std::string script =
+        "(function() {"
+          "let script;"
+          "let text = " + to_inject + ";"
+          "try {"
+            "script = window.document.createElement('script');"
+            "const textnode = window.document.createTextNode(text);"
+            "script.appendChild(textnode);"
+            "(window.document.head || window.document.documentElement).appendChild(script);"
+          "} catch (ex) {"
+          "}"
+          "if (script) {"
+            "if (script.parentNode) {"
+              "script.parentNode.removeChild(script);"
+            "}"
+            "script.textContent = '';"
+          "}"
+        "})();";
       frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16(to_inject),
+          base::UTF8ToUTF16(script),
           base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
     // Working on css rules, we do that on a main frame only
@@ -277,8 +295,8 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
       cosmeticFilterConsiderNewSelectors_script += "];"
           "selectors.forEach(selector => {"
             "if (!window.allSelectorsToRules.has(selector)) {"
-              "window.cosmeticStyleSheet.insertRule(selector + "
-                  "`{display:none !important;}`, nextIndex);"
+              "let rule = selector + '{display:none !important;}';"
+              "window.cosmeticStyleSheet.insertRule(`${rule}`, nextIndex);"
               "window.allSelectorsToRules.set(selector, nextIndex);"
               "nextIndex++;"
               "window.firstRunQueue.add(selector);"
@@ -315,19 +333,17 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
   if (resources_dict->GetDictionary("style_selectors",
       &style_selectors_dictionary)) {
     for (const auto& it : style_selectors_dictionary->DictItems()) {
-      base::ListValue* style_selectors_list = nullptr;
-      if (!style_selectors_dictionary->GetList(it.first,
-          &style_selectors_list) || style_selectors_list->GetSize() == 0) {
-        continue;
-      }
-      styled_stylesheet += it.first + "{";
-      for (size_t i = 0; i < style_selectors_list->GetSize(); i++) {
+      for (size_t i = 0; i < it.second.GetList().size(); i++) {
         if (i != 0) {
           styled_stylesheet += ";";
+        } else {
+          styled_stylesheet += it.first + "{";
         }
-        styled_stylesheet += style_selectors_list->GetList()[i].GetString();
+        styled_stylesheet += it.second.GetList()[i].GetString();
       }
-      styled_stylesheet += ";}\n";
+      if (it.second.GetList().size() != 0) {
+        styled_stylesheet += ";}\n";
+      }
     }
     if (!styled_stylesheet.empty()) {
       std::string cosmeticFilterConsiderNewSelectors_script =
@@ -400,8 +416,8 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
       cosmeticFilterConsiderNewSelectors_script += "];"
         "selectors.forEach(selector => {"
           "if (!window.allSelectorsToRules.has(selector)) {"
-            "window.cosmeticStyleSheet.insertRule(selector + "
-                "`{display:none !important;}`, nextIndex);"
+            "let rule = selector + '{display:none !important;}';"
+            "window.cosmeticStyleSheet.insertRule(`${rule}`, nextIndex);"
             "window.allSelectorsToRules.set(selector, nextIndex);"
             "nextIndex++;"
             "window.firstRunQueue.add(selector);"
@@ -438,6 +454,7 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
   content::CosmeticFiltersCommunicationImpl::CreateInstance(render_frame_host,
       this);
   if (!render_frame_host || !ShouldDoCosmeticFiltering(web_contents(), url)) {
+
     return;
   }
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->
@@ -456,7 +473,7 @@ void BraveCosmeticResourcesTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle)
     return;
-  ProcessURL(web_contents()->GetMainFrame(),
+  ProcessURL(navigation_handle->GetRenderFrameHost(),
       web_contents()->GetLastCommittedURL(),
       navigation_handle->IsInMainFrame());
 }
