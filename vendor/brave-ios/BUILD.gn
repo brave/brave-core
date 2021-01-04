@@ -99,6 +99,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ads/BATAdNotification.h",
     "Ads/BATAdNotification.mm",
     "Ads/BATBraveAds.h",
+    "Ads/BATBraveAds+Private.h",
     "Ads/BATBraveAds.mm",
     "Ads/Generated/NativeAdsClientBridge.h",
     "Ads/Generated/NativeAdsClient.h",

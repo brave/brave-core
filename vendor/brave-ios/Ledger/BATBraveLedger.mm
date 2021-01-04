@@ -12,6 +12,7 @@
 
 #import "BATBraveLedger.h"
 #import "BATBraveAds.h"
+#import "BATBraveAds+Private.h"
 #import "BATCommonOperations.h"
 #import "NSURL+Extensions.h"
 
