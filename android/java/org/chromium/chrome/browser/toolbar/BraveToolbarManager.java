@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.SadTab;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -87,6 +88,9 @@ public class BraveToolbarManager extends ToolbarManager {
     private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
     private LayoutManagerImpl mLayoutManager;
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
+    private TabModelSelector mTabModelSelector;
+    private IncognitoStateProvider mIncognitoStateProvider;
+    private TabCountProvider mTabCountProvider;
 
     private boolean mIsBottomToolbarVisible;
     private View mRootBottomView;
@@ -189,6 +193,17 @@ public class BraveToolbarManager extends ToolbarManager {
                 bookmarkClickHandler, customTabsBackClickHandler, showStartSurfaceSupplier);
 
         if (mBottomControlsCoordinatorSupplier.get() != null) {
+            Runnable closeAllTabsAction = () -> {
+                mTabModelSelector.getModel(mIncognitoStateProvider.isIncognitoSelected())
+                        .closeAllTabs();
+            };
+            assert (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator);
+            ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
+                    .initializeWithNative(mActivity, mCompositorViewHolder.getResourceManager(),
+                            mCompositorViewHolder.getLayoutManager(), tabSwitcherClickHandler,
+                            newTabClickHandler, mWindowAndroid, mTabCountProvider,
+                            mIncognitoStateProvider, mActivity.findViewById(R.id.control_container),
+                            closeAllTabsAction);
             ApiCompatibilityUtils.setAccessibilityTraversalBefore(
                     mLocationBar.getContainerView(), R.id.bottom_toolbar);
         }
