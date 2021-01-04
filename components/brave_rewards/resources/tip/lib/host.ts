@@ -77,6 +77,8 @@ export function createHost (): Host {
       chrome.send('getRewardsParameters')
       chrome.send('fetchBalance')
       chrome.send('getReconcileStamp')
+      chrome.send('getAutoContributeAmount')
+      chrome.send('getAdsPerHour')
       chrome.send('getExternalWallet', ['uphold'])
       chrome.send('getOnlyAnonWallet')
       chrome.send('getRecurringTips')
@@ -118,6 +120,14 @@ export function createHost (): Host {
 
     reconcileStampUpdated (stamp: number) {
       stateManager.update({ nextReconcileDate: new Date(stamp * 1000) })
+    },
+
+    autoContributeAmountUpdated (autoContributeAmount: number) {
+      stateManager.update({ autoContributeAmount })
+    },
+
+    adsPerHourUpdated (adsPerHour: number) {
+      stateManager.update({ adsPerHour })
     },
 
     balanceUpdated (result: { status: number, balance: BalanceInfo }) {
@@ -191,6 +201,16 @@ export function createHost (): Host {
 
     closeDialog () {
       chrome.send('dialogClose')
+    },
+
+    setAutoContributeAmount (autoContributeAmount: number) {
+      chrome.send('setAutoContributeAmount', [autoContributeAmount])
+      stateManager.update({ autoContributeAmount })
+    },
+
+    setAdsPerHour (adsPerHour: number) {
+      chrome.send('setAdsPerHour', [adsPerHour])
+      stateManager.update({ adsPerHour })
     },
 
     saveOnboardingResult (result: OnboardingResult) {

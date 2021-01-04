@@ -14,7 +14,7 @@ import completedImage from './assets/tour_completed.svg'
 
 export const root = styled.div`
   font-family: var(--brave-font-heading);
-  height: 100%;
+  min-height: 388px;
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
@@ -27,11 +27,12 @@ export const root = styled.div`
     "nav";
 
   &.tour-wide {
+    min-height: 300px;
     padding: 0 20px;
     text-align: left;
     column-gap: 60px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 1fr 96px;
+    grid-template-rows: auto 1fr 50px;
     grid-template-areas:
       "header graphic"
       "text graphic"
@@ -55,36 +56,50 @@ export const stepText = styled.div`
   color: var(--brave-palette-neutral700);
 `
 
-export const stepGraphic = styled.div`
+export const stepContent = styled.div`
+  text-align: center;
   grid-area: graphic;
-  margin: 10px 0;
+  margin: 10px 0 12px;
+`
+
+export const stepGraphic = styled.div`
+  height: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  background-sizing: contain;
+  margin-left: auto;
+  margin-right: auto;
 
   &.tour-graphic-welcome {
     background-image: url('${batEcosystemImage}');
+    max-width: 275px;
   }
 
   &.tour-graphic-ads {
     background-image: url('${braveAdsImage}');
+    max-width: 275px;
   }
 
   &.tour-graphic-schedule {
     background-image: url('${batScheduleImage}');
+    max-width: 250px;
   }
 
   &.tour-graphic-ac {
     background-image: url('${acImage}');
+    max-width: 230px;
   }
 
   &.tour-graphic-tipping {
     background-image: url('${tippingImage}');
+    max-width: 230px;
   }
 
   &.tour-graphic-redeem {
     background-image: url('${redeemImage}');
+    max-width: 200px;
   }
+
+  &.tour-graphic-setup {}
 
   &.tour-graphic-complete {
     background-image: url('${completedImage}');

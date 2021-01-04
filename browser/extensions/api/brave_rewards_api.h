@@ -480,6 +480,30 @@ class BraveRewardsSaveOnboardingResultFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetPrefsFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPrefs", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPrefsFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void GetAutoContributePropertiesCallback(
+      ledger::type::AutoContributePropertiesPtr properties);
+};
+
+class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.updatePrefs", UNKNOWN)
+
+ protected:
+  ~BraveRewardsUpdatePrefsFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

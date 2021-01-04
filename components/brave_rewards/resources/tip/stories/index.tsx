@@ -92,12 +92,15 @@ function createHostState (): HostState {
     rewardsParameters: {
       tipChoices: [1, 2, 3],
       monthlyTipChoices: [1, 2, 3],
-      rate: 0.333
+      rate: 0.333,
+      autoContributeChoices: [5, 15, 25, 50]
     },
     hostError: undefined,
     nextReconcileDate: new Date(Date.now() + 15 * 14 * 60 * 60 * 1000),
+    adsPerHour: 3,
+    autoContributeAmount: 15,
     onlyAnonWallet: false,
-    showOnboarding: false,
+    showOnboarding: true,
     tipProcessed: false,
     currentMonthlyTip: 0
   }
@@ -119,6 +122,12 @@ function createHost (): Host {
     },
     closeDialog () {
       console.log('closeDialog')
+    },
+    setAdsPerHour (adsPerHour) {
+      console.log('setAdsPerHour', adsPerHour)
+    },
+    setAutoContributeAmount (amount) {
+      console.log('setAutoContributeAmount', amount)
     },
     saveOnboardingResult (result) {
       console.log('saveOnboardingResult', result)

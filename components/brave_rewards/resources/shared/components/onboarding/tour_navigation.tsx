@@ -12,7 +12,7 @@ import * as style from './tour_navigation.style'
 interface Props {
   stepCount: number
   currentStep: number
-  rewardsEnabled: boolean
+  firstTimeSetup: boolean
   layout?: 'narrow' | 'wide'
   onSelectStep: (step: number) => void
   onSkip: () => void
@@ -46,7 +46,7 @@ export function TourNavigation (props: Props) {
     const skipButton = (
       <button className='nav-skip' onClick={skipClick}>
         {
-          getString(props.rewardsEnabled && props.layout !== 'wide'
+          getString(props.firstTimeSetup && props.layout !== 'wide'
             ? 'onboardingTourSkipForNow'
             : 'onboardingTourSkip')
         }

@@ -484,6 +484,12 @@ void BraveRewardsGetRewardsParametersFunction::OnGet(
   }
   data.SetList("monthlyTipChoices", std::move(monthly_choices));
 
+  auto ac_choices = std::make_unique<base::ListValue>();
+  for (double const& choice : parameters->auto_contribute_choices) {
+    ac_choices->AppendDouble(choice);
+  }
+  data.SetList("autoContributeChoices", std::move(ac_choices));
+
   Respond(OneArgument(std::move(data)));
 }
 
@@ -1225,6 +1231,76 @@ BraveRewardsSaveOnboardingResultFunction::Run() {
     rewards_service->SaveOnboardingResult(OnboardingResult::kDismissed);
   } else {
     NOTREACHED();
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsGetPrefsFunction::~BraveRewardsGetPrefsFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context()));
+
+  if (!rewards_service)
+    return RespondNow(Error("Rewards service is not initialized"));
+
+  rewards_service->GetAutoContributeProperties(base::BindRepeating(
+      &BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback,
+      this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
+    ledger::type::AutoContributePropertiesPtr properties) {
+  base::Value prefs(base::Value::Type::DICTIONARY);
+  prefs.SetBoolKey("autoContributeEnabled", properties->enabled_contribute);
+  prefs.SetDoubleKey("autoContributeAmount", properties->amount);
+
+  auto* ads_service = AdsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context()));
+
+  if (ads_service) {
+    prefs.SetBoolKey("adsEnabled", ads_service->IsEnabled());
+    prefs.SetDoubleKey("adsPerHour",
+                       static_cast<double>(ads_service->GetAdsPerHour()));
+  } else {
+    prefs.SetBoolKey("adsEnabled", false);
+    prefs.SetDoubleKey("adsPerHour", 0);
+  }
+
+  Respond(OneArgument(std::move(prefs)));
+}
+
+BraveRewardsUpdatePrefsFunction::~BraveRewardsUpdatePrefsFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
+  auto params = brave_rewards::UpdatePrefs::Params::Create(*args_);
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  auto* ads_service = AdsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service) {
+    bool* ac_enabled = params->prefs.auto_contribute_enabled.get();
+    if (ac_enabled)
+      rewards_service->SetAutoContributeEnabled(*ac_enabled);
+
+    double* ac_amount = params->prefs.auto_contribute_amount.get();
+    if (ac_amount)
+      rewards_service->SetAutoContributionAmount(*ac_amount);
+  }
+
+  if (ads_service) {
+    bool* ads_enabled = params->prefs.ads_enabled.get();
+    if (ads_enabled)
+      ads_service->SetEnabled(*ads_enabled);
+
+    int* ads_per_hour = params->prefs.ads_per_hour.get();
+    if (ads_per_hour)
+      ads_service->SetAdsPerHour(*ads_per_hour);
   }
 
   return RespondNow(NoArguments());

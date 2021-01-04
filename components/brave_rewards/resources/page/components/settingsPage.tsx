@@ -35,6 +35,7 @@ interface Props extends Rewards.ComponentProps {
 interface State {
   redirectModalDisplayed: 'hide' | 'show'
   showRewardsTour: boolean
+  firstTimeSetup: boolean
 }
 
 class SettingsPage extends React.Component<Props, State> {
@@ -44,7 +45,8 @@ class SettingsPage extends React.Component<Props, State> {
     super(props)
     this.state = {
       redirectModalDisplayed: 'hide',
-      showRewardsTour: false
+      showRewardsTour: false,
+      firstTimeSetup: false
     }
   }
 
@@ -155,7 +157,7 @@ class SettingsPage extends React.Component<Props, State> {
 
     if (pathname === '/enable') {
       this.actions.saveOnboardingResult('opted-in')
-      this.setState({ showRewardsTour: true })
+      this.setState({ showRewardsTour: true, firstTimeSetup: true })
       window.history.replaceState({}, '', '/')
       return
     }
@@ -334,18 +336,37 @@ class SettingsPage extends React.Component<Props, State> {
       return null
     }
 
-    const { showOnboarding } = this.props.rewardsData
+    const {
+      adsData,
+      contributionMonthly,
+      parameters,
+      ui
+    } = this.props.rewardsData
 
     const onDone = () => {
-      this.setState({ showRewardsTour: false })
+      this.setState({ showRewardsTour: false, firstTimeSetup: false })
+    }
+
+    const onAdsPerHourChanged = (adsPerHour: number) => {
+      this.actions.onAdsSettingSave('adsPerHour', adsPerHour)
+    }
+
+    const onAcAmountChanged = (amount: number) => {
+      this.actions.onSettingSave('contributionMonthly', amount)
     }
 
     return (
       <RewardsTourModal
         layout='wide'
-        rewardsEnabled={!showOnboarding}
-        onClose={onDone}
+        firstTimeSetup={this.state.firstTimeSetup}
+        onlyAnonWallet={ui.onlyAnonWallet}
+        adsPerHour={adsData.adsPerHour}
+        autoContributeAmount={contributionMonthly}
+        autoContributeAmountOptions={parameters.autoContributeChoices}
+        onAdsPerHourChanged={onAdsPerHourChanged}
+        onAutoContributeAmountChanged={onAcAmountChanged}
         onDone={onDone}
+        onClose={onDone}
       />
     )
   }
@@ -360,7 +381,7 @@ class SettingsPage extends React.Component<Props, State> {
 
       const onEnable = () => {
         this.actions.saveOnboardingResult('opted-in')
-        onTakeTour()
+        this.setState({ showRewardsTour: true, firstTimeSetup: true })
       }
 
       return (

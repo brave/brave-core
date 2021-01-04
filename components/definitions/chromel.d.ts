@@ -156,6 +156,16 @@ declare namespace chrome.braveRewards {
   const isInitialized: (callback: (initialized: boolean) => void) => {}
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
   const saveOnboardingResult: (result: 'opted-in' | 'dismissed') => {}
+
+  interface RewardsPrefs {
+    adsEnabled: boolean
+    adsPerHour: number
+    autoContributeEnabled: boolean
+    autoContributeAmount: number
+  }
+
+  const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
+  const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
 }
 
 declare namespace chrome.binance {

@@ -5,11 +5,16 @@
 import * as React from 'react'
 
 import { Locale } from '../../lib/locale_context'
+import { RewardsTourProps } from './rewards_tour_props'
+import { SetupForm } from './setup_form'
 
-type TourPanelFunction = (locale: Locale) => ({
+import * as style from './rewards_tour_panels.style'
+
+type TourPanelFunction = (locale: Locale, props: RewardsTourProps) => ({
   id: string
   heading: React.ReactNode
   text: React.ReactNode
+  content?: React.ReactNode
 })
 
 function panelWelcome (locale: Locale) {
@@ -66,6 +71,18 @@ function panelRedeem (locale: Locale) {
   }
 }
 
+function panelSetup (locale: Locale, props: RewardsTourProps) {
+  const { getString } = locale
+  return {
+    id: 'setup',
+    heading: getString('onboardingPanelSetupHeader'),
+    text: (
+      <style.formText>{getString('onboardingPanelSetupText')}</style.formText>
+    ),
+    content: <SetupForm {...props} />
+  }
+}
+
 function panelComplete (locale: Locale) {
   const { getString } = locale
   return {
@@ -75,7 +92,7 @@ function panelComplete (locale: Locale) {
   }
 }
 
-export function getTourPanels (): TourPanelFunction[] {
+export function getTourPanels (props: RewardsTourProps): TourPanelFunction[] {
   return [
     panelWelcome,
     panelAds,
@@ -83,6 +100,7 @@ export function getTourPanels (): TourPanelFunction[] {
     panelAC,
     panelTipping,
     panelRedeem,
+    ...(props.firstTimeSetup ? [panelSetup] : []),
     panelComplete
   ]
 }

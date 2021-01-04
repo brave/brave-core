@@ -6,13 +6,11 @@ import * as React from 'react'
 
 import { Modal, ModalCloseButton } from '../modal'
 import { RewardsTour } from './rewards_tour'
+import { RewardsTourProps } from './rewards_tour_props'
 import * as style from './rewards_tour_modal.style'
 
-interface Props {
-  layout?: 'narrow' | 'wide'
-  rewardsEnabled: boolean
+interface Props extends RewardsTourProps {
   onClose: () => void
-  onDone: () => void
 }
 
 export function RewardsTourModal (props: Props) {
@@ -21,11 +19,7 @@ export function RewardsTourModal (props: Props) {
       <style.root className={`tour-modal-${props.layout || 'narrow'}`}>
         <ModalCloseButton onClick={props.onClose} />
         <style.content>
-          <RewardsTour
-            layout={props.layout}
-            rewardsEnabled={props.rewardsEnabled}
-            onDone={props.onDone}
-          />
+          <RewardsTour {...props} />
         </style.content>
       </style.root>
     </Modal>

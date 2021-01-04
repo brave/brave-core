@@ -635,6 +635,22 @@
     "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "How often do you want to see ads?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(ads per hour)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "How much monthly support do you want to give to your favorite creators?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(from your ads earnings)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Start using Brave Rewards",
     "description": ""
@@ -731,6 +747,14 @@
   },
   "onboardingPanelRedeemText": {
     "message": "Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.",
+    "description": ""
+  },
+  "onboardingPanelSetupHeader": {
+    "message": "Lastly, let’s get you set up on the basic settings",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "You can change this later.",
     "description": ""
   },
   "onboardingPanelCompleteHeader": {

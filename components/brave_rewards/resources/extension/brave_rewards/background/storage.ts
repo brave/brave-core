@@ -6,7 +6,8 @@ export const defaultState: RewardsExtension.State = {
   publishers: {},
   parameters: {
     monthlyTipChoices: [],
-    rate: 0
+    rate: 0,
+    autoContributeChoices: [5, 10, 15, 20]
   },
   balanceReport: {
     ads: 0.0,
@@ -27,7 +28,9 @@ export const defaultState: RewardsExtension.State = {
     wallets: {}
   },
   initializing: true,
-  showOnboarding: false
+  showOnboarding: false,
+  adsPerHour: 1,
+  autoContributeAmount: 0
 }
 
 export const load = (): RewardsExtension.State => {

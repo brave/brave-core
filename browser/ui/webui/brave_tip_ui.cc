@@ -18,6 +18,8 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -79,6 +81,10 @@ class TipMessageHandler : public WebUIMessageHandler,
   void OnTip(const base::ListValue* args);
   void GetRecurringTips(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
+  void GetAutoContributeAmount(const base::ListValue* args);
+  void SetAutoContributeAmount(const base::ListValue* args);
+  void GetAdsPerHour(const base::ListValue* args);
+  void SetAdsPerHour(const base::ListValue* args);
   void TweetTip(const base::ListValue* args);
   void GetOnlyAnonWallet(const base::ListValue* args);
   void GetExternalWallet(const base::ListValue* args);
@@ -86,6 +92,8 @@ class TipMessageHandler : public WebUIMessageHandler,
 
   // Rewards service callbacks
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
+
+  void GetAutoContributeAmountCallback(double amount);
 
   void GetRecurringTipsCallback(ledger::type::PublisherInfoList list);
 
@@ -105,6 +113,7 @@ class TipMessageHandler : public WebUIMessageHandler,
     ledger::type::RewardsParametersPtr parameters);
 
   RewardsService* rewards_service_ = nullptr;  // NOT OWNED
+  brave_ads::AdsService* ads_service_ = nullptr;  // NOT OWNED
   base::WeakPtrFactory<TipMessageHandler> weak_factory_{this};
 };
 
@@ -164,6 +173,24 @@ void TipMessageHandler::RegisterMessages() {
       base::BindRepeating(
           &TipMessageHandler::GetReconcileStamp,
           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getAutoContributeAmount",
+      base::BindRepeating(&TipMessageHandler::GetAutoContributeAmount,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "setAutoContributeAmount",
+      base::BindRepeating(&TipMessageHandler::SetAutoContributeAmount,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getAdsPerHour", base::BindRepeating(&TipMessageHandler::GetAdsPerHour,
+                                           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "setAdsPerHour", base::BindRepeating(&TipMessageHandler::SetAdsPerHour,
+                                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "tweetTip",
@@ -238,14 +265,19 @@ void TipMessageHandler::OnUnblindedTokensReady(
 }
 
 void TipMessageHandler::DialogReady(const base::ListValue* args) {
-  // Initialize rewards service pointer on first "dialogReady" message
+  Profile* profile = Profile::FromWebUI(web_ui());
+
   if (!rewards_service_) {
-    Profile* profile = Profile::FromWebUI(web_ui());
     rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
     if (rewards_service_) {
       rewards_service_->AddObserver(this);
     }
   }
+
+  if (!ads_service_) {
+    ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  }
+
   AllowJavascript();
   if (rewards_service_ && rewards_service_->IsInitialized()) {
     FireWebUIListener("rewardsInitialized");
@@ -338,6 +370,47 @@ void TipMessageHandler::GetReconcileStamp(const base::ListValue* args) {
       weak_factory_.GetWeakPtr()));
 }
 
+void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetAutoContributionAmount(
+      base::Bind(&TipMessageHandler::GetAutoContributeAmountCallback,
+                 weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::SetAutoContributeAmount(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  double amount = args->GetList()[0].GetDouble();
+  if (!rewards_service_ || amount < 0) {
+    return;
+  }
+  AllowJavascript();
+  rewards_service_->SetAutoContributionAmount(amount);
+  FireWebUIListener("autoContributeAmountUpdated", base::Value(amount));
+}
+
+void TipMessageHandler::GetAdsPerHour(const base::ListValue* args) {
+  if (!ads_service_) {
+    return;
+  }
+  AllowJavascript();
+  double adsPerHour = static_cast<double>(ads_service_->GetAdsPerHour());
+  FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
+}
+
+void TipMessageHandler::SetAdsPerHour(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  const double adsPerHour = args->GetList()[0].GetDouble();
+  if (!ads_service_ || adsPerHour < 0) {
+    return;
+  }
+  AllowJavascript();
+  ads_service_->SetAdsPerHour(adsPerHour);
+  FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
+}
+
 void TipMessageHandler::TweetTip(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 2U);
   const std::string name = args->GetList()[0].GetString();
@@ -412,9 +485,15 @@ void TipMessageHandler::GetRewardsParametersCallback(
       monthly_choices.Append(item);
     }
 
+    base::Value ac_choices(base::Value::Type::LIST);
+    for (const auto& item : parameters->auto_contribute_choices) {
+      ac_choices.Append(item);
+    }
+
     data.SetDoubleKey("rate", parameters->rate);
     data.SetKey("tipChoices", std::move(tip_choices));
     data.SetKey("monthlyTipChoices", std::move(monthly_choices));
+    data.SetKey("autoContributeChoices", std::move(ac_choices));
   }
 
   FireWebUIListener("rewardsParametersUpdated", data);
@@ -478,6 +557,13 @@ void TipMessageHandler::GetReconcileStampCallback(uint64_t reconcile_stamp) {
 
   const std::string stamp = base::NumberToString(reconcile_stamp);
   FireWebUIListener("reconcileStampUpdated", base::Value(stamp));
+}
+
+void TipMessageHandler::GetAutoContributeAmountCallback(double amount) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("autoContributeAmountUpdated", base::Value(amount));
 }
 
 void TipMessageHandler::GetShareURLCallback(const std::string& url) {
