@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
 
-namespace cosmetic_filters_worker {
+namespace cosmetic_filters {
 
 class CosmeticFiltersJSHandler {
  public:
@@ -45,6 +45,6 @@ v8::Local<v8::Object> GetOrCreateWorkerObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context);
 
-}  // namespace cosmetic_filters_worker
+}  // namespace cosmetic_filters
 
 #endif  // BRAVE_COMPONENTS_COSMETIC_FILTERS_CONTENT_RENDERER_COSMETIC_FILTERS_JS_HANDLER_H_

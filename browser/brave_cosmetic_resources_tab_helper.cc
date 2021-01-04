@@ -236,10 +236,10 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
           "let script;"
           "let text = " + to_inject + ";"
           "try {"
-            "script = window.document.createElement('script');"
-            "const textnode = window.document.createTextNode(text);"
+            "script = document.createElement('script');"
+            "const textnode = document.createTextNode(text);"
             "script.appendChild(textnode);"
-            "(window.document.head || window.document.documentElement).appendChild(script);"
+            "(document.head || document.documentElement).appendChild(script);"
           "} catch (ex) {"
           "}"
           "if (script) {"
@@ -388,53 +388,48 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
   if (!selectors || IsVettedSearchEngine(url.host())) {
     return;
   }
-  if (enabled_1st_party_cf_filtering_) {
-    // (sergz) We do the same in else section, we need to figure out do we
-    // need that if at all
-  } else {
-    std::string cosmeticFilterConsiderNewSelectors_script =
-        "(function() {"
-          "let nextIndex = window.cosmeticStyleSheet.rules.length;"
-          "const selectors = [";
-    bool execute_script = false;
-    for (size_t i = 0; i < selectors->GetSize(); i++) {
-      base::ListValue* selectors_list = nullptr;
-      if (!selectors->GetList()[i].GetAsList(&selectors_list) ||
-          selectors_list->GetSize() == 0) {
-        continue;
-      }
-      for (size_t j = 0; j < selectors_list->GetSize(); j++) {
-        cosmeticFilterConsiderNewSelectors_script += "`" +
-            selectors_list->GetList()[i].GetString() + "`";
-        if (i != selectors_list->GetSize() - 1) {
-          cosmeticFilterConsiderNewSelectors_script += ",";
-        }
-        execute_script = true;
-      }
+  std::string cosmeticFilterConsiderNewSelectors_script =
+      "(function() {"
+        "let nextIndex = window.cosmeticStyleSheet.rules.length;"
+        "const selectors = [";
+  bool execute_script = false;
+  for (size_t i = 0; i < selectors->GetSize(); i++) {
+    base::ListValue* selectors_list = nullptr;
+    if (!selectors->GetList()[i].GetAsList(&selectors_list) ||
+        selectors_list->GetSize() == 0) {
+      continue;
     }
-    if (execute_script) {
-      cosmeticFilterConsiderNewSelectors_script += "];"
-        "selectors.forEach(selector => {"
-          "if (!window.allSelectorsToRules.has(selector)) {"
-            "let rule = selector + '{display:none !important;}';"
-            "window.cosmeticStyleSheet.insertRule(`${rule}`, nextIndex);"
-            "window.allSelectorsToRules.set(selector, nextIndex);"
-            "nextIndex++;"
-            "window.firstRunQueue.add(selector);"
-          "}"
-        "});"
-        "if (!document.adoptedStyleSheets.includes("
-            "window.cosmeticStyleSheet)){"
-          "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
-        "};"
-        "})();";
-      auto* frame_host = content::RenderFrameHost::FromID(frame_id);
-      if (!frame_host)
-        return;
-      frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16(cosmeticFilterConsiderNewSelectors_script),
-          base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+    for (size_t j = 0; j < selectors_list->GetSize(); j++) {
+      cosmeticFilterConsiderNewSelectors_script += "`" +
+          selectors_list->GetList()[i].GetString() + "`";
+      if (i != selectors_list->GetSize() - 1) {
+        cosmeticFilterConsiderNewSelectors_script += ",";
+      }
+      execute_script = true;
     }
+  }
+  if (execute_script) {
+    cosmeticFilterConsiderNewSelectors_script += "];"
+      "selectors.forEach(selector => {"
+        "if (!window.allSelectorsToRules.has(selector)) {"
+          "let rule = selector + '{display:none !important;}';"
+          "window.cosmeticStyleSheet.insertRule(`${rule}`, nextIndex);"
+          "window.allSelectorsToRules.set(selector, nextIndex);"
+          "nextIndex++;"
+          "window.firstRunQueue.add(selector);"
+        "}"
+      "});"
+      "if (!document.adoptedStyleSheets.includes("
+          "window.cosmeticStyleSheet)){"
+        "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
+      "};"
+      "})();";
+    auto* frame_host = content::RenderFrameHost::FromID(frame_id);
+    if (!frame_host)
+      return;
+    frame_host->ExecuteJavaScriptInIsolatedWorld(
+        base::UTF8ToUTF16(cosmeticFilterConsiderNewSelectors_script),
+        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 
   if (!enabled_1st_party_cf_filtering_) {
@@ -454,7 +449,6 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
   content::CosmeticFiltersCommunicationImpl::CreateInstance(render_frame_host,
       this);
   if (!render_frame_host || !ShouldDoCosmeticFiltering(web_contents(), url)) {
-
     return;
   }
   g_brave_browser_process->ad_block_service()->GetTaskRunner()->

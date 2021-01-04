@@ -26,7 +26,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
 
   if (render_frame->IsMainFrame()) {
-    new cosmetic_filters_worker::CosmeticFiltersJsRenderFrameObserver(
+    new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 }

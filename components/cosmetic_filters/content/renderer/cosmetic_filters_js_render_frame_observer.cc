@@ -5,13 +5,10 @@
 
 #include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_render_frame_observer.h"
 
-#include <memory>
-#include <utility>
-
 #include "base/bind.h"
 #include "content/public/renderer/render_frame.h"
 
-namespace cosmetic_filters_worker {
+namespace cosmetic_filters {
 
 CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame, const int32_t isolated_world_id)
@@ -23,7 +20,6 @@ CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,
     base::Optional<blink::WebNavigationType> navigation_type) {
-  // Save url for feature interactions
 }
 
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
@@ -40,4 +36,4 @@ void CosmeticFiltersJsRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-}  // namespace cosmetic_filters_worker
+}  // namespace cosmetic_filters

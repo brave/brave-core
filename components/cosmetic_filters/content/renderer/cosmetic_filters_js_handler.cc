@@ -16,7 +16,7 @@
 #include "third_party/blink/public/web/blink.h"
 #include "v8/include/v8.h"
 
-namespace cosmetic_filters_worker {
+namespace cosmetic_filters {
 
 CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     content::RenderFrame* render_frame):
@@ -40,13 +40,13 @@ void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
 
   v8::Context::Scope context_scope(context);
 
-  v8::Local<v8::Object> distiller_obj =
+  v8::Local<v8::Object> worker_obj =
       GetOrCreateWorkerObject(isolate, context);
 
   EnsureConnected();
 
   BindFunctionToObject(
-      isolate, distiller_obj, "hiddenClassIdSelectors",
+      isolate, worker_obj, "hiddenClassIdSelectors",
       base::BindRepeating(&CosmeticFiltersJSHandler::HiddenClassIdSelectors,
                           base::Unretained(this)));
 }
@@ -78,19 +78,21 @@ v8::Local<v8::Object> GetOrCreateWorkerObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
-  v8::Local<v8::Object> distiller_obj;
-  v8::Local<v8::Value> distiller_value;
+  v8::Local<v8::Object> cosmetic_filters_obj;
+  v8::Local<v8::Value> cosmetic_filters_value;
   if (!global->Get(context, gin::StringToV8(isolate, "cf_worker"))
-           .ToLocal(&distiller_value) ||
-      !distiller_value->IsObject()) {
-    distiller_obj = v8::Object::New(isolate);
+           .ToLocal(&cosmetic_filters_value) ||
+      !cosmetic_filters_value->IsObject()) {
+    cosmetic_filters_obj = v8::Object::New(isolate);
     global
-        ->Set(context, gin::StringToSymbol(isolate, "cf_worker"), distiller_obj)
+        ->Set(context, gin::StringToSymbol(isolate, "cf_worker"),
+            cosmetic_filters_obj)
         .Check();
   } else {
-    distiller_obj = v8::Local<v8::Object>::Cast(distiller_value);
+    cosmetic_filters_obj = v8::Local<v8::Object>::Cast(cosmetic_filters_value);
   }
-  return distiller_obj;
+
+  return cosmetic_filters_obj;
 }
 
-}  // namespace cosmetic_filters_worker
+}  // namespace cosmetic_filters

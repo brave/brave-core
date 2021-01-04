@@ -8,13 +8,12 @@
 
 #include <memory>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "v8/include/v8.h"
 
-namespace cosmetic_filters_worker {
+namespace cosmetic_filters {
 
 // CosmeticFiltersJsRenderFrame observer waits for a page to be loaded and then
 // adds the Javascript worker object.
@@ -42,6 +41,6 @@ class CosmeticFiltersJsRenderFrameObserver :
   std::unique_ptr<CosmeticFiltersJSHandler> native_javascript_handle_;
 };
 
-}  // namespace cosmetic_filters_worker
+}  // namespace cosmetic_filters
 
 #endif  // BRAVE_COMPONENTS_COSMETIC_FILTERS_CONTENT_RENDERER_COSMETIC_FILTERS_JS_RENDER_FRAME_OBSERVER_H_
