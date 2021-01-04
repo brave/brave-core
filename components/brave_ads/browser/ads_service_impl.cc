@@ -41,6 +41,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
+#include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/browser/prefs_util.h"
@@ -58,6 +59,7 @@
 #include "chrome/browser/browser_process.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #if !defined(OS_ANDROID)
@@ -81,6 +83,7 @@
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/android/service_tab_launcher.h"
@@ -212,6 +215,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
             base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
+    display_service_(NotificationDisplayService::GetForProfile(profile_)),
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
     bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
@@ -656,6 +660,10 @@ void AdsServiceImpl::OnInitialize(
 
   is_initialized_ = true;
 
+  if (!brave::IsDevOrCanaryBuild()) {
+    SetAdsServiceForNotificationHandler();
+  }
+
   MaybeViewAdNotification();
 
   StartCheckIdleStateTimer();
@@ -1023,6 +1031,20 @@ void AdsServiceImpl::RetryViewingAdNotification(
   retry_viewing_ad_notification_with_uuid_ = uuid;
 }
 
+void AdsServiceImpl::SetAdsServiceForNotificationHandler() {
+  auto* unowned_ptr = static_cast<AdsNotificationHandler::UnownedPointer*>(
+      profile_->GetUserData(AdsNotificationHandler::UserDataKey()));
+  CHECK(unowned_ptr);
+  unowned_ptr->get()->SetAdsService(this);
+}
+
+void AdsServiceImpl::ClearAdsServiceForNotificationHandler() {
+  auto* unowned_ptr = static_cast<AdsNotificationHandler::UnownedPointer*>(
+      profile_->GetUserData(AdsNotificationHandler::UserDataKey()));
+  CHECK(unowned_ptr);
+  unowned_ptr->get()->SetAdsService(nullptr);
+}
+
 void AdsServiceImpl::OpenNewTabWithUrl(
     const std::string& url) {
   if (g_brave_browser_process->IsShuttingDown()) {
@@ -1190,6 +1212,14 @@ void AdsServiceImpl::OnGetAdsHistory(
   }
 
   std::move(callback).Run(list);
+}
+
+bool AdsServiceImpl::CanShowBackgroundNotifications() const {
+  if (brave::IsDevOrCanaryBuild()) {
+    return true;
+  }
+
+  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
 void AdsServiceImpl::OnGetStatement(
@@ -1617,7 +1647,8 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
     return;
   }
 
-  if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
+  if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification(
+      brave::IsDevOrCanaryBuild())) {
     return;
   }
 
@@ -1697,20 +1728,34 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
   return data_resource;
 }
 
+// Custom Notifications and Message Center notifications use 2 different
+// types of notification.h
 void AdsServiceImpl::ShowNotification(
     const ads::AdNotificationInfo& ad_notification) {
-  auto notification = CreateAdNotification(ad_notification);
+  if (brave::IsDevOrCanaryBuild()) {
+    auto notification = CreateAdNotification(ad_notification);
 
-  std::unique_ptr<PlatformBridge> platform_bridge =
-      std::make_unique<PlatformBridge>(profile_);
+    std::unique_ptr<PlatformBridge> platform_bridge =
+        std::make_unique<PlatformBridge>(profile_);
 
-  platform_bridge->Display(profile_, notification);
+    platform_bridge->Display(profile_, notification);
+  } else {
+    auto notification = CreateMessageCenterNotification(ad_notification);
+    display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
+        *notification, /*metadata=*/nullptr);
+  }
 
   StartNotificationTimeoutTimer(ad_notification.uuid);
 }
 
 void AdsServiceImpl::StartNotificationTimeoutTimer(
     const std::string& uuid) {
+#if defined(OS_ANDROID)
+  if (!brave::IsDevOrCanaryBuild()) {
+    return;
+  }
+#endif
+
 #if !defined(OS_ANDROID)
   const uint64_t timeout_in_seconds = 120;
 #else
@@ -1747,9 +1792,13 @@ bool AdsServiceImpl::ShouldShowNotifications() {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& uuid) {
-  std::unique_ptr<PlatformBridge>
-    platform_bridge = std::make_unique<PlatformBridge>(profile_);
-  platform_bridge->Close(profile_, uuid);
+  if (brave::IsDevOrCanaryBuild()) {
+    std::unique_ptr<PlatformBridge>
+      platform_bridge = std::make_unique<PlatformBridge>(profile_);
+    platform_bridge->Close(profile_, uuid);
+  } else {
+    display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
+  }
 }
 
 void AdsServiceImpl::UrlRequest(

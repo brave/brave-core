@@ -29,6 +29,8 @@ class BatAdsClientMojoBridge
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
 
   // AdsClient implementation
+  bool CanShowBackgroundNotifications() const override;
+
   bool IsNetworkConnectionAvailable() const override;
 
   bool IsForeground() const override;

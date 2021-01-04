@@ -70,6 +70,7 @@ source_set("browser") {
       "//services/network/public/cpp",
       "//services/network/public/mojom",
       "//ui/base",
+      "//ui/message_center/public/cpp",
     ]
 
     if (is_android) {

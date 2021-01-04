@@ -41,6 +41,10 @@ class ADS_EXPORT AdsClient {
   // Return true if notifications should be displayed otherwise return false
   virtual bool ShouldShowNotifications() = 0;
 
+  // Return true if notifications can be displayed while the browser is inactive
+  // otherwise return false
+  virtual bool CanShowBackgroundNotifications() const = 0;
+
   // Show notification
   virtual void ShowNotification(
       const AdNotificationInfo& ad_notification) = 0;

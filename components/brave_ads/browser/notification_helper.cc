@@ -22,8 +22,13 @@ bool NotificationHelper::ShouldShowNotifications() {
   return true;
 }
 
-bool NotificationHelper::ShowMyFirstAdNotification() {
+bool NotificationHelper::ShowMyFirstAdNotification(
+    bool use_custom_notifications) {
   return false;
+}
+
+bool NotificationHelper::CanShowBackgroundNotifications() const {
+  return true;
 }
 
 NotificationHelper* NotificationHelper::GetInstance() {

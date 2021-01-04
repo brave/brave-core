@@ -23,6 +23,10 @@ public class BraveNotificationManagerProxyImpl extends NotificationManagerProxyI
     @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void createNotificationChannel(NotificationChannel channel) {
+        if (channel.getId().equals(BraveChannelDefinitions.ChannelId.BRAVE_ADS)) {
+            channel.setVibrationPattern(new long[] {0L});
+            channel.enableVibration(true);
+        }
         super.createNotificationChannel(channel);
     }
 }
