@@ -10,7 +10,7 @@
 
 class BookmarkButton : public ToolbarButton {
  public:
-  BookmarkButton(PressedCallback callback);
+  explicit BookmarkButton(PressedCallback callback);
   ~BookmarkButton() override;
 
   void SetToggled(bool on);
