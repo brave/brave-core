@@ -38,6 +38,7 @@ struct Interface: Hashable, Comparable {
   /// The generated output of a this @interface
   var generatedPublicInterface: String {
     return """
+    OBJC_EXPORT
     NS_SWIFT_NAME(\(name))
     @interface \(prefixedName) : NSObject
     \(properties.map { $0.decleration }.joined(separator: "\n"))

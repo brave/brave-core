@@ -7,6 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT
 @interface DataController : NSObject
 
 + (BOOL)defaultStoreExists;

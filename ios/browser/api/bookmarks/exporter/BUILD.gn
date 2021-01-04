@@ -1,0 +1,42 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("exporter") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_bookmarks_exporter.h",
+    "brave_bookmarks_exporter.mm",
+    "bookmark_html_writer.h",
+    "bookmark_html_writer.cc",
+    "bookmarks_encoder.h",
+    "bookmarks_encoder.cc"
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/bookmarks",
+    "//components/bookmarks/browser",
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/keyed_service/core",
+    "//components/strings:components_strings_grit",
+    "//ios/chrome/browser",
+    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/favicon:favicon",
+    "//ios/web/public/thread",
+    "//net",
+    "//ui/base:base",
+    "//url",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+  ]
+}

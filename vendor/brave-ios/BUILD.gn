@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
+import("//brave/ios/app/headers.gni")
 
 config("internal_config") {
   visibility = [
@@ -19,6 +20,7 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
+  ldflags = [ "-Wl,-no_compact_unwind" ]
   include_dirs = [
     ".",
     "Ads",
@@ -53,9 +55,9 @@ ios_framework_bundle("brave_rewards_ios_framework") {
 
   configs += [ ":internal_config" ]
   configs += [ "//build/config/compiler:enable_arc" ]
-  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   deps = [
+    "//brave/ios/app",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
     "//net:net",
@@ -153,13 +155,16 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "$target_gen_dir/ads.mojom.objc.h",
   ]
 
+  public_headers += brave_core_public_headers
+
   frameworks = [
     "Foundation.framework",
     "UIKit.framework",
     "Security.framework",
     "CoreData.framework",
     "SystemConfiguration.framework",
-    "Network.framework"
+    "Network.framework",
+    "CoreImage.framework"
   ]
 }
 

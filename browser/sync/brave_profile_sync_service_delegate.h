@@ -17,6 +17,7 @@ class Profile;
 
 namespace syncer {
 
+class DeviceInfoSyncService;
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
 
@@ -26,7 +27,8 @@ class BraveProfileSyncServiceDelegate
     : public ProfileSyncServiceDelegate,
       public syncer::DeviceInfoTracker::Observer {
  public:
-  explicit BraveProfileSyncServiceDelegate(Profile* profile);
+  explicit BraveProfileSyncServiceDelegate(
+      DeviceInfoSyncService* device_info_sync_service);
   ~BraveProfileSyncServiceDelegate() override;
 
   void SuspendDeviceObserverForOwnReset() override;
@@ -44,7 +46,6 @@ class BraveProfileSyncServiceDelegate
       device_info_observer_{this};
 
   DeviceInfoSyncService* device_info_sync_service_;
-  Profile* profile_;
 
   base::WeakPtrFactory<BraveProfileSyncServiceDelegate> weak_ptr_factory_;
 
