@@ -48,7 +48,6 @@
 <translation id="1048286738600630630">Displays</translation>
 <translation id="1048986595386481879">Dynamically allocated</translation>
 <translation id="1049324577536766607">{COUNT,plural, =1{Receiving <ph name="ATTACHMENTS"/> from <ph name="DEVICE_NAME"/>}other{Receiving <ph name="ATTACHMENTS"/> from <ph name="DEVICE_NAME"/>}}</translation>
-<translation id="1049743911850919806">Incognito</translation>
 <translation id="1049795001945932310">&amp;Language settings</translation>
 <translation id="1054153489933238809">Open Original Image in New Tab</translation>
 <translation id="1055274863771110134">{NUM_WEEKS,plural, =1{Update <ph name="DEVICE_TYPE"/> within 1 week}other{Update <ph name="DEVICE_TYPE"/> within {NUM_WEEKS} weeks}}</translation>
@@ -120,7 +119,6 @@
 <translation id="1128591060186966949">Edit search engine</translation>
 <translation id="1129850422003387628">Manage apps</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> – Part of group <ph name="GROUP_NAME"/></translation>
-<translation id="1134009406053225289">Open in incognito window</translation>
 <translation id="1136179794690960030"><ph name="EMOJI_NAME"/>. <ph name="EMOJI_INDEX"/> of <ph name="EMOJI_COUNT"/>.</translation>
 <translation id="1136712381129578788">The security key is locked because the wrong PIN was entered too many times. To unlock it, remove and reinsert it.</translation>
 <translation id="1137589305610962734">temporary data</translation>
@@ -185,7 +183,6 @@
 <translation id="1204296502688602597">DNS latency</translation>
 <translation id="1206407435587370571">Explore your Bravebook</translation>
 <translation id="1209796539517632982">Automatic name servers</translation>
-<translation id="1211364473545090084">Use the web without saving your browsing history with an incognito window</translation>
 <translation id="1211769675100312947">Shortcuts are curated by you</translation>
 <translation id="1213037489357051291"><ph name="NUM_FINGERPRINTS"/> fingerprints set up</translation>
 <translation id="1213254615020057352">Send usage and diagnostic data. Help improve your child's Android experience by automatically sending diagnostic, device and app usage data to Brave. This won't be used to identify your child, and will help system and app stability and other improvements. Some aggregate data will also help Brave apps and partners, such as Android developers. This setting is enforced by the owner. The owner may choose to send diagnostic and usage data for this device to Brave. If additional Web &amp; App Activity setting is turned on for your child, this data may be saved to their Brave sync chain.</translation>
@@ -332,7 +329,6 @@
 <translation id="1377600615067678409">Skip for now</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> is controlling this setting</translation>
 <translation id="1380028686461971526">Auto connect to network</translation>
-<translation id="1380436189840894976">Quit incognito mode anyway?</translation>
 <translation id="1383861834909034572">Opening when complete</translation>
 <translation id="1383876407941801731">Search</translation>
 <translation id="1386387014181100145">Howdy.</translation>
@@ -398,7 +394,6 @@
 <translation id="1444628761356461360">This setting is managed by the device owner, <ph name="OWNER_EMAIL"/>.</translation>
 <translation id="144518587530125858">Could not load '<ph name="IMAGE_PATH"/>' for theme.</translation>
 <translation id="1451375123200651445">Web page, Single File</translation>
-<translation id="1451917004835509682">Add Supervised Person</translation>
 <translation id="1454223536435069390">T&amp;ake screenshot</translation>
 <translation id="145432137617179457">Spell check languages</translation>
 <translation id="1459693405370120464">Weather</translation>
@@ -532,7 +527,6 @@
 <translation id="1600857548979126453">Access the page debugger backend</translation>
 <translation id="1601560923496285236">Apply</translation>
 <translation id="1602085790802918092">Starting the virtual machine</translation>
-<translation id="1603914832182249871">(Incognito)</translation>
 <translation id="1604432177629086300">Couldn't print. Check printer and try again.</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: Password sync isn't working</translation>
 <translation id="1607139524282324606">Clear entry</translation>
@@ -609,7 +603,6 @@
 <translation id="1680841347983561661">Please try to start Google Play again in a few moments.</translation>
 <translation id="1680849702532889074">An error occurred during installation of your Linux application.</translation>
 <translation id="16815041330799488">Do not allow sites to see text and images copied to the clipboard</translation>
-<translation id="1682548588986054654">New Incognito Window</translation>
 <translation id="1682867089915960590">Turn on caret browsing?</translation>
 <translation id="1686550358074589746">Enable glide typing</translation>
 <translation id="168715261339224929">To get your bookmarks on all your devices, turn on sync.</translation>
@@ -622,9 +615,7 @@
 <translation id="1692210323591458290">Dark purple</translation>
 <translation id="1697150536837697295">Art</translation>
 <translation id="1697686431566694143">Edit file</translation>
-<translation id="1698122934742150150">Current incognito session only</translation>
 <translation id="1700079447639026019">Sites that can never use cookies</translation>
-<translation id="1701062906490865540">Remove this person</translation>
 <translation id="1703331064825191675">Never worry about your passwords</translation>
 <translation id="1704970325597567340">Safety check ran on <ph name="DATE"/></translation>
 <translation id="1706391837335750954">DNS resolver present</translation>
@@ -760,7 +751,6 @@
 <translation id="1850508293116537636">Rotate &amp;clockwise</translation>
 <translation id="1852141627593563189">Find harmful software</translation>
 <translation id="1852799913675865625">There was an error while trying to read the file: <ph name="ERROR_TEXT"/>.</translation>
-<translation id="1853692000353488670">New incognito tab</translation>
 <translation id="1854180393107901205">Stop casting</translation>
 <translation id="1856715684130786728">Add location...</translation>
 <translation id="1858585891038687145">Trust this certificate for identifying software makers</translation>
@@ -1026,7 +1016,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2174948148799307353">Account managed by <ph name="PARENT_EMAIL"/>. To sign out of the primary account on this device, click the time on your screen. In the menu that appears, click 'Sign out'.</translation>
 <translation id="2175607476662778685">Quick launch bar</translation>
 <translation id="217576141146192373">Unable to add printer. Please check your printer's configuration and try again.</translation>
-<translation id="2177950615300672361">Incognito Tab: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_NAME"/> on <ph name="PEPPER_PLUGIN_DOMAIN"/> wants to access your computer</translation>
 <translation id="2178614541317717477">CA Compromise</translation>
 <translation id="2182058453334755893">Copied to your Clipboard</translation>
@@ -1070,7 +1059,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2225864335125757863">Change these passwords immediately to keep your account safe:</translation>
 <translation id="2226449515541314767">This site has been blocked from having full control of MIDI devices.</translation>
 <translation id="2226907662744526012">Unlock automatically once PIN is entered</translation>
-<translation id="222704500187107962">This exception will be automatically removed after you exit the current Incognito session</translation>
 <translation id="2227179592712503583">Remove suggestion</translation>
 <translation id="2229161054156947610">More than 1 hour left</translation>
 <translation id="222931766245975952">File truncated</translation>
@@ -1083,7 +1071,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7956662517480676674">Sync and Brave services</translation>
 <translation id="2235344399760031203">Third-party cookies are blocked</translation>
 <translation id="2238379619048995541">Frequency State Data</translation>
-<translation id="2239921694246509981">Add supervised person</translation>
 <translation id="2241053333139545397">Read and change your data on a number of websites</translation>
 <translation id="2241634353105152135">Just once</translation>
 <translation id="2242687258748107519">File Info</translation>
@@ -1245,7 +1232,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2434758125294431199">Select who can share with you</translation>
 <translation id="2435248616906486374">Network disconnected</translation>
 <translation id="2435457462613246316">Show password</translation>
-<translation id="2435579801172349831">Open all (<ph name="URL_COUNT"/>) in incognito window</translation>
 <translation id="2436186046335138073">Allow <ph name="HANDLER_HOSTNAME"/> to open all <ph name="PROTOCOL"/> links?</translation>
 <translation id="2439545803278355377">Enter your new PIN. A PIN must be at least four characters long and can contain letters, numbers and other characters.</translation>
 <translation id="2440604414813129000">View s&amp;ource</translation>
@@ -1389,7 +1375,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2129873093718581193">Search Brave or type URL</translation>
 <translation id="2602501489742255173">Swipe up to get started</translation>
 <translation id="2603115962224169880">Clean up computer</translation>
-<translation id="2603463522847370204">Open in &amp;Incognito window</translation>
 <translation id="2604255671529671813">Network connection error</translation>
 <translation id="2606246518223360146">Link Data</translation>
 <translation id="2607101320794533334">Subject Public Key Info</translation>
@@ -1460,7 +1445,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="268053382412112343">Hi&amp;story</translation>
 <translation id="2682498795777673382">Update from a parent</translation>
 <translation id="2683638487103917598">Folder sorted</translation>
-<translation id="2684004000387153598">To continue, click OK, then click Add Person to create a new profile for your email address.</translation>
 <translation id="2687403674020088961">Block all cookies (not recommended)</translation>
 <translation id="2687407218262674387">Brave Terms of Service</translation>
 <translation id="2688196195245426394">Error when registering the device with the server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -1605,7 +1589,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2841837950101800123">Provider</translation>
 <translation id="2844169650293029770">USB-C device (left side front port)</translation>
 <translation id="2844809857160214557">View and manage print jobs</translation>
-<translation id="2845382757467349449">Always Show Bookmarks Bar</translation>
 <translation id="284805635805850872">Remove harmful software?</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">Cleanup failed</translation>
@@ -1985,7 +1968,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3315442055907669208">Enter reader mode</translation>
 <translation id="3317459757438853210">Two-sided</translation>
 <translation id="3317678681329786349">Camera and microphone blocked</translation>
-<translation id="3319048459796106952">New &amp;incognito window</translation>
 <translation id="3320630259304269485">Safe Browsing (protection from dangerous sites) and other security settings</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{This data has sensitive or dangerous content. Remove this content and try again.}=1{This file has sensitive or dangerous content. Remove this content and try again.}other{These files have sensitive or dangerous content. Remove this content and try again.}}</translation>
 <translation id="3323521181261657960">Bonus! You got more screen time</translation>
@@ -2037,7 +2019,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3388788256054548012">This file is encrypted. Ask its owner to decrypt it.</translation>
 <translation id="3390013585654699824">App details</translation>
 <translation id="3390741581549395454">Linux apps and files have been successfully backed up. Upgrade will begin shortly.</translation>
-<translation id="339507021360520688">People who have chosen to be visible to you when their screen is unlocked</translation>
 <translation id="3396800784455899911">By clicking the 'Accept and continue' button, you agree to the processing described above for these Brave services.</translation>
 <translation id="3399432415385675819">Notifications will be disabled</translation>
 <translation id="3400390787768057815"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> Hertz) – interlaced</translation>
@@ -2049,7 +2030,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3405664148539009465">Customise fonts</translation>
 <translation id="3405763860805964263">...</translation>
 <translation id="3406396172897554194">Search by language or input name</translation>
-<translation id="3406605057700382950">&amp;Show bookmarks bar</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{This extension may be dangerous}other{These extensions may be dangerous}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">All files and local data associated with this user will be permanently deleted once this user is removed. <ph name="USER_EMAIL"/> can still sign in later.</translation>
@@ -2123,7 +2103,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3476303763173086583">Send usage and diagnostic data. Help improve your child's Android experience by automatically sending diagnostic, device and app usage data to Brave. This won't be used to identify your child, and will help system and app stability and other improvements. Some aggregate data will also help Brave apps and partners, such as Android developers. This <ph name="BEGIN_LINK1"/>setting<ph name="END_LINK1"/> is enforced by the owner. The owner may choose to send diagnostic and usage data for this device to Brave. If additional Web &amp; App Activity setting is turned on for your child, this data may be saved to their Brave sync chain. <ph name="BEGIN_LINK2"/>Find out more<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">Oops!  The system failed to fetch policy for your device.</translation>
 <translation id="347785443197175480">Continue allowing <ph name="HOST"/> to access your camera and microphone</translation>
-<translation id="3478685642445675458">Please unlock your profile before removing a person.</translation>
 <translation id="3479552764303398839">Not now</translation>
 <translation id="3479685872808224578">Couldn't detect the print server. Please check the address and try again.</translation>
 <translation id="3480827850068960424">Found <ph name="NUM"/> tabs</translation>
@@ -2201,7 +2180,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3569682580018832495"><ph name="ORIGIN"/> can view the following files and folders</translation>
 <translation id="3571734092741541777">Set up</translation>
 <translation id="3574210789297084292">sign in</translation>
-<translation id="3574917942258583917">Exit incognito mode anyway?</translation>
 <translation id="3575121482199441727">Allow for this site</translation>
 <translation id="3576324189521867626">Successfully installed</translation>
 <translation id="3578594933904494462">This tab's content is being shared.</translation>
@@ -2221,7 +2199,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3593152357631900254">Enable Fuzzy-Pinyin mode</translation>
 <translation id="3593965109698325041">Certificate Name Constraints</translation>
 <translation id="3596235046596950091">Enable cloud services</translation>
-<translation id="3596414637720633074">Block third-party cookies in Incognito</translation>
 <translation id="3599221874935822507">Raised</translation>
 <translation id="3551285888947169900">Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="3600051066689725006">Web request info</translation>
@@ -2251,7 +2228,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3625481642044239431">Invalid file selected. Try again.</translation>
 <translation id="3626296069957678981">To charge this Bravebook, use a compatible Dell battery.</translation>
 <translation id="3627320433825461852">Less than 1 minute left</translation>
-<translation id="3627588569887975815">Open link in inco&amp;gnito window</translation>
 <translation id="3627671146180677314">Netscape Certificate Renewal Time</translation>
 <translation id="3627879631695760395">Install <ph name="APP"/>…</translation>
 <translation id="3628275722731025472">Turn off Bluetooth</translation>
@@ -2377,7 +2353,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3758842566811519622">Cookies set</translation>
 <translation id="3759933321830434300">Block parts of web pages</translation>
 <translation id="3760460896538743390">Inspect &amp;Background Page</translation>
-<translation id="37613671848467444">Open in &amp;Incognito Window</translation>
 <translation id="3761556954875533505">Let site edit files?</translation>
 <translation id="3764314093345384080">Detailed build information</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{Communicate with a USB device}other{Communicate with # USB devices}}</translation>
@@ -2634,7 +2609,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4035758313003622889">&amp;Task manager</translation>
 <translation id="4036778507053569103">The policy downloaded from the server is invalid.</translation>
 <translation id="4037084878352560732">Horse</translation>
-<translation id="4037889604535939429">Edit person</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Exit Page}other{Exit Pages}}</translation>
 <translation id="4044612648082411741">Enter your certificate password</translation>
 <translation id="4044708573046946214">Screen lock password</translation>
@@ -2762,7 +2736,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4209251085232852247">Turned off</translation>
 <translation id="2624930408905606513">Documents are <ph name="BEGIN_LINK_HELP"/>sent to Brave<ph name="END_LINK_HELP"/> to prepare them for printing. View, edit and manage your printers and printer history on the <ph name="BEGIN_LINK_DASHBOARD"/>Google Cloud Print dashboard<ph name="END_LINK_DASHBOARD"/>.</translation>
 <translation id="4210048056321123003">Downloading the virtual machine</translation>
-<translation id="421182450098841253">&amp;Show Bookmarks Bar</translation>
 <translation id="4211851069413100178">Send usage and diagnostic data. Help improve your Android experience by automatically sending diagnostic, device and app usage data to Brave. This will help system and app stability and other improvements. Some aggregate data will also help Brave apps and partners, such as Android developers. This <ph name="BEGIN_LINK1"/>setting<ph name="END_LINK1"/> is enforced by the owner. The owner may choose to send diagnostic and usage data for this device to Brave. If your additional Web &amp; App Activity setting is turned on, this data may be saved to your Brave sync chain. <ph name="BEGIN_LINK2"/>Find out more<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">Export</translation>
 <translation id="42137655013211669">Access to this resource was forbidden by the server.</translation>
@@ -2895,7 +2868,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4387004326333427325">Authentication certificate rejected remotely</translation>
 <translation id="4387890294700445764">Compromised passwords</translation>
 <translation id="4389091756366370506">User <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{Incognito}other{# open incognito windows}}</translation>
 <translation id="439266289085815679">Bluetooth configuration is controlled by <ph name="USER_EMAIL"/>.</translation>
 <translation id="4392896746540753732">Edit the configuration file</translation>
 <translation id="4393691030048716353"><ph name="DOMAIN"/> has disabled ADB debugging. Once you restart your <ph name="DEVICE_TYPE"/>, you won't be able to sideload apps.</translation>
@@ -2917,7 +2889,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4411578466613447185">Code Signer</translation>
 <translation id="4412698727486357573">Help Centre</translation>
 <translation id="44141919652824029">Allow '<ph name="APP_NAME"/>' to get the list of your attached USB devices?</translation>
-<translation id="4414232939543644979">New &amp;Incognito Window</translation>
 <translation id="4415213869328311284">You are ready to start using your <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="4415245286584082850">No devices found. Open a help centre article in a new tab.</translation>
 <translation id="5749788945734786627">Manage your Brave sync chain</translation>
@@ -2989,7 +2960,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4504374760782163539">{COUNT,plural, =0{Cookies are allowed}=1{Cookies are allowed – 1 exception}other{Cookies are allowed – {COUNT} exceptions}}</translation>
 <translation id="4504940961672722399">Use this extension by clicking on this icon or by pressing <ph name="EXTENSION_SHORTCUT"/>.</translation>
 <translation id="450552327874992444">Word already added</translation>
-<translation id="4508051413094283164">Open all in incognito window</translation>
 <translation id="4508265954913339219">Activation failed</translation>
 <translation id="4508765956121923607">View S&amp;ource</translation>
 <translation id="4510479820467554003">Parent account list</translation>
@@ -3003,7 +2973,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4519935350946509010">Connection error.</translation>
 <translation id="4520385623207007473">Cookies in use</translation>
 <translation id="452039078290142656">unknown devices from <ph name="VENDOR_NAME"/></translation>
-<translation id="4521489190203965562">Current incognito session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> and more</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="4522600456902129422">Continue allowing this site to see the clipboard</translation>
 <translation id="4524832533047962394">The supplied enrolment mode is not supported by this version of the operating system. Please make sure that you are running the newest version.</translation>
@@ -3127,7 +3096,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="4647420311443994946">{0,select, tablet{Start app when you sign in to your tablet}computer{Start app when you sign in to your computer}other{Start app when you sign in to your device}}</translation>
 <translation id="4647697156028544508">Please enter the PIN for "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="4648491805942548247">Insufficient permissions</translation>
-<translation id="4648499713050786492">Please unlock your profile before adding a person.</translation>
 <translation id="4650591383426000695">Disconnect your phone from your <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">Could not load online component with demo mode resources.</translation>
 <translation id="4652935475563630866">The change in camera setting requires Parallels Desktop to relaunch. Relaunch Parallels Desktop to proceed.</translation>
@@ -3477,7 +3445,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5107443654503185812">An extension has turned off Safe Browsing</translation>
 <translation id="5108967062857032718">Settings – Remove Android apps</translation>
 <translation id="5109044022078737958">Mia</translation>
-<translation id="5111646998522066203">Exit incognito</translation>
 <translation id="5111692334209731439">&amp;Bookmark Manager</translation>
 <translation id="5112577000029535889">&amp;Developer Tools</translation>
 <translation id="5113739826273394829">If you click this icon, you will manually lock this <ph name="DEVICE_TYPE"/>. Next time, you’ll need to type your password to enter.</translation>
@@ -3755,7 +3722,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5449551289610225147">Invalid password</translation>
 <translation id="5449588825071916739">Bookmark All Tabs</translation>
 <translation id="5449716055534515760">Close Win&amp;dow</translation>
-<translation id="5452974209916053028">Current incognito session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">with <ph name="PROVIDER"/></translation>
 <translation id="5457113250005438886">Invalid</translation>
 <translation id="5457459357461771897">Read and delete photos, music and other media from your computer</translation>
@@ -3787,7 +3753,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5486561344817861625">Simulate Browser Restart</translation>
 <translation id="5487521232677179737">Clear data</translation>
 <translation id="5488093641312826914">'<ph name="COPIED_ITEM_NAME"/>' copied</translation>
-<translation id="5488468185303821006">Allow in incognito</translation>
 <translation id="5488508217173274228">Sync encryption options</translation>
 <translation id="5489435190927933437">Saved passwords for <ph name="DOMAIN"/></translation>
 <translation id="5490721031479690399">Disconnect Bluetooth device</translation>
@@ -3829,7 +3794,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5526745900034778153">Sign in again to resume sync</translation>
 <translation id="5527463195266282916">Attempted to downgrade extension.</translation>
 <translation id="5527474464531963247">You may also select another network.</translation>
-<translation id="5530766185686772672">Close incognito tabs</translation>
 <translation id="5532223876348815659">Global</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> wants to</translation>
 <translation id="5534304873398226603">Discard photo or video</translation>
@@ -3865,7 +3829,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5568069709869097550">Can't sign in</translation>
 <translation id="5571832155627049070">Customise your profile</translation>
 <translation id="1254756632288991504">Please start and sign in to Brave so that Brave can check whether you are allowed to access this site.</translation>
-<translation id="5575473780076478375">Incognito Extension: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">A problem with demo registration request occurred.</translation>
 <translation id="557722062034137776">Resetting your device will not affect your Brave accounts or any data synced to these accounts. However, all files saved locally on your device will be deleted.</translation>
 <translation id="5578059481725149024">Auto sign-in</translation>
@@ -3962,7 +3925,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5691581861107245578">Get emoji suggestions based on what you're typing</translation>
 <translation id="5691772641933328258">Fingerprint not recognised</translation>
 <translation id="5692183275898619210">Printing complete</translation>
-<translation id="569425414730375234">Current incognito session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">Linux Android app ADB</translation>
 <translation id="5696143504434933566">Report abuse from '<ph name="EXTENSION_NAME"/>'</translation>
 <translation id="5696177755977520104">Chrome OS settings sync</translation>
@@ -3991,7 +3953,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5723034813131030312">Block sites from connecting to serial devices</translation>
 <translation id="572328651809341494">Recent tabs</translation>
 <translation id="5723508132121499792">No background apps running</translation>
-<translation id="5723967018671998714">Third-party cookies are blocked in Incognito mode</translation>
 <translation id="5727728807527375859">Extensions, apps and themes can harm your computer. Are you sure that you want to continue?</translation>
 <translation id="5728450728039149624">Smart Lock screen lock options</translation>
 <translation id="5729712731028706266">&amp;View</translation>
@@ -4072,7 +4033,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5828633471261496623">Printing...</translation>
 <translation id="5830659417568730973">Selected contacts near you when your screen is unlocked</translation>
 <translation id="5830720307094128296">Save Page &amp;As...</translation>
-<translation id="5832805196449965646">Add Person</translation>
 <translation id="583281660410589416">Unknown</translation>
 <translation id="5833397272224757657">Uses content on sites that you visit, plus browser activity and interactions, for personalisation</translation>
 <translation id="5833726373896279253">These settings may only be modified by the owner:</translation>
@@ -4128,7 +4088,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5886009770935151472">Finger 1</translation>
 <translation id="5889282057229379085">Maximum number of intermediate CAs: <ph name="NUM_INTERMEDIATE_CA"/></translation>
 <translation id="5891688036610113830">Preferred Wi-Fi networks</translation>
-<translation id="5893589697005440881">Share files with people around you</translation>
 <translation id="5895138241574237353">Restart</translation>
 <translation id="8907706281008466056">Brave Profile photo</translation>
 <translation id="5900358982890952556">Upgrade Linux (beta)</translation>
@@ -4170,7 +4129,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5935656526031444304">Manage Safe Browsing</translation>
 <translation id="5938002010494270685">Security upgrade available</translation>
 <translation id="5939518447894949180">Reset</translation>
-<translation id="5941153596444580863">Add person</translation>
 <translation id="5941343993301164315">Please sign in to <ph name="TOKEN_NAME"/>.</translation>
 <translation id="5941711191222866238">Minimise</translation>
 <translation id="5942779427914696408">Device visibility</translation>
@@ -4210,7 +4168,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="5979469435153841984">To bookmark pages, click the star in the address bar</translation>
 <translation id="5983642582671533177">This printer won't be supported after December. Contact your admin.</translation>
 <translation id="5984222099446776634">Recently Visited</translation>
-<translation id="598472838394900788">{0,plural, =1{Incognito}other{Incognito (#)}}</translation>
 <translation id="5985458664595100876">Invalid URL format. Supported formats are \\server\share and smb://server/share.</translation>
 <translation id="5990266201903445068">Wi-Fi only</translation>
 <translation id="5990386583461751448">Translated</translation>
@@ -4291,7 +4248,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6078323886959318429">Add shortcut</translation>
 <translation id="6078752646384677957">Please check your microphone and audio levels.</translation>
 <translation id="6078769373519310690">'<ph name="CHROME_EXTENSION_NAME"/>' wants to connect to a HID device</translation>
-<translation id="6080515710685820702">Using a shared computer? Try opening an incognito window.</translation>
 <translation id="6080689532560039067">Check your system time</translation>
 <translation id="6082651258230788217">Show in toolbar</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> – Part of unnamed group</translation>
@@ -4321,7 +4277,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6112294629795967147">Touch to resize</translation>
 <translation id="6112727384379533756">Add a ticket</translation>
 <translation id="6112931163620622315">Check your phone</translation>
-<translation id="6112952769866305444">Edit person, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="6113942107547980621">To use Smart Lock, switch to the primary user profile on your phone</translation>
 <translation id="6116921718742659598">Change language and input settings</translation>
 <translation id="6120205520491252677">Pin this page to Start screen...</translation>
@@ -4360,7 +4315,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="615436196126345398">Protocol</translation>
 <translation id="6154697846084421647">Currently signed in</translation>
 <translation id="6155141482566063812">Background tab is sharing your screen</translation>
-<translation id="6156323911414505561">Show bookmarks bar</translation>
 <translation id="6156863943908443225">Script cache</translation>
 <translation id="6160625263637492097">Provide certificates for authentication</translation>
 <translation id="6163363155248589649">&amp;Normal</translation>
@@ -4573,7 +4527,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6410668567036790476">Add search engine</translation>
 <translation id="641081527798843608">Subject match</translation>
 <translation id="7810992039564280750">Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.</translation>
-<translation id="6412931879992742813">New incognito window</translation>
 <translation id="641469293210305670">Install updates and apps</translation>
 <translation id="6414888972213066896">You asked your parent if it's OK to visit this site</translation>
 <translation id="6415900369006735853">Connect to the Internet through your phone</translation>
@@ -4686,7 +4639,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6550675742724504774">Options</translation>
 <translation id="6551508934388063976">Command unavailable. Press control-N to open a new window.</translation>
 <translation id="6551612971599078809">Site is using USB</translation>
-<translation id="6552395360547205189">Current incognito session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> users</translation>
 <translation id="655483977608336153">Try again</translation>
 <translation id="6555432686520421228">Remove all user accounts and reset your <ph name="IDS_SHORT_PRODUCT_NAME"/> device to be just like new.</translation>
@@ -4700,7 +4652,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6562117348069327379">Store system logs to the downloads directory.</translation>
 <translation id="656293578423618167">The file path or name is too long.  Please save with a shorter name or to another location.</translation>
 <translation id="6563469144985748109">Your manager hasn't approved it yet</translation>
-<translation id="6569934958368283244">Other people</translation>
 <translation id="657402800789773160">&amp;Reload This Page</translation>
 <translation id="6577284282025554716">Download cancelled: <ph name="FILE_NAME"/></translation>
 <translation id="657866106756413002">Network health snapshot</translation>
@@ -4823,7 +4774,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6731877319426971768">Speech recognition files downloaded</translation>
 <translation id="6732801395666424405">Certificates not loaded</translation>
 <translation id="6732900235521116609">Can’t remove shortcut</translation>
-<translation id="6734468588183300211">While in Incognito, sites can't use your cookies to see your browsing activity across different sites; for example, to personalise ads. Features on some sites may break.</translation>
 <translation id="6735304988756581115">Show cookies and other site data...</translation>
 <translation id="6736243959894955139">Address</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4839,7 +4789,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6749006854028927059">Sites can't use your cookies to see your browsing activity across different sites, for example, to personalise ads. Features on some sites may break.</translation>
 <translation id="6750757184909117990">Disable mobile</translation>
 <translation id="6750946710563435348">Use other username</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
 <translation id="6757101664402245801">URL copied</translation>
 <translation id="6758056191028427665">Let us know how we’re doing.</translation>
 <translation id="6759193508432371551">Factory reset</translation>
@@ -4869,7 +4818,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6789592661892473991">Split horizontal</translation>
 <translation id="6790428901817661496">Play</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> was added remotely</translation>
-<translation id="6790820461102226165">Add Person...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> would like to share the contents of your screen with <ph name="TARGET_NAME"/>. Choose what you'd like to share.</translation>
 <translation id="6793604637258913070">Highlight the text caret when it appears or moves</translation>
 <translation id="6795884519221689054">Panda</translation>
@@ -4996,7 +4944,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="6935286146439255109">A paper tray is missing</translation>
 <translation id="693807610556624488">Write operation exceeds the maximum length of the attribute to: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6938386202199793006">You have 1 saved printer.</translation>
-<translation id="6938789263968032501">People</translation>
 <translation id="6939815295902433669">Review device software</translation>
 <translation id="6941937518557314510">Please sign in to <ph name="TOKEN_NAME"/> to authenticate to <ph name="HOST_NAME"/> with your certificate.</translation>
 <translation id="6943060957016121200">Enable Instant Tethering</translation>
@@ -5079,7 +5026,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7022562585984256452">Your home page has been set.</translation>
 <translation id="7025082428878635038">Introducing a new way to navigate with gestures</translation>
 <translation id="7025190659207909717">Mobile data service management</translation>
-<translation id="7027258625819743915">{COUNT,plural, =0{Open all in &amp;incognito window}=1{Open in &amp;incognito window}other{Open all ({COUNT}) in &amp;incognito window}}</translation>
 <translation id="7029307918966275733">Crostini is not installed. Please install Crostini to view credits.</translation>
 <translation id="7029809446516969842">Passwords</translation>
 <translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> – Serial port connected</translation>
@@ -5103,7 +5049,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{Safety check ran 1 minute ago}other{Safety check ran {NUM_MINS} minutes ago}}</translation>
 <translation id="7057767408836081338">Failed to obtain app data. Trying to run the app anyway…</translation>
 <translation id="7059858479264779982">Set to auto-launch</translation>
-<translation id="7059893117020417984">To browse privately, click the dots icon menu to open an incognito window</translation>
 <translation id="7062222374113411376">Allow recently closed sites to finish sending and receiving data (recommended)</translation>
 <translation id="7063129466199351735">Processing shortcuts...</translation>
 <translation id="7063311912041006059">URL with <ph name="SPECIAL_SYMBOL"/> in place of query</translation>
@@ -5125,7 +5070,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7077829361966535409">The sign-in page failed to load using the current proxy settings. Please <ph name="GAIA_RELOAD_LINK_START"/>try to sign in again<ph name="GAIA_RELOAD_LINK_END"/> or use different <ph name="PROXY_SETTINGS_LINK_START"/>proxy settings<ph name="PROXY_SETTINGS_LINK_END"/>.</translation>
 <translation id="7078120482318506217">All networks</translation>
 <translation id="708060913198414444">C&amp;opy audio address</translation>
-<translation id="7081952801286122383">You're incognito</translation>
 <translation id="708278670402572152">Disconnect to enable scanning</translation>
 <translation id="7084321615353200053">Sites can ask to use your camera (recommended)</translation>
 <translation id="1439926347196400598">Allow Brave to record audio?</translation>
@@ -5381,7 +5325,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{Safety check ran 1 hour ago}other{Safety check ran {NUM_HOURS} hours ago}}</translation>
 <translation id="740624631517654988">Pop-up blocked</translation>
 <translation id="7407430846095439694">Import and Bind</translation>
-<translation id="7407504355934009739">Most people block notifications from this site</translation>
 <translation id="740810853557944681">Add a print server</translation>
 <translation id="7409549334477097887">Extra large</translation>
 <translation id="7409735910987429903">Sites might send pop-ups to show ads, or use redirects to lead you to websites that you may not want to visit</translation>
@@ -5431,7 +5374,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7461729991508684543">{NUM_DAYS,plural, =1{<ph name="DOMAIN"/> requires you to back up your data and return this <ph name="DEVICE_TYPE"/> today.<ph name="LINK_BEGIN"/>See details<ph name="LINK_END"/>}other{<ph name="DOMAIN"/> requires you to back up your data and return this <ph name="DEVICE_TYPE"/> within {NUM_DAYS} days.<ph name="LINK_BEGIN"/>See details<ph name="LINK_END"/>}}</translation>
 <translation id="7461924472993315131">Pin</translation>
 <translation id="746216226901520237">Next time, your phone will unlock your <ph name="DEVICE_TYPE"/>. You can turn off Smart Lock in Settings.</translation>
-<translation id="7463006580194749499">Add person</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# open tab; press to toggle tab strip}other{# open tabs; press to toggle tab strip}}</translation>
 <translation id="7465635034594602553">Something went wrong. Please wait a few minutes and run <ph name="APP_NAME"/> again.</translation>
 <translation id="7465778193084373987">Netscape Certificate Revocation URL</translation>
@@ -5453,7 +5395,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7487969577036436319">No components are installed</translation>
 <translation id="7488682689406685343">This site may be trying to trick you into allowing intrusive notifications.</translation>
 <translation id="7489761397368794366">Call from your device</translation>
-<translation id="749028671485790643">Person <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">MAC address</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 cookie}other{{NUM_COOKIES} cookies}}</translation>
 <translation id="7493386493263658176"><ph name="EXTENSION_NAME"/> extension may collect all the text you type, including personal data like passwords and credit card numbers. Do you want to use this extension?</translation>
@@ -5477,7 +5418,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="751523031290522286"><ph name="APP_NAME"/> is blocked by admin. Ask admin for permission to use this app.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> is paused</translation>
 <translation id="7517063221058203587">{0,plural, =1{Update device within 1 minute}other{Update device within # minutes}}</translation>
-<translation id="7520766081042531487">Incognito portal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Say 'Ok Brave'</translation>
 <translation id="7525067979554623046">Create</translation>
@@ -5582,7 +5522,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7649070708921625228">Help</translation>
 <translation id="7650511557061837441">"<ph name="TRIGGERING_EXTENSION_NAME"/>" would like to remove "<ph name="EXTENSION_NAME"/>".</translation>
 <translation id="7650677314924139716">Current data usage setting is Wi-Fi only</translation>
-<translation id="7652808307838961528">Edit person, <ph name="PROFILE_NAME"/></translation>
 <translation id="765293928828334535">Apps, extensions and user scripts cannot be added from this website</translation>
 <translation id="7652954539215530680">Create a PIN</translation>
 <translation id="7654941827281939388">This account is already being used on this computer.</translation>
@@ -5610,8 +5549,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7680416688940118410">Touchscreen calibration</translation>
 <translation id="7681095912841365527">Site can use Bluetooth</translation>
 <translation id="7682634383739326341">Block sites from connecting to USB devices</translation>
-<translation id="7683373461016844951">To continue, click OK, then click Add Person to create a new profile for your <ph name="DOMAIN"/> email address.</translation>
-<translation id="7683593009096723900">{COUNT,plural, =0{Open all in &amp;incognito window}=1{Open in &amp;incognito window}other{Open all ({COUNT}) in &amp;incognito window}}</translation>
 <translation id="7684212569183643648">Installed by Your Administrator</translation>
 <translation id="7684559058815332124">Visit captive portal login page</translation>
 <translation id="1669729672557072907">To create and test your apps, enable the Android Debug Bridge (ADB). Note that this action allows installation of Android apps that haven't been verified by Brave, and requires a factory reset to disable.</translation>
@@ -5828,7 +5765,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7904526211178107182">Make Linux ports available to other devices on your network.</translation>
 <translation id="7907837847548254634">Show a quick highlight on the focused object</translation>
 <translation id="7908378463497120834">Sorry, at least one partition on your external storage device could not be mounted.</translation>
-<translation id="7909969815743704077">Downloaded in Incognito</translation>
 <translation id="7910768399700579500">&amp;New folder</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">Your password has been changed on the server. Please sign out then sign in again.</translation>
@@ -5902,7 +5838,6 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="7982083145464587921">Please restart your device to fix this error.</translation>
 <translation id="7982789257301363584">Network</translation>
 <translation id="7984068253310542383">Mirror <ph name="DISPLAY_NAME"/></translation>
-<translation id="7985283639530788531">Do you want to use Touch ID with <ph name="APP_NAME"/> in Incognito mode?</translation>
 <translation id="7986295104073916105">Read and change saved password settings</translation>
 <translation id="7987814697832569482">Always connect through this VPN</translation>
 <translation id="7988355189918024273">Enable accessibility features</translation>
@@ -6096,7 +6031,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8213449224684199188">Photo mode entered</translation>
 <translation id="8213577208796878755">One other available device.</translation>
 <translation id="8214489666383623925">Open File...</translation>
-<translation id="8214962590150211830">Remove This Person</translation>
 <translation id="8217399928341212914">Continue blocking automatic downloads of multiple files</translation>
 <translation id="8218847192766059983">Add languages or reorder list. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="8221491193165283816">You usually block notifications. To let this site notify you, click here.</translation>
@@ -6161,7 +6095,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8283475148136688298">Authentication code rejected while connecting to "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="8284279544186306258">all <ph name="WEBSITE_1"/> sites</translation>
 <translation id="8286036467436129157">Sign In</translation>
-<translation id="8286963743045814739">You can browse privately using an incognito window</translation>
 <translation id="8287902281644548111">Search by API call/URL</translation>
 <translation id="8288032458496410887">Uninstall <ph name="APP"/>...</translation>
 <translation id="8289128870594824098">Disk size</translation>
@@ -6247,7 +6180,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="839736845446313156">Register</translation>
 <translation id="8397825320644530257">Disconnect connected phone</translation>
 <translation id="8398877366907290961">Proceed anyway</translation>
-<translation id="8400146488506985033">Manage people</translation>
 <translation id="8401432541486058167">Provide the PIN that’s associated with your smart card.</translation>
 <translation id="8405046151008197676">Get highlights from the latest update</translation>
 <translation id="8407199357649073301">Log level:</translation>
@@ -6302,7 +6234,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8466417995783206254">This tab is playing a video in picture-in-picture mode.</translation>
 <translation id="8467103604871441980">You have <ph name="NUMBER_OF_DEVICE_PASSWORDS"/> passwords saved on this device</translation>
 <translation id="8467326454809944210">Choose another language</translation>
-<translation id="8470214316007448308">Other People</translation>
 <translation id="8470513973197838199">Saved passwords for <ph name="ORIGIN"/></translation>
 <translation id="8471525937465764768">Sites usually connect to USB devices for features like printing a document or saving to a storage device</translation>
 <translation id="8472623782143987204">hardware-backed</translation>
@@ -6358,7 +6289,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="854071720451629801">Mark as read</translation>
 <translation id="8541462173655894684">Did not find any printers from the print server</translation>
 <translation id="8542618328173222274">Ask when a site wants to use your virtual reality devices and data</translation>
-<translation id="8543556556237226809">Questions? Contact the person who supervises your profile.</translation>
 <translation id="8545575359873600875">Sorry, your password could not be verified. The manager of this supervised user may have changed the password recently. If so, the new password will be applied the next time you sign in. Try using your old password.</translation>
 <translation id="8546186510985480118">Device is low on space</translation>
 <translation id="8546306075665861288">Image cache</translation>
@@ -6369,7 +6299,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8549316893834449916">You’ll use your Brave sync chain to sign in to your Bravebook – the same account that you use for Gmail, Drive, YouTube and more.</translation>
 <translation id="8551388862522347954">Licences</translation>
 <translation id="8551588720239073785">Date and time settings</translation>
-<translation id="8553342806078037065">Manage other people</translation>
 <translation id="8554899698005018844">No language</translation>
 <translation id="8557022314818157177">Keep touching your security key until your fingerprint is captured</translation>
 <translation id="855773602626431402">An unsandboxed plug-in was prevented from running on this page.</translation>
@@ -6412,7 +6341,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8611682088849615761">Continue allowing this site to have full control of MIDI devices</translation>
 <translation id="8613164732773110792">Lowercase characters, digits, underscores or dashes only</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> is too big for a security check. You can open files up to 50 MB.</translation>
-<translation id="8615618338313291042">Incognito App: <ph name="APP_NAME"/></translation>
 <translation id="8616441548384109662">Add <ph name="CONTACT_NAME"/> to your contacts</translation>
 <translation id="8619803522055190423">Drop shadow</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
@@ -6457,9 +6385,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8655972064210167941">Sign-in failed because your password could not be verified. Please contact your administrator or try again.</translation>
 <translation id="8656768832129462377">Do not check</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> is sharing your screen and audio with <ph name="TAB_NAME"/>.</translation>
-<translation id="8661290697478713397">Open Link in Inco&amp;gnito Window</translation>
 <translation id="8662671328352114214">Join <ph name="TYPE"/> network</translation>
-<translation id="8662795692588422978">People</translation>
 <translation id="8662811608048051533">Signs you out of most sites.</translation>
 <translation id="8662911384982557515">Change your home page to: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave cannot set wallpaper.</translation>
@@ -6558,7 +6484,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5108988215075699143">Brave Photos album</translation>
 <translation id="4570609078116869893">Automatically update Brave for all users</translation>
 <translation id="8770406935328356739">Extension root directory</translation>
-<translation id="8770507190024617908">Manage People</translation>
 <translation id="8771300903067484968">Start page background has been reset to the default background.</translation>
 <translation id="8773302562181397928">Save <ph name="PRINTER_NAME"/></translation>
 <translation id="8774379074441005279">Confirm Restore</translation>
@@ -6697,7 +6622,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8912793549644936705">Stretch</translation>
 <translation id="8912810933860534797">Enable auto-scan</translation>
 <translation id="8915370057835397490">Loading suggestion</translation>
-<translation id="8916476537757519021">Incognito Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8916749157829986308">Set window name</translation>
 <translation id="8918637186205009138"><ph name="GIVEN_NAME"/>'s <ph name="DEVICE_TYPE"/></translation>
 <translation id="8922013791253848639">Always allow ads on this site</translation>
@@ -6848,7 +6772,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9094038138851891550">Username invalid</translation>
 <translation id="9094982973264386462">Remove</translation>
 <translation id="9095253524804455615">Remove</translation>
-<translation id="909554839118732438">Close Incognito</translation>
 <translation id="9100610230175265781">Passphrase required</translation>
 <translation id="9100765901046053179">Advanced settings</translation>
 <translation id="9101691533782776290">Launch app</translation>
@@ -7064,7 +6987,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5074021236879527611">Open all (<ph name="URL_COUNT"/>) in private window</translation>
 <translation id="5463021359602611602">Open in private window</translation>
 <translation id="1850357845349976573">{0,plural, =1{Private}other{# open private windows}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Private}other{Private (#)}}</translation>
+<translation id="8773965542687789581">{0,plural, =1{Private}other{Private (#)}}</translation>
 <translation id="5070556616376997776">This is a private window</translation>
 <translation id="5832813618714645810">People</translation>
 <translation id="7171000599584840888">Add Person...</translation>
@@ -7086,7 +7009,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6912187023601892621">Add Supervised User</translation>
 <translation id="8086119151297127544">Please unlock your profile before removing a person.</translation>
 <translation id="7805701378418968629">Please unlock your profile before adding a person.</translation>
-<translation id="6315812488257290136">People</translation>
+<translation id="1278825116220478166">People</translation>
 <translation id="3707212204259470604">Manage other people</translation>
 <translation id="5840822070878669614">Open Brave Web Store</translation>
 <translation id="383007806262310953">Show bookmarks bar</translation>

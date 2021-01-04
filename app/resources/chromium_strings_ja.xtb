@@ -187,7 +187,7 @@
 <translation id="5516268345616100622">タスク マネージャ - Brave</translation>
 <translation id="61852838583753520">Chrome OS を更新(&amp;C)</translation>
 <translation id="1864557848095568223">Brave を更新しています</translation>
-<translation id="7318036098707714271">ユーザー設定ファイルが壊れているか無効です。
+<translation id="3403365884036456766">ユーザー設定ファイルが壊れているか無効です。
 
 設定を復元できません。</translation>
 <translation id="939305735877869636">Brave</translation>
@@ -205,7 +205,7 @@
       Chrome OS の設定<ph name="LINK_END"/>を確認してください</translation>
 <translation id="3293668930608086049">Brave がカメラとマイクを使用しています。</translation>
 <translation id="2827121003398607864">進化する Brave</translation>
-<translation id="7628001322379820951">お使いのパソコンに有害なソフトウェアが見つかりました</translation>
+<translation id="504499211143662559">お使いのパソコンに有害なソフトウェアが見つかりました</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
 <translation id="5419189641394808652">お使いのドメインでは同期を利用できないため、Brave はデータを同期できませんでした。</translation>
@@ -236,7 +236,7 @@
 <translation id="3052349005266761501">Brave を起動しています...</translation>
 <translation id="6283840329609797763">原因不明のエラーによりインストールに失敗しました。Brave をもう一度ダウンロードしてください。</translation>
 <translation id="2433912322225810055">この拡張機能では、Brave の起動時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
-<translation id="8704119203788522458">自分好みに設定</translation>
+<translation id="4100716194836114130">自分好みに設定</translation>
 <translation id="8757284234053029740">Brave で週 1 回、望ましくないソフトウェアがないか確認します。前回の確認: 昨日。</translation>
 <translation id="4831743161813926460">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
 <translation id="7408085963519505752">Chrome OS 利用規約</translation>

@@ -48,7 +48,6 @@
 <translation id="1048286738600630630">Pantallas</translation>
 <translation id="1048986595386481879">Asignado dinamicamente</translation>
 <translation id="1049324577536766607">{COUNT,plural, =1{Recibindo <ph name="ATTACHMENTS"/> do dispositivo (<ph name="DEVICE_NAME"/>)}other{Recibindo <ph name="ATTACHMENTS"/> do dispositivo (<ph name="DEVICE_NAME"/>)}}</translation>
-<translation id="1049743911850919806">Modo de incógnito</translation>
 <translation id="1049795001945932310">&amp;Configuración de idioma</translation>
 <translation id="1054153489933238809">Abrir imaxe orixinal na pestana nova</translation>
 <translation id="1055274863771110134">{NUM_WEEKS,plural, =1{Actualiza o <ph name="DEVICE_TYPE"/> no prazo de 1 semana}other{Actualiza o <ph name="DEVICE_TYPE"/> no prazo de {NUM_WEEKS} semanas}}</translation>
@@ -120,7 +119,6 @@
 <translation id="1128591060186966949">Editar motor de busca</translation>
 <translation id="1129850422003387628">Xestionar aplicacións</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> (forma parte do grupo <ph name="GROUP_NAME"/>)</translation>
-<translation id="1134009406053225289">Abre o marcador nunha ventá do modo de incógnito</translation>
 <translation id="1136179794690960030"><ph name="EMOJI_NAME"/>. <ph name="EMOJI_INDEX"/> de <ph name="EMOJI_COUNT"/>.</translation>
 <translation id="1136712381129578788">A chave de seguranza bloqueouse porque se introduciu o PIN demasiadas veces. Para desbloqueala, quítaa e introdúcea de novo.</translation>
 <translation id="1137589305610962734">datos temporais</translation>
@@ -185,7 +183,6 @@
 <translation id="1204296502688602597">Latencia de DNS</translation>
 <translation id="1206407435587370571">Explora o teu Bravebook</translation>
 <translation id="1209796539517632982">Servidores de nomes automáticos</translation>
-<translation id="1211364473545090084">Utiliza a web sen gardar o teu historial de navegación cunha ventá do modo de incógnito</translation>
 <translation id="1211769675100312947">Ti seleccionas os atallos</translation>
 <translation id="1213037489357051291">Configuráronse <ph name="NUM_FINGERPRINTS"/> impresións dixitais</translation>
 <translation id="1213254615020057352">Enviar datos de uso e diagnóstico. Envía automaticamente datos de diagnóstico e de uso do dispositivo e das aplicacións a Brave para axudar a mellorar a experiencia do teu fillo en Android. Esta información non se utilizará para identificar o teu fillo, senón co obxectivo de aumentar a estabilidade do sistema e das aplicacións, e de realizar outras melloras. Algúns datos agregados tamén serán útiles para as aplicacións e os socios de Brave, como os programadores de Android. Esta opción de configuración contrólaa o propietario, o cal pode optar por enviarlle a Brave datos de diagnóstico e uso deste dispositivo. Se está activada a opción de configuración Actividade web e das aplicacións adicional para o teu fillo, estes datos pódense gardar na súa Conta de Brave</translation>
@@ -332,7 +329,6 @@
 <translation id="1377600615067678409">Omitir polo momento</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> controla esta opción de configuración</translation>
 <translation id="1380028686461971526">Conectarse á rede de forma automática</translation>
-<translation id="1380436189840894976">Queres saír do modo de incógnito de todas formas?</translation>
 <translation id="1383861834909034572">Abrir unha vez completado</translation>
 <translation id="1383876407941801731">Buscar</translation>
 <translation id="1386387014181100145">Ola.</translation>
@@ -398,7 +394,6 @@
 <translation id="1444628761356461360">Esta configuración está xestionada polo propietario do dispositivo, <ph name="OWNER_EMAIL"/>.</translation>
 <translation id="144518587530125858">Non se puido cargar "<ph name="IMAGE_PATH"/>" para o tema.</translation>
 <translation id="1451375123200651445">Páxina web (nun só ficheiro)</translation>
-<translation id="1451917004835509682">Engadir persoa supervisada</translation>
 <translation id="1454223536435069390">F&amp;acer captura de pantalla</translation>
 <translation id="145432137617179457">Idiomas do corrector ortográfico</translation>
 <translation id="1459693405370120464">O tempo</translation>
@@ -531,7 +526,6 @@
 <translation id="1600857548979126453">Acceder ao back-end de depuración de páxinas</translation>
 <translation id="1601560923496285236">Aplicar</translation>
 <translation id="1602085790802918092">Iniciando máquina virtual</translation>
-<translation id="1603914832182249871">(Incógnito)</translation>
 <translation id="1604432177629086300">Non se puido imprimir. Comproba a impresora e téntao de novo.</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: a sincronización de contrasinais non funciona</translation>
 <translation id="1607139524282324606">Borrar entrada</translation>
@@ -608,7 +602,6 @@
 <translation id="1680841347983561661">Tenta iniciar Google Play de novo nun intre.</translation>
 <translation id="1680849702532889074">Produciuse un erro durante a instalación da aplicación Linux.</translation>
 <translation id="16815041330799488">Non permitir que os sitios vexan o texto e as imaxes que se copian no portapapeis</translation>
-<translation id="1682548588986054654">Nova ventá de incógnito</translation>
 <translation id="1682867089915960590">Queres activar a navegación por cursor de texto?</translation>
 <translation id="1686550358074589746">Activar escritura sen levantar o dedo</translation>
 <translation id="168715261339224929">Activa a sincronización para acceder aos marcadores desde todos os teus dispositivos.</translation>
@@ -621,9 +614,7 @@
 <translation id="1692210323591458290">Púrpura escuro</translation>
 <translation id="1697150536837697295">Arte</translation>
 <translation id="1697686431566694143">Editar ficheiro</translation>
-<translation id="1698122934742150150">Só sesión do modo de incógnito actual</translation>
 <translation id="1700079447639026019">Sitios que nunca poden utilizar cookies</translation>
-<translation id="1701062906490865540">Eliminar esta persoa</translation>
 <translation id="1703331064825191675">Non te preocupes nunca polos teus contrasinais</translation>
 <translation id="1704970325597567340">A comprobación de seguranza executouse o <ph name="DATE"/></translation>
 <translation id="1706391837335750954">Presenza do solucionador de DNS</translation>
@@ -759,7 +750,6 @@
 <translation id="1850508293116537636">Xirar á &amp;dereita</translation>
 <translation id="1852141627593563189">Buscar software daniño</translation>
 <translation id="1852799913675865625">Produciuse un erro mentres se tentaba ler o ficheiro: <ph name="ERROR_TEXT"/>.</translation>
-<translation id="1853692000353488670">Nova pestana de incógnito</translation>
 <translation id="1854180393107901205">Deter emisión</translation>
 <translation id="1856715684130786728">Engadir localización...</translation>
 <translation id="1858585891038687145">Confía neste certificado para identificar fabricantes de software</translation>
@@ -1025,7 +1015,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="2174948148799307353">A conta está xestionada por <ph name="PARENT_EMAIL"/>. Para pechar sesión na conta principal deste dispositivo, fai clic na hora da pantalla. No menú que aparece, fai clic en Pechar sesión.</translation>
 <translation id="2175607476662778685">Barra de inicio rápido</translation>
 <translation id="217576141146192373">Non se puido engadir a impresora. Comproba a súa configuración e téntao de novo.</translation>
-<translation id="2177950615300672361">Pestana de incógnito: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724">O complemento <ph name="PEPPER_PLUGIN_NAME"/> de <ph name="PEPPER_PLUGIN_DOMAIN"/> quere acceder ao teu ordenador</translation>
 <translation id="2178614541317717477">Compromiso de entidade emisora de certificados</translation>
 <translation id="2182058453334755893">Copiouse o contido no teu portapapeis</translation>
@@ -1069,7 +1058,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="2225864335125757863">Cambia estes contrasinais de inmediato para protexer a túa conta:</translation>
 <translation id="2226449515541314767">Bloqueouse a posibilidade de que este sitio teña control total sobre os dispositivos MIDI.</translation>
 <translation id="2226907662744526012">Desbloquear automaticamente ao escribir o PIN</translation>
-<translation id="222704500187107962">Esta excepción quitarase automaticamente cando saias da sesión actual do modo de incógnito</translation>
 <translation id="2227179592712503583">Quitar suxestión</translation>
 <translation id="2229161054156947610">Queda máis de 1 hora</translation>
 <translation id="222931766245975952">Ficheiro truncado</translation>
@@ -1082,7 +1070,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="7956662517480676674">Servizos de Brave e sincronización</translation>
 <translation id="2235344399760031203">Bloqueáronse as cookies de terceiros</translation>
 <translation id="2238379619048995541">Datos do estado da frecuencia</translation>
-<translation id="2239921694246509981">Engadir persoa supervisada</translation>
 <translation id="2241053333139545397">Ler e cambiar os teus datos en varios sitios web</translation>
 <translation id="2241634353105152135">Só unha vez</translation>
 <translation id="2242687258748107519">Información do ficheiro</translation>
@@ -1244,7 +1231,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="2434758125294431199">Selecciona quen pode compartir contido contigo</translation>
 <translation id="2435248616906486374">Rede desconectada</translation>
 <translation id="2435457462613246316">Mostrar contrasinal</translation>
-<translation id="2435579801172349831">Abre todos os URL (<ph name="URL_COUNT"/>) nunha ventá do modo de incógnito</translation>
 <translation id="2436186046335138073">Queres que se use <ph name="HANDLER_HOSTNAME"/> para abrir todas as ligazóns de <ph name="PROTOCOL"/>?</translation>
 <translation id="2439545803278355377">Introduce o teu novo PIN. Debe ter un mínimo de catro caracteres e pode incluír letras, números ou outros caracteres.</translation>
 <translation id="2440604414813129000">Ver f&amp;onte</translation>
@@ -1388,7 +1374,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="2129873093718581193">Realiza unha busca en Brave ou escribe o URL</translation>
 <translation id="2602501489742255173">Pasa o dedo cara arriba para comezar</translation>
 <translation id="2603115962224169880">Fai limpeza no ordenador</translation>
-<translation id="2603463522847370204">Abrir nunha ventá de &amp;incógnito</translation>
 <translation id="2604255671529671813">Produciuse un erro de conexión de rede</translation>
 <translation id="2606246518223360146">Ligar datos</translation>
 <translation id="2607101320794533334">Información de clave pública de entidade</translation>
@@ -1459,7 +1444,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="268053382412112343">Hi&amp;storial</translation>
 <translation id="2682498795777673382">Cambio feito polo teu pai ou nai</translation>
 <translation id="2683638487103917598">Cartafol ordenado</translation>
-<translation id="2684004000387153598">Para continuar, fai clic en Aceptar e despois en Engadir persoa se queres crear un novo perfil para o teu enderezo de correo electrónico.</translation>
 <translation id="2687403674020088961">Bloquear todas as cookies (non recomendado)</translation>
 <translation id="2687407218262674387">Condicións de servizo de Brave</translation>
 <translation id="2688196195245426394">Produciuse un erro ao rexistrar o dispositivo co servidor: <ph name="CLIENT_ERROR"/>.</translation>
@@ -1604,7 +1588,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="2841837950101800123">Provedor</translation>
 <translation id="2844169650293029770">Dispositivo USB-C (porto esquerdo frontal)</translation>
 <translation id="2844809857160214557">Accede aos traballos de impresión e xestiónaos</translation>
-<translation id="2845382757467349449">Mostrar sempre a barra de marcadores</translation>
 <translation id="284805635805850872">Queres eliminar software daniño?</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">Produciuse un erro na limpeza</translation>
@@ -1875,7 +1858,7 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3170072451822350649">Tamén podes <ph name="LINK_START"/>navegar como invitado<ph name="LINK_END"/> sen iniciar sesión.</translation>
 <translation id="3177909033752230686">Idioma da páxina:</translation>
 <translation id="3179982752812949580">Tipo de letra do texto</translation>
-<translation id="3181954750937456830">Navegación segura (protección para ti e o teu dispositivo contra os sitios perigosos)</translation>
+<translation id="3201899458094819285">Navegación segura (protección para ti e o teu dispositivo contra os sitios perigosos)</translation>
 <translation id="3182749001423093222">Corrector ortográfico</translation>
 <translation id="3183139917765991655">Importador de perfís</translation>
 <translation id="3183143381919926261">Redes de datos móbiles</translation>
@@ -1984,7 +1967,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3315442055907669208">Acceder ao modo de lector</translation>
 <translation id="3317459757438853210">Dobre cara</translation>
 <translation id="3317678681329786349">Bloqueáronse a cámara e o micrófono</translation>
-<translation id="3319048459796106952">Nova ventá do modo de &amp;incógnito</translation>
 <translation id="3320630259304269485">Navegación segura (protección contra os sitios perigosos) e outras opcións de configuración de seguranza</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{Estes datos inclúen contido confidencial ou perigoso. Quita ese contido e téntao de novo.}=1{Este ficheiro inclúe contido confidencial ou perigoso. Quita ese contido e téntao de novo.}other{Estes ficheiros inclúen contido confidencial ou perigoso. Quita ese contido e téntao de novo.}}</translation>
 <translation id="3323521181261657960">Xenial! Máis tempo diante da pantalla</translation>
@@ -2036,7 +2018,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3388788256054548012">Este ficheiro está encriptado. Pídelle ao seu propietario que o desencripte.</translation>
 <translation id="3390013585654699824">Detalles da aplicación</translation>
 <translation id="3390741581549395454">Creouse correctamente unha copia de seguranza das aplicacións e dos ficheiros de Linux. A actualización empezará en breve.</translation>
-<translation id="339507021360520688">As persoas que escollesen permanecer visibles para ti cando a súa pantalla estea desbloqueada</translation>
 <translation id="3396800784455899911">Ao facer clic no botón Aceptar e continuar, aceptarás o procesamento descrito anteriormente para estes servizos de Brave.</translation>
 <translation id="3399432415385675819">Desactivaranse as notificacións</translation>
 <translation id="3400390787768057815"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> Hz): liñas entrelazadas</translation>
@@ -2048,7 +2029,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3405664148539009465">Personalizar tipos de letra</translation>
 <translation id="3405763860805964263">...</translation>
 <translation id="3406396172897554194">Busca un idioma ou o nome dun método de introdución de texto</translation>
-<translation id="3406605057700382950">&amp;Mostrar a barra de marcadores</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Esta extensión pode ser perigosa}other{Estas extensións poden ser perigosas}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">En canto se borre este usuario, eliminaranse permanentemente todos os ficheiros e os datos locais asociados con el. <ph name="USER_EMAIL"/> segue podendo iniciar sesión máis tarde.</translation>
@@ -2122,7 +2102,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3476303763173086583">Enviar datos de uso e de diagnóstico. Envía automaticamente datos de diagnóstico e de uso do dispositivo e das aplicacións a Brave para axudar a mellorar a experiencia do teu fillo en Android. Esta información non se utilizará para identificar o teu fillo, senón co obxectivo de aumentar a estabilidade do sistema e das aplicacións, e de realizar outras melloras. Algúns datos agregados tamén serán útiles para as aplicacións e os socios de Brave, como os programadores de Android. Esta <ph name="BEGIN_LINK1"/>opción de configuración<ph name="END_LINK1"/> contrólaa o propietario. O cal pode optar por enviar datos de diagnóstico e uso deste dispositivo a Brave. Se está activada a opción de configuración Actividade web e das aplicacións adicional para o teu fillo, estes datos pódense gardar na súa conta de Brave <ph name="BEGIN_LINK2"/>Máis información<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">O sistema non puido obter a política do teu dispositivo.</translation>
 <translation id="347785443197175480">Continuar permitindo a <ph name="HOST"/> acceder á túa cámara e micrófono</translation>
-<translation id="3478685642445675458">Desbloquea o teu perfil antes de eliminar unha persoa.</translation>
 <translation id="3479552764303398839">Agora non</translation>
 <translation id="3479685872808224578">Non se puido detectar o servidor de impresión. Comproba o enderezo e téntao de novo.</translation>
 <translation id="3480827850068960424"><ph name="NUM"/> pestanas atopadas</translation>
@@ -2200,7 +2179,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3569682580018832495"><ph name="ORIGIN"/> pode ver os seguintes ficheiros e cartafoles</translation>
 <translation id="3571734092741541777">Configurar</translation>
 <translation id="3574210789297084292">iniciar sesión</translation>
-<translation id="3574917942258583917">Queres saír do modo de incógnito de todas formas?</translation>
 <translation id="3575121482199441727">Permitir para este sitio</translation>
 <translation id="3576324189521867626">A instalación realizouse correctamente</translation>
 <translation id="3578594933904494462">Estase compartindo o contido desta pestana.</translation>
@@ -2220,7 +2198,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3593152357631900254">Activar modo de pinyin difuso</translation>
 <translation id="3593965109698325041">Restricións nos nomes de certificados</translation>
 <translation id="3596235046596950091">Activar servizos na nube</translation>
-<translation id="3596414637720633074">Bloquear cookies de terceiros no modo de incógnito</translation>
 <translation id="3599221874935822507">Elevada</translation>
 <translation id="3551285888947169900">Borra o historial de todos os dispositivos que teñen a sesión iniciada. É posible que a túa conta de Brave teña outras formas do historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="3600051066689725006">Información sobre solicitudes web</translation>
@@ -2250,7 +2227,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3625481642044239431">Seleccionouse un ficheiro que non é válido. Téntao de novo.</translation>
 <translation id="3626296069957678981">Para cargar este Bravebook, utiliza unha batería compatible de Dell.</translation>
 <translation id="3627320433825461852">Queda menos de 1 minuto</translation>
-<translation id="3627588569887975815">Abrir ligazón na ventá do modo de incó&amp;gnito</translation>
 <translation id="3627671146180677314">Hora de renovación do certificado de Netscape</translation>
 <translation id="3627879631695760395">Instalar <ph name="APP"/>…</translation>
 <translation id="3628275722731025472">Desactivar Bluetooth</translation>
@@ -2376,7 +2352,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3758842566811519622">Cookies establecidas</translation>
 <translation id="3759933321830434300">Bloquear partes das páxinas web</translation>
 <translation id="3760460896538743390">Inspeccionar &amp;páxina en segundo plano</translation>
-<translation id="37613671848467444">Abrir nunha ventá de &amp;incógnito</translation>
 <translation id="3761556954875533505">Queres permitir que o sitio edite os ficheiros?</translation>
 <translation id="3764314093345384080">Información detallada da compilación</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{Comunicar cun dispositivo USB}other{Comunicar con # dispositivos USB}}</translation>
@@ -2633,7 +2608,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4035758313003622889">Xestor de &amp;tarefas</translation>
 <translation id="4036778507053569103">A política descargada do servidor non é válida.</translation>
 <translation id="4037084878352560732">Cabalo</translation>
-<translation id="4037889604535939429">Editar persoa</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Páxina de saída}other{Páxinas de saída}}</translation>
 <translation id="4044612648082411741">Introduce o contrasinal do certificado</translation>
 <translation id="4044708573046946214">Contrasinal de bloqueo de pantalla</translation>
@@ -2761,7 +2735,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4209251085232852247">Estado: desactivado</translation>
 <translation id="2624930408905606513">Os documentos <ph name="BEGIN_LINK_HELP"/>envíanse a Brave<ph name="END_LINK_HELP"/> para imprimilos. Consulta, edita e xestiona as impresoras e o historial das impresoras no <ph name="BEGIN_LINK_DASHBOARD"/>panel de control de Google Cloud Print<ph name="END_LINK_DASHBOARD"/>.</translation>
 <translation id="4210048056321123003">Descargando máquina virtual</translation>
-<translation id="421182450098841253">&amp;Mostrar a barra de marcadores</translation>
 <translation id="4211851069413100178">Enviar datos de uso e de diagnóstico. Envía automaticamente datos de diagnóstico e de uso do dispositivo e das aplicacións a Brave para axudar a mellorar a túa experiencia en Android. Esta información permitirá aumentar a estabilidade do sistema e das aplicacións, e realizar outras melloras. Algúns datos agregados tamén serán útiles para as aplicacións e os socios de Brave, como os programadores de Android. Esta <ph name="BEGIN_LINK1"/>opción de configuración<ph name="END_LINK1"/> contrólaa o propietario. O cal pode optar por enviar datos de diagnóstico e uso deste dispositivo a Brave. Se está activada a opción Actividade web e das aplicacións adicional, estes datos pódense gardar na túa conta de Brave. <ph name="BEGIN_LINK2"/>Máis información<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">Exportar</translation>
 <translation id="42137655013211669">O servidor non permitiu acceder a este recurso.</translation>
@@ -2894,7 +2867,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4387004326333427325">Certificado de autenticación rexeitado de forma remota</translation>
 <translation id="4387890294700445764">Contrasinais vulnerados</translation>
 <translation id="4389091756366370506">Usuario <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{Modo de incógnito}other{# ventás do modo de incógnito abertas}}</translation>
 <translation id="439266289085815679">A configuración de Bluetooth contrólaa <ph name="USER_EMAIL"/>.</translation>
 <translation id="4392896746540753732">Edita o ficheiro de configuración</translation>
 <translation id="4393691030048716353"><ph name="DOMAIN"/> desactivou a depuración de ADB. Unha vez que reinicies o dispositivo (<ph name="DEVICE_TYPE"/>), non poderás instalar aplicacións externamente.</translation>
@@ -2916,7 +2888,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4411578466613447185">Asinante de código</translation>
 <translation id="4412698727486357573">Centro de Axuda</translation>
 <translation id="44141919652824029">Queres permitir que a aplicación <ph name="APP_NAME"/> acceda á lista de dispositivos USB conectados?</translation>
-<translation id="4414232939543644979">Nova ventá de &amp;incógnito</translation>
 <translation id="4415213869328311284">Xa podes comezar a utilizar o <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="4415245286584082850">Non se atoparon dispositivos. Abre un artigo do centro de axuda nunha nova pestana.</translation>
 <translation id="5749788945734786627">Xestionar a túa Conta de Brave</translation>
@@ -2988,7 +2959,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4504374760782163539">{COUNT,plural, =0{Permítense as cookies}=1{Permítense as cookies (1 excepción)}other{Permítense as cookies ({COUNT} excepcións)}}</translation>
 <translation id="4504940961672722399">Fai clic nesta icona ou preme <ph name="EXTENSION_SHORTCUT"/> para utilizar esta extensión.</translation>
 <translation id="450552327874992444">A palabra xa está no dicionario</translation>
-<translation id="4508051413094283164">Abre todos os marcadores nunha ventá do modo de incógnito</translation>
 <translation id="4508265954913339219">No se puido efectuar a activación</translation>
 <translation id="4508765956121923607">Ver código f&amp;onte</translation>
 <translation id="4510479820467554003">Lista de contas parentais</translation>
@@ -3002,7 +2972,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="4519935350946509010">Produciuse un erro na conexión.</translation>
 <translation id="4520385623207007473">Cookies en uso</translation>
 <translation id="452039078290142656">dispositivos descoñecidos de <ph name="VENDOR_NAME"/></translation>
-<translation id="4521489190203965562">Sesión actual do modo de incógnito: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> e máis</translation>
 <translation id="4522570452068850558">Detalles</translation>
 <translation id="4522600456902129422">Seguir permitindo que este sitio vexa o contido do portapapeis</translation>
 <translation id="4524832533047962394">O modo de inscrición indicado non é compatible con esta versión do sistema operativo. Asegúrate de dispoñer da versión máis recente.</translation>
@@ -3126,7 +3095,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="4647420311443994946">{0,select, tablet{Abrir aplicación ao iniciar sesión na tableta}computer{Abrir aplicación ao iniciar sesión no ordenador}other{Abrir aplicación ao iniciar sesión no dispositivo}}</translation>
 <translation id="4647697156028544508">Introduce o PIN de "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="4648491805942548247">Permisos insuficientes</translation>
-<translation id="4648499713050786492">Desbloquea o teu perfil antes de engadir unha persoa.</translation>
 <translation id="4650591383426000695">Desconecta o teléfono do <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">Non se puido cargar o compoñente en liña cos recursos do modo de demostración.</translation>
 <translation id="4652935475563630866">Para cambiar a configuración da cámara, é necesario reiniciar Parallels Desktop. Reiníciao para continuar.</translation>
@@ -3476,7 +3444,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5107443654503185812">Unha extensión desactivou a opción Navegación segura</translation>
 <translation id="5108967062857032718">Configuración: eliminar aplicacións de Android</translation>
 <translation id="5109044022078737958">Atleta</translation>
-<translation id="5111646998522066203">Saír do modo de incógnito</translation>
 <translation id="5111692334209731439">&amp;Xestor de marcadores</translation>
 <translation id="5112577000029535889">&amp;Ferramentas para programadores</translation>
 <translation id="5113739826273394829">Se fas clic nesta icona, bloquearás manualmente <ph name="DEVICE_TYPE"/>. A próxima vez, terás que escribir o teu contrasinal para acceder.</translation>
@@ -3754,7 +3721,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5449551289610225147">Contrasinal non válido</translation>
 <translation id="5449588825071916739">Engadir todas as pestanas aos marcadores</translation>
 <translation id="5449716055534515760">Pechar &amp;ventá</translation>
-<translation id="5452974209916053028">Sesión actual do modo de incógnito: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/> e <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">con <ph name="PROVIDER"/></translation>
 <translation id="5457113250005438886">Non válidos</translation>
 <translation id="5457459357461771897">Ler e eliminar fotos, música e outros ficheiros multimedia do teu ordenador</translation>
@@ -3786,7 +3752,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5486561344817861625">Simular o reinicio do navegador</translation>
 <translation id="5487521232677179737">Borrar datos</translation>
 <translation id="5488093641312826914">Copiouse <ph name="COPIED_ITEM_NAME"/></translation>
-<translation id="5488468185303821006">Permitir en modo de incógnito</translation>
 <translation id="5488508217173274228">Opcións de encriptación da sincronización</translation>
 <translation id="5489435190927933437">Gardáronse os contrasinais para <ph name="DOMAIN"/></translation>
 <translation id="5490721031479690399">Desconectar dispositivo Bluetooth</translation>
@@ -3828,7 +3793,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5526745900034778153">Volve iniciar sesión para retomar a sincronización</translation>
 <translation id="5527463195266282916">Intentouse cambiar a extensión a unha versión anterior.</translation>
 <translation id="5527474464531963247">Tamén podes seleccionar outra rede.</translation>
-<translation id="5530766185686772672">Pechar pestanas incógnito</translation>
 <translation id="5532223876348815659">Global</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> quere:</translation>
 <translation id="5534304873398226603">Descartar foto ou vídeo</translation>
@@ -3864,7 +3828,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5568069709869097550">Non se pode iniciar sesión</translation>
 <translation id="5571832155627049070">Personaliza o teu perfil</translation>
 <translation id="1254756632288991504">Abre Brave e inicia sesión para que o navegador poida comprobar se tes permiso para acceder a este sitio.</translation>
-<translation id="5575473780076478375">Extensión do modo de incógnito: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">Produciuse un problema coa solicitude de rexistro de demostración.</translation>
 <translation id="557722062034137776">Restablecer o dispositivo non afectará ás túas contas de Brave nin a ningún dos datos sincronizados con esas contas. Non obstante, eliminaranse todos os ficheiros gardados localmente no teu dispositivo.</translation>
 <translation id="5578059481725149024">Inicio de sesión automático</translation>
@@ -3961,7 +3924,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5691581861107245578">Recibe suxestións de emojis baseadas no que escribas</translation>
 <translation id="5691772641933328258">Non se recoñeceu a impresión dixital</translation>
 <translation id="5692183275898619210">Finalizou a impresión</translation>
-<translation id="569425414730375234">Sesión actual do modo de incógnito: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">ADB para aplicacións de Android en Linux</translation>
 <translation id="5696143504434933566">Informar dun uso inadecuado de <ph name="EXTENSION_NAME"/></translation>
 <translation id="5696177755977520104">Sincronización da configuración de Chrome OS</translation>
@@ -3990,7 +3952,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5723034813131030312">Impedir que os sitios se conecten aos dispositivos en serie</translation>
 <translation id="572328651809341494">Pestanas recentes</translation>
 <translation id="5723508132121499792">Non hai ningunha aplicación executándose en segundo plano</translation>
-<translation id="5723967018671998714">As cookies de terceiros bloquéanse no modo de incógnito</translation>
 <translation id="5727728807527375859">As extensións, aplicacións e temas poden danar o teu ordenador. Estás seguro de que queres continuar?</translation>
 <translation id="5728450728039149624">Opcións de bloqueo de pantalla de Smart Lock</translation>
 <translation id="5729712731028706266">&amp;Ver</translation>
@@ -4071,7 +4032,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5828633471261496623">Imprimindo...</translation>
 <translation id="5830659417568730973">Os contactos seleccionados que estean preto cando a pantalla estea desbloqueada</translation>
 <translation id="5830720307094128296">Gardar páxina &amp;como...</translation>
-<translation id="5832805196449965646">Engadir unha persoa</translation>
 <translation id="583281660410589416">Descoñecido</translation>
 <translation id="5833397272224757657">Para personalizar a experiencia, utiliza o contido dos sitios que visitas e mais as interaccións e a actividade do navegador</translation>
 <translation id="5833726373896279253">O único que pode modificar esta configuración é o propietario:</translation>
@@ -4127,7 +4087,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5886009770935151472">Dedo 1</translation>
 <translation id="5889282057229379085">Número máximo de CA intermedias: <ph name="NUM_INTERMEDIATE_CA"/></translation>
 <translation id="5891688036610113830">Redes wifi preferidas</translation>
-<translation id="5893589697005440881">Comparte ficheiros coas persoas que te rodean</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
 <translation id="8907706281008466056">Foto do perfil de Brave</translation>
 <translation id="5900358982890952556">Actualizar Linux (beta)</translation>
@@ -4169,7 +4128,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5935656526031444304">Xestionar a opción Navegación segura</translation>
 <translation id="5938002010494270685">Hai unha actualización de seguranza dispoñible</translation>
 <translation id="5939518447894949180">Restablecer</translation>
-<translation id="5941153596444580863">Engadir persoa...</translation>
 <translation id="5941343993301164315">Inicia sesión en <ph name="TOKEN_NAME"/>.</translation>
 <translation id="5941711191222866238">Minimizar</translation>
 <translation id="5942779427914696408">Visibilidade do dispositivo</translation>
@@ -4209,7 +4167,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="5979469435153841984">Para engadir páxinas aos marcadores, fai clic na estrela da barra de enderezos</translation>
 <translation id="5983642582671533177">Esta impresora deixará de admitirse a partir de decembro. Ponte en contacto co teu administrador.</translation>
 <translation id="5984222099446776634">Visitados recentemente</translation>
-<translation id="598472838394900788">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
 <translation id="5985458664595100876">O formato do URL non é válido. Só se admiten os formatos \\server\share e smb://server/share.</translation>
 <translation id="5990266201903445068">Só por wifi</translation>
 <translation id="5990386583461751448">Páxina traducida</translation>
@@ -4290,7 +4247,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6078323886959318429">Engadir atallo</translation>
 <translation id="6078752646384677957">Comproba os niveis de audio e do micrófono.</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" quere conectarse a un dispositivo de interface humana (HID)</translation>
-<translation id="6080515710685820702">Estás usando un ordenador compartido? Proba a abrir unha ventá do modo de incógnito.</translation>
 <translation id="6080689532560039067">Comproba a hora do sistema</translation>
 <translation id="6082651258230788217">Mostrar na barra de ferramentas</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> (forma parte dun grupo sen nome)</translation>
@@ -4320,7 +4276,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6112294629795967147">Tocar para cambiar o tamaño</translation>
 <translation id="6112727384379533756">Engadir tícket</translation>
 <translation id="6112931163620622315">Consulta o teléfono</translation>
-<translation id="6112952769866305444">Edita a persoa, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="6113942107547980621">Para utilizar Smart Lock, cambia ao perfil do usuario principal do teléfono</translation>
 <translation id="6116921718742659598">Cambiar configuración de idioma e entrada</translation>
 <translation id="6120205520491252677">Fixar esta páxina á pantalla de inicio...</translation>
@@ -4359,7 +4314,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="615436196126345398">Protocolo</translation>
 <translation id="6154697846084421647">Actualmente tes a sesión iniciada</translation>
 <translation id="6155141482566063812">Hai unha pestana en segundo plano que está compartindo a pantalla</translation>
-<translation id="6156323911414505561">Mostrar barra de marcadores</translation>
 <translation id="6156863943908443225">Caché de script</translation>
 <translation id="6160625263637492097">Proporcionar certificados para autenticación</translation>
 <translation id="6163363155248589649">&amp;Normal</translation>
@@ -4572,7 +4526,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6410668567036790476">Engadir motor de busca</translation>
 <translation id="641081527798843608">Coincidencia do asunto</translation>
 <translation id="7810992039564280750">Comproba enderezos URL cunha lista de sitios non seguros almacenada en Brave. Se un sitio tenta roubarche o contrasinal ou se descargas un ficheiro daniño, Brave tamén pode comprobar os enderezos URL, entre os que se inclúen fragmentos de contido das páxinas, a través da función Navegación segura.</translation>
-<translation id="6412931879992742813">Nova ventá do modo de incógnito</translation>
 <translation id="641469293210305670">Instalar actualizacións e aplicacións</translation>
 <translation id="6414888972213066896">Preguntaches aos teus pais se podes visitar este sitio</translation>
 <translation id="6415900369006735853">Conéctase a Internet a través do teléfono</translation>
@@ -4685,7 +4638,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6550675742724504774">Opcións</translation>
 <translation id="6551508934388063976">Comando non dispoñible. Preme control-N para abrir unha ventá nova.</translation>
 <translation id="6551612971599078809">O sitio está utilizando un USB</translation>
-<translation id="6552395360547205189">Sesión actual do modo de incógnito: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/> e <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> usuarios</translation>
 <translation id="655483977608336153">Tentar de novo</translation>
 <translation id="6555432686520421228">Elimina todas as contas de usuario e restablece o dispositivo <ph name="IDS_SHORT_PRODUCT_NAME"/> como se fose novo.</translation>
@@ -4699,7 +4651,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6562117348069327379">Almacena os rexistros do sistema no directorio Descargas.</translation>
 <translation id="656293578423618167">A ruta ou o nome do ficheiro é demasiado longo. Gárdao con outro nome máis curto ou noutra localización.</translation>
 <translation id="6563469144985748109">O teu xestor aínda non o aprobou</translation>
-<translation id="6569934958368283244">Outras persoas</translation>
 <translation id="657402800789773160">&amp;Recargar esta páxina</translation>
 <translation id="6577284282025554716">Cancelouse a descarga do ficheiro <ph name="FILE_NAME"/></translation>
 <translation id="657866106756413002">Instantánea do estado da rede</translation>
@@ -4822,7 +4773,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6731877319426971768">Descargáronse os ficheiros de recoñecemento de voz</translation>
 <translation id="6732801395666424405">Non se poden cargar os certificados</translation>
 <translation id="6732900235521116609">Non se pode quitar o atallo</translation>
-<translation id="6734468588183300211">Co modo de incógnito activado, os sitios web non poden utilizar cookies para ver a túa actividade de navegación en distintos sitios (por exemplo, para personalizar os anuncios). As funcións dalgúns sitios poden quedar bloqueadas.</translation>
 <translation id="6735304988756581115">Mostrar cookies e datos doutros sitios...</translation>
 <translation id="6736243959894955139">Enderezo</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4838,7 +4788,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6749006854028927059">Os sitios web non poden utilizar cookies para ver a túa actividade de navegación en distintos sitios (por exemplo, para personalizar os anuncios). As funcións dalgúns sitios poden quedar bloqueadas.</translation>
 <translation id="6750757184909117990">Desactivar rede móbil</translation>
 <translation id="6750946710563435348">Usar outro nome de usuario</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (incógnito)</translation>
 <translation id="6757101664402245801">Copiouse o URL</translation>
 <translation id="6758056191028427665">Indícanos o teu grao de satisfacción.</translation>
 <translation id="6759193508432371551">Restablecemento de fábrica</translation>
@@ -4868,7 +4817,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6789592661892473991">Dividir horizontalmente</translation>
 <translation id="6790428901817661496">Reproducir</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> engadiuse de forma remota</translation>
-<translation id="6790820461102226165">Engadir persoa...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> quere compartir o contido da túa pantalla con <ph name="TARGET_NAME"/>. Decide o que queres compartir.</translation>
 <translation id="6793604637258913070">Destacar o cursor de texto cando apareza ou se mova</translation>
 <translation id="6795884519221689054">Panda</translation>
@@ -4995,7 +4943,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="6935286146439255109">Falta unha bandexa de papel</translation>
 <translation id="693807610556624488">A operación de escritura supera a lonxitude máxima do atributo para o dispositivo "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6938386202199793006">Tes 1 impresora gardada.</translation>
-<translation id="6938789263968032501">Persoas</translation>
 <translation id="6939815295902433669">Revisar software do dispositivo</translation>
 <translation id="6941937518557314510">Inicia sesión en <ph name="TOKEN_NAME"/> para autenticarte en <ph name="HOST_NAME"/> co teu certificado.</translation>
 <translation id="6943060957016121200">Activar Conexión compartida instantánea</translation>
@@ -5078,7 +5025,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7022562585984256452">Estableceuse a túa páxina de inicio.</translation>
 <translation id="7025082428878635038">Presentamos unha nova forma de navegar con xestos</translation>
 <translation id="7025190659207909717">Xestión de servizos de datos móbiles</translation>
-<translation id="7027258625819743915">{COUNT,plural, =0{Abrir todos nunha ventá de &amp;incógnito}=1{Abrir nunha ventá de &amp;incógnito}other{Abrir todos ({COUNT}) nunha ventá de &amp;incógnito}}</translation>
 <translation id="7029307918966275733">Crostini non está instalado. Instálao para ver os créditos.</translation>
 <translation id="7029809446516969842">Contrasinais</translation>
 <translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - Porto en serie conectado</translation>
@@ -5102,7 +5048,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{A comprobación de seguranza executouse hai 1 minuto}other{A comprobación de seguranza executouse hai {NUM_MINS} minutos}}</translation>
 <translation id="7057767408836081338">Produciuse un erro ao obter os datos da aplicación, pero estase tentando executar a aplicación de todas formas…</translation>
 <translation id="7059858479264779982">Establecer en inicio automático</translation>
-<translation id="7059893117020417984">Se queres navegar de forma privada, fai clic no menú coa icona dos puntos para abrir unha ventá do modo de incógnito</translation>
 <translation id="7062222374113411376">Permitir que os sitios pechados recentemente rematen de enviar e recibir datos (recomendado)</translation>
 <translation id="7063129466199351735">Procesando atallos...</translation>
 <translation id="7063311912041006059">URL co símbolo <ph name="SPECIAL_SYMBOL"/> no lugar da consulta</translation>
@@ -5124,7 +5069,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7077829361966535409">Non se puido cargar a páxina de inicio de sesión coa configuración de proxy actual. <ph name="GAIA_RELOAD_LINK_START"/>Tenta volver iniciar sesión<ph name="GAIA_RELOAD_LINK_END"/> ou utiliza unha <ph name="PROXY_SETTINGS_LINK_START"/>configuración de proxy<ph name="PROXY_SETTINGS_LINK_END"/> diferente.</translation>
 <translation id="7078120482318506217">Todas as redes</translation>
 <translation id="708060913198414444">C&amp;opiar enderezo de audio</translation>
-<translation id="7081952801286122383">Estás no modo de incógnito</translation>
 <translation id="708278670402572152">Desconectar a rede para activar a busca</translation>
 <translation id="7084321615353200053">Os sitios poden pedirche permiso para usar a cámara (recomendado)</translation>
 <translation id="1439926347196400598">Queres permitir que Brave grave audio?</translation>
@@ -5380,7 +5324,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{A comprobación de seguranza executouse hai 1 hora}other{A comprobación de seguranza executouse hai {NUM_HOURS} horas}}</translation>
 <translation id="740624631517654988">Ventá emerxente bloqueada</translation>
 <translation id="7407430846095439694">Importar e vincular</translation>
-<translation id="7407504355934009739">A maioría de usuarios bloquean as notificacións deste sitio</translation>
 <translation id="740810853557944681">Engadir un servidor de impresión</translation>
 <translation id="7409549334477097887">Moi grande</translation>
 <translation id="7409735910987429903">Os sitios poderían mostrar ventás emerxentes con anuncios ou redirixirte a sitios web que quizais non queiras visitar</translation>
@@ -5430,7 +5373,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7461729991508684543">{NUM_DAYS,plural, =1{<ph name="DOMAIN"/> require que fagas unha copia de seguranza dos teus datos e que devolvas este <ph name="DEVICE_TYPE"/> hoxe.<ph name="LINK_BEGIN"/>Ver detalles<ph name="LINK_END"/>}other{<ph name="DOMAIN"/> require que fagas unha copia de seguranza dos teus datos e que devolvas este <ph name="DEVICE_TYPE"/> no prazo de {NUM_DAYS} días.<ph name="LINK_BEGIN"/>Ver detalles<ph name="LINK_END"/>}}</translation>
 <translation id="7461924472993315131">Marcar cun alfinete</translation>
 <translation id="746216226901520237">A próxima vez, o teléfono desbloqueará o teu <ph name="DEVICE_TYPE"/>. Podes desactivar Smart Lock en Configuración.</translation>
-<translation id="7463006580194749499">Engadir unha persoa</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# pestana aberta, preme o botón para activar/desactivar a franxa de pestanas}other{# pestanas abertas, preme o botón para activar/desactivar a franxa de pestanas}}</translation>
 <translation id="7465635034594602553">Produciuse un erro. Agarda uns poucos minutos e executa <ph name="APP_NAME"/> de novo.</translation>
 <translation id="7465778193084373987">URL de revogación do certificado de Netscape</translation>
@@ -5452,7 +5394,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7487969577036436319">Non se instalou ningún compoñente</translation>
 <translation id="7488682689406685343">É posible que este sitio estea tentando enganarte para que permitas notificacións intrusivas.</translation>
 <translation id="7489761397368794366">Chamar desde o teu dispositivo</translation>
-<translation id="749028671485790643">Usuario <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">Enderezo MAC</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 cookie}other{{NUM_COOKIES} cookies}}</translation>
 <translation id="7493386493263658176">A extensión <ph name="EXTENSION_NAME"/> pode recompilar todo o texto que escribas, incluídos os datos persoais, como contrasinais e números de tarxetas de crédito. Queres utilizala?</translation>
@@ -5476,7 +5417,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="751523031290522286">O administrador bloqueou <ph name="APP_NAME"/>. Pídelle permiso para utilizar esta aplicación.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> púxose en pausa</translation>
 <translation id="7517063221058203587">{0,plural, =1{Actualiza o dispositivo en 1 minuto}other{Actualiza o dispositivo en # minutos}}</translation>
-<translation id="7520766081042531487">Portal do modo de incógnito: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Di "Ok Brave"</translation>
 <translation id="7525067979554623046">Crear</translation>
@@ -5581,7 +5521,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7649070708921625228">Axuda</translation>
 <translation id="7650511557061837441">"<ph name="TRIGGERING_EXTENSION_NAME"/>" quere eliminar "<ph name="EXTENSION_NAME"/>".</translation>
 <translation id="7650677314924139716">A configuración de uso de datos actual é Só por wifi</translation>
-<translation id="7652808307838961528">Edita a persoa, <ph name="PROFILE_NAME"/></translation>
 <translation id="765293928828334535">Non se poden engadir aplicacións, extensións nin scripts de usuarios desde este sitio web</translation>
 <translation id="7652954539215530680">Crear un PIN</translation>
 <translation id="7654941827281939388">Esta conta xa se está usando neste ordenador.</translation>
@@ -5609,8 +5548,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7680416688940118410">Calibración da pantalla táctil</translation>
 <translation id="7681095912841365527">O sitio pode usar o Bluetooth</translation>
 <translation id="7682634383739326341">Impedir que os sitios se conecten aos dispositivos USB</translation>
-<translation id="7683373461016844951">Para continuar, fai clic en Aceptar e, despois, en Engadir persoa se queres crear un perfil para o teu enderezo de correo electrónico de <ph name="DOMAIN"/>.</translation>
-<translation id="7683593009096723900">{COUNT,plural, =0{Abrir todos nunha ventá de &amp;incógnito}=1{Abrir nunha ventá de &amp;incógnito}other{Abrir todos ({COUNT}) nunha ventá de &amp;incógnito}}</translation>
 <translation id="7684212569183643648">Extensión instalada polo administrador</translation>
 <translation id="7684559058815332124">Visitar a páxina de inicio de sesión do portal cautivo</translation>
 <translation id="1669729672557072907">Activa Android Debug Bridge (ADB) para poder crear e probar as túas aplicacións. Ten en conta que esta acción permite a instalación de aplicacións de Android non verificadas por Brave e que require un restablecemento dos valores de fábrica para desactivarse.</translation>
@@ -5827,7 +5764,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7904526211178107182">Fai que estean dispoñibles os portos Linux para outros dispositivos da túa rede.</translation>
 <translation id="7907837847548254634">Destacar brevemente obxecto seleccionado</translation>
 <translation id="7908378463497120834">Polo menos unha partición do dispositivo de almacenamento externo non se puido activar.</translation>
-<translation id="7909969815743704077">Descargouse no modo de incógnito</translation>
 <translation id="7910768399700579500">&amp;Novo cartafol</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">O teu contrasinal cambiouse no servidor. Pecha sesión e volve iniciala.</translation>
@@ -5901,7 +5837,6 @@ Se o teu fillo ou filla non utiliza un Bravebook na clase ou se prefires xestion
 <translation id="7982083145464587921">Reinicia o dispositivo para corrixir este erro.</translation>
 <translation id="7982789257301363584">Rede</translation>
 <translation id="7984068253310542383">Proxectar <ph name="DISPLAY_NAME"/></translation>
-<translation id="7985283639530788531">Queres utilizar Touch ID con <ph name="APP_NAME"/> no modo de incógnito?</translation>
 <translation id="7986295104073916105">Ler e cambiar a configuración dos contrasinais gardados</translation>
 <translation id="7987814697832569482">Conectarse sempre a través desta VPN</translation>
 <translation id="7988355189918024273">Activa funcións de accesibilidade</translation>
@@ -6094,7 +6029,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8213449224684199188">Iniciouse o modo de foto</translation>
 <translation id="8213577208796878755">Noutro dispositivo dispoñible.</translation>
 <translation id="8214489666383623925">Abrir ficheiro...</translation>
-<translation id="8214962590150211830">Eliminar esta persoa</translation>
 <translation id="8217399928341212914">Continuar bloqueando as descargas automáticas de varios ficheiros</translation>
 <translation id="8218847192766059983">Engade idiomas ou reordena a lista. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="8221491193165283816">Adoitas bloquear as notificacións. Para permitir que este sitio che envíe notificacións, fai clic aquí.</translation>
@@ -6159,7 +6093,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8283475148136688298">Código de autenticación rexeitado durante a conexión con "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="8284279544186306258">todos os sitios de <ph name="WEBSITE_1"/></translation>
 <translation id="8286036467436129157">Iniciar sesión</translation>
-<translation id="8286963743045814739">Podes navegar de forma privada usando unha ventá do modo de incógnito</translation>
 <translation id="8287902281644548111">Busca por URL ou chamada de API</translation>
 <translation id="8288032458496410887">Desinstalar a aplicación <ph name="APP"/>…</translation>
 <translation id="8289128870594824098">Tamaño do disco</translation>
@@ -6245,7 +6178,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="839736845446313156">Rexistrar</translation>
 <translation id="8397825320644530257">Desconectar teléfono conectado</translation>
 <translation id="8398877366907290961">Continuar igualmente</translation>
-<translation id="8400146488506985033">Xestionar persoas</translation>
 <translation id="8401432541486058167">Introduce o PIN asociado á túa tarxeta intelixente.</translation>
 <translation id="8405046151008197676">Descubre o máis destacado da última actualización</translation>
 <translation id="8407199357649073301">Nivel de rexistro:</translation>
@@ -6300,7 +6232,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8466417995783206254">Esta pestana está reproducindo un vídeo no modo de pantalla superposta.</translation>
 <translation id="8467103604871441980">Tes <ph name="NUMBER_OF_DEVICE_PASSWORDS"/> contrasinais gardados neste dispositivo</translation>
 <translation id="8467326454809944210">Escoller outro idioma</translation>
-<translation id="8470214316007448308">Outras persoas</translation>
 <translation id="8470513973197838199">Gardáronse os contrasinais para <ph name="ORIGIN"/></translation>
 <translation id="8471525937465764768">Os sitios adoitan conectarse aos dispositivos USB para ofrecerche determinadas funcións (por exemplo, imprimir documentos ou gardar información nun dispositivo de almacenamento)</translation>
 <translation id="8472623782143987204">teclas de hardware</translation>
@@ -6356,7 +6287,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="854071720451629801">Marcar como lido</translation>
 <translation id="8541462173655894684">Non se atopou ningunha impresora no servidor de impresión</translation>
 <translation id="8542618328173222274">Preguntar cando un sitio queira utilizar os teus datos e dispositivos de realidade virtual</translation>
-<translation id="8543556556237226809">Tes preguntas? Contacta coa persoa que supervisa o teu perfil.</translation>
 <translation id="8545575359873600875">Non se puido verificar o teu contrasinal. É posible que o administrador deste usuario supervisado cambiase o contrasinal recentemente. En tal caso, aplicarase o contrasinal novo a próxima vez que inicies sesión. Tenta utilizar o contrasinal antigo.</translation>
 <translation id="8546186510985480118">O dispositivo ten pouco espazo restante</translation>
 <translation id="8546306075665861288">Memoria caché de imaxes</translation>
@@ -6367,7 +6297,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8549316893834449916">Usarás a túa Conta de Brave (a mesma que utilizas para Gmail, Drive ou YouTube, entre outros servizos) para iniciar sesión no Bravebook.</translation>
 <translation id="8551388862522347954">Licenzas</translation>
 <translation id="8551588720239073785">Configuración de data e hora</translation>
-<translation id="8553342806078037065">Xestionar outras persoas</translation>
 <translation id="8554899698005018844">Ningún idioma</translation>
 <translation id="8557022314818157177">Sigue tocando a chave de seguranza ata que se capture a túa impresión dixital</translation>
 <translation id="855773602626431402">Impediuse a execución nesta páxina dun complemento non sometido a illamento de procesos.</translation>
@@ -6410,7 +6339,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8611682088849615761">Continuar permitindo que este sitio teña control total dos dispositivos MIDI</translation>
 <translation id="8613164732773110792">Só caracteres en minúscula, díxitos, guións baixos ou trazos</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> é demasiado grande para realizar unha comprobación de seguranza. Podes abrir ficheiros de ata 50 MB.</translation>
-<translation id="8615618338313291042">Aplicación de incógnito: <ph name="APP_NAME"/></translation>
 <translation id="8616441548384109662">Engadir <ph name="CONTACT_NAME"/> aos teus contactos</translation>
 <translation id="8619803522055190423">Sombra paralela</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
@@ -6455,9 +6383,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8655972064210167941">Produciuse un erro no inicio de sesión porque o teu contrasinal non se puido verificar. Contacta co administrador ou téntao de novo.</translation>
 <translation id="8656768832129462377">Non comprobar</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> está compartindo a túa pantalla e o teu audio con <ph name="TAB_NAME"/>.</translation>
-<translation id="8661290697478713397">Abrir ligazón na ventá de incó&amp;gnito</translation>
 <translation id="8662671328352114214">Unirse á rede <ph name="TYPE"/></translation>
-<translation id="8662795692588422978">Persoas</translation>
 <translation id="8662811608048051533">Pecha a túa sesión na maioría dos sitios.</translation>
 <translation id="8662911384982557515">Cambiar a páxina de inicio a: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave non pode establecer o fondo de pantalla.</translation>
@@ -6556,7 +6482,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="5108988215075699143">Álbums de Brave Fotos</translation>
 <translation id="4570609078116869893">Actualizar Brave para todos os usuarios automaticamente</translation>
 <translation id="8770406935328356739">Directorio raíz da extensión</translation>
-<translation id="8770507190024617908">Xestionar persoas</translation>
 <translation id="8771300903067484968">Restableceuse o fondo predeterminado da pantalla de inicio.</translation>
 <translation id="8773302562181397928">Gardar <ph name="PRINTER_NAME"/></translation>
 <translation id="8774379074441005279">Confirmar restauración</translation>
@@ -6695,7 +6620,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8912793549644936705">Estricar</translation>
 <translation id="8912810933860534797">Activar a exploración automática</translation>
 <translation id="8915370057835397490">Cargando suxestión</translation>
-<translation id="8916476537757519021">Submarco de incógnito: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8916749157829986308">Escolle un nome para a ventá</translation>
 <translation id="8918637186205009138"><ph name="DEVICE_TYPE"/> de <ph name="GIVEN_NAME"/></translation>
 <translation id="8922013791253848639">Permitir sempre os anuncios neste sitio</translation>
@@ -6846,7 +6770,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="9094038138851891550">O nome de usuario non é válido</translation>
 <translation id="9094982973264386462">Eliminar</translation>
 <translation id="9095253524804455615">Eliminar</translation>
-<translation id="909554839118732438">Pechar ventás do modo de incógnito</translation>
 <translation id="9100610230175265781">Contrasinal obrigatorio</translation>
 <translation id="9100765901046053179">Configuración avanzada</translation>
 <translation id="9101691533782776290">Iniciar aplicación</translation>
@@ -7062,7 +6985,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="5074021236879527611">Abrir todo (<ph name="URL_COUNT"/>) nunha xanela privada</translation>
 <translation id="5463021359602611602">Abre o marcador nunha ventá do modo de incógnito</translation>
 <translation id="1850357845349976573">{0,plural, =1{Modo de incógnito}other{# ventás do modo de incógnito abertas}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
+<translation id="8773965542687789581">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
 <translation id="5070556616376997776">Estás no modo de incógnito</translation>
 <translation id="5832813618714645810">Persoas</translation>
 <translation id="7171000599584840888">Engadir persoa...</translation>
@@ -7084,7 +7007,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="6912187023601892621">Engadir persoa supervisada</translation>
 <translation id="8086119151297127544">Desbloquea o teu perfil antes de eliminar unha persoa.</translation>
 <translation id="7805701378418968629">Desbloquea o teu perfil antes de engadir unha persoa.</translation>
-<translation id="6315812488257290136">Persoas</translation>
+<translation id="1278825116220478166">Persoas</translation>
 <translation id="3707212204259470604">Xestionar outras persoas</translation>
 <translation id="5840822070878669614">Abrir Brave Web Store</translation>
 <translation id="383007806262310953">Mostrar barra de marcadores</translation>
