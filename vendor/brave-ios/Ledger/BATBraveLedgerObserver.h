@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Creating a LedgerObserver alone will not respond to any events. Set
 /// each closure that you wish to watch based on the data being displayed on
 /// screen
+OBJC_EXPORT 
 NS_SWIFT_NAME(LedgerObserver)
 @interface BATBraveLedgerObserver : NSObject
 

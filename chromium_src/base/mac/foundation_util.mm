@@ -25,7 +25,12 @@
 // build and chrome::GetChannel() will always return stable in test build.
 //
 // For safe in non-test build, current seems fine in official build.
+#if defined(OS_IOS)
+#include "ios/chrome/common/channel_info.h"
+#else
 #include "chrome/common/channel_info.h"
+using chrome::GetChannel;
+#endif
 #endif
 
 namespace base {
@@ -39,7 +44,7 @@ const char* BaseBundleID() {
 #if !defined(OFFICIAL_BUILD)
   return "com.brave.Browser.development";
 #else
-  switch (chrome::GetChannel()) {
+  switch (GetChannel()) {
     case version_info::Channel::CANARY:
       return "com.brave.Browser.nightly";
     case version_info::Channel::DEV:

@@ -9,6 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT
 @interface PendingContribution : NSManagedObject
 
 + (NSFetchRequest<PendingContribution *> *)fetchRequest;

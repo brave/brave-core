@@ -85,8 +85,6 @@ source_set("browser_process") {
     "search_engines/search_engine_tracker.h",
     "search_engines/tor_window_search_engine_provider_service.cc",
     "search_engines/tor_window_search_engine_provider_service.h",
-    "sync/brave_profile_sync_service_delegate.cc",
-    "sync/brave_profile_sync_service_delegate.h",
     "update_util.cc",
     "update_util.h",
   ]
@@ -121,6 +119,7 @@ source_set("browser_process") {
     "profiles",
     "renderer_context_menu",
     "search",
+    "sync",
     "themes",
     "ui",
     "//base",
