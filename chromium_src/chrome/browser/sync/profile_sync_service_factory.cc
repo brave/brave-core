@@ -5,6 +5,7 @@
 
 #include "brave/browser/signin/brave_identity_manager_factory.h"
 #include "brave/browser/sync/brave_profile_sync_service_delegate.h"
+#include "brave/components/signin/public/identity_manager/brave_identity_manager.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 
