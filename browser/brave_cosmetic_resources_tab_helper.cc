@@ -10,6 +10,7 @@
 #include <vector>
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -283,16 +284,16 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     } else {
       std::string cosmeticFilterConsiderNewSelectors_script =
           "(function() {"
-            "let nextIndex = window.cosmeticStyleSheet.rules.length;"
-            "const selectors = [";
-      for (size_t i = 0; i < hide_selectors_list->GetSize(); i++) {
-        cosmeticFilterConsiderNewSelectors_script += "`" +
-            hide_selectors_list->GetList()[i].GetString() + "`";
-        if (i != hide_selectors_list->GetSize() - 1) {
-          cosmeticFilterConsiderNewSelectors_script += ",";
-        }
+            "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+      std::string json_selectors;
+      base::JSONWriter::Write(*hide_selectors_list, &json_selectors);
+      if (!json_selectors.empty()) {
+        cosmeticFilterConsiderNewSelectors_script += "const selectors = " +
+            json_selectors;
+      } else {
+        cosmeticFilterConsiderNewSelectors_script += "const selectors = []";
       }
-      cosmeticFilterConsiderNewSelectors_script += "];"
+      cosmeticFilterConsiderNewSelectors_script += ";"
           "selectors.forEach(selector => {"
             "if (!window.allSelectorsToRules.has(selector)) {"
               "let rule = selector + '{display:none !important;}';"
@@ -390,8 +391,7 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
   }
   std::string cosmeticFilterConsiderNewSelectors_script =
       "(function() {"
-        "let nextIndex = window.cosmeticStyleSheet.rules.length;"
-        "const selectors = [";
+        "let nextIndex = window.cosmeticStyleSheet.rules.length;";
   bool execute_script = false;
   for (size_t i = 0; i < selectors->GetSize(); i++) {
     base::ListValue* selectors_list = nullptr;
@@ -399,17 +399,18 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
         selectors_list->GetSize() == 0) {
       continue;
     }
-    for (size_t j = 0; j < selectors_list->GetSize(); j++) {
-      cosmeticFilterConsiderNewSelectors_script += "`" +
-          selectors_list->GetList()[i].GetString() + "`";
-      if (i != selectors_list->GetSize() - 1) {
-        cosmeticFilterConsiderNewSelectors_script += ",";
-      }
+    std::string json_selectors;
+    base::JSONWriter::Write(*selectors_list, &json_selectors);
+    if (!json_selectors.empty()) {
+      cosmeticFilterConsiderNewSelectors_script += "const selectors = " +
+          json_selectors;
       execute_script = true;
+    } else {
+      cosmeticFilterConsiderNewSelectors_script += "const selectors = []";
     }
   }
   if (execute_script) {
-    cosmeticFilterConsiderNewSelectors_script += "];"
+    cosmeticFilterConsiderNewSelectors_script += ";"
       "selectors.forEach(selector => {"
         "if (!window.allSelectorsToRules.has(selector)) {"
           "let rule = selector + '{display:none !important;}';"
