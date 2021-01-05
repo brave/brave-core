@@ -1,6 +1,7 @@
-// Copyright 2020 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.bookmarks;
 
@@ -8,10 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import org.chromium.base.BuildInfo;
-import org.chromium.base.Log;
-import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge.BookmarkItem;
 import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
@@ -23,7 +21,7 @@ import org.chromium.components.bookmarks.BookmarkType;
 /**
  * A class holding static util functions for bookmark.
  */
-public class BraveBookmarkUtils {
+public class BraveBookmarkUtils extends BookmarkUtils {
     private static final String TAG = "BraveBookmarkUtils";
     /**
      * If the tab has already been bookmarked, start {@link BookmarkEditActivity} for the
@@ -67,13 +65,12 @@ public class BraveBookmarkUtils {
                                        },
                                        Snackbar.TYPE_NOTIFICATION, Snackbar.UMA_BOOKMARK_ADDED)
                                .setSingleLine(false);
-            RecordUserAction.record("EnhancedBookmarks.AddingFailed");
         } else {
             String folderName = bookmarkModel.getBookmarkTitle(
                     bookmarkModel.getBookmarkById(bookmarkId).getParentId());
             SnackbarController snackbarController =
                     createSnackbarControllerForEditButton(activity, bookmarkId);
-            if (BookmarkUtils.getLastUsedParent(activity) == null) {
+            if (getLastUsedParent(activity) == null) {
                 if (fromCustomTab) {
                     String packageLabel = BuildInfo.getInstance().hostPackageLabel;
                     snackbar = Snackbar.make(
@@ -103,51 +100,19 @@ public class BraveBookmarkUtils {
      * An internal version of {@link #addBookmarkSilently(Context, BookmarkModel, String, String)}.
      * Will reset last used parent if it fails to add a bookmark
      */
-    private static BookmarkId addBookmarkInternal(
+    protected static BookmarkId addBookmarkInternal(
             Context context, BookmarkModel bookmarkModel, String title, String url) {
-        BookmarkId parent = BookmarkUtils.getLastUsedParent(context);
-        BookmarkItem parentItem = null;
-        if (parent != null) {
-            parentItem = bookmarkModel.getBookmarkById(parent);
-        }
-        if (parent == null || parentItem == null || parentItem.isManaged()
-                || !parentItem.isFolder()) {
-            parent = bookmarkModel.getDefaultFolder();
-        }
-        BookmarkId bookmarkId =
-                bookmarkModel.addBookmark(parent, bookmarkModel.getChildCount(parent), title, url);
-
-        // TODO(lazzzis): remove log after bookmark sync is fixed, crbug.com/986978
-        if (bookmarkId == null) {
-            Log.e(TAG,
-                    "Failed to add bookmarks: parentTypeAndId %s, defaultFolderTypeAndId %s, "
-                            + "mobileFolderTypeAndId %s, parentEditable Managed isFolder %s,",
-                    parent, bookmarkModel.getDefaultFolder(), bookmarkModel.getMobileFolderId(),
-                    parentItem == null ? "null"
-                                       : (parentItem.isEditable() + " " + parentItem.isManaged()
-                                               + " " + parentItem.isFolder()));
-            BookmarkUtils.setLastUsedParent(context, bookmarkModel.getDefaultFolder());
-        }
-        return bookmarkId;
+        assert (false);
+        return null;
     }
 
     /**
      * Creates a snackbar controller for a case where "Edit" button is shown to edit the newly
      * created bookmark.
      */
-    private static SnackbarController createSnackbarControllerForEditButton(
+    protected static SnackbarController createSnackbarControllerForEditButton(
             final Activity activity, final BookmarkId bookmarkId) {
-        return new SnackbarController() {
-            @Override
-            public void onDismissNoAction(Object actionData) {
-                RecordUserAction.record("EnhancedBookmarks.EditAfterCreateButtonNotClicked");
-            }
-
-            @Override
-            public void onAction(Object actionData) {
-                RecordUserAction.record("EnhancedBookmarks.EditAfterCreateButtonClicked");
-                BookmarkUtils.startEditActivity(activity, bookmarkId);
-            }
-        };
+        assert (false);
+        return null;
     }
 }

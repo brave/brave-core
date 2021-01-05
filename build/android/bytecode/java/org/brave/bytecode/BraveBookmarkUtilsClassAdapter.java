@@ -14,6 +14,12 @@ public class BraveBookmarkUtilsClassAdapter extends BraveClassVisitor {
 
     public BraveBookmarkUtilsClassAdapter(ClassVisitor visitor) {
         super(visitor);
+        makePublicMethod(sBookmarkUtilsClassName, "addBookmarkInternal");
+        changeMethodOwner(
+                sBraveBookmarkUtilsClassName, "addBookmarkInternal", sBookmarkUtilsClassName);
+        makePublicMethod(sBookmarkUtilsClassName, "createSnackbarControllerForEditButton");
+        changeMethodOwner(sBraveBookmarkUtilsClassName, "createSnackbarControllerForEditButton",
+                sBookmarkUtilsClassName);
         changeMethodOwner(
                 sBookmarkUtilsClassName, "addOrEditBookmark", sBraveBookmarkUtilsClassName);
     }
