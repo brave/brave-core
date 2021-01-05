@@ -71,7 +71,7 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   if (headers && GetOnionLocation(headers, &onion_location) &&
       !navigation_handle()->GetURL().DomainIs("onion")) {
     // If user prefers opening it automatically
-    if (pref_service_->GetBoolean(prefs::kAutoOnionLocation)) {
+    if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
       delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
                                  GURL(onion_location));
     } else {
@@ -90,7 +90,8 @@ OnionLocationNavigationThrottle::WillStartRequest() {
   // Open .onion site in Tor window
   if (!is_tor_profile_) {
     GURL url = navigation_handle()->GetURL();
-    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion")) {
+    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion") &&
+        pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
       delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
                                  std::move(url));
       return content::NavigationThrottle::CANCEL_AND_IGNORE;

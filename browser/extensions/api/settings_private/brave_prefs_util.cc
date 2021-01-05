@@ -192,7 +192,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kPreventUrlElisionsInOmnibox] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(ENABLE_TOR)
-  (*s_brave_allowlist)[tor::prefs::kAutoOnionLocation] =
+  (*s_brave_allowlist)[tor::prefs::kAutoOnionRedirect] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =

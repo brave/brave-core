@@ -26,7 +26,7 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 // static
 void TorProfileService::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kAutoOnionLocation, false);
+  registry->RegisterBooleanPref(prefs::kAutoOnionRedirect, false);
 }
 
 void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {
