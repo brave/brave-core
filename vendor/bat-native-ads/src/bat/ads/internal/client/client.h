@@ -15,9 +15,9 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/ad_targeting/data_types/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/ad_targeting/data_types/purchase_intent/purchase_intent_signal_history_info.h"
-#include "bat/ads/internal/ad_targeting/data_types/text_classification/text_classification_aliases.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/client/client_info.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"

@@ -21,14 +21,25 @@ std::vector<std::string> SplitSegment(
       base::SPLIT_WANT_ALL);
 }
 
+std::string GetParentSegment(
+    const std::string& segment) {
+  std::string parent_segment;
+  if (segment.empty()) {
+    return parent_segment;
+  }
+
+  const std::vector<std::string> components = SplitSegment(segment);
+  parent_segment = components.front();
+
+  return parent_segment;
+}
+
 SegmentList GetParentSegments(
     const SegmentList& segments) {
   SegmentList parent_segments;
 
   for (const auto& segment : segments) {
-    const std::vector<std::string> components = SplitSegment(segment);
-
-    const std::string parent_segment = components.front();
+    const std::string parent_segment = GetParentSegment(segment);
     if (std::find(parent_segments.begin(), parent_segments.end(),
         parent_segment) != parent_segments.end()) {
       continue;

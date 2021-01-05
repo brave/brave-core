@@ -11,9 +11,9 @@
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/category_content_info.h"
-#include "bat/ads/internal/ad_targeting/data_types/purchase_intent/purchase_intent_signal_history_info.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/features/features.h"
+#include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
 
@@ -417,7 +417,8 @@ void Client::AppendTextClassificationProbabilitiesToHistory(
     const TextClassificationProbabilitiesMap& probabilities) {
   client_->text_classification_probabilities.push_front(probabilities);
 
-  const size_t maximum_entries = features::GetPageProbabilitiesHistorySize();
+  const size_t maximum_entries =
+      features::GetTextClassificationProbabilitiesHistorySize();
   if (client_->text_classification_probabilities.size() > maximum_entries) {
     client_->text_classification_probabilities.resize(maximum_entries);
   }

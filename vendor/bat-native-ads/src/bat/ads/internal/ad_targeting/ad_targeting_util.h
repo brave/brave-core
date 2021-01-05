@@ -16,6 +16,9 @@ namespace ads {
 std::vector<std::string> SplitSegment(
     const std::string& segment);
 
+std::string GetParentSegment(
+    const std::string& segment);
+
 SegmentList GetParentSegments(
     const SegmentList& segments);
 
