@@ -76,6 +76,8 @@ NS_SWIFT_NAME(BraveRewards)
 @interface BATBraveRewards : NSObject
 
 @property (nonatomic, readonly) BATBraveAds *ads;
+/// Whether or not Brave Ads is enabled
+@property (nonatomic, assign, getter=isAdsEnabled) BOOL adsEnabled;
 @property (nonatomic, readonly) BATBraveLedger *ledger;
 @property (nonatomic, weak) id<BATBraveRewardsDelegate> delegate;
 
