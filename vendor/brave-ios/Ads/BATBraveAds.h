@@ -74,15 +74,12 @@ NS_SWIFT_NAME(BraveAds)
 - (void)initializeIfAdsEnabled;
 
 /// Shuts down the ads service if its running
-- (void)shutdown;
+- (void)shutdown:(nullable void (^)())completion;
 
 /// Whether or not the ads service is running
 - (BOOL)isAdsServiceRunning;
 
 #pragma mark - Configuration
-
-/// Whether or not Brave Ads is enabled
-@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 
 /// The max number of ads the user can see in an hour
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerHour NS_SWIFT_NAME(adsPerHour);
