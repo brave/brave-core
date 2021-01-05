@@ -108,14 +108,12 @@ OBJC_EXPORT
 ///
 /// @note Send nil for `adsInnerText` if the load happened due to tabs restoring
 ///       after app launch
-- (void)reportLoadedPageWithURL:(NSURL*)url
-             redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-                     faviconURL:(nullable NSURL*)faviconURL
+- (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
+                     faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
-                           html:(NSString*)html
-                   adsInnerText:(nullable NSString*)adsInnerText
-    NS_SWIFT_NAME(reportLoadedPage(url:redirectionURLs:faviconUrl:tabId:html:
-                                   adsInnerText:));
+                           html:(NSString *)html
+                   adsInnerText:(nullable NSString *)adsInnerText NS_SWIFT_NAME(reportLoadedPage(url:redirectionURLs:faviconUrl:tabId:html:adsInnerText:));
 /// Report any XHR load happening in the page
 - (void)reportXHRLoad:(NSURL *)url
                 tabId:(UInt32)tabId
