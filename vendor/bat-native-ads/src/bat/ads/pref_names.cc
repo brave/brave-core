@@ -53,6 +53,10 @@ const char kCatalogPing[] =
 const char kCatalogLastUpdated[] =
     "brave.brave_ads.catalog_last_updated";
 
+// Stores values for epsilon greedy bandit arms
+const char kEpsilonGreedyBanditArms[] =
+    "brave.brave_ads.epsilon_greedy_bandit_arms";
+
 }  // namespace prefs
 
 }  // namespace ads

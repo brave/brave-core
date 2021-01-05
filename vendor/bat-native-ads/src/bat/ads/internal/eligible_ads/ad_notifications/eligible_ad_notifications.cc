@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_util.h"
 #include "bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.h"

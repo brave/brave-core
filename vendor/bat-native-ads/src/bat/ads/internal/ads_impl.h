@@ -38,6 +38,7 @@ class TextClassification;
 }  // namespace resource
 
 namespace processor {
+class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
 }  // namespace processor
@@ -194,6 +195,8 @@ class AdsImpl
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<privacy::TokenGenerator> token_generator_;
   std::unique_ptr<Account> account_;
+  std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_processor_;
   std::unique_ptr<ad_targeting::resource::TextClassification>
       text_classification_resource_;
   std::unique_ptr<ad_targeting::processor::TextClassification>
@@ -253,6 +256,8 @@ class AdsImpl
   void OnAdNotificationClicked(
       const AdNotificationInfo& ad) override;
   void OnAdNotificationDismissed(
+      const AdNotificationInfo& ad) override;
+  void OnAdNotificationTimedOut(
       const AdNotificationInfo& ad) override;
 
   // AdServerObserver implementation

@@ -10,7 +10,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/l10n/browser/locale_helper.h"
-#include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/locale/subdivision_code_util.h"
 #include "bat/ads/internal/logging.h"

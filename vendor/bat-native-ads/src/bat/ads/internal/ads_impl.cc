@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "url/gurl.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -19,20 +18,21 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ad_server/ad_server.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/ad_targeting/data_types/purchase_intent/purchase_intent_components.h"
-#include "bat/ads/internal/ad_targeting/data_types/text_classification/text_classification_components.h"
-#include "bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/ad_targeting/processors/purchase_intent/purchase_intent_processor.h"
-#include "bat/ads/internal/ad_targeting/processors/text_classification/text_classification_processor.h"
-#include "bat/ads/internal/ad_targeting/resources/purchase_intent/purchase_intent_resource.h"
-#include "bat/ads/internal/ad_targeting/resources/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_components.h"
+#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_components.h"
+#include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
+#include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.h"
+#include "bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/client/client.h"
@@ -394,6 +394,8 @@ void AdsImpl::set(
   purchase_intent_processor_ =
       std::make_unique<ad_targeting::processor::PurchaseIntent>(
           purchase_intent_resource_.get());
+  epsilon_greedy_bandit_processor_ =
+      std::make_unique<ad_targeting::processor::EpsilonGreedyBandit>();
 
   ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
@@ -506,7 +508,7 @@ void AdsImpl::InitializeStep6(
 
   ad_server_->MaybeFetch();
 
-  features::LogPageProbabilitiesStudy();
+  features::Log();
 
   MaybeServeAdNotificationsAtRegularIntervals();
 }
@@ -569,11 +571,23 @@ void AdsImpl::OnAdNotificationClicked(
   ad_transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
+
+  epsilon_greedy_bandit_processor_->Process({ad.segment,
+      AdNotificationEventType::kClicked});
 }
 
 void AdsImpl::OnAdNotificationDismissed(
     const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kDismissed);
+
+  epsilon_greedy_bandit_processor_->Process({ad.segment,
+      AdNotificationEventType::kDismissed});
+}
+
+void AdsImpl::OnAdNotificationTimedOut(
+    const AdNotificationInfo& ad) {
+  epsilon_greedy_bandit_processor_->Process({ad.segment,
+      AdNotificationEventType::kTimedOut});
 }
 
 void AdsImpl::OnCatalogUpdated(

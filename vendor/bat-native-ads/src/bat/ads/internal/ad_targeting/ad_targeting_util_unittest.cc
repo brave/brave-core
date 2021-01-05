@@ -63,6 +63,48 @@ TEST(BatAdsAdTargetingUtilTest,
 }
 
 TEST(BatAdsAdTargetingUtilTest,
+    GetParentSegment) {
+  // Arrange
+  const std::string segment = "technology & computing-software";
+
+  // Act
+  const std::string parent_segment = GetParentSegment(segment);
+
+  // Assert
+  const std::string expected_parent_segment = "technology & computing";
+
+  EXPECT_EQ(expected_parent_segment, parent_segment);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
+    GetParentSegmentFromParentSegment) {
+  // Arrange
+  const std::string segment = "technology & computing";
+
+  // Act
+  const std::string parent_segment = GetParentSegment(segment);
+
+  // Assert
+  const std::string expected_parent_segment = "technology & computing";
+
+  EXPECT_EQ(expected_parent_segment, parent_segment);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
+    GetParentSegmentFromEmptyString) {
+  // Arrange
+  const std::string segment = "";
+
+  // Act
+  const std::string parent_segment = GetParentSegment(segment);
+
+  // Assert
+  const std::string expected_parent_segment = "";
+
+  EXPECT_EQ(expected_parent_segment, parent_segment);
+}
+
+TEST(BatAdsAdTargetingUtilTest,
     GetParentSegments) {
   // Arrange
   const SegmentList segments = {
