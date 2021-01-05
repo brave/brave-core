@@ -39,6 +39,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/QRCodeShareDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate.java",
+  "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/HeightWrappingViewPager.java",
@@ -232,6 +233,6 @@ brave_components_browser_ui_site_settings_android_java = [ "//brave/components/b
 brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
 
 brave_java_base_sources = [
-      "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
-      "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
-    ]
+  "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
+  "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
+]

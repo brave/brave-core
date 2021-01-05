@@ -1124,7 +1124,7 @@ until they verify, or until 90 days have passed.
         Allow all fingerprinting
       </message>
       <message name="IDS_ADS_AND_OTHER_THINGS_BLOCKED" desc="Text for shields option.">
-        Ads and other creepy\nthings blocked
+        Trackers, ads, and\nmore blocked
       </message>
       <message name="IDS_SHIELDS_ABOUT_TEXT" desc="About Text for shields option.">
         Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.
@@ -1554,6 +1554,33 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
+      </message>
+      <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
+        View full Privacy Report
+      </message>
+      <message name="IDS_GOOGLE_DESC" desc="Onboarding SE text">
+        Most popular
+      </message>
+      <message name="IDS_YAHOO_DESC" desc="Onboarding SE text">
+        Supports Brave
+      </message>
+      <message name="IDS_DDG_DESC" desc="Onboarding SE text">
+        Private and no tracking
+      </message>
+      <message name="IDS_QWANT_DESC" desc="Onboarding SE text">
+        Private and no tracking, EU-based
+      </message>
+      <message name="IDS_STARTPAGE_DESC" desc="Onboarding SE text">
+        Google results without trackers
+      </message>
+      <message name="IDS_BING_DESC" desc="Onboarding SE text">
+        Second most popular
+      </message>
+      <message name="IDS_YANDEX_DESC" desc="Onboarding SE text">
+        A leading search engine in Russia
+      </message>
+      <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
+        Some search engines protect your privacy better than others when you search the web.
       </message>
     </messages>
   </release>

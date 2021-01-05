@@ -68,6 +68,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/widget_cardview"
                     android:layout_width="0dp"
                     android:layout_height="140dp"
                     android:layout_weight="1"

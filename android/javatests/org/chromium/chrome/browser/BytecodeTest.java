@@ -87,6 +87,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
     }
 
     @Test
@@ -141,6 +142,12 @@ public class BytecodeTest {
                         "shouldShowIncognitoToggle", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/download/MimeUtils",
                 "canAutoOpenMimeType", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
+                "addOrEditBookmark", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                "addBookmarkInternal", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                "createSnackbarControllerForEditButton", false, null));
     }
 
     @Test
