@@ -5,6 +5,14 @@
   pref="{{prefs.brave.location_bar_is_wide}}"
   label="$i18n{appearanceSettingsLocationBarIsWide}">
 </settings-toggle-button>
+
+<template is="dom-if" if="[[isSidebarFeatureEnabled_()]]">
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.sidebar.sidebar_enabled}}"
+  label="$i18n{appearanceSettingsSidebarEnabled}">
+</settings-toggle-button>
+</template>
 <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.autocomplete_enabled}}"

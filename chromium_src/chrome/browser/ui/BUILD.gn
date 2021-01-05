@@ -6,8 +6,7 @@
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 
 group("ui") {
-  deps = [
-  ]
+  deps = [ "//brave/components/sidebar/buildflags" ]
 
   if (enable_brave_webtorrent) {
     deps += [

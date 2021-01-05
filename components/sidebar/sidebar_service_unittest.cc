@@ -1,0 +1,113 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include <memory>
+
+#include "base/feature_list.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/sidebar/features.h"
+#include "brave/components/sidebar/sidebar_service.h"
+#include "components/prefs/testing_pref_service.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace sidebar {
+
+class SidebarServiceTest : public testing::Test,
+                           public SidebarService::Observer {
+ public:
+  SidebarServiceTest() = default;
+
+  ~SidebarServiceTest() override = default;
+
+  void SetUp() override {
+    // Disable by default till we implement all sidebar features.
+    EXPECT_FALSE(base::FeatureList::IsEnabled(kSidebarFeature));
+
+    scoped_feature_list_.InitAndEnableFeature(kSidebarFeature);
+    SidebarService::RegisterPrefs(prefs_.registry());
+    service_.reset(new SidebarService(&prefs_));
+    service_->AddObserver(this);
+  }
+
+  void TearDown() override { service_->RemoveObserver(this); }
+
+  // SidebarServiceObserver overrides:
+  void OnItemAdded(const SidebarItem& item, int index) override {
+    item_index_on_called_ = index;
+    on_item_added_called_ = true;
+  }
+
+  void OnWillRemoveItem(const SidebarItem& item, int index) override {
+    item_index_on_called_ = index;
+    on_will_remove_item_called_ = true;
+  }
+
+  void OnItemRemoved(const SidebarItem& item, int index) override {
+    // Make sure OnWillRemoveItem() must be called before this.
+    EXPECT_TRUE(on_will_remove_item_called_);
+    item_index_on_called_ = index;
+    on_item_removed_called_ = true;
+  }
+
+  void ClearState() {
+    item_index_on_called_ = -1;
+    on_item_added_called_ = false;
+    on_will_remove_item_called_ = false;
+    on_item_removed_called_ = false;
+  }
+
+  int item_index_on_called_ = -1;
+  bool on_item_added_called_ = false;
+  bool on_will_remove_item_called_ = false;
+  bool on_item_removed_called_ = false;
+
+  TestingPrefServiceSimple prefs_;
+  std::unique_ptr<SidebarService> service_;
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(SidebarServiceTest, AddRemoveItems) {
+  // Check the default items count.
+  EXPECT_EQ(4UL, service_->items().size());
+  EXPECT_EQ(0UL, service_->GetNotAddedDefaultSidebarItems().size());
+
+  // Cache 1st item to compare after removing.
+  const SidebarItem item = service_->items()[0];
+  EXPECT_TRUE(IsBuiltInType(item));
+
+  EXPECT_FALSE(on_will_remove_item_called_);
+  EXPECT_FALSE(on_item_removed_called_);
+  EXPECT_EQ(-1, item_index_on_called_);
+
+  service_->RemoveItemAt(0);
+  EXPECT_EQ(3UL, service_->items().size());
+  EXPECT_EQ(1UL, service_->GetNotAddedDefaultSidebarItems().size());
+  EXPECT_EQ(0, item_index_on_called_);
+  EXPECT_TRUE(on_will_remove_item_called_);
+  EXPECT_TRUE(on_item_removed_called_);
+  ClearState();
+
+  // Add again.
+  EXPECT_FALSE(on_item_added_called_);
+  service_->AddItem(item);
+  // New item will be added at last.
+  EXPECT_EQ(3, item_index_on_called_);
+  EXPECT_EQ(4UL, service_->items().size());
+  EXPECT_EQ(0UL, service_->GetNotAddedDefaultSidebarItems().size());
+  EXPECT_TRUE(on_item_added_called_);
+  ClearState();
+
+  const SidebarItem item2 =
+      SidebarItem::Create(GURL("https://www.brave.com/"), base::string16(),
+                          SidebarItem::Type::kTypeWeb, true);
+  EXPECT_TRUE(IsWebType(item2));
+  service_->AddItem(item2);
+  EXPECT_EQ(4, item_index_on_called_);
+  EXPECT_EQ(5UL, service_->items().size());
+  // Default item count is not changed.
+  EXPECT_EQ(4UL, service_->GetDefaultSidebarItemsFromCurrentItems().size());
+}
+
+}  // namespace sidebar

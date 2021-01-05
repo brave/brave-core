@@ -28,6 +28,7 @@
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -101,6 +102,10 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/components/sidebar/sidebar_service.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -328,6 +333,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  sidebar::SidebarService::RegisterPrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)

@@ -1,9 +1,11 @@
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
 grit("brave_theme_resources") {
   source = "brave_theme_resources.grd"
   defines = chrome_grit_defines
+  defines += [ "enable_sidebar=$enable_sidebar" ]
   outputs = [
     "grit/brave_theme_resources.h",
     "grit/brave_theme_resources_map.cc",

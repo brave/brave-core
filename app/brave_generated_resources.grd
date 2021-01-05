@@ -945,6 +945,38 @@ up to 6x faster on major news sites.
           Not now
         </message>
       </if>
+
+      <!-- Sidebar -->
+      <if expr="enable_sidebar">
+        <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE" desc="Menu for removing an item from sidebar">
+          Remove
+        </message>
+        <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
+          Add to Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
+          Show Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_SHOW_OPTION_ALWAYS" desc="Label for always show sidebar option">
+          Always
+        </message>
+        <message name="IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER" desc="Label for show sidebar on mousee over option">
+          On mouseover
+        </message>
+        <message name="IDS_SIDEBAR_SHOW_OPTION_ONCLICK" desc="Label for show sidebar on click option">
+          On click
+        </message>
+        <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED" desc="Label for show/hide sidebar option in settings">
+          Enable Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_1" desc="Label for first row text in item added feedback bubble">
+          Added
+        </message>
+        <message name="IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_2" desc="Label for second row text in item added feedback bubble">
+          Right-click to remove
+        </message>
+      </if>
+
       <!-- P3A -->
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
         Brave uses completely private product analytics to estimate the overall usage of certain features

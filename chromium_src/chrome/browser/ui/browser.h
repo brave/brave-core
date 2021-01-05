@@ -6,12 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 
-#define BRAVE_BROWSER_H \
- private: \
-  friend class BookmarkPrefsService;
+#define ScheduleUIUpdate virtual ScheduleUIUpdate
+#define BRAVE_BROWSER_H              \
+ private:                            \
+  friend class BookmarkPrefsService; \
+  friend class BraveBrowser;
 
 #include "../../../../../chrome/browser/ui/browser.h"  // NOLINT
 
 #undef BRAVE_BROWSER_H
+#undef ScheduleUIUpdate
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_

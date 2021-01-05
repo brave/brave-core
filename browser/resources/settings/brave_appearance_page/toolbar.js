@@ -15,5 +15,12 @@ Polymer({
   is: 'settings-brave-appearance-toolbar',
 
   _template: html`{__html_template__}`,
+
+  // TODO(simonhong): Remove this when sidebar is shipped by default in all
+  // channels.
+  isSidebarFeatureEnabled_: function() {
+    return loadTimeData.getBoolean('isSidebarFeatureEnabled');
+  },
+
 });
 

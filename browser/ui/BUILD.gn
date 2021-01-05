@@ -4,6 +4,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -54,6 +55,8 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "brave_browser.cc",
+      "brave_browser.h",
       "brave_browser_command_controller.cc",
       "brave_browser_command_controller.h",
       "brave_browser_content_setting_bubble_model_delegate.cc",
@@ -234,6 +237,7 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a:buildflags",
+    "//brave/components/sidebar/buildflags",
     "//brave/components/tor:pref_names",
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
@@ -278,6 +282,34 @@ source_set("ui") {
     deps += [
       "//brave/components/ipfs",
       "//brave/components/ipfs_ui:generated_resources",
+    ]
+  }
+
+  if (enable_sidebar) {
+    deps += [
+      "//brave/browser/ui/sidebar",
+      "//brave/components/sidebar",
+    ]
+
+    sources += [
+      "views/frame/brave_contents_layout_manager.cc",
+      "views/frame/brave_contents_layout_manager.h",
+      "views/sidebar/sidebar_add_item_bubble_delegate_view.cc",
+      "views/sidebar/sidebar_add_item_bubble_delegate_view.h",
+      "views/sidebar/sidebar_button_view.cc",
+      "views/sidebar/sidebar_button_view.h",
+      "views/sidebar/sidebar_container_view.cc",
+      "views/sidebar/sidebar_container_view.h",
+      "views/sidebar/sidebar_control_view.cc",
+      "views/sidebar/sidebar_control_view.h",
+      "views/sidebar/sidebar_item_added_feedback_bubble.cc",
+      "views/sidebar/sidebar_item_added_feedback_bubble.h",
+      "views/sidebar/sidebar_item_view.cc",
+      "views/sidebar/sidebar_item_view.h",
+      "views/sidebar/sidebar_items_contents_view.cc",
+      "views/sidebar/sidebar_items_contents_view.h",
+      "views/sidebar/sidebar_items_scroll_view.cc",
+      "views/sidebar/sidebar_items_scroll_view.h",
     ]
   }
 

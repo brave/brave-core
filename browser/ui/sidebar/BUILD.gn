@@ -1,0 +1,55 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/sidebar/buildflags/buildflags.gni")
+
+source_set("sidebar") {
+  # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
+  # TODO(simonhong): Create issue for removing this. Remove when XXXXXXX is resolved
+  check_includes = false
+  sources = [
+    "sidebar.h",
+    "sidebar_controller.cc",
+    "sidebar_controller.h",
+    "sidebar_model.cc",
+    "sidebar_model.h",
+    "sidebar_model_data.cc",
+    "sidebar_model_data.h",
+    "sidebar_service_factory.cc",
+    "sidebar_service_factory.h",
+    "sidebar_utils.cc",
+    "sidebar_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/sidebar",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//skia",
+    "//url",
+  ]
+}
+
+source_set("browser_tests") {
+  if (enable_sidebar) {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "sidebar_browsertest.cc" ]
+
+    deps = [
+      "//base",
+      "//brave/browser/ui",
+      "//brave/browser/ui/sidebar",
+      "//brave/components/sidebar",
+      "//chrome/browser",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+    ]
+  }
+}

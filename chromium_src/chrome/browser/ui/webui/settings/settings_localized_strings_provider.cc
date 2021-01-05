@@ -10,6 +10,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
@@ -85,6 +86,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES},
       {"appearanceBraveDefaultImagesOptionLabel",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL},
+#if BUILDFLAG(ENABLE_SIDEBAR)
+      {"appearanceSettingsSidebarEnabled",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED},
+#endif
       {"mruCyclingSettingLabel", IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL},
       {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
       {"braveShieldsDefaultsSectionTitle",
