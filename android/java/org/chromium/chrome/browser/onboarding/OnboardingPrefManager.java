@@ -70,6 +70,7 @@ public class OnboardingPrefManager {
     private static final String BING = "Bing";
     private static final String STARTPAGE = "Startpage";
     public static final String YANDEX = "Yandex";
+    public static final String ECOSIA = "Ecosia";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -250,6 +251,7 @@ public class OnboardingPrefManager {
             put(BING, SearchEngineEnum.BING);
             put(STARTPAGE, SearchEngineEnum.STARTPAGE);
             put(YANDEX, SearchEngineEnum.YANDEX);
+            put(ECOSIA, SearchEngineEnum.ECOSIA);
         }
     };
 

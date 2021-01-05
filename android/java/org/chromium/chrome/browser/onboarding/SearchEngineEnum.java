@@ -20,7 +20,9 @@ public enum SearchEngineEnum {
             R.string.bing_desc),
     YANDEX(R.drawable.yandex, SearchEngineEnumConstants.SEARCH_YANDEX_ID, R.string.yandex_desc),
     STARTPAGE(R.drawable.search_engine_startpage, SearchEngineEnumConstants.SEARCH_STARTPAGE_ID,
-            R.string.startpage_desc);
+            R.string.startpage_desc),
+    ECOSIA(R.drawable.ecosia, SearchEngineEnumConstants.SEARCH_ECOSIA_ID,
+            R.string.ecosia_desc);
 
     private int icon;
     private int id;
@@ -51,5 +53,6 @@ public enum SearchEngineEnum {
         static final int SEARCH_BING_ID = 3;
         static final int SEARCH_STARTPAGE_ID = 4;
         static final int SEARCH_YANDEX_ID = 5;
+        static final int SEARCH_ECOSIA_ID = 6;
     }
 }
