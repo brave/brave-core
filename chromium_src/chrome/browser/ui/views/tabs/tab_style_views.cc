@@ -24,13 +24,13 @@ class BraveGM2TabStyle : public GM2TabStyle {
   const gfx::FontList& GetFontList() const override;
 
  private:
-  gfx::FontList semibold_font_;
+  gfx::FontList active_tab_font_;
 };
 
 BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
     : GM2TabStyle(tab),
-      semibold_font_(
-          normal_font_.DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)) {}
+      active_tab_font_(
+          normal_font_.DeriveWithWeight(gfx::Font::Weight::MEDIUM)) {}
 
 TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
   auto colors = GM2TabStyle::CalculateColors();
@@ -46,7 +46,7 @@ TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
 const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
   const auto& font_list = GM2TabStyle::GetFontList();
   if (&font_list == &normal_font_ && tab_->IsActive()) {
-    return semibold_font_;
+    return active_tab_font_;
   }
   return font_list;
 }
