@@ -32,14 +32,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.RewardsBottomSheetDialogFragment;
@@ -54,10 +56,10 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,64 +91,30 @@ public class NTPUtil {
         parentLayout.removeView(mainLayout);
         parentLayout.removeView(imageCreditLayout);
 
+        parentLayout.addView(mainLayout);
+        parentLayout.addView(imageCreditLayout);
+
+        parentLayout.setOrientation(LinearLayout.VERTICAL);
+
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
-        if (isTablet) {
-            parentLayout.addView(mainLayout);
-            parentLayout.addView(imageCreditLayout);
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        CardView widgetLayout = (CardView) view.findViewById(R.id.ntp_widget_cardview_layout);
+        LinearLayout.LayoutParams widgetLayoutParams = new LinearLayout.LayoutParams(
+                (isTablet ? (int) (dpWidth * 0.75) : dpToPx(context, 385)), dpToPx(context, 140));
+        widgetLayout.setLayoutParams(widgetLayoutParams);
 
-            parentLayout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams mainLayoutLayoutParams =
-                    new LinearLayout.LayoutParams(dpToPx(context, 390), 0);
-            mainLayoutLayoutParams.weight = 1f;
-            mainLayout.setLayoutParams(mainLayoutLayoutParams);
+        LinearLayout.LayoutParams mainLayoutLayoutParams =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        mainLayoutLayoutParams.weight = 1f;
+        mainLayout.setLayoutParams(mainLayoutLayoutParams);
 
-            LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
+        LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
 
-            layoutParams.setMargins(dpToPx(context, 32), 0, 0, 0);
-            layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
-            sponsoredLogo.setLayoutParams(layoutParams);
-        } else {
-            if (ConfigurationUtils.isLandscape(context)
-                    && UserPrefs.get(Profile.getLastUsedRegularProfile())
-                               .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-                parentLayout.addView(imageCreditLayout);
-                parentLayout.addView(mainLayout);
-
-                parentLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                LinearLayout.LayoutParams mainLayoutLayoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
-                mainLayoutLayoutParams.weight = 0.6f;
-                mainLayout.setLayoutParams(mainLayoutLayoutParams);
-
-                LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
-                imageCreditLayoutParams.weight = 0.4f;
-                imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
-
-                layoutParams.setMargins(dpToPx(context, 32), 0, 0, 0);
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
-                sponsoredLogo.setLayoutParams(layoutParams);
-            } else {
-                parentLayout.addView(mainLayout);
-                parentLayout.addView(imageCreditLayout);
-
-                parentLayout.setOrientation(LinearLayout.VERTICAL);
-
-                LinearLayout.LayoutParams mainLayoutLayoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-                mainLayoutLayoutParams.weight = 1f;
-                mainLayout.setLayoutParams(mainLayoutLayoutParams);
-
-                LinearLayout.LayoutParams imageCreditLayoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
-
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                sponsoredLogo.setLayoutParams(layoutParams);
-            }
-        }
+        layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        sponsoredLogo.setLayoutParams(layoutParams);
     }
 
     public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {

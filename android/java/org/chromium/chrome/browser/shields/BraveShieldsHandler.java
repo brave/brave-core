@@ -63,6 +63,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -251,7 +252,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         //Specify the length and width through constants
-        int width = (int)((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
+        int width;
+        if (ConfigurationUtils.isLandscape(mContext)) {
+            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.50);
+        } else {
+            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
+        }
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         //Make Inactive Items Outside Of PopupWindow
