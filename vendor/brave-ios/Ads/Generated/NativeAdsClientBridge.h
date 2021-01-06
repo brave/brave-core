@@ -10,7 +10,6 @@
 @protocol NativeAdsClientBridge
 @required
 
-- (uint64_t)getAdsPerDay;
 - (uint64_t)getAdsPerHour;
 - (bool)isAdsEnabled;
 - (bool)shouldAllowAdConversionTracking;

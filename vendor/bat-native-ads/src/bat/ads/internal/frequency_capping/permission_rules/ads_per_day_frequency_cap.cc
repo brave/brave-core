@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 
-#include <stdint.h>
-
 #include <deque>
 
 #include "base/time/time.h"
@@ -46,11 +44,8 @@ bool AdsPerDayFrequencyCap::DoesRespectCap(
   const uint64_t time_constraint = base::Time::kSecondsPerHour *
       base::Time::kHoursPerDay;
 
-  const uint64_t cap =
-      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerDay);
-
   return DoesHistoryRespectCapForRollingTimeConstraint(
-      history, time_constraint, cap);
+      history, time_constraint, kAdNotificationsPerDayFrequencyCap);
 }
 
 AdEventList AdsPerDayFrequencyCap::FilterAdEvents(

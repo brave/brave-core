@@ -5,18 +5,12 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
 
-#include <stdint.h>
-
 #include <deque>
 
 #include "base/time/time.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
-
-namespace {
-const uint64_t kNewTabPageAdsPerDayFrequencyCap = 20;
-}  // namespace
 
 NewTabPageAdsPerDayFrequencyCap::NewTabPageAdsPerDayFrequencyCap(
     const AdEventList& ad_events)

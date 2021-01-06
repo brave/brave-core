@@ -28,8 +28,6 @@ class BatAdsMinimumWaitTimeFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
     AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, 2);
-
   const AdEventList ad_events;
 
   // Act

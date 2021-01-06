@@ -33,13 +33,11 @@
   + (__type)__objc_getter { return ads::__cpp_var; } \
   + (void)__objc_setter:(__type)newValue { ads::__cpp_var = newValue; }
 
-static const NSInteger kDefaultNumberOfAdsPerDay = 40;
 static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 
 static const int kCurrentUserModelManifestSchemaVersion = 1;
 
 static NSString * const kLegacyAdsEnabledPrefKey = @"BATAdsEnabled";
-static NSString * const kLegacyNumberOfAdsPerDayKey = @"BATNumberOfAdsPerDay";
 static NSString * const kLegacyNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 static NSString * const kLegacyShouldAllowAdsSubdivisionTargetingPrefKey = @"BATShouldAllowAdsSubdivisionTargetingPrefKey";
 static NSString * const kLegacyAdsSubdivisionTargetingCodePrefKey = @"BATAdsSubdivisionTargetingCodePrefKey";
@@ -47,7 +45,6 @@ static NSString * const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey = 
 
 static NSString * const kAdsEnabledPrefKey = [NSString stringWithUTF8String:ads::prefs::kEnabled];
 static NSString * const kNumberOfAdsPerHourKey = [NSString stringWithUTF8String:ads::prefs::kAdsPerHour];
-static NSString * const kNumberOfAdsPerDayKey = [NSString stringWithUTF8String:ads::prefs::kAdsPerDay];
 static NSString * const kShouldAllowAdsSubdivisionTargetingPrefKey = [NSString stringWithUTF8String:ads::prefs::kShouldAllowAdsSubdivisionTargeting];
 static NSString * const kAdsSubdivisionTargetingCodePrefKey = [NSString stringWithUTF8String:ads::prefs::kAdsSubdivisionTargetingCode];
 static NSString * const kAutoDetectedAdsSubdivisionTargetingCodePrefKey = [NSString stringWithUTF8String:ads::prefs::kAutoDetectedAdsSubdivisionTargetingCode];
@@ -107,7 +104,6 @@ ads::DBCommandResponsePtr RunDBTransactionOnTaskRunner(
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
-      self.numberOfAllowableAdsPerDay = kDefaultNumberOfAdsPerDay;
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
     } else {
       [self migratePrefs];
@@ -324,17 +320,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return true;
 }
 
-- (NSInteger)numberOfAllowableAdsPerDay
-{
-  return [self.prefs[kNumberOfAdsPerDayKey] integerValue];
-}
-
-- (void)setNumberOfAllowableAdsPerDay:(NSInteger)numberOfAllowableAdsPerDay
-{
-  self.prefs[kNumberOfAdsPerDayKey] = @(numberOfAllowableAdsPerDay);
-  [self savePrefs];
-}
-
 - (NSInteger)numberOfAllowableAdsPerHour
 {
   return [self.prefs[kNumberOfAdsPerHourKey] integerValue];
@@ -410,11 +395,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if ([self.prefs objectForKey:kLegacyNumberOfAdsPerHourKey]) {
     self.prefs[kNumberOfAdsPerHourKey] = self.prefs[kLegacyNumberOfAdsPerHourKey];
     [self.prefs removeObjectForKey:kLegacyNumberOfAdsPerHourKey];
-  }
-
-  if ([self.prefs objectForKey:kLegacyNumberOfAdsPerDayKey]) {
-    self.prefs[kNumberOfAdsPerDayKey] = self.prefs[kLegacyNumberOfAdsPerDayKey];
-    [self.prefs removeObjectForKey:kLegacyNumberOfAdsPerDayKey];
   }
 
   if ([self.prefs objectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey]) {
@@ -605,11 +585,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 #pragma mark - Configuration
-
-- (uint64_t)getAdsPerDay
-{
-  return self.numberOfAllowableAdsPerDay;
-}
 
 - (uint64_t)getAdsPerHour
 {

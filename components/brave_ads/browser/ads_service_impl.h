@@ -88,8 +88,6 @@ class AdsServiceImpl : public AdsService,
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
 
-  uint64_t GetAdsPerDay() const override;
-
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   std::string GetAdsSubdivisionTargetingCode() const override;
   void SetAdsSubdivisionTargetingCode(

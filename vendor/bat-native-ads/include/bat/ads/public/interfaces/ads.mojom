@@ -26,6 +26,8 @@ enum BraveAdsAdType {
   kNewTabPageAd
 };
 
+// If ad notification event types are added to the 7-day ads history you should
+// update |kMaximumEntries| in |ads_history.h|
 enum BraveAdsAdNotificationEventType {
   kViewed = 0,
   kClicked,
@@ -33,6 +35,8 @@ enum BraveAdsAdNotificationEventType {
   kTimedOut
 };
 
+// If new tab page ad event types are added to the 7-day ads history you should
+// update |kMaximumEntries| in |ads_history.h|
 enum BraveAdsNewTabPageAdEventType {
   kViewed = 0,
   kClicked

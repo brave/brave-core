@@ -81,8 +81,6 @@ class AdsService : public KeyedService {
   virtual void SetAdsPerHour(
       const uint64_t ads_per_hour) = 0;
 
-  virtual uint64_t GetAdsPerDay() const = 0;
-
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAdsSubdivisionTargetingCode(
