@@ -99,10 +99,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Set the Firefox UA for browsing.
         setUserAgent()
+        
+        // An attempt to fix #2185.
+        // There's an unknown crash related to database creation, which happens when tabs are being restored.
+        // Our DataControllers uses a mix of static and lazy properties, there is a chance that some
+        // concurrency problems are occuring.
+        // This forces the database to initialize the most important lazy properties before doing any other
+        // database related code.
+        // Please note that this is called after bookmark and keychain restoration processes.
+        DataController.shared.lazyInitialization()
 
         // Start the keyboard helper to monitor and cache keyboard state.
         KeyboardHelper.defaultHelper.startObserving()
-
         DynamicFontHelper.defaultHelper.startObserving()
 
         MenuHelper.defaultHelper.setItems()
@@ -112,21 +120,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         let logDate = Date()
         // Create a new sync log file on cold app launch. Note that this doesn't roll old logs.
         Logger.syncLogger.newLogWithDate(logDate)
-
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
         let profilePrefix = profile.prefs.getBranchPrefix()
         Migration.launchMigrations(keyPrefix: profilePrefix)
         
-        // An attempt to fix #2185.
-        // There's an unknown crash related to database creation, which happens when tabs are being restored.
-        // Our DataControllers uses a mix of static and lazy properties, there is a chance that some
-        // concurrency problems are occuring.
-        // This forces the database to initialize most important lazy properties before doing any other
-        // database related code.
-        // Please note that this is called after bookmark and keychain restoration processes.
-        DataController.shared.lazyInitialization()
         setUpWebServer(profile)
         
         var imageStore: DiskImageStore?
