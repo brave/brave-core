@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define BRAVE_HISTOGRAM_VALUE_LIST                                \
-  {ContentSettingsType::BRAVE_ADS, 74},                           \
-      {ContentSettingsType::BRAVE_COSMETIC_FILTERING, 75},        \
-      {ContentSettingsType::BRAVE_TRACKERS, 76},                  \
-      {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, 77}, \
-      {ContentSettingsType::BRAVE_FINGERPRINTING_V2, 78},         \
-      {ContentSettingsType::BRAVE_SHIELDS, 79},                   \
-      {ContentSettingsType::BRAVE_REFERRERS, 80},                 \
-      {ContentSettingsType::BRAVE_COOKIES, 81},
+// clang-format off
+#define BRAVE_HISTOGRAM_VALUE_LIST                            \
+  {ContentSettingsType::BRAVE_ADS, 74},                       \
+  {ContentSettingsType::BRAVE_COSMETIC_FILTERING, 75},        \
+  {ContentSettingsType::BRAVE_TRACKERS, 76},                  \
+  {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, 77}, \
+  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, 78},         \
+  {ContentSettingsType::BRAVE_SHIELDS, 79},                   \
+  {ContentSettingsType::BRAVE_REFERRERS, 80},                 \
+  {ContentSettingsType::BRAVE_COOKIES, 81},
+// clang-format on
 
 #define BRAVE_IS_RENDERER_CONTENT_SETTING \
   content_type == ContentSettingsType::AUTOPLAY ||
