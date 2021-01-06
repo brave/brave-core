@@ -9,7 +9,6 @@
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
 -keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
-    *** notifyObservers(...);
     *** updateCachedSettings(...);
     *** setChromeSyncEnabled(...);
     *** mIsSyncable;
