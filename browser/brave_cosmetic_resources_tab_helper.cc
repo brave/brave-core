@@ -205,8 +205,10 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
       resources_dict->GetBoolean("generichide", &generichide);
       std::string pre_init_script =
         "(function() {"
-        "if (window.hide1pContent === undefined) {"
-          "window.hide1pContent = ";
+        "if (window.content_cosmetic == undefined) {"
+          "window.content_cosmetic = new Object();}"
+        "if (window.content_cosmetic.hide1pContent === undefined) {"
+          "window.content_cosmetic.hide1pContent = ";
       if (enabled_1st_party_cf_filtering_) {
         pre_init_script += "true";
       } else {
@@ -214,8 +216,8 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
       }
       pre_init_script += ";"
         "}"
-        "if (window.generichide === undefined) {"
-          "window.generichide = ";
+        "if (window.content_cosmetic.generichide === undefined) {"
+          "window.content_cosmetic.generichide = ";
       if (generichide) {
         pre_init_script += "true";
       } else {
@@ -284,7 +286,8 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     } else {
       std::string cosmeticFilterConsiderNewSelectors_script =
           "(function() {"
-            "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+            "let nextIndex ="
+              "window.content_cosmetic.cosmeticStyleSheet.rules.length;";
       std::string json_selectors;
       base::JSONWriter::Write(*hide_selectors_list, &json_selectors);
       if (!json_selectors.empty()) {
@@ -295,17 +298,20 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
       }
       cosmeticFilterConsiderNewSelectors_script += ";"
           "selectors.forEach(selector => {"
-            "if (!window.allSelectorsToRules.has(selector)) {"
+            "if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {"
               "let rule = selector + '{display:none !important;}';"
-              "window.cosmeticStyleSheet.insertRule(`${rule}`, nextIndex);"
-              "window.allSelectorsToRules.set(selector, nextIndex);"
+              "window.content_cosmetic.cosmeticStyleSheet.insertRule("
+                "`${rule}`, nextIndex);"
+              "window.content_cosmetic.allSelectorsToRules.set("
+                "selector, nextIndex);"
               "nextIndex++;"
-              "window.firstRunQueue.add(selector);"
+              "window.content_cosmetic.firstRunQueue.add(selector);"
             "}"
           "});"
           "if (!document.adoptedStyleSheets.includes("
-                "window.cosmeticStyleSheet)){"
-              "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
+                "window.content_cosmetic.cosmeticStyleSheet)){"
+              "document.adoptedStyleSheets ="
+                "[window.content_cosmetic.cosmeticStyleSheet];"
           "};"
           "})();";
       if (hide_selectors_list->GetSize() != 0) {
@@ -349,17 +355,19 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     if (!styled_stylesheet.empty()) {
       std::string cosmeticFilterConsiderNewSelectors_script =
           "(function() {"
-            "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+            "let nextIndex ="
+              "window.content_cosmetic.cosmeticStyleSheet.rules.length;";
       cosmeticFilterConsiderNewSelectors_script +=
-            "window.cosmeticStyleSheet.insertRule(`" + styled_stylesheet +
-                "`, nextIndex);"
-            "window.allSelectorsToRules.set(`" +
+            "window.content_cosmetic.cosmeticStyleSheet.insertRule(`" +
+              styled_stylesheet + "`, nextIndex);"
+            "window.content_cosmetic.allSelectorsToRules.set(`" +
                 styled_stylesheet + "`, nextIndex);"
             "nextIndex++;";
       cosmeticFilterConsiderNewSelectors_script +=
             "if (!document.adoptedStyleSheets.includes("
-                  "window.cosmeticStyleSheet)){"
-               "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
+                  "window.content_cosmetic.cosmeticStyleSheet)){"
+               "document.adoptedStyleSheets ="
+                 "[window.content_cosmetic.cosmeticStyleSheet];"
             "};";
       cosmeticFilterConsiderNewSelectors_script +=
           "})();";
@@ -391,7 +399,8 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
   }
   std::string cosmeticFilterConsiderNewSelectors_script =
       "(function() {"
-        "let nextIndex = window.cosmeticStyleSheet.rules.length;";
+        "let nextIndex ="
+          "window.content_cosmetic.cosmeticStyleSheet.rules.length;";
   bool execute_script = false;
   for (size_t i = 0; i < selectors->GetSize(); i++) {
     base::ListValue* selectors_list = nullptr;
@@ -412,17 +421,20 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
   if (execute_script) {
     cosmeticFilterConsiderNewSelectors_script += ";"
       "selectors.forEach(selector => {"
-        "if (!window.allSelectorsToRules.has(selector)) {"
+        "if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {"
           "let rule = selector + '{display:none !important;}';"
-          "window.cosmeticStyleSheet.insertRule(`${rule}`, nextIndex);"
-          "window.allSelectorsToRules.set(selector, nextIndex);"
+          "window.content_cosmetic.cosmeticStyleSheet.insertRule("
+            "`${rule}`, nextIndex);"
+          "window.content_cosmetic.allSelectorsToRules.set("
+            "selector, nextIndex);"
           "nextIndex++;"
-          "window.firstRunQueue.add(selector);"
+          "window.content_cosmetic.firstRunQueue.add(selector);"
         "}"
       "});"
       "if (!document.adoptedStyleSheets.includes("
-          "window.cosmeticStyleSheet)){"
-        "document.adoptedStyleSheets = [window.cosmeticStyleSheet];"
+          "window.content_cosmetic.cosmeticStyleSheet)){"
+        "document.adoptedStyleSheets ="
+          "[window.content_cosmetic.cosmeticStyleSheet];"
       "};"
       "})();";
     auto* frame_host = content::RenderFrameHost::FromID(frame_id);
