@@ -13,6 +13,7 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
@@ -24,11 +25,6 @@ namespace {
 Client* g_client = nullptr;
 
 const char kClientFilename[] = "client.json";
-
-// Maximum entries based upon 7 days of history for 20 ads per day, 3
-// confirmation types (viewed, clicked and dismissed) for ad notifications and
-// 2 confirmation types (viewed and clicked) for new tab page ads
-const uint64_t kMaximumEntriesInAdsShownHistory = 7 * ((20 * 3) + (20 * 2));
 
 const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
@@ -101,8 +97,7 @@ void Client::AppendAdHistoryToAdsHistory(
     const AdHistoryInfo& ad_history) {
   client_->ads_shown_history.push_front(ad_history);
 
-  if (client_->ads_shown_history.size() >
-      kMaximumEntriesInAdsShownHistory) {
+  if (client_->ads_shown_history.size() > history::kMaximumEntries) {
     client_->ads_shown_history.pop_back();
   }
 

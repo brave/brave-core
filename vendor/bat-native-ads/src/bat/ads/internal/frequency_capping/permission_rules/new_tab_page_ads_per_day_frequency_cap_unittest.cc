@@ -28,8 +28,6 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
     AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerDay, 2);
-
   const AdEventList ad_events;
 
   // Act
@@ -43,19 +41,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
     AllowAdIfDoesNotExceedCap) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerDay, 2);
-
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
-
-  AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
       ConfirmationType::kViewed);
 
-  for (int i = 0; i < 19; i++) {
-    ad_events.push_back(ad_event);
-  }
+  const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap - 1, ad_event);
 
   // Act
   NewTabPageAdsPerDayFrequencyCap frequency_cap(ad_events);
@@ -68,19 +60,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
     AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerDay, 2);
-
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
-
-  AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
       ConfirmationType::kViewed);
 
-  for (int i = 0; i < 20; i++) {
-    ad_events.push_back(ad_event);
-  }
+  const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromDays(1));
 
@@ -95,19 +81,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
     DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerDay, 2);
-
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
-
-  AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
       ConfirmationType::kViewed);
 
-  for (int i = 0; i < 20; i++) {
-    ad_events.push_back(ad_event);
-  }
+  const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromHours(23));
 
@@ -117,6 +97,16 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 
   // Assert
   EXPECT_FALSE(is_allowed);
+}
+
+TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
+    AdsPerDay) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(20UL, kNewTabPageAdsPerDayFrequencyCap);
 }
 
 }  // namespace ads

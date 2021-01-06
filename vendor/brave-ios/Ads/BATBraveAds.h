@@ -86,9 +86,6 @@ NS_SWIFT_NAME(BraveAds)
 /// The max number of ads the user can see in an hour
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerHour NS_SWIFT_NAME(adsPerHour);
 
-/// The max number of ads the user can see in a day
-@property (nonatomic, assign) NSInteger numberOfAllowableAdsPerDay NS_SWIFT_NAME(adsPerDay);
-
 /// Whether or not the user has opted out of subdivision ad targeting
 @property (nonatomic, assign, getter=shouldAllowSubdivisionTargeting) BOOL allowSubdivisionTargeting;
 

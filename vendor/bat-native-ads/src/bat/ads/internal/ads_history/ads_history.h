@@ -9,6 +9,8 @@
 #include <stdint.h>
 
 #include "bat/ads/ads_history_info.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
 
 namespace ads {
 
@@ -17,6 +19,14 @@ struct AdNotificationInfo;
 struct NewTabPageAdInfo;
 
 namespace history {
+
+// Maximum entries based upon 7 days of ad history for
+// |kAdNotificationsPerDayFrequencyCap| ad notifications per day with 2
+// confirmation types (viewed and either clicked or dismissed) and
+// |kNewTabPageAdsPerDayFrequencyCap| new tab page ads per day with 2
+// confirmation types (viewed and clicked)
+const size_t kMaximumEntries = 7 * ((kAdNotificationsPerDayFrequencyCap * 2) +
+    (kNewTabPageAdsPerDayFrequencyCap * 2));
 
 AdsHistoryInfo Get(
     const AdsHistoryInfo::FilterType filter_type,

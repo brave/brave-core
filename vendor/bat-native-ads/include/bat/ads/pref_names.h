@@ -6,7 +6,14 @@
 #ifndef BAT_ADS_PREF_NAMES_H_
 #define BAT_ADS_PREF_NAMES_H_
 
+#include <stdint.h>
+
 namespace ads {
+
+// Ads per hour are user configurable with the brave://rewards ads UI
+const uint64_t kMinimumAdNotificationsPerHour = 2;
+const uint64_t kMaximumAdNotificationsPerHour = 5;
+const uint64_t kDefaultAdNotificationsPerHour = 2;
 
 namespace prefs {
 
@@ -15,7 +22,6 @@ extern const char kEnabled[];
 extern const char kShouldAllowConversionTracking[];
 
 extern const char kAdsPerHour[];
-extern const char kAdsPerDay[];
 
 extern const char kIdleThreshold[];
 

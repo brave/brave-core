@@ -19,9 +19,6 @@ const char kShouldAllowConversionTracking[] =
 // Stores the maximum amount of ads per hour
 const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 
-// Stores the maximum amount of ads per day
-const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
-
 // Stores the idle threshold before checking if an ad can be served
 const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
 
