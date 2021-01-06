@@ -94,8 +94,6 @@ public class BytecodeTest {
     @SmallTest
     public void testMethodsExist() throws Exception {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
-                "notifyObservers", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
                 "updateCachedSettings", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
                 "setChromeSyncEnabled", false, null));
