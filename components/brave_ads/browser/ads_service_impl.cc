@@ -1797,13 +1797,13 @@ void AdsServiceImpl::CloseNotification(
       platform_bridge = std::make_unique<PlatformBridge>(profile_);
     platform_bridge->Close(profile_, uuid);
   } else {
-  #if defined(OS_ANDROID)
+#if defined(OS_ANDROID)
     const std::string brave_ads_url_prefix = kBraveAdsUrlPrefix;
     const GURL service_worker_scope =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
     BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
         uuid, service_worker_scope);
-  #endif
+#endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
   }
 }
