@@ -75,11 +75,14 @@ const idleize = (onIdle: Function, timeout: number) => {
 }
 
 const isRelativeUrl = (url: string): boolean => {
-  return (
-    !url.startsWith('//') &&
-    !url.startsWith('http://') &&
-    !url.startsWith('https://')
-  )
+  try {
+    new URL(url)
+  } catch (e) {
+    // The url is invalid or relative
+    return true
+  }
+
+  return false
 }
 
 const isElement = (node: Node): boolean => {
