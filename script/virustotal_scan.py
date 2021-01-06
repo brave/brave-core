@@ -16,7 +16,7 @@ logging.basicConfig()
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
-WAIT_TIME = 300  # seconds  (5 min)
+WAIT_TIME = 2  # seconds
 
 RC_NOT_FOUND = 0
 RC_OK = 1
@@ -26,6 +26,7 @@ RET_STR_INFECTED = 'THREAT DETECTED'
 
 SCAN_THREATS_FOUND = 255
 SCAN_ERROR = 1
+SCAN_FALSE_POSITIVES_FOUND = 0
 SCAN_CLEAN = 0
 SCAN_NOT_FOUND = -1
 
@@ -46,20 +47,32 @@ def parse_response(response):
         return SCAN_ERROR
 
     # print(response)
-    total = len(response['data']['attributes']['last_analysis_results'])
+
+    results = response['data']['attributes']['last_analysis_results']
+
+    total = len(results)
     malicious = response['data']['attributes']['last_analysis_stats']['malicious']
     permalink = response['data']['links']['self'].replace(
         "api/v3/files", "gui/file")
 
     if malicious == 0:
         return SCAN_CLEAN
-    else:
-        LOGGER.warning(f"Threats detected: {permalink}")
-        return SCAN_THREATS_FOUND
+    elif malicious == 1:
+        if results['Antiy-AVL']['result'] is not None or results['Zillya']['result'] is not None:
+            LOGGER.warning(
+                f"Known false-positive threats detected (Antiy-AVL or Zillya): {permalink}")
+            return SCAN_FALSE_POSITIVES_FOUND
+    elif malicious == 2:
+        if results['Antiy-AVL']['result'] is not None and results['Zillya']['result'] is not None:
+            LOGGER.warning(
+                f"Known false-positive threats detected (Antiy-AVL and Zillya): {permalink}")
+            return SCAN_FALSE_POSITIVES_FOUND
+
+    LOGGER.warning(f"Threats detected: {permalink}")
+    return SCAN_THREATS_FOUND
 
 
 def check_report(vt, file_hash, abort_on_conn_err=True):
-
     errstr = None
 
     try:
@@ -88,7 +101,6 @@ def check_report(vt, file_hash, abort_on_conn_err=True):
 
 
 def main():
-
     parser = argparse.ArgumentParser(
         description="Scan a single file in VirusTotal and waits until report is complete")
     parser.add_argument('file', help='File to be scanned')
