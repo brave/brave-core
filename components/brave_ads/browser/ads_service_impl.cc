@@ -315,14 +315,18 @@ void AdsServiceImpl::ChangeLocale(
 
 void AdsServiceImpl::OnPageLoaded(
     const SessionID& tab_id,
-    const GURL& original_url,
-    const GURL& url,
+    const std::vector<GURL>& redirect_chain,
     const std::string& content) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnPageLoaded(tab_id.id(), original_url.spec(), url.spec(), content);
+  std::vector<std::string> redirect_chain_as_strings;
+  for (const auto& url : redirect_chain) {
+    redirect_chain_as_strings.push_back(url.spec());
+  }
+
+  bat_ads_->OnPageLoaded(tab_id.id(), redirect_chain_as_strings, content);
 }
 
 void AdsServiceImpl::OnMediaStart(

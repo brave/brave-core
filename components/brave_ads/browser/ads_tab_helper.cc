@@ -87,14 +87,11 @@ void AdsTabHelper::OnJavaScriptResult(
     base::Value value) {
   DCHECK(ads_service_ && ads_service_->IsEnabled());
 
-  const GURL original_url = urls_.front();
-  const GURL url = urls_.back();
-
   DCHECK(value.is_string());
   std::string content;
   value.GetAsString(&content);
 
-  ads_service_->OnPageLoaded(tab_id_, original_url, url, content);
+  ads_service_->OnPageLoaded(tab_id_, redirect_chain_, content);
 }
 
 void AdsTabHelper::DidFinishNavigation(
@@ -105,7 +102,7 @@ void AdsTabHelper::DidFinishNavigation(
     return;
   }
 
-  urls_ = navigation_handle->GetRedirectChain();
+  redirect_chain_ = navigation_handle->GetRedirectChain();
 
   if (navigation_handle->IsSameDocument()) {
     if (!IsAdsEnabled()) {
