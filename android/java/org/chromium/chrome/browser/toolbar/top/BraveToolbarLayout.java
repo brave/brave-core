@@ -33,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.content.res.Configuration;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -76,6 +77,7 @@ import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.lifecycle.ConfigurationChangedObserver;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabSelectionType;
@@ -110,7 +112,8 @@ import java.util.List;
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
   View.OnLongClickListener,
   BraveRewardsObserver,
-  BraveRewardsNativeWorker.PublisherObserver {
+  BraveRewardsNativeWorker.PublisherObserver,
+  ConfigurationChangedObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
 
   private static final long MB_10 = 10000000;
@@ -396,6 +399,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
   }
 
+  public void reopenShieldsPanel() {
+    if (mBraveShieldsHandler != null && mBraveShieldsHandler.isShowing()) {
+      mBraveShieldsHandler.hideBraveShieldsMenu();
+      showShieldsMenu(mBraveShieldsButton);
+    }
+  }
+
+  @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        reopenShieldsPanel();
+    }
+
   private void showBraveRewardsOnboardingModal() {
       Context context = getContext();
       final Dialog dialog = new Dialog(context);
@@ -649,8 +664,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     Context context = getContext();
     if (hasFocus
         && PackageUtils.isFirstInstall(context)
-        && NewTabPage.isNTPUrl(BraveActivity.getBraveActivity().getActivityTab().getUrlString())
-        && !BraveActivity.getBraveActivity().getActivityTab().getUrlString().startsWith(UrlConstants.CHROME_SCHEME)
+        && UrlUtilities.isNTPUrl(BraveActivity.getBraveActivity().getActivityTab().getUrlString())
         && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
         && !BraveSearchEngineUtils.getDSEShortName(true).equals(OnboardingPrefManager.DUCKDUCKGO)) {
       Intent searchActivityIntent = new Intent(context, SearchActivity.class);
