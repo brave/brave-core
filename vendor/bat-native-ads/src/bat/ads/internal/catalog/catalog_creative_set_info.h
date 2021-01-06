@@ -23,6 +23,11 @@ struct CatalogCreativeSetInfo {
       const CatalogCreativeSetInfo& info);
   ~CatalogCreativeSetInfo();
 
+  bool operator==(
+      const CatalogCreativeSetInfo& rhs) const;
+  bool operator!=(
+      const CatalogCreativeSetInfo& rhs) const;
+
   std::string creative_set_id;
   unsigned int per_day = 0;
   unsigned int total_max = 0;

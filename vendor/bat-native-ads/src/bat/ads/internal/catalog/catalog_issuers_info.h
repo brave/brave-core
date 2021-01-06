@@ -20,6 +20,11 @@ struct CatalogIssuersInfo {
       const CatalogIssuersInfo& info);
   ~CatalogIssuersInfo();
 
+  bool operator==(
+      const CatalogIssuersInfo& rhs) const;
+  bool operator!=(
+      const CatalogIssuersInfo& rhs) const;
+
   base::Value ToDictionary() const;
 
   bool FromDictionary(

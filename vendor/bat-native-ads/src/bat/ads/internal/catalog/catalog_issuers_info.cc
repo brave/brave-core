@@ -20,6 +20,17 @@ CatalogIssuersInfo::CatalogIssuersInfo(
 
 CatalogIssuersInfo::~CatalogIssuersInfo() = default;
 
+bool CatalogIssuersInfo::operator==(
+    const CatalogIssuersInfo& rhs) const {
+  return public_key == rhs.public_key &&
+      issuers == rhs.issuers;
+}
+
+bool CatalogIssuersInfo::operator!=(
+    const CatalogIssuersInfo& rhs) const {
+  return !(*this == rhs);
+}
+
 base::Value CatalogIssuersInfo::ToDictionary() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
   dictionary.SetKey("public_key", base::Value(public_key));

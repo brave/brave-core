@@ -23,8 +23,14 @@ std::string FriendlyDateAndTime(
     const bool use_sentence_style = true);
 
 std::string FriendlyDateAndTime(
-    const uint64_t timestamp_in_seconds,
+    const int64_t timestamp,
     const bool use_sentence_style = true);
+
+std::string TimeToISO8601(
+    const base::Time& time);
+
+std::string TimestampToISO8601(
+    const int64_t timestamp);
 
 std::string TimeAsTimestampString(
     const base::Time& time);

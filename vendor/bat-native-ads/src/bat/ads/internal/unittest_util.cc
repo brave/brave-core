@@ -29,6 +29,7 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 #include "bat/ads/internal/ads_client_mock.h"
+#include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/pref_names.h"
 
@@ -106,12 +107,7 @@ bool ParseTimeTag(
     return false;
   }
 
-  base::Time::Exploded exploded;
-  time.UTCExplode(&exploded);
-
-  *value = base::StringPrintf("%04d-%02d-%02dT%02d:%02d:%02dZ",
-      exploded.year, exploded.month, exploded.day_of_month, exploded.hour,
-          exploded.minute, exploded.second);
+  *value = TimeToISO8601(time);
 
   return true;
 }
@@ -466,10 +462,38 @@ base::FilePath GetTestPath() {
   return path;
 }
 
+base::Optional<std::string> ReadFileFromTestPathToString(
+    const std::string& name) {
+  base::FilePath path = GetTestPath();
+  path = path.AppendASCII(name);
+
+  std::string value;
+  if (!base::ReadFileToString(path, &value)) {
+    return base::nullopt;
+  }
+
+  ParseAndReplaceTagsForText(&value);
+
+  return value;
+}
+
 base::FilePath GetResourcesPath() {
   base::FilePath path = GetDataPath();
   path = path.AppendASCII("resources");
   return path;
+}
+
+base::Optional<std::string> ReadFileFromResourcePathToString(
+    const std::string& name) {
+  base::FilePath path = GetResourcesPath();
+  path = path.AppendASCII(name);
+
+  std::string value;
+  if (!base::ReadFileToString(path, &value)) {
+    return base::nullopt;
+  }
+
+  return value;
 }
 
 void SetEnvironment(
@@ -753,15 +777,30 @@ base::Time TimeFromDateString(
 }
 
 int64_t DistantPast() {
-  return 0;  // Thursday, 1 January 1970 00:00:00 UTC
+  return 0;
+}
+
+std::string DistantPastAsISO8601() {
+  const int64_t distant_past = DistantPast();
+  return TimestampToISO8601(distant_past);
 }
 
 int64_t Now() {
   return static_cast<int64_t>(base::Time::Now().ToDoubleT());
 }
 
+std::string NowAsISO8601() {
+  const base::Time time = base::Time::Now();
+  return TimeToISO8601(time);
+}
+
 int64_t DistantFuture() {
-  return 4102444799;  // Thursday, December 31 2099 23:59:59 UTC
+  return 4102444799;
+}
+
+std::string DistantFutureAsISO8601() {
+  const int64_t distant_future = DistantFuture();
+  return TimestampToISO8601(distant_future);
 }
 
 }  // namespace ads

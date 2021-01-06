@@ -17,6 +17,11 @@ struct CatalogIssuerInfo {
       const CatalogIssuerInfo& info);
   ~CatalogIssuerInfo();
 
+  bool operator==(
+      const CatalogIssuerInfo& rhs) const;
+  bool operator!=(
+      const CatalogIssuerInfo& rhs) const;
+
   std::string name;
   std::string public_key;
 };

@@ -48,10 +48,26 @@ std::string FriendlyDateAndTime(
 }
 
 std::string FriendlyDateAndTime(
-    const uint64_t timestamp_in_seconds,
+    const int64_t timestamp,
     const bool use_sentence_style) {
-  const base::Time time = base::Time::FromDoubleT(timestamp_in_seconds);
+  const base::Time time = base::Time::FromDoubleT(timestamp);
   return FriendlyDateAndTime(time, use_sentence_style);
+}
+
+std::string TimeToISO8601(
+    const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.UTCExplode(&exploded);
+
+  return base::StringPrintf("%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
+      exploded.year, exploded.month, exploded.day_of_month, exploded.hour,
+          exploded.minute, exploded.second, exploded.millisecond);
+}
+
+std::string TimestampToISO8601(
+    const int64_t timestamp) {
+  const base::Time time = base::Time::FromDoubleT(timestamp);
+  return TimeToISO8601(time);
 }
 
 std::string TimeAsTimestampString(
