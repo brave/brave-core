@@ -43,12 +43,12 @@ public struct UserAgentBuilder {
     // These are not super precise because each iOS version can have slighly different desktop UA.
     // The only differences are with exact `Version/XX` and `MAC OS X 10_XX` numbers.
     private var desktopUA: String {
-        // Taken from Safari 14.0(ios 14 beta 7)
+        // Taken from Safari 14.3
         let iOS14DesktopUA =
         """
         Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) \
         AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.0 \
+        Version/14.0.2 \
         Safari/605.1.15
         """
         
@@ -96,7 +96,7 @@ public struct UserAgentBuilder {
         switch os.majorVersion {
             case 12: return "12_4_1"
             case 13: return "13_6_1"
-            case 14: return "14_0"
+            case 14: return "14_3"
             default: return "\(os.majorVersion)_0"
                 
         }
@@ -107,7 +107,7 @@ public struct UserAgentBuilder {
         switch os.majorVersion {
             case 12: return "12.1.2"
             case 13: return "13.1.2"
-            case 14: return "14.0"
+            case 14: return "14.0.2"
             default: return "\(os.majorVersion).0"
                 
         }

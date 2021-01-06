@@ -42,7 +42,7 @@ class UserAgentBuilderTests: XCTestCase {
         """
         Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) \
         AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.0 \
+        Version/14.0.2 \
         Safari/605.1.15
         """
         
@@ -66,7 +66,7 @@ class UserAgentBuilderTests: XCTestCase {
                        UserAgentBuilder(device: iPad, iOSVersion: iOS13).build(desktopMode: true),
                        "iOS 13 desktop User Agent on iPad doesn't match")
         
-        let iOS14 = OperatingSystemVersion(majorVersion: 14, minorVersion: 0, patchVersion: 0)
+        let iOS14 = OperatingSystemVersion(majorVersion: 14, minorVersion: 3, patchVersion: 0)
         
         XCTAssertEqual(iOS14DesktopUA,
                        UserAgentBuilder(device: iPhone, iOSVersion: iOS14).build(desktopMode: true),
@@ -89,21 +89,21 @@ class UserAgentBuilderTests: XCTestCase {
         
         // MARK: - iOS 14
         let iPhone_safari_14_UA = """
-        Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.0 \
+        Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/14.0.2 \
         Mobile/15E148 \
         Safari/604.1
         """
         
         let iPad_safari_14_UA = """
-        Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.0 \
+        Mozilla/5.0 (iPad; CPU OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/14.0.2 \
         Mobile/15E148 \
         Safari/604.1
         """
         
-        // MARK: 14.0
-        let ios14_0 = OperatingSystemVersion(majorVersion: 14, minorVersion: 0, patchVersion: 0)
+        // MARK: 14.3
+        let ios14_0 = OperatingSystemVersion(majorVersion: 14, minorVersion: 3, patchVersion: 0)
         
         XCTAssertEqual(iPhone_safari_14_UA,
                        UserAgentBuilder(device: iPhone, iOSVersion: ios14_0).build(desktopMode: false),
@@ -249,8 +249,8 @@ class UserAgentBuilderTests: XCTestCase {
         // MARK: - iPhone iOS 14.8, non existent version(14.8)
         let ios14_8 = OperatingSystemVersion(majorVersion: 14, minorVersion: 8, patchVersion: 0)
         let iPhone_safari_14_8_UA = """
-        Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.0 \
+        Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/14.0.2 \
         Mobile/15E148 \
         Safari/604.1
         """
@@ -261,8 +261,8 @@ class UserAgentBuilderTests: XCTestCase {
         
         // MARK: - iPad iOS 14.8, non existent version(14.8)
         let iPad_safari_14_8_UA = """
-        Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-        Version/14.0 \
+        Mozilla/5.0 (iPad; CPU OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+        Version/14.0.2 \
         Mobile/15E148 \
         Safari/604.1
         """
