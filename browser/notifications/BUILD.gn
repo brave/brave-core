@@ -17,5 +17,15 @@ source_set("notifications") {
     ]
 
     frameworks = [ "Foundation.framework" ]
+  } else if (is_android) {
+    sources = [
+      "brave_notification_platform_bridge_helper_android.cc",
+      "brave_notification_platform_bridge_helper_android.h",
+    ]
+
+    deps = [
+      "//base",
+      "//chrome/common",
+    ]
   }
 }
