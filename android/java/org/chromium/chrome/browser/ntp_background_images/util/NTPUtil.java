@@ -31,16 +31,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.RewardsBottomSheetDialogFragment;
@@ -55,10 +56,10 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,30 +92,29 @@ public class NTPUtil {
         parentLayout.removeView(imageCreditLayout);
 
         parentLayout.addView(mainLayout);
-                parentLayout.addView(imageCreditLayout);
+        parentLayout.addView(imageCreditLayout);
 
-                parentLayout.setOrientation(LinearLayout.VERTICAL);
+        parentLayout.setOrientation(LinearLayout.VERTICAL);
 
-                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
-                DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-                float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-                CardView widgetLayout = (CardView)view.findViewById(R.id.ntp_widget_cardview_layout);
-                LinearLayout.LayoutParams widgetLayoutParams =
-                        new LinearLayout.LayoutParams((isTablet ? (int)(dpWidth * 0.75) : dpToPx(context, 385)), dpToPx(context, 140));
-                widgetLayout.setLayoutParams(widgetLayoutParams);
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        CardView widgetLayout = (CardView) view.findViewById(R.id.ntp_widget_cardview_layout);
+        LinearLayout.LayoutParams widgetLayoutParams = new LinearLayout.LayoutParams(
+                (isTablet ? (int) (dpWidth * 0.75) : dpToPx(context, 385)), dpToPx(context, 140));
+        widgetLayout.setLayoutParams(widgetLayoutParams);
 
-                LinearLayout.LayoutParams mainLayoutLayoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-                mainLayoutLayoutParams.weight = 1f;
-                mainLayout.setLayoutParams(mainLayoutLayoutParams);
+        LinearLayout.LayoutParams mainLayoutLayoutParams =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        mainLayoutLayoutParams.weight = 1f;
+        mainLayout.setLayoutParams(mainLayoutLayoutParams);
 
-                LinearLayout.LayoutParams imageCreditLayoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT);
-                imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
+        LinearLayout.LayoutParams imageCreditLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageCreditLayout.setLayoutParams(imageCreditLayoutParams);
 
-                layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-                sponsoredLogo.setLayoutParams(layoutParams);
+        layoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        sponsoredLogo.setLayoutParams(layoutParams);
     }
 
     public static int checkForNonDisruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {

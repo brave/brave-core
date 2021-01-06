@@ -254,9 +254,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         //Specify the length and width through constants
         int width;
         if (ConfigurationUtils.isLandscape(mContext)) {
-            width = (int)((mContext.getResources().getDisplayMetrics().widthPixels) * 0.50);
+            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.50);
         } else {
-         width = (int)((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
+            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
         }
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
