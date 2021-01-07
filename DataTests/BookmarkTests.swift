@@ -604,17 +604,6 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotNil(dict["objectData"])
     }
     
-    func testFrecencyQuery() {
-        insertBookmarks(amount: 6)
-        
-        let found = Bookmark.byFrecency(query: "brave")
-        // Query limit is 5
-        XCTAssertEqual(found.count, 5)
-        
-        let notFound = Bookmark.byFrecency(query: "notfound")
-        XCTAssertEqual(notFound.count, 0)
-    }
-    
     // MARK: - Helpers
     
     func testSyncOrderValidation() {

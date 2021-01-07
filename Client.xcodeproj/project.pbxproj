@@ -38,7 +38,6 @@
 		0A24F7F0233E9136004D2F3A /* ObjcExceptionBridging.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A27ABA123D1B9C400194921 /* BrandedImageCalloutState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */; };
 		0A2BD6092497780A00254494 /* libadblock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2BD6082497780A00254494 /* libadblock.a */; };
-		0A2F921C22146B7700304249 /* FrecencyQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F921B22146B7700304249 /* FrecencyQuery.swift */; };
 		0A2FF33F24A4B75100F88F43 /* vpncheckmark.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A2FF33E24A4B75000F88F43 /* vpncheckmark.json */; };
 		0A39D56D21930B89008B2772 /* ScriptOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39D56C21930B89008B2772 /* ScriptOpener.swift */; };
 		0A39FE902486604D00290ABC /* GRDSubscriberCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A39FE832486604100290ABC /* GRDSubscriberCredential.h */; };
@@ -60,6 +59,7 @@
 		0A3C789F23056C910022F6D8 /* OnboardingSearchEnginesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3C789E23056C910022F6D8 /* OnboardingSearchEnginesView.swift */; };
 		0A3C78A1230597DA0022F6D8 /* OnboardingShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3C78A0230597DA0022F6D8 /* OnboardingShieldsViewController.swift */; };
 		0A3C78A3230597F10022F6D8 /* OnboardingShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3C78A2230597F10022F6D8 /* OnboardingShieldsView.swift */; };
+		0A40450C25A47BD6009EC321 /* FrecencyQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A40450B25A47BD6009EC321 /* FrecencyQuery.swift */; };
 		0A4214E921A6EBCF006B8E39 /* SafeBrowsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */; };
 		0A4214FF21AC0D6C006B8E39 /* TimeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4214F621AC0AFF006B8E39 /* TimeExtensions.swift */; };
 		0A42150121AC0E8E006B8E39 /* TimeExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A42150021AC0E8E006B8E39 /* TimeExtensionTests.swift */; };
@@ -1285,7 +1285,6 @@
 		0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandedImageCalloutState.swift; sourceTree = "<group>"; };
 		0A2BD6082497780A00254494 /* libadblock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libadblock.a; sourceTree = "<group>"; };
 		0A2D5DF623571F02001ED889 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Storage.strings"; sourceTree = "<group>"; };
-		0A2F921B22146B7700304249 /* FrecencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrecencyQuery.swift; sourceTree = "<group>"; };
 		0A2FF33E24A4B75000F88F43 /* vpncheckmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vpncheckmark.json; sourceTree = "<group>"; };
 		0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
 		0A39D56C21930B89008B2772 /* ScriptOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptOpener.swift; sourceTree = "<group>"; };
@@ -1308,6 +1307,7 @@
 		0A3C789E23056C910022F6D8 /* OnboardingSearchEnginesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSearchEnginesView.swift; sourceTree = "<group>"; };
 		0A3C78A0230597DA0022F6D8 /* OnboardingShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingShieldsViewController.swift; sourceTree = "<group>"; };
 		0A3C78A2230597F10022F6D8 /* OnboardingShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingShieldsView.swift; sourceTree = "<group>"; };
+		0A40450B25A47BD6009EC321 /* FrecencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrecencyQuery.swift; sourceTree = "<group>"; };
 		0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsingTests.swift; sourceTree = "<group>"; };
 		0A4214F621AC0AFF006B8E39 /* TimeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeExtensions.swift; sourceTree = "<group>"; };
 		0A42150021AC0E8E006B8E39 /* TimeExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeExtensionTests.swift; sourceTree = "<group>"; };
@@ -3945,7 +3945,6 @@
 				5D1DC54B20AE004600905E5A /* Syncable.swift */,
 				5D1DC54C20AE004600905E5A /* Model.xcdatamodeld */,
 				0A53F3E621E6560A0086E80C /* InMemoryDataController.swift */,
-				0A2F921B22146B7700304249 /* FrecencyQuery.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -4370,6 +4369,7 @@
 				D3B6923E1B9F9A58004B87A4 /* FindInPageHelper.swift */,
 				39F4C1092045DB2E00746155 /* FocusHelper.swift */,
 				D0E55C4E1FB4FD23006DC274 /* FormPostHelper.swift */,
+				0A40450B25A47BD6009EC321 /* FrecencyQuery.swift */,
 				39DD030C1CD53E1900BC09B3 /* HomePageHelper.swift */,
 				D3C3696D1CC6B78800348A61 /* LocalRequestHelper.swift */,
 				0BB5B30A1AC0AD1F0052877D /* LoginsHelper.swift */,
@@ -5860,7 +5860,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AA029F8222E899400D6B535 /* Bookmark+Reorder.swift in Sources */,
-				0A2F921C22146B7700304249 /* FrecencyQuery.swift in Sources */,
 				5D1DC56E20AE005400905E5A /* SyncBookmark.swift in Sources */,
 				5D1DC55A20AE004600905E5A /* FaviconMO.swift in Sources */,
 				0AD4FEF0223AA45800E00C05 /* BraveCryptoJS.swift in Sources */,
@@ -6047,6 +6046,7 @@
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
 				2726637324981B600056CFE1 /* FeedSectionHeaderView.swift in Sources */,
 				27C461DE211B76500088A441 /* ShieldsView.swift in Sources */,
+				0A40450C25A47BD6009EC321 /* FrecencyQuery.swift in Sources */,
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */,
 				27FCA8E02447708300A8CA48 /* FavoritesSectionProvider.swift in Sources */,

@@ -6,6 +6,11 @@ import Foundation
 import Shared
 import Storage
 
+public protocol WebsitePresentable {
+    var title: String? { get }
+    var url: String? { get }
+}
+
 private let log = Logger.browserLogger
 
 public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD {
@@ -676,28 +681,6 @@ extension Bookmark: Comparable {
         // Alternatively, we could append zeros to make int arrays between the two objects
         // have same length. 0.0.1 vs 0.0.1.2 would convert to 0.0.1.0 vs 0.0.1.2
         return lhsSyncOrderBits.count.compare(rhsSyncOrderBits.count)
-    }
-}
-
-extension Bookmark: Frecencyable {
-    static func byFrecency(query: String? = nil,
-                           context: NSManagedObjectContext = DataController.viewContext) -> [WebsitePresentable] {
-        let fetchRequest = NSFetchRequest<Bookmark>()
-        fetchRequest.fetchLimit = 5
-        fetchRequest.entity = Bookmark.entity(context: context)
-        
-        var predicate = NSPredicate(format: "lastVisited > %@", History.thisWeek as CVarArg)
-        if let query = query {
-            predicate = NSPredicate(format: predicate.predicateFormat + " AND url CONTAINS %@", query)
-        }
-        fetchRequest.predicate = predicate
-        
-        do {
-            return try context.fetch(fetchRequest)
-        } catch {
-            log.error(error)
-        }
-        return [Bookmark]()
     }
 }
 
