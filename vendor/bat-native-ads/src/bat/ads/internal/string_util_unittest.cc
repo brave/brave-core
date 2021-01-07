@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/html_util.h"
+#include "bat/ads/internal/string_util.h"
 
 #include <string>
 
@@ -13,14 +13,13 @@
 
 namespace ads {
 
-TEST(BatAdsHtmlUtilTest,
-    StripHtmlTagsAndNonAlphaCharactersFromEmptyContent) {
+TEST(BatAdsStringUtilTest,
+    StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
   const std::string content = "";
 
   // Act
-  const std::string stripped_content =
-      StripHtmlTagsAndNonAlphaCharacters(content);
+  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content = "";
@@ -28,14 +27,13 @@ TEST(BatAdsHtmlUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsHtmlUtilTest,
-    StripHtmlTagsAndNonAlphaCharactersFromWhitespace) {
+TEST(BatAdsStringUtilTest,
+    StripNonAlphaCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
   // Act
-  const std::string stripped_content =
-      StripHtmlTagsAndNonAlphaCharacters(content);
+  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content = "";
@@ -43,8 +41,7 @@ TEST(BatAdsHtmlUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsHtmlUtilTest,
-    StripHtmlTagsAndNonAlphaCharacters) {
+TEST(BatAdsStringUtilTest, StripNonAlphaCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -57,8 +54,7 @@ TEST(BatAdsHtmlUtilTest,
       "ゑひもせず  ";  // The Quick Brown Fox... Pangrams
 
   // Act
-  const std::string stripped_content =
-      StripHtmlTagsAndNonAlphaCharacters(content);
+  const std::string stripped_content = StripNonAlphaCharacters(content);
 
   // Assert
   const std::string expected_stripped_content =
@@ -72,14 +68,13 @@ TEST(BatAdsHtmlUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsHtmlUtilTest,
-    StripHtmlTagsAndNonAlphaNumericCharactersFromEmptyContent) {
+TEST(BatAdsStringUtilTest,
+    StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
   const std::string content = "";
 
   // Act
-  const std::string stripped_content =
-      StripHtmlTagsAndNonAlphaNumericCharacters(content);
+  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content = "";
@@ -87,14 +82,13 @@ TEST(BatAdsHtmlUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsHtmlUtilTest,
-    StripHtmlTagsAndNonAlphaNumericCharactersFromWhitespace) {
+TEST(BatAdsStringUtilTest,
+    StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
   // Act
-  const std::string stripped_content =
-      StripHtmlTagsAndNonAlphaNumericCharacters(content);
+  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content = "";
@@ -102,8 +96,8 @@ TEST(BatAdsHtmlUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsHtmlUtilTest,
-    StripHtmlTagsAndNonAlphaNumericCharacters) {
+TEST(BatAdsStringUtilTest,
+    StripNonAlphaNumericCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "
@@ -116,8 +110,7 @@ TEST(BatAdsHtmlUtilTest,
       "ゑひもせず  ";  // The Quick Brown Fox... Pangrams
 
   // Act
-  const std::string stripped_content =
-      StripHtmlTagsAndNonAlphaNumericCharacters(content);
+  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
 
   // Assert
   const std::string expected_stripped_content =
