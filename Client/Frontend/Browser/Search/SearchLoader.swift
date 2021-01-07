@@ -2,70 +2,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
 import Shared
 import Storage
-import XCGLogger
 import Data
 
-private let log = Logger.browserLogger
-
-// swiftlint:disable:next force_try
-private let URLBeforePathRegex = try! NSRegularExpression(pattern: "^https?://([^/]+)/", options: [])
-
-// TODO: Swift currently requires that classes extending generic classes must also be generic.
-// This is a workaround until that requirement is fixed.
-typealias SearchLoader = _SearchLoader<AnyObject, AnyObject>
-
-/**
- * Shared data source for the SearchViewController and the URLBar domain completion.
- * Since both of these use the same SQL query, we can perform the query once and dispatch the results.
- */
-class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
-    fileprivate let profile: Profile
-    fileprivate let topToolbar: TopToolbarView
-    fileprivate var inProgress: Cancellable?
-
-    init(profile: Profile, topToolbar: TopToolbarView) {
-        self.profile = profile
-        self.topToolbar = topToolbar
-
-        super.init()
-    }
-
-    // `weak` usage here allows deferred queue to be the owner. The deferred is always filled and this set to nil,
-    // this is defensive against any changes to queue (or cancellation) behaviour in future.
-    private weak var currentDbQuery: Cancellable?
+/// Shared data source for the SearchViewController and the URLBar domain completion.
+/// Since both of these use the same query, we can perform the query once and dispatch the results.
+class SearchLoader: Loader<[Site], SearchViewController> {
+    var autocompleteSuggestionHandler: ((String) -> Void)?
 
     var query: String = "" {
         didSet {
-            guard let profile = self.profile as? BrowserProfile else {
-                assertionFailure("nil profile")
-                return
-            }
-
             if query.isEmpty {
                 load([])
                 return
             }
-            
-            if let inProgress = inProgress {
-                inProgress.cancel()
-                self.inProgress = nil
-            }
 
-            let deferred = FrecencyQuery.sitesByFrecency(containing: query)
-            inProgress = deferred as? Cancellable
-
-            deferred.uponQueue(.main) { result in
-                defer {
-                    self.inProgress = nil
-                }
+            FrecencyQuery.sitesByFrecency(containing: query) { [weak self] result in
+                guard let self = self else { return }
                 
-                // First, see if the query matches any URLs from the user's search history.
-                let bookmarks = Set<Site>(Bookmarkv2.byFrequency(query: self.query).map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: true) })
-                
-                self.load(Array(Set(result + bookmarks)))
+                self.load(Array(result))
                 
                 // If the new search string is not longer than the previous
                 // we don't need to find an autocomplete suggestion.
@@ -75,7 +31,7 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 
                 for site in result {
                     if let completion = self.completionForURL(site.url) {
-                        self.topToolbar.setAutocompleteSuggestion(completion)
+                        self.autocompleteSuggestionHandler?(completion)
                         return
                     }
                 }
@@ -87,7 +43,8 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
         // Extract the pre-path substring from the URL. This should be more efficient than parsing via
         // NSURL since we need to only look at the beginning of the string.
         // Note that we won't match non-HTTP(S) URLs.
-        guard let match = URLBeforePathRegex.firstMatch(in: url, options: [], range: NSRange(location: 0, length: url.count)) else {
+        guard let urlBeforePathRegex = try? NSRegularExpression(pattern: "^https?://([^/]+)/", options: []),
+              let match = urlBeforePathRegex.firstMatch(in: url, options: [], range: NSRange(location: 0, length: url.count)) else {
             return nil
         }
 

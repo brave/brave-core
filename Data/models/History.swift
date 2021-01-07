@@ -121,6 +121,19 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
         
         return try context.fetch(fetchRequest)
     }
+    
+    /// Returns a recently visites sites. Ran on main thread context
+    public static func byFrecency(query: String? = nil) -> [WebsitePresentable] {
+        let urlKeyPath = #keyPath(History.url)
+        let visitedOnKeyPath = #keyPath(History.visitedOn)
+        
+        var predicate = NSPredicate(format: "\(visitedOnKeyPath) > %@", History.thisWeek as CVarArg)
+        if let query = query {
+            predicate = NSPredicate(format: predicate.predicateFormat + " AND \(urlKeyPath) CONTAINS %@", query)
+        }
+        
+        return all(where: predicate, fetchLimit: 100, context: DataController.viewContext) ?? []
+    }
 }
 
 // MARK: - Internal implementations
@@ -139,17 +152,3 @@ extension History {
     }
 }
 
-extension History: Frecencyable {
-    static func byFrecency(query: String? = nil,
-                           context: NSManagedObjectContext = DataController.viewContext) -> [WebsitePresentable] {
-        let urlKeyPath = #keyPath(History.url)
-        let visitedOnKeyPath = #keyPath(History.visitedOn)
-        
-        var predicate = NSPredicate(format: "\(visitedOnKeyPath) > %@", History.thisWeek as CVarArg)
-        if let query = query {
-            predicate = NSPredicate(format: predicate.predicateFormat + " AND \(urlKeyPath) CONTAINS %@", query)
-        }
-        
-        return all(where: predicate, fetchLimit: 100, context: context) ?? []
-    }
-}

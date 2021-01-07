@@ -1295,8 +1295,11 @@ class BrowserViewController: UIViewController {
         searchController.searchDelegate = self
         searchController.profile = self.profile
 
-        searchLoader = SearchLoader(profile: profile, topToolbar: topToolbar)
+        searchLoader = SearchLoader()
         searchLoader?.addListener(searchController)
+        searchLoader?.autocompleteSuggestionHandler = { [weak self] completion in
+            self?.topToolbar.setAutocompleteSuggestion(completion)
+        }
 
         addChild(searchController)
         view.addSubview(searchController.view)
