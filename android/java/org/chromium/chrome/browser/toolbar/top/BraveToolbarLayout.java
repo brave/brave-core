@@ -110,7 +110,7 @@ import java.util.List;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout
         implements OnClickListener, View.OnLongClickListener, BraveRewardsObserver,
-                   BraveRewardsNativeWorker.PublisherObserver, ConfigurationChangedObserver {
+                   BraveRewardsNativeWorker.PublisherObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
 
     private static final long MB_10 = 10000000;
@@ -413,6 +413,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         reopenShieldsPanel();
     }
 
