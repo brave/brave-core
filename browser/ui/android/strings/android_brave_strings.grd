@@ -1847,7 +1847,7 @@ until they verify, or until 90 days have passed.
       Password must be at least 7 characters containg at least one number and a special character
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
-        Does not protect you against dangerous websites, downloads, and extensions.
+      Does not protect you against dangerous websites, downloads, and extensions.
     </message>
     <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
       Phrases did not match, Please try again.
@@ -1978,6 +1978,27 @@ until they verify, or until 90 days have passed.
     </message>
     <message name="IDS_CRYPTO_WALLET_BALANCE" desc="Brave crypto wallet balance">
       Balance:
+    </message>
+    <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
+      Brave Firewall + VPN
+    </message>
+    <message name="IDS_ENABLE" desc="VPN callout text">
+      Enable
+    </message>
+    <message name="IDS_POWERED_BY" desc="VPN text">
+      Powered by
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_1" desc="VPN modal text">
+      Block ads &amp; trackers across all apps
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_2" desc="VPN modal text">
+      Secures all connections
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_3" desc="VPN modal text">
+      Fast and unlimited up to 100 Mbps
+    </message>
+    <message name="IDS_VPN_MODAL_TEXT_4" desc="VPN modal text">
+      24/7 support
     </message>
     </messages>
   </release>
