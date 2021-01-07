@@ -15,6 +15,7 @@
 @import url(chrome://brave-resources/fonts/poppins.css);
 
 html {
+  /* TODO(dbeam): remove this soon. Prefer dir= in HTML. */
   direction: $i18n{textDirection};
 }
 
