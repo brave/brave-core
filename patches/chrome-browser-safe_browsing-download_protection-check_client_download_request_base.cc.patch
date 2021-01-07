@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-index 4f7fd86c5e6edd387254d0eab6aa399db5e42105..1edf51b8e80c967e275e327d8143973ec4881871 100644
+index 3a032040f7c0cf54a8b47900d452a91e71cf8962..ed56f94de4754220df0387295ff8e0e7e787edfa 100644
 --- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
 +++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-@@ -554,6 +554,7 @@ void CheckClientDownloadRequestBase::SendRequest() {
+@@ -556,6 +556,7 @@ void CheckClientDownloadRequestBase::SendRequest() {
    request->set_archive_directory_count(directory_count_);
    request->set_request_ap_verdicts(is_under_advanced_protection_);
  
