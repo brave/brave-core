@@ -16,7 +16,7 @@
 #include "url/gurl.h"
 
 // Exposed for tests.
-constexpr char kDefaultSearchEngineMetric[] = "Brave.Search.DefaultEngine.3";
+constexpr char kDefaultSearchEngineMetric[] = "Brave.Search.DefaultEngine.4";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
@@ -27,9 +27,9 @@ enum class SearchEngineP3A {
   kStartpage,
   kBing,
   kQwant,
-  kYahoo,
   kYandex,
-  kMaxValue = kYandex,
+  kEcosia,
+  kMaxValue = kEcosia,
 };
 
 class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
