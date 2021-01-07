@@ -182,6 +182,12 @@ class TabManager: NSObject {
         })
     }
     
+    func clearTabHistory() {
+        allTabs.filter({$0.webView != nil}).forEach({
+            $0.clearHistory(config: configuration)
+        })
+    }
+    
     func reloadSelectedTab() {
         let tab = selectedTab
         _selectedIndex = -1
