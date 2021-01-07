@@ -81,13 +81,13 @@ class TorProfileManagerTest : public InProcessBrowserTest {
                         ContentSetting setting) {
     content_settings->SetContentSettingCustomScope(
         primary_pattern, ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::JAVASCRIPT, "", setting);
+        ContentSettingsType::JAVASCRIPT, setting);
   }
 
   ContentSetting GetScriptSetting(HostContentSettingsMap* content_settings,
                                   const GURL& primary_url) {
-    return content_settings->GetContentSetting(
-        primary_url, GURL(), ContentSettingsType::JAVASCRIPT, "");
+    return content_settings->GetContentSetting(primary_url, GURL(),
+                                               ContentSettingsType::JAVASCRIPT);
   }
 
   MockTorLauncherFactory* GetTorLauncherFactory() {

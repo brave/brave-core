@@ -9,13 +9,19 @@ source_set("content_settings") {
   sources = [
     "brave_content_settings_manager_delegate.cc",
     "brave_content_settings_manager_delegate.h",
+    "brave_global_value_map.cc",
+    "brave_global_value_map.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_shields/browser",
+    "//brave/components/content_settings/core/browser",
+
     # "//chrome/browser" # dep cycle
     "//components/content_settings/common:mojom",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//content/public/browser",
   ]
 }

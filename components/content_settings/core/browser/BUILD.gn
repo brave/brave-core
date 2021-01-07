@@ -3,8 +3,8 @@ source_set("browser") {
   check_includes = false
   if (!is_ios) {
     sources = [
-      "brave_content_settings_ephemeral_provider.cc",
-      "brave_content_settings_ephemeral_provider.h",
+      "brave_content_settings_default_provider.cc",
+      "brave_content_settings_default_provider.h",
       "brave_content_settings_pref_provider.cc",
       "brave_content_settings_pref_provider.h",
       "brave_content_settings_utils.cc",
@@ -18,9 +18,11 @@ source_set("browser") {
       "//brave/common:shield_exceptions",
       "//brave/components/brave_shields/common",
       "//brave/components/content_settings/core/common",
+
+      # see https://github.com/brave/brave-browser/issues/10624 above
+      # "//components/content_settings/core/browser",
       "//components/content_settings/core/common",
       "//components/prefs",
-      "//extensions/buildflags",
       "//net",
       "//url",
     ]

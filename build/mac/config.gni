@@ -1,4 +1,5 @@
 declare_args() {
+
   # find with `security find-identity -v -p codesigning`
   mac_signing_identifier = ""
   mac_installer_signing_identifier = ""

@@ -15,8 +15,11 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
     public BraveToolbarManagerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinator");
-        makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinator");
+        deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mCallbackController");
+        makeProtectedField(sToolbarManagerClassName, "mCallbackController");
 
         deleteField(sBraveToolbarManagerClassName, "mBrowserControlsSizer");
         makeProtectedField(sToolbarManagerClassName, "mBrowserControlsSizer");

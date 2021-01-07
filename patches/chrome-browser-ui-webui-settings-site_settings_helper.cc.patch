@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 0b2ebbd8c1f33bccc3723157243c1cf6fc78c76b..17c90ea4d1b4a2c79ebda253e286fc5cd7d67039 100644
+index 0f5493f32679e17705f9b5d12346e83a36acfe01..dbc7e70271f9069a5f53c64678bbe934b77451b9 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -375,6 +375,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -149,6 +149,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+     {ContentSettingsType::INSECURE_PRIVATE_NETWORK, nullptr},
+     {ContentSettingsType::PERMISSION_AUTOREVOCATION_DATA, nullptr},
+     {ContentSettingsType::FILE_SYSTEM_LAST_PICKED_DIRECTORY, nullptr},
++    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
+ };
+ static_assert(base::size(kContentSettingsTypeGroupNames) ==
+                   // ContentSettingsType starts at -1, so add 1 here.
+@@ -375,6 +376,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(const std::string& name) {

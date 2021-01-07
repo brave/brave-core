@@ -1069,6 +1069,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_MOVE_TAB_TO_NEW_WINDOW" desc="The text label of the Move Tab to Window menu item.">
             Move tab to new window
           </message>
+          <message name="IDS_TOGGLE_COMMANDER" desc="The text label of the Toggle Commander menu item">
+          Toggle Commander
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_NEW_TAB" desc="In Title Case: The text label of a menu item for opening a new tab">
@@ -1146,6 +1149,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_MOVE_TAB_TO_NEW_WINDOW" desc="In Title Case: The text label of the Move Tab to New Window menu item.">
             Move Tab to New Window
           </message>
+          <message name="IDS_TOGGLE_COMMANDER" desc="In Title Case:The text label of the Toggle Commander menu item">
+          Toggle Commander
+          </message>
         </if>
       </if>
 
@@ -1194,7 +1200,7 @@ are declared in tools/grit/grit_rule.gni.
           R&amp;eopen closed window
         </message>
         <message name="IDS_NAME_WINDOW" desc="The text label of the Name Window menu item, used to give a user-specified name to a window.">
-          &amp;Name window...
+          Name &amp;window...
         </message>
       </if>
       <if expr="use_titlecase">
@@ -1229,7 +1235,7 @@ are declared in tools/grit/grit_rule.gni.
           R&amp;eopen Closed Window
         </message>
         <message name="IDS_NAME_WINDOW" desc="In Title Case: The text label of the Name Window menu item, used to give a user-specified name to a window.">
-          &amp;Name Window...
+          Name &amp;Window...
         </message>
       </if>
 
@@ -3880,6 +3886,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_SYSTEM_STORAGE" desc="The permission string for access to connected system storage devices.">
           Identify and eject storage devices
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_TAB_GROUPS" desc="Permission string for access to tab groups.">
+          View and manage your tab groups
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_TOPSITES" desc="Permission string for access to the list of most frequently visited websites.">
           Read a list of your most frequently visited websites
         </message>
@@ -4750,6 +4759,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_UPDATE_PASSWORD_DIFFERENT_DOMAINS_TITLE" desc="The title of the update password bubble when the submitted form origin isn't equal to saved credentials origin.">
         Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
       </message>
+      <message name="IDS_SAVE_PASSWORD_TO_GOOGLE" desc="The title of the save password bubble when the user syncs passswors to thir Brave account.">
+        Save password to your Brave sync chain?
+      </message>
+      <message name="IDS_SAVE_ACCOUNT_TO_GOOGLE" desc="The title of the save password bubble when a federated credential can be saved to the user's Brave account.">
+        Save username to your Brave sync chain?
+      </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
       </message>
@@ -4945,6 +4960,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SETTINGS_STORAGE_PRESSURE_BUBBLE_VIEW_BUTTON_LABEL" desc="Label for default button on storage pressure buble view which will take users to a page to manage site storage.">
         Choose sites to clear
+      </message>
+
+      <!-- Experimental Lacros Infobar-->
+      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user uses Lacros, an experimental feature.">
+        Lacros is an experimental browser. Please report any issues with Help &gt; "Report an issue..."
       </message>
 
       <!-- Bad Flags Infobar-->
@@ -6987,6 +7007,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION" desc="A label describing the consequences of the 'reset profile settings' feature">
           This will reset your startup page, new tab page, search engine, and pinned tabs. It will also disable all extensions and clear temporary data like cookies. Your bookmarks, history and saved passwords will not be cleared.
         </message>
+        <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION_IN_BULLET_POINTS" desc="A label formatted with bullet points describing the consequences of the 'reset profile settings' feature">
+          This action will:
+          <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+           • Reset Brave settings and Brave shortcuts
+           <ph name="LINE_BREAK">&lt;br&gt;</ph>
+           • Disable extensions
+           <ph name="LINE_BREAK">&lt;br&gt;</ph>
+           • Delete cookies and other temporary site data
+            <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+           Bookmarks, history, and saved passwords won't be affected.
+        </message>
         <message name="IDS_TRIGGERED_RESET_PROFILE_SETTINGS_TITLE" desc="Dialog title for reset dialog triggered by a third party tool">
           <ph name="THIRD_PARTY_TOOL_NAME">$1<ex>SuperDuper PC Cleaner Pro</ex></ph> wants to reset your settings.
         </message>
@@ -7827,9 +7858,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PLUGIN_INITIALIZATION_ERROR_PROMPT" desc="Infobar message to notify that we couldn't load a plugin">
         Could not load <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph>
       </message>
-      <message name="IDS_PLUGIN_FLASH_DEPRECATION_PROMPT" desc="Infobar message to notify users that Flash player will be deprecated soon.">
-        Flash Player will no longer be supported after December 2020.
-      </message>
 
       <!-- External Protocol Dialog -->
       <message name="IDS_EXTERNAL_PROTOCOL_TITLE" desc="External Protocol Dialog Title">
@@ -8037,11 +8065,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu.">
         Password sync isn't working
       </message>
+      <message name="IDS_SYNC_ERROR_RECOVERABILITY_DEGRADED_FOR_EVERYTHING_USER_MENU_TITLE" desc="Title of a sync error header of desktop user menu that prompts the user to add recovery options.">
+        Make sure you can always access your sync data
+      </message>
+      <message name="IDS_SYNC_ERROR_RECOVERABILITY_DEGRADED_FOR_PASSWORDS_USER_MENU_TITLE" desc="Title of a sync error header of desktop user menu that prompts the user to add recovery options.">
+        Make sure you can always access your saved passwords
+      </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_BUTTON" desc="Button in the header of desktop user menu that prompts the user to sign in again to fix the out-of-date signin info error.">
         Sign in again
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_PASSPHRASE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to enter the sync passphrase to fix the out-of-date passphrase error.">
         Enter passphrase
+      </message>
+      <message name="IDS_SYNC_ERROR_USER_MENU_RECOVERABILITY_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
+        Fix now
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_RETRIEVE_KEYS_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
         Fix now
@@ -8208,6 +8245,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE_TITLE" desc="Title text for the translate bubble label when the page could not be translated.">
           This page could not be translated
+        </message>
+        <message name="IDS_TRANSLATE_BUBBLE_TARGET_LANG_COMBOBOX_ACCNAME" desc="Accessible name for the target language selection combobox.">
+          Choose the language to translate the page to
         </message>
         <if expr="not use_titlecase">
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_BUTTON" desc="Text to show for the translate bubble button to jump to the advanced panel.">
@@ -8844,6 +8884,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_GEOLOCATION" desc="Description text next to the location icon inside the pop-up bubble which describes that the location permission is blocked on an OS level.">
           Location
       </message>
+      <message name="IDS_GEOLOCATION_WILL_ASK_AGAIN" desc="Info message that tells user that the website will prompt for geolocation permission again next time">
+          This site will ask again next time.
+      </message>
       <if expr="is_macosx">
         <message name="IDS_GEOLOCATION_TURNED_OFF_IN_MACOS" desc="Title for the geolocation bubble that is used when a site requests geolocation, but geolocation is blocked on an OS level in macOS.">
           Location is turned off in Mac System Preferences
@@ -9459,12 +9502,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <!-- Local Device Discovery display strings -->
       <if expr="enable_service_discovery">
-        <message name="IDS_LOCAL_DISCOVERY_SERVICE_REGISTER" desc="Name for button to register device in the Cloud">
-          Register
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_MANAGE_DEVICE" desc="Name for button to manage registered device">
-          Manage
-        </message>
         <message name="IDS_LOCAL_DISCOVERY_NOTIFICATION_TITLE_PRINTER" desc="Title of notification for one or more new printer showing up on your network. [ICU Syntax]">
         {NUM_PRINTER, plural,
          =1 {New printer on your network}
@@ -9481,101 +9518,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_LOCAL_DISCOVERY_NOTIFICATION_BUTTON_PRINTER" desc="Message on registration button for printer">
           Add to Cloud Print
         </message>
-        <message name="IDS_LOCAL_DISCOVERY_DEVICES_PAGE_TITLE" desc="Title for devices page">
-          Devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_REGISTER_USER" desc="Label for user picker in registration dialog">
-          User:
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_CONFIRM_REGISTRATION" desc="Title for 'confirm registration' page">
-          Confirm registration
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_ADDING_PRINTER" desc="Title for 'adding printer' page">
-          Adding printer...
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_ERROR_OCURRED" desc="Title for error page">
-          Could not complete registration
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_ADDING_PRINTER_MESSAGE1" desc="Message for adding printer number 1">
-          You must confirm registration on your printer to finish this process - check it now.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_ADDING_PRINTER_MESSAGE2" desc="Message for adding printer number 2">
-          Adding the printer to your account - this may take a moment...
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_ERROR_OCURRED_MESSAGE" desc="Message for error page">
-          An error has occurred. Please check your printer and try again.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_NO_DESCRIPTION_PRINTER" desc="Description for printer with an empty description">
-          Printer on Google Cloud Print
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_NO_DESCRIPTION_DEVICE" desc="Description for device with an empty description">
-          Device on Brave Cloud Devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_PRINTERS_ON_NETWORK_ZERO" desc="'Zero' case for number indicator for locally discoverable printers">
-          No other available devices.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_PRINTERS_ON_NETWORK_ONE" desc="'One' case for number indicator for locally discoverable printers">
-          One other available device.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_PRINTERS_ON_NETWORK_MULTIPLE" desc="General case for number indicator for locally discoverable printers">
-          <ph name="NUM_PRINTERS">$1</ph> other available devices.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_LOADING" desc="Loading for local discovery screens">
-          Loading
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_ADD_PRINTERS" desc="Text on button to add printers to cloud print">
-          Add Devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_NO_PRINTERS_ON_NETWORK_EXPLANATION" desc="Explanatory text in case there are no printers to register on the network">
-          Looks like there are no devices available to register on the network. If your device is on and connected to the internet, try registering it using instructions in its instruction manual.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_CLOUD_DEVICES_UNAVAILABLE" desc="Explanatory text in case the list of cloud devices can't be retrieved">
-          Could not load devices.
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_RETRY_LOAD_CLOUD_DEVICES" desc="Text on button to retry loading cloud devices">
-          Try again
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_CLOUD_DEVICES_NEED_LOGIN" desc="Text on login promo for local discovery page">
-          You need to sign in to Brave to see your devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_REGISTER_NEED_LOGIN" desc="Text on login promo for local discovery registration">
-          You need to sign in to Brave to register new devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_CLOUD_DEVICES_LOGIN" desc="Text on login button for local discovery page">
-          sign in
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_AVAILABLE_DEVICES" desc="Title for 'available devices' section in devices page">
-          New devices
-        </message>
-        <message name="IDS_LOCAL_DISCOVERY_MY_DEVICES" desc="Title for 'my devices' section in devices page">
-          My devices
-        </message>
-        <if expr="not chromeos">
-          <message name="IDS_LOCAL_DISCOVERY_CLOUD_PRINT_CONNECTOR_DISABLED_LABEL" desc="In local discovery page: The label of the cloud print setup button when it hasn't been set up yet.">
-            You can add classic printers connected to your computer to <ph name="CLOUD_PRINT_NAME">$1<ex>Google Cloud Print</ex></ph>.
-          </message>
-          <message name="IDS_LOCAL_DISCOVERY_CONNECTOR_SECTION" desc="In local discovery page: Title of cloud print connector section.">
-            Classic printers
-          </message>
-        </if>
         <message name="IDS_LOCAL_DISCOVERY_NOTIFICATIONS_DISABLE_BUTTON_LABEL" desc="Label for button disabling local device notifications">
           Don't show this again
         </message>
       </if>
-      <message name="IDS_LOCAL_DISCOVERY_REGISTER_CANCELED_ON_PRINTER" desc="Label for when registration is canceled on the printer side">
-        Printer registration has been canceled.
-      </message>
-      <message name="IDS_LOCAL_DISCOVERY_REGISTER_TIMEOUT_ON_PRINTER" desc="Label for when registration has timed out on the printer side">
-        Printer registration has timed out. In order to register a printer, you must confirm registration on the printer.
-      </message>
-
-      <!--Cloud printing deprecation messages for chrome://devices & Print Preview-->
-      <message name="IDS_CLOUD_PRINTING_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that cloud printing will no longer be supported.">
-        Cloud printing will no longer be supported after December 31. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$1<ex>https://google.com/</ex>" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
-      </message>
-      <message name="IDS_CLOUD_PRINTING_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that cloud printing will no longer be supported.">
-        Cloud printing will no longer be supported after December 31. Contact your administrator.
-      </message>
 
       <!--Printer registration message for local discovery and Print Preview-->
       <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_INFORMATION" desc="Information about registering printers with Google Cloud Print shown to the user before they confirm registration.">
@@ -9682,6 +9628,30 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_GROUP_AX_LABEL_EXPANDED" desc="Used as part of the accessibility label text of a group header for an expanded tab group.">
         Expanded
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_MOVED_RIGHT" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab to the right">
+        Tab moved right
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_MOVED_LEFT" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab to the left">
+        Tab moved left
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_MOVED_FIRST" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab to the start of the tabstrip">
+        Tab moved to start of tabstrip
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_MOVED_LAST" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab to the end of the tabstrip">
+        Tab moved to end of tabstrip
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_TAB_ADDED_TO_UNNAMED_GROUP" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab and it results in the tab being added to a tab group with no title">
+        Tab moved into unnamed group - <ph name="GROUP_CONTENTS">$1<ex>Brave Search and 3 other tabs</ex></ph>
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_TAB_ADDED_TO_NAMED_GROUP" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab and it results in the tab being added to a tab group with a title">
+        Tab moved into group <ph name="GROUP_NAME">$1</ph> - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph>
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_TAB_REMOVED_FROM_UNNAMED_GROUP" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab and it results in the tab being removed from a tab group with no title">
+        Tab removed from unnamed group - <ph name="GROUP_CONTENTS">$1<ex>Brave Search and 3 other tabs</ex></ph>
+      </message>
+      <message name="IDS_TAB_AX_ANNOUNCE_TAB_REMOVED_FROM_NAMED_GROUP" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the user inputs a hotkey for moving the currently-selected tab and it results in the tab being removed from a tab group with a title">
+        Tab removed from group <ph name="GROUP_NAME">$1</ph> - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph>
       </message>
 
       <!-- ProcessSingleton -->

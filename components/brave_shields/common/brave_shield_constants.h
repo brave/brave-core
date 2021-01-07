@@ -9,7 +9,7 @@
 
 namespace brave_shields {
 
-const char kAds[] = "ads";
+const char kAds[] = "shieldsAds";
 const char kCosmeticFiltering[] = "cosmeticFiltering";
 const char kTrackers[] = "trackers";
 const char kHTTPUpgradableResources[] = "httpUpgradableResources";
@@ -17,10 +17,15 @@ const char kJavaScript[] = "javascript";
 const char kFingerprintingV2[] = "fingerprintingV2";
 const char kBraveShields[] = "braveShields";
 const char kReferrers[] = "referrers";
-const char kCookies[] = "cookies";
+const char kCookies[] = "shieldsCookies";
 const char kFacebookEmbeds[] = "fb-embeds";
 const char kTwitterEmbeds[] = "twitter-embeds";
 const char kLinkedInEmbeds[] = "linked-in-embeds";
+
+// Values used before the migration away from ResourceIdentifier, kept around
+// for migration purposes only.
+const char kObsoleteAds[] = "ads";
+const char kObsoleteCookies[] = "cookies";
 
 }  // namespace brave_shields
 

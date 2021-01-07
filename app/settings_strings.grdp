@@ -957,32 +957,9 @@
     Notifications will be disabled
   </message>
 
-  <!-- Printing -->
+  <!-- Printing (used by OS Settings page) -->
   <message name="IDS_SETTINGS_PRINTING" desc="Title of the printing page and navigation item to get there.">
     Printing
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_NOTIFICATIONS_LABEL" desc="Label for the checkbox which enabled notifications when new printers are added to the user's network">
-    Show notifications when new printers are detected on the network
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_MANAGE_CLOUD_PRINT_DEVICES" desc="Text for the button which allows users to manage their Google Cloud Print devices">
-    Manage Cloud Print devices
-  </message>
-  <if expr="not chromeos">
-    <message name="IDS_SETTINGS_PRINTING_LOCAL_PRINTERS_TITLE" desc="In Printing Settings, the title of local printers setting section on OS other than Chrome OS.">
-      Printers
-    </message>
-  </if>
-  <message name="IDS_SETTINGS_PRINTING_CLOUD_PRINTERS" desc="In Printing Settings, the title of the google cloud printers setting section.">
-    Google Cloud Print
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_GOOGLE_CLOUD_PRINT_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that Google Cloud Print will no longer be supported.">
-    Google Cloud Print will no longer be supported after December 31
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_GOOGLE_CLOUD_PRINT_NOT_SUPPORTED_FULL_WARNING" desc="Warning shown to the user to inform them that Google Cloud Print will no longer be supported. Same as above, with the addition of the learn more link.">
-    Google Cloud Print will no longer be supported after December 31. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_PRINTING_GOOGLE_CLOUD_PRINT_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that Google Cloud Print will no longer be supported.">
-    Google Cloud Print will no longer be supported after December 31. Contact your administrator.
   </message>
 
   <!-- Downloads Page -->
@@ -1304,25 +1281,25 @@
       Brave can check your computer for harmful software
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_SECONDS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
-      Brave didn't find known harmful software on your computer. Last checked: a moment ago.
+      Brave didn't find harmful software on your computer • Checked just now
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_MINUTES" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
       {NUM_MINS, plural,
-       =1 {Brave didn't find known harmful software on your computer. Last checked: 1 minute ago.}
-       other {Brave didn't find known harmful software on your computer. Last checked: {NUM_MINS} minutes ago.}}
+       =1 {Brave didn't find harmful software on your computer • Checked 1 minute ago}
+       other {Brave didn't find harmful software on your computer • Checked {NUM_MINS} minutes ago}}
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_HOURS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
       {NUM_HOURS, plural,
-       =1 {Brave didn't find known harmful software on your computer. Last checked: 1 hour ago.}
-       other {Brave didn't find known harmful software on your computer. Last checked: {NUM_HOURS} hours ago.}}
+       =1 {Brave didn't find harmful software on your computer • Checked 1 hour ago}
+       other {Brave didn't find harmful software on your computer • Checked {NUM_HOURS} hours ago}}
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_YESTERDAY" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
-      Brave didn't find known harmful software on your computer. Last checked: yesterday.
+      Brave didn't find harmful software on your computer • Checked yesterday
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_DAYS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
       {NUM_DAYS, plural,
-       =1 {Brave didn't find known harmful software on your computer. Last checked: 1 day ago.}
-       other {Brave didn't find known harmful software on your computer. Last checked: {NUM_DAYS} days ago.}}
+       =1 {Brave didn't find harmful software on your computer • Checked 1 day ago}
+       other {Brave didn't find harmful software on your computer • Checked {NUM_DAYS} days ago}}
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_INFECTED" desc="This text describes that Brave found harmful software on the computer.">
       Brave found harmful software on your computer
@@ -1334,10 +1311,10 @@
       Brave is removing harmful software from your computer...
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_DISABLED_BY_ADMIN" desc="This text describes that Brave can't check for unwanted software because an administrator disabled the feature.">
-      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has disabled Brave's check for harmful software
+      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off checking for harmful software
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_ERROR" desc="This text describes that Brave can't check for unwanted software due to an error.">
-      An error occurred while Brave was checking your computer for harmful software
+      Something went wrong. Click for more details.
     </message>
   </if>
   
@@ -1556,6 +1533,9 @@
   </message>
 
   <!-- Reset Settings Page -->
+  <message name="IDS_SETTINGS_RESET_PROMPT_TITLE" desc="Title for a prompt that gives an explanation of what would be resetted by 'Reset and clean up' section of Brave Settings. " meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
+    Reset settings?
+  </message>
   <message name="IDS_SETTINGS_RESET" desc="Title for an item in the 'Reset and clean up' section of Brave Settings. If the user clicks this option, browser settings will be returned to their default values, after a confirmation by the user." meaning="Chrome Cleanup feature. Try to use the same translation for 'Reset' in 'Reset and cleanup' string.">
     Reset settings
   </message>
@@ -1986,21 +1966,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the sound content setting.">
     Not allowed to play sound
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_DESCRIPTION" desc="Description of the unsandboxed plugins content setting.">
-    Sites usually use plugins for features like streaming videos or installing apps
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_ALLOWED" desc="Label for the enabled option of the unsandboxed plugins content setting.">
-    Sites can ask to use a plugin to access your computer (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_BLOCKED" desc="Label for the disabled option of the unsandboxed plugins content setting.">
-    Block plugins from accessing your computer
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the unsandboxed plugins content setting.">
-    Allowed to use a plugin to access your computer
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the unsandboxed plugins content setting.">
-    Not allowed to use a plugin to access your computer
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DESCRIPTION" desc="Description of the USB devices content setting.">
     Sites usually connect to USB devices for features like printing a document or saving to a storage device
   </message>
@@ -2222,9 +2187,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_RECENT_ACTIVITY" desc="Label for the section which contains the user's recent permissions changes">
     Recent activity
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS" desc="Label for the unsandboxed plugin access site settings.">
-    Unsandboxed plugin access
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES" desc="Label for the MIDI devices in site settings.">
     MIDI devices
   </message>
@@ -2425,15 +2387,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_BLOCK" desc="The block label for automatic download in site settings.">
     Do not allow any site to download multiple files automatically
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_ASK" desc="The allow label for unsandboxed plugins in site settings.">
-    Ask when a site wants to use a plugin to access your computer
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_ASK_RECOMMENDED" desc="The allow label for unsandboxed plugins in site settings (with the 'recommended' suffix).">
-    Ask when a site wants to use a plugin to access your computer (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_UNSANDBOXED_PLUGINS_BLOCK" desc="The block label for unsandboxed plugins in site settings.">
-    Do not allow any site to use a plugin to access your computer
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT" desc="Label for the window placement site settings.">
     Window placement
@@ -2886,6 +2839,24 @@
     </message>
     <message name="IDS_SETTINGS_PROFILE_SHORTCUT_TOGGLE_LABEL" desc="Label of the toggle that creates or removes a desktop shortcut for the profile.">
       Show desktop shortcut
+    </message>
+    <message name="IDS_SETTINGS_CUSTOMIZE_PROFILE" desc="Title of the manage profile subpage. This is a subpage to customize Brave Profile.">
+      Customize profile
+    </message>
+    <message name="IDS_SETTING_NAME_YOUR_PROFILE" desc="Title of the edit local profile name section on the manage profile page.">
+      Name your profile
+    </message>
+    <message name="IDS_SETTINGS_PICK_A_THEME_COLOR" desc="Title of edit profile theme color section on the manage profile page.">
+      Pick a theme color
+    </message>
+    <message name="IDS_SETTINGS_PICK_AN_AVATAR" desc="Title of the edit avatar selection section on the manage profile page.">
+      Pick an avatar
+    </message>
+    <message name="IDS_SETTINGS_CREATE_SHORTCUT" desc="Title of create shortcut section on the manage profile page.">
+      Create desktop shortcut
+    </message>
+    <message name="IDS_SETTINGS_CREATE_SHORTCUT_SUBTITLE" desc="Subtitle of create shortcut section on the manage profile page.">
+      Create a desktop shortcut on your device to access directly to this profile
     </message>
   </if>
 

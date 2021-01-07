@@ -4,6 +4,9 @@
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+
+#include <algorithm>
+
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -39,10 +42,11 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 
   SkPath path;
   const gfx::Rect contents_bounds = GetContentsBounds();
-  const gfx::Rect path_rect(scaled_origin.x(),
-              extend_to_top ? 0 : scaled_origin.y(),
-              contents_bounds.width() * scale,
-              scaled_origin.y() + contents_bounds.height() * scale);
+  const gfx::Rect path_rect(
+      scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
+      contents_bounds.width() * scale,
+      (extend_to_top ? scaled_origin.y() : 0) +
+          std::min(contents_bounds.width(), contents_bounds.height()) * scale);
   path.addRoundRect(RectToSkRect(path_rect), radius, radius);
   path.close();
   return path;

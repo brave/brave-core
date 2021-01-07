@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index 40a387347f75beaab990267e3768416d96046aec..25d959471e65ad6e69bd5163229a1db850a26b5e 100644
+index 98169739f2dbaf1684eb5c00f80da83e56867e68..98989ce5f72223c0aed218b14486674e35755a6d 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -63,6 +63,7 @@ bool ComputeLockPendingUserGestureRequired(const Document& document) {
@@ -10,7 +10,7 @@ index 40a387347f75beaab990267e3768416d96046aec..25d959471e65ad6e69bd5163229a1db8
    if (!document.GetSettings())
      return Type::kNoUserGestureRequired;
  
-@@ -309,6 +310,7 @@ void AutoplayPolicy::TryUnlockingUserGesture() {
+@@ -310,6 +311,7 @@ void AutoplayPolicy::TryUnlockingUserGesture() {
  bool AutoplayPolicy::IsGestureNeededForPlayback() const {
    if (!IsLockedPendingUserGesture())
      return false;

@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/services.cc b/chrome/utility/services.cc
-index 9660f26b0af22ac72c2b2533449a073dd9588c6c..e4084402c62a9d643ec9df1cfa2446361ab675da 100644
+index 99be30f27435b19fb512f0fc68440545f97c5227..1774d17abb03741cbb5c9bd55bc9af1c78541bf9 100644
 --- a/chrome/utility/services.cc
 +++ b/chrome/utility/services.cc
-@@ -338,6 +338,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& services) {
+@@ -345,6 +345,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& services) {
    services.Add(RunAssistantAudioDecoder);
  #endif
  #endif

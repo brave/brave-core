@@ -39,7 +39,7 @@ GURL WidevinePermissionRequest::GetOrigin() const {
   return web_contents_->GetVisibleURL();
 }
 
-void WidevinePermissionRequest::PermissionGranted() {
+void WidevinePermissionRequest::PermissionGranted(bool is_one_time) {
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   EnableWidevineCdmComponent(web_contents_);
 #endif

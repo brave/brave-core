@@ -13,7 +13,7 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
@@ -36,6 +36,7 @@
 #include "crypto/sha2.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/api/content_scripts.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/file_util.h"
@@ -46,6 +47,8 @@ using extensions::Extension;
 using extensions::Manifest;
 
 namespace {
+
+constexpr char kRunAtDocumentStart[] = "document_start";
 
 // Wraps a Greaselion rule in a component. The component is stored as
 // an unpacked extension in the user data dir. Returns a valid
@@ -106,31 +109,32 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   root->SetStringPath(extensions::manifest_keys::kDescription, "");
   root->SetStringPath(extensions::manifest_keys::kPublicKey, key);
 
-  auto js_files = std::make_unique<base::ListValue>();
-  for (auto script : rule->scripts())
-    js_files->AppendString(script.BaseName().value());
-
-  auto matches = std::make_unique<base::ListValue>();
+  std::vector<std::string> matches;
+  matches.reserve(rule->url_patterns().size());
   for (auto url_pattern : rule->url_patterns())
-    matches->AppendString(url_pattern);
+    matches.push_back(url_pattern);
 
-  auto content_script = std::make_unique<base::DictionaryValue>();
-  content_script->Set(extensions::manifest_keys::kMatches, std::move(matches));
-  content_script->Set(extensions::manifest_keys::kJs, std::move(js_files));
+  extensions::api::content_scripts::ContentScript content_script;
+  content_script.matches = std::move(matches);
+
+  content_script.js = std::make_unique<std::vector<std::string>>();
+  for (auto script : rule->scripts())
+    content_script.js->push_back(script.BaseName().AsUTF8Unsafe());
+
   // All Greaselion scripts default to document end.
-  content_script->SetStringPath(extensions::manifest_keys::kRunAt,
-      rule->run_at() == extensions::manifest_values::kRunAtDocumentStart
-        ? extensions::manifest_values::kRunAtDocumentStart
-        : extensions::manifest_values::kRunAtDocumentEnd);
+  content_script.run_at =
+      rule->run_at() == kRunAtDocumentStart
+          ? extensions::api::content_scripts::RUN_AT_DOCUMENT_START
+          : extensions::api::content_scripts::RUN_AT_DOCUMENT_END;
 
   if (!rule->messages().empty()) {
     root->SetStringPath(extensions::manifest_keys::kDefaultLocale, "en_US");
   }
 
   auto content_scripts = std::make_unique<base::ListValue>();
-  content_scripts->Append(std::move(content_script));
+  content_scripts->Append(content_script.ToValue());
 
-  root->Set(extensions::manifest_keys::kContentScripts,
+  root->Set(extensions::api::content_scripts::ManifestKeys::kContentScripts,
             std::move(content_scripts));
 
   base::FilePath manifest_path =

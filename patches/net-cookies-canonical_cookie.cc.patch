@@ -1,10 +1,10 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index de20c240617f16a9e60b9dbc965e78ad9842d107..20338ee5207bebd8632a3e865913155f320f25f8 100644
+index 1db40c01ebb2feb0f87d48c4cbe13f1901bd5902..ab4082b0bbceb98fa04c5bfc5ff93519763b5f6a 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -428,6 +428,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
-                                          ? CookieSourceScheme::kSecure
-                                          : CookieSourceScheme::kNonSecure;
+@@ -432,6 +432,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
+   // Get the port, this will get a default value if a port isn't provided.
+   int source_port = url.EffectiveIntPort();
  
 +  BRAVE_CREATE
    std::unique_ptr<CanonicalCookie> cc(std::make_unique<CanonicalCookie>(

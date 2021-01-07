@@ -95,7 +95,7 @@ NS_SWIFT_NAME(BraveRewards)
 
 @end
 
-OBJC_EXPORT 
+OBJC_EXPORT
 @interface BATBraveRewards (Reporting)
 
 /// Report that a tab with a given id was updated
@@ -112,7 +112,7 @@ OBJC_EXPORT
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
-                   adsInnerText:(nullable NSString *)adsInnerText NS_SWIFT_NAME(reportLoadedPage(url:faviconUrl:tabId:html:adsInnerText:));
+                   adsInnerText:(nullable NSString *)adsInnerText NS_SWIFT_NAME(reportLoadedPage(url:redirectionURLs:faviconUrl:tabId:html:adsInnerText:));
 /// Report any XHR load happening in the page
 - (void)reportXHRLoad:(NSURL *)url
                 tabId:(UInt32)tabId

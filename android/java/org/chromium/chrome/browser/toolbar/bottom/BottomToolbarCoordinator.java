@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.share.ShareDelegateImpl.ShareOrigin;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
@@ -78,7 +79,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final Callback<ShareDelegate> mShareDelegateSupplierCallback;
     private ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
             new ObservableSupplierImpl<>();
-    private final Supplier<Boolean> mShowStartSurfaceCallable;
     private CallbackController mCallbackController = new CallbackController();
     ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private BottomControlsMediator mBottomControlsMediator;
@@ -98,8 +98,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
      * @param themeColorProvider The {@link ThemeColorProvider} for the bottom toolbar.
      * @param shareDelegateSupplier The supplier for the {@link ShareDelegate} the bottom controls
      *         should use to share content.
-     * @param showStartSurfaceCallable The action that opens the start surface, returning true if
-     * the start surface is shown.
      * @param openHomepageAction The action that opens the homepage.
      * @param setUrlBarFocusAction The function that sets Url bar focus. The first argument is
      * @param overviewModeBehaviorSupplier Supplier for the overview mode manager.
@@ -108,8 +106,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView,
             ViewStub stub, ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier,
-            Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
+            ObservableSupplier<ShareDelegate> shareDelegateSupplier, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
@@ -119,18 +116,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         layoutStateProviderSupplier.onAvailable(
                 mCallbackController.makeCancelable(this::setLayoutStateProvider));
 
-        mShowStartSurfaceCallable = showStartSurfaceCallable;
         final OnClickListener homeButtonListener = v -> {
             openHomepageAction.run();
         };
 
         final OnClickListener searchAcceleratorListener = v -> {
-            // Only switch to HomePage when overview is showing.
-            if (mLayoutStateProvider != null
-                    && mLayoutStateProvider.isLayoutVisible(LayoutType.TAB_SWITCHER)
-                    && mShowStartSurfaceCallable != null) {
-                mShowStartSurfaceCallable.get();
-            }
             setUrlBarFocusAction.onResult(OmniboxFocusReason.ACCELERATOR_TAP);
         };
 
@@ -340,7 +330,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             }
 
             Tab tab = mTabProvider.get();
-            shareDelegate.share(tab, /*shareDirectly=*/false);
+            shareDelegate.share(tab, /*shareDirectly=*/false, ShareOrigin.TOP_TOOLBAR);
         };
 
         mShareButtonListenerSupplier.set(shareButtonListener);

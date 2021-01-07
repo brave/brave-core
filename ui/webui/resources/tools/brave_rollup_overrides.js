@@ -3,14 +3,15 @@ const path = require('path');
 module.exports = {
   braveResolveId: function (params, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, schemeRelativeResourcesUrl) {
     const {srcPath, genPath, excludes} = params;
-    const resourcesSrcPath = joinPaths(srcPath, 'ui/webui/resources/');
-    const resourcesGenPath = joinPaths(genPath, 'ui/webui/resources/');
+    const resourcesPreprocessedPath = joinPaths(srcPath, 'ui/webui/resources/preprocessed/');
     const braveResourcesUrl = 'chrome://brave-resources/';
+    const braveSchemeRelativeResourcesUrl = '//brave-resources/';
     // sources not referencing `brave-resources`
     if (source.startsWith(chromeResourcesUrl) ||
         source.startsWith(schemeRelativeResourcesUrl) ||
-       (!!origin && origin.startsWith(resourcesSrcPath) && source.indexOf(braveResourcesUrl) === -1) ||
-       (!!origin && origin.startsWith(resourcesGenPath) && source.indexOf(braveResourcesUrl) === -1))
+        (!!origin && origin.startsWith(resourcesPreprocessedPath) &&
+         source.indexOf(braveResourcesUrl) === -1 &&
+         source.indexOf(braveSchemeRelativeResourcesUrl) === -1))
     {
       return undefined;
     }
@@ -20,6 +21,8 @@ module.exports = {
     let pathFromBraveResources = ''
     if (source.startsWith(braveResourcesUrl)) {
       pathFromBraveResources = source.slice(braveResourcesUrl.length)
+    } else if (source.startsWith(braveSchemeRelativeResourcesUrl)) {
+      pathFromBraveResources = source.slice(braveSchemeRelativeResourcesUrl.length)
     } else if (!!origin && origin.startsWith(braveResourcesSrcPath)) {
       pathFromBraveResources = combinePaths(relativePath(braveResourcesSrcPath, origin), source);
     } else if (!!origin && origin.startsWith(braveResourcesGenPath)) {

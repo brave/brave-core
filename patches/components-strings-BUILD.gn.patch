@@ -1,5 +1,5 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 253da9837310e302752c079f9668f4cd818d499f..e07ecf1b313f6a27514d38a6593a2e2008686a8f 100644
+index 776127ec45451450394ec6e39e555048fa0e6ee6..922142b79555f9083a67d35a652920ba8a2e90a4 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
 @@ -45,6 +45,7 @@ grit("components_strings") {
@@ -10,10 +10,10 @@ index 253da9837310e302752c079f9668f4cd818d499f..e07ecf1b313f6a27514d38a6593a2e20
  }
  
  if (is_android) {
-@@ -57,7 +58,7 @@ if (is_android) {
- }
+@@ -62,7 +63,7 @@ grit("components_chromium_strings") {
+   # on desktop linux when this is run under Python3. Fix this.
+   run_under_python2 = true
  
- grit("components_chromium_strings") {
 -  source = "../components_chromium_strings.grd"
 +  source = "../components_${branding_path_component}_strings.grd"
    outputs = [ "grit/components_chromium_strings.h" ]

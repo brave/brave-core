@@ -140,12 +140,10 @@ void CookiePrefService::OnPreferenceChanged() {
 void CookiePrefService::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsType content_type,
-    const std::string& resource_identifier) {
+    ContentSettingsType content_type) {
   if (primary_pattern == ContentSettingsPattern::Wildcard() &&
       secondary_pattern == ContentSettingsPattern::Wildcard() &&
-      content_type == ContentSettingsType::PLUGINS &&
-      resource_identifier == brave_shields::kCookies) {
+      content_type == ContentSettingsType::BRAVE_COOKIES) {
     if (lock_.Try()) {
       SetCookiePrefDefaults(host_content_settings_map_, prefs_);
       lock_.Release();

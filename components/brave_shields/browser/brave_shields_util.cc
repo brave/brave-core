@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/referrer.h"
@@ -116,7 +117,7 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, kBraveShields,
+      ContentSettingsType::BRAVE_SHIELDS,
       // this is 'allow_brave_shields' so 'enable' == 'allow'
       enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
 
@@ -134,16 +135,15 @@ void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, kBraveShields,
-      CONTENT_SETTING_DEFAULT);
+      ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_DEFAULT);
 }
 
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return false;
 
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kBraveShields);
+  ContentSetting setting =
+      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
 
   // see EnableBraveShields - allow and default == true
   return setting == CONTENT_SETTING_BLOCK ? false : true;
@@ -160,21 +160,20 @@ void SetAdControlType(HostContentSettingsMap* map,
     return;
   }
 
-  map->SetContentSettingCustomScope(primary_pattern,
-                                    ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::PLUGINS, kAds,
-                                    GetDefaultBlockFromControlType(type));
+  map->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_ADS, GetDefaultBlockFromControlType(type));
 
   map->SetContentSettingCustomScope(primary_pattern,
                                     ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::PLUGINS, kTrackers,
+                                    ContentSettingsType::BRAVE_TRACKERS,
                                     GetDefaultBlockFromControlType(type));
   RecordShieldsSettingChanged(local_state);
 }
 
 ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kAds);
+  ContentSetting setting =
+      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_ADS);
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
@@ -190,17 +189,15 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
     return;
   }
 
-  map->SetContentSettingCustomScope(primary_pattern,
-                                    ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::PLUGINS,
-                                    kCosmeticFiltering,
-                                    GetDefaultBlockFromControlType(type));
+  map->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      GetDefaultBlockFromControlType(type));
 
   map->SetContentSettingCustomScope(
       primary_pattern,
       ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS,
-      kCosmeticFiltering,
+      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
       GetDefaultAllowFromControlType(type));
 
   RecordShieldsSettingChanged(local_state);
@@ -209,13 +206,11 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url) {
   ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kCosmeticFiltering);
+      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING);
 
-  ContentSetting fp_setting = map->GetContentSetting(
-      url,
-      GURL("https://firstParty/"),
-      ContentSettingsType::PLUGINS,
-      kCosmeticFiltering);
+  ContentSetting fp_setting =
+      map->GetContentSetting(url, GURL("https://firstParty/"),
+                             ContentSettingsType::BRAVE_COSMETIC_FILTERING);
 
   if (setting == CONTENT_SETTING_ALLOW) {
     return ControlType::ALLOW;
@@ -249,33 +244,28 @@ void SetCookieControlType(HostContentSettingsMap* map,
 
   map->SetContentSettingCustomScope(primary_pattern,
                                     ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::PLUGINS, kReferrers,
+                                    ContentSettingsType::BRAVE_REFERRERS,
                                     GetDefaultBlockFromControlType(type));
 
   map->SetContentSettingCustomScope(
       primary_pattern,
       ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::PLUGINS, kCookies,
-      GetDefaultAllowFromControlType(type));
+      ContentSettingsType::BRAVE_COOKIES, GetDefaultAllowFromControlType(type));
 
-  map->SetContentSettingCustomScope(primary_pattern,
-                                    ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::PLUGINS, kCookies,
-                                    GetDefaultBlockFromControlType(type));
+  map->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_COOKIES, GetDefaultBlockFromControlType(type));
 
   RecordShieldsSettingChanged(local_state);
 }
 // TODO(bridiver) - convert cookie settings to ContentSettingsType::COOKIES
 // while maintaining read backwards compat
 ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kCookies);
+  ContentSetting setting =
+      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_COOKIES);
 
   ContentSetting fp_setting = map->GetContentSetting(
-      url,
-      GURL("https://firstParty/"),
-      ContentSettingsType::PLUGINS,
-      kCookies);
+      url, GURL("https://firstParty/"), ContentSettingsType::BRAVE_COOKIES);
 
   if (setting == CONTENT_SETTING_ALLOW) {
     return ControlType::ALLOW;
@@ -287,8 +277,8 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
 }
 
 bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kReferrers);
+  ContentSetting setting =
+      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_REFERRERS);
 
   return setting == CONTENT_SETTING_ALLOW;
 }
@@ -304,16 +294,11 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 
   // Clear previous value to have only one rule for one pattern.
   map->SetContentSettingCustomScope(
-      primary_pattern,
-      ContentSettingsPattern::FromString("https://balanced/*"),
-      ContentSettingsType::PLUGINS,
-      kFingerprintingV2,
-      CONTENT_SETTING_DEFAULT);
-  map->SetContentSettingCustomScope(primary_pattern,
-                                    ContentSettingsPattern::Wildcard(),
-                                    ContentSettingsType::PLUGINS,
-                                    kFingerprintingV2,
-                                    CONTENT_SETTING_DEFAULT);
+      primary_pattern, ContentSettingsPattern::FromString("https://balanced/*"),
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
+  map->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, CONTENT_SETTING_DEFAULT);
 
   auto content_setting = CONTENT_SETTING_BLOCK;
   auto secondary_pattern =
@@ -324,11 +309,9 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
     secondary_pattern = ContentSettingsPattern::Wildcard();
   }
 
-  map->SetContentSettingCustomScope(primary_pattern,
-                                    secondary_pattern,
-                                    ContentSettingsType::PLUGINS,
-                                    kFingerprintingV2,
-                                    content_setting);
+  map->SetContentSettingCustomScope(
+      primary_pattern, secondary_pattern,
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
 
   RecordShieldsSettingChanged(local_state);
 }
@@ -336,8 +319,7 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url) {
   ContentSettingsForOneType fingerprinting_rules;
-  map->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                             brave_shields::kFingerprintingV2,
+  map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
                              &fingerprinting_rules);
 
   ContentSetting fp_setting =
@@ -359,7 +341,7 @@ void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, kHTTPUpgradableResources,
+      ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
       // this is 'allow_http_upgradeable_resources' so enabling
       // httpse will set the value to 'BLOCK'
       enable ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
@@ -377,13 +359,13 @@ void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::PLUGINS, kHTTPUpgradableResources,
+      ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
       CONTENT_SETTING_DEFAULT);
 }
 
 bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url) {
   ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::PLUGINS, kHTTPUpgradableResources);
+      url, GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES);
 
   return setting == CONTENT_SETTING_ALLOW ? false : true;
 }
@@ -400,7 +382,7 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, "",
+      ContentSettingsType::JAVASCRIPT,
       type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
                                  : CONTENT_SETTING_BLOCK);
   RecordShieldsSettingChanged(local_state);
@@ -408,8 +390,8 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::JAVASCRIPT, "");
+  ContentSetting setting =
+      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT);
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
