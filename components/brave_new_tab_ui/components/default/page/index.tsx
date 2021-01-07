@@ -218,7 +218,7 @@ export const GridItemBrandedLogo = styled(GridItemCredits)`
 `
 
 export const GridItemNavigation = styled('section')`
-  grid-column: 3 / span 1;
+  grid-column: 2 / span 2;
   grid-row: -2 / span 1;
   align-self: end;
   margin: 0 24px 24px 0;
