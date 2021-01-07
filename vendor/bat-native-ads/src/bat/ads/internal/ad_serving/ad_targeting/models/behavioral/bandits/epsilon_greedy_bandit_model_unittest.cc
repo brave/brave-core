@@ -8,11 +8,13 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -24,11 +26,24 @@ class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {
   BatAdsEpsilonGreedyBanditModelTest() = default;
 
   ~BatAdsEpsilonGreedyBanditModelTest() override = default;
+
+  void SaveSegments(
+      const std::vector<std::string>& segments) {
+    const std::string json = SerializeSegments(segments);
+
+    AdsClientHelper::Get()->SetStringPref(
+        prefs::kEpsilonGreedyBanditEligibleSegments, json);
+  }
+
+  void SaveAllSegments() {
+    SaveSegments(kSegments);
+  }
 };
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
     GetSegmentsIfProcessorNeverInitialized) {
   // Arrange
+  SaveAllSegments();
 
   // Act
   model::EpsilonGreedyBandit model;
@@ -41,6 +56,8 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
     GetSegmentsIfNeverProcessed) {
   // Arrange
+  SaveAllSegments();
+
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "0.25"}});
@@ -58,6 +75,8 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
     GetSegmentsForExploration) {
   // Arrange
+  SaveAllSegments();
+
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "1.0"}});
@@ -81,6 +100,8 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
     GetSegmentsForExploitation) {
   // Arrange
+  SaveAllSegments();
+
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       features::kEpsilonGreedyBandit, {{"epsilon_value", "0.0"}});
@@ -88,7 +109,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
   processor::EpsilonGreedyBandit processor;
-  for (const auto& segment : resource::kSegments) {
+  for (const auto& segment : kSegments) {
     processor.Process({segment, AdNotificationEventType::kDismissed});
   }
 
@@ -115,6 +136,55 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   const SegmentList expected_segments = {
     "science",
     "travel",
+    "technology & computing"
+  };
+
+  EXPECT_EQ(expected_segments, segments);
+}
+
+TEST_F(BatAdsEpsilonGreedyBanditModelTest,
+    GetSegmentsForEligibleSegments) {
+  // Arrange
+  const std::vector<std::string> eligible_segments = {
+    "science",
+    "technology & computing",
+    "invalid_segment"
+  };
+  SaveSegments(eligible_segments);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      features::kEpsilonGreedyBandit, {{"epsilon_value", "0.0"}});
+
+  // Set all values to zero by choosing a zero-reward action due to
+  // optimistic initial values for arms
+  processor::EpsilonGreedyBandit processor;
+  for (const auto& segment : kSegments) {
+    processor.Process({segment, AdNotificationEventType::kDismissed});
+  }
+
+  std::string segment_1 = "science";
+  processor.Process({segment_1, AdNotificationEventType::kClicked});
+  processor.Process({segment_1, AdNotificationEventType::kClicked});
+  processor.Process({segment_1, AdNotificationEventType::kClicked});
+
+  std::string segment_2 = "travel";
+  processor.Process({segment_2, AdNotificationEventType::kDismissed});
+  processor.Process({segment_2, AdNotificationEventType::kClicked});
+  processor.Process({segment_2, AdNotificationEventType::kClicked});
+
+  std::string segment_3 = "technology & computing";
+  processor.Process({segment_3, AdNotificationEventType::kDismissed});
+  processor.Process({segment_3, AdNotificationEventType::kDismissed});
+  processor.Process({segment_3, AdNotificationEventType::kClicked});
+
+  // Act
+  model::EpsilonGreedyBandit model;
+  const SegmentList segments = model.GetSegments();
+
+  // Assert
+  const SegmentList expected_segments = {
+    "science",
     "technology & computing"
   };
 

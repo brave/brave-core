@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "bat/ads/internal/logging.h"
 
 #include <iostream>
@@ -19,9 +20,9 @@ namespace ad_targeting {
 
 namespace {
 
-const char kArmSegmentKey[] = "segment";
-const char kArmValueKey[] = "value";
-const char kArmPullsKey[] = "pulls";
+const char kSegmentKey[] = "segment";
+const char kValueKey[] = "value";
+const char kPullsKey[] = "pulls";
 
 bool GetArmFromDictionary(
     const base::DictionaryValue* dictionary,
@@ -39,15 +40,15 @@ bool GetArmFromDictionary(
 
   EpsilonGreedyBanditArmInfo arm;
 
-  const std::string* segment = dictionary->FindStringKey(kArmSegmentKey);
+  const std::string* segment = dictionary->FindStringKey(kSegmentKey);
   if (!segment) {
     return false;
   }
   arm.segment = *segment;
 
-  arm.pulls = dictionary->FindIntKey(kArmPullsKey).value_or(0);
+  arm.pulls = dictionary->FindIntKey(kPullsKey).value_or(0);
 
-  arm.value = dictionary->FindDoubleKey(kArmValueKey).value_or(1.0);
+  arm.value = dictionary->FindDoubleKey(kValueKey).value_or(1.0);
 
   *info = arm;
 
@@ -117,9 +118,9 @@ std::string EpsilonGreedyBanditArms::ToJson(
 
   for (const auto& arm : arms) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey(kArmSegmentKey, base::Value(arm.first));
-    dictionary.SetKey(kArmPullsKey, base::Value(arm.second.pulls));
-    dictionary.SetKey(kArmValueKey, base::Value(arm.second.value));
+    dictionary.SetKey(kSegmentKey, base::Value(arm.first));
+    dictionary.SetKey(kPullsKey, base::Value(arm.second.pulls));
+    dictionary.SetKey(kValueKey, base::Value(arm.second.value));
     arms_dictionary.SetKey(arm.first, std::move(dictionary));
   }
 

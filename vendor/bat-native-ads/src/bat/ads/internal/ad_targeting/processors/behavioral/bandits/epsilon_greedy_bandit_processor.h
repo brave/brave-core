@@ -29,12 +29,6 @@ class EpsilonGreedyBandit : public Processor<BanditFeedbackInfo> {
       const BanditFeedbackInfo& feedback) override;
 
  private:
-  EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
-      const EpsilonGreedyBanditArmMap& arms) const;
-
-  EpsilonGreedyBanditArmMap MaybeDeleteArms(
-      const EpsilonGreedyBanditArmMap& arms) const;
-
   void InitializeArms() const;
 
   void UpdateArm(

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/p2a/p2a_util.h"
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 
 namespace ads {
 namespace p2a {

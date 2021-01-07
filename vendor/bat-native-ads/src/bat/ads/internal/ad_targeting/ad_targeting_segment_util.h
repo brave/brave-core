@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_UTIL_H_
-#define BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_UTIL_H_
+#ifndef BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_SEGMENT_UTIL_H_
+#define BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_SEGMENT_UTIL_H_
 
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_aliases.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
 
@@ -27,4 +27,4 @@ bool ShouldFilterSegment(
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_UTIL_H_
+#endif  // BAT_ADS_INTERNAL_AD_TARGETING_AD_TARGETING_SEGMENT_UTIL_H_

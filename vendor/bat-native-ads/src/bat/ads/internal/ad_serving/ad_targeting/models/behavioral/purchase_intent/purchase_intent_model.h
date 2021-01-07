@@ -7,7 +7,7 @@
 #define BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_MODEL_H_  // NOLINT
 
 #include "bat/ads/internal/ad_serving/ad_targeting/models/model.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_aliases.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
 namespace ad_targeting {

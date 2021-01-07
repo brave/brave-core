@@ -14,7 +14,6 @@
 namespace ads {
 
 class Catalog;
-struct CatalogIssuersInfo;
 
 class AdServer {
  public:
@@ -50,7 +49,7 @@ class AdServer {
   void FetchAfterDelay();
 
   void NotifyCatalogUpdated(
-      const CatalogIssuersInfo& catalog_issuers);
+      const Catalog& catalog);
   void NotifyCatalogFailed();
 };
 

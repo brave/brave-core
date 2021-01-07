@@ -10,9 +10,9 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
-#include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/pref_names.h"
@@ -22,8 +22,69 @@ namespace ad_targeting {
 namespace processor {
 
 namespace {
+
 const double kArmDefaultValue = 1.0;
 const uint64_t kArmDefaultPulls = 0;
+
+EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
+    const EpsilonGreedyBanditArmMap& arms) {
+  EpsilonGreedyBanditArmMap updated_arms = arms;
+
+  for (const auto& segment : kSegments) {
+    const auto iter = updated_arms.find(segment);
+
+    if (iter != updated_arms.end()) {
+      BLOG(3, "Epsilon greedy bandit arm already exists for "
+          << segment << " segment");
+
+      continue;
+    }
+
+    if (!iter->second.IsValid()) {
+      EpsilonGreedyBanditArmInfo new_arm;
+      new_arm.value = kArmDefaultValue;
+      new_arm.pulls = kArmDefaultPulls;
+
+      updated_arms[segment] = new_arm;
+
+      BLOG(2, "Epsilon greedy bandit invalid arm was reset for "
+          << segment << " segment");
+
+      continue;
+    }
+
+    EpsilonGreedyBanditArmInfo arm;
+    arm.value = kArmDefaultValue;
+    arm.pulls = kArmDefaultPulls;
+
+    updated_arms[segment] = arm;
+
+    BLOG(2, "Epsilon greedy bandit arm was added for "
+        << segment << " segment");
+  }
+
+  return updated_arms;
+}
+
+EpsilonGreedyBanditArmMap MaybeDeleteArms(
+    const EpsilonGreedyBanditArmMap& arms) {
+  EpsilonGreedyBanditArmMap updated_arms = arms;
+
+  for (const auto& arm : updated_arms) {
+    const auto iter = std::find(kSegments.begin(), kSegments.end(), arm.first);
+    if (iter != kSegments.end()) {
+      continue;
+    }
+
+    updated_arms.erase(arm.first);
+
+    BLOG(2, "Epsilon greedy bandit arm was deleted for "
+        << arm.first << " segment ");
+  }
+
+  return updated_arms;
+}
+
 }  // namespace
 
 EpsilonGreedyBandit::EpsilonGreedyBandit() {
@@ -42,80 +103,37 @@ void EpsilonGreedyBandit::Process(
       UpdateArm(/* reward */ 0, segment);
       break;
     }
+
     case AdNotificationEventType::kClicked: {
       UpdateArm(/* reward */ 1, segment);
       break;
     }
+
     case AdNotificationEventType::kViewed: {
       NOTREACHED();
       break;
     }
   }
 
-  BLOG(1, "Epsilon Greedy Bandit processed ad event");
+  BLOG(1, "Epsilon greedy bandit processed " << feedback.ad_event_type);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-EpsilonGreedyBanditArmMap EpsilonGreedyBandit::MaybeAddOrResetArms(
-    const EpsilonGreedyBanditArmMap& arms) const {
-  EpsilonGreedyBanditArmMap updated_arms = arms;
-  for (const auto& segment : resource::kSegments) {
-    const auto iter = updated_arms.find(segment);
-
-    if (iter == updated_arms.end()) {
-      EpsilonGreedyBanditArmInfo arm;
-      arm.value = kArmDefaultValue;
-      arm.pulls = kArmDefaultPulls;
-      updated_arms[segment] = arm;
-      BLOG(6, "Epsilon Greedy Bandit added arm for segment " << segment);
-      continue;
-    }
-
-    if (!iter->second.IsValid()) {
-      EpsilonGreedyBanditArmInfo new_arm;
-      new_arm.value = kArmDefaultValue;
-      new_arm.pulls = kArmDefaultPulls;
-      updated_arms[segment] = new_arm;
-      BLOG(6, "Epsilon Greedy Bandit reset invalid arm for segment  "
-          << segment);
-      continue;
-    }
-
-    BLOG(6, "Epsilon Greedy Bandit arm exists for segment " << segment);
-  }
-
-  return updated_arms;
-}
-
-EpsilonGreedyBanditArmMap EpsilonGreedyBandit::MaybeDeleteArms(
-    const EpsilonGreedyBanditArmMap& arms) const {
-  EpsilonGreedyBanditArmMap updated_arms = arms;
-  for (const auto& arm : updated_arms) {
-    auto iter = std::find(resource::kSegments.begin(),
-        resource::kSegments.end(), arm.first);
-
-    if (iter == resource::kSegments.end()) {
-      updated_arms.erase(arm.first);
-      BLOG(6, "Epsilon Greedy Bandit deleted arm for segment " << arm.first);
-    }
-  }
-
-  return updated_arms;
-}
-
 void EpsilonGreedyBandit::InitializeArms() const {
   std::string json = AdsClientHelper::Get()->GetStringPref(
       prefs::kEpsilonGreedyBanditArms);
+
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
 
   arms = MaybeAddOrResetArms(arms);
+
   arms = MaybeDeleteArms(arms);
 
   json = EpsilonGreedyBanditArms::ToJson(arms);
-  AdsClientHelper::Get()->SetStringPref(
-      prefs::kEpsilonGreedyBanditArms, json);
-  BLOG(1, "Epsilon Greedy Bandit successfully initialized arms");
+  AdsClientHelper::Get()->SetStringPref(prefs::kEpsilonGreedyBanditArms, json);
+
+  BLOG(1, "Successfully initialized epsilon greedy bandit arms");
 }
 
 void EpsilonGreedyBandit::UpdateArm(
@@ -123,15 +141,18 @@ void EpsilonGreedyBandit::UpdateArm(
     const std::string& segment) const {
   std::string json = AdsClientHelper::Get()->GetStringPref(
       prefs::kEpsilonGreedyBanditArms);
+
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
 
   if (arms.empty()) {
+    BLOG(1, "No epsilon greedy bandit arms");
     return;
   }
 
   const auto iter = arms.find(segment);
   if (iter == arms.end()) {
-    BLOG(1, "Epsilon Greedy Bandit arm not found for segment " << segment);
+    BLOG(1, "Epsilon greedy bandit arm was not found for "
+        << segment << " segment");
     return;
   }
 
@@ -141,10 +162,12 @@ void EpsilonGreedyBandit::UpdateArm(
   iter->second = arm;
 
   json = EpsilonGreedyBanditArms::ToJson(arms);
+
   AdsClientHelper::Get()->SetStringPref(
       prefs::kEpsilonGreedyBanditArms, json);
 
-  BLOG(1, "Epsilon Greedy Bandit arm updated for segment " << segment);
+  BLOG(1, "Epsilon greedy bandit arm was updated for "
+      << segment << " segment");
 }
 
 }  // namespace processor

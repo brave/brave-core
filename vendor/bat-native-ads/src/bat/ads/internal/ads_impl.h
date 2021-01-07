@@ -33,6 +33,7 @@ class AdServing;
 namespace ad_targeting {
 
 namespace resource {
+class EpsilonGreedyBandit;
 class PurchaseIntent;
 class TextClassification;
 }  // namespace resource
@@ -61,6 +62,7 @@ class AdsClientHelper;
 class AdServer;
 class AdTargeting;
 class AdTransfer;
+class Catalog;
 class Client;
 class ConfirmationsState;
 class Conversions;
@@ -70,7 +72,6 @@ class UserActivity;
 struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
-struct CatalogIssuersInfo;
 struct NewTabPageAdInfo;
 
 class AdsImpl
@@ -197,6 +198,8 @@ class AdsImpl
   std::unique_ptr<Account> account_;
   std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
       epsilon_greedy_bandit_processor_;
+  std::unique_ptr<ad_targeting::resource::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_resource_;
   std::unique_ptr<ad_targeting::resource::TextClassification>
       text_classification_resource_;
   std::unique_ptr<ad_targeting::processor::TextClassification>
@@ -262,7 +265,7 @@ class AdsImpl
 
   // AdServerObserver implementation
   void OnCatalogUpdated(
-      const CatalogIssuersInfo& catalog_issuers) override;
+      const Catalog& catalog) override;
 
   // AdTransferObserver implementation
   void OnAdTransfer(

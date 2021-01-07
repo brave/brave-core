@@ -55,11 +55,11 @@ void Log() {
     BLOG(1, "No active study found");
   }
 
-  BLOG(1, "Text Classification "
+  BLOG(1, "Text classification feature is "
       << (IsTextClassificationEnabled() ? "enabled" : "disabled"));
-  BLOG(1, "Epsilon Greedy Bandit "
+  BLOG(1, "Epsilon greedy bandit feature is "
       << (IsEpsilonGreedyBanditEnabled() ? "enabled" : "disabled"));
-  BLOG(1, "Purchase Intent "
+  BLOG(1, "Purchase intent feature is "
       << (IsPurchaseIntentEnabled() ? "enabled" : "disabled"));
 }
 

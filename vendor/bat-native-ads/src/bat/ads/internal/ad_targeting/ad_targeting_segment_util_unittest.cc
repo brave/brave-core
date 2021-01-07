@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 
 #include <string>
 
@@ -15,7 +15,7 @@
 namespace ads {
 namespace ad_targeting {
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     SplitParentChildSegment) {
   // Arrange
   const std::string segment = "parent-child";
@@ -32,7 +32,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     SplitParentSegment) {
   // Arrange
   const std::string segment = "parent";
@@ -48,7 +48,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     SplitEmptySegment) {
   // Arrange
   const std::string segment = "";
@@ -62,7 +62,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     GetParentSegment) {
   // Arrange
   const std::string segment = "technology & computing-software";
@@ -76,7 +76,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     GetParentSegmentFromParentSegment) {
   // Arrange
   const std::string segment = "technology & computing";
@@ -90,7 +90,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     GetParentSegmentFromEmptyString) {
   // Arrange
   const std::string segment = "";
@@ -104,7 +104,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_parent_segment, parent_segment);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     GetParentSegments) {
   // Arrange
   const SegmentList segments = {
@@ -126,7 +126,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     GetParentSegmentsForEmptyList) {
   // Arrange
   const SegmentList segments;
@@ -140,7 +140,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     ShouldFilterParentChildSegment) {
   // Arrange
   Client client;
@@ -155,7 +155,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     ShouldFilterParentSegment) {
   // Arrange
   Client client;
@@ -170,7 +170,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_TRUE(should_filter_segment);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     ShouldNotFilterParentChildSegment) {
   // Arrange
   Client client;
@@ -185,7 +185,7 @@ TEST(BatAdsAdTargetingUtilTest,
   EXPECT_FALSE(should_filter_segment);
 }
 
-TEST(BatAdsAdTargetingUtilTest,
+TEST(BatAdsAdTargetingSegmentUtilTest,
     ShouldNotFilterParentSegment) {
   // Arrange
   Client client;
