@@ -128,6 +128,10 @@ std::string TorLauncherFactory::GetTorProxyURI() const {
   return tor_proxy_uri_;
 }
 
+std::string TorLauncherFactory::GetTorVersion() const {
+  return tor_version_;
+}
+
 
 void TorLauncherFactory::AddObserver(tor::TorProfileServiceImpl* service) {
   observers_.AddObserver(service);
@@ -198,6 +202,7 @@ void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
     return;
   }
   VLOG(2) << "Tor version: " << version;
+  tor_version_ = version;
 }
 
 void TorLauncherFactory::GotSOCKSListeners(

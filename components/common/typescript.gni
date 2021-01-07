@@ -21,6 +21,7 @@ brave_common_web_compile_inputs = [
   rebase_path("../definitions/rewardsExtensions.d.ts"),
   rebase_path("../definitions/rewardsInternals.d.ts"),
   rebase_path("../definitions/throttleit.d.ts"),
+  rebase_path("../definitions/torInternals.d.ts"),
   rebase_path("../definitions/webtorrent.d.ts"),
   rebase_path("../definitions/welcome.d.ts"),
   # webpack config changes

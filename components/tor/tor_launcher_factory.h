@@ -34,6 +34,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   virtual int64_t GetTorPid() const;
   virtual bool IsTorConnected() const;
   virtual std::string GetTorProxyURI() const;
+  virtual std::string GetTorVersion() const;
 
   void AddObserver(tor::TorProfileServiceImpl* serice);
   void RemoveObserver(tor::TorProfileServiceImpl* service);
@@ -77,6 +78,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   mojo::Remote<tor::mojom::TorLauncher> tor_launcher_;
 
   std::string tor_proxy_uri_;
+  std::string tor_version_;
 
   int64_t tor_pid_;
 

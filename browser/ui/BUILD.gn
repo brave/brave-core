@@ -391,6 +391,17 @@ source_set("ui") {
       "//brave/vendor/bat-native-ledger:headers",
     ]
   }
+  
+  if (enable_tor) {
+    sources += [
+      "webui/tor_internals_ui.cc",
+      "webui/tor_internals_ui.h",
+    ]
+
+    deps += [
+      "//brave/components/tor/resources:internals_generated_resources",
+    ]
+  }
 
   if (brave_wallet_enabled) {
     sources += [
