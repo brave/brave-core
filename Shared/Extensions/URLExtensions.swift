@@ -556,6 +556,12 @@ private extension URL {
             return ""
         }
 
+        var currentHost = host
+        // Hosts can have a trailing period after the tld
+        if host.hasSuffix(".") {
+            currentHost.removeLast()
+        }
+
         /**
         *  The following algorithm breaks apart the domain and checks each sub domain against the effective TLD
         *  entries from the effective_tld_names.dat file. It works like this:
@@ -578,11 +584,11 @@ private extension URL {
         *  top domain level so we use it by default.
         */
 
-        let tokens = host.components(separatedBy: ".")
+        let tokens = currentHost.components(separatedBy: ".")
         let tokenCount = tokens.count
         var suffix: String?
         var previousDomain: String?
-        var currentDomain: String = host
+        var currentDomain: String = currentHost
 
         for offset in 0..<tokenCount {
             // Store the offset for use outside of this scope so we can add additional parts if needed
@@ -616,7 +622,7 @@ private extension URL {
                 let literalFromEnd: NSString.CompareOptions = [.literal,        // Match the string exactly.
                                      .backwards,      // Search from the end.
                                      .anchored]         // Stick to the end.
-                let suffixlessHost = host.replacingOccurrences(of: suffix, with: "", options: literalFromEnd, range: nil)
+                let suffixlessHost = currentHost.replacingOccurrences(of: suffix, with: "", options: literalFromEnd, range: nil)
                 let suffixlessTokens = suffixlessHost.components(separatedBy: ".").filter { $0 != "" }
                 let maxAdditionalCount = max(0, suffixlessTokens.count - additionalPartCount)
                 let additionalParts = suffixlessTokens[maxAdditionalCount..<suffixlessTokens.count]

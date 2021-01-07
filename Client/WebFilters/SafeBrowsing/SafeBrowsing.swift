@@ -47,20 +47,14 @@ class SafeBrowsing {
     }
     
     private func fillDomainList() {
-        DispatchQueue.global(qos: .background).async {
-            var newList = Set<String>()
-            
-            self.listNames.forEach {
-                if let list = self.openList(withName: $0.name) {
-                    newList.formUnion(self.parse(list, regex: $0.regex))
-                }
-            }
-            
-            DispatchQueue.main.async {
-                log.info("Safe browsing list was filled with \(newList.count) records")
-                self.domainList = newList
+        var newList = Set<String>()
+
+        self.listNames.forEach {
+            if let list = self.openList(withName: $0.name) {
+                newList.formUnion(self.parse(list, regex: $0.regex))
             }
         }
+        self.domainList = newList
     }
     
     private func openList(withName name: String) -> String? {

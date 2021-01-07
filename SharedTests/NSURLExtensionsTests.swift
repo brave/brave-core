@@ -78,6 +78,26 @@ class NSURLExtensionsTests: XCTestCase {
         XCTAssertEqual("co.uk", expected)
     }
 
+    func testBaseDomainWithTrailingDot() {
+        var url = URL(string: "https://test.domain.com")
+        XCTAssertEqual(url?.baseDomain , "domain.com")
+
+        url = URL(string: "https://test.domain.com.")
+        XCTAssertEqual(url?.baseDomain, "domain.com")
+
+        url = URL(string: "https://test.domain.com..")
+        XCTAssertEqual(url?.baseDomain, nil)
+
+        url = URL(string: "https://foo")
+        XCTAssertEqual(url?.baseDomain, "foo")
+
+        url = URL(string: "https://foo.")
+        XCTAssertEqual(url?.baseDomain, ".foo")
+
+        url = URL(string: "https://.")
+        XCTAssertEqual(url?.baseDomain, "")
+    }
+
     func testCanadaComputers() {
         let url = "http://m.canadacomputers.com".asURL!
         let actual = url.baseDomain!
