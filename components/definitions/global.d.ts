@@ -87,7 +87,7 @@ declare global {
       alreadyKnownFirstPartySubtrees: WeakSet
       _hasDelayOcurred: boolean
       _startCheckingId: number | undefined
-      cf_worker: any
+      scriplet: string
     }
   }
 }

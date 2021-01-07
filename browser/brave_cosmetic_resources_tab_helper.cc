@@ -189,11 +189,20 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
     if (!i->GetAsDictionary(&resources_dict)) {
       continue;
     }
-    std::string to_inject;
-    resources_dict->GetString("injected_script", &to_inject);
-    auto* frame_host = content::RenderFrameHost::FromID(frame_id);
-    if (!frame_host)
-      return;
+    std::string pre_init_script =
+        "(function() {"
+        "if (window.content_cosmetic == undefined) {"
+          "window.content_cosmetic = new Object();}";
+    std::string json_to_inject;
+    if (base::JSONWriter::Write(
+        *(resources_dict->FindPath("injected_script")), &json_to_inject) &&
+            json_to_inject.length() > 1) {
+      pre_init_script +=
+        "if (window.content_cosmetic.scriplet == undefined ||"
+            "window.content_cosmetic.scriplet === '') {"
+          "let text = " + json_to_inject + ";"
+          "window.content_cosmetic.scriplet = `${text}`;}";
+    }
     if (do_non_scriplets) {
       Profile* profile = Profile::FromBrowserContext(
           web_contents()->GetBrowserContext());
@@ -203,10 +212,7 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
                   GURL(url));
       bool generichide = false;
       resources_dict->GetBoolean("generichide", &generichide);
-      std::string pre_init_script =
-        "(function() {"
-        "if (window.content_cosmetic == undefined) {"
-          "window.content_cosmetic = new Object();}"
+      pre_init_script +=
         "if (window.content_cosmetic.hide1pContent === undefined) {"
           "window.content_cosmetic.hide1pContent = ";
       if (enabled_1st_party_cf_filtering_) {
@@ -224,37 +230,19 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
         pre_init_script += "false";
       }
       pre_init_script += ";"
-        "}"
-        "})();";
-      frame_host->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(pre_init_script),
-        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+        "}";
+    }
+    pre_init_script += "})();";
+    auto* frame_host = content::RenderFrameHost::FromID(frame_id);
+    if (!frame_host)
+      return;
+    frame_host->ExecuteJavaScriptInIsolatedWorld(
+      base::UTF8ToUTF16(pre_init_script),
+      base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+    if (do_non_scriplets) {
       frame_host->ExecuteJavaScriptInIsolatedWorld(
         base::UTF8ToUTF16(*BraveCosmeticResourcesTabHelper::observing_script_),
         base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
-    }
-    if (to_inject.length() > 1) {
-      std::string script =
-        "(function() {"
-          "let script;"
-          "let text = " + to_inject + ";"
-          "try {"
-            "script = document.createElement('script');"
-            "const textnode = document.createTextNode(text);"
-            "script.appendChild(textnode);"
-            "(document.head || document.documentElement).appendChild(script);"
-          "} catch (ex) {"
-          "}"
-          "if (script) {"
-            "if (script.parentNode) {"
-              "script.parentNode.removeChild(script);"
-            "}"
-            "script.textContent = '';"
-          "}"
-        "})();";
-      frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16(script),
-          base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
     // Working on css rules, we do that on a main frame only
     if (!do_non_scriplets)

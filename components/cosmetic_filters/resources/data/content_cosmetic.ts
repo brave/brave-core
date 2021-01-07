@@ -23,7 +23,7 @@ let notYetQueriedClasses: string[]
 let notYetQueriedIds: string[]
 let cosmeticObserver: MutationObserver | undefined = undefined
 
-window.content_cosmetic = window.content_cosmetic || new Object();
+window.content_cosmetic = window.content_cosmetic || new Object()
 window.content_cosmetic.cosmeticStyleSheet =
   window.content_cosmetic.cosmeticStyleSheet || new CSSStyleSheet()
 window.content_cosmetic.allSelectorsToRules =
@@ -42,8 +42,8 @@ window.content_cosmetic.finalRunQueue =
   window.content_cosmetic.finalRunQueue || new Set<string>()
 window.content_cosmetic.allQueues = window.content_cosmetic.allQueues ||
   [window.content_cosmetic.firstRunQueue,
-  window.content_cosmetic.secondRunQueue,
-  window.content_cosmetic.finalRunQueue]
+    window.content_cosmetic.secondRunQueue,
+    window.content_cosmetic.finalRunQueue]
 window.content_cosmetic.numQueues =
   window.content_cosmetic.numQueues || window.content_cosmetic.allQueues.length
 window.content_cosmetic.alreadyUnhiddenSelectors =
@@ -54,6 +54,24 @@ window.content_cosmetic._hasDelayOcurred =
   window.content_cosmetic._hasDelayOcurred || false
 window.content_cosmetic._startCheckingId =
   window.content_cosmetic._startCheckingId || undefined
+
+function injectScriptlet (text: string) {
+  let script
+  try {
+    script = document.createElement('script')
+    const textnode: Text = document.createTextNode(text)
+    script.appendChild(textnode);
+    (document.head || document.documentElement).appendChild(script)
+  } catch (ex) {
+    /* Unused catch */
+  }
+  if (script) {
+    if (script.parentNode) {
+      script.parentNode.removeChild(script)
+    }
+    script.textContent = ''
+  }
+}
 
 /**
  * Provides a new function which can only be scheduled once at a time.
@@ -76,7 +94,7 @@ const idleize = (onIdle: Function, timeout: number) => {
 
 const isRelativeUrl = (url: string): boolean => {
   try {
-    new URL(url)
+    new URL(url) // tslint:disable-line
   } catch (e) {
     // The url is invalid or relative
     return true
@@ -109,7 +127,7 @@ const fetchNewClassIdRules = () => {
   // Callback to c++ renderer process
   // @ts-ignore
   cf_worker.hiddenClassIdSelectors(
-      JSON.stringify({classes: notYetQueriedClasses, ids: notYetQueriedIds}))
+      JSON.stringify({ classes: notYetQueriedClasses, ids: notYetQueriedIds }))
   notYetQueriedClasses = []
   notYetQueriedIds = []
 }
@@ -542,9 +560,14 @@ const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
 }
 
 if (!window.content_cosmetic.observingHasStarted) {
-  window.content_cosmetic.observingHasStarted = true;
+  window.content_cosmetic.observingHasStarted = true
   scheduleQueuePump(window.content_cosmetic.hide1pContent,
-    window.content_cosmetic.generichide);
+    window.content_cosmetic.generichide)
+} else if (window.content_cosmetic.scriplet &&
+    window.content_cosmetic.scriplet !== '') {
+  let scriptlet = window.content_cosmetic.scriplet
+  window.content_cosmetic.scriplet = ''
+  injectScriptlet(scriptlet)
 } else {
-  scheduleQueuePump(false, false);
+  scheduleQueuePump(false, false)
 }
