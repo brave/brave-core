@@ -309,6 +309,8 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
             return item is CacheClearable || item is CookiesAndCacheClearable
         }
         
+        let historyCleared = clearables.contains { $0 is HistoryClearable }
+        
         if clearAffectsTabs {
             DispatchQueue.main.async {
                 self.tabManager.allTabs.forEach({ $0.reload() })
@@ -339,6 +341,11 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                     if clearAffectsTabs {
                         self.tabManager.allTabs.forEach({ $0.reload() })
                     }
+                    
+                    if historyCleared {
+                        self.tabManager.clearTabHistory()
+                    }
+                    
                     _toggleFolderAccessForBlockCookies(locked: true)
                     deferred.fill(())
                 })

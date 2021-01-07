@@ -104,6 +104,18 @@ public final class TabMO: NSManagedObject, CRUD {
         }
     }
     
+    // Deletes the Tab History by removing items except the last one from historysnapshot and setting current index
+    public class func removeHistory(with tabID: String) {
+        DataController.perform { context in
+            guard let tabToUpdate = getInternal(fromId: tabID, context: context) else { return }
+            
+            if let lastItem = tabToUpdate.urlHistorySnapshot?.lastObject {
+                tabToUpdate.urlHistorySnapshot = [lastItem] as NSArray
+                tabToUpdate.urlHistoryCurrentIndex = 0
+            }
+        }
+    }
+    
     public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
         DataController.perform { context in
             let tabMO = getInternal(fromId: tabId, context: context)

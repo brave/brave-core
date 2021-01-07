@@ -256,6 +256,32 @@ class Tab: NSObject {
         contentScriptManager.helpers.removeAll()
     }
     
+    func clearHistory(config: WKWebViewConfiguration) {
+        guard let webView = webView,
+              let tabID = id  else {
+            return
+        }
+        
+        // Remove the tab history from saved tabs
+        TabMO.removeHistory(with: tabID)
+
+        /*
+         * Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
+         * and this method Removes all items except the current one in the tab list so when another url is added it will add the list properly
+         * This approach is chosen to achieve removing tab history in the event of removing  browser history
+         * Best way perform this is to clear the backforward list and in our case there is no drawback to clear the list
+         * And alternative would be to reload webpages which will be costly and also can cause unexpected results
+         */
+        let argument: [Any] = ["_c", "lea", "r"]
+
+        let method = argument.compactMap { $0 as? String }.joined()
+        let selector: Selector = NSSelectorFromString(method)
+
+        if webView.backForwardList.responds(to: selector) {
+          webView.backForwardList.performSelector(onMainThread: selector, with: nil, waitUntilDone: true)
+        }
+    }
+    
     func restore(_ webView: WKWebView, restorationData: SavedTab?) {
         // Pulls restored session data from a previous SavedTab to load into the Tab. If it's nil, a session restore
         // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
@@ -265,6 +291,7 @@ class Tab: NSObject {
             lastTitle = sessionData.title
             var updatedURLs = [String]()
             var previous = ""
+            
             for urlString in sessionData.history {
                 guard let url = URL(string: urlString) else { continue }
                 let updatedURL = WebServer.sharedInstance.updateLocalURL(url)!.absoluteString
@@ -275,19 +302,24 @@ class Tab: NSObject {
                 previous = current
                 updatedURLs.append(updatedURL)
             }
+            
             let currentPage = sessionData.historyIndex
             self.sessionData = nil
+            
             var jsonDict = [String: AnyObject]()
             jsonDict[SessionData.Keys.history] = updatedURLs as AnyObject
             jsonDict[SessionData.Keys.currentPage] = Int(currentPage) as AnyObject
             
-            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
+            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed),
+                  let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?history=\(escapedJSON)") else {
                 return
             }
             
-            let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?history=\(escapedJSON)")
-            lastRequest = PrivilegedRequest(url: restoreURL!) as URLRequest
-            webView.load(lastRequest!)
+            lastRequest = PrivilegedRequest(url: restoreURL) as URLRequest
+            
+            if let request = lastRequest {
+                webView.load(request)
+            }
         } else if let request = lastRequest {
             webView.load(request)
         } else {
