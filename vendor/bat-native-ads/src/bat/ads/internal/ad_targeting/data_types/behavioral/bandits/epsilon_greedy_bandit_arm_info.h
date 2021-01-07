@@ -14,7 +14,7 @@ struct EpsilonGreedyBanditArmInfo {
   EpsilonGreedyBanditArmInfo();
 
   EpsilonGreedyBanditArmInfo(
-    const EpsilonGreedyBanditArmInfo& info);
+      const EpsilonGreedyBanditArmInfo& info);
 
   ~EpsilonGreedyBanditArmInfo();
 

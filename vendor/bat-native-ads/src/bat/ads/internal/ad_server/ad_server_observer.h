@@ -10,13 +10,13 @@
 
 namespace ads {
 
-struct CatalogIssuersInfo;
+class Catalog;
 
 class AdServerObserver : public base::CheckedObserver {
  public:
   // Invoked when the catalog has been updated
   virtual void OnCatalogUpdated(
-      const CatalogIssuersInfo& catalog_issuers) {}
+      const Catalog& catalog) {}
 
   // Invoked when fetching the catalog fails
   virtual void OnCatalogFailed() {}

@@ -8,7 +8,7 @@
 #include <string>
 
 #include "brave/components/l10n/browser/locale_helper.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/client/client.h"

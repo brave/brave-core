@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_aliases.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
 

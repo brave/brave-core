@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 
 namespace ads {

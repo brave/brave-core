@@ -14,6 +14,7 @@
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
@@ -25,6 +26,7 @@
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -96,6 +98,18 @@ class BatAdsAdTargetingTest
               text_classification_resource_.get());
   }
 
+  void SaveSegments(
+      const std::vector<std::string>& segments) {
+    const std::string json = SerializeSegments(segments);
+
+    AdsClientHelper::Get()->SetStringPref(
+        prefs::kEpsilonGreedyBanditEligibleSegments, json);
+  }
+
+  void SaveAllSegments() {
+    SaveSegments(kSegments);
+  }
+
   void ProcessBandit() {
     const std::vector<processor::BanditFeedbackInfo> feedbacks = {
       {"science", AdNotificationEventType::kClicked},
@@ -109,7 +123,7 @@ class BatAdsAdTargetingTest
       {"technology & computing", AdNotificationEventType::kClicked}
     };
 
-    for (const auto& segment : resource::kSegments) {
+    for (const auto& segment : kSegments) {
       bandit_processor_->Process(
           {segment, AdNotificationEventType::kDismissed});
     }
@@ -153,6 +167,8 @@ class BatAdsAdTargetingTest
 TEST_P(BatAdsAdTargetingTest,
     GetSegments) {
   // Arrange
+  SaveAllSegments();
+
   ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
     ProcessBandit();
@@ -227,6 +243,8 @@ INSTANTIATE_TEST_SUITE_P(BatAdsAdTargetingTest,
 TEST_F(BatAdsAdTargetingTest,
     GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
+  SaveAllSegments();
+
   ProcessBandit();
   ProcessTextClassification();
   ProcessPurchaseIntent();
@@ -264,6 +282,8 @@ TEST_F(BatAdsAdTargetingTest,
 TEST_F(BatAdsAdTargetingTest,
     GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
+  SaveAllSegments();
+
   ProcessBandit();
   ProcessTextClassification();
   ProcessPurchaseIntent();

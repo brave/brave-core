@@ -6,7 +6,7 @@
 #ifndef BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_AD_TARGETING_MODEL_H_
 #define BAT_ADS_INTERNAL_AD_SERVING_AD_TARGETING_MODELS_AD_TARGETING_MODEL_H_
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_aliases.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_segment.h"
 
 namespace ads {
 namespace ad_targeting {

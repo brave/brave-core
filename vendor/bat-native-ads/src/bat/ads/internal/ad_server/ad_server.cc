@@ -91,8 +91,7 @@ void AdServer::OnFetch(
     if (catalog.FromJson(url_response.body)) {
       SaveCatalog(catalog);
 
-      const CatalogIssuersInfo catalog_issuers = catalog.GetIssuers();
-      NotifyCatalogUpdated(catalog_issuers);
+      NotifyCatalogUpdated(catalog);
 
       FetchAfterDelay();
 
@@ -171,9 +170,9 @@ void AdServer::FetchAfterDelay() {
 }
 
 void AdServer::NotifyCatalogUpdated(
-    const CatalogIssuersInfo& catalog_issuers) {
+    const Catalog& catalog) {
   for (AdServerObserver& observer : observers_) {
-    observer.OnCatalogUpdated(catalog_issuers);
+    observer.OnCatalogUpdated(catalog);
   }
 }
 

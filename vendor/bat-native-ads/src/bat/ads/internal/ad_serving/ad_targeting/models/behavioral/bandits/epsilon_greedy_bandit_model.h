@@ -8,8 +8,6 @@
 
 #include "bat/ads/internal/ad_serving/ad_targeting/models/model.h"
 
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
-
 namespace ads {
 namespace ad_targeting {
 namespace model {
@@ -21,10 +19,6 @@ class EpsilonGreedyBandit : public Model {
   ~EpsilonGreedyBandit() override;
 
   SegmentList GetSegments() const override;
-
- private:
-  SegmentList ChooseAction(
-      const EpsilonGreedyBanditArmMap& arms) const;
 };
 
 }  // namespace model

@@ -25,15 +25,16 @@
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
+#include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 #include "bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h"
 #include "bat/ads/internal/ad_transfer/ad_transfer.h"
-#include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/conversions/conversions.h"
@@ -383,6 +384,11 @@ void AdsImpl::set(
   account_ = std::make_unique<Account>(token_generator_.get());
   account_->AddObserver(this);
 
+  epsilon_greedy_bandit_resource_ =
+      std::make_unique<ad_targeting::resource::EpsilonGreedyBandit>();
+  epsilon_greedy_bandit_processor_ =
+      std::make_unique<ad_targeting::processor::EpsilonGreedyBandit>();
+
   text_classification_resource_ =
       std::make_unique<ad_targeting::resource::TextClassification>();
   text_classification_processor_ =
@@ -394,8 +400,6 @@ void AdsImpl::set(
   purchase_intent_processor_ =
       std::make_unique<ad_targeting::processor::PurchaseIntent>(
           purchase_intent_resource_.get());
-  epsilon_greedy_bandit_processor_ =
-      std::make_unique<ad_targeting::processor::EpsilonGreedyBandit>();
 
   ad_targeting_ = std::make_unique<AdTargeting>();
   subdivision_targeting_ =
@@ -591,9 +595,11 @@ void AdsImpl::OnAdNotificationTimedOut(
 }
 
 void AdsImpl::OnCatalogUpdated(
-    const CatalogIssuersInfo& catalog_issuers) {
-  account_->SetCatalogIssuers(catalog_issuers);
+    const Catalog& catalog) {
+  account_->SetCatalogIssuers(catalog.GetIssuers());
   account_->TopUpUnblindedTokens();
+
+  epsilon_greedy_bandit_resource_->LoadFromDatabase();
 }
 
 void AdsImpl::OnAdTransfer(
