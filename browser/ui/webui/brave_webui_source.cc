@@ -221,6 +221,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "torStatusDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED },   // NOLINT
         { "torStatusInitializing", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING },   // NOLINT
 
+        // Together prompt
+        { "togetherPromptTitle", IDS_BRAVE_TOGETHER_PROMPT_TITLE },
+        { "togetherPromptDescription", IDS_BRAVE_TOGETHER_PROMPT_DESCRIPTION },
+        { "togetherPromptAction", IDS_BRAVE_TOGETHER_PROMPT_ACTION },
+
         // Rewards widget
         { "rewardsWidgetBap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
         { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },

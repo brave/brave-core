@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Dispatch } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, select } from '@storybook/addon-knobs/react'
+import { withKnobs, select, boolean } from '@storybook/addon-knobs/react'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
@@ -72,6 +72,7 @@ function dismissBraveTodayIntroCard () {
 
 storiesOf('New Tab/Containers', module)
   .addDecorator(withKnobs)
+  .addDecorator(story => <div dir={boolean('rtl?', false) ? 'rtl' : ''}>{story()}</div>)
   .addDecorator(story => <StoreProvider story={story()} />)
   .addDecorator(story => <ThemeProvider story={story()} />)
   .add('Default', () => {

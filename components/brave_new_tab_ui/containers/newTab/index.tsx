@@ -8,7 +8,7 @@ import * as React from 'react'
 // Components
 import Stats from './stats'
 import TopSitesGrid from './gridSites'
-import FooterInfo from './footerInfo'
+import FooterInfo from '../../components/default/footer/footer'
 import SiteRemovalNotification from './notification'
 import {
   ClockWidget as Clock,
@@ -1079,9 +1079,11 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
-              onClickSettings={this.openSettings}
+              togetherPrmoptDismissed={newTabData.togetherPromptDismissed}
               backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
+              onClickSettings={this.openSettings}
+              onDismissTogetherPrompt={this.props.actions.dismissTogetherPrompt}
             />
             </Page.FooterContent>
           </Page.Footer>

@@ -46,6 +46,7 @@ export const defaultState: NewTab.State = {
     bandwidthSavedStat: 0,
     fingerprintingBlockedStat: 0
   },
+  togetherPromptDismissed: false,
   rewardsState: {
     adsEstimatedEarnings: 0,
     balance: {
@@ -266,6 +267,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
+      togetherPromptDismissed: data.togetherPromptDismissed,
       binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,

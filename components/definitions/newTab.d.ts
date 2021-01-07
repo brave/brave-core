@@ -76,6 +76,7 @@ declare namespace NewTab {
   }
 
   export interface PersistentState {
+    togetherPromptDismissed: boolean
     togetherSupported: boolean
     geminiSupported: boolean
     binanceSupported: boolean

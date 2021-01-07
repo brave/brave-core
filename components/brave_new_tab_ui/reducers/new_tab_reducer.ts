@@ -10,6 +10,7 @@ import { types, DismissBrandedWallpaperNotificationPayload } from '../constants/
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 import { TorTabData } from '../api/torTabData'
+import * as Actions from '../actions/new_tab_actions'
 
 // API
 import * as backgroundAPI from '../api/background'
@@ -183,6 +184,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       performSideEffect(async function (state) {
         chrome.send('customizeClicked', [])
       })
+      break
+    }
+
+    case Actions.dismissTogetherPrompt.getType(): {
+      state = {
+        ...state,
+        togetherPromptDismissed: true
+      }
       break
     }
 
