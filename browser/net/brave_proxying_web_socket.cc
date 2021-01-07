@@ -179,6 +179,10 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
   OnHeadersReceivedComplete(net::OK);
 }
 
+void BraveProxyingWebSocket::OnFailure(const std::string& message,
+                                       int32_t net_error,
+                                       int32_t response_code) {}
+
 void BraveProxyingWebSocket::OnConnectionEstablished(
     mojo::PendingRemote<network::mojom::WebSocket> websocket,
     mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,

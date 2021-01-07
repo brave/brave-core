@@ -1,8 +1,8 @@
 diff --git a/components/bookmarks/browser/bookmark_model.h b/components/bookmarks/browser/bookmark_model.h
-index c1bb12707ee01e92a35442198e520d6c4ff0a316..b84741bffbe00aa538d7d581798ea76329f22c53 100644
+index 317ef338f58763cd53a344731236e2a2a5b8a375..a6d9f97e484b656581858932a43d7d3905c70336 100644
 --- a/components/bookmarks/browser/bookmark_model.h
 +++ b/components/bookmarks/browser/bookmark_model.h
-@@ -302,6 +302,7 @@ class BookmarkModel : public BookmarkUndoProvider,
+@@ -304,6 +304,7 @@ class BookmarkModel : public BookmarkUndoProvider,
      return weak_factory_.GetWeakPtr();
    }
  

@@ -1,5 +1,5 @@
 diff --git a/components/component_updater/component_updater_service.h b/components/component_updater/component_updater_service.h
-index a9f9307c804e9af0353c16ac37ff28f5bc9759e8..297e151497040d3f79d058107491f373a27b6ce0 100644
+index 5a5f0d32ea458a33e5588ef99e45c2409508a555..4c71a4e0422a213929fd6085e5e0230b70fbf064 100644
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
 @@ -162,6 +162,7 @@ class OnDemandUpdater {

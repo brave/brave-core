@@ -220,7 +220,7 @@ AdNotificationViewMD::AdNotificationViewMD(const Notification& notification)
   control_buttons_view_->set_owned_by_client();
 
   // |header_row_| contains app_icon, app_name, control buttons, etc...
-  header_row_ = new NotificationHeaderView(this);
+  header_row_ = new NotificationHeaderView();
   header_row_->AddChildView(control_buttons_view_.get());
   header_row_->SetBounds(0, 0, 30, 20);
   AddChildView(header_row_);
@@ -402,9 +402,6 @@ void AdNotificationViewMD::UpdateControlButtonsVisibilityWithNotification(
   control_buttons_view_->ShowCloseButton(true);
   UpdateControlButtonsVisibility();
 }
-
-void AdNotificationViewMD::ButtonPressed(views::Button* sender,
-                                       const ui::Event& event) {}
 
 void AdNotificationViewMD::CreateOrUpdateContextTitleView(
     const Notification& notification) {

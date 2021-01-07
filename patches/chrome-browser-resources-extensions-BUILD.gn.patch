@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 41882a90448cee3778522c1c1abdd0d5ef675bca..fcfcacabd41712c874d08be461022f38b1e6ff5e 100644
+index cfed148d68be8d0880823b391b55936f942c22cc..2b2989f4ce45b6b74d25d3537865d7d09c54c19e 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
 @@ -57,6 +57,7 @@ generate_grd("build_grd") {

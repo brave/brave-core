@@ -32,6 +32,7 @@ source_set("profiles") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
+    "//brave/components/content_settings/core/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/tor",
     "//brave/content:browser",
@@ -43,8 +44,6 @@ source_set("profiles") {
   ]
 
   if (enable_tor) {
-    deps += [
-      "//brave/browser/tor",
-    ]
+    deps += [ "//brave/browser/tor" ]
   }
 }

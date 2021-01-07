@@ -19,7 +19,7 @@
     if (WebContentSettingsClient* settings =                                   \
             brave::GetContentSettingsClientFor(context)) {                     \
       DOMFloat32Array* destination_array = array.View();                       \
-      size_t len = destination_array->lengthAsSizeT();                         \
+      size_t len = destination_array->length();                                \
       if (len > 0) {                                                           \
         float* destination = destination_array->Data();                        \
         brave::AudioFarblingCallback audio_farbling_callback =                 \

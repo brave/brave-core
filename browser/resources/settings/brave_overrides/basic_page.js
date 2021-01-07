@@ -237,9 +237,9 @@ RegisterPolymerTemplateModifications({
       // Move privacy to before autofill
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
       sectionAutofill.insertAdjacentElement('beforebegin', sectionPrivacy)
-      // Move help tips after printing
-      const sectionPrinting = getSectionElement(advancedSubSectionsTemplate.content, 'printing')
-      sectionPrinting.insertAdjacentElement('afterend', sectionHelpTips)
+      // Move help tips after downloads
+      const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
+      sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
     }
   }
 })

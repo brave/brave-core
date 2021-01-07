@@ -7,22 +7,24 @@
 
 #include <algorithm>
 
+#include "base/notreached.h"
 #include "base/optional.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "url/gurl.h"
 
 namespace {
 
-const std::vector<std::string> kShieldsResourceIDs {
-    brave_shields::kAds,
-    brave_shields::kTrackers,
-    brave_shields::kCosmeticFiltering,
-    brave_shields::kHTTPUpgradableResources,
-    brave_shields::kJavaScript,
-    brave_shields::kFingerprintingV2,
-    brave_shields::kBraveShields,
-    brave_shields::kReferrers,
-    brave_shields::kCookies };
+const std::vector<ContentSettingsType> kShieldsContentSettingsTypes{
+    ContentSettingsType::BRAVE_ADS,
+    ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+    ContentSettingsType::BRAVE_TRACKERS,
+    ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+    ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+    ContentSettingsType::BRAVE_SHIELDS,
+    ContentSettingsType::BRAVE_REFERRERS,
+    ContentSettingsType::BRAVE_COOKIES};
 
 bool CanPatternBeConvertedToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
@@ -54,15 +56,49 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
 
 namespace content_settings {
 
-const std::vector<std::string>& GetShieldsResourceIDs() {
-  return kShieldsResourceIDs;
+const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes() {
+  return kShieldsContentSettingsTypes;
 }
 
-bool IsShieldsResourceID(
-    const content_settings::ResourceIdentifier& resource_identifier) {
-  return std::find(kShieldsResourceIDs.begin(),
-                   kShieldsResourceIDs.end(),
-                   resource_identifier) != kShieldsResourceIDs.end();
+std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
+  switch (content_type) {
+    case ContentSettingsType::BRAVE_ADS:
+      return brave_shields::kAds;
+      break;
+    case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
+      return brave_shields::kCosmeticFiltering;
+      break;
+    case ContentSettingsType::BRAVE_TRACKERS:
+      return brave_shields::kTrackers;
+      break;
+    case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
+      return brave_shields::kHTTPUpgradableResources;
+      break;
+    case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
+      return brave_shields::kFingerprintingV2;
+      break;
+    case ContentSettingsType::BRAVE_SHIELDS:
+      return brave_shields::kBraveShields;
+      break;
+    case ContentSettingsType::BRAVE_REFERRERS:
+      return brave_shields::kReferrers;
+      break;
+    case ContentSettingsType::BRAVE_COOKIES:
+      return brave_shields::kCookies;
+      break;
+    default:
+      NOTREACHED();
+      return std::string();
+  }
+
+  NOTREACHED();
+  return std::string();
+}
+
+bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
+  return std::find(kShieldsContentSettingsTypes.begin(),
+                   kShieldsContentSettingsTypes.end(),
+                   content_type) != kShieldsContentSettingsTypes.end();
 }
 
 base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
@@ -73,6 +109,43 @@ base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
   base::Optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
   return new_pattern;
+}
+
+// Returns the full path in the user preferences store to the Brave Shields
+// setting identified by it's name (i.e. |name|).
+std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
+  return std::string("profile.content_settings.exceptions.").append(name);
+}
+
+// Extract a timestamp from |dictionary[key]|. Will return base::Time() if no
+// timestamp exists.
+base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
+                                      const char* key) {
+  std::string timestamp_str;
+  dictionary->GetStringWithoutPathExpansion(key, &timestamp_str);
+  int64_t timestamp = 0;
+  base::StringToInt64(timestamp_str, &timestamp);
+  base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
+      base::TimeDelta::FromMicroseconds(timestamp));
+  return last_modified;
+}
+
+// Extract a SessionModel from |dictionary[key]|. Will return
+// SessionModel::Durable if no model exists.
+content_settings::SessionModel GetSessionModelFromDictionary(
+    const base::DictionaryValue* dictionary,
+    const char* key) {
+  int model_int = 0;
+  dictionary->GetIntegerWithoutPathExpansion(key, &model_int);
+  if ((model_int >
+       static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
+      (model_int < 0)) {
+    model_int = 0;
+  }
+
+  content_settings::SessionModel session_model =
+      static_cast<content_settings::SessionModel>(model_int);
+  return session_model;
 }
 
 }  // namespace content_settings

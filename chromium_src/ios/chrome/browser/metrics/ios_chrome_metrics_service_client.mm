@@ -94,7 +94,9 @@ IOSChromeMetricsServiceClient::Create(
 
 // static
 void IOSChromeMetricsServiceClient::RegisterPrefs(
-    PrefRegistrySimple* registry) {}
+    PrefRegistrySimple* registry) {
+  metrics::MetricsService::RegisterPrefs(registry);
+}
 
 metrics::MetricsService* IOSChromeMetricsServiceClient::GetMetricsService() {
   return nullptr;

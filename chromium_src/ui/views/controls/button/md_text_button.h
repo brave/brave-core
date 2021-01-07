@@ -28,10 +28,7 @@ namespace views {
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
-  explicit MdTextButton(ButtonListener* listener = nullptr,
-                        const base::string16& text = base::string16(),
-                        int button_context = style::CONTEXT_BUTTON_MD);
-  explicit MdTextButton(PressedCallback callback,
+  explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const base::string16& text = base::string16(),
                         int button_context = style::CONTEXT_BUTTON_MD);
   ~MdTextButton() override;

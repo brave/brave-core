@@ -16,6 +16,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -38,10 +39,10 @@ class BraveBrowsingDataRemoverDelegateTest : public testing::Test {
 
   int GetShieldsSettingsCount() {
     int shields_settings_count = 0;
-    for (const auto& resource_id : content_settings::GetShieldsResourceIDs()) {
+    for (const auto& content_type :
+         content_settings::GetShieldsContentSettingsTypes()) {
       ContentSettingsForOneType settings;
-      ContentSettingsType content_type = ContentSettingsType::PLUGINS;
-      map()->GetSettingsForOneType(content_type, resource_id, &settings);
+      map()->GetSettingsForOneType(content_type, &settings);
       shields_settings_count += settings.size();
     }
     return shields_settings_count;
@@ -65,18 +66,17 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
   // JAVASCRIPT type instead of PLUGINS type.
   // Last one is PLUGINS type but it's flash resource not shields resource.
   map()->SetContentSettingDefaultScope(
-      kBraveURL, GURL(), ContentSettingsType::PLUGINS,
-      brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_ALLOW);
+      kBraveURL, GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+      CONTENT_SETTING_ALLOW);
   map()->SetContentSettingDefaultScope(
-      kBatURL, GURL(), ContentSettingsType::PLUGINS,
-      brave_shields::kFingerprintingV2, CONTENT_SETTING_ALLOW);
+      kBatURL, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      CONTENT_SETTING_ALLOW);
   map()->SetContentSettingCustomScope(
       brave_shields::GetPatternFromURL(kGoogleURL),
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT,
+      CONTENT_SETTING_BLOCK);
   map()->SetContentSettingDefaultScope(
-      kAbcURL, GURL(), ContentSettingsType::PLUGINS,
-      "", CONTENT_SETTING_ALLOW);
+      kAbcURL, GURL(), ContentSettingsType::PLUGINS, CONTENT_SETTING_ALLOW);
 
   const base::Time kNow = base::Time::Now();
   const base::Time k1DaysOld = kNow - base::TimeDelta::FromDays(1);

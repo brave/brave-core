@@ -9,9 +9,7 @@
 class AlwaysGoogleSearchProviderObserver : public SearchProviderObserver {
  public:
   using SearchProviderObserver::SearchProviderObserver;
-  // This is not override because base is not virtual, but that's ok if we
-  // reference this derived class.
-  bool is_google() { return true; }
+  bool is_google() override { return true; }
 };
 
 #define SearchProviderObserver AlwaysGoogleSearchProviderObserver

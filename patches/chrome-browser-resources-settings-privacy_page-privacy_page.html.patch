@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 3fec124468af55207ba36d15dd81c6ff81179c65..cc807af537103feb502a9864e56c8dce22ae0247 100644
+index 5db3d9b229ccf62f754c3671ab7eeabcfe7eede4..cc5d2ab84daf4f376753ae22ecbc2773909a1f30 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -29,6 +29,7 @@
@@ -59,6 +59,6 @@ index 3fec124468af55207ba36d15dd81c6ff81179c65..cc807af537103feb502a9864e56c8dce
 +          </category-setting-exceptions>
 +        </settings-subpage>
 +      </template>
-      <template is="dom-if" route-path="/content/unsandboxedPlugins" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsUnsandboxedPlugins}"
+       <template is="dom-if" route-path="/content/midiDevices" no-search>
+         <settings-subpage page-title="$i18n{siteSettingsMidiDevices}"
              search-label="$i18n{siteSettingsAllSitesSearch}"

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
-index 5ec5105955c7261f940835d62244e4e818797c98..5438cb50a28058b22c99d9bc35335dfa5dc7cc4e 100644
+index 5f15c060e2d16f04c53717f4e85e6e3cd4dedb9f..916fc2b1c9a46364456b447daf6768ca6b457a08 100644
 --- a/third_party/blink/renderer/modules/BUILD.gn
 +++ b/third_party/blink/renderer/modules/BUILD.gn
 @@ -16,6 +16,7 @@ if (is_android) {
@@ -10,7 +10,7 @@ index 5ec5105955c7261f940835d62244e4e818797c98..5438cb50a28058b22c99d9bc35335dfa
  
  config("modules_implementation") {
    defines = [ "BLINK_MODULES_IMPLEMENTATION=1" ]
-@@ -165,6 +166,7 @@ component("modules") {
+@@ -166,6 +167,7 @@ component("modules") {
      "//third_party/blink/renderer/modules/xr",
    ]
  

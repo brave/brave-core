@@ -217,22 +217,20 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   void BlockReferrers() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::PLUGINS, brave_shields::kReferrers,
-        CONTENT_SETTING_BLOCK);
+        ContentSettingsType::BRAVE_REFERRERS, CONTENT_SETTING_BLOCK);
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
-        ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
+        ContentSettingsType::BRAVE_REFERRERS, &settings);
     EXPECT_EQ(settings.size(), 1u);
   }
 
   void AllowReferrers() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::PLUGINS, brave_shields::kReferrers,
-        CONTENT_SETTING_ALLOW);
+        ContentSettingsType::BRAVE_REFERRERS, CONTENT_SETTING_ALLOW);
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
-        ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
+        ContentSettingsType::BRAVE_REFERRERS, &settings);
     EXPECT_EQ(settings.size(), 1u);
   }
 
@@ -579,7 +577,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockReferrerByDefault) {
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
-      ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
+      ContentSettingsType::BRAVE_REFERRERS, &settings);
   EXPECT_EQ(settings.size(), 0u)
       << "There should not be any visible referrer rules.";
 
@@ -634,7 +632,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockReferrerByDefaultRedirects) {
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
-      ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
+      ContentSettingsType::BRAVE_REFERRERS, &settings);
   EXPECT_EQ(settings.size(), 0u)
       << "There should not be any visible referrer rules.";
 
@@ -925,7 +923,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   content_settings->SetContentSettingCustomScope(
       top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::COOKIES, std::string(), CONTENT_SETTING_BLOCK);
+      ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
 
   NavigateToPageWithIframe();
   CheckCookie(contents(), kEmptyCookie);
@@ -941,7 +939,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   content_settings->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::COOKIES, std::string(), CONTENT_SETTING_BLOCK);
+      ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
 
   NavigateToPageWithIframe();
   CheckCookie(contents(), kTestCookie);
@@ -1068,7 +1066,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Block scripts in b.com.
   content_settings()->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
   NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 1u);

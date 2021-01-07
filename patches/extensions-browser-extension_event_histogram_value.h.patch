@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index ca31381d93f539e83db07477c613a5be6eddc971..160ca277ae00441bfbfe7ddd2cd468a1a05ca011 100644
+index 695b0464b4f840a241b04205ecc9ce4059f11f7a..cd1edfeef21e25e77a9f8765cca7a1da22614fb2 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -485,6 +485,20 @@ enum HistogramValue {
-   PASSWORDS_PRIVATE_ON_WEAK_CREDENTIALS_CHANGED = 463,
+@@ -486,6 +486,20 @@ enum HistogramValue {
    ACCESSIBILITY_PRIVATE_ON_MAGNIFIER_BOUNDS_CHANGED = 464,
    FILE_MANAGER_PRIVATE_ON_PIN_TRANSFERS_UPDATED = 465,
+   ACCESSIBILITY_PRIVATE_ON_POINT_SCAN_SET = 466,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

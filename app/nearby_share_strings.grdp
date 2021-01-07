@@ -14,11 +14,17 @@
   </message>
 
   <!-- Contact visibility component -->
-  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_SUBTITLE" desc="Help text shown when there are no available contacts with a Brave sync chain to select from. Nearby Share is the feature name.">
-    No contacts are available. To use Nearby Share with your contacts, add the email address linked with their Brave sync chain to your contacts.
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_DOWNLOAD_FAILED" desc="Message shown when downloading contacts failed when trying to load contacts to show the user a list of who they will be able to share with.">
+      Unable to download contact list. Please check your network connection, or &lt;a href="#" id="tryAgainLink"&gt;try again&lt;/a&gt;.
   </message>
-  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_TITLE" desc="Title text shown when there are no available contacts with a Brave sync chain to select from.">
-    No available contacts
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_DOWNLOADING" desc="Message shown when contacts are being downloaded to show the user a list of who they will be able to share with.">
+    Downloading contact list...
+  </message>
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_SUBTITLE" desc="Help text shown when there are no reachable contacts with a Brave sync chain to select from. Nearby Share is the feature name.">
+    To use Nearby Share with these contacts, add the email address linked with their Brave sync chain to your contacts.
+  </message>
+  <message name="IDS_NEARBY_CONTACT_VISIBILITY_NO_CONTACTS_TITLE" desc="Title text shown when there are no reachable contacts with a Brave sync chain to select from.">
+    No reachable contacts
   </message>
   <message name="IDS_NEARBY_CONTACT_VISIBILITY_OTHERS" desc="Describes when nearby devices are visible to this user when using the Nearby Share feature.">
     Profiles who have chosen to be visible to you when their screen is unlocked and devices near you when Nearby Share is open
@@ -66,6 +72,9 @@
   <message name="IDS_NEARBY_DISCOVERY_PAGE_TITLE" desc="Title of the Nearby Share device discovery page. This is where users select a device to share files with. Nearby Share is the feature name.">
     Nearby Share
   </message>
+  <message name="IDS_NEARBY_DISCOVERY_PAGE_PLACEHOLDER" desc="Text shown on the Nearby Share device discovery page. This is where users select a device to share files with. This placeholder text is shown when the list of devices to share with is empty, and is meant to inform the user that we are currently looking for a device to share with.">
+    Scanning for nearby devices...
+  </message>
 
   <!-- Onboarding page -->
   <message name="IDS_NEARBY_ONBOARDING_PAGE_DEVICE_NAME" desc="Label of the text input field to set the name of a users device which is shown to other devices for the Nearby Share feature.">
@@ -107,6 +116,24 @@
   </message>
   <message name="IDS_NEARBY_DEFAULT_DEVICE_NAME" desc="The default device name used unless a user explicitly sets the device name during onboarding or in settings. Displayed to other users during sharing.">
     <ph name="GIVEN_NAME">$1<ex>Josh</ex></ph>'s <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_ERROR_CANT_SHARE" desc="Notify user that the file wasn't able to be shared. Generic title text for displaying errors to the user. To be shown next to more specific error text.">
+    Can't share
+  </message>
+  <message name="IDS_NEARBY_ERROR_NO_RESPONSE" desc="Notify user that the file share failed because the receiver neither accepted nor declined the share.">
+    The device you're sharing with didn't respond
+  </message>
+  <message name="IDS_NEARBY_ERROR_REJECTED" desc="Notify sender that receiver declined the file share.">
+    The device you’re trying to share with did not accept
+  </message>
+  <message name="IDS_NEARBY_ERROR_SOMETHING_WRONG" desc="Generic error text shown when the reason for the failure is unknown or too technical to explain.">
+    Something went wrong
+  </message>
+  <message name="IDS_NEARBY_ERROR_TIME_OUT" desc="Notify user that the file share failed because something didn't happen in time, e.g. the receiver neither accepted nor declined the share. Generic title text to be shown next to more specific error text describing the situation.">
+    Time out
+  </message>
+  <message name="IDS_NEARBY_ERROR_UNSUPPORTED_FILE_TYPE" desc="Notify user that the file chosen can't be shared because of its type, e.g. missing file extension.">
+    Unsupported file type
   </message>
   <message name="IDS_NEARBY_FILE_ATTACHMENTS_APPS" desc="Describes one or more apps being transfered via Nearby Share.">
     {COUNT, plural, =1 {1 app} other {# apps}}
@@ -152,6 +179,10 @@
     Receive from this device?
   </message>
 
+  <!-- File Preview Strings -->
+  <message name="IDS_NEARBY_PREVIEW_TITLE_MULTIPLE_FILE" desc="The file share preview would show the name of the file being shared, but if multiple files are being shared, we show this description instead. The FILE_COUNT will always be greater than 1, so this string will always be plural.">
+    <ph name="FILE_COUNT">$1<ex>3</ex></ph> Files
+  </message>
 
   <!-- Settings Strings -->
   <message name="IDS_NEARBY_ACCOUNT_ROW_LABEL" desc="Label to describe the account row which displays the user's full name and their email which will identify them when using the Nearby Share feature." is_accessibility_with_no_ui="true">

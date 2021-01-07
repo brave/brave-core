@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 824b68c31bd725a4ea5d6e2acc1633ffc6884683..8f181696f3b463b6b6f67d49ca38b88c0f6ed24d 100644
+index d32451e392a2e7db59cc5660e89b679f11e5c1f9..392a7feb07368e38eb3339f432639165be6aa71b 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -169,6 +169,7 @@ class InfoBarDelegate {
-     CONDITIONAL_TAB_STRIP_INFOBAR_ANDROID = 99,
-     LITE_MODE_HTTPS_IMAGE_COMPRESSION_INFOBAR_ANDROID = 100,
+@@ -171,6 +171,7 @@ class InfoBarDelegate {
      SYSTEM_INFOBAR_DELEGATE_MAC = 101,
+     EXPERIMENTAL_INFOBAR_DELEGATE_LACROS = 102,
+     ROSETTA_REQUIRED_INFOBAR_DELEGATE = 103,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

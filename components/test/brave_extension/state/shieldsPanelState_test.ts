@@ -272,7 +272,7 @@ describe('shieldsPanelState test', () => {
   describe('updateResourceBlocked', () => {
     it('can update ads blocked count', () => {
       this.tabId = 2
-      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com')).toEqual({
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'shieldsAds', 'https://test.brave.com')).toEqual({
         ...state,
         tabs: {
           ...state.tabs,

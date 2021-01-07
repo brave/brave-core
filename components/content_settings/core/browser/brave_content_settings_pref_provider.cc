@@ -24,6 +24,8 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "services/preferences/public/cpp/dictionary_value_update.h"
+#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace content_settings {
 
@@ -31,6 +33,12 @@ namespace {
 
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
+
+const char kExpirationPath[] = "expiration";
+const char kLastModifiedPath[] = "last_modified";
+const char kSessionModelPath[] = "model";
+const char kSettingPath[] = "setting";
+const char kPerResourcePath[] = "per_resource";
 
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   // brave plugin rules incorrectly use first party url as primary
@@ -109,37 +117,29 @@ bool IsActive(const Rule& cookie_rule,
 
 }  // namespace
 
+// static
+void BravePrefProvider::CopyPluginSettingsForMigration(PrefService* prefs) {
+  auto* plugins =
+      prefs->GetDictionary("profile.content_settings.exceptions.plugins");
+  prefs->Set("brave.migrate.content_settings.exceptions.plugins", *plugins);
+}
+
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
                                      bool off_the_record,
                                      bool store_last_modified,
                                      bool restore_session)
     : PrefProvider(prefs, off_the_record, store_last_modified, restore_session),
       initialized_(false),
+      store_last_modified_(store_last_modified),
       weak_factory_(this) {
-  brave_pref_change_registrar_.Init(prefs_);
-  brave_pref_change_registrar_.Add(
+  pref_change_registrar_.Add(
       kGoogleLoginControlType,
       base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
                           base::Unretained(this)));
 
-  WebsiteSettingsRegistry* website_settings =
-      WebsiteSettingsRegistry::GetInstance();
-  // Makes BravePrefProvder handle plugin type.
-  for (const WebsiteSettingsInfo* info : *website_settings) {
-    if (info->type() == ContentSettingsType::PLUGINS) {
-      content_settings_prefs_.insert(std::make_pair(
-          info->type(),
-          std::make_unique<ContentSettingsPref>(
-              info->type(), prefs_, &brave_pref_change_registrar_,
-              info->pref_name(), off_the_record_, restore_session,
-              base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
-      break;
-    }
-  }
-
   MigrateShieldsSettings(off_the_record);
 
-  OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
+  OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 
   // Enable change notifications after initial setup to avoid notification spam
   initialized_ = true;
@@ -150,7 +150,6 @@ BravePrefProvider::~BravePrefProvider() {}
 
 void BravePrefProvider::ShutdownOnUIThread() {
   RemoveObserver(this);
-  brave_pref_change_registrar_.RemoveAll();
   PrefProvider::ShutdownOnUIThread();
 }
 
@@ -160,6 +159,10 @@ void BravePrefProvider::RegisterProfilePrefs(
   PrefProvider::RegisterProfilePrefs(registry);
   // Register shields settings migration pref.
   registry->RegisterIntegerPref(kBraveShieldsSettingsVersion, 1);
+
+  // migration of obsolete plugin prefs
+  registry->RegisterDictionaryPref(
+      "brave.migrate.content_settings.exceptions.plugins");
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -168,7 +171,100 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // session, so also nothing to do.
   if (incognito)
     return;
+
+  // Prior to Chromium 88, we used the "plugins" ContentSettingsType along with
+  // ResourceIdentifiers to store our settings, which we need to migrate now
+  // first of all, before attempting any other migration.
+  MigrateShieldsSettingsFromResourceIds();
+
+  // Now carry on with any other migration that we might need.
   MigrateShieldsSettingsV1ToV2();
+
+  // Finally clean this up now that Shields' settings have been migrated.
+  prefs_->ClearPref("brave.migrate.content_settings.exceptions.plugins");
+}
+
+void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
+  const base::DictionaryValue* plugins_dictionary = prefs_->GetDictionary(
+      "brave.migrate.content_settings.exceptions.plugins");
+  if (!plugins_dictionary)
+    return;
+
+  for (base::DictionaryValue::Iterator i(*plugins_dictionary); !i.IsAtEnd();
+       i.Advance()) {
+    const std::string& patterns_string(i.key());
+    const base::DictionaryValue* settings_dictionary = nullptr;
+    bool is_dictionary = i.value().GetAsDictionary(&settings_dictionary);
+    DCHECK(is_dictionary);
+
+    base::Time expiration =
+        GetTimeStampFromDictionary(settings_dictionary, kExpirationPath);
+    SessionModel session_model =
+        GetSessionModelFromDictionary(settings_dictionary, kSessionModelPath);
+
+    const base::DictionaryValue* resource_dictionary = nullptr;
+    if (settings_dictionary->GetDictionary(kPerResourcePath,
+                                           &resource_dictionary)) {
+      base::Time last_modified =
+          GetTimeStampFromDictionary(settings_dictionary, kLastModifiedPath);
+      for (base::DictionaryValue::Iterator j(*resource_dictionary);
+           !j.IsAtEnd(); j.Advance()) {
+        const std::string& resource_identifier(j.key());
+        int setting = CONTENT_SETTING_DEFAULT;
+        bool is_integer = j.value().GetAsInteger(&setting);
+        DCHECK(is_integer);
+        DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
+
+        // For "ads" and "cookies" we need to adapt the name to the new one,
+        // otherwise it will refer to upstream's "ads" and "cookies" settings.
+        std::string actual_name;
+        if (resource_identifier == brave_shields::kObsoleteAds)
+          actual_name = brave_shields::kAds;
+        else if (resource_identifier == brave_shields::kObsoleteCookies)
+          actual_name = brave_shields::kCookies;
+        else
+          actual_name = resource_identifier;
+
+        MigrateShieldsSettingsFromResourceIdsForOneType(
+            GetShieldsSettingUserPrefsPath(actual_name), patterns_string,
+            expiration, last_modified, session_model, setting);
+      }
+    }
+  }
+}
+
+void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
+    const std::string& preference_name,
+    const std::string& patterns_string,
+    const base::Time& expiration,
+    const base::Time& last_modified,
+    SessionModel session_model,
+    int setting) {
+  prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_name);
+  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings = update.Get();
+
+  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings_dictionary;
+  bool found = shield_settings->GetDictionaryWithoutPathExpansion(
+      patterns_string, &shield_settings_dictionary);
+
+  if (!found) {
+    shield_settings_dictionary =
+        shield_settings->SetDictionaryWithoutPathExpansion(
+            patterns_string, std::make_unique<base::DictionaryValue>());
+  }
+  DCHECK(shield_settings_dictionary);
+
+  shield_settings_dictionary->SetKey(
+      kExpirationPath,
+      base::Value(base::NumberToString(
+          expiration.ToDeltaSinceWindowsEpoch().InMicroseconds())));
+  shield_settings_dictionary->SetKey(
+      kLastModifiedPath,
+      base::Value(base::NumberToString(
+          last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
+  shield_settings_dictionary->SetKey(
+      kSessionModelPath, base::Value(static_cast<int>(session_model)));
+  shield_settings_dictionary->SetKey(kSettingPath, base::Value(setting));
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
@@ -176,28 +272,24 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
   if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 1)
     return;
 
-  // All sources in ContentSettingsType::PLUGINS we want to migrate.
-  for (const auto& resource_id : GetShieldsResourceIDs()) {
-    MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::PLUGINS,
-                                           resource_id);
-  }
+  // All sources in Brave-specific ContentSettingsType(s) we want to migrate.
+  for (const auto& content_type : GetShieldsContentSettingsTypes())
+    MigrateShieldsSettingsV1ToV2ForOneType(content_type);
 
   // ContentSettingsType::JAVASCRIPT.
-  MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::JAVASCRIPT,
-                                         std::string());
+  MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::JAVASCRIPT);
 
   // Mark migration as done.
   prefs_->SetInteger(kBraveShieldsSettingsVersion, 2);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
-    ContentSettingsType content_type,
-    const std::string& resource_id) {
+    ContentSettingsType content_type) {
   using OldRule = std::pair<ContentSettingsPattern, ContentSettingsPattern>;
   // Find rules that can be migrated and create replacement rules for them.
   std::vector<OldRule> old_rules;
   std::vector<Rule> new_rules;
-  auto rule_iterator = PrefProvider::GetRuleIterator(content_type, resource_id,
+  auto rule_iterator = PrefProvider::GetRuleIterator(content_type,
                                                      /*off_the_record*/ false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
@@ -219,13 +311,13 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
   DCHECK_EQ(old_rules.size(), new_rules.size());
   for (size_t i = 0; i < old_rules.size(); i++) {
     // Remove current setting.
-    PrefProvider::SetWebsiteSetting(
-        old_rules[i].first, old_rules[i].second, content_type, resource_id,
+    SetWebsiteSettingInternal(
+        old_rules[i].first, old_rules[i].second, content_type,
         ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
     // Add new setting.
-    PrefProvider::SetWebsiteSetting(
+    SetWebsiteSettingInternal(
         new_rules[i].primary_pattern, new_rules[i].secondary_pattern,
-        content_type, resource_id,
+        content_type,
         ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))),
         {new_rules[i].expiration, new_rules[i].session_model});
   }
@@ -235,18 +327,8 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    const ResourceIdentifier& resource_identifier,
     std::unique_ptr<base::Value>&& in_value,
     const ContentSettingConstraints& constraints) {
-  // Flash's setting shouldn't be reached here.
-  // Its content type is plugin and id is empty string.
-  // One excpetion is default setting. It can be persisted.
-  if (content_type == ContentSettingsType::PLUGINS &&
-      resource_identifier.empty()) {
-    DCHECK(primary_pattern == ContentSettingsPattern::Wildcard() &&
-           secondary_pattern == ContentSettingsPattern::Wildcard());
-  }
-
   // handle changes to brave cookie settings from chromium cookie settings UI
   if (content_type == ContentSettingsType::COOKIES) {
     auto* value = in_value.get();
@@ -269,22 +351,43 @@ bool BravePrefProvider::SetWebsiteSetting(
             ContentSettingsPattern::FromString("https://firstParty/*");
       }
 
-      // change to type PLUGINS
-      return PrefProvider::SetWebsiteSetting(
+      // change to type ContentSettingsType::BRAVE_COOKIES
+      return SetWebsiteSettingInternal(
           plugin_primary_pattern, plugin_secondary_pattern,
-          ContentSettingsType::PLUGINS, brave_shields::kCookies,
-          std::move(in_value), constraints);
+          ContentSettingsType::BRAVE_COOKIES, std::move(in_value), constraints);
     }
   }
 
+  return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
+                                   content_type, std::move(in_value),
+                                   constraints);
+}
+
+bool BravePrefProvider::SetWebsiteSettingInternal(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type,
+    std::unique_ptr<base::Value>&& in_value,
+    const ContentSettingConstraints& constraints) {
+  // PrefProvider ignores default settings so handle them here for shields
+  if (content_settings::IsShieldsContentSettingsType(content_type) &&
+      primary_pattern == ContentSettingsPattern::Wildcard() &&
+      secondary_pattern == ContentSettingsPattern::Wildcard()) {
+    base::Time modified_time =
+        store_last_modified_ ? base::Time::Now() : base::Time();
+
+    return GetPref(content_type)
+        ->SetWebsiteSetting(primary_pattern, secondary_pattern, modified_time,
+                            std::move(in_value), constraints);
+  }
+
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
-                                         content_type, resource_identifier,
-                                         std::move(in_value), constraints);
+                                         content_type, std::move(in_value),
+                                         constraints);
 }
 
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
       ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
       bool incognito) const {
   if (content_type == ContentSettingsType::COOKIES) {
     std::vector<Rule> rules;
@@ -297,14 +400,7 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     return std::make_unique<BraveShieldsRuleIterator>(std::move(rules));
   }
 
-  // Early return. We don't store flash plugin setting in preference.
-  if (content_type == ContentSettingsType::PLUGINS &&
-      resource_identifier == "")
-    return nullptr;
-
-  return PrefProvider::GetRuleIterator(content_type,
-                                       resource_identifier,
-                                       incognito);
+  return PrefProvider::GetRuleIterator(content_type, incognito);
 }
 
 void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
@@ -350,7 +446,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
       ContentSettingsType::COOKIES,
-      "",
       incognito);
   while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
     rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
@@ -358,9 +453,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   chromium_cookies_iterator.reset();
 
   auto brave_shields_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::PLUGINS,
-      brave_shields::kBraveShields,
-      incognito);
+      ContentSettingsType::BRAVE_SHIELDS, incognito);
 
   // collect shield rules
   std::vector<Rule> shield_rules;
@@ -372,9 +465,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // add brave cookies after checking shield status
   auto brave_cookies_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::PLUGINS,
-      brave_shields::kCookies,
-      incognito);
+      ContentSettingsType::BRAVE_COOKIES, incognito);
 
   // Matching cookie rules against shield rules.
   while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
@@ -446,7 +537,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
 
   // Notify brave cookie changes as ContentSettingsType::COOKIES
-  if (initialized_ && content_type == ContentSettingsType::PLUGINS) {
+  if (initialized_ && (content_type == ContentSettingsType::BRAVE_COOKIES ||
+                       content_type == ContentSettingsType::BRAVE_SHIELDS)) {
     // PostTask here to avoid content settings autolock DCHECK
     base::PostTask(
         FROM_HERE,
@@ -460,16 +552,14 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 void BravePrefProvider::NotifyChanges(const std::vector<Rule>& rules,
                                       bool incognito) {
   for (const auto& rule : rules) {
-    Notify(rule.primary_pattern,
-           rule.secondary_pattern,
-           ContentSettingsType::COOKIES,
-           "");
+    Notify(rule.primary_pattern, rule.secondary_pattern,
+           ContentSettingsType::COOKIES);
   }
 }
 
 void BravePrefProvider::OnCookiePrefsChanged(
     const std::string& pref) {
-  OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
+  OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 }
 
 void BravePrefProvider::OnCookieSettingsChanged(
@@ -481,12 +571,10 @@ void BravePrefProvider::OnCookieSettingsChanged(
 void BravePrefProvider::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsType content_type,
-    const std::string& resource_identifier) {
+    ContentSettingsType content_type) {
   if (content_type == ContentSettingsType::COOKIES ||
-      (content_type == ContentSettingsType::PLUGINS &&
-          (resource_identifier == brave_shields::kCookies ||
-           resource_identifier == brave_shields::kBraveShields))) {
+      content_type == ContentSettingsType::BRAVE_COOKIES ||
+      content_type == ContentSettingsType::BRAVE_SHIELDS) {
     OnCookieSettingsChanged(content_type);
   }
 }

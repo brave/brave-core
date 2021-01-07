@@ -20,7 +20,7 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-  ldflags = [ "-Wl,-no_compact_unwind" ]
+  ldflags = [ "-Wl,-no_compact_unwind,-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
   include_dirs = [
     ".",
     "Ads",

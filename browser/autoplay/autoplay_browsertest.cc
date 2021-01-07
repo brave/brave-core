@@ -83,13 +83,13 @@ class AutoplayBrowserTest : public InProcessBrowserTest {
   void AllowAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_ALLOW);
+        ContentSettingsType::AUTOPLAY, CONTENT_SETTING_ALLOW);
   }
 
   void BlockAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_BLOCK);
+        ContentSettingsType::AUTOPLAY, CONTENT_SETTING_BLOCK);
   }
 
   content::WebContents* contents() {

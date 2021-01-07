@@ -24,7 +24,7 @@
             android:gravity="start|center_vertical"
             android:padding="16dp"
             app:srcCompat="@drawable/ic_back"
-            android:tint="@color/shield_back_button_tint"/>
+            app:tint="@color/shield_back_button_tint"/>
 
         <TextView
             android:id="@+id/option_title"

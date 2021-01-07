@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
@@ -73,6 +74,12 @@ BraveProfileManager::~BraveProfileManager() {
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
+  // migrate obsolete plugin prefs to temporary migration pref because otherwise
+  // they get deleteed by PrefProvider before we can migrate them in
+  // BravePrefProvider
+  content_settings::BravePrefProvider::CopyPluginSettingsForMigration(
+      profile->GetPrefs());
+
   ProfileManager::InitProfileUserPrefs(profile);
   brave::RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());

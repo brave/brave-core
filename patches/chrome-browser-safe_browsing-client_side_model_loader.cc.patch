@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/safe_browsing/client_side_model_loader.cc b/chrome/browser/safe_browsing/client_side_model_loader.cc
-index 99a163ccbde4258ab0794213ceb8d592b38f7a3a..55116d5a0df8cd1de469ac53f3b1c639c16c21ff 100644
+index ddf7337ca74fabe4a1cd4f083e27fb64bed629d6..7ecabf340de6fa32316815f948f4ab7361d66a95 100644
 --- a/chrome/browser/safe_browsing/client_side_model_loader.cc
 +++ b/chrome/browser/safe_browsing/client_side_model_loader.cc
 @@ -60,7 +60,7 @@ std::string ReadFileIntoString(base::FilePath path) {
