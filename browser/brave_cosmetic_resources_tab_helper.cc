@@ -37,7 +37,8 @@ std::vector<std::string>
   "yahoo",
   "onesearch",
   "google",
-  "yandex"
+  "yandex",
+  "ecosia"
 };
 
 // Doing that to prevent a lint error:
