@@ -40,11 +40,11 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
-#include "bat/ads/internal/html_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/search_engine/search_providers.h"
+#include "bat/ads/internal/string_util.h"
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/url_util.h"
@@ -169,8 +169,7 @@ void AdsImpl::OnPageLoaded(
   if (SearchProviders::IsSearchEngine(url)) {
     BLOG(1, "Search engine pages are not supported for text classification");
   } else {
-    const std::string stripped_text =
-        StripHtmlTagsAndNonAlphaCharacters(content);
+    const std::string stripped_text = StripNonAlphaCharacters(content);
     text_classification_processor_->Process(stripped_text);
   }
 }
