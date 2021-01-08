@@ -281,8 +281,8 @@ public class NTPUtil {
             BackgroundImage mBackgroundImage = (BackgroundImage) ntpImage;
             imageBitmap = BitmapFactory.decodeResource(mContext.getResources(), mBackgroundImage.getImageDrawable(), options);
 
-            centerPointX = mBackgroundImage.getCenterPoint();
-            centerPointY = 0;
+            centerPointX = mBackgroundImage.getCenterPointX();
+            centerPointY = mBackgroundImage.getCenterPointY();
         }
         return getCalculatedBitmap(imageBitmap, centerPointX, centerPointY, layoutWidth, layoutHeight);
     }
