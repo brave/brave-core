@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/notifications/notification_handler.h b/chrome/browser/notifications/notification_handler.h
+index 088556337d46..c1bb7e6d722f 100644
+--- a/chrome/browser/notifications/notification_handler.h
++++ b/chrome/browser/notifications/notification_handler.h
+@@ -39,6 +39,7 @@ class NotificationHandler {
+     ANNOUNCEMENT = 7,
+     NEARBY_SHARE = 8,
+     NOTIFICATIONS_MUTED = 9,
++    BRAVE_ADS = 10,
+     MAX = NOTIFICATIONS_MUTED,
+   };
+

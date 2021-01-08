@@ -62,6 +62,7 @@ source_set("browser") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/vendor/bat-native-ads",
       "//brave/components/brave_ads/resources",
+      "//brave/browser/notifications",
       "//brave/components/services/bat_ads/public/cpp",
       "//components/history/core/browser",
       "//components/history/core/common",

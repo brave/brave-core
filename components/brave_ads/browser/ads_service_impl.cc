@@ -86,6 +86,7 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
+#include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
@@ -1802,7 +1803,7 @@ void AdsServiceImpl::CloseNotification(
     const GURL service_worker_scope =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
     BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-        uuid, service_worker_scope);
+      uuid, service_worker_scope);
 #endif
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
   }
