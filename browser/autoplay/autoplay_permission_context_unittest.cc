@@ -94,19 +94,19 @@ TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
   // Check that there is no saved content settings.
   EXPECT_EQ(CONTENT_SETTING_ALLOW,
             HostContentSettingsMapFactory::GetForProfile(profile())
-                ->GetContentSetting(
-                    insecure_url.GetOrigin(), insecure_url.GetOrigin(),
-                    ContentSettingsType::AUTOPLAY, std::string()));
+                ->GetContentSetting(insecure_url.GetOrigin(),
+                                    insecure_url.GetOrigin(),
+                                    ContentSettingsType::AUTOPLAY));
   EXPECT_EQ(
       CONTENT_SETTING_ALLOW,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(secure_url.GetOrigin(), insecure_url.GetOrigin(),
-                              ContentSettingsType::AUTOPLAY, std::string()));
+                              ContentSettingsType::AUTOPLAY));
   EXPECT_EQ(
       CONTENT_SETTING_ALLOW,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(insecure_url.GetOrigin(), secure_url.GetOrigin(),
-                              ContentSettingsType::AUTOPLAY, std::string()));
+                              ContentSettingsType::AUTOPLAY));
 
   EXPECT_EQ(CONTENT_SETTING_ALLOW,
             permission_context
@@ -136,7 +136,7 @@ TEST_F(AutoplayPermissionContextTests, TestNonAutoRefresh) {
   HostContentSettingsMapFactory::GetForProfile(profile())
       ->SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
                                       ContentSettingsType::AUTOPLAY,
-                                      std::string(), CONTENT_SETTING_ALLOW);
+                                      CONTENT_SETTING_ALLOW);
   permission_context.RequestPermission(
       web_contents(), id, url, true, base::DoNothing());
   EXPECT_TRUE(permission_context.no_tab_reloaded());
@@ -145,7 +145,7 @@ TEST_F(AutoplayPermissionContextTests, TestNonAutoRefresh) {
   HostContentSettingsMapFactory::GetForProfile(profile())
       ->SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
                                       ContentSettingsType::AUTOPLAY,
-                                      std::string(), CONTENT_SETTING_BLOCK);
+                                      CONTENT_SETTING_BLOCK);
   permission_context.RequestPermission(
       web_contents(), id, url, true, base::DoNothing());
   EXPECT_TRUE(permission_context.no_tab_reloaded());
