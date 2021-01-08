@@ -441,10 +441,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
-        if (PackageUtils.isFirstInstall(mActivity)
-                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            ((BraveActivity)mActivity).showOnboardingV2(false);
-        }
+        // if (PackageUtils.isFirstInstall(mActivity)
+        //         && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+        //     ((BraveActivity)mActivity).showOnboardingV2(false);
+        // }
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
             ((BraveActivity)mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);

@@ -1555,6 +1555,51 @@ until they verify, or until 90 days have passed.
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
       </message>
+      <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
+        View full Privacy Report
+      </message>
+      <message name="IDS_GOOGLE_DESC" desc="Onboarding SE text">
+        Most popular
+      </message>
+      <message name="IDS_YAHOO_DESC" desc="Onboarding SE text">
+        Supports Brave
+      </message>
+      <message name="IDS_DDG_DESC" desc="Onboarding SE text">
+        Private and no tracking
+      </message>
+      <message name="IDS_QWANT_DESC" desc="Onboarding SE text">
+        Private and no tracking, EU-based
+      </message>
+      <message name="IDS_STARTPAGE_DESC" desc="Onboarding SE text">
+        Google results without trackers
+      </message>
+      <message name="IDS_BING_DESC" desc="Onboarding SE text">
+        Second most popular
+      </message>
+      <message name="IDS_YANDEX_DESC" desc="Onboarding SE text">
+        A leading search engine in Russia
+      </message>
+      <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
+        Plants trees, based in Berlin
+      </message>
+      <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
+        Some search engines protect your privacy better than others when you search the web.
+      </message>
+      <message name="IDS_P3A_ONBOARDING_TITLE_TEXT_1" desc="P3a Onboarding title text">
+        Welcome to Brave Browser
+      </message>
+      <message name="IDS_P3A_ONBOARDING_TITLE_TEXT_2" desc="P3a Onboarding title text">
+        Help us learn anonymously
+      </message>
+      <message name="IDS_P3A_ONBOARDING_TEXT" desc="P3a Onboarding text">
+        Brave protects your privacy and\nappreciates your consent to the following:
+      </message>
+      <message name="IDS_P3A_ONBOARDING_CHECKBOX_TEXT" desc="P3a onboarding checkbox text">
+        Help improve Brave by sending crash reports and completely anonymized, <ph name="PRIVATE_PRODUCT_ANALYSIS">%1$s</ph>
+      </message>
+      <message name="IDS_PRIVATE_PRODUCT_ANALYSIS_TEXT" desc="private product analysis text">
+        private product analytics.
+      </message>
     </messages>
   </release>
 </grit>
