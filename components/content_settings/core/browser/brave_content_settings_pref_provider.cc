@@ -216,6 +216,13 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           continue;
         }
 
+        // Drop a "global" value of brave shields, that actually shouldn't exist
+        // at all since we don't have any global toggle for this.
+        if (resource_identifier == brave_shields::kBraveShields &&
+            patterns_string == "*,*") {
+          continue;
+        }
+
         int setting = CONTENT_SETTING_DEFAULT;
         bool is_integer = j.value().GetAsInteger(&setting);
         DCHECK(is_integer);
