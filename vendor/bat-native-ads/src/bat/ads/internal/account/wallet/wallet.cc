@@ -9,8 +9,8 @@
 
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/security/security_util.h"
-#include "bat/ads/internal/string_util.h"
 
 namespace ads {
 
@@ -30,7 +30,7 @@ bool Wallet::Set(
 
   WalletInfo wallet;
   wallet.id = id;
-  wallet.secret_key = BytesToHexString(secret_key);
+  wallet.secret_key = base::HexEncode(secret_key.data(), secret_key.size());
 
   if (!wallet.IsValid()) {
     return false;

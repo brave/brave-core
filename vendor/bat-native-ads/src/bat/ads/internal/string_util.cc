@@ -40,18 +40,6 @@ std::string Strip(
 
 }  // namespace
 
-std::string BytesToHexString(
-    const std::vector<uint8_t>& bytes) {
-  std::ostringstream hex_string;
-
-  for (size_t i = 0; i < bytes.size(); i++) {
-    hex_string << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
-       << std::hex << static_cast<int>(bytes[i]);
-  }
-
-  return hex_string.str();
-}
-
 std::string StripNonAlphaCharacters(
     const std::string& value) {
   const std::string escaped_characters =
