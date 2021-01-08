@@ -111,8 +111,6 @@ std::vector<std::string>
   "qwant",
   "bing",
   "startpage",
-  "yahoo",
-  "onesearch",
   "google",
   "yandex",
   "ecosia"
