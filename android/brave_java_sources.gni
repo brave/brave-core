@@ -98,6 +98,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingPrefManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingViewPagerAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/P3aOnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineEnum.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineOnboardingFragment.java",

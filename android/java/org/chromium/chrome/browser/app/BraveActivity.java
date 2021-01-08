@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.notifications.retention.RetentionNotification
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.P3aOnboardingActivity;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -113,6 +114,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
+    public static final String P3A_URL = "https://brave.com/p3a";
     public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/#rewards";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String OPEN_URL = "open_url";
@@ -361,6 +363,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             openRewardsPanel();
             BraveRewardsHelper.setRewardsOnboardingModalShown(true);
         }
+
+        startActivity(new Intent(this, P3aOnboardingActivity.class));
     }
 
     private void checkForYandexSE() {
