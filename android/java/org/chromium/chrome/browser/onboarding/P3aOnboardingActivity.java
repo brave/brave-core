@@ -37,6 +37,7 @@ public class P3aOnboardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p3a_onboarding);
+        OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
@@ -56,8 +57,9 @@ public class P3aOnboardingActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // BravePrefServiceBridge.getInstance().setP3AEnabled(p3aOnboardingCheckbox.isChecked());
-                // BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
+                BravePrefServiceBridge.getInstance().setP3AEnabled(
+                        p3aOnboardingCheckbox.isChecked());
+                BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
                 if (PackageUtils.isFirstInstall(P3aOnboardingActivity.this)
                         && !OnboardingPrefManager.getInstance().isNewOnboardingShown()
                         && BraveActivity.getBraveActivity() != null) {
@@ -93,8 +95,8 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                 productAnalysisIndex
                         + getResources().getString(R.string.private_product_analysis_text).length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        productAnalysisTextSS.setSpan(new ForegroundColorSpan(getResources().getColor(
-                                              R.color.brave_rewards_modal_theme_color)),
+        productAnalysisTextSS.setSpan(
+                new ForegroundColorSpan(getResources().getColor(R.color.brave_blue_tint_color)),
                 productAnalysisIndex,
                 productAnalysisIndex
                         + getResources().getString(R.string.private_product_analysis_text).length(),

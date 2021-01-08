@@ -33,6 +33,7 @@ import java.util.Map;
  */
 public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING = "onboarding";
+    private static final String PREF_P3A_ONBOARDING = "p3a_onboarding";
     private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
     private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
@@ -99,6 +100,22 @@ public class OnboardingPrefManager {
     public void setOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    /**
+     * Returns the user preference for whether the onboarding is shown.
+     */
+    public boolean isP3aOnboardingShown() {
+        return mSharedPreferences.getBoolean(PREF_P3A_ONBOARDING, false);
+    }
+
+    /**
+     * Sets the user preference for whether the onboarding is shown.
+     */
+    public void setP3aOnboardingShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_P3A_ONBOARDING, isShown);
         sharedPreferencesEditor.apply();
     }
 
