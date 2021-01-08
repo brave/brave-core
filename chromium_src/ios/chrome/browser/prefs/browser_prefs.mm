@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 void BraveRegisterBrowserStatePrefs(PrefRegistrySimple* registry) {
   brave_sync::Prefs::RegisterProfilePrefs(registry);
