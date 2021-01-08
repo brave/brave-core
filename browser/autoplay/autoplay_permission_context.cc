@@ -44,10 +44,11 @@ void AutoplayPermissionContext::NotifyPermissionSet(
     const GURL& embedding_origin,
     permissions::BrowserPermissionCallback callback,
     bool persist,
-    ContentSetting content_setting) {
+    ContentSetting content_setting,
+    bool is_one_time) {
   permissions::PermissionContextBase::NotifyPermissionSet(
       id, requesting_origin, embedding_origin, std::move(callback), persist,
-      content_setting);
+      content_setting, is_one_time);
   // Ask -> Allow
   if (persist && content_setting == CONTENT_SETTING_ALLOW) {
     content::WebContents* web_contents =

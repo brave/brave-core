@@ -45,7 +45,8 @@ class AutoplayPermissionContextTest : public AutoplayPermissionContext {
                            const GURL& embedder_origin,
                            permissions::BrowserPermissionCallback callback,
                            bool persist,
-                           ContentSetting content_setting) override {
+                           ContentSetting content_setting,
+                           bool is_one_time) override {
   if (!(persist && content_setting == CONTENT_SETTING_ALLOW))
     no_tab_reloaded_ = true;
   }
