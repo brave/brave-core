@@ -50,9 +50,5 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
     @Override
     public void onFinishNativeInitialization() {
         super.onFinishNativeInitialization();
-
-        if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
-            getToolbarManager().enableBottomControls();
-        }
     }
 }
