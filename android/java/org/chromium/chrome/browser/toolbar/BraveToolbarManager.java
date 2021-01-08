@@ -44,7 +44,6 @@ import org.chromium.chrome.browser.tab.SadTab;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoordinator;
@@ -144,6 +143,11 @@ public class BraveToolbarManager extends ToolbarManager {
         mWindowAndroid = windowAndroid;
         mCompositorViewHolder = compositorViewHolder;
 
+        boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
+                && mActivity.getResources().getConfiguration().orientation
+                        != Configuration.ORIENTATION_LANDSCAPE;
+        setBottomToolbarVisible(isBottomToolbarVisible);
+
         mBraveHomepageStateListener = () -> {
             assert (mBottomControlsCoordinatorSupplier != null);
             assert (mBottomControlsCoordinatorSupplier.get()
@@ -192,7 +196,8 @@ public class BraveToolbarManager extends ToolbarManager {
         super.initializeWithNative(layoutManager, tabSwitcherClickHandler, newTabClickHandler,
                 bookmarkClickHandler, customTabsBackClickHandler, showStartSurfaceSupplier);
 
-        if (mBottomControlsCoordinatorSupplier.get() != null) {
+        if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+            enableBottomControls();
             Runnable closeAllTabsAction = () -> {
                 mTabModelSelector.getModel(mIncognitoStateProvider.isIncognitoSelected())
                         .closeAllTabs();
@@ -278,7 +283,9 @@ public class BraveToolbarManager extends ToolbarManager {
         if (mToolbar instanceof BraveTopToolbarCoordinator) {
             ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
         }
-        mBottomControlsCoordinatorSupplier.get().setBottomControlsVisible(visible);
+        if (mBottomControlsCoordinatorSupplier.get() != null) {
+            mBottomControlsCoordinatorSupplier.get().setBottomControlsVisible(visible);
+        }
     }
 
     public boolean isBottomToolbarVisible() {

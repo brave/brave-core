@@ -26,11 +26,11 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.BraveHomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.TabSwitcherButtonView;
-import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.components.feature_engagement.FeatureConstants;
@@ -203,6 +203,8 @@ public class BrowsingModeBottomToolbarCoordinator {
 
         mSearchAccelerator.setThemeColorProvider(themeColorProvider);
         mSearchAccelerator.setIncognitoStateProvider(incognitoStateProvider);
+        mSearchAccelerator.onTintChanged(
+                mThemeColorProvider.getTint(), mThemeColorProvider.useLight());
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
@@ -211,6 +213,8 @@ public class BrowsingModeBottomToolbarCoordinator {
         }
 
         mBookmarkButton.setThemeColorProvider(themeColorProvider);
+        mBookmarkButton.onTintChanged(
+                mThemeColorProvider.getTint(), mThemeColorProvider.useLight());
 
         mThemeColorProvider.addTintObserver(mMenuButton);
 
