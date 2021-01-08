@@ -23,7 +23,7 @@ let notYetQueriedClasses: string[]
 let notYetQueriedIds: string[]
 let cosmeticObserver: MutationObserver | undefined = undefined
 
-window.content_cosmetic = window.content_cosmetic || new Object()
+window.content_cosmetic = window.content_cosmetic || {}
 window.content_cosmetic.cosmeticStyleSheet =
   window.content_cosmetic.cosmeticStyleSheet || new CSSStyleSheet()
 window.content_cosmetic.allSelectorsToRules =
