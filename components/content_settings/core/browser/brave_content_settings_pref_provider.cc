@@ -210,6 +210,19 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
       for (base::DictionaryValue::Iterator j(*resource_dictionary);
            !j.IsAtEnd(); j.Advance()) {
         const std::string& resource_identifier(j.key());
+
+        if (resource_identifier == brave_shields::kObsoleteFingerprinting) {
+          // Just drop, because these preferences were not effective anyway.
+          continue;
+        }
+
+        // Drop a "global" value of brave shields, that actually shouldn't exist
+        // at all since we don't have any global toggle for this.
+        if (resource_identifier == brave_shields::kBraveShields &&
+            patterns_string == "*,*") {
+          continue;
+        }
+
         int setting = CONTENT_SETTING_DEFAULT;
         bool is_integer = j.value().GetAsInteger(&setting);
         DCHECK(is_integer);
