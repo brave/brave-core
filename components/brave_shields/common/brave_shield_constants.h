@@ -27,6 +27,9 @@ const char kLinkedInEmbeds[] = "linked-in-embeds";
 const char kObsoleteAds[] = "ads";
 const char kObsoleteCookies[] = "cookies";
 
+// Some users were not properly migrated from fingerprinting V1.
+const char kObsoleteFingerprinting[] = "fingerprinting";
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_BRAVE_SHIELD_CONSTANTS_H_
