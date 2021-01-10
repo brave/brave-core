@@ -7,26 +7,34 @@ package org.chromium.chrome.browser.ntp_background_images.model;
 
 public class BackgroundImage extends NTPImage{
     private int imageDrawable;
-    private int centerPoint;
+    private int centerPointX;
+    private int centerPointY;
     private ImageCredit imageCredit;
 
-    public BackgroundImage(int imageDrawable, int centerPoint, ImageCredit imageCredit) {
+    public BackgroundImage(
+            int imageDrawable, int centerPointX, int centerPointY, ImageCredit imageCredit) {
         this.imageDrawable = imageDrawable;
-        this.centerPoint = centerPoint;
+        this.centerPointX = centerPointX;
+        this.centerPointY = centerPointY;
         this.imageCredit = imageCredit;
     }
 
-    public BackgroundImage(int imageDrawable, int centerPoint) {
+    public BackgroundImage(int imageDrawable, int centerPointX, int centerPointY) {
         this.imageDrawable = imageDrawable;
-        this.centerPoint = centerPoint;
+        this.centerPointX = centerPointX;
+        this.centerPointY = centerPointY;
     }
 
     public int getImageDrawable() {
         return imageDrawable;
     }
 
-    public int getCenterPoint() {
-        return centerPoint;
+    public int getCenterPointX() {
+        return centerPointX;
+    }
+
+    public int getCenterPointY() {
+        return centerPointY;
     }
 
     public ImageCredit getImageCredit() {

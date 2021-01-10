@@ -26,27 +26,48 @@ public class SponsoredImageUtil {
 
     public static final int MAX_TABS = 10;
 
-	private static List<BackgroundImage> backgroundImages = new ArrayList<BackgroundImage>(Arrays.asList(
-            new BackgroundImage(R.drawable.anders_jilden, 1200, new ImageCredit("Anders Jildén", "https://unsplash.com/@andersjilden?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.andreas_gucklhorn, 1160, new ImageCredit("Andreas Gücklhorn", "https://unsplash.com/@draufsicht?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.andy_mai, 988, new ImageCredit("Andy Mai", "https://unsplash.com/@veroz?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.annie_spratt, 682, new ImageCredit("Annie Spratt", "https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.anton_repponen, 2185, new ImageCredit("Anton Repponen", "https://unsplash.com/@repponen?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.ben_karpinski, 815, new ImageCredit("Ben Karpinski", "http://bklandscapes.com/")),
-            new BackgroundImage(R.drawable.dc_cavalleri, 480, new ImageCredit("D.C. Cavalleri", "https://gradivis.com")),
-            new BackgroundImage(R.drawable.joe_gardner, 1277, new ImageCredit("Joe Gardner", "https://unsplash.com/@josephgardnerphotography?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.louis_kim, 0, new ImageCredit("Louis Kim", "http://louiskimphotography.com/")),
-            new BackgroundImage(R.drawable.matt_palmer, 1205, new ImageCredit("Matt Palmer", "https://unsplash.com/@mattpalmer?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
-            new BackgroundImage(R.drawable.oliwier_gesla, 780, new ImageCredit("Oliwier Gesla", "https://www.instagram.com/oliwiergesla/")),
-            new BackgroundImage(R.drawable.svalbard_jerol_soibam, 1280, new ImageCredit("Jerol Soibam", "https://www.instagram.com/jerol_soibam/")),
-            new BackgroundImage(R.drawable.will_christiansen_glacier_peak, 1630, new ImageCredit("Will Christiansen", "http://www.theskyfolk.com/")),
-            new BackgroundImage(R.drawable.will_christiansen_ice, 1330, new ImageCredit("Will Christiansen", "http://www.theskyfolk.com/")),
-            new BackgroundImage(R.drawable.xavier_balderas_cejudo, 1975, new ImageCredit("Xavier Balderas Cejudo", "https://unsplash.com/@xavibalderas?utm_source=unsplash&utm_medium=referral&utm_content=credit"))
-    ));
+    private static List<BackgroundImage> backgroundImages =
+            new ArrayList<BackgroundImage>(Arrays.asList(
+                    new BackgroundImage(R.drawable.alex_plesovskich, 1355, 720,
+                            new ImageCredit("Alex Plesovskich", "https://unsplash.com/@aples")),
+                    new BackgroundImage(R.drawable.andre_benz, 1150, 720,
+                            new ImageCredit("Andre Benz", "https://unsplash.com/@trapnation")),
+                    new BackgroundImage(R.drawable.corwin_prescott_beach, 925, 720,
+                            new ImageCredit("Corwin Prescott", "")),
+                    new BackgroundImage(R.drawable.corwin_prescott_canyon, 755, 720,
+                            new ImageCredit("Corwin Prescott", "")),
+                    new BackgroundImage(R.drawable.corwin_prescott_crestone, 1550, 720,
+                            new ImageCredit("Corwin Prescott", "")),
+                    new BackgroundImage(R.drawable.corwin_prescott_olympic, 1700, 720,
+                            new ImageCredit("Corwin Prescott", "")),
+                    new BackgroundImage(R.drawable.dylan_malval_alps, 450, 720,
+                            new ImageCredit(
+                                    "Dylan Malval", "https://www.instagram.com/vass_captures/")),
+                    new BackgroundImage(R.drawable.dylan_malval_sea, 1500, 720,
+                            new ImageCredit(
+                                    "Dylan Malval", "https://www.instagram.com/vass_captures/")),
+                    new BackgroundImage(R.drawable.sora_sagano, 1600, 720,
+                            new ImageCredit("Sora Sogano", "https://unsplash.com/@sorasagano")),
+                    new BackgroundImage(R.drawable.spencer_moore_desert, 1200, 720,
+                            new ImageCredit("Spencer M. Moore",
+                                    "https://www.smoorevisuals.com/landscapes")),
+                    new BackgroundImage(R.drawable.spencer_moore_fern, 900, 720,
+                            new ImageCredit("Spencer M. Moore",
+                                    "https://www.smoorevisuals.com/landscapes")),
+                    new BackgroundImage(R.drawable.spencer_moore_lake, 1300, 720,
+                            new ImageCredit("Spencer M. Moore",
+                                    "https://www.smoorevisuals.com/landscapes")),
+                    new BackgroundImage(R.drawable.spencer_moore_ocean, 900, 720,
+                            new ImageCredit("Spencer M. Moore",
+                                    "https://www.smoorevisuals.com/landscapes")),
+                    new BackgroundImage(R.drawable.su_san_lee, 250, 720,
+                            new ImageCredit("Su San Lee", "https://unsplash.com/@blackodc")),
+                    new BackgroundImage(R.drawable.zane_lee, 800, 720,
+                            new ImageCredit("Zane Lee", "https://unsplash.com/@zane404"))));
 
-	private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
+    private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
 
-	private static int tabIndex = 1;
+    private static int tabIndex = 1;
 
     public static List<BackgroundImage> getBackgroundImages() {
         return backgroundImages;
