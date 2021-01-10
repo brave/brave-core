@@ -67,7 +67,9 @@ export const ServiceLink = styled<{}, 'a'>('a')`
 
 export const LearnMoreText = styled<{}, 'div'>('div')`
   font-size: 12px;
-  margin-top: 34px;
+  line-height: 18px;
+  font-weight: 500;
+  font-family: Poppins, sans-serif;
 `
 
 export const Title = styled<{ isGrant?: boolean}, 'span'>('span')`
@@ -156,6 +158,10 @@ const CoinsButton: React.FunctionComponent<CoinsButtonProps> = ({ onClick, class
 export const TurnOnAdsButton = styled(Button as React.ComponentType<ButtonProps>)`
   margin: 15px 0;
   display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  padding: 8px 17px;
 `
 
 export const NotificationButton = styled(CoinsButton)`
@@ -253,9 +259,16 @@ export const UnsupportedMessage = styled<{}, 'div'>('div')`
 `
 
 export const TurnOnText = styled<{}, 'div'>('div')`
-  font-size: 14px;
+  font-size: 13px;
   color: ${palette.grey300};
   margin-top: 8px;
+`
+
+export const TurnOnTitle = styled<{}, 'div'>('div')`
+  font-size: 15px;
+  font-weight: 600;
+  color: ${palette.grey300};
+  margin-top: 10px;
 `
 
 export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`

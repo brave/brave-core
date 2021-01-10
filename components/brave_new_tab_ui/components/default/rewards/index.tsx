@@ -25,7 +25,9 @@ import {
   TurnOnAdsButton,
   UnsupportedMessage,
   TurnOnText,
-  StyledTOS
+  TurnOnTitle,
+  StyledTOS,
+  StyleCenter
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import Notification from './notification'
@@ -59,7 +61,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const {
       parameters,
       enabledAds,
-      onStartRewards,
       adsEstimatedEarnings,
       onlyAnonWallet,
       adsSupported
@@ -74,22 +75,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     return (
       <AmountItem isActionPrompt={!!showEnableAds} isLast={false}>
         {
-          showEnableAds
-          ? <>
-            <TurnOnText>
-              {getLocale('rewardsWidgetTurnOnText')}
-            </TurnOnText>
-            <TurnOnAdsButton
-              onClick={onStartRewards}
-              type={'accent'}
-              brand={'rewards'}
-              text={getLocale('rewardsWidgetTurnOnAds')}
-            />
-          </>
-          : null
-        }
-        {
-          !showEnableAds && adsSupported
+          adsSupported
           ? <div data-test-id={`widget-amount-total-ads`}>
               <Amount>{amount.toFixed(3)}</Amount>
               <ConvertedAmount>
@@ -106,11 +92,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
           : null
         }
         <AmountDescription>
-          {
-            showEnableAds
-            ? <StyledTOS title={getLocale('rewardsWidgetStartUsing')} />
-            : getLocale('rewardsWidgetEstimatedEarnings')
-          }
+          {getLocale('rewardsWidgetEstimatedEarnings')}
         </AmountDescription>
       </AmountItem>
     )
@@ -118,10 +100,15 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
 
   renderTipsBox = () => {
     const {
+      enabledAds,
       parameters,
       onlyAnonWallet,
       totalContribution
     } = this.props
+
+    if (!enabledAds) {
+      return null
+    }
 
     const rate = parameters.rate || 0.0
     const amount = totalContribution
@@ -143,15 +130,45 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     )
   }
 
+  renderOptIn = () => {
+    const { onStartRewards } = this.props
+
+    return (
+      <StyleCenter>
+        <TurnOnTitle>
+          {getLocale('rewardsWidgetTurnOnTitle')}
+        </TurnOnTitle>
+        <TurnOnText>
+          {getLocale('rewardsWidgetTurnOnText')}
+        </TurnOnText>
+        <TurnOnAdsButton
+          onClick={onStartRewards}
+          type={'accent'}
+          brand={'rewards'}
+          text={getLocale('rewardsWidgetTurnOnAds')}
+        />
+        <StyledTOS title={getLocale('rewardsWidgetTurnOnAds')} />
+      </StyleCenter>
+    )
+  }
+
   renderRewardsInfo = () => {
     const {
-      adsSupported
+      adsSupported,
+      enabledAds
     } = this.props
+
+    if (!enabledAds && adsSupported) {
+      return this.renderOptIn()
+    }
 
     return (
       <div>
-        {adsSupported && this.renderAmountItem()}
+        {this.renderAmountItem()}
         {this.renderTipsBox()}
+        <Footer>
+          {this.renderLearnMore()}
+        </Footer>
       </div>
     )
   }
@@ -264,9 +281,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
           }
           {this.renderTitle()}
           {this.renderRewardsInfo()}
-          <Footer>
-            {this.renderLearnMore()}
-          </Footer>
         </WidgetLayer>
         {this.renderNotifications()}
       </WidgetWrapper>

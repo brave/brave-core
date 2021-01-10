@@ -817,8 +817,9 @@
       <message name="IDS_BRAVE_UI_POINT_GRANTS" desc="">Point Grants</message>
       <message name="IDS_BRAVE_UI_QR_CODE_LOADING" desc="">Loading image...</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Start using Brave Rewards</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_TEXT" desc="">Earn tokens by viewing privacy-respecting ads and support your favorite web content creators by default.</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Start using Rewards</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_TEXT" desc="">Earn tokens by viewing Brave Private Ads and support content creators automatically.</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_TITLE" desc="">Earn tokens and give back</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
