@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -47,6 +48,10 @@ using ntp_background_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(FTX_ENABLED)
+#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -120,6 +125,11 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showCryptoDotCom",
       prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
+#endif
+#if BUILDFLAG(FTX_ENABLED)
+  pref_data.SetBoolean(
+      "showFTX",
+      prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
 }
@@ -354,6 +364,11 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
 #endif
+#if BUILDFLAG(FTX_ENABLED)
+  pref_change_registrar_.Add(kFTXNewTabPageShowFTX,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   if (tor_launcher_factory_)
@@ -471,6 +486,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   } else if (settingsKeyInput == "showCryptoDotCom") {
     settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;
+#endif
+#if BUILDFLAG(FTX_ENABLED)
+  } else if (settingsKeyInput == "showFTX") {
+    settingsKey = kFTXNewTabPageShowFTX;
 #endif
   } else {
     LOG(ERROR) << "Invalid setting key";

@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -43,6 +44,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(FTX_ENABLED)
+#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 namespace extensions {
@@ -131,6 +136,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   (*s_brave_allowlist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
+#if BUILDFLAG(FTX_ENABLED)
+  (*s_brave_allowlist)[kFTXNewTabPageShowFTX] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
   // Brave today prefs
