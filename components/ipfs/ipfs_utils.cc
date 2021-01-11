@@ -7,15 +7,49 @@
 
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 
 namespace ipfs {
+
+bool IsIpfsDisabledByPolicy(content::BrowserContext* context) {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  return prefs->FindPreference(kIPFSEnabled) &&
+         prefs->IsManagedPreference(kIPFSEnabled) &&
+         !prefs->GetBoolean(kIPFSEnabled);
+}
+
+bool IsIpfsEnabled(content::BrowserContext* context) {
+  if (context->IsOffTheRecord() || IsIpfsDisabledByPolicy(context) ||
+      !base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool IsIpfsResolveMethodDisabled(content::BrowserContext* context) {
+  // Ignore the actual pref value if IPFS feature is disabled.
+  if (!IsIpfsEnabled(context)) {
+    return true;
+  }
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  return prefs->FindPreference(kIPFSResolveMethod) &&
+         prefs->GetInteger(kIPFSResolveMethod) ==
+             static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
+}
 
 bool HasIPFSPath(const GURL& gurl) {
   static std::vector<URLPattern> url_patterns(

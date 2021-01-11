@@ -31,7 +31,7 @@ def AddBravePolicies(template_file_contents):
             'supported_on': ['chrome.*:87-'],
             'features': {
               'dynamic_refresh': False,
-              'per_profile': False,
+              'per_profile': True,
               'can_be_recommended': False,
               'can_be_mandatory': True
             },
