@@ -632,7 +632,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showBraveRewardsOptInLayout(root);
                 braveRewardsOnboardingModalView.setVisibility(View.GONE);
             }
         }));
