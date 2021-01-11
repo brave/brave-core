@@ -5,9 +5,6 @@
 
 #include "brave/browser/brave_cosmetic_resources_tab_helper.h"
 
-#include <memory>
-#include <string>
-#include <vector>
 #include <utility>
 
 #include "base/json/json_writer.h"
@@ -18,6 +15,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "brave/content/browser/cosmetic_filters_communication_impl.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,84 +24,10 @@
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/renderer/render_frame.h"
-#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
 #include "ui/base/resource/resource_bundle.h"
 
-const char k_pre_init_script[] =
-  "(function() {"
-     "if (window.content_cosmetic == undefined) {"
-        "window.content_cosmetic = {};"
-     "}"
-     "%s"
-     "%s"
-  "})();";
-
-const char k_scriplet_init_script[] =
-  "if (window.content_cosmetic.scriplet == undefined ||"
-      "window.content_cosmetic.scriplet === '') {"
-    "let text = %s;"
-    "window.content_cosmetic.scriplet = `${text}`;"
-  "}";
-
-const char k_non_scriplet_init_script[] =
-  "if (window.content_cosmetic.hide1pContent === undefined) {"
-      "window.content_cosmetic.hide1pContent = %s;"
-  "}"
-  "if (window.content_cosmetic.generichide === undefined) {"
-      "window.content_cosmetic.generichide = %s;"
-  "}";
-
-const char k_selectors_inject_script[] =
-  "(function() {"
-     "let nextIndex ="
-        "window.content_cosmetic.cosmeticStyleSheet.rules.length;"
-     "const selectors = %s;"
-     "selectors.forEach(selector => {"
-       "if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {"
-         "let rule = selector + '{display:none !important;}';"
-         "window.content_cosmetic.cosmeticStyleSheet.insertRule("
-           "`${rule}`, nextIndex);"
-         "window.content_cosmetic.allSelectorsToRules.set("
-           "selector, nextIndex);"
-         "nextIndex++;"
-         "window.content_cosmetic.firstRunQueue.add(selector);"
-       "}"
-     "});"
-     "if (!document.adoptedStyleSheets.includes("
-         "window.content_cosmetic.cosmeticStyleSheet)) {"
-       "document.adoptedStyleSheets ="
-         "[window.content_cosmetic.cosmeticStyleSheet];"
-     "};"
-  "})();";
-
-const char k_style_selectors_inject_script[] =
-  "(function() {"
-    "let nextIndex ="
-        "window.content_cosmetic.cosmeticStyleSheet.rules.length;"
-    "const selectors = %s;"
-    "for (let selector in selectors) {"
-      "if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {"
-        "let rule = selector + '{';"
-        "selectors[selector].forEach(prop => {"
-          "if (!rule.endsWith('{')) {"
-            "rule += ';';"
-          "}"
-          "rule += prop;"
-        "});"
-        "rule += '}';"
-        "window.content_cosmetic.cosmeticStyleSheet.insertRule("
-          "`${rule}`, nextIndex);"
-        "window.content_cosmetic.allSelectorsToRules.set("
-          "selector, nextIndex);"
-        "nextIndex++;"
-      "};"
-    "};"
-    "if (!document.adoptedStyleSheets.includes("
-          "window.content_cosmetic.cosmeticStyleSheet)){"
-       "document.adoptedStyleSheets ="
-         "[window.content_cosmetic.cosmeticStyleSheet];"
-    "};"
-  "})();";
+base::NoDestructor<std::string>
+    BraveCosmeticResourcesTabHelper::observing_script_("");
 
 std::vector<std::string>
     BraveCosmeticResourcesTabHelper::vetted_search_engines_ = {
@@ -116,16 +40,83 @@ std::vector<std::string>
   "ecosia"
 };
 
-// Doing that to prevent a lint error:
-// Static/global string variables are not permitted
-// You can create an object dynamically and never delete it by using a
-// Function-local static pointer or reference
-// (e.g., static const auto& impl = *new T(args...);).
-std::string* BraveCosmeticResourcesTabHelper::observing_script_ =
-    new std::string("");
-
-
 namespace {
+
+const char kPreInitScript[] =
+  R"((function() {
+     if (window.content_cosmetic == undefined) {
+        window.content_cosmetic = {};
+     }
+     %s
+     %s
+  })();)";
+
+const char kScripletInitScript[] =
+  R"(if (window.content_cosmetic.scriplet == undefined ||
+      window.content_cosmetic.scriplet === '') {
+    let text = %s;
+    window.content_cosmetic.scriplet = `${text}`;
+  })";
+
+const char kNonScripletInitScript[] =
+  R"(if (window.content_cosmetic.hide1pContent === undefined) {
+      window.content_cosmetic.hide1pContent = %s;
+  }
+  if (window.content_cosmetic.generichide === undefined) {
+      window.content_cosmetic.generichide = %s;
+  })";
+
+const char kSelectorsInjectScript[] =
+  R"((function() {
+     let nextIndex =
+        window.content_cosmetic.cosmeticStyleSheet.rules.length;
+     const selectors = %s;
+     selectors.forEach(selector => {
+       if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
+         let rule = selector + '{display:none !important;}';
+         window.content_cosmetic.cosmeticStyleSheet.insertRule(
+           `${rule}`, nextIndex);
+         window.content_cosmetic.allSelectorsToRules.set(
+           selector, nextIndex);
+         nextIndex++;
+         window.content_cosmetic.firstRunQueue.add(selector);
+       }
+     });
+     if (!document.adoptedStyleSheets.includes(
+         window.content_cosmetic.cosmeticStyleSheet)) {
+       document.adoptedStyleSheets =
+         [window.content_cosmetic.cosmeticStyleSheet];
+     };
+  })();)";
+
+const char kStyleSelectorsInjectScript[] =
+  R"((function() {
+    let nextIndex =
+        window.content_cosmetic.cosmeticStyleSheet.rules.length;
+    const selectors = %s;
+    for (let selector in selectors) {
+      if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
+        let rule = selector + '{';
+        selectors[selector].forEach(prop => {
+          if (!rule.endsWith('{')) {
+            rule += ';';
+          }
+          rule += prop;
+        });
+        rule += '}';
+        window.content_cosmetic.cosmeticStyleSheet.insertRule(
+          `${rule}`, nextIndex);
+        window.content_cosmetic.allSelectorsToRules.set(
+          selector, nextIndex);
+        nextIndex++;
+      };
+    };
+    if (!document.adoptedStyleSheets.includes(
+          window.content_cosmetic.cosmeticStyleSheet)){
+       document.adoptedStyleSheets =
+         [window.content_cosmetic.cosmeticStyleSheet];
+    };
+  })();)";
 
 bool ShouldDoCosmeticFiltering(content::WebContents* contents,
     const GURL& url) {
@@ -135,17 +126,13 @@ bool ShouldDoCosmeticFiltering(content::WebContents* contents,
   return ::brave_shields::ShouldDoCosmeticFiltering(map, url);
 }
 
-std::string LoadDataResource(const int& id) {
-  std::string data_resource;
-
+std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
-    data_resource = resource_bundle.LoadDataResourceString(id);
-  } else {
-    data_resource = resource_bundle.GetRawDataResource(id).as_string();
+    return resource_bundle.LoadDataResourceString(id);
   }
 
-  return data_resource;
+  return resource_bundle.GetRawDataResource(id).as_string();
 }
 
 std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
@@ -250,8 +237,7 @@ BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
   }
 }
 
-BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() {
-}
+BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() = default;
 
 void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
     content::GlobalFrameRoutingId frame_id, const std::string& url,
@@ -259,20 +245,19 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
   if (!resources) {
     return;
   }
-  for (auto i = resources->GetList().begin();
-      i < resources->GetList().end(); i++) {
+  for (auto& elem : resources->GetList()) {
     base::DictionaryValue* resources_dict;
-    if (!i->GetAsDictionary(&resources_dict)) {
+    if (!elem.GetAsDictionary(&resources_dict)) {
       continue;
     }
     std::string pre_init_script;
-    std::string scriplet_init_script = "";
-    std::string non_scriplet_init_script = "";
+    std::string scriplet_init_script;
+    std::string non_scriplet_init_script;
     std::string json_to_inject;
     if (base::JSONWriter::Write(
         *(resources_dict->FindPath("injected_script")), &json_to_inject) &&
             json_to_inject.length() > 1) {
-      scriplet_init_script = base::StringPrintf(k_scriplet_init_script,
+      scriplet_init_script = base::StringPrintf(kScripletInitScript,
           json_to_inject.c_str());
     }
     if (do_non_scriplets) {
@@ -285,11 +270,11 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
       bool generichide = false;
       resources_dict->GetBoolean("generichide", &generichide);
       non_scriplet_init_script =
-          base::StringPrintf(k_non_scriplet_init_script,
+          base::StringPrintf(kNonScripletInitScript,
               enabled_1st_party_cf_filtering_ ? "true" : "false",
               generichide ? "true" : "false");
     }
-    pre_init_script = base::StringPrintf(k_pre_init_script,
+    pre_init_script = base::StringPrintf(kPreInitScript,
         scriplet_init_script.c_str(), non_scriplet_init_script.c_str());
     auto* frame_host = content::RenderFrameHost::FromID(frame_id);
     if (!frame_host)
@@ -332,7 +317,7 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     }
     // Building a script for stylesheet modifications
     std::string new_selectors_script =
-        base::StringPrintf(k_selectors_inject_script, json_selectors.c_str());
+        base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
     if (hide_selectors_list->GetSize() != 0) {
       auto* frame_host = content::RenderFrameHost::FromID(frame_id);
       if (!frame_host)
@@ -353,7 +338,7 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
       json_selectors = "[]";
     }
     std::string new_selectors_script =
-        base::StringPrintf(k_style_selectors_inject_script,
+        base::StringPrintf(kStyleSelectorsInjectScript,
             json_selectors.c_str());
     if (!json_selectors.empty()) {
       auto* frame_host = content::RenderFrameHost::FromID(frame_id);
@@ -395,7 +380,7 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
     }
     // Building a script for stylesheet modifications
     std::string new_selectors_script =
-        base::StringPrintf(k_selectors_inject_script, json_selectors.c_str());
+        base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
     if (selectors_list->GetSize() != 0) {
       auto* frame_host = content::RenderFrameHost::FromID(frame_id);
       if (!frame_host)
@@ -419,7 +404,7 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
 
 void BraveCosmeticResourcesTabHelper::ProcessURL(
     content::RenderFrameHost* render_frame_host, const GURL& url,
-    const bool& do_non_scriplets) {
+    const bool do_non_scriplets) {
   content::CosmeticFiltersCommunicationImpl::CreateInstance(render_frame_host,
       this);
   if (!render_frame_host || !ShouldDoCosmeticFiltering(web_contents(), url)) {
@@ -453,7 +438,7 @@ void BraveCosmeticResourcesTabHelper::ResourceLoadComplete(
   ProcessURL(render_frame_host, resource_load_info.final_url, false);
 }
 
-void BraveCosmeticResourcesTabHelper::HiddenClassIdSelectors(
+void BraveCosmeticResourcesTabHelper::ApplyHiddenClassIdSelectors(
     content::RenderFrameHost* render_frame_host,
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids) {

@@ -18,7 +18,7 @@ class CosmeticFiltersObserver {
   CosmeticFiltersObserver() {}
   ~CosmeticFiltersObserver() {}
 
-  virtual void HiddenClassIdSelectors(RenderFrameHost* render_frame_host,
+  virtual void ApplyHiddenClassIdSelectors(RenderFrameHost* render_frame_host,
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids) {}
 };

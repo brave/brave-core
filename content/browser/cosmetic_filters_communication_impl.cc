@@ -78,7 +78,7 @@ void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
   }
   auto* frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (cosmetic_filters_observer_ && frame_host) {
-    cosmetic_filters_observer_->HiddenClassIdSelectors(frame_host,
+    cosmetic_filters_observer_->ApplyHiddenClassIdSelectors(frame_host,
         classes, ids);
   }
 }

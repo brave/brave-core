@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/no_destructor.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/content/browser/cosmetic_filters_observer.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -21,7 +22,7 @@ class BraveCosmeticResourcesTabHelper
       public content::WebContentsUserData<BraveCosmeticResourcesTabHelper>,
       public base::SupportsWeakPtr<BraveCosmeticResourcesTabHelper> {
  public:
-  static std::string* observing_script_;
+  static base::NoDestructor<std::string> observing_script_;
   static std::vector<std::string> vetted_search_engines_;
 
   explicit BraveCosmeticResourcesTabHelper(content::WebContents* contents);
@@ -34,19 +35,17 @@ class BraveCosmeticResourcesTabHelper
       content::RenderFrameHost* render_frame_host,
       const content::GlobalRequestID& request_id,
       const blink::mojom::ResourceLoadInfo& resource_load_info) override;
-  //
 
   // content::CosmeticFiltersObserver overrides:
-  void HiddenClassIdSelectors(content::RenderFrameHost* render_frame_host,
+  void ApplyHiddenClassIdSelectors(content::RenderFrameHost* render_frame_host,
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids) override;
-  //
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:
   void ProcessURL(content::RenderFrameHost* render_frame_host, const GURL& url,
-      const bool& do_non_scriplets);
+      const bool do_non_scriplets);
 
   void GetUrlCosmeticResourcesOnUI(content::GlobalFrameRoutingId frame_id,
       const std::string& url, bool do_non_scriplets,
