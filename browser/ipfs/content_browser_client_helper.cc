@@ -15,6 +15,7 @@
 #include "brave/common/url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
@@ -54,7 +55,7 @@ bool HandleIPFSURLRewrite(
     return true;
   }
 
-  if (!IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
+  if (!IsIpfsResolveMethodDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later.
       IsIPFSLocalGateway(browser_context) &&

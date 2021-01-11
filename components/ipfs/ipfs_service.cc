@@ -8,14 +8,12 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
@@ -111,17 +109,13 @@ IpfsService::~IpfsService() = default;
 
 // static
 void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kIPFSEnabled, true);
   registry->RegisterIntegerPref(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
-}
-
-// static
-void IpfsService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kIPFSEnabled, true);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {

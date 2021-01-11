@@ -67,7 +67,6 @@ class IpfsService : public KeyedService,
 
   bool IsDaemonLaunched() const;
   static void RegisterPrefs(PrefRegistrySimple* registry);
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;

@@ -31,7 +31,7 @@ class BraveExtensionManagement : public ExtensionManagement,
       UnloadedExtensionReason reason) override;
 
   void OnTorDisabledChanged();
-  void Cleanup();
+  void Cleanup(content::BrowserContext* browser_context);
 
   PrefChangeRegistrar local_state_pref_change_registrar_;
 
