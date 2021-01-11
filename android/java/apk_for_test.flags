@@ -82,6 +82,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
+    public <init>(...);
     *** mBottomControlsCoordinatorSupplier;
     *** mCallbackController;
     *** mBrowserControlsSizer;
@@ -176,4 +177,8 @@
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addBookmarkInternal(...);
     *** createSnackbarControllerForEditButton(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
+    public <init>(...);
 }
