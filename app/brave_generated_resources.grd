@@ -196,6 +196,12 @@
       <message name="IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox for prevent showing widevine install prompt">
         Don't ask again
       </message>
+      <message name="IDS_SETTINGS_ENABLE_WIDEVINE_TITLE" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
+        Enable Widevine
+      </message>
+      <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
+        Uses Widevine digital rights management (DRM) component to view streaming video and other content in the browser.
+      </message>
       <message name="IDS_SETTINGS_ASK_WIDEVINE_INSTALL_DESC" desc="Text fragment for asking widevine install or not">
         Ask when a site wants to install Widevine on your computer.
       </message>

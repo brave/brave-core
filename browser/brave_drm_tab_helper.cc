@@ -24,10 +24,9 @@ namespace {
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   std::vector<std::string> component_ids;
   component_ids = cus->GetComponentIDs();
-  return std::find(component_ids.begin(),
-                   component_ids.end(),
+  return std::find(component_ids.begin(), component_ids.end(),
                    BraveDrmTabHelper::kWidevineComponentId) !=
-                       component_ids.end();
+         component_ids.end();
 }
 #if !defined(OS_LINUX)
 content::WebContents* GetActiveWebContents() {

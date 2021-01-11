@@ -9,6 +9,7 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("favicon_source") {
   # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
@@ -323,6 +324,12 @@ source_set("ui") {
         "webui/settings/brave_default_extensions_handler.cc",
         "webui/settings/brave_default_extensions_handler.h",
       ]
+
+      deps += [ "//third_party/widevine/cdm:buildflags" ]
+
+      if (enable_widevine) {
+        deps += [ "//brave/browser/widevine" ]
+      }
     }
 
     if (brave_rewards_enabled) {

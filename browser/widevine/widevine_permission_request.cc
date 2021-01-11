@@ -47,7 +47,7 @@ void WidevinePermissionRequest::PermissionGranted(bool is_one_time) {
   }
 #endif
   if (!for_restart_)
-    EnableWidevineCdmComponent(web_contents_);
+    EnableWidevineCdmComponent();
 }
 
 void WidevinePermissionRequest::PermissionDenied() {

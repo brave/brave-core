@@ -19,6 +19,8 @@ cr.define('settings', function () {
     setTorEnabled (value) {}
     isTorEnabled () {}
     isTorManaged () {}
+    setWidevineEnabled() {}
+    isWidevineEnabled() {}
     getRestartNeeded () {}
     getWeb3ProviderList () {}
     wasSignInEnabledAtStartup () {}
@@ -61,6 +63,14 @@ cr.define('settings', function () {
 
     isTorManaged () {
       return cr.sendWithPromise('isTorManaged')
+    }
+
+    setWidevineEnabled (value) {
+      chrome.send('setWidevineEnabled', [value])
+    }
+
+    isWidevineEnabled () {
+      return cr.sendWithPromise('isWidevineEnabled')
     }
 
     getRestartNeeded () {
