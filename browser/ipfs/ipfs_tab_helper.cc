@@ -50,7 +50,8 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
       pref_service_->GetInteger(kIPFSResolveMethod));
   if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
       handle->GetResponseHeaders() &&
-      handle->GetResponseHeaders()->HasHeader("x-ipfs-path")) {
+      handle->GetResponseHeaders()->HasHeader("x-ipfs-path") &&
+      IsDefaultGatewayURL(handle->GetURL())) {
     InfoBarService* infobar_service =
         InfoBarService::FromWebContents(web_contents());
     if (infobar_service) {
