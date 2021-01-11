@@ -299,20 +299,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveSyncReflectionUtils.showInformers();
 
         if (BraveConfig.P3A_ENABLED) {
-            // // P3A informer should be shown not for the updated users only
-            // if (!PackageUtils.isFirstInstall(this)) {
-            //     BraveP3AInformers.show();
-            // } else {
-            //     // On the first run P3A is must be set from the onboarding wizard
-            // }
-            // Uncomment ^ when onboarding UI step will be ready for P3A
-
-            // Until we don't have P3A onboarding, P3A will be disabled,
-            // but available for activating through settings
-            if (!BravePrefServiceBridge.getInstance().hasPathP3AEnabled()) {
-                BravePrefServiceBridge.getInstance().setP3AEnabled(false);
+            if (!OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
+                Intent p3aOnboardingIntent = new Intent(this, P3aOnboardingActivity.class);
+                p3aOnboardingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(p3aOnboardingIntent);
             }
-            // Remove lines above ^ when onboarding UI step will be ready for P3A
         }
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
