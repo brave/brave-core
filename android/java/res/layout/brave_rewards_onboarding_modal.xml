@@ -100,6 +100,7 @@
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"
 	            android:gravity="center"
+	            android:lineSpacingMultiplier="1.5"
 	            android:text="@string/brave_rewards_tos_text"
 	            android:textSize="12sp"
 	            android:textStyle="bold"

@@ -1600,6 +1600,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_PRIVATE_PRODUCT_ANALYSIS_TEXT" desc="private product analysis text">
         private product analytics.
       </message>
+      <message name="IDS_BRE_BANNER_TITLE_TEXT" desc="BRE banner title text">
+        Need a refresher on Rewards?
+      </message>
+      <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
+        Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
+      </message>
     </messages>
   </release>
 </grit>

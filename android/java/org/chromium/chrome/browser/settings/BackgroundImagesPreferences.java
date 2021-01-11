@@ -33,6 +33,7 @@ public class BackgroundImagesPreferences
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
     public static final String PREF_SHOW_NON_DISRUPTIVE_BANNER = "show_non_disruptive_banner";
+    public static final String PREF_SHOW_BRE_BANNER = "show_bre_banner";
     public static final String PREF_WIDGET_STACK = "widget_stack";
 
     private ChromeSwitchPreference showBackgroundImagesPref;
