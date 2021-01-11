@@ -450,7 +450,6 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
       error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
     }
 
-    strongSelf.ads.enabled = [BATBraveAds isCurrentLocaleSupported];
     [strongSelf startNotificationTimers];
     strongSelf.initializingWallet = NO;
 
