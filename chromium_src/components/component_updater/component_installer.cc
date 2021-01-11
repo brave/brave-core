@@ -23,7 +23,6 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
     "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
-    "ggkkehgbnfjpeggfpleeakpidbkibbmn",  // Crowd Deny
     "giekcmmlnklenlaomppkphknjmnnpneh",  // Certificate Error Assistant
     "jflookgnkcckhobaglndicnbbgbonegd",  // Safety Tips
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
