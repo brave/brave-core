@@ -9,6 +9,8 @@ import android.content.Context;
 import android.support.test.filters.SmallTest;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,21 +21,34 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.findinpage.FindToolbarManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.init.StartupTabPreloader;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
+import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation.
@@ -63,6 +78,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/ToolbarManager"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/BraveToolbarManager"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator"));
         Assert.assertTrue(classExists(
@@ -180,6 +196,19 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", ChromeActivity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
                 ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
+                "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
+                BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
+                CompositorViewHolder.class, Callback.class, TopUiThemeColorProvider.class,
+                TabObscuringHandler.class, ObservableSupplier.class, IdentityDiscController.class,
+                List.class, ActivityTabProvider.class, ScrimCoordinator.class,
+                ToolbarActionModeCallback.class, FindToolbarManager.class, ObservableSupplier.class,
+                ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
+                OneshotSupplier.class, boolean.class, ObservableSupplier.class,
+                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
+                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
+                ActivityLifecycleDispatcher.class, Supplier.class));
     }
 
     @Test
