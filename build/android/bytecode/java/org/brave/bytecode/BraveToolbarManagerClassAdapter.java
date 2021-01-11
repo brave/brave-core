@@ -15,6 +15,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
     public BraveToolbarManagerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        redirectConstructor(sToolbarManagerClassName, sBraveToolbarManagerClassName);
+
         deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
         makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
 
