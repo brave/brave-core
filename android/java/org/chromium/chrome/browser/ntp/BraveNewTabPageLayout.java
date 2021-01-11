@@ -438,7 +438,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
         if (PackageUtils.isFirstInstall(mActivity)
-                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()
+                && OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
             ((BraveActivity)mActivity).showOnboardingV2(false);
         }
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
