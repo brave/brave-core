@@ -18,8 +18,7 @@
 class BraveCosmeticResourcesTabHelper
     : public content::CosmeticFiltersObserver,
       public content::WebContentsObserver,
-      public content::WebContentsUserData<BraveCosmeticResourcesTabHelper>,
-      public base::SupportsWeakPtr<BraveCosmeticResourcesTabHelper> {
+      public content::WebContentsUserData<BraveCosmeticResourcesTabHelper> {
  public:
   explicit BraveCosmeticResourcesTabHelper(content::WebContents* contents);
   ~BraveCosmeticResourcesTabHelper() override;
@@ -60,6 +59,8 @@ class BraveCosmeticResourcesTabHelper
 
   std::vector<std::string> exceptions_;
   bool enabled_1st_party_cf_filtering_;
+
+  base::WeakPtrFactory<BraveCosmeticResourcesTabHelper> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveCosmeticResourcesTabHelper);
 };

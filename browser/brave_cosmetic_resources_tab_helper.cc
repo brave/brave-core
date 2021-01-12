@@ -220,7 +220,8 @@ bool IsVettedSearchEngine(const std::string& host) {
 
 BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
     content::WebContents* contents)
-    : WebContentsObserver(contents), enabled_1st_party_cf_filtering_(false) {
+    : WebContentsObserver(contents), enabled_1st_party_cf_filtering_(false),
+      weak_factory_(this) {
   if (g_observing_script->empty()) {
     *g_observing_script = LoadDataResource(kCosmeticFiltersGenerated[0].value);
   }
@@ -408,7 +409,7 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
           base::BindOnce(GetUrlCosmeticResourcesOnTaskRunner, url.spec()),
           base::BindOnce(
               &BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI,
-              AsWeakPtr(),
+              weak_factory_.GetWeakPtr(),
               content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
@@ -443,7 +444,7 @@ void BraveCosmeticResourcesTabHelper::ApplyHiddenClassIdSelectors(
                          exceptions_),
           base::BindOnce(
               &BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI,
-              AsWeakPtr(),
+              weak_factory_.GetWeakPtr(),
               content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
