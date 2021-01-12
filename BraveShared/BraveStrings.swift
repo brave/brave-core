@@ -1017,11 +1017,17 @@ extension Strings {
                               value: "Buy",
                               comment: "Button text to buy Brave VPN")
         
+        public static let tryForFreeButton =
+            NSLocalizedString("vpn.learnMore",
+                              bundle: .braveShared,
+                              value: "Try for FREE",
+                              comment: "Button text to try free Brave VPN")
+        
         public static let settingHeaderBody =
             NSLocalizedString("vpn.settingHeaderBody",
                               bundle: .braveShared,
-                              value: "Protect your connection and block invasive trackers.",
-                              comment: "")
+                              value: "Upgrade to a VPN to protect your connection and block invasive trackers everywhere.",
+                              comment: "VPN Banner Description")
         
         public static let errorCantGetPricesTitle =
             NSLocalizedString("vpn.errorCantGetPricesTitle",
