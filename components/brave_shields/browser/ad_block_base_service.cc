@@ -128,13 +128,11 @@ bool AdBlockBaseService::ShouldStartRequest(
       url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
-  // TODO(spinda): Remove explicit_cancel here when removed from adblock-rust.
-  bool explicit_cancel;
   bool saved_from_exception;
-  if (ad_block_client_->matches(
-          url.spec(), url.host(), tab_host, is_third_party,
-          ResourceTypeToString(resource_type), &explicit_cancel,
-          &saved_from_exception, mock_data_url)) {
+  if (ad_block_client_->matches(url.spec(), url.host(), tab_host,
+                                is_third_party,
+                                ResourceTypeToString(resource_type),
+                                &saved_from_exception, mock_data_url)) {
     // We'd only possibly match an exception filter if we're returning true.
     if (did_match_exception) {
       *did_match_exception = false;

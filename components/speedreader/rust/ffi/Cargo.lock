@@ -182,7 +182,7 @@ dependencies = [
  "proc-macro2 1.0.18 (registry+https://github.com/rust-lang/crates.io-index)",
  "procedural-masquerade 0.1.6 (git+https://github.com/AndriusA/rust-cssparser?branch=glibc)",
  "quote 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "smallvec 0.6.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "smallvec 0.6.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "syn 1.0.33 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -998,7 +998,7 @@ dependencies = [
  "phf_codegen 0.7.24 (registry+https://github.com/rust-lang/crates.io-index)",
  "precomputed-hash 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "servo_arc 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "smallvec 0.6.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "smallvec 0.6.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "thin-slice 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -1069,7 +1069,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "smallvec"
-version = "0.6.13"
+version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "maybe-uninit 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1090,7 +1090,7 @@ dependencies = [
  "regex 1.3.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.114 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.55 (registry+https://github.com/rust-lang/crates.io-index)",
- "smallvec 0.6.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "smallvec 0.6.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
  "unicode-normalization 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1242,7 +1242,7 @@ name = "unicode-normalization"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "smallvec 0.6.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "smallvec 0.6.14 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -1454,7 +1454,7 @@ dependencies = [
 "checksum servo_arc 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "d98238b800e0d1576d8b6e3de32827c2d74bee68bb97748dcf5071fb53965432"
 "checksum siphasher 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "0b8de496cf83d4ed58b6be86c3a275b8602f6ffe98d3024a869e124147a9a3ac"
 "checksum siphasher 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "fa8f3741c7372e75519bd9346068370c9cdaabcc1f9599cbcf2a2719352286b7"
-"checksum smallvec 0.6.13 (registry+https://github.com/rust-lang/crates.io-index)" = "f7b0758c52e15a8b5e3691eae6cc559f08eee9406e548a4477ba4e67770a82b6"
+"checksum smallvec 0.6.14 (registry+https://github.com/rust-lang/crates.io-index)" = "b97fcaeba89edba30f044a10c6a3cc39df9c3f17d7cd829dd1446cab35f890e0"
 "checksum stable_deref_trait 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "dba1a27d3efae4351c8051072d619e3ade2820635c3958d826bfea39d59b54c8"
 "checksum string_cache 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2940c75beb4e3bf3a494cef919a747a2cb81e52571e212bfbd185074add7208a"
 "checksum string_cache_codegen 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "f24c8e5e19d22a726626f1a5e16fe15b132dcf21d10177fa5a45ce7962996b97"
