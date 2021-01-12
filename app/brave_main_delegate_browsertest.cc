@@ -21,13 +21,13 @@
 #include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 using BraveMainDelegateBrowserTest = InProcessBrowserTest;
 
