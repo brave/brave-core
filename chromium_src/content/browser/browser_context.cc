@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
+#include "base/optional.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
 #include "content/browser/renderer_host/render_view_host_delegate.h"
@@ -20,13 +21,19 @@ namespace content {
 
 scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     content::StoragePartition* partition,
-    const std::string& namespace_id) {
+    const std::string& namespace_id,
+    base::Optional<std::string> clone_from_namespace_id) {
   content::DOMStorageContextWrapper* context_wrapper =
       static_cast<content::DOMStorageContextWrapper*>(
           partition->GetDOMStorageContext());
 
-  return content::SessionStorageNamespaceImpl::Create(context_wrapper,
-                                                      namespace_id);
+  if (clone_from_namespace_id) {
+    return content::SessionStorageNamespaceImpl::CloneFrom(
+        context_wrapper, namespace_id, clone_from_namespace_id.value(), true);
+  } else {
+    return content::SessionStorageNamespaceImpl::Create(context_wrapper,
+                                                        namespace_id);
+  }
 }
 
 std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
@@ -37,7 +44,6 @@ std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
 }
 
 }  // namespace content
-
 
 namespace content {
 bool BrowserContext::IsTor() const {

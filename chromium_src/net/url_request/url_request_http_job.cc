@@ -13,16 +13,18 @@
 
 namespace {
 
-bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
+bool ShouldUseEphemeralStorage(net::URLRequest* request) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
-  const net::IsolationInfo& isolation_info =
-      http_job->request()->isolation_info();
+  const net::IsolationInfo& isolation_info = request->isolation_info();
   if (!isolation_info.top_frame_origin().has_value() ||
       !isolation_info.frame_origin().has_value())
     return false;
   if (*isolation_info.top_frame_origin() == *isolation_info.frame_origin())
+    return false;
+
+  if (url::Origin::Create(request->url()) == *isolation_info.top_frame_origin())
     return false;
 
   return true;
@@ -31,7 +33,32 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
 }  // namespace
 
 #define BRAVE_ADDCOOKIEHEADERANDSTART                                          \
-  if (ShouldUseEphemeralStorage(this))                                         \
+  bool use_ephemeral_storage = ShouldUseEphemeralStorage(request_);            \
+  if (use_ephemeral_storage) {                                                 \
+    net::CookieInclusionStatus returned_status;                                \
+    auto cookie = net::CanonicalCookie::Create(                                \
+        request_->url(), "a=a", base::Time::Now(), base::nullopt,              \
+        &returned_status);                                                     \
+                                                                               \
+    auto top_frame_url =                                                       \
+        request_->isolation_info().top_frame_origin()->GetURL();               \
+    auto cookie_1p = net::CanonicalCookie::CreateSanitizedCookie(              \
+        top_frame_url, cookie->Name(), cookie->Value(), cookie->Domain(),      \
+        cookie->Path(), cookie->CreationDate(), cookie->ExpiryDate(),          \
+        cookie->LastAccessDate(), cookie->IsSecure(), cookie->IsHttpOnly(),    \
+        cookie->SameSite(), cookie->Priority(), cookie->IsSameParty());        \
+                                                                               \
+    net::CookieOptions::SameSiteCookieContext same_site_context =              \
+        net::cookie_util::ComputeSameSiteContextForResponse(                   \
+            top_frame_url, request_->site_for_cookies(),                       \
+            request_->initiator(), false);                                     \
+    net::CookieOptions options_1p = CreateCookieOptions(same_site_context);    \
+                                                                               \
+    if (!(CanSetCookie(*cookie_1p, &options_1p) &&                             \
+          !CanSetCookie(*cookie, &options)))                                   \
+      use_ephemeral_storage = false;                                           \
+  }                                                                            \
+  if (use_ephemeral_storage)                                                   \
     static_cast<CookieMonster*>(cookie_store)                                  \
         ->GetEphemeralCookieListWithOptionsAsync(                              \
             request_->url(),                                                   \
@@ -41,7 +68,27 @@ bool ShouldUseEphemeralStorage(net::URLRequestHttpJob* http_job) {
   else
 
 #define BRAVE_SAVECOOKIESANDNOTIFYHEADERSCOMPLETE                              \
-  if (ShouldUseEphemeralStorage(this))                                         \
+  bool use_ephemeral_storage = ShouldUseEphemeralStorage(request_);            \
+  if (use_ephemeral_storage) {                                                 \
+    auto top_frame_url =                                                       \
+        request_->isolation_info().top_frame_origin()->GetURL();               \
+    auto cookie_1p = net::CanonicalCookie::CreateSanitizedCookie(              \
+        top_frame_url, cookie->Name(), cookie->Value(), cookie->Domain(),      \
+        cookie->Path(), cookie->CreationDate(), cookie->ExpiryDate(),          \
+        cookie->LastAccessDate(), cookie->IsSecure(), cookie->IsHttpOnly(),    \
+        cookie->SameSite(), cookie->Priority(), cookie->IsSameParty());        \
+                                                                               \
+    net::CookieOptions::SameSiteCookieContext same_site_context =              \
+        net::cookie_util::ComputeSameSiteContextForResponse(                   \
+            top_frame_url, request_->site_for_cookies(),                       \
+            request_->initiator(), false);                                     \
+    net::CookieOptions options_1p = CreateCookieOptions(same_site_context);    \
+                                                                               \
+    if (!(CanSetCookie(*cookie_1p, &options_1p) &&                             \
+          !CanSetCookie(*cookie, &options)))                                   \
+      use_ephemeral_storage = false;                                           \
+  }                                                                            \
+  if (use_ephemeral_storage)                                                   \
     static_cast<CookieMonster*>(request_->context()->cookie_store())           \
         ->SetEphemeralCanonicalCookieAsync(                                    \
             std::move(cookie), request_->url(),                                \

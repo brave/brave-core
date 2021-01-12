@@ -11,6 +11,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
+#include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -143,6 +144,31 @@ bool BraveIsAllowedThirdParty(
   return false;
 }
 
+// TODO(bridiver) make this a common method that can be shared with
+// BraveContentSettingsAgentImpl
+bool ShouldUseEphemeralStorage(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin,
+    const CookieSettingsBase* const cookie_settings) {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
+    return false;
+
+  if (!top_frame_origin || url::Origin::Create(url) == top_frame_origin)
+    return false;
+
+  bool block_3p = !cookie_settings->IsChromiumCookieAccessAllowed(
+      url, site_for_cookies, top_frame_origin);
+  bool block_1p = !cookie_settings->IsChromiumCookieAccessAllowed(
+      url, url, url::Origin::Create(url));
+
+  // only use ephemeral storage for block 3p
+  if (block_3p && !block_1p)
+    return true;
+
+  return false;
+}
+
 }  // namespace
 
 bool CookieSettingsBase::IsCookieAccessAllowed(
@@ -154,6 +180,9 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
+
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin, this))
+    return true;
 
   // Get content settings only - do not consider default 3rd-party blocking.
   ContentSetting setting;

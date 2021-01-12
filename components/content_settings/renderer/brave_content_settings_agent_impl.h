@@ -36,6 +36,9 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
                              const blink::WebURL& script_url) override;
   void DidNotAllowScript() override;
 
+  bool UseEphemeralStorageSync(StorageType storage_type) override;
+  bool AllowStorageAccessSync(StorageType storage_type) override;
+
   void BraveSpecificDidBlockJavaScript(const base::string16& details);
 
   bool AllowAutoplay(bool play_requested) override;
@@ -61,6 +64,7 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
+  bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
 
   // Origins of scripts which are temporary allowed for this frame in the
   // current load
@@ -71,6 +75,9 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
 
   // temporary allowed script origins we preloaded for the next load
   base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
+
+  using StoragePermissionsKey = std::pair<url::Origin, StorageType>;
+  base::flat_map<StoragePermissionsKey, bool> cached_storage_permissions_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };
