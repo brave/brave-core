@@ -1,8 +1,8 @@
 diff --git a/components/feed/features.gni b/components/feed/features.gni
-index 627f7d7bf529671ff8e63517fe6471abd8c6842a..8e43f2cccbeeecfba5c20cef25e07c8927182425 100644
+index c64f6c6703e87d7a736fc7dabc545c603939e58e..f85a8856e34bcf86de5891c0402197eff595e703 100644
 --- a/components/feed/features.gni
 +++ b/components/feed/features.gni
-@@ -25,5 +25,5 @@ declare_args() {
+@@ -29,5 +29,5 @@ declare_args() {
  
  if (is_android && android_channel != "default") {
    # You probably don't want to build without either version in a Clank release.

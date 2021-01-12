@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-index 8192354c80011a233a89e23f1d57e46101e4e96e..8d64bdada66b01408767d35c4eb4786c573fe8d4 100644
+index 75ce9854d076692520a59e6e5322abe14ff146e5..83cd5afa9b4e1d66194b26474fc11e1973a89265 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/RootUiCoordinator.java
-@@ -612,7 +612,7 @@ public class RootUiCoordinator
+@@ -623,7 +623,7 @@ public class RootUiCoordinator
                              mActivity.getModalDialogManager(), voiceSearchDelegate);
              mButtonDataProviders = Arrays.asList(
                      mIdentityDiscController, shareButtonController, voiceToolbarButtonController);
