@@ -12,14 +12,16 @@ namespace signin {
 
 class BravePrimaryAccountMutatorImpl : public PrimaryAccountMutatorImpl {
  public:
-  BravePrimaryAccountMutatorImpl(AccountTrackerService* account_tracker,
-                                 PrimaryAccountManager* primary_account_manager,
-                                 PrefService* pref_service);
+  BravePrimaryAccountMutatorImpl(
+    AccountTrackerService* account_tracker,
+    ProfileOAuth2TokenService* token_service,
+    PrimaryAccountManager* primary_account_manager,
+    PrefService* pref_service,
+    signin::AccountConsistencyMethod account_consistency);
   ~BravePrimaryAccountMutatorImpl() override;
 
 #if !defined(OS_CHROMEOS)
   bool ClearPrimaryAccount(
-      ClearAccountsAction action,
       signin_metrics::ProfileSignout source_metric,
       signin_metrics::SignoutDelete delete_metric) override;
 #endif
