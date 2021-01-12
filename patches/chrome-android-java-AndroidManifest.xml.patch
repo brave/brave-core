@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index c90fe55521d7bcd1ae214a71ad4556b1ad839075..bfaef9baff168f8558f10ef60c9107c369c9e889 100644
+index 1157b22cd8be5934e8fce8d328ebe3e8db625123..46168878940065312a2a07d8b83fc61ebc49c66c 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -38,7 +38,9 @@ by a child template that "extends" this file.
+@@ -39,7 +39,9 @@ by a child template that "extends" this file.
      {% endif %}
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH"/>
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -11,8 +11,8 @@ index c90fe55521d7bcd1ae214a71ad4556b1ad839075..bfaef9baff168f8558f10ef60c9107c3
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
- 
-@@ -48,9 +50,13 @@ by a child template that "extends" this file.
+
+@@ -49,9 +51,13 @@ by a child template that "extends" this file.
      {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
      {% endif %}
@@ -26,7 +26,7 @@ index c90fe55521d7bcd1ae214a71ad4556b1ad839075..bfaef9baff168f8558f10ef60c9107c3
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
      <uses-permission android:name="android.permission.NFC"/>
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-@@ -59,7 +65,9 @@ by a child template that "extends" this file.
+@@ -60,7 +66,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -36,17 +36,17 @@ index c90fe55521d7bcd1ae214a71ad4556b1ad839075..bfaef9baff168f8558f10ef60c9107c3
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -107,7 +115,9 @@ by a child template that "extends" this file.
+@@ -108,7 +116,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
- 
+
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +-->
- 
+
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -160,6 +170,7 @@ by a child template that "extends" this file.
+@@ -161,6 +171,7 @@ by a child template that "extends" this file.
            org.chromium.chrome.browser.ChromeApplication
            {%- endif -%}
            {% endblock %}"
@@ -54,19 +54,19 @@ index c90fe55521d7bcd1ae214a71ad4556b1ad839075..bfaef9baff168f8558f10ef60c9107c3
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -1176,6 +1187,7 @@ by a child template that "extends" this file.
+@@ -1162,6 +1173,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
- 
+
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1258,6 +1270,7 @@ by a child template that "extends" this file.
+@@ -1244,6 +1256,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />
 +        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
        {% endif %}
- 
+
        <!-- Cast support -->
