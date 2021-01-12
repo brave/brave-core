@@ -744,8 +744,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                         }
                         if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                             showBraveRewardsWelcomeLayout(root);
-                        } else {
-                            showBraveRewardsOptInLayout(root);
                         }
                     } else {
                         braveRewardsViewPager.setCurrentItem(braveRewardsViewPager.getCurrentItem() + 1);
