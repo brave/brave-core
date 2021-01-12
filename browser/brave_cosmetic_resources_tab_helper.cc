@@ -430,6 +430,8 @@ void BraveCosmeticResourcesTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
     const blink::mojom::ResourceLoadInfo& resource_load_info) {
+  if (resource_load_info.net_error != net::OK)
+    return;
   ProcessURL(render_frame_host, resource_load_info.final_url, false);
 }
 
