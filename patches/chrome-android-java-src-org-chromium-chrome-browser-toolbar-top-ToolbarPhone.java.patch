@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 4e575a1d8984fbe5b13f42b866ef5c8236f44f5b..bec872a479f71443983f820a33cc0e7c1b3b287f 100644
+index a4c103e8615f20c253bd986eef49b044b46e78ec..f7015b4aa5d596b963b114f9e7081f9c761b609d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -85,7 +85,7 @@ import java.util.List;
@@ -42,7 +42,7 @@ index 4e575a1d8984fbe5b13f42b866ef5c8236f44f5b..bec872a479f71443983f820a33cc0e7c
      }
  
      private void updateToolbarBackground(int color) {
-@@ -2109,6 +2112,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2102,6 +2105,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }
