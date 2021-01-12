@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 99515abfdf92ccf70ee5070b0d539985d8428c6d..0cf3311623a41d2c764c3948626d87f1dbf443dc 100644
+index b5fa0831b3399162e0a241631e7cc612213c55eb..66f77675537180bc3f7e7b5585e17511e67a9716 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -231,6 +231,7 @@ android_resources("chrome_app_java_resources") {
+@@ -233,6 +233,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
      "//third_party/android_deps:material_design_java",
    ]
@@ -10,7 +10,7 @@ index 99515abfdf92ccf70ee5070b0d539985d8428c6d..0cf3311623a41d2c764c3948626d87f1
  }
  
  if (enable_vr) {
-@@ -531,6 +532,7 @@ android_library("chrome_java") {
+@@ -534,6 +535,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index 99515abfdf92ccf70ee5070b0d539985d8428c6d..0cf3311623a41d2c764c3948626d87f1
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -561,6 +563,7 @@ android_library("chrome_java") {
+@@ -563,6 +565,7 @@ android_library("chrome_java") {
      "//components/ui_metrics:ui_metrics_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,7 +26,7 @@ index 99515abfdf92ccf70ee5070b0d539985d8428c6d..0cf3311623a41d2c764c3948626d87f1
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -678,6 +681,7 @@ group("jni_headers") {
+@@ -682,6 +685,7 @@ group("jni_headers") {
      "//chrome/browser/webauthn/android:jni_headers",
      "//components/media_router/browser/android:jni_headers",
    ]
@@ -34,7 +34,7 @@ index 99515abfdf92ccf70ee5070b0d539985d8428c6d..0cf3311623a41d2c764c3948626d87f1
  }
  
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-@@ -1798,6 +1802,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1822,6 +1826,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
