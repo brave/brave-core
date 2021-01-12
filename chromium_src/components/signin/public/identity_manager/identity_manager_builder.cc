@@ -20,7 +20,9 @@ IdentityManager::InitParameters BuildBraveIdentityManagerInitParameters(
   init_params.primary_account_mutator =
       std::make_unique<BravePrimaryAccountMutatorImpl>(
           init_params.account_tracker_service.get(),
-          init_params.primary_account_manager.get(), params->pref_service);
+          init_params.token_service.get(),
+          init_params.primary_account_manager.get(),
+          params->pref_service, params->account_consistency);
 
   return init_params;
 }
