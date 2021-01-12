@@ -654,6 +654,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setGeminiAuthInvalid(false)
   }
 
+  enableAds = () => {
+    chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+  }
+
   getCryptoContent () {
     const {
       widgetStackOrder,
@@ -792,11 +796,8 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards: rewardsWidgetOn,
       textDirection
     } = newTabData
-    const isShowingBrandedWallpaper = GetIsShowingBrandedWallpaper(this.props)
-    const shouldShowBrandedWallpaperNotification = GetShouldShowBrandedWallpaperNotification(this.props)
-    const shouldShowRewardsWidget = rewardsWidgetOn || shouldShowBrandedWallpaperNotification
 
-    if (!shouldShowRewardsWidget) {
+    if (!rewardsWidgetOn) {
       return null
     }
 
@@ -817,13 +818,8 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onStartRewards={this.startRewards}
-        isShowingBrandedWallpaper={isShowingBrandedWallpaper}
-        showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
-        onDisableBrandedWallpaper={this.disableBrandedWallpaper}
-        brandedWallpaperData={newTabData.brandedWallpaperData}
         isNotification={!rewardsWidgetOn}
         onDismissNotification={this.dismissNotification}
-        onDismissBrandedWallpaperNotification={this.dismissBrandedWallpaperNotification}
       />
     )
   }
@@ -993,6 +989,8 @@ class NewTabPage extends React.Component<Props, State> {
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
     const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
     const cryptoContent = this.renderCryptoContent()
+    const shouldShowBrandedWallpaperNotification = GetShouldShowBrandedWallpaperNotification(this.props)
+    const { enabledAds } = newTabData.rewardsState
 
     return (
       <Page.App
@@ -1074,7 +1072,13 @@ class NewTabPage extends React.Component<Props, State> {
                 paddingType={'default'}
                 textDirection={newTabData.textDirection}
                 onClickLogo={this.onClickLogo}
+                onEnableAds={this.enableAds}
+                enabledAds={enabledAds}
                 data={newTabData.brandedWallpaperData.logo}
+                showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
+                onDisableBrandedWallpaper={this.disableBrandedWallpaper}
+                brandedWallpaperData={newTabData.brandedWallpaperData}
+                onDismissBrandedWallpaperNotification={this.dismissBrandedWallpaperNotification}
               />
             </Page.GridItemBrandedLogo>}
             <FooterInfo

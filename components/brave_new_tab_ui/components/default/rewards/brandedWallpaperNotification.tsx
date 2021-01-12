@@ -6,98 +6,105 @@ import * as React from 'react'
 
 import {
   Title,
-  SubTitle,
-  SubTitleLink,
-  CloseIcon,
-  NotificationWrapper,
+  NotificationCloseIcon,
   OrphanedNotificationWrapper,
   NotificationAction,
-  TurnOnAdsButton,
-  StyledTOS,
-  StyleCenter
+  StartRewardsButton,
+  BatIcon,
+  RewardsNotificationTitle,
+  NotificationContent,
+  SubAction,
+  NotificationTOS
 } from './style'
-import { CloseStrokeIcon } from 'brave-ui/components/icons'
-import { getLocale, splitStringForTag } from '../../../../common/locale'
+import { BatColorIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
+import { getLocale } from '../../../../common/locale'
 
 interface NotificationProps {
   onDismissNotification: () => void
   brandedWallpaperData?: NewTab.BrandedWallpaper
-  isOrphan?: boolean
   onStartRewards?: () => void
   onHideSponsoredImages: () => void
-  order: number
 }
 
 export default class BrandedWallpaperRewardsNotification extends React.PureComponent<NotificationProps, {}> {
 
-  renderPostAdsOptInContent () {
-    const text = getLocale('rewardsWidgetBrandedNotificationDescription')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
+  renderHeader () {
     return (
-      <StyleCenter>
+      <RewardsNotificationTitle>
+        <BatIcon>
+          <BatColorIcon />
+        </BatIcon>
+        {getLocale('rewardsWidgetBraveRewards')}
+        <NotificationCloseIcon onClick={this.props.onDismissNotification}>
+          <CloseStrokeIcon />
+        </NotificationCloseIcon>
+      </RewardsNotificationTitle>
+    )
+  }
+
+  renderFooter () {
+    return null
+  }
+
+  renderPostAdsOptInContent () {
+    return (
+      <NotificationContent>
         <Title>
-          {getLocale('rewardsWidgetBrandedNotificationTitle')}
+          {'You’re earning tokens for viewing this sponsored image.'}
         </Title>
-        <SubTitle>
-          {beforeTag}
-          <SubTitleLink href='https://brave.com/brave-rewards/'>
-            {duringTag}
-          </SubTitleLink>
-          {afterTag}
-        </SubTitle>
+        <SubAction>
+          <NotificationAction href='https://brave.com/brave-rewards/'>
+            {'Learn More'}
+          </NotificationAction>
+        </SubAction>
         <NotificationAction onClick={this.props.onHideSponsoredImages}>
           {getLocale('rewardsWidgetBrandedNotificationHideAction')}
         </NotificationAction>
-      </StyleCenter>
+      </NotificationContent>
     )
   }
 
   renderPreAdsOptInContent () {
-    const text = getLocale('rewardsWidgetEnableBrandedWallpaperSubTitle')
-    const { beforeTag, duringTag, afterTag } = splitStringForTag(text)
     return (
-      <StyleCenter>
+      <NotificationContent>
         <Title>
-          {getLocale('rewardsWidgetEnableBrandedWallpaperTitle')}
+          {'Earn tokens for viewing this image and support content creators.'}
         </Title>
-        <SubTitle>
-          {beforeTag}
-          <SubTitleLink onClick={this.props.onHideSponsoredImages}>
-            {duringTag}
-          </SubTitleLink>
-          {afterTag}
-        </SubTitle>
-        <TurnOnAdsButton
-          onClick={this.props.onStartRewards}
-          type={'accent'}
-          brand={'rewards'}
-          text={getLocale('rewardsWidgetTurnOnAds')}
-        />
-        <StyledTOS title={getLocale('rewardsWidgetEarnAndGive')} />
-      </StyleCenter>
+        <StartRewardsButton onClick={this.props.onStartRewards}>
+         {getLocale('rewardsWidgetTurnOnAds')}
+        </StartRewardsButton>
+        <NotificationTOS>
+          {'By clicking Rewards, you agree to the '}<NotificationAction href='https://brave.com/brave-rewards/'>{'Terms of Service'}</NotificationAction> {' and '} <NotificationAction href='https://brave.com/brave-rewards/'>{'Privacy Policy'}</NotificationAction>
+        </NotificationTOS>
+        <SubAction>
+          <NotificationAction href='https://brave.com/brave-rewards/'>
+            {'Learn More'}
+          </NotificationAction>
+        </SubAction>
+        <NotificationAction onClick={this.props.onHideSponsoredImages}>
+          {getLocale('rewardsWidgetBrandedNotificationHideAction')}
+        </NotificationAction>
+      </NotificationContent>
     )
   }
 
   render () {
-    const { brandedWallpaperData, isOrphan } = this.props
+    const { brandedWallpaperData } = this.props
     if (!brandedWallpaperData) {
       console.error('Asked to render a branded wallpaper but there was no data!')
       return null
     }
-    const styleVars = { '--notification-counter': this.props.order } as React.CSSProperties
-    const Wrapper = isOrphan ? OrphanedNotificationWrapper : NotificationWrapper
+    const styleVars = { '--notification-counter': 0 } as React.CSSProperties
     return (
-      <Wrapper
+      <OrphanedNotificationWrapper
         style={styleVars}
       >
-        <CloseIcon onClick={this.props.onDismissNotification}>
-          <CloseStrokeIcon />
-        </CloseIcon>
+        {this.renderHeader()}
           { this.props.onStartRewards
               ? this.renderPreAdsOptInContent()
               : this.renderPostAdsOptInContent()
           }
-      </Wrapper>
+      </OrphanedNotificationWrapper>
     )
   }
 }

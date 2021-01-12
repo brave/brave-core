@@ -12,7 +12,6 @@ import {
   WidgetLayer,
   NotificationsList,
   BatIcon,
-  CloseIcon,
   RewardsTitle,
   Footer,
   ServiceLink,
@@ -29,8 +28,7 @@ import {
 } from './style'
 import { StyledTitleTab } from '../widgetTitleTab'
 import Notification from './notification'
-import BrandedWallpaperNotification from './brandedWallpaperNotification'
-import { BatColorIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
+import { BatColorIcon } from 'brave-ui/components/icons'
 
 export interface RewardsProps {
   enabledAds: boolean
@@ -41,17 +39,12 @@ export interface RewardsProps {
   adsEstimatedEarnings: number
   onlyAnonWallet?: boolean
   adsSupported?: boolean
-  isShowingBrandedWallpaper: boolean
   isNotification?: boolean
-  showBrandedWallpaperNotification: boolean
-  brandedWallpaperData?: NewTab.BrandedWallpaper
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
   onStartRewards: () => void
   onDismissNotification: (id: string) => void
-  onDismissBrandedWallpaperNotification: (isUserAction: boolean) => void
-  onDisableBrandedWallpaper: () => void
 }
 
 class Rewards extends React.PureComponent<RewardsProps, {}> {
@@ -128,6 +121,10 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const converted = convertBalance(amount, rate)
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
+    if (amount === 0) {
+      return null
+    }
+
     return (
       <AmountItem isLast={true}>
         <div data-test-id={`widget-amount-total-tips`}>
@@ -173,9 +170,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   renderNotifications = (singleOrphaned = false) => {
     let {
       promotions,
-      onDismissNotification,
-      enabledAds,
-      onStartRewards
+      onDismissNotification
     } = this.props
 
     // TODO(petemill): If we want a true 'single' mode then
@@ -195,16 +190,6 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
             />
           )
         })}
-        { this.props.showBrandedWallpaperNotification &&
-        <BrandedWallpaperNotification
-          isOrphan={singleOrphaned}
-          onDismissNotification={this.dismissBrandedWallpapernotificationUserAction}
-          onStartRewards={enabledAds ? undefined : onStartRewards}
-          brandedWallpaperData={this.props.brandedWallpaperData}
-          onHideSponsoredImages={this.props.onDisableBrandedWallpaper}
-          order={promotions ? promotions.length + 1 : 1}
-        />
-        }
       </Wrapper>
     )
   }
@@ -232,14 +217,11 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     )
   }
 
-  dismissBrandedWallpapernotificationUserAction = () => {
-    this.props.onDismissBrandedWallpaperNotification(true)
-  }
-
   render () {
     const {
       isNotification,
-      showContent
+      showContent,
+      totalContribution
     } = this.props
 
     if (!showContent) {
@@ -257,16 +239,13 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     return (
       <WidgetWrapper>
         <WidgetLayer>
-          {isNotification &&
-          <CloseIcon onClick={this.dismissBrandedWallpapernotificationUserAction}>
-            <CloseStrokeIcon />
-          </CloseIcon>
-          }
           {this.renderTitle()}
           {this.renderRewardsInfo()}
-          <Footer>
-            {this.renderLearnMore()}
-          </Footer>
+          {totalContribution > 0 &&
+            <Footer>
+              {this.renderLearnMore()}
+            </Footer>
+          }
         </WidgetLayer>
         {this.renderNotifications()}
       </WidgetWrapper>
