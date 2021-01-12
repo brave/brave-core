@@ -19,7 +19,7 @@ class EnableVPNSettingHeader: UIView {
     }
     
     private let titleLabel = UILabel().then {
-        $0.text = Strings.VPN.vpnName
+        $0.text = Strings.VPN.vpnMenuItemTitle
         $0.appearanceTextColor = .white
         $0.font = UIFont.systemFont(ofSize: 19, weight: .semibold)
     }
@@ -37,8 +37,10 @@ class EnableVPNSettingHeader: UIView {
         
         let title = { () -> String in
             switch BraveVPN.vpnState {
-            case .notPurchased, .expired:
-                return Strings.learnMore
+                case .notPurchased:
+                    return Strings.VPN.tryForFreeButton
+                case .expired:
+                    return Strings.learnMore
             case .purchased, .installed:
                 return Strings.VPN.enableButton
             }
@@ -86,8 +88,8 @@ class EnableVPNSettingHeader: UIView {
         contentView.addSubview(mainStackView)
         mainStackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(250)
         }
         
         contentView.snp.makeConstraints {
