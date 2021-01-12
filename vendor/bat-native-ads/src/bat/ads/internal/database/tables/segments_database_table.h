@@ -45,9 +45,9 @@ class Segments : public Table {
       DBCommand* command,
       const CreativeAdList& creative_ads);
 
-  void CreateTableV7(
+  void CreateTableV8(
       DBTransaction* transaction);
-  void MigrateToV7(
+  void MigrateToV8(
       DBTransaction* transaction);
 };
 
