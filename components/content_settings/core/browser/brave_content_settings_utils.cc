@@ -101,6 +101,14 @@ bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
                    content_type) != kShieldsContentSettingsTypes.end();
 }
 
+bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
+  for (auto content_type : kShieldsContentSettingsTypes) {
+    if (GetShieldsContentTypeName(content_type) == content_type_name)
+      return true;
+  }
+  return false;
+}
+
 base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
   if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
