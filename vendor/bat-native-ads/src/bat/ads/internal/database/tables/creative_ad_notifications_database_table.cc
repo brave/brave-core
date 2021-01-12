@@ -263,18 +263,8 @@ void CreativeAdNotifications::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 1: {
-      MigrateToV1(transaction);
-      break;
-    }
-
-    case 2: {
-      MigrateToV2(transaction);
-      break;
-    }
-
-    case 3: {
-      MigrateToV3(transaction);
+    case 7: {
+      MigrateToV7(transaction);
       break;
     }
 
@@ -422,62 +412,7 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   return creative_ad_notification;
 }
 
-void CreativeAdNotifications::CreateTableV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL, "
-          "creative_set_id TEXT NOT NULL, "
-          "campaign_id TEXT NOT NULL, "
-          "start_at_timestamp TIMESTAMP NOT NULL, "
-          "end_at_timestamp TIMESTAMP NOT NULL, "
-          "daily_cap INTEGER DEFAULT 0 NOT NULL, "
-          "advertiser_id LONGVARCHAR, "
-          "priority INTEGER NOT NULL DEFAULT 0, "
-          "conversion INTEGER NOT NULL DEFAULT 0, "
-          "per_day INTEGER NOT NULL DEFAULT 0, "
-          "total_max INTEGER NOT NULL DEFAULT 0, "
-          "target_url TEXT NOT NULL, "
-          "title TEXT NOT NULL, "
-          "body TEXT NOT NULL, "
-          "PRIMARY KEY(creative_instance_id))",
-      get_table_name().c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void CreativeAdNotifications::MigrateToV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Drop(transaction, get_table_name());
-
-  CreateTableV1(transaction);
-}
-
-void CreativeAdNotifications::MigrateToV2(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "ALTER TABLE %s "
-          "ADD ptr DOUBLE NOT NULL DEFAULT 1",
-      get_table_name().c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void CreativeAdNotifications::CreateTableV3(
+void CreativeAdNotifications::CreateTableV7(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -498,13 +433,13 @@ void CreativeAdNotifications::CreateTableV3(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAdNotifications::MigrateToV3(
+void CreativeAdNotifications::MigrateToV7(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV3(transaction);
+  CreateTableV7(transaction);
 }
 
 }  // namespace table

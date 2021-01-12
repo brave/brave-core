@@ -62,13 +62,8 @@ void GeoTargets::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 1: {
-      MigrateToV1(transaction);
-      break;
-    }
-
-    case 3: {
-      MigrateToV3(transaction);
+    case 7: {
+      MigrateToV7(transaction);
       break;
     }
 
@@ -113,46 +108,7 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void GeoTargets::CreateTableV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL, "
-          "geo_target TEXT NOT NULL, "
-          "UNIQUE(creative_instance_id, geo_target) ON CONFLICT REPLACE, "
-          "CONSTRAINT fk_creative_instance_id "
-              "FOREIGN KEY (creative_instance_id) "
-              "REFERENCES creative_ad_notifications (creative_instance_id) "
-              "ON DELETE CASCADE)",
-      get_table_name().c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void GeoTargets::CreateIndexV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "geo_target");
-}
-
-void GeoTargets::MigrateToV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Drop(transaction, get_table_name());
-
-  CreateTableV1(transaction);
-  CreateIndexV1(transaction);
-}
-
-void GeoTargets::CreateTableV3(
+void GeoTargets::CreateTableV7(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -171,20 +127,13 @@ void GeoTargets::CreateTableV3(
   transaction->commands.push_back(std::move(command));
 }
 
-void GeoTargets::CreateIndexV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "campaign_id");
-}
-
-void GeoTargets::MigrateToV3(
+void GeoTargets::MigrateToV7(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV3(transaction);
+  CreateTableV7(transaction);
 }
 
 }  // namespace table
