@@ -28,9 +28,17 @@ class NotificationHelperAndroid
   NotificationHelperAndroid();
   ~NotificationHelperAndroid() override;
 
+  // |foreground_channel|: foreground or background channel
+  bool IsBraveAdsNotificationChannelEnabled(bool foreground_channel) const;
+
+  int GetOperatingSystemVersion() const;
+
+  // NotificationHelper impl
   bool ShouldShowNotifications() override;
 
   bool ShowMyFirstAdNotification() override;
+
+  bool CanShowBackgroundNotifications() const override;
 };
 
 }  // namespace brave_ads

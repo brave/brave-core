@@ -39,6 +39,7 @@ struct ClientInfo {
   uint64_t next_ad_serving_interval_timestamp_ = 0;
   TextClassificationProbabilitiesList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
+  std::string version_code;
 };
 
 }  // namespace ads

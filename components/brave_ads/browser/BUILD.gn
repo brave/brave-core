@@ -61,6 +61,7 @@ source_set("browser") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/vendor/bat-native-ads",
+      "//brave/browser/notifications",
       "//brave/components/brave_ads/resources",
       "//brave/components/services/bat_ads/public/cpp",
       "//components/history/core/browser",
@@ -70,6 +71,7 @@ source_set("browser") {
       "//services/network/public/cpp",
       "//services/network/public/mojom",
       "//ui/base",
+      "//ui/message_center/public/cpp",
     ]
 
     if (is_android) {
