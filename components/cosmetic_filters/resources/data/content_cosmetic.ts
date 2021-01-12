@@ -93,14 +93,11 @@ const idleize = (onIdle: Function, timeout: number) => {
 }
 
 const isRelativeUrl = (url: string): boolean => {
-  try {
-    new URL(url) // tslint:disable-line
-  } catch (e) {
-    // The url is invalid or relative
-    return true
-  }
-
-  return false
+  return (
+    !url.startsWith('//') &&
+    !url.startsWith('http://') &&
+    !url.startsWith('https://')
+  )
 }
 
 const isElement = (node: Node): boolean => {
@@ -127,7 +124,9 @@ const fetchNewClassIdRules = () => {
   // Callback to c++ renderer process
   // @ts-ignore
   cf_worker.hiddenClassIdSelectors(
-      JSON.stringify({ classes: notYetQueriedClasses, ids: notYetQueriedIds }))
+      JSON.stringify({
+        classes: notYetQueriedClasses, ids: notYetQueriedIds
+      }))
   notYetQueriedClasses = []
   notYetQueriedIds = []
 }
@@ -563,10 +562,10 @@ if (!window.content_cosmetic.observingHasStarted) {
   window.content_cosmetic.observingHasStarted = true
   scheduleQueuePump(window.content_cosmetic.hide1pContent,
     window.content_cosmetic.generichide)
-} else if (window.content_cosmetic.scriplet &&
-    window.content_cosmetic.scriplet !== '') {
-  let scriptlet = window.content_cosmetic.scriplet
-  window.content_cosmetic.scriplet = ''
+} else if (window.content_cosmetic.scriptlet &&
+    window.content_cosmetic.scriptlet !== '') {
+  let scriptlet = window.content_cosmetic.scriptlet
+  window.content_cosmetic.scriptlet = ''
   injectScriptlet(scriptlet)
 } else {
   scheduleQueuePump(false, false)

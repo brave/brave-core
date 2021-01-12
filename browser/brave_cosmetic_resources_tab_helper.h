@@ -45,10 +45,10 @@ class BraveCosmeticResourcesTabHelper
 
  private:
   void ProcessURL(content::RenderFrameHost* render_frame_host, const GURL& url,
-      const bool do_non_scriplets);
+      const bool do_non_scriptlets);
 
   void GetUrlCosmeticResourcesOnUI(content::GlobalFrameRoutingId frame_id,
-      const std::string& url, bool do_non_scriplets,
+      const std::string& url, bool do_non_scriptlets,
       std::unique_ptr<base::ListValue> resources);
   void CSSRulesRoutine(const std::string& url,
       base::DictionaryValue* resources_dict,

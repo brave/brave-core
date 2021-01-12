@@ -51,14 +51,14 @@ const char kPreInitScript[] =
      %s
   })();)";
 
-const char kScripletInitScript[] =
-  R"(if (window.content_cosmetic.scriplet == undefined ||
-      window.content_cosmetic.scriplet === '') {
+const char kScriptletInitScript[] =
+  R"(if (window.content_cosmetic.scriptlet == undefined ||
+      window.content_cosmetic.scriptlet === '') {
     let text = %s;
-    window.content_cosmetic.scriplet = `${text}`;
+    window.content_cosmetic.scriptlet = `${text}`;
   })";
 
-const char kNonScripletInitScript[] =
+const char kNonScriptletInitScript[] =
   R"(if (window.content_cosmetic.hide1pContent === undefined) {
       window.content_cosmetic.hide1pContent = %s;
   }
@@ -241,7 +241,7 @@ BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() = default;
 
 void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
     content::GlobalFrameRoutingId frame_id, const std::string& url,
-    bool do_non_scriplets, std::unique_ptr<base::ListValue> resources) {
+    bool do_non_scriptlets, std::unique_ptr<base::ListValue> resources) {
   if (!resources) {
     return;
   }
@@ -251,16 +251,16 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
       continue;
     }
     std::string pre_init_script;
-    std::string scriplet_init_script;
-    std::string non_scriplet_init_script;
+    std::string scriptlet_init_script;
+    std::string non_scriptlet_init_script;
     std::string json_to_inject;
     if (base::JSONWriter::Write(
         *(resources_dict->FindPath("injected_script")), &json_to_inject) &&
             json_to_inject.length() > 1) {
-      scriplet_init_script = base::StringPrintf(kScripletInitScript,
+      scriptlet_init_script = base::StringPrintf(kScriptletInitScript,
           json_to_inject.c_str());
     }
-    if (do_non_scriplets) {
+    if (do_non_scriptlets) {
       Profile* profile = Profile::FromBrowserContext(
           web_contents()->GetBrowserContext());
       enabled_1st_party_cf_filtering_ =
@@ -269,26 +269,26 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
                   GURL(url));
       bool generichide = false;
       resources_dict->GetBoolean("generichide", &generichide);
-      non_scriplet_init_script =
-          base::StringPrintf(kNonScripletInitScript,
+      non_scriptlet_init_script =
+          base::StringPrintf(kNonScriptletInitScript,
               enabled_1st_party_cf_filtering_ ? "true" : "false",
               generichide ? "true" : "false");
     }
     pre_init_script = base::StringPrintf(kPreInitScript,
-        scriplet_init_script.c_str(), non_scriplet_init_script.c_str());
+        scriptlet_init_script.c_str(), non_scriptlet_init_script.c_str());
     auto* frame_host = content::RenderFrameHost::FromID(frame_id);
     if (!frame_host)
       return;
     frame_host->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(pre_init_script),
       base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
-    if (do_non_scriplets) {
+    if (do_non_scriptlets) {
       frame_host->ExecuteJavaScriptInIsolatedWorld(
         base::UTF8ToUTF16(*BraveCosmeticResourcesTabHelper::observing_script_),
         base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
     // Working on css rules, we do that on a main frame only
-    if (!do_non_scriplets)
+    if (!do_non_scriptlets)
       return;
     CSSRulesRoutine(url, resources_dict, frame_id);
   }
@@ -404,7 +404,7 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
 
 void BraveCosmeticResourcesTabHelper::ProcessURL(
     content::RenderFrameHost* render_frame_host, const GURL& url,
-    const bool do_non_scriplets) {
+    const bool do_non_scriptlets) {
   content::CosmeticFiltersCommunicationImpl::CreateInstance(render_frame_host,
       this);
   if (!render_frame_host || !ShouldDoCosmeticFiltering(web_contents(), url)) {
@@ -419,7 +419,7 @@ void BraveCosmeticResourcesTabHelper::ProcessURL(
             content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
-            url.spec(), do_non_scriplets));
+            url.spec(), do_non_scriptlets));
 }
 
 void BraveCosmeticResourcesTabHelper::DidFinishNavigation(
