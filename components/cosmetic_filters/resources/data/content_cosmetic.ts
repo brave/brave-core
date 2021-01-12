@@ -3,6 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// That script is executed from
+// brave/browser/brave_cosmetic_resources_tab_helper.cc several times:
+// - for scriptlets injection;
+// - for cosmetic filters work with CSS and stylesheet. That work itself
+//   could call the script several times.
+
 const { parseDomain, ParseResultType } = require('parse-domain')
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
@@ -562,8 +568,7 @@ if (!window.content_cosmetic.observingHasStarted) {
   window.content_cosmetic.observingHasStarted = true
   scheduleQueuePump(window.content_cosmetic.hide1pContent,
     window.content_cosmetic.generichide)
-} else if (window.content_cosmetic.scriptlet &&
-    window.content_cosmetic.scriptlet !== '') {
+} else if (window.content_cosmetic.scriptlet) {
   let scriptlet = window.content_cosmetic.scriptlet
   window.content_cosmetic.scriptlet = ''
   injectScriptlet(scriptlet)

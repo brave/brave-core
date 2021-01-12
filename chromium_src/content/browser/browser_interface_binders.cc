@@ -13,9 +13,9 @@ namespace internal {
 void PopulateBinderMap(RenderFrameHostImpl* host, mojo::BinderMap* map) {
   PopulateBinderMap_ChromiumImpl(host, map);
   // Register the handler for cosmetic filters responder.
-  map->Add<cf_comm::mojom::CosmeticFiltersCommunication>(base::BindRepeating(
-      &RenderFrameHostImpl::GetCosmeticFiltersResponder,
-          base::Unretained(host)));
+  map->Add<cf_comm::mojom::CosmeticFiltersCommunication>(
+      base::BindRepeating(&RenderFrameHostImpl::GetCosmeticFiltersResponder,
+                          base::Unretained(host)));
 }
 
 void PopulateBinderMap(DedicatedWorkerHost* host, mojo::BinderMap* map) {

@@ -17,18 +17,19 @@ namespace cosmetic_filters {
 
 // CosmeticFiltersJsRenderFrame observer waits for a page to be loaded and then
 // adds the Javascript worker object.
-class CosmeticFiltersJsRenderFrameObserver :
-    public content::RenderFrameObserver {
+class CosmeticFiltersJsRenderFrameObserver
+    : public content::RenderFrameObserver {
  public:
   CosmeticFiltersJsRenderFrameObserver(content::RenderFrame* render_frame,
-      const int32_t isolated_world_id);
+                                       const int32_t isolated_world_id);
   ~CosmeticFiltersJsRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
-  void DidStartNavigation(const GURL& url,
+  void DidStartNavigation(
+      const GURL& url,
       base::Optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
-      int32_t world_id) override;
+                              int32_t world_id) override;
 
  private:
   // RenderFrameObserver implementation.

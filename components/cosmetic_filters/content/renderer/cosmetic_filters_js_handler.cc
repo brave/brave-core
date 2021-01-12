@@ -19,8 +19,8 @@
 namespace cosmetic_filters {
 
 CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
-    content::RenderFrame* render_frame):
-    render_frame_(render_frame) {}
+    content::RenderFrame* render_frame)
+    : render_frame_(render_frame) {}
 
 CosmeticFiltersJSHandler::~CosmeticFiltersJSHandler() = default;
 
@@ -40,8 +40,7 @@ void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
 
   v8::Context::Scope context_scope(context);
 
-  v8::Local<v8::Object> worker_obj =
-      GetOrCreateWorkerObject(isolate, context);
+  v8::Local<v8::Object> worker_obj = GetOrCreateWorkerObject(isolate, context);
 
   EnsureConnected();
 
@@ -74,9 +73,8 @@ void CosmeticFiltersJSHandler::EnsureConnected() {
   }
 }
 
-v8::Local<v8::Object> GetOrCreateWorkerObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Context> context) {
+v8::Local<v8::Object> GetOrCreateWorkerObject(v8::Isolate* isolate,
+                                              v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> cosmetic_filters_obj;
   v8::Local<v8::Value> cosmetic_filters_value;
@@ -86,7 +84,7 @@ v8::Local<v8::Object> GetOrCreateWorkerObject(
     cosmetic_filters_obj = v8::Object::New(isolate);
     global
         ->Set(context, gin::StringToSymbol(isolate, "cf_worker"),
-            cosmetic_filters_obj)
+              cosmetic_filters_obj)
         .Check();
   } else {
     cosmetic_filters_obj = v8::Local<v8::Object>::Cast(cosmetic_filters_value);

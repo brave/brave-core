@@ -11,7 +11,8 @@
 namespace cosmetic_filters {
 
 CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
-    content::RenderFrame* render_frame, const int32_t isolated_world_id)
+    content::RenderFrame* render_frame,
+    const int32_t isolated_world_id)
     : RenderFrameObserver(render_frame),
       worker_isolated_world_id_(isolated_world_id) {}
 
@@ -19,16 +20,15 @@ CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    base::Optional<blink::WebNavigationType> navigation_type) {
-}
+    base::Optional<blink::WebNavigationType> navigation_type) {}
 
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
-    v8::Local<v8::Context> context, int32_t world_id) {
+    v8::Local<v8::Context> context,
+    int32_t world_id) {
   if (world_id != worker_isolated_world_id_)
     return;
 
-  native_javascript_handle_.reset(
-      new CosmeticFiltersJSHandler(render_frame()));
+  native_javascript_handle_.reset(new CosmeticFiltersJSHandler(render_frame()));
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
 }
 

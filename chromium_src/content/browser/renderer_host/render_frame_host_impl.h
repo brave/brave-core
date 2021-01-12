@@ -8,10 +8,10 @@
 
 #include "brave/content/browser/mojom/cosmetic_filters_communication.mojom.h"
 
-#define BRAVE_RENDERER_FRAME_HOST_IMPL_H \
-  void GetCosmeticFiltersResponder( \
-      mojo::PendingReceiver< \
-          cf_comm::mojom::CosmeticFiltersCommunication> receiver);
+#define BRAVE_RENDERER_FRAME_HOST_IMPL_H                                  \
+  void GetCosmeticFiltersResponder(                                       \
+      mojo::PendingReceiver<cf_comm::mojom::CosmeticFiltersCommunication> \
+          receiver);
 
 #include "../../../../../content/browser/renderer_host/render_frame_host_impl.h"  // NOLINT
 

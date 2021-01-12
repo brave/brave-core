@@ -18,8 +18,8 @@ void CosmeticFiltersCommunicationImpl::CreateInstance(
     CosmeticFiltersObserver* cosmetic_filters_observer) {
   if (!render_frame_host->cosmetic_filters_communication_impl_) {
     render_frame_host->cosmetic_filters_communication_impl_.reset(
-        new CosmeticFiltersCommunicationImpl(
-            render_frame_host, cosmetic_filters_observer));
+        new CosmeticFiltersCommunicationImpl(render_frame_host,
+                                             cosmetic_filters_observer));
   } else {
     render_frame_host->cosmetic_filters_communication_impl_->SetObserver(
         cosmetic_filters_observer);
@@ -30,13 +30,11 @@ CosmeticFiltersCommunicationImpl::CosmeticFiltersCommunicationImpl(
     content::RenderFrameHost* render_frame_host,
     CosmeticFiltersObserver* cosmetic_filters_observer)
     : frame_id_(content::GlobalFrameRoutingId(
-                  render_frame_host->GetProcess()->GetID(),
-                  render_frame_host->GetRoutingID())),
-    cosmetic_filters_observer_(cosmetic_filters_observer) {
-}
+          render_frame_host->GetProcess()->GetID(),
+          render_frame_host->GetRoutingID())),
+      cosmetic_filters_observer_(cosmetic_filters_observer) {}
 
-CosmeticFiltersCommunicationImpl::~CosmeticFiltersCommunicationImpl() {
-}
+CosmeticFiltersCommunicationImpl::~CosmeticFiltersCommunicationImpl() {}
 
 void CosmeticFiltersCommunicationImpl::SetObserver(
     CosmeticFiltersObserver* cosmetic_filters_observer) {
@@ -78,8 +76,8 @@ void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
   }
   auto* frame_host = content::RenderFrameHost::FromID(frame_id_);
   if (cosmetic_filters_observer_ && frame_host) {
-    cosmetic_filters_observer_->ApplyHiddenClassIdSelectors(frame_host,
-        classes, ids);
+    cosmetic_filters_observer_->ApplyHiddenClassIdSelectors(frame_host, classes,
+                                                            ids);
   }
 }
 

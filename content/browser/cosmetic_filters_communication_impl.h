@@ -11,8 +11,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "content/public/browser/global_routing_id.h"
 #include "brave/content/browser/mojom/cosmetic_filters_communication.mojom.h"
+#include "content/public/browser/global_routing_id.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
@@ -21,9 +21,10 @@ class RenderFrameHost;
 class CosmeticFiltersObserver;
 
 class CosmeticFiltersCommunicationImpl final
-  : public cf_comm::mojom::CosmeticFiltersCommunication {
+    : public cf_comm::mojom::CosmeticFiltersCommunication {
  public:
-  static void CreateInstance(content::RenderFrameHost* render_frame_host,
+  static void CreateInstance(
+      content::RenderFrameHost* render_frame_host,
       CosmeticFiltersObserver* cosmetic_filters_observer);
 
   CosmeticFiltersCommunicationImpl(

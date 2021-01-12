@@ -29,8 +29,9 @@ class CosmeticFiltersJSHandler {
   // Add a function to the provided object.
   template <typename Sig>
   void BindFunctionToObject(v8::Isolate* isolate,
-      v8::Local<v8::Object> javascript_object, const std::string& name,
-      const base::RepeatingCallback<Sig>& callback);
+                            v8::Local<v8::Object> javascript_object,
+                            const std::string& name,
+                            const base::RepeatingCallback<Sig>& callback);
   void EnsureConnected();
 
   // A function to be called from JS
@@ -41,9 +42,8 @@ class CosmeticFiltersJSHandler {
 };
 
 // static
-v8::Local<v8::Object> GetOrCreateWorkerObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Context> context);
+v8::Local<v8::Object> GetOrCreateWorkerObject(v8::Isolate* isolate,
+                                              v8::Local<v8::Context> context);
 
 }  // namespace cosmetic_filters
 

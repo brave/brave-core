@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
@@ -26,100 +27,91 @@
 #include "content/public/renderer/render_frame.h"
 #include "ui/base/resource/resource_bundle.h"
 
-base::NoDestructor<std::string>
-    BraveCosmeticResourcesTabHelper::observing_script_("");
-
-std::vector<std::string>
-    BraveCosmeticResourcesTabHelper::vetted_search_engines_ = {
-  "duckduckgo",
-  "qwant",
-  "bing",
-  "startpage",
-  "google",
-  "yandex",
-  "ecosia"
-};
-
 namespace {
 
+static base::NoDestructor<std::string> g_observing_script("");
+
+static std::vector<std::string> g_vetted_search_engines = {
+    "duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia"};
+
 const char kPreInitScript[] =
-  R"((function() {
-     if (window.content_cosmetic == undefined) {
-        window.content_cosmetic = {};
-     }
-     %s
-     %s
-  })();)";
+    R"((function() {
+       if (window.content_cosmetic == undefined) {
+          window.content_cosmetic = {};
+       }
+       %s
+       %s
+    })();)";
 
 const char kScriptletInitScript[] =
-  R"(if (window.content_cosmetic.scriptlet == undefined ||
-      window.content_cosmetic.scriptlet === '') {
-    let text = %s;
-    window.content_cosmetic.scriptlet = `${text}`;
-  })";
+    R"(if (window.content_cosmetic.scriptlet == undefined ||
+        window.content_cosmetic.scriptlet === '') {
+      let text = %s;
+      window.content_cosmetic.scriptlet = `${text}`;
+    })";
 
 const char kNonScriptletInitScript[] =
-  R"(if (window.content_cosmetic.hide1pContent === undefined) {
-      window.content_cosmetic.hide1pContent = %s;
-  }
-  if (window.content_cosmetic.generichide === undefined) {
-      window.content_cosmetic.generichide = %s;
-  })";
+    R"(if (window.content_cosmetic.hide1pContent === undefined) {
+        window.content_cosmetic.hide1pContent = %s;
+    }
+    if (window.content_cosmetic.generichide === undefined) {
+        window.content_cosmetic.generichide = %s;
+    })";
 
 const char kSelectorsInjectScript[] =
-  R"((function() {
-     let nextIndex =
-        window.content_cosmetic.cosmeticStyleSheet.rules.length;
-     const selectors = %s;
-     selectors.forEach(selector => {
-       if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
-         let rule = selector + '{display:none !important;}';
-         window.content_cosmetic.cosmeticStyleSheet.insertRule(
-           `${rule}`, nextIndex);
-         window.content_cosmetic.allSelectorsToRules.set(
-           selector, nextIndex);
-         nextIndex++;
-         window.content_cosmetic.firstRunQueue.add(selector);
-       }
-     });
-     if (!document.adoptedStyleSheets.includes(
-         window.content_cosmetic.cosmeticStyleSheet)) {
-       document.adoptedStyleSheets =
-         [window.content_cosmetic.cosmeticStyleSheet];
-     };
-  })();)";
+    R"((function() {
+       let nextIndex =
+          window.content_cosmetic.cosmeticStyleSheet.rules.length;
+       const selectors = %s;
+       selectors.forEach(selector => {
+         if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
+           let rule = selector + '{display:none !important;}';
+           window.content_cosmetic.cosmeticStyleSheet.insertRule(
+             `${rule}`, nextIndex);
+           window.content_cosmetic.allSelectorsToRules.set(
+             selector, nextIndex);
+           nextIndex++;
+           window.content_cosmetic.firstRunQueue.add(selector);
+         }
+       });
+       if (!document.adoptedStyleSheets.includes(
+           window.content_cosmetic.cosmeticStyleSheet)) {
+         document.adoptedStyleSheets =
+           [window.content_cosmetic.cosmeticStyleSheet];
+       };
+    })();)";
 
 const char kStyleSelectorsInjectScript[] =
-  R"((function() {
-    let nextIndex =
-        window.content_cosmetic.cosmeticStyleSheet.rules.length;
-    const selectors = %s;
-    for (let selector in selectors) {
-      if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
-        let rule = selector + '{';
-        selectors[selector].forEach(prop => {
-          if (!rule.endsWith('{')) {
-            rule += ';';
-          }
-          rule += prop;
-        });
-        rule += '}';
-        window.content_cosmetic.cosmeticStyleSheet.insertRule(
-          `${rule}`, nextIndex);
-        window.content_cosmetic.allSelectorsToRules.set(
-          selector, nextIndex);
-        nextIndex++;
+    R"((function() {
+      let nextIndex =
+          window.content_cosmetic.cosmeticStyleSheet.rules.length;
+      const selectors = %s;
+      for (let selector in selectors) {
+        if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
+          let rule = selector + '{';
+          selectors[selector].forEach(prop => {
+            if (!rule.endsWith('{')) {
+              rule += ';';
+            }
+            rule += prop;
+          });
+          rule += '}';
+          window.content_cosmetic.cosmeticStyleSheet.insertRule(
+            `${rule}`, nextIndex);
+          window.content_cosmetic.allSelectorsToRules.set(
+            selector, nextIndex);
+          nextIndex++;
+        };
       };
-    };
-    if (!document.adoptedStyleSheets.includes(
-          window.content_cosmetic.cosmeticStyleSheet)){
-       document.adoptedStyleSheets =
-         [window.content_cosmetic.cosmeticStyleSheet];
-    };
-  })();)";
+      if (!document.adoptedStyleSheets.includes(
+            window.content_cosmetic.cosmeticStyleSheet)){
+         document.adoptedStyleSheets =
+           [window.content_cosmetic.cosmeticStyleSheet];
+      };
+    })();)";
 
 bool ShouldDoCosmeticFiltering(content::WebContents* contents,
-    const GURL& url) {
+                               const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
 
@@ -139,27 +131,29 @@ std::unique_ptr<base::ListValue> GetUrlCosmeticResourcesOnTaskRunner(
     const std::string& url) {
   auto result_list = std::make_unique<base::ListValue>();
 
-  base::Optional<base::Value> resources = g_brave_browser_process->
-      ad_block_service()->UrlCosmeticResources(url);
+  base::Optional<base::Value> resources =
+      g_brave_browser_process->ad_block_service()->UrlCosmeticResources(url);
 
   if (!resources || !resources->is_dict()) {
     return result_list;
   }
 
-  base::Optional<base::Value> regional_resources = g_brave_browser_process->
-      ad_block_regional_service_manager()->UrlCosmeticResources(url);
+  base::Optional<base::Value> regional_resources =
+      g_brave_browser_process->ad_block_regional_service_manager()
+          ->UrlCosmeticResources(url);
 
   if (regional_resources && regional_resources->is_dict()) {
-    ::brave_shields::MergeResourcesInto(
-        std::move(*regional_resources), &*resources, /*force_hide=*/false);
+    ::brave_shields::MergeResourcesInto(std::move(*regional_resources),
+                                        &*resources, /*force_hide=*/false);
   }
 
-  base::Optional<base::Value> custom_resources = g_brave_browser_process->
-      ad_block_custom_filters_service()->UrlCosmeticResources(url);
+  base::Optional<base::Value> custom_resources =
+      g_brave_browser_process->ad_block_custom_filters_service()
+          ->UrlCosmeticResources(url);
 
   if (custom_resources && custom_resources->is_dict()) {
-    ::brave_shields::MergeResourcesInto(
-        std::move(*custom_resources), &*resources, /*force_hide=*/true);
+    ::brave_shields::MergeResourcesInto(std::move(*custom_resources),
+                                        &*resources, /*force_hide=*/true);
   }
 
   result_list->Append(std::move(*resources));
@@ -171,21 +165,22 @@ std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  base::Optional<base::Value> hide_selectors = g_brave_browser_process->
-      ad_block_service()->HiddenClassIdSelectors(classes, ids, exceptions);
+  base::Optional<base::Value> hide_selectors =
+      g_brave_browser_process->ad_block_service()->HiddenClassIdSelectors(
+          classes, ids, exceptions);
 
-  base::Optional<base::Value> regional_selectors = g_brave_browser_process->
-      ad_block_regional_service_manager()->
-          HiddenClassIdSelectors(classes, ids, exceptions);
+  base::Optional<base::Value> regional_selectors =
+      g_brave_browser_process->ad_block_regional_service_manager()
+          ->HiddenClassIdSelectors(classes, ids, exceptions);
 
-  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
-      ad_block_custom_filters_service()->
-          HiddenClassIdSelectors(classes, ids, exceptions);
+  base::Optional<base::Value> custom_selectors =
+      g_brave_browser_process->ad_block_custom_filters_service()
+          ->HiddenClassIdSelectors(classes, ids, exceptions);
 
   if (hide_selectors && hide_selectors->is_list()) {
     if (regional_selectors && regional_selectors->is_list()) {
       for (auto i = regional_selectors->GetList().begin();
-          i < regional_selectors->GetList().end(); i++) {
+           i < regional_selectors->GetList().end(); i++) {
         hide_selectors->Append(std::move(*i));
       }
     }
@@ -205,11 +200,8 @@ std::unique_ptr<base::ListValue> GetHiddenClassIdSelectorsOnTaskRunner(
 }
 
 bool IsVettedSearchEngine(const std::string& host) {
-  for (size_t i = 0;
-      i < BraveCosmeticResourcesTabHelper::vetted_search_engines_.size();
-      i++) {
-    size_t found_pos = host.find(
-        BraveCosmeticResourcesTabHelper::vetted_search_engines_[i]);
+  for (size_t i = 0; i < g_vetted_search_engines.size(); i++) {
+    size_t found_pos = host.find(g_vetted_search_engines[i]);
     if (found_pos != std::string::npos) {
       size_t last_dot_pos = host.find(".", found_pos + 1);
       if (last_dot_pos == std::string::npos) {
@@ -226,22 +218,21 @@ bool IsVettedSearchEngine(const std::string& host) {
 
 }  // namespace
 
-
 BraveCosmeticResourcesTabHelper::BraveCosmeticResourcesTabHelper(
     content::WebContents* contents)
-    : WebContentsObserver(contents),
-    enabled_1st_party_cf_filtering_(false) {
-  if (BraveCosmeticResourcesTabHelper::observing_script_->empty()) {
-    *BraveCosmeticResourcesTabHelper::observing_script_ =
-        LoadDataResource(kCosmeticFiltersGenerated[0].value);
+    : WebContentsObserver(contents), enabled_1st_party_cf_filtering_(false) {
+  if (g_observing_script->empty()) {
+    *g_observing_script = LoadDataResource(kCosmeticFiltersGenerated[0].value);
   }
 }
 
 BraveCosmeticResourcesTabHelper::~BraveCosmeticResourcesTabHelper() = default;
 
 void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
-    content::GlobalFrameRoutingId frame_id, const std::string& url,
-    bool do_non_scriptlets, std::unique_ptr<base::ListValue> resources) {
+    content::GlobalFrameRoutingId frame_id,
+    const std::string& url,
+    bool do_non_scriptlets,
+    std::unique_ptr<base::ListValue> resources) {
   if (!resources) {
     return;
   }
@@ -254,38 +245,38 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
     std::string scriptlet_init_script;
     std::string non_scriptlet_init_script;
     std::string json_to_inject;
-    if (base::JSONWriter::Write(
-        *(resources_dict->FindPath("injected_script")), &json_to_inject) &&
-            json_to_inject.length() > 1) {
-      scriptlet_init_script = base::StringPrintf(kScriptletInitScript,
-          json_to_inject.c_str());
+    if (base::JSONWriter::Write(*(resources_dict->FindPath("injected_script")),
+                                &json_to_inject) &&
+        json_to_inject.length() > 1) {
+      scriptlet_init_script =
+          base::StringPrintf(kScriptletInitScript, json_to_inject.c_str());
     }
     if (do_non_scriptlets) {
-      Profile* profile = Profile::FromBrowserContext(
-          web_contents()->GetBrowserContext());
+      Profile* profile =
+          Profile::FromBrowserContext(web_contents()->GetBrowserContext());
       enabled_1st_party_cf_filtering_ =
           brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-              HostContentSettingsMapFactory::GetForProfile(profile),
-                  GURL(url));
+              HostContentSettingsMapFactory::GetForProfile(profile), GURL(url));
       bool generichide = false;
       resources_dict->GetBoolean("generichide", &generichide);
       non_scriptlet_init_script =
           base::StringPrintf(kNonScriptletInitScript,
-              enabled_1st_party_cf_filtering_ ? "true" : "false",
-              generichide ? "true" : "false");
+                             enabled_1st_party_cf_filtering_ ? "true" : "false",
+                             generichide ? "true" : "false");
     }
-    pre_init_script = base::StringPrintf(kPreInitScript,
-        scriptlet_init_script.c_str(), non_scriptlet_init_script.c_str());
+    pre_init_script =
+        base::StringPrintf(kPreInitScript, scriptlet_init_script.c_str(),
+                           non_scriptlet_init_script.c_str());
     auto* frame_host = content::RenderFrameHost::FromID(frame_id);
     if (!frame_host)
       return;
     frame_host->ExecuteJavaScriptInIsolatedWorld(
-      base::UTF8ToUTF16(pre_init_script),
-      base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+        base::UTF8ToUTF16(pre_init_script), base::NullCallback(),
+        ISOLATED_WORLD_ID_CHROME_INTERNAL);
     if (do_non_scriptlets) {
       frame_host->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(*BraveCosmeticResourcesTabHelper::observing_script_),
-        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+          base::UTF8ToUTF16(*g_observing_script), base::NullCallback(),
+          ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
     // Working on css rules, we do that on a main frame only
     if (!do_non_scriptlets)
@@ -295,7 +286,8 @@ void BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI(
 }
 
 void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
-    const std::string& url_string, base::DictionaryValue* resources_dict,
+    const std::string& url_string,
+    base::DictionaryValue* resources_dict,
     content::GlobalFrameRoutingId frame_id) {
   const GURL url(url_string);
   if (url.is_empty() || !url.is_valid() || IsVettedSearchEngine(url.host())) {
@@ -323,30 +315,29 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
       if (!frame_host)
         return;
       frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16(new_selectors_script),
-          base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+          base::UTF8ToUTF16(new_selectors_script), base::NullCallback(),
+          ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
   }
 
   base::DictionaryValue* style_selectors_dictionary = nullptr;
   if (resources_dict->GetDictionary("style_selectors",
-      &style_selectors_dictionary)) {
+                                    &style_selectors_dictionary)) {
     std::string json_selectors;
-    if (!base::JSONWriter::Write(
-        *style_selectors_dictionary, &json_selectors) ||
-            json_selectors.empty()) {
+    if (!base::JSONWriter::Write(*style_selectors_dictionary,
+                                 &json_selectors) ||
+        json_selectors.empty()) {
       json_selectors = "[]";
     }
     std::string new_selectors_script =
-        base::StringPrintf(kStyleSelectorsInjectScript,
-            json_selectors.c_str());
+        base::StringPrintf(kStyleSelectorsInjectScript, json_selectors.c_str());
     if (!json_selectors.empty()) {
       auto* frame_host = content::RenderFrameHost::FromID(frame_id);
       if (!frame_host)
         return;
       frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16(new_selectors_script),
-          base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+          base::UTF8ToUTF16(new_selectors_script), base::NullCallback(),
+          ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
   }
 
@@ -355,14 +346,14 @@ void BraveCosmeticResourcesTabHelper::CSSRulesRoutine(
     if (!frame_host)
       return;
     frame_host->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(
-            *BraveCosmeticResourcesTabHelper::observing_script_),
-        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+        base::UTF8ToUTF16(*g_observing_script), base::NullCallback(),
+        ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 }
 
 void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
-    content::GlobalFrameRoutingId frame_id, const GURL& url,
+    content::GlobalFrameRoutingId frame_id,
+    const GURL& url,
     std::unique_ptr<base::ListValue> selectors) {
   if (!selectors || IsVettedSearchEngine(url.host())) {
     return;
@@ -386,8 +377,8 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
       if (!frame_host)
         return;
       frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16(new_selectors_script),
-          base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+          base::UTF8ToUTF16(new_selectors_script), base::NullCallback(),
+          ISOLATED_WORLD_ID_CHROME_INTERNAL);
     }
   }
 
@@ -396,30 +387,32 @@ void BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI(
     if (!frame_host)
       return;
     frame_host->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(
-            *BraveCosmeticResourcesTabHelper::observing_script_),
-        base::NullCallback(), ISOLATED_WORLD_ID_CHROME_INTERNAL);
+        base::UTF8ToUTF16(*g_observing_script), base::NullCallback(),
+        ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 }
 
 void BraveCosmeticResourcesTabHelper::ProcessURL(
-    content::RenderFrameHost* render_frame_host, const GURL& url,
+    content::RenderFrameHost* render_frame_host,
+    const GURL& url,
     const bool do_non_scriptlets) {
   content::CosmeticFiltersCommunicationImpl::CreateInstance(render_frame_host,
-      this);
+                                                            this);
   if (!render_frame_host || !ShouldDoCosmeticFiltering(web_contents(), url)) {
     return;
   }
-  g_brave_browser_process->ad_block_service()->GetTaskRunner()->
-      PostTaskAndReplyWithResult(FROM_HERE,
-          base::BindOnce(GetUrlCosmeticResourcesOnTaskRunner,
-            url.spec()),
-          base::BindOnce(&BraveCosmeticResourcesTabHelper::
-            GetUrlCosmeticResourcesOnUI, AsWeakPtr(),
-            content::GlobalFrameRoutingId(
+  g_brave_browser_process->ad_block_service()
+      ->GetTaskRunner()
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(GetUrlCosmeticResourcesOnTaskRunner, url.spec()),
+          base::BindOnce(
+              &BraveCosmeticResourcesTabHelper::GetUrlCosmeticResourcesOnUI,
+              AsWeakPtr(),
+              content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
-            url.spec(), do_non_scriptlets));
+              url.spec(), do_non_scriptlets));
 }
 
 void BraveCosmeticResourcesTabHelper::DidFinishNavigation(
@@ -427,8 +420,8 @@ void BraveCosmeticResourcesTabHelper::DidFinishNavigation(
   if (!navigation_handle)
     return;
   ProcessURL(navigation_handle->GetRenderFrameHost(),
-      web_contents()->GetLastCommittedURL(),
-      navigation_handle->IsInMainFrame());
+             web_contents()->GetLastCommittedURL(),
+             navigation_handle->IsInMainFrame());
 }
 
 void BraveCosmeticResourcesTabHelper::ResourceLoadComplete(
@@ -442,12 +435,15 @@ void BraveCosmeticResourcesTabHelper::ApplyHiddenClassIdSelectors(
     content::RenderFrameHost* render_frame_host,
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids) {
-  g_brave_browser_process->ad_block_service()->GetTaskRunner()->
-      PostTaskAndReplyWithResult(FROM_HERE,
+  g_brave_browser_process->ad_block_service()
+      ->GetTaskRunner()
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
           base::BindOnce(&GetHiddenClassIdSelectorsOnTaskRunner, classes, ids,
-              exceptions_),
-          base::BindOnce(&BraveCosmeticResourcesTabHelper::
-              GetHiddenClassIdSelectorsOnUI, AsWeakPtr(),
+                         exceptions_),
+          base::BindOnce(
+              &BraveCosmeticResourcesTabHelper::GetHiddenClassIdSelectorsOnUI,
+              AsWeakPtr(),
               content::GlobalFrameRoutingId(
                   render_frame_host->GetProcess()->GetID(),
                   render_frame_host->GetRoutingID()),
