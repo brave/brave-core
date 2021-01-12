@@ -20,17 +20,17 @@ export const localeStrings = {
 
   // Onboarding tour panel messages:
   onboardingPanelWelcomeHeader: 'Welcome to Brave Rewards!',
-  onboardingPanelWelcomeText: 'Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.',
+  onboardingPanelWelcomeText: 'Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.',
   onboardingPanelAdsHeader: 'Where do ads show up?',
-  onboardingPanelAdsText: 'Brave private ads will appear as a normal notification. You control how often you see these ads in settings.',
+  onboardingPanelAdsText: 'Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.',
   onboardingPanelScheduleHeader: 'When do you receive rewards',
-  onboardingPanelScheduleText: 'Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.',
-  onboardingPanelAcHeader: 'Support creators on autopilot',
-  onboardingPanelAcText: 'Creators are automatically rewarded with the earned tokens based on your browsing/engagement levels that we measure as ‘Attention’.',
+  onboardingPanelScheduleText: 'Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.',
+  onboardingPanelAcHeader: 'Giving back made effortless',
+  onboardingPanelAcText: 'Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.',
   onboardingPanelTippingHeader: 'Say thank you with tips',
   onboardingPanelTippingText: 'Tipping is a way to personally encourage and support content or creators that you love. Get tippin!',
   onboardingPanelRedeemHeader: 'What can you do with tokens?',
-  onboardingPanelRedeemText: 'Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.',
-  onboardingPanelCompleteHeader: 'WOOOOHOOOOO!$1You’re done.',
-  onboardingPanelCompleteText: 'By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!'
+  onboardingPanelRedeemText: 'Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.',
+  onboardingPanelCompleteHeader: 'Woohoo, you’re all set!',
+  onboardingPanelCompleteText: 'By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!'
 }

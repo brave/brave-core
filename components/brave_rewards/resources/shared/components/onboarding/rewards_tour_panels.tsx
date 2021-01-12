@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { Locale, formatMessageParts } from '../../lib/locale_context'
+import { Locale } from '../../lib/locale_context'
 
 type TourPanelFunction = (locale: Locale) => ({
   id: string
@@ -68,11 +68,9 @@ function panelRedeem (locale: Locale) {
 
 function panelComplete (locale: Locale) {
   const { getString } = locale
-  const heading = formatMessageParts(getString('onboardingPanelCompleteHeader'),
-    (top, bottom) => <>{top}<br />{bottom}</>)
   return {
     id: 'complete',
-    heading,
+    heading: getString('onboardingPanelCompleteHeader'),
     text: getString('onboardingPanelCompleteText')
   }
 }

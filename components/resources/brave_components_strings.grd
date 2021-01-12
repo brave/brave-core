@@ -575,19 +575,19 @@
 
       <!-- WebUI rewards onboarding tour panel content -->
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER" desc="">Welcome to Brave Rewards!</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT" desc="">Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER" desc="">Where do ads show up?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">Brave private ads will appear as a normal notification. You control how often you see these ads in settings.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">When do you receive rewards</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">Support creators on autopilot</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">Creators are automatically rewarded with the earned tokens based on your browsing/engagement levels that we measure as ‘Attention’.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">Giving back made effortless</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT" desc="">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER" desc="">Say thank you with tips</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">Tipping is a way to personally encourage and support content or creators that you love. Get tippin!</message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER" desc="">What can you do with tokens?</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT" desc="">Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">WOOOOHOOOOO!<ph name="NEWLINE">$1</ph>You’re done.</message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT" desc="">Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">Woohoo, you’re all set!</message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

@@ -690,7 +690,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeText": {
-    "message": "Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.",
+    "message": "Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.",
     "description": ""
   },
   "onboardingPanelAdsHeader": {
@@ -698,7 +698,7 @@
     "description": ""
   },
   "onboardingPanelAdsText": {
-    "message": "Brave private ads will appear as a normal notification. You control how often you see these ads in settings.",
+    "message": "Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.",
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
@@ -706,15 +706,15 @@
     "description": ""
   },
   "onboardingPanelScheduleText": {
-    "message": "Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.",
+    "message": "Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.",
     "description": ""
   },
   "onboardingPanelAcHeader": {
-    "message": "Support creators on autopilot",
+    "message": "Giving back made effortless",
     "description": ""
   },
   "onboardingPanelAcText": {
-    "message": "Creators are automatically rewarded with the earned tokens based on your browsing/engagement levels that we measure as ‘Attention’.",
+    "message": "Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.",
     "description": ""
   },
   "onboardingPanelTippingHeader": {
@@ -730,20 +730,15 @@
     "description": ""
   },
   "onboardingPanelRedeemText": {
-    "message": "Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.",
+    "message": "Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.",
     "description": ""
   },
   "onboardingPanelCompleteHeader": {
-    "message": "WOOOOHOOOOO!$line_break$You’re done.",
-    "description": "",
-    "placeholders": {
-      "line_break": {
-        "content": "$1"
-      }
-    }
+    "message": "Woohoo, you’re all set!",
+    "description": ""
   },
   "onboardingPanelCompleteText": {
-    "message": "By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!",
+    "message": "By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!",
     "description": ""
   }
 }
