@@ -177,6 +177,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Schedule Brave Core Priority Tasks
         self.braveCore?.scheduleLowPriorityStartupTasks()
+        browserViewController.removeScheduledAdGrantReminders()
 
         log.info("startApplication end")
         return true
