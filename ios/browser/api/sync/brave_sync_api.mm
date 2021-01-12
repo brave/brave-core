@@ -17,7 +17,8 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#import "brave/ios/browser/api/sync/brave_sync_worker.h"
+#include "brave/components/sync_device_info/brave_device_info.h"
+#include "brave/ios/browser/api/sync/brave_sync_worker.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -180,12 +181,14 @@
 
   base::Value device_list_value(base::Value::Type::LIST);
 
-  for (const auto& device : _worker->GetDeviceList()) {
+  for (const auto& device : device_list) {
     auto device_value = base::Value::FromUniquePtrValue(device->ToValue());
     bool is_current_device =
         local_device_info ? local_device_info->guid() == device->guid() : false;
     device_value.SetBoolKey("isCurrentDevice", is_current_device);
     device_value.SetStringKey("guid", device->guid());
+    device_value.SetBoolKey("supportsSelfDelete",
+                            device->is_self_delete_supported());
     device_list_value.Append(std::move(device_value));
   }
 
@@ -197,8 +200,12 @@
   return base::SysUTF8ToNSString(json_string);
 }
 
-- (bool)resetSync {
-  return _worker->ResetSync();
+- (void)resetSync {
+  _worker->ResetSync();
+}
+
+- (void)deleteDevice:(NSString*)guid {
+  _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
 }
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {
