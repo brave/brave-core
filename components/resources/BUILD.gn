@@ -1,4 +1,5 @@
-import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
+import(
+    "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -19,23 +20,16 @@ grit("static_resources") {
     "grit/brave_components_resources.h",
     "brave_components_static.pak",
   ]
-  deps = [
-    ":strings",
-  ]
+  deps = [ ":strings" ]
 
   if (enable_extensions) {
-    deps += [
-      "//brave/components/brave_extension/extension/brave_extension",
-    ]
+    deps += [ "//brave/components/brave_extension/extension/brave_extension" ]
   }
   if (brave_rewards_enabled) {
-    deps += [
-      "//brave/components/brave_rewards/resources",
-    ]
+    deps += [ "//brave/components/brave_rewards/resources" ]
     if (enable_extensions) {
-      deps += [
-        "//brave/components/brave_rewards/resources/extension:resources",
-      ]
+      deps +=
+          [ "//brave/components/brave_rewards/resources/extension:resources" ]
     }
   }
 
@@ -59,37 +53,31 @@ repack("resources") {
   deps = [
     ":static_resources",
     "//brave/components/brave_adblock_ui:generated_resources",
-    "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_new_tab_ui:generated_resources",
-    "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
+    "//brave/components/cosmetic_filters/resources/data:generated_resources",
+    "//brave/components/webcompat_reporter/ui:generated_resources",
   ]
 
   sources = [
-    "$root_gen_dir/components/brave_components_static.pak",
     "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
-    "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
-    "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
     "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
+    "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
+    "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
+    "$root_gen_dir/components/brave_components_static.pak",
   ]
 
   if (ipfs_enabled) {
-    deps += [
-      "//brave/components/ipfs_ui:generated_resources",
-    ]
+    deps += [ "//brave/components/ipfs_ui:generated_resources" ]
     sources += [
       "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",
     ]
   }
 
   if (brave_wallet_enabled) {
-    deps += [
-      "//brave/components/brave_wallet_ui:generated_resources",
-    ]
-    sources += [
-      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak",
-    ]
+    deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
@@ -98,9 +86,7 @@ repack("resources") {
 grit("strings") {
   source = "brave_components_strings.grd"
 
-  outputs = [
-    "grit/brave_components_strings.h",
-  ]
+  outputs = [ "grit/brave_components_strings.h" ]
 
   defines = [
     "enable_speedreader=$enable_speedreader",
@@ -124,7 +110,5 @@ action("about_credits") {
 
   outputs = [ "$root_gen_dir/npm_licenses.checked" ]
 
-  args = [
-    rebase_path("$root_gen_dir/npm_licenses.checked")
-  ]
+  args = [ rebase_path("$root_gen_dir/npm_licenses.checked") ]
 }

@@ -1,11 +1,12 @@
+import("//brave/components/common/typescript.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
-import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("cosmetic_filters_resources") {
-  entry_points = [
-    ["cosmetic_filters", rebase_path("content_cosmetic.ts")]
-  ]
+  entry_points = [ [
+        "cosmetic_filters",
+        rebase_path("content_cosmetic.ts"),
+      ] ]
 
   resource_name = "cosmetic_filters"
 }
@@ -13,7 +14,5 @@ transpile_web_ui("cosmetic_filters_resources") {
 pack_web_resources("generated_resources") {
   resource_name = "cosmetic_filters"
   output_dir = "$root_gen_dir/brave/components/cosmetic_filters/resources"
-  deps = [
-    ":cosmetic_filters_resources"
-  ]
+  deps = [ ":cosmetic_filters_resources" ]
 }

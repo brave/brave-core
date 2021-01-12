@@ -40,10 +40,10 @@ source_set("android_browser_process") {
 
   if (enable_brave_sync) {
     sources += [
-      "brave_sync_worker.cc",
-      "brave_sync_worker.h",
       "//brave/browser/sync/brave_sync_devices_android.cc",
       "//brave/browser/sync/brave_sync_devices_android.h",
+      "brave_sync_worker.cc",
+      "brave_sync_worker.h",
     ]
     deps += [
       "//brave/components/brave_sync",
