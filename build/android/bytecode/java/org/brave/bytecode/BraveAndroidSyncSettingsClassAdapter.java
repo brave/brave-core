@@ -17,11 +17,6 @@ public class BraveAndroidSyncSettingsClassAdapter extends BraveClassVisitor {
         super(visitor);
 
         addMethodAnnotation(sBraveAndroidSyncSettingsClassName,
-            "isSyncEnabled", "Ljava/lang/Override;");
-        addMethodAnnotation(sBraveAndroidSyncSettingsClassName,
             "disableChromeSync", "Ljava/lang/Override;");
-
-        deleteField(sBraveAndroidSyncSettingsClassName, "mMasterSyncEnabled");
-        makeProtectedField(sAndroidSyncSettingsClassName, "mMasterSyncEnabled");
     }
 }
