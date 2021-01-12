@@ -343,8 +343,8 @@ void CreativeNewTabPageAds::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 3: {
-      MigrateToV3(transaction);
+    case 8: {
+      MigrateToV8(transaction);
       break;
     }
 
@@ -516,7 +516,7 @@ CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
   return creative_new_tab_page_ad;
 }
 
-void CreativeNewTabPageAds::CreateTableV3(
+void CreativeNewTabPageAds::CreateTableV8(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -537,13 +537,13 @@ void CreativeNewTabPageAds::CreateTableV3(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeNewTabPageAds::MigrateToV3(
+void CreativeNewTabPageAds::MigrateToV8(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV3(transaction);
+  CreateTableV8(transaction);
 }
 
 }  // namespace table

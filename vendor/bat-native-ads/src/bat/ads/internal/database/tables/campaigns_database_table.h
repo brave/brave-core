@@ -45,9 +45,9 @@ class Campaigns : public Table {
       DBCommand* command,
       const CreativeAdList& creative_ads);
 
-  void CreateTableV3(
+  void CreateTableV8(
       DBTransaction* transaction);
-  void MigrateToV3(
+  void MigrateToV8(
       DBTransaction* transaction);
 };
 
