@@ -70,6 +70,11 @@ class FeedDataSource {
     
     init() {
         restoreCachedSources()
+        if !AppConstants.buildChannel.isPublic,
+           let savedEnvironment = Preferences.BraveToday.debugEnvironment.value,
+           let environment = Environment(rawValue: savedEnvironment) {
+            self.environment = environment
+        }
     }
     
     // MARK: - Resource Managment
@@ -85,19 +90,39 @@ class FeedDataSource {
         return decoder
     }()
     
+    /// A Brave Today environment
+    enum Environment: String, CaseIterable {
+        case dev = "brave.software"
+        case staging = "bravesoftware.com"
+        case production = "brave.com"
+    }
+    
+    /// The current Brave Today environment.
+    ///
+    /// Updating the environment automatically clears the current cached items if any exist.
+    ///
+    /// - warning: Should only be changed in non-public releases
+    var environment: Environment = .production {
+        didSet {
+            if oldValue == environment { return }
+            assert(!AppConstants.buildChannel.isPublic,
+                   "Environment cannot be changed on non-public build channels")
+            Preferences.BraveToday.debugEnvironment.value = environment.rawValue
+            clearCachedFiles()
+        }
+    }
+    
     private struct TodayBucket {
         var name: String
         var path: String = ""
-        
-        var url: URL {
-            var components = URLComponents()
-            components.scheme = "https"
-            // TODO: At the moment these files are only available on the dev servers, eventually we will
-            // change `brave.software` to `bravesoftware.com` or `brave.com` based on staging/prod
-            components.host = "\(name).brave.com"
-            components.path = "/\(path)"
-            return components.url!
-        }
+    }
+    
+    private func resourceUrl(for bucket: TodayBucket) -> URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "\(bucket.name).\(environment.rawValue)"
+        components.path = "/\(bucket.path)"
+        return components.url
     }
     
     private struct TodayResource {
@@ -180,8 +205,11 @@ class FeedDataSource {
                 if let data = data {
                     return .init(value: .success(data), defaultQueue: .main)
                 }
+                guard let url = self.resourceUrl(for: resource.bucket) else {
+                    fatalError("Incorrect URL generated for the given resource: \(resource)")
+                }
                 let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
-                self.session.dataRequest(with: resource.bucket.url.appendingPathComponent(filename)) { data, response, error in
+                self.session.dataRequest(with: url.appendingPathComponent(filename)) { data, response, error in
                     if let error = error {
                         deferred.fill(.failure(error))
                         return

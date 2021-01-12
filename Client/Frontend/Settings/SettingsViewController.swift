@@ -106,6 +106,11 @@ class SettingsViewController: TableViewController {
         navigationController?.pushViewController(settings, animated: true)
     }
     
+    private func displayBraveTodayDebugMenu() {
+        let settings = BraveTodayDebugSettingsController(dataSource: feedDataSource)
+        navigationController?.pushViewController(settings, animated: true)
+    }
+    
     private var theme: Theme {
         Theme.of(tabManager.selectedTab)
     }
@@ -479,6 +484,9 @@ class SettingsViewController: TableViewController {
                 Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
                 Row(text: "View Rewards Debug Menu", selection: { [unowned self] in
                     self.displayRewardsDebugMenu()
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+                Row(text: "View Brave Today Debug Menu", selection: { [unowned self] in
+                    self.displayBraveTodayDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "Load all QA Links", selection: { [unowned self] in
                     let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!

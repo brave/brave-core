@@ -250,6 +250,7 @@
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		27384CAE254360120086922F /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
 		273EB3A72422AB24002A8AAF /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9616E6A240EE43F00667C2D /* PaymentRequest.swift */; };
+		273FCB9A25A7BC5500F279B5 /* BraveTodayDebugSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FCB9925A7BC5500F279B5 /* BraveTodayDebugSettingsController.swift */; };
 		274398E224E4827800E79605 /* FeedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E124E4827800E79605 /* FeedCard.swift */; };
 		274398E524E4829900E79605 /* FeedFillStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E424E4829900E79605 /* FeedFillStrategy.swift */; };
 		274398E724E483AD00E79605 /* FeedItemMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E624E483AD00E79605 /* FeedItemMenu.swift */; };
@@ -1512,6 +1513,7 @@
 		2726637224981B5F0056CFE1 /* FeedSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSectionHeaderView.swift; sourceTree = "<group>"; };
 		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
 		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
+		273FCB9925A7BC5500F279B5 /* BraveTodayDebugSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodayDebugSettingsController.swift; sourceTree = "<group>"; };
 		274398E124E4827800E79605 /* FeedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCard.swift; sourceTree = "<group>"; };
 		274398E424E4829900E79605 /* FeedFillStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategy.swift; sourceTree = "<group>"; };
 		274398E624E483AD00E79605 /* FeedItemMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemMenu.swift; sourceTree = "<group>"; };
@@ -3426,6 +3428,7 @@
 				27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */,
 				27D114D52358FCA400166534 /* SettingsRowViews.swift */,
 				27D67CEC24D07EB800066D83 /* BraveTodaySettingsViewController.swift */,
+				273FCB9925A7BC5500F279B5 /* BraveTodayDebugSettingsController.swift */,
 				278C700924F96D7000A246C8 /* BraveShieldsAndPrivacySettingsController.swift */,
 			);
 			path = Settings;
@@ -6215,6 +6218,7 @@
 				E63ED8E11BFD25580097D08E /* LoginListViewController.swift in Sources */,
 				D0625CA8208FC47A0081F3B2 /* BrowserViewController+DownloadQueueDelegate.swift in Sources */,
 				2F44FCC71A9E8CF500FD20CC /* SearchSettingsTableViewController.swift in Sources */,
+				273FCB9A25A7BC5500F279B5 /* BraveTodayDebugSettingsController.swift in Sources */,
 				39A359E41BFCCE94006B9E87 /* UserActivityHandler.swift in Sources */,
 				0AF6B1EA24A0EE19005417FC /* InstallVPNView.swift in Sources */,
 				27201F0424589B9800C19DD1 /* NewTabPageNotifications.swift in Sources */,
