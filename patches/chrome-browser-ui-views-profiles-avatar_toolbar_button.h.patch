@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 640405468136d45ce52469e64eb02063305741de..36d0d4d2dc47790091e89854cdf57a02b4fa0199 100644
+index 5778df27f0c116633d48c8ed4729336dc7027671..84fa23f312575d64e820fa0a9f22c16762f7a500 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 @@ -70,6 +70,7 @@ class AvatarToolbarButton : public ToolbarButton,

@@ -1,8 +1,8 @@
 diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
-index eef1a60d348e21689b1378d69f2d2a53c0804840..f87de6244ea6846dcf03585506a7f011f8398684 100644
+index 9590c511b801c158b7d63b59a7438c7299c1570a..862227750eefd7144b683a5e6a05a41a5f5a6ca8 100644
 --- a/sandbox/policy/win/sandbox_win.cc
 +++ b/sandbox/policy/win/sandbox_win.cc
-@@ -937,6 +937,7 @@ ResultCode SandboxWin::StartSandboxedProcess(
+@@ -928,6 +928,7 @@ ResultCode SandboxWin::StartSandboxedProcess(
        launcher_process_command_line.HasSwitch(switches::kNoSandbox)) {
      base::LaunchOptions options;
      options.handles_to_inherit = handles_to_inherit;
