@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index 600f793665021cb8d1ecf6f3f275a153b8cd6fd2..bc64b814a8c4bf537893b76e7850b2c50eff72f0 100644
+index 600f793665021cb8d1ecf6f3f275a153b8cd6fd2..59f796daa55c489f3e5260f32f6c9e614e13c0fa 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
 @@ -50,7 +50,7 @@ namespace {
@@ -11,7 +11,7 @@ index 600f793665021cb8d1ecf6f3f275a153b8cd6fd2..bc64b814a8c4bf537893b76e7850b2c5
    switch (type) {
      case PermissionRequestType::MULTIPLE:
        return "AudioAndVideoCapture";
-@@ -644,6 +644,7 @@ void PermissionUmaUtil::RecordPermissionAction(
+@@ -674,6 +674,7 @@ void PermissionUmaUtil::RecordPermissionAction(
        base::UmaHistogramEnumeration("Permissions.Action.IdleDetection", action,
                                      PermissionAction::NUM);
        break;

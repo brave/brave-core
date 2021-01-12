@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3dfdc2357 100644
+index 3bf1d5382bccefc88c42ec47730a606974e17e8f..9559894ceae64141ab11c4c10a5744196a4ca28a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -186,7 +186,7 @@ import java.util.Locale;
@@ -11,7 +11,7 @@ index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -1471,7 +1471,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1477,7 +1477,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      protected RootUiCoordinator createRootUiCoordinator() {
@@ -20,7 +20,7 @@ index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3
                  mIntentMetadataOneshotSupplier, getShareDelegateSupplier(),
                  getActivityTabProvider(), mEphemeralTabCoordinatorSupplier,
                  mTabModelProfileSupplier, mBookmarkBridgeSupplier,
-@@ -1637,7 +1637,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1645,7 +1645,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -29,7 +29,7 @@ index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier, getModalDialogManager());
-@@ -1661,10 +1661,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1675,10 +1675,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -42,7 +42,7 @@ index 827071978fd601856fd0bcbd5319e6bdb6e22f76..97d64dc1c38d14a5cbffbf3b7531bfd3
                          tabDelegateFactorySupplier, true, overviewNTPCreator,
                          AsyncTabParamsManagerSingleton.getInstance()));
      }
-@@ -2058,7 +2058,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2079,7 +2079,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

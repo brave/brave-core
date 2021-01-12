@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index 6fd7de739e70cd7a184d8cbdf994fe38d58aa549..15875a821fecd158c55b2195f9de9266ee99aa7b 100644
+index b9ef737869b663e213a827c3216c71f5e244c60a..2c33f6042f16b84a0e2521ec3e03e429ce234cd0 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -59,7 +59,7 @@ import org.chromium.ui.vr.VrModeObserver;
+@@ -70,7 +70,7 @@ import org.chromium.ui.vr.VrModeObserver;
   * Layout for the new tab page. This positions the page elements in the correct vertical positions.
   * There are no separate phone and tablet UIs; this layout adapts based on the available space.
   */
