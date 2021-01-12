@@ -184,6 +184,9 @@ class NewTabPageViewController: UIViewController, Themeable {
         collectionView.backgroundView = backgroundButtonsView
         
         feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
+        if !AppConstants.buildChannel.isPublic {
+            feedOverlayView.headerView.settingsButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedBraveTodaySettingsButton)))
+        }
         feedOverlayView.newContentAvailableButton.addTarget(self, action: #selector(tappedNewContentAvailable), for: .touchUpInside)
         
         backgroundButtonsView.tappedActiveButton = { [weak self] sender in
@@ -696,6 +699,14 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         UIImpactFeedbackGenerator(style: .medium).bzzt()
         present(alert, animated: true, completion: nil)
+    }
+    
+    @objc private func longPressedBraveTodaySettingsButton() {
+        assert(!AppConstants.buildChannel.isPublic,
+               "Debug settings are not accessible on public builds")
+        let settings = BraveTodayDebugSettingsController(dataSource: feedDataSource)
+        let container = UINavigationController(rootViewController: settings)
+        present(container, animated: true)
     }
 }
 

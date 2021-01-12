@@ -55,6 +55,7 @@ extension Preferences {
         public static let isEnabled = Option<Bool>(key: "brave-today.enabled", default: true)
         public static let languageChecked = Option<Bool>(key: "brave-today.language-checked", default: false)
         public static let isShowingIntroCard = Option<Bool>(key: "brave-today.showing-intro-card", default: true)
+        public static let debugEnvironment = Option<String?>(key: "brave-today.debug.environment", default: nil)
     }
     
     public final class Review {
