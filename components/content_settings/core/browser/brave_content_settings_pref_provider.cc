@@ -163,6 +163,13 @@ void BravePrefProvider::RegisterProfilePrefs(
   // migration of obsolete plugin prefs
   registry->RegisterDictionaryPref(
       "brave.migrate.content_settings.exceptions.plugins");
+
+#if defined(OS_ANDROID)
+  // This path is no longer registered upstream but we still need it to migrate
+  // Shields settings away from ResourceIdentifier on Android.
+  registry->RegisterDictionaryPref(
+      "profile.content_settings.exceptions.plugins");
+#endif
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -179,9 +186,6 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 
   // Now carry on with any other migration that we might need.
   MigrateShieldsSettingsV1ToV2();
-
-  // Finally clean this up now that Shields' settings have been migrated.
-  prefs_->ClearPref("brave.migrate.content_settings.exceptions.plugins");
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
@@ -244,6 +248,14 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
       }
     }
   }
+
+  // Finally clean this up now that Shields' settings have been migrated.
+  prefs_->ClearPref("brave.migrate.content_settings.exceptions.plugins");
+
+#if defined(OS_ANDROID)
+  // Upstream won't clean this up for ANDROID, need to do it ourselves.
+  prefs_->ClearPref("profile.content_settings.exceptions.plugins");
+#endif
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
