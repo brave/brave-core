@@ -202,6 +202,21 @@ extension BrowserViewController {
             tabManager.addTabAndSelect(request, isPrivate: isPrivate)
         }
     }
+    
+    /// Removes any scheduled or delivered ad grant reminders which may have been added prior to
+    /// removal of those reminders.
+    func removeScheduledAdGrantReminders() {
+        let idPrefix = "rewards.notification.monthly-claim"
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { requests in
+            let ids = requests
+                .filter { $0.identifier.hasPrefix(idPrefix) }
+                .map(\.identifier)
+            if ids.isEmpty { return }
+            center.removeDeliveredNotifications(withIdentifiers: ids)
+            center.removePendingNotificationRequests(withIdentifiers: ids)
+        }
+    }
 }
 
 extension Tab {
