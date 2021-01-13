@@ -119,9 +119,16 @@ bool IsActive(const Rule& cookie_rule,
 
 // static
 void BravePrefProvider::CopyPluginSettingsForMigration(PrefService* prefs) {
+  if (!prefs->HasPrefPath("profile.content_settings.exceptions.plugins")) {
+    return;
+  }
+
   auto* plugins =
       prefs->GetDictionary("profile.content_settings.exceptions.plugins");
   prefs->Set("brave.migrate.content_settings.exceptions.plugins", *plugins);
+
+  // Upstream won't clean this up for ANDROID, need to do it ourselves.
+  prefs->ClearPref("profile.content_settings.exceptions.plugins");
 }
 
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
@@ -163,6 +170,13 @@ void BravePrefProvider::RegisterProfilePrefs(
   // migration of obsolete plugin prefs
   registry->RegisterDictionaryPref(
       "brave.migrate.content_settings.exceptions.plugins");
+
+#if defined(OS_ANDROID)
+  // This path is no longer registered upstream but we still need it to migrate
+  // Shields settings away from ResourceIdentifier on Android.
+  registry->RegisterDictionaryPref(
+      "profile.content_settings.exceptions.plugins");
+#endif
 }
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
@@ -179,12 +193,11 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 
   // Now carry on with any other migration that we might need.
   MigrateShieldsSettingsV1ToV2();
-
-  // Finally clean this up now that Shields' settings have been migrated.
-  prefs_->ClearPref("brave.migrate.content_settings.exceptions.plugins");
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
+  BravePrefProvider::CopyPluginSettingsForMigration(prefs_);
+
   const base::DictionaryValue* plugins_dictionary = prefs_->GetDictionary(
       "brave.migrate.content_settings.exceptions.plugins");
   if (!plugins_dictionary)
@@ -244,6 +257,9 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
       }
     }
   }
+
+  // Finally clean this up now that Shields' settings have been migrated.
+  prefs_->ClearPref("brave.migrate.content_settings.exceptions.plugins");
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
