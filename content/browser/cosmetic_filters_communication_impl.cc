@@ -5,7 +5,10 @@
 
 #include "brave/content/browser/cosmetic_filters_communication_impl.h"
 
+#include <vector>
+
 #include "base/json/json_reader.h"
+#include "base/values.h"
 #include "brave/content/browser/cosmetic_filters_observer.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"

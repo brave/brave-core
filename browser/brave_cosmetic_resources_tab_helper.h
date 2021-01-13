@@ -20,6 +20,10 @@ class BraveCosmeticResourcesTabHelper
       public content::WebContentsObserver,
       public content::WebContentsUserData<BraveCosmeticResourcesTabHelper> {
  public:
+  BraveCosmeticResourcesTabHelper(const BraveCosmeticResourcesTabHelper&) =
+      delete;
+  void operator=(const BraveCosmeticResourcesTabHelper&) = delete;
+
   explicit BraveCosmeticResourcesTabHelper(content::WebContents* contents);
   ~BraveCosmeticResourcesTabHelper() override;
 
@@ -61,8 +65,6 @@ class BraveCosmeticResourcesTabHelper
   bool enabled_1st_party_cf_filtering_;
 
   base::WeakPtrFactory<BraveCosmeticResourcesTabHelper> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveCosmeticResourcesTabHelper);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_COSMETIC_RESOURCES_TAB_HELPER_H_

@@ -7,10 +7,7 @@
 #define BRAVE_CONTENT_BROWSER_COSMETIC_FILTERS_COMMUNICATION_IMPL_H_
 
 #include <string>
-#include <vector>
 
-#include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/content/browser/mojom/cosmetic_filters_communication.mojom.h"
 #include "content/public/browser/global_routing_id.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"

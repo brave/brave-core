@@ -27,9 +27,8 @@ source_set("android_browser_process") {
   ]
 
   if (brave_ads_enabled) {
-    sources += [
-      "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-    ]
+    sources +=
+        [ "//brave/browser/brave_ads/android/brave_ads_native_helper.cc" ]
 
     deps += [
       "//brave/browser/brave_ads/android:jni_headers",
