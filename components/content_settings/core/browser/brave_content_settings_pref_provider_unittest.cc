@@ -443,7 +443,6 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
                                             expected_last_modified,
                                             expected_brave_com_settings_value);
 
-  BravePrefProvider::CopyPluginSettingsForMigration(pref_service);
   provider.MigrateShieldsSettingsFromResourceIds();
 
   // Check migration for all the settings has been properly done.
