@@ -92,6 +92,15 @@ class FtxGetAccountBalancesFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class FtxIsSupportedFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.isSupported", UNKNOWN)
+
+ protected:
+  ~FtxIsSupportedFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

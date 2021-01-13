@@ -127,9 +127,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
 #endif
 #if BUILDFLAG(FTX_ENABLED)
-  pref_data.SetBoolean(
-      "showFTX",
-      prefs->GetBoolean(kFTXNewTabPageShowFTX));
+  pref_data.SetBoolean("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
 }
@@ -365,9 +363,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     base::Unretained(this)));
 #endif
 #if BUILDFLAG(FTX_ENABLED)
-  pref_change_registrar_.Add(kFTXNewTabPageShowFTX,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kFTXNewTabPageShowFTX,
+      base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                 base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

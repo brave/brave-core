@@ -13,7 +13,9 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/ftx.h"
 #include "brave/components/ftx/browser/ftx_service.h"
+#include "brave/components/ftx/browser/regions.h"
 #include "brave/components/ftx/common/pref_names.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -189,6 +191,13 @@ void FtxGetAccountBalancesFunction::OnGetAccountBalances(
   }
 
   Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
+}
+
+ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      profile->GetPrefs(), ::ftx::unsupported_regions, false);
+  return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
 }  // namespace api

@@ -217,6 +217,7 @@ declare namespace chrome.ftx {
   const getAccessToken: (callback: (success: boolean) => void) => {}
 
   const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
+  const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
 declare namespace chrome.braveTogether {
