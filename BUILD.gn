@@ -24,8 +24,8 @@ source_set("rust_ffi") {
 
   sources = [
     "src/lib.h",
-    "src/wrapper.cpp",
-    "src/wrapper.hpp"
+    "src/wrapper.cc",
+    "src/wrapper.h"
   ]
 }
 

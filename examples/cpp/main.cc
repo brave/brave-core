@@ -1,7 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include <cstring>
-#include "wrapper.hpp"
+#include "wrapper.h"
 
 using namespace std;
 using namespace adblock;
