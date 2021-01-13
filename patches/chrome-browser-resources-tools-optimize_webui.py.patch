@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
+diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
 index d7bade19933acfbcd31bbce4231d9e20743f4c91..180e7f20ae355f6e152e697361a95d90cc98cb9c 100755
---- a/chrome/browser/resources/optimize_webui.py
-+++ b/chrome/browser/resources/optimize_webui.py
+--- a/chrome/browser/resources/tools/optimize_webui.py
++++ b/chrome/browser/resources/tools/optimize_webui.py
 @@ -56,8 +56,12 @@ _POLYMER_PATH = os.path.join(
      '').replace('\\', '/')
  
