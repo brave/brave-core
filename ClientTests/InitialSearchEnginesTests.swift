@@ -47,7 +47,7 @@ class InitialSearchEnginesTests: XCTestCase {
     func testYahooRegions() {
         for region in InitialSearchEngines.yahooEligibleRegions {
             let localeSE = SE(locale: Locale(identifier: "en_\(region)"))
-            XCTAssertEqual(localeSE.priorityEngine, .yahoo)
+            XCTAssertNil(localeSE.priorityEngine)
         }
     }
     
@@ -63,29 +63,47 @@ class InitialSearchEnginesTests: XCTestCase {
     
     func testEnUS() throws {
         let localeSE = SE(locale: Locale(identifier: "en_US"))
-        let engines = localeSE.engines.map { $0.id }
         
-        XCTAssertEqual(engines, [.yahoo,
-                                 .google,
-                                 .bing,
-                                 .duckduckgo,
-                                 .qwant,
-                                 .startpage])
+        let availableEngines = localeSE.engines.map { $0.id }
+        XCTAssertEqual(availableEngines, [.google,
+                                          .bing,
+                                          .duckduckgo,
+                                          .qwant,
+                                          .startpage,
+                                          .ecosia,
+                                          .yahoo])
+        
+        let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.google,
+                                           .bing,
+                                           .duckduckgo,
+                                           .qwant,
+                                           .startpage,
+                                           .ecosia])
+        
+        
         
         XCTAssertEqual(localeSE.defaultSearchEngine, .google)
-        XCTAssertEqual(localeSE.priorityEngine, .yahoo)
+        XCTAssertNil(localeSE.priorityEngine)
     }
     
     func testJaJP() throws {
         let localeSE = SE(locale: Locale(identifier: "ja_JP"))
-        let engines = localeSE.engines.map { $0.id }
+        let availableEngines = localeSE.engines.map { $0.id }
         
-        XCTAssertEqual(engines, [.google,
-                                 .bing,
-                                 .duckduckgo,
-                                 .qwant,
-                                 .startpage,
-                                 .yahoo])
+        XCTAssertEqual(availableEngines, [.google,
+                                          .bing,
+                                          .duckduckgo,
+                                          .qwant,
+                                          .startpage,
+                                          .yahoo])
+        
+        let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.google,
+                                           .bing,
+                                           .duckduckgo,
+                                           .qwant,
+                                           .startpage])
         
         XCTAssertEqual(localeSE.defaultSearchEngine, .google)
         XCTAssertNil(localeSE.priorityEngine)
@@ -94,58 +112,91 @@ class InitialSearchEnginesTests: XCTestCase {
     
     func testEnGB() throws {
         let localeSE = SE(locale: Locale(identifier: "en_GB"))
-        let engines = localeSE.engines.map { $0.id }
+        let availableEngines = localeSE.engines.map { $0.id }
+        XCTAssertEqual(availableEngines, [.google,
+                                          .bing,
+                                          .duckduckgo,
+                                          .qwant,
+                                          .startpage,
+                                          .ecosia,
+                                          .yahoo])
         
-        XCTAssertEqual(engines, [.yahoo,
-                                 .google,
-                                 .bing,
-                                 .duckduckgo,
-                                 .qwant,
-                                 .startpage])
+        let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.google,
+                                           .bing,
+                                           .duckduckgo,
+                                           .qwant,
+                                           .startpage,
+                                           .ecosia])
         
         XCTAssertEqual(localeSE.defaultSearchEngine, .google)
-        XCTAssertEqual(localeSE.priorityEngine, .yahoo)
+        XCTAssertNil(localeSE.priorityEngine)
     }
     
     func testDeDE() throws {
         let localeSE = SE(locale: Locale(identifier: "de_DE"))
-        let engines = localeSE.engines.map { $0.id }
         
-        XCTAssertEqual(engines, [.yahoo,
-                                 .duckduckgo,
-                                 .google,
-                                 .bing,
-                                 .qwant,
-                                 .startpage])
+        let availableEngines = localeSE.engines.map { $0.id }
+        XCTAssertEqual(availableEngines, [.duckduckgo,
+                                          .google,
+                                          .bing,
+                                          .qwant,
+                                          .startpage,
+                                          .ecosia,
+                                          .yahoo])
+        
+        let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.duckduckgo,
+                                           .google,
+                                           .bing,
+                                           .qwant,
+                                           .startpage,
+                                           .ecosia])
         
         XCTAssertEqual(localeSE.defaultSearchEngine, .duckduckgo)
-        XCTAssertEqual(localeSE.priorityEngine, .yahoo)
+        XCTAssertNil(localeSE.priorityEngine)
     }
     
     func testFrFR() throws {
         let localeSE = SE(locale: Locale(identifier: "fr_FR"))
-        let engines = localeSE.engines.map { $0.id }
         
-        XCTAssertEqual(engines, [.yahoo,
-                                 .qwant,
-                                 .google,
-                                 .bing,
-                                 .duckduckgo,
-                                 .startpage])
+        let availableEngines = localeSE.engines.map { $0.id }
+        XCTAssertEqual(availableEngines, [.qwant,
+                                          .google,
+                                          .bing,
+                                          .duckduckgo,
+                                          .startpage,
+                                          .ecosia,
+                                          .yahoo])
+        
+        let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.qwant,
+                                           .google,
+                                           .bing,
+                                           .duckduckgo,
+                                           .startpage,
+                                           .ecosia])
         
         XCTAssertEqual(localeSE.defaultSearchEngine, .qwant)
-        XCTAssertEqual(localeSE.priorityEngine, .yahoo)
+        XCTAssertNil(localeSE.priorityEngine)
     }
     
     func testPlPL() throws {
         let unknownLocaleSE = SE(locale: Locale(identifier: "pl_PL"))
-        let engines = unknownLocaleSE.engines.map { $0.id }
         
-        XCTAssertEqual(engines, [.google,
-                                 .bing,
-                                 .duckduckgo,
-                                 .qwant,
-                                 .startpage])
+        let availableEngines = unknownLocaleSE.engines.map { $0.id }
+        XCTAssertEqual(availableEngines, [.google,
+                                          .bing,
+                                          .duckduckgo,
+                                          .qwant,
+                                          .startpage])
+        
+        let onboardingEngines = unknownLocaleSE.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.google,
+                                           .bing,
+                                           .duckduckgo,
+                                           .qwant,
+                                           .startpage])
         
         XCTAssertEqual(unknownLocaleSE.defaultSearchEngine, .google)
         XCTAssertNil(unknownLocaleSE.priorityEngine)
@@ -153,14 +204,22 @@ class InitialSearchEnginesTests: XCTestCase {
     
     func testRuRu() throws {
         let russianLocale = SE(locale: Locale(identifier: "ru_RU"))
-        let engines = russianLocale.engines.map { $0.id }
         
-        XCTAssertEqual(engines, [.yandex,
-                                 .google,
-                                 .bing,
-                                 .duckduckgo,
-                                 .qwant,
-                                 .startpage])
+        let availableEngines = russianLocale.engines.map { $0.id }
+        XCTAssertEqual(availableEngines, [.yandex,
+                                          .google,
+                                          .bing,
+                                          .duckduckgo,
+                                          .qwant,
+                                          .startpage])
+        
+        let onboardingEngines = russianLocale.onboardingEngines.map { $0.id }
+        XCTAssertEqual(onboardingEngines, [.yandex,
+                                           .google,
+                                           .bing,
+                                           .duckduckgo,
+                                           .qwant,
+                                           .startpage])
         
         XCTAssertEqual(russianLocale.defaultSearchEngine, .yandex)
         XCTAssertNil(russianLocale.priorityEngine)
