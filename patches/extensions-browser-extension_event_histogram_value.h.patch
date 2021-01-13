@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 6e7c59d58e7f37f5616af13d0a02b22d60671ea9..c961cd57346c00c5447170213aeab48ebd08b594 100644
+index 9763a6ddf637fe48e9f1263ddd6bcf4f77221146..6eba56410797c4529ee2c3809e7ef7f1a5186655 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -487,6 +487,20 @@ enum HistogramValue {
-   FILE_MANAGER_PRIVATE_ON_PIN_TRANSFERS_UPDATED = 465,
+@@ -488,6 +488,20 @@ enum HistogramValue {
    ACCESSIBILITY_PRIVATE_ON_POINT_SCAN_SET = 466,
    ACCESSIBILITY_PRIVATE_ON_SELECT_TO_SPEAK_PANEL_ACTION = 467,
+   FILE_MANAGER_PRIVATE_ON_TABLET_MODE_CHANGED = 468,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

@@ -10,7 +10,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
 +        sources -= [ "app/chrome_exe.rc", ]
 +        sources += [ "//brave/app/brave_exe.rc", ]
 +      }
-
+ 
        deps += [
          ":chrome_dll",
 @@ -431,11 +435,12 @@ if (is_win) {
@@ -18,10 +18,10 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
      }
    }
 +  copy("brave_app_plist") { deps = [ "//brave:brave_app_plist" ] sources = [ "$root_gen_dir/brave/brave_app_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] }
-
+ 
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
-
+ 
 -    info_plist_target = ":chrome_app_plist"
 +    info_plist_target = ":brave_app_plist"
      extra_substitutions = [
@@ -32,7 +32,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
        "//chrome/common:version_header",
      ]
 +    deps += [ "//brave:brave_app" ]
-
+ 
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
 @@ -519,7 +525,7 @@ if (is_win) {
@@ -51,13 +51,13 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
 +      public_deps -= [ ":chrome_framework_widevine_signature" ]
      }
    }
-
+ 
 @@ -620,9 +627,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
 +  copy("brave_helper_plist") { deps = [ "//brave:brave_helper_plist" ] sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] }
-
+ 
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
 +    if (is_official_build) { entitlements_templates += [ "app/app-entitlements-chrome.plist" ] }
@@ -65,9 +65,9 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
 @@ -643,7 +652,7 @@ if (is_win) {
-
+ 
        output_name = chrome_helper_name + invoker.helper_name_suffix
-
+ 
 -      info_plist_target = ":chrome_helper_plist"
 +      info_plist_target = ":brave_helper_plist"
        extra_substitutions = [
@@ -81,11 +81,11 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
 +      deps += [ "//brave:framework_bundle_data" ]
 +      if (defined(chrome_framework_version)) { framework_contents += [ "Frameworks", ] }
 +    }
-
+ 
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
-
+ 
 @@ -1194,6 +1207,7 @@ if (is_win) {
-
+ 
  group("browser_dependencies") {
    public_deps = [
 +    "//brave:browser_dependencies",
@@ -99,14 +99,14 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
 +    assert_no_deps -= [ "//content/browser" ]
    }
  }
-
+ 
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
 -    sources = [ "app/chrome_exe.ver" ]
 +    sources = [ "//brave/app/brave_exe.ver" ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-
+ 
 @@ -1354,6 +1369,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
@@ -114,4 +114,4 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
 +    "//brave:resources",
    ]
  }
-
+ 
