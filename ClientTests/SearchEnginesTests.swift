@@ -186,7 +186,7 @@ class SearchEnginesTests: XCTestCase {
         let engines = SearchEngines(files: profile.files)
         XCTAssert(engines.orderedEngines.count > 1, "There should be more than one search engine")
         // default engine should be on second place if a priority engine is present.
-        XCTAssertEqual(engines.orderedEngines[1].shortName, "Google", "Google should be the first search engine")
+        XCTAssertEqual(engines.orderedEngines[0].shortName, "Google", "Google should be the first search engine")
     }
 
     func testSearchEngineParamsNewUser() {

@@ -10,7 +10,16 @@ import Foundation
 class InitialSearchEngines {
     /// Type of search engine available to the user.
     enum SearchEngineID: String {
-        case google, bing, duckduckgo, yandex, qwant, startpage, yahoo
+        case google, bing, duckduckgo, yandex, qwant, startpage, yahoo, ecosia
+        
+        var excludedFromOnboarding: Bool {
+            switch self {
+            case .google, .bing, .duckduckgo, .yandex, .qwant, .startpage, .ecosia:
+                return false
+            case .yahoo:
+                return true
+            }
+        }
     }
     
     struct SearchEngine: Equatable, CustomStringConvertible {
@@ -39,9 +48,15 @@ class InitialSearchEngines {
     /// List of available engines for given locale. This list is sorted by with priority and default engines at the top.
     var engines: [SearchEngine]
     
+    /// Lists of engines available during onboarding.
+    var onboardingEngines: [SearchEngine] {
+        engines.filter { !$0.id.excludedFromOnboarding }
+    }
+    
     static let ddgDefaultRegions = ["DE", "AU", "NZ", "IE"]
     static let qwantDefaultRegions = ["FR"]
     static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
+    static let ecosiaDefaultRegions = ["US", "GB", "FR", "DE", "NL", "BE", "CH", "SE"]
     static let yahooEligibleRegions =
         ["GB", "US", "AR", "AT", "AU", "BR", "CA", "CH", "CL", "CO", "DE", "DK", "ES", "FI", "FR", "HK",
          "ID", "IE", "IN", "IT", "MX", "MY", "NL", "NO", "NZ", "PE", "PH", "SE", "SG", "TH", "TW", "VE", "VN"]
@@ -119,14 +134,18 @@ class InitialSearchEngines {
         if Self.yandexDefaultRegions.contains(region) {
             defaultSearchEngine = .yandex
         }
+        
+        if Self.ecosiaDefaultRegions.contains(region) {
+            replaceOrInsert(engineId: .ecosia, customId: nil)
+        }
+        
+        if Self.yahooEligibleRegions.contains(region) {
+            replaceOrInsert(engineId: .yahoo, customId: nil)
+        }
     }
     
     private func priorityOverrides() {
-        guard let region = locale.regionCode else { return }
-        
-        if Self.yahooEligibleRegions.contains(region) {
-            priorityEngine = .yahoo
-        }
+        // No priority engines are live at the moment.
     }
     
     // MARK: - Helpers
@@ -137,8 +156,8 @@ class InitialSearchEngines {
             .sorted { e, _ in e.id == priorityEngine }
     }
     
-    private func replaceOrInsert(engineId: SearchEngineID, customId: String) {
-        guard let engineIndex = engines.firstIndex(of: .init(id: engineId)) else {
+    private func replaceOrInsert(engineId: SearchEngineID, customId: String?) {
+        guard let engineIndex = engines.firstIndex(where: { $0.id == engineId }) else {
             engines.append(.init(id: engineId, customId: customId))
             return
         }
