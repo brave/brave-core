@@ -10,10 +10,12 @@
 
 // Brave-specific: allows the embedder to modify the referrer string
 // according to user preferences.
-#define BRAVE_CONTENT_BROWSER_CLIENT_H                          \
-  virtual void MaybeHideReferrer(                               \
-      BrowserContext* browser_context, const GURL& request_url, \
-      const GURL& document_url, blink::mojom::ReferrerPtr* referrer) {}
+#define BRAVE_CONTENT_BROWSER_CLIENT_H                                       \
+  virtual void MaybeHideReferrer(                                            \
+      BrowserContext* browser_context, const GURL& request_url,              \
+      const GURL& document_url, blink::mojom::ReferrerPtr* referrer) {}      \
+  virtual std::string GetEffectiveUserAgent(BrowserContext* browser_context, \
+                                            const GURL& url);
 
 #include "../../../../../content/public/browser/content_browser_client.h"
 

@@ -111,7 +111,6 @@ source_set("browser_process") {
     "content_settings",
     "download",
     "ephemeral_storage",
-    "farbling",
     "net",
     "ntp_background_images",
     "profiles",

@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/browser/farbling/farbling_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -127,8 +126,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
-
-  FarblingTabHelper::CreateForWebContents(web_contents);
 
   brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
 

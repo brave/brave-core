@@ -103,6 +103,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   std::vector<std::unique_ptr<content::NavigationThrottle>>
       CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
+  std::string GetEffectiveUserAgent(content::BrowserContext* browser_context,
+                                    const GURL& url) override;
+
  private:
   uint64_t session_token_;
   uint64_t incognito_session_token_;
