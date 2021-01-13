@@ -1,13 +1,26 @@
 diff --git a/chrome/browser/resources/tools/rollup_plugin.js b/chrome/browser/resources/tools/rollup_plugin.js
-index b541233a644bc428257dafcea7198d2d4a529d98..356397cbf7b9aa3371458c4cd6331877e1823e9c 100644
+index ca1db0d08aa98e75e18ca5f46e8e23dc09df71d5..228dee40cfcce4aeac70a276373b6a1544980e15 100644
 --- a/chrome/browser/resources/tools/rollup_plugin.js
 +++ b/chrome/browser/resources/tools/rollup_plugin.js
-@@ -71,6 +71,8 @@ export default function plugin(srcPath, genPath, rootPath, host, excludes) {
-         return joinPaths(polymerSrcPath, pathFromPolymer);
+@@ -81,6 +81,21 @@ export default function plugin(rootPath, hostUrl, excludes, externalPaths) {
+       if (origin) {
+         origin = normalizeSlashes(origin);
        }
++      // ___BRAVE_START___
++      const brave_rollup_overrides_path = urlsToPaths.get('brave_rollup_overrides');
++      urlsToPaths.delete('brave_rollup_overrides');
++      const srcPath = urlsToPaths.get('root_dir');
++      urlsToPaths.delete('root_dir');
++      const genPath = urlsToPaths.get('root_gen_dir');
++      urlsToPaths.delete('root_gen_dir');
++      const resolvedByBrave =
++        require(brave_rollup_overrides_path).braveResolveId(source, origin, {srcPath, genPath, excludes}, {relativePath, joinPaths, combinePaths});
++      if (resolvedByBrave) {
++        const msg = '\n----------------\nresolvedByBrave: [' + resolvedByBrave + ']\n';
++        process.stderr.write(msg);
++        return resolvedByBrave;
++      }
++      // ___BRAVE_END___
  
-+      const resolvedByBrave = require(path.join(genPath, 'chrome', 'browser', 'resources', 'brave_rollup_overrides')).braveResolveId({srcPath, genPath, excludes}, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, schemeRelativeResourcesUrl); if (resolvedByBrave) { return resolvedByBrave; }
-+
-       // Get path from ui/webui/resources
-       let pathFromResources = '';
-       if (source.startsWith(chromeResourcesUrl)) {
+       for (const [url, path] of urlsToPaths) {
+         const resultPath = getPathForUrl(source, origin, url, path, excludes);

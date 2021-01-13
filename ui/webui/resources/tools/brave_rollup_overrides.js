@@ -1,11 +1,28 @@
 const path = require('path');
 
 module.exports = {
-  braveResolveId: function (params, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, schemeRelativeResourcesUrl) {
+  braveResolveId: function (source, origin, params, funcs) {
     const {srcPath, genPath, excludes} = params;
-    const resourcesPreprocessedPath = joinPaths(srcPath, 'ui/webui/resources/preprocessed/');
+    const {relativePath, joinPaths, combinePaths} = funcs;
+
+    const msg = '\n----------------\n' +
+                'braveResolveId:\n\tsrcPath: [' +
+                srcPath +
+                '],\n\tgenPath: [' +
+                genPath +
+                '],\n\tsource: [' +
+                source +
+                '],\n\torigin: [' +
+                origin +
+                ']\n';
+    process.stderr.write(msg);
+
+    const chromeResourcesUrl = 'chrome://resources/';
+    const schemeRelativeResourcesUrl = '//resources/';
     const braveResourcesUrl = 'chrome://brave-resources/';
     const braveSchemeRelativeResourcesUrl = '//brave-resources/';
+    const resourcesPreprocessedPath = 'ui/webui/resources/preprocessed/';
+
     // sources not referencing `brave-resources`
     if (source.startsWith(chromeResourcesUrl) ||
         source.startsWith(schemeRelativeResourcesUrl) ||
@@ -15,6 +32,7 @@ module.exports = {
     {
       return undefined;
     }
+
     // sources referencing `brave-resources`
     const braveResourcesSrcPath = joinPaths(srcPath, 'brave/ui/webui/resources/')
     const braveResourcesGenPath = joinPaths(genPath, 'brave/ui/webui/resources/')
