@@ -37,6 +37,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
+#include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/variations/variations_switches.h"
@@ -82,16 +83,14 @@ const char kBraveOriginTrialsPublicKey[] =
 
 const char kDummyUrl[] = "https://no-thanks.invalid";
 
-BraveMainDelegate::BraveMainDelegate()
-    : ChromeMainDelegate() {}
+BraveMainDelegate::BraveMainDelegate() : ChromeMainDelegate() {}
 
 BraveMainDelegate::BraveMainDelegate(base::TimeTicks exe_entry_point_ticks)
     : ChromeMainDelegate(exe_entry_point_ticks) {}
 
 BraveMainDelegate::~BraveMainDelegate() {}
 
-content::ContentBrowserClient*
-BraveMainDelegate::CreateContentBrowserClient() {
+content::ContentBrowserClient* BraveMainDelegate::CreateContentBrowserClient() {
 #if defined(CHROME_MULTIPLE_DLL_CHILD)
   return NULL;
 #else
@@ -112,8 +111,7 @@ BraveMainDelegate::CreateContentRendererClient() {
 #endif
 }
 
-content::ContentUtilityClient*
-BraveMainDelegate::CreateContentUtilityClient() {
+content::ContentUtilityClient* BraveMainDelegate::CreateContentUtilityClient() {
 #if defined(CHROME_MULTIPLE_DLL_BROWSER)
   return NULL;
 #else
@@ -131,19 +129,19 @@ void BraveMainDelegate::PreSandboxStartup() {
 #if defined(OS_MAC)
   base::PathService::Get(base::DIR_APP_DATA, &chrome_user_data_dir);
   chrome_user_data_dir = chrome_user_data_dir.Append("Google/Chrome");
-  native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
-      "/Library/Google/Chrome/NativeMessagingHosts"));
+  native_messaging_dir = base::FilePath(
+      FILE_PATH_LITERAL("/Library/Google/Chrome/NativeMessagingHosts"));
 #else
   chrome::GetDefaultUserDataDirectory(&chrome_user_data_dir);
-  native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
-      "/etc/opt/chrome/native-messaging-hosts"));
+  native_messaging_dir = base::FilePath(
+      FILE_PATH_LITERAL("/etc/opt/chrome/native-messaging-hosts"));
 #endif  // defined(OS_MAC)
   base::PathService::OverrideAndCreateIfNeeded(
       chrome::DIR_USER_NATIVE_MESSAGING,
       chrome_user_data_dir.Append(FILE_PATH_LITERAL("NativeMessagingHosts")),
       false, true);
-  base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
-      native_messaging_dir, false, true);
+  base::PathService::OverrideAndCreateIfNeeded(
+      chrome::DIR_NATIVE_MESSAGING, native_messaging_dir, false, true);
 #endif  // defined(OS_LINUX) || defined(OS_MAC)
 
 #if defined(OS_POSIX) && !defined(OS_MAC)
@@ -168,10 +166,11 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Setting these to default values in Chromium to maintain parity
   // See: ChromeContentVerifierDelegate::GetDefaultMode for ContentVerification
   // See: GetStatus in install_verifier.cc for InstallVerification
-  command_line.AppendSwitchASCII(switches::kExtensionContentVerification,
+  command_line.AppendSwitchASCII(
+      switches::kExtensionContentVerification,
       switches::kExtensionContentVerificationEnforceStrict);
   command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
-      "enforce");
+                                 "enforce");
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
@@ -194,24 +193,25 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Brave variations
   std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
   command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
-      kVariationsServerURL.c_str());
+                                 kVariationsServerURL.c_str());
   CHECK(!kVariationsServerURL.empty());
 #endif
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {
-      // Upgrade all mixed content
-      blink::features::kMixedContentAutoupgrade.name,
-      password_manager::features::kPasswordImport.name,
-      net::features::kLegacyTLSEnforced.name,
-      // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
-      // on this feature.
-      features::kWebUIDarkMode.name,
-      blink::features::kPrefetchPrivacyChanges.name,
-      blink::features::kReducedReferrerGranularity.name,
+    // Upgrade all mixed content
+    blink::features::kMixedContentAutoupgrade.name,
+    password_manager::features::kPasswordImport.name,
+    net::features::kLegacyTLSEnforced.name,
+    // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
+    // on this feature.
+    features::kWebUIDarkMode.name,
+    blink::features::kPrefetchPrivacyChanges.name,
+    blink::features::kReducedReferrerGranularity.name,
 #if defined(OS_WIN)
-      features::kWinrtGeolocationImplementation.name,
+    features::kWinrtGeolocationImplementation.name,
 #endif
+    security_state::features::kSafetyTipUI.name,
   };
 
   // Disabled features.
