@@ -1496,7 +1496,7 @@ until they verify, or until 90 days have passed.
         Say thank you with tips
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
-        Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
+        Tipping is a way to personally encourage and support content or creators that you absolutely love. Get tippin!
       </message>
       <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS" desc="Brave rewards onboarding title">
         What can you do with tokens?

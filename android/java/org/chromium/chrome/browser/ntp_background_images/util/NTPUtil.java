@@ -139,9 +139,6 @@ public class NTPUtil {
         Context context = ContextUtils.getApplicationContext();
         if (!PackageUtils.isFirstInstall(context)
                 && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-                && SharedPreferencesManager.getInstance().readInt(
-                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                        == 0
                 && ContextUtils.getAppSharedPreferences().getBoolean(
                         BackgroundImagesPreferences.PREF_SHOW_BRE_BANNER, true)) {
             final ViewGroup breBottomBannerLayout = (ViewGroup) view.findViewById(R.id.bre_banner);
