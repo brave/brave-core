@@ -9,8 +9,11 @@ import { connect } from 'react-redux'
 
 // Components
 import { GeneralInfo } from './generalInfo'
+import { Log } from './log'
+import { Tabs } from 'brave-ui/components'
 
 // Utils
+import { getLocale } from '../../../../common/locale'
 import * as torInternalsActions from '../actions/tor_internals_actions'
 
 interface Props {
@@ -18,20 +21,65 @@ interface Props {
   torInternalsData: TorInternals.State
 }
 
-export class TorInternalsPage extends React.Component<Props, {}> {
+interface State {
+  currentTabId: string
+}
+
+export class TorInternalsPage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
+    this.state = {
+      currentTabId: 'generalInfo'
+    }
+  }
+
+  componentDidMount () {
+    this.getGeneralInfo()
   }
 
   get actions () {
     return this.props.actions
   }
 
+  getGeneralInfo = () => {
+    this.actions.getTorGeneralInfo()
+  }
+
+  getLog = () => {
+    this.actions.getTorLog()
+  }
+
+  onTabChange = (tabId: string) => {
+    this.setState({ currentTabId: tabId })
+
+    switch (tabId) {
+      case 'generalInfo': {
+        this.getGeneralInfo()
+        break
+      }
+      case 'log': {
+        this.getLog()
+        break
+      }
+      default:
+        break
+    }
+  }
+
   render () {
     return (
-      <div id='Page'>
-        <GeneralInfo state={this.props.torInternalsData} />
-      </div>
+        <Tabs
+          id={'internals-tabs'}
+          activeTabId={this.state.currentTabId}
+          onChange={this.onTabChange}
+        >
+          <div data-key='generalInfo' data-title={getLocale('tabGeneralInfo')}>
+            <GeneralInfo state={this.props.torInternalsData} />
+          </div>
+          <div data-key='log' data-title={getLocale('tabLogs')}>
+	   <Log log={this.props.torInternalsData.log}/>
+          </div>
+        </Tabs>
     )
   }
 }

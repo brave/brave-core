@@ -23,6 +23,9 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler {
 
  private:
   void HandleGetTorGeneralInfo(const base::ListValue* args);
+  void HandleGetTorLog(const base::ListValue* args);
+
+  void OnGetTorLog(bool success, const std::string& log);
 
   base::WeakPtrFactory<TorInternalsDOMHandler> weak_ptr_factory_;
 

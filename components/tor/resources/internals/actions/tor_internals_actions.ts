@@ -14,3 +14,10 @@ export const onGetTorGeneralInfo = (generalInfo: TorInternals.GeneralInfo) =>
   action(types.ON_GET_TOR_GENERAL_INFO, {
     generalInfo
   })
+
+export const getTorLog = () => action(types.GET_TOR_LOG)
+
+export const onGetTorLog = (log: string) =>
+  action(types.ON_GET_TOR_LOG, {
+    log
+  })

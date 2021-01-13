@@ -30,6 +30,11 @@ window.cr.define('tor_internals', function () {
     actions.onGetTorGeneralInfo(generalInfo)
   }
 
+  function onGetTorLog (log: string) {
+    const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
+    actions.onGetTorLog(log)
+  }
+
   function initialize () {
     getTorGeneralInfo()
     render(
@@ -44,7 +49,8 @@ window.cr.define('tor_internals', function () {
 
   return {
     initialize,
-    onGetTorGeneralInfo
+    onGetTorGeneralInfo,
+    onGetTorLog
   }
 })
 

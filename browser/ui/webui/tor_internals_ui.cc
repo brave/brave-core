@@ -26,6 +26,10 @@ void TorInternalsDOMHandler::RegisterMessages() {
       "tor_internals.getTorGeneralInfo",
       base::BindRepeating(&TorInternalsDOMHandler::HandleGetTorGeneralInfo,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "tor_internals.getTorLog",
+      base::BindRepeating(&TorInternalsDOMHandler::HandleGetTorLog,
+                          base::Unretained(this)));
 }
 
 void TorInternalsDOMHandler::HandleGetTorGeneralInfo(const base::ListValue* args) {
@@ -43,6 +47,23 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(const base::ListValue* args
   info.SetBoolKey("isTorConnected", tlf->IsTorConnected());
   web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorGeneralInfo",
                                          std::move(info));
+}
+
+void TorInternalsDOMHandler::HandleGetTorLog(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+  TorLauncherFactory* tlf = TorLauncherFactory::GetInstance();
+  if (!tlf)
+    return;
+  tlf->GetTorLog(base::BindOnce(&TorInternalsDOMHandler::OnGetTorLog,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
+
+void TorInternalsDOMHandler::OnGetTorLog(bool success, const std::string& log) {
+  if (success)
+    web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorLog",
+        base::Value(log));
 }
 
 TorInternalsUI::TorInternalsUI(content::WebUI* web_ui, const std::string& name)

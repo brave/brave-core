@@ -26,6 +26,15 @@ const torInternalsReducer: Reducer<TorInternals.State | undefined> = (state: Tor
         generalInfo: action.payload.generalInfo
       }
       break
+    case types.GET_TOR_LOG:
+      chrome.send('tor_internals.getTorLog')
+      break
+    case types.ON_GET_TOR_LOG:
+      state = {
+        ...state,
+        log: action.payload.log
+      }
+      break
     default:
       break
   }

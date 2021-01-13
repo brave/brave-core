@@ -3,17 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const defaultState: TorInternals.State = {
-  generalInfo: {
-    torVersion: '',
-    torPid: -1,
-    torProxyURI: '',
-    isTorConnected: false
-  },
+import * as React from 'react'
 
-  log: ''
+interface Props {
+  log: string
 }
 
-export const load = (): TorInternals.State => {
-  return defaultState
+export class Log extends React.Component<Props, {}> {
+  constructor (props: Props) {
+    super(props)
+  }
+  render () {
+    return (
+      <textarea value={this.props.log} readOnly={true}></textarea>
+    )
+  }
 }

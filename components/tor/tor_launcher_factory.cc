@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/files/file_util.h"
 #include "base/process/kill.h"
 #include "base/task/post_task.h"
 #include "brave/components/tor/service_sandbox_type.h"
@@ -27,6 +28,18 @@ constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
+
+std::pair<bool, std::string> LoadTorLogOnFileTaskRunner(
+    const base::FilePath& path) {
+  std::string data;
+  bool success = base::ReadFileToString(path, &data);
+  std::pair<bool, std::string> result;
+  result.first = success;
+  if (success) {
+    result.second = data;
+  }
+  return result;
+}
 }  // namespace
 
 // static
@@ -38,6 +51,10 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       is_connected_(false),
       tor_pid_(-1),
+      file_task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       control_(tor::TorControl::Create(this)),
       weak_ptr_factory_(this) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
@@ -94,6 +111,12 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
+void TorLauncherFactory::OnTorLogLoaded(
+    GetLogCallback callback,
+    const std::pair<bool, std::string>& result) {
+  std::move(callback).Run(result.first, result.second);
+}
+
 void TorLauncherFactory::OnTorControlCheckComplete() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (tor_launcher_.is_bound()) {
@@ -130,6 +153,15 @@ std::string TorLauncherFactory::GetTorProxyURI() const {
 
 std::string TorLauncherFactory::GetTorVersion() const {
   return tor_version_;
+}
+
+void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
+  base::FilePath tor_log_path = config_.tor_data_path.AppendASCII("tor.log");
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadTorLogOnFileTaskRunner, tor_log_path),
+      base::BindOnce(&TorLauncherFactory::OnTorLogLoaded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 
