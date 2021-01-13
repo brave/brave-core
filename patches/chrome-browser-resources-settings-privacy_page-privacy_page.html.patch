@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 5db3d9b229ccf62f754c3671ab7eeabcfe7eede4..cc5d2ab84daf4f376753ae22ecbc2773909a1f30 100644
+index 5db3d9b229ccf62f754c3671ab7eeabcfe7eede4..90a6e6b391d71d4bca771eaf7b649bdeaae82623 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -29,6 +29,7 @@
@@ -26,7 +26,7 @@ index 5db3d9b229ccf62f754c3671ab7eeabcfe7eede4..cc5d2ab84daf4f376753ae22ecbc2773
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -402,6 +405,7 @@
+@@ -402,11 +405,13 @@
              </category-setting-exceptions>
            </template>
            <template is="dom-if" if="[[!enableContentSettingsRedesign_]]">
@@ -34,14 +34,12 @@ index 5db3d9b229ccf62f754c3671ab7eeabcfe7eede4..cc5d2ab84daf4f376753ae22ecbc2773
              <category-default-setting
                  toggle-off-label="$i18n{siteSettingsBlocked}"
                  toggle-on-label="$i18n{siteSettingsAllowedRecommended}"
-@@ -413,6 +417,7 @@
-                 allow-header="$i18n{siteSettingsAllow}"
-                 search-filter="[[searchFilter_]]">
-             </category-setting-exceptions>
+                 category="[[ContentSettingsTypes.JAVASCRIPT]]">
+             </category-default-setting>
 +</if>
-           </template>
-         </settings-subpage>
-       </template>
+             <category-setting-exceptions
+                 category="[[ContentSettingsTypes.JAVASCRIPT]]"
+                 block-header="$i18n{siteSettingsBlock}"
 @@ -706,6 +711,19 @@
            </settings-subpage>
         </template>
