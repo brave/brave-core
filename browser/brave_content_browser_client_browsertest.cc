@@ -496,41 +496,34 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   blink::mojom::ReferrerPtr kReferrer = blink::mojom::Referrer::New(
       kDocumentUrl, network::mojom::ReferrerPolicy::kDefault);
 
-  // Cross-origin navigations don't get a referrer.
+  // Cross-origin navigations get an origin.
   blink::mojom::ReferrerPtr referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              true, "GET", &referrer);
-  EXPECT_EQ(referrer->url, GURL());
-
-  // Cross-origin navigations get a truncated referrer if method is not "GET" or
-  // "HEAD".
-  referrer = kReferrer.Clone();
-  client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              true, "POST", &referrer);
+                              &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin());
 
   // Same-origin navigations get full referrers.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kSameOriginRequestUrl,
-                              kDocumentUrl, true, "GET", &referrer);
+                              kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 
   // Same-site navigations get truncated referrers.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kSameSiteRequestUrl,
-                              kDocumentUrl, true, "GET", &referrer);
+                              kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin());
 
   // Cross-origin iframe navigations get origins.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              false, "GET", &referrer);
+                              &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin().spec());
 
   // Same-origin iframe navigations get full referrers.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kSameOriginRequestUrl,
-                              kDocumentUrl, false, "GET", &referrer);
+                              kDocumentUrl, &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 
   // Special rule for extensions.
@@ -538,7 +531,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   referrer = kReferrer.Clone();
   referrer->url = kExtensionUrl;
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kExtensionUrl,
-                              true, "GET", &referrer);
+                              &referrer);
   EXPECT_EQ(referrer->url, kExtensionUrl);
 
   // Allow referrers for certain URL.
@@ -548,6 +541,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
       CONTENT_SETTING_ALLOW);
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
-                              true, "GET", &referrer);
+                              &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 }
