@@ -27,10 +27,10 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
     answer = SearchEngineP3A::kBing;
   } else if (type == SEARCH_ENGINE_QWANT) {
     answer = SearchEngineP3A::kQwant;
-  } else if (type == SEARCH_ENGINE_YAHOO) {
-    answer = SearchEngineP3A::kYahoo;
   } else if (type == SEARCH_ENGINE_YANDEX) {
     answer = SearchEngineP3A::kYandex;
+  } else if (type == SEARCH_ENGINE_ECOSIA) {
+    answer = SearchEngineP3A::kEcosia;
   } else if (type == SEARCH_ENGINE_OTHER) {
     if (base::EndsWith(search_engine_url.host(), "startpage.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
