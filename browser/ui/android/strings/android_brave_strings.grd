@@ -1472,19 +1472,19 @@ until they verify, or until 90 days have passed.
         Welcome to Brave Rewards!
       </message>
       <message name="IDS_WELCOME_TO_BRAVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
+        Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP" desc="Brave rewards onboarding title">
         Where do ads show up?
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP_TEXT" desc="Brave rewards onboarding title">
-        Brave private ads will appear as a normal notification. You control how often you see these ads in settings.
+        Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS" desc="Brave rewards onboarding title">
         When do you receive rewards
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.
+        Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
       </message>
       <message name="IDS_GIVING_BACK_MADE_EFFORTLESS" desc="Brave rewards onboarding title">
         Giving back made effortless
@@ -1496,13 +1496,13 @@ until they verify, or until 90 days have passed.
         Say thank you with tips
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
-        Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
+        Tipping is a way to personally encourage and support content or creators that you absolutely love. Get tippin!
       </message>
       <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS" desc="Brave rewards onboarding title">
         What can you do with tokens?
       </message>
       <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS_TEXT" desc="Brave rewards onboarding title">
-        Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.
+        Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.
       </message>
       <message name="IDS_BASIC_SETTINGS" desc="Brave rewards onboarding title">
         Lastly, let’s get you set up on the basic settings
@@ -1517,7 +1517,7 @@ until they verify, or until 90 days have passed.
         How much support do you want to give to your favorite creators?\n(from your ads earnings)
       </message>
       <message name="IDS_YOU_ARE_DONE" desc="Brave rewards onboarding title">
-        WOOOOHOOOOO!\nYou’re done.
+        Woohoo, you’re all set!
       </message>
       <message name="IDS_YOU_ARE_DONE_TEXT" desc="Brave rewards onboarding title">
         By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
@@ -1599,6 +1599,12 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_PRIVATE_PRODUCT_ANALYSIS_TEXT" desc="private product analysis text">
         private product analytics.
+      </message>
+      <message name="IDS_BRE_BANNER_TITLE_TEXT" desc="BRE banner title text">
+        Need a refresher on Rewards?
+      </message>
+      <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
+        Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
       </message>
     </messages>
   </release>

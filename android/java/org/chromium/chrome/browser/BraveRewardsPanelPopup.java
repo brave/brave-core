@@ -744,8 +744,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                         }
                         if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                             showBraveRewardsWelcomeLayout(root);
-                        } else {
-                            showBraveRewardsOptInLayout(root);
                         }
                     } else {
                         braveRewardsViewPager.setCurrentItem(braveRewardsViewPager.getCurrentItem() + 1);
@@ -844,20 +842,26 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void showLikePopDownMenu() {
         this.showLikePopDownMenu(0, 0);
+        checkForRewardsOnboarding();
         BraveRewardsNativeWorker.getInstance().StartProcess();
+    }
+
+    private void checkForRewardsOnboarding() {
+        if (root != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
+            showBraveRewardsOnboarding(root, false);
+            BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
+        }
     }
 
     @Override
     public void OnStartProcess() {
         if (root != null && PackageUtils.isFirstInstall(mActivity)
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-            if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingOnce()) {
-                showBraveRewardsOnboarding(root, false);
-                BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(false);
-            } else if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
+            if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
                     && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                     && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                        Profile.getLastUsedRegularProfile())) {
+                            Profile.getLastUsedRegularProfile())) {
                 showBraveRewardsOnboardingModal(root);
                 BraveRewardsHelper.updateBraveRewardsAppOpenCount();
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);

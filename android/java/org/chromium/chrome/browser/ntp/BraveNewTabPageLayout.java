@@ -197,6 +197,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             public void onPageScrollStateChanged(int state) {}
         });
         showWidgetBasedOnOrder();
+        NTPUtil.showBREBottomBanner(this);
     }
 
     private void showFallBackNTPLayout() {
