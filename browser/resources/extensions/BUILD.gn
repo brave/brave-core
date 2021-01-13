@@ -1,4 +1,4 @@
-import("//chrome/browser/resources/optimize_webui.gni")
+import("//chrome/browser/resources/tools/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/preprocess_if_expr.gni")
