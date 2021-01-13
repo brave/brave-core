@@ -6,35 +6,33 @@ import("//build/util/version.gni")
 import("//chrome/common/features.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
+packaging_dir = "$brave_packaging_base_dir/" +
+                string_replace("$chrome_product_full_name Packaging", " ", "_")
+
 unsigned_app_path = "$root_out_dir/$brave_exe"
+if (is_universal_binary) {
+  unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
+}
+
 unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
 unsigned_pkg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_pkg"
 
+signed_app_path =
+    "$root_out_dir/$mac_signing_output_prefix/$brave_channel/$brave_exe"
 if (is_release_channel) {
   signed_app_path = "$root_out_dir/$mac_signing_output_prefix/stable/$brave_exe"
-} else {
-  signed_app_path =
-      "$root_out_dir/$mac_signing_output_prefix/$brave_channel/$brave_exe"
 }
 
 signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/$brave_dmg"
 signed_pkg_path = "$root_out_dir/$mac_signed_output_prefix/$brave_pkg"
 
+app_path = signed_app_path
 if (skip_signing) {
   app_path = unsigned_app_path
-} else {
-  app_path = signed_app_path
 }
 
 notarized_dmg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg"
 notarized_pkg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg"
-
-if (is_universal_binary) {
-  unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
-}
-
-packaging_dir = "$brave_packaging_base_dir/" +
-                string_replace("$chrome_product_full_name Packaging", " ", "_")
 
 if (is_universal_binary) {
   arm64_arch_app_path = "$brave_packaging_base_dir/$brave_exe"
