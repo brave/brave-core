@@ -81,9 +81,14 @@ class BatAdsImpl :
       const ads::AdNotificationEventType event_type) override;
 
   void OnNewTabPageAdEvent(
-      const std::string& wallpaper_id,
+      const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::NewTabPageAdEventType event_type) override;
+
+  void OnPromotedContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::PromotedContentAdEventType event_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;

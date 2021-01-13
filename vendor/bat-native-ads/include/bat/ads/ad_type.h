@@ -15,7 +15,8 @@ class AdType {
   enum Value {
     kUndefined,
     kAdNotification,
-    kNewTabPageAd
+    kNewTabPageAd,
+    kPromotedContentAd
   };
 
   AdType() = default;

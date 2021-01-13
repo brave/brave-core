@@ -64,6 +64,35 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
 }
 
 TEST_F(BatAdsPerDayFrequencyCapTest,
+    AllowAdIfDoesNotExceedCapForMultipleTypes) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_set_id = kCreativeSetId;
+  ad.per_day = 2;
+
+  AdEventList ad_events;
+
+  AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_1);
+
+  AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd, ad,
+      ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_2);
+
+  AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
+      ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_3);
+
+  // Act
+  PerDayFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsPerDayFrequencyCapTest,
     AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo ad;

@@ -63,8 +63,8 @@ void Campaigns::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 8: {
-      MigrateToV8(transaction);
+    case 9: {
+      MigrateToV9(transaction);
       break;
     }
 
@@ -117,7 +117,7 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Campaigns::CreateTableV8(
+void Campaigns::CreateTableV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -139,13 +139,13 @@ void Campaigns::CreateTableV8(
   transaction->commands.push_back(std::move(command));
 }
 
-void Campaigns::MigrateToV8(
+void Campaigns::MigrateToV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV8(transaction);
+  CreateTableV9(transaction);
 }
 
 }  // namespace table

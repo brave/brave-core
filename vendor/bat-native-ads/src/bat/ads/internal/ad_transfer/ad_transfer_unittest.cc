@@ -64,7 +64,7 @@ class BatAdsAdTransferTest
 TEST_F(BatAdsAdTransferTest,
     DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
   // Arrange
-  const AdInfo ad = GetAdForType(AdType::kAdNotification);
+  const AdInfo ad = GetAdForType(AdType::kPromotedContentAd);
   ad_transfer_->set_last_clicked_ad(ad);
 
   TabManager::Get()->OnUpdated(1, "https://brave.com", /* is_visible */ true,
@@ -117,7 +117,7 @@ TEST_F(BatAdsAdTransferTest,
 TEST_F(BatAdsAdTransferTest,
     TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad = GetAdForType(AdType::kAdNotification);
+  const AdInfo ad = GetAdForType(AdType::kPromotedContentAd);
   ad_transfer_->set_last_clicked_ad(ad);
 
   TabManager::Get()->OnUpdated(1, "https://foobar.com", /* is_visible */ true,

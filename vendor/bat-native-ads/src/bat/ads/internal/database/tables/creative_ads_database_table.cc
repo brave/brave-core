@@ -62,8 +62,8 @@ void CreativeAds::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 8: {
-      MigrateToV8(transaction);
+    case 9: {
+      MigrateToV9(transaction);
       break;
     }
 
@@ -112,7 +112,7 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
-void CreativeAds::CreateTableV8(
+void CreativeAds::CreateTableV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -133,13 +133,13 @@ void CreativeAds::CreateTableV8(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::MigrateToV8(
+void CreativeAds::MigrateToV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV8(transaction);
+  CreateTableV9(transaction);
 }
 
 }  // namespace table

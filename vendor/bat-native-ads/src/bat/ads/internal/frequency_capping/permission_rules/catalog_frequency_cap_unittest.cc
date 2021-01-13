@@ -30,7 +30,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
   // Arrange
   const URLEndpoints endpoints = {
     {
-      "/v5/catalog", {
+      "/v6/catalog", {
         {
           net::HTTP_OK, "/catalog.json"
         }
@@ -55,7 +55,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
   // Arrange
   const URLEndpoints endpoints = {
     {
-      "/v5/catalog", {
+      "/v6/catalog", {
         {
           net::HTTP_OK, "/catalog.json"
         }
@@ -83,7 +83,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
   // Arrange
   const URLEndpoints endpoints = {
     {
-      "/v5/catalog", {
+      "/v6/catalog", {
         {
           net::HTTP_OK, "/catalog.json"
         }

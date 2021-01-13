@@ -63,8 +63,8 @@ void Segments::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 8: {
-      MigrateToV8(transaction);
+    case 9: {
+      MigrateToV9(transaction);
       break;
     }
 
@@ -107,7 +107,7 @@ std::string Segments::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Segments::CreateTableV8(
+void Segments::CreateTableV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -126,13 +126,13 @@ void Segments::CreateTableV8(
   transaction->commands.push_back(std::move(command));
 }
 
-void Segments::MigrateToV8(
+void Segments::MigrateToV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "categories");
 
-  CreateTableV8(transaction);
+  CreateTableV9(transaction);
 }
 
 }  // namespace table
