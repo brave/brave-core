@@ -75,11 +75,11 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
   DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
-class OnionLocationButtonView : public views::LabelButton,
-                                public views::ButtonListener {
+class OnionLocationButtonView : public views::LabelButton {
  public:
   explicit OnionLocationButtonView(Profile* profile)
-      : LabelButton(this,
+      : LabelButton(base::BindRepeating(&OnionLocationButtonView::ButtonPressed,
+                                        base::Unretained(this)),
                     l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
     if (profile->IsTor())
@@ -106,13 +106,6 @@ class OnionLocationButtonView : public views::LabelButton,
 
   ~OnionLocationButtonView() override {}
 
-  // views::ButtonListener
-  void ButtonPressed(Button* sender, const ui::Event& event) override {
-    TorProfileManager::SwitchToTorProfile(
-        profile_,
-        base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
-  }
-
   void SetOnionLocation(GURL location) { onion_location_ = location; }
 
  private:
@@ -125,6 +118,12 @@ class OnionLocationButtonView : public views::LabelButton,
   void UpdateBorder() {
     SetBackground(
         views::CreateRoundedRectBackground(kOpenInTorBg, height() / 2));
+  }
+
+  void ButtonPressed() {
+    TorProfileManager::SwitchToTorProfile(
+        profile_,
+        base::BindRepeating(&OnTorProfileCreated, GURL(onion_location_)));
   }
 
   GURL onion_location_;

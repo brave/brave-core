@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index 16658d24fa113947cdba81456df81af11fe3f5ba..a0a8fe960bbfdbe28a864612d427c16d3e562a17 100644
+index dd58bc81f065e0434d28f8ec665a3ae8e0ddd29b..8b8f3de73df0dc977bddc719a9805ff2353a2ef2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-@@ -103,7 +103,7 @@ public class BottomControlsCoordinator {
+@@ -94,7 +94,7 @@ public class BottomControlsCoordinator {
          View container = root.findViewById(R.id.bottom_container_slot);
          ViewGroup.LayoutParams params = container.getLayoutParams();
          params.height = root.getResources().getDimensionPixelOffset(bottomControlsHeightId);

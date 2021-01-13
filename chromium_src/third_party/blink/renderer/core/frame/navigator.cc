@@ -9,13 +9,13 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 
-#define BRAVE_NAVIGATOR_USERAGENT                                      \
-  if (blink::WebContentSettingsClient* settings =                      \
-          brave::GetContentSettingsClientFor(GetExecutionContext())) { \
-    if (!settings->AllowFingerprinting(true)) {                        \
-      return brave::BraveSessionCache::From(*(GetExecutionContext()))  \
-          .FarbledUserAgent(GetFrame()->Loader().UserAgent());         \
-    }                                                                  \
+#define BRAVE_NAVIGATOR_USERAGENT                                           \
+  if (blink::WebContentSettingsClient* settings =                           \
+          brave::GetContentSettingsClientFor(GetExecutionContext())) {      \
+    if (!settings->AllowFingerprinting(true)) {                             \
+      return brave::BraveSessionCache::From(*(GetExecutionContext()))       \
+          .FarbledUserAgent(DomWindow()->GetFrame()->Loader().UserAgent()); \
+    }                                                                       \
   }
 
 #include "../../../../../../../third_party/blink/renderer/core/frame/navigator.cc"

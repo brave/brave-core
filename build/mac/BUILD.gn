@@ -23,7 +23,12 @@ if (is_universal_binary) {
   unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
 }
 
-signed_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
+if (is_release_channel) {
+  signed_app_path = "$root_out_dir/$mac_signing_output_prefix/stable/$brave_exe"
+} else {
+  signed_app_path =
+      "$root_out_dir/$mac_signing_output_prefix/$brave_channel/$brave_exe"
+}
 
 if (skip_signing) {
   app_path = unsigned_app_path

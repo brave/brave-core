@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/feature_list.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -151,7 +151,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
 
   // scripts with whitelisted protocols, such as chrome://extensions should
   // be allowed
-  bool should_white_list = IsWhitelistedForContentSettings(
+  bool should_white_list = IsAllowlistedForContentSettings(
       blink::WebSecurityOrigin::Create(script_url),
       render_frame()->GetWebFrame()->GetDocument().Url());
 

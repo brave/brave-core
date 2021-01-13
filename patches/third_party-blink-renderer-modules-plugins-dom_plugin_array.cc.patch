@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index c7e41cbb470861f63d7a9c9183f1dad425870619..d3e81bd5fd25abd45301c6474fd31d0e42c6557d 100644
+index 275160e244c5c6476d671fb93b0752f488150bb6..8358a4a077a250a94198fcc1d0e4c0ad4b534815 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-@@ -145,6 +145,7 @@ void DOMPluginArray::UpdatePluginData() {
+@@ -143,6 +143,7 @@ void DOMPluginArray::UpdatePluginData() {
        }
      }
    }

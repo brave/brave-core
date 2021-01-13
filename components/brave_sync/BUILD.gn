@@ -71,7 +71,6 @@ source_set("prefs") {
     "//base",
     "//components/os_crypt",
     "//components/prefs",
-    "//components/pref_registry",
   ]
 }
 

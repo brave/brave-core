@@ -6,10 +6,11 @@
 #include "chrome/browser/profiles/profile.h"
 
 #include "../../../../../../chrome/browser/ui/page_info/chrome_page_info_delegate.cc"
+#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
 bool ChromePageInfoDelegate::BraveShouldShowPermission(
     ContentSettingsType type) {
-  if ((type == ContentSettingsType::PLUGINS ||
+  if ((content_settings::IsShieldsContentSettingsType(type) ||
        type == ContentSettingsType::GEOLOCATION) &&
       GetProfile()->IsTor()) {
     return false;

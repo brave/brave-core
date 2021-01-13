@@ -6,5 +6,5 @@
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 
 #define NewTabButton BraveNewTabButton
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab_strip.cc"
+#include "../../../../../../../chrome/browser/ui/views/frame/tab_strip_region_view.cc"
 #undef NewTabButton

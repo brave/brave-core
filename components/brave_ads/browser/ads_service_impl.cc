@@ -1053,7 +1053,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(
 #else
   Browser* browser = chrome::FindTabbedBrowser(profile_, false);
   if (!browser) {
-    browser = new Browser(Browser::CreateParams(profile_, true));
+    browser = Browser::Create(Browser::CreateParams(profile_, true));
   }
 
   NavigateParams nav_params(browser, gurl, ui::PAGE_TRANSITION_LINK);

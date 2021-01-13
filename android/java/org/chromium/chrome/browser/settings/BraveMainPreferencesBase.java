@@ -210,7 +210,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
                 RateDialogFragment mRateDialogFragment = new RateDialogFragment();
                 mRateDialogFragment.setCancelable(false);
                 mRateDialogFragment.setArguments(bundle);
-                mRateDialogFragment.show(getActivity().getSupportFragmentManager(), "RateDialogFragment");
+                mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
                 return true;
             }
         });

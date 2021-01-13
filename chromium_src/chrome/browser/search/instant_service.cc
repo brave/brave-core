@@ -4,14 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/search/instant_service.h"
-#include "chrome/browser/search/search_provider_observer.h"
+#include "components/search/search_provider_observer.h"
 
 class AlwaysGoogleSearchProviderObserver : public SearchProviderObserver {
  public:
   using SearchProviderObserver::SearchProviderObserver;
-  // This is not override because base is not virtual, but that's ok if we
-  // reference this derived class.
-  bool is_google() { return true; }
+  bool is_google() override { return true; }
 };
 
 #define SearchProviderObserver AlwaysGoogleSearchProviderObserver

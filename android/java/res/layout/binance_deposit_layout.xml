@@ -36,7 +36,7 @@
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
 			        android:padding="8dp"
-			        android:tint="@android:color/white"
+			        app:tint="@android:color/white"
 			        app:srcCompat="@drawable/ic_back" />
 
 	        	<ImageView

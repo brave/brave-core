@@ -59,7 +59,7 @@ BraveSettingsUI::~BraveSettingsUI() {
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
   constexpr char generated_prefix[] =
-      "@out_folder@/gen/brave/browser/resources/settings/";
+      "@out_folder@/gen/brave/browser/resources/settings/preprocessed";
   const auto generated_prefix_len = strlen(generated_prefix);
   for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
     // Rewrite path for any generated entries

@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_util.cc b/extensions/browser/extension_util.cc
-index af63beaf829691d02a4139adb9eebb0ee941ccb9..d4f914dc323647c8d3c8115c70b2653466e82631 100644
+index aaf9438be943e20e1f7efa64238f8fdf77d36293..a2271789b0d0e22be7910904ed3646486f2512a1 100644
 --- a/extensions/browser/extension_util.cc
 +++ b/extensions/browser/extension_util.cc
-@@ -53,6 +53,7 @@ bool IsIncognitoEnabled(const std::string& extension_id,
+@@ -54,6 +54,7 @@ bool IsIncognitoEnabled(const std::string& extension_id,
        ExtensionRegistry::Get(context)->GetExtensionById(
            extension_id, ExtensionRegistry::ENABLED);
    if (extension) {

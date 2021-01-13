@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"

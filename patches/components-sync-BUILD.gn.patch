@@ -1,8 +1,8 @@
 diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
-index 01059c3ee520e42892d94620a898b341c0f08882..897b5ca70e401c94229794966e5c5ea445730635 100644
+index e07af0706b0b02ed55bbfb1b42b2c3254eec0bbd..ebc7d9e827c2413cba9c96d2a81f5fc9f29f67e4 100644
 --- a/components/sync/BUILD.gn
 +++ b/components/sync/BUILD.gn
-@@ -288,6 +288,7 @@ static_library("rest_of_sync") {
+@@ -273,6 +273,7 @@ static_library("rest_of_sync") {
      "nigori/pending_local_nigori_commit.cc",
      "nigori/pending_local_nigori_commit.h",
    ]

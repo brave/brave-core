@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/path_service.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -80,13 +81,13 @@ class TorProfileManagerTest : public InProcessBrowserTest {
                         ContentSetting setting) {
     content_settings->SetContentSettingCustomScope(
         primary_pattern, ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::JAVASCRIPT, "", setting);
+        ContentSettingsType::JAVASCRIPT, setting);
   }
 
   ContentSetting GetScriptSetting(HostContentSettingsMap* content_settings,
                                   const GURL& primary_url) {
-    return content_settings->GetContentSetting(
-        primary_url, GURL(), ContentSettingsType::JAVASCRIPT, "");
+    return content_settings->GetContentSetting(primary_url, GURL(),
+                                               ContentSettingsType::JAVASCRIPT);
   }
 
   MockTorLauncherFactory* GetTorLauncherFactory() {

@@ -88,7 +88,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   HostContentSettingsMap* map =
       HostContentSettingsMapFactory::GetForProfile(GetProfile());
   std::unique_ptr<base::Value> value =
-      map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
+      map->GetWebsiteSetting(url, url, content_type(), &info);
   setting = content_settings::ValueToContentSetting(value.get());
   setting_source = info.source;
 

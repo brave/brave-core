@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-index 02462b60d63e7c4ceaf2a1476e7564f1706321d8..255fa0ccfd0d491b16853742857b86d1c96709be 100644
+index 3e078d4269238d95085e199df0c0ed6dea78775f..34b982a2d95c555f625f39f3c06d27dd29849bd3 100644
 --- a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
 +++ b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-@@ -195,6 +195,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
+@@ -191,6 +191,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(
    // We use pixmap to access the image pixels. Make the image unaccelerated if
    // necessary.
    image_ = image_->MakeUnaccelerated();

@@ -1164,7 +1164,7 @@ Brave is unable to recover your settings.
           Set up your new Brave profile
         </message>
         <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
-          Ask when I open Brave
+          Ask when Brave opens
         </message>
       </if>
 

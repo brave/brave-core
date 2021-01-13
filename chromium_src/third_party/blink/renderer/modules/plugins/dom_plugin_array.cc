@@ -52,7 +52,9 @@ String PluginReplacementName(std::mt19937_64* prng) {
 
 void FarblePlugins(DOMPluginArray* owner,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
-  LocalFrame* frame = owner->GetFrame();
+  if (!owner->DomWindow())
+    return;
+  LocalFrame* frame = owner->DomWindow()->GetFrame();
   if (!frame || !frame->GetContentSettingsClient())
     return;
   switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
@@ -86,7 +88,8 @@ void FarblePlugins(DOMPluginArray* owner,
               BraveSessionCache::From(*(frame->DomWindow()))
                   .GenerateRandomString(plugin->Filename().Ascii(), 32));
         }
-        (*dom_plugins)[index] = MakeGarbageCollected<DOMPlugin>(frame, *plugin);
+        (*dom_plugins)[index] =
+            MakeGarbageCollected<DOMPlugin>(frame->DomWindow(), *plugin);
       }
       // Add fake plugin #1.
       auto* fake_plugin_info_1 = MakeGarbageCollected<PluginInfo>(
@@ -103,8 +106,8 @@ void FarblePlugins(DOMPluginArray* owner,
               .GenerateRandomString("MIME_1_DESCRIPTION", 32),
           *fake_plugin_info_1);
       fake_plugin_info_1->AddMimeType(fake_mime_info_1);
-      auto* fake_dom_plugin_1 =
-          MakeGarbageCollected<DOMPlugin>(frame, *fake_plugin_info_1);
+      auto* fake_dom_plugin_1 = MakeGarbageCollected<DOMPlugin>(
+          frame->DomWindow(), *fake_plugin_info_1);
       dom_plugins->push_back(fake_dom_plugin_1);
       // Add fake plugin #2.
       auto* fake_plugin_info_2 = MakeGarbageCollected<PluginInfo>(
@@ -121,8 +124,8 @@ void FarblePlugins(DOMPluginArray* owner,
               .GenerateRandomString("MIME_2_DESCRIPTION", 32),
           *fake_plugin_info_2);
       fake_plugin_info_2->AddMimeType(fake_mime_info_2);
-      auto* fake_dom_plugin_2 =
-          MakeGarbageCollected<DOMPlugin>(frame, *fake_plugin_info_2);
+      auto* fake_dom_plugin_2 = MakeGarbageCollected<DOMPlugin>(
+          frame->DomWindow(), *fake_plugin_info_2);
       dom_plugins->push_back(fake_dom_plugin_2);
       // Shuffle the list of plugins pseudo-randomly, based on the domain key.
       std::shuffle(dom_plugins->begin(), dom_plugins->end(), prng);

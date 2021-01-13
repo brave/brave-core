@@ -50,8 +50,7 @@ BinanceGetUserTLDFunction::Run() {
   auto* service = GetBinanceService(browser_context());
   const std::string user_tld = service->GetBinanceTLD();
 
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(user_tld)));
+  return RespondNow(OneArgument(base::Value(user_tld)));
 }
 
 ExtensionFunction::ResponseAction
@@ -63,8 +62,7 @@ BinanceGetClientUrlFunction::Run() {
   auto* service = GetBinanceService(browser_context());
   const std::string client_url = service->GetOAuthClientUrl();
 
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(client_url)));
+  return RespondNow(OneArgument(base::Value(client_url)));
 }
 
 ExtensionFunction::ResponseAction
@@ -86,7 +84,7 @@ BinanceGetAccessTokenFunction::Run() {
 }
 
 void BinanceGetAccessTokenFunction::OnCodeResult(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -111,18 +109,17 @@ BinanceGetAccountBalancesFunction::Run() {
 void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
     const BinanceAccountBalances& balances,
     bool success) {
-  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  base::DictionaryValue result;
 
   for (const auto& balance : balances) {
     auto info = std::make_unique<base::DictionaryValue>();
     info->SetString("balance", balance.second[0]);
     info->SetString("btcValue", balance.second[1]);
     info->SetString("fiatValue", balance.second[2]);
-    result->SetDictionary(balance.first, std::move(info));
+    result.SetDictionary(balance.first, std::move(info));
   }
 
-  Respond(TwoArguments(std::move(result),
-                       std::make_unique<base::Value>(success)));
+  Respond(TwoArguments(std::move(result), base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -152,11 +149,11 @@ BinanceGetConvertQuoteFunction::Run() {
 void BinanceGetConvertQuoteFunction::OnQuoteResult(
     const std::string& quote_id, const std::string& quote_price,
     const std::string& total_fee, const std::string& total_amount) {
-  auto quote = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  quote->SetStringKey("id", quote_id);
-  quote->SetStringKey("price", quote_price);
-  quote->SetStringKey("fee", total_fee);
-  quote->SetStringKey("amount", total_amount);
+  base::Value quote(base::Value::Type::DICTIONARY);
+  quote.SetStringKey("id", quote_id);
+  quote.SetStringKey("price", quote_price);
+  quote.SetStringKey("fee", total_fee);
+  quote.SetStringKey("amount", total_amount);
   Respond(OneArgument(std::move(quote)));
 }
 
@@ -169,8 +166,7 @@ BinanceIsSupportedRegionFunction::Run() {
   auto* service = GetBinanceService(browser_context());
   bool is_supported = service->IsSupportedRegion();
 
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(is_supported)));
+  return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
 ExtensionFunction::ResponseAction
@@ -201,9 +197,7 @@ void BinanceGetDepositInfoFunction::OnGetDepositInfo(
     const std::string& deposit_address,
     const std::string& deposit_tag,
     bool success) {
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(deposit_address),
-      std::make_unique<base::Value>(deposit_tag)));
+  Respond(TwoArguments(base::Value(deposit_address), base::Value(deposit_tag)));
 }
 
 ExtensionFunction::ResponseAction
@@ -231,9 +225,7 @@ BinanceConfirmConvertFunction::Run() {
 
 void BinanceConfirmConvertFunction::OnConfirmConvert(
     bool success, const std::string& message) {
-  Respond(TwoArguments(
-      std::make_unique<base::Value>(success),
-      std::make_unique<base::Value>(message)));
+  Respond(TwoArguments(base::Value(success), base::Value(message)));
 }
 
 ExtensionFunction::ResponseAction
@@ -256,8 +248,7 @@ BinanceGetConvertAssetsFunction::Run() {
 
 void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
     const BinanceConvertAsserts& assets) {
-  auto result = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+  base::Value result(base::Value::Type::DICTIONARY);
 
   for (const auto& asset : assets) {
     base::ListValue sub_selectors;
@@ -269,7 +260,7 @@ void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
       }
       sub_selectors.Append(std::move(sub_selector));
     }
-    result->SetKey(asset.first, std::move(sub_selectors));
+    result.SetKey(asset.first, std::move(sub_selectors));
   }
 
   Respond(OneArgument(std::move(result)));
@@ -294,7 +285,7 @@ BinanceRevokeTokenFunction::Run() {
 }
 
 void BinanceRevokeTokenFunction::OnRevokeToken(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -318,11 +309,10 @@ BinanceGetCoinNetworksFunction::Run() {
 
 void BinanceGetCoinNetworksFunction::OnGetCoinNetworks(
     const BinanceCoinNetworks& networks) {
-  auto coin_networks = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+  base::Value coin_networks(base::Value::Type::DICTIONARY);
 
   for (const auto& network : networks) {
-    coin_networks->SetStringKey(network.first, network.second);
+    coin_networks.SetStringKey(network.first, network.second);
   }
 
   Respond(OneArgument(std::move(coin_networks)));

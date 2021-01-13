@@ -70,6 +70,9 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_TITLE" desc="Title used for End of Life section on the About Page.">
     Update schedule
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME" desc="Title of the line item on the about page that allows the user to edit the device hostname.">
+    Device name
+  </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
     Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
   </message>
@@ -156,6 +159,15 @@
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_SHOW_RELEASE_NOTES" desc="Text of the button which shows user the release notes.">
     See what's new
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_EDIT_DEVICE_NAME" desc="The title of the dialog that allows the user to edit the device hostname.">
+    Edit device name
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_INFO" desc="Label describing which areas of the Chrome OS system broadcast the device hostname to external networks.">
+    This name is visible to other devices for Bluetooth and network connections
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_CONSTRAINTS" desc="Label describing the requirements for the text of the device hostname.">
+    Name can use letters, numbers, and hyphens (-)
   </message>
   <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
     Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is up to date
@@ -499,7 +511,7 @@
 
   <!-- Device Page (OS Settings) -->
   <message name="IDS_OS_SETTINGS_TOUCHPAD_REVERSE_SCROLL_LABEL">
-    Enable reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_DEVICE_TITLE" desc="Name of the settings page which displays device and peripheral settings.">
     Device
@@ -647,8 +659,11 @@
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
   </message>
-  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_TOOLTIP" desc="Tooltip in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
-    Used by Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_BUTTON_LABEL" desc="Label in OS settings for the button to configure search engine behavior.">
+    Configure
+  </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
+    Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
   </message>
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT" desc="Label for the Brave Assistant button.">
     Brave Assistant
@@ -778,6 +793,9 @@
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">
       Enable fullscreen magnifier
+  </message>
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_FOCUS_FOLLOWING_LABEL" desc="Label for toggle which enables keyboard focus following in the fullscreen magnifier">
+      Zoomed in screen follows keyboard focus
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_LABEL" desc="Label for dropdown menu which contains zoom levels for the fullscreen magnifier">
     Fullscreen zoom level:
@@ -1020,28 +1038,28 @@
     Rate
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech rate">
-    Slowest
+    Slow
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_RATE_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech rate">
-    Fastest
+    Fast
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH" desc="The pitch of speech in text-to-speech settings.">
     Pitch
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech pitch">
-    Lowest
+    Low
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PITCH_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech pitch">
-    Highest
+    High
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME" desc="The volume of speech compared to system volume in text-to-speech settings.">
     Volume
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MINIMUM_LABEL" desc="A label for the minimum side of a slider allowing users to change their text-to-speech speech volume">
-    Quietest
+    Quiet
   </message>
   <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOLUME_MAXIMUM_LABEL" desc="A label for the maximum side of a slider allowing users to change their text-to-speech speech volume">
-    Loudest
+    Loud
   </message>
   <message name="IDS_SETTINGS_PERCENTAGE" desc="A number displayed as a percentage">
     <ph name="PERCENTAGE">$1<ex>120</ex></ph>%
@@ -1611,6 +1629,9 @@
   <message name="IDS_SETTINGS_MOUSE_TITLE" desc="In Device Settings, the title of the mouse settings subpage.">
     Mouse
   </message>
+  <message name="IDS_SETTINGS_POINTING_STICK_TITLE" desc="In Device Settings, the title of the pointing stick settings subpage. In most cases this will just be 'TrackPoint', the brand name of the pointing sticks used on Bravebooks.">
+    TrackPoint
+  </message>
   <message name="IDS_SETTINGS_TOUCHPAD_TITLE" desc="In Device Settings, the title of the touchpad settings subpage.">
     Touchpad
   </message>
@@ -1638,8 +1659,14 @@
   <message name="IDS_SETTINGS_MOUSE_SWAP_BUTTONS_LABEL" desc="In Device Settings, the text next to the checkbox to set the primary mouse button to the right button instead of the left button.">
     Swap primary mouse button
   </message>
+  <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_LEFT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the left mouse button.">
+    Left button
+  </message>
+  <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_RIGHT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the right mouse button.">
+    Right button
+  </message>
   <message name="IDS_SETTINGS_MOUSE_REVERSE_SCROLL_LABEL" desc="In Device Settings, the text next to the checkbox to set reverse scrolling.">
-    Enable reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MOUSE_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse acceleration.">
     Enable mouse acceleration
@@ -2044,6 +2071,12 @@
   <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT_CELLULAR" desc="Settings &gt; Internet &gt; Mobile Data details: Label for the checkbox determining whether to automatically connect to the cellular network.">
     Automatically connect to cellular network
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_REMOVE" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to remove an eSIM cellular network">
+    Remove profile
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_MENU_RENAME" desc="Settings &gt; Internet &gt; Network details &gt; Dot menu: Label for the button to rename an eSIM cellular network">
+    Rename
+  </message>
   <message name="IDS_SETTINGS_INTERNET_BUTTON_ACTIVATE" desc="Settings &gt; Internet &gt; Network details: The label for the button to activate a Cellular network.">
     Activate
   </message>
@@ -2194,6 +2227,24 @@
   <message name="IDS_SETTINGS_INTERNET_LOOKING_FOR_MOBILE_NETWORK" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
     Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_INTERNET_ESIM_LABEL" desc="Label describing list of cellular networks as eSIM networks">
+    eSIM
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_PSIM_LABEL" desc="Label on Mobile data page describing list of cellular networks as SIM networks">
+    SIM
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_TETHER_LABEL" desc="Label on Mobile data page describing list of networks as instant tether networks">
+    Instant Tethering
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_ESIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no eSIM profile is available">
+    No available eSIM profiles. Download a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_PSIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no physical SIM profile is available">
+    No available SIM profiles. Setup a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularPsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_TETHER_NOT_SETUP_WITH_LEARN_MORE_LINK" desc="Text shown when viewing the Mobile data page and no instant tether network is available">
+    No device detected <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
 
   <!-- Users Page (OS Settings) -->
   <message name="IDS_SETTINGS_USERS_MODIFIED_BY_OWNER_LABEL" desc="Label saying settings may only be modified by the device owner.">
@@ -2246,6 +2297,9 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_DISABLED" desc="Text to tell user multidevice features are turned off">
     Disabled
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_SUITE_TOGGLE_A11Y_LABEL" desc="Accessibility label for toggle button that enables/disables connected phone features.">
+    Connected phone features enable.
+  </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING" desc="Name of a feature. This feature automatically offers the user to tether to their phone if their Bravebook is offline and their phone supports tethering.">
     Instant Tethering
   </message>
@@ -2258,50 +2312,89 @@
   <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
     Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub section on the settings page.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" desc="The title of the Phone Hub section on the settings page.">
     Phone Hub
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications section on the settings page.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SECTION_TITLE" desc="The title of the Phone Hub Notifications section on the settings page.">
     Notifications
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications Badge section on the settings page.">
-    Notifications Badge
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" desc="The title of the Phone Hub Task Continuation section on the settings page.">
+    Recent Brave tabs
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Task Continuation section on the settings page.">
-    Task Continuation
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on Chrome OS by ensuring that their phones' apps, content, and connectivity are available on their Chrome OS device.">
+    Extend the best of your Android phone to your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on Chrome OS by ensuring that their phones' apps, content, and connectivity are available on their Chrome OS device.">
-    Make the best of your Android phone on your your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
+    View notifications from your chat apps on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
-    View your phones notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
+    View recent Brave tabs from your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Notification Badge' setting. This feature shows an indicator in the Chrome OS shelf when notifications are mirrored from a connected Android phone.">
-    Indicator in shelf when new notifications come in
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on.">
+    Turn on notifications on your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Task Continuation' setting. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
-    View your active Brave tabs in Phone Hub
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_SUMMARY" desc="The summary of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on.">
+    Receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on.">
-    Turn on notifications on Android phone
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_AWAITING_RESPONSE_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user needs to follow the setup flow instructions on their phone in order to start mirroring notifications from their phone to their Bravebook.">
+    Complete setup on your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTING_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the feature that will mirror phone notifications to their Bravebook.">
-    Connecting to your Phone
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_AWAITING_RESPONSE_SUMMARY" translateable="false" desc="The body text of the dialog containing the Phone Hub notification opt-in flow shown when the user needs to follow the setup flow instructions on their phone in order to start mirroring notifications from their phone to their Bravebook.">
+    Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on. Follow steps on your phone to complete setup.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" translateable="false" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the Phone Hub 'Notifications' toggle is switched on, and when the user has confirmed to turn on the feature.">
-    Make sure your phone is nearby, unlocked and has Bluetooth and Wi-Fi turned on. Turn on notifications toggle under Google Play Services&gt;Bravebook Phone Hub from your phone.
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTING_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the feature that will mirror phone notifications to their Bravebook.">
+    Connecting to your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_TITLE" translateable="false" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the Phone Hub 'Notifications' toggle is switched on, and when the user has confirmed to turn on the feature.">
+    Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
     Notifications turned on
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_SUMMARY" translateable="false" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
-    You will receive your phone notifications on your Bravebook
+    You can now receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Dismissing notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> will also dismiss them on your phone. Make sure your phone is nearby and has Bluetooth and Wi-Fi turned on.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SECTION_TITLE" translateable="false" desc="The title of the Wifi Sync section on the settings page. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the device is unable to establish a connection to the phone.">
+    Could not establish connection
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_SUMMARY" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the device is unable to establish a connection to the phone.">
+    We were unable to establish a connection with your phone. Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTION_LOST_WITH_PHONE_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the device loses its connection to the phone.">
+    Connection lost with your phone
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTION_LOST_WITH_PHONE_SUMMARY" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the device loses its connection to the phone.">
+    We were unable to maintain a connection with your phone. Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile." translateable="false">
+    Could not set up notifications syncing
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACCESS_PROHIBITED_SUMMARY" desc="The title of the dialog containing the Phone Hub notification opt-in flow when access to notifications is prohibited because the user's phone has a work profile." translateable="false">
+    Notification syncing is not supported for phones in a work profile. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with work profiles cannot opt into this feature." translateable="false">
+    Notification syncing is not supported for phones in a work profile
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_GET_STARTED_BUTTON_LABEL" desc="The label to a button in the Phone Hub notification opt-in flow that appears when the dialog first opens. Clicking the button will allow the user to try enabling the feature.">
+    Get started
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_TRY_AGAIN_BUTTON_LABEL" desc="The label to a button in the Phone Hub notification opt-in flow that appears when the first attempt to enable feature fails. Clicking the button will allow the user to try enabling the feature again.">
+    Try again
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SECTION_TITLE" desc="The title of the Wifi Sync section on the settings page. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone.">
     Wi-Fi Sync
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" translateable="false" desc="Description of for the 'Wifi Sync' setting. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
-    Sync Wi-Fi networks with your phone <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone">
+    Sync Wi-Fi networks with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_ENABLE_WIFI_SYNC_V1_SUMMARY" desc="Description for the 'Wifi Sync' section on the settings page when the prerequisite 'Brave Sync' setting is not activated. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone. The description contains a link that leads to the toggle where the prerequisite 'Brave Sync' feature can be turned on and a 'Learn More' link to learn more about the 'Wifi Sync' feature.">
+    Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to use Wi-Fi Sync. <ph name="LINK2_BEGIN">&lt;a id="learnMoreLink" target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK2_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_CHROME_SYNC_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to the Brave Sync toggle that needs to be enabled as a prerequisite for the 'Wifi Sync' feature to be enabled. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
+    Turn on Brave Sync to use Wi-Fi Sync
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_WIFI_SYNC_LEARN_MORE_LABEL" desc="Accessibility label (used by screen readers, not shown in UI) for a link that leads to a page with more information about the 'Wifi Sync' feature. This feature lets the user sync wifi network configurations between Chrome OS devices and a connected Android phone.">
+    Wi-Fi Sync, Learn More
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
@@ -2418,6 +2511,11 @@
   </message>
   <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOGIN_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure security and sign-in settings.">
     Enter your password to configure security and sign-in
+  </message>
+
+  <!-- Kerberos section (OS settings) -->
+  <message name="IDS_OS_SETTINGS_KERBEROS" desc="Name of a section in the OS settings page." meaning="Manage Kerberos authetication tickets.">
+    Kerberos
   </message>
 
   <!-- Kerberos Add Accounts Dialog Page (OS settings) -->
@@ -2616,6 +2714,9 @@
   </message>
 
   <!-- Reset Page (OS settings)-->
+  <message name="IDS_SETTINGS_RESET_TITLE" desc="Title of a section of settings. This section describes settings for resetting the device.">
+    Reset settings
+  </message>
   <message name="IDS_SETTINGS_FACTORY_RESET" desc="Name of the factory reset option on the Brave settings page">
     Powerwash
   </message>

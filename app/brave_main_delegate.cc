@@ -101,10 +101,8 @@ BraveMainDelegate::CreateContentBrowserClient() {
   return NULL;
 #else
   if (chrome_content_browser_client_ == nullptr) {
-    DCHECK(!startup_data_);
-    startup_data_ = std::make_unique<StartupData>();
     chrome_content_browser_client_ =
-        std::make_unique<BraveContentBrowserClient>(startup_data_.get());
+        std::make_unique<BraveContentBrowserClient>();
   }
   return chrome_content_browser_client_.get();
 #endif
@@ -226,20 +224,20 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kTextFragmentAnchor.name,
-    features::kAllowPopupsDuringPageUnload.name,
     features::kIdleDetection.name,
     features::kNotificationTriggers.name,
     features::kPrivacySettingsRedesign.name,
     features::kSignedExchangeSubresourcePrefetch.name,
-    features::kSmsReceiver.name,
     features::kTabHoverCards.name,
+    features::kVideoPlaybackQuality.name,
+    features::kWebOTP.name,
     network_time::kNetworkTimeServiceQuerying.name,
     password_manager::features::kPasswordCheck.name,
     safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
-    translate::kTranslate.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
+    translate::kTranslate.name,
 #endif
   };
 

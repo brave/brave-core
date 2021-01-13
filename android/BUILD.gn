@@ -13,7 +13,6 @@ java_cpp_enum("brave_android_java_enums_srcjar") {
 }
 
 java_cpp_template("brave_config_java") {
-  package_path = "org/chromium/chrome/browser"
   sources = [ "//brave/build/android/java/templates/BraveConfig.template" ]
   defines = [
     "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"",

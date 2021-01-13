@@ -183,6 +183,7 @@ source_set("browser_process") {
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
+    "//services/metrics/public/cpp:metrics_cpp",
     "//services/network/public/cpp",
     "//third_party/blink/public/common",
     "//third_party/blink/public/mojom:mojom_platform_headers",

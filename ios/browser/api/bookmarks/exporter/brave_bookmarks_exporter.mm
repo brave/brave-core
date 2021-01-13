@@ -11,7 +11,7 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/mac/foundation_util.h"
@@ -145,7 +145,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
         listener(BraveBookmarksExporterStateStarted);
         base::FilePath destination_file_path =
             base::mac::NSStringToFilePath(filePath);
-        
+
         // Create artificial nodes
         auto bookmark_bar_node = [exporter getBookmarksBarNode];
         auto other_folder_node = [exporter getOtherBookmarksNode];

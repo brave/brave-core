@@ -22,8 +22,10 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
-#define Init \
-  Init();    \
+#define Init                                                              \
+  Init();                                                                 \
+  void RegisterBraveContentSettingsTypes(const ContentSettingsType& type, \
+                                         const std::string& name);        \
   void BraveInit
 
 #include "../../../../../../components/content_settings/core/browser/content_settings_registry.h"

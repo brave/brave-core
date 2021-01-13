@@ -8,8 +8,14 @@
   <message name="IDS_PAGE_INFO_MIXED_CONTENT_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is using mainly using a secure connection but has some insecure parts (like insecurely loaded images).">
     Your connection to this site is not fully secure
   </message>
+  <message name="IDS_PAGE_INFO_MIXED_CONTENT_SUMMARY_SHORT" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is using mainly using a secure connection but has some insecure parts (like insecurely loaded images).">
+    Connection is not fully secure
+  </message>
   <message name="IDS_PAGE_INFO_NOT_SECURE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is not secure.">
     Your connection to this site is not secure
+  </message>
+  <message name="IDS_PAGE_INFO_NOT_SECURE_SUMMARY_SHORT" desc="A shorter one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is not secure.">
+    Connection is not secure
   </message>
   <message name="IDS_PAGE_INFO_MALWARE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing malware.">
     This site contains malware
@@ -43,9 +49,6 @@
   <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_TITLE" desc="Message to display in the page info bubble when the page you are on triggered a safety tip.">
     Suspicious site
   </message>
-  <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_DESCRIPTION" desc="Body of message to display in the page info bubble when you are viewing a page that triggered a safety tip.">
-    This site could be fake or fraudulent. Brave recommends leaving now.
-  </message>
   <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_LEAVE_BUTTON" desc="Text of button to leave a suspicious page. Shown on the safety tip page info bubble.">
     Leave site
   </message>
@@ -58,7 +61,7 @@
   <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_TITLE" desc="Title of Safety Tip infobar on a domain that looks like another domain.">
     Did you mean <ph name="LOOKALIKE_DOMAIN">$1<ex>google.com</ex></ph>?
   </message>
-  <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_DESCRIPTION" desc="Body of a warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_DESCRIPTION" desc="Body of a warning when the user visits a page that triggered a Safety Tip.">
     Attackers sometimes mimic sites by making hard-to-see changes to the web address.
   </message>
 
@@ -247,7 +250,7 @@
       Background Sync
     </message>
     <message name="IDS_PAGE_INFO_TYPE_IDLE_DETECTION" desc="The label used for the idle detection permission controlls in the Page Info popup.">
-      User presence
+      Your presence
     </message>
     <message name="IDS_PAGE_INFO_TYPE_IMAGES" desc="The label used for images permission controls in the Page Info popup.">
       Images
@@ -329,6 +332,9 @@
     <!-- Permission values -->
     <message name="IDS_PAGE_INFO_BUTTON_TEXT_ALLOWED_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to allow by the user.">
       Allow
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_ALLOWED_ONCE_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to allow once by the user.">
+      Only this time
     </message>
     <message name="IDS_PAGE_INFO_BUTTON_TEXT_BLOCKED_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to block by the user.">
       Block

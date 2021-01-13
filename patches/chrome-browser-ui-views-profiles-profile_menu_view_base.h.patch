@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index c1492c4dcbcea0ef58307d0de5428ff9f4b72dba..5f90da599e3558901a774e99dfd85f4b12a7e402 100644
+index 774b4f51943410c0e3fe1c38bc408af287e3fd23..0aae453f1a9778d4a61be2519dd0552cc07896b9 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -169,6 +169,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -165,6 +165,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
    void set_perform_menu_actions_for_testing(bool perform_menu_actions) {
      perform_menu_actions_ = perform_menu_actions;
    }
 +  BRAVE_PROFILE_MENU_VIEW_BASE_H_
  
   private:
-   friend class ProfileMenuViewExtensionsTest;
+   class AXMenuWidgetObserver;

@@ -96,7 +96,7 @@ IOSChromeMetricsServiceClient::Create(
 // static
 void IOSChromeMetricsServiceClient::RegisterPrefs(
     PrefRegistrySimple* registry) {
-  
+  metrics::MetricsService::RegisterPrefs(registry);
 }
 
 metrics::MetricsService* IOSChromeMetricsServiceClient::GetMetricsService() {
@@ -108,9 +108,7 @@ ukm::UkmService* IOSChromeMetricsServiceClient::GetUkmService() {
 }
 
 void IOSChromeMetricsServiceClient::SetMetricsClientId(
-    const std::string& client_id) {
-  
-}
+    const std::string& client_id) {}
 
 int32_t IOSChromeMetricsServiceClient::GetProduct() {
   return metrics::ChromeUserMetricsExtension::CHROME;
@@ -179,9 +177,7 @@ void IOSChromeMetricsServiceClient::RegisterMetricsServiceProviders() {
   DeleteFileMetrics();
 }
 
-void IOSChromeMetricsServiceClient::RegisterUKMProviders() {
-  
-}
+void IOSChromeMetricsServiceClient::RegisterUKMProviders() {}
 
 void IOSChromeMetricsServiceClient::CollectFinalHistograms() {
   DCHECK(thread_checker_.CalledOnValidThread());
@@ -196,11 +192,9 @@ bool IOSChromeMetricsServiceClient::RegisterForBrowserStateEvents(
   return false;
 }
 
-void IOSChromeMetricsServiceClient::OnTabParented(web::WebState* web_state) {
-}
+void IOSChromeMetricsServiceClient::OnTabParented(web::WebState* web_state) {}
 
-void IOSChromeMetricsServiceClient::OnURLOpenedFromOmnibox(OmniboxLog* log) {
-}
+void IOSChromeMetricsServiceClient::OnURLOpenedFromOmnibox(OmniboxLog* log) {}
 
 // static
 metrics::FileMetricsProvider::FilterAction

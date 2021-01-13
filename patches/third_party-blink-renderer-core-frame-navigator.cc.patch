@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator.cc b/third_party/blink/renderer/core/frame/navigator.cc
-index 037ab2677ec4713860e7c7f9bd3ed6bdcc9399ba..8941fa58a598bac028ca450e133b96614692a5ef 100644
+index a1ca9b10d8896dd3cfa035191224e886c977d6bf..1a202b6fc6cf873bd88dd46f7ea53262f8d135eb 100644
 --- a/third_party/blink/renderer/core/frame/navigator.cc
 +++ b/third_party/blink/renderer/core/frame/navigator.cc
-@@ -75,6 +75,7 @@ String Navigator::userAgent() const {
-   if (!GetFrame() || !GetFrame()->GetPage())
+@@ -74,6 +74,7 @@ String Navigator::userAgent() const {
+   if (!DomWindow())
      return String();
  
 +  BRAVE_NAVIGATOR_USERAGENT
-   return GetFrame()->Loader().UserAgent();
+   return DomWindow()->GetFrame()->Loader().UserAgent();
  }
  

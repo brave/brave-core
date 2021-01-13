@@ -26,15 +26,15 @@ const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
 
 size_t GetBraveAvatarIconStartIndex();
 
-#define BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO          \
-  size_t brave_start_index =                                        \
-      kDefaultAvatarIconsCount - kBraveDefaultAvatarIconsCount;     \
-  if (index >= brave_start_index) {                                 \
-    size_t brave_icon_index = index - brave_start_index;            \
-    const IconResourceInfo* brave_icon =                                  \
-        GetBraveDefaultAvatarIconResourceInfo(brave_icon_index);    \
-    if (brave_icon)                                                 \
-      return brave_icon;                                            \
+#define BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO              \
+  size_t brave_start_index =                                     \
+      kDefaultAvatarIconsCount - kBraveDefaultAvatarIconsCount;  \
+  if (index >= brave_start_index) {                              \
+    size_t brave_icon_index = index - brave_start_index;         \
+    const IconResourceInfo* brave_icon =                         \
+        GetBraveDefaultAvatarIconResourceInfo(brave_icon_index); \
+    if (brave_icon)                                              \
+      return brave_icon;                                         \
   }
 
 #define BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX  \
@@ -43,15 +43,15 @@ size_t GetBraveAvatarIconStartIndex();
 }  // namespace profiles
 
 // Override some functions (see implementations for details).
-#define GetDefaultProfileAvatarIconsAndLabels \
-    GetDefaultProfileAvatarIconsAndLabels_ChromiumImpl
+#define GetCustomProfileAvatarIconsAndLabels \
+  GetCustomProfileAvatarIconsAndLabels_ChromiumImpl
 #define IsDefaultAvatarIconUrl IsDefaultAvatarIconUrl_ChromiumImpl
 #define GetGuestAvatar GetGuestAvatar_ChromiumImpl
 
 #include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 #undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
-#undef GetDefaultProfileAvatarIconsAndLabels
+#undef GetCustomProfileAvatarIconsAndLabels
 #undef IsDefaultAvatarIconUrl
 #undef GetGuestAvatar
 
@@ -155,15 +155,15 @@ const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
 #endif
 }
 
-std::unique_ptr<base::ListValue> GetDefaultProfileAvatarIconsAndLabels(
+std::unique_ptr<base::ListValue> GetCustomProfileAvatarIconsAndLabels(
     size_t selected_avatar_idx) {
-  auto avatars = GetDefaultProfileAvatarIconsAndLabels_ChromiumImpl(
-      selected_avatar_idx);
+  auto avatars =
+      GetCustomProfileAvatarIconsAndLabels_ChromiumImpl(selected_avatar_idx);
 #if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
   //  Insert the 'placeholder' item, so it is still selectable
   //  in the Settings and Profile Manager WebUI.
   std::unique_ptr<base::DictionaryValue> avatar_info(
-        new base::DictionaryValue());
+      new base::DictionaryValue());
   avatar_info->SetString("url", profiles::GetPlaceholderAvatarIconUrl());
   avatar_info->SetString(
       "label", l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER));

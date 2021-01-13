@@ -26,7 +26,7 @@ TEST(ProfileUtilTest, BraveAvatarIconChoices) {
   // are brave's and include the placeholder so that
   // it can be re-selected, unlike chromium.
   std::unique_ptr<base::ListValue> avatars(
-      profiles::GetDefaultProfileAvatarIconsAndLabels(0));
+      profiles::GetCustomProfileAvatarIconsAndLabels(0));
 
   const size_t expected_selectable_avatar_count =
       profiles::kBraveDefaultAvatarIconsCount + 1;

@@ -39,8 +39,7 @@ GeminiGetClientUrlFunction::Run() {
   auto* service = GetGeminiService(browser_context());
   const std::string client_url = service->GetOAuthClientUrl();
 
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(client_url)));
+  return RespondNow(OneArgument(base::Value(client_url)));
 }
 
 ExtensionFunction::ResponseAction
@@ -58,7 +57,7 @@ GeminiGetAccessTokenFunction::Run() {
 }
 
 void GeminiGetAccessTokenFunction::OnCodeResult(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -76,7 +75,7 @@ GeminiRefreshAccessTokenFunction::Run() {
 }
 
 void GeminiRefreshAccessTokenFunction::OnRefreshResult(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -101,7 +100,7 @@ GeminiGetTickerPriceFunction::Run() {
 
 void GeminiGetTickerPriceFunction::OnPriceResult(
     const std::string& price) {
-  Respond(OneArgument(std::make_unique<base::Value>(price)));
+  Respond(OneArgument(base::Value(price)));
 }
 
 ExtensionFunction::ResponseAction
@@ -122,15 +121,13 @@ GeminiGetAccountBalancesFunction::Run() {
 void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
     const GeminiAccountBalances& balances,
     bool auth_invalid) {
-  auto result = std::make_unique<base::Value>(
-      base::Value::Type::DICTIONARY);
+  base::Value result(base::Value::Type::DICTIONARY);
 
   for (const auto& balance : balances) {
-    result->SetStringKey(balance.first, balance.second);
+    result.SetStringKey(balance.first, balance.second);
   }
 
-  Respond(TwoArguments(std::move(result),
-                       std::make_unique<base::Value>(auth_invalid)));
+  Respond(TwoArguments(std::move(result), base::Value(auth_invalid)));
 }
 
 ExtensionFunction::ResponseAction
@@ -154,8 +151,7 @@ GeminiGetDepositInfoFunction::Run() {
 
 void GeminiGetDepositInfoFunction::OnGetDepositInfo(
     const std::string& deposit_address) {
-  Respond(OneArgument(
-      std::make_unique<base::Value>(deposit_address)));
+  Respond(OneArgument(base::Value(deposit_address)));
 }
 
 ExtensionFunction::ResponseAction
@@ -173,7 +169,7 @@ GeminiRevokeTokenFunction::Run() {
 }
 
 void GeminiRevokeTokenFunction::OnRevokeToken(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -200,14 +196,13 @@ void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
     const std::string& quote_id, const std::string& quantity,
     const std::string& fee, const std::string& price,
     const std::string& total_price, const std::string& error) {
-  auto quote = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  quote->SetStringKey("id", quote_id);
-  quote->SetStringKey("quantity", quantity);
-  quote->SetStringKey("fee", fee);
-  quote->SetStringKey("price", price);
-  quote->SetStringKey("totalPrice", total_price);
-  Respond(TwoArguments(
-    std::move(quote), std::make_unique<base::Value>(error)));
+  base::Value quote(base::Value::Type::DICTIONARY);
+  quote.SetStringKey("id", quote_id);
+  quote.SetStringKey("quantity", quantity);
+  quote.SetStringKey("fee", fee);
+  quote.SetStringKey("price", price);
+  quote.SetStringKey("totalPrice", total_price);
+  Respond(TwoArguments(std::move(quote), base::Value(error)));
 }
 
 ExtensionFunction::ResponseAction
@@ -232,7 +227,7 @@ GeminiExecuteOrderFunction::Run() {
 }
 
 void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+  Respond(OneArgument(base::Value(success)));
 }
 
 ExtensionFunction::ResponseAction
@@ -240,8 +235,7 @@ GeminiIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), ::gemini::supported_regions, true);
-  return RespondNow(OneArgument(
-      std::make_unique<base::Value>(is_supported)));
+  return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
 }  // namespace api

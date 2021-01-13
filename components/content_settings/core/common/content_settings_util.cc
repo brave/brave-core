@@ -13,25 +13,26 @@
 
 namespace content_settings {
 
-ContentSetting GetDefaultFromResourceIdentifier(
-    const std::string& resource_identifier,
+ContentSetting GetDefaultFromContentSettingsType(
+    const ContentSettingsType& content_type,
     const GURL& primary_url,
     const GURL& secondary_url) {
-  if (resource_identifier == brave_shields::kAds) {
+  if (content_type == ContentSettingsType::ADS) {
     return CONTENT_SETTING_BLOCK;
-  } else if (resource_identifier == brave_shields::kCosmeticFiltering) {
+  } else if (content_type == ContentSettingsType::BRAVE_COSMETIC_FILTERING) {
     return secondary_url == GURL("https://firstParty/")
         ? CONTENT_SETTING_ALLOW
         : CONTENT_SETTING_BLOCK;
-  } else if (resource_identifier == brave_shields::kTrackers) {
+  } else if (content_type == ContentSettingsType::BRAVE_TRACKERS) {
     return CONTENT_SETTING_BLOCK;
-  } else if (resource_identifier == brave_shields::kHTTPUpgradableResources) {
+  } else if (content_type ==
+             ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES) {
     return CONTENT_SETTING_BLOCK;
-  } else if (resource_identifier == brave_shields::kBraveShields) {
+  } else if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
     return CONTENT_SETTING_ALLOW;
-  } else if (resource_identifier == brave_shields::kReferrers) {
+  } else if (content_type == ContentSettingsType::BRAVE_REFERRERS) {
     return CONTENT_SETTING_BLOCK;
-  } else if (resource_identifier == brave_shields::kCookies) {
+  } else if (content_type == ContentSettingsType::BRAVE_COOKIES) {
     return secondary_url == GURL("https://firstParty/")
         ? CONTENT_SETTING_BLOCK
         : CONTENT_SETTING_ALLOW;
@@ -42,11 +43,9 @@ ContentSetting GetDefaultFromResourceIdentifier(
 bool IsAllowContentSetting(const ContentSettingsForOneType& content_settings,
                            const GURL& primary_url,
                            const GURL& secondary_url,
-                           const std::string& resource_identifier) {
-  ContentSetting setting =
-      GetDefaultFromResourceIdentifier(resource_identifier,
-                                       primary_url,
-                                       secondary_url);
+                           const ContentSettingsType& content_type) {
+  ContentSetting setting = GetDefaultFromContentSettingsType(
+      content_type, primary_url, secondary_url);
 
   for (const auto& entry : content_settings) {
     if (entry.primary_pattern.Matches(primary_url) &&

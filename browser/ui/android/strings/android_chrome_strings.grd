@@ -320,10 +320,10 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain. [CHAR-LIMIT=40]">
         Brave services
       </message>
-      <message name="IDS_OFFER_CHROME_SIGNIN_TITLE" desc="Title for a checkbox in Brave services that controls sign-in and sync prompts.">
+      <message name="IDS_ALLOW_CHROME_SIGNIN_TITLE" desc="Title for a checkbox in Brave services that controls sign-in and sync prompts.">
         Allow Brave sign-in
       </message>
-      <message name="IDS_OFFER_CHROME_SIGNIN_SUMMARY" desc="Summary for a checkbox in Brave services that controls sign-in and sync prompts.">
+      <message name="IDS_ALLOW_CHROME_SIGNIN_SUMMARY" desc="Summary for a checkbox in Brave services that controls sign-in and sync prompts.">
         Show Brave sign-in prompts when you sign in to your Brave sync chain
       </message>
       <message name="IDS_AUTOCOMPLETE_SEARCHES_AND_URLS_TITLE" desc="Title for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
@@ -373,6 +373,35 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_CANCEL_SYNC_BUTTON" desc="The text of a button in a dialog that is shown when users tries closing 'Sync and Brave services' preferences without confirming the changes.">
         Cancel sync
+      </message>
+
+      <!-- Metrics settings -->
+      <message name="IDS_PREFS_METRICS_SETTINGS" desc="Title for the page that allows the user to control how much usage data Brave uploads. [CHAR-LIMIT=32]">
+        Usage data
+      </message>
+      <message name="IDS_MANAGE_METRICS_SETTINGS" desc="The text for a preferences row to open metrics settings.">
+        Manage usage data sharing
+      </message>
+      <message name="IDS_METRICS_SETTINGS_DESCRIPTION" desc="The text describing what the metrics settings page controls.">
+        Choose what you’re comfortable to share with Brave. The metrics you share will be used to help improve Brave’s features, performance, and stability.
+      </message>
+      <message name="IDS_METRICS_SETTINGS_EXTENDED_TITLE" desc="Title for the extended metrics option.">
+        Extended usage data
+      </message>
+      <message name="IDS_METRICS_SETTINGS_EXTENDED_SUMMARY" desc="Description text for 'Extended usage data' option in Usage data settings that enables extended metrics collection. Other options are 'Basic usage data' and 'No usage data'.">
+        Basic data plus information about the websites you visit and apps you use
+      </message>
+      <message name="IDS_METRICS_SETTINGS_BASIC_TITLE" desc="Title for the basic metrics option.">
+        Basic usage data
+      </message>
+      <message name="IDS_METRICS_SETTINGS_BASIC_SUMMARY" desc="Description text for 'Basic usage data' option in Usage data settings that enables basic metrics collection. Other options are 'Extended usage data' and 'No usage data'.">
+        How you interact with Brave, settings you’ve selected, details of Brave crashes
+      </message>
+      <message name="IDS_METRICS_SETTINGS_NONE_TITLE" desc="Title for no metrics option.">
+        No usage data
+      </message>
+      <message name="IDS_METRICS_SETTINGS_NONE_SUMMARY" desc="Description text for 'No usage data' option in Usage data settings that disables metrics collection. Other options are 'Extended usage data' and 'Basic usage data'.">
+        No statistics or crash reports are sent to Brave
       </message>
 
       <!-- Search engine settings -->
@@ -566,9 +595,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_ENTRY_VIEWER_DELETE_STORED_PASSWORD" desc="Content description for the button that allows users to delete the stored password.">
         Delete stored password
       </message>
-      <message name="IDS_PASSWORD_ENTRY_VIEWER_EDIT_STORED_PASSWORD" desc="Content description for the button that allows users to edit the stored password.">
-        Edit stored password
-      </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_USERNAME_COPIED_INTO_CLIPBOARD" desc="Text that announces to the user that the username of a saved account has been copied into clipboard.">
         Username copied
       </message>
@@ -583,6 +609,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_PASSWORD_EXPORT_SET_LOCK_SCREEN" desc="Text prompting user to set device lock in order to be able to export passwords">
         Turn on screen lock in Settings to export your passwords from this device
+      </message>
+      <message name="IDS_PASSWORD_ENTRY_VIEW_SET_SCREEN_LOCK" desc="Text prompting the user to set up a screen lock on their device in order to be able to view passwords">
+        To view passwords, first set a screen lock on your device
       </message>
       <message name="IDS_PASSWORD_GENERATION_POPUP_CONTENT_DESCRIPTION" desc="The text announced by the screen reader when the password generation popup is shown.">
         Showing password generation popup
@@ -1618,9 +1647,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR-LIMT=32]">
         Settings
       </message>
-      <message name="IDS_TURN_OFF_SYNC" desc="Button that user can press to turn off sync and sign out. [CHAR-LIMT=32]">
-        Sign out and turn off sync
-      </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Brave Pay data for Autofill. 'Brave Pay' should not be translated as it is the product name.">
         Credit cards and addresses using Brave Pay
       </message>
@@ -1846,8 +1872,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_UNDO_TAB_CLOSED" desc="Content description for the undo tab closed 'button.">
         Reopen closed tab
       </message>
+      <message name="IDS_ACCESSIBILITY_UNDO_CLOSED_TAB_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a closed tab.">
+        Restored <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph>, tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_UNDO_MULTIPLE_CLOSED_TABS_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo multiple closed tabs at once.">
+        Restored <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs
+      </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED" desc="Content description for the tab title of the currently selected tab.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab, selected
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_CLOSE_TAB" desc="Content description for the close tab button.">
         Close <ph name="TAB_TITLE">%1$s<ex>Brave</ex></ph> tab
@@ -2092,6 +2127,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR-LIMIT=30]">
         Preview page <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
+      <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. We're also labeling it *New* to draw attention to it when first released. [CHAR-LIMIT=30]">
+        Read later <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
       <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target page is fast-loading and responsive. [CHAR-LIMIT=30]">
         Fast page
       </message>
@@ -2160,6 +2198,24 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NOTIFICATION_WEBAPK_INSTALLED" desc="Indicates that a WebAPK has been successfully added to Home screen.">
         Added to Home screen
       </message>
+      <message name="IDS_IPH_PWA_INSTALL_AVAILABLE_TEXT" desc="The in-product-help message for PWAs that can be installed to the device.">
+        Install this app
+      </message>
+      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN" desc="The in-product-help message encouraging users to add a commonly visited webpage to the home screen.">
+        To get here quicker, add this page to your Home screen
+      </message>
+      <message name="IDS_IPH_BUBBLE_ADD_TO_HOME_SCREEN_ACCESSIBILITY" desc="The in-product-help message encouraging users to add a commonly visited webpage to the home screen. Used when a screen reader is turned. 'More options' should match TC ID 8110367050267853536.">
+        To get here quicker, add this page to your Home screen from the More options button
+      </message>
+      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_TITLE" desc="The title of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen.">
+        Get to this site quicker
+      </message>
+      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on phones.">
+        Add this site to your phone’s Home screen so you can get here more easily
+      </message>
+      <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION_TABLET" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on tablets.">
+        Add this site to your tablet’s Home screen so you can get here more easily
+      </message>
 
       <!-- Page info popup -->
       <message name="IDS_PAGE_INFO_CONNECTION_OFFLINE" desc="Message to display in the page info bubble when viewing and offline page.">
@@ -2173,6 +2229,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PAGE_INFO_PREVIEW_LOAD_ORIGINAL" desc="This text, when clicked, loads the original page from its origin without any treatments. This text is shown in the page info bubble when the currently viewed page has been modified to be a lighter and faster version of the original page.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Load original page<ph name="END_LINK">&lt;/link&gt;</ph> from <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_PAGE_INFO_CONNECTION_PAINT_PREVIEW" desc="Message to display in the page info bubble when viewing a preview of a page.">
+        You are viewing a preview of this page
       </message>
 
       <!-- Sad tab page -->
@@ -2638,12 +2697,16 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_NTP_LEARN_MORE_ABOUT_SUGGESTED_CONTENT" desc="Text in the footer of the New Tab Page. Part of the text is a link to a help center page where the user can learn more about suggested content.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph> about suggested content
       </message>
-      <message name="IDS_NTP_SUGGESTIONS_FETCH_FAILED" desc="Snackbar text shown when the user presses the More button to get more suggestions, but this fails (eg, no internet connectivity).">
-        Can’t get suggestions
-      </message>
-      <message name="IDS_NTP_SUGGESTIONS_FETCH_NO_NEW_SUGGESTIONS" desc="Snackbar text shown when the user presses the More button to get more suggestions, the fetch succeeds but provides no new suggestions.">
-        No new suggestions
-      </message>
+      <if expr="enable_feed_v1">
+        <message name="IDS_NTP_SUGGESTIONS_FETCH_FAILED" desc="Snackbar text shown when the user presses the More button to get more suggestions, but this fails (eg, no internet connectivity).">
+          Can’t get suggestions
+        </message>
+      </if>
+      <if expr="enable_feed_v1">
+        <message name="IDS_NTP_SUGGESTIONS_FETCH_NO_NEW_SUGGESTIONS" desc="Snackbar text shown when the user presses the More button to get more suggestions, the fetch succeeds but provides no new suggestions.">
+          No new suggestions
+        </message>
+      </if>
       <message name="IDS_NTP_MANAGE_MY_ACTIVITY" desc="Content description to manage my activity from the feed header overflow menu.">
         Manage activity
       </message>
@@ -2772,6 +2835,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_VIDEO_TUTORIALS_IPH_TAP_VOICE_ICON_TO_START" desc="In-product help bubble text prompting user to start typing on the search box or tap on the microphone icon to start a voice search.">
         Type here or tap the voice icon to start
       </message>
+      <message name="IDS_VIDEO_TUTORIALS_LOADING" desc="Text on the loading animation screen indicating that the video loading is currently in progress.">
+        Loading…
+      </message>
 
       <!-- Toolbar button strings -->
       <message name="IDS_OPEN_TABS" desc="Text for button to enter the tab switcher and show tabs that are open on this device">
@@ -2881,11 +2947,23 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_MENU_GROUP_TABS" desc="Menu item for grouping tabs. [CHAR-LIMIT=27]">
         Group tabs
       </message>
+      <message name="IDS_MENU_TRACK_PRICES" desc="Menu item for tracking prices on tabs. [CHAR-LIMIT=27]">
+        Track prices
+      </message>
       <message name="IDS_MENU_GET_IMAGE_DESCRIPTIONS" desc="Menu item to start getting alt text accessibility image labels/descriptions [CHAR-LIMIT=27]">
         Get image descriptions
       </message>
       <message name="IDS_MENU_STOP_IMAGE_DESCRIPTIONS" desc="Menu item to stop getting alt text accessibility image labels/descriptions [CHAR-LIMIT=27]">
         Stop image descriptions
+      </message>
+      <message name="IDS_MENU_ADD_TO" desc="Menu item for opening the 'Add to' dialog which can add the page to bookmarks, downloads, home screen, etc. [CHAR-LIMIT=27]">
+        Add to…
+      </message>
+      <message name="IDS_MENU_ADD_TO_DIALOG_TITLE" desc="Menu item for opening the 'Add to' dialog which can add the page to bookmarks, downloads, home screen, etc.">
+        Add to
+      </message>
+      <message name="IDS_MENU_HOMESCREEN" desc="Menu item for adding a shortcut to the Home screen (default title). [CHAR-LIMIT=27]">
+        Home screen
       </message>
 
       <!-- Bookmarks strings -->
@@ -2957,6 +3035,21 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
         Can’t find that bookmark. Check your spelling or add a new bookmark.
       </message>
+      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_TITLE" desc="The title for the bookmark bottom sheet, shown when trying to add a bookmark. Translation should match TC ID 9191031968346938109.">
+        Add to
+      </message>
+      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="The content description for the bookmark bottom sheet. Read as accessibility string when tapping on the bottom sheet.">
+        List of bookmark folders
+      </message>
+      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_OPENED_HALF" desc="The accessibility string read when the bookmark bottom sheet is half opened.">
+        List of bookmark folders opened at half height
+      </message>
+      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_OPENED_FULL" desc="The accessibility string read when the bookmark bottom sheet is fully opened.">
+        List of bookmark folders opened at full height
+      </message>
+      <message name="IDS_BOOKMARKS_BOTTOM_SHEET_CLOSED" desc="The accessibility string read when the bookmark bottom sheet is closed.">
+        List of bookmark folders is closed
+      </message>
       <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR-LIMIT=30]">
         Edit bookmark
       </message>
@@ -2995,6 +3088,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_READING_LIST_READY_FOR_OFFLINE" desc="The string to inform the user that the reading list has offline page ready.">
         Ready for offline
       </message>
+      <message name="IDS_READING_LIST_SAVED" desc="App-based message shown after user adds a new link to the reading list. [CHAR-LIMIT=32]">
+        Added to reading list
+      </message>
       <message name="IDS_READING_LIST_MARK_AS_READ" desc="The text for the action to mark the reading list as read.">
         Mark as read
       </message>
@@ -3005,16 +3101,35 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Catch up on your reading list
       </message>
       <message name="IDS_READING_LIST_REMINDER_NOTIFICATION_SUBTITLE" desc="The subtitle of the reminder notification for reading list.">
-        You have <ph name="READING_LIST_COUNT">%1$d<ex>5</ex></ph> pages
+          {READING_LIST_REMINDER_NOTIFICATION_SUBTITLE, plural,
+          =1 {You have <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE">%1$d<ex>1</ex></ph> page}
+          other {You have <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY">%1$d<ex>8</ex></ph> pages}}
       </message>
       <message name="IDS_READING_LIST_UNREAD_PAGE_COUNT" desc="Inform the user about the number of unread reading list items.">
-        <ph name="READING_LIST_COUNT">%1$d<ex>5</ex></ph> unread pages
+          {READING_LIST_UNREAD_PAGE_COUNT, plural,
+          =1 {<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE">%1$d<ex>1</ex></ph> unread page}
+          other {<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY">%1$d<ex>8</ex></ph> unread pages}}
+      </message>
+      <message name="IDS_READING_LIST_NO_UNREAD_PAGES" desc="The text as reading list folder subtitle to inform the user that there is no reading list articles.">
+        No unread pages
       </message>
       <message name="IDS_READING_LIST_INTRO_TEXT" desc="The text on the reading list in product help bubble and other UIs to introduce the feature to the user.">
         Save this page for later and get a reminder
       </message>
+      <message name="IDS_READING_LIST_SAVE_PAGES_FOR_LATER" desc="The text on the reading list in product help bubble to introduce the feature to the user.">
+        Save pages for later and get a reminder
+      </message>
       <message name="IDS_READING_LIST_FIND_IN_BOOKMARKS" desc="The text to inform the user to find the reading list in bookmarks UI.">
         Find your reading list in Bookmarks
+      </message>
+      <message name="IDS_READING_LIST_EMPTY_LIST_TITLE" desc="The text on reading list page when there are no reading list items informing user that reading list is supposed to appear on this surface.">
+        You’ll find your reading list here
+      </message>
+      <message name="IDS_READING_LIST_EMPTY_LIST_DESCRIPTION" desc="The description text on reading list page when there are no reading list items informing user that they can save articles to read later which will appear on this surface.">
+        You can save pages to your reading list to find them again
+      </message>
+      <message name="IDS_READING_LIST_EMPTY_LIST_DESCRIPTION_OFFLINE" desc="The description text on reading list page when there are no reading list items informing user that they can save articles to read later offline which will appear on this surface.">
+        You can save pages to your reading list to find them again or read offline
       </message>
 
       <!-- Offline pages -->
@@ -3120,9 +3235,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MENU_OS_VERSION_UNSUPPORTED" desc="Content description for the menu button when it is covered by the warning icon that is displayed when the current Android OS version is unsupported.">
         Brave can’t update. More options
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO" desc="Content description for the page icon that gives more site information when clicked. The icon can be a magnifier for search result pages, or other icons representing the page state.">
-        Site information
-      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
       </message>
@@ -3199,8 +3311,8 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Showing suggestions for <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_TILE" desc="When the user focuses a Frequently Visited URL tile suggestion, the tile will be crome://announced according to the following pattern">
-        <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>: <ph name="WEBSITE_URL">%1$s<ex>https://www.nps.gov/crla</ex></ph>
-      </message> 
+        <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>: <ph name="WEBSITE_URL">%2$s<ex>https://www.nps.gov/crla</ex></ph>
+      </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
@@ -3310,6 +3422,12 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_UNDO_BAR_MULTIPLE_DOWNLOADS_DELETE_MESSAGE" desc="Message shown when you can undo deleting several downloads.">
         <ph name="NUMBER_OF_DOWNLOADS">%1$s<ex>3</ex></ph> downloads deleted
       </message>
+      <message name="IDS_UNDO_BAR_DELETE_RESTORE_ACCESSIBILITY_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a download deletion.">
+        Restored <ph name="ITEM_TITLE">%1$s<ex>YouTube</ex></ph>
+      </message>
+      <message name="IDS_UNDO_BAR_MULTIPLE_DOWNLOADS_DELETE_RESTORE_ACCESSIBILITY_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo multiple download deletions at once.">
+        <ph name="NUMBER_OF_DOWNLOADS">%1$s<ex>3</ex></ph> downloads restored
+      </message>
 
       <!-- MultiWindow -->
       <message name="IDS_UNSUPPORTED_NUMBER_OF_WINDOWS" desc="Popup message for when the user has tried to start too many concurrent versions of Brave.">
@@ -3343,6 +3461,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <!-- Ephemeral Tab -->
       <message name="IDS_EPHEMERAL_TAB_SHEET_DESCRIPTION" desc="The content description of the preview tab bottom sheet.">
         Preview tab
+      </message>
+      <message name="IDS_EPHEMERAL_TAB_SHEET_NOT_VIEWABLE" desc="Notifies the user that the link they are trying to preview cannot be viewed.">
+        Preview tab content is not viewable.
       </message>
       <message name="IDS_EPHEMERAL_TAB_SHEET_OPENED_HALF" desc="Accessibility string read when the preview tab bottom sheet is opened at half height. The sheet will occupy up to half the screen.">
         Preview tab is half-opened
@@ -3449,9 +3570,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- WebAPK/TWA related strings -->
-      <message name="IDS_APP_RUNNING_IN_CHROME_DISCLOSURE" desc="Message on the snackbar that indicates an app may use Brave data.">
-        This app is running in Brave
-      </message>
       <message name="IDS_TWA_RUNNING_IN_CHROME" desc="Message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         Running in Brave
       </message>
@@ -3588,22 +3706,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <if expr="enable_arcore">
-        <!-- ARCore check infobar -->
-        <message name="IDS_AR_CORE_CHECK_INFOBAR_INSTALL_TEXT" desc="Text to be displayed in the ARCore check infobar. When a WebXR page is loaded, if ARCore is needed to display AR content and it is not installed, an infobar will be shown to the user prompting them to install ARCore.">
-          To view augmented reality content, install ARCore
-        </message>
-        <message name="IDS_AR_CORE_CHECK_INFOBAR_UPDATE_TEXT" desc="Text to be displayed in the ARCore check infobar. When a WebXR page is loaded, if ARCore is needed to display AR content and the installed ARCore is not up to date to the version needed by the implementation, an infobar will be shown to the user prompting them to update ARCore.">
-          To view augmented reality content, update ARCore
-        </message>
-
         <!-- AR module -->
         <message name="IDS_AR_MODULE_TITLE" desc="Text shown when the AR module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Augmented Reality for Brave…').">
           Augmented Reality
-        </message>
-
-        <!-- App upgrade from Play Store -->
-        <message name="IDS_UPDATE_FROM_MARKET" desc="Title of button that will direct the user to update an app from the market (Play Store)">
-          Update
         </message>
       </if>
 
@@ -3874,14 +3979,30 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- Autofill Assistant preferences -->
+      <!-- TODO(b/168178344): Move to Assistant settings strings section below. -->
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_TITLE" desc="Title for the Autofill Assistant preferences screen. [CHAR-LIMIT=32]">
         Brave Assistant in Brave
       </message>
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_SWITCH" desc="Title for the switch toggling whether Autofill Assistant is enabled. [CHAR-LIMIT=32]">
-        Assistant Triggered Checkout
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_SUMMARY" desc="Summary for the Autofill Assistant preferences screen.">
+        Helps you complete tasks, such as checkout, throughout the web
       </message>
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_SUMMARY" desc="Description for the Autofill Assistant toggle.">
+      <message name="IDS_PREFS_WEB_ASSISTANCE_SECTION_TITLE" desc="Title for the web assistance section">
+        Web Assistance
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_TITLE" desc="Title for the switch toggling whether Autofill Assistant is enabled. [CHAR-LIMIT=32]">
+        Get help with tasks on the web
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_SUMMARY" desc="Description for the Autofill Assistant toggle.">
         To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_TITLE" desc="Title for the switch toggling whether proactive help is enabled. When turned on, the Assistant will be able to proactively show up (without explicit user prompt) and offer to help. [CHAR-LIMIT=32]">
+        Proactive Help
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_SUMMARY" desc="Description for the proactive help toggle. It explains that the Assistant may appear proactively when it detects that it can help the user. ">
+        Assistant will appear when it detects that it can help you on supported websites
+      </message>
+      <message name="IDS_PREFS_PROACTIVE_HELP_SYNC_LINK" desc="Disclaimer that appears after the proactive help toggle, but only if 'make search and browsing better'[MSBB] is switched off. Proactive help is only possible while MSBB is turned on, which is the default for signed-in users. If MSBB is off, the proactive help setting will be grayed out and this disclaimer is shown.">
+        To use this setting <ph name="BEGIN_LINK">&lt;link&gt;</ph>Make searches and browsing better<ph name="END_LINK">&lt;/link&gt;</ph> must be turned on
       </message>
       <!-- Usage Stats strings -->
       <message name="IDS_USAGE_STATS_CONSENT_TITLE" desc="Title for activity authorizing Digital Wellbeing to access Brave usage data">
@@ -3933,6 +4054,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
 
       <message name="IDS_CABLEV2_AUTHENTICATOR_MODULE_TITLE" desc="Text shown when the caBLEv2 module (i.e. for Phone as a Security Key) is               referenced in install start, success, and failure UI (e.g. in               IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Phone as a               Security Key Support for Brave…'). A security key is usually a physical piece of               hardware used for authentication and this feature is about using a mobile               phone in place of one.">
         Phone as a Security Key Support
+      </message>
+
+      <message name="IDS_CABLEV2_ACTIVITY_TITLE" desc="The label of the Activity for using your phone as a security key. A 'security key' in this context is generally a small USB device that is used for logging into websites. This feature allows Brave on an Android phone to act as a security key. A user may see it in Android permissions prompts (see screenshot).">
+         Brave as a Security Key
       </message>
 
       <!-- QR Code -->
@@ -4176,6 +4301,55 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_GET_DESCRIPTIONS_BUTTON" desc="Button for dialog to enable option to get image descriptions.">
         Get descriptions
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TITLE" desc="Title of the preference that allows user to update accessibility image descriptions settings. [CHAR-LIMIT=32]">
+        Image descriptions
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TOGGLE_TITLE" desc="Title of the toggle to turn preference on and off for accessibility image descriptions.">
+        Get image descriptions
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_TOGGLE_CONTENT" desc="Content of the toggle to turn preference on and off for accessibility image descriptions.">
+        Some images are sent to Brave to improve descriptions for you
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_USE_MOBILE_DATA_TITLE" desc="Title of radio button to allow user to specify getting accessibility image descriptions while on mobile data.">
+        Use mobile data
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_USE_MOBILE_DATA_CONTENT" desc="Content of radio button to allow user to specify getting accessibility image descriptions while on mobile data.">
+        Wi-Fi is used when available
+      </message>
+
+      <!-- Assistant voice search consent ui. -->
+      <message name="IDS_AVS_CONSENT_UI_TITLE" desc="Title for a dialog asking the user's permission to use Assistant for voice search.">
+      Get a better voice experience on the web
+      </message>
+      <message name="IDS_AVS_CONSENT_UI_SUBTITLE" desc="Subtitle for a dialog asking the user's permission to use Assistant for voice search.">
+      Brave Assistant can complete actions across websites for you
+      </message>
+      <message name="IDS_AVS_CONSENT_UI_BODY" desc="Body for a dialog asking the user's permission to use Assistant for voice search.">
+      To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant. This information may be stored in your Brave account. You can turn off Assistant in Brave settings.
+      </message>
+      <message name="IDS_AVS_CONSENT_UI_CONTENT_DESCRIPTION" desc="Enable button text for a dialog asking the user's permission to use Assistant for voice search.">
+      Assistant voice search consent ui
+      </message>
+      <message name="IDS_AVS_CONSENT_UI_HALF_HEIGHT_DESCRIPTION" desc="Enable button text for a dialog asking the user's permission to use Assistant for voice search.">
+      Assistant voice search consent ui opened at half height
+      </message>
+      <message name="IDS_AVS_CONSENT_UI_FULL_HEIGHT_DESCRIPTION" desc="Enable button text for a dialog asking the user's permission to use Assistant for voice search.">
+      Assistant voice search consent ui opened at full height
+      </message>
+      <message name="IDS_AVS_CONSENT_UI_CLOSED_DESCRIPTION" desc="Enable button text for a dialog asking the user's permission to use Assistant for voice search.">
+      Assistant voice search consent ui closed
+      </message>
+
+      <!-- Assistant settings strings-->
+      <message name="IDS_AVS_SETTING_CATEGORY_TITLE" desc="Title of the Assistant voice search setting category.">
+      Voice assistance
+      </message>
+      <message name="IDS_AVS_SETTING_ENABLED_TITLE" desc="Title of the Assistant voice search setting.">
+      Enhanced voice search
+      </message>
+      <message name="IDS_AVS_SETTING_ENABLED_DESCRIPTION" desc="Description of the Assistant voice search setting.">
+      Brave Assistant provides a better voice experience for searching the web and engaging with sites you have open. Brave Assistant will receive the URL and contents of sites you use with it.
       </message>
     </messages>
   </release>

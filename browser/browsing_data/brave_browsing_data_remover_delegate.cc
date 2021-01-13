@@ -75,19 +75,18 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
   auto* provider =
       static_cast<content_settings::BravePrefProvider*>(map->GetPrefProvider());
-  for (const auto& resource_id : content_settings::GetShieldsResourceIDs()) {
+  for (const auto& content_type :
+       content_settings::GetShieldsContentSettingsTypes()) {
     ContentSettingsForOneType settings;
-    ContentSettingsType content_type = ContentSettingsType::PLUGINS;
-    map->GetSettingsForOneType(content_type, resource_id, &settings);
+    map->GetSettingsForOneType(content_type, &settings);
     for (const ContentSettingPatternSource& setting : settings) {
       base::Time last_modified = provider->GetWebsiteSettingLastModified(
-          setting.primary_pattern, setting.secondary_pattern, content_type,
-          resource_id);
+          setting.primary_pattern, setting.secondary_pattern, content_type);
       if (last_modified >= begin_time &&
           (last_modified < end_time || end_time.is_null())) {
         provider->SetWebsiteSetting(setting.primary_pattern,
                                     setting.secondary_pattern, content_type,
-                                    resource_id, nullptr, {});
+                                    nullptr, {});
       }
     }
   }

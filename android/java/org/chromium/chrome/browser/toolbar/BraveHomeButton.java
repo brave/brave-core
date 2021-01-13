@@ -8,39 +8,36 @@
 package org.chromium.chrome.browser.toolbar;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 
-import androidx.core.content.ContextCompat;
-
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.homepage.HomepageManager;
-import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.chrome.browser.toolbar.ThemeColorProvider.TintObserver;
 
 /**
  * Brave's extension of HomeButton.
  */
-public class BraveHomeButton extends HomeButton {
-    private Context mContext;
+public class BraveHomeButton extends HomeButton implements TintObserver {
+    private ThemeColorProvider mThemeColorProvider;
 
     public BraveHomeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
     }
 
-    /**
-     * Override to swap icon to new_tab_icon and enable the button when
-     * homepage is disabled.
-     */
-    @Override
-    public void updateButtonEnabledState(Tab tab) {
-        super.updateButtonEnabledState(tab);
+    public void setThemeColorProvider(ThemeColorProvider themeColorProvider) {
+        mThemeColorProvider = themeColorProvider;
+        mThemeColorProvider.addTintObserver(this);
+    }
 
-        final boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
-        if (!isHomepageEnabled) {
-            setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.new_tab_icon));
-            setEnabled(true);
-        } else { // swap back to home button icon
-            setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.btn_toolbar_home));
+    @Override
+    public void onTintChanged(ColorStateList tint, boolean useLight) {
+        ApiCompatibilityUtils.setImageTintList(this, tint);
+    }
+
+    public void destroy() {
+        if (mThemeColorProvider != null) {
+            mThemeColorProvider.removeTintObserver(this);
+            mThemeColorProvider = null;
         }
     }
 }

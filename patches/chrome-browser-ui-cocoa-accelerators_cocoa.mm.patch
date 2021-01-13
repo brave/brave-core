@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/cocoa/accelerators_cocoa.mm b/chrome/browser/ui/cocoa/accelerators_cocoa.mm
-index c7ef438a98109198d0b12f0e3ae3146588fe7547..54e6fcccffde04146cdcb15f9e82b4a7f8962efd 100644
+index 1667c1fa640089f88709ca919ca6475622b84383..5ab1db8c781dda9aaafcd3011c4366523029d7c8 100644
 --- a/chrome/browser/ui/cocoa/accelerators_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/accelerators_cocoa.mm
-@@ -39,6 +39,8 @@ const struct AcceleratorMapping {
+@@ -40,6 +40,8 @@ const struct AcceleratorMapping {
       ui::VKEY_N},
      {IDC_NEW_TAB, ui::EF_COMMAND_DOWN, ui::VKEY_T},
      {IDC_NEW_WINDOW, ui::EF_COMMAND_DOWN, ui::VKEY_N},

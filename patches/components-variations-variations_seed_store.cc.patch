@@ -1,5 +1,5 @@
 diff --git a/components/variations/variations_seed_store.cc b/components/variations/variations_seed_store.cc
-index c3567148f8abfb40537d3ca834cb9b5164e3a664..57154461360609eacaac88e1f5511ad6881f886e 100644
+index 7b6ee96b13a31d55373f506d67eccb0ae2c8fbfa..0772d7d399bae55e4dac636542c8a04d55dbe9b4 100644
 --- a/components/variations/variations_seed_store.cc
 +++ b/components/variations/variations_seed_store.cc
 @@ -35,6 +35,7 @@ namespace {

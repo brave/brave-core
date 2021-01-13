@@ -313,6 +313,7 @@
       <part file="send_tab_to_self_strings.grdp" />
       <part file="sms_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
+      <part file="subresource_filter_strings.grdp" />
       <part file="sync_ui_strings.grdp" />
       <part file="translate_strings.grdp" />
       <part file="tab_groups_strings.grdp" />
@@ -327,6 +328,9 @@
       </if>
       <if expr="is_ios">
         <part file="management_ios_strings.grdp" />
+      </if>
+      <if expr="enable_vr">
+        <part file="webxr_strings.grdp" />
       </if>
 
       <!-- Generic terms -->
@@ -348,6 +352,9 @@
       <message name="IDS_OK" desc="Used for OK on buttons">
         OK
       </message>
+      <message name="IDS_RELOAD" desc="Used for Reload on buttons">
+        Reload
+      </message>
       <message name="IDS_ADD" desc="Used for Add on buttons">
         Add
       </message>
@@ -359,6 +366,12 @@
       </message>
       <message name="IDS_MENU" desc="The accessible name for the Menu. This is used as the aria-roledescription for context menus.">
         Menu
+      </message>
+      <message name="IDS_INSTALL" desc="Text to be displayed when an action will trigger an installation (of a component, app from the Play Store, etc.).">
+        Install
+      </message>
+      <message name="IDS_UPDATE" desc="Text to be displayed when an action will trigger an update of an existing item (e.g. a component, app from the Play Store, etc.).">
+        Update
       </message>
       <if expr="is_android">
         <message name="IDS_SHOW_CONTENT" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">

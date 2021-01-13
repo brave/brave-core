@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
+index 27dbaba5b91bcbfac4b50892919e92728def2380..ecdf4012ef42e4f73c3d698511ec182088c91a23 100644
+--- a/components/content_settings/core/common/content_settings_types.h
++++ b/components/content_settings/core/common/content_settings_types.h
+@@ -229,6 +229,7 @@ enum class ContentSettingsType : int32_t {
+   // by the File System Access API.
+   FILE_SYSTEM_LAST_PICKED_DIRECTORY,
+ 
++  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
+   NUM_TYPES,
+ };
+ 

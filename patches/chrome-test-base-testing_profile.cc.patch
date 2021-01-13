@@ -1,8 +1,8 @@
 diff --git a/chrome/test/base/testing_profile.cc b/chrome/test/base/testing_profile.cc
-index 4574f3d923eff0c6c3ff5282ce52280c402f741b..607d487d803fa250906454ccfb3566a3b4c70d81 100644
+index 011c8898386fff3bc433759286fe94f3d53c4800..1f5b8e034a53edd29605e621f8755bbee0026020 100644
 --- a/chrome/test/base/testing_profile.cc
 +++ b/chrome/test/base/testing_profile.cc
-@@ -329,6 +329,7 @@ void TestingProfile::Init() {
+@@ -354,6 +354,7 @@ void TestingProfile::Init() {
        EnsureBrowserContextKeyedServiceFactoriesBuilt();
  
  #if BUILDFLAG(ENABLE_SUPERVISED_USERS)

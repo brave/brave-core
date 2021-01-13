@@ -299,12 +299,7 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   DCHECK_NE(sync_code.size(), 0u);
 
   if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
-    configuration.encrypt_all = false;
     configuration.set_new_passphrase = false;
-  }
-
-  if (configuration.encrypt_all) {
-    service->GetUserSettings()->EnableEncryptEverything();
   }
 
   bool passphrase_failed = false;
