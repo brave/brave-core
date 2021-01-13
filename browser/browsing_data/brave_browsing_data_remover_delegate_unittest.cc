@@ -60,11 +60,7 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
   const GURL kBatURL("https://basicattentiontoken.org");
   const GURL kGoogleURL("https://www.google.com");
   const GURL kAbcURL("https://www.abc.com");
-  // Four settings are added.
-  // First two settings are shields settings in PLUGINS type.
-  // Javascript is not counted as shields type because it's stored to
-  // JAVASCRIPT type instead of PLUGINS type.
-  // Last one is PLUGINS type but it's flash resource not shields resource.
+  // Three settings are added.
   map()->SetContentSettingDefaultScope(
       kBraveURL, GURL(), ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
       CONTENT_SETTING_ALLOW);
@@ -75,8 +71,6 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
       brave_shields::GetPatternFromURL(kGoogleURL),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT,
       CONTENT_SETTING_BLOCK);
-  map()->SetContentSettingDefaultScope(
-      kAbcURL, GURL(), ContentSettingsType::PLUGINS, CONTENT_SETTING_ALLOW);
 
   const base::Time kNow = base::Time::Now();
   const base::Time k1DaysOld = kNow - base::TimeDelta::FromDays(1);
