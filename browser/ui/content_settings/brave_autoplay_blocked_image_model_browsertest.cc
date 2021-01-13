@@ -36,6 +36,6 @@ IN_PROC_BROWSER_TEST_F(BraveAutoplayBlockedImageModelTest, CreateBubbleModel) {
   EXPECT_EQ(static_cast<ContentSettingSimpleImageModel*>(model.get())
             ->content_type(),
             simple_bubble->content_type());
-  EXPECT_EQ(ImageType::PLUGINS, model->image_type());
+  EXPECT_EQ(ImageType::MEDIASTREAM, model->image_type());
   EXPECT_EQ(ContentSettingsType::AUTOPLAY, model->content_type());
 }
