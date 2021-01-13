@@ -64,6 +64,8 @@ class BraveComponentLoader : public ComponentLoader {
   void CheckRewardsStatus();
 #endif
 
+  void ReinstallAsNonComponent(std::string extension_id);
+
   Profile* profile_;
   PrefService* profile_prefs_;
   PrefChangeRegistrar pref_change_registrar_;

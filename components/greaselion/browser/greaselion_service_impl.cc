@@ -108,6 +108,8 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   root->SetStringPath(extensions::manifest_keys::kVersion, "1.0");
   root->SetStringPath(extensions::manifest_keys::kDescription, "");
   root->SetStringPath(extensions::manifest_keys::kPublicKey, key);
+  root->SetStringPath("incognito",
+                      extensions::manifest_values::kIncognitoNotAllowed);
 
   std::vector<std::string> matches;
   matches.reserve(rule->url_patterns().size());
