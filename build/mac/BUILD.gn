@@ -42,7 +42,7 @@ if (is_universal_binary) {
   x64_arch_app_path = "$root_out_dir/$x64_app_path_prefix/$brave_exe"
 
   action("universalize") {
-    script = "//brave/installer/mac/universalizer.py"
+    script = "//chrome/installer/mac/universalizer.py"
 
     args = [
       rebase_path(arm64_arch_app_path),
