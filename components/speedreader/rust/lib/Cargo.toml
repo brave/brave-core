@@ -31,7 +31,7 @@ flate2 = { version = "1.0.12", features = ["rust_backend"], default-features = f
 # Pin versions compatible with rustc 1.35.0
 url = "=1.7.2"
 unicode-normalization = "=0.1.8"
-smallvec = "=0.6.13"
+smallvec = "=0.6.14"
 
 readability = { path = "src/readability" }
 lazy_static = "1.3"
