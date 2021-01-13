@@ -70,6 +70,7 @@ class IpfsService : public KeyedService,
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
+  base::FilePath GetIpfsExecutablePath();
   base::FilePath GetDataPath() const;
   base::FilePath GetConfigFilePath() const;
 
@@ -88,7 +89,6 @@ class IpfsService : public KeyedService,
   void RunLaunchDaemonCallbackForTest(bool result);
 
  protected:
-  base::FilePath GetIpfsExecutablePath();
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
  private:

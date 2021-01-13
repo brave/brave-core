@@ -1,3 +1,4 @@
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("browsing_data") {
@@ -12,6 +13,7 @@ source_set("browsing_data") {
 
   deps = [
     "//base",
+    "//brave/components/ipfs/buildflags",
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/content_settings/core/browser",
@@ -25,5 +27,9 @@ source_set("browsing_data") {
       "//brave/common/extensions/api",
       "//extensions/browser",
     ]
+  }
+
+  if (ipfs_enabled) {
+    deps += [ "//brave/components/ipfs" ]
   }
 }
