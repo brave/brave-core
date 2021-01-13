@@ -19,12 +19,6 @@
 namespace content_settings {
 
 // With this subclass, shields configuration is persisted across sessions.
-// Its content type is |ContentSettingsType::PLUGIN| and its storage option is
-// ephemeral because chromium want that flash configuration shouldn't be
-// persisted. (Maybe chromium assumes flash is the only one of this type).
-// Because of this reasion, shields configuration was also ephemeral.
-// However, we want shilelds configuration persisted. To do this, we make
-// EphemeralProvider ignore shields type and this class handles.
 class BravePrefProvider : public PrefProvider,
                           public Observer {
  public:
