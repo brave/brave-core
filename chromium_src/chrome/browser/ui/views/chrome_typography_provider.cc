@@ -22,7 +22,7 @@ bool ShouldIgnoreHarmonySpec(const ui::NativeTheme& theme) {
 #if defined(OS_MAC)
     return false;
 #else
-    if (theme.UsesHighContrastColors())
+    if (theme.UserHasContrastPreference())
       return true;
     if (theme.ShouldUseDarkColors())
       return false;
