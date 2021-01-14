@@ -29,7 +29,7 @@ BackgroundHelperLinux::~BackgroundHelperLinux() {
 
 bool BackgroundHelperLinux::IsForeground() const {
   x11::Window x11_window = x11::Window::None;
-  ui::GetProperty(ui::GetX11RootWindow(), gfx::GetAtom("_NET_ACTIVE_WINDOW"),
+  ui::GetProperty(ui::GetX11RootWindow(), x11::GetAtom("_NET_ACTIVE_WINDOW"),
      &x11_window);
 
   for (auto* browser : *BrowserList::GetInstance()) {
