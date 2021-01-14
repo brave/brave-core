@@ -11,7 +11,7 @@ import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
-import { attributeNameCardCount, OnReadFeedItem, OnSetPublisherPref } from './'
+import { attributeNameCardCount, OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref } from './'
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
@@ -58,6 +58,7 @@ type Props = {
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
   onPeriodicCardViews: (element: HTMLElement | null) => void
+  onPromotedItemViewed: OnPromotedItemViewed
 }
 
 type CardProps = Props & {
@@ -97,6 +98,7 @@ function Card (props: CardProps) {
                 articleToScrollTo={props.articleToScrollTo}
                 onReadFeedItem={props.onReadFeedItem}
                 onSetPublisherPref={props.onSetPublisherPref}
+                onItemViewed={props.onPromotedItemViewed}
       />
     case CardType.CategoryGroup:
       if (!props.content.itemsByCategory) {

@@ -93,7 +93,8 @@ declare namespace BraveToday {
   }
 
   export type PromotedArticle = BaseFeedItem & {
-    content_type: 'brave_partner'
+    content_type: 'brave_partner',
+    creative_instance_id: string // (Possibly but not guaranteed unique) Id for this specific item
   }
 
   export type Deal = BaseFeedItem & {

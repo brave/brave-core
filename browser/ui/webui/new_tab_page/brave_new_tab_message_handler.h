@@ -60,8 +60,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   // TODO(petemill): Today should get it's own message handler
   // or service.
   void HandleTodayInteractionBegin(const base::ListValue* args);
-  void HandleTodayOnCardVisits(const base::ListValue* args);
+  void HandleTodayOnCardVisit(const base::ListValue* args);
   void HandleTodayOnCardViews(const base::ListValue* args);
+  void HandleTodayOnPromotedCardView(const base::ListValue* args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();

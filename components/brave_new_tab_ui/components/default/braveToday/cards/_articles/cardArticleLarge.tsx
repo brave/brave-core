@@ -10,6 +10,7 @@ import PublisherMeta from '../PublisherMeta'
 import useScrollIntoView from '../../useScrollIntoView'
 import useReadArticleClickHandler from '../../useReadArticleClickHandler'
 import { OnReadFeedItem, OnSetPublisherPref } from '../../'
+import VisibilityTimer from '../../../../../helpers/visibilityTimer'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
   articleToScrollTo?: BraveToday.FeedItem
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
+  onItemViewed?: (item: BraveToday.FeedItem) => any
   isPromoted?: boolean
 }
 
@@ -27,6 +29,7 @@ type ArticleProps = {
   shouldScrollIntoView?: boolean
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
+  onItemViewed?: (item: BraveToday.FeedItem) => any
   isPromoted?: boolean
 }
 
@@ -42,16 +45,46 @@ function onClickPromoted (e: React.MouseEvent) {
   e.preventDefault()
 }
 
-const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props: ArticleProps, ref) {
+const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props: ArticleProps, forwardedRef) {
   const { publisher, item } = props
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
 
-  const onClick = useReadArticleClickHandler(props.onReadFeedItem, item)
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, { item, isPromoted: props.isPromoted })
+
+  const innerRef = React.useRef<HTMLElement>(null)
+
+  React.useEffect(() => {
+    if (!innerRef.current) {
+      return
+    }
+    // Pass ref to parent
+    if (forwardedRef) {
+      if (typeof forwardedRef === 'function') {
+        forwardedRef(innerRef.current)
+      } else {
+        // @ts-ignore
+        // Ref.current is meant to be readonly, but we can ignore that.
+        ref.current = newRef
+      }
+    }
+    // If asked, detect when card is viewed, and send an action.
+    if (!props.onItemViewed) {
+      return
+    }
+    let onItemViewed = props.onItemViewed
+    const observer = new VisibilityTimer(() => {
+      onItemViewed(item)
+    }, 100, innerRef.current)
+    observer.startTracking()
+    return () => {
+      observer.stopTracking()
+    }
+  }, [innerRef.current, props.onItemViewed])
 
   // TODO(petemill): Avoid nested links
   // `ref as any` due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   return (
-    <Card.Large innerRef={ref as any}>
+    <Card.Large innerRef={innerRef}>
       <a onClick={onClick} href={item.url} ref={cardRef}>
         <CardImage
           imageUrl={item.img}
@@ -121,6 +154,7 @@ const CardSingleArticleLarge = React.forwardRef<HTMLElement, Props>(function (pr
             shouldScrollIntoView={shouldScrollIntoView}
             onReadFeedItem={props.onReadFeedItem}
             onSetPublisherPref={props.onSetPublisherPref}
+            onItemViewed={props.onItemViewed}
             isPromoted={props.isPromoted}
           />
         )
