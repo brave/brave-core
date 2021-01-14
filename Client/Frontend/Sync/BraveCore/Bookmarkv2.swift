@@ -298,7 +298,8 @@ extension Bookmarkv2 {
             guard let self = self else { return }
             
             if case .favIconChanged(let node) = state {
-                if node.guid == self.bookmarkNode.guid {
+                if node.isValid && self.bookmarkNode.isValid
+                    && node.guid == self.bookmarkNode.guid {
                     observer()
                 }
             }
