@@ -13,17 +13,17 @@
 // CanvasRenderingContext2D because we also replace that one with our own.
 #define getImageDataInternal                                                   \
   getImageDataInternal(ScriptState*, int sx, int sy, int sw, int sh,           \
-                       ImageDataColorSettings*, ExceptionState&);              \
+                       ImageDataSettings*, ExceptionState&);                   \
   ImageData* getImageDataInternal(int sx, int sy, int sw, int sh,              \
-                                  ImageDataColorSettings*, ExceptionState&);   \
+                                  ImageDataSettings*, ExceptionState&);        \
   ImageData* getImageData(ScriptState*, int sx, int sy, int sw, int sh,        \
                           ExceptionState&);                                    \
   ImageData* getImageData(ScriptState*, int sx, int sy, int sw, int sh,        \
-                          ImageDataColorSettings*, ExceptionState&);           \
+                          ImageDataSettings*, ExceptionState&);                \
   ImageData* getImageData_Unused(int sx, int sy, int sw, int sh,               \
                                  ExceptionState&);                             \
   ImageData* getImageData_Unused(int sx, int sy, int sw, int sh,               \
-                                 ImageDataColorSettings*, ExceptionState&);    \
+                                 ImageDataSettings*, ExceptionState&);         \
                                                                                \
   bool isPointInPath(ScriptState*, const double x, const double y,             \
                      const String& winding = "nonzero");                       \
