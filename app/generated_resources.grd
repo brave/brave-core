@@ -1159,6 +1159,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_ASSIGN_TO_DESKS_MENU" desc="The text label of the Assign to Desks submenu">
           Assign to desk
         </message>
+        <message name="IDS_ASSIGN_TO_ALL_DESKS" desc="The text label of the Assign to All Desks menu item">
+          All desks
+        </message>
       </if>
 
       <message name="IDS_ACCNAME_ZOOM_PLUS2" desc="The accessible description of the Make Text Larger menu item in the merged menu">
@@ -1910,6 +1913,18 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
         <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> is being scanned.
       </message>
+      <if expr="is_macosx">
+        <then>
+          <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the download was delivered insecurely. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> can't be downloaded securely.
+          </message>
+        </then>
+        <else>
+          <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the download was delivered insecurely. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> can't be downloaded securely. Press Shift+F6 to cycle to the downloads bar area.
+          </message>
+        </else>
+      </if>
 
       <!-- Download Notification Labels -->
       <message name="IDS_DOWNLOAD_NOTIFICATION_COPY_TO_CLIPBOARD" desc="In the download notification, the text of 'Copy to clipboard' button, which is to copy the file content (eg. an image for image files) to the clipboard">
@@ -2103,19 +2118,6 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit
-        </message>
-      </if>
-
-      <!-- Ambient badge -->
-      <if expr="is_android">
-        <message name="IDS_AMBIENT_BADGE_INSTALL" desc="String for the ambient badge promoting an app installation">
-          Add <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> to Home screen
-        </message>
-        <message name="IDS_AMBIENT_BADGE_INSTALL_ALTERNATIVE" desc="String for the ambient badge promoting an app installation. Alternative used for experimentation.">
-          Install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
-        </message>
-        <message name="IDS_AMBIENT_BADGE_INSTALL_ALTERNATIVE_NO_DOWNLOAD_REQUIRED" desc="String for the ambient badge promoting an app installation. Alternative used for experimentation.">
-          Install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> (no download required)
         </message>
       </if>
 
@@ -5464,6 +5466,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DUMMY2_TITLE" translateable="false" desc="Title shown in the header of the dummy 2 module.">
         Even Better Module
       </message>
+      <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module.">
+        Recently from Google Drive
+      </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
       </message>
@@ -5478,6 +5483,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
+      </message>
+      <message name="IDS_NTP_MODULES_CART_HEADER_CHIP_NEW" desc="Text shown on the header chip of chrome cart module.">
+        New
       </message>
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -5548,6 +5556,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READ_LATER_MENU_TOOLTIP_MARK_AS_UNREAD" desc="Tooltip for the button to mark a read later entry as unread.">
         Mark as unread
+      </message>
+      <message name="IDS_READ_LATER_MENU_EMPTY_STATE_HEADER" desc="Header for the read later menu when there are no unread or read entries.">
+        You'll find your reading list here
+      </message>
+      <message name="IDS_READ_LATER_MENU_EMPTY_STATE_SUBHEADER" desc="Subheader for the read later menu when there are no unread or read entries.">
+        To save a page for later, click the Bookmark icon
       </message>
 
       <!--Tooltip strings-->
@@ -5676,8 +5690,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_BOOKMARKS_CHEVRON" desc="The accessible name for the chevron visible if not all the bookmark buttons fit.">
         Menu containing hidden bookmarks
       </message>
-      <message name="IDS_ACCNAME_BOOKMARKS_MENU" desc="The accessible name for the Bookmarks menu.">
-        Bookmarks menu
+      <message name="IDS_ACCNAME_BOOKMARK_BUTTON_ROLE_DESCRIPTION" desc="The accessible role description for bookmark buttons.">
+        Bookmark button
+      </message>
+      <message name="IDS_ACCNAME_BOOKMARK_FOLDER_BUTTON_ROLE_DESCRIPTION" desc="The accessible role description for bookmark folders.">
+        Bookmark folder button
       </message>
       <message name="IDS_ACCNAME_SEPARATOR" desc="The accessible name for a separator.">
         Separator
@@ -5705,12 +5722,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
         Search tabs
-      </message>
-      <message name="IDS_ACCNAME_TAB_STRIP" desc="The accessible name for the tab strip.">
-        Tab strip
-      </message>
-      <message name="IDS_ACCNAME_TOOLBAR" desc="The accessible name for the toolbar.">
-        Toolbar
       </message>
 
       <!-- Clipboard permission -->
@@ -5783,7 +5794,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Reopen a tab if you accidentally closed it
       </message>
       <message name="IDS_DESKTOP_PWA_INSTALL_PROMO" desc="Text shown on promotional UI appearing next to the PWA install icon">
-        To get back here quickly, install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
+        To get back here quickly, install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> by clicking the install button
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
@@ -7746,6 +7757,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
           Switch
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_GUEST_LINK" desc="Text of the link to offer switching to a Guest profile">
+            Not your device? Use <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
           To keep your browsing separate, you can create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
@@ -9989,6 +10003,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_FONT_ACCESS_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
         Cancel
       </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_SELECT_ALL_CHECKBOX_TEXT" desc="Label for the checkbox that allows the selection of all fonts.">
+        Select all fonts
+      </message>
     </if>
 
     <!-- Brave IME API activated bubble. -->
@@ -10439,6 +10456,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CLIENT_PIN_AUTHENTICATOR_REMOVED_DESCRIPTION" desc="Description in the error dialog shown after their security key (an external physical device for user authentication) was removed while the application was waiting for the security key PIN to be entered.">
         Reinsert your security key and try again
       </message>
+      <message name="IDS_WEBAUTHN_PIN_ENTRY_ERROR_SAME_AS_CURRENT" desc="Error message. Displayed when the user attempts to set a new PIN code for their security key (an external physical device for user authentication), and the new PIN is the same as the currently set PIN.">
+        Create a new PIN that's different from your current PIN
+      </message>
 
       <!-- WebAuthn authenticator internal user verification -->
       <message name="IDS_WEBAUTHN_INLINE_ENROLLMENT_CANCEL_LABEL" desc="The label on a button allowing users to skip fingerprint registration when setting up a fingerprint enabled authenticator.">
@@ -10791,6 +10811,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_SHOW_KALEIDOSCOPE" desc="Menu item to launch the Brave watch feature">
       Watch
+    </message>
+
+    <!-- BraveBeta bubble -->
+    <message name="IDS_CHROMEBETA_RELAUNCH_BUTTON_LABEL" desc="Label on the button in the footer of the Brave Beta bubble which will relaunch the browser.">
+      Relaunch
     </message>
   </messages>
 </release>
