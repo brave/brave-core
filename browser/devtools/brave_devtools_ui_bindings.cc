@@ -22,14 +22,14 @@ std::string GetDevToolsUIThemeValue() {
 }
 }
 
-void BraveDevToolsUIBindings::GetPreferences(const DispatchCallback& callback) {
+void BraveDevToolsUIBindings::GetPreferences(DispatchCallback callback) {
   const base::DictionaryValue* prefs =
       profile_->GetPrefs()->GetDictionary(prefs::kDevToolsPreferences);
 
   if (prefs->FindKey("uiTheme"))
-    return DevToolsUIBindings::GetPreferences(callback);
+    return DevToolsUIBindings::GetPreferences(std::move(callback));
 
   base::Value new_prefs(prefs->Clone());
   new_prefs.SetKey("uiTheme", base::Value(GetDevToolsUIThemeValue()));
-  callback.Run(&new_prefs);
+  std::move(callback).Run(&new_prefs);
 }

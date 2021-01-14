@@ -15,7 +15,7 @@ class BraveDevToolsUIBindings : public DevToolsUIBindings {
   FRIEND_TEST_ALL_PREFIXES(BraveDevToolsUIBindingsBrowserTest, ThemeTest);
 
   // DevToolsUIBindings overrides:
-  void GetPreferences(const DispatchCallback& callback) override;
+  void GetPreferences(DispatchCallback callback) override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDevToolsUIBindings);
 };
