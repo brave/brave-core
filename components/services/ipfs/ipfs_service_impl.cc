@@ -186,7 +186,9 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
        "[\"/ip4/0.0.0.0/tcp/" + config->swarm_port + "\", \"/ip6/::/tcp/" +
            config->swarm_port + "\"]"},
       {"config", "Datastore.GCPeriod", "1h"},
-      {"config", "Datastore.StorageMax", "1GB"}};
+      {"config", "Datastore.StorageMax", "1GB"},
+      {"config", "--json", "Swarm.ConnMgr.LowWater", "50"},
+      {"config", "--json", "Swarm.ConnMgr.HighWater", "300"}};
 
   for (auto args : config_args) {
     if (!LaunchProcessAndExit(config->binary_path, args, options)) {
