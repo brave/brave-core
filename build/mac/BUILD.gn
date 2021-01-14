@@ -12,6 +12,8 @@ packaging_dir = "$brave_packaging_base_dir/" +
 unsigned_app_path = "$root_out_dir/$brave_exe"
 if (is_universal_binary) {
   unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
+  arm64_arch_app_path = "$brave_packaging_base_dir/$brave_exe"
+  x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
 }
 
 unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
@@ -35,9 +37,6 @@ notarized_dmg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg"
 notarized_pkg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg"
 
 if (is_universal_binary) {
-  arm64_arch_app_path = "$brave_packaging_base_dir/$brave_exe"
-  x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
-
   action("universalize") {
     script = "//chrome/installer/mac/universalizer.py"
 
