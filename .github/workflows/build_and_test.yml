@@ -24,9 +24,6 @@ jobs:
         run: sudo xcode-select --switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install required software.
-        run: |
-          brew install swiftlint
       - name: Update node
         uses: actions/setup-node@v1
         with:
