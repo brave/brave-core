@@ -1,4 +1,4 @@
-import { select, boolean, number } from '@storybook/addon-knobs/react'
+import { select, boolean, number } from '@storybook/addon-knobs'
 import { images } from '../../../data/backgrounds'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'
 import dummyBrandedWallpaper from './brandedWallpaper'

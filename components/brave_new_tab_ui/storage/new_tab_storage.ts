@@ -44,6 +44,7 @@ export const defaultState: NewTab.State = {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
     bandwidthSavedStat: 0,
+    httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
   togetherPromptDismissed: false,

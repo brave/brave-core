@@ -7,7 +7,8 @@ import * as bluebird from 'bluebird'
 import './background/greaselion'
 import './background/today'
 
-global.Promise = bluebird
+// workaround https://github.com/DefinitelyTyped/DefinitelyTyped/issues/42084
+global.Promise = bluebird as any
 
 function promisifier (method: any) {
   // return a function

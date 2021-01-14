@@ -203,7 +203,10 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
               monthlyAmount
               ? this.donationDropDown()
               : <StyledSetButtonContainer>
-                  <StyledSetButton type={'tip-monthly'} onClick={setMonthlyAction}>
+                  <StyledSetButton
+                    data-test-id={'tip-monthly'}
+                    onClick={setMonthlyAction}
+                  >
                     {getLocale('set')}
                   </StyledSetButton>
                 </StyledSetButtonContainer>
@@ -274,6 +277,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           }
           <StyledDonateWrapper>
             <RewardsButton
+              testId='tip-once'
               type={'tip'}
               onClick={donationAction}
               text={getLocale('donateNow')}

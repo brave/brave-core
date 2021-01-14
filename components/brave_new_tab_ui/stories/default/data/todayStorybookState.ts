@@ -1,4 +1,4 @@
-import { boolean } from '@storybook/addon-knobs/react'
+import { boolean } from '@storybook/addon-knobs'
 import { BraveTodayState } from '../../../reducers/today'
 
 export default function getTodayState (): BraveTodayState {

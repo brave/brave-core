@@ -72,7 +72,7 @@ export default class ImportBox extends React.PureComponent<Props, State> {
             >
               <option key={0} value=''>{getLocale('importFrom')}</option>
               {
-                isValidBrowserProfiles
+                isValidBrowserProfiles(browserProfiles)
                 ? browserProfiles.map((browserProfile, index) =>
                   <option
                     key={index + 1}

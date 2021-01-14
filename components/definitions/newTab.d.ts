@@ -45,6 +45,7 @@ declare namespace NewTab {
 
   export interface Stats {
     adsBlockedStat: number
+    httpsUpgradesStat: number
     javascriptBlockedStat: number
     bandwidthSavedStat: number
     fingerprintingBlockedStat: number
@@ -143,6 +144,7 @@ declare namespace NewTab {
   }
 
   export interface BinanceWidgetState {
+    binanceSupported?: boolean
     userTLD: BinanceTLD
     initialFiat: string
     initialAmount: string
