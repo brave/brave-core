@@ -41,7 +41,7 @@ public class BraveSigninManager extends SigninManagerImpl {
         assert identityManager != null;
         assert identityMutator != null;
         return new BraveSigninManager(nativeSigninManagerAndroid, accountTrackerService,
-                identityManager, identityMutator,
-                AndroidSyncSettings.get(), AppHooks.get().getExternalAuthUtils());
+                identityManager, identityMutator, AndroidSyncSettings.get(),
+                ExternalAuthUtils.getInstance());
     }
 }
