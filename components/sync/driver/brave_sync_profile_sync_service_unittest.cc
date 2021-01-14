@@ -188,7 +188,7 @@ TEST_F(BraveProfileSyncServiceTest, NoIdentityManagerCalls) {
   // So the indirect way to ensure is to see there is no call of
   // `SyncEngine::OnCookieJarChanged`
 
-  EXPECT_CALL(*sync_engine, OnCookieJarChanged(_, _, _)).Times(0);
+  EXPECT_CALL(*sync_engine, OnCookieJarChanged(_, _)).Times(0);
   brave_sync_service()->OnEngineInitialized(
       ModelTypeSet(BOOKMARKS), WeakHandle<JsBackend>(),
       WeakHandle<DataTypeDebugInfoListener>(), "", "", true);
