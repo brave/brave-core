@@ -791,6 +791,114 @@ extension Strings {
     }
 }
 
+// MARK: ShieldEducation
+
+extension Strings {
+    public struct ShieldEducation {
+        public static let trackerCountShareTitle =
+            NSLocalizedString("shieldEducation.trackerCountShareTitle",
+                              bundle: .braveShared,
+                              value: "%ld trackers & ads blocked",
+                              comment: "Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked")
+
+        public static let trackerAdWarningTitle =
+            NSLocalizedString("shieldEducation.trackerAdWarningTitle",
+                              bundle: .braveShared,
+                              value: "Trackers & ads blocked on this page.",
+                              comment: "Title for Shield Education Tracker Ad Warning")
+        
+        public static let videoAdBlockTitle =
+            NSLocalizedString("shieldEducation.videoAdBlockTitle",
+                              bundle: .braveShared,
+                              value: "Ads are blocked while watching videos on this website.",
+                              comment: "Title for Shield Education Tracker Video Ad Block")
+        
+        public static let trackerAdCountBlockTitle =
+            NSLocalizedString("shieldEducation.trackerAdCountBlockTitle",
+                              bundle: .braveShared,
+                              value: "%ld+ trackers & ads blocked on this page.",
+                              comment: "Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page")
+        
+        public static let encryptedConnectionWarningTitle =
+            NSLocalizedString("shieldEducation.encryptedConnectionWarningTitle",
+                              bundle: .braveShared,
+                              value: "Your connection is now encrypted.",
+                              comment: "Title for Shield Education Encrypted Connection Warning")
+        
+        public static let trackerCountShareSubtitle =
+            NSLocalizedString("shieldEducation.trackerCountShareSubtitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You're pretty special.",
+                              comment: "Subtitle for Shield Education Tracker Count Share")
+
+        public static let trackerAdWarningSubtitle =
+            NSLocalizedString("shieldEducation.trackerAdWarningSubTitle",
+                              bundle: .braveShared,
+                              value: "Brave Shields just protected your online privacy.",
+                              comment: "Subtitle for Shield Education Tracker Ad Warning")
+        
+        public static let videoAdBlockSubtitle =
+            NSLocalizedString("shieldEducation.videoAdBlockSubtitle",
+                              bundle: .braveShared,
+                              value: "Videos without ads use less data.",
+                              comment: "Subtitle for Shield Education Tracker Video Ad Block")
+        
+        public static let trackerAdCountBlockSubtitle =
+            NSLocalizedString("shieldEducation.trackerAdCountBlockSubtitle",
+                              bundle: .braveShared,
+                              value: "Brave Shields protects your online privacy on every site.",
+                              comment: "Subtitle for Shield Education Tracker Ad Count Block")
+        
+        public static let encryptedConnectionWarningSubtitle =
+            NSLocalizedString("shieldEducation.encryptedConnectionWarningSubtitle",
+                              bundle: .braveShared,
+                              value: "If available, Brave upgrades you to a secure connection automatically.",
+                              comment: "Subtitle for Shield Education Encrypted Connection Warning")
+        
+        public static let educationInspectTitle =
+            NSLocalizedString("shieldEducation.inspectTitle",
+                              bundle: .braveShared,
+                              value: "Take a look",
+                              comment: "Action title for inspectable Education warnings")
+        
+        public static let benchmarkSpecialTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkSpecialTierTitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You’re pretty special.",
+                              comment: "Subtitle for tracker benchmark Share")
+        
+        public static let benchmarkExclusiveTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkExclusiveTierTitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You’re part of an exclusive club.",
+                              comment: "Subtitle for tracker benchmark Share")
+        
+        public static let benchmarkProfessionalTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkProfessionalTierTitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You joined the pros.",
+                              comment: "Subtitle for tracker benchmark Share")
+        
+        public static let benchmarkPrimeTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkPrimeTierTitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You’ve become a master.",
+                              comment: "Subtitle for tracker benchmark Share")
+        
+        public static let benchmarkGrandTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkGrandTierTitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You’ve become a Grand Master.",
+                              comment: "Subtitle for tracker benchmark Share")
+        
+        public static let benchmarkLegendaryTierTitle =
+            NSLocalizedString("shieldEducation.benchmarkLegendaryTierTitle",
+                              bundle: .braveShared,
+                              value: "Congratulations. You are legendary.",
+                              comment: "Subtitle for tracker benchmark Share")
+    }
+}
+
 // MARK: - VPN
 extension Strings {
     public struct VPN {

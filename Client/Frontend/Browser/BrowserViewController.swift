@@ -146,6 +146,17 @@ class BrowserViewController: UIViewController {
     private(set) var publisher: PublisherInfo?
     
     let vpnProductInfo = VPNProductInfo()
+    
+    /// Boolean which is tracking If a product notification is presented
+    /// in order to not to try to present another one over existing popover
+    var benchmarkNotificationPresented = false
+    
+    /// Boolean which is tracking If a benchmark notification is presented
+    /// in single application instance
+    var shieldStatChangesNotified = false
+    
+    /// Number of Ads/Trackers used a limit to show benchmark notification
+    let benchmarkNumberOfTrackers = 10
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
@@ -213,7 +224,7 @@ class BrowserViewController: UIViewController {
         }
         rewardsObserver = LedgerObserver(ledger: rewards.ledger)
         deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
-
+        
         super.init(nibName: nil, bundle: nil)
         didInit()
         
@@ -611,7 +622,8 @@ class BrowserViewController: UIViewController {
                            name: .adsOrRewardsToggledInSettings, object: nil)
             $0.addObserver(self, selector: #selector(vpnConfigChanged),
                            name: .NEVPNConfigurationChange, object: nil)
-            
+            $0.addObserver(self, selector: #selector(updateShieldNotifications),
+                           name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
         }
         
         KeyboardHelper.defaultHelper.addDelegate(self)
@@ -2232,6 +2244,10 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView) {
+        presentBraveShieldsViewController()
+    }
+    
+    func presentBraveShieldsViewController() {
         guard let selectedTab = tabManager.selectedTab, var url = selectedTab.url else { return }
         if url.isErrorPageURL, let originalURL = url.originalURLFromErrorURL {
             url = originalURL

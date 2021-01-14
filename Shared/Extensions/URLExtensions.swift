@@ -420,6 +420,15 @@ extension URL {
         }
         return ["youtube", "vimeo", "twitch", "twitter", "reddit"].contains(where: domain.contains)
     }
+    
+    // Check if the website is a video streaming content site used inside product notifications
+    public var isVideoSteamingSiteURL: Bool {
+        guard let domain = self.baseDomain else {
+            return false
+        }
+        
+        return ["youtube", "vimeo", "twitch"].contains(where: domain.contains)
+    }
 }
 
 // Helpers to deal with About URLs
