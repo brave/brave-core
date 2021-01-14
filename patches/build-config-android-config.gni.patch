@@ -1,5 +1,5 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index 4608a5d8b5bd9b21f9811a988ee95a341a650d81..195533f3d69a7eb38fbfc35ee3d18e37cf1b640b 100644
+index 41b32719c2cf0bfc72a7416670f7eb3066a4dfce..cbecbb866f0ead369c2930268779d42e3ec0d100 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
 @@ -7,6 +7,7 @@
