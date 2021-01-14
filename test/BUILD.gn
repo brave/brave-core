@@ -884,6 +884,7 @@ if (is_android) {
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/android/appmenu:java",
       "//chrome/browser/ui/android/theme:java",
+      "//chrome/browser/ui/android/toolbar:java",
       "//chrome/test/android:chrome_java_test_support",
       "//components/browser_ui/widget/android:java",
       "//components/search_engines/android:java",
