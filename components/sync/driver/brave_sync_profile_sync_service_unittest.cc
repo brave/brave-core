@@ -14,8 +14,8 @@
 #include "components/sync/driver/fake_data_type_controller.h"
 #include "components/sync/driver/profile_sync_service_bundle.h"
 #include "components/sync/driver/sync_api_component_factory_mock.h"
-#include "components/sync/engine/fake_sync_engine.h"
-#include "components/sync/engine/mock_sync_engine.h"
+#include "components/sync/test/engine/fake_sync_engine.h"
+#include "components/sync/test/engine/mock_sync_engine.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
