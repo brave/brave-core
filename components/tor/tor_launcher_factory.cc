@@ -12,7 +12,7 @@
 #include "base/process/kill.h"
 #include "base/task/post_task.h"
 #include "brave/components/tor/service_sandbox_type.h"
-#include "brave/components/tor/tor_profile_service_impl.h"
+#include "brave/components/tor/tor_launcher_observer.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -165,19 +165,19 @@ void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
 }
 
 
-void TorLauncherFactory::AddObserver(tor::TorProfileServiceImpl* service) {
-  observers_.AddObserver(service);
+void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
+  observers_.AddObserver(observer);
 }
 
-void TorLauncherFactory::RemoveObserver(tor::TorProfileServiceImpl* service) {
-  observers_.RemoveObserver(service);
+void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
   LOG(INFO) << "Tor Launcher Crashed";
   is_starting_ = false;
   for (auto& observer : observers_)
-    observer.NotifyTorLauncherCrashed();
+    observer.OnTorLauncherCrashed();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
@@ -186,7 +186,7 @@ void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   is_starting_ = false;
   is_connected_ = false;
   for (auto& observer : observers_)
-    observer.NotifyTorCrashed(pid);
+    observer.OnTorCrashed(pid);
   KillTorProcess();
   // Post delayed relaucn for control to stop
   content::GetUIThreadTaskRunner({})->PostDelayedTask(
@@ -206,7 +206,7 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     LOG(ERROR) << "Tor Launching Failed(" << pid << ")";
   }
   for (auto& observer : observers_)
-    observer.NotifyTorLaunched(result, pid);
+    observer.OnTorLaunched(result, pid);
   control_->Start();
 }
 
@@ -258,7 +258,7 @@ void TorLauncherFactory::GotSOCKSListeners(
       tor_proxy_uri.end());
   tor_proxy_uri_ = tor_proxy_uri;
   for (auto& observer : observers_)
-    observer.NotifyTorNewProxyURI(tor_proxy_uri);
+    observer.OnTorNewProxyURI(tor_proxy_uri);
 }
 
 void TorLauncherFactory::OnTorClosed() {
@@ -307,16 +307,16 @@ void TorLauncherFactory::OnTorEvent(
           progress_start + strlen(kStatusClientBootstrapProgress),
           progress_length - strlen(kStatusClientBootstrapProgress));
       for (auto& observer : observers_)
-        observer.NotifyTorInitializing(percentage);
+        observer.OnTorInitializing(percentage);
     } else if (initial.find(kStatusClientCircuitEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)
-        observer.NotifyTorCircuitEstablished(true);
+        observer.OnTorCircuitEstablished(true);
       is_connected_ = true;
     } else if (initial.find(kStatusClientCircuitNotEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)
-        observer.NotifyTorCircuitEstablished(false);
+        observer.OnTorCircuitEstablished(false);
     }
   }
 }

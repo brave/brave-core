@@ -8,7 +8,8 @@ export const defaultState: TorInternals.State = {
     torVersion: '',
     torPid: -1,
     torProxyURI: '',
-    isTorConnected: false
+    isTorConnected: false,
+    torInitPercentage: ''
   },
 
   log: ''

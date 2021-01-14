@@ -12,7 +12,8 @@ declare namespace TorInternals {
     torVersion: string,
     torPid: number,
     torProxyURI: string,
-    isTorConnected: boolean
+    isTorConnected: boolean,
+    torInitPercentage: string
   }
 }
 

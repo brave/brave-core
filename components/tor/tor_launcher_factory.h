@@ -24,11 +24,8 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace tor {
-class TorProfileServiceImpl;
-}
-
 class MockTorLauncherFactory;
+class TorLauncherObserver;
 
 class TorLauncherFactory : public tor::TorControl::Delegate {
  public:
@@ -44,8 +41,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   virtual std::string GetTorVersion() const;
   virtual void GetTorLog(GetLogCallback);
 
-  void AddObserver(tor::TorProfileServiceImpl* serice);
-  void RemoveObserver(tor::TorProfileServiceImpl* service);
+  void AddObserver(TorLauncherObserver* observer);
+  void RemoveObserver(TorLauncherObserver* observer);
 
   // tor::TorControl::Delegate
   void OnTorControlReady() override;
@@ -94,7 +91,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   tor::mojom::TorConfig config_;
 
-  base::ObserverList<tor::TorProfileServiceImpl> observers_;
+  base::ObserverList<TorLauncherObserver> observers_;
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 

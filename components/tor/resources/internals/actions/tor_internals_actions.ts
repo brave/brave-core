@@ -21,3 +21,8 @@ export const onGetTorLog = (log: string) =>
   action(types.ON_GET_TOR_LOG, {
     log
   })
+
+export const onGetTorInitPercentage = (percentage: string) =>
+  action(types.ON_GET_TOR_INIT_PERCENTAGE, {
+    percentage
+  })

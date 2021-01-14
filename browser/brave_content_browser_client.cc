@@ -484,7 +484,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
     tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle,
-        TorProfileServiceFactory::GetForContext(context),
         context->IsTor());
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));

@@ -31,6 +31,9 @@ export class GeneralInfo extends React.Component<Props, {}> {
         <div>
           {getLocale('isTorConnected') + ': '} {this.props.state.generalInfo.isTorConnected ? 'Connected' : 'Disconnected'}
         </div>
+        <div>
+          {getLocale('torInitPercentage') + ': '} {this.props.state.generalInfo.torInitPercentage}
+        </div>
       </div>
     )
   }

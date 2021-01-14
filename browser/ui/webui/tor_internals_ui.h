@@ -11,11 +11,19 @@
 #include <vector>
 
 #include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/components/tor/tor_launcher_observer.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
-class TorInternalsDOMHandler : public content::WebUIMessageHandler {
+class TorLauncherFactory;
+
+namespace content {
+class BrowserContext;
+}  // namespace content
+
+class TorInternalsDOMHandler : public content::WebUIMessageHandler,
+                               public TorLauncherObserver {
  public:
-  TorInternalsDOMHandler();
+  TorInternalsDOMHandler(content::BrowserContext* context);
   ~TorInternalsDOMHandler() override;
 
   // WebUIMessageHandler implementation.
@@ -26,6 +34,12 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler {
   void HandleGetTorLog(const base::ListValue* args);
 
   void OnGetTorLog(bool success, const std::string& log);
+
+  // tor::TorLauncherObserver:
+  void OnTorCircuitEstablished(bool result) override;
+  void OnTorInitializing(const std::string& percentage) override;
+
+  TorLauncherFactory* tor_launcher_factory_ = nullptr;
 
   base::WeakPtrFactory<TorInternalsDOMHandler> weak_ptr_factory_;
 

@@ -13,7 +13,6 @@
 #include "base/task/post_task.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
-#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -218,38 +217,10 @@ void TorProfileServiceImpl::KillTor() {
   UnregisterTorClientUpdater();
 }
 
-void TorProfileServiceImpl::NotifyTorLauncherCrashed() {
-  for (auto& observer : observers_)
-    observer.OnTorLauncherCrashed();
-}
-
-void TorProfileServiceImpl::NotifyTorCrashed(int64_t pid) {
-  for (auto& observer : observers_)
-    observer.OnTorCrashed(pid);
-}
-
-void TorProfileServiceImpl::NotifyTorLaunched(bool result, int64_t pid) {
-  for (auto& observer : observers_)
-    observer.OnTorLaunched(result, pid);
-}
-
-void TorProfileServiceImpl::NotifyTorNewProxyURI(const std::string& uri) {
+void TorProfileServiceImpl::OnTorNewProxyURI(const std::string& uri) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(proxy_config_service_);
   proxy_config_service_->UpdateProxyURI(uri);
-}
-
-void TorProfileServiceImpl::NotifyTorCircuitEstablished(bool result) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  for (auto& observer : observers_)
-    observer.OnTorCircuitEstablished(result);
-}
-
-void TorProfileServiceImpl::NotifyTorInitializing(
-    const std::string& percentage) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  for (auto& observer : observers_)
-    observer.OnTorInitializing(percentage);
 }
 
 std::unique_ptr<net::ProxyConfigService>

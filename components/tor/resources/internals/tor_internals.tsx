@@ -35,6 +35,13 @@ window.cr.define('tor_internals', function () {
     actions.onGetTorLog(log)
   }
 
+  function onGetTorInitPercentage (percentage: string) {
+    if (percentage == '100')
+      getTorGeneralInfo()
+    const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
+    actions.onGetTorInitPercentage(percentage)
+  }
+
   function initialize () {
     getTorGeneralInfo()
     render(
@@ -50,7 +57,8 @@ window.cr.define('tor_internals', function () {
   return {
     initialize,
     onGetTorGeneralInfo,
-    onGetTorLog
+    onGetTorLog,
+    onGetTorInitPercentage
   }
 })
 
