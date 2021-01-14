@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 3ce48539e1d50cc02e2b619dc89618d6c8c9b5f3..1658957a1c064b1851bb1c1e71a057cc57106e3f 100644
+index 115464039040dd5ece6d40fb8b305417b011f6e1..96e9ac9e0038eaddb7421e1eccb7500ce9a1498c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -86,7 +86,7 @@ import java.util.List;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
-index a12dd1813d7a979f922185f350cec64da19e5b74..a01885a71fa7ab485966b6a1f7836c85345a65d5 100644
+index 4a9e55b4c8dc5f495058c6a6bdc4a0f9a20b88c5..ef4f8582761716ccfa1bba5d13435d5a57961653 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h
 @@ -75,6 +75,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,

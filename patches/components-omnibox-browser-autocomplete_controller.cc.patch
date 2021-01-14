@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index 890f8e936f517632e3cddb5321e64dee2ea0f03f..9aa920315e79fa7ab3f2429a6ed31e770b86d4a2 100644
+index a6363ba3335cf231ff4c6d10588ecb01b385681b..1d6b880830389740b135a587e5c0a8bb23ad0c77 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -263,6 +263,7 @@ AutocompleteController::AutocompleteController(
+@@ -289,6 +289,7 @@ AutocompleteController::AutocompleteController(
    if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
      search_provider_ = new SearchProvider(provider_client_.get(), this);
      providers_.push_back(search_provider_);

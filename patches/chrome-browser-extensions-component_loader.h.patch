@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index d7eff4d5ccc2db7f50fcffbd90a1b568fcdba687..e3011ebb11d32c114568c7b8868a86f8a8af472a 100644
+index 1d7591379e5252ea8edd7737d26f068c801bbb1f..99aa94dc64185a7838da5edfc6e9a1b5f62fd435 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
 @@ -81,7 +81,7 @@ class ComponentLoader {
@@ -11,7 +11,7 @@ index d7eff4d5ccc2db7f50fcffbd90a1b568fcdba687..e3011ebb11d32c114568c7b8868a86f8
  
    // Similar to above but adds the default component extensions for kiosk mode.
    void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
-@@ -128,6 +128,7 @@ class ComponentLoader {
+@@ -127,6 +127,7 @@ class ComponentLoader {
    }
  
   private:
@@ -19,7 +19,7 @@ index d7eff4d5ccc2db7f50fcffbd90a1b568fcdba687..e3011ebb11d32c114568c7b8868a86f8
    FRIEND_TEST_ALL_PREFIXES(ComponentLoaderTest, ParseManifest);
  
    // Information about a registered component extension.
-@@ -173,6 +174,7 @@ class ComponentLoader {
+@@ -172,6 +173,7 @@ class ComponentLoader {
    void AddDefaultComponentExtensionsWithBackgroundPagesForKioskMode();
  
  #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
