@@ -135,6 +135,9 @@
   <message name="IDS_NEARBY_ERROR_NO_RESPONSE" desc="Notify user that the file share failed because the receiver neither accepted nor declined the share. Suggest trying again.">
     The device you're sharing with didn't respond. Please try again.
   </message>
+  <message name="IDS_NEARBY_ERROR_TRANSFER_IN_PROGRESS" desc="Notify user that they are unable to start a Nearby Share because there is already a Nearby Share file transfer in progress. Suggest trying again after the file transfer is complete.">
+    You can only share one file at a time. Try again when the current transfer is complete.
+  </message>
   <message name="IDS_NEARBY_ERROR_NOT_ENOUGH_SPACE" desc="Notify user that the file can't be shared because there isn't enough disk space to store it. Displayed as a subtitle under a more generic file-couldn't-be-shared message.">
     Not enough disk space
   </message>
@@ -200,6 +203,18 @@
   <message name="IDS_NEARBY_HIGH_VISIBILITY_TIMEOUT_TEXT" desc="Describes to the user that their device is visible to nearby devices with a specific device name. This is used on the sub-title of the of high visibility receive dialog for the Nearby Share feature.">
     No available devices sharing nearby. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_NEARBY_HIGH_VISIBILITY_TRANSFER_IN_PROGRESS_ERROR" desc="An error title telling the user that there is already a Nearby Share transfer in progress">
+    Can’t share
+  </message>
+  <message name="IDS_NEARBY_HIGH_VISIBILITY_TRANSFER_IN_PROGRESS_DESCRIPTION" desc="An error description telling the user that there is already a Nearby Share transfer in progress">
+    You can only share one file at a time. Try again when the current transfer is complete.
+  </message>
+    <message name="IDS_NEARBY_HIGH_VISIBILITY_CONNECTION_MEDIUM_ERROR" desc="When the Nearby Share receive dialog is open, an error title telling the user that there is no available connection medium such as wifi or Bluetooth">
+    Bluetooth and Wi-Fi needed
+  </message>
+  <message name="IDS_NEARBY_HIGH_VISIBILITY_CONNECTION_MEDIUM_DESCRIPTION" desc="When the Nearby Share receive dialog is open, an error title telling the user that there is no available connection medium such as wifi or Bluetooth">
+    To use Nearby Share, turn on Bluetooth and Wi-Fi
+  </message>
 
   <!-- Receive Confirmation Page Strings -->
   <message name="IDS_NEARBY_RECEIVE_CONFIRM_PAGE_TITLE" desc="The title of the recieve confirmation page which askign the user to confirm receving a share from a specific device.">
@@ -252,6 +267,9 @@
   </message>
   <message name="IDS_NEARBY_NOTIFICATION_ACTION_OPEN_FOLDER" desc="Notification action button text that opens the folder to the received files.">
     Open folder
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_ACTION_OPEN_URL" desc="Notification action button text that opens the received URL.">
+    Open
   </message>
   <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_MESSAGE" desc="Text shown as the message of a notfication when a nearby device requests a connection via Nearby Share.">
     {COUNT, plural,

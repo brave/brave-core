@@ -253,6 +253,13 @@ are declared in tools/grit/grit_rule.gni.
         <else>
           </else>
       </if>
+      <if expr="is_macosx">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
+
       <if expr="not is_android">
         <if expr="not use_titlecase">
           <if expr="is_macosx">
@@ -285,9 +292,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit private mode anyway?
         </message>
-        </if>
-
-      <if expr="is_android">
         </if>
 
       <if expr="not is_android">

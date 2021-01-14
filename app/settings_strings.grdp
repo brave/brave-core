@@ -101,17 +101,17 @@
   <message name="IDS_SETTINGS_HOME_BUTTON_DISABLED" desc="Sub label for the Show home button setting when disabled.">
     Disabled
   </message>
-  <if expr="chromeos">
+  <if expr="chromeos or lacros">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
       Browser themes
     </message>
   </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
       Theme
     </message>
   </if>
-  <if expr="is_linux and not chromeos">
+  <if expr="is_linux and not chromeos and not lacros">
     <message name="IDS_SETTINGS_SYSTEM_THEME" desc="Text of the label describing the system (GTK+) browser theme on Linux">
       GTK+
     </message>
@@ -125,7 +125,7 @@
       Use Classic
     </message>
   </if>
-  <if expr="not is_linux or chromeos">
+  <if expr="not is_linux or chromeos or lacros">
     <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Name of the control which resets the browser theme back to the default theme.">
       Reset to default
     </message>
@@ -560,19 +560,22 @@
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT_AND_DEVICE" desc="Label for an undo tooltip following deletion of a password from the account and the device.">
     Password deleted from this device and your Brave sync chain
   </message>
-    <!-- TODO(crbug.com/1139263): Make it translateable and add translation screenshots once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT" desc="Message displayed in the moving multiple passwords to the user Brave sync chain banner.">
-    Move them to your Brave sync chain, and make it across-device accessible
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT" desc="Message displayed in the moving multiple passwords to the user Brave sync chain banner.">
+    To use them on all your devices, move them to your Brave sync chain
   </message>
-  <!-- TODO(crbug.com/1139263): Make it translateable and add translation screenshots once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_COUNT" desc="Message shown in the footer of the moving multiple password to the Brave sync chain dialog. It reflects how many passwords are selected and will be movec.">
+   <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_COUNT" desc="Label shown in the link that open moving multiple password dialog.">
     {COUNT, plural,
-      =1 {You are moving {COUNT} password from your device to your Brave sync chain}
-      other {You are moving {COUNT} passwords from your device to your Brave sync chain}}
+      =1 {{COUNT} password is accessible on this device}
+      other {{COUNT} passwords are accessible on this device}}
   </message>
-  <!-- TODO(crbug.com/1139263): Make it translateable and add translation screenshots once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that asks the user to select which passwords to move to their Brave sync chain.">
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_FOOTER" desc="Footer for the dialog that asks the user to select which passwords to move to their Brave sync chain.">
+    Passwords will be moved from your device to your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that asks the user to select which passwords to move to their Brave sync chain.">
     Choose which passwords to move
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_SNACKBAR" desc="Text in the snackbar that appears after the user successfuly moved local passwords to their Brave sync chain.">
+    Passwords moved to your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that confirms whether the user wishes to move a password to their Brave sync chain.">
     Move to Brave sync chain?
@@ -584,11 +587,10 @@
     Move
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action of moving a password to the user Brave sync chain.">
-    No thanks
+    Cancel
   </message>
-  <!-- TODO(crbug.com/1139263): Make it translateable and add translation screenshots once final mocks are available. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_OPEN_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_BUTTON_TEXT" desc="Text for the button that opens the dialog that moves multiple passwords to the user Brave sync chain.">
-    Move Passwords ...
+  <message name="IDS_SETTINGS_PASSWORD_OPEN_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_BUTTON_TEXT" desc="Text for the button that opens the dialog that moves multiple passwords to the user Brave sync chain.">
+    Move passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
     Delete password?
@@ -608,14 +610,8 @@
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_DEVICE_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from the device.">
     From this device
   </message>
-  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL_SINGULAR" desc="The label for the link on settings leading to the 'device passwords' page, when there is 1 device password.">
-    You have 1 password saved on this device
-  </message>
-  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL_PLURAL" desc="The label for the link on settings leading to the 'device passwords' page, when there is more than 1 device password.">
-    You have <ph name="NUMBER_OF_DEVICE_PASSWORDS">$1<ex>2</ex></ph> passwords saved on this device
-  </message>
-  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_SUB_LABEL" desc="The sub-label for the link on settings leading to the 'device passwords' page.">
-    Save all your passwords in your Brave sync chain, so you can use them on all your devices
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL" desc="The label for the link on settings leading to the 'device passwords' page.">
+    See and manage passwords saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
     View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -1358,7 +1354,7 @@
       Something went wrong. Click for more details.
     </message>
   </if>
-  
+
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
     Preload pages for faster browsing and searching
   </message>
