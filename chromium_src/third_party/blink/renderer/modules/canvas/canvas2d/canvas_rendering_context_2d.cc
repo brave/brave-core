@@ -24,7 +24,7 @@ ImageData* CanvasRenderingContext2D::getImageDataInternal(
     int sy,
     int sw,
     int sh,
-    ImageDataColorSettings* color_settings,
+    ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
   const IdentifiableSurface surface = IdentifiableSurface::FromTypeAndToken(
       IdentifiableSurface::Type::kCanvasReadback, GetContextType());
@@ -34,7 +34,7 @@ ImageData* CanvasRenderingContext2D::getImageDataInternal(
         .Record(ukm_recorder_);
   }
   return BaseRenderingContext2D::getImageDataInternal(
-      script_state, sx, sy, sw, sh, color_settings, exception_state);
+      script_state, sx, sy, sw, sh, image_data_settings, exception_state);
 }
 
 }  // namespace blink

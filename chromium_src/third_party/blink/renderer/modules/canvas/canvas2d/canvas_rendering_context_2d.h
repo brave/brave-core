@@ -8,9 +8,9 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
-#define getImageDataInternal                                            \
-  getImageDataInternal(ScriptState*, int sx, int sy, int sw, int sh,    \
-                       ImageDataColorSettings*, ExceptionState&) final; \
+#define getImageDataInternal                                         \
+  getImageDataInternal(ScriptState*, int sx, int sy, int sw, int sh, \
+                       ImageDataSettings*, ExceptionState&) final;   \
   ImageData* getImageDataInternal_Unused
 
 #include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
