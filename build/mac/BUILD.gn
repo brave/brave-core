@@ -11,9 +11,9 @@ packaging_dir = "$brave_packaging_base_dir/" +
 
 unsigned_app_path = "$root_out_dir/$brave_exe"
 if (is_universal_binary) {
-  unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
-  arm64_arch_app_path = "$brave_packaging_base_dir/$brave_exe"
+  arm64_arch_app_path = unsigned_app_path
   x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
+  unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
 }
 
 unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
