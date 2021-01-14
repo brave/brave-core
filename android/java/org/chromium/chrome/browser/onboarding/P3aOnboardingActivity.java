@@ -17,6 +17,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +47,15 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                         ? getResources().getString(R.string.p3a_onboarding_title_text_1)
                         : getResources().getString(R.string.p3a_onboarding_title_text_2));
         CheckBox p3aOnboardingCheckbox = findViewById(R.id.p3a_onboarding_checkbox);
+        p3aOnboardingCheckbox.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());
+        p3aOnboardingCheckbox.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        BravePrefServiceBridge.getInstance().setP3AEnabled(isChecked);
+                        BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
+                    }
+                });
         ImageView p3aOnboardingImg = findViewById(R.id.p3a_onboarding_img);
         p3aOnboardingImg.setImageResource(isFirstInstall
                         ? R.drawable.ic_brave_logo
@@ -57,9 +67,6 @@ public class P3aOnboardingActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BravePrefServiceBridge.getInstance().setP3AEnabled(
-                        p3aOnboardingCheckbox.isChecked());
-                BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
                 if (PackageUtils.isFirstInstall(P3aOnboardingActivity.this)
                         && !OnboardingPrefManager.getInstance().isNewOnboardingShown()
                         && BraveActivity.getBraveActivity() != null) {
