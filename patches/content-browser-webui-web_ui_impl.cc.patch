@@ -1,5 +1,5 @@
 diff --git a/content/browser/webui/web_ui_impl.cc b/content/browser/webui/web_ui_impl.cc
-index b770052804c622199d40bbd5eedcd768277ced86..60483d836d616325b5874915666ba4ca0335df05 100644
+index 2fab662372067a27dce21e527b9255a0a9a7ff6e..bf0f0e672f9915d8253fe8e562d3549e15a5e1b0 100644
 --- a/content/browser/webui/web_ui_impl.cc
 +++ b/content/browser/webui/web_ui_impl.cc
 @@ -69,6 +69,7 @@ WebUIImpl::WebUIImpl(WebContentsImpl* contents, RenderFrameHostImpl* frame_host)
