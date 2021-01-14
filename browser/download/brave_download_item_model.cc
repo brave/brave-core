@@ -11,7 +11,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/strings/grit/components_strings.h"
-#include "third_party/blink/public/common/loader/network_utils.h"
+#include "services/network/public/cpp/is_potentially_trustworthy.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/gfx/text_elider.h"
@@ -54,7 +54,7 @@ base::string16 BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
 
   std::string origin;
   if (gurl.is_valid()) {
-    *is_secure = blink::network_utils::IsOriginSecure(gurl);
+    *is_secure = network::IsUrlPotentiallyTrustworthy(gurl);
     if (gurl.SchemeIs(url::kAboutScheme)) {
       origin = gurl.spec();
     } else {

@@ -17,7 +17,7 @@ source_set("download") {
     # brave_download_item_model.cc.
     "//chrome/common",
     "//components/strings:components_strings_grit",
-    "//third_party/blink/public/common",
+    "//services/network/public/cpp",
     "//ui/base",
     "//ui/gfx",
     "//url",
