@@ -196,6 +196,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <message name="IDS_PRODUCT_DESCRIPTION" desc="Browser description">
           Brave is a web browser that runs webpages and applications with lightning speed. It's fast, stable, and easy to use. Browse the web more safely with malware and phishing protection built into Brave.
         </message>
+        <message name="IDS_WELCOME_TO_CHROME" desc="Welcoming text announced via screen readers the first time Brave is launched at the conclusion of installation.">
+          Welcome to Brave; new browser window opened
+        </message>
       </if>
       <if expr="chromeos">
         <message name="IDS_PRODUCT_OS_NAME" desc="The Chrome OS application name">
@@ -792,8 +795,8 @@ Brave is unable to recover your settings.
 
       <!-- Chrome OS OOBE Terms of Service screen-->
       <if expr="chromeos">
-        <message name="IDS_TERMS_OF_SERVICE_SCREEN_SUBHEADING" desc="Subheading at the top of the Terms of Service screen.">
-          <ph name="DOMAIN">$1<ex>example.com</ex></ph> requires that you read and accept the following Terms of Service before using this device. These terms do not expand, modify or limit the Chrome OS Terms.
+        <message name="IDS_TERMS_OF_SERVICE_SCREEN_SUBHEADING" desc="Subheading at the top of the Terms of Service screen. MANAGER can be a domain or an email address.">
+          <ph name="MANAGER">$1<ex>example.com</ex></ph> requires that you read and accept the following Terms of Service before using this device. These terms do not expand, modify or limit the Chrome OS Terms.
         </message>
       </if>
 
@@ -1203,20 +1206,15 @@ Brave is unable to recover your settings.
         <message name="IDS_RESTORE_FOR_CRASH_NOTIFICATION_MESSAGE" desc="This is the text message of the notification for the user to select restore or not on startup after crash.">
           Chrome OS didn't shut down correctly.
         </message>
+        <message name="IDS_SET_RESTORE_NOTIFICATION_MESSAGE" desc="This is the text message of the notification for the user to set restore by default.">
+          Chrome OS can always restore your apps &amp; pages after reboot without asking every time.
+        </message>
       </if>
 
-      <!-- Rosetta installation for protected media -->
-      <if expr="is_macosx">
-        <message name="IDS_ROSETTA_INSTALL_TITLE" desc="Title of the 'do you want to install Rosetta' dialog. Used when there is a page title.">
-          To enable Brave to play protected media, you need to install Rosetta. Do you want to install it now?
-        </message>
-        <message name="IDS_ROSETTA_INSTALL_BODY" desc="Body text of the 'do you want to install Rosetta' dialog.">
-          Rosetta enables Brave to play the protected media on this page.
-        </message>
-        <message name="IDS_ROSETTA_INSTALL_RESTART_DIALOG" desc="Title text of the dialog once Rosetta is installed.">
-          To use Rosetta to play protected media, you must restart Brave.
-        </message>
-      </if>
+      <!-- BraveBeta bubble -->
+      <message name="IDS_CHROMEBETA_RELAUNCH_FOOTER_MESSAGE" desc="Text that shows in the footer of the Brave Beta bubble when relaunch is needed for changes to take effect.">
+        Your changes will take effect the next time you relaunch Brave.
+      </message>
     </messages>
   </release>
 </grit>

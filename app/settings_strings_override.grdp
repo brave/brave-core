@@ -18,13 +18,13 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="chromeos">
+  <if expr="chromeos or lacros">
     </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     </if>
-  <if expr="is_linux and not chromeos">
+  <if expr="is_linux and not chromeos and not lacros">
     </if>
-  <if expr="not is_linux or chromeos">
+  <if expr="not is_linux or chromeos or lacros">
     </if>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks

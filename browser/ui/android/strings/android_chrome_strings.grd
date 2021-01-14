@@ -675,26 +675,6 @@ CHAR-LIMIT guidelines:
         Brave’s homepage
       </message>
 
-      <!-- Homepage Promo card -->
-      <message name="IDS_HOMEPAGE_PROMO_TITLE" desc="The title displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage.">
-        Get here quicker
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_TITLE_SLIM" desc="The title displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage. Used for the one liner variation.">
-        Make this page your homepage
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_DESCRIPTION" desc="The description displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage.">
-        See your top sites and recent stories whenever you tap the Home button
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_PRIMARY_BUTTON" desc="The text displayed on homepage promo card's primary button compat, which will change the user's homepage to new tab page when they tab.">
-        Change homepage
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_PRIMARY_BUTTON_SLIM" desc="The text displayed on homepage promo card's primary button compat, which will change the user's homepage to new tab page when they tab. Used for the slim variation that has a smaller space for the button.">
-        Change
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_SNACKBAR_MESSAGE" desc="The text displayed on the snackbar that appears after setting homepage by click on homepage promo card's primary button, which will change the user's homepage to new tab page.">
-        Homepage changed
-      </message>
-
       <!-- Enhanced Protection Promo card -->
       <message name="IDS_ENHANCED_PROTECTION_PROMO_TITLE" desc="The title displayed on homepage promo card, which guides the user to the chrome settings page to select the enhanced protection option.">
         Get Brave’s strongest security
@@ -777,6 +757,12 @@ Touch &amp; hold any word to search. To refine your search, select more or fewer
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_NO_THANKS_BUTTON" desc="A button to confirm and dismiss opt out promo">
         No thanks
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_HELP_BODY" desc="Some help text that is shown in the body of a paragraph. The text tells the user what gesture to use instead of a previous gesture in order to search.">
+        To search for a word or phrase, touch and hold it instead of tapping it
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_HELP_HEADER" desc="Summary help text that is shown at the top of a paragraph. The text tells the user what gesture to use in order to search.">
+        Touch &amp; hold to search
       </message>
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for 'Do Not Track' preference">
         “Do Not Track”
@@ -3108,6 +3094,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_READING_LIST_TITLE" desc="The title for the reading list page in main bookmark UI.">
         Reading list
       </message>
+      <message name="IDS_READING_LIST_TITLE_NEW" desc="The title for the reading list with a new text.">
+        Reading list <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
       <message name="IDS_READING_LIST_READ" desc="The header for the read section in the reading list UI.">
         Read
       </message>
@@ -3146,7 +3135,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Save this page for later and get a reminder
       </message>
       <message name="IDS_READING_LIST_SAVE_PAGES_FOR_LATER" desc="The text on the reading list in product help bubble to introduce the feature to the user.">
-        Save pages for later and get a reminder
+        Add pages to your Reading List to get a reminder
       </message>
       <message name="IDS_READING_LIST_FIND_IN_BOOKMARKS" desc="The text to inform the user to find the reading list in bookmarks UI.">
         Find your reading list in Bookmarks
@@ -4269,29 +4258,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_PAINT_PREVIEW_STARTUP_AUTO_UPGRADE_TOAST" desc="Text displayed as a toast message when paint preview         is automatically removed and live tab is shown.">
         Viewing live page
-      </message>
-
-      <!-- Default Browser Promo Strings-->
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_TITLE" desc="Title of the default browser promo dialog">
-        Set <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> as your default?
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DESC" desc="Description in the default browser promo dialog, which is concatenated with one of the following steps strings">
-        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> has the smarts and speed you need to safely do, create, and explore online
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DISAMBIGUATION_SHEET_STEPS" desc="Description of the steps to set the default browser throught disambiguation sheet. 'Always' should match TC ID 5575222334666843269.">
-        1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Always”
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_SYSTEM_SETTINGS_STEPS" desc="Description of the steps to set the default browser throught system settings.         'Go to Settings' should match TC ID 4431460803004659888. 'Browser App' should match TC ID 6222206565850006894.">
-        1. Go to Settings\n2. Tap “Browser App”\n3. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_ROLE_MANAGER_STEPS" desc="Description of the steps to set the default browser throught role manager. 'Set as default' should match TC ID 5706081295230541240.">
-        1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Set as default”
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_CHOOSE_CHROME_BUTTON" desc="A button in the default browser promo dialog to choose chrome as default">
-        Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_GO_TO_SETTINGS_BUTTON" desc="A button in the default browser promo to navigate users to systen settings. 'Go to Settings' should match TC ID 4431460803004659888.">
-        Go to Settings
       </message>
 
       <!-- HTTPS image compression InfoBar -->
