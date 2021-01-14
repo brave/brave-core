@@ -17,7 +17,7 @@ action("sign_app") {
     target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
   }
 
-  outputs = [ "$target_sign_app_path-singed" ]
+  outputs = [ "$target_sign_app_path_signed" ]
   args = [
     rebase_path(_zipalign, root_out_dir),
     rebase_path(_apksigner, root_out_dir),
