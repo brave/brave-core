@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -235,6 +236,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 checkForBraveStats();
             }
         });
@@ -264,6 +266,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 mBraveStatsView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                         checkForBraveStats();
                     }
                 });
