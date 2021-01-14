@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
-index 3aaf5b333c1fcc0c2133af8ec8342925836ba772..fae4b6e64f337d8959446745217a0f8960f81d79 100644
+index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..3c6e34fc42775ef23e50e7c7b88283504b68acd2 100644
 --- a/chrome/browser/resources/tools/optimize_webui.gni
 +++ b/chrome/browser/resources/tools/optimize_webui.gni
-@@ -47,6 +47,7 @@ template("optimize_webui") {
+@@ -48,6 +48,7 @@ template("optimize_webui") {
      }
  
      deps = invoker.deps

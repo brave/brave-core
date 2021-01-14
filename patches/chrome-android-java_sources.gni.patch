@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java_sources.gni b/chrome/android/java_sources.gni
-index b5a8a6604e06f48bb4706db025a20dfdeb77b584..2aff2200a5e9b6a3d3bec844eaafee1f3077cb77 100644
+index 01620861902eaeb77af5d8c8abef07559d21218d..566909368a9344198a07682a912a8f500e0bab15 100644
 --- a/chrome/android/java_sources.gni
 +++ b/chrome/android/java_sources.gni
 @@ -21,6 +21,7 @@ import("//components/omnibox/browser/test_java_sources.gni")
