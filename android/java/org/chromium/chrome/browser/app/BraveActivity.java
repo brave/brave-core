@@ -309,12 +309,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         BraveSyncReflectionUtils.showInformers();
 
-        if (BraveConfig.P3A_ENABLED) {
-            if (!OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
-                Intent p3aOnboardingIntent = new Intent(this, P3aOnboardingActivity.class);
-                p3aOnboardingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(p3aOnboardingIntent);
-            }
+        if (BraveConfig.P3A_ENABLED
+                && !OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
+            Intent p3aOnboardingIntent = new Intent(this, P3aOnboardingActivity.class);
+            p3aOnboardingIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(p3aOnboardingIntent);
         }
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
