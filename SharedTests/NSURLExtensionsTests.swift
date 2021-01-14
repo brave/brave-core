@@ -665,4 +665,34 @@ class NSURLExtensionsTests: XCTestCase {
             XCTAssertFalse((getURL(url: $0)?.isMediaSiteURL) ?? false, "failed for \($0)")
         }
     }
+    
+    func testVideoSteamingSiteURL() {
+        let streamingSiteURLs = [
+            "https://www.youtube.com",
+            "https://www.vimeo.com",
+            "https://m.youtube.com",
+            "https://m.twitch.tv",
+            "https://www.twitch.tv"
+        ]
+        
+        let notSteamingSiteUrls = [
+            "https://xyz.com",
+            "https://tube.tube",
+            "https://www.google.com",
+            "https://www.cnn.com",
+            
+        ]
+        
+        func getURL(url: String) -> URL? {
+            return URL(string: url)
+        }
+        
+        streamingSiteURLs.forEach {
+            XCTAssertTrue(URL(string: $0)?.isVideoSteamingSiteURL ?? true, "failed for \($0)")
+        }
+        
+        notSteamingSiteUrls.forEach {
+            XCTAssertFalse(URL(string: $0)?.isVideoSteamingSiteURL ?? false, "failed for \($0)")
+        }
+    }
 }
