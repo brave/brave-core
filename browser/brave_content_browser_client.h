@@ -51,6 +51,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const url::Origin& requesting_origin,
       const url::Origin& embedding_origin) override;
 
+  void ExposeInterfacesToRenderer(
+      service_manager::BinderRegistry* registry,
+      blink::AssociatedInterfaceRegistry* associated_registry,
+      content::RenderProcessHost* render_process_host) override;
+
   void AppendExtraCommandLineSwitches(base::CommandLine* command_line,
                                       int child_process_id) override;
 

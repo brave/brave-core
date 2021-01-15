@@ -51,6 +51,12 @@ class AdBlockService : public AdBlockBaseService {
                           const std::string& tab_host,
                           bool* did_match_exception,
                           std::string* mock_data_url) override;
+  base::Optional<base::Value> UrlCosmeticResources(
+      const std::string& url) override;
+  base::Optional<base::Value> HiddenClassIdSelectors(
+      const std::vector<std::string>& classes,
+      const std::vector<std::string>& ids,
+      const std::vector<std::string>& exceptions) override;
 
   AdBlockRegionalServiceManager* regional_service_manager();
   AdBlockCustomFiltersService* custom_filters_service();

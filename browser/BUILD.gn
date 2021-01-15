@@ -48,8 +48,6 @@ source_set("browser_process") {
     "brave_browser_process_impl.h",
     "brave_content_browser_client.cc",
     "brave_content_browser_client.h",
-    "brave_cosmetic_resources_tab_helper.cc",
-    "brave_cosmetic_resources_tab_helper.h",
     "brave_local_state_prefs.cc",
     "brave_local_state_prefs.h",
     "brave_profile_prefs.cc",
@@ -140,6 +138,7 @@ source_set("browser_process") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/cosmetic_filters/browser",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags",
     "//brave/components/gemini/browser/buildflags",
@@ -153,7 +152,6 @@ source_set("browser_process") {
     "//brave/components/speedreader:buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
-    "//brave/content/browser/mojom",
     "//brave/services/network/public/cpp",
     "//brave/ui/brave_ads",
     "//brave/ui/brave_ads/public/cpp",
@@ -193,10 +191,6 @@ source_set("browser_process") {
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
   ]
-  if (is_component_build) {
-    sources += brave_content_public_browser_sources
-    deps += brave_content_public_browser_deps
-  }
 
   if (brave_wallet_enabled) {
     deps += [

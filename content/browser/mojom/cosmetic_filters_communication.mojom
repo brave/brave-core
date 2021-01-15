@@ -1,6 +1,0 @@
-module cf_comm.mojom;
-
-interface CosmeticFiltersCommunication {
-  // Receives an input string which is JSON object.
-  HiddenClassIdSelectors(string input);
-};

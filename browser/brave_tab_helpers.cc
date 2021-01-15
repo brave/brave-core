@@ -7,7 +7,6 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
-#include "brave/browser/brave_cosmetic_resources_tab_helper.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/farbling/farbling_tab_helper.h"
@@ -80,7 +79,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-  BraveCosmeticResourcesTabHelper::CreateForWebContents(web_contents);
 
 #if defined(OS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);

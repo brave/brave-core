@@ -30,7 +30,15 @@ class CosmeticFiltersCommunicationImpl final
   ~CosmeticFiltersCommunicationImpl() override;
 
   // cf_comm::mojom::CosmeticFiltersCommunication
-  void HiddenClassIdSelectors(const std::string& input) override;
+  //void HiddenClassIdSelectors(const std::string& input) override;
+  void ShouldDoCosmeticFiltering(
+      const std::string& url,
+      ShouldDoCosmeticFilteringCallback callback) override;
+  void HiddenClassIdSelectors(
+      const std::string& input,
+      HiddenClassIdSelectorsCallback callback) override;
+  void UrlCosmeticResources(const std::string& url,
+                            UrlCosmeticResourcesCallback callback) override;
 
   void SetObserver(CosmeticFiltersObserver* cosmetic_filters_observer);
 

@@ -17,7 +17,7 @@ source_set("renderer") {
 
   deps = [
     "//base",
-    "//brave/content/browser/mojom",
+    "//brave/components/cosmetic_filters/common:mojom",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

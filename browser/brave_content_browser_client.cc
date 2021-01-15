@@ -28,6 +28,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -37,6 +38,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
@@ -48,6 +50,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
@@ -170,6 +173,30 @@ BraveContentBrowserClient::AllowWebBluetooth(
     const url::Origin& requesting_origin,
     const url::Origin& embedding_origin) {
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
+}
+
+void BraveContentBrowserClient::ExposeInterfacesToRenderer(
+    service_manager::BinderRegistry* registry,
+    blink::AssociatedInterfaceRegistry* associated_registry,
+    content::RenderProcessHost* render_process_host) {
+  auto* profile =
+      Profile::FromBrowserContext(render_process_host->GetBrowserContext());
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile);
+
+  auto create_cosmetic_filters_resources =
+      [](HostContentSettingsMap* settings_map,
+         mojo::PendingReceiver<
+             cosmetic_filters::mojom::CosmeticFiltersResources> receiver) {
+        mojo::MakeSelfOwnedReceiver(
+            std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
+                settings_map, g_brave_browser_process->ad_block_service()),
+            std::move(receiver));
+      };
+
+  registry->AddInterface(base::BindRepeating(create_cosmetic_filters_resources,
+                                             base::RetainedRef(settings_map)),
+                         content::GetUIThreadTaskRunner({}));
+  LOG(ERROR) << "!!!ExposeInterfacesToRenderer";
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

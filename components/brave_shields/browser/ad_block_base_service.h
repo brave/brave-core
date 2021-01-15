@@ -49,9 +49,9 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  base::Optional<base::Value> UrlCosmeticResources(
+  virtual base::Optional<base::Value> UrlCosmeticResources(
           const std::string& url);
-  base::Optional<base::Value> HiddenClassIdSelectors(
+  virtual base::Optional<base::Value> HiddenClassIdSelectors(
           const std::vector<std::string>& classes,
           const std::vector<std::string>& ids,
           const std::vector<std::string>& exceptions);

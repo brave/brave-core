@@ -27,17 +27,3 @@ brave_chrome_browser_public_deps = [
   "//brave/components/brave_sync:constants",
   "//brave/components/variations:constants",
 ]
-
-brave_content_public_browser_sources = [
-  "//brave/content/browser/cosmetic_filters_communication_impl.cc",
-  "//brave/content/browser/cosmetic_filters_communication_impl.h",
-  "//brave/content/browser/cosmetic_filters_observer.h",
-  "//brave/content/public/browser/brave_render_frame_host.cc",
-]
-
-brave_content_public_browser_deps = [
-  "//base",
-  "//brave/content/browser/mojom",
-  "//skia",
-  "//third_party/blink/public:blink_headers",
-]

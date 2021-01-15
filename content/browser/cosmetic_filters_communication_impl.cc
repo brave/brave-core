@@ -13,6 +13,9 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 
+// TODO remove stub
+#include "base/json/json_reader.h"
+
 namespace content {
 
 // static
@@ -46,15 +49,37 @@ void CosmeticFiltersCommunicationImpl::SetObserver(
   }
 }
 
+void CosmeticFiltersCommunicationImpl::ShouldDoCosmeticFiltering(
+    const std::string& url,
+    ShouldDoCosmeticFilteringCallback callback) {
+  // TODO
+  LOG(ERROR) << "!!!CosmeticFiltersCommunicationImpl::ShouldDoCosmeticFiltering";
+  std::move(callback).Run(true, false);
+}
+
+void CosmeticFiltersCommunicationImpl::UrlCosmeticResources(
+    const std::string& url,
+    UrlCosmeticResourcesCallback callback) {
+  // TODO remove stub
+  base::Optional<base::Value> resources = base::JSONReader::Read("{}");
+  std::move(callback).Run(resources->Clone());
+}
+
 void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
-    const std::string& input) {
+    const std::string& input,
+    HiddenClassIdSelectorsCallback callback) {
+  base::Optional<base::Value> resources = base::JSONReader::Read("{}");
   base::Optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value || !input_value->is_dict()) {
     // Nothing to work with
+    std::move(callback).Run(resources->Clone());
+
     return;
   }
   base::DictionaryValue* input_dict;
   if (!input_value->GetAsDictionary(&input_dict)) {
+    std::move(callback).Run(resources->Clone());
+
     return;
   }
   std::vector<std::string> classes;
@@ -77,11 +102,13 @@ void CosmeticFiltersCommunicationImpl::HiddenClassIdSelectors(
       ids.push_back(ids_list->GetList()[i].GetString());
     }
   }
-  auto* frame_host = content::RenderFrameHost::FromID(frame_id_);
-  if (cosmetic_filters_observer_ && frame_host) {
-    cosmetic_filters_observer_->ApplyHiddenClassIdSelectors(frame_host, classes,
-                                                            ids);
-  }
+  // TODO remove stub
+  std::move(callback).Run(resources->Clone());
+  //auto* frame_host = content::RenderFrameHost::FromID(frame_id_);
+  //if (cosmetic_filters_observer_ && frame_host) {
+  //  cosmetic_filters_observer_->ApplyHiddenClassIdSelectors(frame_host, classes,
+  //                                                          ids);
+  //}
 }
 
 }  // namespace content

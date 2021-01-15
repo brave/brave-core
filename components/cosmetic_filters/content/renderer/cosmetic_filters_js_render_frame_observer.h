@@ -11,6 +11,7 @@
 #include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "url/gurl.h"
 #include "v8/include/v8.h"
 
 namespace cosmetic_filters {
@@ -30,6 +31,7 @@ class CosmeticFiltersJsRenderFrameObserver
       base::Optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
+  void DidCreateNewDocument() override;
 
  private:
   // RenderFrameObserver implementation.
@@ -40,6 +42,8 @@ class CosmeticFiltersJsRenderFrameObserver
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<CosmeticFiltersJSHandler> native_javascript_handle_;
+
+  GURL url_;
 };
 
 }  // namespace cosmetic_filters

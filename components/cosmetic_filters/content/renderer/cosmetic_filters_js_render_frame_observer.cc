@@ -20,16 +20,31 @@ CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    base::Optional<blink::WebNavigationType> navigation_type) {}
+    base::Optional<blink::WebNavigationType> navigation_type) {
+  url_ = url;
+}
 
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (world_id != worker_isolated_world_id_)
+  if (!render_frame()->IsMainFrame() || world_id != worker_isolated_world_id_ ||
+      !native_javascript_handle_)
     return;
 
-  native_javascript_handle_.reset(new CosmeticFiltersJSHandler(render_frame()));
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+}
+
+void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
+  // There could be empty and "about:blank" URLs, empty URLs are duplicated
+  // with DidCreateDocumentElement, so we just skip them, "about:blank"
+  // should fallback to the main frame rules
+  if (url_.is_empty())
+    return;
+  if (!native_javascript_handle_) {
+    native_javascript_handle_.reset(new CosmeticFiltersJSHandler(
+        render_frame(), worker_isolated_world_id_));
+  }
+  native_javascript_handle_->ProcessURL(url_);
 }
 
 void CosmeticFiltersJsRenderFrameObserver::OnDestruct() {
