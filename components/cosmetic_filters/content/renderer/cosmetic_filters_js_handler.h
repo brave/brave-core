@@ -38,7 +38,7 @@ class CosmeticFiltersJSHandler {
                             v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
-  void EnsureConnected();
+  bool EnsureConnected();
 
   void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
 

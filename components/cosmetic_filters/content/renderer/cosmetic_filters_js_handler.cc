@@ -25,8 +25,8 @@ namespace {
 
 static base::NoDestructor<std::string> g_observing_script("");
 
-static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines({
-    "duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia"});
+static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
+    {"duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia"});
 
 const char kPreInitScript[] =
     R"((function() {
@@ -149,14 +149,12 @@ CosmeticFiltersJSHandler::~CosmeticFiltersJSHandler() = default;
 
 void CosmeticFiltersJSHandler::HiddenClassIdSelectors(
     const std::string& input) {
-  if (!cosmetic_filters_resources_) {
+  if (EnsureConnected())
     return;
-  }
 
   cosmetic_filters_resources_->HiddenClassIdSelectors(
-      input,
-      base::BindOnce(&CosmeticFiltersJSHandler::OnHiddenClassIdSelectors,
-                     base::Unretained(this)));
+      input, base::BindOnce(&CosmeticFiltersJSHandler::OnHiddenClassIdSelectors,
+                            base::Unretained(this)));
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -172,7 +170,8 @@ void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
 }
 
 void CosmeticFiltersJSHandler::CreateWorkerObject(
-    v8::Isolate* isolate, v8::Local<v8::Context> context) {
+    v8::Isolate* isolate,
+    v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> cosmetic_filters_obj;
   v8::Local<v8::Value> cosmetic_filters_value;
@@ -189,7 +188,8 @@ void CosmeticFiltersJSHandler::CreateWorkerObject(
 }
 
 void CosmeticFiltersJSHandler::BindFunctionsToObject(
-    v8::Isolate* isolate, v8::Local<v8::Object> javascript_object) {
+    v8::Isolate* isolate,
+    v8::Local<v8::Object> javascript_object) {
   BindFunctionToObject(
       isolate, javascript_object, "hiddenClassIdSelectors",
       base::BindRepeating(&CosmeticFiltersJSHandler::HiddenClassIdSelectors,
@@ -212,16 +212,22 @@ void CosmeticFiltersJSHandler::BindFunctionToObject(
       .Check();
 }
 
-void CosmeticFiltersJSHandler::EnsureConnected() {
-  if (!cosmetic_filters_resources_) {
+bool CosmeticFiltersJSHandler::EnsureConnected() {
+  if (!cosmetic_filters_resources_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         cosmetic_filters_resources_.BindNewPipeAndPassReceiver());
   }
+
+  if (cosmetic_filters_resources_.is_bound())
+    return true;
+  else
+    return false;
 }
 
 void CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
-  if (!cosmetic_filters_resources_)
+  if (!EnsureConnected())
     return;
+
   url_ = url;
   cosmetic_filters_resources_->ShouldDoCosmeticFiltering(
       url_.spec(),
@@ -232,7 +238,7 @@ void CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
 void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
     bool enabled,
     bool first_party_enabled) {
-  if (!enabled)  
+  if (!enabled || !EnsureConnected())
     return;
 
   cosmetic_filters_resources_->UrlCosmeticResources(
@@ -252,19 +258,19 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
   std::string non_scriptlet_init_script;
   std::string json_to_inject;
   base::Value* injected_script = resources_dict->FindPath("injected_script");
-  if (injected_script && base::JSONWriter::Write(*injected_script,
-                                                 &json_to_inject) &&
+  if (injected_script &&
+      base::JSONWriter::Write(*injected_script, &json_to_inject) &&
       json_to_inject.length() > 1) {
     scriptlet_init_script =
         base::StringPrintf(kScriptletInitScript, json_to_inject.c_str());
   }
   if (render_frame_->IsMainFrame()) {
     // TODO get the enabled_1st_party_cf_filtering_
-    //Profile* profile =
+    // Profile* profile =
     //    Profile::FromBrowserContext(web_contents()->GetBrowserContext());
     enabled_1st_party_cf_filtering_ = false;
-        //brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-        //    HostContentSettingsMapFactory::GetForProfile(profile), GURL(url));
+    // brave_shields::IsFirstPartyCosmeticFilteringEnabled(
+    //    HostContentSettingsMapFactory::GetForProfile(profile), GURL(url));
     bool generichide = false;
     resources_dict->GetBoolean("generichide", &generichide);
     non_scriptlet_init_script =
@@ -289,7 +295,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
       blink::WebString::FromUTF8(*g_observing_script));
 
   CSSRulesRoutine(resources_dict);
-  //std::string pre_init_script = "(function(){console.log('!!!hello1');})();";
+  // std::string pre_init_script = "(function(){console.log('!!!hello1');})();";
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
@@ -343,8 +349,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 
   if (!enabled_1st_party_cf_filtering_) {
     web_frame->ExecuteScriptInIsolatedWorld(
-          worker_isolated_world_id_,
-          blink::WebString::FromUTF8(*g_observing_script));
+        worker_isolated_world_id_,
+        blink::WebString::FromUTF8(*g_observing_script));
   }
 }
 
