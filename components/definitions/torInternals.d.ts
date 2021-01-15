@@ -5,7 +5,8 @@ declare namespace TorInternals {
 
   export interface State {
     generalInfo: GeneralInfo,
-    log: string
+    log: string,
+    torControlEvents: string[]
   }
 
   export interface GeneralInfo {

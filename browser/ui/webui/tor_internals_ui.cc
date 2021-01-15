@@ -71,7 +71,15 @@ void TorInternalsDOMHandler::OnGetTorLog(bool success, const std::string& log) {
         base::Value(log));
 }
 
-void TorInternalsDOMHandler::OnTorCircuitEstablished(bool result) {}
+void TorInternalsDOMHandler::OnTorCircuitEstablished(bool result) {
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "tor_internals.onGetTorCircuitEstablished", base::Value(result));
+}
+
+void TorInternalsDOMHandler::OnTorControlEvent(const std::string& event) {
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "tor_internals.onGetTorControlEvent", base::Value(event));
+}
 
 void TorInternalsDOMHandler::OnTorInitializing(const std::string& percentage) {
   web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorInitPercentage",

@@ -295,9 +295,11 @@ void TorLauncherFactory::OnTorEvent(
     const std::string& initial,
     const std::map<std::string, std::string>& extra) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  VLOG(3) << "TOR CONTROL: event "
-          << (*tor::kTorControlEventByEnum.find(event)).second << ": "
-          << initial;
+  const std::string raw_event =
+      (*tor::kTorControlEventByEnum.find(event)).second + ": " + initial;
+  VLOG(3) << "TOR CONTROL: event " << raw_event;
+  for (auto& observer : observers_)
+    observer.OnTorControlEvent(raw_event);
   if (event == tor::TorControlEvent::STATUS_CLIENT) {
     if (initial.find(kStatusClientBootstrap) != std::string::npos) {
       size_t progress_start = initial.find(kStatusClientBootstrapProgress);

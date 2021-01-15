@@ -26,6 +26,15 @@ const torInternalsReducer: Reducer<TorInternals.State | undefined> = (state: Tor
         generalInfo: action.payload.generalInfo
       }
       break
+    case types.GET_TOR_LOG:
+      chrome.send('tor_internals.getTorLog')
+      break
+    case types.ON_GET_TOR_LOG:
+      state = {
+        ...state,
+        log: action.payload.log
+      }
+      break
     case types.ON_GET_TOR_INIT_PERCENTAGE:
       state = {
         ...state,
@@ -35,14 +44,18 @@ const torInternalsReducer: Reducer<TorInternals.State | undefined> = (state: Tor
         }
       }
       break
-    case types.GET_TOR_LOG:
-      chrome.send('tor_internals.getTorLog')
-      break
-    case types.ON_GET_TOR_LOG:
+    case types.ON_GET_TOR_CIRCUIT_ESTABLISHED:
       state = {
         ...state,
-        log: action.payload.log
+        generalInfo :{
+          ...state.generalInfo,
+          isTorConnected: action.payload.success
+        }
       }
+      break
+    case types.ON_GET_TOR_CONTROL_EVENT:
+      state = { ...state }
+      state.torControlEvents.push(action.payload.event)
       break
     default:
       break

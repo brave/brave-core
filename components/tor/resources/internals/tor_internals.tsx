@@ -36,10 +36,19 @@ window.cr.define('tor_internals', function () {
   }
 
   function onGetTorInitPercentage (percentage: string) {
-    if (percentage == '100')
-      getTorGeneralInfo()
     const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
     actions.onGetTorInitPercentage(percentage)
+  }
+
+  function onGetTorCircuitEstablished (success: boolean) {
+    const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
+    actions.onGetTorCircuitEstablished(success)
+    getTorGeneralInfo()
+  }
+
+  function onGetTorControlEvent (event: string) {
+    const actions = bindActionCreators(torInternalsActions, store.dispatch.bind(store))
+    actions.onGetTorControlEvent(event)
   }
 
   function initialize () {
@@ -58,7 +67,9 @@ window.cr.define('tor_internals', function () {
     initialize,
     onGetTorGeneralInfo,
     onGetTorLog,
-    onGetTorInitPercentage
+    onGetTorInitPercentage,
+    onGetTorCircuitEstablished,
+    onGetTorControlEvent
   }
 })
 

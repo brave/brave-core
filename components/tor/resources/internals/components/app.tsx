@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 // Components
 import { GeneralInfo } from './generalInfo'
 import { Log } from './log'
+import { TorControlEvents } from './torControlEvents'
 import { Tabs } from 'brave-ui/components'
 
 // Utils
@@ -78,6 +79,9 @@ export class TorInternalsPage extends React.Component<Props, State> {
           </div>
           <div data-key='log' data-title={getLocale('tabLogs')}>
 	   <Log log={this.props.torInternalsData.log}/>
+          </div>
+          <div data-key='torControlEvents' data-title={getLocale('torControlEvent')}>
+	   <TorControlEvents events={this.props.torInternalsData.torControlEvents}/>
           </div>
         </Tabs>
     )

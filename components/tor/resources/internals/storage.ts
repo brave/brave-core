@@ -11,8 +11,8 @@ export const defaultState: TorInternals.State = {
     isTorConnected: false,
     torInitPercentage: ''
   },
-
-  log: ''
+  log: '',
+  torControlEvents: []
 }
 
 export const load = (): TorInternals.State => {

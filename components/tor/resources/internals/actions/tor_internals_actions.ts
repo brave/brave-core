@@ -26,3 +26,13 @@ export const onGetTorInitPercentage = (percentage: string) =>
   action(types.ON_GET_TOR_INIT_PERCENTAGE, {
     percentage
   })
+
+export const onGetTorCircuitEstablished = (success: boolean) =>
+  action(types.ON_GET_TOR_CIRCUIT_ESTABLISHED, {
+    success
+  })
+
+export const onGetTorControlEvent = (event: string) =>
+  action(types.ON_GET_TOR_CONTROL_EVENT, {
+    event
+  })

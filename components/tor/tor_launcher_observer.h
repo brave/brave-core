@@ -20,6 +20,7 @@ class TorLauncherObserver : public base::CheckedObserver {
   virtual void OnTorNewProxyURI(const std::string& uri) {}
   virtual void OnTorCircuitEstablished(bool result) {}
   virtual void OnTorInitializing(const std::string& percentage) {}
+  virtual void OnTorControlEvent(const std::string& event) {}
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_OBSERVER_H_
