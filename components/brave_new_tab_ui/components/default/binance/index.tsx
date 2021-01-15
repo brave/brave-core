@@ -143,6 +143,7 @@ interface Props {
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
+  onBinanceUserLocale: (userLocale: string) => void
   onSetInitialFiat: (initialFiat: string) => void
   onSetInitialAmount: (initialAmount: string) => void
   onSetInitialAsset: (initialAsset: string) => void
@@ -225,6 +226,10 @@ class Binance extends React.PureComponent<Props, State> {
         this.props.onSetUserTLDAutoSet()
       })
     }
+
+    chrome.binance.getLocaleForURL((userLocale: string) => {
+      this.props.onBinanceUserLocale(userLocale)
+    })
 
     this.getClientURL()
   }

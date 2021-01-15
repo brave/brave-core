@@ -150,6 +150,15 @@ class BinanceGetCoinNetworksFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetLocaleForURLFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getLocaleForURL", UNKNOWN)
+
+ protected:
+  ~BinanceGetLocaleForURLFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

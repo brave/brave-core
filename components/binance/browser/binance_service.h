@@ -80,6 +80,7 @@ class BinanceService : public KeyedService {
 
   bool GetAccessToken(GetAccessTokenCallback callback);
   bool IsSupportedRegion();
+  std::string GetLocaleForURL();
   bool GetConvertQuote(const std::string& from,
       const std::string& to,
       const std::string& amount,

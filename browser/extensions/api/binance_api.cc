@@ -318,5 +318,16 @@ void BinanceGetCoinNetworksFunction::OnGetCoinNetworks(
   Respond(OneArgument(std::move(coin_networks)));
 }
 
+ExtensionFunction::ResponseAction BinanceGetLocaleForURLFunction::Run() {
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  const std::string locale = service->GetLocaleForURL();
+
+  return RespondNow(OneArgument(base::Value(locale)));
+}
+
 }  // namespace api
 }  // namespace extensions
