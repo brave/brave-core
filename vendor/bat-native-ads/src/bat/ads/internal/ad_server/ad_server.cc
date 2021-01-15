@@ -62,7 +62,7 @@ void AdServer::Fetch() {
   DCHECK(!is_processing_);
 
   BLOG(1, "Get catalog");
-  BLOG(2, "GET /v5/catalog");
+  BLOG(2, "GET /v6/catalog");
 
   is_processing_ = true;
 

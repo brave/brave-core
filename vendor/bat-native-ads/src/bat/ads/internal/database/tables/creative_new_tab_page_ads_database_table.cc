@@ -94,9 +94,9 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
 
   const std::string query = base::StringPrintf(
       "SELECT "
-          "can.creative_instance_id, "
-          "can.creative_set_id, "
-          "can.campaign_id, "
+          "cntpa.creative_instance_id, "
+          "cntpa.creative_set_id, "
+          "cntpa.campaign_id, "
           "cam.start_at_timestamp, "
           "cam.end_at_timestamp, "
           "cam.daily_cap, "
@@ -108,24 +108,24 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
           "s.segment, "
           "gt.geo_target, "
           "ca.target_url, "
-          "can.company_name, "
-          "can.alt, "
+          "cntpa.company_name, "
+          "cntpa.alt, "
           "cam.ptr, "
           "dp.dow, "
           "dp.start_minute, "
           "dp.end_minute "
-      "FROM %s AS can "
+      "FROM %s AS cntpa "
           "INNER JOIN campaigns AS cam "
-              "ON cam.campaign_id = can.campaign_id "
+              "ON cam.campaign_id = cntpa.campaign_id "
           "INNER JOIN segments AS s "
-              "ON s.creative_set_id = can.creative_set_id "
+              "ON s.creative_set_id = cntpa.creative_set_id "
           "INNER JOIN creative_ads AS ca "
-              "ON ca.creative_instance_id = can.creative_instance_id "
+              "ON ca.creative_instance_id = cntpa.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
-              "ON gt.campaign_id = can.campaign_id "
+              "ON gt.campaign_id = cntpa.campaign_id "
           "INNER JOIN dayparts AS dp "
-              "ON dp.campaign_id = can.campaign_id "
-      "WHERE can.creative_instance_id = '%s'",
+              "ON dp.campaign_id = cntpa.campaign_id "
+      "WHERE cntpa.creative_instance_id = '%s'",
       get_table_name().c_str(),
       creative_instance_id.c_str());
 
@@ -174,9 +174,9 @@ void CreativeNewTabPageAds::GetForSegments(
 
   const std::string query = base::StringPrintf(
       "SELECT "
-          "can.creative_instance_id, "
-          "can.creative_set_id, "
-          "can.campaign_id, "
+          "cntpa.creative_instance_id, "
+          "cntpa.creative_set_id, "
+          "cntpa.campaign_id, "
           "cam.start_at_timestamp, "
           "cam.end_at_timestamp, "
           "cam.daily_cap, "
@@ -188,23 +188,23 @@ void CreativeNewTabPageAds::GetForSegments(
           "s.segment, "
           "gt.geo_target, "
           "ca.target_url, "
-          "can.company_name, "
-          "can.alt, "
+          "cntpa.company_name, "
+          "cntpa.alt, "
           "cam.ptr, "
           "dp.dow, "
           "dp.start_minute, "
           "dp.end_minute "
-      "FROM %s AS can "
+      "FROM %s AS cntpa "
           "INNER JOIN campaigns AS cam "
-              "ON cam.campaign_id = can.campaign_id "
+              "ON cam.campaign_id = cntpa.campaign_id "
           "INNER JOIN segments AS s "
-              "ON s.creative_set_id = can.creative_set_id "
+              "ON s.creative_set_id = cntpa.creative_set_id "
           "INNER JOIN creative_ads AS ca "
-              "ON ca.creative_instance_id = can.creative_instance_id "
+              "ON ca.creative_instance_id = cntpa.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
-              "ON gt.campaign_id = can.campaign_id "
+              "ON gt.campaign_id = cntpa.campaign_id "
           "INNER JOIN dayparts AS dp "
-              "ON dp.campaign_id = can.campaign_id "
+              "ON dp.campaign_id = cntpa.campaign_id "
       "WHERE s.segment IN %s "
           "AND %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
@@ -256,9 +256,9 @@ void CreativeNewTabPageAds::GetAll(
     GetCreativeNewTabPageAdsCallback callback) {
   const std::string query = base::StringPrintf(
       "SELECT "
-          "can.creative_instance_id, "
-          "can.creative_set_id, "
-          "can.campaign_id, "
+          "cntpa.creative_instance_id, "
+          "cntpa.creative_set_id, "
+          "cntpa.campaign_id, "
           "cam.start_at_timestamp, "
           "cam.end_at_timestamp, "
           "cam.daily_cap, "
@@ -270,23 +270,23 @@ void CreativeNewTabPageAds::GetAll(
           "s.segment, "
           "gt.geo_target, "
           "ca.target_url, "
-          "can.company_name, "
-          "can.alt, "
+          "cntpa.company_name, "
+          "cntpa.alt, "
           "cam.ptr, "
           "dp.dow, "
           "dp.start_minute, "
           "dp.end_minute "
-      "FROM %s AS can "
+      "FROM %s AS cntpa "
           "INNER JOIN campaigns AS cam "
-              "ON cam.campaign_id = can.campaign_id "
+              "ON cam.campaign_id = cntpa.campaign_id "
           "INNER JOIN segments AS s "
-              "ON s.creative_set_id = can.creative_set_id "
+              "ON s.creative_set_id = cntpa.creative_set_id "
           "INNER JOIN creative_ads AS ca "
-              "ON ca.creative_instance_id = can.creative_instance_id "
+              "ON ca.creative_instance_id = cntpa.creative_instance_id "
           "INNER JOIN geo_targets AS gt "
-              "ON gt.campaign_id = can.campaign_id "
+              "ON gt.campaign_id = cntpa.campaign_id "
           "INNER JOIN dayparts AS dp "
-              "ON dp.campaign_id = can.campaign_id "
+              "ON dp.campaign_id = cntpa.campaign_id "
       "WHERE %s BETWEEN cam.start_at_timestamp AND cam.end_at_timestamp",
       get_table_name().c_str(),
       TimeAsTimestampString(base::Time::Now()).c_str());
@@ -343,8 +343,8 @@ void CreativeNewTabPageAds::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 8: {
-      MigrateToV8(transaction);
+    case 9: {
+      MigrateToV9(transaction);
       break;
     }
 
@@ -516,7 +516,7 @@ CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
   return creative_new_tab_page_ad;
 }
 
-void CreativeNewTabPageAds::CreateTableV8(
+void CreativeNewTabPageAds::CreateTableV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -537,13 +537,13 @@ void CreativeNewTabPageAds::CreateTableV8(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeNewTabPageAds::MigrateToV8(
+void CreativeNewTabPageAds::MigrateToV9(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV8(transaction);
+  CreateTableV9(transaction);
 }
 
 }  // namespace table

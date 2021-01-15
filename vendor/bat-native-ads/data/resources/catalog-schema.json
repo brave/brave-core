@@ -285,6 +285,32 @@
                                                     },
                                                     {
                                                         "properties": {
+                                                            "domain": {
+                                                                "type": "string"
+                                                            },
+                                                            "feed": {
+                                                                "type": "string"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            },
+                                                            "category": {
+                                                                "type": "string"
+                                                            },
+                                                            "ogImages": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "contentType": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    {
+                                                        "properties": {
                                                             "logo": {
                                                                 "type": "object",
                                                                 "required": [

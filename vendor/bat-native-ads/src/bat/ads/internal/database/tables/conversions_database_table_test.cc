@@ -29,7 +29,7 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
   // Arrange
   const URLEndpoints endpoints = {
     {
-      "/v5/catalog", {
+      "/v6/catalog", {
         {
           net::HTTP_OK, "/catalog.json"
         }

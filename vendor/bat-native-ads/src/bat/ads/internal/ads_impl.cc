@@ -32,6 +32,7 @@
 #include "bat/ads/internal/ads/ad_notifications/ad_notification.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
+#include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/catalog/catalog.h"
@@ -51,6 +52,7 @@
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
+#include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/statement_info.h"
 
 namespace ads {
@@ -73,6 +75,7 @@ AdsImpl::~AdsImpl() {
   ad_transfer_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
   new_tab_page_ad_->RemoveObserver(this);
+  promoted_content_ad_->RemoveObserver(this);
 }
 
 void AdsImpl::set_for_testing(
@@ -269,10 +272,17 @@ void AdsImpl::OnAdNotificationEvent(
 }
 
 void AdsImpl::OnNewTabPageAdEvent(
-    const std::string& wallpaper_id,
+    const std::string& uuid,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
-  new_tab_page_ad_->FireEvent(wallpaper_id, creative_instance_id, event_type);
+  new_tab_page_ad_->FireEvent(uuid, creative_instance_id, event_type);
+}
+
+void AdsImpl::OnPromotedContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const PromotedContentAdEventType event_type) {
+  promoted_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
 void AdsImpl::RemoveAllHistory(
@@ -414,6 +424,9 @@ void AdsImpl::set(
 
   ad_transfer_ = std::make_unique<AdTransfer>();
   ad_transfer_->AddObserver(this);
+
+  promoted_content_ad_ = std::make_unique<PromotedContentAd>();
+  promoted_content_ad_->AddObserver(this);
 
   client_ = std::make_unique<Client>();
 
@@ -572,6 +585,14 @@ void AdsImpl::OnTransactionsChanged() {
   AdsClientHelper::Get()->OnAdRewardsChanged();
 }
 
+void AdsImpl::OnCatalogUpdated(
+    const Catalog& catalog) {
+  account_->SetCatalogIssuers(catalog.GetIssuers());
+  account_->TopUpUnblindedTokens();
+
+  epsilon_greedy_bandit_resource_->LoadFromDatabase();
+}
+
 void AdsImpl::OnAdNotificationViewed(
     const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
@@ -601,24 +622,6 @@ void AdsImpl::OnAdNotificationTimedOut(
       AdNotificationEventType::kTimedOut});
 }
 
-void AdsImpl::OnCatalogUpdated(
-    const Catalog& catalog) {
-  account_->SetCatalogIssuers(catalog.GetIssuers());
-  account_->TopUpUnblindedTokens();
-
-  epsilon_greedy_bandit_resource_->LoadFromDatabase();
-}
-
-void AdsImpl::OnAdTransfer(
-    const AdInfo& ad) {
-  account_->Deposit(ad.creative_instance_id, ConfirmationType::kTransferred);
-}
-
-void AdsImpl::OnConversion(
-    const std::string& creative_instance_id) {
-  account_->Deposit(creative_instance_id, ConfirmationType::kConversion);
-}
-
 void AdsImpl::OnNewTabPageAdViewed(
     const NewTabPageAdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
@@ -629,6 +632,28 @@ void AdsImpl::OnNewTabPageAdClicked(
   ad_transfer_->set_last_clicked_ad(ad);
 
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
+}
+
+void AdsImpl::OnPromotedContentAdViewed(
+    const PromotedContentAdInfo& ad) {
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kViewed);
+}
+
+void AdsImpl::OnPromotedContentAdClicked(
+    const PromotedContentAdInfo& ad) {
+  ad_transfer_->set_last_clicked_ad(ad);
+
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kClicked);
+}
+
+void AdsImpl::OnAdTransfer(
+    const AdInfo& ad) {
+  account_->Deposit(ad.creative_instance_id, ConfirmationType::kTransferred);
+}
+
+void AdsImpl::OnConversion(
+    const std::string& creative_instance_id) {
+  account_->Deposit(creative_instance_id, ConfirmationType::kConversion);
 }
 
 }  // namespace ads

@@ -1016,14 +1016,25 @@ void AdsServiceImpl::OnViewAdNotification(
 }
 
 void AdsServiceImpl::OnNewTabPageAdEvent(
-    const std::string& wallpaper_id,
+    const std::string& uuid,
     const std::string& creative_instance_id,
     const ads::NewTabPageAdEventType event_type) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, event_type);
+  bat_ads_->OnNewTabPageAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void AdsServiceImpl::OnPromotedContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const ads::PromotedContentAdEventType event_type) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
 void AdsServiceImpl::RetryViewingAdNotification(

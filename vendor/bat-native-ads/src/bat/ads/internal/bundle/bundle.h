@@ -8,6 +8,7 @@
 
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 
 namespace ads {
@@ -30,19 +31,23 @@ class Bundle {
 
   void DeleteDatabaseTables();
 
-  void DeleteCreativeAdNotifications();
-  void DeleteCreativeNewTabPageAds();
   void DeleteCampaigns();
   void DeleteSegments();
   void DeleteCreativeAds();
   void DeleteDayparts();
   void DeleteGeoTargets();
 
+  void DeleteCreativeAdNotifications();
   void SaveCreativeAdNotifications(
       const CreativeAdNotificationList& creative_ad_notifications);
 
+  void DeleteCreativeNewTabPageAds();
   void SaveCreativeNewTabPageAds(
       const CreativeNewTabPageAdList& creative_new_tab_page_ads);
+
+  void DeleteCreativePromotedContentAds();
+  void SaveCreativePromotedContentAds(
+      const CreativePromotedContentAdList& creative_promoted_content_ads);
 
   void PurgeExpiredConversions();
   void SaveConversions(

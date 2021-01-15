@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ad_transfer/ad_transfer_observer.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
+#include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -67,12 +68,14 @@ class Client;
 class ConfirmationsState;
 class Conversions;
 class NewTabPageAd;
+class PromotedContentAd;
 class TabManager;
 class UserActivity;
 struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
 struct NewTabPageAdInfo;
+struct PromotedContentAdInfo;
 
 class AdsImpl
     : public Ads,
@@ -81,7 +84,8 @@ class AdsImpl
       public AdServerObserver,
       public AdTransferObserver,
       public ConversionsObserver,
-      public NewTabPageAdObserver {
+      public NewTabPageAdObserver,
+      public PromotedContentAdObserver {
  public:
   AdsImpl(
       AdsClient* ads_client);
@@ -149,9 +153,14 @@ class AdsImpl
       const AdNotificationEventType event_type) override;
 
   void OnNewTabPageAdEvent(
-      const std::string& wallpaper_id,
+      const std::string& uuid,
       const std::string& creative_instance_id,
       const NewTabPageAdEventType event_type) override;
+
+  void OnPromotedContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const PromotedContentAdEventType event_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -220,6 +229,7 @@ class AdsImpl
   std::unique_ptr<Conversions> conversions_;
   std::unique_ptr<database::Initialize> database_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<PromotedContentAd> promoted_content_ad_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
 
@@ -253,6 +263,10 @@ class AdsImpl
   void OnAdRewardsChanged() override;
   void OnTransactionsChanged() override;
 
+  // AdServerObserver implementation
+  void OnCatalogUpdated(
+      const Catalog& catalog) override;
+
   // AdNotificationObserver implementation
   void OnAdNotificationViewed(
       const AdNotificationInfo& ad) override;
@@ -263,9 +277,17 @@ class AdsImpl
   void OnAdNotificationTimedOut(
       const AdNotificationInfo& ad) override;
 
-  // AdServerObserver implementation
-  void OnCatalogUpdated(
-      const Catalog& catalog) override;
+  // NewTabPageAdObserver implementation
+  void OnNewTabPageAdViewed(
+      const NewTabPageAdInfo& ad) override;
+  void OnNewTabPageAdClicked(
+      const NewTabPageAdInfo& ad) override;
+
+  // PromotedContentAdObserver implementation
+  void OnPromotedContentAdViewed(
+      const PromotedContentAdInfo& ad) override;
+  void OnPromotedContentAdClicked(
+      const PromotedContentAdInfo& ad) override;
 
   // AdTransferObserver implementation
   void OnAdTransfer(
@@ -274,12 +296,6 @@ class AdsImpl
   // ConversionsObserver implementation
   void OnConversion(
       const std::string& creative_instance_id) override;
-
-  // NewTabPageAdObserver implementation
-  void OnNewTabPageAdViewed(
-      const NewTabPageAdInfo& ad) override;
-  void OnNewTabPageAdClicked(
-      const NewTabPageAdInfo& ad) override;
 };
 
 }  // namespace ads

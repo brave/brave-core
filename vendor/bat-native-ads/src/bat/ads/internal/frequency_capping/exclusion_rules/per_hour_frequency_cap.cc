@@ -65,7 +65,7 @@ AdEventList PerHourFrequencyCap::FilterAdEvents(
 
   const auto iter = std::remove_if(filtered_ad_events.begin(),
       filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
-    return ad_event.type == AdType::kNewTabPageAd ||
+    return ad_event.type != AdType::kAdNotification ||
         ad_event.creative_instance_id != ad.creative_instance_id ||
         ad_event.confirmation_type != ConfirmationType::kViewed;
   });

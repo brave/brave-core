@@ -8,6 +8,7 @@
 
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 
 namespace ads {
@@ -20,6 +21,7 @@ struct BundleState {
 
   CreativeAdNotificationList creative_ad_notifications;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
+  CreativePromotedContentAdList creative_promoted_content_ads;
   ConversionList conversions;
 };
 

@@ -107,7 +107,7 @@ TEST(BatAdsHistoryConfirmationFilterTest,
 
   AdHistoryInfo ad4;  // Unsupported
   ad4.ad_content.uuid = "a86a11d7-674c-494e-844d-f62417c2357b";
-  ad4.ad_content.type = AdType::kNewTabPageAd;
+  ad4.ad_content.type = AdType::kPromotedContentAd;
   ad4.ad_content.creative_instance_id = "47c73793-d1c1-4fdb-8530-4ae478c79783";
   ad4.ad_content.ad_action = ConfirmationType::kDownvoted;
 
@@ -125,7 +125,7 @@ TEST(BatAdsHistoryConfirmationFilterTest,
 
   AdHistoryInfo ad7;  // Dismiss
   ad7.ad_content.uuid = "1ec4f1ba-4255-4ecf-8701-8e550744cdf8";
-  ad7.ad_content.type = AdType::kNewTabPageAd;
+  ad7.ad_content.type = AdType::kPromotedContentAd;
   ad7.ad_content.creative_instance_id = "d5d47c90-5c6b-4aa2-bd05-582ff6e4a03e";
   ad7.ad_content.ad_action = ConfirmationType::kDismissed;
 

@@ -18,6 +18,7 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
 namespace history {
@@ -89,6 +90,28 @@ void AddNewTabPageAd(
   ad_history.ad_content.campaign_id = ad.campaign_id;
   ad_history.ad_content.brand = ad.company_name;
   ad_history.ad_content.brand_info = ad.alt;
+  ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
+  ad_history.ad_content.brand_url = ad.target_url;
+  ad_history.ad_content.ad_action = confirmation_type;
+  ad_history.category_content.category = ad.segment;
+
+  Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
+}
+
+void AddPromotedContentAd(
+    const PromotedContentAdInfo& ad,
+    const ConfirmationType& confirmation_type) {
+  AdHistoryInfo ad_history;
+
+  ad_history.timestamp_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  ad_history.ad_content.type = ad.type;
+  ad_history.ad_content.uuid = ad.uuid;
+  ad_history.ad_content.creative_instance_id = ad.creative_instance_id;
+  ad_history.ad_content.creative_set_id = ad.creative_set_id;
+  ad_history.ad_content.campaign_id = ad.campaign_id;
+  ad_history.ad_content.brand = ad.title;
+  ad_history.ad_content.brand_info = ad.description;
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
   ad_history.ad_content.brand_url = ad.target_url;
   ad_history.ad_content.ad_action = confirmation_type;

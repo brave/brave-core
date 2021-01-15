@@ -23,7 +23,8 @@ struct BraveAdsBuildChannel {
 enum BraveAdsAdType {
   kUndefined = 0,
   kAdNotification,
-  kNewTabPageAd
+  kNewTabPageAd,
+  kPromotedContentAd
 };
 
 // If ad notification event types are added to the 7-day ads history you should
@@ -38,6 +39,13 @@ enum BraveAdsAdNotificationEventType {
 // If new tab page ad event types are added to the 7-day ads history you should
 // update |kMaximumEntries| in |ads_history.h|
 enum BraveAdsNewTabPageAdEventType {
+  kViewed = 0,
+  kClicked
+};
+
+// If promoted content ad event types are added to the 7-day ads history you
+// should update |kMaximumEntries| in |ads_history.h|
+enum BraveAdsPromotedContentAdEventType {
   kViewed = 0,
   kClicked
 };

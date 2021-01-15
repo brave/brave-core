@@ -54,16 +54,14 @@ void NewTabPageAd::RemoveObserver(
 }
 
 void NewTabPageAd::FireEvent(
-    const std::string& wallpaper_id,
+    const std::string& uuid,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
-  if (wallpaper_id.empty() || creative_instance_id.empty()) {
-    BLOG(1, "Failed to fire new tab page ad event for wallpaper id "
-        << wallpaper_id << " and creative instance id "
-            << creative_instance_id);
+  if (uuid.empty() || creative_instance_id.empty()) {
+    BLOG(1, "Failed to fire new tab page ad event for uuid " << uuid
+        << " and creative instance id " << creative_instance_id);
 
-    NotifyNewTabPageAdEventFailed(wallpaper_id,
-        creative_instance_id, event_type);
+    NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
 
     return;
   }
@@ -74,18 +72,17 @@ void NewTabPageAd::FireEvent(
       const std::string& creative_instance_id,
       const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
     if (result != SUCCESS) {
-      BLOG(1, "Failed to fire new tab page ad event for wallpaper id");
+      BLOG(1, "Failed to fire new tab page ad event for uuid");
 
-      NotifyNewTabPageAdEventFailed(wallpaper_id,
-          creative_instance_id, event_type);
+      NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
 
       return;
     }
 
     const NewTabPageAdInfo ad =
-        CreateNewTabPageAd(wallpaper_id, creative_new_tab_page_ad);
+        CreateNewTabPageAd(uuid, creative_new_tab_page_ad);
 
-    FireEvent(ad, wallpaper_id, creative_instance_id, event_type);
+    FireEvent(ad, uuid, creative_instance_id, event_type);
   });
 }
 
@@ -109,7 +106,7 @@ bool NewTabPageAd::ShouldFireEvent(
 
 void NewTabPageAd::FireEvent(
     const NewTabPageAdInfo& ad,
-    const std::string& wallpaper_id,
+    const std::string& uuid,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
   database::table::AdEvents database_table;
@@ -119,8 +116,7 @@ void NewTabPageAd::FireEvent(
     if (result != Result::SUCCESS) {
       BLOG(1, "New tab page ad: Failed to get ad events");
 
-      NotifyNewTabPageAdEventFailed(wallpaper_id,
-          creative_instance_id, event_type);
+      NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
 
       return;
     }
@@ -129,8 +125,7 @@ void NewTabPageAd::FireEvent(
         !ShouldFireEvent(ad, ad_events)) {
       BLOG(1, "New tab page ad: Not allowed");
 
-      NotifyNewTabPageAdEventFailed(wallpaper_id,
-          creative_instance_id, event_type);
+      NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
 
       return;
     }
@@ -173,12 +168,11 @@ void NewTabPageAd::NotifyNewTabPageAdClicked(
 }
 
 void NewTabPageAd::NotifyNewTabPageAdEventFailed(
-    const std::string& wallpaper_id,
+    const std::string& uuid,
     const std::string& creative_instance_id,
     const NewTabPageAdEventType event_type) {
   for (NewTabPageAdObserver& observer : observers_) {
-    observer.OnNewTabPageAdEventFailed(wallpaper_id,
-        creative_instance_id, event_type);
+    observer.OnNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
   }
 }
 

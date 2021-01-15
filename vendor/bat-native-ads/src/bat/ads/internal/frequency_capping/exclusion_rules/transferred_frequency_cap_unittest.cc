@@ -79,6 +79,41 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 }
 
 TEST_F(BatAdsTransferredFrequencyCapTest,
+    AdAllowedForAdWithDifferentCampaignIdWithin48HoursForMultipleTypes) {
+  // Arrange
+  CreativeAdInfo ad_1;
+  ad_1.creative_instance_id = kCreativeInstanceId;
+  ad_1.campaign_id = kCampaignIds.at(0);
+
+  CreativeAdInfo ad_2;
+  ad_2.creative_instance_id = kCreativeInstanceId;
+  ad_2.campaign_id = kCampaignIds.at(1);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification,
+      ad_2, ConfirmationType::kTransferred);
+  ad_events.push_back(ad_event_1);
+
+  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd,
+      ad_2, ConfirmationType::kTransferred);
+  ad_events.push_back(ad_event_2);
+
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
+      ad_2, ConfirmationType::kTransferred);
+  ad_events.push_back(ad_event_3);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+
+  // Act
+  TransferredFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsTransferredFrequencyCapTest,
     AdNotAllowedForAdWithSameCampaignIdWithin48Hours) {
   // Arrange
   CreativeAdInfo ad;

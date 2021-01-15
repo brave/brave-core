@@ -27,7 +27,7 @@ class NewTabPageAdObserver : public base::CheckedObserver {
 
   // Invoked when a new tab page ad event fails
   virtual void OnNewTabPageAdEventFailed(
-      const std::string& wallpaper_id,
+      const std::string& uuid,
       const std::string& creative_instance_id,
       const NewTabPageAdEventType event_type) {}
 
