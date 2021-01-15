@@ -55,10 +55,12 @@ class BravePrefProvider : public PrefProvider,
                            TestShieldsSettingsMigrationVersion);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationFromResourceIDs);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsSettingsMigrationFromUnknownSettings);
   void MigrateShieldsSettings(bool incognito);
   void MigrateShieldsSettingsFromResourceIds();
   void MigrateShieldsSettingsFromResourceIdsForOneType(
-      const std::string& preference_name,
+      const std::string& preference_path,
       const std::string& patterns_string,
       const base::Time& expiration,
       const base::Time& last_modified,

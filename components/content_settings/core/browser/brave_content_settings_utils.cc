@@ -64,28 +64,20 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
   switch (content_type) {
     case ContentSettingsType::BRAVE_ADS:
       return brave_shields::kAds;
-      break;
     case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
       return brave_shields::kCosmeticFiltering;
-      break;
     case ContentSettingsType::BRAVE_TRACKERS:
       return brave_shields::kTrackers;
-      break;
     case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
       return brave_shields::kHTTPUpgradableResources;
-      break;
     case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
       return brave_shields::kFingerprintingV2;
-      break;
     case ContentSettingsType::BRAVE_SHIELDS:
       return brave_shields::kBraveShields;
-      break;
     case ContentSettingsType::BRAVE_REFERRERS:
       return brave_shields::kReferrers;
-      break;
     case ContentSettingsType::BRAVE_COOKIES:
       return brave_shields::kCookies;
-      break;
     default:
       NOTREACHED();
       return std::string();
@@ -99,6 +91,14 @@ bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
   return std::find(kShieldsContentSettingsTypes.begin(),
                    kShieldsContentSettingsTypes.end(),
                    content_type) != kShieldsContentSettingsTypes.end();
+}
+
+bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
+  for (auto content_type : kShieldsContentSettingsTypes) {
+    if (GetShieldsContentTypeName(content_type) == content_type_name)
+      return true;
+  }
+  return false;
 }
 
 base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
