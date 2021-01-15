@@ -673,11 +673,10 @@ class PageWallet extends React.Component<Props, State> {
   getMonthlyReportDropDown = (): Record<string, string> => {
     const { monthlyReportIds } = this.props.rewardsData
 
-    let ids = monthlyReportIds
-    if (!monthlyReportIds) {
-      ids = []
-      ids.push(`${new Date().getFullYear()}_${new Date().getMonth() + 1}`)
-    }
+    const ids = [
+      ...monthlyReportIds || [],
+      `${new Date().getFullYear()}_${new Date().getMonth() + 1}`
+    ]
 
     let result: Record<string, string> = {}
     ids.forEach((id: string) => {
