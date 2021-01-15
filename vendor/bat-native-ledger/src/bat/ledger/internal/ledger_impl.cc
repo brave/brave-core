@@ -486,6 +486,7 @@ void LedgerImpl::GetAllBalanceReports(
 type::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
   auto props = type::AutoContributeProperties::New();
   props->enabled_contribute = state()->GetAutoContributeEnabled();
+  props->amount = state()->GetAutoContributionAmount();
   props->contribution_min_time = state()->GetPublisherMinVisitTime();
   props->contribution_min_visits = state()->GetPublisherMinVisits();
   props->contribution_non_verified = state()->GetPublisherAllowNonVerified();

@@ -102,6 +102,7 @@ export interface RewardsParameters {
   rate: number
   tipChoices: number[]
   monthlyTipChoices: number[]
+  autoContributeChoices: number[]
 }
 
 export interface HostError {
@@ -116,6 +117,8 @@ export interface HostState {
   rewardsParameters?: RewardsParameters
   hostError?: HostError
   nextReconcileDate?: Date
+  adsPerHour?: number
+  autoContributeAmount?: number
   currentMonthlyTip?: number
   onlyAnonWallet?: boolean
   showOnboarding?: boolean
@@ -130,6 +133,8 @@ export interface Host {
   getString: (key: string) => string
   getDialogArgs: () => DialogArgs
   closeDialog: () => void
+  setAutoContributeAmount: (autoContributeAmount: number) => void
+  setAdsPerHour: (adsPerHour: number) => void
   saveOnboardingResult: (result: OnboardingResult) => void
   processTip: (amount: number, kind: TipKind) => void
   shareTip: (target: ShareTarget) => void

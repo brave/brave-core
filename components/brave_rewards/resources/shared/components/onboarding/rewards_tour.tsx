@@ -6,31 +6,26 @@ import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
 
+import { RewardsTourProps } from './rewards_tour_props'
 import { TourNavigation } from './tour_navigation'
 import { TourStepLinks } from './tour_step_links'
 import { getTourPanels } from './rewards_tour_panels'
 
 import * as style from './rewards_tour.style'
 
-interface Props {
-  layout?: 'narrow' | 'wide'
-  rewardsEnabled: boolean
-  onDone: () => void
-}
-
-export function RewardsTour (props: Props) {
+export function RewardsTour (props: RewardsTourProps) {
   const locale = React.useContext(LocaleContext)
   const [currentStep, setCurrentStep] = React.useState(0)
-  const stepPanels = getTourPanels()
+  const stepPanels = getTourPanels(props)
 
   if (stepPanels.length === 0 || currentStep >= stepPanels.length) {
     return null
   }
 
-  const panel = stepPanels[currentStep](locale)
+  const panel = stepPanels[currentStep](locale, props)
 
   const onSkip = () => {
-    if (props.rewardsEnabled) {
+    if (props.firstTimeSetup) {
       setCurrentStep(stepPanels.length - 1)
     } else {
       props.onDone()
@@ -53,7 +48,7 @@ export function RewardsTour (props: Props) {
         layout={props.layout}
         stepCount={stepPanels.length}
         currentStep={currentStep}
-        rewardsEnabled={props.rewardsEnabled}
+        firstTimeSetup={props.firstTimeSetup}
         onSelectStep={setCurrentStep}
         onDone={props.onDone}
         onSkip={onSkip}
@@ -65,7 +60,11 @@ export function RewardsTour (props: Props) {
     <style.root className={`tour-${props.layout || 'narrow'}`}>
       <style.stepHeader>{panel.heading}</style.stepHeader>
       <style.stepText>{panel.text}</style.stepText>
-      <style.stepGraphic className={`tour-graphic-${panel.id}`} />
+      <style.stepContent>
+        <style.stepGraphic className={`tour-graphic-${panel.id}`}>
+          {panel.content}
+        </style.stepGraphic>
+      </style.stepContent>
       {
         props.layout === 'wide'
           ? <>{tourNav}{stepLinks}</>

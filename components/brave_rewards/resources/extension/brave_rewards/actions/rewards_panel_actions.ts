@@ -149,3 +149,9 @@ export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RE
 })
 
 export const initialized = () => action(types.INITIALIZED)
+
+export const updatePrefs = (prefs: Partial<chrome.braveRewards.RewardsPrefs>) =>
+  action(types.UPDATE_PREFS, { prefs })
+
+export const onGetPrefs = (prefs: chrome.braveRewards.RewardsPrefs) =>
+  action(types.ON_GET_PREFS, { prefs })

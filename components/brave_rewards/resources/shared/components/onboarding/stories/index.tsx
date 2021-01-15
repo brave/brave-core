@@ -45,27 +45,38 @@ function StoryWrapper (props: StoryWrapperProps) {
   )
 }
 
+function getRewardsTourProps () {
+  return {
+    firstTimeSetup: true,
+    onlyAnonWallet: false,
+    adsPerHour: 3,
+    autoContributeAmount: 15,
+    autoContributeAmountOptions: [5, 10, 15, 20, 25, 50, 100],
+    onAdsPerHourChanged: actionLogger('onAdsPerHourChanged'),
+    onAutoContributeAmountChanged: actionLogger('onAcAmountChanged'),
+    onDone: actionLogger('onDone')
+  }
+}
+
 storiesOf('Rewards/Onboarding', module)
   .add('Tour Modal', () => {
     return (
       <StoryWrapper>
-          <RewardsTourModal
-            onClose={actionLogger('onClose')}
-            onDone={actionLogger('onDone')}
-            rewardsEnabled={true}
-          />
+        <RewardsTourModal
+          {...getRewardsTourProps()}
+          onClose={actionLogger('onClose')}
+        />
       </StoryWrapper>
     )
   })
   .add('Tour Modal (Wide)', () => {
     return (
       <StoryWrapper>
-          <RewardsTourModal
-            layout='wide'
-            onClose={actionLogger('onClose')}
-            onDone={actionLogger('onDone')}
-            rewardsEnabled={true}
-          />
+        <RewardsTourModal
+          {...getRewardsTourProps()}
+          layout='wide'
+          onClose={actionLogger('onClose')}
+        />
       </StoryWrapper>
     )
   })

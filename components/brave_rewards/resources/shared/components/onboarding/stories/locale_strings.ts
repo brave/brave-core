@@ -1,4 +1,7 @@
 export const localeStrings = {
+  bat: 'BAT',
+  bap: 'BAP',
+
   onboardingBraveRewards: 'Brave Rewards',
   onboardingDetailLinks: '$1Take a quick tour$2 or $3learn more$4 for details.',
   onboardingEarnHeader: 'Earn Tokens & Give Back',
@@ -6,6 +9,10 @@ export const localeStrings = {
   onboardingMaybeLater: 'Maybe later',
   onboardingPromoHeader: 'Need a refresher on Rewards?',
   onboardingPromoText: 'Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!',
+  onboardingSetupAdsHeader: 'How often do you want to see ads?',
+  onboardingSetupAdsSubheader: '(ads per hour)',
+  onboardingSetupContributeHeader: 'How much monthly support do you want to give to your favorite creators?',
+  onboardingSetupContributeSubheader: '(from your ads earnings)',
   onboardingStartUsingRewards: 'Start using Brave Rewards',
   onboardingTakeTour: 'Take a quick tour',
   onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
@@ -31,6 +38,8 @@ export const localeStrings = {
   onboardingPanelTippingText: 'Tipping is a way to personally encourage and support content or creators that you love. Get tippin!',
   onboardingPanelRedeemHeader: 'What can you do with tokens?',
   onboardingPanelRedeemText: 'Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.',
+  onboardingPanelSetupHeader: 'Lastly, let’s get you set up on the basic settings',
+  onboardingPanelSetupText: 'You can change this later.',
   onboardingPanelCompleteHeader: 'Woohoo, you’re all set!',
   onboardingPanelCompleteText: 'By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!'
 }

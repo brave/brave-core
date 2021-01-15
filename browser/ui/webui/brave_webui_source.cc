@@ -630,6 +630,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingEarnText", IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT },
         { "onboardingPromoHeader", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER },
         { "onboardingPromoText", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT },
+        { "onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER },  // NOLINT
+        { "onboardingSetupAdsSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER },  // NOLINT
+        { "onboardingSetupContributeHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER },  // NOLINT
+        { "onboardingSetupContributeSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER },  // NOLINT
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
         { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
@@ -651,6 +655,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingPanelTippingText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT },  // NOLINT
         { "onboardingPanelRedeemHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER },  // NOLINT
         { "onboardingPanelRedeemText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT },  // NOLINT
+        { "onboardingPanelSetupHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER },  // NOLINT
+        { "onboardingPanelSetupText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT },  // NOLINT
         { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
         { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
         { "oneTime", IDS_BRAVE_UI_ONE_TIME },
@@ -883,6 +889,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "notEnoughTokensLink", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS_LINK },
         { "on", IDS_BRAVE_UI_ON },
         { "onboardingMaybeLater", IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER },
+        { "onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER },  // NOLINT
+        { "onboardingSetupAdsSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER },  // NOLINT
+        { "onboardingSetupContributeHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER },  // NOLINT
+        { "onboardingSetupContributeSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER },  // NOLINT
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
         { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
@@ -906,6 +916,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "onboardingPanelTippingText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT },  // NOLINT
         { "onboardingPanelRedeemHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER },  // NOLINT
         { "onboardingPanelRedeemText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT },  // NOLINT
+        { "onboardingPanelSetupHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER },  // NOLINT
+        { "onboardingPanelSetupText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT },  // NOLINT
         { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
         { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
         { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
