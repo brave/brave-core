@@ -18,9 +18,7 @@ bool WidevinePermissionRequest::is_test_ = false;
 WidevinePermissionRequest::WidevinePermissionRequest(
     content::WebContents* web_contents,
     bool for_restart)
-    : web_contents_(web_contents),
-      for_restart_(for_restart) {
-}
+    : web_contents_(web_contents), for_restart_(for_restart) {}
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 

@@ -94,8 +94,8 @@ void DisableWidevineCdmComponent() {
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
 #if defined(OS_LINUX)
   return for_restart
-      ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
-      : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
+             ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
+             : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
 #else
   return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
 #endif
@@ -158,8 +158,8 @@ void MigrateObsoleteWidevineLocalStatePrefs(PrefService* local_state) {
 #if defined(OS_LINUX)
   // If local state doesn't have default value, it means we've used old
   // widevine binary. Delete old widevine binary.
-  if (!local_state->FindPreference(kWidevineInstalledVersion)->
-          IsDefaultValue()) {
+  if (!local_state->FindPreference(kWidevineInstalledVersion)
+           ->IsDefaultValue()) {
     DeleteOldWidevineBinary();
   }
 #endif
