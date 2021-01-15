@@ -139,6 +139,7 @@ source_set("browser_process") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/cosmetic_filters/browser",
+    "//brave/components/cosmetic_filters/common:mojom",
     "//brave/components/crypto_dot_com/browser/buildflags",
     "//brave/components/gemini/browser/buildflags",
     "//brave/components/greaselion/browser/buildflags",
