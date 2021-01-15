@@ -26,7 +26,7 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       bool is_tor_profile);
-  TorNavigationThrottle(content::NavigationHandle* navigation_handle);
+  explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
   ~TorNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:

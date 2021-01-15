@@ -80,7 +80,7 @@ export class TorInternalsPage extends React.Component<Props, State> {
           <div data-key='log' data-title={getLocale('tabLogs')}>
 	   <Log log={this.props.torInternalsData.log}/>
           </div>
-          <div data-key='torControlEvents' data-title={getLocale('torControlEvent')}>
+          <div data-key='torControlEvents' data-title={getLocale('torControlEvents')}>
 	   <TorControlEvents events={this.props.torInternalsData.torControlEvents}/>
           </div>
         </Tabs>
@@ -100,4 +100,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TorInternalsPage)
-

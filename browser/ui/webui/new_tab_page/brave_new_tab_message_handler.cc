@@ -202,7 +202,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile) {
 #if BUILDFLAG(ENABLE_TOR)
-    tor_launcher_factory_ = TorLauncherFactory::GetInstance();
+  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
 #endif
 }
 

@@ -24,4 +24,3 @@ class TorLauncherObserver : public base::CheckedObserver {
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_OBSERVER_H_
-

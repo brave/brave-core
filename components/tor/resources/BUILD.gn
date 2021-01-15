@@ -5,10 +5,9 @@ import("//tools/grit/repack.gni")
 pack_web_resources("internals_generated_resources") {
   resource_name = "tor_internals"
   output_dir = "$root_gen_dir/brave/components/tor/resources"
+
   # need webpack and GRD generation first
-  deps = [
-    "internals"
-  ]
+  deps = [ "internals" ]
 }
 
 grit("static_resources") {

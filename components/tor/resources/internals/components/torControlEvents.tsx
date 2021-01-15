@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import { LogTextArea } from '../style'
+
 interface Props {
   events: string[]
 }
@@ -15,8 +17,7 @@ export class TorControlEvents extends React.Component<Props, {}> {
   }
   render () {
     return (
-      <textarea value={this.props.events.join('\r\n')} readOnly={true}></textarea>
+      <LogTextArea value={this.props.events.join('\r\n')} readOnly={true}/>
     )
   }
 }
-

@@ -33,7 +33,7 @@ grit("static_resources") {
     }
   }
   if (enable_tor) {
-    deps += [ "//brave/components/tor/resources", ]
+    deps += [ "//brave/components/tor/resources" ]
   }
 
   defines = [

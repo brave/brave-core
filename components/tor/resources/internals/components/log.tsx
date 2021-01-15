@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import { LogTextArea } from '../style'
+
 interface Props {
   log: string
 }
@@ -15,7 +17,7 @@ export class Log extends React.Component<Props, {}> {
   }
   render () {
     return (
-      <textarea value={this.props.log} readOnly={true}></textarea>
+      <LogTextArea value={this.props.log} readOnly={true}/>
     )
   }
 }

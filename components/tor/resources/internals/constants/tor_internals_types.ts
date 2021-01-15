@@ -12,4 +12,3 @@ export const enum types {
   ON_GET_TOR_CIRCUIT_ESTABLISHED = '@@tor_internals/ON_GET_TOR_CIRCUIT_ESTABLISHED',
   ON_GET_TOR_CONTROL_EVENT = '@@tor_internals/ON_GET_TOR_CONTROL_EVENT'
 }
-

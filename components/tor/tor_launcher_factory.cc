@@ -164,7 +164,6 @@ void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-
 void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
   observers_.AddObserver(observer);
 }

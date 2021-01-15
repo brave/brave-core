@@ -17,4 +17,3 @@ declare namespace TorInternals {
     torInitPercentage: string
   }
 }
-

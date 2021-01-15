@@ -49,7 +49,6 @@ class TorProfileServiceImpl : public TorProfileService,
   void KillTor() override;
   void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) override;
 
-
   // TorLauncherObserver:
   void OnTorNewProxyURI(const std::string& uri) override;
 

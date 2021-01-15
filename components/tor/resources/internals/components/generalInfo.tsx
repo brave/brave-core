@@ -29,13 +29,13 @@ export class GeneralInfo extends React.Component<Props, {}> {
           {getLocale('torProxyURI') + ': '} {this.props.state.generalInfo.torProxyURI}
         </div>
         <div>
-          {getLocale('isTorConnected') + ': '} {this.props.state.generalInfo.isTorConnected ? 'Connected' : 'Disconnected'}
+          {getLocale('torConnectionStatus') + ': '} {this.props.state.generalInfo.isTorConnected ? 'Connected' : 'Disconnected'}
         </div>
         <div>
-          {getLocale('torInitPercentage') + ': '} {this.props.state.generalInfo.torInitPercentage}
+          {getLocale('torInitProgress') + ': '} {this.props.state.generalInfo.torInitPercentage}
+          {this.props.state.generalInfo.torInitPercentage ? '%' : ''}
         </div>
       </div>
     )
   }
 }
-

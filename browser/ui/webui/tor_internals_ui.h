@@ -16,14 +16,10 @@
 
 class TorLauncherFactory;
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 class TorInternalsDOMHandler : public content::WebUIMessageHandler,
                                public TorLauncherObserver {
  public:
-  TorInternalsDOMHandler(content::BrowserContext* context);
+  TorInternalsDOMHandler();
   ~TorInternalsDOMHandler() override;
 
   // WebUIMessageHandler implementation.
