@@ -90,13 +90,34 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_type_new_tab_page_ad.platform = "all";
     catalog_type_new_tab_page_ad.version = 1;
     catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
-    catalog_creative_new_tab_page_ad.payload.company_name = "Brave 1";
+    catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 1";
     catalog_creative_new_tab_page_ad.payload.alt =
         "Test New Tab Page Ad Campaign 1";
     catalog_creative_new_tab_page_ad.payload.target_url =
         "https://brave.com/1/new_tab_page_ad";
     catalog_creative_new_tab_page_ads.push_back(
         catalog_creative_new_tab_page_ad);
+
+    // Creative Promoted Content Ads
+    CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
+
+    CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
+    catalog_creative_promoted_content_ad.creative_instance_id =
+        "60001aa5-9368-45d2-81fc-e69887d278c5";
+    CatalogTypeInfo catalog_type_promoted_content_ad_type;
+    catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
+    catalog_type_promoted_content_ad_type.name = "promoted_content";
+    catalog_type_promoted_content_ad_type.platform = "all";
+    catalog_type_promoted_content_ad_type.version = 1;
+    catalog_creative_promoted_content_ad.type =
+        catalog_type_promoted_content_ad_type;
+    catalog_creative_promoted_content_ad.payload.title = "Promoted Content 1";
+    catalog_creative_promoted_content_ad.payload.description =
+        "Test Promoted Content Ad Campaign 1";
+    catalog_creative_promoted_content_ad.payload.target_url =
+        "https://brave.com/1/promoted_content_ad";
+    catalog_creative_promoted_content_ads.push_back(
+        catalog_creative_promoted_content_ad);
 
     // Conversions
     ConversionList conversions;
@@ -123,6 +144,8 @@ class BatAdsCatalogTest : public UnitTestBase {
         catalog_creative_ad_notifications;
     catalog_creative_set.creative_new_tab_page_ads =
         catalog_creative_new_tab_page_ads;
+    catalog_creative_set.creative_promoted_content_ads =
+        catalog_creative_promoted_content_ads;
     catalog_creative_set.conversions = conversions;
     catalog_creative_sets.push_back(catalog_creative_set);
 
@@ -221,13 +244,34 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_type_new_tab_page_ad.platform = "all";
     catalog_type_new_tab_page_ad.version = 1;
     catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
-    catalog_creative_new_tab_page_ad.payload.company_name = "Brave 2";
+    catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 2";
     catalog_creative_new_tab_page_ad.payload.alt =
         "Test New Tab Page Ad Campaign 2";
     catalog_creative_new_tab_page_ad.payload.target_url =
         "https://brave.com/2/new_tab_page_ad";
     catalog_creative_new_tab_page_ads.push_back(
         catalog_creative_new_tab_page_ad);
+
+    // Creative Promoted Content Ads
+    CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
+
+    CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
+    catalog_creative_promoted_content_ad.creative_instance_id =
+        "9f2f49ab-77d7-4e99-9428-472dc8e04f90";
+    CatalogTypeInfo catalog_type_promoted_content_ad_type;
+    catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
+    catalog_type_promoted_content_ad_type.name = "promoted_content";
+    catalog_type_promoted_content_ad_type.platform = "all";
+    catalog_type_promoted_content_ad_type.version = 1;
+    catalog_creative_promoted_content_ad.type =
+        catalog_type_promoted_content_ad_type;
+    catalog_creative_promoted_content_ad.payload.title = "Promoted Content 2";
+    catalog_creative_promoted_content_ad.payload.description =
+        "Test Promoted Content Ad Campaign 2";
+    catalog_creative_promoted_content_ad.payload.target_url =
+        "https://brave.com/2/promoted_content_ad";
+    catalog_creative_promoted_content_ads.push_back(
+        catalog_creative_promoted_content_ad);
 
     // Conversions
     ConversionList conversions;
@@ -254,6 +298,8 @@ class BatAdsCatalogTest : public UnitTestBase {
         catalog_creative_ad_notifications;
     catalog_creative_set.creative_new_tab_page_ads =
         catalog_creative_new_tab_page_ads;
+    catalog_creative_set.creative_promoted_content_ads =
+        catalog_creative_promoted_content_ads;
     catalog_creative_set.conversions = conversions;
     catalog_creative_sets.push_back(catalog_creative_set);
 
@@ -412,7 +458,7 @@ TEST_F(BatAdsCatalogTest,
   const int version = catalog.GetVersion();
 
   // Assert
-  EXPECT_EQ(5, version);
+  EXPECT_EQ(6, version);
 }
 
 TEST_F(BatAdsCatalogTest,

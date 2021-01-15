@@ -19,6 +19,7 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/result.h"
 #include "bat/ads/statement_info.h"
 
@@ -163,9 +164,15 @@ class ADS_EXPORT Ads {
 
   // Should be called when a user views or clicks a new tab page ad
   virtual void OnNewTabPageAdEvent(
-      const std::string& wallpaper_id,
+      const std::string& uuid,
       const std::string& creative_instance_id,
       const NewTabPageAdEventType event_type) = 0;
+
+  // Should be called when a user views or clicks a promoted content ad
+  virtual void OnPromotedContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const PromotedContentAdEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument — |Result| should be set to |SUCCESS| if successful otherwise

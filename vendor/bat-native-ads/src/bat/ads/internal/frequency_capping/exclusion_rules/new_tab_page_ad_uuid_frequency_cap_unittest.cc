@@ -72,6 +72,37 @@ TEST_F(BatAdsNewTabPageAdUuidFrequencyCapTest,
 }
 
 TEST_F(BatAdsNewTabPageAdUuidFrequencyCapTest,
+    AdAllowedForAdWithDifferentUuidForMultipleTypes) {
+  // Arrange
+  AdInfo ad_1;
+  ad_1.uuid = kUuids.at(0);
+
+  AdInfo ad_2;
+  ad_2.uuid = kUuids.at(1);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification,
+      ad_2, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_1);
+
+  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd,
+      ad_2, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_2);
+
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
+      ad_2, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_3);
+
+  // Act
+  NewTabPageAdUuidFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsNewTabPageAdUuidFrequencyCapTest,
     AdNotAllowedForAdWithSameUuid) {
   // Arrange
   AdInfo ad;

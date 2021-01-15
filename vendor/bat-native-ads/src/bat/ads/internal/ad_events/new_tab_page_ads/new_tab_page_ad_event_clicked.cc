@@ -8,7 +8,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/ad_transfer/ad_transfer.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/new_tab_page_ad_info.h"

@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "issuers": [
     {
       "name": "confirmation",
@@ -42,6 +42,24 @@
                 "body": "Test Ad 2 Campaign 1 Body",
                 "title": "Test Ad 2 Campaign 1 Title",
                 "targetUrl": "https://brave.com/2"
+              }
+            },
+            {
+              "creativeInstanceId": "75d4cbac-b661-4126-9ccb-7bbb6ee56ef3",
+              "type": {
+                "code": "promoted_content_all_v1",
+                "name": "promoted_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "feed": "https://brave.com/3",
+                "title": "Test Ad 3 Campaign 1 Title",
+                "domain": "Domain",
+                "category": "Category",
+                "ogImages": false,
+                "contentType": "Content Type",
+                "description": "Test Ad 3 Campaign 1 Body"
               }
             }
           ],

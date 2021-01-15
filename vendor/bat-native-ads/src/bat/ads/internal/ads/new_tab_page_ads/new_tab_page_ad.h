@@ -29,9 +29,9 @@ class NewTabPageAd
       NewTabPageAdObserver* observer);
 
   void FireEvent(
-    const std::string& wallpaper_id,
-    const std::string& creative_instance_id,
-    const NewTabPageAdEventType event_type);
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const NewTabPageAdEventType event_type);
 
  private:
   base::ObserverList<NewTabPageAdObserver> observers_;
@@ -42,7 +42,7 @@ class NewTabPageAd
 
   void FireEvent(
       const NewTabPageAdInfo& ad,
-      const std::string& wallpaper_id,
+      const std::string& uuid,
       const std::string& creative_instance_id,
       const NewTabPageAdEventType event_type);
 
@@ -56,7 +56,7 @@ class NewTabPageAd
       const NewTabPageAdInfo& ad);
 
   void NotifyNewTabPageAdEventFailed(
-      const std::string& wallpaper_id,
+      const std::string& uuid,
       const std::string& creative_instance_id,
       const NewTabPageAdEventType event_type);
 };

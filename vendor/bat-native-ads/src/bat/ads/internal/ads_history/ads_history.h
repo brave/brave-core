@@ -11,12 +11,14 @@
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.h"
 
 namespace ads {
 
 class ConfirmationType;
 struct AdNotificationInfo;
 struct NewTabPageAdInfo;
+struct PromotedContentAdInfo;
 
 namespace history {
 
@@ -25,8 +27,11 @@ namespace history {
 // confirmation types (viewed and either clicked or dismissed) and
 // |kNewTabPageAdsPerDayFrequencyCap| new tab page ads per day with 2
 // confirmation types (viewed and clicked)
+// |kPromotedContentAdsPerDayFrequencyCap| promoted content ads per day with 2
+// confirmation types (viewed and clicked)
 const size_t kMaximumEntries = 7 * ((kAdNotificationsPerDayFrequencyCap * 2) +
-    (kNewTabPageAdsPerDayFrequencyCap * 2));
+    (kNewTabPageAdsPerDayFrequencyCap * 2) +
+        (kPromotedContentAdsPerDayFrequencyCap * 2));
 
 AdsHistoryInfo Get(
     const AdsHistoryInfo::FilterType filter_type,
@@ -40,6 +45,10 @@ void AddAdNotification(
 
 void AddNewTabPageAd(
     const NewTabPageAdInfo& ad,
+    const ConfirmationType& confirmation_type);
+
+void AddPromotedContentAd(
+    const PromotedContentAdInfo& ad,
     const ConfirmationType& confirmation_type);
 
 }  // namespace history

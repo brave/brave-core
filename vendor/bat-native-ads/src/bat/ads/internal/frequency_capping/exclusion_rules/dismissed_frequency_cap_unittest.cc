@@ -84,6 +84,35 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissedForMultipleTypes) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification, ad,
+      ConfirmationType::kDismissed);
+  ad_events.push_back(ad_event_1);
+
+  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd, ad,
+      ConfirmationType::kDismissed);
+  ad_events.push_back(ad_event_2);
+
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
+      ConfirmationType::kDismissed);
+  ad_events.push_back(ad_event_3);
+
+  // Act
+  DismissedFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
     AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissedThenClicked) {
   // Arrange
   CreativeAdInfo ad;

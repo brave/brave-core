@@ -14,7 +14,7 @@ GetCatalogUrlRequestBuilder::GetCatalogUrlRequestBuilder() = default;
 
 GetCatalogUrlRequestBuilder::~GetCatalogUrlRequestBuilder() = default;
 
-// GET /v5/catalog
+// GET /v6/catalog
 
 UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
   UrlRequestPtr url_request = UrlRequest::New();
@@ -27,7 +27,7 @@ UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string GetCatalogUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v5/catalog", server::GetHost().c_str());
+  return base::StringPrintf("%s/v6/catalog", server::GetHost().c_str());
 }
 
 }  // namespace ads

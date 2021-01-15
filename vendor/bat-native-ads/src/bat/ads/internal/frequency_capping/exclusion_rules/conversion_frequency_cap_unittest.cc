@@ -49,7 +49,7 @@ TEST_F(BatAdsConversionFrequencyCapTest,
 }
 
 TEST_F(BatAdsConversionFrequencyCapTest,
-    DoNotAllowAdIfShouldNotAllowConversionTrackingAndHasAConversion) {
+    DoNotAllowAdIfShouldNotAllowConversionTracking) {
   // Arrange
   ads_client_mock_->SetBooleanPref(
       prefs::kShouldAllowConversionTracking, false);

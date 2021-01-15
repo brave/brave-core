@@ -64,6 +64,36 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
 }
 
 TEST_F(BatAdsPerHourFrequencyCapTest,
+    AdAllowedAfter1HourForMultipleTypes) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification,
+      ad, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_1);
+
+  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd,
+      ad, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_2);
+
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
+      ad, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_3);
+
+  FastForwardClockBy(base::TimeDelta::FromHours(1));
+
+  // Act
+  PerHourFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsPerHourFrequencyCapTest,
     DoNotAllowTheSameAdWithin1Hour) {
   // Arrange
   CreativeAdInfo ad;

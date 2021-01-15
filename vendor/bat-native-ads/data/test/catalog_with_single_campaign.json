@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "issuers": [
     {
       "name": "confirmation",
@@ -46,7 +46,7 @@
                 "logo": {
                   "alt": "Test New Tab Page Ad Campaign 1",
                   "imageUrl": "https://brave.com/1/test.jpg",
-                  "companyName": "Brave 1",
+                  "companyName": "New Tab Page 1",
                   "destinationUrl": "https://brave.com/1/new_tab_page_ad"
                 },
                 "wallpapers": [
@@ -65,6 +65,24 @@
                     "imageUrl": "https://brave.com/1/test3.jpg"
                   }
                 ]
+              }
+            },
+            {
+              "creativeInstanceId": "532943cb-b564-456f-9328-3eb7f7b79cb9",
+              "type": {
+                "code": "promoted_content_all_v1",
+                "name": "promoted_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "feed": "https://brave.com/3",
+                "title": "Promoted Content 1",
+                "domain": "Domain 1",
+                "category": "Category 1",
+                "ogImages": false,
+                "contentType": "Content Type 1",
+                "description": "Test Promoted Content Ad Campaign 1"
               }
             }
           ],
