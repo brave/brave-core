@@ -244,15 +244,15 @@ bool BraveSyncWorker::IsFirstSetupComplete() {
 void BraveSyncWorker::ResetSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service = GetSyncService();
-  
+
   if (!sync_service) {
     return;
   }
-  
+
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   DCHECK(device_info_service);
-  
+
   brave_sync::ResetSync(sync_service, device_info_service,
                         base::BindOnce(&BraveSyncWorker::OnResetDone,
                                         weak_ptr_factory_.GetWeakPtr()));
@@ -261,15 +261,15 @@ void BraveSyncWorker::ResetSync() {
 void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service = GetSyncService();
-  
+
   if (!sync_service) {
     return;
   }
-  
+
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   DCHECK(device_info_service);
-  
+
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
 }
 
