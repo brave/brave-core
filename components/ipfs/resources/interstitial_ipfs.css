@@ -3,6 +3,10 @@
   text-decoration: none;
 }
 
+.ipfs button {
+  background: var(--primary-button-fill-color);
+}
+
 .ipfs .icon {
   background-image: -webkit-image-set(
       url(../../../../components/security_interstitials/core/browser/resources/images/1x/info.png) 1x,
