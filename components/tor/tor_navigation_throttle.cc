@@ -25,10 +25,31 @@ TorNavigationThrottle::MaybeCreateThrottleFor(
   return std::make_unique<TorNavigationThrottle>(navigation_handle);
 }
 
+// static
+std::unique_ptr<TorNavigationThrottle>
+TorNavigationThrottle::MaybeCreateThrottleFor(
+    content::NavigationHandle* navigation_handle,
+    TorLauncherFactory* tor_launcher_factory,
+    bool is_tor_profile) {
+  if (!is_tor_profile)
+    return nullptr;
+  return std::make_unique<TorNavigationThrottle>(navigation_handle,
+                                                 tor_launcher_factory);
+}
+
 TorNavigationThrottle::TorNavigationThrottle(
     content::NavigationHandle* navigation_handle)
     : content::NavigationThrottle(navigation_handle),
       tor_launcher_factory_(TorLauncherFactory::GetInstance()) {
+  DCHECK(tor_launcher_factory_);
+  tor_launcher_factory_->AddObserver(this);
+}
+
+TorNavigationThrottle::TorNavigationThrottle(
+    content::NavigationHandle* navigation_handle,
+    TorLauncherFactory* tor_launcher_factory)
+    : content::NavigationThrottle(navigation_handle),
+      tor_launcher_factory_(tor_launcher_factory) {
   DCHECK(tor_launcher_factory_);
   tor_launcher_factory_->AddObserver(this);
 }
