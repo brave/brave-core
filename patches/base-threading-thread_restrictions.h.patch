@@ -1,0 +1,12 @@
+diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
+index ac19eaecc4cc36c4376052c33314bc289bab7bcf..6e79d17b49ba84fa4ccbbfefd88c3aa1888a855b 100644
+--- a/base/threading/thread_restrictions.h
++++ b/base/threading/thread_restrictions.h
+@@ -433,6 +433,7 @@ INLINE_IF_DCHECK_IS_OFF void DisallowBaseSyncPrimitives()
+     EMPTY_BODY_IF_DCHECK_IS_OFF;
+ 
+ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
++  BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
+  private:
+   // This can only be instantiated by friends. Use
+   // ScopedAllowBaseSyncPrimitivesForTesting in unit tests to avoid the friend

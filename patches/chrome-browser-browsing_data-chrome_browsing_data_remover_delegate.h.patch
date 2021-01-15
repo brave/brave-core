@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
+index ae0d55606244bca6ac1a1fa0037e0dc286c36174..74bc2123ced2db3fcdfc8854aac5a61f6067bd62 100644
+--- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
++++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
+@@ -195,6 +195,7 @@ class ChromeBrowsingDataRemoverDelegate
+   void OverrideDomainReliabilityClearerForTesting(
+       DomainReliabilityClearer clearer);
+ 
++  BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H
+  private:
+   using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
+ 
