@@ -189,9 +189,10 @@ uint64_t AdNotifications::Count() const {
 
 #if defined(OS_ANDROID)
 void AdNotifications::RemoveAllAfterReboot() {
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     return;
   }
+
   database::table::AdEvents database_table;
   database_table.GetAll([=](
       const Result result,
@@ -217,9 +218,10 @@ void AdNotifications::RemoveAllAfterReboot() {
 }
 
 void AdNotifications::RemoveAllAfterUpdate() {
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     return;
   }
+
   const std::string current_version_code =
       base::android::BuildInfo::GetInstance()->package_version_code();
 

@@ -34,7 +34,7 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::ShouldShowNotifications() {
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     return true;
   }
 
@@ -58,7 +58,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
     return false;
   }
 
-  const bool use_custom_notifications = brave::IsDevOrCanaryBuild();
+  const bool use_custom_notifications = brave::IsNightlyOrDeveloperBuild();
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(
@@ -69,6 +69,10 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
 }
 
 bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
+  if (brave::IsNightlyOrDeveloperBuild()) {
+    return true;
+  }
+
   JNIEnv* env = base::android::AttachCurrentThread();
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
