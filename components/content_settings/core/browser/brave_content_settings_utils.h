@@ -22,6 +22,8 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type);
 
 bool IsShieldsContentSettingsType(const ContentSettingsType& content_type);
 
+bool IsShieldsContentSettingsTypeName(const std::string& content_type_name);
+
 base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern);
 
