@@ -23,7 +23,7 @@ EXCLUDE_PATHS = [
 
 # Ping security team before adding to ignored_npm_advisories
 ignored_npm_advisories = [
-    1556  # low-sev DoS vector that isn't fixed in some upstream packages
+    '1556'  # low-sev DoS vector that isn't fixed in some upstream packages
 ]
 
 
@@ -71,45 +71,33 @@ def npm_audit_deps(path, args):
         npm_cmd = 'npm.cmd'
 
     npm_args = [npm_cmd, 'audit', '--json']
+    if not args.audit_dev_deps:
+        npm_args.append('--production')
+        print('WARNING: Ignoring npm devDependencies')
     audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
     output, error_data = audit_process.communicate()
-    if not args.audit_dev_deps:
-        print('WARNING: Ignoring npm devDependencies')
 
     try:
         # results from audit
         result = json.loads(output.decode('UTF-8'))
-        assert 'actions' in result
+        assert 'advisories' in result
     except (ValueError, AssertionError):
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
         return 1
 
-    # remove the results which match the exceptions
     if len(ignored_npm_advisories):
         print('Ignoring NPM advisories ' + ','.join(map(str, ignored_npm_advisories)))
-    for i, val in enumerate(result['actions']):
-        result['actions'][i]['resolves'] = \
-            [d for d in result['actions'][i]['resolves'] if
-                d['id'] not in ignored_npm_advisories]
 
-    resolutions, non_dev_exceptions = extract_resolutions(result)
+    resolutions = extract_resolutions(result)
 
-    if resolutions:
-        print('Result: Audit finished, vulnerabilities found')
-
-    # Trigger a failure if there are non-dev exceptions
-    if non_dev_exceptions and not args.audit_dev_deps:
-        print('Result: Audit finished, dev vulnerabilities ignored')
-        print(json.dumps(non_dev_exceptions, indent=4))
+    if len(resolutions):
+        print('Result: Audit failed due to vulnerabilities')
+        print(json.dumps(resolutions, indent=2))
         return 1
 
-    if resolutions:
-        print(json.dumps(resolutions, indent=4))
-        return 1 if args.audit_dev_deps else 0
-    else:
-        print('Result: Audit finished, no vulnerabilities found')
-        return 0
+    print('Result: Audit finished, no vulnerabilities found')
+    return 0
 
 
 def cargo_audit_deps(path, args):
@@ -143,17 +131,12 @@ def cargo_audit_deps(path, args):
 
 
 def extract_resolutions(result):
-    if 'actions' not in result:
-        return [], []
-
-    if len(result['actions']) == 0:
-        return [], []
-
-    if 'resolves' not in result['actions'][0]:
-        return [], []
-
-    resolutions = result['actions'][0]['resolves']
-    return resolutions, [r for r in resolutions if not r['dev']]
+    if 'advisories' not in result:
+        return {}
+    advisories = result['advisories']
+    if len(advisories) == 0:
+        return {}
+    return {k: v for k, v in advisories.items() if k not in ignored_npm_advisories}
 
 
 def parse_args():

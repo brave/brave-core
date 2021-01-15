@@ -109,10 +109,10 @@ content::WebContents* RewardsBrowserTestContextHelper::OpenSiteBanner(
 
   switch (tip_action) {
     case rewards_browsertest_util::TipAction::OneTime:
-      button_selector = "[type=tip]";
+      button_selector = "[data-test-id=tip-once]";
       break;
     case rewards_browsertest_util::TipAction::SetMonthly:
-      button_selector = "[type=tip-monthly]";
+      button_selector = "[data-test-id=tip-monthly]";
       break;
     case rewards_browsertest_util::TipAction::ChangeMonthly:
       button_selector = "[data-test-id=change-monthly-amount]";

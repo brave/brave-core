@@ -7,7 +7,7 @@ import { Type } from './index'
 import styled, { css } from 'styled-components'
 
 interface StyleProps {
-  type?: Type
+  buttonType?: Type
   hasIcon?: boolean
   disabled?: boolean
 }
@@ -67,7 +67,7 @@ export const StyledButtonWrapper = styled<StyleProps, 'button'>('button')`
   border: none;
   align-items: center;
   cursor: ${p => p.disabled ? 'default' : 'pointer'};
-  ${p => getTypeStyle(p.type, p.disabled)}
+  ${p => getTypeStyle(p.buttonType, p.disabled)}
 
   &:focus {
     outline: 0;

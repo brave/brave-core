@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, select, text } from '@storybook/addon-knobs/react'
+import { withKnobs, select, text } from '@storybook/addon-knobs'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'

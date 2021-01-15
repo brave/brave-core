@@ -27,7 +27,7 @@ export default class RewardsButton extends React.PureComponent<Props, {}> {
 
     return (
       <StyledButtonWrapper
-        type={type}
+        buttonType={type}
         disabled={disabled}
         onClick={onClick}
         data-test-id={testId}

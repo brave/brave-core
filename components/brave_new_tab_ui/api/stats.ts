@@ -14,6 +14,7 @@ export type Stats = {
   adsBlockedStat: number,
   javascriptBlockedStat: number,
   fingerprintingBlockedStat: number,
+  httpsUpgradesStat: number,
   bandwidthSavedStat: number
 }
 
