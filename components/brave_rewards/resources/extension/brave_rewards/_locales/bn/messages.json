@@ -639,8 +639,12 @@
     "message": "Brave Rewards ব্যবহার শুরু করা হল ",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "দ্রুত ভ্রমণ করুন",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "এগিয়ে চলার মাধ্যমে, আপনি$tos_link_begin$পরিষেবার শর্তাদি $tos_link_end$ এবং $pp_link_begin$ গোপনীয়তা নীতি $pp_link_end$ এর সাথে সম্মত হন।",
+    "message": "এগিয়ে চলার মাধ্যমে, আপনি $tos_link_begin$ পরিষেবার শর্তাদি $tos_link_end$ এবং $pp_link_begin$ গোপনীয়তা নীতি$pp_link_end$ -এ সম্মত হন।",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "ফিরে যাও",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "আসুন দ্রুত ভ্রমণ করি",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "চালিয়ে যান",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "সম্পন্ন হয়েছে",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "ছেড়ে যান",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "যথোপযুক্ত সৃষ্টিকর্তা",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Brave Rewards এ স্বাগতম",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave এর  ব্যক্তিগত বিজ্ঞাপনগুলি আপনাকে প্রচলিত বিজ্ঞাপনগুলির বিপরীতে সামগ্রী নির্মাতাদের সমর্থন করার জন্য টোকেন দিয়ে পুরস্কৃত করে, আপনার ব্যক্তিগত তথ্য ব্যক্তিগত রাখার সময়।",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "বিজ্ঞাপনগুলি কোথায় প্রদর্শিত হবে?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave এর ব্যক্তিগত বিজ্ঞাপনগুলি একটি সাধারণ বিজ্ঞপ্তি হিসাবে উপস্থিত হবে।আপনি এই বিজ্ঞাপনগুলি কতবার দেখেন তা সেটিংসে গিয়ে নিয়ন্ত্রণ করুন।",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "আপনি কখন পুরষ্কার পাবেন?",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "চলতি মাস জুড়ে আপনার সাহসী প্রাইভেট বিজ্ঞাপন থেকে উপার্জন টোকেনগুলি আগামী মাসের 5 তারিখে আসবে।",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "অনায়াসেই তৈরি করে ফিরিয়ে দেওয়া হয় ",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "নির্মাতারা আপনার ব্যস্ততার স্তরের উপর ভিত্তি করে স্বয়ংক্রিয়ভাবে আপনার টোকেন অবদানগুলি গ্রহণ করেন যা আমরা 'মনোযোগ' হিসাবে মাপি।",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "টিপস সহ আপনাকে ধন্যবাদ বলুন",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "আপনার পছন্দসই বিষয়বস্তু বা নির্মাতাদের ব্যক্তিগতভাবে উত্সাহ এবং সমর্থন করার একটি উপায় হ'ল টিপিং। টিপিং পান!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "টোকেন দিয়ে আপনি কী করতে পারেন?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "টোকেনগুলি স্রষ্টাদের সহায়তার বাইরেও ব্যবহার করা যেতে পারে।বণিকরা জাহাজে আসার সাথে সাথে আপনি ডিজিটাল সামগ্রী এবং অন্যান্য পণ্য কিনতে পারেন।",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "ওহু, আপনি সম্পূর্ণ প্রস্তুত!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave রিওয়ার্ডস ব্যবহার করে আপনি ওয়েবকে সবার জন্য আরও ভাল জায়গা করতে সহায়তা করছেন। এবং এটি দুর্দান্ত!",
+    "description": ""
   }
 }

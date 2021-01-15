@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди 1 час.}other{Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди {NUM_HOURS} часа.}}</translation>
 <translation id="1065672644894730302">Предпочитанията ви не могат да бъдат прочетени. Възможно е да няма достъп до някои функции и промените в предпочитанията няма да бъдат запазени.</translation>
 <translation id="8488151306313572776">За да бъде личното ви сърфиране отделно от това на <ph name="NEW_USER"/>, създайте нов потребителски профил в Brave</translation>
 <translation id="2796517443093885402">Brave може да ви защити от нарушения на сигурността на данните, злонамерени разширения и др.</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">За да проверите дали паролите ви не са компрометирани при нарушения на сигурността на данните и други проблеми със сигурността, <ph name="BEGIN_LINK"/>влезте в Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Всичко за Brave</translation>
 <translation id="4798342026247191171">Настройване на новия ви потребителски профил в Brave</translation>
+<translation id="5893502481331584971">Запитване, когато Brave се отвори</translation>
 <translation id="113959764510199339">Brave опитва да покаже паролите.</translation>
 <translation id="8132634101975074716">Влязохте в Brave!</translation>
 <translation id="7370605478942575409">Трябва да рестартирате Brave, за да използвате Rosetta за възпроизвеждане на защитено мултимедийно съдържание.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Раздел в Brave</translation>
 <translation id="8372880274820509128">За повишаване на сигурността Brave ще шифрова данните ви.</translation>
 <translation id="2770231113462710648">Промяна на браузъра по подразбиране с/ъс:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди 1 минута.}other{Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди {NUM_MINS} минути.}}</translation>
 <translation id="2799223571221894425">Стартиране отново</translation>
 <translation id="777113543093865885">Премахване от Brave...</translation>
-<translation id="8846162271735377947">Запитване, когато отворя Brave</translation>
 <translation id="2885378588091291677">Диспечер на задачите</translation>
 <translation id="2176825726964012531">Всичко за &amp;Brave</translation>
 <translation id="8208853227947884571">Brave е актуален</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave не може да провери паролите ви. Опитайте пак по-късно.</translation>
 <translation id="8880183781256147665">Добавя се към Brave...</translation>
 <translation id="7918740962659365265">Помогнете ни да подобрим Brave, като ни изпращате <ph name="UMA_LINK"/> му и сигнали за сривове</translation>
-<translation id="2911521062311014336">Brave проверява за нежелан софтуер веднъж седмично</translation>
 <translation id="7365690458036015383">Инсталационната програма не успя да декомпресира архива. Моля, изтеглете отново Brave.</translation>
 <translation id="8919461291440820124">Brave използва микрофона ви.</translation>
 <translation id="4805806622840861220">Рестартиране на Brave</translation>
@@ -168,7 +165,6 @@
 <translation id="8211837073776713955">Brave ви уведомява, ако паролите ви бъдат компрометирани</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (копирано в Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди 1 ден.}other{Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди {NUM_DAYS} дни.}}</translation>
 <translation id="2301993384336631869">Brave е актуализиран, но не сте го използвали от поне 30 дни.</translation>
 <translation id="8522287263361940593">Rosetta дава възможност на Brave да възпроизвежда защитеното мултимедийно съдържание на тази страница.</translation>
 <translation id="6418340404893954563">Ненадеждните пароли са лесни за отгатване. Използвайте Brave <ph name="BEGIN_LINK"/>за създаване и запомняне на надеждни пароли за профилите ви<ph name="END_LINK"/>.</translation>
@@ -198,7 +194,6 @@
 <translation id="5657226924540934362">Ако дадена настройка не се показва на тази страница, потърсете в <ph name="LINK_BEGIN"/>настройките на Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave използва камерата и микрофона ви.</translation>
 <translation id="2827121003398607864">Brave се подобри</translation>
-<translation id="504499211143662559">Brave откри опасен софтуер на компютъра ви</translation>
 <translation id="3343095737966473035">Brave не е браузърът ви по подразбиране</translation>
 <translation id="5477319665405831211">Синхронизирайте и персонализирайте Brave на всичките си устройства</translation>
 <translation id="5419189641394808652">Brave не можа да синхронизира данните ви, защото синхронизирането не е налице за домейна ви.</translation>
@@ -230,7 +225,6 @@
 <translation id="6283840329609797763">Инсталирането не бе успешно поради неизвестна грешка. Моля, изтеглете отново Brave.</translation>
 <translation id="2433912322225810055">То също контролира коя страница се показва при стартиране на Brave или при търсене от полето за всичко.</translation>
 <translation id="4100716194836114130">Това е вашият Brave</translation>
-<translation id="8757284234053029740">Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: вчера.</translation>
 <translation id="4831743161813926460">Brave се нуждае от разрешение за достъп до камерата и микрофона ви за този сайт</translation>
 <translation id="7408085963519505752">Общи условия на Chrome OS</translation>
 <translation id="2262856633481902138">Brave не можа да синхронизира данните ви, защото потребителското име и паролата за вход в профила ви не са актуални.</translation>
@@ -239,13 +233,12 @@
 <translation id="3215652305414474626">То също контролира коя страница се показва при стартиране на Brave или при кликване върху бутона „Начална страница“.</translation>
 <translation id="8285294305439559616">Brave опитва да покаже паролите. За да разрешите това, въведете паролата си за Windows.</translation>
 <translation id="6389268239133412586">Brave не може да се актуализира</translation>
-<translation id="8974095189086268230">Chrome OS е възможна благодарение на допълнителен <ph name="BEGIN_LINK_CROS_OSS"/>софтуер с отворен код<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="6368958679917195344">Chrome OS е възможна благодарение на допълнителен <ph name="BEGIN_LINK_CROS_OSS"/>софтуер с отворен код<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5173820533850252773">Brave не е актуален</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave ще се стартира отново след 1 час}other{Brave ще се стартира отново след # часа}}</translation>
 <translation id="7863882214613921971">Отваряне на връзката в нов &amp;раздел на Brave</translation>
 <translation id="911206726377975832">Да се изтрият ли и данните от сърфирането?</translation>
 <translation id="2444257125841652328">Системният ви администратор е конфигурирал Brave да отваря алтернативен браузър за достъп до <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave проверява за нежелан софтуер веднъж седмично. Последна проверка: преди малко.</translation>
 <translation id="3350544518197210895">Brave (входящ трафик за mDNS)</translation>
 <translation id="7977787072794666032">Brave може да не функционира правилно, тъй като вече не се поддържа под Windows XP и Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> изисква да прочетете и приемете следните Общи условия, преди да използвате това устройство. Те не разширяват, не променят, нито ограничават Условията на Chrome OS.</translation>

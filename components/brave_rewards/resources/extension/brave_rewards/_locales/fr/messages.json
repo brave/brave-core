@@ -639,8 +639,12 @@
     "message": "Commencez à utiliser Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Faire une visite rapide",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "En procédant, vous acceptez les $tos_link_begin$Conditions d'utilisation$tos_link_end$ et la $pp_link_begin$Politique de Confidentialité$pp_link_end$. ",
+    "message": "En continuant, vous acceptez les $tos_link_begin$Conditions d'utilisations$tos_link_end$ et la$pp_link_begin$Politique de confidentialité$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Revenir en arrière ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Faisons une rapide visite guidée",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuer",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Terminé",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Passer",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Passer pour l'instant",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Bienvenue à Brave Rewards ! ",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Les Brave Private Ads vous octroient des jetons afin de soutenir les créateurs de contenus, contrairement aux publicités traditionnelles, tout en maintenant la confidentialité de vos informations personnelles.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Où apparaissent les pubs ?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Les Brave Private Ads apparaîtront comme une notification normale. Vous contrôlez la fréquence à laquelle vous voyez ces publicités dans les paramètres.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Quand recevez-vous vos rewards",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Les jetons que vous avez obtenus via les Brave Private Ads au cours du mois actuel arriveront le 5 du mois suivant.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Redonner sans effort ",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Les créateurs reçoivent vos contributions en jetons automatiquement, sur la base de vos niveaux d'implication que nous mesurons par « l'Attention »,",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Dites merci en laissant un pourboire",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Laisser un pourboire, c'est une façon d'encourager et de soutenir personnellement le contenu ou les créateurs que vous aimez. À vos pourboires ! ",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Que pouvez-vous faire avec vos jetons ?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Les jetons peuvent être utilisés au-delà du soutien aux créateurs. Vous pouvez acheter du contenu digital et d'autres produits à mesure que les vendeurs nous rejoignent.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Wahou, vous êtes fin prêt !",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "En utilisant les Brave Rewards, vous aider à faire du Web un endroit meilleur pour tout le monde. Et c'est génial !",
+    "description": ""
   }
 }

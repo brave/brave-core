@@ -63,7 +63,7 @@
 <translation id="7053983685419859001">አግድ</translation>
 <translation id="5806601733251372221">የ Brave መከላከያዎች</translation>
 <translation id="2880356288762235261">በድረ ገጽ ውስጥ ክትትል ሳይደረግብዎ ለማሰስ እንዲችሉ ግላዊ መብትን የሚጋፉ ማስታወቂያዎችና ተከታታዮች</translation>
-<translation id="8537217141725709400">ማስመሰያማስመሰያያግኙ <ph name="TOKEN"/>s</translation>
+<translation id="8537217141725709400">ማስመሰያ ያግኙ <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
 <translation id="5870330605209713397">ግላዊ አክብሮት ያላቸውን ማስታወቂያዎችን በመመልከት እና ተወዳጅ ጣቢያዎችዎን እና ፈጣሪዎችዎ በነባሪነት በመደገፋቸው ነው ፡፡</translation>
 <translation id="821707262661492716">ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየት።</translation>
@@ -75,7 +75,7 @@
 <translation id="6511854390690723657">ይህ የመጀመሪያው የ Brave ማስታወቂያዎ ነው። ለተጨማሪ መረጃ ነካ አድርግ።</translation>
 <translation id="4930714375720679147">አብራ</translation>
 <translation id="2453860139492968684">ጨርስ</translation>
-<translation id="2070991379950719711">የ Brave ሽልማቶችን መጠቀም ይጀምሩ</translation>
+<translation id="2070991379950719711">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ</translation>
 <translation id="48520986898237073">በኪስ ቦርሳ ይቀጥሉ</translation>
 <translation id="3570367516044491911">እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
 <translation id="7493053924837150477">ከዝርዝሩ ውስጥ የ Brave ማሰሻን መርጠው 'ሁልጊዜ' የሚለውን ነካ ያድርጉ</translation>
@@ -115,7 +115,7 @@
 <translation id="8280223431922155812">ህዳር</translation>
 <translation id="4254029385847607686">ዲሲምበር</translation>
 <translation id="1916285746997567466">ቀጣዩን ኢንተርኔት ለመጠቀም ይዘጋጁ፡፡</translation>
-<translation id="3540580927110899945">ግላዊነት ስምግላዊነት ማክበር ማስታወቂያዎች ለመመልከት አሁን <ph name="TOKEN"/>
+<translation id="3540580927110899945">ግላዊነት ስምግላዊነት ማክበር ማስታወቂያዎች ለመመልከት አሁን <ph name="ማስመሰያ"/>
 ማግኘት ይችላሉ።</translation>
 <translation id="1327938628925645979">ወደ ሽልማት ይቀላቀሉ</translation>
 <translation id="5567439033041178034">የበለጠ ይወቁ</translation>
@@ -157,7 +157,7 @@
 <translation id="2429828319207652823">አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር</translation>
 <translation id="3453206261112715431">ነፃ የቶክን ብድር</translation>
 <translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
-<translation id="5497435273900537730">ነጻ <ph name="TOKEN"/> ግራንት ዝግጁ ነው።</translation>
+<translation id="5497435273900537730">ነጻ <ph name="ማስመሰያ"/> ግራንት ዝግጁ ነው።</translation>
 <translation id="8689997599821157251">አግኝተዋል</translation>
 <translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
 <translation id="2775064702681588061">የእርስዎ Brave Rewards መለያ ተቀማጭ ገንዘብ በመጠባበቅ ላይ ነው።</translation>
@@ -172,7 +172,7 @@
 <translation id="8969049974285901797">Twitch ላይ</translation>
 <translation id="4376933248999950592">እርስዎ ወስነዋል <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> መዋጮ ለመቀበል ያልተመዘገቡ ፈጣሪዎችአሳሽዎ እስካረጋገጡ 
 ድረስ ወይም 90 ቀናት እስኪያልፍ ድረስ መዋጮ ማድረጉን ይቀጥላል።</translation>
-<translation id="3101693828171454453">በቂ ያልሆነ <ph name="TOKEN"/>s</translation>
+<translation id="3101693828171454453">በቂ ያልሆነ <ph name="ማስመሰያ"/>s</translation>
 <translation id="6940273954212603510">እባክዎ</translation>
 <translation id="1036277985068412734">ድጎማ ያድርጉ</translation>
 <translation id="3492491948683276944">ወርሀዊ ጠቃሚ ምክሮችን ያስቀምጡ</translation>
@@ -229,7 +229,7 @@
 <translation id="3349204812119681938">የ Brave ሽልማቶችን እንደገና አዘጋጅ</translation>
 <translation id="8782039523249932839">ይህ የ Brave ዋሌትዎን በመሰረዝ ሁሉንም የ Brave ሽልማቶች እንደገና ይሞላል።</translation>
 <translation id="6810078320346589989">ዕልባት ፍጠር</translation>
-<translation id="3396347744975515056">ብራቭ ማመሳሰል የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
+<translation id="3396347744975515056">Brave አስምር የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="1872784258300710671">Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናዎችን ይጠቀማል።</translation>
 <translation id="8712637175834984815">ገባኝ</translation>
@@ -254,9 +254,9 @@
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="1486343603936278248">ተለዋጭ ስም</translation>
 <translation id="8713995420537272453">ነጥብ</translation>
-<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
-<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
+<translation id="2802462801862186499">1.000 <ph name="ጠቃሚ ምክር"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="ጠቃሚ ምክር"/></translation>
+<translation id="487252517537426371">10.000 <ph name="ጠቃሚ ምክር"/></translation>
 <translation id="7781069478569868053">የአዲስ ትር ገጽ</translation>
 <translation id="8522669544471808198">የዳራ ምስሎችን አሳይ</translation>
 <translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
@@ -307,7 +307,7 @@
 <translation id="6991128190741664836">በኋላ</translation>
 <translation id="8851456134224363571">ድንቅ ነው! ወደ Play Store ገብተው ነጥብ ሊሰጡን ይችላሉ?</translation>
 <translation id="8668962040900592974">እንዴት ማሻሻል እንደምንችል ያሳውቁን</translation>
-<translation id="4406937629441301400">ይህን ምስል ለማየትና ወደ ፈጣሪዎች ለማስተላለፍ ቶክኖችን ያግኙ። <ph name="LEARN_MORE"/></translation>
+<translation id="4406937629441301400">ይህን ምስል ለማየትና ወደ ፈጣሪዎች ለማስተላለፍ ማስመሰያዎች ያግኙ። <ph name="LEARN_MORE"/></translation>
 <translation id="1992363542751124282">ይህንን ምስል ስላዩ ማስመሰያዎች ያግኙ። ድርሻዎን ለመጠየቅ የ Brave ወሮታዎች መጠቀም ጀምር የሚለውን ጠቅ ያድርጉ።</translation>
 <translation id="6632345639591919543">ይህን ምስል በማየትዎ ቶክኖችን እያገኙ ነው።\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">ይህን ምስል በማየትዎ ቶክንስ እያገኙ ነው።</translation>
@@ -324,7 +324,7 @@
 <translation id="7396366757003005317">የጣት አሻራ ታግዷል(ጥብቅ፣ ጣቢያዎችን ሊሰብር ይችላል)</translation>
 <translation id="700453611199558021">የጣት አሻራ ታግቷል(መደበኛ)</translation>
 <translation id="769702552748212954">ሁሉም የጣት አሻራ መውሰድን ፍቀድ</translation>
-<translation id="2888409909650566510">ማስታወቂያዎችና ሌሎች አዋኪ\nነገሮች ታግደዋል</translation>
+<translation id="5142293891785304489">መከታተያዎች፣ ማስታወቂያዎች፣ and\nmore ታግደዋል</translation>
 <translation id="6930134873084561197">ድረ ገጾች አብዛኛውን ጊዜ የእርስዎንና የመሳሪያዎን ማንነት ለማወቅ የሚሞክሩ ኩኪዎችና ስክሪፕቶች ያካትታሉ። እርስዎ ማን እንደሆኑ ለማወቅና በድረ ገጹ ባጠቃላይ የእርስዎን እንቅስቃሴ ለመከታተል ይጥራሉ። n\nBrave  እነዚህን ነገሮች በማገድ ማንም ሳይከተልዎት ማሰስ አንዲችሉ ያደርግዎታል።</translation>
 <translation id="8553998445606452168">ስለ Brave ጋሻዎች</translation>
 <translation id="8912304686498704084">ላይ</translation>
@@ -369,13 +369,13 @@
 <translation id="3694122362646626770">ድር ጣቢያዎች</translation>
 <translation id="2225863440766607138">ተከታታዮች</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">ባለፉት 3 ሰዓታት ውስጥ <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎችን በBrave አሳሽ አግደዋል።</translation>
+<translation id="6737820963776538947">ባለፉት 3 ሰዓታት ውስጥ <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎች በBrave አሳሽ አግደዋል።</translation>
 <translation id="3621193901658023971">የተከታታዮች &amp; ማስታወቂያዎችን በማገድ በBrave ውስጥ ዋና የዜና ድር ጣቢያዎች ላይ እስከ 6x ፍጥነት ያስሱ።</translation>
 <translation id="7427567994475794038">ባለፉት 3 ሰዓታት ውስጥ ስንት የተከታታዮች &amp; ማስታወቂያዎች እንደታገዱ ለማየት የግላዊነት ሪፖርቶችን ያብሩ።</translation>
 <translation id="2053891538879944400">በአሳሽ <ph name="DATA"/> <ph name="DATA_TEXT"/> ውሂብን አስቀምጠዋል።</translation>
 <translation id="8640064498452534195">ምን ያህል ውሂብ እንዳከማቹ ለማየት የግላዊነት ሪፖርቶችን ያብሩ።</translation>
 <translation id="2252497442547961651">የ Brave አሳሽ በአማካይ 40% ያነሰ ባትሪ ተጠቅሟል።&#128267;</translation>
-<translation id="1945330434665345785">ባለፈው ሳምንት <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎችን በ Brave አሳሽ አግደዋል።</translation>
+<translation id="1945330434665345785">ባለፈው ሳምንት <ph name="COUNT"/> trackers &amp; የተከታታዮች &amp; ማስታወቂያዎች ን በ Brave አሳሽ አግደዋል።</translation>
 <translation id="2883868922264431515">ግላዊነትን የሚያከበሩ ማስታወቂያዎችን በመመልከት ቶክኖችን ያግኙ እንዲሁም የሚወዱትን ድር ጣቢያዎች ይደግፉ።</translation>
 <translation id="5678925890616256956">ጥሩ! በ Brave አሳሽ 250 የተከታታዮች &amp; ማስታወቂያዎች ን አግደዋል።&#128293;</translation>
 <translation id="9199047775708635708">ጥሩ! በ Brave አሳሽ 10MB ቆጥበዋል።&#128267;</translation>
@@ -436,22 +436,22 @@
 <translation id="8804164990146287819">የግለኝነት መጠበቂያ ህግ</translation>
 <translation id="6318696841371191107">ፈጣን ጉብኝት ያድርጉ</translation>
 <translation id="7930505144430343145">ወደ Brave ወሮታዎች እንኳን በደህና መጡ!</translation>
-<translation id="7909111626803226907">ከነባሮቹ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ Brave የግል ማስታወቂያዎች በ ማስመሰያዎች ይከፍሉዎታል ፣ ይህም ደግሞ ሁሉም የግል መረጃዎን በሚስጥር እየጠበቀ ነው።</translation>
+<translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ ማስመሰያዎች ሽልማት ሰጥቶታል።</translation>
 <translation id="6973095375773523904">ማስታወቂያዎች የት ይታያሉ?</translation>
-<translation id="3867028444168159102">Brave የግል ማስታወቂያዎች እንደ መደበኛ ማሳወቂያ ይታያሉ። እነዚህን ማስታወቂያዎች በቅንብሮች ውስጥ ምን ያህል ጊዜ እንደሚያዩ እርስዎ ይቆጣጠራሉ።</translation>
+<translation id="7556325460112047619">የ Brave የግል ማስታወቂያዎች እንደ መደበኛ ማሳወቂያ ይታያሉ። እነዚህን ማስታወቂያዎች ምን ያህል ጊዜ ማየት እንደሚፈልጉ በቅንብሮች ውስጥ ይቆጣጠራሉ።</translation>
 <translation id="5816125157889950051">ሽልማቶችን መቼ ይቀበላሉ</translation>
-<translation id="4649471244559455723">በያዝነው ወር በሙሉ ከ Brave ማስታወቂያዎች ያገኙት ማስመሰያዎች በቀታይ ወር 5ኛ ቀን ላይ ይደርሳሉ።</translation>
+<translation id="310863932297733723">በዚህ ወር ውስጥ ከ Brave የግል ማስታወቂያዎች ያገኙዋቸው ማስመሰያዎች በሚቀጥለው ወር 5ኛ ቀን ላይ ይደርስዎታል።</translation>
 <translation id="7712287524451429139">መልሶ መስጠት ያለ ምንም ጥረት ሁኗል</translation>
 <translation id="105037569026952831">እንደ ‘ትኩረት’ በምንለካው የተሳትፎ ደረጃዎችዎ ላይ በመመስረት ፈጣሪዎች የእርስዎን ማስመሰያ መዋጮ በራስ-ሰር ይቀበላሉ።</translation>
 <translation id="5323267338679539010">ከ ጠቃሚ ምክሮች ጋር አመሰግናለሁ ይበሉ</translation>
-<translation id="6042317056594735519">ቲፕ መስጠት የሚወዱትን ይዘት ወይም ፈጣሪዎች በግል ለማበረታታት እና ለመደገፍ መንገድ ነው። ቲፕ መስጠትዎን ይቀጥሉ!</translation>
+<translation id="6730444165801605682">ቲፕ መስጠት በፍፁም የሚወዷቸውን ይዘት ወይም ፈጣሪዎች በግል የማበረታቻ እና የመደገፊያ መንገድ ነው። ቲፒ ይስጡ!</translation>
 <translation id="7509452925943421624">በ ማስመሰያዎች ምን ማድረግ ይችላሉ?</translation>
-<translation id="7059157883171259940">ማስመሰያዎች ፈጣሪዎችን ከመደገፍ ባለፈ ጥቅም ላይ ሊውሉ ይችላሉ። ዲጂታል እቃዎችን እና ጊፍትካርዶችን በተመላሽ ገንዘብ ጉርሻ መግዛት ይችላሉ።</translation>
+<translation id="5876169128756792273">ማስመሰያዎች ፈጣሪዎችን ከመደገፍ ባለፈ ጥቅም ላይ ሊውሉ ይችላሉ። ነጋዴዎች ሲመጡ ዲጂታል ይዘት ን እና ሌሎች ሸቀጦችን መግዛት ይችላሉ።</translation>
 <translation id="1402530520078693620">በመጨረሻም፣ በመሰረታዊ ቅንብሮች ላይ እናዘጋጅዎ</translation>
 <translation id="3494356595346329740">ይህንን በኋላ መለወጥ ይችላሉ።</translation>
 <translation id="6462814326662189004">ምን ያህል ጊዜ ማስታወቂያዎች ማየት ይፈልጋሉ?\n(ማስታወቂያዎች በሰዓት)</translation>
 <translation id="2134244432345596331">ለሚወዷቸው ፈጣሪዎች ምን ያህል ድጋፍ መስጠት ይፈልጋሉ?\n(ከ ማስታወቂያዎች ገቢዎች)</translation>
-<translation id="7456161272236175794">ዋዋዋዋዋውውውውውው!\nጨርሰዋል</translation>
+<translation id="827315274423079662">ዋው፣ you’re ሁሉም ተዘጋጅቷል!</translation>
 <translation id="3895246934788932488">Brave ወሮታዎች በመጠቀም፣ የእርስዎን ግላዊነት እየጠበቁ እና ድሩን ለሁሉም ሰው የተሻለ ቦታ ለማድረግ እየረዱ ነው። እና ይሄ ግሩም ነው!</translation>
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
 <translation id="5140321319944305531">እስቲ አንድ ፈጣን ጉብኝት እንውሰድ</translation>
@@ -464,4 +464,21 @@
 <translation id="3604285424134705930">እርስዎ <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>ለውጠዋል!</translation>
 <translation id="392587271502873865">እባክዎ የኔትዎርክዎ ግንኙነት ያጣሩ።</translation>
 <translation id="7889432931837317731">ሲቻል በራስ-ሰር ይክፈቱ</translation>
+<translation id="8967385052772844086">ሙሉውን የግላዊነት ሪፖርት ይመልከቱ</translation>
+<translation id="6864343534748973390">በጣም ታዋቂ</translation>
+<translation id="1622983732360473885">Brave ን ይደግፉ</translation>
+<translation id="4608192160278975831">የግል እና መከታተያ የሌለው</translation>
+<translation id="7208522820527289601">የግል እና መከታተያ የሌለው፣ በአውሮፓ ህብረት ላይ የተመሠረተ</translation>
+<translation id="1161008391729450974">የጉግል ያለ መከታተያዎች ውጤት ያመጣል</translation>
+<translation id="7320542277711359296">ሁለተኛ በጣም ታዋቂ</translation>
+<translation id="8295049095570748497">በሩሲያ ውስጥ መሪ የመፈለጊያ ማሸን</translation>
+<translation id="2642661895835126239">ዛፎች ይተክላል፣ በርሊን ውስጥ የተመሠረተ</translation>
+<translation id="1410130669636877548">አንዳንድ የፍለጋ ማሽኖች ድሩን ሲፈልጉ ከሌሎች በተሻለ ሚስጥራዊነትዎን ይከላከላሉ።</translation>
+<translation id="1078265935778232285">ወደ Brave አሳሽ እንኳን በደህና መጡ</translation>
+<translation id="6824713633331856331">ስምዎን ሳያሳውቁ እንድንማር ይርዱን</translation>
+<translation id="6116685031674149112">Brave ግላዊነትዎን ይጠብቃል and\nappreciates ለሚከተለው የሚሰጡትን ፍቃድዎን፡</translation>
+<translation id="3971666849661839619">የብልሽት ሪፖርቶችን በመላክ እና ስም-አልባ ሆኖ በመላክ Brave ን እንዲሻሻል ያግዙ፣ <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">የግል ምርት ትንታኔዎች።</translation>
+<translation id="5187052478998910855">በሽልማቶች ላይ አዳሽ ይፈልጋሉ?</translation>
+<translation id="8622329973403382303">እንደ የሽልማቶች ሮክስታር ታሪክ ውስጥ ለመግባት እንዴት እንደሚሠራ ለማወቅ በፍጥነት ጉብኝት ያድርጉ።</translation>
 </translationbundle>

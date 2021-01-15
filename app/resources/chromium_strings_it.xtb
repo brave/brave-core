@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: 1 ora fa.}other{Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: {NUM_HOURS} ore fa.}}</translation>
 <translation id="1065672644894730302">Impossibile leggere le preferenze. Alcune funzioni potrebbero non essere disponibili e le modifiche alle preferenze non verranno salvate.</translation>
 <translation id="8488151306313572776">Per separare la navigazione personale da quella di <ph name="NEW_USER"/>, crea un nuovo profilo in Brave</translation>
 <translation id="2796517443093885402">Brave può contribuire a proteggerti da violazioni dei dati, estensioni non valide e non solo</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Per controllare che le tue password siano protette da violazioni dei dati e altri problemi di sicurezza, <ph name="BEGIN_LINK"/>accedi a Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Informazioni su Brave</translation>
 <translation id="4798342026247191171">Configura il tuo nuovo profilo di Brave</translation>
+<translation id="5893502481331584971">Chiedi all'apertura di Brave</translation>
 <translation id="113959764510199339">Brave sta cercando di visualizzare le password.</translation>
 <translation id="8132634101975074716">Hai eseguito l'accesso a Brave.</translation>
 <translation id="7370605478942575409">Per poter usare Rosetta per riprodurre contenuti multimediali protetti, devi riavviare Brave.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Scheda Brave</translation>
 <translation id="8372880274820509128">Per maggiore sicurezza, Brave cripterà i tuoi dati.</translation>
 <translation id="2770231113462710648">Cambia browser predefinito con:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: 1 minuto fa.}other{Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: {NUM_MINS} minuti fa.}}</translation>
 <translation id="2799223571221894425">Riavvia</translation>
 <translation id="777113543093865885">Rimuovi da Brave...</translation>
-<translation id="8846162271735377947">Chiedi all'apertura di Brave</translation>
 <translation id="2885378588091291677">Task Manager</translation>
 <translation id="2176825726964012531">Informazioni su &amp;Brave</translation>
 <translation id="8208853227947884571">Brave è aggiornato</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave non può controllare le tue password. Riprova più tardi.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
 <translation id="7918740962659365265">Aiutaci a migliorare Brave inviando a Brave rapporti sugli arresti anomali e <ph name="UMA_LINK"/></translation>
-<translation id="2911521062311014336">Brave verifica la presenza di software indesiderato una volta a settimana</translation>
 <translation id="7365690458036015383">Il programma di installazione non è riuscito a decomprimere l'archivio. Scarica di nuovo Brave.</translation>
 <translation id="8919461291440820124">Brave sta utilizzando il microfono.</translation>
 <translation id="4805806622840861220">Riavvia Brave</translation>
@@ -139,7 +136,7 @@
 <translation id="9071554113102421877">&amp;Apri in Brave</translation>
 <translation id="7861579472672677409">L'estensione <ph name="EXTENSION_NAME"/> è stata aggiunta a Brave</translation>
 <translation id="2577755334620061182">Impossibile sincronizzare i dati in Brave a causa di un errore durante l'accesso.</translation>
-<translation id="6096348254544841612">È disponibile un nuovo aggiornamento.</translation>
+<translation id="5849446944780602366">È disponibile un nuovo aggiornamento.</translation>
 <translation id="492209281555538239">Brave salverà la password nel tuo Account Brave affinché tu non debba memorizzarla.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="7006260220514217183">Navigazione sicura è disattivata. Brave consiglia di attivarla.</translation>
@@ -172,7 +169,6 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="8211837073776713955">Brave ti avvisa se le tue password vengono compromesse</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiata in Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: 1 giorno fa.}other{Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: {NUM_DAYS} giorni fa.}}</translation>
 <translation id="2301993384336631869">Brave è stato aggiornato ma non lo utilizzi da almeno 30 giorni.</translation>
 <translation id="8522287263361940593">Rosetta consente di riprodurre i contenuti multimediali protetti in questa pagina su Brave.</translation>
 <translation id="6418340404893954563">Le password inefficaci sono facili da indovinare. Consenti a Brave di <ph name="BEGIN_LINK"/>creare e memorizzare password efficaci per te<ph name="END_LINK"/>.</translation>
@@ -204,7 +200,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="5657226924540934362">Se un'impostazione non viene mostrata in questa pagina, cercala nelle <ph name="LINK_BEGIN"/>impostazioni del sistema operativo Brave<ph name="LINK_END"/>.</translation>
 <translation id="3293668930608086049">Brave sta utilizzando videocamera e microfono.</translation>
 <translation id="2827121003398607864">Da oggi Brave è ancora meglio</translation>
-<translation id="504499211143662559">Brave ha rilevato software dannoso sul tuo computer</translation>
 <translation id="3343095737966473035">Brave non è il browser predefinito</translation>
 <translation id="5477319665405831211">Sincronizza e personalizza Brave sui tuoi dispositivi</translation>
 <translation id="5419189641394808652">Impossibile sincronizzare i dati in Brave perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
@@ -236,7 +231,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6283840329609797763">Installazione non riuscita a causa di un errore imprecisato. Scarica di nuovo Brave.</translation>
 <translation id="2433912322225810055">Controlla anche la pagina visualizzata all'avvio di Brave o quando esegui ricerche dalla Omnibox.</translation>
 <translation id="4100716194836114130">Questo è il tuo account Brave</translation>
-<translation id="8757284234053029740">Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: ieri.</translation>
 <translation id="4831743161813926460">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera e al microfono</translation>
 <translation id="7408085963519505752">Termini di Chrome OS</translation>
 <translation id="2262856633481902138">Impossibile sincronizzare i dati in Brave perché i dati di accesso dell'account sono obsoleti.</translation>
@@ -251,7 +245,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7863882214613921971">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="911206726377975832">Eliminare anche i tuoi dati di navigazione?</translation>
 <translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave verifica la presenza di software indesiderato una volta a settimana. Ultima verifica: qualche istante fa.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave potrebbe non funzionare correttamente perché non è più supportato su Windows XP o Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> richiede di leggere e accettare i seguenti Termini di servizio prima di utilizzare il dispositivo. Questi termini non ampliano, modificano o limitano i Termini di Chrome OS.</translation>

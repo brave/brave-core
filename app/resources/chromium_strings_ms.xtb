@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: 1 jam yang lalu.}other{Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: {NUM_HOURS} jam yang lalu.}}</translation>
 <translation id="1065672644894730302">Pilihan anda tidak dapat dibaca. Beberapa ciri mungkin tidak tersedia dan perubahan terhadap pilihan tidak akan disimpan.</translation>
 <translation id="8488151306313572776">Untuk memisahkan penyemakan imbas peribadi dan <ph name="NEW_USER"/>, buat profil baharu pada Brave</translation>
 <translation id="2796517443093885402">Brave dapat membantu untuk memastikan anda selamat daripada pelanggaran data, sambungan tidak elok dan pelbagai lagi</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Untuk menyemak sama ada kata laluan anda selamat daripada pelanggaran data dan isu keselamatan lain, <ph name="BEGIN_LINK"/>log masuk ke Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Mengenai Brave</translation>
 <translation id="4798342026247191171">Sediakan profil Brave baharu anda</translation>
+<translation id="5893502481331584971">Tanya apabila Brave dibuka</translation>
 <translation id="113959764510199339">Brave sedang cuba memaparkan kata laluan.</translation>
 <translation id="8132634101975074716">Anda log masuk ke Brave!</translation>
 <translation id="7370605478942575409">Untuk menggunakan Rosetta untuk memainkan media yang dilindungi, anda mesti memulakan semula Brave.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keselamatan tambahan, Brave akan menyulitkan data anda.</translation>
 <translation id="2770231113462710648">Tukar penyemak imbas lalai kepada:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: 1 minit yang lalu.}other{Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: {NUM_MINS} minit yang lalu.}}</translation>
 <translation id="2799223571221894425">Lancarkan semula</translation>
 <translation id="777113543093865885">Alih keluar daripada Brave...</translation>
-<translation id="8846162271735377947">Tanya apabila saya membuka Brave</translation>
 <translation id="2885378588091291677">Pengurus Tugas</translation>
 <translation id="2176825726964012531">Mengenai &amp;Brave</translation>
 <translation id="8208853227947884571">Brave telah dikemas kini</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave tidak dapat menyemak kata laluan anda. Cuba lagi nanti.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
 <translation id="7918740962659365265">Bantu jadikan Brave lebih baik dengan menghantar laporan ranap dan <ph name="UMA_LINK"/> kepada Brave.</translation>
-<translation id="2911521062311014336">Brave menyemak perisian yang tidak diingini seminggu sekali</translation>
 <translation id="7365690458036015383">Pemasang gagal untuk menyahmampat arkib. Sila muat turun Brave sekali lagi.</translation>
 <translation id="8919461291440820124">Brave menggunakan mikrofon anda.</translation>
 <translation id="4805806622840861220">Lancarkan Semula Brave</translation>
@@ -172,7 +169,6 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="8211837073776713955">Brave akan memberitahu anda sekiranya kata laluan anda terjejas</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (disalin ke Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: 1 hari yang lalu.}other{Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: {NUM_DAYS} hari yang lalu.}}</translation>
 <translation id="2301993384336631869">Brave telah dikemas kini, tetapi anda belum menggunakannya untuk sekurang-kurangnya 30 hari.</translation>
 <translation id="8522287263361940593">Rosetta membolehkan Brave memainkan media yang dilindungi pada halaman ini.</translation>
 <translation id="6418340404893954563">Kata laluan lemah mudah diteka. Biar Brave <ph name="BEGIN_LINK"/>membuat dan mengingat kata laluan kukuh untuk anda<ph name="END_LINK"/>.</translation>
@@ -205,7 +201,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
       tetapan OS Brave anda<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon anda.</translation>
 <translation id="2827121003398607864">Brave kini lebih baik</translation>
-<translation id="504499211143662559">Brave menemukan perisian berbahaya pada komputer anda</translation>
 <translation id="3343095737966473035">Brave bukan penyemak imbas lalai anda</translation>
 <translation id="5477319665405831211">Segerakkan dan peribadikan Brave pada semua peranti anda</translation>
 <translation id="5419189641394808652">Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
@@ -237,7 +232,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6283840329609797763">Pemasangan gagal disebabkan ralat yang tidak dinyatakan. Sila muat turun semula Brave.</translation>
 <translation id="2433912322225810055">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave atau membuat carian dari Kotak Omni.</translation>
 <translation id="4100716194836114130">Ini Brave anda</translation>
-<translation id="8757284234053029740">Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: semalam.</translation>
 <translation id="4831743161813926460">Brave memerlukan kebenaran untuk mengakses kamera dan mikrofon anda bagi tapak ini</translation>
 <translation id="7408085963519505752">Syarat Chrome OS</translation>
 <translation id="2262856633481902138">Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
@@ -252,7 +246,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7863882214613921971">Buka Pautan dalam &amp;tab Brave Baharu</translation>
 <translation id="911206726377975832">Padamkan juga data menyemak imbas anda?</translation>
 <translation id="2444257125841652328">Pentadbir sistem anda telah mengkonfigurasikan Brave agar membuka penyemak imbas alternatif untuk mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave menyemak perisian yang tidak diingini seminggu sekali. Terakhir disemak: sesaat yang lalu.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave mungkin tidak akan berfungsi dengan betul kerana tidak lagi disokong pada Windows XP atau Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> menghendaki anda membaca dan menerima Syarat Perkhidmatan berikut sebelum menggunakan peranti ini. Syarat ini tidak meluaskan, mengubah suai atau mengehadkan Syarat OS Brave.</translation>

@@ -329,7 +329,7 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="7396366757003005317">Seadmetuvastus blokeeritud (range, võib saite lõhkuda)</translation>
 <translation id="700453611199558021">Seadmetuvastus blokeeritud (tavaline)</translation>
 <translation id="769702552748212954">Luba seadmetuvastus igal pool</translation>
-<translation id="2888409909650566510">Reklaamid ja muud kõhedad asjad\non blokeeritud</translation>
+<translation id="5142293891785304489">Blokeeritud jälitajad, reklaamid\nja muu</translation>
 <translation id="6930134873084561197">Lehed sisaldavad tihti küpsiseid ja skripte, mis üritavad tuvastada teid ja teie seadet. Need soovivad teada, kes olete ja teid veebis jälitada ehk jälgida, mida igal lehel teete. \n\nBrave blokeerib need, et saaksite sirvida, ilma et keegi teid jälitaks.</translation>
 <translation id="8553998445606452168">Brave’i kaitsete kohta</translation>
 <translation id="8912304686498704084">ÜLES</translation>
@@ -441,22 +441,22 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="8804164990146287819">Privaatsuspoliitika</translation>
 <translation id="6318696841371191107">Tehke kiire tuur</translation>
 <translation id="7930505144430343145">Tere tulemast kasutama Brave Rewardsi!</translation>
-<translation id="7909111626803226907">Erinevalt tavareklaamidest annab Brave'i erareklaamide vaatamine teile sisuloojate toetamiseks tokeneid, samas hoitakse teie isikuandmed privaatsed.</translation>
+<translation id="3477340970981564961">Erinevalt tavareklaamidest annab Brave'i erareklaamide vaatamine teile sisuloojate toetamiseks tokeneid, samas hoitakse teie isikuandmed privaatsed.</translation>
 <translation id="6973095375773523904">Kus reklaamid kuvatakse?</translation>
-<translation id="3867028444168159102">Brave'i erareklaamid kuvatakse tavateavitusena. Seadete abil saate reguleerida, kui tihti neid reklaame näete.</translation>
+<translation id="7556325460112047619">Brave'i erareklaamid kuvatakse tavateavitusena. Seadete abil saate reguleerida, kui tihti neid reklaame näete.</translation>
 <translation id="5816125157889950051">Millal preemiaid saab?</translation>
-<translation id="4649471244559455723">Käesoleval kuul Brave'i reklaamide eest teenitud tokenid saabuvad järgmise kuu 5ndal kuupäeval.</translation>
+<translation id="310863932297733723">Käesoleval kuul Brave'i erareklaamide eest teenitud tokenid saabuvad järgmise kuu 5ndal kuupäeval.</translation>
 <translation id="7712287524451429139">Vaevata vastuannetused</translation>
 <translation id="105037569026952831">Loojad saavad teie annetatud tokenid automaatselt teie kaasatustaseme alusel, mida mõõdame ‘aktiivsusena’.</translation>
 <translation id="5323267338679539010">Saate tänada preemiaga</translation>
-<translation id="6042317056594735519">Preemia andmisega saate isiklikult toetada meeldivat sisu või toredaid loojaid. Hakake preemiat jagama!</translation>
+<translation id="6730444165801605682">Preemia andmisega saate isiklikult toetada väga meeldivat sisu või toredaid loojaid. Hakake preemiat jagama!</translation>
 <translation id="7509452925943421624">Mida saab tokenitega teha?</translation>
-<translation id="7059157883171259940">Tokeneid saab kasutada ka muuks peale loojate toetamise. Saate osta digitaalset kaupa ja kinkekaarte, mille eest saab tagasi rahalist boonust.</translation>
+<translation id="5876169128756792273">Tokeneid saab kasutada ka muuks peale loojate toetamise. Saate osta digitaalset sisu ja muid kaupu, sedamööda, kuidas lisandub kaupmehi.</translation>
 <translation id="1402530520078693620">Lõpetuseks paneme paika põhiseadistuse</translation>
 <translation id="3494356595346329740">Seda saate hiljem muuta.</translation>
 <translation id="6462814326662189004">Kui sageli soovite reklaame näha?\n(Reklaame tunnis)</translation>
 <translation id="2134244432345596331">Kui palju soovite toetada lemmikloojaid?\n(oma reklaamiteenistusest)</translation>
-<translation id="7456161272236175794">OHOOOOO!\nOngi valmis.</translation>
+<translation id="827315274423079662">Ohoo, olete valmis alustama!</translation>
 <translation id="3895246934788932488">Brave Rewardsi kasutamisega kaitsete oma privaatsust ja aitate veebi kõigi jaoks paremaks muuta. Ja see on vinge!</translation>
 <translation id="5705882733397021510">Mine tagasi</translation>
 <translation id="5140321319944305531">Teeme ühe kiire tuuri</translation>
@@ -469,4 +469,21 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="3604285424134705930">Konverteerisite <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> vääringusse <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Kontrollige oma võrguühendust.</translation>
 <translation id="7889432931837317731">Võimalusel avatakse automaatselt</translation>
+<translation id="8967385052772844086">Kuva täielik privaatsusaruanne</translation>
+<translation id="6864343534748973390">Kõige populaarsem</translation>
+<translation id="1622983732360473885">Toetab Brave'i</translation>
+<translation id="4608192160278975831">Privaatne ja jälitamiseta</translation>
+<translation id="7208522820527289601">Privaatne ja jälitamiseta, ELi põhine</translation>
+<translation id="1161008391729450974">Google'i tulemused ilma jälitajateta</translation>
+<translation id="7320542277711359296">Populaarsuselt teine</translation>
+<translation id="8295049095570748497">Venemaa juhtiv otsimootor</translation>
+<translation id="2642661895835126239">Istutab puid, tegutseb Berliinis</translation>
+<translation id="1410130669636877548">Veebist otsimisel kaitseb mõni otsimootor teie privaatsust teistest paremini.</translation>
+<translation id="1078265935778232285">Tere tulemast Brave Software'i</translation>
+<translation id="6824713633331856331">Aidake meil anonüümselt õppida</translation>
+<translation id="6116685031674149112">Brave kaitseb teie privaatsust ja\non tänulik, kui annate nõusoleku järgmiseks:</translation>
+<translation id="3971666849661839619">Aidake Brave'i paremaks muuta, saates krahhiaruandeid ja täiesti anonüümset <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">privaatset tooteanalüüsi teavet.</translation>
+<translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
+<translation id="8622329973403382303">Tehke kiire ringkäik, et meenutada, kuidas see toimis, ja võite ajalukku minna Rewardsi staarina!</translation>
 </translationbundle>

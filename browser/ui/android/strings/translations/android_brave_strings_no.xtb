@@ -318,7 +318,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="7396366757003005317">Fingeravtrykk blokkert (restriktivt; kan gjøre at nettsteder slutter å fungere)</translation>
 <translation id="700453611199558021">Fingeravtrykk er blokkert (standard)</translation>
 <translation id="769702552748212954">Tillat all bruk av fingeravtrykk</translation>
-<translation id="2888409909650566510">Annonser og andre uhyggelige\nting blokkert</translation>
+<translation id="5142293891785304489">Trackere, annonser og\nmer blokkert</translation>
 <translation id="6930134873084561197">Nettsteder inkluderer ofte informasjonskapsler og skript som prøver å identifisere deg og din enhet. De ønsker å finne ut av hvem du er, følge deg på nettet og spore det du gjør på alle nettsider. \n\nBrave blokkerer dette, slik at du kan surfe på nett uten å bli fulgt.</translation>
 <translation id="8553998445606452168">Om Brave Shields</translation>
 <translation id="8912304686498704084">OPP</translation>
@@ -424,22 +424,22 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="8804164990146287819">Personvernerklæring</translation>
 <translation id="6318696841371191107">Ta en rask omvisning</translation>
 <translation id="7930505144430343145">Velkommen til Brave Rewards!</translation>
-<translation id="7909111626803226907">Private Brave-annonser belønner deg med tokener for å støtte innholdsprodusenter, til forskjell fra tradisjonell annonsering, samtidig som personopplysningene dine skjermes.</translation>
+<translation id="3477340970981564961">Brave Private Ads belønner deg med polletter for å støtte innholdsskapere, i motsetning til tradisjonelle annonser – samtidig som den personlige informasjonen din beskyttes.</translation>
 <translation id="6973095375773523904">Hvor vises annonsene?</translation>
-<translation id="3867028444168159102">Private Brave-annonser vil fremstå som normale varslinger. Du bestemmer hvor ofte du ser disse annonsene i innstillinger.</translation>
+<translation id="7556325460112047619">Brave Private Ads vil vises som et ordinært varsel. Du kontrollerer hvor ofte du ser disse annonsene via innstillingene.</translation>
 <translation id="5816125157889950051">Når mottar du belønninger</translation>
-<translation id="4649471244559455723">De opptjente tokenene dine fra Brave-annonser i løpet av inneværende måned mottar du den 5. i neste måned.</translation>
+<translation id="310863932297733723">Pollettene du har tjent på Brave Private Ads i inneværende måned vil komme inn den 5. i neste måned.</translation>
 <translation id="7712287524451429139">Gi tilbake uten anstrengelser</translation>
 <translation id="105037569026952831">Innholdsprodusenter mottar automatisk token-bidragene basert på engasjementsnivåene dine. Disse måler vi som 'Oppmerksomhet'.</translation>
 <translation id="5323267338679539010">Si takk med tips</translation>
-<translation id="6042317056594735519">Tipsing er en måte å personlig oppmuntre og støtte innhold eller produsenter du elsker. Sett i gang å tipse!</translation>
+<translation id="6730444165801605682">Tipsing er en måte å gi en personlig oppmuntring på, og å støtte innhold eller skapere som du bare elsker. Tips i vei!</translation>
 <translation id="7509452925943421624">Hva kan du gjøre med tokener?</translation>
-<translation id="7059157883171259940">Tokener kan brukes til mer enn å støtte produsenter. Du kan kjøpe digitale produkter og gavekort med en cashback-bonus.</translation>
+<translation id="5876169128756792273">Polletter kan brukes til mer enn å støtte skapere. Du kan kjøpe digitalt innhold og andre artikler etter hvert som selgere blir med.</translation>
 <translation id="1402530520078693620">La oss til slutt få satt deg opp med basisinnstillingene</translation>
 <translation id="3494356595346329740">Du kan endre dette senere.</translation>
 <translation id="6462814326662189004">Hvor ofte vil du se annonser?\n(Annonser per time)</translation>
 <translation id="2134244432345596331">Hvor mye ønsker du å støtte favorittprodusentene dine med?\n(fra annonseinntjeningen din)</translation>
-<translation id="7456161272236175794">JOOOOHOOOOO!\nDu er ferdig!</translation>
+<translation id="827315274423079662">Hurra, du er helt klar!</translation>
 <translation id="3895246934788932488">Ved å bruke Brave Rewards styrker du personvernet ditt og bidrar til å gjøre nettet til et bedre sted for alle. Det er bare fantastisk!</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
 <translation id="5140321319944305531">La oss ta en rask omvisning</translation>
@@ -452,4 +452,21 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="3604285424134705930">Du konverterte <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Vennligst sjekk nettverksforbindelsen din.</translation>
 <translation id="7889432931837317731">Åpne automatisk når mulig</translation>
+<translation id="8967385052772844086">Se hele Personvernrapporten</translation>
+<translation id="6864343534748973390">Mest populær</translation>
+<translation id="1622983732360473885">Støtter Brave</translation>
+<translation id="4608192160278975831">Privat og ingen sporing</translation>
+<translation id="7208522820527289601">Privat og uten sporing, EU-basert</translation>
+<translation id="1161008391729450974">Google-resultater uten trackere</translation>
+<translation id="7320542277711359296">Nest mest populær</translation>
+<translation id="8295049095570748497">En ledende søkemotor i Russland</translation>
+<translation id="2642661895835126239">Planter trær, basert i Berlin</translation>
+<translation id="1410130669636877548">Noen søkemotorer beskytter personvernet ditt bedre enn andre når du søker på nettet.</translation>
+<translation id="1078265935778232285">Velkommen til Brave-nettleseren</translation>
+<translation id="6824713633331856331">Hjelp oss med å lære anonymt</translation>
+<translation id="6116685031674149112">Brave beskytter personvernet ditt, og\nsetter pris på at du samtykker i følgende:</translation>
+<translation id="3971666849661839619">Hjelp oss med å forbedre Brave ved å sende rapporter om krasj og fullstendig anonymisert <ph name="PRIVAT PRODUKTANALYSE"/></translation>
+<translation id="6478996494082389936">privat produktanalyse.</translation>
+<translation id="5187052478998910855">Behov for å friske opp kunnskapene dine om Rewards?</translation>
+<translation id="8622329973403382303">Ta en rask omvisning og frisk opp kunnskapen om hvordan du går inn i historien som Rewards-rockestjerne!</translation>
 </translationbundle>

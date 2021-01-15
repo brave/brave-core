@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-HK">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：1 小時前。}other{Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：{NUM_HOURS} 小時前。}}</translation>
 <translation id="1065672644894730302">系統無法讀取您的偏好設定。
 
 部分功能可能無法使用，而系統也不會儲存任何偏好設定的變更。</translation>
@@ -12,6 +11,7 @@
 <translation id="8522292744959221145">如要檢查密碼是否安全，且未受資料外洩或其他安全性問題影響，請<ph name="BEGIN_LINK"/>登入 Brave<ph name="END_LINK"/>。</translation>
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
+<translation id="5893502481331584971">Brave 開啟時詢問我</translation>
 <translation id="113959764510199339">Brave 即將顯示密碼。</translation>
 <translation id="8132634101975074716">您已登入 Brave！</translation>
 <translation id="7370605478942575409">您必須重新啟動 Brave，才能使用 Rosetta 播放受保護的媒體。</translation>
@@ -46,10 +46,8 @@
 <translation id="6791166902140255175">Brave 分頁</translation>
 <translation id="8372880274820509128">為提高安全性，Brave 會將您的資料加密。</translation>
 <translation id="2770231113462710648">將預設瀏覽器變更為：</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：1 分鐘前。}other{Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：{NUM_MINS} 分鐘前。}}</translation>
 <translation id="2799223571221894425">重新啟動</translation>
 <translation id="777113543093865885">從 Brave 中移除…</translation>
-<translation id="8846162271735377947">開啟 Brave 時詢問我</translation>
 <translation id="2885378588091291677">工作管理員</translation>
 <translation id="2176825726964012531">關於 Brave(&amp;C)</translation>
 <translation id="8208853227947884571">Brave 已是最新版本</translation>
@@ -57,7 +55,6 @@
 <translation id="8755404239607088219">Brave 無法檢查密碼，請稍後再試。</translation>
 <translation id="8880183781256147665">正在新增至 Brave…</translation>
 <translation id="7918740962659365265">將當機報告和<ph name="UMA_LINK"/>傳送給 Brave，助我們一臂之力，讓 Brave 更臻完美</translation>
-<translation id="2911521062311014336">Brave 每星期會檢查 1 次有否垃圾軟件</translation>
 <translation id="7365690458036015383">安裝程式無法解壓縮封存檔案，請重新下載 Brave。</translation>
 <translation id="8919461291440820124">Brave 正在使用您的麥克風。</translation>
 <translation id="4805806622840861220">重新啟動 Brave</translation>
@@ -175,7 +172,6 @@
 <translation id="8211837073776713955">Brave 會通知您密碼是否曾被盜用</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (已複製至 Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：1 天前。}other{Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：{NUM_DAYS} 天前。}}</translation>
 <translation id="2301993384336631869">Brave 已更新，但您已至少超過 30 天沒有使用 Brave。</translation>
 <translation id="8522287263361940593">Rosetta 讓 Brave 能夠播放此頁面上的受保護媒體。</translation>
 <translation id="6418340404893954563">安全性弱的密碼很容易被猜到。讓 Brave <ph name="BEGIN_LINK"/>為您建立並記住安全性強的密碼<ph name="END_LINK"/>。</translation>
@@ -207,7 +203,6 @@ Brave 無法復原您的設定。</translation>
 <translation id="5657226924540934362">如果此頁面沒有顯示設定，請前往 <ph name="LINK_BEGIN"/>Brave 作業系統設定<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave 正在使用您的相機和麥克風。</translation>
 <translation id="2827121003398607864">Brave 現在更進一步</translation>
-<translation id="504499211143662559">Brave 在您的電腦上發現了有害軟件</translation>
 <translation id="3343095737966473035">Brave 不是您的預設瀏覽器</translation>
 <translation id="5477319665405831211">在不同裝置上同步和設定個人化的 Brave</translation>
 <translation id="5419189641394808652">您的網域無法使用「同步功能」，因此 Brave 無法同步處理您的數據。</translation>
@@ -239,7 +234,6 @@ Brave 無法復原您的設定。</translation>
 <translation id="6283840329609797763">不明錯誤導致安裝失敗，請重新下載 Brave。</translation>
 <translation id="2433912322225810055">這個擴充功能也會控管 Brave 啟動時或您使用網址列搜尋時所顯示的網頁。</translation>
 <translation id="4100716194836114130">這是您專屬的 Brave</translation>
-<translation id="8757284234053029740">Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：昨天。</translation>
 <translation id="4831743161813926460">Brave 需要取得權限，才能讓這個網站存取您的相機和麥克風</translation>
 <translation id="7408085963519505752">Brave 作業系統條款</translation>
 <translation id="2262856633481902138">您的帳戶登入詳細資料尚未更新，因此 Brave 無法同步處理您的數據。</translation>
@@ -254,7 +248,6 @@ Brave 無法復原您的設定。</translation>
 <translation id="7863882214613921971">在 Brave 的新分頁中開啟連結(&amp;T)</translation>
 <translation id="911206726377975832">您要一併刪除瀏覽數據嗎？</translation>
 <translation id="2444257125841652328">系統管理員已設定 Brave 開啟替代瀏覽器來存取 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
-<translation id="2250443703383891643">Brave 每星期會檢查 1 次，查看有否垃圾軟件。上次檢查時間：剛才。</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">由於 Brave 將不再支援 Windows XP 或 Windows Vista，因此可能無法正常運作</translation>
 <translation id="2398566204186296120">在使用這部裝置前，<ph name="DOMAIN"/> 要求您仔細閱讀並接受下列《服務條款》。這些條款不會擴展、修改或限制《Brave 作業系統條款》。</translation>

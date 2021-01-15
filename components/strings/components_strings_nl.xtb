@@ -78,6 +78,12 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
     &lt;/ol&gt;</translation>
 <translation id="1257286744552378071">Je hebt je wachtwoord ingevoerd op een site die niet door je organisatie wordt beheerd. Hergebruik je wachtwoord niet voor andere apps en sites om je account te beschermen.</translation>
 <translation id="1263231323834454256">Leeslijst</translation>
+<translation id="1267173982554786072"><ph name="BEGIN_BOLD"/>Activiteit die niet op dit apparaat blijft staan:<ph name="END_BOLD"/>
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Pagina's die je bekijkt in dit venster
+          <ph name="LIST_ITEM"/>Cookies en sitegegevens
+          <ph name="LIST_ITEM"/>Accountgegevens (<ph name="LINK_BEGIN"/>uitloggen<ph name="LINK_END"/>)
+        <ph name="END_LIST"/></translation>
 <translation id="1270502636509132238">Ophaalmethode</translation>
 <translation id="1281476433249504884">Stapeleenheid 1</translation>
 <translation id="1285320974508926690">Deze site nooit vertalen</translation>
@@ -106,7 +112,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="1348198688976932919">De volgende site bevat gevaarlijke apps</translation>
 <translation id="1348779747280417563">Naam bevestigen</translation>
 <translation id="1357195169723583938">Wie het apparaat recent heeft gebruikt en wanneer</translation>
-<translation id="1360955481084547712">Een nieuw incognitovenster openen om privé te browsen</translation>
 <translation id="1363819917331173092">Niet aanbieden om pagina's in het <ph name="SOURCE_LANGUAGE"/> te vertalen</translation>
 <translation id="1364822246244961190">Dit beleid is geblokkeerd. De waarde ervan wordt genegeerd.</translation>
 <translation id="1374468813861204354">suggesties</translation>
@@ -276,6 +281,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="3163988908275223348">Inloggen om wachtwoorden te gebruiken die zijn opgeslagen in je Brave-account</translation>
 <translation id="2053111141626950936">Pagina's in het <ph name="LANGUAGE"/> worden niet vertaald.</translation>
 <translation id="2053553514270667976">Postcode</translation>
+<translation id="2054665754582400095">Je aanwezigheid</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 suggestie}other{# suggesties}}</translation>
 <translation id="2079545284768500474">Ongedaan maken</translation>
 <translation id="20817612488360358">De proxyinstellingen van het systeem moeten worden gebruikt, maar er is ook een expliciete proxyconfiguratie opgegeven.</translation>
@@ -289,6 +295,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="2102495993840063010">Android-apps</translation>
 <translation id="2107021941795971877">Afdruksteunen</translation>
 <translation id="2108755909498034140">Je computer opnieuw opstarten</translation>
+<translation id="2111166930115883695">Druk op de spatiebalk om te spelen</translation>
 <translation id="2111256659903765347">Super-A</translation>
 <translation id="2113977810652731515">Pas</translation>
 <translation id="2114841414352855701">Genegeerd omdat het werd overschreven door <ph name="POLICY_NAME"/>.</translation>
@@ -300,6 +307,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="214556005048008348">Betaling annuleren</translation>
 <translation id="2147827593068025794">Synchronisatie op de achtergrond</translation>
 <translation id="2148613324460538318">Pas toevoegen</translation>
+<translation id="2149968176347646218">Verbinding is niet beveiligd</translation>
 <translation id="2154054054215849342">De synchronisatieservice is niet beschikbaar voor je domein</translation>
 <translation id="2154484045852737596">Pas bewerken</translation>
 <translation id="2161656808144014275">Tekst</translation>
@@ -310,7 +318,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="2181821976797666341">Beleid</translation>
 <translation id="2183608646556468874">Telefoonnummer</translation>
 <translation id="2184405333245229118">{COUNT,plural, =1{1 adres}other{# adressen}}</translation>
-<translation id="2187243482123994665">Aanwezigheid van gebruiker</translation>
 <translation id="2187317261103489799">Detecteren (standaard)</translation>
 <translation id="2188375229972301266">Meerdere perforaties onder</translation>
 <translation id="2202020181578195191">Geef een geldig vervaljaar op</translation>
@@ -438,7 +445,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="272451190272506600">Raak de sensor aan om te betalen</translation>
 <translation id="2728127805433021124">Het certificaat van de server is ondertekend met een zwak ondertekeningsalgoritme.</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Verbindingsdiagnose uitvoeren<ph name="END_LINK"/></translation>
-<translation id="2734544361860335147">Als je deze functies inschakelt, kun je browsergegevens kwijtraken of je veiligheid of privacy in gevaar brengen. Ingeschakelde functies zijn van toepassing op alle gebruikers van deze browser.</translation>
+<translation id="2734544361860335147">Als je deze functies inschakelt, kun je browsegegevens kwijtraken of je veiligheid of privacy in gevaar brengen. Ingeschakelde functies zijn van toepassing op alle gebruikers van deze browser.</translation>
 <translation id="2735043616039983645">Er zijn meerdere bronnen met conflicterende waarden aanwezig voor dit beleid.</translation>
 <translation id="2738330467931008676">Ophaaladres kiezen</translation>
 <translation id="2740531572673183784">OK</translation>
@@ -460,6 +467,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="2839501879576190149">Nepsite gedetecteerd</translation>
 <translation id="2850739647070081192">Invite (envelop)</translation>
 <translation id="2856444702002559011">Cybercriminelen proberen mogelijk je gegevens van <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> te stelen (bijvoorbeeld wachtwoorden, berichten of creditcardgegevens). <ph name="BEGIN_LEARN_MORE_LINK"/>Meer informatie<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2859806420264540918">Site geeft opdringerige of misleidende advertenties weer.</translation>
 <translation id="2878197950673342043">Kruisvouw</translation>
 <translation id="2878424575911748999">A1</translation>
 <translation id="2880660355386638022">Vensterplaatsing</translation>
@@ -496,18 +504,17 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="6683975920571472553">Suggesties van Brave</translation>
 <translation id="3002501248619246229">Materiaal in de invoerlade controleren</translation>
 <translation id="3005723025932146533">Opgeslagen kopie weergeven</translation>
-<translation id="3007719053326478567">Het afdrukken van deze content is geblokkeerd door je beheerder</translation>
 <translation id="3008447029300691911">Geef de CVC-code voor <ph name="CREDIT_CARD"/> op. Zodra je bevestigt, worden je creditcardgegevens gedeeld met deze site.</translation>
 <translation id="3010559122411665027">Lijstitem '<ph name="ENTRY_INDEX"/>': <ph name="ERROR"/></translation>
 <translation id="301521992641321250">Automatisch geblokkeerd</translation>
 <translation id="3016780570757425217">Je locatie weten</translation>
+<translation id="3017086357773116182"><ph name="REMOVE_SUGGESTION_SUFFIX"/>, druk op Tab en daarna op Enter om de suggestie te verwijderen.</translation>
 <translation id="3023071826883856138">You4 (envelop)</translation>
 <translation id="3024663005179499861">Onjuist beleidstype</translation>
-<translation id="3037605927509011580">Helaas.</translation>
+<translation id="3037605927509011580">Asjemenou!</translation>
 <translation id="3041612393474885105">Certificaatgegevens</translation>
 <translation id="3060227939791841287">C9 (envelop)</translation>
 <translation id="3061707000357573562">Patchservice</translation>
-<translation id="3064966200440839136">Je verlaat de incognitomodus om te betalen via een externe app. Doorgaan?</translation>
 <translation id="3080254622891793721">Afbeelding</translation>
 <translation id="3086579638707268289">Je activiteit op internet wordt in de gaten gehouden</translation>
 <translation id="3087734570205094154">Onderaan</translation>
@@ -528,7 +535,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="3154506275960390542">Deze pagina bevat een formulier dat mogelijk niet beveiligd wordt verzonden. Gegevens die je verzendt, kunnen tijdens de overdracht worden bekeken door anderen of kunnen worden aangepast door een aanvaller om te wijzigen wat de server ontvangt.</translation>
 <translation id="3157931365184549694">Herstellen</translation>
 <translation id="3162559335345991374">Het is mogelijk dat je de inlogpagina moet bezoeken van het wifi-netwerk dat je gebruikt.</translation>
-<translation id="3167968892399408617">De pagina's die je op incognitotabbladen weergeeft, worden niet bewaard in je browsergeschiedenis, cookie-opslag of zoekgeschiedenis nadat je al je incognitotabbladen hebt gesloten. Alle bestanden die je hebt gedownload of bookmarks die je hebt gemaakt, blijven behouden.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Eiland</translation>
 <translation id="3176929007561373547">Controleer je proxyinstellingen of neem contact op met je netwerkbeheerder om te controleren of de proxyserver werkt. Als je denkt dat je geen proxyserver zou moeten gebruiken: <ph name="PLATFORM_TEXT"/></translation>
@@ -540,6 +546,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="3207960819495026254">Toegevoegd aan 'Bookmarks'</translation>
 <translation id="3209034400446768650">Pagina kan geld in rekening brengen</translation>
 <translation id="3212581601480735796">Je activiteit op <ph name="HOSTNAME"/> wordt gecontroleerd</translation>
+<translation id="3212623355668894776">Sluit alle gastvensters zodat je browse-activiteit wordt verwijderd van dit apparaat.</translation>
 <translation id="3215092763954878852">Kan WebAuthn niet gebruiken</translation>
 <translation id="3218181027817787318">Relatief</translation>
 <translation id="3225919329040284222">De server heeft een certificaat gepresenteerd dat niet overeenkomt met de ingebouwde verwachtingen. Deze verwachtingen zijn opgenomen voor bepaalde websites om je te beschermen.</translation>
@@ -650,7 +657,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="3676592649209844519">Apparaat-ID:</translation>
 <translation id="3677008721441257057">Bedoelde je &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Verzoek kan niet worden ondertekend</translation>
-<translation id="3678529606614285348">Pagina openen in een nieuw incognitovenster (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Certificaatgegevens</translation>
 <translation id="3701427423622901115">Reset bevestigd.</translation>
 <translation id="3704162925118123524">Het is mogelijk dat je de inlogpagina moet bezoeken van het netwerk dat je gebruikt.</translation>
@@ -682,6 +688,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="3784372983762739446">Bluetooth-apparaten</translation>
 <translation id="3787705759683870569">Verloopt: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="3789155188480882154">Grootte 16</translation>
+<translation id="3789841737615482174">Installeren</translation>
 <translation id="3793574014653384240">Aantallen en oorzaken van de crashes die onlangs hebben plaatsgevonden</translation>
 <translation id="3797522431967816232">Prc3 (envelop)</translation>
 <translation id="3799805948399000906">Lettertype aangevraagd</translation>
@@ -733,6 +740,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4058922952496707368">Sleutel '<ph name="SUBKEY"/>': <ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (envelop)</translation>
+<translation id="4067669230157909013">De schermopname is hervat.</translation>
 <translation id="4067947977115446013">Geldig adres toevoegen</translation>
 <translation id="4072486802667267160">Er is een fout opgetreden bij het verwerken van je bestelling. Probeer het opnieuw.</translation>
 <translation id="4075732493274867456">De client en server ondersteunen geen algemene SSL-protocolversie of coderingssuite.</translation>
@@ -800,6 +808,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="4297502707443874121">Miniatuur voor pagina <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="42981349822642051">Uitvouwen</translation>
 <translation id="4300675098767811073">Meerdere perforaties rechts</translation>
+<translation id="4302514097724775343">Tik op de dino om te spelen</translation>
 <translation id="4302965934281694568">Chou3 (envelop)</translation>
 <translation id="4305666528087210886">Je bestand kan niet worden geopend</translation>
 <translation id="4305817255990598646">Overschakelen</translation>
@@ -873,6 +882,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="4658638640878098064">Nietje linksboven</translation>
 <translation id="4668929960204016307">,</translation>
 <translation id="4670064810192446073">Virtual reality</translation>
+<translation id="5554243581036241411">Je ziet geen Brave-profielgegevens in de gastmodus. Je kunt <ph name="LINK_BEGIN"/>inloggen<ph name="LINK_END"/> voor toegang tot je Brave-accountgegevens zoals wachtwoorden en betaalmethoden.</translation>
 <translation id="467662567472608290">De server kan niet bewijzen dat dit <ph name="DOMAIN"/> is. Het beveiligingscertificaat van de server bevat fouten. Dit kan worden veroorzaakt door een verkeerde configuratie of een aanvaller die je verbinding onderschept.</translation>
 <translation id="4677585247300749148"><ph name="URL"/> wil reageren op toegankelijkheidsfunctionaliteit</translation>
 <translation id="8197094463444457125">Brave Presentaties</translation>
@@ -898,6 +908,10 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="4761104368405085019">Je microfoon gebruiken</translation>
 <translation id="4764776831041365478"><ph name="URL"/> werkt even niet, of de pagina kan verhuisd zijn naar een nieuw webadres.</translation>
 <translation id="4766713847338118463">Twee nietjes onder</translation>
+<translation id="4768815695067202997"><ph name="BEGIN_BOLD"/>Je activiteit die op dit apparaat blijft staan:<ph name="END_BOLD"/>
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Bestanden die je downloadt in dit venster
+        <ph name="END_LIST"/></translation>
 <translation id="4771973620359291008">Er is een onbekende fout opgetreden.</translation>
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Pop-up geblokkeerd}other{# pop-ups geblokkeerd}}</translation>
 <translation id="4780366598804516005">Mailbox 1</translation>
@@ -995,7 +1009,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="5148809049217731050">Met de bedrukte zijde omhoog</translation>
 <translation id="515292512908731282">C4 (envelop)</translation>
 <translation id="5158275234811857234">Omslag</translation>
-<translation id="5159010409087891077">Pagina openen in een nieuw incognitovenster (⇧⌘N)</translation>
 <translation id="5161506081086828129">Stapeleenheid 9</translation>
 <translation id="5164798890604758545">Tekst wordt ingevoerd</translation>
 <translation id="2996889577833788807">Geef de CVC-code voor <ph name="CREDIT_CARD"/> op. Nadat je hebt bevestigd, worden de creditcardgegevens uit je Brave-account gedeeld met deze site.</translation>
@@ -1005,7 +1018,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="5172758083709347301">Computer</translation>
 <translation id="5179510805599951267">Niet in het <ph name="ORIGINAL_LANGUAGE"/>? Deze fout melden</translation>
 <translation id="5179740473595559246">Weten wanneer je aanwezig bent</translation>
-<translation id="5190835502935405962">Bookmarkbalk</translation>
 <translation id="519422657042045905">Annotatie niet beschikbaar</translation>
 <translation id="5201306358585911203">Een ingesloten pagina op deze pagina meldt het volgende</translation>
 <translation id="5205222826937269299">Naam vereist</translation>
@@ -1059,11 +1071,13 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="5386426401304769735">De certificaatketen voor deze site bevat een certificaat dat is ondertekend met SHA-1.</translation>
 <translation id="538659543871111977">A4-Tab</translation>
 <translation id="5396631636586785122">Inbinden met nietjes rechts</translation>
+<translation id="5398772614898833570">Advertenties geblokkeerd</translation>
 <translation id="5400836586163650660">Grijs</translation>
 <translation id="540969355065856584">Deze server kan niet bewijzen dat dit <ph name="DOMAIN"/> is. Het beveiligingscertificaat is momenteel niet geldig. Dit kan worden veroorzaakt door een verkeerde configuratie of een aanvaller die je verbinding onderschept.</translation>
 <translation id="541416427766103491">Stapeleenheid 4</translation>
 <translation id="5421136146218899937">Browsegegevens wissen</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> wil meldingen sturen</translation>
+<translation id="542872847390508405">Je browst momenteel als gast</translation>
 <translation id="5430298929874300616">Bookmark verwijderen</translation>
 <translation id="5439770059721715174">Schemavalidatiefout op '<ph name="ERROR_PATH"/>': <ph name="ERROR"/></translation>
 <translation id="5443468954631487277">Omgekeerde volgorde met de bedrukte zijde omhoog</translation>
@@ -1105,12 +1119,12 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="5571083550517324815">Kan niet ophalen van dit adres. Selecteer een ander adres.</translation>
 <translation id="5580958916614886209">Controleer de vervalmaand en probeer het opnieuw</translation>
 <translation id="5586446728396275693">Geen opgeslagen adressen</translation>
+<translation id="5593349413089863479">Verbinding is niet volledig beveiligd</translation>
 <translation id="5595485650161345191">Adres bewerken</translation>
 <translation id="5598944008576757369">Betaalmethode kiezen</translation>
 <translation id="560412284261940334">Beheer wordt niet ondersteund</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="5607240918979444548">Architecture-C</translation>
-<translation id="4067274479097837765">Deze site is mogelijk nep of bedrieglijk. Brave raadt je aan de site direct te verlaten.</translation>
 <translation id="5610142619324316209">Controleer de verbinding</translation>
 <translation id="5610807607761827392">Je kunt passen en adressen beheren in <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
 <translation id="2012723355262040739">Deze pagina vertalen met Brave Translate</translation>
@@ -1182,6 +1196,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="5901630391730855834">Geel</translation>
 <translation id="5905445707201418379">Geblokkeerd op basis van het herkomstbeleid van <ph name="ORIGIN"/>.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (gesynchroniseerd)</translation>
+<translation id="5913377024445952699">Schermopname onderbroken</translation>
 <translation id="59174027418879706">Ingeschakeld</translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5921185718311485855">Aan</translation>
@@ -1194,6 +1209,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="5963413905009737549">Sectie</translation>
 <translation id="5967592137238574583">Contactgegevens bewerken</translation>
 <translation id="5967867314010545767">Verwijderen uit geschiedenis</translation>
+<translation id="5968793460449681917">Bij elk bezoek</translation>
 <translation id="5975083100439434680">Uitzoomen</translation>
 <translation id="5979084224081478209">Wachtwoorden controleren</translation>
 <translation id="5980920751713728343">Index-3x5</translation>
@@ -1250,7 +1266,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="6177128806592000436">Je verbinding met deze site is niet beveiligd</translation>
 <translation id="6180316780098470077">Interval voor nieuwe poging</translation>
-<translation id="6196640612572343990">Indirecte cookies blokkeren</translation>
+<translation id="6196640612572343990">Cookies van derden blokkeren</translation>
 <translation id="6203231073485539293">Controleer je internetverbinding</translation>
 <translation id="8385639954311581596">Adres verwijderen uit Brave?</translation>
 <translation id="622039917539443112">Parallelvouw</translation>
@@ -1347,6 +1363,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="6587923378399804057">Link die je hebt gekopieerd</translation>
 <translation id="6591833882275308647">Je <ph name="DEVICE_TYPE"/> wordt niet beheerd</translation>
 <translation id="6596325263575161958">Opties voor encryptie</translation>
+<translation id="6596892391065203054">Het afdrukken van deze content is geblokkeerd door je beheerder.</translation>
 <translation id="6604181099783169992">Bewegings- of lichtsensoren</translation>
 <translation id="6609880536175561541">Prc7 (envelop)</translation>
 <translation id="6612358246767739896">Beschermde content</translation>
@@ -1405,6 +1422,7 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="6895330447102777224">Je creditcard is bevestigd</translation>
 <translation id="6897140037006041989">User-agent</translation>
 <translation id="6898699227549475383">Organisatie (O)</translation>
+<translation id="6907293445143367439">Toestaan dat <ph name="SITE_NAME"/> het volgende doet:</translation>
 <translation id="6910240653697687763"><ph name="URL"/> wil volledig beheer van je MIDI-apparaten hebben</translation>
 <translation id="6915804003454593391">Gebruiker:</translation>
 <translation id="6722453239914327220">Dit is de naam die in je Brave-account staat</translation>
@@ -1471,7 +1489,6 @@ Anders wordt dit geblokkeerd door je privacyinstellingen. Hierdoor werkt de cont
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> en nog <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}other{<ph name="SHIPPING_OPTION_PREVIEW"/> en nog <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}}</translation>
 <translation id="7179323680825933600">Betaalmethoden toevoegen en invullen</translation>
 <translation id="7180611975245234373">Vernieuwen</translation>
-<translation id="7181261019481237103">Incognitovenster openen</translation>
 <translation id="7182878459783632708">Geen beleid ingesteld</translation>
 <translation id="7186367841673660872">Deze pagina is vertaald van het<ph name="ORIGINAL_LANGUAGE"/>in het<ph name="LANGUAGE_LANGUAGE"/></translation>
 <translation id="7192203810768312527">Hiermee wordt <ph name="SIZE"/> vrijgemaakt. Sommige sites kunnen langzamer worden geladen wanneer je ze weer bezoekt.</translation>
@@ -1516,6 +1533,7 @@ Aanvullende informatie:
 <translation id="7346048084945669753">Is gelieerd:</translation>
 <translation id="7349430561505560861">A4-Extra</translation>
 <translation id="7353601530677266744">Opdrachtregel</translation>
+<translation id="7359588939039777303">Advertenties geblokkeerd.</translation>
 <translation id="7372973238305370288">zoekresultaat</translation>
 <translation id="3898257577441589237">Dit probleem doet zich voor als gevolg van een certificaat dat jij of iemand anders heeft geïnstalleerd op je apparaat. Het certificaat staat erom bekend dat het wordt gebruikt voor netwerkmonitoring en -onderschepping en wordt niet vertrouwd door Brave. Hoewel er ook legitieme certificaten bestaan, bijvoorbeeld op een school- of zakelijk netwerk, wil Brave zeker weten dat je begrijpt wat er gebeurt, ook als je het niet kunt tegenhouden. Monitoring kan plaatsvinden in elke browser of app met toegang tot internet.</translation>
 <translation id="7375818412732305729">Bestand wordt bijgevoegd</translation>
@@ -1656,7 +1674,6 @@ Aanvullende informatie:
 <translation id="782886543891417279">Het is mogelijk dat je de inlogpagina moet bezoeken van het wifi-netwerk (<ph name="WIFI_NAME"/>) dat je gebruikt.</translation>
 <translation id="7836231406687464395">Postfix (envelop)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Geen}=1{1 app (<ph name="EXAMPLE_APP_1"/>)}=2{2 apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Je bent echter niet onzichtbaar. Als je incognito bent, wordt je browsegeschiedenis niet verborgen voor je werkgever, je internetprovider of de websites die je bezoekt.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Site verlaten?</translation>
 <translation id="7865448901209910068">Beste snelheid</translation>
@@ -1687,6 +1704,7 @@ Aanvullende informatie:
 <translation id="7976214039405368314">Te veel verzoeken</translation>
 <translation id="7977538094055660992">Uitvoerapparaat</translation>
 <translation id="7977894662897852582">Edp</translation>
+<translation id="79859296434321399">Installeer ARCore om augmented reality-content te bekijken</translation>
 <translation id="799149739215780103">Inbinden</translation>
 <translation id="7995512525968007366">Niet opgegeven</translation>
 <translation id="800218591365569300">Probeer andere tabbladen en programma's te sluiten om geheugen vrij te maken.</translation>
@@ -1739,11 +1757,9 @@ Aanvullende informatie:
 <translation id="8218327578424803826">Toegewezen locatie:</translation>
 <translation id="8220146938470311105">C7/C6 (envelop)</translation>
 <translation id="3272614036080146686">Je hebt zojuist je wachtwoord opgegeven op een misleidende site. Brave raadt je aan naar <ph name="WEBSITE_1"/> en andere sites te gaan waarop je dit wachtwoord hebt gebruikt en je wachtwoord nu te wijzigen.</translation>
-<translation id="8225771182978767009">De persoon die deze computer heeft geconfigureerd, heeft deze site geblokkeerd.</translation>
 <translation id="8228419419708659934">Weergave met twee pagina's</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Temperatuur van plateau</translation>
-<translation id="8238581221633243064">Pagina openen op een nieuw incognitotabblad</translation>
 <translation id="8241707690549784388">De pagina die je zoekt, heeft informatie gebruikt die je hebt opgegeven Als je terugkeert naar deze pagina, worden acties die je hebt uitgevoerd, mogelijk herhaald. Wil je doorgaan?</translation>
 <translation id="8241712895048303527">Blokkeren op deze site</translation>
 <translation id="8242426110754782860">Doorgaan</translation>
@@ -1756,7 +1772,6 @@ Aanvullende informatie:
 <translation id="8265992338205884890">Zichtbare gegevens</translation>
 <translation id="8267698848189296333">Inloggen als <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Afzonderlijke documenten/gesorteerde exemplaren</translation>
-<translation id="8269981117540303696">Je kunt nu privé browsen, zodat andere mensen die dit apparaat gebruiken jouw activiteit niet kunnen zien. Downloads en bookmarks worden echter wel opgeslagen.</translation>
 <translation id="8275952078857499577">Niet aanbieden om deze site te vertalen</translation>
 <translation id="8277900682056760511">Blad voor betalingshandler is geopend</translation>
 <translation id="8281084378435768645">Grote foto</translation>
@@ -1778,7 +1793,6 @@ Aanvullende informatie:
 <translation id="8339163506404995330">Pagina's in het <ph name="LANGUAGE"/> worden niet vertaald</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Als je de beveiligingsrisico's begrijpt, kun je <ph name="BEGIN_LINK"/>deze site bezoeken<ph name="END_LINK"/> voordat de schadelijke programma's zijn verwijderd.</translation>
-<translation id="8349305172487531364">Bookmarkbalk</translation>
 <translation id="8355270400102541638">Lokale crashcontext:</translation>
 <translation id="8363502534493474904">Zet de vliegtuigmodus uit</translation>
 <translation id="8364627913115013041">Niet ingesteld.</translation>
@@ -1812,23 +1826,35 @@ Aanvullende informatie:
 <translation id="8507227106804027148">Opdrachtregel</translation>
 <translation id="8508648098325802031">Zoekpictogram</translation>
 <translation id="1426902392270366682">Brave kan je helpen je Brave-account te beschermen en je wachtwoord te wijzigen.</translation>
+<translation id="8525306231823319788">Volledig scherm</translation>
 <translation id="1215802963054007211">Je browsegeschiedenis, cookies, cache en meer wissen in de Brave-instellingen</translation>
 <translation id="8533619373899488139">Ga naar &lt;strong&gt;chrome://policy&lt;/strong&gt; om de lijst met geblokkeerde URL's en andere beleidsregels te bekijken die worden afgedwongen door je systeembeheerder.</translation>
 <translation id="8541158209346794904">Bluetooth-apparaat</translation>
 <translation id="8542014550340843547">Drie nietjes onder</translation>
 <translation id="8543181531796978784">Je kunt <ph name="BEGIN_ERROR_LINK"/>een detectieprobleem melden<ph name="END_ERROR_LINK"/>. Als je de veiligheidsrisico's begrijpt, kun je ook <ph name="BEGIN_LINK"/>deze onveilige site bezoeken<ph name="END_LINK"/>.</translation>
 <translation id="8557066899867184262">De CVC-code staat op de achterkant van je pas.</translation>
+<translation id="8558485628462305855">Update ARCore om augmented reality-content te bekijken</translation>
 <translation id="8559762987265718583">Er kan geen privéverbinding met <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> tot stand worden gebracht, omdat de datum en tijd van je apparaat (<ph name="DATE_AND_TIME"/>) onjuist zijn.</translation>
 <translation id="8564182942834072828">Afzonderlijke documenten/ongesorteerde exemplaren</translation>
+<translation id="856887218454489335"><ph name="BEGIN_BOLD"/>Activiteit die niet op dit apparaat blijft staan:<ph name="END_BOLD"/>
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Pagina's die je bekijkt in dit venster
+          <ph name="LIST_ITEM"/>Cookies en sitegegevens
+        <ph name="END_LIST"/></translation>
 <translation id="8574899947864779331">Gebruik Touch ID om kaarten sneller te bevestigen</translation>
 <translation id="858637041960032120">Telnr. toevoegen</translation>
 <translation id="8589998999637048520">Beste kwaliteit</translation>
+<translation id="8600271352425265729">Alleen deze keer</translation>
 <translation id="860043288473659153">Naam kaarthouder</translation>
 <translation id="8606726445206553943">Je MIDI-apparaten gebruiken</translation>
+<translation id="8612761427948161954">Hallo <ph name="USERNAME"/>,
+        <ph name="BR"/>
+        Je browst momenteel als gast</translation>
 <translation id="861775596732816396">Grootte 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">Geen overeenkomende wachtwoorden. Alle opgeslagen wachtwoorden weergeven.</translation>
 <translation id="8625384913736129811">Deze pas opslaan op dit apparaat</translation>
+<translation id="8627040765059109009">Schermopname hervat</translation>
 <translation id="8657078576661269990">Je beheerder heeft delen door <ph name="ORIGIN_NAME"/> met <ph name="VM_NAME_1"/> en <ph name="VM_NAME_2"/> geblokkeerd</translation>
 <translation id="8663226718884576429">Besteloverzicht, <ph name="TOTAL_LABEL"/>, meer informatie</translation>
 <translation id="867224526087042813">Handtekening</translation>
@@ -1847,10 +1873,8 @@ Aanvullende informatie:
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, zoeksuggestie</translation>
 <translation id="8719528812645237045">Meerdere perforaties boven</translation>
 <translation id="8725066075913043281">Opnieuw proberen</translation>
-<translation id="8728672262656704056">Je bent incognito</translation>
 <translation id="8730621377337864115">Klaar</translation>
 <translation id="1769647018144434441">Knop 'Wachtwoorden beheren'. Druk op Enter om je wachtwoorden te bekijken en te beheren in de Brave-instellingen.</translation>
-<translation id="8737134861345396036"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Druk op Tab en vervolgens op Enter om een nieuw incognitovenster te openen om privé te browsen.</translation>
 <translation id="6326805297893828864">Als je een beveiligde verbinding tot stand wilt brengen, moet je klok goed zijn ingesteld. Dit moet omdat de certificaten die deze websites gebruiken om zichzelf te identificeren, slechts gedurende bepaalde perioden geldig zijn. Aangezien de klok van je apparaat niet goed is ingesteld, kan Brave deze certificaten niet verifiëren.</translation>
 <translation id="8740359287975076522">Het &lt;abbr id="dnsDefinition"&gt;DNS-adres&lt;/abbr&gt; van <ph name="HOST_NAME"/> kan niet worden gevonden. Er wordt een diagnose van het probleem uitgevoerd.</translation>
 <translation id="8742371904523228557">Je code voor <ph name="ORIGIN"/> is<ph name="ONE_TIME_CODE"/>.</translation>
@@ -1886,10 +1910,10 @@ Aanvullende informatie:
 <translation id="8903921497873541725">Inzoomen</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Suggestieknop verwijderen, druk op Enter om te verwijderen, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Je bent incognito</translation>
 <translation id="2684652081942622950">Brave-account</translation>
 <translation id="4102271590580840789">Knop 'Betaalmethoden beheren'. Druk op Enter om je betalingen en creditcardgegevens te beheren in de Brave-instellingen.</translation>
 <translation id="8918231688545606538">Deze pagina is verdacht</translation>
+<translation id="8922013791253848639">Altijd advertenties op deze site toestaan</translation>
 <translation id="892588693504540538">Perforatie rechtsboven</translation>
 <translation id="7757992844965332255">Wil je deze pas opslaan in je Brave-account?</translation>
 <translation id="8932102934695377596">Je klok loopt achter</translation>
@@ -1961,6 +1985,7 @@ Aanvullende informatie:
 <translation id="9183302530794969518">Brave Documenten</translation>
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> gebruikt een niet-ondersteund protocol.</translation>
 <translation id="9191834167571392248">Perforatie linksonder</translation>
+<translation id="9199905725844810519">Afdrukken is geblokkeerd</translation>
 <translation id="9205078245616868884">Je gegevens zijn versleuteld met je wachtwoordzin voor synchronisatie. Geef deze op om de synchronisatie te starten.</translation>
 <translation id="9207861905230894330">Kan artikel niet toevoegen.</translation>
 <translation id="9213433120051936369">Weergave aanpassen</translation>
@@ -1973,6 +1998,7 @@ Aanvullende informatie:
 <translation id="939736085109172342">Nieuwe map</translation>
 <translation id="945855313015696284">Controleer de informatie hieronder en verwijder alle ongeldige passen</translation>
 <translation id="950736567201356821">Drie perforaties boven</translation>
+<translation id="951941430552851965">Je beheerder heeft de schermopname onderbroken vanwege de content op je scherm.</translation>
 <translation id="961663415146723894">Onder inbinden</translation>
 <translation id="962484866189421427">Deze content kan mogelijk proberen misleidende apps te installeren die zich voordoen als iets anders of gegevens verzamelen die kunnen worden gebruikt om je te volgen. <ph name="BEGIN_LINK"/>Toch weergeven<ph name="END_LINK"/></translation>
 <translation id="969892804517981540">Officiële build</translation>

@@ -324,7 +324,7 @@ tháng này...</translation>
 <translation id="7396366757003005317">Dấu vân tay bị chặn (nghiêm ngặt, có thể phá vỡ các trang)</translation>
 <translation id="700453611199558021">Vân tay bị chặn (tiêu chuẩn)</translation>
 <translation id="769702552748212954">Cho phép tất cả vân tay</translation>
-<translation id="2888409909650566510">Quảng cáo và những thứ đáng sợ\nkhác đã bị chặn</translation>
+<translation id="5142293891785304489">Trình theo dõi, quảng cáo và\nnhiều thứ khác bị chặn</translation>
 <translation id="6930134873084561197">Các trang web thường có các cookie và tập lệnh cố gắng xác định bạn và thiết bị của bạn. Họ muốn tìm ra bạn là ai và theo dõi bạn trên web - theo dõi những gì bạn làm trên mọi trang web.\n\nBrave chặn những thứ này để bạn có thể duyệt web mà không bị theo dõi.</translation>
 <translation id="8553998445606452168">Về Khiên của Brave</translation>
 <translation id="8912304686498704084">LÊN</translation>
@@ -436,22 +436,22 @@ tháng này...</translation>
 <translation id="8804164990146287819">Privacy Policy</translation>
 <translation id="6318696841371191107">Xem giới thiệu nhanh</translation>
 <translation id="7930505144430343145">Chào mừng bạn đến với Brave Rewards!</translation>
-<translation id="7909111626803226907">Brave Private Ads thưởng cho bạn token để hỗ trợ người sáng tạo nội dung không giống như quảng cáo truyền thống, đồng thời đảm bảo thông tin cá nhân của bạn được riêng tư.</translation>
+<translation id="3477340970981564961">Brave Private Ads thưởng cho bạn các token để ủng hộ những nhà sáng tạo nội dung không giống như các quảng cáo truyền thống, đồng thời giữ bí mật thông tin cá nhân của bạn.</translation>
 <translation id="6973095375773523904">Quảng cáo hiển thị ở đâu?</translation>
-<translation id="3867028444168159102">Brave Private Ads sẽ xuất hiện như một thông báo bình thường. Bạn kiểm soát tần suất xuất hiện những quảng cáo này trong phần cài đặt.</translation>
+<translation id="7556325460112047619">Brave Private Ads sẽ hiển thị như một thông báo thông thường. Bạn kiểm soát tần suất bạn nhìn thấy các quảng cáo này trong phần cài đặt.</translation>
 <translation id="5816125157889950051">Khi nào bạn nhận được phần thưởng</translation>
-<translation id="4649471244559455723">Bạn sẽ nhận được các token kiếm được từ Brave Ads trong tháng hiện tại vào ngày 5 của tháng tiếp theo.</translation>
+<translation id="310863932297733723">Các token mà bạn kiếm được từ Brave Private Ads trong suốt tháng này sẽ đến vào ngày 5 của tháng sau.</translation>
 <translation id="7712287524451429139">Tặng lại một cách dễ dàng</translation>
 <translation id="105037569026952831">Người sáng tạo tự động nhận được các khoản đóng góp token của bạn dựa trên mức độ tương tác của bạn mà chúng tôi đo lường là "Sự chú ý".</translation>
 <translation id="5323267338679539010">Cảm ơn bằng cách tặng tiền</translation>
-<translation id="6042317056594735519">Tặng tiền là một cách để bạn đích thân khuyến khích và hỗ trợ cho nội dung hoặc người sáng tạo mà bạn yêu thích. Bắt đầu tặng tiền!</translation>
+<translation id="6730444165801605682">Tiền boa là một cách để khuyến khích và ủng hộ nội dung hoặc nhà sáng tạo mà bạn thực sự yêu thích. Hãy cho tiền boa nhé!</translation>
 <translation id="7509452925943421624">Bạn có thể làm gì với token?</translation>
-<translation id="7059157883171259940">Ngoài việc hỗ trợ người sáng tạo, bạn có thể sử dụng token cho việc khác. Bạn có thể mua hàng hóa kỹ thuật số và thẻ quà tặng với phần thưởng hoàn tiền.</translation>
+<translation id="5876169128756792273">Bạn có thể sử dụng các token ngoài việc ủng hộ các nhà sáng tạo. Bạn có thể mua nội dung kỹ thuật số và các hàng hóa khác khi các thương gia tham gia.</translation>
 <translation id="1402530520078693620">Cuối cùng, bạn hãy thiết lập các cài đặt cơ bản</translation>
 <translation id="3494356595346329740">Bạn có thể thay đổi điều này sau.</translation>
 <translation id="6462814326662189004">Bạn muốn xem quảng cáo bao lâu một lần?\n(Quảng cáo mỗi giờ)</translation>
 <translation id="2134244432345596331">Bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo mà bạn yêu thích?\n(từ thu nhập xem quảng cáo của bạn)</translation>
-<translation id="7456161272236175794">TUYỆT VỜI!\nBạn đã đăng ký xong.</translation>
+<translation id="827315274423079662">Tuyệt vời, tất cả đã sẵn sàng rồi!</translation>
 <translation id="3895246934788932488">Bằng cách sử dụng Brave Rewards, bạn đang bảo vệ quyền riêng tư của mình, đồng thời giúp cho mạng toàn cầu trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!</translation>
 <translation id="5705882733397021510">Quay Lại</translation>
 <translation id="5140321319944305531">Hãy Xem Giới thiệu Nhanh</translation>
@@ -464,4 +464,21 @@ tháng này...</translation>
 <translation id="3604285424134705930">Bạn đã chuyển đổi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> thành <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Xin vui lòng kiểm tra kết nối mạng của bạn.</translation>
 <translation id="7889432931837317731">Tự động mở khi có thể</translation>
+<translation id="8967385052772844086">Xem toàn văn Báo cáo Quyền riêng tư</translation>
+<translation id="6864343534748973390">Phổ biến nhất</translation>
+<translation id="1622983732360473885">Ủng hộ Brave</translation>
+<translation id="4608192160278975831">Riêng tư và không theo dõi</translation>
+<translation id="7208522820527289601">Riêng tư và không theo dõi, có căn cứ ở Liên minh Châu Âu</translation>
+<translation id="1161008391729450974">Kết quả của Google mà không có trình theo dõi</translation>
+<translation id="7320542277711359296">Phổ biến thứ hai</translation>
+<translation id="8295049095570748497">Công cụ tìm kiếm hàng đầu ở Nga</translation>
+<translation id="2642661895835126239">Trồng cây, có trụ sở ở Berlin</translation>
+<translation id="1410130669636877548">Một vài công cụ tìm kiếm bảo vệ quyền riêng tư của bạn tốt hơn những công cụ khác khi bạn tìm kiếm trên web</translation>
+<translation id="1078265935778232285">Chào mừng bạn đến với Trình duyệt Brave</translation>
+<translation id="6824713633331856331">Giúp chúng tôi bí mật tìm hiểu</translation>
+<translation id="6116685031674149112">Brave bảo vệ quyền riêng tư của bạn và\nmong bạn đồng ý những điều sau:</translation>
+<translation id="3971666849661839619">Giúp cải thiện Brave bằng cách gửi báo cáo sự cố và hoàn toàn ẩn danh, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">phân tích sản phẩm riêng tư.</translation>
+<translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
+<translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Phần thưởng!</translation>
 </translationbundle>

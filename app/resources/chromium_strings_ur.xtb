@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ur">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: 1 گھنٹہ پہلے۔}other{‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: {NUM_HOURS} گھنٹے پہلے۔}}</translation>
 <translation id="1065672644894730302">آپ کی ترجیحات کو نہیں پڑھا جا سکتا ہے۔
 
 کچھ خصوصیات غیر دستیاب ہو سکتی ہیں اور ترجیحات میں تبدیلیاں محفوظ نہیں ہونگی۔</translation>
@@ -12,6 +11,7 @@
 <translation id="8522292744959221145">‏یہ دیکھنے کے لئے کہ آیا آپ کے پاس ورڈز ڈیٹا کی خلاف ورزیوں اور دیگر سیکیورٹی مسائل سے محفوظ ہیں، <ph name="BEGIN_LINK"/>Brave میں سائن ان کریں<ph name="END_LINK"/>۔</translation>
 <translation id="8541922081612557424">‏Brave کے بارے میں</translation>
 <translation id="4798342026247191171">‏اپنی نئی Brave پروفائل سیٹ اپ کریں</translation>
+<translation id="5893502481331584971">‏جب Brave کھولتا ہے تب پوچھیں</translation>
 <translation id="113959764510199339">‏Brave پاس ورڈز دکھانے کی کوشش کر رہا ہے۔</translation>
 <translation id="8132634101975074716">‏آپ Brave میں سائن ان ہیں!</translation>
 <translation id="7370605478942575409">‏تحفظ یافتہ میڈیا چلانے کی خاطر Rosetta استعمال کرنے کیلئے آپ کو Brave ری سٹارٹ کرنا ضروری ہے۔</translation>
@@ -46,10 +46,8 @@
 <translation id="6791166902140255175">‏Brave ٹیب</translation>
 <translation id="8372880274820509128">‏اضافی سیکیورٹی کیلئے، Brave آپ کا ڈیٹا مرموز کر دے گا۔</translation>
 <translation id="2770231113462710648">ڈیفالٹ براؤزر کو اس میں تبدیل کریں:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: 1 منٹ پہلے۔}other{‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: {NUM_MINS} منٹ پہلے۔}}</translation>
 <translation id="2799223571221894425">دوبارہ شروع کریں</translation>
 <translation id="777113543093865885">‏Brave سے ہٹائیں…</translation>
-<translation id="8846162271735377947">‏جب میں Brave کھولتا ہوں تو پوچھیں</translation>
 <translation id="2885378588091291677">ٹاسک مینیجر</translation>
 <translation id="2176825726964012531">‏Brave&amp; کے بارے میں</translation>
 <translation id="8208853227947884571">‏Brave اپ ٹو ڈیٹ ہے</translation>
@@ -57,7 +55,6 @@
 <translation id="8755404239607088219">‏Brave آپ کے پاس ورڈز چیک نہیں کر سکتا ہے۔ بعد میں دوبارہ کوشش کریں۔</translation>
 <translation id="8880183781256147665">‏Brave میں شامل کیا جا رہا ہے…</translation>
 <translation id="7918740962659365265">‏Brave کو کریش کی رپورٹیں اور <ph name="UMA_LINK"/> بھیج کر Brave کو بہتر بنانے میں مدد کریں</translation>
-<translation id="2911521062311014336">‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے</translation>
 <translation id="7365690458036015383">‏انسٹالر آرکائیو کا کمپریشن ختم کرنے میں ناکام ہوگیا۔ براہ کرم Brave کو دوبارہ ڈاؤن لوڈ کریں۔</translation>
 <translation id="8919461291440820124">‏Brave آپ کا مائیکروفون استعمال کر رہا ہے۔</translation>
 <translation id="4805806622840861220">‏Brave کو دوبارہ شروع کریں</translation>
@@ -175,7 +172,6 @@
 <translation id="8211837073776713955">‏Brave آپ کو بتاتا ہے کہ آیا آپ کے پاس ورڈز کے ساتھ کبھی چھیڑ چھاڑ کی گئی ہے</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/>‎</translation>
 <translation id="5253815230176279256">‏Brave Pay ‏(Brave میں کاپی کر دیا گیا)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: 1 دن پہلے۔}other{‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: {NUM_DAYS} دن پہلے۔}}</translation>
 <translation id="2301993384336631869">‏Brave کو اپ ڈیٹ کر دیا گیا ہے لیکن آپ نے کم از کم 30 دن سے اسے استعمال نہیں کیا ہے۔</translation>
 <translation id="8522287263361940593">‏اس صفحے پر تحفظ یافتہ میڈیا چلانے کیلئے Rosetta‏ Brave کو فعال کرتا ہے۔</translation>
 <translation id="6418340404893954563">‏کمزور پاس ورڈز کا اندازہ لگانا آسان ہوتا ہے۔ Brave کو <ph name="BEGIN_LINK"/>آپ کے لیے مضبوط پاس ورڈز تخلیق کرنے اور یاد رکھنے دیں<ph name="END_LINK"/>۔</translation>
@@ -208,7 +204,6 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
       Chrome OS کی ترتیبات<ph name="LINK_END"/> میں دیکھیں</translation>
 <translation id="3293668930608086049">‏Brave آپ کا کیمرا اور مائیکروفون استعمال کر رہا ہے۔</translation>
 <translation id="2827121003398607864">‏Brave اور بھی بہتر ہوگیا ہے</translation>
-<translation id="504499211143662559">‏Brave کو آپ کے کمپیوٹر پر نقصان دہ سافٹ ویئر ملا</translation>
 <translation id="3343095737966473035">‏Brave آپ کا ڈیفالٹ براؤزر نہیں ہے</translation>
 <translation id="5477319665405831211">‏اپنے آلات پر Brave کو مطابقت پذیر اور ذاتی نوعیت کا بنائیں</translation>
 <translation id="5419189641394808652">‏Brave آپ کا ڈیٹا مطابقت پذیر نہیں کر سکا کیونکہ مطابقت پذیری آپ کے ڈومین کیلئے دستیاب نہیں ہے۔</translation>
@@ -240,7 +235,6 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="6283840329609797763">‏غیر متعین خرابی کی وجہ سے انسٹالیشن ناکام ہوگیا۔ براہ کرم Brave دوبارہ ڈاؤن لوڈ کریں۔</translation>
 <translation id="2433912322225810055">‏یہ آپ کی جانب سے Brave شروع کیے جانے یا اومنی باکس سے تلاش کیے جانے پر دکھائی دینے والے صفحہ کو کنٹرول بھی کرتا ہے۔</translation>
 <translation id="4100716194836114130">‏یہ آپ کا Brave ہے</translation>
-<translation id="8757284234053029740">‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: گزشتہ کل۔</translation>
 <translation id="4831743161813926460">‏Brave کو اس سائٹ کیلئے آپ کے کیمرے اور مائیکروفون تک رسائی کی اجازت درکار ہے</translation>
 <translation id="7408085963519505752">‏Chrome OS کی شرائط</translation>
 <translation id="2262856633481902138">‏Brave آپ کے اکاؤنٹ کی سائن ان تفصیلات پرانی ہونے کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
@@ -255,7 +249,6 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="7863882214613921971">‏لنک کو نئے Brave &amp;ٹیب میں کھولیں</translation>
 <translation id="911206726377975832">نیز آپ کا براؤزنگ ڈیٹا حذف کریں؟</translation>
 <translation id="2444257125841652328">‏آپ کے سسٹم کے منتظم نے <ph name="TARGET_URL_HOSTNAME"/> تک رسائی حاصل کرنے کے لیے Brave کو ایک متبادل براؤزر کھولنے کے لیے کنفیگر کیا ہے۔</translation>
-<translation id="2250443703383891643">‏Brave ہفتے میں ایک بار غیر مطلوبہ سافٹ ویئر کو چیک کرتا ہے۔ آخری بار چیک کیا گیا: ایک لمحہ پہلے۔</translation>
 <translation id="3350544518197210895">‎Brave (mDNS-In)‎</translation>
 <translation id="7977787072794666032">‏ممکن ہے کہ Brave ٹھیک طریقے سے کام نہ کرے کیونکہ یہ اب Windows XP یا Windows Vista پر تعاون یافتہ نہیں ہے</translation>
 <translation id="2398566204186296120">‏<ph name="DOMAIN"/> تقاضہ کرتا ہے کہ آپ یہ آلہ استعمال کرنے سے پہلے مندرجہ ذیل سروس کی شرائط کو پڑھیں اور قبول کریں۔ یہ شرائط Chrome OS شرائط کی ایکسٹینشن، ان میں ترمیم یا انہیں محدود نہیں کرتی ہیں۔</translation>

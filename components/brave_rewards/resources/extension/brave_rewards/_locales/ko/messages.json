@@ -639,8 +639,12 @@
     "message": "Brave Rewards 사용 시작",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "빠르게 투어하기",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "계속하면, $tos_link_begin$서비스 약관$tos_link_end$ 및 $pp_link_begin$개인 정보 보호 정책$pp_link_end$에 동의하는 것입니다.",
+    "message": "계속함에 따라 $tos_link_begin$이용 약관$tos_link_end$과 $pp_link_begin$개인 정보 처리 방침$pp_link_end$에 동의합니다. ",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "돌아가기",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "간단히 살펴봅시다",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "계속",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "완료",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "건너뛰기",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "지금은 넘어가기",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Brave Rewards에 오신 것을 환영합니다!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave 프라이빗 광고는 종전의 광고와는 달리 콘텐츠 제작자를 지원할 수 있도록 여러분께 토큰을 리워드로 지급하며, 이 과정에서 여러분의 개인 정보는 안전하게 보호됩니다.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "광고는 어디에 표시됩니까?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave 프라이빗 광고는 일반 알림의 형태로 나타나게 됩니다. 설정에서 이 광고를 얼마나 자주 볼 것인지에 대해 조정할 수 있습니다.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "언제 보상을 받습니까",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "이번 달 동안 Brave 프라이빗 광고를 통해 획득하신 토큰은 다음 달 5일에 지급됩니다.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "쉽게 돌려주기",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "창작자들은 저희들이 ‘어텐션’으로써 측정하는 여러분의 주의 수준에 따라 자동으로 여러분의 토큰 기부금을 수여받게 됩니다.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "팁으로 감사 인사하기",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "팁은 내가 좋아하는 콘텐츠나 크리에이터를 개인적으로 격려하고 지원하는 방법입니다. 팁을 받으세요!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "토큰으로 무엇을 할 수 있습니까?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "토큰은 창작자 후원 그 이상의 용도로 사용할 수 있습니다. 공급자가 추가되는 대로 디지털 콘텐츠와 기타 상품을 구매할 수 있습니다.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "야호, 설정이 다 끝났습니다!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave Rewards를 사용함에 따라 여러분은 웹을 모두를 위한 더 나은 장소로 만드는 데 한 몫을 거들고 있습니다. 대단한 일이지요!",
+    "description": ""
   }
 }

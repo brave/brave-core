@@ -320,7 +320,7 @@ dar nebuvo...</translation>
 <translation id="7396366757003005317">Kontrolinių kodų kūrimas blokuojamas (griežtai, gali neveikti svetainės)</translation>
 <translation id="700453611199558021">Kontrolinių kodų kūrimas blokuojamas (standartiškai)</translation>
 <translation id="769702552748212954">Leisti visus kontrolinius kodus</translation>
-<translation id="2888409909650566510">Reklamos ir kiti baisūs\ndalykai užblokuoti</translation>
+<translation id="5142293891785304489">Sekimo programų, reklamų ir\nkt. blokavimas</translation>
 <translation id="6930134873084561197">Svetainėse dažnai būna slapukų ir scenarijų, kurie bando identifikuoti jus ir jūsų įrenginį. Jais siekiama išsiaiškinti, kas jūs esate, ir sekti jus žiniatinklyje – stebėti, ką veikiate kiekvienoje svetainėje.\n\n„Brave“ blokuoja tokius dalykus, kad galėtumėte naršyti nesekami.</translation>
 <translation id="8553998445606452168">Apie „Brave“ skydus</translation>
 <translation id="8912304686498704084">AUKŠTYN</translation>
@@ -432,22 +432,22 @@ dar nebuvo...</translation>
 <translation id="8804164990146287819">Privatumo politika</translation>
 <translation id="6318696841371191107">Peržiūrėkite trumpą apžvalgą</translation>
 <translation id="7930505144430343145">Sveiki, tai – „Brave Rewars“!</translation>
-<translation id="7909111626803226907">Kitaip nei įprastos reklamos atveju, už privatumo nepažeidžiančias „Brave“ reklamas gaunate žetonų, kuriais galite paremti turinio kūrėjus, o jūsų asmeninė informacija liks privati.</translation>
+<translation id="3477340970981564961">„Brave Private Ads“, skirtingai nuo įprastinių reklamų, skiria jums žetonų, kuriais galite paremti turinio kūrėjus. Visa tai vyksta saugant jūsų asmens duomenų privatumą.</translation>
 <translation id="6973095375773523904">Kur rodomos reklamos?</translation>
-<translation id="3867028444168159102">Privatumo nepažeidžiančios „Brave“ reklamos bus rodomos kaip įprastas pranešimas. Nuostatų dalyje galite pasirinkti, kaip dažnai norite matyti šias reklamas.</translation>
+<translation id="7556325460112047619">„Brave Private Ads“ rodomos kaip įprastas pranešimas. Nuostatų skiltyje galite pasirinkti, kaip dažnai norite matyti šias reklamas.</translation>
 <translation id="5816125157889950051">Kada gaunate atlygį</translation>
-<translation id="4649471244559455723">Žetonus, kuriuos uždirbote iš „Brave Ads“ šį mėnesį, gausite kito mėnesio 5 d.</translation>
+<translation id="310863932297733723">Žetonai, kuriuos iš „Brave Private Ads“ gavote per einamąjį mėnesį, jus pasieks kito mėnesio 5 dieną.</translation>
 <translation id="7712287524451429139">Atsilyginti dabar paprasta</translation>
 <translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį matuojame kaip „dėmesį“.</translation>
 <translation id="5323267338679539010">Padėkokite skirdami arbatpinigių</translation>
-<translation id="6042317056594735519">Arbatpinigių skyrimas yra būdas asmeniškai paskatinti ir paremti mėgstamą turinį arba kūrėjus. Paaukokite!</translation>
+<translation id="6730444165801605682">Arbatpinigių skyrimas yra būdas asmeniškai paskatinti ir paremti ypač mėgstamą turinį arba kūrėjus. Tapkite rėmėju!</translation>
 <translation id="7509452925943421624">Ką galite daryti su žetonais?</translation>
-<translation id="7059157883171259940">Žetonus galima naudoti ne vien kūrėjams paremti. Galite pirkti skaitmenines prekes ir dovanų korteles pasinaudodami pinigų susigrąžinimo premija.</translation>
+<translation id="5876169128756792273">Žetonus galima naudoti ne tik kūrėjams remti. Galite pirkti skaitmeninį turinį ir kitas prekes, nes mūsų gretas pildo pardavėjai.</translation>
 <translation id="1402530520078693620">Galiausiai nustatykime pagrindines nuostatas</translation>
 <translation id="3494356595346329740">Tai galite pakeisti vėliau.</translation>
 <translation id="6462814326662189004">Kaip dažnai norite matyti reklamas?\n(Reklamų skaičius per valandą)</translation>
 <translation id="2134244432345596331">Kiek paramos norite skirti savo mėgstamiems kūrėjams?\n(Iš uždarbio už reklamą)</translation>
-<translation id="7456161272236175794">VALIOOOOO!\nBaigėte</translation>
+<translation id="827315274423079662">Valio! Viskas parengta!</translation>
 <translation id="3895246934788932488">Naudodami „Brave Rewards“, saugote savo privatumą ir padedate padaryti, kad žiniatinklis būtų geresnė vieta visiems. Juk tai puiku!</translation>
 <translation id="5705882733397021510">Grįžti</translation>
 <translation id="5140321319944305531">Peržiūrėkite trumpą apžvalgą</translation>
@@ -460,4 +460,21 @@ dar nebuvo...</translation>
 <translation id="3604285424134705930">Konvertavote <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> į <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Patikrinkite tinklo ryšį.</translation>
 <translation id="7889432931837317731">Kai galima, atverti automatiškai</translation>
+<translation id="8967385052772844086">Peržiūrėti visą privatumo ataskaitą</translation>
+<translation id="6864343534748973390">Populiariausia</translation>
+<translation id="1622983732360473885">Pritaikyta „Brave“</translation>
+<translation id="4608192160278975831">Privatu ir jokio sekimo</translation>
+<translation id="7208522820527289601">Privatu, jokio sekimo, veikia ES teritorijoje</translation>
+<translation id="1161008391729450974">„Google“ rezultatai be sekimo programų</translation>
+<translation id="7320542277711359296">Antra pagal populiarumą</translation>
+<translation id="8295049095570748497">Rusijoje populiariausia paieškos sistema</translation>
+<translation id="2642661895835126239">Berlyne sodinami medžiai</translation>
+<translation id="1410130669636877548">Kai naršote internete, vienos paieškos sistemos jūsų privatumą saugo geriau nei kitos.</translation>
+<translation id="1078265935778232285">Sveiki, tai – naršyklė „Brave“</translation>
+<translation id="6824713633331856331">Anonimiškai padėkite mums tobulėti</translation>
+<translation id="6116685031674149112">„Brave“ saugo jūsų privatumą ir\nvertina, kad sutinkate su:</translation>
+<translation id="3971666849661839619">Padėkite tobulinti „Brave“ – siųskite strigčių ataskaitas ir visiškai anoniminę <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">privačią produkto analizę.</translation>
+<translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
+<translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>
 </translationbundle>

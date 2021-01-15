@@ -325,7 +325,7 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="7396366757003005317">Blokirano pritiskanje prstima (striktno, mrežna se mjesta mogu rušiti)</translation>
 <translation id="700453611199558021">Blokirano pritiskanje prstima (standardno)</translation>
 <translation id="769702552748212954">Dopusti sve pokušaje pritiskanja prstima</translation>
-<translation id="2888409909650566510">Blokirani oglasi i druge čudne stavke</translation>
+<translation id="5142293891785304489">Elementi za praćenje, oglasi i\nviše blokiranih sadržaja</translation>
 <translation id="6930134873084561197">Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj. Njima se želi saznati tko ste i pratiti što radite na svakom mrežnom mjestu.\n\nPreglednikom Brave blokiraju se navedene stavke kako biste mogli pregledavati internet, a da vas se pritom ne prati.</translation>
 <translation id="8553998445606452168">O značajci Brave Shields</translation>
 <translation id="8912304686498704084">GORE</translation>
@@ -437,22 +437,22 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="8804164990146287819">Pravilnik o zaštiti privatnosti</translation>
 <translation id="6318696841371191107">Obavi kratkotrajni demonstracijski pregled</translation>
 <translation id="7930505144430343145">Dobro došli u uslugu Brave Rewards!</translation>
-<translation id="7909111626803226907">Putem privatnih oglasa preglednika Brave dobivate tokene za davanje pružanje autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.</translation>
+<translation id="3477340970981564961">Putem privatnih Brave Ads dobivate tokene za pružanje podrške autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.</translation>
 <translation id="6973095375773523904">Gdje se pojavljuju oglasi?</translation>
-<translation id="3867028444168159102">Privatni oglasi preglednika Brave pojavljuju se kao normalna obavijest. U postavkama možete odrediti koliko se često prikazuju ovi oglasi.</translation>
+<translation id="7556325460112047619">Privatni Brave Ads pojavljuju se kao normalna obavijest. U postavkama možete odrediti koliko se često prikazuju ovi oglasi.</translation>
 <translation id="5816125157889950051">Kada primate nagrade</translation>
-<translation id="4649471244559455723">Vaši tokeni koji se zarade putem oglasa preglednika Brave tijekom trenutačnog mjeseca dostupni su na 5. dan u sljedećem mjesecu.</translation>
+<translation id="310863932297733723">Vaši tokeni koji se zarade putem privatnih Brave Ads tijekom trenutačnog mjeseca dostupni su 5. dan u sljedećem mjesecu.</translation>
 <translation id="7712287524451429139">Jednostavno oduživanje</translation>
 <translation id="105037569026952831">Autori automatski dobivaju vaše doprinose u obliku tokena na temelju vaših razina sudjelovanja koje mjerimo kao  ‘Pažnja’.</translation>
 <translation id="5323267338679539010">Zahvali se napojnicama</translation>
-<translation id="6042317056594735519">Davanje napojnica osobni je način poticanja i pružanja podrške omiljenom sadržaju ili autorima. Krenite!</translation>
+<translation id="6730444165801605682">Davanje napojnica osobni je način poticanja i pružanja podrške omiljenom sadržaju ili autorima. Krenite!</translation>
 <translation id="7509452925943421624">Na koji način možete upotrijebiti tokene?</translation>
-<translation id="7059157883171259940">Tokeni se mogu upotrijebiti i za druge svrhe osim davanja podrške autorima. Možete kupovati digitalna dobra i darovne kartice bonusom povrata novca.</translation>
+<translation id="5876169128756792273">Tokeni se mogu upotrijebiti i za druge svrhe osim davanja podrške autorima. Možete kupiti digitalni sadržaj i dobra kako se trgovci pridružuju na platformi.</translation>
 <translation id="1402530520078693620">Naposljetku, morate’ znati sve što je potrebno o osnovnim postavkama</translation>
 <translation id="3494356595346329740">To možete promijeniti kasnije.</translation>
 <translation id="6462814326662189004">Koliko često želite vidjeti oglase?\n(oglasi po satu)</translation>
 <translation id="2134244432345596331">Koliku podršku želite dati svojim omiljenim autorima?\n(od svoje zarade na temelju oglasa)</translation>
-<translation id="7456161272236175794">JUPIIIIIII!\nGotovi’ ste.</translation>
+<translation id="827315274423079662">Odlično, spremni ste!</translation>
 <translation id="3895246934788932488">Uporabom usluge Brave Rewards štitite svoju privatnost i doprinosite stvaranju boljeg okruženja na mreži za sve. A to’ je izvrsno!</translation>
 <translation id="5705882733397021510">Idi natrag</translation>
 <translation id="5140321319944305531">Obavimo kratkotrajni demonstracijski pregled</translation>
@@ -461,8 +461,25 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="8342862030112839977">Vaša se 1. isplata za nagrade isporučuje do:</translation>
 <translation id="3769645103175790584">Tijekom pregledavanja, zaradite tokene i nagradite autore za izvrstan sadržaj. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Kratkotrajno uvodno razgledavanje</translation>
-<translation id="1080013038789678738">I’m In!</translation>
+<translation id="1080013038789678738">Sudjelujem!</translation>
 <translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> u <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Provjerite svoju mrežnu vezu.</translation>
 <translation id="7889432931837317731">Automatski se otvara kad god je to moguće</translation>
+<translation id="8967385052772844086">Prikaži cijelo izvješće o privatnosti</translation>
+<translation id="6864343534748973390">Najpopularnije</translation>
+<translation id="1622983732360473885">Podržava Brave</translation>
+<translation id="4608192160278975831">Privatno i bez praćenja</translation>
+<translation id="7208522820527289601">Privatno i bez praćenja, unutar EU-a</translation>
+<translation id="1161008391729450974">Rezultati tražilice Google bez elemenata za praćenje</translation>
+<translation id="7320542277711359296">Drugi najpopularniji</translation>
+<translation id="8295049095570748497">Vodeća tražilica u Rusiji</translation>
+<translation id="2642661895835126239">Sađenje stabala, sjedište u Berlinu</translation>
+<translation id="1410130669636877548">Nekim se tražilicama štiti vaša privatnost bolje od drugih kada se pretražuje internet.</translation>
+<translation id="1078265935778232285">Dobro došli u preglednik Brave</translation>
+<translation id="6824713633331856331">Pomognite nam anonimno saznati</translation>
+<translation id="6116685031674149112">Preglednikom Brave štiti se vaša privatnost i\ncijeni vaša privola za sljedeće stavke:</translation>
+<translation id="3971666849661839619">Pomognite unaprijediti preglednik Brave slanjem izvješća o rušenju u potpuno anonimnom formatu, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">privatna analitika proizvoda.</translation>
+<translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
+<translation id="8622329973403382303">Krenite u kratki obilazak kako biste razjasnili kako se ulazi u povijest kao zvijezda Rewards!</translation>
 </translationbundle>

@@ -639,8 +639,12 @@
     "message": "Mula menggunakan Ganjaran Brave",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Jelajah pantas",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Dengan meneruskan, anda bersetuju dengan $tos_link_begin$Syarat Perkhidmatan$tos_link_end$ dan $pp_link_begin$Dasar Privasi$pp_link_end$.",
+    "message": "Dengan meneruskan, anda bersetuju dengan $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Kembali",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Mari terokai dengan pantas",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Teruskan",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Selesai",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Langkau",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Langkau buat sekarang",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Selamat datang ke Ganjaran Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Iklan Peribadi Brave memberikan ganjaran token kepada anda untuk menyokong pencipta token tidak seperti iklan tradisional, semuanya sementara mengekalkan privasi maklumat peribadi anda.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Di manakah iklan muncul?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Iklan Peribadi Brave akan timbul sebagai pemberitahuan biasa. Anda mengawal berapa kerap yang anda melihat iklan-iklan ini dalam tetapan.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "BIla anda menerima ganjaran",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Token anda yang diperoleh daripada Iklan Peribadi Brave sepanjang bulan semasa akan tiba pada 5hb bulan depan.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Memberi balik dijadikan mudah",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Pencipta menerima sumbangan token anda secara automatik berdasarkan tahap penglibatan anda yang kami ukur sebagai 'Perhatian'.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Ucapkan terima kasih dengan tip",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Memberi tip ialah sebuah cara untuk menggalakkan dan menyokong secara peribadi kandungan atau pencipta yang anda sukai. Berikan tip!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Apakah yang anda boleh lakukan dengan token?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Token boleh digunakan selain daripada menyokong pencipta. Anda boleh membeli kandungan digital dan barangan-barangan lain apabila saudagar menyertai.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Woohoo, anda sudah bersedia!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Dengan menggunakan Ganjaran Brave anda membantu menjadikan web ini tempat yang lebih baik buat semua orang. Dan itu memang hebat!",
+    "description": ""
   }
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="vi">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: 1 giờ trước.}other{Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: {NUM_HOURS} giờ trước.}}</translation>
 <translation id="1065672644894730302">Không thể đọc tùy chọn của bạn. Một số tính năng có thể không khả dụng và các thay đổi đối với tùy chọn sẽ không được lưu.</translation>
 <translation id="8488151306313572776">Để tách biệt giữa hoạt động duyệt web cá nhân và hoạt động duyệt web của <ph name="NEW_USER"/>, hãy tạo một hồ sơ mới trong Brave</translation>
 <translation id="2796517443093885402">Brave có thể giúp bảo vệ bạn trước các sự cố rò rỉ dữ liệu, tiện ích độc hại và những vấn đề khác</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Để kiểm tra xem mật khẩu của bạn có bị ảnh hưởng bởi các vụ rò rỉ dữ liệu và sự cố bảo mật khác hay không, hãy <ph name="BEGIN_LINK"/>đăng nhập vào Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Giới thiệu về Brave</translation>
 <translation id="4798342026247191171">Thiết lập hồ sơ Brave mới</translation>
+<translation id="5893502481331584971">Hỏi khi Brave mở</translation>
 <translation id="113959764510199339">Brave đang cố gắng hiển thị mật khẩu.</translation>
 <translation id="8132634101975074716">Bạn đã đăng nhập vào Brave!</translation>
 <translation id="7370605478942575409">Nếu muốn dùng Rosetta để phát nội dung nghe nhìn được bảo vệ, bạn phải khởi động lại Brave.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Thẻ Brave</translation>
 <translation id="8372880274820509128">Để bảo mật hơn, Brave sẽ mã hóa dữ liệu của bạn.</translation>
 <translation id="2770231113462710648">Thay đổi trình duyệt mặc định thành:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: 1 phút trước.}other{Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: {NUM_MINS} phút trước.}}</translation>
 <translation id="2799223571221894425">Chạy lại</translation>
 <translation id="777113543093865885">Xóa khỏi Brave...</translation>
-<translation id="8846162271735377947">Hỏi khi tôi mở Brave</translation>
 <translation id="2885378588091291677">Trình quản lý tác vụ</translation>
 <translation id="2176825726964012531">Giới thiệu về &amp;Brave</translation>
 <translation id="8208853227947884571">Brave đã được cập nhật</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave không thể kiểm tra mật khẩu của bạn. Hãy thử lại sau.</translation>
 <translation id="8880183781256147665">Đang thêm vào Brave...</translation>
 <translation id="7918740962659365265">Giúp cải thiện Brave bằng cách gửi báo cáo sự cố và <ph name="UMA_LINK"/> tới Brave</translation>
-<translation id="2911521062311014336">Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần</translation>
 <translation id="7365690458036015383">Trình cài đặt không thể giải nén tệp lưu trữ. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="8919461291440820124">Brave đang sử dụng micrô của bạn.</translation>
 <translation id="4805806622840861220">Chạy lại Brave</translation>
@@ -172,7 +169,6 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="8211837073776713955">Brave cho bạn biết mật khẩu của bạn có bị đánh cắp hay không</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (đã sao chép vào Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: 1 ngày trước.}other{Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: {NUM_DAYS} ngày trước.}}</translation>
 <translation id="2301993384336631869">Brave đã được cập nhật nhưng bạn đã không sử dụng trình duyệt này trong ít nhất 30 ngày.</translation>
 <translation id="8522287263361940593">Rosetta cho phép Brave phát nội dung nghe nhìn được bảo vệ trên trang này.</translation>
 <translation id="6418340404893954563">Mật khẩu yếu thường dễ đoán. Brave có thể <ph name="BEGIN_LINK"/>tạo mật khẩu mạnh và ghi nhớ mật khẩu này cho bạn<ph name="END_LINK"/>.</translation>
@@ -205,7 +201,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
       cài đặt của Chrome OS<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave đang sử dụng máy ảnh và micrô của bạn.</translation>
 <translation id="2827121003398607864">Brave được cải tiến hơn</translation>
-<translation id="504499211143662559">Brave đã phát hiện thấy phần mềm có hại trên máy tính của bạn</translation>
 <translation id="3343095737966473035">Brave không phải là trình duyệt mặc định của bạn</translation>
 <translation id="5477319665405831211">Đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
 <translation id="5419189641394808652">Brave không thể đồng bộ hóa dữ liệu của bạn vì Đồng bộ hóa không khả dụng cho miền của bạn.</translation>
@@ -237,7 +232,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="6283840329609797763">Không thể cài đặt do xảy ra lỗi không xác định. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="2433912322225810055">Tiện ích này cũng điều khiển trang nào được hiển thị khi bạn khởi động Brave hoặc tìm kiếm từ Thanh địa chỉ.</translation>
 <translation id="4100716194836114130">Đây là Brave của bạn</translation>
-<translation id="8757284234053029740">Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: hôm qua.</translation>
 <translation id="4831743161813926460">Brave cần có quyền truy cập vào máy ảnh và micrô của bạn cho trang web này</translation>
 <translation id="7408085963519505752">Điều khoản Chrome OS</translation>
 <translation id="2262856633481902138">Brave không thể đồng bộ hóa dữ liệu của bạn vì chi tiết đăng nhập tài khoản của bạn đã cũ.</translation>
@@ -252,7 +246,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="7863882214613921971">Mở liên kết trong thẻ mới của Brave</translation>
 <translation id="911206726377975832">Bạn cũng muốn xóa dữ liệu duyệt web của mình?</translation>
 <translation id="2444257125841652328">Quản trị viên hệ thống của bạn đã định cấu hình Brave để mở một trình duyệt thay thế khi truy cập vào <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave kiểm tra để phát hiện phần mềm không mong muốn một lần một tuần. Lần kiểm tra gần đây nhất: vài phút trước.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave có thể không hoạt động chính xác do không được hỗ trợ trên Windows XP hoặc Windows Vista nữa</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> yêu cầu bạn đọc và chấp nhận Điều khoản dịch vụ sau đây trước khi sử dụng thiết bị này. Những điều khoản này không mở rộng, sửa đổi hoặc giới hạn Điều khoản Chrome OS.</translation>

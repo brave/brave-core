@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sq">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: 1 orë më parë.}other{Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: {NUM_HOURS} orë më parë.}}</translation>
 <translation id="1065672644894730302">Preferencat e tua nuk mund të lexohen.
 
 Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruhen.</translation>
@@ -12,6 +11,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="8522292744959221145">Për të kontrolluar nëse fjalëkalimet e tua janë të sigurta nga nxjerrjet e paautorizuara të të dhënave dhe probleme të tjera të sigurisë, <ph name="BEGIN_LINK"/>identifikohu në Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Rreth Brave</translation>
 <translation id="4798342026247191171">Konfiguro profilin tënd të ri të Brave</translation>
+<translation id="5893502481331584971">Pyet kur të hapet Brave</translation>
 <translation id="113959764510199339">Brave po përpiqet të shfaqë fjalëkalimet.</translation>
 <translation id="8132634101975074716">Je i identifikuar në Brave!</translation>
 <translation id="7370605478942575409">Për të përdorur Rosetta që të luajë media të mbrojtur, duhet të rinisësh Brave.</translation>
@@ -46,10 +46,8 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="6791166902140255175">Skeda Brave</translation>
 <translation id="8372880274820509128">Për më shumë siguri, Brave do t'i enkriptojë të dhënat e tua.</translation>
 <translation id="2770231113462710648">Ndrysho shfletuesin me parazgjedhje në:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: 1 minutë më parë.}other{Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: {NUM_MINS} minuta më parë.}}</translation>
 <translation id="2799223571221894425">Nis sërish</translation>
 <translation id="777113543093865885">Hiqe nga Brave...</translation>
-<translation id="8846162271735377947">Pyet kur unë hap Brave</translation>
 <translation id="2885378588091291677">Menaxheri i detyrave</translation>
 <translation id="2176825726964012531">Rreth &amp;Brave</translation>
 <translation id="8208853227947884571">Brave është i përditësuar</translation>
@@ -57,7 +55,6 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="8755404239607088219">Brave nuk mund t'i kontrollojë fjalëkalimet e tua. Provo përsëri më vonë.</translation>
 <translation id="8880183781256147665">Po shton në Brave...</translation>
 <translation id="7918740962659365265">Ndihmo në përmirësimin e Brave duke dërguar te Brave raportet e ndërprerjeve aksidentale dhe <ph name="UMA_LINK"/></translation>
-<translation id="2911521062311014336">Brave kontrollon për softuerë të padëshiruar një herë në javë</translation>
 <translation id="7365690458036015383">Instaluesi nuk arriti ta nxjerrë arkivin. Shkarko përsëri Brave.</translation>
 <translation id="8919461291440820124">Brave po përdor mikrofonin tënd.</translation>
 <translation id="4805806622840861220">Rinis Brave</translation>
@@ -175,7 +172,6 @@ Disa funksione mund të mos ofrohen. Specifiko një direktori tjetër profili os
 <translation id="8211837073776713955">Brave të informon nëse fjalëkalimet e tua komprometohen ndonjëherë</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopjuar në Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: 1 ditë më parë.}other{Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: {NUM_DAYS} ditë më parë.}}</translation>
 <translation id="2301993384336631869">Brave është përditësuar, por nuk e ke përdorur për të paktën 30 ditë.</translation>
 <translation id="8522287263361940593">Rosetta e mundëson Brave që të luajë median e mbrojtur në këtë faqe.</translation>
 <translation id="6418340404893954563">Fjalëkalimet e dobëta mund të gjenden me lehtësi. Lejoje Brave <ph name="BEGIN_LINK"/>të krijojë dhe mbajë mend fjalëkalime të forta për ty<ph name="END_LINK"/>.</translation>
@@ -208,7 +204,6 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
       cilësimet e sistemit operativ të Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave po përdor kamerën dhe mikrofonin tënd.</translation>
 <translation id="2827121003398607864">Brave sapo është përmirësuar</translation>
-<translation id="504499211143662559">Brave gjeti softuer keqdashës në kompjuterin tënd</translation>
 <translation id="3343095737966473035">Brave nuk është shfletuesi i parazgjedhur</translation>
 <translation id="5477319665405831211">Sinkronizo dhe personalizo Brave nëpër pajisjet e tua</translation>
 <translation id="5419189641394808652">Brave nuk mundi të sinkronizonte të dhënat e tua, sepse "Sinkronizimi" nuk ofrohet për domenin tënd.</translation>
@@ -240,7 +235,6 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="6283840329609797763">Instalimi dështoi për shkak të një gabimi të papërcaktuar. Shkarko përsëri Brave.</translation>
 <translation id="2433912322225810055">Kontrollon po ashtu se cila faqe shfaqet kur nis Brave ose kur kërkon nga Omnibox.</translation>
 <translation id="4100716194836114130">Ky është Brave për ty</translation>
-<translation id="8757284234053029740">Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: dje.</translation>
 <translation id="4831743161813926460">Brave ka nevojë për leje për t'u qasur te kamera dhe mikrofoni yt për këtë sajt</translation>
 <translation id="7408085963519505752">Kushtet e sistemit operativ Brave</translation>
 <translation id="2262856633481902138">Brave nuk mund të sinkronizonte të dhënat e tua sepse detajet e identifikimit të llogarisë nuk janë të përditësuara.</translation>
@@ -255,7 +249,6 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="7863882214613921971">Hape lidhjen në një &amp;skedë të re të Brave</translation>
 <translation id="911206726377975832">Të fshihen po ashtu të dhënat e shfletimit?</translation>
 <translation id="2444257125841652328">Administratori i sistemit ka konfiguruar Brave që të hapë një shfletues alternativ për të pasur qasje te <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave kontrollon për softuerë të padëshiruar një herë në javë. Kontrolli i fundit: një moment më parë.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave mund të mos funksionojë si duhet sepse nuk mbështetet më në Windows XP ose Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> kërkon që të lexosh dhe të pranosh "Kushtet e shërbimit" më poshtë para se të përdorësh këtë pajisje. Këto kushte nuk i zgjerojnë, modifikojnë ose kufizojnë kushtet e sistemit operativ të Brave.</translation>

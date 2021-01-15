@@ -78,6 +78,14 @@
     &lt;/ol&gt;</translation>
 <translation id="1257286744552378071">您在一个不受贵单位管理的网站上输入了您的密码。为了保护您的帐号，请不要在其他应用和网站上重复使用您的密码。</translation>
 <translation id="1263231323834454256">阅读清单</translation>
+<translation id="1267173982554786072"><ph name="BEGIN_BOLD"/>
+        系统不会将以下活动记录保存到此设备上：
+        <ph name="END_BOLD"/>
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>您在该窗口中查看的网页
+          <ph name="LIST_ITEM"/>Cookie 和网站数据
+          <ph name="LIST_ITEM"/>帐号信息（<ph name="LINK_BEGIN"/>退出<ph name="LINK_END"/>）
+        <ph name="END_LIST"/></translation>
 <translation id="1270502636509132238">取货方式</translation>
 <translation id="1281476433249504884">堆叠出纸器 1</translation>
 <translation id="1285320974508926690">一律不翻译此网站</translation>
@@ -106,7 +114,6 @@
 <translation id="1348198688976932919">您要访问的网站包含危险应用</translation>
 <translation id="1348779747280417563">确认姓名</translation>
 <translation id="1357195169723583938">最近使用过这部设备的用户和使用时间</translation>
-<translation id="1360955481084547712">若要私密地浏览网页，请打开一个新的无痕式窗口</translation>
 <translation id="1363819917331173092">不询问是否翻译<ph name="SOURCE_LANGUAGE"/>网页</translation>
 <translation id="1364822246244961190">此政策已被禁用，其值也会被忽略。</translation>
 <translation id="1374468813861204354">建议</translation>
@@ -135,7 +142,7 @@
 <translation id="1462951478840426066">使用您计算机上的字体，以便您能够创作高保真内容</translation>
 <translation id="1463543813647160932">5x7</translation>
 <translation id="1467432559032391204">向左</translation>
-<translation id="1472675084647422956">显示更多</translation>
+<translation id="1472675084647422956">展开</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="147358896496811705">2A0</translation>
 <translation id="1476595624592550506">更改您的密码</translation>
@@ -275,6 +282,7 @@
 <translation id="3163988908275223348">登录后即可使用您 Brave 帐号中保存的密码</translation>
 <translation id="2053111141626950936">系统不会翻译<ph name="LANGUAGE"/>网页。</translation>
 <translation id="2053553514270667976">邮编</translation>
+<translation id="2054665754582400095">您的状态</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 条建议}other{# 条建议}}</translation>
 <translation id="2079545284768500474">撤消</translation>
 <translation id="20817612488360358">已设置为使用系统代理设置，但同时指定了一个明确的代理配置。</translation>
@@ -288,6 +296,7 @@
 <translation id="2102495993840063010">Android 应用</translation>
 <translation id="2107021941795971877">打印方面的支持</translation>
 <translation id="2108755909498034140">重新启动计算机</translation>
+<translation id="2111166930115883695">按空格键即可播放</translation>
 <translation id="2111256659903765347">Super-A</translation>
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="2114841414352855701">由于已被 <ph name="POLICY_NAME"/> 替换，该政策已忽略。</translation>
@@ -299,6 +308,7 @@
 <translation id="214556005048008348">取消付款</translation>
 <translation id="2147827593068025794">后台同步</translation>
 <translation id="2148613324460538318">添加支付卡</translation>
+<translation id="2149968176347646218">连接不安全</translation>
 <translation id="2154054054215849342">您的网域不支持同步</translation>
 <translation id="2154484045852737596">修改支付卡</translation>
 <translation id="2161656808144014275">文字</translation>
@@ -309,7 +319,6 @@
 <translation id="2181821976797666341">政策</translation>
 <translation id="2183608646556468874">电话号码</translation>
 <translation id="2184405333245229118">{COUNT,plural, =1{1 个地址}other{# 个地址}}</translation>
-<translation id="2187243482123994665">用户活跃状态</translation>
 <translation id="2187317261103489799">检测（默认）</translation>
 <translation id="2188375229972301266">多孔（底部）</translation>
 <translation id="2202020181578195191">请输入有效的失效年份</translation>
@@ -459,6 +468,7 @@
 <translation id="2839501879576190149">您要访问的是虚假网站</translation>
 <translation id="2850739647070081192">Invite (Envelope)</translation>
 <translation id="2856444702002559011">攻击者可能会试图从 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> 窃取您的信息（例如：密码、通讯内容或信用卡信息）。<ph name="BEGIN_LEARN_MORE_LINK"/>了解详情<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2859806420264540918">此网站展示过侵扰性或误导性广告。</translation>
 <translation id="2878197950673342043">海报折</translation>
 <translation id="2878424575911748999">A1</translation>
 <translation id="2880660355386638022">窗口放置</translation>
@@ -495,18 +505,17 @@
 <translation id="6683975920571472553">Brave 提供的建议</translation>
 <translation id="3002501248619246229">检查进纸匣媒体</translation>
 <translation id="3005723025932146533">显示已保存的版本</translation>
-<translation id="3007719053326478567">您的管理员已禁止打印此内容</translation>
 <translation id="3008447029300691911">输入“<ph name="CREDIT_CARD"/>”的银行卡验证码 (CVC)。在您确认后，您的信用卡详情将与此网站共享。</translation>
 <translation id="3010559122411665027">列表条目“<ph name="ENTRY_INDEX"/>”：<ph name="ERROR"/></translation>
 <translation id="301521992641321250">已被自动禁止</translation>
 <translation id="3016780570757425217">获取您的位置</translation>
+<translation id="3017086357773116182"><ph name="REMOVE_SUGGESTION_SUFFIX"/>，依次按 Tab 键和 Enter 键即可移除建议。</translation>
 <translation id="3023071826883856138">You4 (Envelope)</translation>
 <translation id="3024663005179499861">策略类型有误</translation>
 <translation id="3037605927509011580">喔唷，崩溃啦！</translation>
 <translation id="3041612393474885105">证书信息</translation>
 <translation id="3060227939791841287">C9 (Envelope)</translation>
 <translation id="3061707000357573562">修补服务</translation>
-<translation id="3064966200440839136">将要退出隐身模式，以便通过外部应用付款。是否继续？</translation>
 <translation id="3080254622891793721">图形</translation>
 <translation id="3086579638707268289">您在网络上的活动正被监控</translation>
 <translation id="3087734570205094154">底部</translation>
@@ -527,7 +536,6 @@
 <translation id="3154506275960390542">此页包含一个可能无法安全提交的表单。他人可能会在传输过程中查看您所发送的数据；攻击者也可能会修改这些数据，从而改变服务器收到的内容。</translation>
 <translation id="3157931365184549694">恢复</translation>
 <translation id="3162559335345991374">您要使用的 Wi-Fi 网络可能需要您访问其登录页面。</translation>
-<translation id="3167968892399408617">在您关闭所有无痕模式标签页后，您在这些标签页中查看的网页不会在浏览器历史记录、Cookie 存储区或搜索记录中留下任何痕迹。不过，您下载的所有文件或创建的书签均会保留下来。</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">岛</translation>
 <translation id="3176929007561373547">请检查您的代理服务器设置或与网络管理员联系，以确保代理服务器正常运行。如果您认为自己不需要使用代理服务器，请执行以下操作：
@@ -540,6 +548,7 @@
 <translation id="3207960819495026254">已加书签</translation>
 <translation id="3209034400446768650">此网页可能会收取费用</translation>
 <translation id="3212581601480735796">您在 <ph name="HOSTNAME"/> 上的活动正被监控</translation>
+<translation id="3212623355668894776">请关闭所有访客窗口，以便从此设备中删除您的浏览活动记录。</translation>
 <translation id="3215092763954878852">无法使用 WebAuthn</translation>
 <translation id="3218181027817787318">相对</translation>
 <translation id="3225919329040284222">服务器提供的证书与内置预期证书不匹配。这些预期证书是针对某些高安全性网站提供的，以便为您提供保护。</translation>
@@ -650,7 +659,6 @@
 <translation id="3676592649209844519">设备 ID：</translation>
 <translation id="3677008721441257057">您是想访问 &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; 吧？</translation>
 <translation id="3678029195006412963">无法签署该请求</translation>
-<translation id="3678529606614285348">在新的无痕式窗口中打开网页 (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">证书信息</translation>
 <translation id="3701427423622901115">已确认要重置。</translation>
 <translation id="3704162925118123524">您正在使用的网络可能会要求您访问其登录页面。</translation>
@@ -682,6 +690,7 @@
 <translation id="3784372983762739446">蓝牙设备</translation>
 <translation id="3787705759683870569">失效日期：<ph name="EXPIRATION_YEAR"/> 年 <ph name="EXPIRATION_MONTH"/> 月</translation>
 <translation id="3789155188480882154">大小：16</translation>
+<translation id="3789841737615482174">安装</translation>
 <translation id="3793574014653384240">近期发生崩溃的次数和原因</translation>
 <translation id="3797522431967816232">Prc3 (Envelope)</translation>
 <translation id="3799805948399000906">请求的字体</translation>
@@ -732,6 +741,7 @@
 <translation id="4056223980640387499">棕色调</translation>
 <translation id="4058922952496707368">“<ph name="SUBKEY"/>”键：<ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (Envelope)</translation>
+<translation id="4067669230157909013">屏幕截取功能已恢复。</translation>
 <translation id="4067947977115446013">添加有效地址</translation>
 <translation id="4072486802667267160">处理您的订单时出错。请重试。</translation>
 <translation id="4075732493274867456">客户端和服务器不支持一般 SSL 协议版本或加密套件。</translation>
@@ -795,6 +805,7 @@
 <translation id="4297502707443874121">第 <ph name="THUMBNAIL_PAGE"/> 页的缩略图</translation>
 <translation id="42981349822642051">展开</translation>
 <translation id="4300675098767811073">多孔（右侧）</translation>
+<translation id="4302514097724775343">点按恐龙图标即可开始玩这款游戏</translation>
 <translation id="4302965934281694568">Chou3 (Envelope)</translation>
 <translation id="4305666528087210886">无法访问您的文件</translation>
 <translation id="4305817255990598646">切换</translation>
@@ -868,6 +879,7 @@
 <translation id="4658638640878098064">钉装（左上角）</translation>
 <translation id="4668929960204016307">,</translation>
 <translation id="4670064810192446073">虚拟实境</translation>
+<translation id="5554243581036241411">在访客模式下，您无法查看任何 Brave 个人资料的信息。您可<ph name="LINK_BEGIN"/>登录<ph name="LINK_END"/>以访问您的 Brave 帐号信息（例如密码和付款方式）。</translation>
 <translation id="467662567472608290">此服务器无法证明它是<ph name="DOMAIN"/>；其安全证书有误。出现此问题的原因可能是配置有误或您的连接被拦截了。</translation>
 <translation id="4677585247300749148"><ph name="URL"/> 想对无障碍事件做出响应</translation>
 <translation id="8197094463444457125">Brave 幻灯片</translation>
@@ -893,6 +905,12 @@
 <translation id="4761104368405085019">使用您的麦克风</translation>
 <translation id="4764776831041365478">网址为 <ph name="URL"/> 的网页可能暂时无法连接，或者它已永久性地移动到了新网址。</translation>
 <translation id="4766713847338118463">双钉（底部）</translation>
+<translation id="4768815695067202997"><ph name="BEGIN_BOLD"/>
+        系统会将您的以下活动记录保存到此设备上：
+        <ph name="END_BOLD"/>
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>您在该窗口中下载的所有文件
+        <ph name="END_LIST"/></translation>
 <translation id="4771973620359291008">发生未知错误。</translation>
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{已拦截弹出式窗口}other{已拦截 # 个弹出式窗口}}</translation>
 <translation id="4780366598804516005">信箱 1</translation>
@@ -921,7 +939,6 @@
 <translation id="4879725228911483934">在您的屏幕上打开和放置窗口</translation>
 <translation id="4880827082731008257">搜索历史记录</translation>
 <translation id="4881695831933465202">打开</translation>
-<translation id="4889420713887366944">“打开无痕式窗口”按钮，按 Enter 键即可打开一个新的无痕式窗口以私密浏览网页</translation>
 <translation id="4892518386797173871">后方</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>、<ph name="TYPE_2"/>、<ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">保存…</translation>
@@ -991,7 +1008,6 @@
 <translation id="5148809049217731050">正面朝上</translation>
 <translation id="515292512908731282">C4 (Envelope)</translation>
 <translation id="5158275234811857234">封面</translation>
-<translation id="5159010409087891077">在新的无痕式窗口中打开网页 (⇧⌘N)</translation>
 <translation id="5161506081086828129">堆叠出纸器 9</translation>
 <translation id="5164798890604758545">输入文字</translation>
 <translation id="2996889577833788807">请输入 <ph name="CREDIT_CARD"/> 的银行卡验证码 (CVC)。待您确认后，系统便会将您 Brave 帐号中的信用卡详细信息共享给该网站。</translation>
@@ -1001,7 +1017,6 @@
 <translation id="5172758083709347301">本机</translation>
 <translation id="5179510805599951267">不是<ph name="ORIGINAL_LANGUAGE"/>？报告此错误</translation>
 <translation id="5179740473595559246">了解您何时处于活跃状态</translation>
-<translation id="5190835502935405962">书签栏</translation>
 <translation id="519422657042045905">注释不可用</translation>
 <translation id="5201306358585911203">此网页上的嵌入式页面显示</translation>
 <translation id="5205222826937269299">需要提供名称</translation>
@@ -1055,11 +1070,13 @@
 <translation id="5386426401304769735">此网站的证书链包含使用 SHA-1 签署的证书。</translation>
 <translation id="538659543871111977">A4-Tab</translation>
 <translation id="5396631636586785122">边缘装订（右侧）</translation>
+<translation id="5398772614898833570">广告已被拦截</translation>
 <translation id="5400836586163650660">灰色</translation>
 <translation id="540969355065856584">此服务器无法证明它是 <ph name="DOMAIN"/>；其安全证书目前无效。出现此问题的原因可能是配置有误或您的连接被拦截了。</translation>
 <translation id="541416427766103491">堆叠出纸器 4</translation>
 <translation id="5421136146218899937">清除浏览数据...</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> 想向您发送通知</translation>
+<translation id="542872847390508405">您正在以访客身份浏览</translation>
 <translation id="5430298929874300616">移除书签</translation>
 <translation id="5439770059721715174">“<ph name="ERROR_PATH"/>”中存在模式验证错误：<ph name="ERROR"/></translation>
 <translation id="5443468954631487277">逆转顺序，正面朝上</translation>
@@ -1101,12 +1118,12 @@
 <translation id="5571083550517324815">无法从此地址取货。请另选一个地址。</translation>
 <translation id="5580958916614886209">请检查您的信用卡到期月份，然后重试</translation>
 <translation id="5586446728396275693">没有已保存的地址</translation>
+<translation id="5593349413089863479">连接不够安全</translation>
 <translation id="5595485650161345191">修改地址</translation>
 <translation id="5598944008576757369">选择付款方式</translation>
 <translation id="560412284261940334">不支持管理</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="5607240918979444548">Architecture-C</translation>
-<translation id="4067274479097837765">此网站可能是虚假或欺诈性网站。Brave 建议您立即离开。</translation>
 <translation id="5610142619324316209">检查网络连接</translation>
 <translation id="5610807607761827392">您可以在<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>中管理信用卡和地址信息。</translation>
 <translation id="2012723355262040739">使用“Brave 翻译”服务来翻译此页面</translation>
@@ -1178,6 +1195,7 @@
 <translation id="5901630391730855834">黄色</translation>
 <translation id="5905445707201418379">已根据 <ph name="ORIGIN"/> 的来源政策而屏蔽。</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/>（已同步）</translation>
+<translation id="5913377024445952699">屏幕截取功能已暂停</translation>
 <translation id="59174027418879706">已启用</translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5921185718311485855">已开启</translation>
@@ -1190,6 +1208,7 @@
 <translation id="5963413905009737549">章节标记</translation>
 <translation id="5967592137238574583">修改联系信息</translation>
 <translation id="5967867314010545767">从历史记录中移除</translation>
+<translation id="5968793460449681917">每次访问时</translation>
 <translation id="5975083100439434680">缩小</translation>
 <translation id="5979084224081478209">检查密码</translation>
 <translation id="5980920751713728343">Index-3x5</translation>
@@ -1343,6 +1362,7 @@
 <translation id="6587923378399804057">您复制的链接</translation>
 <translation id="6591833882275308647">您的 <ph name="DEVICE_TYPE"/> 不受管理</translation>
 <translation id="6596325263575161958">加密选项</translation>
+<translation id="6596892391065203054">您的管理员已禁止打印此内容。</translation>
 <translation id="6604181099783169992">动态传感器或光传感器</translation>
 <translation id="6609880536175561541">Prc7 (Envelope)</translation>
 <translation id="6612358246767739896">受保护的内容</translation>
@@ -1401,6 +1421,7 @@
 <translation id="6895330447102777224">已确认您的信用卡</translation>
 <translation id="6897140037006041989">用户代理</translation>
 <translation id="6898699227549475383">组织 (O)</translation>
+<translation id="6907293445143367439">允许 <ph name="SITE_NAME"/>：</translation>
 <translation id="6910240653697687763"><ph name="URL"/> 想完全控制您的 MIDI 设备</translation>
 <translation id="6915804003454593391">用户：</translation>
 <translation id="6722453239914327220">此名称来自您的 Brave 帐号</translation>
@@ -1467,7 +1488,6 @@
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/>以及另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 种送货方式}other{<ph name="SHIPPING_OPTION_PREVIEW"/>以及另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 种送货方式}}</translation>
 <translation id="7179323680825933600">保存并填写付款方式</translation>
 <translation id="7180611975245234373">刷新</translation>
-<translation id="7181261019481237103">打开无痕式窗口</translation>
 <translation id="7182878459783632708">未设置任何政策</translation>
 <translation id="7186367841673660872">已将此网页从<ph name="ORIGINAL_LANGUAGE"/>翻译成<ph name="LANGUAGE_LANGUAGE"/></translation>
 <translation id="7192203810768312527">释放了 <ph name="SIZE"/>。当您下次访问时，某些网站的加载速度可能会更慢。</translation>
@@ -1512,6 +1532,7 @@
 <translation id="7346048084945669753">有无关联：</translation>
 <translation id="7349430561505560861">A4-Extra</translation>
 <translation id="7353601530677266744">命令行</translation>
+<translation id="7359588939039777303">广告已被拦截。</translation>
 <translation id="7372973238305370288">搜索结果</translation>
 <translation id="3898257577441589237">此问题是由您或他人在您设备上安装的某个证书导致的。该证书已知被用于监控和拦截网络，因此不受 Brave 信任。尽管某些情况下的监控确实是合理的（例如监控学校网络或公司网络），但 Brave 想确保您知道自己正被监控，即使您无法改变这一事实。监控可能会发生在已联网的任何浏览器或应用中。</translation>
 <translation id="7375818412732305729">附加文件</translation>
@@ -1652,7 +1673,6 @@
 <translation id="782886543891417279">您要使用的 Wi-Fi 网络（<ph name="WIFI_NAME"/>）可能需要您访问其登录页面。</translation>
 <translation id="7836231406687464395">Postfix (Envelope)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{无}=1{1 个应用（<ph name="EXAMPLE_APP_1"/>）}=2{2 个应用（<ph name="EXAMPLE_APP_1"/>、<ph name="EXAMPLE_APP_2"/>）}other{# 个应用（<ph name="EXAMPLE_APP_1"/>、<ph name="EXAMPLE_APP_2"/>、<ph name="AND_MORE"/>）}}</translation>
-<translation id="785549533363645510">但是，这并不意味着您能完全隐身。即使您进入隐身模式，您的雇主、互联网服务提供商和您访问的网站仍然能看到您的浏览活动。</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">离开此网站？</translation>
 <translation id="7865448901209910068">最快的速度</translation>
@@ -1683,6 +1703,7 @@
 <translation id="7976214039405368314">请求次数过多</translation>
 <translation id="7977538094055660992">输出设备</translation>
 <translation id="7977894662897852582">Edp</translation>
+<translation id="79859296434321399">要查看增强现实内容，请安装 ARCore</translation>
 <translation id="799149739215780103">装订</translation>
 <translation id="7995512525968007366">未指定</translation>
 <translation id="800218591365569300">请尝试关闭其他标签页或程序以释放内存。</translation>
@@ -1735,11 +1756,9 @@
 <translation id="8218327578424803826">分配的位置：</translation>
 <translation id="8220146938470311105">C7/C6 (Envelope)</translation>
 <translation id="3272614036080146686">您刚刚在一个诈骗网站中输入了密码。Brave 建议您立即前往 <ph name="WEBSITE_1"/> 以及使用此密码的其他网站更改密码。</translation>
-<translation id="8225771182978767009">设置此计算机的用户已选择屏蔽此网站。</translation>
 <translation id="8228419419708659934">双页视图</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>、<ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">平台温度</translation>
-<translation id="8238581221633243064">在新的无痕式标签页中打开网页</translation>
 <translation id="8241707690549784388">您所查找的网页要使用已输入的信息。返回此页可能需要重复已进行的所有操作。是否要继续操作？</translation>
 <translation id="8241712895048303527">在此网站上拦截</translation>
 <translation id="8242426110754782860">继续</translation>
@@ -1752,7 +1771,6 @@
 <translation id="8265992338205884890">可见数据</translation>
 <translation id="8267698848189296333">目前登录的帐号是 <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">单独的文档/逐份打印的副本</translation>
-<translation id="8269981117540303696">现在，您便可进行私密浏览了。共用此设备的其他用户将不会看到您的活动，但您下载的内容和添加的书签将会保存在此设备上。</translation>
 <translation id="8275952078857499577">不询问是否翻译此网站</translation>
 <translation id="8277900682056760511">付款处理程序工作表已打开</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
@@ -1774,7 +1792,6 @@
 <translation id="8339163506404995330">系统不会自动翻译源语言为<ph name="LANGUAGE"/>的网页</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">如果您了解自己将面临的安全风险，则可以在有害程序被清除之前<ph name="BEGIN_LINK"/>访问此网站<ph name="END_LINK"/>。</translation>
-<translation id="8349305172487531364">书签栏</translation>
 <translation id="8355270400102541638">本机崩溃上下文：</translation>
 <translation id="8363502534493474904">关闭飞行模式</translation>
 <translation id="8364627913115013041">未设置。</translation>
@@ -1808,24 +1825,38 @@
 <translation id="8507227106804027148">命令行</translation>
 <translation id="8508648098325802031">搜索图标</translation>
 <translation id="1426902392270366682">Brave 可以帮助您保护您的 Brave 帐号和更改密码。</translation>
+<translation id="8525306231823319788">全屏</translation>
 <translation id="1215802963054007211">请在 Brave 设置中清除您的浏览记录、Cookie、缓存及其他数据</translation>
 <translation id="8533619373899488139">请访问 &lt;strong&gt;chrome://policy&lt;/strong&gt;，查看被屏蔽的网址列表以及您的系统管理员强制执行的其他政策。</translation>
 <translation id="8541158209346794904">蓝牙设备</translation>
 <translation id="8542014550340843547">三钉（底部）</translation>
 <translation id="8543181531796978784">您可以<ph name="BEGIN_ERROR_LINK"/>报告检测问题<ph name="END_ERROR_LINK"/>；或者，如果您了解自己将面临的安全风险，则可以<ph name="BEGIN_LINK"/>访问这个不安全的网站<ph name="END_LINK"/>。</translation>
 <translation id="8557066899867184262">银行卡验证码 (CVC) 位于银行卡背面。</translation>
+<translation id="8558485628462305855">要查看增强现实内容，请更新 ARCore</translation>
 <translation id="8559762987265718583">您设备的日期和时间（<ph name="DATE_AND_TIME"/>）不正确，因此无法与 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> 建立私密连接。</translation>
 <translation id="8564182942834072828">单独的文档/非逐份打印的副本</translation>
+<translation id="856887218454489335"><ph name="BEGIN_BOLD"/>
+        系统不会将以下活动记录保存到此设备上：
+        <ph name="END_BOLD"/>
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>您在该窗口中查看的网页
+          <ph name="LIST_ITEM"/>Cookie 和网站数据
+        <ph name="END_LIST"/></translation>
 <translation id="8574899947864779331">使用 Touch ID 更快地确认银行卡</translation>
 <translation id="858637041960032120">添加电话号码
 </translation>
 <translation id="8589998999637048520">最佳的质量</translation>
+<translation id="8600271352425265729">仅限这一次</translation>
 <translation id="860043288473659153">持卡人姓名</translation>
 <translation id="8606726445206553943">使用您的 MIDI 设备</translation>
+<translation id="8612761427948161954">尊敬的<ph name="USERNAME"/>：
+        <ph name="BR"/>
+        您好！您正在以访客身份浏览</translation>
 <translation id="861775596732816396">大小：4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">没有匹配的密码。显示所有已保存的密码。</translation>
 <translation id="8625384913736129811">将此卡的信息保存到该设备</translation>
+<translation id="8627040765059109009">屏幕截取功能已恢复</translation>
 <translation id="8657078576661269990">您的管理员已禁止将 <ph name="ORIGIN_NAME"/> 的内容共享给 <ph name="VM_NAME_1"/> 和 <ph name="VM_NAME_2"/></translation>
 <translation id="8663226718884576429">订单摘要，<ph name="TOTAL_LABEL"/>，更多详情</translation>
 <translation id="867224526087042813">签名</translation>
@@ -1844,10 +1875,8 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>，<ph name="DESCRIPTION"/>，搜索建议</translation>
 <translation id="8719528812645237045">多孔（顶部）</translation>
 <translation id="8725066075913043281">重试</translation>
-<translation id="8728672262656704056">您已进入无痕模式</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="1769647018144434441">“管理密码”按钮，按 Enter 键即可在 Brave 设置中查看和管理您的密码</translation>
-<translation id="8737134861345396036"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>，依次按 Tab 键和 Enter 键即可打开一个新的无痕式窗口以私密浏览网页</translation>
 <translation id="6326805297893828864">要建立安全连接，您的时钟设置必须正确。这是因为，网站用于证明身份的证书仅在特定时间段有效。由于您设备的时钟不正确，因此 Brave 无法验证这些证书。</translation>
 <translation id="8740359287975076522">无法找到 <ph name="HOST_NAME"/> 的 &lt;abbr id="dnsDefinition"&gt;DNS 地址&lt;/abbr&gt;。正在诊断该问题。</translation>
 <translation id="8742371904523228557">您的 <ph name="ORIGIN"/> 验证码是 <ph name="ONE_TIME_CODE"/></translation>
@@ -1883,10 +1912,10 @@
 <translation id="8903921497873541725">放大</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">“移除建议”按钮，按 Enter 键即可移除“<ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/>”</translation>
-<translation id="8910670906166981838">您已进入无痕模式</translation>
 <translation id="2684652081942622950">Brave 帐号</translation>
 <translation id="4102271590580840789">“管理付款方式”按钮，按 Enter 键即可在 Brave 设置中管理您的付款和信用卡信息</translation>
 <translation id="8918231688545606538">此网页可疑</translation>
+<translation id="8922013791253848639">在此网站上始终允许显示广告</translation>
 <translation id="892588693504540538">打孔（右上角）</translation>
 <translation id="7757992844965332255">要将此卡的信息保存到您的 Brave 帐号吗？</translation>
 <translation id="8932102934695377596">您的时钟慢了</translation>
@@ -1958,6 +1987,7 @@
 <translation id="9183302530794969518">Brave 文档</translation>
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> 使用了不受支持的协议。</translation>
 <translation id="9191834167571392248">打孔（左下角）</translation>
+<translation id="9199905725844810519">打印功能已被禁用</translation>
 <translation id="9205078245616868884">您的数据已使用您的同步密码加密。输入该密码即可开始同步。</translation>
 <translation id="9207861905230894330">无法添加文章。</translation>
 <translation id="9213433120051936369">自定义外观</translation>
@@ -1970,6 +2000,7 @@
 <translation id="939736085109172342">新建文件夹</translation>
 <translation id="945855313015696284">请查看下面的信息，并删除所有无效卡片</translation>
 <translation id="950736567201356821">三孔（顶部）</translation>
+<translation id="951941430552851965">为了保护您屏幕上的内容，管理员已暂停屏幕截取功能。</translation>
 <translation id="961663415146723894">装订（底部）</translation>
 <translation id="962484866189421427">此内容可能会尝试安装欺骗性应用，而这些应用能够冒充其他内容或收集可用于对您进行跟踪的数据。<ph name="BEGIN_LINK"/>仍然显示<ph name="END_LINK"/></translation>
 <translation id="969892804517981540">正式版本</translation>

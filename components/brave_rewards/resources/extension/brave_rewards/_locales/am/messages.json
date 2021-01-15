@@ -636,11 +636,15 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "የ Brave ሽልማቶችን መጠቀም ይጀምሩ",
+    "message": "የ Brave ወሮታዎች ን መጠቀም ይጀምሩ",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "ፈጣን ጉብኝት ያድርጉ",
     "description": ""
   },
   "onboardingTerms": {
-    "message": "በመቀጠል እርስዎ በ $tos_link_begin$አገልግሎት ሁኔታዎች$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$ተስማምተዋል።",
+    "message": "በመቀጠል በ $tos_link_begin$የአገልግሎት ውሎች$tos_link_end$ እና$pp_link_begin$ ግላዊነት ፖሊሲ$pp_link_end$ ይስማማሉ።",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "ወደ ኋላ ተመለስ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "እስቲ ፈጣን ጉብኝት እናድርግ",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "ቀጥል",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "ተከናውኗል",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "ዝለል",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "ለአሁን ይዝለሉ",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "ወደ Brave ወሮታዎች እንኳን በደህና መጡ!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የይዘት ፈጣሪዎችን ለመደገፍ ቶከኖች ይሸልምዎታል።",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "ማስታወቂያዎች የት ይታያሉ?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "የ Brave የግል ማስታወቂያዎች እንደ መደበኛ ማሳወቂያ ይታያሉ። እነዚህን ማስታወቂያዎች ምን ያህል ጊዜ ማየት እንደሚፈልጉ በቅንብሮች ውስጥ ይቆጣጠራሉ።",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "ሽልማቶችን መቼ ይቀበላሉ",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "በዚህ ወሩ ውስጥ ከ Brave የግል ማስታወቂያዎች ያገኙዋቸው ምልክቶች በሚቀጥለው ወር 5ኛ ቀን ላይ ይደርስዎታል።",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "መልሶ መስጠት ያለ ምንም ጥረት ሁኗል",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "ፈጣሪዎች እንደ 'ትኩረት' የምንለካቸውን የተሳትፎ ደረጃዎችዎ ላይ በመመርኮዝ የቶክንዎን መዋጮ በራስ-ሰር አሠራር ይቀበላሉ።",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "ከ ጠቃሚ ምክሮች ጋር አመሰግናለሁ ይበሉ",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "ቲፕ መስጠት የሚወዱትን ይዘት ወይም ፈጣሪዎች በግል ለማበረታታት እና ለመደገፍ መንገድ ነው። ቲፕ መስጠትዎን ይቀጥሉ!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "በ ማስመሰያዎች ምን ማድረግ ይችላሉ?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "ቶክኖች ፈጣሪዎችን ከመደገፍ ባለፈ ጥቅም ላይ ሊውሉ ይችላሉ። ነጋዴዎች ሲመጡ ዲጂታል ይዘትን እና ሌሎች ሸቀጦችን መግዛት ይችላሉ።",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "ዎው፣ ሁላችሁም ተዘጋጅታችኋል!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave Rewards ን በመጠቀም ድሩ ለሁሉም ሰው የተሻለ ቦታ እንዲሆን እየረዱ ነው። እና ያ ግሩም ነው!",
+    "description": ""
   }
 }

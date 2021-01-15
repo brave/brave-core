@@ -324,7 +324,7 @@ hónapban...</translation>
 <translation id="7396366757003005317">Ujjlenyomat-vétel blokkolva (szigorú, néhány oldal összeomolhat)</translation>
 <translation id="700453611199558021">Ujjlenyomat letiltva (alap)</translation>
 <translation id="769702552748212954">Minden ujjlenyomat-beállítás engedélyezése</translation>
-<translation id="2888409909650566510">Reklámok és más ijesztő\ndolgok blokkolva</translation>
+<translation id="5142293891785304489">Követők, reklámok és\egyebek blokkolva</translation>
 <translation id="6930134873084561197">A weboldalak gyakran olyan sütiket és parancsfájlokat tartalmaznak, amelyek azonosítani akarnak téged vagy a készülékedet. Megpróbálják kideríteni, hogy ki vagy, és követik webes tevékenységedet minden oldalon\n\nA Brave letiltja ezeket a dolgokat, így követés nélkül böngészhetsz.</translation>
 <translation id="8553998445606452168">Bővebben a Brave Shieldsről</translation>
 <translation id="8912304686498704084">FEL</translation>
@@ -436,22 +436,22 @@ hónapban...</translation>
 <translation id="8804164990146287819">Adatvédelmi szabályzat</translation>
 <translation id="6318696841371191107">Nézzen körül</translation>
 <translation id="7930505144430343145">Üdvözli a Brave Rewards!</translation>
-<translation id="7909111626803226907">A Brave privát hirdetések tokenekkel jutalmaznak meg, amikkel, a hagyományos hirdetésekkel ellentétben, a tartalomkészítőket támogathatja, és közben nem fedi fel személyes adatait.</translation>
+<translation id="3477340970981564961">A Brave privát hirdetések tokenekkel jutalmaznak meg, amivel a hagyományos reklámokkal ellentétben, támogathatod a tartalomkészítőket, és közben személyes adataid rejtve maradnak.</translation>
 <translation id="6973095375773523904">Hol jelennek meg a hirdetések?</translation>
-<translation id="3867028444168159102">A Brave privát hirdetések rendes értesítésként jelennek meg. A hirdetések gyakorisága a beállításokban vezérelhető.</translation>
+<translation id="7556325460112047619">A Brave privát hirdetések szokványos értesítésként jelennek meg. A beállításokban megszabhatod, hogy milyen gyakran jelenjenek meg.</translation>
 <translation id="5816125157889950051">Mikor kapja meg a jutalmakat</translation>
-<translation id="4649471244559455723">A hónap folyamán Brave hirdetésekkel szerzett tokenek a következő hónap 5-én érkeznek meg.</translation>
+<translation id="310863932297733723">Az aktuális hónap folyamán a Brave privát hirdetésektől szerzett tokenjeidet a következő hónap 5-én kapod meg.</translation>
 <translation id="7712287524451429139">Visszaadás erőfeszítés nélkül</translation>
 <translation id="105037569026952831">Az alkotók automatikusan megkapják a token hozzájárulásait az elkötelezettségi szintek alapján, amit ‘Figyelemben ’ mérünk.</translation>
 <translation id="5323267338679539010">Fejezze ki háláját borravalókkal</translation>
-<translation id="6042317056594735519">A borravalókkal személyesen bátoríthatja és támogathatja a kedvelt tartalomkészítőket. Jattoljon!</translation>
+<translation id="6730444165801605682">A jattolás egy módszer, amivel személyesen bátoríthatod és támogathatod azokat a tartalmakat vagy alkotókat, akiket nagyon kedvelsz. Kezdj el jattolni!</translation>
 <translation id="7509452925943421624">Mit tehet a tokenekkel?</translation>
-<translation id="7059157883171259940">A tokeneket az alkotók támogatása mellet, digitális termékek és ajándékkártyák vásárlására is fordíthatja pénzfisszafizetési bónusszal.</translation>
+<translation id="5876169128756792273">A tokeneket nem csak az alkotók támogatására használhatod. Digitális tartalmakat és egyéb javakat is vásárolhatsz, amint kereskedők csatlakoznak hozzánk.</translation>
 <translation id="1402530520078693620">Végül, végezzük el az alapbeállításokat</translation>
 <translation id="3494356595346329740">Ez később megváltoztatható.</translation>
 <translation id="6462814326662189004">Milyen gyakran szeretne hirdetéseket látni?\n(Hirdetés/óra)</translation>
 <translation id="2134244432345596331">Mennyi támogatást szeretne adni kedvenc alkotóinak?\n(a hirdetései bevételéből)</translation>
-<translation id="7456161272236175794">JUHÉÉ!\nKész.</translation>
+<translation id="827315274423079662">Juhé, készen állsz!</translation>
 <translation id="3895246934788932488">A Brave Rewardsot használva vigyáz az adataira, és mindenki számára jobb hellyé teszi a netet. És ez fantasztikus!</translation>
 <translation id="5705882733397021510">Vissza</translation>
 <translation id="5140321319944305531">Tegyünk egy gyors bemutatót</translation>
@@ -464,4 +464,21 @@ hónapban...</translation>
 <translation id="3604285424134705930">Átváltott <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Ellenőrizze a hálózati kapcsolatot.</translation>
 <translation id="7889432931837317731">Automatikus megnyitás, ha lehetséges</translation>
+<translation id="8967385052772844086">Teljes adatvédelmi jelentés megtekintése</translation>
+<translation id="6864343534748973390">Legnépszerűbb</translation>
+<translation id="1622983732360473885">Támogatja a Brave-et</translation>
+<translation id="4608192160278975831">Privát és követő nélküli</translation>
+<translation id="7208522820527289601">Privát és követés nélküli, EU alapú</translation>
+<translation id="1161008391729450974">Google eredmények követők nélkül</translation>
+<translation id="7320542277711359296">Második legnépszerűbb</translation>
+<translation id="8295049095570748497">Egy vezető keresőmotor Oroszországban</translation>
+<translation id="2642661895835126239">Fákat ültet, berlini székhelyű</translation>
+<translation id="1410130669636877548">Egyes keresőmotorok jobban védik adataidat internetes keresés közben.</translation>
+<translation id="1078265935778232285">Üdvözöljük a Brave böngészőben</translation>
+<translation id="6824713633331856331">Segíts fejlődnünk névtelenül</translation>
+<translation id="6116685031674149112">A Brave vigyáz adataidra, és\nhálás, hogy elfogadtad a következőket:</translation>
+<translation id="3971666849661839619">Segíthetsz a Brave fejlesztésében összeomlási jelentések és teljesen névtelen <ph name="PRIVÁT_TERMÉKELEMZÉSEKP"/> küldésével</translation>
+<translation id="6478996494082389936">privát termékelemzés.</translation>
+<translation id="5187052478998910855">Kell egy kis frissítés a Rewardsot illetően?</translation>
+<translation id="8622329973403382303">Nézz meg egy gyors bemutatót, hogy tisztázódjon, hogyan működik, és Rewards rocksztárként jegyezhessen fel a történelem!</translation>
 </translationbundle>

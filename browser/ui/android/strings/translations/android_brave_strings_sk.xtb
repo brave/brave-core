@@ -322,7 +322,7 @@
 <translation id="7396366757003005317">Odtlačky prstov blokované (striktne, môžu poškodiť stránky)</translation>
 <translation id="700453611199558021">Odtlačok prsta blokovaný (štandard)</translation>
 <translation id="769702552748212954">Povoliť všetky odtlačky prstov</translation>
-<translation id="2888409909650566510">Reklamy a ďalšie hrozné\nveci blokované</translation>
+<translation id="5142293891785304489">Sledovacie zariadenia, reklamy a blokované</translation>
 <translation id="6930134873084561197">Webové stránky často obsahujú súbory cookie a skripty, ktoré sa snažia identifikovať vás a vaše zariadenie. Chcú zistiť, kto ste, a sledovať čo robíte na každej stránke naprieč webom.\n\nBrave tieto veci blokuje, takže môžete prehliadať bez toho, aby ste boli všade prenasledovaní.</translation>
 <translation id="8553998445606452168">O Brave štítoch</translation>
 <translation id="8912304686498704084">HORE</translation>
@@ -434,22 +434,22 @@
 <translation id="8804164990146287819">Zásady ochrany osobních údajů</translation>
 <translation id="6318696841371191107">Urobte si rýchlu prehliadku</translation>
 <translation id="7930505144430343145">Vitajte v Odmenách Brave!</translation>
-<translation id="7909111626803226907">Súkromné reklamy Brave vás odmeňujú tokenmi na podporu tvorcov obsahu na rozdiel od tradičných reklám, a to všetko pri zachovaní súkromia vašich osobných údajov.</translation>
+<translation id="3477340970981564961">Súkromné reklamy Brave vás odmenia žetónmi na podporu tvorcov obsahu na rozdiel od tradičných reklám, a to všetko pri zachovaní súkromia vašich osobných údajov.</translation>
 <translation id="6973095375773523904">Kde sa zobrazujú reklamy?</translation>
-<translation id="3867028444168159102">Súkromné reklamy Brave sa zobrazia ako bežné upozornenie. V nastaveniach môžete určiť, ako často sa tieto reklamy zobrazia.</translation>
+<translation id="7556325460112047619">Súkromné reklamy Brave sa zobrazia ako bežné upozornenie. V nastaveniach môžete určiť, ako často sa tieto reklamy zobrazia.</translation>
 <translation id="5816125157889950051">Kedy dostávate odmeny</translation>
-<translation id="4649471244559455723">Vaše získané tokeny z reklám Brave v priebehu aktuálneho mesiaca dorazia 5. deň nasledujúceho mesiaca.</translation>
+<translation id="310863932297733723">Vaše získané žetóny zo služby Súkromné reklamy Brave za celý aktuálny mesiac dorazia 5. deň nasledujúceho mesiaca.</translation>
 <translation id="7712287524451429139">Dávajte naspäť bez akejkoľvek námahy</translation>
 <translation id="105037569026952831">Autori dostávajú vaše tokenové príspevky automaticky na základe vašich úrovní zapojenia, ktoré meriame ako ‘pozornosť’.</translation>
 <translation id="5323267338679539010">Poďakujte sa tringeltami</translation>
-<translation id="6042317056594735519">Dávanie tringeltov je spôsob, ako osobne povzbudiť a podporiť obsah alebo autorov, ktorých máte radi. Získavajte tringelty!</translation>
+<translation id="6730444165801605682">Dávanie tipov je spôsob, ako osobne povzbudiť a podporiť obsah alebo autorov, ktorých máte úplne radi. Získajte tipy!</translation>
 <translation id="7509452925943421624">Čo môžete robiť so žetónmi?</translation>
-<translation id="7059157883171259940">Tokeny je možné používať nad rámec podpory tvorcov. Môžete si kúpiť digitálny tovar a darčekové karty s bonusom cashback.</translation>
+<translation id="5876169128756792273">Žetóny je možné používať nad rámec podpory tvorcov. Keď pribudnú obchodníci, môžete si kúpiť digitálny obsah a ďalší tovar.</translation>
 <translation id="1402530520078693620">Na záver si povieme, ako nastaviť základné nastavenia</translation>
 <translation id="3494356595346329740">Toto môžete neskôr zmeniť.</translation>
 <translation id="6462814326662189004">Ako často chcete vidieť reklamy?\n(Reklamy za hodinu)</translation>
 <translation id="2134244432345596331">Koľko podpory chcete poskytnúť svojim obľúbeným autorom?\n(z vašich výnosov z reklám)</translation>
-<translation id="7456161272236175794">WOOOOHOOOOO!\nHotovo.</translation>
+<translation id="827315274423079662">Juchúúú, všetko je hotové!</translation>
 <translation id="3895246934788932488">Používaním služby Odmeny Brave chránite svoje súkromie a pomáhate robiť z webu lepšie miesto pre všetkých. A to je úžasné!</translation>
 <translation id="5705882733397021510">Ísť naspäť</translation>
 <translation id="5140321319944305531">Poďme na rýchlu prehliadku</translation>
@@ -462,4 +462,21 @@
 <translation id="3604285424134705930">Previedli ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Skontrolujte svoje sieťové pripojenie.</translation>
 <translation id="7889432931837317731">Ak je to možné, automaticky sa otvorí</translation>
+<translation id="8967385052772844086">Zobraziť celú správu o ochrane osobných údajov</translation>
+<translation id="6864343534748973390">Najpopulárnejšie</translation>
+<translation id="1622983732360473885">Podporuje Brave</translation>
+<translation id="4608192160278975831">Súkromné a bez sledovania</translation>
+<translation id="7208522820527289601">Súkromné a bez sledovania, so sídlom v EÚ</translation>
+<translation id="1161008391729450974">Výsledky Google bez sledovacích nástrojov</translation>
+<translation id="7320542277711359296">Druhé najpopulárnejšie</translation>
+<translation id="8295049095570748497">Popredný vyhľadávač v Rusku</translation>
+<translation id="2642661895835126239">Zasaďte stromy, so sídlom v Berlíne</translation>
+<translation id="1410130669636877548">Niektoré vyhľadávače pri prehliadaní webu chránia vaše súkromie lepšie ako iné.</translation>
+<translation id="1078265935778232285">Vitajte v prehliadači Brave</translation>
+<translation id="6824713633331856331">Pomôžte nám učiť sa anonymne</translation>
+<translation id="6116685031674149112">Brave chráni vaše súkromie a oceňuje váš súhlas s nasledovným:</translation>
+<translation id="3971666849661839619">Pomôžte vylepšiť Brave zasielaním správ o zlyhaní a úplne anonymizovanou, <ph name="ANALÝZOU_SÚKROMNÉHO_PRODUKTU"/></translation>
+<translation id="6478996494082389936">súkromné analýzy produktov.</translation>
+<translation id="5187052478998910855">Potrebujete obnovenia na Odmeny?</translation>
+<translation id="8622329973403382303">Urobte si krátku prehliadku, aby ste si osvojili, ako funguje vstup do histórie ako rocková hviezda Odmien!</translation>
 </translationbundle>

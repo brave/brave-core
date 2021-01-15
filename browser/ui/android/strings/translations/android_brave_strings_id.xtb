@@ -327,7 +327,7 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="7396366757003005317">Penyidikjari diblokir(ketat, dapat memacetkan situs)</translation>
 <translation id="700453611199558021">Penyidikjari diblokir(standar)</translation>
 <translation id="769702552748212954">Izinkan semua pemindaian sidik jari</translation>
-<translation id="2888409909650566510">Iklan dan hal mencurigakan\nlainnya diblokir</translation>
+<translation id="5142293891785304489">Pelacak, iklan, dan\nlainnya diblokir</translation>
 <translation id="6930134873084561197">Situs kerap memiliki cookie dan skrip yang berupaya mengidentifikasi Anda dan perangkat Anda. Mereka ingin mengetahui siapa Anda dan mengikuti Anda ke seantero web - melacak aktivitas Anda di setiap situs.\n\nBrave memblokir hal-hal ini agar Anda dapat meramban tanpa diikuti.</translation>
 <translation id="8553998445606452168">Seputar Brave Shields</translation>
 <translation id="8912304686498704084">PASANG</translation>
@@ -439,22 +439,22 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="8804164990146287819">Kebijakan Privasi</translation>
 <translation id="6318696841371191107">Lihat tur singkat</translation>
 <translation id="7930505144430343145">Selamat datang di Brave Rewards!</translation>
-<translation id="7909111626803226907">Iklan pribadi Brave memberi Anda token untuk mendukung pembuat konten sangat berbeda dari iklan tradisional, dengan tetap menjaga kerahasiaan informasi pribadi Anda.</translation>
+<translation id="3477340970981564961">Berbeda dengan iklan tradisional, Iklan Privat Brave menghadiahi Anda token untuk mendukung kreator konten, sembari menjaga informasi personal Anda tetap privat.</translation>
 <translation id="6973095375773523904">Di mana iklan muncul?</translation>
-<translation id="3867028444168159102">Iklan pribadi Brave akan muncul sebagai notifikasi biasa. Anda mengontrol seberapa sering Anda melihat iklan di pengaturan.</translation>
+<translation id="7556325460112047619">Iklan Privat Brave akan muncul sebagai pemberitahuan normal. Anda mengontrol seberapa sering Anda melihat iklan-iklan ini di pengaturan.</translation>
 <translation id="5816125157889950051">Kapan Anda menerima imbalan</translation>
-<translation id="4649471244559455723">Token yang Anda peroleh dari iklan Brave selama bulan ini akan tiba pada tanggal 5 bulan depan.</translation>
+<translation id="310863932297733723">Token yang Anda peroleh dari Iklan Privat Brave sepanjang bulan ini akan tiba tanggal 5 bulan berikutnya.</translation>
 <translation id="7712287524451429139">Jadi mudah untuk memberi balik</translation>
 <translation id="105037569026952831">Pencipta menerima kontribusi token Anda secara otomatis berdasarkan tingkat interaksi Anda yang kami ukur sebagai ‘Perhatian’.</translation>
 <translation id="5323267338679539010">Ucapkan terima kasih dengan tip</translation>
-<translation id="6042317056594735519">Memberi tip adalah cara untuk mendorong dan mendukung konten atau kreator yang Anda sukai. Ayo berikan tip!</translation>
+<translation id="6730444165801605682">Memberi tip adalah cara yang personal untuk mendorong dan mendukung konten atau kreator yang Anda sukai. Selamat memberi!</translation>
 <translation id="7509452925943421624">Apa yang dapat Anda lakukan dengan token?</translation>
-<translation id="7059157883171259940">Token dapat digunakan tidak hanya untuk mendukung pencipta konten. Anda dapat membeli barang digital dan kartu hadiah dengan bonus rabat tunai.</translation>
+<translation id="5876169128756792273">Token dapat digunakan selain untuk mendukung kreator. Anda dapat membeli konten digital dan barang-barang lainnya di merchant.</translation>
 <translation id="1402530520078693620">Terakhir, mari kita siapkan setelan dasar</translation>
 <translation id="3494356595346329740">Anda bisa mengubahnya nanti.</translation>
 <translation id="6462814326662189004">Seberapa sering Anda ingin melihat iklan?\n(Iklan per jam)</translation>
 <translation id="2134244432345596331">Berapa banyak dukungan yang ingin Anda berikan kepada pembuat konten favorit Anda?\n(Dari penghasilan iklan Anda)</translation>
-<translation id="7456161272236175794">WOOOOOOOOOW!\nAnda selesai.</translation>
+<translation id="827315274423079662">Cihuy, Anda kini siap!</translation>
 <translation id="3895246934788932488">Dengan menggunakan Brave Rewards, Anda melindungi privasi Anda dan membantu membuat web jadi tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="5140321319944305531">Ayo Mengikuti Tur Cepat</translation>
@@ -467,4 +467,21 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="3604285424134705930">Anda mengonversi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ke <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Harap periksa koneksi jaringan Anda.</translation>
 <translation id="7889432931837317731">Dibuka secara otomatis jika memungkinkan</translation>
+<translation id="8967385052772844086">Tampilkan Laporan Privasi penuh</translation>
+<translation id="6864343534748973390">Terpopuler</translation>
+<translation id="1622983732360473885">Mendukung Brave</translation>
+<translation id="4608192160278975831">Privat dan tanpa pelacakan</translation>
+<translation id="7208522820527289601">Privat dan tanpa pelacakan, berbasis di Eropa</translation>
+<translation id="1161008391729450974">Hasil Google tanpa pelacak</translation>
+<translation id="7320542277711359296">Terpopuler kedua</translation>
+<translation id="8295049095570748497">Mesin pencarian ternama di Rusia</translation>
+<translation id="2642661895835126239">Menanam pohon, berbasis di Berlin</translation>
+<translation id="1410130669636877548">Sejumlah mesin pencarian melindungi privasi lebih baik dibanding lainnya saat Anda mencari di web.</translation>
+<translation id="1078265935778232285">Selamat Datang di Peramban Brave</translation>
+<translation id="6824713633331856331">Bantu kami belajar secara anonim</translation>
+<translation id="6116685031674149112">Brave melindungi privasi dan\nmenghargai persetujuan Anda untuk hal-hal berikut:</translation>
+<translation id="3971666849661839619">Bantu tingkatkan Brave dengan mengirim laporan crash dan teranonimisasi sepenuhnya, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">analitik produk privat.</translation>
+<translation id="5187052478998910855">Perlu penyegaran tentang Reward?</translation>
+<translation id="8622329973403382303">Ikuti tur singkat untuk mempelajari kembali cara menjadi rockstar Reward legendaris!</translation>
 </translationbundle>
