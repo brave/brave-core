@@ -221,6 +221,7 @@ source_set("ui") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_wallet/buildflags:buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
