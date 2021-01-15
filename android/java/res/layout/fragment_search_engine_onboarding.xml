@@ -9,12 +9,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
     android:background="@color/onboarding_bg_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:paddingTop="36dp"
+        android:paddingBottom="16dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -23,7 +27,6 @@
             android:gravity="center"
             android:text="@string/choose_default_search_engine"
             android:lineSpacingMultiplier="1.2"
-            android:layout_marginTop="36dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:textSize="20sp"
@@ -70,7 +73,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/orange_rounded_button"
             android:text="@string/save"
             android:textAllCaps="false"
