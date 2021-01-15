@@ -184,7 +184,7 @@ int OnBeforeStartTransaction_SiteHacksWork(
       !brave_shields::IsSameOriginNavigation(ctx->redirect_source,
                                              ctx->request_url)) {
     // This is a hack that notifies the network layer.
-    ctx->removed_headers.insert("X-Brave-Cap-Referer");
+    ctx->removed_headers.insert("X-Brave-Cap-Referrer");
   }
   return net::OK;
 }

@@ -31,11 +31,10 @@ void RedirectUtil::UpdateHttpRequest(
                                  should_clear_upload);
   // Hack for capping referrers at the network layer.
   if (removed_headers) {
-    if (base::Contains(*removed_headers, "X-Brave-Cap-Referer")) {
+    if (base::Contains(*removed_headers, "X-Brave-Cap-Referrer")) {
       GURL capped_referrer = URLRequestJob::ComputeReferrerForPolicy(
           ReferrerPolicy::REDUCE_GRANULARITY_ON_TRANSITION_CROSS_ORIGIN,
-          GURL(redirect_info.new_referrer),
-          redirect_info.new_url);
+          GURL(redirect_info.new_referrer), redirect_info.new_url);
       const_cast<RedirectInfo&>(redirect_info).new_referrer =
           capped_referrer.spec();
     }

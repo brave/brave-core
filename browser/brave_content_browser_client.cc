@@ -367,9 +367,9 @@ void BraveContentBrowserClient::MaybeHideReferrer(
       document_url);
 
   content::Referrer new_referrer;
-  if (brave_shields::MaybeChangeReferrer(
-          allow_referrers, shields_up, (*referrer)->url, request_url,
-          &new_referrer)) {
+  if (brave_shields::MaybeChangeReferrer(allow_referrers, shields_up,
+                                         (*referrer)->url, request_url,
+                                         &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }
