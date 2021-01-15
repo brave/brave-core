@@ -661,7 +661,7 @@ void AdsServiceImpl::OnInitialize(
 
   is_initialized_ = true;
 
-  if (!brave::IsDevOrCanaryBuild()) {
+  if (!brave::IsNightlyOrDeveloperBuild()) {
     SetAdsServiceForNotificationHandler();
   }
 
@@ -1216,10 +1216,6 @@ void AdsServiceImpl::OnGetAdsHistory(
 }
 
 bool AdsServiceImpl::CanShowBackgroundNotifications() const {
-  if (brave::IsDevOrCanaryBuild()) {
-    return true;
-  }
-
   return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
@@ -1732,7 +1728,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 // types of notification.h
 void AdsServiceImpl::ShowNotification(
     const ads::AdNotificationInfo& ad_notification) {
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     auto notification = CreateAdNotification(ad_notification);
 
     std::unique_ptr<PlatformBridge> platform_bridge =
@@ -1751,7 +1747,7 @@ void AdsServiceImpl::ShowNotification(
 void AdsServiceImpl::StartNotificationTimeoutTimer(
     const std::string& uuid) {
 #if defined(OS_ANDROID)
-  if (!brave::IsDevOrCanaryBuild()) {
+  if (!brave::IsNightlyOrDeveloperBuild()) {
     return;
   }
 #endif
@@ -1792,7 +1788,7 @@ bool AdsServiceImpl::ShouldShowNotifications() {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& uuid) {
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     std::unique_ptr<PlatformBridge>
       platform_bridge = std::make_unique<PlatformBridge>(profile_);
     platform_bridge->Close(profile_, uuid);
