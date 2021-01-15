@@ -50,10 +50,10 @@ ContentSettingsPattern SecondaryUrlToPattern(const GURL& gurl) {
     return ContentSettingsPattern::FromString("https://firstParty/*");
 }
 
-void InitializeAllShieldSettingsInDictionary(
+std::unique_ptr<prefs::DictionaryValueUpdate>
+InitializeCommonSettingsAndGetPerResourceDictionary(
     prefs::DictionaryValueUpdate* dictionary,
-    const base::Time& last_modified_time,
-    const int& value) {
+    const base::Time& last_modified_time) {
   const uint64_t last_modified_time_in_ms =
       last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
 
@@ -64,10 +64,17 @@ void InitializeAllShieldSettingsInDictionary(
       kSessionModelPath,
       static_cast<int>(content_settings::SessionModel::Durable));
 
-  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
-      dictionary->SetDictionaryWithoutPathExpansion(
-          kPerResourcePath, std::make_unique<base::DictionaryValue>());
+  return dictionary->SetDictionaryWithoutPathExpansion(
+      kPerResourcePath, std::make_unique<base::DictionaryValue>());
+}
 
+void InitializeAllShieldSettingsInDictionary(
+    prefs::DictionaryValueUpdate* dictionary,
+    const base::Time& last_modified_time,
+    int value) {
+  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
+      InitializeCommonSettingsAndGetPerResourceDictionary(dictionary,
+                                                          last_modified_time);
   per_resource_dict->SetInteger(brave_shields::kAds, value);
   per_resource_dict->SetInteger(brave_shields::kCookies, value);
   per_resource_dict->SetInteger(brave_shields::kCosmeticFiltering, value);
@@ -80,29 +87,27 @@ void InitializeAllShieldSettingsInDictionary(
 void InitializeBraveShieldsSettingInDictionary(
     prefs::DictionaryValueUpdate* dictionary,
     const base::Time& last_modified_time,
-    const int& value) {
-  const uint64_t last_modified_time_in_ms =
-      last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
+    int value) {
+  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
+      InitializeCommonSettingsAndGetPerResourceDictionary(dictionary,
+                                                          last_modified_time);
+  per_resource_dict->SetInteger(brave_shields::kBraveShields, value);
+}
 
-  dictionary->SetInteger(kExpirationPath, 0);
-  dictionary->SetString(kLastModifiedPath,
-                        base::NumberToString(last_modified_time_in_ms));
-  dictionary->SetInteger(
-      kSessionModelPath,
-      static_cast<int>(content_settings::SessionModel::Durable));
-
-  std::unique_ptr<prefs::DictionaryValueUpdate> brave_per_resource_dict =
-      dictionary->SetDictionaryWithoutPathExpansion(
-          kPerResourcePath, std::make_unique<base::DictionaryValue>());
-
-  brave_per_resource_dict->SetInteger(brave_shields::kBraveShields, value);
+void InitializeUnsupportedShieldSettingInDictionary(
+    prefs::DictionaryValueUpdate* dictionary,
+    const base::Time& last_modified_time) {
+  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
+      InitializeCommonSettingsAndGetPerResourceDictionary(dictionary,
+                                                          last_modified_time);
+  per_resource_dict->SetInteger("unknown_setting", 1);
 }
 
 void CheckMigrationFromResourceIdentifierForDictionary(
     const base::DictionaryValue* dictionary,
     const std::string& patterns_string,
     const base::Time& expected_last_modified,
-    const int& expected_setting_value) {
+    int expected_setting_value) {
   const base::DictionaryValue* settings_dict = nullptr;
   dictionary->GetDictionaryWithoutPathExpansion(patterns_string,
                                                 &settings_dict);
@@ -466,6 +471,54 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
           brave_shields_dict, "www.example.com,*", expected_last_modified,
           expected_example_com_settings_value);
     }
+  }
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
+  PrefService* pref_service = testing_profile()->GetPrefs();
+  BravePrefProvider provider(pref_service, false /* incognito */,
+                             true /* store_last_modified */,
+                             false /* restore_session */);
+
+  // Manually write invalid settings under the PLUGINS type using the no longer
+  // existing ResourceIdentifier names, to attempt the migration.
+  prefs::ScopedDictionaryPrefUpdate plugins_pref_update(
+      pref_service, kUserProfilePluginsPath);
+  std::unique_ptr<prefs::DictionaryValueUpdate> plugins_dictionary =
+      plugins_pref_update.Get();
+  EXPECT_NE(plugins_dictionary, nullptr);
+
+  // Seed both global and per-site shield settings preferences using unsupported
+  // names, so that we can test that Brave doesn't crash while attempting the
+  // migration and simply ignore those unsupported names instead.
+  //
+  // For a list of supported names, see |kBraveContentSettingstypes| inside the
+  // components/content_settings/core/browser/content_settings_registry.cc
+  // override, in the chromium_src/ directory.
+  std::unique_ptr<prefs::DictionaryValueUpdate> global_settings_dict =
+      plugins_dictionary->SetDictionaryWithoutPathExpansion(
+          "*,*", std::make_unique<base::DictionaryValue>());
+  InitializeUnsupportedShieldSettingInDictionary(global_settings_dict.get(),
+                                                 base::Time::Now());
+  std::unique_ptr<prefs::DictionaryValueUpdate> example_settings_dict =
+      plugins_dictionary->SetDictionaryWithoutPathExpansion(
+          "www.example.com,*", std::make_unique<base::DictionaryValue>());
+  InitializeUnsupportedShieldSettingInDictionary(example_settings_dict.get(),
+                                                 base::Time::Now());
+
+  // Doing the migration below should NOT get a crash due to invalid settings.
+  provider.MigrateShieldsSettingsFromResourceIds();
+
+  // New Shields-specific content settings types should have been created due to
+  // the migration, but all should be empty since only invalid data was fed.
+  for (auto content_type : GetShieldsContentSettingsTypes()) {
+    const base::DictionaryValue* brave_shields_dict =
+        pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
+            GetShieldsContentTypeName(content_type)));
+    EXPECT_NE(brave_shields_dict, nullptr);
+    EXPECT_TRUE(brave_shields_dict->empty());
   }
 
   provider.ShutdownOnUIThread();

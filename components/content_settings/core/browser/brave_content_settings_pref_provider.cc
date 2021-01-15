@@ -223,15 +223,24 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
       for (base::DictionaryValue::Iterator j(*resource_dictionary);
            !j.IsAtEnd(); j.Advance()) {
         const std::string& resource_identifier(j.key());
+        std::string shields_preference_name;
 
-        if (resource_identifier == brave_shields::kObsoleteFingerprinting) {
-          // Just drop, because these preferences were not effective anyway.
+        // For "ads" and "cookies" we need to adapt the name to the new one,
+        // otherwise it will refer to upstream's "ads" and "cookies" settings.
+        if (resource_identifier == brave_shields::kObsoleteAds)
+          shields_preference_name = brave_shields::kAds;
+        else if (resource_identifier == brave_shields::kObsoleteCookies)
+          shields_preference_name = brave_shields::kCookies;
+        else
+          shields_preference_name = resource_identifier;
+
+        // Protect against non registered paths (unlikely, but possible).
+        if (!IsShieldsContentSettingsTypeName(shields_preference_name))
           continue;
-        }
 
         // Drop a "global" value of brave shields, that actually shouldn't exist
         // at all since we don't have any global toggle for this.
-        if (resource_identifier == brave_shields::kBraveShields &&
+        if (shields_preference_name == brave_shields::kBraveShields &&
             patterns_string == "*,*") {
           continue;
         }
@@ -241,19 +250,9 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
         DCHECK(is_integer);
         DCHECK_NE(CONTENT_SETTING_DEFAULT, setting);
 
-        // For "ads" and "cookies" we need to adapt the name to the new one,
-        // otherwise it will refer to upstream's "ads" and "cookies" settings.
-        std::string actual_name;
-        if (resource_identifier == brave_shields::kObsoleteAds)
-          actual_name = brave_shields::kAds;
-        else if (resource_identifier == brave_shields::kObsoleteCookies)
-          actual_name = brave_shields::kCookies;
-        else
-          actual_name = resource_identifier;
-
         MigrateShieldsSettingsFromResourceIdsForOneType(
-            GetShieldsSettingUserPrefsPath(actual_name), patterns_string,
-            expiration, last_modified, session_model, setting);
+            GetShieldsSettingUserPrefsPath(shields_preference_name),
+            patterns_string, expiration, last_modified, session_model, setting);
       }
     }
   }
@@ -263,13 +262,17 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
-    const std::string& preference_name,
+    const std::string& preference_path,
     const std::string& patterns_string,
     const base::Time& expiration,
     const base::Time& last_modified,
     SessionModel session_model,
     int setting) {
-  prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_name);
+  // Non-supported preference paths should have been filtered out already.
+  CHECK(prefs_->HasPrefPath(preference_path))
+      << "Attempted to migrate unsupported shields setting.";
+
+  prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_path);
   std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings = update.Get();
 
   std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings_dictionary;
