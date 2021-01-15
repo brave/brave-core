@@ -5,7 +5,7 @@
 
 function getCryptoDotComTickerInfo (asset: string) {
   return new Promise((resolve: Function) => {
-    chrome.cryptoDotCom.getTickerInfo(`${asset}_USDT`, (resp: any) => {
+    chrome.cryptoDotCom.getTickerInfo(`${asset}`, (resp: any) => {
       resolve({ [asset]: resp })
     })
   })

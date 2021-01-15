@@ -16,6 +16,9 @@ function performSideEffect (fn: () => void): void {
 }
 
 function reducePairs (rawPairs: SupportedPair[]) {
+  if (!rawPairs || !rawPairs.length) {
+    return {}
+  }
   return rawPairs.reduce((pairs: object, currPair: SupportedPair) => {
     const { base, pair } = currPair
     pairs[base] = pairs[base]
@@ -31,30 +34,61 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
   switch (action.type) {
     case types.ON_BTC_PRICE_OPT_IN:
       state = { ...state }
-      state.cryptoDotComState.optInBTCPrice = true
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        optInBTCPrice: true,
+        fetchStatus: 'pending'
+      }
+      performSideEffect(async function () {
+        chrome.cryptoDotCom.onInteraction()
+      })
       break
 
-    case types.MARKET_DATA_UPDATED:
+    case types.MARKETS_REQUESTED:
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
+        fetchStatus: 'pending',
+        optInMarkets: true
+      }
+      performSideEffect(async function () {
+        chrome.cryptoDotCom.onInteraction()
+      })
+      break
+
+    case types.MARKETS_RECEIVED:
+      state = { ...state }
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        fetchStatus: 'completed',
         tickerPrices: {
           ...state.cryptoDotComState.tickerPrices,
           ...payload.tickerPrices
         },
-        losersGainers: payload.losersGainers
+        losersGainers: payload.losersGainers,
+        tradingPairs: payload.pairs || state.cryptoDotComState.tradingPairs
       }
       break
 
-    case types.SET_ASSET_DATA:
+    case types.ALL_ASSETS_DETAILS_REQUESTED:
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
+        fetchStatus: 'pending'
+      }
+      break
+
+    case types.ALL_ASSETS_DETAILS_RECEIVED:
+      state = { ...state }
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        fetchStatus: 'completed',
         charts: {
           ...state.cryptoDotComState.charts,
           ...payload.charts
         },
-        supportedPairs: reducePairs(payload.pairs)
+        supportedPairs: reducePairs(payload.pairs) || {},
+        tradingPairs: payload.pairs
       }
       break
 
@@ -62,6 +96,15 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       state = { ...state }
       state.cryptoDotComState = {
         ...state.cryptoDotComState,
+        fetchStatus: 'refreshing'
+      }
+      break
+
+    case types.REFRESHED_DATA_RECEIVED:
+      state = { ...state }
+      state.cryptoDotComState = {
+        ...state.cryptoDotComState,
+        fetchStatus: 'completed',
         tickerPrices: {
           ...state.cryptoDotComState.tickerPrices,
           ...payload.tickerPrices
@@ -70,7 +113,9 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
           ...state.cryptoDotComState.charts,
           ...payload.charts
         },
-        losersGainers: payload.losersGainers
+        losersGainers: payload.losersGainers,
+        supportedPairs: payload.pairs ? reducePairs(payload.pairs) : state.cryptoDotComState.supportedPairs,
+        tradingPairs: payload.pairs ? payload.pairs : state.cryptoDotComState.tradingPairs
       }
       break
 
@@ -80,23 +125,9 @@ const cryptoDotComReducer: Reducer<NewTab.State | undefined> = (state: NewTab.St
       })
       break
 
-    case types.ON_INTERACTION:
-      performSideEffect(async function () {
-        chrome.cryptoDotCom.onInteraction()
-      })
-      break
-
     case types.ON_MARKETS_OPT_IN:
       state = { ...state }
       state.cryptoDotComState.optInMarkets = payload.show
-      break
-
-    case types.SET_SUPPORTED_PAIRS:
-      state = { ...state }
-      state.cryptoDotComState = {
-        ...state.cryptoDotComState,
-        supportedPairs: reducePairs(payload.pairs)
-      }
       break
 
     default:

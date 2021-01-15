@@ -3,11 +3,28 @@
   <if expr="crypto_dot_com_enabled">
     <message name="IDS_SETTINGS_NEW_TAB_CRYPTO_DOT_COM" desc="The label for Crypto.com show/hide feature toggle">Crypto.com</message>
     <message name="IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC" desc="crypto.com widget description">View markets and buy crypto from crypto.com.</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_TRADE_BTC" desc="">Trade BTC</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_CONNECT" desc="">Connect to crypto.com</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE" desc="">Show Price</message>
-    <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE" desc="">Get 2% bonus on deposits</message>
-    <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_TWO" desc="">Stop paying trading fees</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE" desc="">Connect to Crypto.com to view buy and trade crypto, view account balance and upcoming events.</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC" desc="">Buy Bitcoin</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_VIEW_MARKETS" desc="">View Crypto.com Markets</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_TOP" desc="">Top</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_EVENTS" desc="">Events</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_COPY_ADDRESS" desc="">Copy Address</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_HEADING" desc="">Send only {{currency}} to this deposit address.</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_SEND_CAVEAT_BODY" desc="">Sending coin or token other than {{currency}} to this address may result in the loss of your deposit.</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_TRADE_TO" desc="">Trade ({{fromCurrency}} to {{toCurrency}})</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM" desc="">Confirm</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_CONFIRM_ORDER" desc="">Confirm Order</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_PRICE" desc="">Approx Market Price</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_RECEIVED" desc="">Approx Total Received</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_TOTAL_SPENT" desc="">Approx Total Spent</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_APPROX_FOOTNOTE" desc="">Market Price is determined at the time of Order Confirmation</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_AVAILABLE_BALANCE" desc="">Available Balance</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_HOLDINGS" desc="">Holdings</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_GAINERS" desc="">Gainers</message>
+    <message name="IDS_CRYPTO_DOT_COM_WIDGET_LOSERS" desc="">Losers</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_GRAPH" desc="">7d Graph</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_PAIRS" desc="">Supported Pairs</message>
     <message name="IDS_CRYPTO_DOT_COM_WIDGET_VOLUME" desc="">24HR Volume</message>
