@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 11a8c2b06277288e35925866e6a7387d59c6faca..952034904b01f5b9bfbfbf99a76a8729b8ad1bf3 100644
+index 11a8c2b06277288e35925866e6a7387d59c6faca..da377b2814de59a790a313a10a2969b62ad31af4 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -85,6 +85,7 @@ generate_grd("build_grd") {
+@@ -45,6 +45,7 @@ if (optimize_webui) {
+       "chrome://resources/mojo/mojo/public/js/mojo_bindings_lite.js",
+       "chrome://resources/mojo/skia/public/mojom/skcolor.mojom-lite.js",
+     ]
++    deps += brave_deps_chrome_browser_resources_settings_build
+   }
+ }
+ 
+@@ -85,6 +86,7 @@ generate_grd("build_grd") {
        "$target_gen_dir/$preprocess_gen_manifest",
      ]
    }
