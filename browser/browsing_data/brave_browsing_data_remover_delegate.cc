@@ -172,6 +172,6 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
       FROM_HERE, {base::TaskPriority::USER_VISIBLE, base::MayBlock()},
       base::BindOnce(&BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC,
                      base::Unretained(this), base::Passed(&process)),
-      CreateTaskCompletionClosure(TracingDataType::kHostCache));
+      CreateTaskCompletionClosure(TracingDataType::kIPFSCache));
 }
 #endif  // BUILDFLAG(IPFS_ENABLED)
