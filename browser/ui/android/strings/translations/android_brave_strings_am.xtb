@@ -115,7 +115,7 @@
 <translation id="8280223431922155812">ህዳር</translation>
 <translation id="4254029385847607686">ዲሲምበር</translation>
 <translation id="1916285746997567466">ቀጣዩን ኢንተርኔት ለመጠቀም ይዘጋጁ፡፡</translation>
-<translation id="3540580927110899945">ግላዊነት ስምግላዊነት ማክበር ማስታወቂያዎች ለመመልከት አሁን <ph name="ማስመሰያ"/>
+<translation id="3540580927110899945">ግላዊነት ስምግላዊነት ማክበር ማስታወቂያዎች ለመመልከት አሁን <ph name="TOKEN"/>
 ማግኘት ይችላሉ።</translation>
 <translation id="1327938628925645979">ወደ ሽልማት ይቀላቀሉ</translation>
 <translation id="5567439033041178034">የበለጠ ይወቁ</translation>
@@ -157,7 +157,7 @@
 <translation id="2429828319207652823">አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር</translation>
 <translation id="3453206261112715431">ነፃ የቶክን ብድር</translation>
 <translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
-<translation id="5497435273900537730">ነጻ <ph name="ማስመሰያ"/> ግራንት ዝግጁ ነው።</translation>
+<translation id="5497435273900537730">ነጻ <ph name="TOKEN"/> ግራንት ዝግጁ ነው።</translation>
 <translation id="8689997599821157251">አግኝተዋል</translation>
 <translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
 <translation id="2775064702681588061">የእርስዎ Brave Rewards መለያ ተቀማጭ ገንዘብ በመጠባበቅ ላይ ነው።</translation>
@@ -172,7 +172,7 @@
 <translation id="8969049974285901797">Twitch ላይ</translation>
 <translation id="4376933248999950592">እርስዎ ወስነዋል <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> መዋጮ ለመቀበል ያልተመዘገቡ ፈጣሪዎችአሳሽዎ እስካረጋገጡ 
 ድረስ ወይም 90 ቀናት እስኪያልፍ ድረስ መዋጮ ማድረጉን ይቀጥላል።</translation>
-<translation id="3101693828171454453">በቂ ያልሆነ <ph name="ማስመሰያ"/>s</translation>
+<translation id="3101693828171454453">በቂ ያልሆነ <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">እባክዎ</translation>
 <translation id="1036277985068412734">ድጎማ ያድርጉ</translation>
 <translation id="3492491948683276944">ወርሀዊ ጠቃሚ ምክሮችን ያስቀምጡ</translation>
@@ -254,9 +254,9 @@
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="1486343603936278248">ተለዋጭ ስም</translation>
 <translation id="8713995420537272453">ነጥብ</translation>
-<translation id="2802462801862186499">1.000 <ph name="ጠቃሚ ምክር"/></translation>
-<translation id="3215472762156924589">5.000 <ph name="ጠቃሚ ምክር"/></translation>
-<translation id="487252517537426371">10.000 <ph name="ጠቃሚ ምክር"/></translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">የአዲስ ትር ገጽ</translation>
 <translation id="8522669544471808198">የዳራ ምስሎችን አሳይ</translation>
 <translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
