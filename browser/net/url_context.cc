@@ -98,7 +98,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->network_isolation_key =
         request.trusted_params->isolation_info.network_isolation_key();
-    ctx->tab_origin = ctx->network_isolation_key.GetTopFrameSite()
+    ctx->tab_origin = request.trusted_params->isolation_info.top_frame_origin()
                           .value_or(url::Origin())
                           .GetURL();
   }
