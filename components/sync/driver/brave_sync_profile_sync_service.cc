@@ -30,15 +30,20 @@ BraveProfileSyncService::BraveProfileSyncService(
       base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   GetBraveSyncAuthManager()->DeriveSigningKeys(brave_sync_prefs_.GetSeed());
-  if (!brave_sync_prefs_.IsSyncV1Migrated()) {
-    StopImpl(CLEAR_DATA);
-    brave_sync_prefs_.SetSyncV1Migrated(true);
-  }
+
   profile_service_delegate_->set_profile_sync_service(this);
 }
 
 BraveProfileSyncService::~BraveProfileSyncService() {
   brave_sync_prefs_change_registrar_.RemoveAll();
+}
+
+void BraveProfileSyncService::Initialize() {
+  ProfileSyncService::Initialize();
+  if (!brave_sync_prefs_.IsSyncV1Migrated()) {
+    StopImpl(CLEAR_DATA);
+    brave_sync_prefs_.SetSyncV1Migrated(true);
+  }
 }
 
 bool BraveProfileSyncService::IsSetupInProgress() const {
