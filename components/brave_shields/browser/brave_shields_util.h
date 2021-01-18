@@ -93,16 +93,13 @@ void DispatchBlockedEvent(const GURL& request_url,
                           int frame_tree_node_id,
                           const std::string& block_type);
 
-bool ShouldCleanReferrerForTopLevelNavigation(const std::string& method,
-                                              const GURL& referrer_url,
-                                              const GURL& request_url);
+bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 
 bool MaybeChangeReferrer(
     bool allow_referrers,
     bool shields_up,
     const GURL& current_referrer,
     const GURL& target_url,
-    network::mojom::ReferrerPolicy policy,
     content::Referrer* output_referrer);
 
 
