@@ -5,8 +5,7 @@
 
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 
-#include <string>
-#include <vector>
+#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/optional.h"

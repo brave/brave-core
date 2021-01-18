@@ -10,7 +10,5 @@ source_set("renderer") {
 
   public_deps = [ "//chrome/renderer" ]
 
-  deps = [
-    "//brave/components/cosmetic_filters/content/renderer",
-  ]
+  deps = [ "//brave/components/cosmetic_filters/content/renderer" ]
 }

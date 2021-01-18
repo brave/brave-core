@@ -154,8 +154,7 @@ void CosmeticFiltersJSHandler::HiddenClassIdSelectors(
     return;
 
   cosmetic_filters_resources_->HiddenClassIdSelectors(
-      input,
-      exceptions_,
+      input, exceptions_,
       base::BindOnce(&CosmeticFiltersJSHandler::OnHiddenClassIdSelectors,
                      base::Unretained(this)));
 }

@@ -4,7 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 // That script is executed from
-// brave/browser/brave_cosmetic_resources_tab_helper.cc several times:
+// components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.cc
+// several times:
 // - for scriptlets injection;
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.

@@ -42,8 +42,8 @@ void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
   if (url_.is_empty())
     return;
   if (url_.spec() == "about:blank") {
-    url_ = url::Origin(
-        render_frame()->GetWebFrame()->GetSecurityOrigin()).GetURL();
+    url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
+               .GetURL();
   }
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(new CosmeticFiltersJSHandler(

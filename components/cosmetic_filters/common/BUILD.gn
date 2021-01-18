@@ -3,7 +3,5 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("mojom") {
   sources = [ "cosmetic_filters.mojom" ]
 
-  deps = [
-    "//mojo/public/mojom/base",
-  ]
+  deps = [ "//mojo/public/mojom/base" ]
 }

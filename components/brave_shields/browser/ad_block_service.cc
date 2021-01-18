@@ -141,16 +141,15 @@ base::Optional<base::Value> AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
   base::Optional<base::Value> hide_selectors =
-      AdBlockBaseService::HiddenClassIdSelectors(
-          classes, ids, exceptions);
+      AdBlockBaseService::HiddenClassIdSelectors(classes, ids, exceptions);
 
   base::Optional<base::Value> regional_selectors =
-      regional_service_manager()
-          ->HiddenClassIdSelectors(classes, ids, exceptions);
+      regional_service_manager()->HiddenClassIdSelectors(classes, ids,
+                                                         exceptions);
 
   base::Optional<base::Value> custom_selectors =
-      custom_filters_service()
-          ->HiddenClassIdSelectors(classes, ids, exceptions);
+      custom_filters_service()->HiddenClassIdSelectors(classes, ids,
+                                                       exceptions);
 
   if (hide_selectors && hide_selectors->is_list()) {
     if (regional_selectors && regional_selectors->is_list()) {
@@ -190,8 +189,7 @@ AdBlockService::custom_filters_service() {
 
 AdBlockService::AdBlockService(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate), component_delegate_(delegate) {
-}
+    : AdBlockBaseService(delegate), component_delegate_(delegate) {}
 
 AdBlockService::~AdBlockService() {}
 

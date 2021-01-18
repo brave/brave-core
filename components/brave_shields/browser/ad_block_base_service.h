@@ -50,11 +50,11 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   bool TagExists(const std::string& tag);
 
   virtual base::Optional<base::Value> UrlCosmeticResources(
-          const std::string& url);
+      const std::string& url);
   virtual base::Optional<base::Value> HiddenClassIdSelectors(
-          const std::vector<std::string>& classes,
-          const std::vector<std::string>& ids,
-          const std::vector<std::string>& exceptions);
+      const std::vector<std::string>& classes,
+      const std::vector<std::string>& ids,
+      const std::vector<std::string>& exceptions);
 
  protected:
   friend class ::AdBlockServiceTest;
