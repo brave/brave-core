@@ -2,9 +2,7 @@ import { localeStrings as onboardingStrings } from '../../shared/components/onbo
 
 export const localeStrings = {
   addFunds: 'add funds',
-  bap: 'BAP',
   bapFunds: 'BAP Funds',
-  bat: 'BAT',
   batFunds: 'BAT Funds',
   cancel: 'Cancel',
   cancelConfirmationText: 'Are you sure you want to stop supporting this creator?',
