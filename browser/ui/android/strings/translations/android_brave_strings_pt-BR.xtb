@@ -323,7 +323,7 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="7396366757003005317">Impressão digital bloqueada(absolutamente, alguns sites podem não funcionar corretamente)</translation>
 <translation id="700453611199558021">Impressão digital bloqueada (padrão)</translation>
 <translation id="769702552748212954">Permitir todas as impressões digitais</translation>
-<translation id="2888409909650566510">Anúncios e outras coisas\nestranhas bloqueadas</translation>
+<translation id="5142293891785304489">Rastreadores, anúncios e\nmais bloqueados</translation>
 <translation id="6930134873084561197">Os sites muitas vezes incluem cookies e scripts que tentam identificar você e seu dispositivo. Eles querem descobrir quem você é e querem seguir você, rastreando o que você faz em todos os sites.\n\nBrave bloqueia essas coisas, para que você possa nagear sem ser seguido.</translation>
 <translation id="8553998445606452168">Sobre o Brave Shields</translation>
 <translation id="8912304686498704084">ATIVADO</translation>
@@ -435,22 +435,22 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="8804164990146287819">Política de Privacidade</translation>
 <translation id="6318696841371191107">Fazer um tour</translation>
 <translation id="7930505144430343145">Bem-vindo ao Programa de Recompensas Brave!</translation>
-<translation id="7909111626803226907">Ao contrário dos anúncios tradicionais, os anúncios privados do Brave recompensam você com tokens para apoiar criadores de conteúdo, sempre protegendo a privacidade das suas informações pessoais.</translation>
+<translation id="3477340970981564961">Ao contrário dos anúncios tradicionais, os Anúncios Privados do Brave o recompensam com tokens para apoiar criadores de conteúdo, ao mesmo tempo que mantêm a privacidade de suas informações.</translation>
 <translation id="6973095375773523904">Onde os anúncios aparecem?</translation>
-<translation id="3867028444168159102">Os anúncios privados do Brave aparecerão como uma notificação normal. Você controla a frequência com que deseja ver esses anúncios nas configurações.</translation>
+<translation id="7556325460112047619">Os Anúncios Privados do Brave aparecerão como uma notificação normal. Você controla a frequência com que deseja ver esses anúncios nas configurações.</translation>
 <translation id="5816125157889950051">Quando você ganha recompensas</translation>
-<translation id="4649471244559455723">Os tokens que você ganhou através dos anúncios do Brave ao longo do mês corrente serão disponibilizados no 5º dia do mês seguinte.</translation>
+<translation id="310863932297733723">Os tokens que você ganhou através dos Anúncios Privados do Brave ao longo do mês atual serão disponibilizados no dia 5 do próximo mês.</translation>
 <translation id="7712287524451429139">Descomplicando a retribuição</translation>
 <translation id="105037569026952831">Criadores recebem automaticamente sua contribuição de tokens com base no seu nível de engajamento, que medimos como ‘Atenção’.</translation>
 <translation id="5323267338679539010">Agradeça com gorjetas</translation>
-<translation id="6042317056594735519">Dar gorjeta é uma maneira de encorajar e apoiar pessoalmente os conteúdos ou criadores que adora. Comece a distribuir gorjetas!</translation>
+<translation id="6730444165801605682">Dar gorjetas é uma maneira de incentivar e apoiar individualmente conteúdos ou criadores que você adora de verdade. Comece a distribuir essas gorjetas!</translation>
 <translation id="7509452925943421624">O que você pode fazer com tokens?</translation>
-<translation id="7059157883171259940">Tokens podem ser usados além do apoio aos criadores. Você pode comprar produtos digitais e vale-presentes com bônus de cashback.</translation>
+<translation id="5876169128756792273">Os Tokens podem ser utilizados para muito mais do que apenas apoiar os criadores. Você pode comprar conteúdo digital e outros produtos à medida que mais comerciantes passem a utilizá-los.</translation>
 <translation id="1402530520078693620">Por último, vamos ajudá-lo a definir as configurações básicas</translation>
 <translation id="3494356595346329740">Você pode alterar isto mais tarde.</translation>
 <translation id="6462814326662189004">Com que frequência você deseja ver os anúncios?\n(Anúncios por hora)</translation>
 <translation id="2134244432345596331">Quanto apoio você quer oferecer aos seus criadores favoritos?\n(a partir dos seus ganhos com anúncios)</translation>
-<translation id="7456161272236175794">UUUUUHUUUUU!\nPronto.</translation>
+<translation id="827315274423079662">Uhuuu! Está tudo pronto!</translation>
 <translation id="3895246934788932488">Usando as Recompensas do Brave, você está protegendo sua privacidade e ajudando a tornar a web um lugar melhor para todos. E isso é fantástico!</translation>
 <translation id="5705882733397021510">Voltar</translation>
 <translation id="5140321319944305531">Vamos fazer um tour rápido</translation>
@@ -463,4 +463,21 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="3604285424134705930">Você converteu <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> para <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Por favor, verifique sua conexão de rede.</translation>
 <translation id="7889432931837317731">Abrir automaticamente quando possível</translation>
+<translation id="8967385052772844086">Exibir Relatório de Privacidade integral</translation>
+<translation id="6864343534748973390">Mais popular</translation>
+<translation id="1622983732360473885">Apoia o Brave</translation>
+<translation id="4608192160278975831">Privado e sem monitoramento</translation>
+<translation id="7208522820527289601">Privado e sem monitoramento, com sede na UE</translation>
+<translation id="1161008391729450974">Pesquise resultados no Google sem rastreadores</translation>
+<translation id="7320542277711359296">Segundo mais popular</translation>
+<translation id="8295049095570748497">Um mecanismo de pesquisa líder na Rússia</translation>
+<translation id="2642661895835126239">Planta árvores, com sede em Berlim</translation>
+<translation id="1410130669636877548">Alguns mecanismos de busca protegem sua privacidade melhor do que outros quando você faz pesquisas na web.</translation>
+<translation id="1078265935778232285">Bem-vindo ao Navegador Brave</translation>
+<translation id="6824713633331856331">Ajude-nos a entender anonimamente</translation>
+<translation id="6116685031674149112">O Brave protege sua privacidade e\nagradece seu consentimento para o seguinte:</translation>
+<translation id="3971666849661839619">Ajude a melhorar o Brave enviando relatórios de falhas e <ph name="PRIVATE_PRODUCT_ANALYSIS"/> totalmente anônimos</translation>
+<translation id="6478996494082389936">análise privada de produtos.</translation>
+<translation id="5187052478998910855">Precisando de uma atualização sobre as Recompensas?</translation>
+<translation id="8622329973403382303">Faça um tour rápido para relembrar como isso funciona e entre para a história como um astro do rock das Recompensas!</translation>
 </translationbundle>

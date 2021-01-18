@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="eu">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela ordubete egiaztatu du azkenengoz.}other{Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela {NUM_HOURS} ordu egiaztatu du azkenengoz.}}</translation>
 <translation id="1065672644894730302">Ezin dira zure hobespenak irakurri.
 
 Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak ez dira aldatuko.</translation>
@@ -12,6 +11,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="8522292744959221145">Pasahitzak datuen isilpekotasunaren urratzeen eta beste segurtasun-arazoen aurka babestuta dauden egiaztatzeko, <ph name="BEGIN_LINK"/>hasi saioa Brave-en<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Brave arakatzaileari buruz</translation>
 <translation id="4798342026247191171">Konfiguratu Brave-eko profil berria</translation>
+<translation id="5893502481331584971">Galdetu Brave irekitzean</translation>
 <translation id="113959764510199339">Brave pasahitzak erakusten saiatzen ari da.</translation>
 <translation id="8132634101975074716">Brave-en saioa hasi duzu.</translation>
 <translation id="7370605478942575409">Rosetta erabili nahi baduzu babestutako multimedia edukia erreproduzitzeko, Brave berrabiarazi behar duzu.</translation>
@@ -29,7 +29,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="831418749472885028">Gainerako pasahitzak datuen isilpekotasunaren urratzeen eta beste segurtasun-arazoen aurka babestuta dauden egiaztatzeko, <ph name="BEGIN_LINK"/>hasi saioa Brave-en<ph name="END_LINK"/>.</translation>
 <translation id="8745514854244955877">Brave - Hasi saioa sarean - <ph name="PAGE_TITLE"/></translation>
 <translation id="162629503687514352">Chrome OS sistema eragileak ezin izan ditu sinkronizatu pasahitzak.</translation>
-<translation id="2241627712206172106">Ordenagailua partekatzen baduzu, lagunek eta familiako kideek euren kontuak erabilita ibil daitezke Interneten, nahi duten moduan.</translation>
+<translation id="5659384504794665581">Ordenagailua partekatzen baduzu, lagunek eta familiako kideek euren kontuak erabilita ibil daitezke Interneten, nahi duten moduan.</translation>
 <translation id="5997267581285668459">Aukerakoa: lagundu Chrome OS sistemaren eginbideak eta funtzionamendua hobetzen Brave-ri diagnostikoak eta erabilera-datuak automatikoki bidalita.</translation>
 <translation id="9095263438435683933">Zenbaki bat hemendik Android-eko telefonora bidaltzeko, hasi Brave-eko saioa bi gailuetan.</translation>
 <translation id="3813272600615358652">Luzapenak aldatu egin du Brave abiarazten duzunean agertzen den orria.</translation>
@@ -46,10 +46,8 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="6791166902140255175">Brave fitxa</translation>
 <translation id="8372880274820509128">Segurtasun gehiago izateko, Brave-ek datuak enkriptatuko ditu.</translation>
 <translation id="2770231113462710648">Ezarri hau arakatzaile lehenetsia gisa:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela 1 minutu egiaztatu du azkenengoz.}other{Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela {NUM_MINS} minutu egiaztatu du azkenengoz.}}</translation>
 <translation id="2799223571221894425">Abiarazi berriro</translation>
 <translation id="777113543093865885">Kendu Brave-etik…</translation>
-<translation id="8846162271735377947">Galdetu Brave irekitzen dudanean</translation>
 <translation id="2885378588091291677">Zereginen kudeatzailea</translation>
 <translation id="2176825726964012531">&amp;Brave arakatzaileari buruz</translation>
 <translation id="8208853227947884571">Eguneratuta dago Brave</translation>
@@ -57,7 +55,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="8755404239607088219">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu geroago.</translation>
 <translation id="8880183781256147665">Brave-era gehitzen…</translation>
 <translation id="7918740962659365265">Lagundu Brave hobetzen hutsegite-txostenak eta <ph name="UMA_LINK"/> Brave-ra bidalita</translation>
-<translation id="2911521062311014336">Brave-ek nahi ez den softwarerik baden egiaztatzen du astean behin</translation>
 <translation id="7365690458036015383">Instalatzaileak ezin izan du artxiboa deskonprimitu. Deskargatu berriro Brave.</translation>
 <translation id="8919461291440820124">Brave zure mikrofonoa erabiltzen ari da.</translation>
 <translation id="4805806622840861220">Berrabiarazi Brave</translation>
@@ -175,7 +172,6 @@ Baliteke eginbide batzuk erabilgarri ez egotea. Adierazi beste profil-direktorio
 <translation id="8211837073776713955">Brave-ek abisatu egingo dizu pasahitzak inoiz arriskuan badaude</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave-en kopiatu da)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela 1 egun egiaztatu zuen azkenengoz.}other{Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela {NUM_DAYS} egun egiaztatu zuen azkenengoz.}}</translation>
 <translation id="2301993384336631869">Brave eguneratu da baina ez duzu erabili 30 egunetan gutxienez.</translation>
 <translation id="8522287263361940593">Rosetta-rekin, Brave-ek orri honetako babestutako multimedia-edukia erreproduzi dezake.</translation>
 <translation id="6418340404893954563">Seguruak ez diren pasahitzak erraz asmatzen dira. Utzi Brave-i <ph name="BEGIN_LINK"/>pasahitz seguruak sortzen eta gogoratzen<ph name="END_LINK"/>.</translation>
@@ -208,7 +204,6 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
       Brave-en sistema eragilearen ezarpenetan.<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave kamera eta mikrofonoa erabiltzen ari da.</translation>
 <translation id="2827121003398607864">Brave hobetu egin dugu</translation>
-<translation id="504499211143662559">Brave-ek software kaltegarria aurkitu du ordenagailuan</translation>
 <translation id="3343095737966473035">Brave ez da zure arakatzaile lehenetsia</translation>
 <translation id="5477319665405831211">Sinkronizatu eta pertsonalizatu Brave gailu guzietan</translation>
 <translation id="5419189641394808652">Brave-ek ezin izan dizkizu sinkronizatu datuak sinkronizazioa ez dagoelako erabilgarri zure domeinuan.</translation>
@@ -240,7 +235,6 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="6283840329609797763">Instalazioak huts egin du zehaztu gabeko errore batengatik. Deskargatu Brave berriro.</translation>
 <translation id="2433912322225810055">Brave hasten duzunean edo Omnibox-etik bilaketak egiten dituzunean erakusten den orria ere kontrolatzen du.</translation>
 <translation id="4100716194836114130">Hau da zure Brave arakatzailea</translation>
-<translation id="8757284234053029740">Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Atzo egiaztatu zuen azkenengoz.</translation>
 <translation id="4831743161813926460">Brave-ek webgune honen izenean kamera eta mikrofonoa atzitzeko baimena behar du</translation>
 <translation id="7408085963519505752">Chrome OS sistema eragilearen baldintzak</translation>
 <translation id="2262856633481902138">Brave-ek ezin izan ditu zure datuak sinkronizatu kontuan saioa hasteko datuak iraungi egin direlako.</translation>
@@ -255,7 +249,6 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="7863882214613921971">Ireki esteka Brave-eko beste &amp;fitxa batean</translation>
 <translation id="911206726377975832">Arakatze-datuak ere ezabatu nahi dituzu?</translation>
 <translation id="2444257125841652328">Sistemaren administratzailearen konfigurazioaren arabera, Brave-ek beste arakatzaile bat ireki behar du <ph name="TARGET_URL_HOSTNAME"/> helbidera joateko.</translation>
-<translation id="2250443703383891643">Brave-ek nahi ez den softwarerik baden begiratzen du astean behin. Duela gutxi egiaztatu du azkenengoz.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave-ek agian ez du behar bezala funtzionatuko, jada ez baita bateragarria Windows XP eta Windows Vista-rekin</translation>
 <translation id="2398566204186296120">Gailua erabili aurretik, <ph name="DOMAIN"/> domeinuak jarraian azalduko diren Zerbitzu-baldintza irakurtzeko eta onartzeko eskatzen dizu. Baldintzok ez dituzte Chrome OS Baldintzak hedatuko, aldatuko edo mugatuko.</translation>

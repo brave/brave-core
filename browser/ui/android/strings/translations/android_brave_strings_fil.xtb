@@ -327,7 +327,7 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="7396366757003005317">Naka-block ang fingerprinting(istrikto, puwedeng makasira ng mga site)</translation>
 <translation id="700453611199558021">Naka-block ang fingerprinting(standard)</translation>
 <translation id="769702552748212954">Payagan ang lahat ng fingerprinting</translation>
-<translation id="2888409909650566510">Mga ad at iba pang hindi kanais-nais\nna bagay na na-block</translation>
+<translation id="5142293891785304489">Na-block ang mga tracker, ad, at\nhigit pa</translation>
 <translation id="6930134873084561197">Madalas na nagsasama ang mga site ng cookies at mga script na sumusubok na kumilala sa iyo at sa iyong device. Gusto nilang malaman kung sino ka at susundan ka sa buong web-susubaybayan kung ano ang ginagawa mo sa bawat site.\n\nBina-block ng Brave ang mga bagay na ito para makapag-browse ka nang hindi nasusundan.</translation>
 <translation id="8553998445606452168">Tungkol sa Brave Shields</translation>
 <translation id="8912304686498704084">PATAAS</translation>
@@ -439,22 +439,22 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8804164990146287819">Patakaran sa Privacy</translation>
 <translation id="6318696841371191107">Mabilis na maglibot</translation>
 <translation id="7930505144430343145">Welcome sa Brave Rewards!</translation>
-<translation id="7909111626803226907">Bibigyan ka ng mga pribadong Brave ad ng mga token para suportahan ang mga creator ng content hindi tulad ng mga tradisyonal na ad, lahat habang pinapanatiling pribado ang iyong personal na impormasyon.</translation>
+<translation id="3477340970981564961">Hindi tulad ng mga tradisyonal na ad, binibigyan ka ng Brave Private Ads ng mga token para suportahan ang mga creator ng content, ang lahat ng ito habang pinapanatiling pribado ang iyong personal na impormasyon.</translation>
 <translation id="6973095375773523904">Saan lumalabas ang mga ad?</translation>
-<translation id="3867028444168159102">Lalabas ang mga pribadong Brave ad bilang karaniwang notification. Ikaw ang magkokontrol kung gaano kadalas mo makikita ang mga ad na ito sa mga setting.</translation>
+<translation id="7556325460112047619">Lalabas ang Brave Private Ads bilang normal na notification. Makokontrol mo kung gaano mo kadalas makikita ang mga ad na ito sa mga setting.</translation>
 <translation id="5816125157889950051">Kailan ka makakatanggap ng mga reward</translation>
-<translation id="4649471244559455723">Darating ang nakuha mong mga token mula sa Brave ads sa kabuuan ng kasalukuyang buwan sa ika-5 ng susunod na buwan.</translation>
+<translation id="310863932297733723">Darating sa ika-5 ng susunod na buwan ang iyong mga nakuhang token mula sa Brave Private Ads sa kabuuan ng kasalukuyang buwan.</translation>
 <translation id="7712287524451429139">Ginawang walang kahirap-hirap ang pagganti ng tulong</translation>
 <translation id="105037569026952831">Awtomatikong matatanggap ng mga creator ang iyong mga token na ambag batay sa mga antas ng pakikipag-ugnayan mo na sinusukat namin bilang ‘Atensyon’.</translation>
 <translation id="5323267338679539010">Magpasalamat sa pamamagitan ng mga tip</translation>
-<translation id="6042317056594735519">Ang pagbibigay ng tip ay isang paraan para personal na himukin at suportahan ang content o mga creator na gusto mo. Magbigay ng tip!</translation>
+<translation id="6730444165801605682">Ang pagbibigay ng tip ay isang paraan para personal na manghikayat ng at suportahan ang content o mga creator na gustong gusto mo. Magbigay ng tip!</translation>
 <translation id="7509452925943421624">Ano ang magagawa mo sa mga token?</translation>
-<translation id="7059157883171259940">Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng mga digital na produkto at giftcard na may cashback bonus.</translation>
+<translation id="5876169128756792273">Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng digital na content at iba pang produkto sa pagdating ng mga merchant.</translation>
 <translation id="1402530520078693620">Panghuli, tutulungan ka naming mag-set up sa mga basic na setting</translation>
 <translation id="3494356595346329740">Puwede mo itong baguhin sa ibang pagkakataon.</translation>
 <translation id="6462814326662189004">Gaano kadalas mo gustong makakita ng mga ad?\n(Mga ad bawat oras)</translation>
 <translation id="2134244432345596331">Gaano kalaking suporta ang gusto mong ibigay sa iyong mga paboritong creator?\n(mula sa iyong kita sa mga ad)</translation>
-<translation id="7456161272236175794">WOOOOHOOOOO!\nTapos ka na.</translation>
+<translation id="827315274423079662">Ayos, handa ka na!</translation>
 <translation id="3895246934788932488">Sa pamamagitan ng paggamit sa Brave Rewards, pinoprotektahan mo ang iyong privacy at nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At ayos iyan!</translation>
 <translation id="5705882733397021510">Bumalik</translation>
 <translation id="5140321319944305531">Mabilis Tayong Maglibot</translation>
@@ -467,4 +467,21 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="3604285424134705930">Nag-convert ka ng <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> sa <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Pakitingnan ang iyong koneksyon sa network.</translation>
 <translation id="7889432931837317731">Awtomatikong buksan kung posible</translation>
+<translation id="8967385052772844086">Tingnan ang buong Ulat sa Privacy</translation>
+<translation id="6864343534748973390">Pinakasikat</translation>
+<translation id="1622983732360473885">Sinusuportahan ang Brave</translation>
+<translation id="4608192160278975831">Pribado at bawal ang pag-track</translation>
+<translation id="7208522820527289601">Pribado at bawal ang pag-track, nasa EU</translation>
+<translation id="1161008391729450974">Mga resulta sa Google nang walang kasamang tracker</translation>
+<translation id="7320542277711359296">Pangalawang pinakasikat</translation>
+<translation id="8295049095570748497">Isang nangungunang search engine sa Russia</translation>
+<translation id="2642661895835126239">Nagtatanim ng mga puno, nasa Berlin</translation>
+<translation id="1410130669636877548">Pinoprotektahan ng ilang search engine ang iyong privacy nang mas mahusay sa iba kapag naghahanap ka sa web.</translation>
+<translation id="1078265935778232285">Welcome sa Brave Browser</translation>
+<translation id="6824713633331856331">Anonymous kaming tulungang matuto</translation>
+<translation id="6116685031674149112">Pinoprotektahan ng Brave ang iyong privacy at\nnagpapasalamat ito sa pahintulot mo sa mga sumusunod:</translation>
+<translation id="3971666849661839619">Tumulong na mapahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat sa pag-crash at ganap na anonymous na, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">pribadong pagsusuri ng produkto.</translation>
+<translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
+<translation id="8622329973403382303">Mabilis na matuto tungkol sa kung paano ito gumagana para maalala bilang nangunguna sa Rewards!</translation>
 </translationbundle>

@@ -639,8 +639,12 @@
     "message": "Comenceu a utilitzar Recompenses Brave",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Realitzeu un recorregut ràpid",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Si continueu, esteu acceptant els $tos_link_begin$Termes de Servei$tos_link_end$ i $pp_link_begin$Política de Privadesa$pp_link_end$.",
+    "message": "Si continueu, esteu d'acord amb els $tos_link_begin$Termes d'Ús$tos_link_end$ i la $pp_link_begin$Política de Privacitat$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Torneu",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Fem un tour ràpid",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continua",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Fet",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Omet",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Salteu per ara",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Benvinguts a Recompenses Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Els Brave Private Ads, a diferència dels anuncis tradicionals, us recompensen amb tokens per a sostenir creadors de contingut, tot mantenint la privacitat de la vostra informació personal.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "A on es mostren els anuncis?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Els Brave Private Ads apareixeran com una notificació normal. Podeu controlar cada quant voleu veure aquests anuncis a les opcions.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Quan rebeu recompenses",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Els tokens dels Brave Private Ads que heu guanyat al llarg d'aquest mes arribaran el dia 5 del mes següent.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Retornat sense esforç",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Els creadors reben automàticament les vostres contribucions en forma de token basant-se en els vostres nivells de compromís que mesurem com a 'Atenció'.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Doneu les gràcies amb propines",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Donar propina és una manera d'incentivar personalment i donar suport al contingut o als creadors que us agraden més. Comenceu a donar propina!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Què podeu fer amb fitxes?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Els tokens es poden utilitzar per a més coses a més de sostenir els creadors. Podeu comprar continguts digitals i altres productes quan s'incorporin venedors.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Molt bé, ja esteu llestos!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Fent servir Brave Rewards esteu ajudant a fer de la xarxa un lloc millor per a tots. I això és fantàstic!",
+    "description": ""
   }
 }

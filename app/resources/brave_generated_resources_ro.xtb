@@ -18,7 +18,6 @@
 <translation id="6241402707160226266">Fereastră privată cu Tor</translation>
 <translation id="8762452230727230396">Tor ascunde adresa dvs. de IP de site-urile pe care le vizitați.</translation>
 <translation id="1369311132025451972">Redirecționează automat siteurile .onion</translation>
-<translation id="4341373692446027469">Brave va deschide serviciul onion al siteului web în fereastră Tor când va fi disponibil</translation>
 <translation id="8053096063396012732">Instalează Widevine</translation>
 <translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
@@ -162,16 +161,14 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7090046810227878892">Furnizor Ethereum pentru utilizarea Dapps</translation>
 <translation id="5913089932885076110">Încărcare Crypto Wallets la pornire</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
-<translation id="1365342176656744625">Metodă de rezolvare a locațiilor IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nod local</translation>
+<translation id="8425213833346101688">Modifică</translation>
 <translation id="585868419599255817">Conectare la portalul public IPFS</translation>
-<translation id="8705871434289874898">Conectați-vă automat la portalul public IPFS când nodul local nu poate fi accesat.</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
 <translation id="1765684547504191670">Folosește componenta Media Router pentru a activa Chromecast în browser.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
-<translation id="6222323340194834282">Utilizează extensia IPFS pentru a amplifica suportul IPFS în browser.</translation>
 <translation id="8137559199583651773">Gestionați extensiile</translation>
 <translation id="7013485839273047434">Obține mai multe extensii</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
@@ -232,9 +229,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4823406846571523661">Configurare Crypto Wallets</translation>
 <translation id="8199661191594897555">Porniți Crypto Wallets și reîncărcați</translation>
 <translation id="8428213095426709021">Setări</translation>
-<translation id="1854270995641373652">Vrei să activezi suportul daemon local IPFS în Brave?</translation>
 <translation id="2366908098700680611">Activează IPFS</translation>
-<translation id="1556882415222118816">Aflați mai multe despre consecințele confidențialității</translation>
 <translation id="4552520379838695057">Ne pare rău, pagina aceea lipsește.</translation>
 <translation id="2609895996619941644">Vreți să verificați dacă este disponibilă o versiune salvată pe Wayback Machine?</translation>
 <translation id="8053093028263274061">Ne pare rău, nu este disponibilă nicio versiune salvată.</translation>

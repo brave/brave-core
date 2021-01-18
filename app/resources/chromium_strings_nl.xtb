@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave checkt één keer per week op ongewenste software. Laatst gecheckt: 1 uur geleden.}other{Brave checkt één keer per week op ongewenste software. Laatst gecheckt: {NUM_HOURS} uur geleden.}}</translation>
 <translation id="1065672644894730302">Je voorkeuren kunnen niet worden gelezen.
 
 Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren worden niet opgeslagen.</translation>
@@ -12,6 +11,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8522292744959221145">Als je wilt checken of je wachtwoorden zijn beveiligd tegen gegevenslekken en andere beveiligingsproblemen, <ph name="BEGIN_LINK"/>log je in bij Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Over Brave</translation>
 <translation id="4798342026247191171">Je nieuwe Brave-profiel instellen</translation>
+<translation id="5893502481331584971">Vragen als Brave wordt geopend</translation>
 <translation id="113959764510199339">Brave probeert wachtwoorden weer te geven.</translation>
 <translation id="8132634101975074716">Je bent ingelogd bij Brave.</translation>
 <translation id="7370605478942575409">Start Brave opnieuw op als je Rosetta wilt gebruiken om beveiligde media af te spelen.</translation>
@@ -46,10 +46,8 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="6791166902140255175">Brave-tabblad</translation>
 <translation id="8372880274820509128">Je gegevens worden voor extra beveiliging door Brave gecodeerd.</translation>
 <translation id="2770231113462710648">Standaardbrowser wijzigen in:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave checkt één keer per week op ongewenste software. Laatst gecheckt: 1 minuut geleden.}other{Brave checkt één keer per week op ongewenste software. Laatst gecheckt: {NUM_MINS} minuten geleden.}}</translation>
 <translation id="2799223571221894425">Opnieuw starten</translation>
 <translation id="777113543093865885">Verwijderen uit Brave…</translation>
-<translation id="8846162271735377947">Vragen als ik Brave open</translation>
 <translation id="2885378588091291677">Taakbeheer</translation>
 <translation id="2176825726964012531">Over &amp;Brave</translation>
 <translation id="8208853227947884571">Brave is up-to-date</translation>
@@ -57,7 +55,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8755404239607088219">Brave kan je wachtwoorden niet checken. Probeer het later opnieuw.</translation>
 <translation id="8880183781256147665">Toevoegen aan Brave...</translation>
 <translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave te verzenden</translation>
-<translation id="2911521062311014336">Brave checkt één keer per week op ongewenste software</translation>
 <translation id="7365690458036015383">Het installatieprogramma kan het archief niet uitpakken. Download Brave opnieuw.</translation>
 <translation id="8919461291440820124">Brave gebruikt je microfoon.</translation>
 <translation id="4805806622840861220">Brave opnieuw starten</translation>
@@ -174,7 +171,6 @@ Sommige functies zijn mogelijk niet beschikbaar. Geef een andere profieldirector
 <translation id="8211837073776713955">Brave laat het je weten als je wachtwoorden mogelijk niet veilig meer zijn</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (gekopieerd naar Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave checkt één keer per week op ongewenste software. Laatst gecheckt: 1 dag geleden.}other{Brave checkt één keer per week op ongewenste software. Laatst gecheckt: {NUM_DAYS} dagen geleden.}}</translation>
 <translation id="2301993384336631869">Brave is bijgewerkt, maar je hebt het programma minstens 30 dagen niet gebruikt.</translation>
 <translation id="8522287263361940593">Met Rosetta kan Brave de beveiligde media op deze pagina afspelen.</translation>
 <translation id="6418340404893954563">Zwakke wachtwoorden zijn makkelijk te raden. Laat Brave <ph name="BEGIN_LINK"/>sterke wachtwoorden voor je instellen en onthouden<ph name="END_LINK"/>.</translation>
@@ -206,11 +202,10 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="5657226924540934362">Kijk je in de <ph name="LINK_BEGIN"/>Chrome OS-instellingen<ph name="LINK_END"/>als je een instelling niet ziet op deze pagina.</translation>
 <translation id="3293668930608086049">Brave gebruikt je camera en microfoon.</translation>
 <translation id="2827121003398607864">Brave is nu nog beter</translation>
-<translation id="504499211143662559">Brave heeft schadelijke software gevonden op je computer</translation>
 <translation id="3343095737966473035">Brave is niet je standaardbrowser</translation>
 <translation id="5477319665405831211">Brave synchroniseren en personaliseren op al je apparaten</translation>
 <translation id="5419189641394808652">Brave kan je gegevens niet synchroniseren, omdat synchronisatie niet beschikbaar is voor je domein.</translation>
-<translation id="4784414698887946907">Hiermee worden je browsergegevens verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
+<translation id="4784414698887946907">Hiermee worden je browsegegevens verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Het installatieprogramma kan geen tijdelijke directory maken. Controleer of je nog schijfruimte hebt en of je rechten hebt om software te installeren.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="38898988211673781">Cookies en sitegegevens wissen wanneer je Brave sluit</translation>
@@ -238,7 +233,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="6283840329609797763">De installatie is mislukt wegens een onbekende fout. Download Brave opnieuw.</translation>
 <translation id="2433912322225810055">Hiermee wordt ook gecontroleerd welke pagina wordt weergegeven wanneer je Brave start of vanuit de omnibox zoekt.</translation>
 <translation id="4100716194836114130">Personaliseer jouw Brave</translation>
-<translation id="8757284234053029740">Brave checkt één keer per week op ongewenste software. Laatst gecheckt: gisteren.</translation>
 <translation id="4831743161813926460">Brave heeft toegangsrechten voor je camera en microfoon nodig voor deze site</translation>
 <translation id="7408085963519505752">Voorwaarden van Chrome OS</translation>
 <translation id="2262856633481902138">Brave kan je gegevens niet synchroniseren, omdat de inloggegevens voor je account zijn verouderd.</translation>
@@ -253,7 +247,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="7863882214613921971">Link openen op een nieuw Brave-&amp;tabblad</translation>
 <translation id="911206726377975832">Ook browsegegevens wissen?</translation>
 <translation id="2444257125841652328">Je systeembeheerder heeft geconfigureerd dat Brave een alternatieve browser opent voor toegang tot <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave checkt één keer per week op ongewenste software. Laatst gecheckt: minder dan een minuut geleden.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave werkt mogelijk niet naar behoren omdat dit niet langer wordt ondersteund op Windows XP en Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> vereist dat je de volgende Servicevoorwaarden leest en accepteert voordat je dit apparaat gebruikt. Deze voorwaarden zijn geen uitbreiding, aanpassing of beperking van de Voorwaarden van Chrome OS.</translation>

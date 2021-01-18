@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred 1 uro.}one{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_HOURS} uro.}two{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_HOURS} urama.}few{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_HOURS} urami.}other{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_HOURS} urami.}}</translation>
 <translation id="1065672644894730302">Nastavitev ni mogoče prebrati.
 
 Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.</translation>
@@ -12,6 +11,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8522292744959221145">Če želite preveriti, ali so gesla varna pred podatkovnimi kršitvami in drugimi varnostnimi težavami, <ph name="BEGIN_LINK"/>se prijavite v Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">O Braveu</translation>
 <translation id="4798342026247191171">Nastavitev novega profila v Braveu</translation>
+<translation id="5893502481331584971">Vprašaj, ko se Brave odpre</translation>
 <translation id="113959764510199339">Brave poskuša prikazati gesla.</translation>
 <translation id="8132634101975074716">Prijavljeni ste v Brave.</translation>
 <translation id="7370605478942575409">Če želite uporabljati program Rosetta za predvajanje zaščitene predstavnosti, morate znova zagnati Brave.</translation>
@@ -46,10 +46,8 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="6791166902140255175">Zavihek v Braveu</translation>
 <translation id="8372880274820509128">Zaradi večje varnosti bo Brave šifriral vaše podatke.</translation>
 <translation id="2770231113462710648">Spremeni privzeti brskalnik na:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred 1 minuto.}one{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_MINS} minuto.}two{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_MINS} minutama.}few{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_MINS} minutami.}other{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_MINS} minutami.}}</translation>
 <translation id="2799223571221894425">Vnovičen zagon</translation>
 <translation id="777113543093865885">Odstranitev iz Bravea ...</translation>
-<translation id="8846162271735377947">Vprašaj, ko odprem Brave</translation>
 <translation id="2885378588091291677">Upravitelj opravil</translation>
 <translation id="2176825726964012531">O &amp;Braveu</translation>
 <translation id="8208853227947884571">Brave je posodobljen</translation>
@@ -57,7 +55,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8755404239607088219">Brave ne more preveriti gesel. Poskusite pozneje.</translation>
 <translation id="8880183781256147665">Dodajanje v Brave ...</translation>
 <translation id="7918740962659365265">Pomagajte izboljšati Brave – Googlu pošiljajte poročila o zrušitvah in ta dokument: <ph name="UMA_LINK"/>.</translation>
-<translation id="2911521062311014336">Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema</translation>
 <translation id="7365690458036015383">Namestitvenemu programu ni uspelo razširiti arhiva. Znova prenesite Brave.</translation>
 <translation id="8919461291440820124">Brave uporablja vaš mikrofon.</translation>
 <translation id="4805806622840861220">Znova zaženite Brave</translation>
@@ -174,7 +171,6 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopirano v Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred 1 dnevom.}one{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_DAYS} dnevom.}two{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_DAYS} dnevoma.}few{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_DAYS} dnevi.}other{Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pred {NUM_DAYS} dnevi.}}</translation>
 <translation id="2301993384336631869">Brave je posodobljen, vendar ga niste uporabljali najmanj 30 dni.</translation>
 <translation id="8522287263361940593">Program Rosetta Braveu omogoča predvajanje zaščitene predstavnosti na tej strani.</translation>
 <translation id="6418340404893954563">Šibka gesla je preprosto ugotoviti. Braveu omogočite, da <ph name="BEGIN_LINK"/>ustvari zapletena gesla za vas in jih shrani<ph name="END_LINK"/>.</translation>
@@ -207,7 +203,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
       nastavitve operacijskega sistema Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave uporablja vašo kamero in mikrofon.</translation>
 <translation id="2827121003398607864">Brave je pravkar postal še boljši</translation>
-<translation id="504499211143662559">Brave je v računalniku odkril škodljivo programsko opremo</translation>
 <translation id="3343095737966473035">Brave ni privzeti brskalnik</translation>
 <translation id="5477319665405831211">V vseh svojih napravah sinhronizirajte in prilagodite Brave</translation>
 <translation id="5419189641394808652">Brave ni mogel sinhronizirati podatkov, ker sinhronizacija ni na voljo za vašo domeno.</translation>
@@ -239,7 +234,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="6283840329609797763">Namestitev ni uspela zaradi nenavedene napake. Znova prenesite Brave.</translation>
 <translation id="2433912322225810055">Določa tudi, katera stran je prikazana, ko zaženete Brave ali iščete v naslovni vrstici.</translation>
 <translation id="4100716194836114130">To je vaš Brave</translation>
-<translation id="8757284234053029740">Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Včeraj.</translation>
 <translation id="4831743161813926460">Brave potrebuje dovoljenje za dostop do fotoaparata in mikrofona za to spletno mesto</translation>
 <translation id="7408085963519505752">Pogoji za Chrome OS</translation>
 <translation id="2262856633481902138">Brave ni mogel sinhronizirati podatkov, ker so podatki za prijavo v račun zastareli.</translation>
@@ -248,13 +242,12 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="3215652305414474626">Določa tudi, katera stran je prikazana, ko zaženete Brave ali kliknete gumb za domačo stran.</translation>
 <translation id="8285294305439559616">Brave poskuša prikazati gesla. Če želite omogočiti to, vnesite geslo za Windows.</translation>
 <translation id="6389268239133412586">Bravea ni mogoče posodobiti</translation>
-<translation id="8974095189086268230">Sistem Chrome OS omogoča dodatna <ph name="BEGIN_LINK_CROS_OSS"/>odprtokodna programska oprema<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="6368958679917195344">Sistem Chrome OS omogoča dodatna <ph name="BEGIN_LINK_CROS_OSS"/>odprtokodna programska oprema<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="5173820533850252773">Brave je zastarel</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave se bo znova zagnal čez eno uro}one{Brave se bo znova zagnal čez # uro}two{Brave se bo znova zagnal čez # uri}few{Brave se bo znova zagnal čez # ure}other{Brave se bo znova zagnal čez # ur}}</translation>
 <translation id="7863882214613921971">Odpiranje povezave na novem &amp;zavihku v Braveu</translation>
 <translation id="911206726377975832">Ali želite izbrisati tudi podatke brskanja?</translation>
 <translation id="2444257125841652328">Skrbnik sistema je Brave nastavil tako, da za dostop do <ph name="TARGET_URL_HOSTNAME"/> odpre drug brskalnik.</translation>
-<translation id="2250443703383891643">Brave enkrat tedensko preveri, ali je nameščena neželena programska oprema. Nazadnje preverjeno: Pravkar.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave morda ne bo deloval pravilno, ker ni več podprt v sistemu Windows XP ali Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> zahteva, da preberete in sprejmete pogoje storitve, preden začnete uporabljati napravo. Ti pogoji ne dopolnjujejo, spreminjajo ali omejujejo pogojev za Chrome OS.</translation>

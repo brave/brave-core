@@ -323,7 +323,7 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="7396366757003005317">Získávání otisku blokováno (striktně, weby nemusí správně fungovat)</translation>
 <translation id="700453611199558021">Získávání otisku blokováno (standardně)</translation>
 <translation id="769702552748212954">Povolit všechna získávání otisku</translation>
-<translation id="2888409909650566510">Reklamy a další podezřelé\nthings blokovány</translation>
+<translation id="5142293891785304489">Zablokováno sledování reklamy a další</translation>
 <translation id="6930134873084561197">Stránky často obsahují cookies a skripty, které se pokoušejí poznat vás a vaše zařízení. Chtějí pracovat s daty o vaší totožnosti a sledovat vás skrze internetovou dokumentaci toho, co děláte na každé stránce.\n\nBrave tyto věci blokuje, abyste mohli prohlížet bez toho, abyste byli sledováni.</translation>
 <translation id="8553998445606452168">O Štítech Brave</translation>
 <translation id="8912304686498704084">NAHORU</translation>
@@ -435,22 +435,22 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="8804164990146287819">Zásady ochrany osobních údajů</translation>
 <translation id="6318696841371191107">Spustit rychlou prohlídku</translation>
 <translation id="7930505144430343145">Vítejte v Brave Rewards!</translation>
-<translation id="7909111626803226907">Brave Private Ads vás narozdíl od běžných reklam odmění tokeny, s kterými můžete podpořit tvůrce. A při tom všem udrží vaše osobní informace v soukromí.</translation>
+<translation id="3477340970981564961">Brave Private Ads vás na rozdíl od běžných reklam odměňují tokeny k podpoře tvůrců obsahu, ale zároveň udržuje vaše osobní informace v soukromí.</translation>
 <translation id="6973095375773523904">Kde se zobrazují reklamy?</translation>
-<translation id="3867028444168159102">Brave Private Ads se budou objevovat jako běžná oznámení. To, jak často se vám tyto reklamy budou zobrazovat, si přizpůsobíte v nastavení.</translation>
+<translation id="7556325460112047619">Brave Private Ads se zobrazí jako normální oznámení.  V nastavení můžete změnit, jak často se tyto reklamy budou zobrazovat.</translation>
 <translation id="5816125157889950051">Kdy dostanete odměny</translation>
-<translation id="4649471244559455723">Tokeny, které si v Brave Ads vyděláte v tomto měsíci, vám přijdou 5. dne příštího měsíce.</translation>
+<translation id="310863932297733723">Vaše vydělané tokeny z Brave Private Ads z aktuálního měsíce dorazí 5. dne následujícího měsíce.</translation>
 <translation id="7712287524451429139">Odměňování bez námahy</translation>
 <translation id="105037569026952831">Tvůrci dostávají vaše příspěvky ve formě tokenů automaticky na základě vaší úrovně zaujetí, kterou měříme jako „Pozornost“.</translation>
 <translation id="5323267338679539010">Poděkujte prostřednictvím příspěvků</translation>
-<translation id="6042317056594735519">Přispívání je způsob, jak osobně povzbudit a podpořit tvůrce a obsah, co máte rádi. Pojďte přispívat!</translation>
+<translation id="6730444165801605682">Spropitné je nástroj, se kterým lze osobně povzbudit a podpořit obsah nebo autory, které máte opravdu rádi.  Začněte se spropitným!</translation>
 <translation id="7509452925943421624">Co můžete s tokeny dělat?</translation>
-<translation id="7059157883171259940">Tokeny je možné použít i jinak, než na podporu tvůrců. Můžete si koupit digitální zboží a dárkové karty s cashback bonusem.</translation>
+<translation id="5876169128756792273">Tokeny lze použít i nad rámec podpory tvůrců.  Jakmile se přidají obchodníci, můžete si za ně koupit digitální obsah a další zboží.</translation>
 <translation id="1402530520078693620">A nakonec provedeme pár základních nastavení</translation>
 <translation id="3494356595346329740">Toto můžete později změnit.</translation>
 <translation id="6462814326662189004">Jak často chcete vidět reklamy?\n(Počet reklam za hodinu.)</translation>
 <translation id="2134244432345596331">Jak hodně chcete podpořit své oblíbené tvůrce (z vašich výdělků za reklamy)?</translation>
-<translation id="7456161272236175794">BOMBA! Máte hotovo.</translation>
+<translation id="827315274423079662">Hurá, vše je nastaveno!</translation>
 <translation id="3895246934788932488">Používáním Brave Rewards chráníte své soukromí a napomáháte tomu, aby se internet stával pro všechny lepším místem. A to je prostě senzační!</translation>
 <translation id="5705882733397021510">Přejít zpět</translation>
 <translation id="5140321319944305531">Pojďte si dát rychlou prohlídku</translation>
@@ -463,4 +463,21 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="3604285424134705930">Převedli jste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> na <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Zkontrolujte prosím své připojení.</translation>
 <translation id="7889432931837317731">Pokud to lze, tak automaticky otevřít</translation>
+<translation id="8967385052772844086">Zobrazit celou zprávu o ochraně osobních údajů</translation>
+<translation id="6864343534748973390">Nejpopulárnější</translation>
+<translation id="1622983732360473885">Podporuje Brave</translation>
+<translation id="4608192160278975831">Bezpečný a bez sledování</translation>
+<translation id="7208522820527289601">Bezpečný a bez sledování, založený v EU</translation>
+<translation id="1161008391729450974">Výsledky z Googlu bez sledovacích souborů</translation>
+<translation id="7320542277711359296">Druhý nejpopulárnější</translation>
+<translation id="8295049095570748497">Přední vyhledávač v Rusku</translation>
+<translation id="2642661895835126239">Sází stromy, založeno v Berlíně</translation>
+<translation id="1410130669636877548">Při vyhledávání na webu některé vyhledávače chrání vaše soukromí lépe než jiné.</translation>
+<translation id="1078265935778232285">Vítejte v prohlížeči Brave</translation>
+<translation id="6824713633331856331">Pomozte nám se učit anonymně</translation>
+<translation id="6116685031674149112">Brave chrání vaše soukromí a cení si vašeho souhlasu s následujícími:</translation>
+<translation id="3971666849661839619">Pomozte vylepšit Brave zasíláním zpráv o selhání a úplnou anonymizací, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">soukromé analýzy produktů.</translation>
+<translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
+<translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
 </translationbundle>

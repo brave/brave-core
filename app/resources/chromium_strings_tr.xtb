@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: 1 saat önce.}other{Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: {NUM_HOURS} saat önce.}}</translation>
 <translation id="1065672644894730302">Tercihleriniz okunamıyor. Bazı özellikler kullanılamayabilir. Tercihlerde yapılan değişiklikler kaydedilmeyecektir.</translation>
 <translation id="8488151306313572776">Kişisel hesaptan ve <ph name="NEW_USER"/> hesabından yapılan göz atma işlemlerini birbirinden ayırmak için Brave'da yeni profil oluşturun</translation>
 <translation id="2796517443093885402">Brave veri ihlallerine, kötü uzantılara ve diğer tehditlere karşı güvende kalmanıza yardımcı olabilir</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Şifrelerinizin veri ihlali ve diğer güvenlik sorunlarına karşı güvende olup olmadığını kontrol etmek için <ph name="BEGIN_LINK"/>Brave'da oturum açın<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Brave hakkında</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi oluşturun</translation>
+<translation id="5893502481331584971">Brave açıldığında sor</translation>
 <translation id="113959764510199339">Brave, şifreleri göstermeye çalışıyor.</translation>
 <translation id="8132634101975074716">Brave'da oturum açtınız!</translation>
 <translation id="7370605478942575409">Korunan medyayı izlemek üzere Rosetta'yı kullanmak için Brave'u yeniden başlatmalısınız.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Brave Sekmesi</translation>
 <translation id="8372880274820509128">Brave ek güvenlik için verilerinizi şifreler.</translation>
 <translation id="2770231113462710648">Varsayılan tarayıcıyı şuna dönüştür:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: 1 dakika önce.}other{Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: {NUM_MINS} dakika önce.}}</translation>
 <translation id="2799223571221894425">Yeniden başlat</translation>
 <translation id="777113543093865885">Brave'dan kaldır...</translation>
-<translation id="8846162271735377947">Brave'u açtığımda sor</translation>
 <translation id="2885378588091291677">Görev Yöneticisi</translation>
 <translation id="2176825726964012531">&amp;Brave hakkında</translation>
 <translation id="8208853227947884571">Brave güncel durumda</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave, şifrelerinizi kontrol edemiyor. Daha sonra tekrar deneyin.</translation>
 <translation id="8880183781256147665">Brave'a ekleniyor ...</translation>
 <translation id="7918740962659365265">Kilitlenme raporlarını ve <ph name="UMA_LINK"/> bilgilerini Brave'a göndererek, Brave'u daha iyi hale getirmeye yardımcı olun</translation>
-<translation id="2911521062311014336">Brave, istenmeyen yazılımları haftada bir kontrol eder</translation>
 <translation id="7365690458036015383">Yükleyici sıkıştırılmış arşivi açamadı. Lütfen Brave'u yeniden indirin.</translation>
 <translation id="8919461291440820124">Brave mikrofonunuzu kullanıyor.</translation>
 <translation id="4805806622840861220">Brave'u Yeniden Başlat</translation>
@@ -170,7 +167,6 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="8211837073776713955">Brave, şifrelerinizin güvenliğinin ihlal edilip edilmediğini size bildirir</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave'a kopyalandı)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: 1 gün önce.}other{Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: {NUM_DAYS} gün önce.}}</translation>
 <translation id="2301993384336631869">Brave güncellendi, ancak programı en azından 30 gündür kullanmıyorsunuz.</translation>
 <translation id="8522287263361940593">Rosetta, Brave'un bu sayfadaki korunan medyayı oynatmasını sağlar.</translation>
 <translation id="6418340404893954563">Zayıf şifrelerin tahmin edilmesi kolaydır. Brave'un <ph name="BEGIN_LINK"/>sizin için güçlü şifreler oluşturup bu şifreleri hatırlamasına<ph name="END_LINK"/> izin verin.</translation>
@@ -203,7 +199,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
       Chrome OS ayarlarınıza<ph name="LINK_END"/> bakın</translation>
 <translation id="3293668930608086049">Brave kameranızı ve mikrofonunuzu kullanıyor.</translation>
 <translation id="2827121003398607864">Brave daha da iyi bir hale geldi</translation>
-<translation id="504499211143662559">Brave, bilgisayarınızda zararlı yazılım buldu</translation>
 <translation id="3343095737966473035">Brave varsayılan tarayıcınız değil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarınız arasında senkronize edin ve kişiselleştirin</translation>
 <translation id="5419189641394808652">Senkronizasyon alan adınızda kullanılamadığından Brave, verilerinizi senkronize edemedi.</translation>
@@ -235,7 +230,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="6283840329609797763">Yükleme belirtilmeyen bir hata nedeniyle başarısız oldu. Lütfen Brave'u tekrar indirin.</translation>
 <translation id="2433912322225810055">Ayrıca Brave'u başlattığınızda veya Çok Amaçlı Adres Çubuğu'ndan arama yaptığınızda gösterilecek sayfayı da denetler.</translation>
 <translation id="4100716194836114130">Bu sizin Brave'unuz</translation>
-<translation id="8757284234053029740">Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: Dün.</translation>
 <translation id="4831743161813926460">Brave'un bu sitede kameranıza ve mikrofonunuza erişmesi için izin gerekiyor</translation>
 <translation id="7408085963519505752">Chrome OS şartları</translation>
 <translation id="2262856633481902138">Hesap oturum açma ayrıntılarınız güncel olmadığından Brave, verilerinizi senkronize edemedi.</translation>
@@ -250,7 +244,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="7863882214613921971">Bağlantıyı Yeni Brave &amp;sekmesinde aç</translation>
 <translation id="911206726377975832">Tarama verileriniz de silinsin mi?</translation>
 <translation id="2444257125841652328">Sistem yöneticiniz, Brave'u, <ph name="TARGET_URL_HOSTNAME"/> sitesini alternatif bir tarayıcıda açacak şekilde yapılandırmış.</translation>
-<translation id="2250443703383891643">Brave, istenmeyen yazılımları haftada bir kontrol eder. Son kontrol: Biraz önce.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave artık Windows XP veya Windows Vista üzerinde desteklenmediği için doğru şekilde çalışmayabilir</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/>, bu cihazı kullanmadan önce aşağıdaki Hizmet Şartları'nı okuyup kabul etmenizi gerektirmektedir. Bu şartlar, Chrome OS Şartları'nın kapsamını genişletmez, değiştirmez veya sınırlamaz.</translation>
