@@ -5,6 +5,8 @@
 
 #include "base/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/views/sidebar/bubble_border_with_arrow.h"
+#include "brave/browser/ui/views/sidebar/sidebar_bubble_background.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -29,6 +31,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
           base::TimeDelta::FromMilliseconds(kFadeoutDurationInMs), 60, this) {
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
   set_color(kBubbleBackground);
+  set_shadow(views::BubbleBorder::NO_SHADOW);
   set_margins(gfx::Insets());
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
@@ -55,11 +58,16 @@ SidebarItemAddedFeedbackBubble::CreateNonClientFrameView(
     views::Widget* widget) {
   std::unique_ptr<views::BubbleFrameView> frame(
       new views::BubbleFrameView(gfx::Insets(), gfx::Insets(10, 18)));
-  std::unique_ptr<views::BubbleBorder> border =
-      std::make_unique<views::BubbleBorder>(arrow(), GetShadow(), color());
+  std::unique_ptr<BubbleBorderWithArrow> border =
+      std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kFeedbackBubbleRadius = 6;
   border->SetCornerRadius(kFeedbackBubbleRadius);
+  border->set_insets(gfx::Insets(
+      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+  auto* border_ptr = border.get();
   frame->SetBubbleBorder(std::move(border));
+  // Replace default background to draw arrow.
+  frame->SetBackground(std::make_unique<SidebarBubbleBackground>(border_ptr));
   return frame;
 }
 

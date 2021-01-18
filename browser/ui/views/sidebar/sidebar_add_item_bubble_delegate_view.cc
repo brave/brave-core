@@ -13,6 +13,8 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/sidebar/bubble_border_with_arrow.h"
+#include "brave/browser/ui/views/sidebar/sidebar_bubble_background.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -20,7 +22,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
-#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/label.h"
@@ -43,6 +44,7 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
       browser_(browser) {
   DCHECK(browser_);
   set_margins(gfx::Insets());
+  set_shadow(views::BubbleBorder::NO_SHADOW);
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
@@ -56,11 +58,16 @@ SidebarAddItemBubbleDelegateView::CreateNonClientFrameView(
     views::Widget* widget) {
   std::unique_ptr<views::BubbleFrameView> frame(
       new views::BubbleFrameView(gfx::Insets(), gfx::Insets(10)));
-  std::unique_ptr<views::BubbleBorder> border =
-      std::make_unique<views::BubbleBorder>(arrow(), GetShadow(), color());
+  std::unique_ptr<BubbleBorderWithArrow> border =
+      std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kRadius = 4;
   border->SetCornerRadius(kRadius);
+  border->set_insets(gfx::Insets(
+      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+  auto* border_ptr = border.get();
   frame->SetBubbleBorder(std::move(border));
+  // Replace frame's background to draw arrow.
+  frame->SetBackground(std::make_unique<SidebarBubbleBackground>(border_ptr));
   return frame;
 }
 
