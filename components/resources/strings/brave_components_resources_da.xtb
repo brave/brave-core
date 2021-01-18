@@ -753,4 +753,15 @@
 <translation id="3358050091139900813">Få tegnebogen her for at komme i gang</translation>
 <translation id="3449068867189933593">Det indtastede beløb skal være mindst {{minimumAmount}} {{fiat}}</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="2835162985889791522">Optjen tokens ved at se annoncer, der respekterer dine persondata og støt dine foretrukne hjemmesider og skabere som standard.</translation>
+<translation id="1543259266592091784">Tilføj midler</translation>
+<translation id="2623808496299703826">Optjen tokens ved at se annoncer, der respekterer dine data, og støt dine yndlingsskabere af webindhold som standard.</translation>
+<translation id="453977518730680921">Afspil medier automatisk</translation>
+<translation id="6717690610234999751">Adresser Konfig</translation>
+<translation id="9182285671734219088">Daemon-status</translation>
+<translation id="1515163294334130951">Start</translation>
+<translation id="1895658205118569222">Nedlukning</translation>
+<translation id="8237116764941266924">Kan ikke oprette forbindelse til IPFS-indholdet</translation>
+<translation id="7602558611695320510">Kunne ikke oprette forbindelse til IPFS-indholdet ved hjælp af den lokale IPFS-node. Klik på knappen Fortsæt nedenfor for at oprette forbindelse via den offentlige gateway og automatisk vende tilbage til den offentlige gateway i fremtiden.</translation>
+<translation id="6334164481400727517">Vi kunne ikke oprette forbindelse til det ønskede indhold ved hjælp af den lokale IPFS-node, da den lokale node ikke startede, eller da der ikke er nogen tilsluttede peers tilgængelige i øjeblikket. Ved at fortsætte går vi automatisk tilbage til den offentlige standard-gateway i fremtiden, når vi ikke kan oprette forbindelse til IPFS-indhold ved hjælp af den lokale IPFS-node. Dette kan deaktiveres senere under indstillingerne.</translation>
 </translationbundle>

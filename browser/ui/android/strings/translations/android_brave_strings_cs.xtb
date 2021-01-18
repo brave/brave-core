@@ -373,12 +373,12 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="7427567994475794038">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik sledovacích prvků a reklam bylo v posledních třech hodinách zablokováno.</translation>
 <translation id="2053891538879944400">S prohlížečem Brave jste ušetřili <ph name="DATA"/> <ph name="DATA_TEXT"/> dat.</translation>
 <translation id="8640064498452534195">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik dat jste ušetřili.</translation>
-<translation id="2252497442547961651">Prohlížeč Brave využívá průměrně o 40 % méně baterie. &#128267;</translation>
+<translation id="2252497442547961651">Prohlížeč Brave využívá průměrně o 40 % méně baterie. 🔋</translation>
 <translation id="1945330434665345785">Prostřednictvím prohlížeče Brave jste minulý týden zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
 <translation id="2883868922264431515">Vydělávejte žetony za sledování reklam, které berou ohled na vaše soukromí, a podpořte své oblíbené internetové stránky.</translation>
-<translation id="5678925890616256956">Krása! S prohlížečem Brave jste zablokovali 250 sledovačů a reklam. &#128293;</translation>
-<translation id="9199047775708635708">Krása! S prohlížečem Brave jste uspořili 10 MB. &#128267;</translation>
-<translation id="1880168210969863408">Krása! S prohlížečem Brave jste si během načítání stránek ušetřili 10 minut. &#128168;&#128168;</translation>
+<translation id="5678925890616256956">Krása! S prohlížečem Brave jste zablokovali 250 sledovačů a reklam. 🔥</translation>
+<translation id="9199047775708635708">Krása! S prohlížečem Brave jste uspořili 10 MB. 🔋</translation>
+<translation id="1880168210969863408">Krása! S prohlížečem Brave jste si během načítání stránek ušetřili 10 minut. 💨💨</translation>
 <translation id="7408493389591475748">Hlášení o porušení soukromí uvidíte, jakmile začnete procházet web</translation>
 <translation id="9080777565335515917">Nastavte prohlížeč Brave jako výchozí prohlížeč pro soukromé a bezpečné prohlížení stránek.</translation>
 <translation id="7801488941710395275">Umožňuje prohlížeči Brave zobrazit statistiky soukromí</translation>
@@ -480,4 +480,11 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="6478996494082389936">soukromé analýzy produktů.</translation>
 <translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
 <translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
+<translation id="2888409909650566510">Reklamy a další podezřelé\nthings blokovány</translation>
+<translation id="7909111626803226907">Brave Private Ads vás narozdíl od běžných reklam odmění tokeny, s kterými můžete podpořit tvůrce. A při tom všem udrží vaše osobní informace v soukromí.</translation>
+<translation id="3867028444168159102">Brave Private Ads se budou objevovat jako běžná oznámení. To, jak často se vám tyto reklamy budou zobrazovat, si přizpůsobíte v nastavení.</translation>
+<translation id="4649471244559455723">Tokeny, které si v Brave Ads vyděláte v tomto měsíci, vám přijdou 5. dne příštího měsíce.</translation>
+<translation id="6042317056594735519">Přispívání je způsob, jak osobně povzbudit a podpořit tvůrce a obsah, co máte rádi. Pojďte přispívat!</translation>
+<translation id="7059157883171259940">Tokeny je možné použít i jinak, než na podporu tvůrců. Můžete si koupit digitální zboží a dárkové karty s cashback bonusem.</translation>
+<translation id="7456161272236175794">BOMBA! Máte hotovo.</translation>
 </translationbundle>

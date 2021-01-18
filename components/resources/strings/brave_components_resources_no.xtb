@@ -718,4 +718,15 @@
 <translation id="3358050091139900813">Få lommeboken her for å komme i gang</translation>
 <translation id="3449068867189933593">Angitt beløp må være minst {{minimumAmount}} {{fiat}}</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="2835162985889791522">Tjen tokener ved å se på personvern-respekterende annonser og støtt favorittnettstedene og innholdsprodusentene dine som standardvalg.</translation>
+<translation id="1543259266592091784">Legg til midler</translation>
+<translation id="2623808496299703826">Tjen tokener ved å se annonser som respekterer personvern og støtt skaperne av ditt favorittwebinnhold som standard.</translation>
+<translation id="453977518730680921">Autoavspill media</translation>
+<translation id="6717690610234999751">Konfigurasjon av adresser</translation>
+<translation id="9182285671734219088">Daemon-status</translation>
+<translation id="1515163294334130951">Start</translation>
+<translation id="1895658205118569222">Avslutning</translation>
+<translation id="8237116764941266924">Kan ikke koble til IPFS-innholdet</translation>
+<translation id="7602558611695320510">Kunne ikke koble til IPFS-innholdet ved hjelp av den lokale IPFS-noden. Klikk på fortsettelsesknappen under for å koble til gjennom den offentlige gatewayen denne gangen, og automatisk falle tilbake til den offentlige gatewayen i fremtiden.</translation>
+<translation id="6334164481400727517">Vi kan ikke koble til det forespurte innholdet ved hjelp av den lokale IPFS-noden fordi den lokale noden ikke startet, eller fordi det ikke er noen tilkoblede motparter som er tilgjengelige for øyeblikket. Ved å fortsette, faller vi automatisk tilbake til standard offentlig gateway i fremtiden når vi ikke kan koble til IPFS-innhold ved hjelp av den lokale IPFS-noden. Dette kan slås av senere i innstillingene.</translation>
 </translationbundle>

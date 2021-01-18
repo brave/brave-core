@@ -262,4 +262,10 @@
 <translation id="8487693399751278191">立即导入书签...</translation>
 <translation id="2557899542277210112">要快速访问，请将书签放在书签栏的此处。</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
+<translation id="4341373692446027469">如果可用，Brave 会在 Tor 窗口中打开网站的  onion 服务</translation>
+<translation id="1365342176656744625">解决 IPFS 位置的方法</translation>
+<translation id="8705871434289874898">无法访问本地节点时，自动回退到 IPFS 公共网关。</translation>
+<translation id="6222323340194834282">使用 IPFS 协同扩展来增强浏览器中的 IPFS 支持。</translation>
+<translation id="1854270995641373652">您想在 Brave 中启用 IPFS 本地守护程序支持吗？</translation>
+<translation id="1556882415222118816">了解更多有关隐私后果的信息</translation>
 </translationbundle>

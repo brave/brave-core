@@ -752,4 +752,15 @@
 <translation id="3358050091139900813">Obtenha aqui a carteira para começar</translation>
 <translation id="3449068867189933593">A quantia introduzida deverá ser no mínimo {{minimumAmount}} {{fiat}}</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="2835162985889791522">Ganhe tokens ao visualizar anúncios que respeitam a sua privacidade e apoie os seus sites preferidos e os criadores de conteúdo automaticamente por norma.</translation>
+<translation id="1543259266592091784">Adicionar fundos</translation>
+<translation id="2623808496299703826">Ganhe tokens ao visualizar anúncios que respeitam a política de privacidade e ajude automaticamente os seus criadores de conteúdo favoritos.</translation>
+<translation id="453977518730680921">Reprodução automática de media</translation>
+<translation id="6717690610234999751">Configuração de endereços</translation>
+<translation id="9182285671734219088">Estado do daemon</translation>
+<translation id="1515163294334130951">Iniciar</translation>
+<translation id="1895658205118569222">Encerrar</translation>
+<translation id="8237116764941266924">Não é possível conectar ao conteúdo do IPFS</translation>
+<translation id="7602558611695320510">Falha ao conectar a conteúdo IPFS através do nó IPFS local, clique abaixo no botão avançar para conectar agora através do gateway público e para utilizar esta opção futuramente como alternativa.</translation>
+<translation id="6334164481400727517">Não é possível ligar ao conteúdo solicitado através do nó IPFS local, uma vez que o nó local não iniciou ou porque não existem pares conectados neste momento. Ao avançar, ativaremos automaticamente o gateway público sempre que não consigamos conectar ao conteúdo do IPFS através do nó IPFS local. Poderá desativar mais tarde em Definições.</translation>
 </translationbundle>

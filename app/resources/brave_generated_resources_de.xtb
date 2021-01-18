@@ -262,4 +262,10 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8487693399751278191">Lesezeichen jetzt importieren ...</translation>
 <translation id="2557899542277210112">Für schnellen Zugriff platzieren Sie Ihre Lesezeichen hier auf der Lesezeichenleiste.</translation>
 <translation id="2808630562319398131">Brave-Rewards-Daten zurücksetzen</translation>
+<translation id="4341373692446027469">Brave wird den Onion-Service der Webseite im Tor-Fenster öffnen, sofern verfügbar</translation>
+<translation id="1365342176656744625">Methode, um IPFS-Pfade aufzulösen</translation>
+<translation id="8705871434289874898">Automatischer Fallback für das öffentliche IPFS-Gateway, wenn auf den lokalen Node nicht zugegriffen werden kann.</translation>
+<translation id="6222323340194834282">Nutzt die IPFS-Companion-Erweiterung, um die IPFS-Unterstützung im Browser zu verbessern.</translation>
+<translation id="1854270995641373652">Möchten Sie die Unterstützung eines lokalen IPFS-Daemons in Brave aktivieren?</translation>
+<translation id="1556882415222118816">Erfahren Sie mehr über Datenschutz-Konsequenzen</translation>
 </translationbundle>

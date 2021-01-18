@@ -753,4 +753,15 @@
 <translation id="3358050091139900813">Norėdami pradėti, gaukite piniginę čia</translation>
 <translation id="3449068867189933593">Įvesta suma turi būti mažiausiai {{minimumAmount}} {{fiat}}</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="2835162985889791522">Gaukite žetonų žiūrėdami privatumo nepažeidžiančias reklamas ir paremkite numatytąsias mėgstamas svetaines ir kūrėjus.</translation>
+<translation id="1543259266592091784">Pridėti lėšų</translation>
+<translation id="2623808496299703826">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą ir paremkite numatytuosius mėgstamo svetainių turinio kūrėjus.</translation>
+<translation id="453977518730680921">Automatiškai leisti mediją</translation>
+<translation id="6717690610234999751">Adresų konfigūravimas</translation>
+<translation id="9182285671734219088">Paslaugų teikimo sistemos būsena</translation>
+<translation id="1515163294334130951">Paleisti</translation>
+<translation id="1895658205118569222">Išjungimas</translation>
+<translation id="8237116764941266924">Nepavyksta prisijungti prie IPFS turinio</translation>
+<translation id="7602558611695320510">Nepavyko prisijungti prie IPFS turinio naudojant vietinį IPFS mazgą. Spustelėkite toliau pateiktą mygtuką Tęsti, kad šį kartą prisijungtumėte per viešąjį tinklų sietuvą ir ateityje automatiškai naudotumėte atsarginį viešąjį tinklų sietuvą.</translation>
+<translation id="6334164481400727517">Negalime prisijungti prie norimo turinio naudodami vietinį IPFS mazgą, nes vietinis mazgas nepasileidžia arba šiuo metu nėra prisijungusių kolegų. Tęsdami ateityje automatiškai naudosime atsarginį viešąjį tinklų sietuvą, jei negalėsime prie IPFS turinio prisijungti naudodami vietinį IPFS mazgą. Vėliau tai galima išjungti nuostatų dalyje.</translation>
 </translationbundle>

@@ -262,4 +262,10 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8487693399751278191">Importar marcadores agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, coloque os seus marcadores aqui na barra de marcadores.</translation>
 <translation id="2808630562319398131">Redefinir dados da Brave Rewards...</translation>
+<translation id="4341373692446027469">O Brave abrirá endereços onion em Tor sempre que disponível</translation>
+<translation id="1365342176656744625">Método para resolver localizações IPFS</translation>
+<translation id="8705871434289874898">Permitir automaticamente acesso público a IPFS quando não for possível o acesso ao ponto central.</translation>
+<translation id="6222323340194834282">Utiliza a extensão interligada IPFS para melhorar o suporte de IPFS no navegador.</translation>
+<translation id="1854270995641373652">Gostaria de ativar o suporte do daemon local IPFS no Brave?</translation>
+<translation id="1556882415222118816">Saiba mais sobre as consequências de privacidade</translation>
 </translationbundle>

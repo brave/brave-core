@@ -376,12 +376,12 @@ denna månad...</translation>
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="7801488941710395275">Låter Brave visa din integritetsstatistik</translation>
@@ -483,4 +483,11 @@ denna månad...</translation>
 <translation id="6478996494082389936">privata produktanalyser.</translation>
 <translation id="5187052478998910855">Behöver du en repetition om Belöningar?</translation>
 <translation id="8622329973403382303">Ta en snabb rundtur för att friska upp minnet av hur det fungerar för att gå till historien som en Belöningarnas rockstjärna!</translation>
+<translation id="2888409909650566510">Annonser och andra oönskade\nsaker blockerade</translation>
+<translation id="7909111626803226907">Brave privata annonser belönar dig med tokens för att stödja innehållsskapare, till skillnad från traditionella annonser, samtidigt som din personliga information hålls privat.</translation>
+<translation id="3867028444168159102">Brave privata annonser visas som en normal avisering. Du styr hur ofta du ser dessa annonser i inställningarna.</translation>
+<translation id="4649471244559455723">Dina intjänade tokens från Brave ads under hela den aktuella månaden anländer den 5:e nästa månad.</translation>
+<translation id="6042317056594735519">Dricks är ett sätt att personligen uppmuntra och stödja innehåll eller skapare som du gillar. Börja dricksa!</translation>
+<translation id="7059157883171259940">Tokens kan användas utöver att stödja innehållsskapare. Du kan köpa digitala varor och presentkort med en cashback-bonus.</translation>
+<translation id="7456161272236175794">WOOOOHOOOOO!\nDu är redo.</translation>
 </translationbundle>

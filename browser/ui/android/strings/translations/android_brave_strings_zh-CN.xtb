@@ -361,12 +361,12 @@
 <translation id="7427567994475794038">启用“隐私报告”查看一下在过去 3 小时内有多少跟踪器和广告被屏蔽了。</translation>
 <translation id="2053891538879944400">您用 Brave 浏览器节省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 的数据。</translation>
 <translation id="8640064498452534195">打开“隐私报告”看看您已节省了多少数据。</translation>
-<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。&#128267;</translation>
+<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。🔋</translation>
 <translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
 <translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
-<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。&#128293;</translation>
-<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。&#128267;</translation>
-<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。🔥</translation>
+<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。🔋</translation>
+<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。💨💨</translation>
 <translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
 <translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
 <translation id="7801488941710395275">允许 brave 显示您的隐私统计数据</translation>
@@ -468,4 +468,11 @@
 <translation id="6478996494082389936">私人产品分析。</translation>
 <translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
 <translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>
+<translation id="2888409909650566510">广告和其他爬虫程序\n阻止的程序</translation>
+<translation id="7909111626803226907">与传统广告不同的是，Brave 的私人广告会奖励您代币以支持内容创作者，同时还会将您的个人信息保密。</translation>
+<translation id="3867028444168159102">Brave 的私人广告将以常规通知的形式显示。您可以在设置中控制看到这些广告的频率。</translation>
+<translation id="4649471244559455723">您本月从 Brave ads 获得的代币将在下个月的 5 号到账。</translation>
+<translation id="6042317056594735519">打赏是一种以个人身份鼓励和支持自己喜欢的内容或创作者的方式。赶快领取赏金吧！</translation>
+<translation id="7059157883171259940">代币可以用于支持创作者之外的其他用途。您可以购买带有现金返还奖金的数字商品和礼品卡。</translation>
+<translation id="7456161272236175794">WOOOOHOOOOO!\n您已完成。</translation>
 </translationbundle>

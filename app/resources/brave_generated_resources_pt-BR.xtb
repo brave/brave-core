@@ -262,4 +262,10 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8487693399751278191">Importar favoritos agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, ponha seus favoritos aqui na barra de favoritos.</translation>
 <translation id="2808630562319398131">Redefinir dados de recompensas do Brave...</translation>
+<translation id="4341373692446027469">O Brave abrirá o serviço de onions do site na janela do Tor quando estiver disponível</translation>
+<translation id="1365342176656744625">Método para resolver a localização do IPFS</translation>
+<translation id="8705871434289874898">Envia automaticamente para o gateway público do IPFS quando o nó local não puder ser acessado.</translation>
+<translation id="6222323340194834282">Utilize a extensão complementar de IPFS para aprimorar o suporte ao IPFS no navegador.</translation>
+<translation id="1854270995641373652">Gostaria de habilitar o suporte ao daemon local de IPFS no Brave?</translation>
+<translation id="1556882415222118816">Saiba mais sobre as consequências da privacidade</translation>
 </translationbundle>

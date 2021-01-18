@@ -262,4 +262,10 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8487693399751278191">Importera bokmärken nu ...</translation>
 <translation id="2557899542277210112">För snabb åtkomst kan du lägga dina bokmärken här.</translation>
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
+<translation id="4341373692446027469">Brave öppnar onion-tjänsten på webbplatsen i Tor-fönstret när det är tillgängligt</translation>
+<translation id="1365342176656744625">Metod för att anropa IPFS-platser</translation>
+<translation id="8705871434289874898">Återställ automatiskt till IPFS public gateway när den lokala noden inte kan nås.</translation>
+<translation id="6222323340194834282">Använder IPFS companion-tillägg för att förbättra IPFS-stöd i webbläsaren.</translation>
+<translation id="1854270995641373652">Vill du aktivera stöd för IPFS lokal daemon i Brave?</translation>
+<translation id="1556882415222118816">Läs mer om integritetskonsekvenser</translation>
 </translationbundle>

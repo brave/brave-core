@@ -262,4 +262,10 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8487693399751278191">I-import ang mga bookmark ngayon...</translation>
 <translation id="2557899542277210112">Para sa mabilis na access, ilagay dito sa bookmarks bar ang iyong mga bookmark.</translation>
 <translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
+<translation id="4341373692446027469">Magbubukas ang Brave ng serbisyo ng onion ng website sa window ng Tor kapag available ito</translation>
+<translation id="1365342176656744625">Pamamaraan upang maresolba ang mga lokasyon ng IPFS</translation>
+<translation id="8705871434289874898">Awtomatikong mag-fallback sa pampublikong gateway ng IPFS kapag hindi ma-access ang lokal na node</translation>
+<translation id="6222323340194834282">Gumagamit ng kasamang extension na IPFS upang pahusayin ang suporta sa IPFS sa browser.</translation>
+<translation id="1854270995641373652">Gusto mo bang i-enable ang lokal na suporta sa daemon ng IPFS sa Brave?</translation>
+<translation id="1556882415222118816">Matuto pa tungkol sa mga kahihinatnan ng privacy</translation>
 </translationbundle>

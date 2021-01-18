@@ -753,4 +753,15 @@
 <translation id="3358050091139900813">Get the wallet here to get started</translation>
 <translation id="3449068867189933593">Amount entered must be at least {{minimumAmount}} {{fiat}}</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="2835162985889791522">Earn tokens by viewing privacy-respecting ads and support your favorite sites and creators by default.</translation>
+<translation id="1543259266592091784">Add funds</translation>
+<translation id="2623808496299703826">Earn tokens by viewing privacy-respecting ads and support your favourite web content creators by default.</translation>
+<translation id="453977518730680921">Autoplay media</translation>
+<translation id="6717690610234999751">Addresses config</translation>
+<translation id="9182285671734219088">Daemon status</translation>
+<translation id="1515163294334130951">Launch</translation>
+<translation id="1895658205118569222">Shutdown</translation>
+<translation id="8237116764941266924">Can't connect to the IPFS content</translation>
+<translation id="7602558611695320510">Failed to connect to the IPFS content using the local IPFS node, click the proceed button below to connect through the public gateway this time and automatically fallback to the public gateway in the future.</translation>
+<translation id="6334164481400727517">We cannot connect to the requested content using the local IPFS node because the local node didn't start or because there are no connected peers available at the moment. By proceeding, we will automatically fallback to the default public gateway in the future when we cannot connect to IPFS content using the local IPFS node. This can be turned off later in settings.</translation>
 </translationbundle>

@@ -241,4 +241,10 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8487693399751278191">Importer bokmerker nå ...</translation>
 <translation id="2557899542277210112">For rask tilgang, plasser dine bokmerker her på bokmerkeraden.</translation>
 <translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
+<translation id="4341373692446027469">Brave åpner oniontjenesten til nettstedet i et Tor-vindu når det er tilgjengelig</translation>
+<translation id="1365342176656744625">Metode for å løse IPFS-plasseringer</translation>
+<translation id="8705871434289874898">Fall automatisk tilbake til offentlig IPFS-gateway når forbindelse til den lokale noden ikke kan opprettes.</translation>
+<translation id="6222323340194834282">Bruker IPFS-kompanjongutvidelsen for å forbedre IPFS-støtten i nettleseren.</translation>
+<translation id="1854270995641373652">Vil du slå på lokal daemon-støtte for IPFS i Brave?</translation>
+<translation id="1556882415222118816">Lær mer om personvernkonsekvenser</translation>
 </translationbundle>

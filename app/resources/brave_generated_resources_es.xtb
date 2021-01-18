@@ -262,4 +262,10 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8487693399751278191">Importar marcadores ahora...</translation>
 <translation id="2557899542277210112">Para acceder de forma rápida, coloca los marcadores aquí en la barra de marcadores</translation>
 <translation id="2808630562319398131">Restablecer los datos de recompensas de Brave...</translation>
+<translation id="4341373692446027469">Brave abrirá el servicio de onion del sitio web en la ventana de Tor cuando esté disponible</translation>
+<translation id="1365342176656744625">Método para resolver localizaciones IPFS</translation>
+<translation id="8705871434289874898">Pasar automáticamente a la puerta pública del IPFS cuando no se pueda acceder al nodo local.</translation>
+<translation id="6222323340194834282">Utiliza la extensión complementaria IPFS para mejorar la compatibilidad con IPFS en el navegador.</translation>
+<translation id="1854270995641373652">¿Quieres habilitar la compatibilidad con el daemon local IPFS en Brave?</translation>
+<translation id="1556882415222118816">Más información sobre las consecuencias de la privacidad</translation>
 </translationbundle>

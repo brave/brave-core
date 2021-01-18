@@ -375,12 +375,12 @@ mois-ci...</translation>
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traceurs &amp; d'annonces ont été bloqués au cours des 3 dernières heures.</translation>
 <translation id="2053891538879944400">Vous avez enregistré les données <ph name="DATA"/> <ph name="DATA_TEXT"/> avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les rapports de confidentialité pour voir combien de données vous avez enregistrées.</translation>
-<translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.&#128267;</translation>
+<translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traceurs &amp; annonces avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en visualisant des annonces respectueuses de la vie privée et soutenez vos sites web préférés.</translation>
-<translation id="5678925890616256956">Super ! Vous avez bloqué 250 traceurs et publicités avec le navigateur Brave.&#128293;</translation>
-<translation id="9199047775708635708">Super ! Vous avez économisé 10 Mo grâce au navigateur Brave.&#128267;</translation>
-<translation id="1880168210969863408">Super ! Vous avez économisé 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Super ! Vous avez bloqué 250 traceurs et publicités avec le navigateur Brave.🔥</translation>
+<translation id="9199047775708635708">Super ! Vous avez économisé 10 Mo grâce au navigateur Brave.🔋</translation>
+<translation id="1880168210969863408">Super ! Vous avez économisé 10 minutes de temps de chargement avec le navigateur Brave.💨💨</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Définissez Brave comme votre navigateur par défaut pour une navigation privée et sécurisée.</translation>
 <translation id="7801488941710395275">Permet à Brave d'afficher des statistiques sur votre vie privée</translation>
@@ -482,4 +482,11 @@ mois-ci...</translation>
 <translation id="6478996494082389936">Analyse de données de produits privée.</translation>
 <translation id="5187052478998910855">Besoin qu'on vous rafraîchisse la mémoire au sujet des Rewards ?</translation>
 <translation id="8622329973403382303">Suivez une rapide visite guidée pour savoir comment faire pour qu'on se rappelle de vous en tant que star des Rewards !</translation>
+<translation id="2888409909650566510">Pubs et autres choses\neffrayantes bloquées</translation>
+<translation id="7909111626803226907">Les publicités privées Brave ads récompensent avec des jetons pour soutenir les créateurs de contenu, contrairement aux publicités traditionnelles, tout en préservant la confidentialité de vos informations personnelles.</translation>
+<translation id="3867028444168159102">Les publicités privées Brave ads apparaîtront comme des notifications normales. Pour contrôler la fréquence avec laquelle vous voyez ces publicités, allez dans réglages.</translation>
+<translation id="4649471244559455723">Les jetons que vous avez gagnés grâce à Brave ads tout au long de ce mois-ci arriveront le 5 du mois prochain.</translation>
+<translation id="6042317056594735519">Laisser un pourboire, c'est une façon d'encourager et de soutenir personnellement le contenu ou les créateurs que vous aimez. À vos pourboires !</translation>
+<translation id="7059157883171259940">Au-delà du soutien aux créateurs, les jetons peuvent être utilisés pour acheter des produits numériques et des cartes cadeaux avec une prime de remboursement.</translation>
+<translation id="7456161272236175794">YOOOOUPIIII !\nVous’avez fini.</translation>
 </translationbundle>

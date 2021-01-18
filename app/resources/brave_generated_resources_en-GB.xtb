@@ -262,4 +262,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="8487693399751278191">Import bookmarks now ...</translation>
 <translation id="2557899542277210112">For quick access, place your bookmarks here on the bookmarks bar.</translation>
 <translation id="2808630562319398131">Reset Brave Rewards data ...</translation>
+<translation id="4341373692446027469">Brave will open onion service of the website in Tor window when available</translation>
+<translation id="1365342176656744625">Method to resolve IPFS locations</translation>
+<translation id="8705871434289874898">Automatically fallback to IPFS public gateway when the local node cannot be accessed.</translation>
+<translation id="6222323340194834282">Uses IPFS companion extension to enhance IPFS support in the browser.</translation>
+<translation id="1854270995641373652">Would you like to enable IPFS local daemon support in Brave?</translation>
+<translation id="1556882415222118816">Learn more about privacy consequences</translation>
 </translationbundle>

@@ -753,4 +753,15 @@
 <translation id="3358050091139900813">Obtenez un portefeuille ici pour commencer</translation>
 <translation id="3449068867189933593">Le montant saisi doit être au moins {{minimumAmount}} {{{fiat}}</translation>
 <translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="2835162985889791522">Gagnez des jetons en regardant des publicités qui respectent votre confidentialité, et soutenez vos sites et créateurs préférés par défaut.</translation>
+<translation id="1543259266592091784">Ajouter des fonds</translation>
+<translation id="2623808496299703826">Gagnez des jetons en visionnant des annonces respectueuses de la vie privée et soutenez vos créateurs de contenu web préférés par défaut.</translation>
+<translation id="453977518730680921">Lecture automatique des médias</translation>
+<translation id="6717690610234999751">Configuration des adresses</translation>
+<translation id="9182285671734219088">Statut du démon</translation>
+<translation id="1515163294334130951">Lancement</translation>
+<translation id="1895658205118569222">Arrêt</translation>
+<translation id="8237116764941266924">Impossible de se connecter au contenu IPFS</translation>
+<translation id="7602558611695320510">Impossible de se connecter au contenu IPFS en utilisant le nœud IPFS local. Cliquez sur le bouton ci-dessous pour vous connecter via la passerelle publique et revenez automatiquement à la passerelle publique à l'avenir.</translation>
+<translation id="6334164481400727517">Nous ne pouvons pas nous connecter au contenu demandé à l'aide du nœud IPFS local parce que le nœud local n'a pas démarré ou parce qu'il n'y a pas de pairs connectés disponibles pour le moment. En continuant, nous reviendrons automatiquement à la passerelle publique par défaut à l'avenir lorsque nous ne pourrons pas nous connecter au contenu IPFS à l'aide du nœud IPFS local. Cette fonction peut être désactivée ultérieurement dans les paramètres.</translation>
 </translationbundle>

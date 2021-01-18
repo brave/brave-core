@@ -262,4 +262,10 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8487693399751278191">Uvezi obeleživače sada...</translation>
 <translation id="2557899542277210112">Za brzi pristup, stavite obeleživače ovde na traku sa obeleživačima.</translation>
 <translation id="2808630562319398131">Ponovo postavi Brave Rewards podatke...</translation>
+<translation id="4341373692446027469">Brave će otvoriti onion uslugu veb-sajta u Tor prozoru kada je to dostupno</translation>
+<translation id="1365342176656744625">Metoda za rešavanje IPFS lokacija</translation>
+<translation id="8705871434289874898">Automatsko vraćanje na IPFS javni mrežni prolaz kada nije moguće pristupiti lokalnom čvoru.</translation>
+<translation id="6222323340194834282">Koristi IPFS prateće proširenje za poboljšanje IPFS podrške u pregledaču.</translation>
+<translation id="1854270995641373652">Da li biste želeli da omogućite lokalnu daemon IPFS podršku u Brave-u?</translation>
+<translation id="1556882415222118816">Saznajte više o posledicama privatnosti</translation>
 </translationbundle>

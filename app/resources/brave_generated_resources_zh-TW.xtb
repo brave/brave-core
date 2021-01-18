@@ -262,4 +262,10 @@
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
+<translation id="4341373692446027469">如果可用，Brave 將會在 Tor 視窗中開啟網站的 onion 服務</translation>
+<translation id="1365342176656744625">解析 IPFS 位置的方法</translation>
+<translation id="8705871434289874898">當本機節點無法存取時自動汰退到 IPFS 公開閘道器。</translation>
+<translation id="6222323340194834282">使用 IPFS 伴隨延伸套件，增強瀏覽器的 IPFS 支援。</translation>
+<translation id="1854270995641373652">您想在 Brave 中啟用 IPFS 本地常駐程式支援嗎？</translation>
+<translation id="1556882415222118816">了解更多關於隱私的重要性</translation>
 </translationbundle>

@@ -262,4 +262,10 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8487693399751278191">Importeu ara les adreces d'interès...</translation>
 <translation id="2557899542277210112">Per accedir ràpidament, col·loqueu les adreces d'interès aquí a la barra d'adreces d'interès.</translation>
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
+<translation id="4341373692446027469">Brave obrirà el servei onion de la pàgina web a la finestra Tor quan estigui disponible</translation>
+<translation id="1365342176656744625">Mètode per resoldre ubicacions IPFS</translation>
+<translation id="8705871434289874898">Tornar automaticament a la passarel·la pública IPFS quan no es pot accedir al node local.</translation>
+<translation id="6222323340194834282">Utilitza l'extensió complementària IPFS per millorar el suport d'IPFS al navegador.</translation>
+<translation id="1854270995641373652">Voleu habilitar el suport de IPFS local daemon a Brave?</translation>
+<translation id="1556882415222118816">Apreneu-ne més sobre les conseqüències de privadesa</translation>
 </translationbundle>

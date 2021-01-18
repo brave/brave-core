@@ -360,12 +360,12 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">저장한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="7801488941710395275">Brave가 개인정보 통계를 표시하도록 허용</translation>
@@ -467,4 +467,11 @@
 <translation id="6478996494082389936">프라이빗 상품 분석.</translation>
 <translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
 <translation id="8622329973403382303">역사에 리워드 락스타로 남을 수 있도록 어떻게 작동하는지에 대해 간단히 복습해 봅시다!</translation>
+<translation id="2888409909650566510">광고 및 기타 소름 끼치는\n것들 차단됨</translation>
+<translation id="7909111626803226907">Brave private ads는 기존 광고와 달리 콘텐츠 크리에이터를 지원하는 토큰으로 보상을 제공하는 동시에 개인 정보를 비공개로 유지합니다.</translation>
+<translation id="3867028444168159102">Brave private ads는 일반 알림으로 표시됩니다. 설정에서 이러한 광고를 보는 빈도를 제어할 수 있습니다.</translation>
+<translation id="4649471244559455723">이번 달 동안 Brave ads에서 얻은 토큰은 다음 달 5일에 도착합니다.</translation>
+<translation id="6042317056594735519">팁은 내가 좋아하는 콘텐츠나 크리에이터를 개인적으로 격려하고 지원하는 방법입니다. 팁을 받으세요!</translation>
+<translation id="7059157883171259940">토큰은 크리에이터를 지원하는 것 이상으로 사용될 수 있습니다. 캐시백 보너스로 디지털 상품과 기프트 카드를 구매할 수 있습니다.</translation>
+<translation id="7456161272236175794">유후!\n끝났습니다.</translation>
 </translationbundle>

@@ -376,12 +376,12 @@ tapahtumia…</translation>
 <translation id="7427567994475794038">Kytke yksityisyysraportit päälle, niin näet miten monta seurainta &amp; mainosta on estetty viimeisen kolmen tunnin aikana.</translation>
 <translation id="2053891538879944400">Säästit Brave-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
 <translation id="8640064498452534195">Kytke yksityisyysraportit päälle, niin näet miten paljon dataa olet säästänyt.</translation>
-<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.&#128267;</translation>
+<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
 <translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
-<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.&#128293;</translation>
-<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.&#128267;</translation>
-<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.🔥</translation>
+<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.🔋</translation>
+<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.💨💨</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
 <translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
 <translation id="7801488941710395275">Sallii Braven näyttää yksityisyystilastosi</translation>
@@ -483,4 +483,11 @@ tapahtumia…</translation>
 <translation id="6478996494082389936">yksityistuoteanalytiikka.</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>
+<translation id="2888409909650566510">Mainokset ynnä muu häiritsevä\nsisältö estetty</translation>
+<translation id="7909111626803226907">Braven yksityismainoksista saa palkinnoksi maksutunnuksia, joiden avulla voit tavallisista mainoksista poiketen tukea sisällönkehittäjiä sekä pitää omat tietosi salassa.</translation>
+<translation id="3867028444168159102">Braven yksityismainokset näkyvät tavallisina ilmoituksina. Voit itse hallinnoida näiden mainosten esitystiheyttä asetuksista käsin.</translation>
+<translation id="4649471244559455723">Brave-mainosten kautta kuluvan kuun aikana ansaitsemasi maksutunnukset saapuvat seuraavan kuun 5. päivänä</translation>
+<translation id="6042317056594735519">Tippaaminen kannustaa ja tukee suosikkisisältöäsi ja -kehittäjiäsi. Aloita siis tippaaminen!</translation>
+<translation id="7059157883171259940">Maksutunnuksia voi käyttää muuhunkin kuin kehittäjien tukemiseen. Cashback-bonuksen avulla voi myös ostaa digitaalisia tuotteita ja lahjakortteja.</translation>
+<translation id="7456161272236175794">JEEEE!\nValmista tuli.</translation>
 </translationbundle>

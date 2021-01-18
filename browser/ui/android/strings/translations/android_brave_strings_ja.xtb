@@ -376,12 +376,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="7801488941710395275">Braveが、プライバシー統計を表示できるようにする</translation>
@@ -484,4 +484,11 @@
 <translation id="6478996494082389936">プライベート製品分析。</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsロックスターとして歴史に名を残すための仕組みについてブラッシュアップしてください！</translation>
+<translation id="2888409909650566510">ブロック済の広告・トラッカー</translation>
+<translation id="7909111626803226907">プライバシーを尊重したBrave広告は、従来の広告とは異なり、あなたにコンテンツクリエイターをサポートするためのトークンを与えて報いますが、あなたの個人情報を機密扱いにしながらすべてを実現します。</translation>
+<translation id="3867028444168159102">Brave広告は、通常の通知として表示されます。設定でこれらの広告を表示する頻度を制御します。</translation>
+<translation id="4649471244559455723">当月中にBrave広告で獲得したトークンは、翌月の5日に届きます。</translation>
+<translation id="6042317056594735519">チッピングは、あなたが好きなコンテンツやクリエイターを個人的に応援し、サポートする方法の1つです。チッピングしよう！</translation>
+<translation id="7059157883171259940">トークンはクリエイターをサポートする以外にも使用できます。キャッシュバックボーナス付きのデジタルグッズやギフトカードを購入できます。</translation>
+<translation id="7456161272236175794">やったー！\n完了しました。</translation>
 </translationbundle>
