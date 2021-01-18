@@ -7,6 +7,7 @@
 
 #include "base/bind.h"
 #include "content/public/renderer/render_frame.h"
+#include "third_party/blink/public/web/web_local_frame.h"
 
 namespace cosmetic_filters {
 
@@ -40,6 +41,10 @@ void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
   // should fallback to the main frame rules
   if (url_.is_empty())
     return;
+  if (url_.spec() == "about:blank") {
+    url_ = url::Origin(
+        render_frame()->GetWebFrame()->GetSecurityOrigin()).GetURL();
+  }
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(new CosmeticFiltersJSHandler(
         render_frame(), worker_isolated_world_id_));

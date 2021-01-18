@@ -35,6 +35,7 @@ class CosmeticFiltersResources final
       const std::string& url,
       ShouldDoCosmeticFilteringCallback callback) override;
   void HiddenClassIdSelectors(const std::string& input,
+                              const std::vector<std::string>& exceptions,
                               HiddenClassIdSelectorsCallback callback) override;
   void UrlCosmeticResources(const std::string& url,
                             UrlCosmeticResourcesCallback callback) override;

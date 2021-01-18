@@ -57,7 +57,8 @@ const char kSelectorsInjectScript[] =
               window.content_cosmetic.cosmeticStyleSheet.rules.length;
           const selectors = %s;
           selectors.forEach(selector => {
-            if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
+            if ((typeof selector === 'string') &&
+                !window.content_cosmetic.allSelectorsToRules.has(selector)) {
               let rule = selector + '{display:none !important;}';
               window.content_cosmetic.cosmeticStyleSheet.insertRule(
                 `${rule}`, nextIndex);
@@ -149,12 +150,14 @@ CosmeticFiltersJSHandler::~CosmeticFiltersJSHandler() = default;
 
 void CosmeticFiltersJSHandler::HiddenClassIdSelectors(
     const std::string& input) {
-  if (EnsureConnected())
+  if (!EnsureConnected())
     return;
 
   cosmetic_filters_resources_->HiddenClassIdSelectors(
-      input, base::BindOnce(&CosmeticFiltersJSHandler::OnHiddenClassIdSelectors,
-                            base::Unretained(this)));
+      input,
+      exceptions_,
+      base::BindOnce(&CosmeticFiltersJSHandler::OnHiddenClassIdSelectors,
+                     base::Unretained(this)));
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -241,6 +244,7 @@ void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
   if (!enabled || !EnsureConnected())
     return;
 
+  enabled_1st_party_cf_filtering_ = first_party_enabled;
   cosmetic_filters_resources_->UrlCosmeticResources(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
@@ -265,12 +269,6 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
         base::StringPrintf(kScriptletInitScript, json_to_inject.c_str());
   }
   if (render_frame_->IsMainFrame()) {
-    // TODO get the enabled_1st_party_cf_filtering_
-    // Profile* profile =
-    //    Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-    enabled_1st_party_cf_filtering_ = false;
-    // brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-    //    HostContentSettingsMapFactory::GetForProfile(profile), GURL(url));
     bool generichide = false;
     resources_dict->GetBoolean("generichide", &generichide);
     non_scriptlet_init_script =
@@ -295,7 +293,6 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
       blink::WebString::FromUTF8(*g_observing_script));
 
   CSSRulesRoutine(resources_dict);
-  // std::string pre_init_script = "(function(){console.log('!!!hello1');})();";
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
@@ -355,42 +352,30 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 }
 
 void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
-  // TODO figure out value
-  // if (!selectors || IsVettedSearchEngine(url.host())) {
-  //   return;
-  // }
-  // for (size_t i = 0; i < selectors->GetSize(); i++) {
-  //   base::ListValue* selectors_list = nullptr;
-  //   if (!selectors->GetList()[i].GetAsList(&selectors_list) ||
-  //       selectors_list->GetSize() == 0) {
-  //     continue;
-  //   }
-  //   std::string json_selectors;
-  //   if (!base::JSONWriter::Write(*selectors_list, &json_selectors) ||
-  //       json_selectors.empty()) {
-  //     json_selectors = "[]";
-  //   }
-  //   // Building a script for stylesheet modifications
-  //   std::string new_selectors_script =
-  //       base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
-  //   if (selectors_list->GetSize() != 0) {
-  //     auto* frame_host = content::RenderFrameHost::FromID(frame_id);
-  //     if (!frame_host)
-  //       return;
-  //     frame_host->ExecuteJavaScriptInIsolatedWorld(
-  //         base::UTF8ToUTF16(new_selectors_script), base::NullCallback(),
-  //         ISOLATED_WORLD_ID_CHROME_INTERNAL);
-  //   }
-  // }
+  base::ListValue* selectors_list;
+  if (IsVettedSearchEngine(url_.host()) || !result.GetAsList(&selectors_list)) {
+    return;
+  }
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  std::string json_selectors;
+  if (!base::JSONWriter::Write(*selectors_list, &json_selectors) ||
+      json_selectors.empty()) {
+    json_selectors = "[]";
+  }
+  // Building a script for stylesheet modifications
+  std::string new_selectors_script =
+      base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
+  if (selectors_list->GetSize() != 0) {
+    web_frame->ExecuteScriptInIsolatedWorld(
+        worker_isolated_world_id_,
+        blink::WebString::FromUTF8(new_selectors_script));
+  }
 
-  // if (!enabled_1st_party_cf_filtering_) {
-  //   auto* frame_host = content::RenderFrameHost::FromID(frame_id);
-  //   if (!frame_host)
-  //     return;
-  //   frame_host->ExecuteJavaScriptInIsolatedWorld(
-  //       base::UTF8ToUTF16(*g_observing_script), base::NullCallback(),
-  //       ISOLATED_WORLD_ID_CHROME_INTERNAL);
-  // }
+  if (!enabled_1st_party_cf_filtering_) {
+    web_frame->ExecuteScriptInIsolatedWorld(
+        worker_isolated_world_id_,
+        blink::WebString::FromUTF8(*g_observing_script));
+  }
 }
 
 }  // namespace cosmetic_filters

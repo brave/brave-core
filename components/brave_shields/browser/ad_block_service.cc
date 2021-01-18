@@ -28,6 +28,8 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
+#include "base/json/json_writer.h"
+
 #define DAT_FILE "rs-ABPFilterParserData.dat"
 #define REGIONAL_CATALOG "regional_catalog.json"
 
@@ -161,7 +163,7 @@ base::Optional<base::Value> AdBlockService::HiddenClassIdSelectors(
     hide_selectors = std::move(regional_selectors);
   }
 
-  if (!hide_selectors || hide_selectors->is_list())
+  if (!hide_selectors || !hide_selectors->is_list())
     hide_selectors = base::ListValue();
 
   if (custom_selectors && custom_selectors->is_list())

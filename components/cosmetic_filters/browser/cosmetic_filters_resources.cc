@@ -44,14 +44,19 @@ CosmeticFiltersResources::~CosmeticFiltersResources() {}
 
 void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::string& input,
+    const std::vector<std::string>& exceptions,
     HiddenClassIdSelectorsCallback callback) {
   base::Optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value || !input_value->is_dict()) {
     // Nothing to work with
+    std::move(callback).Run(base::Value());
+
     return;
   }
   base::DictionaryValue* input_dict;
   if (!input_value->GetAsDictionary(&input_dict)) {
+    std::move(callback).Run(base::Value());
+
     return;
   }
   std::vector<std::string> classes;
@@ -78,7 +83,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   ad_block_service_->GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(HiddenClassIdSelectorsOnTaskRunner, ad_block_service_,
-                     classes, ids, std::vector<std::string>()),
+                     classes, ids, exceptions),
       base::BindOnce(&CosmeticFiltersResources::HiddenClassIdSelectorsOnUI,
                      base::Unretained(this), std::move(callback)));
 }
