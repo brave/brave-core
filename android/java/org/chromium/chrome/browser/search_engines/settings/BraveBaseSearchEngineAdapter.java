@@ -12,11 +12,13 @@ import android.widget.BaseAdapter;
 
 import androidx.annotation.StringRes;
 
-import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
+import org.chromium.components.search_engines.TemplateUrl;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     public BraveBaseSearchEngineAdapter() {
@@ -52,9 +54,16 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
             List<TemplateUrl> templateUrls, TemplateUrl defaultSearchEngine) {
         int recentEngineNum = 0;
         long displayTime = System.currentTimeMillis() - SearchEngineAdapter.MAX_DISPLAY_TIME_SPAN_MS;
+        Set<String> templateUrlSet = new HashSet<String>();
         Iterator<TemplateUrl> iterator = templateUrls.iterator();
         while (iterator.hasNext()) {
             TemplateUrl templateUrl = iterator.next();
+            if (!templateUrlSet.contains(templateUrl.getShortName())) {
+                templateUrlSet.add(templateUrl.getShortName());
+            } else {
+                iterator.remove();
+                continue;
+            }
             if (getSearchEngineSourceType(templateUrl, defaultSearchEngine)
                     != SearchEngineAdapter.TemplateUrlSourceType.RECENT) {
                 continue;

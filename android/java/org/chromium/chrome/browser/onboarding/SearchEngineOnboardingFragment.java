@@ -33,7 +33,10 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class SearchEngineOnboardingFragment extends Fragment {
     private String searchSpanText = "%s\n%s";
@@ -67,6 +70,17 @@ public class SearchEngineOnboardingFragment extends Fragment {
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
             BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
+
+        Iterator<TemplateUrl> iterator = templateUrls.iterator();
+        Set<String> templateUrlSet = new HashSet<String>();
+        while (iterator.hasNext()) {
+            TemplateUrl templateUrl = iterator.next();
+            if (!templateUrlSet.contains(templateUrl.getShortName())) {
+                templateUrlSet.add(templateUrl.getShortName());
+            } else {
+                iterator.remove();
+            }
+        }
 
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
