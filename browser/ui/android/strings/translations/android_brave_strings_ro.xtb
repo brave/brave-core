@@ -325,6 +325,7 @@ lună...</translation>
 <translation id="7396366757003005317">Amprentare blocată (strictă, poate să afecteze siteurile)</translation>
 <translation id="700453611199558021">Amprentare blocată (standard)</translation>
 <translation id="769702552748212954">Permite toată amprentarea</translation>
+<translation id="5142293891785304489">Trackere, reclame și\nmulte altele blocate</translation>
 <translation id="6930134873084561197">Site-urile adesea includ module cookie și scripturi care încearcă să vă identifice pe dvs. și dispozitivul dvs. Vor să afle cine sunteți și vă urmăresc pe internet, monitorizându-vă activitatea pe fiecare site.\n\nBrave le blochează astfel încât să puteți naviga pe internet fără să fiți urmărit.</translation>
 <translation id="8553998445606452168">Despre scuturile Brave</translation>
 <translation id="8912304686498704084">SUS</translation>
@@ -436,16 +437,22 @@ lună...</translation>
 <translation id="8804164990146287819">Politica de Confidențialitate</translation>
 <translation id="6318696841371191107">Faceți un tur rapid</translation>
 <translation id="7930505144430343145">Bun venit la Recompensele Brave!</translation>
+<translation id="3477340970981564961">Reclamele private Brave te recompensează cu tokeni, pentru a sprijini creatorii de conținut altfel decât reclamele tradiționale, menținându-ți în același timp informațiile personale private.</translation>
 <translation id="6973095375773523904">Unde se afișează reclamele/</translation>
+<translation id="7556325460112047619">Reclamele private Brave vor apărea sub forma unei notificări obișnuite. Tu controlezi cât de des vezi aceste reclame, din setări.</translation>
 <translation id="5816125157889950051">Când primiți recompensele</translation>
+<translation id="310863932297733723">Tokenii obținuți pentru reclamele private Brave urmărite pe parcursul acestei luni vor fi disponibili în data de 5 a lunii următoare.</translation>
 <translation id="7712287524451429139">Dăruiți fără efort</translation>
 <translation id="105037569026952831">Creatorii primesc automat contribuțiile dvs. în tokenuri, pe baza nivelurilor de angajament pe care le măsurăm ca‘Atenție’.</translation>
 <translation id="5323267338679539010">Spuneți „mulțumesc” cu tokenuri</translation>
+<translation id="6730444165801605682">Oferirea de bacșiș este o modalitate de a încuraja și susține personal conținutul sau creatorii care îți plac. Începe să lași bacșiș!</translation>
 <translation id="7509452925943421624">Ce puteți face cu tokenurile?</translation>
+<translation id="5876169128756792273">Tokenii pot fi folosiți la mai mult decât susținerea creatorilor. Poți cumpăra conținut digital și alte bunuri pe măsură ce ni se alătură mai mulți vânzători.</translation>
 <translation id="1402530520078693620">La final, să configurăm setările de bază</translation>
 <translation id="3494356595346329740">Puteți modifica acest lucru mai târziu.</translation>
 <translation id="6462814326662189004">Cât de des doriți să vedeți reclame?\n(Reclame pe oră)</translation>
 <translation id="2134244432345596331">Câtă susținere doriți să oferiți creatorilor favoriți?\n(din câștigurile dvs. din reclame)</translation>
+<translation id="827315274423079662">Iuhuu, totul e gata!</translation>
 <translation id="3895246934788932488">Folosind Recompensele Brave, vă protejați confidențialitatea și ajutați la crearea unei rețele web mai bună pentru toată lumea. Și asta e minunat!</translation>
 <translation id="5705882733397021510">Înapoi</translation>
 <translation id="5140321319944305531">Haideți să facem un tur rapid</translation>
@@ -458,5 +465,21 @@ lună...</translation>
 <translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
 <translation id="7889432931837317731">Deschideți automat atunci când este posibil</translation>
+<translation id="8967385052772844086">Vizualizare text integral al Raportului de confidențialitate</translation>
+<translation id="6864343534748973390">Cele mai populare</translation>
+<translation id="1622983732360473885">Susține Brave</translation>
+<translation id="4608192160278975831">Confidențial și fără monitorizare</translation>
+<translation id="7208522820527289601">Confidențial și fără monitorizare, sediu în UE</translation>
+<translation id="1161008391729450974">Rezultate Google fără trackere</translation>
+<translation id="7320542277711359296">Al doilea cel mai popular</translation>
+<translation id="8295049095570748497">Un motor de căutare de top din Rusia</translation>
+<translation id="2642661895835126239">Plantează copaci, cu sediul în Berlin</translation>
+<translation id="1410130669636877548">Atunci când cauți ceva pe web, unele motoare de căutare îți protejează confidențialitatea datelor mai bine decât altele.</translation>
 <translation id="1078265935778232285">Bine ați venit pe browserul Brave</translation>
+<translation id="6824713633331856331">Ajută-ne să învățăm, anonim</translation>
+<translation id="6116685031674149112">Brave îți protejează confidențialitatea datelor și \napreciază acordul pentru următoarele:</translation>
+<translation id="3971666849661839619">Ajută-ne să îmbunătățim Brave trimițând rapoarte de defecțiuni complet anonimizate, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">date de analiză produs privat.</translation>
+<translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
+<translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
 </translationbundle>
