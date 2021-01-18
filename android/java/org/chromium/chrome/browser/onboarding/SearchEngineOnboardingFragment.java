@@ -9,7 +9,6 @@ package org.chromium.chrome.browser.onboarding;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +17,20 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.fragment.app.Fragment;
+
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchEngineEnum;
-import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class SearchEngineOnboardingFragment extends Fragment {
     private RadioGroup radioGroup;
@@ -58,7 +62,19 @@ public class SearchEngineOnboardingFragment extends Fragment {
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.get();
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
-            BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
+                BraveSearchEngineUtils.getTemplateUrlByShortName(
+                        BraveSearchEngineUtils.getDSEShortName(false));
+
+        Iterator<TemplateUrl> iterator = templateUrls.iterator();
+        Set<String> templateUrlSet = new HashSet<String>();
+        while (iterator.hasNext()) {
+            TemplateUrl templateUrl = iterator.next();
+            if (!templateUrlSet.contains(templateUrl.getShortName())) {
+                templateUrlSet.add(templateUrl.getShortName());
+            } else {
+                iterator.remove();
+            }
+        }
 
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
@@ -114,7 +130,8 @@ public class SearchEngineOnboardingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (selectedSearchEngine == null) {
-                    selectedSearchEngine = BraveSearchEngineUtils.getTemplateUrlByShortName(BraveSearchEngineUtils.getDSEShortName(false));
+                    selectedSearchEngine = BraveSearchEngineUtils.getTemplateUrlByShortName(
+                            BraveSearchEngineUtils.getDSEShortName(false));
                 }
                 if (selectedSearchEngine != null) {
                     BraveSearchEngineUtils.setDSEPrefs(selectedSearchEngine, false);
