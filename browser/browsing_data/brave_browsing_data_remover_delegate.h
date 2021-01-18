@@ -7,7 +7,12 @@
 #define BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 
 #include "base/time/time.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
+
+namespace base {
+class Process;
+}  // namespace base
 
 namespace content_settings {
 class BravePrefProvider;
@@ -41,6 +46,10 @@ class BraveBrowsingDataRemoverDelegate
                           override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
+#if BUILDFLAG(IPFS_ENABLED)
+  void ClearIPFSCache();
+  void WaitForIPFSRepoGC(base::Process process);
+#endif
 
   Profile* profile_;
 };
