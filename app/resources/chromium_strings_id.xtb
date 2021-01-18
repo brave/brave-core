@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: 1 jam yang lalu.}other{Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: {NUM_HOURS} jam yang lalu}}</translation>
 <translation id="1065672644894730302">Preferensi Anda tidak dapat dibaca. Beberapa fitur mungkin tidak tersedia dan perubahan pada preferensi tidak akan disimpan.</translation>
 <translation id="8488151306313572776">Untuk memisahkan penjelajahan pribadi dan <ph name="NEW_USER"/>, buat profil baru di Brave</translation>
 <translation id="2796517443093885402">Brave dapat membantu Anda agar tetap aman dari pelanggaran data, ekstensi berbahaya, dan lainnya</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Untuk memeriksa apakah sandi Anda aman dari pelanggaran data dan masalah keamanan lainnya, <ph name="BEGIN_LINK"/>login ke Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Tentang Brave</translation>
 <translation id="4798342026247191171">Siapkan profil Brave baru Anda</translation>
+<translation id="5893502481331584971">Tanyakan saat Brave terbuka</translation>
 <translation id="113959764510199339">Brave mencoba menampilkan sandi.</translation>
 <translation id="8132634101975074716">Anda sudah masuk ke Brave!</translation>
 <translation id="7370605478942575409">Untuk memutar media yang dilindungi menggunakan Rosetta, Anda harus memulai ulang Brave.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keamanan tambahan, Brave akan mengenkripsi data Anda.</translation>
 <translation id="2770231113462710648">Ubah browser default ke:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: 1 menit yang lalu.}other{Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: {NUM_MINS} menit yang lalu.}}</translation>
 <translation id="2799223571221894425">Luncurkan Ulang</translation>
 <translation id="777113543093865885">Buang dari Brave...</translation>
-<translation id="8846162271735377947">Tanyakan saat saya membuka Brave</translation>
 <translation id="2885378588091291677">Pengelola Tugas</translation>
 <translation id="2176825726964012531">Tentang &amp;Brave</translation>
 <translation id="8208853227947884571">Brave sudah diperbarui</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave tidak dapat memeriksa sandi Anda. Coba lagi nanti.</translation>
 <translation id="8880183781256147665">Menambahkan Brave...</translation>
 <translation id="7918740962659365265">Bantu Brave menjadi lebih baik dengan mengirim laporan kerusakan dan <ph name="UMA_LINK"/> ke Brave</translation>
-<translation id="2911521062311014336">Brave memeriksa software yang tidak diinginkan seminggu sekali</translation>
 <translation id="7365690458036015383">Pemasang gagal membatalkan kompresi arsip. Download Brave lagi.</translation>
 <translation id="8919461291440820124">Brave menggunakan mikrofon Anda.</translation>
 <translation id="4805806622840861220">Luncurkan ulang Brave</translation>
@@ -172,7 +169,6 @@ Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda at
 <translation id="8211837073776713955">Brave akan memberi tahu jika sandi Anda disusupi</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (disalin ke Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: 1 hari yang lalu.}other{Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: {NUM_DAYS} hari yang lalu.}}</translation>
 <translation id="2301993384336631869">Brave telah diperbarui, tetapi Anda belum menggunakannya selama setidaknya 30 hari.</translation>
 <translation id="8522287263361940593">Rosetta memungkinkan Brave memutar media yang dilindungi di halaman ini.</translation>
 <translation id="6418340404893954563">Sandi yang lemah mudah ditebak. Izinkan Brave <ph name="BEGIN_LINK"/>membuat dan mengingat sandi yang kuat untuk Anda<ph name="END_LINK"/>.</translation>
@@ -205,7 +201,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
       setelan Chrome OS<ph name="LINK_END"/> Anda</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon Anda.</translation>
 <translation id="2827121003398607864">Brave menjadi lebih baik</translation>
-<translation id="504499211143662559">Brave menemukan software berbahaya di komputer Anda</translation>
 <translation id="3343095737966473035">Brave bukan browser default</translation>
 <translation id="5477319665405831211">Menyinkronkan dan mempersonalisasi Brave di perangkat Anda</translation>
 <translation id="5419189641394808652">Brave tidak dapat menyinkronkan data Anda karena Sinkronisasi tidak tersedia untuk domain Anda.</translation>
@@ -237,7 +232,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="6283840329609797763">Pemasangan gagal karena kesalahan yang tidak ditentukan. Download Brave lagi.</translation>
 <translation id="2433912322225810055">Juga mengontrol halaman apa yang ditampilkan saat Anda memulai Brave atau menelusuri dari Omnibox.</translation>
 <translation id="4100716194836114130">Ini Brave Anda</translation>
-<translation id="8757284234053029740">Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: kemarin.</translation>
 <translation id="4831743161813926460">Brave memerlukan izin akses ke kamera dan mikrofon untuk situs ini</translation>
 <translation id="7408085963519505752">Persyaratan Chrome OS</translation>
 <translation id="2262856633481902138">Brave tidak dapat menyinkronkan data karena detail proses masuk Anda sebelum diperbarui.</translation>
@@ -252,7 +246,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="7863882214613921971">Buka Link di &amp;tab Brave Baru</translation>
 <translation id="911206726377975832">Hapus juga data browsing Anda?</translation>
 <translation id="2444257125841652328">Administrator sistem Anda telah mengonfigurasi Brave untuk membuka browser alternatif guna mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave memeriksa software yang tidak diinginkan seminggu sekali. Terakhir diperiksa: sesaat yang lalu.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave mungkin tidak berfungsi dengan semestinya karena sudah tidak didukung di Windows XP atau Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> mewajibkan Anda membaca dan menyetujui Persyaratan Layanan sebelum menggunakan perangkat ini. Persyaratan ini tidak memperluas, mengubah, atau membatasi Persyaratan Chrome OS.</translation>

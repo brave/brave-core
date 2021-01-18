@@ -639,8 +639,12 @@
     "message": "Brave Rewards ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "ತ್ವರಿತ ಪ್ರವಾಸ ಮಾಡಿ",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ ಗೆ ಸಮ್ಮತಿಸುತ್ತೀರಿ.",
+    "message": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ಗೆ ಒಪ್ಪುತ್ತೀರಿ.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "ಹಿಂತಿರುಗಿ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "ತ್ವರಿತ ಪ್ರಯಾಣವನ್ನು ಕೈಗೊಳ್ಳೋಣ",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "ಮುಂದುವರೆಸಿ",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "ಮುಗಿದಿದೆ",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "ಸ್ಕಿಪ್‌",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "ಸದ್ಯಕ್ಕೆ ಸ್ಕಿಪ್ ಮಾಡಿ",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Brave Rewards ಗೆ ಸ್ವಾಗತ!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ಖಾಸಗಿಯಾಗಿಟ್ಟುಕೊಂಡು ಸಾಂಪ್ರದಾಯಿಕ ಜಾಹೀರಾತುಗಳಿಗಿಂತ ಭಿನ್ನವಾಗಿ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ನಿಮಗೆ ಟೋಕನ್‌ಗಳನ್ನು ನೀಡುತ್ತವೆ.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "ಜಾಹೀರಾತುಗಳು ಎಲ್ಲಿ ತೋರಿಸುತ್ತವೆ?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಸಾಮಾನ್ಯ ಅಧಿಸೂಚನೆಯಂತೆ ಗೋಚರಿಸುತ್ತವೆ. ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಈ ಜಾಹೀರಾತುಗಳನ್ನು ನೀವು ಎಷ್ಟು ಬಾರಿ ನೋಡುತ್ತೀರಿ ಎಂಬುದನ್ನು ನೀವು ನಿಯಂತ್ರಿಸುತ್ತೀರಿ.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "ನೀವು ಯಾವಾಗ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯುತ್ತೀರಿ",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "ಪ್ರಸ್ತುತ ತಿಂಗಳಿನಾದ್ಯಂತ Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳಿಂದ ನೀವು ಗಳಿಸಿದ ಟೋಕನ್‌ಗಳು ಮುಂದಿನ ತಿಂಗಳು 5 ರಂದು ಬರಲಿವೆ.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "ಮರಳಿ ಹಿಂತಿರುಗಿಸುವುದು ಪ್ರಯತ್ನರಹಿತವಾಗಿದೆ",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "ನಾವು 'ಗಮನಿಸುವಿಕೆ' ಎಂಬುದಾಗಿ ಅಳೆಯುವ ನಿಮ್ಮ ತೊಡಗಿಸಿಕೊಳ್ಳುವಿಕೆಯ ಹಂತಗಳ ಆಧಾರದ ಮೇಲೆ ರಚನೆಕಾರರು ನಿಮ್ಮ ಟೋಕನ್ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ವೀಕರಿಸುತ್ತಾರೆ.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "ಸಲಹೆಗಳೊಂದಿಗೆ ಧನ್ಯವಾದಗಳು ಎಂದು ಹೇಳಿ",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "ಟಿಪ್ಪಿಂಗ್ ಎಂಬುದು ನೀವು ಇಷ್ಟಪಡುವ ವಿಷಯ ಅಥವಾ ರಚಿಸುವವರನ್ನು ವೈಯಕ್ತಿಕವಾಗಿ ಪ್ರೋತ್ಸಾಹಿಸುವ ಮತ್ತು ಬೆಂಬಲಿಸುವ ಒಂದು ಮಾರ್ಗವಾಗಿದೆ. ಟಿಪ್ಪಿನ್ ಅನ್ನು ಪಡೆಯಿರಿ!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "ನೀವು ಟೋಕನ್‌ಗಳೊಂದಿಗೆ ಏನು ಮಾಡಬಹುದು?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸುವುದನ್ನು ಮೀರಿ ಟೋಕನ್‌ಗಳನ್ನು ಬಳಸಬಹುದು. ವ್ಯಾಪಾರಿಗಳು ನಮ್ಮ ವೇದಿಕೆಯನ್ನು ಸೇರಿಕೊಂಡಂತೆಲ್ಲಾ ನೀವು ಡಿಜಿಟಲ್ ವಿಷಯ ಮತ್ತು ಇತರ ಸರಕುಗಳನ್ನು ಖರೀದಿಸಬಹುದು.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "ಓಹೋ, ನೀವು ಸಿದ್ಧರಾಗಿರುವಿರಿ!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave Rewards ಬಳಸುವ ಮೂಲಕ, ಎಲ್ಲರಿಗೂ ವೆಬ್ ಅನ್ನು ಉತ್ತಮ ಸ್ಥಳವನ್ನಾಗಿ ಮಾಡಲು ನೀವು ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಅದು ಅದ್ಭುತವಾಗಿದೆ!",
+    "description": ""
   }
 }

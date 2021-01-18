@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: 1시간 전}other{Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: {NUM_HOURS}시간 전}}</translation>
 <translation id="1065672644894730302">환경설정을 읽을 수 없습니다.
 
 일부 기능을 사용할 수 없으며 환경설정의 변경사항이 저장되지 않습니다.</translation>
@@ -12,6 +11,7 @@
 <translation id="8522292744959221145">암호가 정보 유출 및 다른 보안 문제로부터 안전한지 확인하려면 <ph name="BEGIN_LINK"/>Brave에 로그인<ph name="END_LINK"/>하세요.</translation>
 <translation id="8541922081612557424">Brave 정보</translation>
 <translation id="4798342026247191171">새 Brave 프로필 설정</translation>
+<translation id="5893502481331584971">Brave이 열릴 때 확인</translation>
 <translation id="113959764510199339">Brave이 비밀번호를 표시하려고 합니다.</translation>
 <translation id="8132634101975074716">Brave에 로그인했습니다.</translation>
 <translation id="7370605478942575409">Rosetta를 사용하여 보호된 미디어를 재생하려면 Brave을 다시 시작해야 합니다</translation>
@@ -46,10 +46,8 @@
 <translation id="6791166902140255175">Brave 탭</translation>
 <translation id="8372880274820509128">보안 강화를 위해 Brave에서 사용자 데이터를 암호화합니다.</translation>
 <translation id="2770231113462710648">다음으로 기본 브라우저 변경:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: 1분 전}other{Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: {NUM_MINS}분 전}}</translation>
 <translation id="2799223571221894425">다시 시작</translation>
 <translation id="777113543093865885">Brave에서 제거...</translation>
-<translation id="8846162271735377947">Brave을 열 때 확인</translation>
 <translation id="2885378588091291677">작업 관리자</translation>
 <translation id="2176825726964012531">Brave 정보</translation>
 <translation id="8208853227947884571">Brave이 최신 버전임</translation>
@@ -57,7 +55,6 @@
 <translation id="8755404239607088219">Brave에서 비밀번호를 확인할 수 없습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8880183781256147665">Brave에 추가하는 중...</translation>
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave로 전송하여 Brave 개선에 참여합니다.</translation>
-<translation id="2911521062311014336">Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다.</translation>
 <translation id="7365690458036015383">설치 프로그램이 보관 파일 압축 풀기에 실패했습니다. Brave을 다시 다운로드하세요.</translation>
 <translation id="8919461291440820124">Brave이 마이크를 사용 중입니다.</translation>
 <translation id="4805806622840861220">Brave 다시 시작</translation>
@@ -144,7 +141,7 @@
 <translation id="5849446944780602366">Brave을 맞춤설정하고 제어하세요. 업데이트가 출시되었습니다.</translation>
 <translation id="492209281555538239">Brave에서 내 Brave 계정에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
-<translation id="6134968993075716475">세이프 브라우징이 사용 중지되어 있습니다. 사용 설정하는 것이 좋습니다.</translation>
+<translation id="7006260220514217183">세이프 브라우징이 사용 중지되어 있습니다. 사용 설정하는 것이 좋습니다.</translation>
 <translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/>에서 Brave에 로그인되어 있는지 확인한 다음 다시 전송해 보세요.</translation>
 <translation id="8320964054148936490">컴퓨터에 이미 최신 버전의 Brave이 있습니다. 소프트웨어가 작동하지 않으면 Brave의 설치를 제거한 뒤 다시 시도하세요.</translation>
 <translation id="3574823187131579180">{0,plural, =0{곧 Brave이 다시 시작됩니다}=1{1초 후 Brave이 다시 시작됩니다}other{#초 후 Brave이 다시 시작됩니다}}</translation>
@@ -174,7 +171,6 @@
 <translation id="8211837073776713955">비밀번호가 유출되면 Brave에서 알려줍니다.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay(Brave에 복사됨)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: 1일 전}other{Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: {NUM_DAYS}일 전}}</translation>
 <translation id="2301993384336631869">Brave이 업데이트되었지만, 최소 30일 동안 사용하지 않았습니다.</translation>
 <translation id="8522287263361940593">Brave에서는 Rosetta를 통해 이 페이지에서 보호된 미디어를 재생할 수 있습니다.</translation>
 <translation id="6418340404893954563">취약한 비밀번호는 추측하기 쉽습니다. Brave에서 <ph name="BEGIN_LINK"/>안전한 비밀번호를 생성하고 기억하도록 설정<ph name="END_LINK"/>하세요.</translation>
@@ -187,7 +183,7 @@
 <translation id="3405035915691517126">Brave에서 비밀번호를 확인할 수 없습니다. 24시간 후 다시 시도해 보세요.</translation>
 <translation id="5660079256336839395">Brave 메뉴에서 숨기기</translation>
 <translation id="5516268345616100622">작업 관리자 - Brave</translation>
-<translation id="731644333568559921">Chrome OS 업데이트</translation>
+<translation id="61852838583753520">Chrome OS 업데이트</translation>
 <translation id="1864557848095568223">Brave 업데이트 중</translation>
 <translation id="3403365884036456766">환경설정 파일이 손상되었거나 잘못되었습니다.
 
@@ -207,7 +203,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
       Chrome OS 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
 <translation id="3293668930608086049">Brave이 카메라와 마이크를 사용 중입니다.</translation>
 <translation id="2827121003398607864">더욱 업그레이드된 Brave</translation>
-<translation id="504499211143662559">Brave이 컴퓨터에서 유해한 소프트웨어를 발견했습니다.</translation>
 <translation id="3343095737966473035">Brave이 기본 브라우저로 설정되어 있지 않습니다</translation>
 <translation id="5477319665405831211">모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="5419189641394808652">도메인에서 동기화를 사용할 수 없어 Brave에서 데이터를 동기화하지 못했습니다.</translation>
@@ -239,7 +234,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="6283840329609797763">알 수 없는 오류로 인해 설치에 실패했습니다. Brave을 다시 다운로드하세요.</translation>
 <translation id="2433912322225810055">또한 Brave을 시작하거나 검색주소창에서 검색할 때 표시되는 페이지를 설정합니다.</translation>
 <translation id="4100716194836114130">나만의 Brave</translation>
-<translation id="8757284234053029740">Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: 어제</translation>
 <translation id="4831743161813926460">이 사이트에서 카메라와 마이크에 액세스하려면 Brave에 권한이 필요합니다</translation>
 <translation id="7408085963519505752">Chrome OS 용어</translation>
 <translation id="2262856633481902138">계정의 로그인 세부정보가 오래되어 Brave에서 데이터를 동기화하지 못했습니다.</translation>
@@ -248,13 +242,12 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3215652305414474626">또한 Brave을 시작하거나 홈 버튼을 클릭할 때 표시되는 페이지를 설정합니다.</translation>
 <translation id="8285294305439559616">Brave에서 비밀번호를 표시하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="6389268239133412586">Brave을 업데이트하지 못함</translation>
-<translation id="8974095189086268230">Chrome OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용했습니다.</translation>
+<translation id="6368958679917195344">Chrome OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용했습니다.</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
 <translation id="310518206836658214">{0,plural, =1{1시간 후 Brave이 다시 시작됩니다}other{#시간 후 Brave이 다시 시작됩니다}}</translation>
 <translation id="7863882214613921971">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="911206726377975832">인터넷 사용 기록도 삭제하시겠습니까?</translation>
 <translation id="2444257125841652328">시스템 관리자가 <ph name="TARGET_URL_HOSTNAME"/> 액세스를 위해 대체 브라우저를 열도록 Brave을 구성했습니다.</translation>
-<translation id="2250443703383891643">Brave에서 일주일에 한 번 원치 않는 소프트웨어가 있는지 확인합니다. 최근 확인: 조금 전</translation>
 <translation id="3350544518197210895">Brave(mDNS-In)</translation>
 <translation id="7977787072794666032">Windows XP 또는 Windows Vista에서 더 이상 Brave을 지원하지 않으므로 Brave이 올바르게 작동하지 않을 수 있습니다</translation>
 <translation id="2398566204186296120">이 기기를 사용하기 전에 <ph name="DOMAIN"/>에서 다음 서비스 약관을 읽고 동의해야 합니다. 이 약관은 Chrome OS 약관을 확장, 수정 또는 제한하지 않습니다.</translation>

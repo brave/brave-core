@@ -639,8 +639,12 @@
     "message": "Bắt đầu sử dụng Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Xem giới thiệu nhanh",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Bằng cách tiếp tục, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách Quyền riêng tư$pp_link_end$.",
+    "message": "Khi tiếp tục, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Quay Lại",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Hãy tham gia một hành trình ngắn",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Tiếp tục",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Đã xong",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Bỏ qua",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Tạm thời bỏ qua",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Chào mừng bạn đến với Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads thưởng cho bạn các token để ủng hộ những nhà sáng tạo nội dung không giống như các quảng cáo truyền thống, đồng thời giữ bí mật thông tin cá nhân của bạn.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Quảng cáo hiển thị ở đâu?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads sẽ hiển thị như một thông báo thông thường. Bạn kiểm soát tần suất bạn nhìn thấy các quảng cáo này trong phần cài đặt.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Khi nào bạn nhận được phần thưởng",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Các token mà bạn kiếm được từ Brave Private Ads trong suốt tháng này sẽ đến vào ngày 5 của tháng sau.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Tặng lại một cách dễ dàng",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Những nhà sáng tạo tự động nhận được các khoản đóng góp token của bạn dựa trên mức độ tương tác của bạn mà chúng tôi đánh giá dưới dạng \"Chú ý\".",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Cảm ơn bằng cách tặng tiền",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Tặng tiền là một cách để bạn đích thân khuyến khích và hỗ trợ cho nội dung hoặc người sáng tạo mà bạn yêu thích. Bắt đầu tặng tiền!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Bạn có thể làm gì với token?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Bạn có thể sử dụng các token ngoài việc ủng hộ các nhà sáng tạo. Bạn có thể mua nội dung kỹ thuật số và các hàng hóa khác khi các thương gia tham gia.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Tuyệt vời, tất cả đã sẵn sàng rồi!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Khi sử dụng Brave Rewards, bạn đang giúp làm cho trang web trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!",
+    "description": ""
   }
 }

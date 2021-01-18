@@ -325,7 +325,7 @@ mois-ci...</translation>
 <translation id="7396366757003005317">Prise d'empreinte numérique bloquée (strict, peut bloquer des sites)</translation>
 <translation id="700453611199558021">Prise d'empreinte numérique désactivée (standard)</translation>
 <translation id="769702552748212954">Autoriser toutes les empreintes digitales</translation>
-<translation id="2888409909650566510">Pubs et autres choses\neffrayantes bloquées</translation>
+<translation id="5142293891785304489">Trackers, publicités et \n autres bloqués</translation>
 <translation id="6930134873084561197">Les sites incluent souvent des cookies et des scripts qui tentent de vous identifier, vous et votre appareil. Ils veulent savoir qui vous êtes et vous suivre sur le web en pistant ce que vous faites sur chaque site.\n\nBrave bloque ces éléments afin que vous puissiez naviguer sans être suivi.</translation>
 <translation id="8553998445606452168">À propos de Brave Shields</translation>
 <translation id="8912304686498704084">HAUT</translation>
@@ -437,22 +437,22 @@ mois-ci...</translation>
 <translation id="8804164990146287819">Politique de Confidentialité</translation>
 <translation id="6318696841371191107">Faire une visite rapide</translation>
 <translation id="7930505144430343145">Bienvenue à Brave Rewards !</translation>
-<translation id="7909111626803226907">Les publicités privées Brave ads récompensent avec des jetons pour soutenir les créateurs de contenu, contrairement aux publicités traditionnelles, tout en préservant la confidentialité de vos informations personnelles.</translation>
+<translation id="3477340970981564961">Les Brave Private Ads vous octroient des jetons afin de soutenir les créateurs de contenus, contrairement aux publicités traditionnelles, tout en maintenant la confidentialité de vos informations personnelles.</translation>
 <translation id="6973095375773523904">Où apparaissent les pubs ?</translation>
-<translation id="3867028444168159102">Les publicités privées Brave ads apparaîtront comme des notifications normales. Pour contrôler la fréquence avec laquelle vous voyez ces publicités, allez dans réglages.</translation>
+<translation id="7556325460112047619">Les Brave Private Ads apparaîtront comme une notification normale. Vous contrôlez la fréquence à laquelle vous voyez ces publicités dans les paramètres.</translation>
 <translation id="5816125157889950051">Quand recevez-vous vos rewards</translation>
-<translation id="4649471244559455723">Les jetons que vous avez gagnés grâce à Brave ads tout au long de ce mois-ci arriveront le 5 du mois prochain.</translation>
+<translation id="310863932297733723">Les jetons que vous avez obtenus via les Brave Private Ads au cours du mois actuel arriveront le 5 du mois suivant.</translation>
 <translation id="7712287524451429139">Redonner sans effort</translation>
 <translation id="105037569026952831">Les créateurs reçoivent automatiquement vos jetons en fonction de vos niveaux d'engagement, que nous mesurons comme ‘Attention’.</translation>
 <translation id="5323267338679539010">Dites merci en laissant un pourboire</translation>
-<translation id="6042317056594735519">Laisser un pourboire, c'est une façon d'encourager et de soutenir personnellement le contenu ou les créateurs que vous aimez. À vos pourboires !</translation>
+<translation id="6730444165801605682">Donner un pourboire est une façon d'encourager de manière personnelle et de soutenir les contenus ou créateurs que vous aimez vraiment. C'est parti pour les pourboires !</translation>
 <translation id="7509452925943421624">Que pouvez-vous faire avec vos jetons ?</translation>
-<translation id="7059157883171259940">Au-delà du soutien aux créateurs, les jetons peuvent être utilisés pour acheter des produits numériques et des cartes cadeaux avec une prime de remboursement.</translation>
+<translation id="5876169128756792273">Les jetons peuvent être utilisés au-delà du soutien aux créateurs. Vous pouvez acheter du contenu digital et d'autres produits à mesure que les commerçants nous rejoignent.</translation>
 <translation id="1402530520078693620">Pour finir, et si on vous aidait à prendre vos marques avec les paramètres de base</translation>
 <translation id="3494356595346329740">Vous pourrez changer ça plus tard.</translation>
 <translation id="6462814326662189004">À quelle fréquence voulez-vous voir des pubs ? \n(Pubs par heure)</translation>
 <translation id="2134244432345596331">Quel soutien souhaitez-vous apporter à vos créateurs préférés ?\n(à partir de vos revenus publicitaires)</translation>
-<translation id="7456161272236175794">YOOOOUPIIII !\nVous’avez fini.</translation>
+<translation id="827315274423079662">Wahou, vous êtes fin prêt !</translation>
 <translation id="3895246934788932488">En utilisant Brave Rewards, vous protégez votre vie privée et contribuez à faire du web un endroit meilleur pour tous. Et c’ est génial !</translation>
 <translation id="5705882733397021510">Revenir en arrière</translation>
 <translation id="5140321319944305531">Faisons Une Visite Rapide</translation>
@@ -465,4 +465,21 @@ mois-ci...</translation>
 <translation id="3604285424134705930">Vous avez converti <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Veuillez vérifier votre connexion au réseau</translation>
 <translation id="7889432931837317731">Ouvrir automatiquement lorsque c'est possible</translation>
+<translation id="8967385052772844086">Voir le rapport de confidentialité complet</translation>
+<translation id="6864343534748973390">Les plus populaires</translation>
+<translation id="1622983732360473885">Soutient Brave</translation>
+<translation id="4608192160278975831">Privé et sans tracking</translation>
+<translation id="7208522820527289601">Privé et sans tracking, basé en Europe</translation>
+<translation id="1161008391729450974">Les résultats Google sans trackers</translation>
+<translation id="7320542277711359296">Deuxième plus populaire</translation>
+<translation id="8295049095570748497">Un moteur de recherche de premier plan en Russie</translation>
+<translation id="2642661895835126239">Plante des arbres, basé à Berlin</translation>
+<translation id="1410130669636877548">Certains moteurs de recherche protègent votre confidentialité mieux que d'autres lorsque vous faites des recherches sur le Web.</translation>
+<translation id="1078265935778232285">Bienvenue au navigateur Brave</translation>
+<translation id="6824713633331856331">Aidez-nous à apprendre, de manière anonyme</translation>
+<translation id="6116685031674149112">Brave protège votre confidentialité et apprécie votre consentement concernant les éléments suivants :</translation>
+<translation id="3971666849661839619">Aidez à l'amélioration de Brave en envoyant des rapports de crash complètement anonymisés, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">Analyse de données de produits privée.</translation>
+<translation id="5187052478998910855">Besoin qu'on vous rafraîchisse la mémoire au sujet des Rewards ?</translation>
+<translation id="8622329973403382303">Suivez une rapide visite guidée pour savoir comment faire pour qu'on se rappelle de vous en tant que star des Rewards !</translation>
 </translationbundle>

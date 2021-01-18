@@ -639,8 +639,12 @@
     "message": "Začnite používať Odmeny Brave",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Urobte si rýchlu prehliadku",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Pokračovaním vyjadrujete súhlas s $tos_link_begin$Zmluvnými podmienkami $tos_link_end$ a $pp_link_begin$Pravidlá ochrany osobných údajov $pp_link_end$.",
+    "message": "Pokračovaním vyjadrujete súhlas so $tos_link_begin$Zmluvnými podmienkami$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobných údajov$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Ísť naspäť",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Poďme na krátku prehliadku",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Pokračovať",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Hotovo",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Preskočiť",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Zatiaľ preskočiť",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Vitajte v Odmenách Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Súkromné reklamy Brave vás odmenia žetónmi na podporu tvorcov obsahu na rozdiel od tradičných reklám, a to všetko pri zachovaní súkromia vašich osobných údajov.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Kde sa zobrazujú reklamy?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Súkromné reklamy Brave sa zobrazia ako bežné upozornenie. V nastaveniach môžete určiť, ako často sa tieto reklamy zobrazia.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kedy dostávate odmeny",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Vaše získané žetóny zo služby Súkromné reklamy Brave za celý aktuálny mesiac dorazia 5. deň nasledujúceho mesiaca.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Dávajte naspäť bez akejkoľvek námahy",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Autori dostávajú vaše tokenové príspevky automaticky na základe vašich úrovní zapojenia, ktoré meriame ako „pozornosť“.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Poďakujte sa tringeltami",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Dávanie tringeltov je spôsob, ako osobne povzbudiť a podporiť obsah alebo autorov, ktorých máte radi. Získavajte tringelty!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Čo môžete robiť so žetónmi?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Žetóny je možné používať nad rámec podpory tvorcov. Keď pribudnú obchodníci, môžete si kúpiť digitálny obsah a ďalší tovar.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Juchúúú, všetko je hotové!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Používaním služby Odmeny Brave pomáhate robiť z webu lepšie miesto pre všetkých. A to je úžasné!",
+    "description": ""
   }
 }

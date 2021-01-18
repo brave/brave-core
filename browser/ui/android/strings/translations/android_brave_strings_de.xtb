@@ -323,7 +323,7 @@ um das nächste Internet zu erleben.</translation>
 <translation id="7396366757003005317">Fingerprinting blockiert (stikt, könnte Seiten beschädigen)</translation>
 <translation id="700453611199558021">Fingerprinting blockiert (Standard)</translation>
 <translation id="769702552748212954">Sämtliches Fingerprinting zulassen</translation>
-<translation id="2888409909650566510">Werbung und andere unheimliche\nDinge blockiert</translation>
+<translation id="5142293891785304489">Tracker, Werbung und\nmehr blockiert</translation>
 <translation id="6930134873084561197">Sites beinhalten oft Cookies und Scripts, die versuchen, Sie und Ihr Gerät zu identifizieren. Sie wollen herausfinden, wer Sie sind und folgen Ihnen durch das Web-Tracking von dem, was Sie auf jeder Site machen.\n\nBrave blockiert diese Dinge, damit Sie browsen können, ohne verfolgt zu werden.</translation>
 <translation id="8553998445606452168">Über Brave Shields</translation>
 <translation id="8912304686498704084">HOCH</translation>
@@ -435,22 +435,22 @@ um das nächste Internet zu erleben.</translation>
 <translation id="8804164990146287819">Datenschutzrichtlinie</translation>
 <translation id="6318696841371191107">Einen kurzen Rundgang unternehmen</translation>
 <translation id="7930505144430343145">Willkommen bei Brave Rewards!</translation>
-<translation id="7909111626803226907">Im Gegensatz zu traditionellen Werbeanzeigen belohnen private Werbeanzeigen von Brave Sie mit Token, mit denen Sie Inhaltsersteller unterstützen können, und sorgen dabei dafür, dass Ihre privaten Daten privat bleiben.</translation>
+<translation id="3477340970981564961">Anders als herkömmliche Werbung belohnt Brave Private Ads Sie mit Tokens, um Inhaltsersteller zu unterstützen, und schützt dabei Ihre persönlichen Informationen.</translation>
 <translation id="6973095375773523904">Wo tauchen die Werbeanzeigen auf?</translation>
-<translation id="3867028444168159102">Private Werbeanzeigen von Brave erscheinen als normale Benachrichtigungen. Sie steuern über die Einstellungen, wie häufig Sie diese Anzeigen sehen.</translation>
+<translation id="7556325460112047619">Brave Private Ads wird als normale Benachrichtigung erscheinen. Sie kontrollieren in den Einstellungen, wie oft Sie diese Anzeigen sehen.</translation>
 <translation id="5816125157889950051">Wann Sie Belohnungen erhalten</translation>
-<translation id="4649471244559455723">Die über den aktuellen Monat durch Brave-Werbeanzeigen verdienten Token erscheinen am 5ten des Folgemonats.</translation>
+<translation id="310863932297733723">Ihre im aktuellen Monat  von Brave Private Ads verdienten Tokens werden am 5. des nächsten Monats ankommen.</translation>
 <translation id="7712287524451429139">Andere Unterstützen leicht gemacht</translation>
 <translation id="105037569026952831">Ersteller erhalten die von Ihnen vergebenen Token automatisch basierend auf Ihrer Aktivität, die wir als ‘Aufmerksamkeit’ messen.</translation>
 <translation id="5323267338679539010">Sagen Sie durch Spenden Danke</translation>
-<translation id="6042317056594735519">Tipping ist ein Weg, um Inhalte bzw. Ersteller, die Sie lieben, individuell zu ermutigen und zu unterstützen. Spenden ahoi!</translation>
+<translation id="6730444165801605682">Trinkgelder sind eine Methode, Content oder Ersteller, die Sie absolut lieben, persönlich zu ermutigen und zu unterstützen. Geben Sie Trinkgelder!</translation>
 <translation id="7509452925943421624">Was können Sie mit Token tun?</translation>
-<translation id="7059157883171259940">Tokens lassen sich nicht nur zur Unterstützung von Inhaltserstellern einsetzen. Sie können damit digitale Waren und Geschenkgutscheine mit Cashback-Bonus erwerben.</translation>
+<translation id="5876169128756792273">Tokens können auch für andere Zwecke als die Unterstützung von Inhaltserstellern genutzt werden. Sie können digitalen Content und andere Waren kaufen, wenn Händler an Bord kommen.</translation>
 <translation id="1402530520078693620">Zu guter Letzt sollten wir Ihre Grundeinstellungen einrichten</translation>
 <translation id="3494356595346329740">Sie können das später ändern.</translation>
 <translation id="6462814326662189004">Wie häufig möchten Sie Werbeanzeigen sehen?\n(Werbeanzeigen pro Stunde)</translation>
 <translation id="2134244432345596331">Wie viel Unterstützung möchten Sie an Ihre liebsten Inhaltsersteller weitergeben?\n(aus Ihren Werbeanzeigeneinnahmen)</translation>
-<translation id="7456161272236175794">HUUUURRAAAAA!\nSie sind fertig.</translation>
+<translation id="827315274423079662">Hurra, Sie sind startklar!</translation>
 <translation id="3895246934788932488">Durch Nutzung von Brave Rewards schützen Sie Ihre Privatsphäre und tragen dazu bei, das Internet zu einem besseren Ort zu machen. Und das ist genial!</translation>
 <translation id="5705882733397021510">Zurück</translation>
 <translation id="5140321319944305531">Begeben wir uns auf einen kleinen Rundgang</translation>
@@ -463,4 +463,21 @@ um das nächste Internet zu erleben.</translation>
 <translation id="3604285424134705930">Sie haben <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> in <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> konvertiert!</translation>
 <translation id="392587271502873865">Bitte prüfen Sie Ihre Netzwerkverbindung.</translation>
 <translation id="7889432931837317731">Wenn möglich automatisch öffnen</translation>
+<translation id="8967385052772844086">Vollen Datenschutzbericht sehen</translation>
+<translation id="6864343534748973390">Beliebteste</translation>
+<translation id="1622983732360473885">Unterstützt Brave</translation>
+<translation id="4608192160278975831">Privat und kein Tracking</translation>
+<translation id="7208522820527289601">Privat und kein Tracking, EU-basiert</translation>
+<translation id="1161008391729450974">Google-Ergebnisse ohne Tracker</translation>
+<translation id="7320542277711359296">Zweitbeliebteste</translation>
+<translation id="8295049095570748497">Eine führende Suchmaschine in Russland</translation>
+<translation id="2642661895835126239">Pflanzt Bäume, lebt in Berlin</translation>
+<translation id="1410130669636877548">Einige Suchmaschinen schützen Ihre Daten besser als andere, wenn Sie etwas im Internet suchen.</translation>
+<translation id="1078265935778232285">Willkommen beim Brave Browser</translation>
+<translation id="6824713633331856331">Helfen Sie uns anonym zu lernen</translation>
+<translation id="6116685031674149112">Brave schützt Ihre Daten und\nschätzt Ihre Zustimmung zu Folgendem:</translation>
+<translation id="3971666849661839619">Helfen Sie, Brave zu verbessern, indem Sie Absturzberichte und komplett anonymisierte <ph name="PRIVATE_PRODUCT_ANALYSIS"/> senden</translation>
+<translation id="6478996494082389936">private Produktanalytik.</translation>
+<translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
+<translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
 </translationbundle>
