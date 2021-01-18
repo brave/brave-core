@@ -504,7 +504,6 @@
 <translation id="1553538517812678578">nelimitat</translation>
 <translation id="1554390798506296774">Permite întotdeauna pluginurile scoase din mediul de testare pe <ph name="HOST"/></translation>
 <translation id="1555130319947370107">Albastru</translation>
-<translation id="5057428659122655451">Persoanele care au ales să rămână vizibile pentru tine când au ecranul deblocat și pentru dispozitivele din apropiere, atunci când funcția Nearby Share este deschisă</translation>
 <translation id="1556537182262721003">Directorul extensiei nu se poate muta în profil.</translation>
 <translation id="155865706765934889">Touchpad</translation>
 <translation id="1562119309884184621">Dacă adaugi persoana de contact, aceasta va fi recunoscută data viitoare când trimite fișiere</translation>
@@ -7148,6 +7147,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4854477725773269949">Permite în privat</translation>
 <translation id="6436164536244065364">Vizualizați în Magazinul web Brave</translation>
 <translation id="38046578254905003">Găsești extensii și teme în <ph name="BEGIN_LINK"/>Web Store<ph name="END_LINK"/></translation>
+<translation id="5057428659122655451">Profiluri care au ales să fie vizibile pentru tine atunci când ecranul lor este deblocat și dispozitive din apropiere ta când este deschis Partajare în apropiere</translation>
 <translation id="3910100573440336938">Partajați fișiere cu profiluri din jur</translation>
 <translation id="6336451774241870485">Tab privat nou</translation>
 <translation id="6610147964972079463">Închide taburi private</translation>
