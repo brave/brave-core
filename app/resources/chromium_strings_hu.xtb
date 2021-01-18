@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: 1 órája.}other{A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: {NUM_HOURS} órája.}}</translation>
 <translation id="1065672644894730302">A beállításait nem sikerült olvasni. Egyes funkciókat esetleg nem ér el, és a beállításaiban végrehajtott módosításokat nem menti a rendszer.</translation>
 <translation id="8488151306313572776">Ha elkülönítené egymástól a személyes böngészést és a(z) <ph name="NEW_USER"/> profilos böngészési tevékenységet, hozzon létre új profilt a Braveban.</translation>
 <translation id="2796517443093885402">A Brave segíthet az adatvédelmi incidensek, nem biztonságos bővítmények és egyebek elleni védekezésben</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Ha ellenőrizni szeretné, hogy jelszavai biztonságban vannak-e az adatvédelmi incidensektől és más biztonsági problémáktól, <ph name="BEGIN_LINK"/>jelentkezzen be a Braveba<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">A Brave névjegye</translation>
 <translation id="4798342026247191171">Új Brave-profil beállítása</translation>
+<translation id="5893502481331584971">Kérdezzen rá a Brave megnyitásakor</translation>
 <translation id="113959764510199339">A Brave megpróbálja megjeleníteni a jelszavakat.</translation>
 <translation id="8132634101975074716">Bejelentkezett a Braveba.</translation>
 <translation id="7370605478942575409">Ahhoz, hogy használhassa a Rosettát védett médiatartalmak lejátszásához, újra kell indítania a Braveot.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Brave lap</translation>
 <translation id="8372880274820509128">A nagyobb biztonság érdekében a Brave titkosítja az Ön adatait.</translation>
 <translation id="2770231113462710648">Alapértelmezett böngésző beállítása:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: 1 perce.}other{A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: {NUM_MINS} perce.}}</translation>
 <translation id="2799223571221894425">Újraindítás</translation>
 <translation id="777113543093865885">Eltávolítás a Braveból…</translation>
-<translation id="8846162271735377947">Kérdezzen rá a Brave megnyitásakor</translation>
 <translation id="2885378588091291677">Feladatkezelő</translation>
 <translation id="2176825726964012531">A &amp;Brave névjegye</translation>
 <translation id="8208853227947884571">A Brave naprakész</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">A Brave nem tudja ellenőrizni a jelszavait. Próbálkozzon később.</translation>
 <translation id="8880183781256147665">Hozzáadás a Bravehoz...</translation>
 <translation id="7918740962659365265">Segítse a Brave fejlesztését azáltal, hogy elküldi a Brave-nak a következőket: hibajelentések és <ph name="UMA_LINK"/></translation>
-<translation id="2911521062311014336">A Brave hetente egyszer keres nemkívánatos szoftvereket.</translation>
 <translation id="7365690458036015383">Nem sikerült a telepítőnek kibontani a tömörített állományt. Kérjük, töltse le újra a Brave böngészőt.</translation>
 <translation id="8919461291440820124">A Brave használja a mikrofont.</translation>
 <translation id="4805806622840861220">A Brave újraindítása</translation>
@@ -170,7 +167,6 @@
 <translation id="8211837073776713955">A Brave tájékoztatja arról, ha jelszavai illetéktelen kezekbe kerülnek</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (a Braveba másolva)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: 1 napja.}other{A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: {NUM_DAYS} napja.}}</translation>
 <translation id="2301993384336631869">A Brave frissítése megtörtént, de nem használta a böngészőt legalább 30 napja.</translation>
 <translation id="8522287263361940593">A Rosetta engedélyezi a Brave számára, hogy védett médiatartalmakat játsszon le ezen az oldalon.</translation>
 <translation id="6418340404893954563">A gyenge jelszavakat könnyű kitalálni. Engedélyezze a Brave számára, hogy <ph name="BEGIN_LINK"/> erős jelszavakat hozzon létre Önnek, és megjegyezze őket<ph name="END_LINK"/>.</translation>
@@ -202,7 +198,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="5657226924540934362">Ha valamelyik beállítás nem látható ezen az oldalon, keresse a <ph name="LINK_BEGIN"/>Chrome OS beállításai<ph name="LINK_END"/> között</translation>
 <translation id="3293668930608086049">A Brave használja a kamerát és a mikrofont.</translation>
 <translation id="2827121003398607864">A Brave még jobb lett</translation>
-<translation id="504499211143662559">A Brave kártékony szoftvert talált az Ön számítógépén</translation>
 <translation id="3343095737966473035">A Brave nem az alapértelmezett böngésző</translation>
 <translation id="5477319665405831211">Szinkronizálhatja és személyre szabhatja a Braveot minden eszközén</translation>
 <translation id="5419189641394808652">A Brave nem tudta szinkronizálni az adatait, mert a szinkronizálás nem érhető el az Ön domainjénél.</translation>
@@ -234,7 +229,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="6283840329609797763">A telepítés egy meg nem határozott hiba miatt nem sikerült. Kérjük, töltse le újra a Braveot.</translation>
 <translation id="2433912322225810055">Továbbá azt is szabályozza, hogy melyik oldal jelenik meg a Brave indításakor vagy a cím- és keresősávban indított kereséskor.</translation>
 <translation id="4100716194836114130">Ez az Ön Braveja</translation>
-<translation id="8757284234053029740">A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: tegnap.</translation>
 <translation id="4831743161813926460">A Bravenak engedélyre van szüksége ahhoz, hogy hozzáférjen a kamerához és a mikrofonhoz ennél a webhelynél</translation>
 <translation id="7408085963519505752">Chrome OS – Szerződési Feltételek</translation>
 <translation id="2262856633481902138">A Brave nem tudta szinkronizálni az adatokat, mert a fiók bejelentkezési adatai elavultak.</translation>
@@ -249,7 +243,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="7863882214613921971">Link megnyi&amp;tása új Brave-lapon</translation>
 <translation id="911206726377975832">Törli a böngészési adatait is?</translation>
 <translation id="2444257125841652328">Rendszergazdája úgy állította be a Braveot, hogy másik böngészőt nyisson meg a(z) <ph name="TARGET_URL_HOSTNAME"/> eléréséhez.</translation>
-<translation id="2250443703383891643">A Brave hetente egyszer keres nemkívánatos szoftvereket. Legutóbb frissítve: az imént.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Előfordulhat, hogy a Brave nem működik majd megfelelően, mert a továbbiakban már nem támogatja a következő rendszereket: Windows XP és Windows Vista</translation>
 <translation id="2398566204186296120">A(z) <ph name="DOMAIN"/> megköveteli, hogy olvassa, majd fogadja el a következő Általános Szerződési Feltételeket, mielőtt használná ezt az eszközt. Ezek a feltételek nem bővítik, módosítják vagy korlátozzák a Chrome OS feltételeit.</translation>

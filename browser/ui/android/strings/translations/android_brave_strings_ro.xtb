@@ -325,7 +325,6 @@ lună...</translation>
 <translation id="7396366757003005317">Amprentare blocată (strictă, poate să afecteze siteurile)</translation>
 <translation id="700453611199558021">Amprentare blocată (standard)</translation>
 <translation id="769702552748212954">Permite toată amprentarea</translation>
-<translation id="2888409909650566510">Reclame și alte lucruri\nciudate blocate</translation>
 <translation id="6930134873084561197">Site-urile adesea includ module cookie și scripturi care încearcă să vă identifice pe dvs. și dispozitivul dvs. Vor să afle cine sunteți și vă urmăresc pe internet, monitorizându-vă activitatea pe fiecare site.\n\nBrave le blochează astfel încât să puteți naviga pe internet fără să fiți urmărit.</translation>
 <translation id="8553998445606452168">Despre scuturile Brave</translation>
 <translation id="8912304686498704084">SUS</translation>
@@ -437,22 +436,16 @@ lună...</translation>
 <translation id="8804164990146287819">Politica de Confidențialitate</translation>
 <translation id="6318696841371191107">Faceți un tur rapid</translation>
 <translation id="7930505144430343145">Bun venit la Recompensele Brave!</translation>
-<translation id="7909111626803226907">Reclamele private Brave vă recompensează cu tokenuri pentru a susține creatorii de conținut, spre deosebire de reclamele tradiționale, în timp ce informațiile dvs. personale rămân confidențiale.</translation>
 <translation id="6973095375773523904">Unde se afișează reclamele/</translation>
-<translation id="3867028444168159102">Reclamele private Brave vor apărea ca o notificare normală. Dvs. controlați cât de des vedeți aceste reclame în setări.</translation>
 <translation id="5816125157889950051">Când primiți recompensele</translation>
-<translation id="4649471244559455723">Tokenurile câștigate din reclamele Brave din luna curentă vor sosi pe data de 5 a lunii următoare.</translation>
 <translation id="7712287524451429139">Dăruiți fără efort</translation>
 <translation id="105037569026952831">Creatorii primesc automat contribuțiile dvs. în tokenuri, pe baza nivelurilor de angajament pe care le măsurăm ca‘Atenție’.</translation>
 <translation id="5323267338679539010">Spuneți „mulțumesc” cu tokenuri</translation>
-<translation id="6042317056594735519">Trimiterea de tokenuri este o modalitate de a încuraja și de a susține personal conținutul sau creatorii care vă plac. Începeți să trimiteți!</translation>
 <translation id="7509452925943421624">Ce puteți face cu tokenurile?</translation>
-<translation id="7059157883171259940">Tokenurile pot fi folosite nu numai pentru susținerea creatorilor. Puteți să cumpărați bunuri digitale și felicitări cu un bonus cashback.</translation>
 <translation id="1402530520078693620">La final, să configurăm setările de bază</translation>
 <translation id="3494356595346329740">Puteți modifica acest lucru mai târziu.</translation>
 <translation id="6462814326662189004">Cât de des doriți să vedeți reclame?\n(Reclame pe oră)</translation>
 <translation id="2134244432345596331">Câtă susținere doriți să oferiți creatorilor favoriți?\n(din câștigurile dvs. din reclame)</translation>
-<translation id="7456161272236175794">URAAAAAA!\nAți terminat.</translation>
 <translation id="3895246934788932488">Folosind Recompensele Brave, vă protejați confidențialitatea și ajutați la crearea unei rețele web mai bună pentru toată lumea. Și asta e minunat!</translation>
 <translation id="5705882733397021510">Înapoi</translation>
 <translation id="5140321319944305531">Haideți să facem un tur rapid</translation>
@@ -465,4 +458,5 @@ lună...</translation>
 <translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
 <translation id="7889432931837317731">Deschideți automat atunci când este posibil</translation>
+<translation id="1078265935778232285">Bine ați venit pe browserul Brave</translation>
 </translationbundle>

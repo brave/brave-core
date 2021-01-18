@@ -639,8 +639,12 @@
     "message": "Начать использовать Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Сделайте быстрый обзорный тур",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Продолжая, вы соглашаетесь с $tos_link_begin$Условиями предоставления услуг$tos_link_end$ и $pp_link_begin$Политикой Конфиденциальности$pp_link_end$.",
+    "message": "Продолжив, вы принимаете $tos_link_begin$Условия использования$tos_link_end$ и $pp_link_begin$Политику конфиденциальности$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Назад",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Давайте проведем небольшой тур",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Продолжить",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Готово",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Пропустить",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Пока пропустить",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Добро пожаловать в Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "В отличие от традиционной рекламы, просмотр Brave Private Ads приносит вам вознаграждения в виде токенов для поддержки создателей контента, сохраняя при этом конфиденциальность ваших персональных данных.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Где появляются рекламные объявления?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Реклама Brave Private Ads будет показываться как обычные уведомления. Вы можете контролировать частоту показа объявлений в настройках.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Когда вы получаете вознаграждения",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Заработанные в текущем месяце токены от Brave Private Ads будут начислены 5 числа следующего месяца.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Выражать благодарность теперь не составляет усилий",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Создатели контента автоматически получают взносы в токенах на основе уровня вашей вовлеченности, который мы измеряем в показателе ‘Внимание’.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Скажите спасибо при помощи донатов",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Донаты — это способ лично поощрить и поддержать контент или авторов, которые вам нравятся. Начать донатить!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Что вы можете сделать с жетонами?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Токены можно использовать не только для поддержки создателей контента. Вы сможете покупать цифровой контент и другие товары по мере прихода на платформу продавцов.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Ура, всё готово к работе!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Используя Brave Rewards, вы помогаете сделать Интернет лучше для всех. И это прекрасно!",
+    "description": ""
   }
 }

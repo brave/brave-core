@@ -5,8 +5,8 @@
 <translation id="7999989146447764333">क्र्यास रिपोर्टिङ Brave मा उपलब्ध छैन।</translation>
 <translation id="1953231710324290369">तपाईं एउटा सुरक्षित Brave पृष्ठ हेर्दै हुनुहुन्छ</translation>
 <translation id="4010643444566880169">Chrome OS ले यसको सुरूको सेटअप सम्पन्न गरेको छैन।</translation>
-<translation id="358997566136285270">क्रोमियम लोगो</translation>
-<translation id="4365115785552740256">क्रोमियमको कारण सम्भव भएको हो <ph name="BEGIN_LINK_CHROMIUM"/> क्रोमियम <ph name="END_LINK_CHROMIUM"/> खुला स्रोत परियोजना र अन्य <ph name="BEGIN_LINK_OSS"/> खुला स्रोत सफ्टवेयर <ph name="END_LINK_OSS"/> ।</translation>
+<translation id="4847979153841887006">क्रोमियम लोगो</translation>
+<translation id="7932149101545999102">क्रोमियमको कारण सम्भव भएको हो <ph name="BEGIN_LINK_CHROMIUM"/> क्रोमियम <ph name="END_LINK_CHROMIUM"/> खुला स्रोत परियोजना र अन्य <ph name="BEGIN_LINK_OSS"/> खुला स्रोत सफ्टवेयर <ph name="END_LINK_OSS"/> ।</translation>
 <translation id="8746410156982274638">यसमा जानुहोस्
           Brave मेनु &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -28,7 +28,7 @@
           <ph name="PROXIES_TITLE"/>
           र तपाइँको विन्यास "प्रोक्सी छैन" वand make sure your configuration is set to "no proxy" or "direct."</translation>
 <translation id="9156965752763025780">तपाईंले अर्को पटक Brave लाई पुन: लन्च गर्दा तपाईंका परिवर्तनहरू प्रभावमा आउनेछन्।</translation>
-<translation id="7861509383340276692">जानुहोस्
+<translation id="4068928808254189629">जानुहोस्
           क्रोमियम मेनुमा &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
@@ -38,5 +38,5 @@
 <translation id="8187289872471304532">यसमा जानुहोस्
           एपहरू &gt; प्रणाली प्राथमिकताहरू &gt; सञ्जाल &gt; उन्नत &gt; प्रोक्सीहरू
           र तपाइँले चयन गर्नुका कुनै पनि प्रोक्सीहरूको चयन हटाउनुहोस्।</translation>
-<translation id="8684913864886094367">क्रोमियम सही तवरले बन्द भएन।</translation>
+<translation id="88187049159266777">क्रोमियम सही तवरले बन्द भएन।</translation>
 </translationbundle>

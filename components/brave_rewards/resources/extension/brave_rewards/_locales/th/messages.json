@@ -639,8 +639,12 @@
     "message": "เริ่มต้นใช้ Brave Reward",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "ดูการแนะนำสั้นๆ",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "หากดำเนินการต่อ จะถือว่าคุณยอมรับ $tos_link_begin$เงื่อนไขการใช้บริการ$tos_link_end$ และ $pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
+    "message": "การดำเนินการต่อจะถือว่าคุณยอมรับ$tos_link_begin$ข้อตกลงในการใช้บริการ$tos_link_end$และ$pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "ย้อนกลับ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "มาดูรายละเอียดคร่าวๆ กัน",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "ดำเนินการต่อ",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "เสร็จ",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "ข้าม",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "ข้ามไปก่อน",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "ยินดีต้อนรับสู่ Brave Reward",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "โฆษณาส่วนตัวของ Brave ให้ Reward เป็นโทเค็นสำหรับนำไปสนับสนุนผู้สร้างคอนเทนต์ ซึ่งจะต่างจากโฆษณาทั่วไป แต่ยังคงรักษาความเป็นส่วนตัวให้กับข้อมูลส่วนตัวของคุณไว้ในทุกๆ ส่วน",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "โฆษณาจะปรากฏที่ใด",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "โฆษณาส่วนตัวของ Brave จะปรากฏในรูปการแจ้งเตือนตามปกติ คุณสามารถควบคุมความถี่ในการเห็นโฆษณาเหล่านี้ได้ในการตั้งค่า",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "คุณจะได้รับ Reward เมื่อใด",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "โทเค็นที่คุณได้รับจากโฆษณาส่วนตัวของ Brave ตลอดทั้งเดือนนี้จะเข้าบัญชีในวันที่ 5 ของเดือนถัดไป",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "การตอบแทนจะกลายเป็นเรื่องง่าย",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "ครีเอเตอร์จะได้รับโทเค็นบริจาคจากคุณโดยอัตโนมัติตามระดับการมีส่วนร่วมที่เราวัดได้ในรูป 'ความสนใจ' ของคุณ",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "ให้ทิปเป็นการขอบคุณ",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "การให้ทิปเป็นวิธีส่งกำลังใจและให้การสนับสนุนเนื้อหาหรือผู้สร้างที่คุณชื่นชอบ ไปให้ทิปกัน!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "ใช้โทเค็นทำอะไรได้บ้าง",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "สามารถใช้โทเค็นในกิจกรรมอื่นๆ นอกเหนือจากการสนับสนุนครีเอเตอร์ โดยสามารถนำไปซื้อเนื้อหาดิจิตอลและสินค้าอื่นๆ เมื่อมีผู้ค้ามาเข้าร่วม",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "ไชโย คุณพร้อมแล้วละ!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "การใช้งาน Brave Reward จะช่วยส่งเสริมให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งนับว่าเยี่ยมยอดไปเลย!",
+    "description": ""
   }
 }

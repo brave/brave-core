@@ -639,8 +639,12 @@
     "message": "Brave Rewards jetzt nutzen",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Einen kurzen Rundgang unternehmen",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Durch Fortfahren stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu.",
+    "message": "Indem Sie fortfahren, akzeptieren Sie die $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und die $pp_link_begin$Datenschutzrichtlinie$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Zurück",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Machen wir eine schnelle Tour",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Fortfahren",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Fertig",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Überspringen",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Für den Moment überspringen",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Willkommen bei Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Anders als herkömmliche Werbung belohnt Brave Private Ads Sie mit Tokens, um Content-Schöpfer zu unterstützen, und schützt dabei Ihre persönlichen Informationen.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Wo tauchen die Werbeanzeigen auf?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads wird als normale Benachrichtigung erscheinen. Sie kontrollieren in den Einstellungen, wie oft Sie diese Anzeigen sehen.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Wann Sie Belohnungen erhalten",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Ihre im aktuellen Monat  von Brave Private Ads verdienten Tokens werden am 5. des nächsten Monats ankommen.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Andere Unterstützen leicht gemacht",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Inhaltsersteller erhalten Token-Beiträge automatisch auf Grund Ihrer Engagementlevel, die wir als „Aufmerksamkeit“ messen.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Sagen Sie durch Spenden Danke",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Tipping ist ein Weg, um Inhalte bzw. Ersteller, die Sie lieben, individuell zu ermutigen und zu unterstützen. Spenden ahoi!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Was können Sie mit Token tun?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokens können auch für andere Zwecke als die Unterstützung von Inhaltserstellern genutzt werden. Sie können digitalen Content und andere Waren kaufen, wenn Händler an Bord kommen.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Hurra, Sie sind startklar!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Indem Sie Brave Rewards nutzen, helfen Sie, das Web zu einem besseren Ort für alle zu machen. Und das ist toll!",
+    "description": ""
   }
 }

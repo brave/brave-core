@@ -639,8 +639,12 @@
     "message": "开始使用 Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "快速浏览",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "继续操作即表示您同意$tos_link_begin$服务条款$tos_link_end$ 和 $pp_link_begin$隐私政策$pp_link_end$。",
+    "message": "继续进行即表示您同意$tos_link_begin$服务条款$tos_link_end$和$pp_link_begin$隐私政策$pp_link_end$。",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "返回",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "让我们一起来快速浏览一下",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "继续",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "完成",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "跳过",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "现在跳过",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "欢迎使用 Brave Rewards！",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "与传统广告不同的是，Brave 的私人广告会奖励您代币以支持内容创作者，同时还会将您的个人信息保密。",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "广告在哪里显示？",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave 的私人广告将以常规通知的形式显示。您可以在设置中控制看到这些广告的频率。",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "您什么时候获得奖励",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "您本月从 Brave ads 获得的代币将在下个月的 5 号到账。",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "给予回馈变得毫不费力了",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "创建者会根据您的参与度（我们将其衡量为“Attention”）来自动接收您的代币捐款。",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "通过打赏表示感谢",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "打赏是一种以个人身份鼓励和支持自己喜欢的内容或创作者的方式。赶快领取赏金吧！",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "您可以用代币来做什么？",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "代币可以用于支持创作者之外的其他用途。随着商家的加入，您可以买到数字内容和其他商品。",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "太棒了, 您的设置完成了！",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "通过使用 Brave Rewards，您可以帮助使网络成为每个人的美好地方。太棒了！",
+    "description": ""
   }
 }

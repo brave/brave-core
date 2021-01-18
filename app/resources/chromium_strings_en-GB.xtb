@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave checks for unwanted software once a week. Last checked: 1 hour ago.}other{Brave checks for unwanted software once a week. Last checked: {NUM_HOURS} hours ago.}}</translation>
 <translation id="1065672644894730302">Your preferences cannot be read.
 
 Some features may be unavailable and changes to preferences won't be saved.</translation>
@@ -12,6 +11,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8522292744959221145">To check if your passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK"/>sign in to Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="4798342026247191171">Set up your new Brave profile</translation>
+<translation id="5893502481331584971">Ask when Brave opens</translation>
 <translation id="113959764510199339">Brave is trying to show passwords.</translation>
 <translation id="8132634101975074716">You're signed in to Brave!</translation>
 <translation id="7370605478942575409">To use Rosetta to play protected media, you must restart Brave.</translation>
@@ -46,10 +46,8 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="6791166902140255175">Brave Tab</translation>
 <translation id="8372880274820509128">For added security, Brave will encrypt your data.</translation>
 <translation id="2770231113462710648">Change default browser to:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave checks for unwanted software once a week. Last checked: 1 minute ago.}other{Brave checks for unwanted software once a week. Last checked: {NUM_MINS} minutes ago.}}</translation>
 <translation id="2799223571221894425">Relaunch</translation>
 <translation id="777113543093865885">Remove from Brave...</translation>
-<translation id="8846162271735377947">Ask when I open Brave</translation>
 <translation id="2885378588091291677">Task Manager</translation>
 <translation id="2176825726964012531">About &amp;Brave</translation>
 <translation id="8208853227947884571">Brave is up to date</translation>
@@ -57,7 +55,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8755404239607088219">Brave can't check your passwords. Try again later.</translation>
 <translation id="8880183781256147665">Adding to Brave ...</translation>
 <translation id="7918740962659365265">Help make Brave better by sending crash reports and <ph name="UMA_LINK"/> to Brave</translation>
-<translation id="2911521062311014336">Brave checks for unwanted software once a week</translation>
 <translation id="7365690458036015383">The installer failed to uncompress archive. Please download Brave again.</translation>
 <translation id="8919461291440820124">Brave is using your microphone.</translation>
 <translation id="4805806622840861220">Relaunch Brave</translation>
@@ -174,7 +171,6 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="8211837073776713955">Brave lets you know if your passwords are ever compromised</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copied to Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave checks for unwanted software once a week. Last checked: 1 day ago.}other{Brave checks for unwanted software once a week. Last checked: {NUM_DAYS} days ago.}}</translation>
 <translation id="2301993384336631869">Brave has been updated, but you haven't used it for 30 days or more.</translation>
 <translation id="8522287263361940593">Rosetta enables Brave to play the protected media on this page.</translation>
 <translation id="6418340404893954563">Weak passwords are easy to guess. Let Brave <ph name="BEGIN_LINK"/>create and remember strong passwords for you<ph name="END_LINK"/>.</translation>
@@ -199,7 +195,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="5062123544085870375">Restart Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave needs permission to access your camera for this site</translation>
-<translation id="2619516027171717873">Can not install the same Brave version that is currently running. Please close Brave and try again.</translation>
+<translation id="2619516027171717873">Cannot install the same Brave version that is currently running. Please close Brave and try again.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave will relaunch in 1 minute}other{Brave will relaunch in # minutes}}</translation>
 <translation id="573759479754913123">About Chrome OS</translation>
 <translation id="8516116288943000095">Also clear data from Brave (<ph name="URL"/>)</translation>
@@ -207,7 +203,6 @@ Brave is unable to recover your settings.</translation>
       Chrome OS settings<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave is using your camera and microphone.</translation>
 <translation id="2827121003398607864">Brave just got better</translation>
-<translation id="504499211143662559">Brave found harmful software on your computer</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="5477319665405831211">Sync and personalise Brave across your devices</translation>
 <translation id="5419189641394808652">Brave could not sync your data because Sync is not available for your domain.</translation>
@@ -239,7 +234,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="6283840329609797763">Installation failed due to unspecified error. Please download Brave again.</translation>
 <translation id="2433912322225810055">It also controls what page is shown when you start Brave or search from the Omnibox.</translation>
 <translation id="4100716194836114130">This is your Brave</translation>
-<translation id="8757284234053029740">Brave checks for unwanted software once a week. Last checked: yesterday.</translation>
 <translation id="4831743161813926460">Brave needs permission to access your camera and microphone for this site</translation>
 <translation id="7408085963519505752">Chrome OS terms</translation>
 <translation id="2262856633481902138">Brave could not sync your data because your account sign-in details are out of date.</translation>
@@ -254,7 +248,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="7863882214613921971">Open Link in New Brave &amp;tab</translation>
 <translation id="911206726377975832">Also delete your browsing data?</translation>
 <translation id="2444257125841652328">Your system administrator has configured Brave to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave checks for unwanted software once a week. Last checked: a moment ago.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> requires that you read and accept the following Terms of Service before using this device. These terms do not expand, modify or limit the Chrome OS Terms.</translation>

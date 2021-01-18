@@ -639,8 +639,12 @@
     "message": "Brave Rewardsの使用を開始",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "クイックツアーに参加",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "続行することで、あなたは$tos_link_begin$利用規約$tos_link_end$と$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
+    "message": "続行することで、お客様は$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "戻る",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "クイックツアーを見てみましょう",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "続ける",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "完了",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "スキップ",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "今はスキップ",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Brave Rewardsへようこそ！",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Braveプライベート広告は、従来の広告とは異なり、コンテンツクリエイターをサポートするためのトークンで報酬がもらえ、すべては個人情報を非公開にして行われます。",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "広告はどこに表示されますか？",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Braveプライベート広告は通常の通知として表示されます。これらの広告をどのくらいの頻度で表示するかは設定で操作します。",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "報酬を受け取るタイミング",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "当月中にBraveプライベート広告から獲得したトークンは、翌月の5日に届きます。",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "クリエイターへの支援がもっと簡単に",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "クリエイターは、弊社が「アテンション」として測定するあなたのエンゲージメントレベルに基づいて、あなたからのトークンによる寄付を自動的に受け取ります。",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "チップでお礼を言おう",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "チッピングは、あなたが好きなコンテンツやクリエイターを個人的に応援し、サポートする方法の1つです。チッピングしよう！",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "トークンで何ができますか？",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "やったー、準備完了です！",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！",
+    "description": ""
   }
 }

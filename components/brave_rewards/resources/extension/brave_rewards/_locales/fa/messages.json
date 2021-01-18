@@ -639,8 +639,12 @@
     "message": "شروع استفاده از Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "گشتی سریع بزنید",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "با ادامه دادن، با $tos_link_begin$شرایط خدمات$tos_link_end$ و $pp_link_begin$خط مشی رازداری$pp_link_end$ موافقت می‌کنید.",
+    "message": "با ادامه دادن، با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ موافقت می‌کنید.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "برگشتن",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "بیایید گشت سریعی بزنیم",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "ادامه",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "تمام",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "رد شدن",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "فعلاً رد شود",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "به Brave Rewards خوش آمدید!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads به شما توکن جایزه می‌دهد تا از سازندگان محتوا پشتیبانی شود (کاملاً برعکس آگهی‌های قدیمی)، همه این کارها را در حالی انجام می‌دهد که اطلاعات شخصی شما را خصوصی نگه می‌دارد.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "آگهی‌ها کجا نمایش داده می‌شوند؟",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads به‌عنوان اعلانی معمولی نشان داده خواهد شد. شما می‌توانید تعداد دفعات مشاهده این آگهی‌ها را در تنظیمات کنترل کنید.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "چه زمانی پاداش دریافت می‌کنید",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "توکن‌های به‌دست‌آمده از Brave Private Ads در ماه فعلی، در 5ام ماه بعدی دریافت خواهند شد.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "برگرداندن بی‌دردسر شده است",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "سازندگان همیاری‌های توکن شما را به‌طور خودکار بر اساس سطح مشارکتتان دریافت می‌کنند که ما آن را به‌عنوان «توجه» می‌سنجیم.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "با انعام‌ها سپاس‌گزاری خود را اعلام کنید",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "انعام دادن روشی است برای تشویق شخصی و پشتیبانی از محتوا یا سازندگان مورد علاقه‌تان. انعام بدهید!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "با توکن‌ها چه‌کارهایی می‌توانید انجام دهید؟",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "توکن‌ها را فراتر از پشتیبانی از سازندگان می‌توان استفاده کرد. با پیوستن فروشندگان به تیم، می‌توانید محتوای دیجیتال و کالاهای دیگر خریداری کنید.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "وو هوو، کاملاً آماده هستید!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!",
+    "description": ""
   }
 }

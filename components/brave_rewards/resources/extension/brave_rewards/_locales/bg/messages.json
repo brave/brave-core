@@ -639,8 +639,12 @@
     "message": "Започнете да използвате Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Направете кратка обиколка",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Продължавайки, вие приемате $tos_link_begin$Условията за ползване$tos_link_end$ и $pp_link_begin$Политиката за поверителност$pp_link_end$.",
+    "message": "Продължавайки, вие се съгласявате с $tos_link_begin$Условията за ползване$tos_link_end$ и $pp_link_begin$Политиката за поверителност$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Назад",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Нека направим кратка обиколка",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Продължи",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Готово",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Пропускане",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Прескачане засега",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Добре дошли в Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads ви възнаграждава с токени за подкрепа на създателите на съдържание, за разлика от традиционните реклами, като същевременно запазва личната ви информация поверителна.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Къде се показват рекламите?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads ще се показват като нормално известие. Вие контролирате колко често виждате тези реклами в настройките.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Кога получавате награди",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Спечелените от вас токени от Brave Private Ads през текущия месец ще пристигнат на 5-то число на следващия месец.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Връщане без усилие",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Създателите получават вашите внесени токени автоматично въз основа на нивата ви на ангажираност, които измерваме като „Внимание“.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Кажете благодаря, като подпомагате",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Подпомагането е начин за лично насърчаване и подкрепа на съдържание или създатели, които много харесвате. Подпомагайте!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Какво можете да направите с токени?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Токените могат да се използват не само за подкрепа на създателите. Можете да купувате цифрово съдържание и други стоки, когато търговците се качат на борда.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Еха, всичко е готово!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Използвайки Brave Rewards, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!",
+    "description": ""
   }
 }

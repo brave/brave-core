@@ -639,8 +639,12 @@
     "message": "Brave Ödülleri'ni kullanmaya Başla",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Hızlı bir tur atın",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Devam ederek, $tos_link_begin$Hizmet Şartları'nı$tos_link_end$ ve $pp_link_begin$Gizlilik Politikası'nı$pp_link_end$ kabul etmiş olursunuz.",
+    "message": "İlerleyerek, $tos_link_begin$Hizmet Koşulları$tos_link_end$ ve $pp_link_begin$Gizlilik Politikasını$pp_link_end$ kabul edersiniz.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Geri Git",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Hızlı bir gezinti yapalım",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Devam et",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Bitti",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Atla",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Şimdilik atla",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Brave Ödülleri'ne Hoşgeldiniz!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads, geleneksel reklamlardan farklı olarak sizi içerik üreticilerini desteklemeniz için jetonlarla ödüllendirir, bu sırada kişisel bilgilerinizi gizli tutar.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Reklamlar nerede çıkıyor?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads normal bir bildirim gibi gözükecektir. Bu reklamları ne sıklıkta göreceğinizi ayarlardan kontrol edersiniz.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Ödülleri ne zaman alırsınız",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Mevcut ay boyunca Brave Private Ads'ten kazanılan jetonlarınız sonraki ayın 5'inde gelecektir.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Geri vermek zahmetsiz hale geldi",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Üreticiler, bizin 'Dikkat' olarak ölçtüğümüz katılım seviyelerinize dayalı olarak jeton katkılarınızı otomatik bir şekilde alır.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Bahşiş vererek teşekkür et",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Bahşiş, sevdiğiniz içeriği veya içerik üreticilerini kişisel olarak teşvik etmenin ve desteklemenin bir yoludur. Bahşiş vermeye başlayın!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Jetonlarla neler yapabilirsiniz?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Jetonlar yaratıcıları desteklemenin ötesinde de kullanılabilir. Satıcılar katıldıkça dijital içerik ve diğer ürünleri satın alabilirsiniz.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Yaşasın, her şey tamam!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave Rewards kullanarak webin herkes için daha iyi bir yer haline gelmesine yardım ediyorsunuz. Ve bu harika!",
+    "description": ""
   }
 }

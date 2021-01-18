@@ -639,8 +639,12 @@
     "message": "Comece a usar o Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Faça uma visita rápida",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Ao continuar, concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e a $pp_link_begin$Política de Privacidade$pp_link_end$.",
+    "message": "Ao continuar, concorda com os $tos_link_begin$Termos do Serviço$tos_link_end$ e a $pp_link_begin$Política de Privacidade$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Volte",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Vamos a uma viagem rápida",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuar",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Concluído",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Ignorar",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Sair por agora",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Bem-vindo ao Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Os Brave Private Ads recompensam-no com tokens para apoiar os criadores de conteúdo, o que não acontece com os anúncios tradicionais, enquanto mantêm a sua informação pessoal. ",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Onde é que os anúncios são apresentados?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Os Brave Private Ads aparecerão como uma notificação normal.  Você controla a frequência com que visualiza estes anúncios nas configurações. ",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Quando recebe as recompensas",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Os tokens por si conquistados no mês atual com os Brave Private Ads, chegarão no dia 5 do mês a seguir.  ",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Contribua sem esforço",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Os criadores recebem automaticamente as suas contribuições token, com base nos seus níveis de envolvimento, que medimos como ‘Atenção’.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Agradeça com uma gorjeta",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Dar gorjetas é uma forma de encorajar pessoalmente o conteúdo ou os criadores da sua preferência.  Receba gorjetas!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "O que pode fazer com os tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Os tokens podem ser usados para além do apoio aos criadores.  Pode comprar conteúdo e outros bens à medida que os comerciantes aderem. ",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Pronto, já está!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Ao usar os Brave Rewards está a ajudar a fazer da net um melhor lugar para todos.  E isso é fantástico!",
+    "description": ""
   }
 }

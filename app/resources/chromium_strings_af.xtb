@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="af">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: 1 uur gelede.}other{Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: {NUM_HOURS} uur gelede.}}</translation>
 <translation id="1065672644894730302">Jou voorkeure kan nie gelees word nie.
 
 Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure sal nie gestoor word nie.</translation>
@@ -12,6 +11,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8522292744959221145"><ph name="BEGIN_LINK"/>Meld by Brave aan<ph name="END_LINK"/> om te kyk of jou wagwoorde teen dataskendings en ander sekuriteitkwessies beveilig word.</translation>
 <translation id="8541922081612557424">Meer oor Brave</translation>
 <translation id="4798342026247191171">Stel jou nuwe Brave-profiel op</translation>
+<translation id="5893502481331584971">Vra wanneer Brave oopmaak</translation>
 <translation id="113959764510199339">Brave probeer tans om wagwoorde te wys.</translation>
 <translation id="8132634101975074716">Jy is by Brave aangemeld!</translation>
 <translation id="7370605478942575409">Om Rosetta te gebruik om beskermde media te speel, moet jy Brave herbegin.</translation>
@@ -46,10 +46,8 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="6791166902140255175">Brave-oortjie</translation>
 <translation id="8372880274820509128">Brave sal jou data enkripteer vir bykomende sekuriteit.</translation>
 <translation id="2770231113462710648">Verander verstekblaaier na:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: 1 minuut gelede.}other{Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: {NUM_MINS} minute gelede.}}</translation>
 <translation id="2799223571221894425">Begin weer</translation>
 <translation id="777113543093865885">Verwyder uit Brave …</translation>
-<translation id="8846162271735377947">Vra wanneer ek Brave oopmaak</translation>
 <translation id="2885378588091291677">Taakbestuurder</translation>
 <translation id="2176825726964012531">Meer oor Brave</translation>
 <translation id="8208853227947884571">Brave is op datum</translation>
@@ -57,7 +55,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8755404239607088219">Brave kan nie jou wagwoorde nagaan nie. Probeer later weer.</translation>
 <translation id="8880183781256147665">Voeg tans by Brave …</translation>
 <translation id="7918740962659365265">Help om Brave beter te maak deur omvalverslae en <ph name="UMA_LINK"/> na Brave te stuur</translation>
-<translation id="2911521062311014336">Brave kyk een keer per week vir ongewenste sagteware</translation>
 <translation id="7365690458036015383">Die installeerder kon nie die argief se saampersing omkeer nie. Laai Brave asseblief weer af.</translation>
 <translation id="8919461291440820124">Brave gebruik tans jou mikrofoon.</translation>
 <translation id="4805806622840861220">Herbegin Brave</translation>
@@ -175,7 +172,6 @@ Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielg
 <translation id="8211837073776713955">Brave sal jou laat weet as jou wagwoorde gekompromitteer is</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (na Brave gekopieer)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: 1 dag gelede.}other{Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: {NUM_DAYS} dae gelede.}}</translation>
 <translation id="2301993384336631869">Brave is opgedateer, maar jy het dit vir minstens 30 dae nie gebruik nie.</translation>
 <translation id="8522287263361940593">Rosetta maak dit vir Brave moontlik om die beskemde media op hierdie bladsy te speel.</translation>
 <translation id="6418340404893954563">Swak wagwoorde is maklik om te raai. Laat Brave <ph name="BEGIN_LINK"/>sterk wagwoorde vir jou skep en onthou<ph name="END_LINK"/>.</translation>
@@ -208,7 +204,6 @@ Brave kan nie jou instellings herwin nie.</translation>
       Brave-bedryfstelselinstellings<ph name="LINK_END"/> kyk</translation>
 <translation id="3293668930608086049">Brave gebruik tans jou kamera en mikrofoon.</translation>
 <translation id="2827121003398607864">Brave het pas beter geword</translation>
-<translation id="504499211143662559">Brave het skadelike sagteware op jou rekenaar gekry</translation>
 <translation id="3343095737966473035">Brave is nie jou verstekblaaier nie</translation>
 <translation id="5477319665405831211">Sinkroniseer en personaliseer Brave op al jou toestelle</translation>
 <translation id="5419189641394808652">Brave kon nie jou data sinkroniseer nie, omdat Sinkronisering nie vir jou domein beskikbaar is nie.</translation>
@@ -240,7 +235,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="6283840329609797763">Kon weens 'n ongespesifiseerde fout nie installeer nie. Laai Brave asseblief weer af.</translation>
 <translation id="2433912322225810055">Dit beheer ook watter bladsy gewys word wanneer jy Brave begin of vanuit die omnikassie soek.</translation>
 <translation id="4100716194836114130">Dit is jou Brave</translation>
-<translation id="8757284234053029740">Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: gister.</translation>
 <translation id="4831743161813926460">Brave het toestemming nodig om toegang te kry tot jou kamera en mikrofoon vir hierdie werf</translation>
 <translation id="7408085963519505752">Brave-bedryfstel se bepalings</translation>
 <translation id="2262856633481902138">Brave kon nie jou data sinkroniseer nie, want jou rekening se aanmeldbesonderhede is verouderd.</translation>
@@ -255,7 +249,6 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="7863882214613921971">Maak skakel in 'n nuwe Brave-oortjie oop</translation>
 <translation id="911206726377975832">Vee ook jou blaaidata uit?</translation>
 <translation id="2444257125841652328">Jou stelseladministrateur het Brave opgestel om 'n alternatiewe blaaier oop te maak om na <ph name="TARGET_URL_HOSTNAME"/> toe te gaan.</translation>
-<translation id="2250443703383891643">Brave kyk een keer per week vir ongewenste sagteware. Laas nagegaan: 'n oomblik gelede.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave sal dalk nie reg werk nie omdat dit nie meer in Windows XP en Windows Vista gesteun word nie</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> vereis dat jy die volgende diensbepalings lees en aanvaar voor jy hierdie toestel gebruik. Hierdie bepalings verander, beperk of brei nie die Brave-bedryfstelseldiensbepalings uit nie.</translation>
