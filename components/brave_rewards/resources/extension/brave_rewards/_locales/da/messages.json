@@ -639,8 +639,12 @@
     "message": "Begynd at bruge Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Tag en hurtig rundvisning",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Ved at fortsætte accepterer du $tos_link_begin$Servicevilkårene$tos_link_end$ og $pp_link_begin$Politikken om beskyttelse af persondata$pp_link_end$.",
+    "message": "Ved at fortsætte accepterer du $tos_link_begin$Servicevilkårene $tos_link_end$ og $pp_link_begin$Databeskyttelsespolitikken$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Gå tilbage",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Lad os tage en hurtig rundvisning",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Fortsæt",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Færdig",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Spring over",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Spring over for nu",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Velkommen til Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads belønner dig med tokens, der hjælper indholdsskabere i modsætning til traditionelle annoncer, samtidig med at dine personlige oplysninger holdes private.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Hvor vises annoncerne?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads vises som en normal meddelelse. Du bestemmer, hvor ofte du ser disse annoncer i indstillinger.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Når du modtager belønninger",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Dine optjente tokens fra Brave Private Ads i hele den nuværende måned kommer den 5. i næste måned.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Det har aldrig været nemmere, at give tilbage",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Indholdsskabere modtager dine tokenbidrag automatisk baseret på dine engagementsniveauer, som vi måler som \"Opmærksomhed\".",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Sig tak med drikkepenge",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "At give drikkepenge er en måde, hvorpå du personligt kan opfordre og støtte indhold eller skabere, som du elsker. Kom i gang med dine drikkepenge!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Hvad kan man bruge tokens til?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokens kan bruges til andet end at at støtte indholdsskaberne. Du kan købe digitalt indhold og andre varer, efterhånden som forhandlere bliver en del af Brave.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Woohoo, du er klar!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Ved at bruge Brave Rewards hjælper du med at gøre internettet til et bedre sted for alle, og det er fantastisk!",
+    "description": ""
   }
 }

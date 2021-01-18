@@ -639,8 +639,12 @@
     "message": "Začněte používat Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Spustit rychlou prohlídku",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Pokračováním souhlasíte s $tos_link_begin$Podmínkami služby$tos_link_end$ a $pp_link_begin$Ochranou soukromí$pp_link_end$.",
+    "message": "Pokračováním souhlasíte s $tos_link_begin$Podmínkami služby$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobních údajů$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Přejít zpět",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Pojďme na rychlou prohlídku",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Pokračovat",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Hotovo",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Přeskočit",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Nyní přeskočit",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Vítejte v Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads vás na rozdíl od běžných reklam odměňují tokeny k podpoře tvůrců obsahu, ale zároveň udržuje vaše osobní informace v soukromí.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Kde se zobrazují reklamy?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads se zobrazí jako normální oznámení.  V nastavení můžete změnit, jak často se tyto reklamy budou zobrazovat.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kdy dostanete odměny",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Vaše vydělané tokeny z Brave Private Ads z aktuálního měsíce dorazí 5. dne následujícího měsíce.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Odměňování bez námahy",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Tvůrci získávají vaše příspěvky v podobě tokenů automaticky na základě vašich úrovní zapojení, které měříme jako „pozornost“.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Poděkujte prostřednictvím příspěvků",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Přispívání je způsob, jak osobně povzbudit a podpořit tvůrce a obsah, co máte rádi. Pojďte přispívat!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Co můžete s tokeny dělat?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokeny lze použít i nad rámec podpory tvůrců.  Jakmile se přidají obchodníci, můžete si za ně koupit digitální obsah a další zboží.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Hurá, vše bylo nastaveno!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Používáním služby Brave Rewards pomáháte vytvářet z webu lepší místo pro všechny. A to je úžasné!",
+    "description": ""
   }
 }

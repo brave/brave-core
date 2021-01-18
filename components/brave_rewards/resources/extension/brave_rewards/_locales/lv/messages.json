@@ -639,8 +639,12 @@
     "message": "Sākt izmantot Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Izejiet ātru tūri",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Turpinot jūs piekrītat $tos_link_begin$Terms of Service$tos_link_end$ un $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "message": "Turpinot jūs piekrītat $tos_link_begin$pakalpojumu sniegšanas noteikumiem$tos_link_end$ un $pp_link_begin$konfidencialitātes politikai$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Doties atpakaļ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Iziesim ātru tūri",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Turpināt",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Pabeigts",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Izlaist",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Pagaidām izlaist",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Laipni lūdzam pakalpojumā Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave privātās reklāmas atalgo jūs ar žetoniem, atbalstot satura veidotājus, atšķirībā no parastajām reklāmām, vienlaikus ievērojot jūsu personiskās informācijas konfidencialitāti.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Kur tiek rādītas reklāmas?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave privātās reklāmas tiks rādītas kā parasts paziņojums. To, cik bieži redzat šīs reklāmas, jūs kontrolējat iestatījumos.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kad jūs saņemat balvas",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Jūsu nopelnītie žetoni par Brave privātajām reklāmām visā šī mēneša laikā tiks saņemti nākamā mēneša 5. datumā.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Vienkārša atdošana",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Veidotāji jūsu žetonu ziedojumus saņem automātiski, pamatojoties uz jūsu iesaistes līmeņiem, kurus mēs mērām kā “Attention”.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Pateicieties ar dzeramnaudu",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Dzeramnauda ir veids, kā personīgi iedrošināt un atbalstīt jūsu iecienītāko saturu vai veidotājus. Piešķiriet dzeramnaudu!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Ko jūs varat darīt ar žetoniem?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Žetonus var izmantot, ne tikai atbalstot veidotājus. Varat iegādāties digitālo saturu un citas preces, kad pievienojas tirgotāji.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Hei, jūs esat gatavs!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Izmantojot Brave Rewards, jūs palīdzat tīmekli padarīt par labāku vietu ikvienam. Tas ir lieliski!",
+    "description": ""
   }
 }

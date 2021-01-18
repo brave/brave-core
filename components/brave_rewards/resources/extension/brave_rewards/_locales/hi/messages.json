@@ -639,8 +639,12 @@
     "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें\n",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "क्विक टूर लें",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "आगे बढ़ने से, आप $tos_link_begin$सेवा की शर्तें$tos_link_end$ और $pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं।",
+    "message": "आगे बढ़कर आप $tos_link_begin$सेवा की शर्तों$tos_link_end$ और $pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं।",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "वापस जाएँ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "चलिए एक त्वरित टूर करते हैं",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "जारी रखें",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "हो गया",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "अभी नहीं",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "अभी के लिए रहने दो",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "ब्रेव रिवार्ड्स में आपका स्वागत है!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave निजी विज्ञापन आपकी व्यक्तिगत जानकारी को गोपनीय रखते हुए, सामग्री रचनाकारों का समर्थन करने के लिए आपको पारंपरिक विज्ञापनों के विपरीत पुरस्कार के रूप में टोकन प्रदान करते हैं।",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "विज्ञापन कहाँँ दिखाए जाते हैं?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave निजी विज्ञापन एक सामान्य सूचना के रूप में दिखाई देंगे। आप विज्ञापनों को कितनी बार देखें, इसे आप सेटिंग्स से नियंत्रित कर सकते हैं।",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "आप रिवार्ड्स कब प्राप्त करते हैं",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "वर्तमान पूरे महीने में Brave प्राइवेट विज्ञापनों से अर्जित आपके टोकन अगले महीने की 5 तारीख को आ जाएँगे।",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "वापस देना सरल बना दिया गया है\n",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "निर्माता आपकी व्यस्तता के स्तरों के आधार पर आपके टोकन योगदान को स्वचालित रूप से प्राप्त करते हैं जिसकी हम 'अटेंशन' के रूप में गणना करते हैं।",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "सुझावों के साथ धन्यवाद कहें",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "टिपिंग व्यक्तिगत रूप से आपके द्वारा पसंद किए जाने वाले कंटेंट या रचनाकारों को व्यक्तिगत रूप से प्रोत्साहित करने और सपोर्ट करने का एक तरीका है। टीपिंंग करना शुरू करें!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "आप टोकन के साथ क्या कर सकते हैं?\n",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "टोकन का उपयोग निर्मातों की सहायता से परे भी किया जा सकता है। आप डिजिटल सामग्री और अन्य वस्तुएँ खरीद सकते हैं क्योंकि व्यापारी ऑनबोर्ड आते हैं।",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "वूहू, आप पूरी तरह से तैयार हैं!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave पुरस्कारों का उपयोग करके आप वेब को सभी के लिए बेहतर जगह बनाने में मदद कर रहे हैं। और वह बहुत बढ़िया है!",
+    "description": ""
   }
 }

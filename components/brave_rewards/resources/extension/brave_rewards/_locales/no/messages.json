@@ -639,8 +639,12 @@
     "message": "Begynn å bruke Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Ta en rask omvisning",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Ved å fortsette samtykker du til $tos_link_begin$Tjenestevilkårene$tos_link_end$ og $pp_link_begin$Personvernpolicyen$pp_link_end$.",
+    "message": "Ved å fortsette samtykker du i $tos_link_begin$Vilkår for tjenesten$tos_link_end$ og $pp_link_begin$Personvernerklæringen$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Gå tilbake",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "La oss ta en rask omvisning",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Fortsett",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Ferdig",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Hopp over",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Hopp over i denne omgang",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Velkommen til Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads belønner deg med polletter for å støtte innholdsskapere, i motsetning til tradisjonelle annonser – samtidig som den personlige informasjonen din beskyttes.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Hvor vises annonsene?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads vil vises som et ordinært varsel. Du kontrollerer hvor ofte du ser disse annonsene i innstillingene.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Når mottar du belønninger",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Pollettene du tjener på Brave Private Ads gjennom inneværende måned vil komme inn den 5. i neste måned.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Gi tilbake uten anstrengelser",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Skapere mottar pollettbidragene dine automatisk basert på engasjementsnivåene dine, som vi måler som \"Oppmerksomhet\".",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Si takk med tips",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Tipsing er en måte å personlig oppmuntre og støtte innhold eller produsenter du elsker. Sett i gang å tipse!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Hva kan du gjøre med tokener?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Polletter kan brukes til mer enn å støtte skapere. Du kan kjøpe digitalt innhold og andre artikler etter hvert som selgere blir med.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Hurra, du er helt klar!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Når du bruker Brave Rewards bidrar du til å gjøre nettet til et bedre sted for alle. Og det er kjempebra!",
+    "description": ""
   }
 }

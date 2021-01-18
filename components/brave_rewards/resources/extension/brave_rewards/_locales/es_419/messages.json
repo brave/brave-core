@@ -639,6 +639,10 @@
     "message": "Comenzar a utilizar Recompensas Brave",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Haz un recorrido rápido",
+    "description": ""
+  },
   "onboardingTerms": {
     "message": "Al continuar, aceptas las $tos_link_begin$Condiciones del servicio$tos_link_end$ y la $pp_link_begin$Política de privacidad$pp_link_end$.",
     "description": "",
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Regresar",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Hagamos un recorrido rápido",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuar",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Listo",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Omitir",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Omitir por el momento",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "¡Te damos la bienvenida a Recompensas Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Los anuncios privados de Brave te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "¿Dónde se muestran los anuncios?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Los anuncios privados de Brave se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "¿Cuándo recibes recompensas?",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Recibirás los tokens que ganaste de los anuncios de Brave durante el mes actual el día 5 del mes siguiente.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Retribuye sin demasiado esfuerzo",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Los creadores reciben tus contribuciones de tokens de forma automática en función de tus niveles de participación que medimos como \"Atención\".",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Agradece con propinas",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Dar propinas es una forma de animar y apoyar personalmente al contenido o a los creadores que te encantan. ¡Es hora de dar propinas!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "¿Qué puedes hacer con los tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Los tokens pueden utilizarse para otras cosas además de apoyar a creadores. Puedes comprar contenido digital y otros bienes a medida que los comercios se incorporan.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "¡Felicitaciones, has terminado!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Al utilizar Brave Rewards, estás ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!",
+    "description": ""
   }
 }

@@ -639,8 +639,12 @@
     "message": "Használja a Brave Rewardsot",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Nézzen körül",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "A folytatással elfogadja a $tos_link_begin$Szolgáltatás feltételeit$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
+    "message": "A folytatással elfogadod a $tos_link_begin$TSzolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Vissza",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Tegyünk egy gyors bemutatót",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Folytatás ",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Kész",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Kihagyás",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Most kihagyod",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Üdvözli a Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "A Brave privát hirdetések tokenekkel jutalmaznak meg, amivel a hagyományos reklámokkal ellentétben, támogathatod a tartalomkészítőket, és közben személyes adataid rejtve maradnak.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Hol jelennek meg a hirdetések?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "A Brave privát hirdetések szokványos értesítésként jelennek meg. A beállításokban megszabhatod, hogy milyen gyakran jelenjenek meg.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Mikor kapja meg a jutalmakat",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Az aktuális hónap folyamán a Brave privát hirdetésektől szerzett tokenjeidet a következő hónap 5-én kapod meg.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Visszaadás erőfeszítés nélkül",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Az alkotók automatikusan megkapják tokenes hozzájárulásaidat az elkötelezettségi szinted alapján, amit 'Figyelem'-ben mérünk.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Fejezze ki háláját borravalókkal",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "A borravalókkal személyesen bátoríthatja és támogathatja a kedvelt tartalomkészítőket. Jattoljon!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Mit tehet a tokenekkel?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "A tokeneket nem csak az alkotók támogatására használhatod. Digitális tartalmakat és egyéb javakat is vásárolhatsz, amint kereskedők csatlakoznak hozzánk.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Juhé, készen állsz!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "A Brave Rewards használatával segítesz mindenki számára jobbá tenni az internetet. Ez fantasztikus!",
+    "description": ""
   }
 }

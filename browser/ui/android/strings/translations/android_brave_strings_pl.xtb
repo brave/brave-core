@@ -198,7 +198,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="2614069607859982576">Używając istniejącego zsynchronizowanego urządzenia, otwórz Ustawienia i przejdź do sekcji Ustawienia i synchronizacja. Wybierz opcję Dodaj nowe urządzenie i zeskanuj kod QR wyświetlony na ekranie.</translation>
 <translation id="5241263629636958324">Skopiowane do schowka</translation>
 <translation id="5817918615728894473">Sparuj</translation>
-<translation id="7090325819305486658">Preferencje co do daty</translation>
+<translation id="7090325819305486658">Preferencje danych</translation>
 <translation id="728334460283296316">Usuń urządzenie</translation>
 <translation id="1178128181015923849">Czy na pewno chcesz usunąć urządzenie „<ph name="DEVICE_NAME"/>”?</translation>
 <translation id="7745082336226088126">Zeskanuj lub wprowadź kod synchronizacji</translation>
@@ -329,7 +329,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="7396366757003005317">Blokuj rozpoznawanie urządzenia (ściśle, strony mogą nie działać)</translation>
 <translation id="700453611199558021">Blokuj rozpoznawanie urządzenia (standardowo)</translation>
 <translation id="769702552748212954">Zezwalaj na rozpoznawanie urządzenia</translation>
-<translation id="2888409909650566510">Zablokowane reklamy i inne straszne\nrzeczy</translation>
+<translation id="5142293891785304489">Śledzenie, reklamy i/ninne zablokowane</translation>
 <translation id="6930134873084561197">Witryny często zawierają pliki cookies i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie. Chcą dowiedzieć się, kim jesteś, i śledzić Cię w sieci, monitorując wykonywane przez Ciebie czynności na każdej stronie.\n\nBrave blokuje to, dzięki czemu możesz przeglądać, i nikt nie będzie Cię śledzić.</translation>
 <translation id="8553998445606452168">O osłonach Brave</translation>
 <translation id="8912304686498704084">WŁĄCZONE</translation>
@@ -355,7 +355,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8374242949413616101">Ochrona prywatności</translation>
 <translation id="4955406228638026265">Przeglądarka Brave zapobiega zbieraniu informacji o Tobie bez Twojej zgody przez reklamy i narzędzia do monitorowania.</translation>
 <translation id="752842701893882688">Oszczędzaj dane i prąd</translation>
-<translation id="1685837926613452362">Blokowanie reklam i modułów śledzących na stronach internetowych pozwala zmniejszyć zużycie pakietu danych oraz baterii. Może to nawet przełożyć się na niższe opłaty za transmisję danych.</translation>
+<translation id="1685837926613452362">Blokowanie reklam i skryptów śledzących na stronach internetowych pozwala zmniejszyć zużycie pakietu danych oraz baterii. Może to nawet przełożyć się na niższe opłaty za transmisję danych.</translation>
 <translation id="5440744330377972191">Witryny internetowe wczytują się szybciej</translation>
 <translation id="3000738865641747653">Wczytywanie mniejszej ilości danych oznacza, że witryny internetowe w przeglądarce Brave wczytują się szybciej – do 8 x szybciej niż w innych przeglądarkach.</translation>
 <translation id="8903462729414407077">Otrzymuj co tydzień aktualne wiadomości</translation>
@@ -374,17 +374,17 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="3694122362646626770">Witryny internetowe</translation>
 <translation id="2225863440766607138">Narzędzia do monitorowania</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
-<translation id="6737820963776538947">W ciągu ostatnich trzech godzin zablokowałeś(-aś) z pomocą przeglądarki Brave <ph name="COUNT"/> trackers &amp; reklam.</translation>
+<translation id="6737820963776538947">W ciągu ostatnich trzech godzin zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="3621193901658023971">Przeszukuj duże portale z wiadomościami do 6 x szybciej w przeglądarce Brave, blokując monitorowanie i reklamy.</translation>
 <translation id="7427567994475794038">Włącz raporty o prywatności, aby zobaczyć, ile narzędzi do monitorowania i reklam zablokowano w ciągu ostatnich trzech godzin.</translation>
 <translation id="2053891538879944400">Oszczędziłeś(-aś) <ph name="DATA"/> <ph name="DATA_TEXT"/> danych z użyciem przeglądarki Brave.</translation>
 <translation id="8640064498452534195">Włącz raporty o prywatności, aby zobaczyć, ile danych oszczędziłeś(-aś).</translation>
-<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.&#128267;</translation>
-<translation id="1945330434665345785">W ubiegłym tygodniu zablokowałeś(-aś) z pomocą przeglądarki Brave <ph name="COUNT"/> trackers &amp; reklam.</translation>
+<translation id="2252497442547961651">Przeglądarka Brave zużywa średnio o 40% mniej baterii.🔋</translation>
+<translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
-<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 modułów śledzących i reklam.&#128293;</translation>
-<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Brawo! Dzięki przeglądarce Brave udało Ci się zablokować 250 skryptów śledzących i reklam.🔥</translation>
+<translation id="9199047775708635708">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 MB.🔋</translation>
+<translation id="1880168210969863408">Brawo! Dzięki przeglądarce Brave udało Ci się zaoszczędzić 10 minut na ładowaniu stron.💨💨</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
 <translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
 <translation id="7801488941710395275">Umożliwia przeglądarce Brave pokazywanie Twoich statystyk prywatności.</translation>
@@ -441,22 +441,22 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8804164990146287819">Polityka prywatności</translation>
 <translation id="6318696841371191107">Weź udział w szybkim oprowadzeniu.</translation>
 <translation id="7930505144430343145">Witamy w nagrodach Brave!</translation>
-<translation id="7909111626803226907">Kiedy oglądasz prywatne reklamy w przeglądarce Brave – inaczej niż  w przypadku tradycyjnego wyświetlania reklam – zarabiasz tokeny, którymi możesz wspierać twórców, jednocześnie zachowując swoje dane osobowe w poufności.</translation>
+<translation id="3477340970981564961">Brave Private Ads nagradza Cię za pomocą żetonów wspierających twórców treści innych niż tradycyjne reklamy, nie ujawniając zarazem Twoich danych osobowych.</translation>
 <translation id="6973095375773523904">Kiedy wyświetlane są reklamy?</translation>
-<translation id="3867028444168159102">Prywatne reklamy w przeglądarce Brave pojawiają się jak standardowe powiadomienie. Użytkownik sam kontroluje, poprzez swoje ustawienia, częstość wyświetlania tych reklam.</translation>
+<translation id="7556325460112047619">Brave Private Ads pojawi się jako zwykłe powiadomienie. Masz możliwość decyzji poprzez ustawienia, jak często zobaczysz te reklamy.</translation>
 <translation id="5816125157889950051">Kiedy przekazywane są nagrody</translation>
-<translation id="4649471244559455723">Twoje tokeny zarobione w tym miesiącu za oglądanie reklam Brave zostaną przyznane 5. dnia najbliższego miesiąca.</translation>
+<translation id="310863932297733723">Zdobyte przez Ciebie żetony na Brave Private Ads w tym miesiącu otrzymasz 5 dnia następnego miesiąca.</translation>
 <translation id="7712287524451429139">Bezwysiłkowe obdarowywanie innych.</translation>
 <translation id="105037569026952831">Twórcy otrzymują Twoje tokenowe darowizny automatycznie, w oparciu o poziom Twojego zaangażowania mierzony jako ‘Uwaga’.</translation>
 <translation id="5323267338679539010">Podziękuj napiwkami.</translation>
-<translation id="6042317056594735519">Dawanie napiwków to sposób na osobiste zachęcanie i wspieranie twórców Twoich ulubionych treści. Zacznij dawać napiwki!</translation>
+<translation id="6730444165801605682">Dawanie napiwków to sposób na osobiste zachęcanie i wspieranie twórców treści, które absolutnie kochasz. Dawaj napiwki!</translation>
 <translation id="7509452925943421624">Co można zrobić z tokenami?</translation>
-<translation id="7059157883171259940">Tokenów można używać także do innych celów niż wspieranie twórców. Można za nie kupować towary cyfrowe oraz karty podarunkowe z bonusowym cashbackiem.</translation>
+<translation id="5876169128756792273">Żetony mogą być wykorzystane poza zakresem wspierających twórców. Możesz zakupić cyfrowe treści i inne towary, gdy kupcy wchodzą na pokład.</translation>
 <translation id="1402530520078693620">Na koniec skonfigurujmy podstawowe ustawienia.</translation>
 <translation id="3494356595346329740">Można to później zmienić.</translation>
 <translation id="6462814326662189004">Jak często chcesz oglądać reklamy?\n(Liczba reklam na godzinę.)</translation>
 <translation id="2134244432345596331">W jakim zakresie chcesz wspierać ulubionych twórców?\n(ze swoich zarobków z reklam)</translation>
-<translation id="7456161272236175794">HURRRA!!\nZrobione.</translation>
+<translation id="827315274423079662">Huraa, jesteście’ gotowi!</translation>
 <translation id="3895246934788932488">Korzystając z nagród Brave, chronisz swoją prywatność i pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
 <translation id="5705882733397021510">Wróć</translation>
 <translation id="5140321319944305531">Zróbmy małe oprowadzanie.</translation>
@@ -469,4 +469,28 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="3604285424134705930">Konwertowałeś(-aś) <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> na <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Sprawdź połączenie sieciowe.</translation>
 <translation id="7889432931837317731">Kiedy to możliwe, otwieraj automatycznie</translation>
+<translation id="8967385052772844086">Zobacz pełny Raport prywatności</translation>
+<translation id="6864343534748973390">Najpopularniejsze</translation>
+<translation id="1622983732360473885">Wspieraj Brave</translation>
+<translation id="4608192160278975831">Prywatny i bez śledzenia</translation>
+<translation id="7208522820527289601">Prywatny i bez śledzenia, z siedzibą w Unii Europejskiej</translation>
+<translation id="1161008391729450974">Wyniki Google bez śledzenia</translation>
+<translation id="7320542277711359296">Drugi najbardziej popularny</translation>
+<translation id="8295049095570748497">Wiodąca wyszukiwarka w Rosji</translation>
+<translation id="2642661895835126239">Sadzimy drzewa, z siedzibą w Berlinie</translation>
+<translation id="1410130669636877548">Gdy przeszukujesz sieć, niektóre wyszukiwarki chronią Twoją prywatność lepiej od innych.</translation>
+<translation id="1078265935778232285">Witaj w przeglądarce Brave</translation>
+<translation id="6824713633331856331">Pomóż nam uczyć się anonimowo</translation>
+<translation id="6116685031674149112">Brave chroni Twoją prywatność oraz docenia zgodę na następujące kwestie:</translation>
+<translation id="3971666849661839619">Pomóż wspierać Brave poprzez wysyłanie raportów o błędach i zupełnie anonimizowanych, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">analityka prywatnego produktu</translation>
+<translation id="5187052478998910855">Potrzebujesz powtórzenia w zakresie nagród?</translation>
+<translation id="8622329973403382303">Przejdź krótki kurs, aby dowiedzieć się, jak przejść do historii jako gwiazda nagród!</translation>
+<translation id="2888409909650566510">Zablokowane reklamy i inne straszne\nrzeczy</translation>
+<translation id="7909111626803226907">Kiedy oglądasz prywatne reklamy w przeglądarce Brave – inaczej niż  w przypadku tradycyjnego wyświetlania reklam – zarabiasz tokeny, którymi możesz wspierać twórców, jednocześnie zachowując swoje dane osobowe w poufności.</translation>
+<translation id="3867028444168159102">Prywatne reklamy w przeglądarce Brave pojawiają się jak standardowe powiadomienie. Użytkownik sam kontroluje, poprzez swoje ustawienia, częstość wyświetlania tych reklam.</translation>
+<translation id="4649471244559455723">Twoje tokeny zarobione w tym miesiącu za oglądanie reklam Brave zostaną przyznane 5. dnia najbliższego miesiąca.</translation>
+<translation id="6042317056594735519">Dawanie napiwków to sposób na osobiste zachęcanie i wspieranie twórców Twoich ulubionych treści. Zacznij dawać napiwki!</translation>
+<translation id="7059157883171259940">Tokenów można używać także do innych celów niż wspieranie twórców. Można za nie kupować towary cyfrowe oraz karty podarunkowe z bonusowym cashbackiem.</translation>
+<translation id="7456161272236175794">HURRRA!!\nZrobione.</translation>
 </translationbundle>

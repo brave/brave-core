@@ -327,7 +327,7 @@ dejavnosti ...</translation>
 <translation id="7396366757003005317">Prstni odtisi blokirani (strogo, lahko vdrejo v spletna mesta)</translation>
 <translation id="700453611199558021">Prstni odtis je blokiran (standardno)</translation>
 <translation id="769702552748212954">Dovoli vsa ustvarjanja prstnih odtisov</translation>
-<translation id="2888409909650566510">Sledilniki in druge grozljive\nstvari so blokirani</translation>
+<translation id="5142293891785304489">Sledilci, oglasi in\nveč blokad za</translation>
 <translation id="6930134873084561197">Spletna mesta pogosto vključujejo piškotke in skripte, ki poskušajo prepoznati vas in vašo napravo. Želijo ugotoviti, kdo ste in vas spremljati po spletu - spremljati, kaj počnete na vsakem posameznem spletnem mestu.\nBrave to blokira, da lahko brskate, ne da bi vas povsod spremljali.</translation>
 <translation id="8553998445606452168">O Brave Shields</translation>
 <translation id="8912304686498704084">GOR</translation>
@@ -377,12 +377,12 @@ dejavnosti ...</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
-<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.🔋</translation>
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
-<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.🔥</translation>
+<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.💨💨</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="7801488941710395275">To brskalniku Brave omogoča prikaz statističnih podatkov o vaši zasebnosti</translation>
@@ -439,22 +439,22 @@ dejavnosti ...</translation>
 <translation id="8804164990146287819">Zasebnost</translation>
 <translation id="6318696841371191107">Pojdimo na hiter ogled</translation>
 <translation id="7930505144430343145">Dobrodošli v Brave Rewards!</translation>
-<translation id="7909111626803226907">Zasebni oglasi Brave vas nagradijo z žetoni za podporo ustvarjalcev vsebin, pri čemer za razliko od tradicionalnih oglasov vaši osebni podatki ostanejo zasebni.</translation>
+<translation id="3477340970981564961">Brave Private Ads vas nagradi z žetoni, ki podpirajo ustvarjalce vsebin, za razliko od tradicionalnih oglasov, hkrati pa ohranjajo vaše osebne podatke zasebne.</translation>
 <translation id="6973095375773523904">Kje se prikazujejo oglasi?</translation>
-<translation id="3867028444168159102">Zasebni oglasi Brave bodo prikazani kot običajno obvestilo. V nastavitvah lahko nadzirate, kako pogosto vidite te oglase.</translation>
+<translation id="7556325460112047619">Brave Private Ads bo prikazan kot običajno obvestilo. Kako pogosto vidite te oglase, lahko nadzirate v nastavitvah.</translation>
 <translation id="5816125157889950051">Kdaj prejmete nagrade</translation>
-<translation id="4649471244559455723">Vaši prisluženi žetoni iz oglasov Brave tekočega meseca boste prejeli 5. dne naslednjega meseca.</translation>
+<translation id="310863932297733723">Zahvaljujoč Brave Private Ads ste si prislužili žetone, ki bodo za ves tekoči mesec prispeli 5. dne v naslednjem mesecu.</translation>
 <translation id="7712287524451429139">Podpora je zares enostavna</translation>
 <translation id="105037569026952831">Ustvarjalci samodejno prejmejo vaše prispevane žetone glede na vašo stopnjo angažiranosti, ki jo merimo kot ‘pozornost’.</translation>
 <translation id="5323267338679539010">Zahvalite se z vašo podporo</translation>
-<translation id="6042317056594735519">Prispevki so način osebnega spodbujanja in podpore vsebin ali ustvarjalcev, ki so vam všeč. Dajte kak prispevek!</translation>
+<translation id="6730444165801605682">Prispevki so način, kako osebno spodbuditi in podpreti vsebino ali ustvarjalce, ki so vam zelo všeč. Pa kar pogumno k prispevkom!</translation>
 <translation id="7509452925943421624">Kaj lahko storite z žetoni?</translation>
-<translation id="7059157883171259940">Žetone je mogoče uporabiti tudi drugače kot v obliki podpore ustvarjalcem. Digitalno blago in darilne kartice lahko kupite z bonusom v obliki vračila denarja.</translation>
+<translation id="5876169128756792273">Žetone je mogoče uporabiti poleg podpore ustvarjalcem. Ko se trgovci pojavijo na krovu, lahko kupite digitalno vsebino in drugo blago.</translation>
 <translation id="1402530520078693620">Nenazadne, pojdimo zdaj na osnovne nastavitve’</translation>
 <translation id="3494356595346329740">To lahko spremenite pozneje.</translation>
 <translation id="6462814326662189004">Kako pogosto si želite ogledati oglase?\n(oglasov na uro)</translation>
 <translation id="2134244432345596331">Koliko podpore želite dati svojim najljubšim ustvarjalcem?\n(od zaslužka od oglasov)</translation>
-<translation id="7456161272236175794">HURAAA!\nPrišli smo do konca!’</translation>
+<translation id="827315274423079662">Juhu, vse je pripravljeno!</translation>
 <translation id="3895246934788932488">Z uporabo Brave Rewards ščitite svojo zasebnost in pomagate izboljšati splet za vse. To je super!’</translation>
 <translation id="5705882733397021510">Pojdi nazaj</translation>
 <translation id="5140321319944305531">Pa pojdimo na eno kratko turo</translation>
@@ -467,4 +467,28 @@ dejavnosti ...</translation>
 <translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> v <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Preverite vašo omrežno povezavo.</translation>
 <translation id="7889432931837317731">Ko je mogoče, se naj samodejno odpre</translation>
+<translation id="8967385052772844086">Oglejte si celotno poročilo o zasebnosti</translation>
+<translation id="6864343534748973390">Najbolj priljubljeno</translation>
+<translation id="1622983732360473885">Podpora Brave</translation>
+<translation id="4608192160278975831">Zasebno in brez sledenja</translation>
+<translation id="7208522820527289601">Zasebno in brez sledenja, s sedežem v EU</translation>
+<translation id="1161008391729450974">Googlovi rezultati brez sledilcev</translation>
+<translation id="7320542277711359296">Drugi najbolj priljubljeni</translation>
+<translation id="8295049095570748497">Vodilni iskalnik v Rusiji</translation>
+<translation id="2642661895835126239">Sadi drevesa s sedežem v Berlinu</translation>
+<translation id="1410130669636877548">Nekateri iskalniki varujejo vašo zasebnost bolje kot drugi, ko iščete po spletu.</translation>
+<translation id="1078265935778232285">Dobrodošli v brskalniku Brave</translation>
+<translation id="6824713633331856331">Pomagajte nam pri anonimnem učenju</translation>
+<translation id="6116685031674149112">Brave varuje vašo zasebnost in\nceni vaše soglasje za naslednje:</translation>
+<translation id="3971666849661839619">Pomagajte izboljšati Brave s pošiljanjem poročil o zrušitvah in to popolnoma anonimizirano, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">zasebna analitika izdelkov.</translation>
+<translation id="5187052478998910855">Potrebujete kratko osvežitev o Rewards?</translation>
+<translation id="8622329973403382303">Na hitro si oglejte, kako vse skupaj deluje, da se boste zapisali v zgodovino kot zvezda Rewards!</translation>
+<translation id="2888409909650566510">Sledilniki in druge grozljive\nstvari so blokirani</translation>
+<translation id="7909111626803226907">Zasebni oglasi Brave vas nagradijo z žetoni za podporo ustvarjalcev vsebin, pri čemer za razliko od tradicionalnih oglasov vaši osebni podatki ostanejo zasebni.</translation>
+<translation id="3867028444168159102">Zasebni oglasi Brave bodo prikazani kot običajno obvestilo. V nastavitvah lahko nadzirate, kako pogosto vidite te oglase.</translation>
+<translation id="4649471244559455723">Vaši prisluženi žetoni iz oglasov Brave tekočega meseca boste prejeli 5. dne naslednjega meseca.</translation>
+<translation id="6042317056594735519">Prispevki so način osebnega spodbujanja in podpore vsebin ali ustvarjalcev, ki so vam všeč. Dajte kak prispevek!</translation>
+<translation id="7059157883171259940">Žetone je mogoče uporabiti tudi drugače kot v obliki podpore ustvarjalcem. Digitalno blago in darilne kartice lahko kupite z bonusom v obliki vračila denarja.</translation>
+<translation id="7456161272236175794">HURAAA!\nPrišli smo do konca!’</translation>
 </translationbundle>

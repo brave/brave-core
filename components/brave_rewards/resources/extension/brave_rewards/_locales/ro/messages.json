@@ -639,8 +639,12 @@
     "message": "Începeți să folosiți Recompensele Brave",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Faceți un tur rapid",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Dacă alegeți să continuați, sunteți de acord cu $tos_link_begin$Termenii și condițiile$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$.",
+    "message": "By proceeding, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Înapoi",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Let’s take a quick tour",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuă",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Gata",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Omite",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Skip for now",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Bun venit la Recompensele Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Unde se afișează reclamele/",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Când primiți recompensele",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Dăruiți fără efort",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Spuneți „mulțumesc” cu tokenuri",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Trimiterea de tokenuri este o modalitate de a încuraja și de a susține personal conținutul sau creatorii care vă plac. Începeți să trimiteți!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Ce puteți face cu tokenurile?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Woohoo, you’re all set!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!",
+    "description": ""
   }
 }
