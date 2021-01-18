@@ -190,7 +190,7 @@ void AdRewards::SetUnreconciledTransactions(
   const int64_t to_timestamp =
       static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  unreconciled_estimated_pending_rewards_ = CalculateEarningsForTransactions(
+  unreconciled_estimated_pending_rewards_ += CalculateEarningsForTransactions(
       unreconciled_transactions, 0, to_timestamp);
 
   ConfirmationsState::Get()->Save();
