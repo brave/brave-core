@@ -639,6 +639,10 @@
     "message": "Anza kutumia Zawadi za Brave",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Angalia onyesho haraka",
+    "description": ""
+  },
   "onboardingTerms": {
     "message": "Kwa kuendelea, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$.",
     "description": "",
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Rudi Nyuma",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Hebu tuangalie onyesho la haraka",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Endelea",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Umemaliza",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Ruka",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Ruka kwa sasa",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Karibu kwenye Zawadi za Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads hukuzawidi tokeni ili kusaidia waundaji maudhui kinyume na matangazo ya jadi, yote huku ukidumisha faragha ya taarifa zako binafsi.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Je, matangazo yanaonekana wapi?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads itaonekana kama arifa ya kawaida. Huwezi kudhibiti mara ambazo unaona matangazo haya katika mipangilio.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Je, unazipokea zawadi lini",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Tokeni ulizopata kutoka Brave Private Ads mwezi mzima wa sasa zitawasili tarehe 5 mwezi ujao.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Kutoa shukrani kumerahisishwa",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Waundaji wanapokea michango yako ya tokeni kiotomatiki kulingana na viwango vya ushirikishaji tunavyopima kuwa ‘Attention’.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Sema asante kwa vidokezo",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Kutoa bahshishi ni njia ya kuhimiza na kufadhili binafsi maudhui au waundaji unaopenda. Toa bahshishi!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Je, unaweza kufanyia nini tokeni?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokeni zinaweza kutumiwa zaidi ya kuwasaidia waundaji. Unaweza kununua maudhui ya dijitali na bidhaa nyingine wauzaji wanapokuja.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Woohoo, uko tayari kuanza kutumia!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Kwa kutumia Zawadi za Brave, unasaidia kufanya wavuti kuwa mahali bora pa kila mtu. Na hilo ni jambo bora!",
+    "description": ""
   }
 }

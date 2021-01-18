@@ -639,6 +639,10 @@
     "message": "Simulang gamitin ang Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Mabilis na maglibot",
+    "description": ""
+  },
   "onboardingTerms": {
     "message": "Sa pamamagitan ng pagpapatuloy, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$.",
     "description": "",
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Bumalik",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Mabilisan tayong maglibot",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Magpatuloy",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Tapos na",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Laktawan",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Laktawan sa ngayon",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Welcome sa Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Hindi tulad ng mga tradisyonal na ad, binibigyan ka ng Brave Private Ads ng mga token para suportahan ang mga creator ng content, ang lahat ng ito habang pinapanatiling pribado ang iyong personal na impormasyon. ",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Saan lumalabas ang mga ad?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Lalabas ang Brave Private Ads bilang normal na notification. Makokontrol mo kung gaano mo kadalas makikita ang mga ad na ito sa mga setting.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kailan ka makakatanggap ng mga reward",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Darating sa ika-5 ng susunod na buwan ang iyong mga naipong token mula sa Brave Private Ads sa kabuuan ng kasalukuyang buwan.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Ginawang walang kahirap-hirap ang pagganti ng tulong",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Awtomatikong natatanggap ng mga creator ang iyong mga iniambag na token batay sa mga antas ng pakikilahok mo na sinusukat namin bilang 'Paalala.'",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Magpasalamat sa pamamagitan ng mga tip",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Ang pagbibigay ng tip ay isang paraan para personal na himukin at suportahan ang content o mga creator na gusto mo. Magbigay ng tip!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Ano ang magagawa mo sa mga token?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng digital na content at iba pang produkto sa pagdating ng mga merchant.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Ayos, handa ka na!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Sa pamamagitan ng paggamit sa Brave Rewards, nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At mabuti iyon!",
+    "description": ""
   }
 }

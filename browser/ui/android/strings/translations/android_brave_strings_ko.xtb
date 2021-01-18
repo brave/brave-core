@@ -316,7 +316,7 @@
 <translation id="7396366757003005317">지문 차단 (엄격, 사이트 장애 발생 가능)</translation>
 <translation id="700453611199558021">지문 차단 (표준)</translation>
 <translation id="769702552748212954">모든 지문 인식 허용</translation>
-<translation id="2888409909650566510">광고 및 기타 소름 끼치는\n것들 차단됨</translation>
+<translation id="5142293891785304489">추적기, 광고 및\n기타 차단됨</translation>
 <translation id="6930134873084561197">사이트에는 종종 사용자와 사용자의 기기를 식별하는 쿠키 및 스크립트가 포함됩니다. 그들은 사용자가 누구인지 알아내고 모든 웹사이트에서 사용자가 하는 일을 웹을 통해 추적하기를 원합니다.\n\nBrave는 이러한 것들을 차단하여 사용자는 추적을 당하지 않고 탐색할 수 있습니다.</translation>
 <translation id="8553998445606452168">Brave 실드 정보</translation>
 <translation id="8912304686498704084">위</translation>
@@ -422,22 +422,22 @@
 <translation id="8804164990146287819">개인정보 보호 정책</translation>
 <translation id="6318696841371191107">빠르게 투어하기</translation>
 <translation id="7930505144430343145">Brave Rewards에 오신 것을 환영합니다!</translation>
-<translation id="7909111626803226907">Brave private ads는 기존 광고와 달리 콘텐츠 크리에이터를 지원하는 토큰으로 보상을 제공하는 동시에 개인 정보를 비공개로 유지합니다.</translation>
+<translation id="3477340970981564961">Brave 프라이빗 광고는 종전의 광고와는 달리 콘텐츠 제작자를 지원할 수 있도록 여러분께 토큰을 리워드로 지급하며, 이 과정에서 여러분의 개인 정보는 안전하게 보호됩니다.</translation>
 <translation id="6973095375773523904">광고는 어디에 표시됩니까?</translation>
-<translation id="3867028444168159102">Brave private ads는 일반 알림으로 표시됩니다. 설정에서 이러한 광고를 보는 빈도를 제어할 수 있습니다.</translation>
+<translation id="7556325460112047619">Brave 프라이빗 광고는 일반 알림의 형태로 나타나게 됩니다. 설정에서 이 광고를 얼마나 자주 볼 것인지에 대해 조정할 수 있습니다.</translation>
 <translation id="5816125157889950051">언제 보상을 받습니까</translation>
-<translation id="4649471244559455723">이번 달 동안 Brave ads에서 얻은 토큰은 다음 달 5일에 도착합니다.</translation>
+<translation id="310863932297733723">이번 달 동안 Brave 프라이빗 광고를 통해 획득하신 토큰은 다음 달 5일에 지급됩니다.</translation>
 <translation id="7712287524451429139">쉽게 돌려주기</translation>
 <translation id="105037569026952831">크리에이터는 ‘관심’으로 측정한 참여 수준에 따라 자동으로 토큰 기여금을 받습니다.</translation>
 <translation id="5323267338679539010">팁으로 감사 인사하기</translation>
-<translation id="6042317056594735519">팁은 내가 좋아하는 콘텐츠나 크리에이터를 개인적으로 격려하고 지원하는 방법입니다. 팁을 받으세요!</translation>
+<translation id="6730444165801605682">팁 주기는 여러분이 완전 사랑하는 컨텐츠나 크리에이터에게 개인적으로 동기부여나 지원을 할 수 있는 방법입니다. 팁을 보내보세요!</translation>
 <translation id="7509452925943421624">토큰으로 무엇을 할 수 있습니까?</translation>
-<translation id="7059157883171259940">토큰은 크리에이터를 지원하는 것 이상으로 사용될 수 있습니다. 캐시백 보너스로 디지털 상품과 기프트 카드를 구매할 수 있습니다.</translation>
+<translation id="5876169128756792273">토큰은 창작자 후원 그 이상의 용도로 사용할 수 있습니다. 공급자가 추가되는 대로 디지털 콘텐츠와 기타 상품을 구매할 수 있습니다.</translation>
 <translation id="1402530520078693620">마지막으로 기본 설정을 설정하겠습니다</translation>
 <translation id="3494356595346329740">나중에 변경할 수 있습니다.</translation>
 <translation id="6462814326662189004">얼마나 자주 광고를 보고 싶으십니까?\n(시간당 광고)</translation>
 <translation id="2134244432345596331">좋아하는 크리에이터에게 얼마나 많은 지원을 하고 싶으신가요?\n(광고 수익에서)</translation>
-<translation id="7456161272236175794">유후!\n끝났습니다.</translation>
+<translation id="827315274423079662">야호, 설정이 모두 끝났습니다!</translation>
 <translation id="3895246934788932488">Brave Rewards를 사용하면 개인 정보를 보호하고 웹을 모두에게 더 나은 곳으로 만드는 데 도움이 됩니다. 그리고 그것은 굉장합니다!</translation>
 <translation id="5705882733397021510">돌아가기</translation>
 <translation id="5140321319944305531">빠르게 둘러보기</translation>
@@ -450,4 +450,21 @@
 <translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>에서 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>(으)로 바꿨습니다!</translation>
 <translation id="392587271502873865">네트워크 연결을 확인하세요.</translation>
 <translation id="7889432931837317731">가능한 경우 자동으로 열림</translation>
+<translation id="8967385052772844086">전체 개인 정보 보호 보고서 보기</translation>
+<translation id="6864343534748973390">가장 인기있는</translation>
+<translation id="1622983732360473885">Brave 지원</translation>
+<translation id="4608192160278975831">개인 정보가 보호되고 추적 요소 없음</translation>
+<translation id="7208522820527289601">개인정보 보호, 사용자 추적 없음, EU 기반</translation>
+<translation id="1161008391729450974">추적기 없는 Google 결과</translation>
+<translation id="7320542277711359296">두 번째로 인기가 많은</translation>
+<translation id="8295049095570748497">러시아의 상위권 검색 엔진</translation>
+<translation id="2642661895835126239">베를린 소재, 나무를 심습니다</translation>
+<translation id="1410130669636877548">여러분이 웹에서 검색을 할 때, 어떤 검색 엔진은 다른 엔진에 비해 여러분의 개인 정보를 더욱 잘 보호합니다.</translation>
+<translation id="1078265935778232285">Brave Brower에 오신 것을 환영합니다</translation>
+<translation id="6824713633331856331">익명으로 개발진의 학습 돕기</translation>
+<translation id="6116685031674149112">Brave는 여러분의 프라이버시를 보호하며\n아래에 대한 여러분의 승낙을 존중합니다:</translation>
+<translation id="3971666849661839619">완전히 익명화된 충돌 보고서와 <ph name="PRIVATE_PRODUCT_ANALYSIS"/>을(를) Brave가 개선될 수 있도록 보내 주세요</translation>
+<translation id="6478996494082389936">프라이빗 상품 분석.</translation>
+<translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
+<translation id="8622329973403382303">역사에 리워드 락스타로 남을 수 있도록 어떻게 작동하는지에 대해 간단히 복습해 봅시다!</translation>
 </translationbundle>

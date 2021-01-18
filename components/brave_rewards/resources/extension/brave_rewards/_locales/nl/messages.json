@@ -639,8 +639,12 @@
     "message": "Starten met het gebruik van Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Een beknopt overzicht bekijken",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Door verder te gaan, gaat u akkoord met de $tos_link_begin$Servicevoorwaarden$tos_link_end$ en het $pp_link_begin$Privacybeleid$pp_link_end$.",
+    "message": "Als u doorgaat, gaat u akkoord met de $tos_link_begin$servicevoorwaarden$tos_link_end$ en het $pp_link_begin$privacybeleid$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Terugkeren",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Laten we een snelle tour nemen",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Doorgaan met",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Gedaan",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Overslaan",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Voor nu overslaan",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Welkom bij Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads beloont u met tokens om de makers van content te ondersteunten, in tegenstelling tot traditionele advertenties, terwijl je persoonlijke informatie privé blijft.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Waar verschijnen de advertenties?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads zullen verschijnen als een normale notificatie. U bepaalt zelf hoe vaak u deze advertenties ziet in instellingen.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Wanneer ontvangt u beloningen",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "U verdiende tokens van Brave Private Ads gedurende de hele lopende maand zullen op de 5e van de volgende maand aankomen.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Moeiteloos terugschenken",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "De makers ontvangen uw contributies automatisch op basis van uw engagementniveau's die we meten als 'Attention'.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Bedanken door middel van een fooi",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Een fooi geven is een manier om inhoud of makers waar u van houdt persoonlijk aan te moedigen en te steunen. Laten we een fooi geven!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Wat kunt u doen met tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokens kunnen gebruikt worden buiten de ondersteuning van de makers. U kunt digitale content en andere producten kopen als handelaren aan boord komen.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Woehoe, u bent er helemaal klaar voor!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Door Brave Rewards te gebruiken helpt u het internet een betere plek te maken voor iedereen. En dat is geweldig!",
+    "description": ""
   }
 }

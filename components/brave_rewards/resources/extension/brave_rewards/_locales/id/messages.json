@@ -639,8 +639,12 @@
     "message": "Mulai Gunakan Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Lihat tur singkat",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Dengan melanjutkan, Anda menyetujui $tos_link_begin$Ketentuan Layanan$tos_link_end$ dan $pp_link_begin$Kebijakan Privasi$pp_link_end$.",
+    "message": "Dengan melanjutkan, Anda menyetujui $tos_link_begin$Syarat Layanan$tos_link_end$ dan $pp_link_begin$Kebijakan Privasi$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Kembali",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Mari ikuti tur singkat",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Lanjutkan",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Selesai",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Lewati",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Lewati dulu",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Selamat datang di Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Berbeda dengan iklan tradisional, Iklan Privat Brave menghadiahi Anda token untuk mendukung kreator konten, sembari menjaga informasi personal Anda tetap privat.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Di mana iklan muncul?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Iklan Privat Brave akan muncul sebagai pemberitahuan normal. Anda mengontrol seberapa sering Anda melihat iklan-iklan ini di pengaturan.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kapan Anda menerima imbalan",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Token yang Anda peroleh dari Iklan Privat Brave sepanjang bulan ini akan tiba tanggal 5 bulan berikutnya.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Jadi mudah untuk memberi balik",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Kreator menerima kontribusi token Anda secara otomatis berdasarkan tingkat keterlibatan Anda yang kami ukur sebagai 'Atensi'.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Ucapkan terima kasih dengan tip",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Memberi tip adalah cara untuk mendorong dan mendukung konten atau kreator yang Anda sukai. Ayo berikan tip!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Apa yang dapat Anda lakukan dengan token?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Token dapat digunakan selain untuk mendukung kreator. Anda dapat membeli konten digital dan barang-barang lainnya di merchant.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Cihuy, Anda kini siap!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Dengan menggunakan Brave Rewards Anda membantu menjadikan web tempat yang lebih baik bagi semua orang. Dan itu keren!",
+    "description": ""
   }
 }

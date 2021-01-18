@@ -310,7 +310,7 @@ month ...</translation>
 <translation id="7396366757003005317">Fingerprinting blocked (strict, may break sites)</translation>
 <translation id="700453611199558021">Fingerprinting blocked (standard)</translation>
 <translation id="769702552748212954">Allow all fingerprinting</translation>
-<translation id="2888409909650566510">Ads and other creepy\nthings blocked</translation>
+<translation id="5142293891785304489">Trackers, ads, and\nmore blocked</translation>
 <translation id="6930134873084561197">Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking to see what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.</translation>
 <translation id="8553998445606452168">About Brave Shields</translation>
 <translation id="8912304686498704084">UP</translation>
@@ -422,22 +422,22 @@ month ...</translation>
 <translation id="8804164990146287819">Privacy Policy</translation>
 <translation id="6318696841371191107">Take a quick tour</translation>
 <translation id="7930505144430343145">Welcome to Brave Rewards!</translation>
-<translation id="7909111626803226907">Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</translation>
+<translation id="3477340970981564961">Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</translation>
 <translation id="6973095375773523904">Where do ads show up?</translation>
-<translation id="3867028444168159102">Brave private ads will appear as a normal notification. You control how often you see these ads in settings.</translation>
+<translation id="7556325460112047619">Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.</translation>
 <translation id="5816125157889950051">When do you receive rewards</translation>
-<translation id="4649471244559455723">Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.</translation>
+<translation id="310863932297733723">Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.</translation>
 <translation id="7712287524451429139">Giving back made effortless</translation>
 <translation id="105037569026952831">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</translation>
 <translation id="5323267338679539010">Say thank you with tips</translation>
-<translation id="6042317056594735519">Tipping is a way to personally encourage and support content or creators that you love. Get tipping!</translation>
+<translation id="6730444165801605682">Tipping is a way to personally encourage and support content or creators that you absolutely love. Get tipping!</translation>
 <translation id="7509452925943421624">What can you do with tokens?</translation>
-<translation id="7059157883171259940">Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.</translation>
+<translation id="5876169128756792273">Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.</translation>
 <translation id="1402530520078693620">Lastly, let’s get you set up on the basic settings</translation>
 <translation id="3494356595346329740">You can change this later.</translation>
 <translation id="6462814326662189004">How often do you want to see ads?\n(Ads per hour)</translation>
 <translation id="2134244432345596331">How much support do you want to give to your favorite creators?\n(from your ads earnings)</translation>
-<translation id="7456161272236175794">WOOOOHOOOOO!\nYou’re done.</translation>
+<translation id="827315274423079662">Woohoo, you’re done!</translation>
 <translation id="3895246934788932488">By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!</translation>
 <translation id="5705882733397021510">Go Back</translation>
 <translation id="5140321319944305531">Lets Take A Quick Tour</translation>
@@ -450,4 +450,21 @@ month ...</translation>
 <translation id="3604285424134705930">You converted <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Please check your network connection.</translation>
 <translation id="7889432931837317731">Automatically open when possible</translation>
+<translation id="8967385052772844086">View full Privacy Report</translation>
+<translation id="6864343534748973390">Most popular</translation>
+<translation id="1622983732360473885">Supports Brave</translation>
+<translation id="4608192160278975831">Private and no tracking</translation>
+<translation id="7208522820527289601">Private and no tracking, EU-based</translation>
+<translation id="1161008391729450974">Google results without trackers</translation>
+<translation id="7320542277711359296">Second most popular</translation>
+<translation id="8295049095570748497">A leading search engine in Russia</translation>
+<translation id="2642661895835126239">Plants trees, based in Berlin</translation>
+<translation id="1410130669636877548">Some search engines protect your privacy better than others when you search the web.</translation>
+<translation id="1078265935778232285">Welcome to Brave Browser</translation>
+<translation id="6824713633331856331">Help us learn anonymously</translation>
+<translation id="6116685031674149112">Brave protects your privacy and\nappreciates your consent to the following:</translation>
+<translation id="3971666849661839619">Help improve Brave by sending crash reports and completely anonymised, <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">private product analytics.</translation>
+<translation id="5187052478998910855">Need a refresher on Rewards?</translation>
+<translation id="8622329973403382303">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</translation>
 </translationbundle>

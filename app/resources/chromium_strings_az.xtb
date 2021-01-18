@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="az">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma: 1 saat əvvəl.}other{Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma: {NUM_HOURS} saat əvvəl.}}</translation>
 <translation id="1065672644894730302">Tərcihləriniz oxuna bilmir.
 
 Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən dəyişikliklər saxlanmaya bilər.</translation>
@@ -12,6 +11,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8522292744959221145">Parollarınızın data pozuntuları və digər güvənlik məsələlərinə qarşı güvəndə olduğunu yoxlamaq üçün <ph name="BEGIN_LINK"/>Brave'a daxil olun<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Brave haqqında</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi ayarlayın</translation>
+<translation id="5893502481331584971">Brave açıldığı zaman soruşulsun</translation>
 <translation id="113959764510199339">Brave parolları göstərməyə çalışır.</translation>
 <translation id="8132634101975074716">Brave'a daxil oldunuz!</translation>
 <translation id="7370605478942575409">Qorunan medianı Rosetta vasitəsilə oxutmaq üçün Brave yenidən başladılmalıdır.</translation>
@@ -46,10 +46,8 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="6791166902140255175">Brave Paneli</translation>
 <translation id="8372880274820509128">Əlavə təhlükəsizlik üçün, Brave datanızı şifrələyəcək.</translation>
 <translation id="2770231113462710648">Defolt brauzeri dəyişin:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma: 1 dəqiqə əvvəl.}other{Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma: {NUM_MINS} dəqiqə əvvəl.}}</translation>
 <translation id="2799223571221894425">Yenidən başladın</translation>
 <translation id="777113543093865885">Brave'dan silin...</translation>
-<translation id="8846162271735377947">Brave'u açdığım zaman soruşulsun</translation>
 <translation id="2885378588091291677">Tapşırıq Meneceri</translation>
 <translation id="2176825726964012531">Brave haqqında</translation>
 <translation id="8208853227947884571">Brave güncəldir</translation>
@@ -57,7 +55,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8755404239607088219">Brave parollarınızı yoxlaya bilmir. Sonra yenidən cəhd edin.</translation>
 <translation id="8880183781256147665">Xrom durub ...</translation>
 <translation id="7918740962659365265">Qəza raportlarını və <ph name="UMA_LINK"/> linkini Brave'a göndərməklə Brave'un daha keyfiyyətli olmasına yardım olun</translation>
-<translation id="2911521062311014336">Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır</translation>
 <translation id="7365690458036015383">Quraşdırıcı arxivi dekompres edə bilmədi. Brave'u yenidən endirməyiniz xahiş olunur.</translation>
 <translation id="8919461291440820124">Brave mikrofonunuzu istifadə edir.</translation>
 <translation id="4805806622840861220">Brave'u yenidən başladın</translation>
@@ -173,7 +170,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="8211837073776713955">Brave parollarınızın oğurlanıb-oğurlanmadığı haqqında Sizə məlumat verir</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave'a kopyalandı)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma 1 gün əvvəl.}other{Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma: {NUM_DAYS} gün əvvəl.}}</translation>
 <translation id="2301993384336631869">Xrom yeniləndi, lakin ən azı 30 gün üçün istifadə etməmişlər.</translation>
 <translation id="8522287263361940593">Rosetta Brave'un bu səhifədə qorunan medianı oxutmasına imkan verir.</translation>
 <translation id="6418340404893954563">Zəif parolları tapmaq asandır. Brave'un <ph name="BEGIN_LINK"/>sizin üçün güclü parollar yaratmasına və yadda saxlamasına<ph name="END_LINK"/> imkan verin.</translation>
@@ -204,7 +200,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
       Chrome OS ayarlarına<ph name="LINK_END"/> baxın</translation>
 <translation id="3293668930608086049">Brave kameranızı və mikrofonunuzu işlədir.</translation>
 <translation id="2827121003398607864">Brave daha da keyfiyyətli oldu</translation>
-<translation id="504499211143662559">Brave kompüterdə zərərli proqram tapıb</translation>
 <translation id="3343095737966473035">Brave defolt brauzeriniz deyil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarda sinxronizasiya edin və fərdiləşdirin</translation>
 <translation id="5419189641394808652">Chomium datanızı sinxronizasiya edə bilmədi, çünki sinxronizasiya domeniniz üçün əlçatan deyil.</translation>
@@ -236,7 +231,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="6283840329609797763">Naməlum xəta üzündən quraşdırmaq alınmadı. Brave'u yenidən endirin.</translation>
 <translation id="2433912322225810055">O, həmçinin Brave'u başlatdığınız zaman və ya Omnibox'dan axtarış etdiyiniz zaman göstərilən səhifəyə nəzarət edir.</translation>
 <translation id="4100716194836114130">Bu, Sizin Brave'dur</translation>
-<translation id="8757284234053029740">Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son dəfə yoxlanılıb: dünən.</translation>
 <translation id="4831743161813926460">Brave bu sayt üçün kamera və mikrofona giriş icazəsi tələb edir</translation>
 <translation id="7408085963519505752">Chrome OS şərtləri</translation>
 <translation id="2262856633481902138">Brave datanızı sinxronizasiya edə bilmir, çünki hesaba giriş məlumatlarınız köhnədir.</translation>
@@ -251,7 +245,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="7863882214613921971">Linki Yeni Brave tabında açın</translation>
 <translation id="911206726377975832">Brauzinq datanız da silinsin?</translation>
 <translation id="2444257125841652328">Sistem administratoru Brave'u <ph name="TARGET_URL_HOSTNAME"/> ünvanına daxil olmaq məqsədilə alternativ brauzer açmaq üçün konfiqurasiya edib.</translation>
-<translation id="2250443703383891643">Brave arzuolunmaz proqram olub-olmadığını həftədə bir dəfə yoxlayır. Son yoxlanma: 1 saniyə əvvəl.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave düzgün işləməyə bilər, çünki daha Windows XP və ya Windows Vista'da dəstəklənmir</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> bu cihazı istifadə etməzdən əvvəl aşağıdakı Xidmət Şərtlərini oxuyub razılaşmağı tələb edir. Bu şərtlər Chrome OS Şərtlərini artırmır, dəyişdirmir və ya məhdudlaşdırmır.</translation>

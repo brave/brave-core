@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="et">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: 1 tund tagasi.}other{Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: {NUM_HOURS} tundi tagasi.}}</translation>
 <translation id="1065672644894730302">Teie eelistusi ei saa lugeda. Mõned funktsioonid ei pruugi saadaval olla ja eelistuste muudatusi ei salvestata.</translation>
 <translation id="8488151306313572776">Isikliku ja kasutaja <ph name="NEW_USER"/> sirvimise eristamiseks looge Braveis uus profiil</translation>
 <translation id="2796517443093885402">Brave aitab teid kaitsta andmetega seotud rikkumiste, ohtlike laienduste ja muu eest</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Kui soovite kontrollida, kas teie paroolid on andmetega seotud rikkumiste ja muude turvaprobleemide eest kaitstud, <ph name="BEGIN_LINK"/>logige Bravei sisse<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Teave Bravei kohta</translation>
 <translation id="4798342026247191171">Uue Bravei profiili seadistamine</translation>
+<translation id="5893502481331584971">Küsi Bravei avamisel</translation>
 <translation id="113959764510199339">Brave püüab paroole kuvada.</translation>
 <translation id="8132634101975074716">Olete Bravei sisse logitud.</translation>
 <translation id="7370605478942575409">Rosettaga kaitstud meedia esitamiseks peate Bravei taaskäivitama.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Bravei vaheleht</translation>
 <translation id="8372880274820509128">Turvalisuse suurendamiseks krüptib Brave teie andmed.</translation>
 <translation id="2770231113462710648">Asenda vaikebrauser:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: 1 minut tagasi.}other{Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: {NUM_MINS} minutit tagasi.}}</translation>
 <translation id="2799223571221894425">Taaskäivita</translation>
 <translation id="777113543093865885">Braveist eemaldamine ...</translation>
-<translation id="8846162271735377947">Küsi, kui ma Bravei avan</translation>
 <translation id="2885378588091291677">Tegumihaldur</translation>
 <translation id="2176825726964012531">Teave &amp;Bravei kohta</translation>
 <translation id="8208853227947884571">Brave on ajakohane</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave ei saa teie paroole kontrollida. Proovige hiljem uuesti.</translation>
 <translation id="8880183781256147665">Bravei lisamine ...</translation>
 <translation id="7918740962659365265">Aidake Bravei täiustada, saates Brave'ile krahhiaruandeid ja lingi <ph name="UMA_LINK"/></translation>
-<translation id="2911521062311014336">Brave kontrollib soovimatu tarkvara olemasolu kord nädalas</translation>
 <translation id="7365690458036015383">Installeril ei õnnestunud arhiivi lahti pakkida. Laadige Brave uuesti alla.</translation>
 <translation id="8919461291440820124">Brave kasutab teie mikrofoni.</translation>
 <translation id="4805806622840861220">Bravei taaskäivitamine</translation>
@@ -172,7 +169,6 @@ On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloo
 <translation id="8211837073776713955">Brave annab teile teada, kui teie paroolid ohtu satuvad</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopeeritud Bravei)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: 1 päev tagasi.}other{Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: {NUM_DAYS} päeva tagasi.}}</translation>
 <translation id="2301993384336631869">Bravei on värskendatud, kuid te ei ole seda kasutanud vähemalt 30 päeva.</translation>
 <translation id="8522287263361940593">Rosetta võimaldab Braveil esitada sellel lehel olevat kaitstud meediat.</translation>
 <translation id="6418340404893954563">Nõrku paroole on lihtne ära arvata. Laske Braveil <ph name="BEGIN_LINK"/>teie jaoks luua ja meelde jätta tugevaid paroole<ph name="END_LINK"/>.</translation>
@@ -205,7 +201,6 @@ Brave ei saa teie seadeid taastada.</translation>
       Chrome OS-i seadeid<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave kasutab kaamerat ja mikrofoni.</translation>
 <translation id="2827121003398607864">Brave muutus just paremaks</translation>
-<translation id="504499211143662559">Brave leidis teie arvutist kahjulikku tarkvara</translation>
 <translation id="3343095737966473035">Brave ei ole teie vaikebrauser</translation>
 <translation id="5477319665405831211">Sünkroonige ja isikupärastage Brave kõigis oma seadmetes</translation>
 <translation id="5419189641394808652">Brave ei saa teie andmeid sünkroonida, sest teie domeenil pole sünkroonimine saadaval.</translation>
@@ -237,7 +232,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="6283840329609797763">Installimine ebaõnnestus tundmatu vea tõttu. Laadige Brave uuesti alla.</translation>
 <translation id="2433912322225810055">Lisaks juhib see seda, mis leht kuvatakse Bravei käivitamisel või omnikastikeses otsingu tegemisel.</translation>
 <translation id="4100716194836114130">See on teie Brave</translation>
-<translation id="8757284234053029740">Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: eile.</translation>
 <translation id="4831743161813926460">Brave vajab selle saidi puhul luba, et teie kaamerale ja mikrofonile juurde pääseda</translation>
 <translation id="7408085963519505752">Chrome OS-i tingimused</translation>
 <translation id="2262856633481902138">Brave ei saa andmeid sünkroonida, sest teie konto sisselogimisandmed on aegunud.</translation>
@@ -252,7 +246,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="7863882214613921971">Ava link Bravei uuel &amp;vahekaardil</translation>
 <translation id="911206726377975832">Kas kustutada ka teie sirvimisandmed?</translation>
 <translation id="2444257125841652328">Teie süsteemiadministraator on konfigureerinud Bravei avama alternatiivset brauserit, et saada juurdepääs lehele <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave kontrollib soovimatu tarkvara olemasolu kord nädalas. Viimati kontrolliti: hetk tagasi</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Brave ei pruugi õigesti töötada, kuna seda ei toetata enam Windows XP-s ega Windows Vistas</translation>
 <translation id="2398566204186296120">Domeen <ph name="DOMAIN"/> nõuab, et loete enne selle seadme kasutamist läbi järgmised teenusetingimused ja nõustute nendega. Need tingimused ei laienda, muuda ega piira Chrome OS-i tingimusi.</translation>

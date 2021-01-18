@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
-<translation id="9064439941833792299">{NUM_HOURS,plural, =1{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum o oră.}few{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum {NUM_HOURS} ore.}other{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum {NUM_HOURS} de ore.}}</translation>
 <translation id="1065672644894730302">Preferințele dvs. nu pot fi citite. Este posibil ca unele funcții să nu fie disponibile, iar modificările aduse preferințelor nu vor fi salvate.</translation>
 <translation id="8488151306313572776">Pentru a separa navigarea personală de navigarea ca <ph name="NEW_USER"/>, creează un profil nou în Brave</translation>
 <translation id="2796517443093885402">Brave te protejează împotriva încălcării securității datelor, a extensiilor necorespunzătoare și nu numai</translation>
@@ -10,6 +9,7 @@
 <translation id="8522292744959221145">Ca să verifici dacă parolele sunt protejate împotriva încălcării securității datelor și a altor probleme de securitate, <ph name="BEGIN_LINK"/>conectează-te la Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Despre Brave</translation>
 <translation id="4798342026247191171">Configurează noul profil Brave</translation>
+<translation id="5893502481331584971">Întreabă atunci când se deschide Brave</translation>
 <translation id="113959764510199339">Brave încearcă să afișeze parolele.</translation>
 <translation id="8132634101975074716">V-ați conectat la Brave!</translation>
 <translation id="7370605478942575409">Ca să poți reda conținut media protejat în Rosetta, trebuie să repornești Brave.</translation>
@@ -44,10 +44,8 @@
 <translation id="6791166902140255175">Fila Brave</translation>
 <translation id="8372880274820509128">Pentru un plus de securitate, Brave îți va cripta datele.</translation>
 <translation id="2770231113462710648">Schimbă browserul prestabilit la:</translation>
-<translation id="3177029757643180105">{NUM_MINS,plural, =1{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum un minut.}few{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum {NUM_MINS} minute.}other{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum {NUM_MINS} de minute.}}</translation>
 <translation id="2799223571221894425">Repornește</translation>
 <translation id="777113543093865885">Elimină din Brave...</translation>
-<translation id="8846162271735377947">Întreabă atunci când deschid Brave</translation>
 <translation id="2885378588091291677">Manager de activități</translation>
 <translation id="2176825726964012531">Despre &amp;Brave</translation>
 <translation id="8208853227947884571">Brave este actualizat</translation>
@@ -55,7 +53,6 @@
 <translation id="8755404239607088219">Brave nu îți poate verifica parolele. Încearcă din nou mai târziu.</translation>
 <translation id="8880183781256147665">Se adaugă la Brave...</translation>
 <translation id="7918740962659365265">Contribuie la îmbunătățirea proiectului Brave trimițând la Brave rapoarte de blocare și <ph name="UMA_LINK"/></translation>
-<translation id="2911521062311014336">Brave verifică dacă există software nedorit o dată pe săptămână</translation>
 <translation id="7365690458036015383">Programul de instalare nu a putut decomprima arhiva. Descărcați din nou Brave.</translation>
 <translation id="8919461291440820124">Brave utilizează microfonul.</translation>
 <translation id="4805806622840861220">Reporniți Brave</translation>
@@ -172,7 +169,6 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="8211837073776713955">Brave te anunță dacă parolele tale sunt compromise</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiat în Brave)</translation>
-<translation id="2840979170261817333">{NUM_DAYS,plural, =1{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum o zi.}few{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum {NUM_DAYS} zile.}other{Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum {NUM_DAYS} de zile.}}</translation>
 <translation id="2301993384336631869">Brave a fost actualizat, dar nu l-ați utilizat de cel puțin 30 de zile.</translation>
 <translation id="8522287263361940593">Rosetta face posibilă redarea conținutului media protejat din această pagină în Brave.</translation>
 <translation id="6418340404893954563">Parolele slabe sunt ușor de ghicit. Permite browserului Brave <ph name="BEGIN_LINK"/>să creeze și să memoreze parole puternice pentru tine<ph name="END_LINK"/>.</translation>
@@ -205,7 +201,6 @@ Brave nu poate recupera setările.</translation>
     setările sistemului de operare Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave utilizează camera foto și microfonul.</translation>
 <translation id="2827121003398607864">Brave a devenit și mai bun</translation>
-<translation id="504499211143662559">Brave a găsit software dăunător pe computer</translation>
 <translation id="3343095737966473035">Brave nu este browserul prestabilit</translation>
 <translation id="5477319665405831211">Sincronizează și personalizează Brave pe toate dispozitivele</translation>
 <translation id="5419189641394808652">Brave nu a putut sincroniza datele, deoarece sincronizarea nu este disponibilă pentru domeniul dvs.</translation>
@@ -237,7 +232,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="6283840329609797763">Instalarea nu a reușit din cauza unei erori neprecizate. Descărcați Brave din nou.</translation>
 <translation id="2433912322225810055">Stabilește și ce pagină se afișează când porniți Brave sau când căutați din caseta polivalentă.</translation>
 <translation id="4100716194836114130">Acesta este browserul dvs. Brave</translation>
-<translation id="8757284234053029740">Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: ieri.</translation>
 <translation id="4831743161813926460">Brave are nevoie de permisiune ca să acceseze camera foto și microfonul pentru acest site</translation>
 <translation id="7408085963519505752">Termeni pentru sistemul de operare Brave</translation>
 <translation id="2262856633481902138">Brave nu a putut sincroniza datele, deoarece detaliile de conectare pentru contul dvs. nu sunt actualizate.</translation>
@@ -252,7 +246,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="7863882214613921971">Deschide linkul într-o &amp;filă Brave nouă</translation>
 <translation id="911206726377975832">Ștergi și datele de navigare?</translation>
 <translation id="2444257125841652328">Administratorul de sistem a configurat Brave să deschidă un browser secundar pentru a accesa <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="2250443703383891643">Brave verifică dacă există software nedorit o dată pe săptămână. Ultima verificare: acum câteva clipe.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="7977787072794666032">Este posibil ca Brave să nu funcționeze corespunzător, deoarece nu mai este acceptat pe Windows XP sau Windows Vista</translation>
 <translation id="2398566204186296120"><ph name="DOMAIN"/> necesită să citiți și să acceptați Termenii și condițiile următoare înainte de a utiliza acest dispozitiv. Acești termeni nu extind, nu modifică și nu limitează Termenii pentru sistemul de operare Brave.</translation>

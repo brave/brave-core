@@ -323,7 +323,7 @@ mēnesī...</translation>
 <translation id="7396366757003005317">Pirkstu nospiedumu ņemšana bloķēta (stingrais režīms, var radīt vietņu darbības traucējumus)</translation>
 <translation id="700453611199558021">Pirkstu nospiedumu ņemšana bloķēta (standarta režīms)</translation>
 <translation id="769702552748212954">Atļaut visu identificējošās dokumenta ciparvirknes veidošanu</translation>
-<translation id="2888409909650566510">Reklāmas un citas baisas\nlietas ir bloķētas</translation>
+<translation id="5142293891785304489">Izsekotāji, reklāmas un\nciti bloķēti</translation>
 <translation id="6930134873084561197">Vietnēs bieži ir iekļauti sīkfaili un skripti, kas mēģina identificēt jūs un jūsu ierīci. Tie vēlas noskaidrot, kas jūs esat, un sekot jums visā tīmeklī — sekojot tam, ko jūs darāt katrā vietnē.\n\nBrave tos bloķē, lai jūs varētu veikt pārlūkošanu, netiekot izsekots.</translation>
 <translation id="8553998445606452168">Par Brave aizsargiem</translation>
 <translation id="8912304686498704084">IESLĒGT</translation>
@@ -435,22 +435,22 @@ mēnesī...</translation>
 <translation id="8804164990146287819">Privātuma politika</translation>
 <translation id="6318696841371191107">Izejiet ātru tūri</translation>
 <translation id="7930505144430343145">Laipni lūdzam pakalpojumā Brave Rewards!</translation>
-<translation id="7909111626803226907">Brave privātās reklāmas atalgo jūs ar žetoniem, atbalstot satura veidotājus, atšķirībā no parastajām reklāmām, vienlaikus ievērojot jūsu personiskās informācijas konfidencialitāti.</translation>
+<translation id="3477340970981564961">Brave privātās reklāmas atalgo jūs ar žetoniem, atbalstot satura veidotājus, atšķirībā no parastajām reklāmām, vienlaikus ievērojot jūsu personiskās informācijas konfidencialitāti.</translation>
 <translation id="6973095375773523904">Kur tiek rādītas reklāmas?</translation>
-<translation id="3867028444168159102">Brave privātās reklāmas tiks rādītas kā parasts paziņojums. To, cik bieži redzat šīs reklāmas, jūs kontrolējat iestatījumos.</translation>
+<translation id="7556325460112047619">Brave privātās reklāmas tiks rādītas kā parasts paziņojums. To, cik bieži redzat šīs reklāmas, jūs kontrolējat iestatījumos.</translation>
 <translation id="5816125157889950051">Kad jūs saņemat balvas</translation>
-<translation id="4649471244559455723">Jūsu nopelnītie žetoni par Brave reklāmām visā šī mēneša laikā tiks saņemti nākamā mēneša 5. datumā.</translation>
+<translation id="310863932297733723">Jūsu nopelnītie žetoni par Brave privātajām reklāmām visā šī mēneša laikā tiks saņemti nākamā mēneša 5. datumā.</translation>
 <translation id="7712287524451429139">Vienkārša atdošana</translation>
 <translation id="105037569026952831">Veidotāji jūsu žetonu ziedojumus saņem automātiski, pamatojoties uz jūsu iesaistīšanās līmeņiem, kurus mēs mērām kā ‘Attention’.</translation>
 <translation id="5323267338679539010">Pateicieties ar dzeramnaudu</translation>
-<translation id="6042317056594735519">Dzeramnauda ir veids, kā personīgi iedrošināt un atbalstīt jūsu iecienītāko saturu vai veidotājus. Piešķiriet dzeramnaudu!</translation>
+<translation id="6730444165801605682">Dzeramnauda ir veids, kā personīgi iedrošināt un atbalstīt jūsu iecienītāko saturu vai veidotājus. Piešķiriet dzeramnaudu!</translation>
 <translation id="7509452925943421624">Ko jūs varat darīt ar žetoniem?</translation>
-<translation id="7059157883171259940">Žetonus var izmantot, ne tikai atbalstot veidotājus. Varat iegādāties digitālās preces un dāvanu kartes ar naudas atmaksas bonusu.</translation>
+<translation id="5876169128756792273">Žetonus var izmantot, ne tikai atbalstot veidotājus. Varat iegādāties digitālo saturu un citas preces, kad pievienojas tirgotāji.</translation>
 <translation id="1402530520078693620">Visbeidzot izveidosim jums pamata iestatījumus</translation>
 <translation id="3494356595346329740">Vēlāk varēsiet to mainīt.</translation>
 <translation id="6462814326662189004">Cik bieži vēlaties redzēt reklāmas?\n(Reklāmas stundā)</translation>
 <translation id="2134244432345596331">Cik lielu atbalstu vēlaties sniegt saviem iecienītākajiem veidotājiem?\n(no savas reklāmu peļņas)</translation>
-<translation id="7456161272236175794">HEEEIII!\nEsat pabeidzis.</translation>
+<translation id="827315274423079662">Hei, jūs esat gatavs!</translation>
 <translation id="3895246934788932488">Izmantojot Brave Rewards, jūs aizsargājat savu privātumu, kā arī palīdzat tīmekli padarīt par labāku vietu ikvienam. Un tas ir lieliski!</translation>
 <translation id="5705882733397021510">Doties atpakaļ</translation>
 <translation id="5140321319944305531">Iziesim ātru tūri</translation>
@@ -460,7 +460,24 @@ mēnesī...</translation>
 <translation id="3769645103175790584">Nopelniet žetonus un atlīdziniet satura veidotājiem par lielisko saturu, kamēr veicat pārlūkošanu. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Ātrā tūre</translation>
 <translation id="1080013038789678738">Es piedalos!</translation>
-<translation id="3604285424134705930">Jūs konvertējāt <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
+<translation id="3604285424134705930">Jūs konvertējāt <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> uz <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Lūdzu, pārbaudiet savu tīkla savienojumu.</translation>
 <translation id="7889432931837317731">Kad vien iespējams, atvērt automātiski</translation>
+<translation id="8967385052772844086">Skatīt pilnu konfidencialitātes ziņojumu</translation>
+<translation id="6864343534748973390">Populārākais</translation>
+<translation id="1622983732360473885">Atbalsta Brave</translation>
+<translation id="4608192160278975831">Privāts un bez izsekošanas</translation>
+<translation id="7208522820527289601">Privāts un bez izsekošanas, atrodas ES</translation>
+<translation id="1161008391729450974">Google rezultāti bez izsekotājiem</translation>
+<translation id="7320542277711359296">Otrais populārākais</translation>
+<translation id="8295049095570748497">Vadošā meklētājprogramma Krievijā</translation>
+<translation id="2642661895835126239">Stāda kokus, atrodas Berlīnē</translation>
+<translation id="1410130669636877548">Veicot meklēšanu tīmeklī, dažas meklētājprogrammas jūsu konfidencialitāti aizsargā labāk nekā citas.</translation>
+<translation id="1078265935778232285">Esiet sveicināti Brave pārlūkprogrammā!</translation>
+<translation id="6824713633331856331">Palīdziet mums mācīties anonīmi</translation>
+<translation id="6116685031674149112">Brave aizsargā jūsu konfidencialitāti un\nnovērtē, ka piekrītat tālāk norādītajam:</translation>
+<translation id="3971666849661839619">Palīdziet uzlabot Brave, nosūtot avāriju ziņojumus un pilnībā anonimizētu <ph name="PRIVATE_PRODUCT_ANALYSIS"/></translation>
+<translation id="6478996494082389936">privātu produktu analīze.</translation>
+<translation id="5187052478998910855">Vai vēlaties atsvaidzināt zināšanas par balvām?</translation>
+<translation id="8622329973403382303">Izejiet ātru tūri, lai atsvaidzinātu zināšanas par to, kā tas darbojas, un iekļūtu vēsturē kā balvu rokzvaigzne!</translation>
 </translationbundle>

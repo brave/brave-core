@@ -639,8 +639,12 @@
     "message": "Počnite da koristite Brave nagrade",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Krenite u brzi obilazak",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Nastavljajući, pristajete na $tos_link_begin$Uslove korišćenja$tos_link_end$ i $pp_link_begin$Pravila o privatnosti$pp_link_end$.",
+    "message": "Nastavljajući, pristajete na $tos_link_begin$Uslovi korišćenja $tos_link_end$ and $pp_link_begin$Privatnost polise$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Idite nazad",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Krenimo u kratku turneju",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Nastavi",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Gotovo",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Прескочи",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Preskoči za sada",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Dobrodošli u Brave nagrade!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave privatni oglasi nagrađuju vas sa tokenima da biste podržali sadržaj kreatora za razliku od tradicionalnih oglasa, u isto vreme zadržavajući privatnim vaše privatne podatke.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Gde se prikazuju reklame?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave privatni oglasi će se pojaviti kao normalno obaveštenje. U podešavanjima možete da kontrolišete koliko često vidite ove oglase.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kada dobijate nagrade",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Vaši zarađeni tokeni od ovog meseca od Bravo privatnih reklama će stići 5og sledećeg meseca.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Uzvraćanje zajednici je nikad lakše",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Kreatori primaju vaš token doprinosa automatski na osnovu vašeg nivoa angažmana koji mi merimo kao  „Pažnja”.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Zahvalite se pomoću napojnica",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Napojnice su način da privatno ohrabrite i podržavate sadržaj ili kreatore koje volite. Krenite da dajete napojnice!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Šta možeš da uradiš sa tokenima?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokeni se mogu koristiti i van podržavanja kreatora. Možete kupiti digitalni sadržaj i drugu robu kako se prodavci pridružuju.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Vuuhuu, potpuno ste spremni!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Korišćenjem Brave nagrada pomažete da veb bude bolje mesto za sve. I to je sjajno!",
+    "description": ""
   }
 }

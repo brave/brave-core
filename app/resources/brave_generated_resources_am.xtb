@@ -18,7 +18,7 @@
 <translation id="6241402707160226266">የግል መስኮት በ Tor</translation>
 <translation id="8762452230727230396">Tor የ IP አድራሻዎን ከሚጎበኟቸው ጣቢያዎች ይደብቃል።</translation>
 <translation id="1369311132025451972">.onion ጣቢያዎችን በራስ-ሰር አዛውር</translation>
-<translation id="4341373692446027469">Brave በሚኖርበት ጊዜ በቶር መስኮት ላይ የድርጣቢያውን የ onion አገልግሎት ይከፍታል</translation>
+<translation id="81720820779436751">Brave በሚገኝበት ጊዜ የድር ጣቢያውን ኦንዬን አገልግሎት ወይም በ Tor መስኮት ውስጥ .onion ዶሜንን ይከፍታል</translation>
 <translation id="8053096063396012732">Widevineን ይጫኑ</translation>
 <translation id="4840334696217618631">Widevine ን ለማንቃት አሳሹን እንደገና ያስጀምሩ</translation>
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
@@ -26,7 +26,7 @@
  ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
 <translation id="410351446219883937">አውቶፕለይ</translation>
 <translation id="3218385319396786393">በዚህ ገፅ ላይ አውቶፕለይ ይከላከሉ</translation>
-<translation id="4988333904713528597"><ph name="HOST"/> ላይ በራስ መጫወቱን ሁልግዜም ፍቀድ;</translation>
+<translation id="4988333904713528597"><ph name="HOST"/> ላይ በራስ መጫወቱን ሁልግዜም ይፍቀዱ;</translation>
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
 <translation id="8988939298652262600">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አያጣራም። ይህን ቅጥያ መጫን ያለብዎ ገንቢውን የሚያምኑት ከሆነ ብቻ ነው።</translation>
 <translation id="8081858229109418493">የገጽ ስም እና አዶ</translation>
@@ -162,20 +162,30 @@
 <translation id="7090046810227878892">Dapps ን ለመጠቀም የ Ethereum አቅራቢ</translation>
 <translation id="5913089932885076110">የ Crypto ዋሌቶችን መነሻ ላይ ጫን</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
-<translation id="1365342176656744625">የ IPFS አካባቢዎችን ለመፍታት ዘዴ</translation>
+<translation id="9170907049676078643">የ IPFS ሀብቶችን የፍታት ዘዴ</translation>
 <translation id="1327977588028644528">አግባቢ ፍኖት</translation>
 <translation id="80225669816651290">አካባቢያዊ መገናኛ</translation>
+<translation id="4927734062756955434">የ IPFS የህዝብ አግባቢ ፍኖት አድራሻ</translation>
+<translation id="8425213833346101688">ለውጥ</translation>
+<translation id="557281710253742286">የ IPFS  አግባቢ ፍኖትን ያስተካክሉ</translation>
+<translation id="8571837315037233299">አግባቢ ፍኖት አድራሻ</translation>
+<translation id="7703184801853248830">ልክ ያልሆነ የአግባቢ ፍኖት አድራሻ</translation>
 <translation id="585868419599255817">የ IPFS የህዝብ መግቢያ ማምለጫ</translation>
-<translation id="8705871434289874898">የአካባቢው መስቀለኛ መንገድ ሊደረስበት በማይችልበት ጊዜ፣ በራስ-ሰር ወደ IPFS የህዝብ መተላለፊያ መንገድ ማምለጥ።</translation>
+<translation id="207763736230883589">የአከባቢዎ አንጓ መገኘት ካልቻለ በራስ-ሰር አሠራር ወደ ህዝብ IPFS አግባቢ ፍኖት ይመለሳሉ።</translation>
+<translation id="4107552920076294723">የ IPFS ሀብቶችን ወደተዋቀረው የIPFS አግባቢ ፍኖት ይቀይሩ</translation>
+<translation id="6494857428933042381">የ IPFS አግባቢ ፍኖት ሀብት ሲያጋጥም፣ የተዋቀረውን አግባቢ ፍኖት ለ IPFS ጥራቶች በራስ-ሰር ይጠቀማል።</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="1765684547504191670">በማሰሺያው ውስጥ Chromecast ን ለማንቃት የሚዲያ ራውተር አካልን ተጠቀም።</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
-<translation id="6222323340194834282">በአሳሽ ውስጥ IPFSን ድጋፍ ለማሻሻል የ IPFS አጃቢ ቅጥያ ይጠቀማል።</translation>
+<translation id="8068526464562249859">ከአሳሽዎ አሞሌ የተለመዱ የ IPFS ተግባሮችን ማግኘት ጨምሮ በ Brave ውስጥ ለተሻሻለው የ IPFS ድጋፍ የ IPFS ኮምፓኒየን ቅጥያን ይጠቀማል።</translation>
 <translation id="8137559199583651773">ቅጥያዎችን ያስተዳድሩ</translation>
 <translation id="7013485839273047434">ተጨማሪ ቅጥያዎችን ያግኙ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
+<translation id="3161744659507801211">ማስጠንቀቂያ፡ Brave ቅጥያዎች የእርስዎን የአሰሳ ታሪክ እንዳይመዘግቡ ሊያግድ አይችልም።</translation>
+<translation id="2162109630536601963">ይህ ቅጥያ የአውታረ መረብ ጥያቄዎችን የሚያቀርብ ከሆነ Tor ን ወይም የግል ሁነታን አይጠቀሙም።</translation>
+<translation id="2725327089319971976">ይህንን ቅጥያ በግል ሁነታ እና በTor ሁነታ እንዳይሠራ ለማድረግ፣ ይህንን አማራጭ አይምረጡ።</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
 <translation id="5057399635433117814">ይህ ገጽ ይተርጎም? ይሄ ሁሉንም ጽሁፎች ለትርጉም ወደ Microsoft እንዲላኩ ያደርጋቸዋል።</translation>
 <translation id="330263065709195164">ይህን ገጽ ለመተርጎም የጉግል ትርጉም ቅጥያ ይጫኑ?</translation>
@@ -232,15 +242,15 @@
 <translation id="4823406846571523661">የ Crypto ዋሌቶችን ሙላ</translation>
 <translation id="8199661191594897555">የ Crypto ዋሌቶችን አስጀምረና ዳግም ጫን</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
-<translation id="1854270995641373652">በ Brave ውስጥ የ IPFS አካባቢያዊ የዴሞን ድጋፍን ማንቃት ይፈልጋሉ?</translation>
+<translation id="3110802155897279216">የ IPFS ሀብቶች ተገኝተዋል። አካባቢያዊ IPFS አንጓዎችን በመጠቀም Brave እንዲጭኗቸው ይፈልጋሉ?</translation>
 <translation id="2366908098700680611">IPFS ን አንቃ</translation>
-<translation id="1556882415222118816">ስለ ግላዊነት ውጤቶች የበለጠ ይወቁ</translation>
+<translation id="72868071984333667">ስለ IPFS እና ግላዊነት የበለጠ ይወቁ</translation>
 <translation id="4552520379838695057">ይቅርታ፣ ይህ ገጽ ይጎድላል።</translation>
 <translation id="2609895996619941644">የተቀመጠ ስሪት በ Wayback ማሽን ላይ መኖሩን ለማጣራት ይፈልጋሉ?</translation>
 <translation id="8053093028263274061">ይቅርታ፣ የተቀመጠ ስሪት የለም።</translation>
 <translation id="8517321676372639828">የተቀመጠ ስሪት መኖሩን አጣራ</translation>
 <translation id="191143826155037518">Brave ለእርስዎ ዝግጁ የተደረገው በ <ph name="BEGIN_LINK_MPL"/>Mozilla ሕዝባዊ ፈቃድ 2.0<ph name="END_LINK_MPL"/> (MPL) ሲሆን በውስጡም <ph name="BEGIN_LINK_OSS"/>ምንጫቸው ክፍት የሆኑ ሶፍትዌር<ph name="END_LINK_OSS"/> በሌሎች የተለያዩ ፈቃዶች ስር ያካትታል።
-        <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ይህን ኮፒ ለመፍጠር የዋለውን የተወሰነ f<ph name="END_LINK_BUILD_INSTRUCTIONS"/>  መነሻ ኮድን  <ph name="BEGIN_LINK_SOURCE_CODE"/> እንዴት ማውረድና ለራስዎ እንዴት መገንባት እንደሚችሉ መመሪያዎችን ማንበብ ይችላሉ<ph name="END_LINK_SOURCE_CODE"/>።</translation>
+        <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ይህን ኮፒ ለመፍጠር የዋለውን የተወሰነ f<ph name="END_LINK_BUILD_INSTRUCTIONS"/>  መነሻ ኮድን  <ph name="BEGIN_LINK_SOURCE_CODE"/> እንዴት ማውረድ እና ለራስዎ እንዴት መገንባት እንደሚችሉ መመሪያዎችን ማንበብ ይችላሉ<ph name="END_LINK_SOURCE_CODE"/>።</translation>
 <translation id="4474155171896946103">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="2336228925368920074">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="796831669370432378">ዕልባት ለማከል፣ ከአድራሻ አሞሌው አጠገብ ያለውን ቁልፍ ጠቅ ያድርጉ</translation>

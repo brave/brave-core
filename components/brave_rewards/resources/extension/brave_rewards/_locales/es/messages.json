@@ -639,8 +639,12 @@
     "message": "Empezar a utilizar Brave Rewards",
     "description": ""
   },
+  "onboardingTakeTour": {
+    "message": "Haga una visita rápida",
+    "description": ""
+  },
   "onboardingTerms": {
-    "message": "Al continuar, acepta las $tos_link_begin$Condiciones de servicio$tos_link_end$ y la $pp_link_begin$Política de privacidad$pp_link_end$.",
+    "message": "Al continuar, aceptas las $tos_link_begin$condiciones del servicio$tos_link_end$ y $pp_link_begin$la política de protección de datos personales$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -656,5 +660,85 @@
         "content": "$4"
       }
     }
+  },
+  "onboardingTourBack": {
+    "message": "Volver",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Hagamos un recorrido rápido",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuar",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Hecho",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Saltar",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Omitir de momento",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "¡Bienvenido/a a Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Los anuncios privados de Brave te premian con vales que sirven para apoyar a los creadores de contenido. Y a diferencia de los anuncios tradicionales, no tendrás que renunciar a la privacidad de tu información personal.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "¿Dónde se muestran los anuncios?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Los anuncios privados de Brave aparecerán como una notificación normal. Puedes controlar la frecuencia con la que ves los anuncios en la configuración.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "¿Cuándo recibe recompensas?",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Los vales que hayas conseguido con los anuncios privados de Brave a lo largo del mes en curso se acreditarán el día cinco del mes siguiente.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Retribuir es facilísimo",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Los creadores reciben tus contribuciones en forma de vales de forma automática según los niveles de interacción que se miden como “atención”.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Dé las gracias con las propinas",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "La propina es una forma de animar y apoyar el contenido o los creadores que le gustan. Dé propina.",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "¿Qué puede hacer con los tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Los vales se pueden usar para mucho más que para apoyar a los creadores. Puedes adquirir contenido digital y otros productos según se vayan incorporando los comercios.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "¡Bien!, ya tienes todo lo que necesitas.",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Cuando usas los premios de Brave contribuyes para que la web sea un lugar mejor para todos. ¡Algo que es increíble!",
+    "description": ""
   }
 }
