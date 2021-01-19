@@ -9,7 +9,10 @@
   sync_status->SetBoolean(                \
       "firstSetupInProgress",             \
       service && !disallowed_by_policy && \
-          !service->GetUserSettings()->IsFirstSetupComplete());
+          !service->GetUserSettings()->IsFirstSetupComplete()); \
+  sync_status->SetBoolean(                \
+      "isEngineInitialized",             \
+      service && service->IsEngineInitialized());
 
 #include "../../../../../../../chrome/browser/ui/webui/settings/people_handler.cc"
 #undef BRAVE_GET_SYNC_STATUS_DICTIONARY
