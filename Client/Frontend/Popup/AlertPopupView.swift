@@ -60,8 +60,8 @@ class AlertPopupView: PopupView {
         if let inputType = inputType {
             textField = UITextField(frame: CGRect.zero).then {
                 $0.keyboardType = inputType
-                $0.textColor = .black
-                $0.placeholder = inputPlaceholder ?? ""
+                $0.appearanceTextColor = .black
+                $0.attributedPlaceholder = NSAttributedString(string: inputPlaceholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: BraveUX.greyH])
                 $0.autocorrectionType = .no
                 $0.autocapitalizationType = .none
                 $0.layer.cornerRadius = 4
