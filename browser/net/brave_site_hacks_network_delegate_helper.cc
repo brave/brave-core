@@ -40,6 +40,8 @@ const std::string& GetQueryStringTrackers() {
            "_openstat",
            // https://github.com/brave/brave-browser/issues/11817
            "vero_conv", "vero_id",
+           // https://github.com/brave/brave-browser/issues/13647
+           "wickedid",
            // https://github.com/brave/brave-browser/issues/11578
            "yclid",
            // https://github.com/brave/brave-browser/issues/9019
