@@ -414,14 +414,11 @@ void DispatchBlockedEvent(const GURL& request_url,
 #endif
 }
 
-bool ShouldCleanReferrerForTopLevelNavigation(const std::string& method,
-                                              const GURL& referrer_url,
-                                              const GURL& request_url) {
-  // See https://github.com/brave/brave-browser/issues/8696
-  return ((method == "GET" || method == "HEAD") &&
-      !net::registry_controlled_domains::SameDomainOrHost(
-          referrer_url, request_url,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
+bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url) {
+  const url::Origin original_referrer = url::Origin::Create(referrer);
+  const url::Origin target_origin = url::Origin::Create(target_url);
+
+  return original_referrer.IsSameOriginWith(target_origin);
 }
 
 bool MaybeChangeReferrer(
@@ -429,26 +426,25 @@ bool MaybeChangeReferrer(
     bool shields_up,
     const GURL& current_referrer,
     const GURL& target_url,
-    network::mojom::ReferrerPolicy policy,
     Referrer* output_referrer) {
   DCHECK(output_referrer);
   if (allow_referrers || !shields_up || current_referrer.is_empty()) {
     return false;
   }
 
-  const url::Origin original_referrer = url::Origin::Create(current_referrer);
-  const url::Origin target_origin = url::Origin::Create(target_url);
-
-  if (original_referrer.IsSameOriginWith(target_origin)) {
+  if (IsSameOriginNavigation(current_referrer, target_url)) {
     // Do nothing for same-origin requests. This check also prevents us from
     // sending referrer from HTTPS to HTTP.
     return false;
   }
 
-  // Cap referrer to "strict-origin-when-cross-origin" or anything more
-  // restrictive according do given policy.
+  // Cap the referrer to "strict-origin-when-cross-origin". More restrictive
+  // policies should be already applied.
+  // See https://github.com/brave/brave-browser/issues/13464
   *output_referrer = Referrer::SanitizeForRequest(
-      target_url, Referrer(current_referrer.GetOrigin(), policy));
+      target_url,
+      Referrer(current_referrer.GetOrigin(),
+               network::mojom::ReferrerPolicy::kStrictOriginWhenCrossOrigin));
 
   return true;
 }
