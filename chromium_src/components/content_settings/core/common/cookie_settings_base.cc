@@ -157,9 +157,9 @@ bool ShouldUseEphemeralStorage(
   if (!top_frame_origin || url::Origin::Create(url) == top_frame_origin)
     return false;
 
-  bool block_3p = !cookie_settings->IsChromiumCookieAccessAllowed(
+  bool block_3p = !cookie_settings->IsCookieAccessAllowed(
       url, site_for_cookies, top_frame_origin);
-  bool block_1p = !cookie_settings->IsChromiumCookieAccessAllowed(
+  bool block_1p = !cookie_settings->IsCookieAccessAllowed(
       url, url, url::Origin::Create(url));
 
   // only use ephemeral storage for block 3p
@@ -171,6 +171,22 @@ bool ShouldUseEphemeralStorage(
 
 }  // namespace
 
+bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
+    const GURL& url, const GURL& first_party_url) const {
+  return IsEphemeralCookieAccessAllowed(url, first_party_url, base::nullopt);
+}
+
+bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin) const {
+
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin, this))
+    return true;
+
+  return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+}
+
 bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url, const GURL& first_party_url) const {
   return IsCookieAccessAllowed(url, first_party_url, base::nullopt);
@@ -180,10 +196,6 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
-
-  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin, this))
-    return true;
-
   // Get content settings only - do not consider default 3rd-party blocking.
   ContentSetting setting;
   GetCookieSettingInternal(

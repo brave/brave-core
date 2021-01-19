@@ -6,6 +6,7 @@
 #include "services/network/restricted_cookie_manager.h"
 
 #include "base/feature_list.h"
+#include "components/content_settings/core/common/cookie_settings_base.h"
 #include "net/base/features.h"
 #include "net/cookies/cookie_monster.h"
 #include "net/cookies/site_for_cookies.h"
@@ -25,9 +26,9 @@ bool ShouldUseEphemeralStorage(
   if (url::Origin::Create(url) == top_frame_origin)
     return false;
 
-  bool block_3p = !cookie_settings->IsChromiumCookieAccessAllowed(
+  bool block_3p = !cookie_settings->IsCookieAccessAllowed(
       url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
-  bool block_1p = !cookie_settings->IsChromiumCookieAccessAllowed(
+  bool block_1p = !cookie_settings->IsCookieAccessAllowed(
       url, url, url::Origin::Create(url));
 
   // only use ephemeral storage for block 3p
@@ -67,4 +68,6 @@ bool ShouldUseEphemeralStorage(
     return;                                                                    \
   }
 
+#define IsCookieAccessAllowed IsEphemeralCookieAccessAllowed
 #include "../../../../../services/network/restricted_cookie_manager.cc"
+#undef IsCookieAccessAllowed
