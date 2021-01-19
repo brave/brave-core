@@ -72,6 +72,7 @@ export const defaultState: NewTab.State = {
   savedWidgetStackOrder: [],
   binanceState: {
     userTLD: 'com',
+    userLocale: 'en',
     initialFiat: 'USD',
     initialAmount: '',
     initialAsset: 'BTC',

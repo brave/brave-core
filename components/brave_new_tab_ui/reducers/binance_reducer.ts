@@ -22,6 +22,17 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       }
       break
 
+    case types.ON_BINANCE_USER_LOCALE:
+      state = { ...state }
+      state = {
+        ...state,
+        binanceState: {
+          ...state.binanceState,
+          userLocale: payload.userLocale
+        }
+      }
+      break
+
     case types.SET_INITIAL_AMOUNT:
       state = { ...state }
       state = {

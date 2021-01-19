@@ -10,6 +10,8 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/browser/",
+    "//brave/components/l10n/common/",
     "//components/country_codes",
     "//components/prefs",
     "//crypto",

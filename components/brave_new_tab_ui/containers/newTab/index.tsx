@@ -340,19 +340,23 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   buyCrypto = (coin: string, amount: string, fiat: string) => {
-    const { userTLD } = this.props.newTabData.binanceState
+    const { userLocale, userTLD } = this.props.newTabData.binanceState
     const refCode = userTLD === 'us' ? '35089877' : '39346846'
     const refParams = `ref=${refCode}&utm_source=brave`
 
     if (userTLD === 'us') {
       window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     } else {
-      window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
+      window.open(`https://www.binance.com/${userLocale}/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     }
   }
 
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
     this.props.actions.onBinanceUserTLD(userTLD)
+  }
+
+  onBinanceUserLocale = (userLocale: string) => {
+    this.props.actions.onBinanceUserLocale(userLocale)
   }
 
   setBalanceInfo = (info: Record<string, Record<string, string>>) => {
@@ -889,6 +893,7 @@ class NewTabPage extends React.Component<Props, State> {
         onValidAuthCode={this.onValidBinanceAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
+        onBinanceUserLocale={this.onBinanceUserLocale}
         onShowContent={this.setForegroundStackWidget.bind(this, 'binance')}
         onSetInitialAmount={this.setInitialAmount}
         onSetInitialAsset={this.setInitialAsset}

@@ -10,6 +10,10 @@ export const onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => action(types.ON_
   userTLD
 })
 
+export const onBinanceUserLocale = (userLocale: string) => action(types.ON_BINANCE_USER_LOCALE, {
+  userLocale
+})
+
 export const setInitialFiat = (initialFiat: string) => action(types.SET_INITIAL_FIAT, {
   initialFiat
 })

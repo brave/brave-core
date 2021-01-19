@@ -135,6 +135,12 @@ bool BinanceService::IsSupportedRegion() {
   return is_supported;
 }
 
+std::string BinanceService::GetLocaleForURL() {
+  const std::string url_locale =
+      ntp_widget_utils::FindLocale(::binance::supported_locales, "en");
+  return url_locale;
+}
+
 bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
   auto internal_callback = base::BindOnce(&BinanceService::OnGetAccountBalances,
       base::Unretained(this), std::move(callback));

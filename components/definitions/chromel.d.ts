@@ -180,6 +180,7 @@ declare namespace chrome.binance {
   const getConvertAssets: (callback: (supportedAssets: any) => void) => {}
   const confirmConvert: (quoteId: string, callback: (success: boolean, message: string) => void) => {}
   const revokeToken: (callback: (success: boolean) => void) => {}
+  const getLocaleForURL: (callback: (locale: string) => void) => {}
 }
 
 declare namespace chrome.gemini {

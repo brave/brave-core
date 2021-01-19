@@ -146,6 +146,7 @@ declare namespace NewTab {
   export interface BinanceWidgetState {
     binanceSupported?: boolean
     userTLD: BinanceTLD
+    userLocale: string
     initialFiat: string
     initialAmount: string
     initialAsset: string
