@@ -149,6 +149,10 @@ bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
+  if (storage_type != StorageType::kLocalStorage &&
+      storage_type != StorageType::kSessionStorage)
+    return false;
+
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame))
