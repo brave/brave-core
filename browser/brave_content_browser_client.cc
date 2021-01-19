@@ -345,8 +345,6 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     content::BrowserContext* browser_context,
     const GURL& request_url,
     const GURL& document_url,
-    bool is_main_frame,
-    const std::string& method,
     blink::mojom::ReferrerPtr* referrer) {
   DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -368,19 +366,10 @@ void BraveContentBrowserClient::MaybeHideReferrer(
       HostContentSettingsMapFactory::GetForProfile(profile),
       document_url);
 
-  // Some top-level navigations get empty referrers (brave/brave-browser#3422).
-  network::mojom::ReferrerPolicy policy = (*referrer)->policy;
-  if (is_main_frame &&
-      brave_shields::ShouldCleanReferrerForTopLevelNavigation(method,
-                                                              (*referrer)->url,
-                                                              request_url)) {
-    policy = network::mojom::ReferrerPolicy::kNever;
-  }
-
   content::Referrer new_referrer;
-  if (brave_shields::MaybeChangeReferrer(
-          allow_referrers, shields_up, (*referrer)->url, request_url, policy,
-          &new_referrer)) {
+  if (brave_shields::MaybeChangeReferrer(allow_referrers, shields_up,
+                                         (*referrer)->url, request_url,
+                                         &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;
   }

@@ -134,10 +134,8 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-          ctx->allow_referrers, ctx->allow_brave_shields,
-          GURL(ctx->referrer), ctx->request_url,
-          blink::ReferrerUtils::NetToMojoReferrerPolicy(ctx->referrer_policy),
-          &new_referrer)) {
+          ctx->allow_referrers, ctx->allow_brave_shields, GURL(ctx->referrer),
+          ctx->request_url, &new_referrer)) {
     ctx->new_referrer = new_referrer.url;
     return true;
   }
@@ -179,14 +177,14 @@ int OnBeforeStartTransaction_SiteHacksWork(
   // will affect performance).
   // Note that this code only affects "Referer" header sent via network - we
   // handle document.referer in content::NavigationRequest (see also
-  // BraveContentBrowserClient::MaybeHideReferrer).
+  // |BraveContentBrowserClient::MaybeHideReferrer|).
   if (!ctx->allow_referrers && ctx->allow_brave_shields &&
       ctx->redirect_source.is_valid() &&
       ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
-      brave_shields::ShouldCleanReferrerForTopLevelNavigation(
-          ctx->method, ctx->redirect_source, ctx->request_url)) {
-    // This is hack that notifies the patched code in net::URLRequest.
-    ctx->removed_headers.insert("X-Brave-Clear-Referer");
+      !brave_shields::IsSameOriginNavigation(ctx->redirect_source,
+                                             ctx->request_url)) {
+    // This is a hack that notifies the network layer.
+    ctx->removed_headers.insert("X-Brave-Cap-Referrer");
   }
   return net::OK;
 }
