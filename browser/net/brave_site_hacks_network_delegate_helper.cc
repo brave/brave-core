@@ -36,6 +36,8 @@ const std::string& GetQueryStringTrackers() {
            "fbclid", "gclid", "msclkid", "mc_eid",
            // https://github.com/brave/brave-browser/issues/9879
            "dclid",
+           // https://github.com/brave/brave-browser/issues/13644
+           "oly_anon_id", "oly_enc_id",
            // https://github.com/brave/brave-browser/issues/11579
            "_openstat",
            // https://github.com/brave/brave-browser/issues/11817
