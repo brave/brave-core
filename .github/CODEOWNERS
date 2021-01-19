@@ -57,7 +57,7 @@ chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-
 
 # Speedreader
 browser/speedreader/ @iefremov
-components/speedreader/ @iefremov
+components/speedreader/* @iefremov
 
 # P3A
 browser/p3a/ @iefremov
