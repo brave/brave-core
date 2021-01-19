@@ -39,6 +39,7 @@ Polymer({
      * @type {?SyncStatus}
      */
     syncStatus_: Object,
+    is_encryption_set_: Object,
     syncLabel_: {
       type: String,
       computed: 'computeSyncLabel_(syncStatus_.firstSetupInProgress)'
@@ -68,9 +69,7 @@ Polymer({
   attached: function() {
     const onSyncStatus = this.handleSyncStatus_.bind(this)
     this.browserProxy_.getSyncStatus().then(onSyncStatus);
-    this.addWebUIListener('sync-status-changed',onSyncStatus);
-    this.addWebUIListener(
-        'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
+    this.addWebUIListener('sync-status-changed', onSyncStatus);
   },
 
   /** @private */
@@ -85,30 +84,24 @@ Polymer({
    * @param {?SyncStatus} syncStatus
    * @private
    */
-  handleSyncStatus_: function(syncStatus) {
-    console.debug('Sync Status Update', syncStatus)
+  handleSyncStatus_: async function(syncStatus) {
     this.syncStatus_ = syncStatus;
-  },
 
-  /**
-   * Handler for when the sync preferences are updated.
-   * @private
-   */
-  handleSyncPrefsChanged_: async function(syncPrefs) {
-    // Enforce encryption
-    if (this.syncStatus_ && !this.syncStatus_.firstSetupInProgress) {
-      if (!syncPrefs.encryptAllData) {
-        const syncCode = await this.braveBrowserProxy_.getSyncCode()
-        syncPrefs.encryptAllData = true;
-        syncPrefs.setNewPassphrase = true;
-        syncPrefs.passphrase = syncCode;
-        await this.browserProxy_.setSyncEncryption(syncPrefs)
-      } else if (syncPrefs.passphraseRequired) {
-        const syncCode = await this.braveBrowserProxy_.getSyncCode()
-        syncPrefs.setNewPassphrase = false;
-        syncPrefs.passphrase = syncCode;
-        await this.browserProxy_.setSyncEncryption(syncPrefs)
-      }
+    // Cleanup is_encryption_set_ for re-enabling sync
+    if (!this.syncStatus_.isEngineInitialized &&
+      this.syncStatus_.firstSetupInProgress && this.is_encryption_set_) {
+      this.is_encryption_set_ = false
+    }
+
+    // Both setEncryptionPassphrase and setDecryptionPassphrase need to have
+    // SyncService::IsEngineInitialized() true, see sync_service_crypto.cc
+    // We cannot rely on `firstSetupInProgress` because there is a gap when both
+    // `firstSetupInProgress` and `isEngineInitialized` are false
+    if (this.syncStatus_.isEngineInitialized && !this.is_encryption_set_) {
+      const syncCode = await this.braveBrowserProxy_.getSyncCode()
+      this.browserProxy_.setEncryptionPassphrase(syncCode);
+      this.browserProxy_.setDecryptionPassphrase(syncCode);
+      this.is_encryption_set_ = true;
     }
   },
 });
