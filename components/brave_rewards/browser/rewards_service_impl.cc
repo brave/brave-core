@@ -372,6 +372,9 @@ void RewardsServiceImpl::Init(
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
+      prefs::kHideButton, base::Bind(&RewardsServiceImpl::OnPreferenceChanged,
+                                     base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
       prefs::kInlineTipTwitterEnabled,
       base::Bind(
           &RewardsServiceImpl::OnPreferenceChanged,
@@ -1310,28 +1313,32 @@ void RewardsServiceImpl::GetReconcileStamp(
 }
 
 void RewardsServiceImpl::EnableGreaseLion() {
-  #if BUILDFLAG(ENABLE_GREASELION)
-    if (greaselion_service_) {
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::REWARDS,
-          true);
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::TWITTER_TIPS,
-          profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled));
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::REDDIT_TIPS,
-          profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled));
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::GITHUB_TIPS,
-          profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled));
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::AUTO_CONTRIBUTION,
-          profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
-      greaselion_service_->SetFeatureEnabled(
-          greaselion::ADS,
-          profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
-    }
-  #endif
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (!greaselion_service_) {
+    return;
+  }
+
+  greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, true);
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::AUTO_CONTRIBUTION,
+      profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+
+  const bool hide_button = profile_->GetPrefs()->GetBoolean(prefs::kHideButton);
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::TWITTER_TIPS,
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
+          !hide_button);
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::REDDIT_TIPS,
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
+          !hide_button);
+  greaselion_service_->SetFeatureEnabled(
+      greaselion::GITHUB_TIPS,
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
+          !hide_button);
+#endif
 }
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
