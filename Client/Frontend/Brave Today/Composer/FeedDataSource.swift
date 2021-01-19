@@ -287,7 +287,7 @@ class FeedDataSource {
         case .loading:
             return false
         case .success:
-            return isFeedContentExpired || isSourcesExpired
+            return isFeedContentExpired || isSourcesExpired || needsReloadCards
         }
     }
     
@@ -371,7 +371,9 @@ class FeedDataSource {
         if let cards = state.cards, cards.isEmpty && enabled {
             // If we're enabling a source and we don't have any items because their source selection was
             // causing an empty generation, regenerate the cards
-            self.reloadCards(from: self.items, sources: self.sources)
+            reloadCards(from: self.items, sources: self.sources)
+        } else {
+            needsReloadCards = true
         }
     }
     
@@ -386,16 +388,22 @@ class FeedDataSource {
         if let cards = state.cards, cards.isEmpty && enabled {
             // If we're enabling a category and we don't have any items because their source selection was
             // causing an empty generation, regenerate the cards
-            self.reloadCards(from: self.items, sources: self.sources)
+            reloadCards(from: self.items, sources: self.sources)
+        } else {
+            needsReloadCards = true
         }
     }
     
     /// Reset all source settings back to default
     func resetSourcesToDefault() {
         FeedSourceOverride.resetSourceSelection()
+        needsReloadCards = true
     }
     
     // MARK: - Card Generation
+    
+    /// Whether or not cards need to be reloaded next time we attempt to request state data
+    private var needsReloadCards = false
     
     /// Scores and generates cards from a set of items and sources
     private func reloadCards(
@@ -403,6 +411,7 @@ class FeedDataSource {
         sources: [FeedItem.Source],
         completion: (() -> Void)? = nil
     ) {
+        needsReloadCards = false
         // Only allow 1 reload at a time
         // Since the scoring/generation work hops between threads a lot it would be possible for reloads to
         // mess up the ending state or update the cards
