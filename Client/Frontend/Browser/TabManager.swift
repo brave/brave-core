@@ -244,9 +244,12 @@ class TabManager: NSObject {
             selectedTab?.createWebview()
             restoreTab(t)
         }
-
-        assert(tab === selectedTab, "Expected tab is selected")
         
+        guard tab === selectedTab else {
+            log.error("Expected tab (\(String(describing: tab?.url))) is not selected. Selected index: \(selectedIndex)")
+            return
+        }
+    
         UIImpactFeedbackGenerator(style: .light).bzzt()
         selectedTab?.createWebview()
         selectedTab?.lastExecutedTime = Date.now()
