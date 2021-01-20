@@ -62,6 +62,14 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return SkColorSetRGB(0xE8, 0xE8, 0xE8);
     case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
       return SkColorSetRGB(0xE9, 0xE9, 0xF4);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT:
+      return SkColorSetRGB(0x17, 0x17, 0x1F);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL:
+      return SkColorSetRGB(0x21, 0x25, 0x29);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
+      return SK_ColorWHITE;
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
+      return SkColorSetRGB(0x4C, 0x54, 0xD2);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:

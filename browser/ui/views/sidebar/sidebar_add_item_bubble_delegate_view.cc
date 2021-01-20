@@ -18,6 +18,7 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -27,13 +28,70 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
+#include "ui/views/view_class_properties.h"
 #include "url/gurl.h"
 
 namespace {
 
+constexpr gfx::Size kAddItemBubbleEntrySize{242, 40};
+
 sidebar::SidebarService* GetSidebarService(Browser* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
 }
+
+class SidebarAddItemButton : public views::LabelButton {
+ public:
+  // Get theme provider to use browser's theme color in this dialog.
+  SidebarAddItemButton(bool bold, const ui::ThemeProvider* theme_provider)
+      : theme_provider_(theme_provider) {
+    constexpr gfx::Insets kDefaultAddItemInsets{10, 34, 4, 8};
+    SetBorder(views::CreateEmptyBorder(kDefaultAddItemInsets));
+    if (theme_provider_) {
+      SetTextColor(
+          views::Button::STATE_NORMAL,
+          theme_provider->GetColor(
+              BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL));
+      SetTextColor(views::Button::STATE_HOVERED,
+                   theme_provider->GetColor(BraveThemeProperties::
+                       COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
+      SetTextColor(views::Button::STATE_PRESSED,
+                   theme_provider->GetColor(
+                   BraveThemeProperties::
+                       COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
+    }
+
+    const int size_diff = 13 - views::Label::GetDefaultFontList().GetFontSize();
+    label()->SetFontList(
+        views::Label::GetDefaultFontList()
+        .DeriveWithSizeDelta(size_diff)
+        .DeriveWithWeight(bold ? gfx::Font::Weight::SEMIBOLD
+                               : gfx::Font::Weight::NORMAL));
+  }
+
+  gfx::Size CalculatePreferredSize() const override {
+    return kAddItemBubbleEntrySize;
+  }
+
+  void OnPaintBackground(gfx::Canvas* canvas)  override {
+    if (GetState() == STATE_HOVERED) {
+      cc::PaintFlags flags;
+      flags.setAntiAlias(true);
+      flags.setStyle(cc::PaintFlags::kFill_Style);
+      if (theme_provider_) {
+        flags.setColor(theme_provider_->GetColor(
+            BraveThemeProperties::
+                COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED));
+      }
+
+      constexpr int kItemRadius = 6;
+      // Fill the background.
+      canvas->DrawRoundRect(GetLocalBounds(), kItemRadius, flags);
+    }
+  }
+
+ private:
+  const ui::ThemeProvider* theme_provider_;
+};
 
 }  // namespace
 
@@ -57,7 +115,7 @@ std::unique_ptr<views::NonClientFrameView>
 SidebarAddItemBubbleDelegateView::CreateNonClientFrameView(
     views::Widget* widget) {
   std::unique_ptr<views::BubbleFrameView> frame(
-      new views::BubbleFrameView(gfx::Insets(), gfx::Insets(10)));
+      new views::BubbleFrameView(gfx::Insets(), gfx::Insets()));
   std::unique_ptr<BubbleBorderWithArrow> border =
       std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kRadius = 4;
@@ -75,17 +133,34 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
    SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
+   auto* theme_provider =
+       BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider();
+
+  views::View* site_part = AddChildView(std::make_unique<views::View>());
+  site_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kVertical));
+  site_part->SetProperty(views::kMarginsKey, gfx::Insets(4));
   // Use 13px font size.
   const int size_diff = 13 - views::Label::GetDefaultFontList().GetFontSize();
   views::Label::CustomFont font = {
       views::Label::GetDefaultFontList()
           .DeriveWithSizeDelta(size_diff)
           .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)};
-  AddChildView(std::make_unique<views::Label>(
+  auto* header = site_part->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE), font));
+  if (theme_provider) {
+    header->SetEnabledColor(theme_provider->GetColor(
+        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));
+  }
+  header->SetAutoColorReadabilityEnabled(false);
+  header->SetPreferredSize(kAddItemBubbleEntrySize);
+  constexpr gfx::Insets kHeaderInsets{10, 34, 4, 8};
+  header->SetBorder(views::CreateEmptyBorder(kHeaderInsets));
+  header->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   if (sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
-    auto* button = AddChildView(std::make_unique<views::LabelButton>());
+    auto* button = site_part->AddChildView(
+        std::make_unique<SidebarAddItemButton>(true, theme_provider));
     const GURL active_tab_url =
         browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
     button->SetText(base::UTF8ToUTF16(active_tab_url.host()));
@@ -100,13 +175,18 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
     return;
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
-  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+  views::View* default_part = AddChildView(std::make_unique<views::View>());
+  default_part->SetProperty(views::kMarginsKey, gfx::Insets(4, 4, 8, 4));
+  default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kVertical));
+  if (theme_provider) {
     separator->SetColor(theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR));
   }
 
   for (const auto& item : not_added_default_items) {
-    auto* button = AddChildView(std::make_unique<views::LabelButton>());
+    auto* button = default_part->AddChildView(
+        std::make_unique<SidebarAddItemButton>(false, theme_provider));
     button->SetText(item.title);
     button->SetCallback(base::BindRepeating(
         &SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed,
