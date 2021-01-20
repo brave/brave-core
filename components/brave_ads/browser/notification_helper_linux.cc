@@ -21,7 +21,7 @@ bool NotificationHelperLinux::ShouldShowNotifications() {
     return false;
   }
 
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     return true;
   }
 

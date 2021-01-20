@@ -71,7 +71,7 @@ bool NotificationHelperWin::ShouldShowNotifications() {
     return false;
   }
 
-  if (brave::IsDevOrCanaryBuild()) {
+  if (brave::IsNightlyOrDeveloperBuild()) {
     return true;
   }
 
