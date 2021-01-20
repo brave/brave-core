@@ -3,8 +3,8 @@
 <translationbundle lang="ko">
 <translation id="5288293905681750318">트래커 &amp; 광고 차단됨</translation>
 <translation id="2313532038420432247">HTTPS 업그레이드</translation>
-<translation id="788493840831967104">시간 저장됨</translation>
-<translation id="2318592590318590295">대역폭 저장됨</translation>
+<translation id="788493840831967104">시간 절약됨</translation>
+<translation id="2318592590318590295">데이터 절약됨</translation>
 <translation id="5206618227023752085">맨 위 사이트 제거됨.</translation>
 <translation id="2079545284768500474">원상태로 돌리기</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -36,13 +36,13 @@
 <translation id="867722069064361487">12시간 시계</translation>
 <translation id="4064062743338217840">24시간 시계</translation>
 <translation id="8643377320501056697">탑 사이트 보기</translation>
-<translation id="7176563092712682575">상위 사이트 사용자 지정</translation>
+<translation id="7176563092712682575">탑 사이트 사용자 지정</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="6274899614137380422">Binance 표시</translation>
-<translation id="5551238871320268996">Brave 함께</translation>
+<translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">카드</translation>
 <translation id="3870475560794762985">스폰 이미지 표시</translation>
-<translation id="2875302873837723333">최고의 사이트</translation>
+<translation id="2875302873837723333">탑 사이트</translation>
 <translation id="8173998484743827990">Brave Stats</translation>
 <translation id="383680190590774040">시계</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -61,7 +61,7 @@
 <translation id="8890516388109605451">소스</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> 콘텐츠 비활성화</translation>
 <translation id="1776831331757823105">시계</translation>
-<translation id="4643117005422448078">최고의 사이트</translation>
+<translation id="4643117005422448078">탑 사이트</translation>
 <translation id="3159285901314605198">배경 이미지</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="7679334366167089823">개인정보 존중 광고를 시청하여 토큰을 획득하십시오.</translation>
