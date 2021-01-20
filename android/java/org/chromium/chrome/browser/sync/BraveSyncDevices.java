@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @JNINamespace("chrome::android")
 public class BraveSyncDevices {
     public static final String TAG = "SYNC";
-    private long mNativeBraveSyncDevicesAndroid = 0;
+    private long mNativeBraveSyncDevicesAndroid;
 
     private static BraveSyncDevices sBraveSyncDevices;
     private static boolean sInitialized;
