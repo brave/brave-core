@@ -1529,7 +1529,7 @@ until they verify, or until 90 days have passed.
         Lets Take A Quick Tour
       </message>
       <message name="IDS_BRAVE_REWARDS_WELCOME_LAYOUT_TEXT" desc="Brave rewards welcome layout text">
-        After you recieve your first ads payout you can come back and tip this creator!
+        After you receive your first ads payout you can come back and tip this creator!
       </message>
       <message name="IDS_QUICK_REFRESHER_TOUR" desc="Brave rewards welcome layout button text">
         Quick refresher tour
