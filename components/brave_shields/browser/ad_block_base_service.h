@@ -40,10 +40,12 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
-  bool ShouldStartRequest(const GURL& url,
+  void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
                           const std::string& tab_host,
+                          bool* did_match_rule,
                           bool* did_match_exception,
+                          bool* did_match_important,
                           std::string* mock_data_url) override;
   void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);

@@ -315,6 +315,44 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// Load a page with an ad image, with a corresponding exception installed in
+// the custom filters, and make sure it is not blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("*ad_banner.png");
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("@@ad_banner.png"));
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Load a page with an image blocked by custom filters, with a corresponding
+// exception installed in the default filters, and make sure it is not blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("@@ad_banner.png");
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("*ad_banner.png"));
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
 // Load a page with an image which is not an ad, and make sure it is NOT
 // blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,

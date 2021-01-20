@@ -23,7 +23,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -73,37 +73,31 @@ std::string AdBlockService::g_ad_block_component_id_(kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 
-bool AdBlockService::ShouldStartRequest(
+void AdBlockService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    bool* did_match_rule,
     bool* did_match_exception,
+    bool* did_match_important,
     std::string* mock_data_url) {
-  if (!AdBlockBaseService::ShouldStartRequest(
-          url, resource_type, tab_host, did_match_exception, mock_data_url)) {
-    return false;
-  }
-  if (did_match_exception && *did_match_exception) {
-    return true;
-  }
-
-  if (!regional_service_manager()->ShouldStartRequest(
-          url, resource_type, tab_host, did_match_exception, mock_data_url)) {
-    return false;
-  }
-  if (did_match_exception && *did_match_exception) {
-    return true;
+  AdBlockBaseService::ShouldStartRequest(
+      url, resource_type, tab_host, did_match_rule, did_match_exception,
+      did_match_important, mock_data_url);
+  if (did_match_important && *did_match_important) {
+    return;
   }
 
-  if (!custom_filters_service()->ShouldStartRequest(
-          url, resource_type, tab_host, did_match_exception, mock_data_url)) {
-    return false;
-  }
-  if (did_match_exception && *did_match_exception) {
-    return true;
+  regional_service_manager()->ShouldStartRequest(
+      url, resource_type, tab_host, did_match_rule, did_match_exception,
+      did_match_important, mock_data_url);
+  if (did_match_important && *did_match_important) {
+    return;
   }
 
-  return true;
+  custom_filters_service()->ShouldStartRequest(
+      url, resource_type, tab_host, did_match_rule, did_match_exception,
+      did_match_important, mock_data_url);
 }
 
 base::Optional<base::Value> AdBlockService::UrlCosmeticResources(

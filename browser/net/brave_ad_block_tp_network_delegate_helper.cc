@@ -56,29 +56,39 @@ content::WebContents* GetWebContents(int render_process_id,
 
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
                                base::Optional<std::string> canonical_name) {
+  bool did_match_rule = false;
   bool did_match_exception = false;
+  bool did_match_important = false;
   if (!ctx->initiator_url.is_valid()) {
     return;
   }
   std::string source_host = ctx->initiator_url.host();
-  if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          ctx->request_url, ctx->resource_type, source_host,
-          &did_match_exception, &ctx->mock_data_url)) {
+
+  g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+        ctx->request_url, ctx->resource_type, source_host,
+        &did_match_rule, &did_match_exception, &did_match_important,
+        &ctx->mock_data_url);
+  if (did_match_important) {
     ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception && canonical_name.has_value() &&
-             ctx->request_url.host() != *canonical_name &&
-             *canonical_name != "") {
+    return;
+  }
+
+  if (canonical_name.has_value() && ctx->request_url.host() != *canonical_name
+      && *canonical_name != "") {
     GURL::Replacements replacements = GURL::Replacements();
     replacements.SetHost(
         canonical_name->c_str(),
         url::Component(0, static_cast<int>(canonical_name->length())));
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
-    if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-            canonical_url, ctx->resource_type, source_host,
-            &did_match_exception, &ctx->mock_data_url)) {
-      ctx->blocked_by = kAdBlocked;
-    }
+    g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+        ctx->request_url, ctx->resource_type, source_host,
+        &did_match_rule, &did_match_exception, &did_match_important,
+        &ctx->mock_data_url);
+  }
+
+  if (did_match_important || (did_match_rule && !did_match_exception)) {
+    ctx->blocked_by = kAdBlocked;
   }
 }
 
