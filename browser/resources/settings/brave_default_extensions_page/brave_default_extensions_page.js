@@ -45,6 +45,7 @@ Polymer({
     this.openKeyboardShortcutsPage_ = this.openKeyboardShortcutsPage_.bind(this)
     this.onWidevineEnabledChange_ = this.onWidevineEnabledChange_.bind(this)
     this.restartBrowser_ = this.restartBrowser_.bind(this)
+    this.onTorEnabledChange_ = this.onTorEnabledChange_.bind(this)
 
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
       this.showRestartToast_ = needsRestart
