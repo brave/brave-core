@@ -119,7 +119,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     public <T extends Preference> T findPreference(CharSequence key) {
         T result = super.findPreference(key);
         if (result == null) {
-            result = (T)mRemovedPreferences.get(key);
+            result = (T) mRemovedPreferences.get((String) key);
         }
         return result;
     }
