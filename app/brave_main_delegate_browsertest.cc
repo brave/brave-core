@@ -70,7 +70,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kPrivacySettingsRedesign,
       &features::kSignedExchangeSubresourcePrefetch,
       &features::kTabHoverCards,
-      &features::kVideoPlaybackQuality,
       &features::kWebOTP,
       &network_time::kNetworkTimeServiceQuerying,
       &password_manager::features::kPasswordCheck,
