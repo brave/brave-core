@@ -427,7 +427,14 @@ extension URL {
             return false
         }
         
-        return ["youtube", "vimeo", "twitch"].contains(where: domain.contains)
+        var siteList = ["youtube", "vimeo", "twitch"]
+        
+        /// Additional sites for Japanese locale
+        if Locale.current.regionCode == "JP" {
+            siteList.append(contentsOf: ["nicovideo", "tiktok", "instagram"])
+        }
+        
+        return siteList.contains(where: domain.contains)
     }
 }
 
