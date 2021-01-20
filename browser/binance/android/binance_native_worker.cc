@@ -122,6 +122,20 @@ bool BinanceNativeWorker::IsSupportedRegion(JNIEnv* env,
   return binance_service_->IsSupportedRegion();
 }
 
+base::android::ScopedJavaLocalRef<jstring> BinanceNativeWorker::GetLocaleForURL(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  base::android::ScopedJavaLocalRef<jstring> locale =
+      base::android::ConvertUTF8ToJavaString(env, "");
+
+  if (binance_service_) {
+    locale = base::android::ConvertUTF8ToJavaString(
+        env, binance_service_->GetLocaleForURL());
+  }
+
+  return locale;
+}
+
 void BinanceNativeWorker::OnGetAccessToken(bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BinanceNativeWorker_OnGetAccessToken(

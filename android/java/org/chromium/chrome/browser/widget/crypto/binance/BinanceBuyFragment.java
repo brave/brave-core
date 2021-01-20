@@ -111,8 +111,13 @@ public class BinanceBuyFragment extends Fragment {
                 public void onClick(View view) {
                     String buyUrl = "";
                     if (buyRadioGroup.getCheckedRadioButtonId() == R.id.com_radio) {
-                        buyUrl = String.format(BinanceWidgetManager.BINANCE_COM, selectedFiat,
-                                selectedCrypto, amountEditText.getText());
+                        String localizedUrl =
+                                new StringBuilder(BinanceWidgetManager.BINANCE_COM_ONE)
+                                        .append(mBinanceNativeWorker.getLocaleForURL())
+                                        .append(BinanceWidgetManager.BINANCE_COM_TWO)
+                                        .toString();
+                        buyUrl = String.format(localizedUrl, selectedFiat, selectedCrypto,
+                                amountEditText.getText());
                     } else if (buyRadioGroup.getCheckedRadioButtonId() == R.id.us_radio) {
                         buyUrl = String.format(BinanceWidgetManager.BINANCE_US, selectedCrypto,
                                 amountEditText.getText());
