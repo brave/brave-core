@@ -46,9 +46,4 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 contextualSearchManagerSupplier, tabModelSelectorSupplier, startSurfaceSupplier,
                 layoutStateProviderOneshotSupplier, startSurfaceParentTabSupplier);
     }
-
-    @Override
-    public void onFinishNativeInitialization() {
-        super.onFinishNativeInitialization();
-    }
 }

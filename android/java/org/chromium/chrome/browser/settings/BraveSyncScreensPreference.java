@@ -178,7 +178,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     public void deviceInfoChanged() {
         onDevicesAvailable();
     }
-    boolean deviceInfoObserverSet = false;
+    boolean deviceInfoObserverSet;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -1009,7 +1009,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         alertDialog.show();
     }
 
-    private boolean mLeaveSyncChainInProgress = false;
+    private boolean mLeaveSyncChainInProgress;
 
     private void startLeaveSyncChainOperations() {
         mLeaveSyncChainInProgress = true;

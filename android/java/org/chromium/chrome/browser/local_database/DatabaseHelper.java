@@ -30,10 +30,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "brave_db";
 
-    public static synchronized DatabaseHelper getInstance() {
-        if (mInstance == null) {
-            Context context = ContextUtils.getApplicationContext();
-            mInstance = new DatabaseHelper(context);
+    public static DatabaseHelper getInstance() {
+        synchronized (mInstance) {
+            if (mInstance == null) {
+                Context context = ContextUtils.getApplicationContext();
+                mInstance = new DatabaseHelper(context);
+            }
         }
         return mInstance;
     }

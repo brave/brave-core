@@ -15,8 +15,8 @@ import org.chromium.chrome.browser.BraveConfig;
 // and create it without explict import
 public class BraveSyncReflectionUtils {
 
-    private static Object sBraveSyncWorker = null;
-    private static boolean sInitialized = false;
+    private static Object sBraveSyncWorker;
+    private static boolean sInitialized;
     private static String TAG = "SYNC";
 
     public static Object getSyncWorker() {
