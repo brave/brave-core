@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_uma_util.h b/components/permissions/permission_uma_util.h
+index f2fe29c36726b73a92c8693466240e92340415c3..5b730ad861a80b9b315350e58bf47b6a4f8764aa 100644
+--- a/components/permissions/permission_uma_util.h
++++ b/components/permissions/permission_uma_util.h
+@@ -66,6 +66,7 @@ enum class RequestTypeForUma {
+   PERMISSION_WINDOW_PLACEMENT = 25,
+   PERMISSION_FONT_ACCESS = 26,
+   PERMISSION_IDLE_DETECTION = 27,
++  BRAVE_PERMISSION_REQUEST_TYPES_FOR_UMA
+   // NUM must be the last value in the enum.
+   NUM
+ };
