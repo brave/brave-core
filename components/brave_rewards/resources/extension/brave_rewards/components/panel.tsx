@@ -284,14 +284,14 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    if (externalWallet.addUrl) {
+    if (externalWallet.links.deposit) {
       chrome.tabs.create({
-        url: externalWallet.addUrl
+        url: externalWallet.links.deposit
       })
       return
     }
 
-    utils.handleUpholdLink(balance, externalWallet)
+    utils.handleVerifyLink(balance, externalWallet)
   }
 
   showTipSiteDetail = (entryPoint: RewardsExtension.TipDialogEntryPoint) => {
@@ -571,19 +571,19 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  goToUphold = () => {
+  goToWalletProvider = () => {
     const { externalWallet } = this.props.rewardsPanelData
 
-    if (!externalWallet || !externalWallet.accountUrl) {
-      this.actions.getExternalWallet('uphold')
+    if (!externalWallet || !externalWallet.links.account) {
+      utils.getExternalWallet(this.actions)
       return
     }
 
-    window.open(externalWallet.accountUrl, '_blank')
+    window.open(externalWallet.links.account, '_blank')
   }
 
   onDisconnectClick = () => {
-    chrome.braveRewards.disconnectWallet('uphold')
+    chrome.braveRewards.disconnectWallet()
   }
 
   shouldShowConnectedMessage = () => {
@@ -770,7 +770,9 @@ export class Panel extends React.Component<Props, State> {
     let onVerifyClick = undefined
     if (!this.props.onlyAnonWallet) {
       walletStatus = utils.getWalletStatus(externalWallet)
-      onVerifyClick = utils.handleUpholdLink.bind(this, balance, externalWallet)
+      onVerifyClick = () => {
+        utils.handleVerifyLink(balance, externalWallet)
+      }
     }
 
     return (
@@ -790,9 +792,10 @@ export class Panel extends React.Component<Props, State> {
         onSolution={this.onSolution}
         onFinish={this.onFinish}
         walletState={walletStatus}
+        walletProvider={externalWallet ? externalWallet.provider : ''}
         onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}
-        goToUphold={this.goToUphold}
+        goToWalletProvider={this.goToWalletProvider}
         greetings={utils.getGreetings(externalWallet)}
         onlyAnonWallet={this.props.onlyAnonWallet}
         showLoginMessage={this.showLoginMessage()}

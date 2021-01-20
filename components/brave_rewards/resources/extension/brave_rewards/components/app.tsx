@@ -85,9 +85,7 @@ export class RewardsPanel extends React.Component<Props, State> {
       this.props.actions.onAllNotifications(list)
     })
 
-    const { externalWallet } = this.props.rewardsPanelData
-
-    utils.getExternalWallet(this.actions, externalWallet)
+    utils.getExternalWallet(this.actions)
 
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       this.actions.onBalance(balance)

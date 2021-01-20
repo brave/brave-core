@@ -41,7 +41,7 @@ declare namespace Rewards {
     enabledAds: boolean
     enabledAdsMigrated: boolean
     enabledContribute: boolean
-    externalWallet?: ExternalWallet
+    externalWallet?: chrome.braveRewards.ExternalWalletInfo
     initializing: boolean
     inlineTip: {
       twitter: boolean
@@ -263,29 +263,6 @@ declare namespace Rewards {
   export interface Balance {
     total: number
     wallets: Record<string, number>
-  }
-
-  export type WalletType = 'anonymous' | 'uphold'
-
-  export enum WalletStatus {
-    NOT_CONNECTED = 0,
-    CONNECTED = 1,
-    VERIFIED = 2,
-    DISCONNECTED_NOT_VERIFIED = 3,
-    DISCONNECTED_VERIFIED = 4
-  }
-
-  export interface ExternalWallet {
-    token: string
-    address: string
-    status: WalletStatus
-    type: WalletType
-    verifyUrl: string
-    addUrl: string
-    withdrawUrl: string
-    userName?: string
-    accountUrl: string
-    loginUrl: string
   }
 
   export interface ProcessRewardsPageUrl {

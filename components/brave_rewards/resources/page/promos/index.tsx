@@ -25,7 +25,7 @@ export const getActivePromos = (rewardsData: Rewards.State) => {
 
   if (rewardsData) {
     let wallet = rewardsData.externalWallet
-    if (wallet && wallet.status === 2 && wallet.address && wallet.address.length > 0) { // WalletStatus::VERIFIED
+    if (wallet && wallet.verified && wallet.address) {
       promos.unshift('uphold-card')
     }
   }

@@ -320,7 +320,7 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.removeAllPendingContribution()
   }
 
-  handleUpholdLink = () => {
+  handleVerifyLink = () => {
     const { ui, externalWallet, balance } = this.props.rewardsData
 
     if (!externalWallet) {
@@ -328,23 +328,23 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (balance.total < 25) {
-      window.open(externalWallet.loginUrl, '_self')
+      window.open(externalWallet.links.login, '_self')
       return
     }
 
-    if (!ui.verifyOnboardingDisplayed && externalWallet.status === 0) {
+    if (!ui.verifyOnboardingDisplayed && !externalWallet.address) {
       this.toggleVerifyModal()
       return
     }
 
-    window.open(externalWallet.verifyUrl, '_self')
+    window.open(externalWallet.links.verify, '_self')
   }
 
   onVerifyClick = (hideVerify: boolean) => {
     const { externalWallet } = this.props.rewardsData
 
-    if (!externalWallet || !externalWallet.verifyUrl) {
-      this.actions.getExternalWallet('uphold')
+    if (!externalWallet || !externalWallet.links.verify) {
+      this.actions.getExternalWallet()
       return
     }
 
@@ -352,7 +352,7 @@ class PageWallet extends React.Component<Props, State> {
       this.actions.onVerifyOnboardingDisplayed()
     }
 
-    this.handleUpholdLink()
+    this.handleVerifyLink()
   }
 
   getWalletStatus = (): WalletState | undefined => {
@@ -362,25 +362,23 @@ class PageWallet extends React.Component<Props, State> {
       return undefined
     }
 
-    switch (externalWallet.status) {
-      // ledger::type::WalletStatus::CONNECTED
-      case 1:
-        return 'connected'
-      // WalletStatus::VERIFIED
-      case 2:
-        return 'verified'
-      // WalletStatus::DISCONNECTED_NOT_VERIFIED
-      case 3:
-        return 'disconnected_unverified'
-      // WalletStatus::DISCONNECTED_VERIFIED
-      case 4:
-        return 'disconnected_verified'
-      // ledger::type::WalletStatus::PENDING
-      case 5:
-        return 'pending'
-      default:
-        return 'unverified'
+    if (externalWallet.status === 'connecting') {
+      return 'pending'
     }
+
+    if (externalWallet.verified) {
+      return externalWallet.status === 'disconnected'
+        ? 'disconnected_verified'
+        : 'verified'
+    }
+
+    if (!externalWallet.address) {
+      return 'unverified'
+    }
+
+    return externalWallet.status === 'disconnected'
+        ? 'disconnected_unverified'
+        : 'connected'
   }
 
   onFundsAction = (action: string) => {
@@ -390,38 +388,40 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
+    const { links } = externalWallet
+
     switch (action) {
       case 'add': {
-        if (externalWallet.addUrl) {
-          window.open(externalWallet.addUrl, '_self')
+        if (links.deposit) {
+          window.open(links.deposit, '_self')
           return
         }
         break
       }
       case 'withdraw': {
-        if (externalWallet.withdrawUrl) {
-          window.open(externalWallet.withdrawUrl, '_self')
+        if (links.withdraw) {
+          window.open(links.withdraw, '_self')
           return
         }
         break
       }
     }
 
-    if (externalWallet.verifyUrl) {
-      this.handleUpholdLink()
+    if (links.verify) {
+      this.handleVerifyLink()
       return
     }
   }
 
-  goToUphold = () => {
+  goToWalletProvider = () => {
     const { externalWallet } = this.props.rewardsData
 
-    if (!externalWallet || !externalWallet.accountUrl) {
-      this.actions.getExternalWallet('uphold')
+    if (!externalWallet || !externalWallet.links.account) {
+      this.actions.getExternalWallet()
       return
     }
 
-    window.open(externalWallet.accountUrl, '_self')
+    window.open(externalWallet.links.account, '_self')
   }
 
   getGreetings = () => {
@@ -434,7 +434,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onDisconnectClick = () => {
-    this.actions.disconnectWallet('uphold')
+    this.actions.disconnectWallet()
   }
 
   getActions = () => {
@@ -795,9 +795,10 @@ class PageWallet extends React.Component<Props, State> {
           showSecActions={true}
           alert={this.walletAlerts()}
           walletState={this.getWalletStatus()}
+          walletProvider={'uphold'}
           onVerifyClick={onVerifyClick}
           onDisconnectClick={this.onDisconnectClick}
-          goToUphold={this.goToUphold}
+          goToWalletProvider={this.goToWalletProvider}
           greetings={this.getGreetings()}
           onlyAnonWallet={onlyAnonWallet}
           showLoginMessage={this.showLoginMessage()}

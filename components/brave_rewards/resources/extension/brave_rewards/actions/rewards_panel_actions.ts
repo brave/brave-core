@@ -138,7 +138,7 @@ export const onBalance = (balance: RewardsExtension.Balance) => action(types.ON_
   balance
 })
 
-export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+export const onExternalWallet = (wallet?: chrome.braveRewards.ExternalWalletInfo) => action(types.ON_EXTERNAL_WALLET, {
   wallet
 })
 

@@ -123,6 +123,7 @@ export interface Props {
   converted: string | null
   actions: ActionWallet[]
   walletState?: WalletState
+  walletProvider: string
   compact?: boolean
   contentPadding?: boolean
   showCopy?: boolean
@@ -141,7 +142,7 @@ export interface Props {
   onSolution?: (promotionId: string, x: number, y: number) => void
   onVerifyClick?: () => void
   onDisconnectClick?: () => void
-  goToUphold?: () => void
+  goToWalletProvider?: () => void
   greetings?: string
   onlyAnonWallet?: boolean
   showLoginMessage?: boolean
@@ -410,7 +411,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   }
 
   getVerificationDetails = () => {
-    const { goToUphold, greetings, onDisconnectClick, onVerifyClick, walletState } = this.props
+    const { goToWalletProvider, greetings, onDisconnectClick, onVerifyClick, walletState } = this.props
     const notVerified = walletState === 'connected' || walletState === 'pending'
 
     return (
@@ -431,7 +432,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               : null
             }
             <li>
-              <StyledLink onClick={this.onDetailsLinkClicked.bind(this, goToUphold)} target={'_blank'}>
+              <StyledLink onClick={this.onDetailsLinkClicked.bind(this, goToWalletProvider)} target={'_blank'}>
                 {getLocale('walletGoToUphold')}
               </StyledLink>
             </li>

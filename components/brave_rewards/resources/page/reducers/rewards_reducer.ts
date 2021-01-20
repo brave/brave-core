@@ -359,7 +359,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.DISCONNECT_WALLET: {
-      chrome.send('brave_rewards.disconnectWallet', [action.payload.walletType])
+      chrome.braveRewards.disconnectWallet()
       break
     }
     case types.ONLY_ANON_WALLET: {

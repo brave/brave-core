@@ -2870,6 +2870,10 @@ void RewardsServiceImpl::OnGetUpholdWallet(
     GetUpholdWalletCallback callback,
     const ledger::type::Result result,
     ledger::type::UpholdWalletPtr wallet) {
+  // TODO(zenparsing): In the front-end, if result is EXPIRED_TOKEN, then
+  // another call is made to getExternalWallet('uphold'), basically in a
+  // loop as long as that status is returned. Do we need to do that here?
+  // That should probably be taken care of in native-ledger, though.
   std::move(callback).Run(result, std::move(wallet));
 }
 

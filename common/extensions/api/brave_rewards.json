@@ -1077,51 +1077,63 @@
       {
         "name": "getExternalWallet",
         "type": "function",
-        "description": "Get external wallet for provided wallet type",
+        "description": "Gets the user's current external wallet",
         "parameters": [
-          {
-            "name": "type",
-            "type": "string"
-          },
           {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "name": "result",
-                "type": "integer"
-              },
-              {
                 "name": "wallet",
                 "type": "object",
                 "optional": true,
+                "description": "The user's current external wallet",
                 "properties": {
-                  "token": {
-                    "type": "any"
-                  },
-                  "address": {
-                    "type": "any"
-                  },
-                  "status": {
-                    "type": "any"
-                  },
-                  "verifyUrl": {
-                    "type": "any"
-                  },
-                  "addUrl": {
-                    "type": "any"
-                  },
-                  "withdrawUrl": {
-                    "type": "any"
+                  "provider": {
+                    "type": "string",
+                    "description": "TODO"
                   },
                   "userName": {
-                    "type": "any"
+                    "type": "string",
+                    "description": "TODO"
                   },
-                  "accountUrl": {
-                    "type": "any"
+                  "address": {
+                    "type": "any",
+                    "description": "The wallet address"
                   },
-                  "loginUrl": {
-                    "type": "string"
+                  "status": {
+                    "type": "string",
+                    "description": "The current connection status of the external wallet. One of 'connecting', 'connected', or 'disconnected'."
+                  },
+                  "verified": {
+                    "type": "boolean",
+                    "description": "A value indicating whether the user's identity has been verified by the external wallet provider"
+                  },
+                  "links": {
+                    "type": "object",
+                    "description": "A collection of URLs associated with the external wallet",
+                    "properties": {
+                      "account": {
+                        "type": "string",
+                        "description": "TODO"
+                      },
+                      "login": {
+                        "type": "string",
+                        "description": "TODO"
+                      },
+                      "verify": {
+                        "type": "string",
+                        "description": "TODO"
+                      },
+                      "deposit": {
+                        "type": "string",
+                        "description": "TODO"
+                      },
+                      "withdraw": {
+                        "type": "string",
+                        "description": "TODO"
+                      }
+                    }
                   }
                 }
               }
@@ -1132,13 +1144,8 @@
       {
         "name": "disconnectWallet",
         "type": "function",
-        "description": "Disconnect wallet",
-        "parameters": [
-          {
-            "name": "type",
-            "type": "string"
-          }
-        ]
+        "description": "Disconnects the user's current external wallet",
+        "parameters": []
       },
       {
         "name": "onlyAnonWallet",

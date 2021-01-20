@@ -117,7 +117,7 @@ class SettingsPage extends React.Component<Props, State> {
       prevProps.rewardsData.externalWallet &&
       !this.props.rewardsData.externalWallet
     ) {
-      this.actions.getExternalWallet('uphold')
+      this.actions.getExternalWallet()
     }
   }
 
@@ -146,7 +146,7 @@ class SettingsPage extends React.Component<Props, State> {
     }, 60000)
 
     this.actions.fetchPromotions()
-    this.actions.getExternalWallet('uphold')
+    this.actions.getExternalWallet()
     this.actions.getOnboardingStatus()
 
     this.handleURL()
@@ -216,8 +216,8 @@ class SettingsPage extends React.Component<Props, State> {
 
     const { externalWallet } = this.props.rewardsData
 
-    if (externalWallet && externalWallet.verifyUrl) {
-      window.open(externalWallet.verifyUrl, '_self')
+    if (externalWallet && externalWallet.links.verify) {
+      window.open(externalWallet.links.verify, '_self')
     }
   }
 

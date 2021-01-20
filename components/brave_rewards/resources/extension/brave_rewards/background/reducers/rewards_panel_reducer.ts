@@ -458,8 +458,10 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       break
     }
     case types.ON_EXTERNAL_WALLET: {
-      state = { ...state }
-      state.externalWallet = payload.wallet
+      state = {
+        ...state,
+        externalWallet: payload.wallet as chrome.braveRewards.ExternalWalletInfo
+      }
       break
     }
     case types.ON_REWARDS_PARAMETERS: {

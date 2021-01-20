@@ -97,33 +97,33 @@ export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus
   return status === 0
 }
 
-export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet): WalletState | undefined => {
+export const getWalletStatus = (
+  externalWallet?: chrome.braveRewards.ExternalWalletInfo
+): WalletState | undefined => {
   if (!externalWallet) {
     return undefined
   }
 
-  switch (externalWallet.status) {
-    // ledger::type::WalletStatus::CONNECTED
-    case 1:
-      return 'connected'
-    // ledger::type::WalletStatus::VERIFIED
-    case 2:
-      return 'verified'
-    // ledger::type::WalletStatus::DISCONNECTED_NOT_VERIFIED
-    case 3:
-      return 'disconnected_unverified'
-    // ledger::type::WalletStatus::DISCONNECTED_VERIFIED
-    case 4:
-      return 'disconnected_verified'
-    // ledger::type::WalletStatus::PENDING
-    case 5:
-      return 'pending'
-    default:
-      return 'unverified'
+  if (externalWallet.status === 'connecting') {
+    return 'pending'
   }
+
+  if (externalWallet.verified) {
+    return externalWallet.status === 'disconnected'
+      ? 'disconnected_verified'
+      : 'verified'
+  }
+
+  if (!externalWallet.address) {
+    return 'unverified'
+  }
+
+  return externalWallet.status === 'disconnected'
+      ? 'disconnected_unverified'
+      : 'connected'
 }
 
-export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) => {
+export const getGreetings = (externalWallet?: chrome.braveRewards.ExternalWalletInfo) => {
   if (!externalWallet || !externalWallet.userName) {
     return ''
   }
@@ -131,19 +131,22 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
   return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
-export const handleUpholdLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
+export const handleVerifyLink = (
+  balance: RewardsExtension.Balance,
+  externalWallet?: chrome.braveRewards.ExternalWalletInfo
+) => {
   if (!externalWallet) {
     return
   }
 
-  let link = externalWallet.verifyUrl
+  let link = externalWallet.links.verify
 
-  if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
+  if (!externalWallet.address) {
     link = 'brave://rewards/#verify'
   }
 
   if (balance.total < 25) {
-    link = externalWallet.loginUrl
+    link = externalWallet.links.login
   }
 
   chrome.tabs.create({
@@ -151,14 +154,16 @@ export const handleUpholdLink = (balance: RewardsExtension.Balance, externalWall
   })
 }
 
-export const getExternalWallet = (actions: any, externalWallet?: RewardsExtension.ExternalWallet) => {
-  chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
+export const getExternalWallet = (actions: any) => {
+  chrome.braveRewards.getExternalWallet((wallet) => {
+    // TODO(zenparsing): This should be done at the rewards service side
+    /*
     // EXPIRED TOKEN
     if (result === 24) {
-      getExternalWallet(actions, externalWallet)
+      getExternalWallet(actions)
       return
     }
-
+    */
     actions.onExternalWallet(wallet)
   })
 }

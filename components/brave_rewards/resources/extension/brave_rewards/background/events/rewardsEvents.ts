@@ -78,9 +78,9 @@ chrome.braveRewards.onReconcileComplete.addListener((result: number, type: numbe
   }
 })
 
-chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number, walletType: string}) => {
+chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number}) => {
   if (properties.result === 0) {
-    chrome.braveRewards.getExternalWallet(properties.walletType, (result: number, wallet: RewardsExtension.ExternalWallet) => {
+    chrome.braveRewards.getExternalWallet((wallet) => {
       rewardsPanelActions.onExternalWallet(wallet)
     })
 

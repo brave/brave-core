@@ -1009,21 +1009,14 @@ BraveRewardsGetExternalWalletFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetExternalWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    base::Value data(base::Value::Type::DICTIONARY);
-    return RespondNow(OneArgument(std::move(data)));
-  }
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service)
+    return RespondNow(Error("RewardsService is not available"));
 
-  std::unique_ptr<brave_rewards::GetExternalWallet::Params> params(
-    brave_rewards::GetExternalWallet::Params::Create(*args_));
+  rewards_service->GetUpholdWallet(base::BindOnce(
+      &BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet, this));
 
-  rewards_service->GetUpholdWallet(
-      base::BindOnce(
-          &BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet,
-          this));
   return RespondLater();
 }
 
@@ -1031,22 +1024,49 @@ void BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet(
     const ledger::type::Result result,
     ledger::type::UpholdWalletPtr wallet) {
   if (!wallet) {
-    Respond(OneArgument(base::Value(static_cast<int>(result))));
+    Respond(NoArguments());
     return;
   }
 
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetStringKey("token", wallet->token);
-  data.SetStringKey("address", wallet->address);
-  data.SetIntKey("status", static_cast<int>(wallet->status));
-  data.SetStringKey("verifyUrl", wallet->verify_url);
-  data.SetStringKey("addUrl", wallet->add_url);
-  data.SetStringKey("withdrawUrl", wallet->withdraw_url);
-  data.SetStringKey("userName", wallet->user_name);
-  data.SetStringKey("accountUrl", wallet->account_url);
-  data.SetStringKey("loginUrl", wallet->login_url);
+  std::string provider = "uphold";
+  std::string status = "disconnected";
+  bool verified = false;
 
-  Respond(TwoArguments(base::Value(static_cast<int>(result)), std::move(data)));
+  switch (wallet->status) {
+    case ledger::type::WalletStatus::NOT_CONNECTED:
+    case ledger::type::WalletStatus::DISCONNECTED_NOT_VERIFIED:
+      break;
+    case ledger::type::WalletStatus::CONNECTED:
+      status = "connected";
+      break;
+    case ledger::type::WalletStatus::VERIFIED:
+      status = "connected";
+      verified = true;
+      break;
+    case ledger::type::WalletStatus::DISCONNECTED_VERIFIED:
+      verified = true;
+      break;
+    case ledger::type::WalletStatus::PENDING:
+      status = "connecting";
+      break;
+  }
+
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey("provider", provider);
+  data.SetStringKey("userName", wallet->user_name);
+  data.SetStringKey("address", wallet->address);
+  data.SetStringKey("status", status);
+  data.SetBoolKey("verified", verified);
+
+  base::Value links(base::Value::Type::DICTIONARY);
+  links.SetStringKey("verify", wallet->verify_url);
+  links.SetStringKey("deposit", wallet->add_url);
+  links.SetStringKey("withdraw", wallet->withdraw_url);
+  links.SetStringKey("account", wallet->account_url);
+  links.SetStringKey("login", wallet->login_url);
+  data.SetKey("links", std::move(links));
+
+  Respond(OneArgument(std::move(data)));
 }
 
 BraveRewardsDisconnectWalletFunction::
@@ -1055,17 +1075,12 @@ BraveRewardsDisconnectWalletFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsDisconnectWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(NoArguments());
-  }
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service)
+    return RespondNow(Error("RewardsService is not available"));
 
-  std::unique_ptr<brave_rewards::DisconnectWallet::Params> params(
-    brave_rewards::DisconnectWallet::Params::Create(*args_));
-
-  rewards_service->DisconnectWallet(params->type);
+  rewards_service->DisconnectWallet("uphold");
   return RespondNow(NoArguments());
 }
 

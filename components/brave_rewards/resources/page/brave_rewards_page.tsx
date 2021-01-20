@@ -202,12 +202,14 @@ window.cr.define('brave_rewards', function () {
 
     // EXPIRED TOKEN
     if (properties.result === 24) {
-      getActions().getExternalWallet('uphold')
+      getActions().getExternalWallet()
     }
   }
 
-  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
-    getActions().onExternalWallet(properties.result, properties.wallet)
+  function externalWallet (wallet: chrome.braveRewards.ExternalWalletInfo) {
+    // TODO(zenparsing): That thing where we reload if we have an expired
+    // token?
+    getActions().onExternalWallet(wallet)
   }
 
   function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {

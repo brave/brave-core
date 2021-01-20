@@ -146,18 +146,13 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.GET_EXTERNAL_WALLET: {
-      chrome.send('brave_rewards.getExternalWallet', [action.payload.type])
+      chrome.braveRewards.getExternalWallet((wallet) => {
+        (self as any).brave_rewards.externalWallet(wallet)
+      })
       break
     }
     case types.ON_EXTERNAL_WALLET: {
-      state = { ...state }
-
-      if (action.payload.result === 24) { // on ledger::type::Result::EXPIRED_TOKEN
-        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
-        break
-      }
-
-      state.externalWallet = action.payload.wallet
+      state = { ...state, externalWallet: action.payload.wallet }
       break
     }
     case types.GET_MONTHLY_REPORT: {
