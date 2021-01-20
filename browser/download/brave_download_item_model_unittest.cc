@@ -96,8 +96,12 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     {"https://example.com:5678/foo.bar", "https://example.com:5678", true},
     // File, secure.
     {"file:///c:/foo/bar/foo.bar", "file:///", true},
-    // about:, secure.
-    {"about:about", "about:about", true},
+    // about:blank, secure.
+    {"about:blank", "about:blank", true},
+    // about:srcdoc, secure.
+    {"about:srcdoc", "about:srcdoc", true},
+    // Other about: URLs, not secure.
+    {"about:about", "about:about", false},
     // invalid, not secure.
     {"foo.bar.baz", "", false},
     // empty, not secure.
