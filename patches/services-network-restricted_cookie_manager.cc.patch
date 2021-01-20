@@ -1,8 +1,8 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index e97217669ea27658be4befa1a7fd64823200b71e..f5372e6b1c37d03a5ed98b7a0e3745cf77b00d40 100644
+index 07546488a18fbdc60db42ae47a7625807fdafc8d..5ad3526e010bfcca8f9393654e57273b85ee10eb 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
-@@ -241,6 +241,7 @@ void RestrictedCookieManager::GetAllForUrl(
+@@ -265,6 +265,7 @@ void RestrictedCookieManager::GetAllForUrl(
    //                                 removing deprecation warnings.
    net_options.set_return_excluded_cookies();
  
@@ -10,10 +10,10 @@ index e97217669ea27658be4befa1a7fd64823200b71e..f5372e6b1c37d03a5ed98b7a0e3745cf
    cookie_store_->GetCookieListWithOptionsAsync(
        url, net_options,
        base::BindOnce(&RestrictedCookieManager::CookieListToGetAllForUrlCallback,
-@@ -380,6 +381,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
- 
-   net::CookieOptions options =
-       MakeOptionsForSet(role_, url, site_for_cookies, cookie_settings());
+@@ -405,6 +406,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
+   net::CookieOptions options = MakeOptionsForSet(
+       role_, url, site_for_cookies, isolation_info_, cookie_settings(),
+       cookie_store_->cookie_access_delegate());
 +  BRAVE_SETCANONICALCOOKIE
    // TODO(chlily): |url| is validated to be the same origin as |origin_|, but
    // the path is not checked. If we ever decide to enforce the path constraint
