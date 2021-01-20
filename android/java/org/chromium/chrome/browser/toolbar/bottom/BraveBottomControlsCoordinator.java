@@ -123,6 +123,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     }
 
     public void updateHomeButtonState() {
-        mBottomToolbarCoordinator.updateHomeButtonState();
+        if (mBottomToolbarCoordinator != null) {
+            mBottomToolbarCoordinator.updateHomeButtonState();
+        }
     }
 }
