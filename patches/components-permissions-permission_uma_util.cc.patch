@@ -1,13 +1,19 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index 64042b1fc8cf906789d526d6c7a99dbc2ded9d76..4d3bc36bc3b50b2df0872365ef2c61ea88f4cc78 100644
+index 68828c19b1660fcded7984869c7f33b7f447e5c4..65faa52335b4f0d3e928356c157c2d1ac4d74b8a 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -50,7 +50,7 @@ namespace {
+@@ -103,12 +103,13 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
+     case RequestType::kWindowPlacement:
+       return RequestTypeForUma::PERMISSION_WINDOW_PLACEMENT;
+ #endif
++    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
+   }
+ }
  
  const int kPriorCountCap = 10;
  
--std::string GetPermissionRequestString(PermissionRequestType type) {
-+std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type) {
+-std::string GetPermissionRequestString(RequestTypeForUma type) {
++std::string GetPermissionRequestString_ChromiumImpl(RequestTypeForUma type) {
    switch (type) {
-     case PermissionRequestType::MULTIPLE:
+     case RequestTypeForUma::MULTIPLE:
        return "AudioAndVideoCapture";
