@@ -20,7 +20,6 @@ const std::vector<std::string> kVettedExtensions{
     brave_webtorrent_extension_id,
     crl_set_extension_id,
     hangouts_extension_id,
-    widevine_extension_id,
     brave_component_updater::kLocalDataFilesComponentId,
     // Ethereum remote client
     "odbfpeeihdkbihmopkbjmoonfanlbfcl",
