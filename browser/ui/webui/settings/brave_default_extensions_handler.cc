@@ -43,8 +43,16 @@
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #endif
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/widevine_utils.h"
+#endif
+
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
-    : weak_ptr_factory_(this) {}
+    : weak_ptr_factory_(this) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  was_widevine_enabled_ = IsWidevineOptedIn();
+#endif
+}
 
 BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
 
@@ -92,6 +100,14 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "isTorManaged",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorManaged,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setWidevineEnabled",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetWidevineEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isWidevineEnabled",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::IsWidevineEnabled,
+                          base::Unretained(this)));
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -108,11 +124,18 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
       prefs::kEnableMediaRouter,
       base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
                  base::Unretained(this)));
-#if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Init(g_brave_browser_process->local_state());
+#if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Add(
       tor::prefs::kTorDisabled,
       base::Bind(&BraveDefaultExtensionsHandler::OnTorEnabledChanged,
+                 base::Unretained(this)));
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  local_state_change_registrar_.Add(
+      kWidevineOptedIn,
+      base::Bind(&BraveDefaultExtensionsHandler::OnWidevineEnabledChanged,
                  base::Unretained(this)));
 #endif
 }
@@ -126,7 +149,16 @@ bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
       profile_->GetPrefs()->GetBoolean(prefs::kEnableMediaRouter);
   bool media_router_new_pref =
       profile_->GetPrefs()->GetBoolean(kBraveEnabledMediaRouter);
-  return media_router_current_pref != media_router_new_pref;
+
+  if (media_router_current_pref != media_router_new_pref)
+    return true;
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (was_widevine_enabled_ != IsWidevineOptedIn())
+    return true;
+#endif
+
+  return false;
 }
 
 void BraveDefaultExtensionsHandler::GetRestartNeeded(
@@ -272,6 +304,41 @@ void BraveDefaultExtensionsHandler::IsTorManaged(const base::ListValue* args) {
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_managed));
+}
+
+void BraveDefaultExtensionsHandler::SetWidevineEnabled(
+    const base::ListValue* args) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  CHECK_EQ(args->GetSize(), 1U);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+  enabled ? EnableWidevineCdmComponent() : DisableWidevineCdmComponent();
+  AllowJavascript();
+#endif
+}
+
+void BraveDefaultExtensionsHandler::IsWidevineEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0],
+#if BUILDFLAG(ENABLE_WIDEVINE)
+                            base::Value(IsWidevineOptedIn()));
+#else
+                            base::Value(false));
+#endif
+}
+
+void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener("widevine-enabled-changed",
+#if BUILDFLAG(ENABLE_WIDEVINE)
+                      base::Value(IsWidevineOptedIn()));
+#else
+                      base::Value(false));
+#endif
+    OnRestartNeededChanged();
+  }
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(

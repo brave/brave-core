@@ -10,16 +10,18 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "content/public/browser/browser_thread.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 
@@ -72,9 +74,7 @@ void ClearWidevinePrefs(Profile* profile) {
 
 }  // namespace
 
-void EnableWidevineCdmComponent(content::WebContents* web_contents) {
-  DCHECK(web_contents);
-
+void EnableWidevineCdmComponent() {
   if (IsWidevineOptedIn())
     return;
 
@@ -82,11 +82,20 @@ void EnableWidevineCdmComponent(content::WebContents* web_contents) {
   RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
 }
 
+void DisableWidevineCdmComponent() {
+  if (!IsWidevineOptedIn())
+    return;
+
+  SetWidevineOptedIn(false);
+  g_brave_browser_process->component_updater()->UnregisterComponent(
+      BraveDrmTabHelper::kWidevineComponentId);
+}
+
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
 #if defined(OS_LINUX)
   return for_restart
-      ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
-      : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
+             ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
+             : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
 #else
   return IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
 #endif
@@ -149,8 +158,8 @@ void MigrateObsoleteWidevineLocalStatePrefs(PrefService* local_state) {
 #if defined(OS_LINUX)
   // If local state doesn't have default value, it means we've used old
   // widevine binary. Delete old widevine binary.
-  if (!local_state->FindPreference(kWidevineInstalledVersion)->
-          IsDefaultValue()) {
+  if (!local_state->FindPreference(kWidevineInstalledVersion)
+           ->IsDefaultValue()) {
     DeleteOldWidevineBinary();
   }
 #endif

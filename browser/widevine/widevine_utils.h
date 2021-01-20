@@ -20,7 +20,8 @@ class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
-void EnableWidevineCdmComponent(content::WebContents* web_contents);
+void EnableWidevineCdmComponent();
+void DisableWidevineCdmComponent();
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);

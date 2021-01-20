@@ -18,9 +18,7 @@ bool WidevinePermissionRequest::is_test_ = false;
 WidevinePermissionRequest::WidevinePermissionRequest(
     content::WebContents* web_contents,
     bool for_restart)
-    : web_contents_(web_contents),
-      for_restart_(for_restart) {
-}
+    : web_contents_(web_contents), for_restart_(for_restart) {}
 
 WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
@@ -47,7 +45,7 @@ void WidevinePermissionRequest::PermissionGranted(bool is_one_time) {
   }
 #endif
   if (!for_restart_)
-    EnableWidevineCdmComponent(web_contents_);
+    EnableWidevineCdmComponent();
 }
 
 void WidevinePermissionRequest::PermissionDenied() {
