@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
+index 1b95c9e232ba3f707802962c8033493b21c6fab3..e08f046f72a30dd2084b31300c31614a5be49328 100644
+--- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
++++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
+@@ -81,7 +81,7 @@ public class BottomControlsCoordinator {
+         ViewGroup.LayoutParams params = container.getLayoutParams();
+         params.height = root.getResources().getDimensionPixelOffset(bottomControlsHeightId);
+         mMediator =
+-                new BottomControlsMediator(windowAndroid, model, controlsSizer, fullscreenManager,
++                new BraveBottomControlsMediator(windowAndroid, model, controlsSizer, fullscreenManager,
+                         root.getResources().getDimensionPixelOffset(bottomControlsHeightId),
+                         overlayPanelVisibilitySupplier);
+ 
