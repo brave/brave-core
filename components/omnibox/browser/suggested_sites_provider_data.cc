@@ -4,17 +4,25 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/stringprintf.h"
-#include "brave/components/binance/browser/regions.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
+#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/suggested_sites_provider.h"
 
 #include "base/strings/utf_string_conversions.h"
 
+#if BUILDFLAG(BINANCE_ENABLED)
+#include "brave/components/binance/browser/regions.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
+#endif
+
 namespace {
 
 std::string GetLocalizedURL(const std::string& query_params, bool str_display) {
+#if BUILDFLAG(BINANCE_ENABLED)
   const std::string locale =
       ntp_widget_utils::FindLocale(::binance::supported_locales, "en");
+#else
+  const std::string locale = "en";
+#endif
   return base::StringPrintf("%sbinance.com/%s/buy-sell-crypto%s",
                             (str_display ? "" : "https://wwww."),
                             locale.c_str(), query_params.c_str());
