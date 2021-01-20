@@ -4,13 +4,14 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import VisibilityTimer from '../../../../../helpers/visibilityTimer'
+import { getLocale } from '../../../../../../common/locale'
 import * as Card from '../../cardSizes'
-import CardImage from '../CardImage'
-import PublisherMeta from '../PublisherMeta'
 import useScrollIntoView from '../../useScrollIntoView'
 import useReadArticleClickHandler from '../../useReadArticleClickHandler'
 import { OnReadFeedItem, OnSetPublisherPref } from '../../'
-import VisibilityTimer from '../../../../../helpers/visibilityTimer'
+import CardImage from '../CardImage'
+import PublisherMeta from '../PublisherMeta'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
 interface Props {
@@ -116,7 +117,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
                     />
                   </svg>
                 </Card.PromotedIcon>
-                Promoted
+                {getLocale('promoted')}
               </Card.PromotedLabel>
               }
             </Card.Source>
