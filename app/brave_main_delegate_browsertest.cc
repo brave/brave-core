@@ -95,4 +95,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 
   for (const auto* feature : enabled_features)
     EXPECT_TRUE(base::FeatureList::IsEnabled(*feature));
+
+  EXPECT_TRUE(features::kDnsOverHttpsShowUiParam.default_value);
 }
