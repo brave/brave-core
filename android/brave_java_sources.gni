@@ -166,7 +166,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarNewTabButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsCoordinator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveScrollingBottomViewResourceFrameLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarLinearLayout.java",
@@ -233,6 +232,8 @@ if (enable_brave_sync) {
 brave_components_browser_ui_site_settings_android_java = [ "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java" ]
 
 brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
+
+brave_browser_ui_android_toolbar_sources = [ "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java" ]
 
 brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",

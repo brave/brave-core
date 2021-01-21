@@ -44,12 +44,15 @@ import org.chromium.chrome.browser.tab.SadTab;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
+import org.chromium.chrome.browser.tasks.tab_management.TabManagementModuleProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
+import org.chromium.chrome.browser.toolbar.bottom.ScrollingBottomViewResourceFrameLayout;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
@@ -92,13 +95,13 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabCountProvider mTabCountProvider;
 
     private boolean mIsBottomToolbarVisible;
-    private View mRootBottomView;
     private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private HomepageManager.HomepageStateListener mBraveHomepageStateListener;
     private AppCompatActivity mActivity;
     private WindowAndroid mWindowAndroid;
     private CompositorViewHolder mCompositorViewHolder;
+    private TabGroupUi mTabGroupUi;
 
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
@@ -165,7 +168,10 @@ public class BraveToolbarManager extends ToolbarManager {
             super.enableBottomControls();
             return;
         }
-        viewStub.setOnInflateListener((stub, inflated) -> { mRootBottomView = inflated; });
+        View root = viewStub.inflate();
+        mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
+                root.findViewById(R.id.bottom_container_slot), mAppThemeColorProvider,
+                mScrimCoordinator, mOmniboxFocusStateSupplier);
         assert (mActivity instanceof ChromeActivity);
         mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
                 mLayoutStateProviderSupplier,
@@ -177,15 +183,17 @@ public class BraveToolbarManager extends ToolbarManager {
                 /* Below are parameters for BottomControlsCoordinator */
                 mActivity, mWindowAndroid, mLayoutManager,
                 mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
-                mFullscreenManager, mActivity.findViewById(R.id.bottom_controls_stub),
-                mAppThemeColorProvider, mShareDelegateSupplier, mScrimCoordinator,
-                mOmniboxFocusStateSupplier, mOverlayPanelVisibilitySupplier));
-        ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
-                .setRootView(mRootBottomView);
+                mFullscreenManager, (ScrollingBottomViewResourceFrameLayout) root,
+                mAppThemeColorProvider, mTabGroupUi, mOverlayPanelVisibilitySupplier));
         boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
                 && mActivity.getResources().getConfiguration().orientation
                         != Configuration.ORIENTATION_LANDSCAPE;
         setBottomToolbarVisible(isBottomToolbarVisible);
+    }
+
+    @Override
+    public TabGroupUi getTabGroupUi() {
+        return mTabGroupUi;
     }
 
     @Override

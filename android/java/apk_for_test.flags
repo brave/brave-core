@@ -182,3 +182,11 @@
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
+    public <init>(...);
+}
