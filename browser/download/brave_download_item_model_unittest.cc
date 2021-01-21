@@ -101,7 +101,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     // about:srcdoc, secure.
     {"about:srcdoc", "about:srcdoc", true},
     // Other about: URLs, not secure.
-    {"about:about", "about:about", false},
+    {"about:about", "about:about", true},
     // invalid, not secure.
     {"foo.bar.baz", "", false},
     // empty, not secure.
@@ -117,7 +117,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     EXPECT_STREQ(
         test_case.expected_text,
         base::UTF16ToUTF8(model().GetOriginURLText(&is_secure)).c_str());
-    EXPECT_EQ(is_secure, test_case.expected_is_secure);
+    EXPECT_EQ(is_secure, test_case.expected_is_secure) << test_case.url;
     Mock::VerifyAndClearExpectations(&item());
   }
 }
