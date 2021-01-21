@@ -4743,11 +4743,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_UPDATE_PASSWORD_DIFFERENT_DOMAINS_TITLE" desc="The title of the update password bubble when the submitted form origin isn't equal to saved credentials origin.">
         Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
       </message>
-      <message name="IDS_SAVE_PASSWORD_TO_GOOGLE" desc="The title of the save password bubble when the user syncs passswors to thir Brave account.">
-        Save password to your Brave sync chain?
+      <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of save password message when the user is signed in.">
+        <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to your Brave sync chain, <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
       </message>
-      <message name="IDS_SAVE_ACCOUNT_TO_GOOGLE" desc="The title of the save password bubble when a federated credential can be saved to the user's Brave account.">
-        Save username to your Brave sync chain?
+      <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The alternative description of save password message when the user is signed in.">
+        <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
       </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
@@ -5380,7 +5380,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Uninstall
       </message>
       <message name="IDS_NTP_CUSTOMIZE_COLOR_PICKER_LABEL" desc="The label for the color picker in the customization menu on the New Tab Page">
-        Select color
+        Custom color
       </message>
       <message name="IDS_NTP_CUSTOMIZE_DEFAULT_LABEL" desc="The label for the Default theme in the customization menu on the New Tab Page">
         Default
@@ -5486,6 +5486,36 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_CART_HEADER_CHIP_NEW" desc="Text shown on the header chip of chrome cart module.">
         New
+      </message>
+      <message name="IDS_NTP_MODULES_CART_TITLE" desc="Title shown in the header of the chrome cart module.">
+        Your carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_WARM_WELCOME" desc="Text shown in the module header when module shows for the first couple of times. This is served as welcome message and user education.">
+        Find what you added to shopping carts and check out when you're ready
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_HIDE" desc="An option in the chrome cart module action menu to temporarily hide the module.">
+        Hide these carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_HIDE_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart module has been temporarily hidden.">
+        Carts hidden. They’ll reappear when you make changes.
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_REMOVE" desc="An option in the chrome cart module action menu to permanently remove the module.">
+        Never show carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_REMOVE_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart module has been permanently removed.">
+        You won’t see your carts again on this page
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_HIDE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant will be temporarily hidden. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com). ">
+        Hide <ph name="MERCHANT">$1<ex>Amazon</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_HIDE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been temporarily hidden. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+        <ph name="MERCHANT">$1<ex>Amazon</ex> hidden. You’ll see it again when you revisit your cart.</ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant wil be permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+        Never show <ph name="MERCHANT">$1<ex>Amazon</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+        You won't see <ph name="MERCHANT">$1<ex>Amazon</ex></ph> again
       </message>
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -7747,7 +7777,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Dice Web Signin Interception Bubble-->
       <if expr="not chromeos and not is_android">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
-          Create
+          Ok
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL_V2" desc="Label of the confirmation button in the web signin interception bubble">
+          Continue
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
@@ -7756,31 +7789,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Cancel
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
-          Switch
+          Ok
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL_V2" desc="Label of the profile switch button in the web signin interception bubble">
+          Continue
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_GUEST_LINK" desc="Text of the link to offer switching to a Guest profile">
             Not your device? Use <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
-          To keep your browsing separate, you can create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
-          To separate personal and <ph name="EXISTING_USER">$2<ex>example.com</ex></ph> browsing, create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when both accounts are managed">
-          To separate your <ph name="NEW_USER">$1<ex>example.com</ex></ph> browsing from your <ph name="EXISTING_USER">$2<ex>example.com</ex></ph> browsing, create a new profile
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
-          Create a new profile for work?
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
+          This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_TITLE" desc="Title for the profile switch interception bubble">
-          Switch to another profile?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC" desc="Description for the profile switch interception bubble">
-          <ph name="EXISTING_USER">$2<ex>Bob</ex></ph>'s profile is already signed in to <ph name="NEW_USER">$1<ex>bob@gmail.com</ex></ph>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC_V2" desc="Description for the profile switch interception bubble">
+          <ph name="NAME">$2<ex>Bob</ex></ph>'s profile is linked to <ph name="EMAIL">$1<ex>bob@gmail.com</ex></ph>
         </message>
       </if>
 
@@ -9725,6 +9749,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_PERMISSIONS_DIALOG_SELECT" desc="Button confirming the devices selected for access by the app.">
         Select
       </message>
+      <message name="IDS_DEVICE_PERMISSIONS_DIALOG_LOADING_LABEL" desc="Text on label that the browser is loading the list of selectable devices.">
+        Finding devices...
+      </message>
+      <message name="IDS_DEVICE_PERMISSIONS_DIALOG_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of selectable devices.">
+        Finding devices...
+      </message>
 
       <!-- About device logs UI display strings -->
       <message name="IDS_DEVICE_LOG_TITLE" desc="Title of the chrome://device-log page">
@@ -9859,9 +9889,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_TURN_ON_BLUETOOTH_LINK_TEXT" desc="Text of the 'Turn on Bluetooth' link when Bluetooth adapter is turned off.">
         Turn on Bluetooth
       </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_SCANNING" desc="The label that is used to indicate the chooser is scanning for Bluetooth devices.">
-        ''' while scanning for devices...
-      </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_RE_SCAN" desc="Text of a button the user can click to start a new scan for Bluetooth devices.">
         Re-scan
       </message>
@@ -9907,6 +9934,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_USB_DEVICE_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the USB chooser popup and connects the selected device.">
       Connect
+    </message>
+    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of USB devices.">
+      Finding devices...
+    </message>
+    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of USB devices.">
+      Finding USB devices...
     </message>
     <message name="IDS_DEVICE_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
       Cancel
@@ -9971,6 +10004,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
         Connect
       </message>
+      <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of serial devices.">
+        Finding devices...
+      </message>
+      <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of serial devices.">
+        Finding serial devices...
+      </message>
     </if>
 
     <!-- HID (Human Interface Device) chooser -->
@@ -9986,6 +10025,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_HID_CHOOSER_ITEM_WITH_NAME" desc="User option displaying the device name, vendor ID, and product ID for a Human Interface Device (HID).">
         <ph name="DEVICE_NAME">$1<ex>Wireless Controller</ex></ph> (Vendor: <ph name="VENDOR_ID">$2<ex>0x1234</ex></ph>, Product: <ph name="PRODUCT_ID">$3<ex>0xabcd</ex></ph>)
+      </message>
+      <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
+        Finding devices...
+      </message>
+      <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
+        Finding HID devices...
       </message>
     </if>
 
@@ -10005,6 +10050,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_FONT_ACCESS_CHOOSER_SELECT_ALL_CHECKBOX_TEXT" desc="Label for the checkbox that allows the selection of all fonts.">
         Select all fonts
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of available fonts.">
+        Loading fonts...
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of available fonts.">
+        Loading fonts...
       </message>
     </if>
 
@@ -10813,9 +10864,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Watch
     </message>
 
-    <!-- BraveBeta bubble -->
-    <message name="IDS_CHROMEBETA_RELAUNCH_BUTTON_LABEL" desc="Label on the button in the footer of the Brave Beta bubble which will relaunch the browser.">
+    <!-- BraveLabs bubble -->
+    <message name="IDS_CHROMELABS_RELAUNCH_BUTTON_LABEL" desc="Label on the button in the footer of the Brave Labs bubble which will relaunch the browser.">
       Relaunch
+    </message>
+    <message name="IDS_WINDOW_TITLE_EXPERIMENTS" desc="Window title for the Brave Labs bubble">
+      Experiments
     </message>
   </messages>
 </release>
