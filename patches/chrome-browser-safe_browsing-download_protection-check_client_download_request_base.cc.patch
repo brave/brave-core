@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-index 8e22a9f4cac677ec3694f9c8ebda7d18597ab357..dfc68130032f770c8c6c23b2083ff765f0f494f8 100644
+index fdd00658f55fe6e7db0ed107fa9e9341aebf7aca..f8868594c10cde468579e214b110b79b291b55c7 100644
 --- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
 +++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-@@ -554,6 +554,7 @@ void CheckClientDownloadRequestBase::SendRequest() {
-   request->set_archive_directory_count(directory_count_);
-   request->set_request_ap_verdicts(is_under_advanced_protection_);
+@@ -328,6 +328,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(
+     std::unique_ptr<ClientDownloadRequest> request) {
+   client_download_request_ = std::move(request);
+   SanitizeRequest();
++  BRAVE_ON_REQUEST_BUILT_FILTER
  
-+  BRAVE_SEND_REQUEST_FILTER
-   if (!request->SerializeToString(&client_download_request_data_)) {
-     FinishRequest(DownloadCheckResult::UNKNOWN, REASON_INVALID_REQUEST_PROTO);
-     return;
+   // If it's an archive with no archives or executables, finish early.
+   if ((client_download_request_->download_type() ==
