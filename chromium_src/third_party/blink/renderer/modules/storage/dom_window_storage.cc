@@ -211,7 +211,7 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
   if (!ShouldUseEphemeralStorage(
-          window, WebContentSettingsClient::StorageType::kSessionStorage))
+          window, WebContentSettingsClient::StorageType::kLocalStorage))
     return storage;
 
   return ephemeralLocalStorage();
