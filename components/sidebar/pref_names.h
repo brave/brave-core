@@ -9,7 +9,7 @@
 namespace sidebar {
 
 constexpr char kSidebarItems[] = "brave.sidebar.sidebar_items";
-constexpr char kSidebarEnabled[] = "brave.sidebar.sidebar_enabled";
+constexpr char kSidebarShowOption[] = "brave.sidebar.sidebar_show_option";
 
 }  // namespace sidebar
 

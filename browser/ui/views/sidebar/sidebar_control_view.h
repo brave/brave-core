@@ -62,12 +62,6 @@ class SidebarControlView : public views::View,
   void Update();
 
  private:
-  enum ContextMenuIDs {
-    kShowSidebarAlways,
-    kShowSidebarOnMouseOver,
-    kShowSidebarOnClick,
-  };
-
   void AddChildViews();
 
   void OnButtonPressed(views::View* view);

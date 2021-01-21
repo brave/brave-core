@@ -11,13 +11,10 @@
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "components/prefs/pref_service.h"
 
 namespace sidebar {
 
@@ -31,11 +28,7 @@ SidebarService* GetSidebarService(Browser* browser) {
 
 SidebarController::SidebarController(BraveBrowser* browser, Profile* profile)
     : browser_(browser), sidebar_model_(new SidebarModel(profile)) {
-  profile_state_change_registrar_.Init(profile->GetPrefs());
-  profile_state_change_registrar_.Add(
-      sidebar::kSidebarEnabled,
-      base::BindRepeating(&SidebarController::OnPreferenceChanged,
-                          base::Unretained(this)));
+  sidebar_service_observed_.Add(GetSidebarService(browser_));
 }
 
 SidebarController::~SidebarController() = default;
@@ -68,6 +61,12 @@ void SidebarController::ActivateItemAt(int index) {
   }
 }
 
+void SidebarController::OnShowSidebarOptionChanged(int option) {
+  // Clear active state whenever sidebar enabled state is changed.
+  ActivateItemAt(-1);
+  UpdateSidebarVisibility();
+}
+
 void SidebarController::AddItemWithCurrentTab() {
   if (!sidebar::CanAddCurrentActiveTabToSidebar(browser_))
     return;
@@ -91,20 +90,11 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
   UpdateSidebarVisibility();
 }
 
-void SidebarController::OnPreferenceChanged(const std::string& pref_name) {
-  if (pref_name == sidebar::kSidebarEnabled) {
-    // Clear active state whenever sidebar enabled state is changed.
-    ActivateItemAt(-1);
-    UpdateSidebarVisibility();
-    return;
-  }
-}
-
 void SidebarController::UpdateSidebarVisibility() {
   DCHECK(sidebar_);
-  const bool sidebar_enabled =
-      browser_->profile()->GetPrefs()->GetBoolean(sidebar::kSidebarEnabled);
-  sidebar_->ShowSidebar(sidebar_enabled);
+  const int show_options =
+      GetSidebarService(browser_)->GetSidebarShowOption();
+  sidebar_->ShowSidebar(show_options == sidebar::SidebarService::kShowAlways);
 }
 
 }  // namespace sidebar

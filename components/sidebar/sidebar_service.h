@@ -11,6 +11,7 @@
 #include "base/observer_list.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -20,11 +21,19 @@ namespace sidebar {
 // This manages per-context persisted sidebar items list.
 class SidebarService : public KeyedService {
  public:
+  enum ShowSidebarOption {
+    kShowAlways = 0,
+    kShowOnMouseOver,
+    kShowOnClick,
+    kShowNever,
+  };
+
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnItemAdded(const SidebarItem& item, int index) = 0;
-    virtual void OnWillRemoveItem(const SidebarItem& item, int index) = 0;
-    virtual void OnItemRemoved(const SidebarItem& item, int index) = 0;
+    virtual void OnItemAdded(const SidebarItem& item, int index) {}
+    virtual void OnWillRemoveItem(const SidebarItem& item, int index) {}
+    virtual void OnItemRemoved(const SidebarItem& item, int index) {}
+    virtual void OnShowSidebarOptionChanged(int option) {}
 
    protected:
     ~Observer() override = default;
@@ -44,6 +53,8 @@ class SidebarService : public KeyedService {
   void RemoveObserver(Observer* observer);
 
   std::vector<SidebarItem> GetNotAddedDefaultSidebarItems() const;
+  int GetSidebarShowOption() const;
+  void SetSidebarShowOption(int show_options);
 
   SidebarService(const SidebarService&) = delete;
   SidebarService& operator=(const SidebarService&) = delete;
@@ -54,10 +65,12 @@ class SidebarService : public KeyedService {
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
   std::vector<SidebarItem> GetDefaultSidebarItemsFromCurrentItems() const;
+  void OnPreferenceChanged(const std::string& pref_name);
 
   PrefService* prefs_ = nullptr;
   std::vector<SidebarItem> items_;
   base::ObserverList<Observer> observers_;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace sidebar

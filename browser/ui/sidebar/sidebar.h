@@ -8,6 +8,7 @@
 
 namespace sidebar {
 
+// Interact with UI layer.
 class Sidebar {
  public:
   virtual void ShowSidebar(bool show) = 0;

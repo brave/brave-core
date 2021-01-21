@@ -105,8 +105,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  (*s_brave_allowlist)[sidebar::kSidebarEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
   // new tab prefs
   (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =

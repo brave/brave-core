@@ -9,10 +9,12 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -132,14 +134,17 @@ void SidebarControlView::ShowContextMenuForViewImpl(
   context_menu_model_->AddTitle(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_TITLE));
   context_menu_model_->AddCheckItem(
-      kShowSidebarAlways,
+      sidebar::SidebarService::kShowAlways,
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
   context_menu_model_->AddCheckItem(
-      kShowSidebarOnMouseOver,
+      sidebar::SidebarService::kShowOnMouseOver,
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
   context_menu_model_->AddCheckItem(
-      kShowSidebarOnClick,
+      sidebar::SidebarService::kShowOnClick,
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
+  context_menu_model_->AddCheckItem(
+      sidebar::SidebarService::kShowNever,
+      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU);
   context_menu_runner_->RunMenuAt(
@@ -148,11 +153,15 @@ void SidebarControlView::ShowContextMenuForViewImpl(
 }
 
 void SidebarControlView::ExecuteCommand(int command_id, int event_flags) {
-  NOTIMPLEMENTED();
+  auto* service =
+      sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
+  service->SetSidebarShowOption(command_id);
 }
 
 bool SidebarControlView::IsCommandIdChecked(int command_id) const {
-  return command_id == kShowSidebarAlways;
+  const auto* service =
+      sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
+  return command_id == service->GetSidebarShowOption();
 }
 
 void SidebarControlView::OnItemAdded(const sidebar::SidebarItem& item,

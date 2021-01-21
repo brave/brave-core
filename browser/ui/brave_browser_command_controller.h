@@ -39,6 +39,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   void UpdateCommandForWebcompatReporter();
   void UpdateCommandForBraveSync();
   void UpdateCommandForBraveWallet();
+  void UpdateCommandForSidebar();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,

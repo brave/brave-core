@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,6 +25,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "components/sync/driver/sync_driver_switches.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "base/feature_list.h"
+#include "brave/components/sidebar/features.h"
 #endif
 
 namespace {
@@ -122,6 +128,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
 #endif
+  UpdateCommandForSidebar();
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, !is_guest_session);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, !is_guest_session);
   UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
@@ -148,6 +155,13 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
                        !brave::IsTorDisabledForProfile(browser_->profile()));
 }
 #endif
+
+void BraveBrowserCommandController::UpdateCommandForSidebar() {
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature))
+    UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
+#endif
+}
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);

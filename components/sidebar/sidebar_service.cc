@@ -60,12 +60,18 @@ void SidebarService::RegisterPrefs(PrefRegistrySimple* registry) {
     return;
 
   registry->RegisterListPref(kSidebarItems);
-  registry->RegisterBooleanPref(kSidebarEnabled, true);
+  registry->RegisterIntegerPref(kSidebarShowOption, kShowAlways);
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
   DCHECK(prefs_);
   LoadSidebarItems();
+
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      kSidebarShowOption,
+      base::BindRepeating(&SidebarService::OnPreferenceChanged,
+                          base::Unretained(this)));
 }
 
 SidebarService::~SidebarService() = default;
@@ -138,6 +144,14 @@ SidebarService::GetDefaultSidebarItemsFromCurrentItems() const {
   return items;
 }
 
+int SidebarService::GetSidebarShowOption() const {
+  return prefs_->GetInteger(kSidebarShowOption);
+}
+
+void SidebarService::SetSidebarShowOption(int show_options) {
+  prefs_->SetInteger(kSidebarShowOption, show_options);
+}
+
 void SidebarService::LoadSidebarItems() {
   auto* preference = prefs_->FindPreference(kSidebarItems);
   if (preference->IsDefaultValue()) {
@@ -176,6 +190,14 @@ void SidebarService::LoadSidebarItems() {
 
     items_.push_back(SidebarItem::Create(GURL(url), base::UTF8ToUTF16(title),
                                          type, open_in_panel));
+  }
+}
+
+void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == kSidebarShowOption) {
+    for (Observer& obs : observers_)
+      obs.OnShowSidebarOptionChanged(GetSidebarShowOption());
+    return;
   }
 }
 

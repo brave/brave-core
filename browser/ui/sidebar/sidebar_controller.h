@@ -9,7 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "components/prefs/pref_change_registrar.h"
+#include "base/scoped_observer.h"
+#include "brave/components/sidebar/sidebar_service.h"
 
 class BraveBrowser;
 class GURL;
@@ -28,10 +29,10 @@ class SidebarModel;
 // This will observe SidebarService to know per-profile sidebar data changing
 // such as adding new item or deleting existing item.
 // Controller will request about add/delete items to SidebarService.
-class SidebarController {
+class SidebarController : public SidebarService::Observer {
  public:
   SidebarController(BraveBrowser* browser, Profile* profile);
-  virtual ~SidebarController();
+  ~SidebarController() override;
 
   SidebarController(const SidebarController&) = delete;
   SidebarController& operator=(const SidebarController&) = delete;
@@ -47,6 +48,9 @@ class SidebarController {
 
   SidebarModel* model() const { return sidebar_model_.get(); }
 
+  // SidebarService::Observer overrides:
+  void OnShowSidebarOptionChanged(int option) override;
+
  private:
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateSidebarVisibility();
@@ -55,8 +59,9 @@ class SidebarController {
   // Interface to view.
   Sidebar* sidebar_ = nullptr;
 
-  PrefChangeRegistrar profile_state_change_registrar_;
   std::unique_ptr<SidebarModel> sidebar_model_;
+  ScopedObserver<SidebarService, SidebarService::Observer>
+      sidebar_service_observed_{this};
 };
 
 }  // namespace sidebar

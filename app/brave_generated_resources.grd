@@ -966,8 +966,14 @@ up to 6x faster on major news sites.
         <message name="IDS_SIDEBAR_SHOW_OPTION_ONCLICK" desc="Label for show sidebar on click option">
           On click
         </message>
-        <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED" desc="Label for show/hide sidebar option in settings">
-          Enable Sidebar
+        <message name="IDS_SIDEBAR_SHOW_OPTION_NEVER" desc="Label for show sidebar on click option">
+          Never
+        </message>
+        <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC" desc="Label for show sidebar option in settings">
+          Enabled
+        </message>
+        <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC" desc="Label for show sidebar option in settings">
+          Disabled
         </message>
         <message name="IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_1" desc="Label for first row text in item added feedback bubble">
           Added

@@ -1,4 +1,4 @@
-<style include="settings-shared">
+<style include="settings-shared iron-flex">
 </style>
 <settings-toggle-button
   class="cr-row"
@@ -6,12 +6,21 @@
   label="$i18n{appearanceSettingsLocationBarIsWide}">
 </settings-toggle-button>
 
-<template is="dom-if" if="[[isSidebarFeatureEnabled_()]]">
-<settings-toggle-button
-  class="cr-row"
-  pref="{{prefs.brave.sidebar.sidebar_enabled}}"
-  label="$i18n{appearanceSettingsSidebarEnabled}">
-</settings-toggle-button>
+<template is="dom-if" if="[[isSidebarFeatureEnabled_]]">
+  <div class="settings-box">
+    <div class="flex" id="labelWrapper" aria-hidden="true">
+      <div class="label">$i18n{appearanceSettingsShowOptionTitle}</div>
+      <div class="secondary label" id="sub-label">
+        <span id="sub-label-text" aria-hidden="true">
+          [[getSidebarShowEnabledLabel_()]]
+        </span>
+      </div>
+    </div>
+    <settings-dropdown-menu id="sidebarShowOption"
+      pref="{{prefs.brave.sidebar.sidebar_show_option}}"
+      menu-options="[[sidebarShowOptions_]]">
+    </settings-toggle-button>
+  </div>
 </template>
 <settings-toggle-button
   class="cr-row"
