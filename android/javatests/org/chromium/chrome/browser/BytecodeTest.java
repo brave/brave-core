@@ -44,6 +44,7 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modelutil.PropertyModel;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -104,6 +105,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator"));
     }
 
     @Test
@@ -209,6 +214,11 @@ public class BytecodeTest {
                 OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
                 Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
+                WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
+                FullscreenManager.class, int.class, ObservableSupplier.class));
     }
 
     @Test
@@ -262,8 +272,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mActivityTabProvider"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mAppThemeColorProvider"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mShareDelegateSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
         Assert.assertTrue(fieldExists(
@@ -384,8 +392,8 @@ public class BytecodeTest {
             return false;
         }
         try {
-            Constructor ctor1 = c1.getConstructor(parameterTypes);
-            Constructor ctor2 = c2.getConstructor(parameterTypes);
+            Constructor ctor1 = c1.getDeclaredConstructor(parameterTypes);
+            Constructor ctor2 = c2.getDeclaredConstructor(parameterTypes);
             if (ctor1 != null && ctor2 != null) {
                 return true;
             }
