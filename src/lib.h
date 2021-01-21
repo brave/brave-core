@@ -30,34 +30,37 @@ bool set_domain_resolver(C_DomainResolverCallback resolver);
 /**
  * Create a new `Engine`.
  */
-C_Engine *engine_create(const char *rules);
+struct C_Engine *engine_create(const char *rules);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.
  */
-bool engine_match(C_Engine *engine,
+bool engine_match(struct C_Engine *engine,
                   const char *url,
                   const char *host,
                   const char *tab_host,
                   bool third_party,
                   const char *resource_type,
-                  bool *saved_from_exception,
-                  char **redirect);
+                  bool *did_match_exception,
+                  bool *did_match_important,
+                  char **redirect,
+                  bool previously_matched_rule,
+                  bool force_check_exceptions);
 
 /**
  * Adds a tag to the engine for consideration
  */
-void engine_add_tag(C_Engine *engine, const char *tag);
+void engine_add_tag(struct C_Engine *engine, const char *tag);
 
 /**
  * Checks if a tag exists in the engine
  */
-bool engine_tag_exists(C_Engine *engine, const char *tag);
+bool engine_tag_exists(struct C_Engine *engine, const char *tag);
 
 /**
  * Adds a resource to the engine by name
  */
-bool engine_add_resource(C_Engine *engine,
+bool engine_add_resource(struct C_Engine *engine,
                          const char *key,
                          const char *content_type,
                          const char *data);
@@ -65,22 +68,22 @@ bool engine_add_resource(C_Engine *engine,
 /**
  * Adds a list of `Resource`s from JSON format
  */
-void engine_add_resources(C_Engine *engine, const char *resources);
+void engine_add_resources(struct C_Engine *engine, const char *resources);
 
 /**
  * Removes a tag to the engine for consideration
  */
-void engine_remove_tag(C_Engine *engine, const char *tag);
+void engine_remove_tag(struct C_Engine *engine, const char *tag);
 
 /**
  * Deserializes a previously serialized data file list.
  */
-bool engine_deserialize(C_Engine *engine, const char *data, size_t data_size);
+bool engine_deserialize(struct C_Engine *engine, const char *data, size_t data_size);
 
 /**
  * Destroy a `Engine` once you are done with it.
  */
-void engine_destroy(C_Engine *engine);
+void engine_destroy(struct C_Engine *engine);
 
 /**
  * Destroy a `*c_char` once you are done with it.
@@ -90,14 +93,14 @@ void c_char_buffer_destroy(char *s);
 /**
  * Returns a set of cosmetic filtering resources specific to the given url, in JSON format
  */
-char *engine_url_cosmetic_resources(C_Engine *engine, const char *url);
+char *engine_url_cosmetic_resources(struct C_Engine *engine, const char *url);
 
 /**
  * Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
  *
  * The leading '.' or '#' character should not be provided
  */
-char *engine_hidden_class_id_selectors(C_Engine *engine,
+char *engine_hidden_class_id_selectors(struct C_Engine *engine,
                                        const char *const *classes,
                                        size_t classes_size,
                                        const char *const *ids,

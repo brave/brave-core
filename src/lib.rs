@@ -60,8 +60,11 @@ pub unsafe extern "C" fn engine_match(
     tab_host: *const c_char,
     third_party: bool,
     resource_type: *const c_char,
-    saved_from_exception: *mut bool,
+    did_match_exception: *mut bool,
+    did_match_important: *mut bool,
     redirect: *mut *mut c_char,
+    previously_matched_rule: bool,
+    force_check_exceptions: bool,
 ) -> bool {
     let url = CStr::from_ptr(url).to_str().unwrap();
     let host = CStr::from_ptr(host).to_str().unwrap();
@@ -69,14 +72,17 @@ pub unsafe extern "C" fn engine_match(
     let resource_type = CStr::from_ptr(resource_type).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let blocker_result = engine.check_network_urls_with_hostnames(
+    let blocker_result = engine.check_network_urls_with_hostnames_subset(
         url,
         host,
         tab_host,
         resource_type,
         Some(third_party),
+        previously_matched_rule,
+        force_check_exceptions,
     );
-    *saved_from_exception = blocker_result.filter != None && blocker_result.exception != None;
+    *did_match_exception = blocker_result.exception.is_some();
+    *did_match_important = blocker_result.important;
     *redirect = match blocker_result.redirect {
         Some(x) => match CString::new(x) {
             Ok(y) => y.into_raw(),
