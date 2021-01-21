@@ -34,8 +34,6 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.share.ShareDelegateImpl.ShareOrigin;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
@@ -75,8 +73,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     /** The activity tab provider. */
     private ActivityTabProvider mTabProvider;
 
-    private final ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
-    private final Callback<ShareDelegate> mShareDelegateSupplierCallback;
     private ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
             new ObservableSupplierImpl<>();
     private CallbackController mCallbackController = new CallbackController();
@@ -91,23 +87,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    /**
-     * Build the coordinator that manages the bottom toolbar.
-     * @param stub The bottom toolbar {@link ViewStub} to inflate.
-     * @param tabProvider The {@link ActivityTabProvider} used for making the IPH.
-     * @param themeColorProvider The {@link ThemeColorProvider} for the bottom toolbar.
-     * @param shareDelegateSupplier The supplier for the {@link ShareDelegate} the bottom controls
-     *         should use to share content.
-     * @param openHomepageAction The action that opens the homepage.
-     * @param setUrlBarFocusAction The function that sets Url bar focus. The first argument is
-     * @param overviewModeBehaviorSupplier Supplier for the overview mode manager.
-     * @param menuButtonHelperSupplier
-     */
     BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView,
             ViewStub stub, ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier, Runnable openHomepageAction,
-            Callback<Integer> setUrlBarFocusAction,
+            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             BottomControlsMediator bottomControlsMediator) {
@@ -132,10 +115,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mThemeColorProvider = themeColorProvider;
         mTabProvider = tabProvider;
-
-        mShareDelegateSupplier = shareDelegateSupplier;
-        mShareDelegateSupplierCallback = this::onShareDelegateAvailable;
-        mShareDelegateSupplier.addObserver(mShareDelegateSupplierCallback);
 
         mMenuButtonHelperSupplier = menuButtonHelperSupplier;
         mBottomControlsMediator = bottomControlsMediator;
@@ -320,20 +299,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mLayoutStateProvider = null;
         }
         mThemeColorProvider.destroy();
-        mShareDelegateSupplier.removeObserver(mShareDelegateSupplierCallback);
-    }
-
-    private void onShareDelegateAvailable(ShareDelegate shareDelegate) {
-        final OnClickListener shareButtonListener = v -> {
-            if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-                RecordUserAction.record("MobileBottomToolbarShareButton");
-            }
-
-            Tab tab = mTabProvider.get();
-            shareDelegate.share(tab, /*shareDirectly=*/false, ShareOrigin.TOP_TOOLBAR);
-        };
-
-        mShareButtonListenerSupplier.set(shareButtonListener);
     }
 
     private void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {

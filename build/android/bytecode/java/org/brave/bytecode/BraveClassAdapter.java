@@ -32,6 +32,7 @@ public class BraveClassAdapter {
         chain = new BraveActivityClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
+        chain = new BraveBottomControlsMediatorClassAdapter(chain);
         return chain;
     }
 }
