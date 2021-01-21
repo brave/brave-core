@@ -37,7 +37,7 @@ class CosmeticFiltersJsRenderFrameObserver
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
-  // The isolated world that the distiller object should be written to.
+  // The isolated world that the cosmetic filters object should be written to.
   int32_t worker_isolated_world_id_;
 
   // Handle to "handler" JavaScript object functionality.

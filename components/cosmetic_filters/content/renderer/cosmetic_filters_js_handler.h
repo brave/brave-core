@@ -18,6 +18,10 @@
 
 namespace cosmetic_filters {
 
+// CosmeticFiltersJSHandler class is responsible for JS execution inside a
+// a given render_frame. It also does interactions with CosmeticFiltersResources
+// class that lives in the main process.
+
 class CosmeticFiltersJSHandler {
  public:
   explicit CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
@@ -25,14 +29,15 @@ class CosmeticFiltersJSHandler {
   ~CosmeticFiltersJSHandler();
 
   // Adds the "cs_worker" JavaScript object and its functions to the current
-  // |RenderFrame|.
+  // render_frame_.
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   void ProcessURL(const GURL& url);
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
                              v8::Local<v8::Object> javascript_object);
-  // Add a function to the provided object.
+
+  // Adds a function to the provided object.
   template <typename Sig>
   void BindFunctionToObject(v8::Isolate* isolate,
                             v8::Local<v8::Object> javascript_object,

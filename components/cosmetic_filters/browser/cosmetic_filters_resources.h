@@ -22,6 +22,9 @@ class AdBlockService;
 
 namespace cosmetic_filters {
 
+// CosmeticFiltersResources is a class that is responsible for interaction
+// between CosmeticFiltersJSHandler class that lives inside renderer process.
+
 class CosmeticFiltersResources final
     : public cosmetic_filters::mojom::CosmeticFiltersResources {
  public:
@@ -32,12 +35,20 @@ class CosmeticFiltersResources final
       brave_shields::AdBlockService* ad_block_service);
   ~CosmeticFiltersResources() override;
 
+  // Sends back to renderer a response: do we need to apply cosmetic filters
+  // for the url.
   void ShouldDoCosmeticFiltering(
       const std::string& url,
       ShouldDoCosmeticFilteringCallback callback) override;
+
+  // Sends back to renderer a response about rules that has to be applied
+  // for the specified selectors.
   void HiddenClassIdSelectors(const std::string& input,
                               const std::vector<std::string>& exceptions,
                               HiddenClassIdSelectorsCallback callback) override;
+
+  // Sends back to renderer a response what rules and scripts has to be
+  // applied for the specified url.
   void UrlCosmeticResources(const std::string& url,
                             UrlCosmeticResourcesCallback callback) override;
 

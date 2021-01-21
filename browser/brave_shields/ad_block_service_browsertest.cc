@@ -844,7 +844,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result_first = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                            R"(function waitCSSSelector() {
           if (checkSelector('#ad-banner', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
@@ -856,7 +856,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   EXPECT_EQ(base::Value(true), result_first.value);
 
   auto result_second = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                             R"(function waitCSSSelector() {
           if (checkSelector('.ad-banner', 'display', 'block')) {
             window.domAutomationController.send(true);
           } else {
@@ -868,7 +868,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   EXPECT_EQ(base::Value(true), result_second.value);
 
   auto result_third = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                            R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
@@ -913,7 +913,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                      R"(function waitCSSSelector() {
           if (checkSelector('.fpsponsored', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
@@ -939,7 +939,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result_first = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                            R"(function waitCSSSelector() {
           if (checkSelector('.blockme', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
@@ -951,7 +951,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   EXPECT_EQ(base::Value(true), result_first.value);
 
   auto result_second = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                             R"(function waitCSSSelector() {
           if (checkSelector('.dontblockme', 'display', 'block')) {
             window.domAutomationController.send(true);
           } else {
@@ -1006,7 +1006,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                      R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'padding-bottom', '10px')) {
             window.domAutomationController.send(true);
           } else {
@@ -1036,7 +1036,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result_first = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                            R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'display', 'block')) {
             window.domAutomationController.send(true);
           } else {
@@ -1048,7 +1048,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
   EXPECT_EQ(base::Value(true), result_first.value);
 
   auto result_second = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                             R"(function waitCSSSelector() {
           if (checkSelector('#ad-banner', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
@@ -1092,7 +1092,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result = EvalJsWithManualReply(contents,
-      R"(function waitCSSSelector() {
+                                      R"(function waitCSSSelector() {
           if (checkSelector('.ad', 'color', 'Impossible value')) {
             window.domAutomationController.send(true);
           } else {
