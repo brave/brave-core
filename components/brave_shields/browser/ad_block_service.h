@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+#include "base/optional.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"

@@ -15,7 +15,7 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame,
     const int32_t isolated_world_id)
     : RenderFrameObserver(render_frame),
-      worker_isolated_world_id_(isolated_world_id) {}
+      isolated_world_id_(isolated_world_id) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
@@ -28,7 +28,7 @@ void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (!render_frame()->IsMainFrame() || world_id != worker_isolated_world_id_ ||
+  if (!render_frame()->IsMainFrame() || world_id != isolated_world_id_ ||
       !native_javascript_handle_)
     return;
 
@@ -46,8 +46,8 @@ void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
                .GetURL();
   }
   if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(new CosmeticFiltersJSHandler(
-        render_frame(), worker_isolated_world_id_));
+    native_javascript_handle_.reset(
+        new CosmeticFiltersJSHandler(render_frame(), isolated_world_id_));
   }
   native_javascript_handle_->ProcessURL(url_);
 }

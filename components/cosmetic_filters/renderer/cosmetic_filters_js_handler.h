@@ -25,7 +25,7 @@ namespace cosmetic_filters {
 class CosmeticFiltersJSHandler {
  public:
   explicit CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
-                                    const int32_t worker_isolated_world_id);
+                                    const int32_t isolated_world_id);
   ~CosmeticFiltersJSHandler();
 
   // Adds the "cs_worker" JavaScript object and its functions to the current
@@ -58,7 +58,7 @@ class CosmeticFiltersJSHandler {
   content::RenderFrame* render_frame_;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
       cosmetic_filters_resources_;
-  int32_t worker_isolated_world_id_;
+  int32_t isolated_world_id_;
   bool enabled_1st_party_cf_filtering_;
   std::vector<std::string> exceptions_;
   GURL url_;

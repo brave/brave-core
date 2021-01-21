@@ -136,9 +136,9 @@ namespace cosmetic_filters {
 
 CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     content::RenderFrame* render_frame,
-    const int32_t worker_isolated_world_id)
+    const int32_t isolated_world_id)
     : render_frame_(render_frame),
-      worker_isolated_world_id_(worker_isolated_world_id),
+      isolated_world_id_(isolated_world_id),
       enabled_1st_party_cf_filtering_(false) {
   if (g_observing_script->empty()) {
     *g_observing_script = LoadDataResource(kCosmeticFiltersGenerated[0].value);
@@ -282,14 +282,13 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
   if (web_frame->IsProvisional())
     return;
   web_frame->ExecuteScriptInIsolatedWorld(
-      worker_isolated_world_id_, blink::WebString::FromUTF8(pre_init_script));
+      isolated_world_id_, blink::WebString::FromUTF8(pre_init_script));
   if (!render_frame_->IsMainFrame())
     return;
 
   // Working on css rules, we do that on a main frame only
   web_frame->ExecuteScriptInIsolatedWorld(
-      worker_isolated_world_id_,
-      blink::WebString::FromUTF8(*g_observing_script));
+      isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
 
   CSSRulesRoutine(resources_dict);
 }
@@ -320,8 +319,7 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
         base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
     if (hide_selectors_list->GetSize() != 0) {
       web_frame->ExecuteScriptInIsolatedWorld(
-          worker_isolated_world_id_,
-          blink::WebString::FromUTF8(new_selectors_script));
+          isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
     }
   }
 
@@ -338,15 +336,13 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
         base::StringPrintf(kStyleSelectorsInjectScript, json_selectors.c_str());
     if (!json_selectors.empty()) {
       web_frame->ExecuteScriptInIsolatedWorld(
-          worker_isolated_world_id_,
-          blink::WebString::FromUTF8(new_selectors_script));
+          isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
     }
   }
 
   if (!enabled_1st_party_cf_filtering_) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        worker_isolated_world_id_,
-        blink::WebString::FromUTF8(*g_observing_script));
+        isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
   }
 }
 
@@ -366,14 +362,12 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
       base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
   if (selectors_list->GetSize() != 0) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        worker_isolated_world_id_,
-        blink::WebString::FromUTF8(new_selectors_script));
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
   }
 
   if (!enabled_1st_party_cf_filtering_) {
     web_frame->ExecuteScriptInIsolatedWorld(
-        worker_isolated_world_id_,
-        blink::WebString::FromUTF8(*g_observing_script));
+        isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
   }
 }
 

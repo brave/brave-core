@@ -8,9 +8,11 @@
 
 #include <memory>
 
+#include "base/optional.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "third_party/blink/public/web/web_navigation_type.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
 
@@ -38,7 +40,7 @@ class CosmeticFiltersJsRenderFrameObserver
   void OnDestruct() override;
 
   // The isolated world that the cosmetic filters object should be written to.
-  int32_t worker_isolated_world_id_;
+  int32_t isolated_world_id_;
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<CosmeticFiltersJSHandler> native_javascript_handle_;
