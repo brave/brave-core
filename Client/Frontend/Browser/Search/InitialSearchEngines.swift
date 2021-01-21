@@ -57,7 +57,7 @@ class InitialSearchEngines {
     static let qwantDefaultRegions = ["FR"]
     static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
     static let ecosiaDefaultRegions = ["AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
-                                       "LU", "NO", "PT", "US", "GB", "FR", "DE", "NL", "CH", "SE"]
+                                       "LU", "NO", "PT", "US", "GB", "FR", "DE", "NL", "CH", "SE", "IE"]
     static let yahooEligibleRegions =
         ["GB", "US", "AR", "AT", "AU", "BR", "CA", "CH", "CL", "CO", "DE", "DK", "ES", "FI", "FR", "HK",
          "ID", "IE", "IN", "IT", "MX", "MY", "NL", "NO", "NZ", "PE", "PH", "SE", "SG", "TH", "TW", "VE", "VN"]
