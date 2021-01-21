@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be6965227574a 100644
+index 5eeb0d0c2598bbcff4981dcb6f43cae82ec37c99..d20263d25250da69f53b9b7e5322e019a7bda879 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -164,6 +164,10 @@ if (!is_android && !is_mac) {
+@@ -165,6 +165,10 @@ if (!is_android && !is_mac) {
          "common/crash_keys.cc",
          "common/crash_keys.h",
        ]
@@ -13,7 +13,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
  
        deps += [
          ":chrome_dll",
-@@ -431,11 +435,12 @@ if (is_win) {
+@@ -432,11 +436,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
@@ -27,7 +27,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -453,6 +458,7 @@ if (is_win) {
+@@ -454,6 +459,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -35,7 +35,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
  
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
-@@ -519,7 +525,7 @@ if (is_win) {
+@@ -520,7 +526,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -44,7 +44,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
            "-v",
            chrome_version_full,
            "-g",
-@@ -588,6 +594,7 @@ if (is_win) {
+@@ -589,6 +595,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -52,7 +52,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
      }
    }
  
-@@ -620,9 +627,11 @@ if (is_win) {
+@@ -621,9 +628,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -64,7 +64,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -643,7 +652,7 @@ if (is_win) {
+@@ -644,7 +653,7 @@ if (is_win) {
  
        output_name = chrome_helper_name + invoker.helper_name_suffix
  
@@ -73,7 +73,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
        extra_substitutions = [
          "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
          "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1043,6 +1052,10 @@ if (is_win) {
+@@ -1044,6 +1053,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -84,7 +84,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1194,6 +1207,7 @@ if (is_win) {
+@@ -1205,6 +1218,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -92,7 +92,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/app:shutdown_signal_handlers",
-@@ -1295,12 +1309,13 @@ group("child_dependencies") {
+@@ -1306,12 +1320,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -107,7 +107,7 @@ index 9e7ab3df122909140ec0eb9c727fee46561f81cd..c30a184b21fcae7d9cdba74e607be696
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1354,6 +1369,7 @@ group("resources") {
+@@ -1365,6 +1380,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",

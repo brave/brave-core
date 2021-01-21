@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 3f8fd4f592d27951b09f0c24b16196607d612559..d7fba8034e00ea26c72c02902cae1a681c7e46a2 100644
+index 1dc23535c42aec292e94a09e9fd2d1c7f37e82cd..e5890278a6af4a162ba67cf914f0447a79f94a3e 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -444,7 +444,7 @@ Browser::Browser(const CreateParams& params)
+@@ -442,7 +442,7 @@ Browser::Browser(const CreateParams& params)
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
        tab_strip_model_(
