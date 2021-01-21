@@ -84,6 +84,8 @@ class BraveActionsContainer::EmptyExtensionsContainer
 
   void ToggleExtensionsMenu() override {}
 
+  bool HasAnyExtensions() const override { return false; }
+
  private:
   DISALLOW_COPY_AND_ASSIGN(EmptyExtensionsContainer);
 };
