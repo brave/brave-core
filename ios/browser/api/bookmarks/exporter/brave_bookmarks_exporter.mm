@@ -14,6 +14,7 @@
 #include "base/callback_helpers.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
+#include "base/guid.h"
 #include "base/mac/foundation_util.h"
 #include "base/path_service.h"
 #include "base/sequenced_task_runner.h"
@@ -177,30 +178,30 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getRootNode {
   return std::make_unique<bookmarks::BookmarkNode>(/*id=*/0,
-                                                   bookmarks::BookmarkNode::kRootNodeGuid,
-                                                   GURL());
+      base::GUID::ParseLowercase(bookmarks::BookmarkNode::kRootNodeGuid),
+      GURL());
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getBookmarksBarNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/1,
-                                                        bookmarks::BookmarkNode::kBookmarkBarNodeGuid,
-                                                        GURL());
+      base::GUID::ParseLowercase(bookmarks::BookmarkNode::kBookmarkBarNodeGuid),
+      GURL());
   node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_FOLDER_NAME));
   return node;
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getOtherBookmarksNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/2,
-                                                        bookmarks::BookmarkNode::kOtherBookmarksNodeGuid,
-                                                        GURL());
+      base::GUID::ParseLowercase(
+        bookmarks::BookmarkNode::kOtherBookmarksNodeGuid), GURL());
   node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
   return node;
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getMobileBookmarksNode {
   auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/3,
-                                                   bookmarks::BookmarkNode::kMobileBookmarksNodeGuid,
-                                                   GURL());
+      base::GUID::ParseLowercase(
+        bookmarks::BookmarkNode::kMobileBookmarksNodeGuid), GURL());
   node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));
   return node;
 }

@@ -71,15 +71,15 @@
                  dateModified:(NSDate*)dateModified
                      children:(NSArray<IOSBookmarkNode*>*)children {
   if ((self = [super init])) {
-    // Only in a NEWER version of Chromium, they have `base::GUID`
-    std::string guid_;  // base::GUID guid_ = base::GUID();
+    base::GUID guid_ = base::GUID();
     int64_t id_ = static_cast<int64_t>(id);
 
     if ([guid length] > 0) {
-      DCHECK(base::IsValidGUID(base::SysNSStringToUTF16(guid)));
-      guid_ = [guid UTF8String];
+      base::string16 guid_string = base::SysNSStringToUTF16(guid);
+      DCHECK(base::IsValidGUID(guid_string));
+      guid_ = base::GUID::ParseCaseInsensitive(guid_string);
     } else {
-      guid_ = base::GenerateGUID();
+      guid_ = base::GUID::GenerateRandomV4();
     }
 
     GURL gurl_ = net::GURLWithNSURL(url);
@@ -166,7 +166,7 @@
 
 - (NSString*)guid {
   DCHECK(node_);
-  return base::SysUTF8ToNSString(node_->guid());
+  return base::SysUTF8ToNSString(node_->guid().AsLowercaseString());
 }
 
 - (NSURL*)url {
