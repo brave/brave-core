@@ -50,7 +50,8 @@ void SidebarContainerView::UpdateBackgroundAndBorder() {
     constexpr int kBorderThickness = 1;
     SetBorder(views::CreateSolidSidedBorder(
         0, 0, 0, kBorderThickness,
-        theme_provider->GetColor(BraveThemeProperties::COLOR_SIDEBAR_BORDER)));
+        theme_provider->GetColor(
+            BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER)));
   }
 }
 

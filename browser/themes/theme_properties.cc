@@ -57,7 +57,9 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED:
       return SkColorSetARGB(0X66, 0x49, 0x50, 0x57);
     case BraveThemeProperties::COLOR_SIDEBAR_BORDER:
-      return SkColorSetRGB(0xD9, 0xDC, 0xDF);
+      return SkColorSetRGB(0xD5, 0xD5, 0xDC);
+    case BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER:
+      return SkColorSetARGB(0x21, 0x00, 0x00, 0x00);
     case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
       return SkColorSetRGB(0xE8, 0xE8, 0xE8);
     case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
@@ -126,10 +128,20 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF);
     case BraveThemeProperties::COLOR_SIDEBAR_BORDER:
       return SkColorSetRGB(0x3B, 0x3E, 0x4F);
+    case BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER:
+      return SkColorSetARGB(0x21, 0x00, 0x00, 0x00);
     case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
       return SkColorSetRGB(0x41, 0x44, 0x51);
     case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
       return SkColorSetRGB(0xE9, 0xE9, 0xF4);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT:
+      return SkColorSetRGB(0x17, 0x17, 0x1F);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL:
+      return SkColorSetRGB(0x21, 0x25, 0x29);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
+      return SK_ColorWHITE;
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
+      return SkColorSetRGB(0x4C, 0x54, 0xD2);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;
     default:
