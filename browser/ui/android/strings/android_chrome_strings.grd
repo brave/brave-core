@@ -792,6 +792,9 @@ For example, some websites may respond to this request by showing you ads that a
       <message name="IDS_PRIVACY_SANDBOX_BULLET_TWO" desc="Second bullet point of the Privacy Sandbox description">
         Allow advertisers to study ad campaigns using non-identifiable information.
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_SNACKBAR_MESSAGE" desc="The text displayed in the snackbar, which gives the user an option to navigate to the Privacy Sandbox settings page. 'Privacy sandbox' has TC ID 5753235213964358658.">
+        Explore the Privacy Sandbox
+      </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
       <message name="IDS_SETTINGS_CUSTOM" desc="Label for a custom option in a dropdown menu.">
@@ -1184,12 +1187,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_ITEM_OPTION_OFFER_TO_TRANSLATE" desc="Option in language item menu. User can click the 'Offer to translate' option to toggle whether they want Brave to translate pages in this language. [CHAR-LIMIT=32]">
         Offer to translate
-      </message>
-      <message name="IDS_LANGUAGES_SET_APPLICATION_LANGUAGE_PROMPT" desc="Option in language item menu. User can click the 'App Language' option to toggle whether or not the Brave user interface should be displayed in this language. [CHAR-LIMIT=32]">
-        Use as Brave’s language
-      </message>
-      <message name="IDS_LANGUAGES_SET_AS_APPLICATION_LANGUAGE" desc="Toast to display after selecting language to use for Brave's user interface.">
-        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> will use <ph name="language">%2$s<ex>Hindi</ex></ph> on restart.
       </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
         What languages do you read?
