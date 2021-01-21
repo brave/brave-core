@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
+import org.chromium.ui.base.WindowAndroid;
 
 public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
@@ -29,15 +30,15 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     public BraveMenuButtonCoordinator(
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate,
-            Activity activity, SetFocusFunction setUrlBarFocusFunction,
+            WindowAndroid windowAndroid, SetFocusFunction setUrlBarFocusFunction,
             Runnable requestRenderRunnable, boolean shouldShowAppUpdateBadge,
             Supplier<Boolean> isInOverviewModeSupplier, ThemeColorProvider themeColorProvider,
             @IdRes int menuButtonId) {
-        super(appMenuCoordinatorSupplier, controlsVisibilityDelegate, activity,
+        super(appMenuCoordinatorSupplier, controlsVisibilityDelegate, windowAndroid,
                 setUrlBarFocusFunction, requestRenderRunnable, shouldShowAppUpdateBadge,
                 isInOverviewModeSupplier, themeColorProvider, menuButtonId);
 
-        mActivity = activity;
+        mActivity = windowAndroid.getActivity().get();
     }
 
     @Override
