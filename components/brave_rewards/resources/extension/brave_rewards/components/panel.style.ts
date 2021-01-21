@@ -8,5 +8,5 @@ import styled from 'styled-components'
 // element will insert veritical space to expand the panel height by the
 // required amount.
 export const rewardsTourSpacer = styled.div`
-  height: 40px;
+  height: 70px;
 `
