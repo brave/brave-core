@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index db0b18ae6d7a543c08edf7c06aaeda68036cd7e2..de130b513e7f9e313524f0ce668f59f11bcc4940 100644
+index 83764adfda9629c6ca291dff11720afee8e31491..0bfe5618d73288ae31ed869a0c746e46f4735aed 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -31,6 +31,7 @@ if (optimize_webui) {
+@@ -34,6 +34,7 @@ if (optimize_webui) {
        "../../../../ui/webui/resources:preprocess",
      ]
      excludes = [ "chrome://resources/js/cr.m.js" ]
@@ -10,7 +10,7 @@ index db0b18ae6d7a543c08edf7c06aaeda68036cd7e2..de130b513e7f9e313524f0ce668f59f1
    }
  }
  
-@@ -58,6 +59,7 @@ generate_grd("build_grd") {
+@@ -61,6 +62,7 @@ generate_grd("build_grd") {
        "$target_gen_dir/$preprocess_gen_manifest",
      ]
    }
