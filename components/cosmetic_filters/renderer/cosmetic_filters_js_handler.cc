@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.h"
+#include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
 #include "base/bind.h"
 #include "base/json/json_writer.h"

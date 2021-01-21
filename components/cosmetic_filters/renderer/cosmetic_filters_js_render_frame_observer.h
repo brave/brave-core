@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.h"
+#include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "url/gurl.h"
