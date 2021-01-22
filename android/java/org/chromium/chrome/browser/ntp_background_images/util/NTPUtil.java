@@ -103,7 +103,11 @@ public class NTPUtil {
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         CardView widgetLayout = (CardView) view.findViewById(R.id.ntp_widget_cardview_layout);
         LinearLayout.LayoutParams widgetLayoutParams = new LinearLayout.LayoutParams(
-                (isTablet ? (int) (dpWidth * 0.75) : dpToPx(context, 385)), dpToPx(context, 140));
+                (isTablet ? (int) (dpWidth * 0.75)
+                          : (ConfigurationUtils.isLandscape(context)
+                                          ? (int) (displayMetrics.widthPixels * 0.75)
+                                          : (int) (displayMetrics.widthPixels * 0.93))),
+                dpToPx(context, 140));
         widgetLayout.setLayoutParams(widgetLayoutParams);
 
         LinearLayout.LayoutParams mainLayoutLayoutParams =
