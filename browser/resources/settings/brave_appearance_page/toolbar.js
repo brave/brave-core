@@ -34,6 +34,11 @@ Polymer({
       },
     },
 
+    sidebarShowEnabledLabel_: {
+      readOnly: false,
+      type: String,
+    },
+
     // TODO(simonhong): Remove this when sidebar is shipped by default in all
     // channels.
     isSidebarFeatureEnabled_: {
@@ -44,11 +49,24 @@ Polymer({
     },
   },
 
-  getSidebarShowEnabledLabel_: function() {
-    // TODO(simonhong): Return Enabled or Disabled by checking drop down value.
-    console.error(this.$$('#sidebarShowOption'));
-    return this.i18n('appearanceSettingsSidebarEnabledDesc');
-    // return this.i18n('appearanceSettingsSidebarDisabledDesc')
+  /** @override */
+  ready() {
+    this.sidebarShowEnabledLabel_ =
+      this.computeSidebarShowOptionSubLabel_(this.getCurrentSidebarOption_());
+  },
+
+  computeSidebarShowOptionSubLabel_(option) {
+    return option === 3 ? this.i18n('appearanceSettingsSidebarDisabledDesc')
+                        : this.i18n('appearanceSettingsSidebarEnabledDesc');
+  },
+
+  onShowOptionChanged_: function() {
+    this.sidebarShowEnabledLabel_ =
+      this.computeSidebarShowOptionSubLabel_(this.getCurrentSidebarOption_());
+  },
+
+  getCurrentSidebarOption_: function() {
+    return this.get('prefs.brave.sidebar.sidebar_show_option.value');
   },
 });
 

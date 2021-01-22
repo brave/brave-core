@@ -12,12 +12,13 @@
       <div class="label">$i18n{appearanceSettingsShowOptionTitle}</div>
       <div class="secondary label" id="sub-label">
         <span id="sub-label-text" aria-hidden="true">
-          [[getSidebarShowEnabledLabel_()]]
+          [[sidebarShowEnabledLabel_]]
         </span>
       </div>
     </div>
-    <settings-dropdown-menu id="sidebarShowOption"
+    <settings-dropdown-menu
       pref="{{prefs.brave.sidebar.sidebar_show_option}}"
+      on-settings-control-change="onShowOptionChanged_"
       menu-options="[[sidebarShowOptions_]]">
     </settings-toggle-button>
   </div>
