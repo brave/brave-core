@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
-index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..d86dc6ef4349dbd51c878cf600984180843bb77d 100644
+index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..2b9f684c17d0d93802ee755e843b3c85a9909e6b 100644
 --- a/chrome/browser/resources/tools/optimize_webui.gni
 +++ b/chrome/browser/resources/tools/optimize_webui.gni
 @@ -48,6 +48,7 @@ template("optimize_webui") {
@@ -10,24 +10,11 @@ index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..d86dc6ef4349dbd51c878cf600984180
  
      # Note that we have to manually pass the sources to our script if the
      # script needs them as inputs.
-@@ -78,6 +79,20 @@ template("optimize_webui") {
+@@ -78,6 +79,7 @@ template("optimize_webui") {
        "chrome://resources/polymer/v3_0/|$polymer_path",
        "chrome://resources/|$resources_path",
      ]
-+    # ____BRAVE_START____
-+    # brave_resources_path =
-+    #     rebase_path("$root_gen_dir/brave/ui/webui/resources/",
-+    #                 root_build_dir)
-+    # external_paths += [ "chrome://brave-resources/|$brave_resources_path" ]
-+    brave_rollup_overrides_path = rebase_path("$root_gen_dir/chrome/browser/resources/brave_rollup_overrides")
-+    root_dir_path = rebase_path("//")
-+    root_gen_dir_path = rebase_path("$root_gen_dir")
-+    external_paths += [
-+      "brave_rollup_overrides|$brave_rollup_overrides_path",
-+      "root_dir|$root_dir_path",
-+      "root_gen_dir|$root_gen_dir_path",
-+    ]
-+    # ____BRAVE_END____
++    brave_resources_path = rebase_path("$root_gen_dir/brave/ui/webui/resources/", root_build_dir) external_paths += [ "chrome://brave-resources/|$brave_resources_path" ]
      if (defined(invoker.external_paths)) {
        external_paths += invoker.external_paths
      }
