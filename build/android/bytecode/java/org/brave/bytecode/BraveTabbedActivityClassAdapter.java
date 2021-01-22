@@ -13,8 +13,6 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
     static String sBraveActivityClassName = "org/chromium/chrome/browser/app/BraveActivity";
     static String sTabbedRootUiCoordinatorClassName =
             "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator";
-    static String sBraveTabbedRootUiCoordinatorClassName =
-            "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator";
     static String sTabbedAppMenuPropertiesDelegateClassName =
             "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate";
     static String sBraveTabbedAppMenuPropertiesDelegateClassName =
@@ -28,9 +26,6 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
         super(visitor);
 
         changeSuperName(sChromeTabbedActivityClassName, sBraveActivityClassName);
-
-        redirectConstructor(
-                sTabbedRootUiCoordinatorClassName, sBraveTabbedRootUiCoordinatorClassName);
 
         redirectConstructor(sTabbedAppMenuPropertiesDelegateClassName,
                 sBraveTabbedAppMenuPropertiesDelegateClassName);
