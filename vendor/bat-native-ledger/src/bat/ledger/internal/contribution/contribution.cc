@@ -151,7 +151,7 @@ void Contribution::StartMonthlyContribution() {
   const auto reconcile_stamp = ledger_->state()->GetReconcileStamp();
   ResetReconcileStamp();
 
-  BLOG(1, "Staring monthly contribution");
+  BLOG(1, "Starting monthly contribution");
 
   auto callback = std::bind(&Contribution::StartAutoContribute,
       this,
