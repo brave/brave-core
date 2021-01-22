@@ -93,6 +93,84 @@ TEST_F(BatAdsPaymentsTest,
 }
 
 TEST_F(BatAdsPaymentsTest,
+    DidReconcileZeroBalance) {
+  // Arrange
+  const std::string json = R"(
+    [
+      {
+        "balance" : "0.0",
+        "month" : "2019-06",
+        "transactionCount" : "0"
+      }
+    ]
+  )";
+
+  payments_->SetFromJson(json);
+
+  const double previous_balance = 0.0;
+  const double unreconciled_estimated_pending_rewards = 0.0;
+
+  // Act
+  const bool did_reconcile = payments_->DidReconcileBalance(
+      previous_balance, unreconciled_estimated_pending_rewards);
+
+  // Assert
+  EXPECT_TRUE(did_reconcile);
+}
+
+TEST_F(BatAdsPaymentsTest,
+    DidReconcileBalance) {
+  // Arrange
+  const std::string json = R"(
+    [
+      {
+        "balance" : "0.5",
+        "month" : "2019-06",
+        "transactionCount" : "10"
+      }
+    ]
+  )";
+
+  payments_->SetFromJson(json);
+
+  const double previous_balance = 0.3;
+  const double unreconciled_estimated_pending_rewards = 0.2;
+
+  // Act
+  const bool did_reconcile = payments_->DidReconcileBalance(
+      previous_balance, unreconciled_estimated_pending_rewards);
+
+  // Assert
+  EXPECT_TRUE(did_reconcile);
+}
+
+TEST_F(BatAdsPaymentsTest,
+    DidNotReconcileBalance) {
+  // Arrange
+  const std::string json = R"(
+    [
+      {
+        "balance" : "0.3",
+        "month" : "2019-06",
+        "transactionCount" : "5"
+      }
+    ]
+  )";
+
+  payments_->SetFromJson(json);
+
+  const double previous_balance = 0.3;
+  const double unreconciled_estimated_pending_rewards = 0.2;
+
+  // Act
+  const bool did_reconcile = payments_->DidReconcileBalance(
+      previous_balance, unreconciled_estimated_pending_rewards);
+
+  // Assert
+  EXPECT_FALSE(did_reconcile);
+}
+
+TEST_F(BatAdsPaymentsTest,
     BalanceForMultiplePayments) {
   // Arrange
   const std::string json = R"(

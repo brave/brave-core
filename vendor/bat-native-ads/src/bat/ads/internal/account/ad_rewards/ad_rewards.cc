@@ -241,6 +241,23 @@ bool AdRewards::SetFromDictionary(
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool AdRewards::DidReconcile(
+    const std::string& json) const {
+  const double last_balance = payments_->GetBalance();
+
+  Payments payments;
+  if (!payments.SetFromJson(json)) {
+    return false;
+  }
+
+  if (!payments.DidReconcileBalance(last_balance,
+      unreconciled_estimated_pending_rewards_)) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdRewards::Reconcile() {
   DCHECK(!is_processing_);
 
@@ -274,6 +291,12 @@ void AdRewards::OnGetPayments(
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to get payment balance");
+    OnFailedToReconcileAdRewards();
+    return;
+  }
+
+  if (!DidReconcile(url_response.body)) {
+    BLOG(0, "Payment balance is not ready");
     OnFailedToReconcileAdRewards();
     return;
   }
