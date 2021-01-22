@@ -129,6 +129,7 @@ preprocess_grit("preprocess_generated") {
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_gen_manifest"
   in_files = [
     "brave_appearance_page/brave_theme.js",
+    "brave_appearance_page/sidebar.js",
     "brave_appearance_page/super_referral.js",
     "brave_appearance_page/toolbar.js",
     "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js",
