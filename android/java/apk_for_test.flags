@@ -150,10 +150,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate {
     public <init>(...);
 }
