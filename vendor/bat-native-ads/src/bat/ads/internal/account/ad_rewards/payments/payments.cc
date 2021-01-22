@@ -119,6 +119,21 @@ double Payments::GetBalance() const {
   return balance;
 }
 
+bool Payments::DidReconcileBalance(
+    const double last_balance,
+    const double unreconciled_estimated_pending_rewards) const {
+  if (unreconciled_estimated_pending_rewards == 0.0) {
+    return true;
+  }
+
+  const double delta = GetBalance() - last_balance;
+  if (delta >= unreconciled_estimated_pending_rewards) {
+    return true;
+  }
+
+  return false;
+}
+
 base::Time Payments::CalculateNextPaymentDate(
     const base::Time& time,
     const base::Time& next_token_redemption_date) const {

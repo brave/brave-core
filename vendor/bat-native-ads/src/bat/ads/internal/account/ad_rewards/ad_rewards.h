@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <memory>
+#include <string>
 
 #include "base/time/time.h"
 #include "base/values.h"
@@ -66,6 +67,9 @@ class AdRewards {
   double unreconciled_estimated_pending_rewards_ = 0.0;
 
   void Reconcile();
+
+  bool DidReconcile(
+      const std::string& json) const;
 
   void GetPayments();
   void OnGetPayments(
