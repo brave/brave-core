@@ -227,6 +227,7 @@ declare namespace chrome.braveToday {
   const onClearHistory: {
     addListener: (callback: () => any) => void
   }
+  const getHostname: (callback: (hostname: string) => any) => void
 }
 
 type BlockTypes = 'shieldsAds' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'

@@ -5,12 +5,12 @@
 
 import { debounce } from '../../../../../common/debounce'
 import Events from '../../../../../common/events'
-import { fetchResource, URLS } from './privateCDN'
+import { fetchResource } from './privateCDN'
 import { getPrefs as getPublisherPrefs, addPrefsChangedListener } from './publisher-user-prefs'
+import { getSourcesUrl } from './urls'
 
 let memoryData: BraveToday.Publishers | undefined
 let readLock: Promise<void> | null
-const url = URLS.braveTodayPublishers
 const publishersEvents = new Events()
 const eventNameChanged = 'publishers-changed'
 const storageKey = 'todayPublishers'
@@ -70,7 +70,7 @@ function performUpdate (notify: boolean = true) {
     try {
       // TODO(petemill): Use If-None-Match so we don't re-download the exact
       // same publisher list. Save Etag in storage.
-      const feedResponse = await fetchResource(url)
+      const feedResponse = await fetchResource(await getSourcesUrl())
       if (feedResponse.ok) {
         const feedContents: BraveToday.Publisher[] = await feedResponse.json()
         console.debug('fetched today publishers', feedContents)
@@ -85,7 +85,7 @@ function performUpdate (notify: boolean = true) {
         throw new Error(`Not ok when fetching publishers. Status ${feedResponse.status} (${feedResponse.statusText})`)
       }
     } catch (e) {
-      console.error('Could not process publishers contents from ', url)
+      console.error('Could not process Brave Today sources contents')
       reject(e)
     } finally {
       readLock = null

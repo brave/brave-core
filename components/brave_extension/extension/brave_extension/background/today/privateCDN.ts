@@ -3,11 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-export const URLS = {
-  braveTodayFeed: 'https://brave-today-cdn.brave.com/brave-today/feed.json',
-  braveTodayPublishers: 'https://brave-today-cdn.brave.com/sources.json'
-}
-
 export async function fetchResource (url: string) {
   const response = await fetch(url, {
     // TODO(petemill): strip user-agent when this is possible

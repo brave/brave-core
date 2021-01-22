@@ -39,7 +39,7 @@ export default async function getBraveTodayData (
   enabledPublishers: BraveToday.Publishers
 ): Promise<BraveToday.Feed | undefined> {
   // No sponsor content yet, wait until we have content spec
-  // const sponsors: (BraveToday.Article)[] = []
+  const promotedArticles: (BraveToday.PromotedArticle)[] = []
   const deals: (BraveToday.Deal)[] = []
   let articles: (BraveToday.Article)[] = []
 
@@ -57,9 +57,9 @@ export default async function getBraveTodayData (
   for (let feedItem of feedContent) {
     feedItem = convertFeedItem(feedItem)
     switch (feedItem.content_type) {
-      // case 'offer':
-      //   sponsors.push(feedItem as BraveToday.Article)
-      //   break
+      case 'brave_partner':
+        promotedArticles.push(feedItem)
+        break
       case 'product':
         deals.push(feedItem)
         break
@@ -105,9 +105,6 @@ export default async function getBraveTodayData (
   const dealsCategoriesByPriority = Array.from(dealsCategoryCounts.keys())
     .sort((a, b) => dealsCategoryCounts[a] - dealsCategoryCounts[b])
 
-  // TODO(petemill): Sponsor
-  // const firstSponsors = sponsors.splice(0, 1) // Featured sponsor is the first sponsor
-
   const firstHeadlines = take(articles, 1, isArticleTopNews)
   const firstDeals = deals.splice(0, 3)
 
@@ -121,7 +118,7 @@ export default async function getBraveTodayData (
   while (canGenerateAnotherPage && curPage++ < maxPages) {
     const category = categoriesByPriority.shift()
     const dealsCategory = dealsCategoriesByPriority.shift()
-    const nextPage = generateNextPage(articles, deals, category, dealsCategory)
+    const nextPage = generateNextPage(articles, deals, promotedArticles, category, dealsCategory)
     if (!nextPage) {
       canGenerateAnotherPage = false
       continue
@@ -130,7 +127,6 @@ export default async function getBraveTodayData (
   }
 
   return {
-    // featuredSponsor: firstSponsors.length ? firstSponsors[0] : undefined,
     hash,
     featuredArticle: firstHeadlines.length ? firstHeadlines[0] : undefined,
     featuredDeals: firstDeals,
@@ -155,6 +151,7 @@ function isArticleWithin48Hours (article: BraveToday.Article) {
 function generateNextPage (
   articles: BraveToday.Article[],
   allDeals: BraveToday.Deal[],
+  promotedArticles: BraveToday.PromotedArticle[],
   featuredCategory?: string,
   dealsCategory?: string): BraveToday.Page | null {
 
@@ -179,6 +176,8 @@ function generateNextPage (
     deals = deals.concat(allDeals.splice(0, 3 - deals.length))
   }
 
+  const pagePromotedArticles = take(promotedArticles, 1)
+
   const publisherInfo = generateArticleSourceGroup(articles)
 
   const randomArticles = take(articles, 4, isArticleWithin48Hours, true)
@@ -187,6 +186,7 @@ function generateNextPage (
     articles: headlines,
     randomArticles,
     deals,
+    promotedArticle: pagePromotedArticles.length ? pagePromotedArticles[0] : undefined,
     itemsByCategory: (featuredCategory && articlesWithCategory.length) ? { categoryName: featuredCategory, items: articlesWithCategory } : undefined,
     itemsByPublisher: publisherInfo ? { name: publisherInfo[0], items: publisherInfo[1] } : undefined
   }

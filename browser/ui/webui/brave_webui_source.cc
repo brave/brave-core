@@ -168,6 +168,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "braveTodaySourcesTitle", IDS_BRAVE_TODAY_SOURCES_TITLE},
         { "braveTodayDisableSourceCommand",
             IDS_BRAVE_TODAY_DISABLE_SOURCE_COMMAND},
+        { "promoted", IDS_BRAVE_TODAY_PROMOTED },
 
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },
