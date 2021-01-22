@@ -439,7 +439,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
-                       NavigationCookiesArePartitioned) {
+                       DISABLED_NavigationCookiesArePartitioned) {
   GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
   GURL b_site_set_cookie_url = https_server_.GetURL(
