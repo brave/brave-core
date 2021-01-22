@@ -24,8 +24,8 @@ namespace cosmetic_filters {
 
 class CosmeticFiltersJSHandler {
  public:
-  explicit CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
-                                    const int32_t isolated_world_id);
+  CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
+                           const int32_t isolated_world_id);
   ~CosmeticFiltersJSHandler();
 
   // Adds the "cs_worker" JavaScript object and its functions to the current

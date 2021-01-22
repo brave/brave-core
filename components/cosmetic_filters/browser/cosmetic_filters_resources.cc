@@ -16,28 +16,12 @@
 
 namespace cosmetic_filters {
 
-namespace {
-
-base::Optional<base::Value> HiddenClassIdSelectorsOnTaskRunner(
-    brave_shields::AdBlockService* ad_block_service,
-    const std::vector<std::string>& classes,
-    const std::vector<std::string>& ids,
-    const std::vector<std::string>& exceptions) {
-  return ad_block_service->HiddenClassIdSelectors(classes, ids, exceptions);
-}
-
-base::Optional<base::Value> UrlCosmeticResourcesOnTaskRunner(
-    brave_shields::AdBlockService* ad_block_service,
-    const std::string& url) {
-  return ad_block_service->UrlCosmeticResources(url);
-}
-
-}  // namespace
-
 CosmeticFiltersResources::CosmeticFiltersResources(
     HostContentSettingsMap* settings_map,
     brave_shields::AdBlockService* ad_block_service)
-    : settings_map_(settings_map), ad_block_service_(ad_block_service) {}
+    : settings_map_(settings_map),
+      ad_block_service_(ad_block_service),
+      weak_factory_(this) {}
 
 CosmeticFiltersResources::~CosmeticFiltersResources() {}
 
@@ -81,22 +65,25 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
 
   ad_block_service_->GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(HiddenClassIdSelectorsOnTaskRunner, ad_block_service_,
-                     classes, ids, exceptions),
+      base::BindOnce(&brave_shields::AdBlockService::HiddenClassIdSelectors,
+                     base::Unretained(ad_block_service_), classes, ids,
+                     exceptions),
       base::BindOnce(&CosmeticFiltersResources::HiddenClassIdSelectorsOnUI,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void CosmeticFiltersResources::HiddenClassIdSelectorsOnUI(
     HiddenClassIdSelectorsCallback callback,
     base::Optional<base::Value> resources) {
-  std::move(callback).Run(resources ? resources->Clone() : base::Value());
+  std::move(callback).Run(resources ? std::move(resources.value())
+                                    : base::Value());
 }
 
 void CosmeticFiltersResources::UrlCosmeticResourcesOnUI(
     UrlCosmeticResourcesCallback callback,
     base::Optional<base::Value> resources) {
-  std::move(callback).Run(resources ? resources->Clone() : base::Value());
+  std::move(callback).Run(resources ? std::move(resources.value())
+                                    : base::Value());
 }
 
 void CosmeticFiltersResources::ShouldDoCosmeticFiltering(
@@ -115,9 +102,10 @@ void CosmeticFiltersResources::UrlCosmeticResources(
     UrlCosmeticResourcesCallback callback) {
   ad_block_service_->GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(UrlCosmeticResourcesOnTaskRunner, ad_block_service_, url),
+      base::BindOnce(&brave_shields::AdBlockService::UrlCosmeticResources,
+                     base::Unretained(ad_block_service_), url),
       base::BindOnce(&CosmeticFiltersResources::UrlCosmeticResourcesOnUI,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 }  // namespace cosmetic_filters

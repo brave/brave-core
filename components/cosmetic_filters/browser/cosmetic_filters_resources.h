@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/optional.h"
 #include "base/values.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
@@ -30,9 +31,8 @@ class CosmeticFiltersResources final
  public:
   CosmeticFiltersResources(const CosmeticFiltersResources&) = delete;
   CosmeticFiltersResources& operator=(const CosmeticFiltersResources&) = delete;
-  explicit CosmeticFiltersResources(
-      HostContentSettingsMap* settings_map,
-      brave_shields::AdBlockService* ad_block_service);
+  CosmeticFiltersResources(HostContentSettingsMap* settings_map,
+                           brave_shields::AdBlockService* ad_block_service);
   ~CosmeticFiltersResources() override;
 
   // Sends back to renderer a response: do we need to apply cosmetic filters
@@ -61,6 +61,8 @@ class CosmeticFiltersResources final
 
   HostContentSettingsMap* settings_map_;             // Not owned
   brave_shields::AdBlockService* ad_block_service_;  // Not owned
+
+  base::WeakPtrFactory<CosmeticFiltersResources> weak_factory_;
 };
 
 }  // namespace cosmetic_filters

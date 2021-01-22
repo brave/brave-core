@@ -220,10 +220,7 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
         cosmetic_filters_resources_.BindNewPipeAndPassReceiver());
   }
 
-  if (cosmetic_filters_resources_.is_bound())
-    return true;
-  else
-    return false;
+  return cosmetic_filters_resources_.is_bound();
 }
 
 void CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
