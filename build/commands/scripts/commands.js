@@ -200,6 +200,7 @@ program
 
 program
   .command('test <suite>')
+  .allowUnknownOption(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
@@ -213,7 +214,7 @@ program
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
   .arguments('[build_config]')
-  .action(test)
+  .action(test.bind(null, parsedArgs.unknown))
 
 program
   .command('lint')

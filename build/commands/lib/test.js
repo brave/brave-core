@@ -20,11 +20,11 @@ const getTestsToRun = (config, suite) => {
   return testsToRun
 }
 
-const test = (suite, buildConfig = config.defaultBuildConfig, options) => {
+const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  const braveArgs = [
+  let braveArgs = [
     '--enable-logging=stderr'
   ]
 
@@ -60,6 +60,8 @@ const test = (suite, buildConfig = config.defaultBuildConfig, options) => {
   if (options.test_launcher_jobs) {
     braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
   }
+
+  braveArgs = braveArgs.concat(passthroughArgs)
 
   // Build the tests
   if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests') {
