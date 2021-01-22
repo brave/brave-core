@@ -46,7 +46,7 @@ Polymer({
 
   getSidebarShowEnabledLabel_: function() {
     // TODO(simonhong): Return Enabled or Disabled by checking drop down value.
-    console.error(this.$.sidebarShowOption);
+    console.error(this.$$('#sidebarShowOption'));
     return this.i18n('appearanceSettingsSidebarEnabledDesc');
     // return this.i18n('appearanceSettingsSidebarDisabledDesc')
   },

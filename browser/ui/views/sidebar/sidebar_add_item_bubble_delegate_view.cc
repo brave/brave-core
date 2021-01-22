@@ -106,6 +106,11 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
+  if (auto* theme_provider =
+          BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider()) {
+    set_color(theme_provider->GetColor(
+        BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_BACKGROUND));
+  }
   AddChildViews();
 }
 
@@ -133,13 +138,10 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
    SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
-   auto* theme_provider =
-       BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider();
-
+  // |site_part| includes Add item header and current tab url.
   views::View* site_part = AddChildView(std::make_unique<views::View>());
   site_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
-        views::BoxLayout::Orientation::kVertical));
-  site_part->SetProperty(views::kMarginsKey, gfx::Insets(4));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets(4, 4, 6, 4), 6));
   // Use 13px font size.
   const int size_diff = 13 - views::Label::GetDefaultFontList().GetFontSize();
   views::Label::CustomFont font = {
@@ -148,6 +150,8 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
           .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD)};
   auto* header = site_part->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE), font));
+  auto* theme_provider =
+       BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider();
   if (theme_provider) {
     header->SetEnabledColor(theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));
@@ -175,14 +179,15 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
     return;
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
-  views::View* default_part = AddChildView(std::make_unique<views::View>());
-  default_part->SetProperty(views::kMarginsKey, gfx::Insets(4, 4, 8, 4));
-  default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
-        views::BoxLayout::Orientation::kVertical));
   if (theme_provider) {
     separator->SetColor(theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR));
   }
+
+  // |default_part| includes not added default items.
+  views::View* default_part = AddChildView(std::make_unique<views::View>());
+  default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical, gfx::Insets(6, 4, 8, 4), 6));
 
   for (const auto& item : not_added_default_items) {
     auto* button = default_part->AddChildView(

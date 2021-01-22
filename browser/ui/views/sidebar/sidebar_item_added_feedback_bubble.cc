@@ -29,6 +29,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
     : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::LEFT_CENTER),
       animation_(
           base::TimeDelta::FromMilliseconds(kFadeoutDurationInMs), 60, this) {
+  // This bubble uses same color for all themes.
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
   set_color(kBubbleBackground);
   set_shadow(views::BubbleBorder::NO_SHADOW);

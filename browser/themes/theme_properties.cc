@@ -63,13 +63,15 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
       return SkColorSetRGB(0xE8, 0xE8, 0xE8);
     case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
-      return SkColorSetRGB(0xE9, 0xE9, 0xF4);
+      return SkColorSetRGB(0xE6, 0xE8, 0xF5);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_BACKGROUND:
+      return SK_ColorWHITE;
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT:
       return SkColorSetRGB(0x17, 0x17, 0x1F);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL:
       return SkColorSetRGB(0x21, 0x25, 0x29);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
-      return SK_ColorWHITE;
+      return SkColorSetRGB(0xF0, 0xF2, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
     case BraveThemeProperties::COLOR_FOR_TEST:
@@ -133,13 +135,15 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
       return SkColorSetRGB(0x41, 0x44, 0x51);
     case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
-      return SkColorSetRGB(0xE9, 0xE9, 0xF4);
+      return SkColorSetRGB(0x5E, 0x61, 0x75);
+    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_BACKGROUND:
+      return gfx::kBraveGrey800;
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT:
-      return SkColorSetRGB(0x17, 0x17, 0x1F);
+      return SkColorSetRGB(0xF0, 0xF0, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL:
-      return SkColorSetRGB(0x21, 0x25, 0x29);
+      return SkColorSetRGB(0xF0, 0xF0, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
-      return SK_ColorWHITE;
+      return SkColorSetRGB(0xF0, 0xF0, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
     case BraveThemeProperties::COLOR_FOR_TEST:
