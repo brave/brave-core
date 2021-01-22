@@ -125,7 +125,7 @@ export async function onSelectorReturned (response: any) {
       code: `${rule.selector} {display: none !important;}`,
       cssOrigin: 'user'
     })
-
-    await addSiteCosmeticFilter(rule.host, rule.selector)
   }
+
+  await addSiteCosmeticFilter(rule.host, rule.selector)
 }

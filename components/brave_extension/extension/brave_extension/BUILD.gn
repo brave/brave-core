@@ -5,17 +5,30 @@ transpile_web_ui("brave_extension") {
   # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
   # what is the output bundle called and what is the entry point file
   entry_points = [
-    ["brave_extension", rebase_path("braveShieldsPanel.tsx")],
-    ["brave_extension_background", rebase_path("background.ts")],
-    ["content", rebase_path("content.ts")],
-    ["content_dapps", rebase_path("content_dapps.ts")],
-    ["content_cosmetic", rebase_path("content_cosmetic.ts")],
-    ["webstore", rebase_path("webstore.ts")],
+    [
+      "brave_extension",
+      rebase_path("braveShieldsPanel.tsx"),
+    ],
+    [
+      "brave_extension_background",
+      rebase_path("background.ts"),
+    ],
+    [
+      "content",
+      rebase_path("content.ts"),
+    ],
+    [
+      "content_dapps",
+      rebase_path("content_dapps.ts"),
+    ],
+    [
+      "webstore",
+      rebase_path("webstore.ts"),
+    ],
   ]
 
   # what is the directory / pack name
   resource_name = "brave_extension"
-
 
   # Must match the relative path from the static GRD to the manifest.json
   # plus any other relative path we want these files to live in the extension
@@ -28,7 +41,7 @@ if (is_mac) {
   group("brave_extension_framework_bundle_data") {
     deps = []
     foreach(locale, locales) {
-      deps += [":brave_extension_framework_bundle_data_${locale}"]
+      deps += [ ":brave_extension_framework_bundle_data_${locale}" ]
     }
   }
 
@@ -36,31 +49,23 @@ if (is_mac) {
     bundle_data("brave_extension_framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
-      sources = [
-        "//brave/components/brave_extension/extension/brave_extension/_locales/$source_locale/messages.json"
-      ]
-      outputs = [
-        "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}"
-      ]
+      sources = [ "//brave/components/brave_extension/extension/brave_extension/_locales/$source_locale/messages.json" ]
+      outputs = [ "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}" ]
     }
   }
 } else {
   group("locales") {
     deps = []
     foreach(locale, locales) {
-      deps += [":locales_${locale}"]
+      deps += [ ":locales_${locale}" ]
     }
   }
   foreach(locale, locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
-      sources = [
-        "//brave/components/brave_extension/extension/brave_extension/_locales/${source_locale}/messages.json",
-      ]
-      outputs = [
-        "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}",
-      ]
+      sources = [ "//brave/components/brave_extension/extension/brave_extension/_locales/${source_locale}/messages.json" ]
+      outputs = [ "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}" ]
     }
   }
 }

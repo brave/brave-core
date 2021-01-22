@@ -3,19 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// Notify the background script as soon as the content script has loaded.
-// chrome.tabs.insertCSS may sometimes fail to inject CSS in a newly navigated
-// page when using the chrome.webNavigation API.
-// See: https://bugs.chromium.org/p/chromium/issues/detail?id=331654#c15
-// The RenderView should always be ready when the content script begins, so
-// this message is used to trigger CSS insertion instead.
-chrome.runtime.sendMessage({
-  type: 'contentScriptsLoaded',
-  location: window.location
-})
+// That script is executed from
+// components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.cc
+// several times:
+// - for scriptlets injection;
+// - for cosmetic filters work with CSS and stylesheet. That work itself
+//   could call the script several times.
 
 const { parseDomain, ParseResultType } = require('parse-domain')
-
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
 // or sooner if the thread is idle.
@@ -35,10 +30,39 @@ let notYetQueriedClasses: string[]
 let notYetQueriedIds: string[]
 let cosmeticObserver: MutationObserver | undefined = undefined
 
-const allSelectorsToRules = new Map<string, number>()
-const cosmeticStyleSheet = new CSSStyleSheet()
+window.content_cosmetic = window.content_cosmetic || {}
+window.content_cosmetic.cosmeticStyleSheet =
+  window.content_cosmetic.cosmeticStyleSheet || new CSSStyleSheet()
+window.content_cosmetic.allSelectorsToRules =
+  window.content_cosmetic.allSelectorsToRules || new Map<string, number>()
+window.content_cosmetic.observingHasStarted =
+  window.content_cosmetic.observingHasStarted || false
+// All new selectors go in `firstRunQueue`
+window.content_cosmetic.firstRunQueue =
+  window.content_cosmetic.firstRunQueue || new Set<string>()
+// Third party matches go in the second and third queues.
+window.content_cosmetic.secondRunQueue =
+  window.content_cosmetic.secondRunQueue || new Set<string>()
+// Once a selector gets in to this queue, it's only evaluated for 1p content one
+// more time.
+window.content_cosmetic.finalRunQueue =
+  window.content_cosmetic.finalRunQueue || new Set<string>()
+window.content_cosmetic.allQueues = window.content_cosmetic.allQueues ||
+  [window.content_cosmetic.firstRunQueue,
+    window.content_cosmetic.secondRunQueue,
+    window.content_cosmetic.finalRunQueue]
+window.content_cosmetic.numQueues =
+  window.content_cosmetic.numQueues || window.content_cosmetic.allQueues.length
+window.content_cosmetic.alreadyUnhiddenSelectors =
+  window.content_cosmetic.alreadyUnhiddenSelectors || new Set<string>()
+window.content_cosmetic.alreadyKnownFirstPartySubtrees =
+  window.content_cosmetic.alreadyKnownFirstPartySubtrees || new WeakSet()
+window.content_cosmetic._hasDelayOcurred =
+  window.content_cosmetic._hasDelayOcurred || false
+window.content_cosmetic._startCheckingId =
+  window.content_cosmetic._startCheckingId || undefined
 
-const injectScriptlet = (text: string) => {
+function injectScriptlet (text: string) {
   let script
   try {
     script = document.createElement('script')
@@ -104,11 +128,12 @@ const fetchNewClassIdRules = () => {
     (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
     return
   }
-  chrome.runtime.sendMessage({
-    type: 'hiddenClassIdSelectors',
-    classes: notYetQueriedClasses || [],
-    ids: notYetQueriedIds || []
-  })
+  // Callback to c++ renderer process
+  // @ts-ignore
+  cf_worker.hiddenClassIdSelectors(
+      JSON.stringify({
+        classes: notYetQueriedClasses, ids: notYetQueriedIds
+      }))
   notYetQueriedClasses = []
   notYetQueriedIds = []
 }
@@ -344,26 +369,26 @@ const unhideSelectors = (selectors: Set<string>) => {
   }
   // Find selectors we have a rule index for
   const rulesToRemove = Array.from(selectors)
-    .map(selector => allSelectorsToRules.get(selector))
+    .map(selector => window.content_cosmetic.allSelectorsToRules.get(selector))
     .filter(i => i !== undefined)
     .sort()
     .reverse()
   // Delete the rules
-  let lastIdx: number = allSelectorsToRules.size - 1
+  let lastIdx: number = window.content_cosmetic.allSelectorsToRules.size - 1
   for (const ruleIdx of rulesToRemove) {
     // Safe to asset ruleIdx is a number because we've already filtered out
     // any `undefined` instances with the filter call above.
-    cosmeticStyleSheet.deleteRule(ruleIdx as number)
+    window.content_cosmetic.cosmeticStyleSheet.deleteRule(ruleIdx as number)
   }
   // Re-sync the indexes
   // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.
-  const ruleLookup = Array.from(allSelectorsToRules.entries())
+  const ruleLookup = Array.from(window.content_cosmetic.allSelectorsToRules.entries())
   let countAtLastHighest = rulesToRemove.length
   for (let i = lastIdx; i > 0; i--) {
     const [selector, oldIdx] = ruleLookup[i]
     // Is this one we removed?
     if (rulesToRemove.includes(i)) {
-      allSelectorsToRules.delete(selector)
+      window.content_cosmetic.allSelectorsToRules.delete(selector)
       countAtLastHighest--
       if (countAtLastHighest === 0) {
         break
@@ -374,21 +399,10 @@ const unhideSelectors = (selectors: Set<string>) => {
       // Probably out of sync
       console.error('Cosmetic Filters: old index did not match lookup index', { selector, oldIdx, i })
     }
-    allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
+    window.content_cosmetic.allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
   }
 }
 
-const alreadyUnhiddenSelectors = new Set<string>()
-const alreadyKnownFirstPartySubtrees = new WeakSet()
-// All new selectors go in `firstRunQueue`
-const firstRunQueue = new Set<string>()
-// Third party matches go in the second and third queues.
-const secondRunQueue = new Set<string>()
-// Once a selector gets in to this queue, it's only evaluated for 1p content one
-// more time.
-const finalRunQueue = new Set<string>()
-const allQueues = [firstRunQueue, secondRunQueue, finalRunQueue]
-const numQueues = allQueues.length
 const pumpIntervalMinMs = 40
 const pumpIntervalMaxMs = 1000
 const maxWorkSize = 60
@@ -411,9 +425,9 @@ const pumpCosmeticFilterQueues = () => {
   // For each "pump", walk through each queue until we find selectors
   // to evaluate. This means that nothing in queue N+1 will be evaluated
   // until queue N is completely empty.
-  for (let queueIndex = 0; queueIndex < numQueues; queueIndex += 1) {
-    const currentQueue = allQueues[queueIndex]
-    const nextQueue = allQueues[queueIndex + 1]
+  for (let queueIndex = 0; queueIndex < window.content_cosmetic.numQueues; queueIndex += 1) {
+    const currentQueue = window.content_cosmetic.allQueues[queueIndex]
+    const nextQueue = window.content_cosmetic.allQueues[queueIndex + 1]
     if (currentQueue.size === 0) {
       continue
     }
@@ -430,7 +444,7 @@ const pumpCosmeticFilterQueues = () => {
       // Don't recheck elements / subtrees we already know are first party.
       // Once we know something is third party, we never need to evaluate it
       // again.
-      if (alreadyKnownFirstPartySubtrees.has(aMatchingElm)) {
+      if (window.content_cosmetic.alreadyKnownFirstPartySubtrees.has(aMatchingElm)) {
         continue
       }
 
@@ -453,14 +467,14 @@ const pumpCosmeticFilterQueues = () => {
         // Similarly, if we already know a selector matches 1p content,
         // there is no need to notify the background script again, so
         // we don't need to consider further.
-        if (alreadyUnhiddenSelectors.has(selector) === true) {
+        if (window.content_cosmetic.alreadyUnhiddenSelectors.has(selector) === true) {
           continue
         }
 
         newlyIdentifiedFirstPartySelectors.add(selector)
-        alreadyUnhiddenSelectors.add(selector)
+        window.content_cosmetic.alreadyUnhiddenSelectors.add(selector)
       }
-      alreadyKnownFirstPartySubtrees.add(aMatchingElm)
+      window.content_cosmetic.alreadyKnownFirstPartySubtrees.add(aMatchingElm)
     }
 
     unhideSelectors(newlyIdentifiedFirstPartySelectors)
@@ -526,24 +540,22 @@ const startObserving = () => {
   cosmeticObserver.observe(document.documentElement, observerConfig)
 }
 
-let _hasDelayOcurred: boolean = false
-let _startCheckingId: number | undefined = undefined
 const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
   // Three states possible here.  First, the delay has already occurred.  If so,
   // pass through to pumpCosmeticFilterQueues immediately.
-  if (_hasDelayOcurred === true) {
+  if (window.content_cosmetic._hasDelayOcurred === true) {
     pumpCosmeticFilterQueuesOnIdle()
     return
   }
   // Second possibility is that we're already waiting for the delay to pass /
   // occur.  In this case, do nothing.
-  if (_startCheckingId !== undefined) {
+  if (window.content_cosmetic._startCheckingId !== undefined) {
     return
   }
   // Third / final possibility, this is this the first time this has been
   // called, in which case set up a timmer and quit
-  _startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
-    _hasDelayOcurred = true
+  window.content_cosmetic._startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
+    window.content_cosmetic._hasDelayOcurred = true
     if (!generichide) {
       startObserving()
     }
@@ -553,45 +565,14 @@ const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
-const vettedSearchEngines = ['duckduckgo', 'qwant', 'bing', 'startpage', 'google', 'yandex', 'ecosia']
-
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  const action = typeof msg === 'string' ? msg : msg.type
-  switch (action) {
-    case 'cosmeticFilteringBackgroundReady': {
-      if (msg.hideOptions !== undefined) {
-        scheduleQueuePump(msg.hideOptions.hide1pContent, msg.hideOptions.generichide)
-      }
-      injectScriptlet(msg.scriptlet)
-      break
-    }
-    case 'cosmeticFilterConsiderNewSelectors': {
-      const { selectors } = msg
-      let nextIndex = cosmeticStyleSheet.rules.length
-      for (const selector of selectors) {
-        if (_parsedCurrentDomain.type === ParseResultType.Listed && vettedSearchEngines.includes(_parsedCurrentDomain.icann.domain)) {
-          continue
-        }
-        if (allSelectorsToRules.has(selector)) {
-          continue
-        }
-        // insertRule always adds to index 0,
-        // so we always add to end of list manually.
-        cosmeticStyleSheet.insertRule(
-          `${selector}{display:none !important;}`,
-          nextIndex
-        )
-        allSelectorsToRules.set(selector, nextIndex)
-        nextIndex++
-        firstRunQueue.add(selector)
-      }
-      // @ts-ignore
-      if (!document.adoptedStyleSheets.includes(cosmeticStyleSheet)) {
-        // @ts-ignore
-        document.adoptedStyleSheets = [cosmeticStyleSheet]
-      }
-      scheduleQueuePump(false, false)
-      break
-    }
-  }
-})
+if (!window.content_cosmetic.observingHasStarted) {
+  window.content_cosmetic.observingHasStarted = true
+  scheduleQueuePump(window.content_cosmetic.hide1pContent,
+    window.content_cosmetic.generichide)
+} else if (window.content_cosmetic.scriptlet) {
+  let scriptlet = window.content_cosmetic.scriptlet
+  window.content_cosmetic.scriptlet = ''
+  injectScriptlet(scriptlet)
+} else {
+  scheduleQueuePump(false, false)
+}

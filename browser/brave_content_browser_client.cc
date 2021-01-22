@@ -20,7 +20,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -28,6 +27,9 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
+#include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -37,6 +39,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
@@ -48,6 +51,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
@@ -128,6 +132,24 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
   return false;
 }
 
+void BindCosmeticFiltersResources(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
+        receiver) {
+  auto* web_contents = content::WebContents::FromRenderFrameHost(frame_host);
+  if (!web_contents)
+    return;
+
+  auto* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile);
+
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
+          settings_map, g_brave_browser_process->ad_block_service()),
+      std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient()
@@ -170,6 +192,15 @@ BraveContentBrowserClient::AllowWebBluetooth(
     const url::Origin& requesting_origin,
     const url::Origin& embedding_origin) {
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
+}
+
+void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
+    content::RenderFrameHost* render_frame_host,
+    mojo::BinderMapWithContext<content::RenderFrameHost*>* map) {
+  ChromeContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
+      render_frame_host, map);
+  map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
+      base::BindRepeating(&BindCosmeticFiltersResources));
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(

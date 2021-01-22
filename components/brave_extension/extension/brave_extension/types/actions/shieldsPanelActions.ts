@@ -184,19 +184,6 @@ export interface GenerateClassIdStylesheet {
   (tabId: number, classes: string[], ids: string[]): GenerateClassIdStylesheetReturn
 }
 
-interface CosmeticFilterRuleExceptionsReturn {
-  type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
-  tabId: number,
-  frameId: number,
-  exceptions: string[],
-  scriptlet: string,
-  generichide: boolean
-}
-
-export interface CosmeticFilterRuleExceptions {
-  (tabId: number, frameId: number, exceptions: string[], scriptlet: string, generichide: boolean): CosmeticFilterRuleExceptionsReturn
-}
-
 interface ContentScriptsLoadedReturn {
   type: types.CONTENT_SCRIPTS_LOADED,
   tabId: number,
@@ -227,5 +214,4 @@ export type shieldPanelActions =
   SetAdvancedViewFirstAccessReturn |
   ShieldsReadyReturn |
   GenerateClassIdStylesheetReturn |
-  CosmeticFilterRuleExceptionsReturn |
   ContentScriptsLoadedReturn

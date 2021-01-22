@@ -5,8 +5,6 @@ source_set("android_browser_process") {
   check_includes = false
 
   sources = [
-    "brave_cosmetic_resources_tab_helper.cc",
-    "brave_cosmetic_resources_tab_helper.h",
     "brave_feature_list.cc",
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
@@ -29,9 +27,8 @@ source_set("android_browser_process") {
   ]
 
   if (brave_ads_enabled) {
-    sources += [
-      "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-    ]
+    sources +=
+        [ "//brave/browser/brave_ads/android/brave_ads_native_helper.cc" ]
 
     deps += [
       "//brave/browser/brave_ads/android:jni_headers",
@@ -42,10 +39,10 @@ source_set("android_browser_process") {
 
   if (enable_brave_sync) {
     sources += [
-      "brave_sync_worker.cc",
-      "brave_sync_worker.h",
       "//brave/browser/sync/brave_sync_devices_android.cc",
       "//brave/browser/sync/brave_sync_devices_android.h",
+      "brave_sync_worker.cc",
+      "brave_sync_worker.h",
     ]
     deps += [
       "//brave/components/brave_sync",
