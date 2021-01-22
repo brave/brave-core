@@ -39,7 +39,7 @@ declare namespace BraveToday {
     }
   }
 
-  export type FeedItem = (Article | Deal)
+  export type FeedItem = (Article | Deal | PromotedArticle)
 
   export interface Feed {
     hash: string
@@ -61,7 +61,7 @@ declare namespace BraveToday {
       items: Article[] // 3
     }
     deals: Deal[] // 3
-
+    promotedArticle?: PromotedArticle
   }
 
   export interface ScrollingList {
@@ -71,7 +71,7 @@ declare namespace BraveToday {
   }
 
   type BaseFeedItem = {
-    content_type: 'article' | 'product'
+    content_type: 'article' | 'product' | 'brave_partner'
     category: string // 'Tech', 'Business', 'Top News', 'Crypto', 'Cars', 'Culture', 'Fashion', 'Sports', 'Entertainment'
     publish_time: string // UTC "2020-04-17 19:21:10"
     title: string // "14 Truly Incredible Catfish Makeup Transformations From TikTok"
@@ -90,6 +90,11 @@ declare namespace BraveToday {
 
   export type Article = BaseFeedItem & {
     content_type: 'article'
+  }
+
+  export type PromotedArticle = BaseFeedItem & {
+    content_type: 'brave_partner',
+    creative_instance_id: string // (Possibly but not guaranteed unique) Id for this specific item
   }
 
   export type Deal = BaseFeedItem & {

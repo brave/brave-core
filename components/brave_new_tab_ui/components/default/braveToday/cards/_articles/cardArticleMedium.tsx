@@ -31,7 +31,9 @@ type ArticleProps = {
 function MediumArticle (props: ArticleProps) {
   const { publisher, item } = props
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
-  const onClick = useReadArticleClickHandler(props.onReadFeedItem, item)
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, {
+    item
+  })
   return (
     <Card.Small>
       <a onClick={onClick} href={item.url} ref={cardRef}>

@@ -4,12 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { ReadFeedItemPayload } from '../../../actions/today_actions'
 import { OnReadFeedItem } from './'
 
-export default function useReadArticleClickHandler (action: OnReadFeedItem, item: BraveToday.FeedItem) {
+export default function useReadArticleClickHandler (action: OnReadFeedItem, payloadData: ReadFeedItemPayload) {
   return React.useCallback((e: React.MouseEvent) => {
     const openInNewTab = e.ctrlKey || e.metaKey
-    action({ item, openInNewTab })
+    action({ ...payloadData, openInNewTab })
     e.preventDefault()
-  }, [action, item])
+  }, [action, payloadData.item, payloadData.isPromoted])
 }

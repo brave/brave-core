@@ -6,7 +6,8 @@
 import { isPublisherContentAllowed } from '../../../../../common/braveToday'
 import { getOrFetchData as getOrFetchPublishers, addPublishersChangedListener } from './publishers'
 import feedToData from './feedToData'
-import { fetchResource, URLS } from './privateCDN'
+import { fetchResource } from './privateCDN'
+import { getFeedUrl } from './urls'
 
 type RemoteData = BraveToday.FeedItem[]
 
@@ -15,7 +16,6 @@ type FeedInStorage = {
   feed: BraveToday.Feed
 }
 
-const feedUrl = URLS.braveTodayFeed
 let memoryTodayData: BraveToday.Feed | undefined
 let readLock: Promise<void> | null
 const STORAGE_KEY = 'today'
@@ -103,7 +103,7 @@ function performUpdateFeed () {
         // We don't use If-None-Match header because
         // often have to fetch same data and compute feed
         // with different publisher preferences.
-        fetchResource(feedUrl),
+        fetchResource(await getFeedUrl()),
         getOrFetchPublishers()
       ])
       if (feedResponse.ok) {
@@ -132,7 +132,7 @@ function performUpdateFeed () {
         throw new Error(`Not ok when fetching feed. Status ${feedResponse.status} (${feedResponse.statusText})`)
       }
     } catch (e) {
-      console.error('Could not process feed contents from ', feedUrl)
+      console.error('Could not process Brave Today feed contents')
       reject(e)
     } finally {
       readLock = null
@@ -171,7 +171,7 @@ export async function checkForRemoteUpdate () {
   if (!existingEtag) {
     return true
   }
-  const headResponse = await fetch(feedUrl, { method: 'HEAD' })
+  const headResponse = await fetch(await getFeedUrl(), { method: 'HEAD' })
   if (!headResponse.ok) {
     console.warn(`Tried to fetch feed HEAD but got error ${headResponse.status}: "${headResponse.statusText}".`)
     return false

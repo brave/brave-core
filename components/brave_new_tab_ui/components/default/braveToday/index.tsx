@@ -17,6 +17,7 @@ type State = {
 
 export type OnReadFeedItem = (args: ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
+export type OnPromotedItemViewed = (item: BraveToday.FeedItem) => any
 
 export type Props = {
   isFetching: boolean
@@ -28,6 +29,7 @@ export type Props = {
   displayedPageCount: number
   onInteracting: (interacting: boolean) => any
   onReadFeedItem: OnReadFeedItem
+  onPromotedItemViewed: OnPromotedItemViewed
   onFeedItemViewedCountChanged: (feedItemsViewed: number) => any
   onSetPublisherPref: OnSetPublisherPref
   onAnotherPageNeeded: () => any

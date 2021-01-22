@@ -255,6 +255,9 @@
       <message name="IDS_BRAVE_TODAY_DISABLE_SOURCE_COMMAND" desc="Command text to disable a specific publisher from showing in the feed">
         Disable content from <ph name="PUBLISHER_NAME">$1<ex>The New York Times</ex></ph>
       </message>
+      <message name="IDS_BRAVE_TODAY_PROMOTED" desc="Label for promoted content">
+        Promoted
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_TAB" desc="Clock title">Clock</message>
