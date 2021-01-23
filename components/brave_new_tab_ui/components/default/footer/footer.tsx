@@ -75,13 +75,13 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
                 {getLocale('customize')}
               </IconButtonSideText>
             </IconButtonContainer>
-            <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
+            <IconLink title={getLocale('preferencesPageTitle')} href='brave://settings'>
               <SettingsAdvancedIcon />
             </IconLink>
-            <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks'>
+            <IconLink title={getLocale('bookmarksPageTitle')} href='brave://bookmarks'>
               <BookmarkBook />
             </IconLink>
-            <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
+            <IconLink title={getLocale('historyPageTitle')} href='brave://history'>
               <HistoryIcon />
             </IconLink>
             { !togetherPrmoptDismissed
