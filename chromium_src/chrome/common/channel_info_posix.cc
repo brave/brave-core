@@ -31,6 +31,8 @@ std::string GetDesktopName(base::Environment* env) {
       return "brave-browser-dev.desktop";
     case version_info::Channel::BETA:
       return "brave-browser-beta.desktop";
+    case version_info::Channel::CANARY:
+      return "brave-browser-nightly.desktop";
     default:
       return "brave-browser.desktop";
   }
