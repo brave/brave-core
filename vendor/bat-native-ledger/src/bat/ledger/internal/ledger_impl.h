@@ -37,6 +37,8 @@ class SequencedTaskRunner;
 
 namespace ledger {
 
+class BATLedgerContext;
+
 class LedgerImpl : public ledger::Ledger {
  public:
   typedef std::map<uint32_t,
@@ -48,6 +50,8 @@ class LedgerImpl : public ledger::Ledger {
   // Not copyable, not assignable
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
+
+  BATLedgerContext* context() const;
 
   ledger::LedgerClient* ledger_client() const;
 
@@ -362,6 +366,7 @@ class LedgerImpl : public ledger::Ledger {
   void OnAllDone(const type::Result result, ledger::ResultCallback callback);
 
   ledger::LedgerClient* ledger_client_;
+  std::unique_ptr<BATLedgerContext> context_;
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;

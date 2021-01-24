@@ -45,10 +45,7 @@ base::FilePath GetTestDataPath() {
 TestNetworkResult::TestNetworkResult(const std::string& url,
                                      mojom::UrlMethod method,
                                      mojom::UrlResponsePtr response)
-    : url(url), method(method), response(std::move(response)) {
-  DCHECK(!url.empty());
-  DCHECK(response);
-}
+    : url(url), method(method), response(std::move(response)) {}
 
 TestNetworkResult::~TestNetworkResult() = default;
 
@@ -106,9 +103,11 @@ void TestLedgerClient::Log(const char* file,
                            const int verbose_level,
                            const std::string& message) {
   int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (verbose_level <= vlog_level) {
+  if (verbose_level <= vlog_level)
     logging::LogMessage(file, line, -verbose_level).stream() << message;
-  }
+
+  if (log_callback_)
+    log_callback_.Run(message);
 }
 
 void TestLedgerClient::PublisherListNormalized(
@@ -289,9 +288,15 @@ void TestLedgerClient::SetOptionForTesting(const std::string& name,
   option_store_.SetPath(name, std::move(value));
 }
 
-void TestLedgerClient::SetNetworkResultsForTesting(
-    std::list<TestNetworkResult>&& list) {
-  network_results_ = std::move(list);
+void TestLedgerClient::AddNetworkResultForTesting(
+    const std::string& url,
+    mojom::UrlMethod method,
+    mojom::UrlResponsePtr response) {
+  network_results_.emplace_back(url, method, std::move(response));
+}
+
+void TestLedgerClient::SetLogCallbackForTesting(LogCallback callback) {
+  log_callback_ = std::move(callback);
 }
 
 void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
