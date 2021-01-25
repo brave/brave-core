@@ -60,6 +60,7 @@ source_set("browser_tests") {
       "//brave/common",
       "//brave/common:pref_names",
       "//chrome/browser",
+      "//chrome/browser:browser_process",
       "//chrome/browser/ui",
       "//chrome/common",
       "//chrome/test:test_support_ui",
