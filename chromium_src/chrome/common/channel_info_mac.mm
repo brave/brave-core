@@ -23,13 +23,12 @@ std::string GetChannelName() {
 
     NSString* channel = [bundle objectForInfoDictionaryKey:@"KSChannelID"];
 
-    // Only ever return "", "unknown", "beta", "dev", or "nightly" in an official
-    // build.
+    // Only ever return "", "unknown", "beta", "dev", or "nightly" in an
+    // official build.
     if (!channel) {
       // For the stable channel, KSChannelID is not set.
       channel = @"";
-    } else if ([channel isEqual:@"beta"] ||
-               [channel isEqual:@"dev"] ||
+    } else if ([channel isEqual:@"beta"] || [channel isEqual:@"dev"] ||
                [channel isEqual:@"nightly"]) {
       // do nothing.
     } else {

@@ -5,14 +5,13 @@
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
-#define BRAVE_GET_SYNC_STATUS_DICTIONARY  \
-  sync_status->SetBoolean(                \
-      "firstSetupInProgress",             \
-      service && !disallowed_by_policy && \
+#define BRAVE_GET_SYNC_STATUS_DICTIONARY                        \
+  sync_status->SetBoolean(                                      \
+      "firstSetupInProgress",                                   \
+      service && !disallowed_by_policy &&                       \
           !service->GetUserSettings()->IsFirstSetupComplete()); \
-  sync_status->SetBoolean(                \
-      "isEngineInitialized",             \
-      service && service->IsEngineInitialized());
+  sync_status->SetBoolean("isEngineInitialized",                \
+                          service && service->IsEngineInitialized());
 
 #include "../../../../../../../chrome/browser/ui/webui/settings/people_handler.cc"
 #undef BRAVE_GET_SYNC_STATUS_DICTIONARY

@@ -213,7 +213,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 mTabModelSelector.getModel(mIncognitoStateProvider.isIncognitoSelected())
                         .closeAllTabs();
             };
-            assert (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator);
+            assert (mBottomControlsCoordinatorSupplier.get()
+                            instanceof BraveBottomControlsCoordinator);
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .initializeWithNative(mActivity, mCompositorViewHolder.getResourceManager(),
                             mCompositorViewHolder.getLayoutManager(), tabSwitcherClickHandler,
