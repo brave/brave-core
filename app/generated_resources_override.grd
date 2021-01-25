@@ -136,6 +136,12 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <if expr="chromeos">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_win or desktop_linux">
+        </if>
       <if expr="not is_android">
         </if>
 
@@ -831,6 +837,12 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="chromeos">
         </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_win or desktop_linux">
+        </if>
+      <if expr="chromeos">
+        </if>
 
       <if expr="chromeos">
       </if>
@@ -875,15 +887,10 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
     <if expr="is_win or is_macosx or desktop_linux or chromeos">
+      <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DESCRIPTION" desc="Description of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
+         Sign-in data will be stored on this device after you exit Private mode. You'll be able to sign in to this website with your device again later.
+      </message>
       </if>
-   <if expr="is_macosx">
-     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_TITLE" desc="Title of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
-       Do you want to use Touch ID with <ph name="APP_NAME">$1<ex>example.com</ex></ph> in Private mode?
-     </message>
-     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_DESCRIPTION" desc="Description of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
-       Sign-in data will be stored in Brave after you exit Private mode. This will let you use Touch ID with this website again later.
-     </message>
-     </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the private version of profile menu.">
       Private

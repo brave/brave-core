@@ -119,6 +119,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_USAGE_AND_CRASH_REPORTS_SUMMARY" desc="Description for 'Help improve Brave's features and performance' preference.">
         Automatically sends crash reports to Brave
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION" desc="">
+        Privacy Sandbox is a set of new technologies that will eventually protect profiles from cross-site tracking mechanisms, like third-party cookies, while preserving web content and services that depend on those mechanisms today. Brave is working with website developers, publishers, advertisers, and other browsers to develop this new technology.
+      </message>
       <message name="IDS_DATA_REDUCTION_DESCRIPTION_LITE_MODE" desc="Text describing how the Lite mode feature works. Seen only before the user has enabled the feature.">
         When Lite mode is on, Brave uses Brave servers to make pages load faster. Lite mode rewrites very slow pages to load only essential content. Lite mode does not apply to Private tabs.
       </message>
