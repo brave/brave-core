@@ -21,6 +21,7 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
+#include "net/base/features.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -29,6 +30,14 @@
 
 namespace content_settings {
 namespace {
+
+bool IsFrameWithOpaqueOrigin(blink::WebFrame* frame) {
+  // Storage access is keyed off the top origin and the frame's origin.
+  // It will be denied any opaque origins so have this method to return early
+  // instead of making a Sync IPC call.
+  return frame->GetSecurityOrigin().IsOpaque() ||
+         frame->Top()->GetSecurityOrigin().IsOpaque();
+}
 
 GURL GetOriginOrURL(const blink::WebFrame* frame) {
   url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
@@ -133,6 +142,62 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
     blocked_script_url_ = GURL::EmptyGURL();
   }
   ContentSettingsAgentImpl::DidNotAllowScript();
+}
+
+bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
+    StorageType storage_type) {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
+    return false;
+
+  if (storage_type != StorageType::kLocalStorage &&
+      storage_type != StorageType::kSessionStorage)
+    return false;
+
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+
+  if (!frame || IsFrameWithOpaqueOrigin(frame))
+    return false;
+
+  return  // block 3p
+      !ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type) &&
+      // allow 1p
+      AllowStorageAccessForMainFrameSync(storage_type);
+}
+
+bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
+    StorageType storage_type) {
+  bool result = ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type);
+
+  if (result || UseEphemeralStorageSync(storage_type))
+    return true;
+
+  return false;
+}
+
+bool BraveContentSettingsAgentImpl::AllowStorageAccessForMainFrameSync(
+    StorageType storage_type) {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+
+  if (IsFrameWithOpaqueOrigin(frame))
+    return false;
+
+  bool result = false;
+
+  StoragePermissionsKey key(url::Origin(frame->GetSecurityOrigin()),
+                            storage_type);
+  const auto permissions = cached_storage_permissions_.find(key);
+  if (permissions != cached_storage_permissions_.end())
+    return permissions->second;
+
+  // check for block all by looking at top domain only
+  GetContentSettingsManager().AllowStorageAccess(
+      routing_id(), ConvertToMojoStorageType(storage_type),
+      frame->GetDocument().TopFrameOrigin(),
+      url::Origin(frame->GetDocument().TopFrameOrigin()).GetURL(),
+      frame->GetDocument().TopFrameOrigin(), &result);
+  cached_storage_permissions_[key] = result;
+
+  return result;
 }
 
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(

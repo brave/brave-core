@@ -5,24 +5,44 @@
 
 #include "services/network/restricted_cookie_manager.h"
 
+#include "base/feature_list.h"
+#include "components/content_settings/core/common/cookie_settings_base.h"
 #include "net/base/features.h"
 #include "net/cookies/cookie_monster.h"
+#include "net/cookies/site_for_cookies.h"
+#include "services/network/cookie_settings.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
-bool ShouldUseEphemeralStorage(const GURL& url,
-                               const url::Origin& top_frame_origin) {
+bool ShouldUseEphemeralStorage(
+    const GURL& url,
+    const url::Origin& top_frame_origin,
+    const net::SiteForCookies& site_for_cookies,
+    const network::CookieSettings* const cookie_settings) {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
   if (url::Origin::Create(url) == top_frame_origin)
     return false;
-  return true;
+
+  bool block_3p = !cookie_settings->IsCookieAccessAllowed(
+      url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
+  bool block_1p = !cookie_settings->IsCookieAccessAllowed(
+      url, url, url::Origin::Create(url));
+
+  // only use ephemeral storage for block 3p
+  if (block_3p && !block_1p)
+    return true;
+
+  return false;
 }
 
 }  // namespace
 
 #define BRAVE_GETALLFORURL                                                  \
-  if (ShouldUseEphemeralStorage(url, top_frame_origin)) {                   \
+  if (ShouldUseEphemeralStorage(url, top_frame_origin, site_for_cookies,    \
+                                cookie_settings_)) {                        \
     static_cast<net::CookieMonster*>(cookie_store_)                         \
         ->GetEphemeralCookieListWithOptionsAsync(                           \
             url, top_frame_origin.GetURL(), net_options,                    \
@@ -31,10 +51,12 @@ bool ShouldUseEphemeralStorage(const GURL& url,
                 weak_ptr_factory_.GetWeakPtr(), url, site_for_cookies,      \
                 top_frame_origin, net_options, std::move(options),          \
                 std::move(callback)));                                      \
-  } else  // NOLINT
+    return;                                                                 \
+  }
 
 #define BRAVE_SETCANONICALCOOKIE                                               \
-  if (ShouldUseEphemeralStorage(url, top_frame_origin)) {                      \
+  if (ShouldUseEphemeralStorage(url, top_frame_origin, site_for_cookies,       \
+                                cookie_settings_)) {                           \
     static_cast<net::CookieMonster*>(cookie_store_)                            \
         ->SetEphemeralCanonicalCookieAsync(                                    \
             std::move(sanitized_cookie), origin_.GetURL(),                     \
@@ -43,6 +65,9 @@ bool ShouldUseEphemeralStorage(const GURL& url,
                            weak_ptr_factory_.GetWeakPtr(), url,                \
                            site_for_cookies, cookie_copy, options,             \
                            std::move(callback)));                              \
-  } else  // NOLINT
+    return;                                                                    \
+  }
 
+#define IsCookieAccessAllowed IsEphemeralCookieAccessAllowed
 #include "../../../../../services/network/restricted_cookie_manager.cc"
+#undef IsCookieAccessAllowed

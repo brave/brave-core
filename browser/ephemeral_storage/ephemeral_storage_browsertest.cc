@@ -109,13 +109,6 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
-  void AllowAllCookies() {
-    auto* content_settings =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    brave_shields::SetCookieControlType(
-        content_settings, brave_shields::ControlType::ALLOW, GURL());
-  }
-
   void SetValuesInFrame(RenderFrameHost* frame,
                         std::string storage_value,
                         std::string cookie_value) {
@@ -184,8 +177,6 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
-  AllowAllCookies();
-
   WebContents* first_party_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   WebContents* site_a_tab1 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
@@ -263,8 +254,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        NavigatingClearsEphemeralStorage) {
-  AllowAllCookies();
-
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -303,8 +292,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ClosingTabClearsEphemeralStorage) {
-  AllowAllCookies();
-
   WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
 
@@ -353,8 +340,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ReloadDoesNotClearEphemeralStorage) {
-  AllowAllCookies();
-
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -392,8 +377,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        EphemeralStorageDoesNotLeakBetweenProfiles) {
-  AllowAllCookies();
-
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -456,9 +439,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
-                       NavigationCookiesArePartitioned) {
-  AllowAllCookies();
-
+                       DISABLED_NavigationCookiesArePartitioned) {
   GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
   GURL b_site_set_cookie_url = https_server_.GetURL(
@@ -510,8 +491,6 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        FirstPartyNestedInThirdParty) {
-  AllowAllCookies();
-
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   GURL a_site_set_cookie_url = https_server_.GetURL(

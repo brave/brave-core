@@ -27,6 +27,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 using brave_shields::ControlType;
 
@@ -376,9 +377,17 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   template <typename T>
-  void CheckLocalStorageNull(T* frame) {
-    EXPECT_EQ(nullptr, EvalJs(frame, "localStorage"));
-    EXPECT_EQ(nullptr, EvalJs(frame, "sessionStorage"));
+  void CheckLocalStorageAccessDenied(T* frame) {
+    EXPECT_THAT(
+        EvalJs(frame, "localStorage").error,
+        ::testing::StartsWith(
+            "a JavaScript error:\nError: Failed to read the 'localStorage' "
+            "property from 'Window': Access is denied for this document.\n"));
+    EXPECT_THAT(
+        EvalJs(frame, "sessionStorage").error,
+        ::testing::StartsWith(
+            "a JavaScript error:\nError: Failed to read the 'sessionStorage' "
+            "property from 'Window': Access is denied for this document.\n"));
   }
 
   template <typename T>
@@ -1002,7 +1011,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Local storage is null, accessing it shouldn't throw.
   NavigateIframe(cross_site_url());
-  CheckLocalStorageNull(child_frame());
+  CheckLocalStorageAccessDenied(child_frame());
 
   // Cookies allowed:
   AllowCookies();
@@ -1022,7 +1031,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Local storage is null, accessing it doesn't throw.
   NavigateIframe(cross_site_url());
-  CheckLocalStorageNull(child_frame());
+  CheckLocalStorageAccessDenied(child_frame());
 
   // Shields down, third-party cookies still blocked:
   ShieldsDown();
