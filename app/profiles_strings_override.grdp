@@ -74,9 +74,6 @@
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
           Remove This Profile
         </message>
-        <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-          Add Supervised Profile
-        </message>
       </if>
       <if expr="chromeos">
         </if>
@@ -88,9 +85,6 @@
       <if expr="not chromeos">
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
           Remove this profile
-        </message>
-        <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-          Add supervised profile
         </message>
       </if>
       <if expr="chromeos">

@@ -258,9 +258,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="is_linux">
-        </if>
-
       <if expr="is_android">
         </if>
 
