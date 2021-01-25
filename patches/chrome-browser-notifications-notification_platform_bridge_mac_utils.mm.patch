@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm b/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm
+index 8e9b49b47dec121651492d24e1514224eed326ce..9bd30fcb2531dc575aa3c18e6e73442851e8e7b4 100644
+--- a/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm
++++ b/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm
+@@ -60,6 +60,7 @@ void DoProcessMacNotificationResponse(
+ // call this method directly as SysInfo::OperatingSystemVersionNumbers might be
+ // an expensive call. Instead use SupportsAlerts which caches this value.
+ bool MacOSSupportsXPCAlertsImpl() {
++  BRAVE_SUPPORTSALERTSIMPL_
+   int32_t major, minor, bugfix;
+   base::SysInfo::OperatingSystemVersionNumbers(&major, &minor, &bugfix);
+   // Allow alerts on all versions except 10.15.0, 10.15.1 & 10.15.2.
