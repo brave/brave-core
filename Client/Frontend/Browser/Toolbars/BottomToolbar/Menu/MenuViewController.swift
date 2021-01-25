@@ -103,7 +103,8 @@ class MenuViewController: UITableViewController {
         
         var title: String {
             switch self {
-            case .vpn: return Strings.VPN.vpnMenuItemTitle
+            // This string should not be translated.
+            case .vpn: return "Brave VPN"
             case .bookmarks: return Strings.bookmarksMenuItem
             case .history: return Strings.historyMenuItem
             case .settings: return Strings.settingsMenuItem

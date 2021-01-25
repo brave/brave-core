@@ -19,7 +19,8 @@ class EnableVPNSettingHeader: UIView {
     }
     
     private let titleLabel = UILabel().then {
-        $0.text = Strings.VPN.vpnMenuItemTitle
+        // This string should not be translated
+        $0.text = "Brave VPN"
         $0.appearanceTextColor = .white
         $0.font = UIFont.systemFont(ofSize: 19, weight: .semibold)
     }
