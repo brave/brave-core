@@ -908,12 +908,6 @@ extension Strings {
                               value: "Brave Firewall + VPN",
                               comment: "Title for screen to buy the VPN.")
         
-        public static let vpnMenuItemTitle =
-            NSLocalizedString("vpn.vpnMenuItemTitle",
-                              bundle: .braveShared,
-                              value: "Brave VPN",
-                              comment: "Title Brave VPN menu item.")
-        
         public static let poweredBy =
             NSLocalizedString("vpn.poweredBy",
                               bundle: .braveShared,
