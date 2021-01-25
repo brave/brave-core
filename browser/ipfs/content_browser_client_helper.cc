@@ -60,8 +60,8 @@ bool HandleIPFSURLRewrite(
       // We instead will translate the URL later.
       IsIPFSLocalGateway(browser_context) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
-    return TranslateIPFSURI(*url, url,
-                            GetDefaultIPFSLocalGateway(chrome::GetChannel()));
+    return TranslateIPFSURI(
+        *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
   }
 
   return false;

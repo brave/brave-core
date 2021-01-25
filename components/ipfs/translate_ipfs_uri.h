@@ -10,7 +10,10 @@
 
 namespace ipfs {
 
-bool TranslateIPFSURI(const GURL& url, GURL* new_url, const GURL& gateway_url);
+bool TranslateIPFSURI(const GURL& url,
+                      GURL* new_url,
+                      const GURL& gateway_url,
+                      bool use_subdomain);
 
 }  // namespace ipfs
 

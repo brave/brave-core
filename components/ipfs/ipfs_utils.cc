@@ -91,7 +91,7 @@ GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
 
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.
   if (IsIPFSScheme(url) &&
-      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context))) {
+      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context), false)) {
     return new_url;
   }
 
