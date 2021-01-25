@@ -146,10 +146,9 @@ public class BraveToolbarManager extends ToolbarManager {
         mWindowAndroid = windowAndroid;
         mCompositorViewHolder = compositorViewHolder;
 
-        boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
-                && mActivity.getResources().getConfiguration().orientation
-                        != Configuration.ORIENTATION_LANDSCAPE;
-        setBottomToolbarVisible(isBottomToolbarVisible);
+        if (isToolbarPhone()) {
+            updateBottomToolbarVisibility();
+        }
 
         mBraveHomepageStateListener = () -> {
             if (mBottomControlsCoordinatorSupplier != null
@@ -189,10 +188,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
                 mFullscreenManager, (ScrollingBottomViewResourceFrameLayout) root,
                 mAppThemeColorProvider, mTabGroupUi, mOverlayPanelVisibilitySupplier));
-        boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
-                && mActivity.getResources().getConfiguration().orientation
-                        != Configuration.ORIENTATION_LANDSCAPE;
-        setBottomToolbarVisible(isBottomToolbarVisible);
+        updateBottomToolbarVisibility();
     }
 
     @Override
@@ -208,7 +204,7 @@ public class BraveToolbarManager extends ToolbarManager {
         super.initializeWithNative(layoutManager, tabSwitcherClickHandler, newTabClickHandler,
                 bookmarkClickHandler, customTabsBackClickHandler, showStartSurfaceSupplier);
 
-        if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
             Runnable closeAllTabsAction = () -> {
                 mTabModelSelector.getModel(mIncognitoStateProvider.isIncognitoSelected())
@@ -303,5 +299,18 @@ public class BraveToolbarManager extends ToolbarManager {
 
     public boolean isBottomToolbarVisible() {
         return mIsBottomToolbarVisible;
+    }
+
+    private void updateBottomToolbarVisibility() {
+        boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
+                && mActivity.getResources().getConfiguration().orientation
+                        != Configuration.ORIENTATION_LANDSCAPE;
+        setBottomToolbarVisible(isBottomToolbarVisible);
+    }
+
+    private boolean isToolbarPhone() {
+        assert (mToolbar instanceof BraveTopToolbarCoordinator);
+        return mToolbar instanceof BraveTopToolbarCoordinator
+                && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
     }
 }

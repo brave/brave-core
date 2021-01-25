@@ -60,7 +60,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
         mBraveToolbarLayout = toolbarLayout;
 
-        if (toolbarLayout instanceof ToolbarPhone) {
+        if (isToolbarPhone()) {
             if (!StartSurfaceConfiguration.isStartSurfaceEnabled()) {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
@@ -78,5 +78,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     .onBottomToolbarVisibilityChanged(isVisible);
         }
         mOptionalButtonController.updateButtonVisibility();
+    }
+
+    public boolean isToolbarPhone() {
+        return mBraveToolbarLayout instanceof ToolbarPhone;
     }
 }
