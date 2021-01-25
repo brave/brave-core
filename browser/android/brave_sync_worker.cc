@@ -132,7 +132,7 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
 }
 
 // Most of methods below were taken from by PeopleHandler class to
-// bring logic of enablind / disabling sync from deskop to Android
+// bring the logic of enabling / disabling sync from deskop to Android
 
 void BraveSyncWorker::RequestSync(
     JNIEnv* env,
@@ -239,116 +239,57 @@ void BraveSyncWorker::OnResetDone() {
   }
 }
 
-namespace {
+void BraveSyncWorker::SetEncryptionPassphrase() {
+  syncer::SyncService* service = GetSyncService();
+  DCHECK(service);
+  DCHECK(service->IsEngineInitialized());
+  DCHECK(!this->passphrase_.empty());
 
-// A structure which contains all the configuration information for sync.
-struct SyncConfigInfo {
-  SyncConfigInfo();
-  ~SyncConfigInfo();
+  syncer::SyncUserSettings* sync_user_settings =
+      GetSyncService()->GetUserSettings();
+  DCHECK(!sync_user_settings->IsPassphraseRequired());
 
-  bool encrypt_all;
-  std::string passphrase;
-  bool set_new_passphrase;
-};
-
-SyncConfigInfo::SyncConfigInfo()
-    : encrypt_all(false), set_new_passphrase(false) {}
-
-SyncConfigInfo::~SyncConfigInfo() {}
-
-// Return false if we are not interested configure encryption
-bool FillSyncConfigInfo(syncer::SyncService* service,
-                        SyncConfigInfo* configuration,
-                        const std::string& passphrase) {
-  bool first_setup_in_progress =
-      service && !service->GetUserSettings()->IsFirstSetupComplete();
-
-  configuration->encrypt_all =
-      service->GetUserSettings()->IsEncryptEverythingEnabled();
-
-  bool sync_prefs_passphrase_required =
-      service->GetUserSettings()->IsPassphraseRequired();
-
-  if (!first_setup_in_progress) {
-    if (!configuration->encrypt_all) {
-      configuration->encrypt_all = true;
-      configuration->set_new_passphrase = true;
-      DCHECK_NE(passphrase.size(), 0u);
-      configuration->passphrase = passphrase;
-    } else if (sync_prefs_passphrase_required) {
-      configuration->set_new_passphrase = false;
-      DCHECK_NE(passphrase.size(), 0u);
-      configuration->passphrase = passphrase;
-    } else {
-      return false;
-    }
+  if (sync_user_settings->IsEncryptEverythingAllowed() &&
+      !sync_user_settings->IsUsingSecondaryPassphrase() &&
+      !sync_user_settings->IsTrustedVaultKeyRequired()) {
+    sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
+    ProfileMetrics::LogProfileSyncInfo(
+        ProfileMetrics::SYNC_CREATED_NEW_PASSPHRASE);
   }
-  return true;
 }
 
-}  // namespace
+void BraveSyncWorker::SetDecryptionPassphrase() {
+  syncer::SyncService* service = GetSyncService();
+  DCHECK(service);
+  DCHECK(service->IsEngineInitialized());
+  DCHECK(!this->passphrase_.empty());
+  syncer::SyncUserSettings* sync_user_settings =
+      GetSyncService()->GetUserSettings();
+  DCHECK(sync_user_settings->IsPassphraseRequired());
+
+  if (sync_user_settings->SetDecryptionPassphrase(this->passphrase_)) {
+    ProfileMetrics::LogProfileSyncInfo(
+        ProfileMetrics::SYNC_ENTERED_EXISTING_PASSPHRASE);
+  }
+}
 
 void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
-  // Fill SyncConfigInfo as it is done in
-  // brave_sync_subpage.js:handleSyncPrefsChanged_ and then configure encryption
-  // as in  PeopleHandler::HandleSetEncryption
-
-  SyncConfigInfo configuration;
-
   syncer::SyncService* service = GetSyncService();
-
   // If the sync engine has shutdown for some reason, just give up
   if (!service || !service->IsEngineInitialized()) {
     VLOG(3) << "[BraveSync] " << __func__ << " sync engine is not initialized";
     return;
   }
 
-  if (!FillSyncConfigInfo(service, &configuration, this->passphrase_)) {
-    VLOG(3) << "[BraveSync] " << __func__
-            << " operations with passphrase are not required";
+  if (this->passphrase_.empty()) {
+    VLOG(3) << "[BraveSync] " << __func__ << " empty passphrase";
     return;
   }
 
-  if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
-    // Don't allow "encrypt all" if the SyncService doesn't allow it.
-    // The UI is hidden, but the user may have enabled it e.g. by fiddling with
-    // the web inspector.
-    configuration.set_new_passphrase = false;
-  }
-
-  bool passphrase_failed = false;
-  if (!configuration.passphrase.empty()) {
-    // We call IsPassphraseRequired() here (instead of
-    // IsPassphraseRequiredForPreferredDataTypes()) because the user may try to
-    // enter a passphrase even though no encrypted data types are enabled.
-    if (service->GetUserSettings()->IsPassphraseRequired()) {
-      // If we have pending keys, try to decrypt them with the provided
-      // passphrase. We track if this succeeds or fails because a failed
-      // decryption should result in an error even if there aren't any encrypted
-      // data types.
-      passphrase_failed = !service->GetUserSettings()->SetDecryptionPassphrase(
-          configuration.passphrase);
-    } else if (service->GetUserSettings()->IsTrustedVaultKeyRequired()) {
-      // There are pending keys due to trusted vault keys being required, likely
-      // because something changed since the UI was displayed. A passphrase
-      // cannot be set in such circumstances.
-      passphrase_failed = true;
-    } else {
-      // OK, the user sent us a passphrase, but we don't have pending keys. So
-      // it either means that the pending keys were resolved somehow since the
-      // time the UI was displayed (re-encryption, pending passphrase change,
-      // etc) or the user wants to re-encrypt.
-      if (configuration.set_new_passphrase &&
-          !service->GetUserSettings()->IsUsingSecondaryPassphrase()) {
-        service->GetUserSettings()->SetEncryptionPassphrase(
-            configuration.passphrase);
-      }
-    }
-  }
-
-  if (passphrase_failed ||
-      service->GetUserSettings()->IsPassphraseRequiredForPreferredDataTypes()) {
-    VLOG(1) << __func__ << " setup passphrase failed";
+  if (GetSyncService()->GetUserSettings()->IsPassphraseRequired()) {
+    SetDecryptionPassphrase();
+  } else {
+    SetEncryptionPassphrase();
   }
 }
 
