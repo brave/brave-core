@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
 import org.chromium.chrome.browser.tasks.tab_management.TabManagementModuleProvider;
+import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomTabSwitcherActionMenuCoordinator;
@@ -139,7 +140,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 isInOverviewModeSupplier, isCustomTab, modalDialogManagerSupplier,
                 statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
                 startSurfaceParentTabSupplier);
-
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;
@@ -169,9 +169,12 @@ public class BraveToolbarManager extends ToolbarManager {
             return;
         }
         View root = viewStub.inflate();
-        mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
-                root.findViewById(R.id.bottom_container_slot), mAppThemeColorProvider,
-                mScrimCoordinator, mOmniboxFocusStateSupplier);
+        if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled()
+                || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
+            mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
+                    root.findViewById(R.id.bottom_container_slot), mAppThemeColorProvider,
+                    mScrimCoordinator, mOmniboxFocusStateSupplier);
+        }
         assert (mActivity instanceof ChromeActivity);
         mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
                 mLayoutStateProviderSupplier,
