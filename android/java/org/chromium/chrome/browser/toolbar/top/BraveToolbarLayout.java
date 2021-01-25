@@ -16,14 +16,18 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -56,6 +60,8 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltipUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
@@ -141,7 +147,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private boolean mIsNotificationPosted;
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
-    private PopupWindow mShieldsTooltipPopupWindow;
+    private PopupWindowTooltip mShieldsPopupWindowTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -234,21 +240,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                                 || block_type.equals(BraveShieldsContentSettings
                                                              .RESOURCE_IDENTIFIER_TRACKERS))) {
                     addStatsToDb(block_type, subresource, currentTab.getUrlString());
-                }
-                if (!OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
-                        && PackageUtils.isFirstInstall(getContext())) {
-                    mShieldsTooltipPopupWindow =
-                            mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
-                    OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
-                    mShieldsTooltipPopupWindow.getContentView().setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    mShieldsTooltipPopupWindow.dismiss();
-                                    mShieldsTooltipPopupWindow = null;
-                                    showShieldsMenu(mBraveShieldsButton);
-                                }
-                            });
                 }
             }
 
@@ -378,6 +369,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                     BraveRewardsHelper.updateBraveRewardsAppOpenCount();
                     BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 }
+                if (mBraveShieldsButton != null
+                        && (mBraveShieldsHandler.getTackersBlockedCount(tab.getId())
+                                   + mBraveShieldsHandler.getAdsBlockedCount(tab.getId()))
+                                > 0) {
+                    showTooltip();
+                }
             }
 
             @Override
@@ -398,9 +395,45 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         };
     }
 
+    private void showTooltip() {
+        if (!OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
+                && PackageUtils.isFirstInstall(getContext())) {
+            mShieldsPopupWindowTooltip = new PopupWindowTooltip.Builder(getContext())
+                                                 .anchorView(mBraveShieldsButton)
+                                                 .gravity(Gravity.BOTTOM)
+                                                 .dismissOnOutsideTouch(true)
+                                                 .dismissOnInsideTouch(false)
+                                                 .modal(true)
+                                                 .contentView(R.layout.brave_shields_tooltip_layout)
+                                                 .build();
+
+            mShieldsPopupWindowTooltip.findViewById(R.id.btn_tooltip)
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dismissShieldsTooltip();
+                            showShieldsMenu(mBraveShieldsButton);
+                        }
+                    });
+
+            TextView tooltipTitle = mShieldsPopupWindowTooltip.findViewById(R.id.txt_tooltip_title);
+            SpannableStringBuilder ssb = new SpannableStringBuilder(
+                    new StringBuilder("\t\t")
+                            .append(getContext().getResources().getString(R.string.tooltip_title_1))
+                            .toString());
+            ssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_shield_done_filled_20dp), 0, 1,
+                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tooltipTitle.setText(ssb, TextView.BufferType.SPANNABLE);
+
+            mShieldsPopupWindowTooltip.show();
+            OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
+        }
+    }
+
     public void dismissShieldsTooltip() {
-        if (mShieldsTooltipPopupWindow != null) {
-            mShieldsTooltipPopupWindow.dismiss();
+        if (mShieldsPopupWindowTooltip != null && mShieldsPopupWindowTooltip.isShowing()) {
+            mShieldsPopupWindowTooltip.dismiss();
+            mShieldsPopupWindowTooltip = null;
         }
     }
 
@@ -414,6 +447,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        dismissShieldsTooltip();
         reopenShieldsPanel();
     }
 
