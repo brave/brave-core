@@ -25,7 +25,7 @@
 
 namespace ipfs {
 
-class IPFSBraveContentBrowserClientTest : public testing::Test {
+class TranslateIPFSURITest : public testing::Test {
  protected:
   void SetUp() override {
     public_gateway_ = GURL(kDefaultIPFSGateway);
@@ -40,13 +40,13 @@ class IPFSBraveContentBrowserClientTest : public testing::Test {
   GURL public_gateway_;
 };
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURINotIPFSScheme) {
+TEST_F(TranslateIPFSURITest, TranslateIPFSURINotIPFSScheme) {
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
   ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSScheme) {
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
@@ -54,7 +54,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSScheme) {
                           "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSScheme) {
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
@@ -62,7 +62,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSScheme) {
                           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeLocal) {
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
@@ -70,7 +70,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeLocal) {
                           "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSSchemeLocal) {
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
@@ -78,7 +78,7 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSSchemeLocal) {
                           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeWithPath) {
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeWithPath) {
   GURL url(
       "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
       "/wiki/Vincent_van_Gogh.html");
@@ -88,6 +88,78 @@ TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeWithPath) {
             GURL("https://dweb.link/ipfs/"
                  "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
                  "/wiki/Vincent_van_Gogh.html"));
+}
+
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeWithPathAndHash) {
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html#Emerging_artist");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
+  EXPECT_EQ(new_url,
+            GURL("https://dweb.link/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html#Emerging_artist"));
+}
+
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeLocalWithPathAndHash) {
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html#Emerging_artist");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
+  EXPECT_EQ(new_url,
+            GURL("http://localhost:48080/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html#Emerging_artist"));
+}
+
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeWithPathAndQuery) {
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html?test=true");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
+  EXPECT_EQ(new_url,
+            GURL("https://dweb.link/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html?test=true"));
+}
+
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeLocalWithPathAndQuery) {
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html?test=true");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
+  EXPECT_EQ(new_url,
+            GURL("http://localhost:48080/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html?test=true"));
+}
+
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeWithPathQueryHash) {
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html?test=true#test");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway()));
+  EXPECT_EQ(new_url,
+            GURL("https://dweb.link/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html?test=true#test"));
+}
+
+TEST_F(TranslateIPFSURITest, TranslateIPFSURIIPFSSchemeLocalWithPathQueryHash) {
+  GURL url(
+      "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+      "/wiki/Vincent_van_Gogh.html?test=true#test");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway()));
+  EXPECT_EQ(new_url,
+            GURL("http://localhost:48080/ipfs/"
+                 "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
+                 "/wiki/Vincent_van_Gogh.html?test=true#test"));
 }
 
 }  // namespace ipfs

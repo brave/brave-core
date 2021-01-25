@@ -42,13 +42,13 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, const GURL& gateway_url) {
       // new_url would be:
       // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
       if (new_url) {
-        std::string gateway_empty_path = gateway_url.spec();
-        if (gateway_empty_path.size() > 0 &&
-            gateway_empty_path[gateway_empty_path.size() - 1] == '/') {
-          gateway_empty_path.pop_back();
-        }
-        *new_url = GURL(gateway_empty_path +
-                        (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
+        GURL::Replacements replacements;
+        replacements.SetSchemeStr(gateway_url.scheme_piece());
+        replacements.SetHostStr(gateway_url.host_piece());
+        replacements.SetPortStr(gateway_url.port_piece());
+        std::string new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
+        replacements.SetPathStr(new_path);
+        *new_url = url.ReplaceComponents(replacements);
         VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
       }
 
