@@ -795,6 +795,7 @@ if (!is_android) {
       "//brave/components/l10n/browser",
       "//brave/components/tor",
       "//brave/components/tor/buildflags",
+      "//build:chromeos_buildflags",
       "//chrome/app:command_ids",
       "//chrome/browser:browser_process",
       "//chrome/browser:theme_properties",
