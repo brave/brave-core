@@ -14,8 +14,8 @@ source_set("browsing_data") {
   deps = [
     "//base",
     "//brave/components/ipfs/buildflags",
-    "//chrome/common",
     "//chrome/browser/browsing_data:constants",
+    "//chrome/common",
     "//components/browsing_data/core",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
@@ -32,5 +32,35 @@ source_set("browsing_data") {
 
   if (ipfs_enabled) {
     deps += [ "//brave/components/ipfs" ]
+  }
+}
+
+if (!is_android) {
+  source_set("browser_tests") {
+    testonly = true
+
+    sources = [
+      "//brave/browser/browsing_data/brave_clear_browsing_data_browsertest.cc",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//brave/browser/browsing_data",
+      "//chrome/app:command_ids",
+      "//chrome/browser",
+      "//chrome/browser/browsing_data:constants",
+      "//chrome/browser/ui",
+      "//chrome/common:constants",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/browsing_data/core",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/public/common",
+      "//content/test:test_support",
+    ]
   }
 }
