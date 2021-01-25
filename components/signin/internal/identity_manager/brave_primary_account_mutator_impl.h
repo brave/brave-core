@@ -20,7 +20,7 @@ class BravePrimaryAccountMutatorImpl : public PrimaryAccountMutatorImpl {
       signin::AccountConsistencyMethod account_consistency);
   ~BravePrimaryAccountMutatorImpl() override;
 
-#if !defined(OS_CHROMEOS)
+#if !BUILDFLAG(IS_CHROMEOS_ASH)
   bool ClearPrimaryAccount(
       signin_metrics::ProfileSignout source_metric,
       signin_metrics::SignoutDelete delete_metric) override;
