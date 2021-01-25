@@ -1,7 +1,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
-// Command to get whitelist ID:
+// Command to get allowlist ID:
 // Brave Shields       A321D47A2B4CA86898167A55CA8B2E02385EA7CD: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
 // WebTorrent          3D9518A72EB02667A773B69DBA9E72E0F4A37423: echo -n lgjmpdmojkpocjcopdikifhejkkjglho | openssl sha1 | tr '[:lower:]' '[:upper:]'
 // sync api            ACA6385EDA662A28A9B48E83A69CA85CB65DA263: echo -n nomlkjnggnifocmealianaaiobmebgil | openssl sha1 | tr '[:lower:]' '[:upper:]'
@@ -13,7 +13,7 @@
     "channel": "stable",
     "dependencies": [],
     "contexts": ["blessed_extension"],
-    "whitelist": [
+    "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"
     ]
   },
@@ -21,7 +21,7 @@
     "channel": "stable",
     "dependencies": [],
     "contexts": ["blessed_extension"],
-    "whitelist": [
+    "allowlist": [
       "ACA6385EDA662A28A9B48E83A69CA85CB65DA263"
     ]
   },
@@ -65,24 +65,24 @@
   "sockets.tcp": {
     "dependencies": ["manifest:sockets"],
     "contexts": ["blessed_extension"],
-    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
+    "allowlist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
   },
   "sockets.tcpServer": {
     "dependencies": ["manifest:sockets"],
     "contexts": ["blessed_extension"],
-    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
+    "allowlist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
   },
   "sockets.udp": {
     "dependencies": ["manifest:sockets"],
     "contexts": ["blessed_extension"],
-    "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
+    "allowlist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423", "780BF954C0F7C586EA9662D4F967771F49CC2114", "FF32507DC3DB5DFFD1D6733187C84D4B74713D63"]
   },
   "braveRewards": [
     {
       "channel": "stable",
       "dependencies": [],
       "contexts": ["blessed_extension"],
-      "whitelist": [
+      "allowlist": [
         "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
       ]
     },
@@ -98,14 +98,14 @@
     "channel": "stable",
     "dependencies": [],
     "contexts": ["blessed_extension"],
-    "whitelist": [
+    "allowlist": [
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
     ]
   },
   "braveTheme": [{
     "channel": "stable",
     "contexts": ["blessed_extension"],
-    "whitelist": [
+    "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // braveShields
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64",  // braveRewards
       "21070F3D60711361C1210B870439BE49B5D995F4"   // braveWallet
@@ -124,7 +124,7 @@
   "greaselion": [{
     "channel": "stable",
     "contexts": ["blessed_extension"],
-    "whitelist": [
+    "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // braveShields
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"   // braveRewards
     ]
@@ -138,7 +138,7 @@
   "braveToday": {
     "channel": "stable",
     "contexts": ["blessed_extension"],
-    "whitelist": [
+    "allowlist": [
       "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"  // brave
     ]
   }
