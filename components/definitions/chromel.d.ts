@@ -313,6 +313,10 @@ declare namespace chrome.braveWallet {
   const loadUI: (callback: () => void) => void
 }
 
+declare namespace chrome.ipfs {
+  const resolveIPFSURI: (uri: string, callback: (gateway_url: string) => void) => void
+}
+
 declare namespace chrome.test {
   const sendMessage: (message: string) => {}
 }
