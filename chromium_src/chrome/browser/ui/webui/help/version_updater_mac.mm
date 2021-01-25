@@ -73,9 +73,8 @@ VersionUpdaterMac::VersionUpdaterMac()
 VersionUpdaterMac::~VersionUpdaterMac() {
 }
 
-void VersionUpdaterMac::CheckForUpdate(
-    StatusCallback status_callback,
-    PromoteCallback promote_callback) {
+void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
+                                       PromoteCallback promote_callback) {
   status_callback_ = std::move(status_callback);
 
 #if BUILDFLAG(ENABLE_SPARKLE)

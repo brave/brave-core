@@ -12,20 +12,18 @@
 #include "third_party/blink/renderer/core/frame/navigator_id.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 
-#define BRAVE_NAVIGATOR_BASE_USER_AGENT                                     \
-  if (!GetExecutionContext())                                               \
-    return String();                                                        \
-  if (blink::WebContentSettingsClient* settings =                           \
-          brave::GetContentSettingsClientFor(GetExecutionContext())) {      \
-    if (!settings->AllowFingerprinting(true)) {                             \
-      return brave::BraveSessionCache::From(*(GetExecutionContext()))       \
-          .FarbledUserAgent(GetExecutionContext()->UserAgent());            \
-    }                                                                       \
-  }                                                                         \
+#define BRAVE_NAVIGATOR_BASE_USER_AGENT                                \
+  if (!GetExecutionContext())                                          \
+    return String();                                                   \
+  if (blink::WebContentSettingsClient* settings =                      \
+          brave::GetContentSettingsClientFor(GetExecutionContext())) { \
+    if (!settings->AllowFingerprinting(true)) {                        \
+      return brave::BraveSessionCache::From(*(GetExecutionContext()))  \
+          .FarbledUserAgent(GetExecutionContext()->UserAgent());       \
+    }                                                                  \
+  }
 
 #include "../../../../../../../third_party/blink/renderer/core/execution_context/navigator_base.h"
 #undef BRAVE_NAVIGATOR_BASE_USER_AGENT
-
-
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_NAVIGATOR_BASE_H_

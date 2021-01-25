@@ -191,8 +191,7 @@ const char kPaymentMethodsLearnMoreURL[] =
 const char kPrivacyLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017989132-How-do-I-change-my-Privacy-Settings-";
-const char kPrivacySandboxURL[] =
-    "https://support.brave.com";
+const char kPrivacySandboxURL[] = "https://support.brave.com";
 
 const char kRemoveNonCWSExtensionURL[] =
     "https://support.brave.com/hc/en-us/articles/"
