@@ -26,23 +26,8 @@ void SidebarBubbleBackground::Paint(
 
   gfx::RectF bounds(view->GetLocalBounds());
   bounds.Inset(gfx::Insets(border_->GetInsets()));
-
-  // Fill the background.
+  // Fill the background except arrow area in this bubble.
+  bounds.Inset(gfx::Insets(
+      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
   canvas->DrawRoundRect(bounds, border_->corner_radius(), flags);
-
-  // Fill the arrow.
-  gfx::RectF arrow_bounds = BubbleBorderWithArrow::GetArrowRect(
-      bounds, border_->arrow());
-  SkPath arrow_path;
-  arrow_path.moveTo(SkIntToScalar(arrow_bounds.top_right().x()),
-                    SkIntToScalar(arrow_bounds.top_right().y()));
-  arrow_path.lineTo(
-      SkIntToScalar(arrow_bounds.x()),
-      SkIntToScalar(arrow_bounds.y() + arrow_bounds.height() / 2));
-  arrow_path.lineTo(SkIntToScalar(arrow_bounds.bottom_right().x()),
-                    SkIntToScalar(arrow_bounds.bottom_right().y()));
-  arrow_path.lineTo(SkIntToScalar(arrow_bounds.top_right().x()),
-                    SkIntToScalar(arrow_bounds.top_right().y()));
-  arrow_path.close();
-  canvas->DrawPath(arrow_path, flags);
 }

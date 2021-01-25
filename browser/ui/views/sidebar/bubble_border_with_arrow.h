@@ -16,16 +16,15 @@ class BubbleBorderWithArrow : public views::BubbleBorder {
   static gfx::RectF GetArrowRect(
       const gfx::RectF& contents_bounds, views::BubbleBorder::Arrow arrow);
 
-  using BubbleBorder::BubbleBorder;
+  BubbleBorderWithArrow(Arrow arrow, Shadow shadow, SkColor color);
   ~BubbleBorderWithArrow() override;
 
   BubbleBorderWithArrow(const BubbleBorderWithArrow&) = delete;
   BubbleBorderWithArrow& operator=(const BubbleBorderWithArrow&) = delete;
 
   // views::BubbleBorder overrides:
-  gfx::Rect GetBounds(const gfx::Rect& anchor_rect,
-                      const gfx::Size& contents_size) const override;
   void Paint(const views::View& view, gfx::Canvas* canvas) override;
+  SkRRect GetClientRect(const views::View& view) const override;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_BUBBLE_BORDER_WITH_ARROWH_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_BUBBLE_BORDER_WITH_ARROW_H_

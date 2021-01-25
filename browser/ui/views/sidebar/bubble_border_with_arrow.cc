@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/views/view.h"
 
@@ -33,42 +34,51 @@ gfx::RectF BubbleBorderWithArrow::GetArrowRect(
   return arrow_rect;
 }
 
-BubbleBorderWithArrow::~BubbleBorderWithArrow() = default;
-
-gfx::Rect BubbleBorderWithArrow::GetBounds(
-    const gfx::Rect& anchor_rect, const gfx::Size& contents_size) const {
-  gfx::Rect bounds = BubbleBorder::GetBounds(anchor_rect, contents_size);
-  bounds.set_x(bounds.x() + kBubbleArrowBoundsWidth);
-  return bounds;
+BubbleBorderWithArrow::BubbleBorderWithArrow(
+    Arrow arrow, Shadow shadow, SkColor color)
+    : BubbleBorder(arrow, shadow, color) {
+  set_md_shadow_elevation(ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+      views::EMPHASIS_HIGH));
 }
+
+BubbleBorderWithArrow::~BubbleBorderWithArrow() = default;
 
 void BubbleBorderWithArrow::Paint(
     const views::View& view, gfx::Canvas* canvas) {
-  DCHECK(shadow() == views::BubbleBorder::NO_SHADOW);
-  gfx::RectF bounds(view.GetLocalBounds());
-  bounds.Inset(GetInsets());
+  BubbleBorder::Paint(view, canvas);
+
   cc::PaintFlags flags;
+  flags.setAntiAlias(true);
+  flags.setStyle(cc::PaintFlags::kFill_Style);
+  flags.setColor(background_color());
+
+  gfx::RectF bounds(view.GetLocalBounds());
+  bounds.Inset(GetInsets() + gfx::Insets(0, kBubbleArrowBoundsWidth, 0, 0));
+  gfx::RectF arrow_bounds = GetArrowRect(bounds, arrow());
+
+  // Fill arrow bg.
+  SkPath arrow_bg_path;
+  arrow_bg_path.moveTo(SkIntToScalar(arrow_bounds.top_right().x()),
+                    SkIntToScalar(arrow_bounds.top_right().y()));
+  arrow_bg_path.lineTo(
+      SkIntToScalar(arrow_bounds.x()),
+      SkIntToScalar(arrow_bounds.y() + arrow_bounds.height() / 2));
+  arrow_bg_path.lineTo(SkIntToScalar(arrow_bounds.bottom_right().x()),
+                    SkIntToScalar(arrow_bounds.bottom_right().y()));
+  arrow_bg_path.lineTo(SkIntToScalar(arrow_bounds.top_right().x()),
+                    SkIntToScalar(arrow_bounds.top_right().y()));
+  arrow_bg_path.close();
+  canvas->DrawPath(arrow_bg_path, flags);
+
+  // Platform window will draw border & shadow.
+  if (shadow() == NO_ASSETS)
+    return;
+
+  // Draw the arrow border.
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kStroke_Style);
   flags.setStrokeWidth(kBorderThicknessDip);
-  SkColor kBorderColor = view.GetNativeTheme()->GetSystemColor(
-      ui::NativeTheme::kColorId_BubbleBorder);
-  flags.setColor(kBorderColor);
-  canvas->DrawRoundRect(bounds, corner_radius(), flags);
-
-  // Draw the arrow border.
-  gfx::RectF arrow_bounds = GetArrowRect(bounds, arrow());
-
-  // Erase existing vertical border that meets arrow.
-  // TODO(simonhong): Check why vertical line is thicker than configs.
-  flags.setStrokeWidth(kBorderThicknessDip * 2);
-  flags.setColor(background_color());
-  canvas->DrawLine(arrow_bounds.top_right(),
-                   arrow_bounds.bottom_right(),
-                   flags);
-
-  flags.setColor(kBorderColor);
-  flags.setStrokeWidth(kBorderThicknessDip);
+  flags.setColor(SkColorSetARGB(0x2E, 0x63, 0x69, 0x6E));
   canvas->DrawLine(arrow_bounds.top_right(),
                    gfx::PointF(arrow_bounds.x(),
                                arrow_bounds.y() + arrow_bounds.height() / 2),
@@ -77,4 +87,11 @@ void BubbleBorderWithArrow::Paint(
                    gfx::PointF(arrow_bounds.x(),
                                arrow_bounds.y() + arrow_bounds.height() / 2),
                    flags);
+}
+
+SkRRect BubbleBorderWithArrow::GetClientRect(const views::View& view) const {
+  gfx::RectF bounds(view.GetLocalBounds());
+  bounds.Inset(GetInsets() + gfx::Insets(0, kBubbleArrowBoundsWidth, 0, 0));
+  return SkRRect::MakeRectXY(gfx::RectFToSkRect(bounds), corner_radius(),
+                             corner_radius());
 }
