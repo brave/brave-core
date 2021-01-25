@@ -18,9 +18,11 @@
 #include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/focus_ring.h"
 
 namespace {
 
@@ -29,6 +31,8 @@ class SidebarItemsArrowView : public views::ImageButton {
   SidebarItemsArrowView() {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
+    DCHECK(GetInstallFocusRingOnFocus());
+    focus_ring()->SetColor(gfx::kBraveBlurple300);
   }
 
   ~SidebarItemsArrowView() override = default;

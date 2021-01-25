@@ -44,12 +44,13 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
+#if BUILDFLAG(ENABLE_SIDEBAR)
+    case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
+      return SkColorSetRGB(0xF3, 0xF3, 0xF5);
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
       return SkColorSetRGB(0xE3, 0xE3, 0xE3);
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_NORMAL:
       return SkColorSetRGB(0x21, 0x25, 0x29);
-    case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
-      return SkColorSetRGB(0xF3, 0xF3, 0xF5);
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED:
       return SkColorSetARGB(0x8A, 0x49, 0x50, 0x57);
     case BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE:
@@ -74,6 +75,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return SkColorSetRGB(0xF0, 0xF2, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
+#endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:
@@ -116,8 +118,9 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
+#if BUILDFLAG(ENABLE_SIDEBAR)
     case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
-      return SkColorSetRGB(0x30, 0x34, 0x43);
+      return kDarkToolbar;
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x42, 0x45, 0x51);
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED:
@@ -146,6 +149,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return SkColorSetRGB(0xF0, 0xF0, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
+#endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;
     default:
@@ -185,6 +189,18 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateToolbar, 0.3f);
+#if BUILDFLAG(ENABLE_SIDEBAR)
+    case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
+      return kPrivateToolbar;
+    case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
+      return SkColorSetRGB(0x4B, 0x3E, 0x78);
+    case BraveThemeProperties::COLOR_SIDEBAR_BORDER:
+      return SkColorSetRGB(0x3B, 0x3E, 0x4F);
+    case BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER:
+      return SkColorSetARGB(0x21, 0x00, 0x00, 0x00);
+    case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
+      return SkColorSetRGB(0x4B, 0x3E, 0x78);
+#endif
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kPrivateColorForTest;
     // The rest is covered by a dark-appropriate value
@@ -218,6 +234,18 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateTorUi(int id) {
       return color_utils::AlphaBlend(kDarkToolbarIcon,
                                      kPrivateTorToolbar,
                                      0.3f);
+#if BUILDFLAG(ENABLE_SIDEBAR)
+    case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
+      return kPrivateTorToolbar;
+    case BraveThemeProperties::COLOR_SIDEBAR_ARROW_BACKGROUND_HOVERED:
+      return SkColorSetRGB(0x5F, 0x42, 0x6F);
+    case BraveThemeProperties::COLOR_SIDEBAR_BORDER:
+      return SkColorSetRGB(0x3B, 0x3E, 0x4F);
+    case BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER:
+      return SkColorSetARGB(0x21, 0x00, 0x00, 0x00);
+    case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
+      return SkColorSetRGB(0x5F, 0x42, 0x6F);
+#endif
     // The rest is covered by a private value
     default:
       return MaybeGetDefaultColorForPrivateUi(id);

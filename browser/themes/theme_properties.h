@@ -8,6 +8,7 @@
 
 #include "base/optional.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "third_party/skia/include/core/SkColor.h"
 
 namespace BraveThemeProperties {
@@ -23,6 +24,7 @@ enum TestProperty {
 enum ThemeProperties {
   BRAVE_THEME_PROPERTIES_START = 10000,
   COLOR_BOOKMARK_BAR_INSTRUCTIONS_TEXT = BRAVE_THEME_PROPERTIES_START,
+#if BUILDFLAG(ENABLE_SIDEBAR)
   COLOR_SIDEBAR_ADD_BUTTON_DISABLED,
   COLOR_SIDEBAR_BACKGROUND,
   COLOR_SIDEBAR_BUTTON_BASE,
@@ -38,6 +40,7 @@ enum ThemeProperties {
   COLOR_SIDEBAR_ARROW_NORMAL,
   COLOR_SIDEBAR_ARROW_DISABLED,
   COLOR_SIDEBAR_SEPARATOR,
+#endif
   BRAVE_THEME_PROPERTIES_LAST = COLOR_SIDEBAR_SEPARATOR,
 };
 

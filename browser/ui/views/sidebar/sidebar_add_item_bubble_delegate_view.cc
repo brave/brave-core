@@ -187,7 +187,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
   // |default_part| includes not added default items.
   views::View* default_part = AddChildView(std::make_unique<views::View>());
   default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical, gfx::Insets(6, 4, 8, 4), 6));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets(6, 4, 8, 4), 8));
 
   for (const auto& item : not_added_default_items) {
     auto* button = default_part->AddChildView(

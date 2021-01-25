@@ -4,11 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "ui/gfx/color_palette.h"
+#include "ui/views/controls/focus_ring.h"
 
 SidebarButtonView::SidebarButtonView(Delegate* delegate) : delegate_(delegate) {
   // Locate image at center of the button.
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
+  DCHECK(GetInstallFocusRingOnFocus());
+  focus_ring()->SetColor(gfx::kBraveBlurple300);
 }
 
 SidebarButtonView::~SidebarButtonView() = default;
