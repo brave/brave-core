@@ -6,6 +6,7 @@
 #include "brave/browser/devtools/brave_devtools_ui_bindings.h"
 
 #include <string>
+#include <utility>
 
 #include "base/values.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
