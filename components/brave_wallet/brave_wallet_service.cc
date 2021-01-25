@@ -28,7 +28,7 @@
 #include "crypto/symmetric_key.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_system.h"
-#include "extensions/browser/shared_user_script_manager.h"
+#include "extensions/browser/extension_user_script_manager.h"
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/common/constants.h"
 
@@ -245,9 +245,10 @@ std::string BraveWalletService::GetBitGoSeed(std::vector<uint8_t> key) {
 
 void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto* shared_user_script_manager =
-      extensions::ExtensionSystem::Get(context_)->shared_user_script_manager();
-  if (!shared_user_script_manager) {
+  auto* extension_user_script_manager =
+      extensions::ExtensionSystem::Get(context_)
+          ->extension_user_script_manager();
+  if (!extension_user_script_manager) {
     return;
   }
   auto* registry = extensions::ExtensionRegistry::Get(context_);
@@ -257,13 +258,13 @@ void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
   auto* erc_extension = registry->enabled_extensions().GetByID(
       ethereum_remote_client_extension_id);
   if (erc_extension) {
-    shared_user_script_manager->OnExtensionUnloaded(
+    extension_user_script_manager->OnExtensionUnloaded(
         context_, erc_extension, extensions::UnloadedExtensionReason::DISABLE);
   }
   auto* metamask_extension =
       registry->enabled_extensions().GetByID(metamask_extension_id);
   if (metamask_extension) {
-    shared_user_script_manager->OnExtensionUnloaded(
+    extension_user_script_manager->OnExtensionUnloaded(
         context_, metamask_extension,
         extensions::UnloadedExtensionReason::DISABLE);
   }
@@ -276,12 +277,12 @@ void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
   // 2) Check if CryptoWallets content scripts are enabled, if so, disable them.
   if (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS) {
     if (erc_extension) {
-      shared_user_script_manager->OnExtensionLoaded(context_, erc_extension);
+      extension_user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
   } else if (provider != BraveWalletWeb3ProviderTypes::NONE) {
     if (metamask_extension) {
-      shared_user_script_manager->OnExtensionLoaded(context_,
-                                                    metamask_extension);
+      extension_user_script_manager->OnExtensionLoaded(context_,
+                                                       metamask_extension);
     }
   }
 }
