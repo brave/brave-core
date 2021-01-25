@@ -74,6 +74,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   void OnResetDone();
 
+  void SetEncryptionPassphrase();
+  void SetDecryptionPassphrase();
+
   JavaObjectWeakGlobalRef weak_java_brave_sync_worker_;
   Profile* profile_ = nullptr;
 
