@@ -1,5 +1,5 @@
 {
-    "whitelist": [
+    "allowlist": [
         {
             "<all_urls>": [
                 "https://use.typekit.net/*",
