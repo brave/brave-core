@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/features.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
@@ -43,6 +44,10 @@
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ui/webui/ipfs_ui.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/webui/tor_internals_ui.h"
 #endif
 
 using content::WebUI;
@@ -96,6 +101,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
 #endif  // !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_TOR)
+  } else if (host == kTorInternalsHost) {
+    return new TorInternalsUI(web_ui, url.host());
+#endif
   }
   return nullptr;
 }
@@ -109,7 +118,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kWebcompatReporterHost ||
 #if BUILDFLAG(IPFS_ENABLED)
       (url.host_piece() == kIPFSHost &&
-          base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
+       base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
       url.host_piece() == kWalletHost ||
@@ -118,6 +127,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
+#endif
+#if BUILDFLAG(ENABLE_TOR)
+      url.host_piece() == kTorInternalsHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||

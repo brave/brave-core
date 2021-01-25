@@ -9,26 +9,31 @@
 #include <memory>
 
 #include "base/gtest_prod_util.h"
-#include "brave/components/tor/tor_launcher_service_observer.h"
+#include "brave/components/tor/tor_launcher_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
 class NavigationHandle;
 }  // namespace content
 
+class TorLauncherFactory;
+
 namespace tor {
 
-class TorProfileService;
-
 class TorNavigationThrottle : public content::NavigationThrottle,
-                              public TorLauncherServiceObserver {
+                              public TorLauncherObserver {
  public:
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
-      TorProfileService* service,
       bool is_tor_profile);
+  // For tests to use its own McokTorLauncherFactory
+  static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
+      content::NavigationHandle* navigation_handle,
+      TorLauncherFactory* tor_launcher_factory,
+      bool is_tor_profile);
+  explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
   TorNavigationThrottle(content::NavigationHandle* navigation_handle,
-                        TorProfileService* service);
+                        TorLauncherFactory* tor_launcher_factory);
   ~TorNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:
@@ -39,11 +44,11 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   FRIEND_TEST_ALL_PREFIXES(TorNavigationThrottleUnitTest,
                            DeferUntilTorProcessLaunched);
 
-  // TorLauncherServiceObserver:
+  // TorLauncherObserver:
   void OnTorCircuitEstablished(bool result) override;
 
   bool resume_pending_ = false;
-  TorProfileService* tor_profile_service_ = nullptr;
+  TorLauncherFactory* tor_launcher_factory_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottle);
 };

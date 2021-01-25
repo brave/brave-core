@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/tor/tor_profile_service.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -19,24 +19,43 @@ namespace tor {
 std::unique_ptr<TorNavigationThrottle>
 TorNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
-    TorProfileService* service,
     bool is_tor_profile) {
-  if (!is_tor_profile || !service)
+  if (!is_tor_profile)
     return nullptr;
-  return std::make_unique<TorNavigationThrottle>(navigation_handle, service);
+  return std::make_unique<TorNavigationThrottle>(navigation_handle);
+}
+
+// static
+std::unique_ptr<TorNavigationThrottle>
+TorNavigationThrottle::MaybeCreateThrottleFor(
+    content::NavigationHandle* navigation_handle,
+    TorLauncherFactory* tor_launcher_factory,
+    bool is_tor_profile) {
+  if (!is_tor_profile)
+    return nullptr;
+  return std::make_unique<TorNavigationThrottle>(navigation_handle,
+                                                 tor_launcher_factory);
+}
+
+TorNavigationThrottle::TorNavigationThrottle(
+    content::NavigationHandle* navigation_handle)
+    : content::NavigationThrottle(navigation_handle),
+      tor_launcher_factory_(TorLauncherFactory::GetInstance()) {
+  DCHECK(tor_launcher_factory_);
+  tor_launcher_factory_->AddObserver(this);
 }
 
 TorNavigationThrottle::TorNavigationThrottle(
     content::NavigationHandle* navigation_handle,
-    TorProfileService* service)
+    TorLauncherFactory* tor_launcher_factory)
     : content::NavigationThrottle(navigation_handle),
-      tor_profile_service_(service) {
-  DCHECK(tor_profile_service_);
-  tor_profile_service_->AddObserver(this);
+      tor_launcher_factory_(tor_launcher_factory) {
+  DCHECK(tor_launcher_factory_);
+  tor_launcher_factory_->AddObserver(this);
 }
 
 TorNavigationThrottle::~TorNavigationThrottle() {
-  tor_profile_service_->RemoveObserver(this);
+  tor_launcher_factory_->RemoveObserver(this);
 }
 
 content::NavigationThrottle::ThrottleCheckResult
@@ -45,7 +64,7 @@ TorNavigationThrottle::WillStartRequest() {
   if (url.SchemeIsHTTPOrHTTPS() || url.SchemeIs(content::kChromeUIScheme) ||
       url.SchemeIs(extensions::kExtensionScheme) ||
       url.SchemeIs(content::kChromeDevToolsScheme)) {
-    if (!tor_profile_service_->IsTorConnected() &&
+    if (!tor_launcher_factory_->IsTorConnected() &&
         !url.SchemeIs(content::kChromeUIScheme)) {
       resume_pending_ = true;
       return content::NavigationThrottle::DEFER;

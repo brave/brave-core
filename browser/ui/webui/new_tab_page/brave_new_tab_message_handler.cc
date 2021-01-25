@@ -50,8 +50,7 @@ using ntp_background_images::ViewCounterServiceFactory;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/components/tor/tor_profile_service.h"
+#include "brave/components/tor/tor_launcher_factory.h"
 #endif
 
 namespace {
@@ -203,16 +202,14 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile)
     : profile_(profile) {
 #if BUILDFLAG(ENABLE_TOR)
-  if (profile->IsTor()) {
-    tor_profile_service_ = TorProfileServiceFactory::GetForContext(profile);
-  }
+  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
 #endif
 }
 
 BraveNewTabMessageHandler::~BraveNewTabMessageHandler() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor_profile_service_)
-    tor_profile_service_->RemoveObserver(this);
+  if (tor_launcher_factory_)
+    tor_launcher_factory_->RemoveObserver(this);
 #endif
 }
 
@@ -359,16 +356,16 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor_profile_service_)
-    tor_profile_service_->AddObserver(this);
+  if (tor_launcher_factory_)
+    tor_launcher_factory_->AddObserver(this);
 #endif
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor_profile_service_)
-    tor_profile_service_->RemoveObserver(this);
+  if (tor_launcher_factory_)
+    tor_launcher_factory_->RemoveObserver(this);
 #endif
 }
 
@@ -400,7 +397,7 @@ void BraveNewTabMessageHandler::HandleGetTorProperties(
   AllowJavascript();
 #if BUILDFLAG(ENABLE_TOR)
   auto data = GetTorPropertiesDictionary(
-      tor_profile_service_ ? tor_profile_service_->IsTorConnected() : false,
+      tor_launcher_factory_ ? tor_launcher_factory_->IsTorConnected() : false,
       "");
 #else
   auto data = GetTorPropertiesDictionary(false, "");

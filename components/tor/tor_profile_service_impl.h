@@ -13,6 +13,7 @@
 #include "base/optional.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
+#include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "net/proxy_resolution/proxy_info.h"
 
@@ -31,7 +32,8 @@ using NewTorCircuitCallback = base::OnceCallback<void(
     const base::Optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl : public TorProfileService,
-                              public BraveTorClientUpdater::Observer {
+                              public BraveTorClientUpdater::Observer,
+                              public TorLauncherObserver {
  public:
   TorProfileServiceImpl(content::BrowserContext* context,
                         BraveTorClientUpdater* tor_client_updater,
@@ -47,14 +49,8 @@ class TorProfileServiceImpl : public TorProfileService,
   void KillTor() override;
   void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) override;
 
-
-  // For internal observer
-  void NotifyTorLauncherCrashed();
-  void NotifyTorCrashed(int64_t pid);
-  void NotifyTorLaunched(bool result, int64_t pid);
-  void NotifyTorNewProxyURI(const std::string& uri);
-  void NotifyTorCircuitEstablished(bool result);
-  void NotifyTorInitializing(const std::string& percentage);
+  // TorLauncherObserver:
+  void OnTorNewProxyURI(const std::string& uri) override;
 
  private:
   void LaunchTor();

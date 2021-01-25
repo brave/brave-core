@@ -1,0 +1,10 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("internals") {
+  entry_points = [ [
+        "tor_internals",
+        rebase_path("tor_internals.tsx"),
+      ] ]
+
+  resource_name = "tor_internals"
+}

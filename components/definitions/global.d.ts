@@ -70,6 +70,9 @@ declare global {
     sync_ui_exports: {
       initialize: () => void
     }
+    tor_internals: {
+      initialize: () => void
+    }
     alreadyInserted: boolean
     web3: any
     content_cosmetic: {

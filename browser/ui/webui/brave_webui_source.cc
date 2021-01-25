@@ -14,6 +14,7 @@
 #include "brave/common/url_constants.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
@@ -1030,6 +1031,19 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletStatusPending", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING },    // NOLINT
       }
     }, {
+#if BUILDFLAG(IPFS_ENABLED)
+      std::string("tor-internals"), {
+        { "tabGeneralInfo", IDS_TOR_INTERNALS_TAB_GENERAL_INFO },
+        { "tabLogs", IDS_TOR_INTERNALS_TAB_LOGS },
+        { "torControlEvents", IDS_TOR_INTERNALS_TOR_CONTROL_EVENTS },
+        { "torVersion", IDS_TOR_INTERNALS_TOR_VERSION },
+        { "torPid", IDS_TOR_INTERNALS_TOR_PID },
+        { "torProxyURI", IDS_TOR_INTERNALS_TOR_PROXY_URI },
+        { "torConnectionStatus", IDS_TOR_INTERNALS_TOR_CONNECTION_STATUS },
+        { "torInitProgress", IDS_TOR_INTERNALS_TOR_INIT_PROGRESS },
+      }
+    }, {
+#endif
       std::string("webcompat"), {
         // Report modal
         { "reportModalTitle", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE },
