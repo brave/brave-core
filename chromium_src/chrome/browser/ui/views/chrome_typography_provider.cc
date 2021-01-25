@@ -20,20 +20,20 @@ namespace {
 // to fall onto Chromium code.
 bool ShouldIgnoreHarmonySpec(const ui::NativeTheme& theme) {
 #if defined(OS_MAC)
-    return false;
+  return false;
 #else
-    if (theme.UserHasContrastPreference())
-      return true;
-    if (theme.ShouldUseDarkColors())
-      return false;
+  if (theme.UserHasContrastPreference())
+    return true;
+  if (theme.ShouldUseDarkColors())
+    return false;
 
-    // TODO(pbos): Revisit this check. Both GG900 and black are considered
-    // "default black" as the common theme uses GG900 as primary color.
-    const SkColor test_color =
-        theme.GetSystemColor(ui::NativeTheme::kColorId_LabelEnabledColor);
-    const bool label_color_is_black =
-        test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
-    return !label_color_is_black;
+  // TODO(pbos): Revisit this check. Both GG900 and black are considered
+  // "default black" as the common theme uses GG900 as primary color.
+  const SkColor test_color =
+      theme.GetSystemColor(ui::NativeTheme::kColorId_LabelEnabledColor);
+  const bool label_color_is_black =
+      test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
+  return !label_color_is_black;
 #endif  // defined(OS_MAC)
 }
 

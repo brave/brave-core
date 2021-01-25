@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
+
+#include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
 #define AppMenuModel BraveAppMenuModel
 #include "../../../../../../../chrome/browser/ui/views/toolbar/browser_app_menu_button.cc"

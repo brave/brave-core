@@ -177,13 +177,15 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 // MARK: - Internal artificial nodes used for exporting arbitrary bookmarks to a file
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getRootNode {
-  return std::make_unique<bookmarks::BookmarkNode>(/*id=*/0,
+  return std::make_unique<bookmarks::BookmarkNode>(
+      /*id=*/0,
       base::GUID::ParseLowercase(bookmarks::BookmarkNode::kRootNodeGuid),
       GURL());
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getBookmarksBarNode {
-  auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/1,
+  auto node = std::make_unique<bookmarks::BookmarkNode>(
+      /*id=*/1,
       base::GUID::ParseLowercase(bookmarks::BookmarkNode::kBookmarkBarNodeGuid),
       GURL());
   node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_FOLDER_NAME));
@@ -191,17 +193,21 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getOtherBookmarksNode {
-  auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/2,
+  auto node = std::make_unique<bookmarks::BookmarkNode>(
+      /*id=*/2,
       base::GUID::ParseLowercase(
-        bookmarks::BookmarkNode::kOtherBookmarksNodeGuid), GURL());
+          bookmarks::BookmarkNode::kOtherBookmarksNodeGuid),
+      GURL());
   node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME));
   return node;
 }
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getMobileBookmarksNode {
-  auto node = std::make_unique<bookmarks::BookmarkNode>(/*id=*/3,
+  auto node = std::make_unique<bookmarks::BookmarkNode>(
+      /*id=*/3,
       base::GUID::ParseLowercase(
-        bookmarks::BookmarkNode::kMobileBookmarksNodeGuid), GURL());
+          bookmarks::BookmarkNode::kMobileBookmarksNodeGuid),
+      GURL());
   node->SetTitle(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_MOBILE_FOLDER_NAME));
   return node;
 }
