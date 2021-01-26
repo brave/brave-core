@@ -18,7 +18,7 @@
   if (ExecutionContext* context = ExecutionContext::From(script_state)) {      \
     if (WebContentSettingsClient* settings =                                   \
             brave::GetContentSettingsClientFor(context)) {                     \
-      DOMFloat32Array* destination_array = array.View();                       \
+      DOMFloat32Array* destination_array = array.Get();                       \
       size_t len = destination_array->length();                                \
       if (len > 0) {                                                           \
         float* destination = destination_array->Data();                        \
