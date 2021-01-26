@@ -147,6 +147,7 @@ export default function getTodayState (): BraveTodayState {
       pages: [
         {
           promotedArticle: {
+            creative_instance_id: '31ad7084-4168-4ea3-a0ec-fc4768e0aab0',
             category: `Brave Partners`,
             publish_time: `2020-10-21 21:46:00 UTC`,
             url: `https://www.autoblog.com/2020/10/21/tesla-quarterly-earnings-net-profit/`,
