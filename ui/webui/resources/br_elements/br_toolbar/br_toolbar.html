@@ -1,4 +1,5 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
+<link rel="import" href="chrome://resources/polymer/v1_0/iron-media-query/iron-media-query.html">
 <link rel="import" href="chrome://brave-resources/br_elements/shared_vars_css.html">
 <link rel="import" href="./br_toolbar_search_field.html">
 
@@ -187,6 +188,9 @@
       <div class="toolbar-extra">
         <slot></slot>
       </div>
+      <iron-media-query query="(max-width: [[narrowThreshold]]px)"
+                        query-matches="{{narrow}}">
+      </iron-media-query>
     </div>
   </template>
   <script src="br_toolbar.js"></script>
