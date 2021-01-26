@@ -14,6 +14,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
@@ -43,6 +44,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#include "brave/components/unstoppable_domains/pref_names.h"
 #endif
 
 namespace extensions {
@@ -206,6 +211,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;
+
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+  // Unstoppable Domains pref
+  (*s_brave_allowlist)[unstoppable_domains::kResolveMethod] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+#endif
 
   return *s_brave_allowlist;
 }

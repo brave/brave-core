@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc b/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc
+index 36ddfefcbc527e43d7efcb2210614b9df8c9919f..399f34639a082ea071801de7bc89ebbff275d652 100644
+--- a/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc
+@@ -33,7 +33,7 @@ namespace settings {
+ 
+ namespace {
+ 
+-std::unique_ptr<base::DictionaryValue> CreateSecureDnsSettingDict() {
++std::unique_ptr<base::DictionaryValue> CreateSecureDnsSettingDict_ChromiumImpl() {
+   // Fetch the current host resolver configuration. It is not sufficient to read
+   // the secure DNS prefs directly since the host resolver configuration takes
+   // other factors into account such as whether a managed environment or

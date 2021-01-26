@@ -7,3 +7,8 @@ brave_net_sources = [
   "//brave/net/proxy_resolution/proxy_config_service_tor.cc",
   "//brave/net/proxy_resolution/proxy_config_service_tor.h",
 ]
+
+brave_net_deps = [
+  "//brave/components/unstoppable_domains:constants",
+  "//brave/components/unstoppable_domains/buildflags",
+]

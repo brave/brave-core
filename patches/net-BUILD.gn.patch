@@ -1,5 +1,5 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index d214ac4959ff76dd8e95d327c9839ee967d14444..292ce4d3c2c294be04cc8d7ba8ed5ac06e2d58f4 100644
+index d214ac4959ff76dd8e95d327c9839ee967d14444..709ca7acfa482e5d85f2e4207bbbe2d93dd61fee 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
 @@ -1176,6 +1176,7 @@ component("net") {
@@ -10,3 +10,11 @@ index d214ac4959ff76dd8e95d327c9839ee967d14444..292ce4d3c2c294be04cc8d7ba8ed5ac0
  
      if (is_android) {
        sources += [
+@@ -1695,6 +1696,7 @@ source_set("net_deps") {
+   ]
+ 
+   public_configs = net_configs
++  public_deps += brave_net_deps
+ 
+   if (!is_nacl) {
+     public_deps += [

@@ -1,0 +1,23 @@
+source_set("constants") {
+  sources = [
+    "constants.cc",
+    "constants.h",
+  ]
+}
+
+source_set("unstoppable_domains") {
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+    "unstoppable_domains_service.cc",
+    "unstoppable_domains_service.h",
+    "unstoppable_domains_service_delegate.h",
+  ]
+
+  public_deps = [ ":constants" ]
+
+  deps = [
+    "//components/keyed_service/core",
+    "//components/prefs",
+  ]
+}
