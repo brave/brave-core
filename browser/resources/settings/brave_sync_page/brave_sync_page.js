@@ -39,7 +39,10 @@ Polymer({
      * @type {?SyncStatus}
      */
     syncStatus_: Object,
-    is_encryption_set_: Object,
+    isEncryptionSet_: {
+      type: Boolean,
+      value: false
+    },
     syncLabel_: {
       type: String,
       computed: 'computeSyncLabel_(syncStatus_.firstSetupInProgress)'
@@ -69,6 +72,8 @@ Polymer({
   attached: function() {
     const onSyncStatus = this.handleSyncStatus_.bind(this)
     this.browserProxy_.getSyncStatus().then(onSyncStatus);
+    this.addWebUIListener(
+      'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
     this.addWebUIListener('sync-status-changed', onSyncStatus);
   },
 
@@ -86,22 +91,23 @@ Polymer({
    */
   handleSyncStatus_: async function(syncStatus) {
     this.syncStatus_ = syncStatus;
+  },
 
-    // Cleanup is_encryption_set_ for re-enabling sync
-    if (!this.syncStatus_.isEngineInitialized &&
-      this.syncStatus_.firstSetupInProgress && this.is_encryption_set_) {
-      this.is_encryption_set_ = false
-    }
-
-    // Both setEncryptionPassphrase and setDecryptionPassphrase need to have
-    // SyncService::IsEngineInitialized() true, see sync_service_crypto.cc
-    // We cannot rely on `firstSetupInProgress` because there is a gap when both
-    // `firstSetupInProgress` and `isEngineInitialized` are false
-    if (this.syncStatus_.isEngineInitialized && !this.is_encryption_set_) {
+  /**
+   * Handler for when the sync preferences are updated.
+   * @private
+   */
+  handleSyncPrefsChanged_: async function(syncPrefs) {
+    if (this.syncStatus_ && !this.syncStatus_.firstSetupInProgress) {
       const syncCode = await this.braveBrowserProxy_.getSyncCode()
-      this.browserProxy_.setEncryptionPassphrase(syncCode);
-      this.browserProxy_.setDecryptionPassphrase(syncCode);
-      this.is_encryption_set_ = true;
+      if (syncPrefs.passphraseRequired) {
+        await this.browserProxy_.setDecryptionPassphrase(syncCode);
+      } else if (!this.isEncryptionSet_) {
+        this.browserProxy_.setEncryptionPassphrase(syncCode)
+        .then(successfullySet => {
+          this.isEncryptionSet_ = successfullySet
+        })
+      }
     }
   },
 });
