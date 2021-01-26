@@ -144,8 +144,6 @@ bool BraveIsAllowedThirdParty(
   return false;
 }
 
-// TODO(bridiver) make this a common method that can be shared with
-// BraveContentSettingsAgentImpl
 bool ShouldUseEphemeralStorage(
     const GURL& url,
     const GURL& site_for_cookies,

@@ -21,21 +21,8 @@ bool ShouldUseEphemeralStorage(
     const url::Origin& top_frame_origin,
     const net::SiteForCookies& site_for_cookies,
     const network::CookieSettings* const cookie_settings) {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
-  if (url::Origin::Create(url) == top_frame_origin)
-    return false;
-
-  bool block_3p = !cookie_settings->IsCookieAccessAllowed(
+  return cookie_settings->IsEphemeralCookieAccessAllowed(
       url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
-  bool block_1p = !cookie_settings->IsCookieAccessAllowed(
-      url, url, url::Origin::Create(url));
-
-  // only use ephemeral storage for block 3p
-  if (block_3p && !block_1p)
-    return true;
-
-  return false;
 }
 
 }  // namespace

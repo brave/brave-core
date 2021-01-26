@@ -57,9 +57,8 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   // The URL might not be empty if this is a restored WebContents, for instance.
   // In that case we want to make sure it has valid ephemeral storage.
   const GURL& url = web_contents->GetLastCommittedURL();
-  if (!url.is_empty())
-    CreateEphemeralStorageAreasForDomainAndURL(
-        net::URLToEphemeralStorageDomain(url), url);
+  CreateEphemeralStorageAreasForDomainAndURL(
+      net::URLToEphemeralStorageDomain(url), url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {}
@@ -84,6 +83,9 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     std::string new_domain,
     const GURL& new_url) {
+  if (new_url.is_empty())
+    return;
+
   auto* browser_context = web_contents()->GetBrowserContext();
   auto site_instance =
       content::SiteInstance::CreateForURL(browser_context, new_url);

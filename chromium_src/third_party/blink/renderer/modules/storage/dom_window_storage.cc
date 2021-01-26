@@ -35,12 +35,6 @@ String StringToSessionStorageId(const String& string,
 bool ShouldUseEphemeralStorage(
     LocalDOMWindow* window,
     WebContentSettingsClient::StorageType storage_type) {
-  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
-
-  if (!window->IsCrossSiteSubframe())
-    return false;
-
   auto* frame = window->GetFrame();
   if (!frame)
     return false;

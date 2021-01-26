@@ -158,6 +158,9 @@ bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
   if (!frame || IsFrameWithOpaqueOrigin(frame))
     return false;
 
+  if (frame->GetDocument().TopFrameOrigin() == frame->GetSecurityOrigin())
+    return false;
+
   return  // block 3p
       !ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type) &&
       // allow 1p
