@@ -45,9 +45,9 @@ Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {
 
 bool Engine::matches(const std::string& url, const std::string& host,
     const std::string& tab_host, bool is_third_party,
-    const std::string& resource_type, bool* did_match_exception,
-    bool* did_match_important, std::string* redirect, bool
-    previously_matched_rule, bool previously_matched_exception) {
+    const std::string& resource_type, bool previously_matched_rule,
+    bool previously_matched_exception, std::string* redirect,
+    bool* did_match_exception, bool* did_match_important) {
   char* redirect_char_ptr = nullptr;
   bool result = engine_match(raw, url.c_str(), host.c_str(),tab_host.c_str(),
       is_third_party, resource_type.c_str(), did_match_exception, did_match_important,
