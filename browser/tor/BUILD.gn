@@ -6,12 +6,12 @@ source_set("tor") {
   # Remove when https://github.com/brave/brave-browser/issues/10655 is resolved
   check_includes = false
   visibility = [
+    ":*",
     "//brave/browser:browser_process",
     "//brave/browser/profiles",
     "//brave/browser/ui",
     "//brave/components/ipfs/test:*",
     "//brave/test:*",
-    ":*",
   ]
 
   if (enable_tor) {
@@ -62,16 +62,16 @@ source_set("unit_tests") {
 
     deps = [
       "//base",
+      "//base/test:test_support",
+      "//brave/browser/tor",
       "//brave/browser/translate/buildflags",
       "//brave/common:pref_names",
       "//brave/components/brave_webtorrent/browser/buildflags",
-      "//base/test:test_support",
-      "//brave/browser/tor",
       "//brave/components/tor",
       "//brave/components/tor:test_support",
       "//chrome/common",
-      "//components/keyed_service/content",
       "//chrome/test:test_support",
+      "//components/keyed_service/content",
       "//components/safe_browsing/core/common:safe_browsing_prefs",
       "//components/translate/core/browser",
       "//content/public/browser",
@@ -115,18 +115,16 @@ source_set("browser_tests") {
       "//net:test_support",
     ]
 
-  if (enable_extensions) {
-    deps += [
-      "//extensions/browser",
-      "//extensions/common",
-    ]
-  }
+    if (enable_extensions) {
+      deps += [
+        "//extensions/browser",
+        "//extensions/common",
+      ]
+    }
 
-  if (brave_ads_enabled) {
-    deps += [
-      "//brave/components/brave_ads/browser",
-    ]
-  }
+    if (brave_ads_enabled) {
+      deps += [ "//brave/components/brave_ads/browser" ]
+    }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }

@@ -9,32 +9,30 @@ declare_args() {
 brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
 
 brave_chrome_java_deps = [
-  "//brave/third_party/android_deps:google_play_services_safetynet_java",
-  "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
+  "//brave/third_party/android_deps:com_android_installreferrer_java",
+  "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
-  "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
+  "//third_party/android_deps:google_play_services_vision_java",
 ]
 
 # To use our overrided enum in java, put the header file of our overrided enum
 # in brave_android_java_enums_srcjar target and add the chromium header file of
 # the enum we're replacing in brave_java_cpp_enum_filter.
-brave_java_cpp_enum_filter = ["//chrome/browser/notifications/notification_handler.h"]
+brave_java_cpp_enum_filter =
+    [ "//chrome/browser/notifications/notification_handler.h" ]
 brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",
   "//brave/android:brave_config_java",
   "//brave/browser/android/preferences:java_pref_names_srcjar",
 ]
 
-brave_chrome_app_java_resources_deps = [
-  "//brave/build/android:android_brave_strings_grd",
-]
+brave_chrome_app_java_resources_deps =
+    [ "//brave/build/android:android_brave_strings_grd" ]
 
-brave_components_browser_ui_site_settings_android_java_resources_deps = [
-  "//brave/build/android:android_brave_strings_grd",
-]
+brave_components_browser_ui_site_settings_android_java_resources_deps =
+    [ "//brave/build/android:android_brave_strings_grd" ]
 
-brave_resources_exclusion_exceptions = [
-"*com_google_android_material*design_bottom_*"
-]
+brave_resources_exclusion_exceptions =
+    [ "*com_google_android_material*design_bottom_*" ]
