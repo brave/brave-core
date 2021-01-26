@@ -1,11 +1,11 @@
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -72,8 +72,8 @@ source_set("extensions") {
     "//brave/components/tor/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
-    "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/gcm_driver:gcm_driver",
     "//components/omnibox/browser:browser",
     "//components/prefs",
     "//components/services/patch/content",
@@ -97,7 +97,7 @@ source_set("extensions") {
       "api/brave_wallet_api.cc",
       "api/brave_wallet_api.h",
       "brave_wallet_util.cc",
-      "brave_wallet_util.h"
+      "brave_wallet_util.h",
     ]
     configs += [ ":infura_config" ]
     deps += [ "//brave/components/brave_wallet" ]
@@ -108,9 +108,7 @@ source_set("extensions") {
       "api/ipfs_api.cc",
       "api/ipfs_api.h",
     ]
-    deps += [
-      "//brave/components/ipfs",
-    ]
+    deps += [ "//brave/components/ipfs" ]
   }
 
   if (brave_rewards_enabled) {
@@ -123,23 +121,19 @@ source_set("extensions") {
 
     deps += [
       "//brave/components/brave_rewards/browser",
-      "//brave/vendor/bat-native-ledger:headers",
       "//brave/vendor/bat-native-ads:headers",
+      "//brave/vendor/bat-native-ledger:headers",
     ]
   }
   if (enable_brave_webtorrent) {
-    deps += [
-      "//brave/components/brave_webtorrent/browser",
-    ]
+    deps += [ "//brave/components/brave_webtorrent/browser" ]
     sources += [
       "brave_webtorrent_navigation_throttle.cc",
       "brave_webtorrent_navigation_throttle.h",
     ]
   }
   if (enable_brave_wayback_machine) {
-    deps += [
-      "//brave/components/brave_wayback_machine",
-    ]
+    deps += [ "//brave/components/brave_wayback_machine" ]
   }
   if (gemini_enabled) {
     sources += [
@@ -216,6 +210,6 @@ group("resources") {
 config("infura_config") {
   defines = [
     "BRAVE_SERVICES_KEY=\"$brave_services_key\"",
-    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\""
+    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
   ]
 }

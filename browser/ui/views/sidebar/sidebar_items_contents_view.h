@@ -63,8 +63,9 @@ class SidebarItemsContentsView : public views::View,
     kItemRemove,
   };
 
-  void AddItemView(
-      const sidebar::SidebarItem& item, int index, bool user_gesture);
+  void AddItemView(const sidebar::SidebarItem& item,
+                   int index,
+                   bool user_gesture);
   void UpdateItemViewStateAt(int index, bool active);
   void SetDefaultImageAt(int index, const sidebar::SidebarItem& item);
   bool IsBuiltInTypeItemView(views::View* view) const;

@@ -13,7 +13,6 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "ui/base/l10n/l10n_util.h"
 #endif
@@ -26,8 +25,7 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
                          public ui::SimpleMenuModel::Delegate {
  public:
   explicit SidebarMenuModel(Browser* browser)
-      : SimpleMenuModel(nullptr),
-        browser_(browser) {
+      : SimpleMenuModel(nullptr), browser_(browser) {
     set_delegate(this);
     Build(browser_);
   }
@@ -47,7 +45,7 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
     const auto* service =
         sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
     return ConvertIDCToSidebarShowOptions(command_id) ==
-        service->GetSidebarShowOption();
+           service->GetSidebarShowOption();
   }
 
  private:
@@ -55,18 +53,14 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
     // IDC_XXX is used instead of direct kShowXXX and it's translated by
     // ConvertIDCToSidebarShowOptions() to avoid any issue with app menu.
     // Ex, id with 0 is always disabled state in the app menu.
-    AddCheckItem(
-        IDC_SIDEBAR_SHOW_OPTION_ALWAYS,
-        l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
-    AddCheckItem(
-        IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER,
-        l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
-    AddCheckItem(
-        IDC_SIDEBAR_SHOW_OPTION_ONCLICK,
-        l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
-    AddCheckItem(
-        IDC_SIDEBAR_SHOW_OPTION_NEVER,
-        l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
+    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_ALWAYS,
+                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
+    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER,
+                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
+    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_ONCLICK,
+                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
+    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_NEVER,
+                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   }
 
   int ConvertIDCToSidebarShowOptions(int id) const {
@@ -176,10 +170,9 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature)) {
     sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
-    InsertSubMenuWithStringIdAt(GetIndexOfBraveSidebarItem(),
-                                IDC_SIDEBAR_SHOW_OPTION_MENU,
-                                IDS_SIDEBAR_SHOW_OPTION_TITLE,
-                                sub_menus_.back().get());
+    InsertSubMenuWithStringIdAt(
+        GetIndexOfBraveSidebarItem(), IDC_SIDEBAR_SHOW_OPTION_MENU,
+        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus_.back().get());
   }
 #endif
 

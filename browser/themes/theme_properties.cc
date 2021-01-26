@@ -73,7 +73,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return SkColorSetRGB(0x21, 0x25, 0x29);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
       return SkColorSetRGB(0xF0, 0xF2, 0xFF);
-    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
+    case BraveThemeProperties::
+        COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
 #endif
     case BraveThemeProperties::COLOR_FOR_TEST:
@@ -147,7 +148,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return SkColorSetRGB(0xF0, 0xF0, 0xFF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED:
       return SkColorSetRGB(0xF0, 0xF0, 0xFF);
-    case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
+    case BraveThemeProperties::
+        COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_BACKGROUND_HOVERED:
       return SkColorSetRGB(0x4C, 0x54, 0xD2);
 #endif
     case BraveThemeProperties::COLOR_FOR_TEST:

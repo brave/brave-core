@@ -13,8 +13,8 @@ class BubbleBorderWithArrow : public views::BubbleBorder {
   static const int kBubbleArrowBoundsWidth = 12;
   static const int kBubbleArrowBoundsHeight = 18;
 
-  static gfx::RectF GetArrowRect(
-      const gfx::RectF& contents_bounds, views::BubbleBorder::Arrow arrow);
+  static gfx::RectF GetArrowRect(const gfx::RectF& contents_bounds,
+                                 views::BubbleBorder::Arrow arrow);
 
   BubbleBorderWithArrow(Arrow arrow, Shadow shadow, SkColor color);
   ~BubbleBorderWithArrow() override;

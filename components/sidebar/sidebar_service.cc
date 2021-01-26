@@ -6,7 +6,6 @@
 #include "brave/components/sidebar/sidebar_service.h"
 
 #include <algorithm>
-#include <string>
 #include <utility>
 
 #include "base/feature_list.h"

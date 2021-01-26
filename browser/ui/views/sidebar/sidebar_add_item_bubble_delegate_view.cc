@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 
-#include <memory>
+#include <utility>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/themes/theme_properties.h"
@@ -52,27 +52,28 @@ class SidebarAddItemButton : public views::LabelButton {
           theme_provider->GetColor(
               BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_NORMAL));
       SetTextColor(views::Button::STATE_HOVERED,
-                   theme_provider->GetColor(BraveThemeProperties::
-                       COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
+                   theme_provider->GetColor(
+                       BraveThemeProperties::
+                           COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
       SetTextColor(views::Button::STATE_PRESSED,
                    theme_provider->GetColor(
-                   BraveThemeProperties::
-                       COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
+                       BraveThemeProperties::
+                           COLOR_SIDEBAR_ADD_BUBBLE_ITEM_TEXT_HOVERED));
     }
 
     const int size_diff = 13 - views::Label::GetDefaultFontList().GetFontSize();
     label()->SetFontList(
         views::Label::GetDefaultFontList()
-        .DeriveWithSizeDelta(size_diff)
-        .DeriveWithWeight(bold ? gfx::Font::Weight::SEMIBOLD
-                               : gfx::Font::Weight::NORMAL));
+            .DeriveWithSizeDelta(size_diff)
+            .DeriveWithWeight(bold ? gfx::Font::Weight::SEMIBOLD
+                                   : gfx::Font::Weight::NORMAL));
   }
 
   gfx::Size CalculatePreferredSize() const override {
     return kAddItemBubbleEntrySize;
   }
 
-  void OnPaintBackground(gfx::Canvas* canvas)  override {
+  void OnPaintBackground(gfx::Canvas* canvas) override {
     if (GetState() == STATE_HOVERED) {
       cc::PaintFlags flags;
       flags.setAntiAlias(true);
@@ -102,8 +103,8 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
       browser_(browser) {
   DCHECK(browser_);
   // Give margin and arrow at there.
-  set_margins(gfx::Insets(
-      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+  set_margins(
+      gfx::Insets(0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
   set_title_margins(gfx::Insets());
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
@@ -135,7 +136,7 @@ SidebarAddItemBubbleDelegateView::CreateNonClientFrameView(
 }
 
 void SidebarAddItemBubbleDelegateView::AddChildViews() {
-   SetLayoutManager(std::make_unique<views::BoxLayout>(
+  SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
   // |site_part| includes Add item header and current tab url.
@@ -151,7 +152,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
   auto* header = site_part->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE), font));
   auto* theme_provider =
-       BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider();
+      BrowserView::GetBrowserViewForBrowser(browser_)->GetThemeProvider();
   if (theme_provider) {
     header->SetEnabledColor(theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));

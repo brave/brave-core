@@ -13,7 +13,8 @@
 
 // static
 gfx::RectF BubbleBorderWithArrow::GetArrowRect(
-    const gfx::RectF& contents_bounds, views::BubbleBorder::Arrow arrow) {
+    const gfx::RectF& contents_bounds,
+    views::BubbleBorder::Arrow arrow) {
   // sidebar bubble border only support these two arrow types now.
   DCHECK(arrow == views::BubbleBorder::LEFT_TOP ||
          arrow == views::BubbleBorder::LEFT_CENTER);
@@ -34,8 +35,9 @@ gfx::RectF BubbleBorderWithArrow::GetArrowRect(
   return arrow_rect;
 }
 
-BubbleBorderWithArrow::BubbleBorderWithArrow(
-    Arrow arrow, Shadow shadow, SkColor color)
+BubbleBorderWithArrow::BubbleBorderWithArrow(Arrow arrow,
+                                             Shadow shadow,
+                                             SkColor color)
     : BubbleBorder(arrow, shadow, color) {
   set_md_shadow_elevation(ChromeLayoutProvider::Get()->GetShadowElevationMetric(
       views::EMPHASIS_HIGH));
@@ -43,8 +45,8 @@ BubbleBorderWithArrow::BubbleBorderWithArrow(
 
 BubbleBorderWithArrow::~BubbleBorderWithArrow() = default;
 
-void BubbleBorderWithArrow::Paint(
-    const views::View& view, gfx::Canvas* canvas) {
+void BubbleBorderWithArrow::Paint(const views::View& view,
+                                  gfx::Canvas* canvas) {
   BubbleBorder::Paint(view, canvas);
 
   cc::PaintFlags flags;
@@ -59,14 +61,14 @@ void BubbleBorderWithArrow::Paint(
   // Fill arrow bg.
   SkPath arrow_bg_path;
   arrow_bg_path.moveTo(SkIntToScalar(arrow_bounds.top_right().x()),
-                    SkIntToScalar(arrow_bounds.top_right().y()));
+                       SkIntToScalar(arrow_bounds.top_right().y()));
   arrow_bg_path.lineTo(
       SkIntToScalar(arrow_bounds.x()),
       SkIntToScalar(arrow_bounds.y() + arrow_bounds.height() / 2));
   arrow_bg_path.lineTo(SkIntToScalar(arrow_bounds.bottom_right().x()),
-                    SkIntToScalar(arrow_bounds.bottom_right().y()));
+                       SkIntToScalar(arrow_bounds.bottom_right().y()));
   arrow_bg_path.lineTo(SkIntToScalar(arrow_bounds.top_right().x()),
-                    SkIntToScalar(arrow_bounds.top_right().y()));
+                       SkIntToScalar(arrow_bounds.top_right().y()));
   arrow_bg_path.close();
   canvas->DrawPath(arrow_bg_path, flags);
 

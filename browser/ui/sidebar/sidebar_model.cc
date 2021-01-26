@@ -13,8 +13,8 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
-#include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
 #include "components/favicon/core/favicon_service.h"
@@ -57,8 +57,7 @@ constexpr net::NetworkTrafficAnnotationTag kSidebarFaviconTrafficAnnotation =
 }  // namespace
 
 SidebarModel::SidebarModel(Profile* profile)
-    : profile_(profile),
-      task_tracker_(new base::CancelableTaskTracker{}) {}
+    : profile_(profile), task_tracker_(new base::CancelableTaskTracker{}) {}
 
 SidebarModel::~SidebarModel() = default;
 
@@ -87,7 +86,7 @@ void SidebarModel::AddItem(const SidebarItem& item,
     data_.push_back(std::make_unique<SidebarModelData>(profile_));
   } else {
     data_.insert(data_.begin() + index,
-                std::make_unique<SidebarModelData>(profile_));
+                 std::make_unique<SidebarModelData>(profile_));
   }
   for (Observer& obs : observers_) {
     // Index starts at zero. If |index| is -1, add as a last item.
@@ -133,8 +132,7 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
       base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&SidebarModel::FetchFavicon,
-                         weak_ptr_factory_.GetWeakPtr(),
-                         items[i]),
+                         weak_ptr_factory_.GetWeakPtr(), items[i]),
           base::TimeDelta::FromSeconds(2));
     }
   }
@@ -216,7 +214,7 @@ void SidebarModel::FetchFavicon(const sidebar::SidebarItem& item) {
   auto* favicon_service = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
   favicon_service->GetRawFaviconForPageURL(
-      item.url, {favicon_base::IconType::kFavicon}, 0/*largest*/, false,
+      item.url, {favicon_base::IconType::kFavicon}, 0 /*largest*/, false,
       base::BindRepeating(&SidebarModel::OnGetLocalFaviconImage,
                           weak_ptr_factory_.GetWeakPtr(), item),
       task_tracker_.get());
@@ -234,9 +232,9 @@ void SidebarModel::OnGetLocalFaviconImage(
   // network.
   if (bitmap_result.is_valid()) {
     for (Observer& obs : observers_) {
-      obs.OnFaviconUpdatedForItem(item,
-                                  gfx::Image::CreateFrom1xPNGBytes(
-                                      bitmap_result.bitmap_data).AsImageSkia());
+      obs.OnFaviconUpdatedForItem(
+          item, gfx::Image::CreateFrom1xPNGBytes(bitmap_result.bitmap_data)
+                    .AsImageSkia());
     }
   } else {
     // Flaging to try to update favicon again.
@@ -251,8 +249,8 @@ void SidebarModel::FetchFaviconFromNetwork(const sidebar::SidebarItem& item) {
   DCHECK(service);
   auto* fetcher = service->GetImageFetcher(
       image_fetcher::ImageFetcherConfig::kDiskCacheOnly);
-  image_fetcher::ImageFetcherParams params(
-      kSidebarFaviconTrafficAnnotation, kImageFetcherUmaClientName);
+  image_fetcher::ImageFetcherParams params(kSidebarFaviconTrafficAnnotation,
+                                           kImageFetcherUmaClientName);
   fetcher->FetchImage(
       TemplateURL::GenerateFaviconURL(item.url),
       base::BindOnce(&SidebarModel::OnGetFaviconImageFromNetwork,
@@ -265,7 +263,7 @@ void SidebarModel::OnGetFaviconImageFromNetwork(
     const gfx::Image& image,
     const image_fetcher::RequestMetadata& request_metadata) {
   if (!image.IsEmpty()) {
-     for (Observer& obs : observers_)
+    for (Observer& obs : observers_)
       obs.OnFaviconUpdatedForItem(item, image.AsImageSkia());
   }
 }

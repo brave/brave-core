@@ -13,8 +13,8 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
@@ -159,8 +159,7 @@ void SidebarItemsScrollView::OnThemeChanged() {
 }
 
 void SidebarItemsScrollView::OnBoundsAnimatorProgressed(
-    views::BoundsAnimator* animator) {
-}
+    views::BoundsAnimator* animator) {}
 
 void SidebarItemsScrollView::OnBoundsAnimatorDone(
     views::BoundsAnimator* animator) {
@@ -196,12 +195,13 @@ void SidebarItemsScrollView::OnItemRemoved(int index) {
   contents_view_->OnItemRemoved(index);
 }
 
-void SidebarItemsScrollView::OnActiveIndexChanged(
-    int old_index, int new_index) {
+void SidebarItemsScrollView::OnActiveIndexChanged(int old_index,
+                                                  int new_index) {
   contents_view_->OnActiveIndexChanged(old_index, new_index);
 }
 void SidebarItemsScrollView::OnFaviconUpdatedForItem(
-    const sidebar::SidebarItem& item, const gfx::ImageSkia& image) {
+    const sidebar::SidebarItem& item,
+    const gfx::ImageSkia& image) {
   contents_view_->SetImageForItem(item, image);
 }
 
@@ -303,8 +303,8 @@ void SidebarItemsScrollView::ScrollContentsViewBy(int offset, bool animate) {
 
   // Move contents view vertically for |offset|.
   gfx::Rect target_bounds = contents_view_->bounds();
-  target_bounds.set_origin({contents_view_->origin().x(),
-                            contents_view_->origin().y() + offset});
+  target_bounds.set_origin(
+      {contents_view_->origin().x(), contents_view_->origin().y() + offset});
   if (animate) {
     scroll_animator_for_smooth_->AnimateViewTo(contents_view_, target_bounds);
   } else {

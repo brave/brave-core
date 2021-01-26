@@ -4,8 +4,8 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//third_party/closure_compiler/compile_js.gni")
-import("//tools/polymer/polymer.gni")
 import("//tools/polymer/html_to_js.gni")
+import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
 
@@ -14,23 +14,19 @@ js_type_check("closure_compile_module") {
   deps = [
     ":brave_appearance_browser_proxy",
     ":brave_theme",
+    ":sidebar",
     ":super_referral",
     ":toolbar",
-    ":sidebar",
   ]
 }
 
 js_library("brave_appearance_browser_proxy") {
-  deps = [
-    "//ui/webui/resources/js:cr.m",
-  ]
+  deps = [ "//ui/webui/resources/js:cr.m" ]
   externs_list = [
     "$externs_path/chrome_send.js",
     "$externs_path/management.js",
   ]
-  extra_deps = [
-    ":templatize"
-  ]
+  extra_deps = [ ":templatize" ]
 }
 
 js_library("brave_theme") {
@@ -42,12 +38,8 @@ js_library("brave_theme") {
     "//ui/webui/resources/js:load_time_data.m",
     "//ui/webui/resources/js:web_ui_listener_behavior.m",
   ]
-  externs_list = [
-    "$externs_path/settings_private.js",
-  ]
-  extra_deps = [
-    ":templatize"
-  ]
+  externs_list = [ "$externs_path/settings_private.js" ]
+  extra_deps = [ ":templatize" ]
 }
 
 js_library("super_referral") {
@@ -58,37 +50,23 @@ js_library("super_referral") {
     "//ui/webui/resources/js:i18n_behavior.m",
     "//ui/webui/resources/js:load_time_data.m",
   ]
-  externs_list = [
-    "$externs_path/settings_private.js",
-  ]
-  extra_deps = [
-    ":templatize"
-  ]
+  externs_list = [ "$externs_path/settings_private.js" ]
+  extra_deps = [ ":templatize" ]
 }
 
 js_library("toolbar") {
-  externs_list = [
-    "$externs_path/settings_private.js",
-  ]
-  extra_deps = [
-    ":templatize"
-  ]
+  externs_list = [ "$externs_path/settings_private.js" ]
+  extra_deps = [ ":templatize" ]
 }
 
 js_library("sidebar") {
-  externs_list = [
-    "$externs_path/settings_private.js",
-  ]
-  extra_deps = [
-    ":templatize"
-  ]
+  externs_list = [ "$externs_path/settings_private.js" ]
+  extra_deps = [ ":templatize" ]
 }
 
 # make modules
 group("web_modules") {
-  public_deps = [
-    ":templatize",
-  ]
+  public_deps = [ ":templatize" ]
 }
 
 html_to_js("templatize") {

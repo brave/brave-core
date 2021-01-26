@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 
+#include <string>
+
 #include "base/bind.h"
 #include "base/i18n/case_conversion.h"
 #include "base/notreached.h"
@@ -189,7 +191,8 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
 }
 
 void SidebarItemsContentsView::SetDefaultImageAt(
-    int index, const sidebar::SidebarItem& item) {
+    int index,
+    const sidebar::SidebarItem& item) {
   SkColor text_color = SK_ColorWHITE;
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     text_color = theme_provider->GetColor(
@@ -204,13 +207,11 @@ void SidebarItemsContentsView::SetDefaultImageAt(
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   canvas.DrawStringRectWithFlags(
       base::i18n::ToUpper(base::UTF8ToUTF16(GetFirstCharFromURL(item.url))),
-      rb.GetFontListWithDelta(8),
-      text_color,
-      gfx::Rect(kIconSize),
+      rb.GetFontListWithDelta(8), text_color, gfx::Rect(kIconSize),
       gfx::Canvas::TEXT_ALIGN_CENTER);
 
-  SetImageForItem(
-      item, gfx::ImageSkia(gfx::ImageSkiaRep(canvas.GetBitmap(), scale)));
+  SetImageForItem(item,
+                  gfx::ImageSkia(gfx::ImageSkiaRep(canvas.GetBitmap(), scale)));
 }
 
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble() {
@@ -241,10 +242,10 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
     return;
 
   SidebarItemView* item_view = static_cast<SidebarItemView*>(children()[index]);
-  item_view->SetImage(views::Button::STATE_NORMAL,
-                      gfx::ImageSkiaOperations::CreateResizedImage(
-                          image, skia::ImageOperations::RESIZE_BEST,
-                          kIconSize));
+  item_view->SetImage(
+      views::Button::STATE_NORMAL,
+      gfx::ImageSkiaOperations::CreateResizedImage(
+          image, skia::ImageOperations::RESIZE_BEST, kIconSize));
 }
 
 void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {

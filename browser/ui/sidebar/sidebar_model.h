@@ -129,8 +129,8 @@ class SidebarModel : public SidebarService::Observer,
   std::unique_ptr<base::CancelableTaskTracker> task_tracker_;
   base::ObserverList<Observer> observers_;
   std::vector<std::unique_ptr<SidebarModelData>> data_;
-  ScopedObserver<SidebarService, SidebarService::Observer>
-      sidebar_observed_{this};
+  ScopedObserver<SidebarService, SidebarService::Observer> sidebar_observed_{
+      this};
   ScopedObserver<history::HistoryService, HistoryServiceObserver>
       history_observed_{this};
   base::WeakPtrFactory<SidebarModel> weak_ptr_factory_{this};

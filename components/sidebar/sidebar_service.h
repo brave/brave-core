@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 #define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 
+#include <string>
 #include <vector>
 
 #include "base/observer_list.h"
