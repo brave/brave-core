@@ -27,7 +27,7 @@
         "stats": {
             "ads": "0xFB542B",
             "trackers": "0x742BC4",
-            "httpse": "0xA0A5EB",
+            "dataSaved": "0xA0A5EB",
             "timeSaved": "0xffffff"
         }
     },

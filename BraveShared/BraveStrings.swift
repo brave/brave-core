@@ -449,7 +449,7 @@ extension Strings {
     public static let shieldsAdStats = NSLocalizedString("AdsrBlocked", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Ads \nBlocked", comment: "Shields Ads Stat")
     public static let shieldsAdAndTrackerStats = NSLocalizedString("AdsAndTrackersrBlocked", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Trackers & ads blocked", comment: "Shields Ads Stat")
     public static let shieldsTrackerStats = NSLocalizedString("TrackersrBlocked", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Trackers \nBlocked", comment: "Shields Trackers Stat")
-    public static let shieldsHttpsStats = NSLocalizedString("HTTPSrUpgrades", tableName: "BraveShared", bundle: Bundle.braveShared, value: "HTTPS \nUpgrades", comment: "Shields Https Stat")
+    public static let dataSavedStat = NSLocalizedString("DataSavedStat", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Est. Data \nSaved", comment: "Data Saved Shield Stat")
     public static let shieldsTimeStats = NSLocalizedString("EstTimerSaved", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Est. Time \nSaved", comment: "Shields Time Saved Stat")
     public static let shieldsTimeStatsHour = NSLocalizedString("ShieldsTimeStatsHour", tableName: "BraveShared", bundle: Bundle.braveShared, value: "h", comment: "Time Saved Hours")
     public static let shieldsTimeStatsMinutes = NSLocalizedString("ShieldsTimeStatsMinutes", tableName: "BraveShared", bundle: Bundle.braveShared, value: "min", comment: "Time Saved Minutes")

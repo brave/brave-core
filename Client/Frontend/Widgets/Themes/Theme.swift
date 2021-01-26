@@ -132,18 +132,18 @@ class Theme: Equatable, Decodable {
                 let container = try decoder.container(keyedBy: ThemeCodingKeys.ColorCodingKeys.StatCodingKeys.self)
                 let adsStr = try container.decode(String.self, forKey: .ads)
                 let trackersStr = try container.decode(String.self, forKey: .trackers)
-                let httpseStr = try container.decode(String.self, forKey: .httpse)
+                let dataSavedStr = try container.decode(String.self, forKey: .dataSaved)
                 let timeSavedStr = try container.decode(String.self, forKey: .timeSaved)
 
                 ads = UIColor(colorString: adsStr)
                 trackers = UIColor(colorString: trackersStr)
-                httpse = UIColor(colorString: httpseStr)
+                dataSaved = UIColor(colorString: dataSavedStr)
                 timeSaved = UIColor(colorString: timeSavedStr)
             }
 
             let ads: UIColor
             let trackers: UIColor
-            let httpse: UIColor
+            let dataSaved: UIColor
             let timeSaved: UIColor
         }
         
@@ -317,7 +317,7 @@ fileprivate enum ThemeCodingKeys: String, CodingKey {
         enum StatCodingKeys: String, CodingKey {
             case ads
             case trackers
-            case httpse
+            case dataSaved
             case timeSaved
         }
     }
