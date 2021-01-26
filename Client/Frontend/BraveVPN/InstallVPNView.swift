@@ -23,7 +23,7 @@ extension InstallVPNViewController {
             let image = UIImageView(image: #imageLiteral(resourceName: "install_vpn_image")).then { img in
                 img.contentMode = .scaleAspectFill
                 img.setContentHuggingPriority(.required, for: .vertical)
-                img.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+                img.setContentCompressionResistancePriority(UILayoutPriority(1), for: .vertical)
             }
             
             $0.snp.makeConstraints { make in
@@ -38,7 +38,7 @@ extension InstallVPNViewController {
             image.clipsToBounds = true
             
             $0.setContentHuggingPriority(.required, for: .vertical)
-            $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+            $0.setContentCompressionResistancePriority(UILayoutPriority(1), for: .vertical)
         }
         
         private lazy var infoStackView = UIStackView().then {
@@ -47,7 +47,6 @@ extension InstallVPNViewController {
                 stackView.axis = .vertical
                 stackView.distribution = .equalSpacing
                 stackView.spacing = 16
-                stackView.alignment = .center
             }
             
             let textStackView = UIStackView().then { stackView in
@@ -68,12 +67,20 @@ extension InstallVPNViewController {
                     label.numberOfLines = 0
                     label.font = .systemFont(ofSize: 18, weight: .medium)
                     label.appearanceTextColor = #colorLiteral(red: 0.4745098039, green: 0.4745098039, blue: 0.4745098039, alpha: 1)
+                    label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
                 }
                 
                 [titleLabel, bodyLabel].forEach(stackView.addArrangedSubview(_:))
             }
             
-            [textStackView, installVPNButton].forEach(contentStackView.addArrangedSubview(_:))
+            let buttonsStackView = UIStackView().then {
+                $0.axis = .vertical
+                $0.spacing = 4
+                $0.addStackViewItems(.view(installVPNButton),
+                                     .view(contactSupportButton))
+            }
+            
+            [textStackView, buttonsStackView].forEach(contentStackView.addArrangedSubview(_:))
             
             [UIView.spacer(.horizontal, amount: 30),
              contentStackView,
@@ -91,6 +98,25 @@ extension InstallVPNViewController {
             }
             $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
             $0.layer.cornerRadius = 22
+            if #available(iOS 13.0, *) {
+                $0.layer.cornerCurve = .continuous
+            }
+            
+            $0.loaderView = LoaderView(size: .small)
+        }
+        
+        let contactSupportButton = Button(type: .system).then {
+            $0.setTitle(Strings.VPN.settingsContactSupport, for: .normal)
+            $0.titleLabel?.font = .systemFont(ofSize: 16)
+            $0.appearanceTextColor = BraveUX.greyH
+            $0.snp.makeConstraints { make in
+                make.height.equalTo(44)
+            }
+            $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
+            $0.layer.cornerRadius = 22
+            if #available(iOS 13.0, *) {
+                $0.layer.cornerCurve = .continuous
+            }
             $0.loaderView = LoaderView(size: .small)
         }
         

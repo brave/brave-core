@@ -30,6 +30,7 @@ class BraveVPNContactFormViewController: TableViewController {
         var networkType: String?
         var cellularCarrier: String?
         var issue: String?
+        var logs: [(date: Date, message: String)]?
     }
     
     /// User can choose an issue from predefined list or write their own in email body.
@@ -57,6 +58,13 @@ class BraveVPNContactFormViewController: TableViewController {
     private var contactForm = ContactForm()
     
     override func viewDidLoad() {
+        // Not ideal to grab Theme globally
+        // but passing it here from other view controllers is problematic too.
+        // Navigation bar theme has to be updated here because
+        // some parent view controllers use custom colors for it(VPN Purple color)
+        let tabManager = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.tabManager
+        let theme = Theme.of(tabManager?.selectedTab)
+        applyTheme(theme)
         
         // MARK: Hostname
         let hostname = BraveVPN.hostname
@@ -141,8 +149,19 @@ class BraveVPNContactFormViewController: TableViewController {
                     }
                 })), cellClass: MultilineSubtitleCell.self)
         
+        // MARK: Error logs
+        let errorLogs =
+            Row(text: Strings.VPN.contactFormLogs,
+                accessory: .view(SwitchAccessoryView(initialValue: false, valueChange: { [weak self] isOn in
+                    if isOn {
+                        self?.contactForm.logs = BraveVPN.errorLog
+                    } else {
+                        self?.contactForm.logs = nil
+                    }
+                })), cellClass: MultilineSubtitleCell.self)
+        
         var section = Section(rows: [hostnameRow, subscriptionTypeRow, receiptRow, appVersionRow,
-                                     timezoneRow, networkTypeRow, carrierRow])
+                                     timezoneRow, networkTypeRow, carrierRow, errorLogs])
         
         // MARK: Issue
         var issueRow =
@@ -243,6 +262,19 @@ class BraveVPNContactFormViewController: TableViewController {
         if let carrier = contactForm.cellularCarrier {
             body.append(Strings.VPN.contactFormCarrier)
             body.append("\n\(carrier)\n\n")
+        }
+        
+        if let logs = contactForm.logs {
+            body.append("\(Strings.VPN.contactFormLogs)\n")
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .medium
+            
+            logs.forEach {
+                body.append("\(formatter.string(from: $0.date)): \($0.message)\n")
+            }
+            
+            body.append("\n")
         }
         
         if let issue = contactForm.issue {
