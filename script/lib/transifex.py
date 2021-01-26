@@ -276,8 +276,7 @@ def fix_links_with_target_blank_in_text(text):
     try:
         xml_elem = lxml.etree.fromstring('<text>' + xml_text + '</text>')
     except lxml.etree.XMLSyntaxError as e:
-        print ("\n--------------------\n"
-               "{0}\nERROR: {1}\n").format(xml_text.encode('utf-8'), str(e))
+        print "\n--------------------\n{0}\nERROR: {1}\n".format(xml_text.encode('utf-8'), str(e))
         cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
             return text
