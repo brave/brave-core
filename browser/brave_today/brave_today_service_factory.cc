@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_today/browser/brave_today_service.h"
+#include "brave/components/p3a/brave_p3a_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -48,9 +49,10 @@ KeyedService* BraveTodayServiceFactory::BuildServiceInstanceFor(
     return nullptr;
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* p3a_service = g_brave_browser_process->brave_p3a_service();
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
-
-  return new BraveTodayService(ads_service,
+  return new BraveTodayService(p3a_service,
+                                ads_service,
                                 profile->GetPrefs(),
                                 g_brave_browser_process->local_state());
 }

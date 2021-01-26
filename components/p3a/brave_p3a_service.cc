@@ -26,6 +26,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/p3a/brave_p3a_collector.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
@@ -306,6 +307,14 @@ BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
   return metric_names->contains(histogram_name);
 }
 
+void BraveP3AService::AddCollector(BraveP3ACollector* collector) {
+  collectors_.AddObserver(collector);
+}
+
+void BraveP3AService::RemoveCollector(BraveP3ACollector* collector) {
+  collectors_.RemoveObserver(collector);
+}
+
 void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
 
@@ -374,6 +383,9 @@ void BraveP3AService::UpdatePyxisMeta() {
 
 void BraveP3AService::StartScheduledUpload() {
   VLOG(2) << "BraveP3AService::StartScheduledUpload at " << base::Time::Now();
+  // Get most recent values for metrics which may not always have pushed an updated
+  // value for the period in between uploads.
+  CollectMetrics();
   if (!log_store_->has_unsent_logs()) {
     // We continue to schedule next uploads since new histogram values can
     // come up at any moment. Maybe it's worth to add a method with more
@@ -503,6 +515,12 @@ void BraveP3AService::UpdateRotationTimer() {
 
   VLOG(2) << "BraveP3AService new rotation timer will fire at "
           << base::Time::Now() + next_rotation << " after " << next_rotation;
+}
+
+void BraveP3AService::CollectMetrics() {
+  for (auto& collector : collectors_) {
+    collector.CollectMetrics();
+  }
 }
 
 }  // namespace brave

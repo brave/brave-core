@@ -26,11 +26,13 @@ class P
 
 namespace brave_today {
 
-class BraveTodayService : public KeyedService {
+class BraveTodayService : public KeyedService,
+                          public brave::BraveP3ACollector {
  public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  BraveTodayService(brave_ads::AdsService* ads_service,
+  BraveTodayService(brave::BraveP3AService* p3a_service,
+      brave_ads::AdsService* ads_service,
       PrefService* prefs, PrefService* local_state);
   ~BraveTodayService() override;
 
@@ -45,7 +47,11 @@ class BraveTodayService : public KeyedService {
   void RecordPromotedItemView(
       std::string item_id, std::string creative_instance_id);
 
+  // brave::BraveP3ACollector
+  void CollectMetrics() override;
+
  private:
+  brave::BraveP3AService* p3a_service_;
   brave_ads::AdsService* ads_service_;
   PrefService* prefs_ = nullptr;
 };
