@@ -23,6 +23,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#include "brave/browser/brave_today/brave_today_service_factory.h"
 #else
 #include "brave/browser/ntp_background_images/android/ntp_background_images_bridge.h"
 #endif
@@ -58,6 +59,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !defined(OS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
+  brave_today::BraveTodayServiceFactory::GetInstance();
 #else
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif

@@ -214,12 +214,15 @@ source_set("browser_process") {
     sources += [
       "p3a/p3a_core_metrics.cc",
       "p3a/p3a_core_metrics.h",
+      "brave_today/brave_today_service_factory.cc",
+      "brave_today/brave_today_service_factory.h",
     ]
 
     deps += [
       "importer",
       "infobars",
       "//brave/app:brave_generated_resources_grit",
+      "//brave/components/brave_today/browser",
     ]
   } else {
     deps += [ "android:android_browser_process" ]

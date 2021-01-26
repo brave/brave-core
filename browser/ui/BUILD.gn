@@ -285,6 +285,7 @@ source_set("ui") {
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:profile_sync_service_helper",
+      "//brave/components/brave_today/browser",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//chrome/app:chromium_strings",
       "//components/sync_device_info",
