@@ -55,8 +55,6 @@ void DragAndDrop(
     const std::string& drag_selector,
     const std::string& drop_selector);
 
-void IsMediaTipsInjected(content::WebContents* contents, bool should_appear);
-
 std::vector<double> GetSiteBannerTipOptions(content::WebContents* site_banner);
 
 double GetRewardsPopupMonthlyTipValue(content::WebContents* context);
