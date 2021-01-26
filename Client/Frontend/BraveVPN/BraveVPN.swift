@@ -32,13 +32,14 @@ class BraveVPN {
         // When the app loads we should load it from preferences to track its state.
         NEVPNManager.shared().loadFromPreferences { error in
             if let error = error {
-                log.error("Failed to load vpn conection: \(error)")
+                logAndStoreError("Failed to load vpn conection: \(error)")
             }
             
             // We validate the current receipt at the start to know if the subscription has expirerd.
             BraveVPN.validateReceipt() { expired in
                 if expired == true {
                     BraveVPN.clearConfiguration()
+                    logAndStoreError("Receipt expired")
                     return
                 }
                 
@@ -49,7 +50,7 @@ class BraveVPN {
                             return
                         }
                         
-                        log.debug("VPN server status failure, migrating to new host")
+                        logAndStoreError("VPN server status failure, migrating to new host")
                         disconnect()
                         reconnect()
                     }
@@ -181,9 +182,10 @@ class BraveVPN {
     /// Name of the purchased vpn plan.
     static var subscriptionName: String {
         guard let credentialString =
-                   GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
-                   return ""
-               }
+                GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
+            logAndStoreError("subscriptionName: failed to retrieve subscriber credentials")
+            return ""
+        }
         let credential = GRDSubscriberCredential(subscriberCredential: credentialString)
         let productId = credential.subscriptionType
         
@@ -198,13 +200,30 @@ class BraveVPN {
         }
     }
     
+    /// Stores a in-memory list of vpn errors encountered during current browsing session.
+    private(set) static var errorLog = [(Date, String)]()
+    
+    /// Prints out the error to the logger and stores it in a in memory array.
+    /// This can be further used for a customer support form.
+    private static func logAndStoreError(_ message: String, printToConsole: Bool = true) {
+        if printToConsole {
+            log.error(message)
+        }
+        
+        // Extra safety here in case the log is spammed by many messages.
+        // Early logs are more valuable for debugging, we do not rotate them with new entries.
+        if errorLog.count < 1000 {
+            errorLog.append((Date(), message))
+        }
+    }
+    
     // MARK: - Actions
     
     /// Reconnects to the vpn. Checks for server health first, if it's bad it tries to connect to another host.
     /// The vpn must be configured prior to that otherwise it does nothing.
     static func reconnect() {
         if reconnectPending {
-            log.debug("Can't reconnect the vpn while another reconnect is pending.")
+            logAndStoreError("Can't reconnect the vpn while another reconnect is pending.")
             return
         }
         
@@ -213,6 +232,7 @@ class BraveVPN {
         guard let credentialString =
             GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
             reconnectPending = false
+            logAndStoreError("reconnect: failed to retrieve subscriber credentials")
             return
         }
         
@@ -223,6 +243,7 @@ class BraveVPN {
         if Date() > tokenExpirationDate {
             guard let host = hostname else {
                 reconnectPending = false
+                logAndStoreError("failed to retrieve hostname")
                 return
             }
             
@@ -234,7 +255,7 @@ class BraveVPN {
                         reconnectPending = false
                     }
                 case .error:
-                    log.error("Creating new credentials failed when tried to reconnect to the vpn.")
+                    logAndStoreError("Creating new credentials failed when tried to reconnect to the vpn.")
                     reconnectPending = false
                 }
             }
@@ -242,7 +263,7 @@ class BraveVPN {
             connectOrMigrateToNewNode { completion in
                 switch completion {
                 case .error(let type):
-                    log.error("Failed to reconnect, error: \(type)")
+                    logAndStoreError("Failed to reconnect, error: \(type)")
                 case .success:
                     log.debug("Reconnected to the VPN")
                 }
@@ -256,7 +277,7 @@ class BraveVPN {
     /// The vpn must be configured prior to that otherwise it does nothing.
     static func disconnect() {
         if reconnectPending {
-            log.debug("Can't disconnect the vpn while reconnect is still pending.")
+            logAndStoreError("Can't disconnect the vpn while reconnect is still pending.")
             return
         }
         
@@ -271,6 +292,7 @@ class BraveVPN {
                 // Api call for receipt verification failed,
                 // we do not know if the receipt has expired or not.
                 receiptHasExpired?(nil)
+                logAndStoreError("Api call for receipt verification failed")
                 return
             }
             
@@ -280,6 +302,7 @@ class BraveVPN {
                     // Setting super old date to force expiration logic in the UI.
                     Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
                     receiptHasExpired?(true)
+                    logAndStoreError("vpn expired", printToConsole: false)
                     return
             }
             
@@ -306,6 +329,7 @@ class BraveVPN {
         serverManager.selectGuardianHost { host, error in
             guard let host = host, error == nil else {
                 firstTimeUserConfigPending = false
+                logAndStoreError("configureFirstTimeUser connection problems")
                 completion?(.error(type: .connectionProblems))
                 return
             }
@@ -326,6 +350,7 @@ class BraveVPN {
             jwtCredential, success, error in
             
             if !success {
+                logAndStoreError("createNewSubscriberCredential connection problems")
                 completion(.error(type: .connectionProblems))
                 return
             }
@@ -334,11 +359,13 @@ class BraveVPN {
                 
                 helper.createFreshUser(withSubscriberCredential: jwtCredential) { status, createError in
                     if status != .success {
+                        logAndStoreError("createFreshUser provisioning problems")
                         completion(.error(type: .provisioning))
                         return
                     }
                     
                     if !saveJwtCredential(jwtCredential) {
+                        logAndStoreError("createFreshUser save jwt token error")
                         completion(.error(type: .provisioning))
                         return
                     }
@@ -371,14 +398,17 @@ class BraveVPN {
                         completion(.success)
                     } else {
                         completion(.error(type: .loadConfigError))
+                        logAndStoreError("connectOrMigrateToNewNode doesNeedMigration error")
                     }
                 }
             case .api_AuthenticationError, .api_ProvisioningError, .app_VpnPrefsLoadError,
                  .app_VpnPrefsSaveError, .coudNotReachAPIError, .fail,
                  .networkConnectionError, .migrating:
+                logAndStoreError("connectOrMigrateToNewNode error: \(status.rawValue)")
                 completion(.error(type: .loadConfigError))
             @unknown default:
                 assertionFailure()
+                logAndStoreError("connectOrMigrateToNewNode unknown error")
                 completion(.error(type: .loadConfigError))
             }
         }
@@ -398,11 +428,13 @@ class BraveVPN {
             serverManager.selectGuardianHost { host, error in
                 guard let host = host, error == nil else {
                     completion?(false)
+                    logAndStoreError("reconfigureVPN host error")
                     return
                 }
                 
                 guard let credentialString =
                     GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
+                    logAndStoreError("reconfigureVPN failed to retrieve subscriber credentials")
                     completion?(false)
                     return
                 }
@@ -411,6 +443,7 @@ class BraveVPN {
                 
                 helper.createFreshUser(withSubscriberCredential: credentialString) { status, createError in
                     if status != .success {
+                        logAndStoreError("reconfigureVPN createFreshUser failed")
                         completion?(false)
                         return
                     }
@@ -418,6 +451,7 @@ class BraveVPN {
                     connectOrMigrateToNewNode { status in
                         switch status {
                         case .error:
+                            logAndStoreError("reconfigureVPN connectOrMigrateToNewNode failed")
                             completion?(false)
                         case .success:
                             completion?(true)
@@ -435,7 +469,7 @@ class BraveVPN {
         
         NEVPNManager.shared().removeFromPreferences { error in
             if let error = error {
-                log.error("Remove vpn error: \(error)")
+                logAndStoreError("Remove vpn error: \(error)")
             }
         }
     }

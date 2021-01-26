@@ -26,6 +26,7 @@ class InstallVPNViewController: UIViewController {
         super.viewDidLoad()
         title = Strings.VPN.installTitle
         installVPNView.installVPNButton.addTarget(self, action: #selector(installVPNAction), for: .touchUpInside)
+        installVPNView.contactSupportButton.addTarget(self, action: #selector(contactSupportAction), for: .touchUpInside)
         navigationItem.setLeftBarButton(.init(barButtonSystemItem: .cancel, target: self, action: #selector(dismissView)), animated: true)
     }
     
@@ -99,6 +100,10 @@ class InstallVPNViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc private func contactSupportAction() {
+        navigationController?.pushViewController(BraveVPNContactFormViewController(), animated: true)
     }
     
     private func showSuccessAlert() {

@@ -1251,6 +1251,12 @@ extension Strings {
                               value: "Cellular Carrier",
                               comment: "Cellular Carrier field for customer support contact form.")
         
+        public static let contactFormLogs =
+            NSLocalizedString("vpn.contactFormLogs",
+                              bundle: .braveShared,
+                              value: "Error Logs",
+                              comment: "VPN logs field for customer support contact form.")
+        
         public static let contactFormIssue =
             NSLocalizedString("vpn.contactFormIssue",
                               bundle: .braveShared,
