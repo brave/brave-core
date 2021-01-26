@@ -411,11 +411,6 @@ void DragAndDrop(
   ASSERT_TRUE(jsResult.ExtractBool());
 }
 
-void IsMediaTipsInjected(content::WebContents* context, bool should_appear) {
-  DCHECK(context);
-  WaitForElementToAppear(context, ".action-brave-tip", should_appear);
-}
-
 std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
   DCHECK(context);
   WaitForElementToAppear(context, "[data-test-id=tip-amount-options]");
