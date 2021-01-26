@@ -46,7 +46,6 @@ Polymer({
     // True when the toolbar is displaying in narrow mode.
     narrow: {
       type: Boolean,
-      value: true,
       reflectToAttribute: true,
       readonly: true,
       notify: true,
