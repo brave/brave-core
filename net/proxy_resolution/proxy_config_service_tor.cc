@@ -22,7 +22,6 @@
 #include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
-#include "url/origin.h"
 
 namespace net {
 
@@ -138,8 +137,8 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   //
   // In particular, we need not isolate by the scheme,
   // username/password, port, path, or query part of the URL.
-  url::Origin url_origin = url::Origin::Create(url);
-  net::NetworkIsolationKey network_isolation_key(url_origin, url_origin);
+  const net::SchemefulSite url_site(url);
+  const net::NetworkIsolationKey network_isolation_key(url_site, url_site);
 
   const base::Optional<net::SchemefulSite>& schemeful_site =
       network_isolation_key.GetTopFrameSite();
