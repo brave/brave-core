@@ -1033,6 +1033,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_RESET_REWARDS_DATA" desc="The label for opening rewards manage wallet dialog">
         Reset Brave Rewards data...
       </message>
+      <!--First-run dialog messages -->
+      <if expr="is_macosx">
+        <message name="IDS_FIRSTRUN_DLG_MAC_OPTIONS_SEND_USAGE_STATS_LABEL_BRAVE" desc="Label for checkbox to ask whether to send usage stats to Google">
+          Help improve <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> by sending crash reports and completely anonymised, private product analytics.
+        </message>
+      </if>
     </messages>
   </release>
 </grit>
