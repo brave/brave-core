@@ -60,7 +60,7 @@ index f721f1aff4781fa5936010dfb5b0c97587e81c05..d0ca7e97fc2c50897d1b04a11090dbb3
  
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
-+    if (is_official_build) { entitlements_templates += [ "//brave/app/app-entitlements-brave.plist" ] }
++    if (is_official_build) { entitlements_templates += [ "app/app-entitlements-chrome.plist" ] }
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
