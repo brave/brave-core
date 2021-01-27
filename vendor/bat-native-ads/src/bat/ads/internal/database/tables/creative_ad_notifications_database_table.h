@@ -84,17 +84,9 @@ class CreativeAdNotifications : public Table {
   CreativeAdNotificationInfo GetFromRecord(
       DBRecord* record) const;
 
-  void CreateTableV1(
+  void CreateTableV7(
       DBTransaction* transaction);
-  void MigrateToV1(
-      DBTransaction* transaction);
-
-  void MigrateToV2(
-      DBTransaction* transaction);
-
-  void CreateTableV3(
-      DBTransaction* transaction);
-  void MigrateToV3(
+  void MigrateToV7(
       DBTransaction* transaction);
 
   int batch_size_;

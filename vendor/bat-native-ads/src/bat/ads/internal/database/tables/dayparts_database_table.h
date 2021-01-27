@@ -45,11 +45,9 @@ class Dayparts : public Table {
       DBCommand* command,
       const CreativeAdList& creative_ads);
 
-  void CreateTableV6(
+  void CreateTableV7(
       DBTransaction* transaction);
-  void CreateIndexV6(
-      DBTransaction* transaction);
-  void MigrateToV6(
+  void MigrateToV7(
       DBTransaction* transaction);
 };
 

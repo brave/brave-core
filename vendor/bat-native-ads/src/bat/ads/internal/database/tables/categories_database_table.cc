@@ -63,13 +63,8 @@ void Categories::Migrate(
   DCHECK(transaction);
 
   switch (to_version) {
-    case 1: {
-      MigrateToV1(transaction);
-      break;
-    }
-
-    case 3: {
-      MigrateToV3(transaction);
+    case 7: {
+      MigrateToV7(transaction);
       break;
     }
 
@@ -112,46 +107,7 @@ std::string Categories::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Categories::CreateTableV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL, "
-          "category TEXT NOT NULL, "
-          "UNIQUE(creative_instance_id, category) ON CONFLICT REPLACE, "
-          "CONSTRAINT fk_creative_instance_id "
-              "FOREIGN KEY (creative_instance_id) "
-              "REFERENCES creative_ad_notifications (creative_instance_id) "
-              "ON DELETE CASCADE)",
-      get_table_name().c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void Categories::CreateIndexV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "category");
-}
-
-void Categories::MigrateToV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Drop(transaction, get_table_name());
-
-  CreateTableV1(transaction);
-  CreateIndexV1(transaction);
-}
-
-void Categories::CreateTableV3(
+void Categories::CreateTableV7(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
@@ -170,21 +126,13 @@ void Categories::CreateTableV3(
   transaction->commands.push_back(std::move(command));
 }
 
-void Categories::CreateIndexV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "creative_set_id");
-}
-
-void Categories::MigrateToV3(
+void Categories::MigrateToV7(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV3(transaction);
-  CreateIndexV3(transaction);
+  CreateTableV7(transaction);
 }
 
 }  // namespace table
