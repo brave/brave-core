@@ -101,7 +101,6 @@ OnionLocationNavigationThrottle::WillStartRequest() {
         pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
       delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
                                  std::move(url));
-      return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }
   return content::NavigationThrottle::PROCEED;

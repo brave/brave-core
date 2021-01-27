@@ -22,11 +22,11 @@ void OnTorProfileCreated(GURL onion_location,
                          Profile::CreateStatus status) {
   if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
     return;
-  Browser* browser = chrome::FindTabbedBrowser(profile, true);
+  Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                  WindowOpenDisposition::SWITCH_TO_TAB,
                                   ui::PAGE_TRANSITION_TYPED, false);
   browser->OpenURL(open_tor);
 }
@@ -46,11 +46,6 @@ void OnionLocationNavigationThrottleDelegate::OpenInTorWindow(
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   TorProfileManager::SwitchToTorProfile(profile,
       base::BindRepeating(&OnTorProfileCreated, std::move(onion_location)));
-
-  // We do not close last tab of the window
-  Browser* browser = chrome::FindBrowserWithProfile(profile);
-  if (browser && browser->tab_strip_model()->count() > 1)
-    web_contents->ClosePage();
 }
 
 }  // namespace tor
