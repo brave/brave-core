@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm b/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm
-index 8e9b49b47dec121651492d24e1514224eed326ce..9bd30fcb2531dc575aa3c18e6e73442851e8e7b4 100644
+index c6c1ca3d3d95d03eacd0b23bbb5c4c6186ba9879..a5b7b5d168f9267c605880ac12e3befe1f3e04dc 100644
 --- a/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm
 +++ b/chrome/browser/notifications/notification_platform_bridge_mac_utils.mm
 @@ -60,6 +60,7 @@ void DoProcessMacNotificationResponse(
