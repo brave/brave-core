@@ -17,6 +17,6 @@ NET_EXPORT extern const base::Feature kBraveEphemeralStorage;
 }  // namespace features
 }  // namespace net
 
-#include "../../../../../../net/base/features.h"
+#include "../../../../net/base/features.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_FEATURES_H_
