@@ -735,6 +735,8 @@ class BrowserViewController: UIViewController {
         vpnProductInfo.load()
         BraveVPN.initialize()
         
+        showWalletTransferExpiryPanelIfNeeded()
+        
         //We stop ever attempting migration after 3 times.
         if Preferences.Chromium.syncV2BookmarksMigrationCount.value < 3 {
             self.migrateToChromiumBookmarks { success in

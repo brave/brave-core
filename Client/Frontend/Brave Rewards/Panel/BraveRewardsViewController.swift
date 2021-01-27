@@ -119,7 +119,7 @@ class BraveRewardsViewController: UIViewController, Themeable, PopoverContentCom
         
         rewardsView.legacyWalletTransferButton.isHidden = true
         if !Preferences.Rewards.dismissedLegacyWalletTransfer.value {
-            if let legacyWallet = legacyWallet {
+            if let legacyWallet = legacyWallet, !legacyWallet.isLedgerTransferExpired {
                 legacyWallet.transferrableAmount({ [weak self] total in
                     guard let self = self else { return }
                     if total > 0 {

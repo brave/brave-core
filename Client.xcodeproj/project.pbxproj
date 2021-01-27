@@ -353,6 +353,7 @@
 		27C405E924255A2B00347246 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
 		27C461DE211B76500088A441 /* ShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461DD211B76500088A441 /* ShieldsView.swift */; };
 		27C46201211CD8D20088A441 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
+		27C626CB25BA198700418F40 /* WalletTransferExpiredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C626CA25BA198700418F40 /* WalletTransferExpiredViewController.swift */; };
 		27C647772550AE16006D72FC /* WalletTransferCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C647762550AE16006D72FC /* WalletTransferCompleteViewController.swift */; };
 		27C647832550AF34006D72FC /* WalletTransferCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C647822550AF34006D72FC /* WalletTransferCompleteView.swift */; };
 		27C6478F2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C6478E2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift */; };
@@ -1607,6 +1608,7 @@
 		27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverride.swift; sourceTree = "<group>"; };
 		27B3DDD424AF98EA0006A7ED /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
+		27C626CA25BA198700418F40 /* WalletTransferExpiredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferExpiredViewController.swift; sourceTree = "<group>"; };
 		27C647762550AE16006D72FC /* WalletTransferCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferCompleteViewController.swift; sourceTree = "<group>"; };
 		27C647822550AF34006D72FC /* WalletTransferCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferCompleteView.swift; sourceTree = "<group>"; };
 		27C6478E2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsDebugViewController.swift; sourceTree = "<group>"; };
@@ -3173,6 +3175,7 @@
 				27829E832549FF9D007CF0B2 /* WalletTransferView.swift */,
 				27C647762550AE16006D72FC /* WalletTransferCompleteViewController.swift */,
 				27C647822550AF34006D72FC /* WalletTransferCompleteView.swift */,
+				27C626CA25BA198700418F40 /* WalletTransferExpiredViewController.swift */,
 			);
 			path = Transfer;
 			sourceTree = "<group>";
@@ -6030,6 +6033,7 @@
 				592F521E2217327C0078395E /* HttpCookieExtension.swift in Sources */,
 				4422D4D721BFFB7600BF1855 /* table.cc in Sources */,
 				0A4BEF62221B26610005551A /* LocalAdblockResourceProtocol.swift in Sources */,
+				27C626CB25BA198700418F40 /* WalletTransferExpiredViewController.swift in Sources */,
 				5D5E2361238C386B00AD6FBD /* NTPTableViewController.swift in Sources */,
 				E4CD9F6D1A77DD2800318571 /* ReaderModeStyleViewController.swift in Sources */,
 				D0FCF7F51FE45842004A7995 /* UserScriptManager.swift in Sources */,

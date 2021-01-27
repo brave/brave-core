@@ -11,6 +11,22 @@ private let log = Logger.rewardsLogger
 
 extension BraveLedger {
     
+    public var isLedgerTransferExpired: Bool {
+        if Locale.current.regionCode != "JP" {
+            return false
+        }
+        let now = Date()
+        let deadlineComponents = DateComponents(year: 2021, month: 3, day: 13)
+        guard let deadlineDate = Calendar(identifier: .gregorian).nextDate(
+            after: now,
+            matching: deadlineComponents,
+            matchingPolicy: .strict
+        ) else {
+            return true
+        }
+        return now >= deadlineDate
+    }
+    
     public func listAutoContributePublishers(_ completion: @escaping (_ publishers: [PublisherInfo]) -> Void) {
         let filter: ActivityInfoFilter = {
             let sort = ActivityInfoFilterOrderPair().then {

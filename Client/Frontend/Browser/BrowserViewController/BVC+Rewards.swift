@@ -92,6 +92,39 @@ extension BrowserViewController {
         rewards.ledger.fetchPromotions(nil)
     }
     
+    func showWalletTransferExpiryPanelIfNeeded() {
+        func _show() {
+            let controller = WalletTransferExpiredViewController()
+            let popover = PopoverController(contentController: controller, contentSizeBehavior: .autoLayout)
+            popover.popoverDidDismiss = { _ in
+                Preferences.Rewards.transferUnavailableLastSeen.value = Date().timeIntervalSince1970
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                popover.present(from: self.topToolbar.locationView.rewardsButton, on: self)
+            }
+        }
+        
+        let now = Date()
+        
+        guard let legacyWallet = legacyWallet,
+              !legacyWallet.isLedgerTransferExpired,
+              presentedViewController == nil,
+              Locale.current.regionCode == "JP" else { return }
+        
+        legacyWallet.transferrableAmount { amount in
+            guard amount > 0 else { return }
+            let gap = AppConstants.buildChannel.isPublic ? 3.days : 2.minutes
+            if let lastSeenTimeInterval = Preferences.Rewards.transferUnavailableLastSeen.value {
+                // Check if they've seen it in the past 3 days
+                if now.timeIntervalSince1970 > lastSeenTimeInterval + gap {
+                    _show()
+                }
+            } else {
+                _show()
+            }
+        }
+    }
+    
     func claimPendingPromotions() {
         rewards.ledger.pendingPromotions.forEach { promo in
             if promo.status == .active {

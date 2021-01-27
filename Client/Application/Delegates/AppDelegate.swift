@@ -480,6 +480,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         AdblockResourceDownloader.shared.startLoading()
+        
+        browserViewController.showWalletTransferExpiryPanelIfNeeded()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
