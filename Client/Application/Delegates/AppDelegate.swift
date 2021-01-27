@@ -115,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         MenuHelper.defaultHelper.setItems()
         
-        SDWebImageCodersManager.sharedInstance().addCoder(PrivateCDNImageCoder())
+        SDImageCodersManager.shared.addCoder(PrivateCDNImageCoder())
 
         let logDate = Date()
         // Create a new sync log file on cold app launch. Note that this doesn't roll old logs.
@@ -531,7 +531,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // This only needs to be done once per runtime. Note that we use defaults here that are
         // readable from extensions, so they can just use the cached identifier.
 
-        SDWebImageDownloader.shared().setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        SDWebImageDownloader.shared.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
         WebcompatReporter.userAgent = userAgent
         

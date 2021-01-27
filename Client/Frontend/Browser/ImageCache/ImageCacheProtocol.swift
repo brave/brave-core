@@ -52,12 +52,6 @@ protocol ImageCacheProtocol {
     /// - returns: true if the image is cached in memory, otherwise false.
     func isCached(_ url: URL) -> Bool
     
-    /// Returns whether the image at the given URL is cached on disk or not.
-    ///
-    /// - parameter url: URL to image.
-    /// - returns: true if the image is cached on disk, otherwise false.
-    func isPersisted(_ url: URL) -> Bool
-    
     /// Remove image at the given URL from the cache.
     ///
     /// - parameter url: URL to image.

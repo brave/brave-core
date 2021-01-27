@@ -73,6 +73,13 @@
         "identifier" : "2FCAE2231ABB51F800877008",
         "name" : "StorageTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "27756E9325AF6F5F00C129AF",
+        "name" : "SPMLibrariesTests"
+      }
     }
   ],
   "version" : 1

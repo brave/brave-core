@@ -26,12 +26,12 @@ final class WebImageCache: ImageCacheProtocol {
         if let sandbox = sandbox {
             imageCache = SDImageCache(namespace: sandbox, diskCacheDirectory: sandbox)
         } else {
-            imageCache = SDImageCache.shared()
+            imageCache = SDImageCache.shared
         }
         
-        let imageDownloader = SDWebImageDownloader.shared()
+        let imageDownloader = SDWebImageDownloader.shared
         
-        webImageManager = SDWebImageManager(cache: imageCache, downloader: imageDownloader)
+        webImageManager = SDWebImageManager(cache: imageCache, loader: imageDownloader)
     }
     
     @discardableResult
@@ -46,14 +46,16 @@ final class WebImageCache: ImageCacheProtocol {
         }
         
         var webImageOptions = self.webImageOptions
+        let webImageContext = self.webImageContext
         
         if options.contains(.lowPriority) {
             webImageOptions.append(.lowPriority)
         }
 
-        let imageOperation = webImageManager.loadImage(with: url, options: SDWebImageOptions(webImageOptions), progress: progressBlock) { image, data, error, webImageCacheType, _, imageURL in
+        let imageOperation = webImageManager.loadImage(with: url, options: SDWebImageOptions(webImageOptions), context: webImageContext, progress: progressBlock) { image, data, error, webImageCacheType, _, imageURL in
+            let key = self.webImageManager.cacheKey(for: url)
             if let image = image, !self.isPrivate {
-                self.webImageManager.saveImage(toCache: image, for: url)
+                self.webImageManager.imageCache.store(image, imageData: data, forKey: key, cacheType: .all)
             }
             
             let cacheType = self.mapImageCacheType(from: webImageCacheType)
@@ -66,25 +68,19 @@ final class WebImageCache: ImageCacheProtocol {
     func isCached(_ url: URL) -> Bool {
         return webImageManager.cacheKey(for: url) != nil
     }
-    
-    func isPersisted(_ url: URL) -> Bool {
-        let key = webImageManager.cacheKey(for: url)
-        let exists = webImageManager.imageCache?.diskImageDataExists(withKey: key) ?? false
-        return exists
-    }
-    
+
     func remove(fromCache url: URL) {
         let key = webImageManager.cacheKey(for: url)
-        webImageManager.imageCache?.removeImage(forKey: key)
+        webImageManager.imageCache.removeImage(forKey: key, cacheType: .all)
     }
-    
+
     func clearMemoryCache() {
-        webImageManager.imageCache?.clearMemory()
+        webImageManager.imageCache.clear(with: .memory)
     }
-    
+
     func clearDiskCache() {
         if !isPrivate {
-            webImageManager.imageCache?.clearDisk()
+            webImageManager.imageCache.clear(with: .disk)
         }
     }
     
@@ -93,13 +89,15 @@ final class WebImageCache: ImageCacheProtocol {
 extension WebImageCache {
     
     private var webImageOptions: [SDWebImageOptions] {
-        var options: [SDWebImageOptions] = [.retryFailed, .continueInBackground]
-        
+        return [.retryFailed, .continueInBackground]
+    }
+    
+    private var webImageContext: [SDWebImageContextOption: Any] {
+        var context: [SDWebImageContextOption: Any] = [:]
         if isPrivate {
-            options.append(.cacheMemoryOnly)
+            context[.storeCacheType] = SDImageCacheType.memory.rawValue
         }
-        
-        return options
+        return context
     }
     
     private func mapImageCacheType(from imageCacheType: SDImageCacheType) -> ImageCacheType {

@@ -6,6 +6,7 @@ import Data
 import Shared
 import WebKit
 import Lottie
+import YubiKit
 
 private struct FIDORegisterRequest: Codable {
     var challenge: String
@@ -243,7 +244,9 @@ class U2FExtensions: NSObject {
         }
         
         // Make sure the session is started
-        YubiKitManager.shared.accessorySession.startSession()
+        if YubiKitDeviceCapabilities.supportsMFIAccessoryKey {
+            YubiKitManager.shared.accessorySession.startSession()
+        }
     }
     
     deinit {

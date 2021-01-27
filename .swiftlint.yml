@@ -68,6 +68,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - fastlane/
   - SharedTests/
   - Client/Assets/Search/get_supported_locales.swift
+  - .build
 
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level
