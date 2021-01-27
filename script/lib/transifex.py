@@ -78,8 +78,8 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
     string_tag = lxml.etree.Element('translation')
     string_tag.set('id', str(fingerprint))
     if string_value.count('<') != string_value.count('>'):
-        assert False, 'Warning: Unmatched < character, consider fixing on '
-        ' Trasifex, force encoding the following string:' + string_value
+        assert False, 'Warning: Unmatched < character, consider fixing on ' \
+                      ' Trasifex, force encoding the following string:' + string_value
     string_tag.text = string_value
     string_tag.tail = '\n'
     return string_tag
@@ -276,8 +276,7 @@ def fix_links_with_target_blank_in_text(text):
     try:
         xml_elem = lxml.etree.fromstring('<text>' + xml_text + '</text>')
     except lxml.etree.XMLSyntaxError as e:
-        print ("\n--------------------\n"
-               "{0}\nERROR: {1}\n").format(xml_text.encode('utf-8'), str(e))
+        print "\n--------------------\n{0}\nERROR: {1}\n".format(xml_text.encode('utf-8'), str(e))
         cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
             return text
@@ -757,7 +756,7 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
     filename = os.path.basename(grd_file_path).split('.')[0]
     x_grd_extra_strings = grd_string_names - transifex_string_ids
     assert len(x_grd_extra_strings) == 0, (
-        'GRD has extra strings over Transifex %' %
+        'GRD has extra strings over Transifex %s' %
         list(x_grd_extra_strings))
     x_transifex_extra_strings = transifex_string_ids - grd_string_names
     assert len(x_transifex_extra_strings) == 0, (
