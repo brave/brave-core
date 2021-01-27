@@ -123,7 +123,7 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
   friend class ::GreaselionServiceTest;
 
   void OnDATFileDataReady(std::string contents);
-  void OnDevModeLocalFileChanged(const base::FilePath& path, bool error);
+  void OnDevModeLocalFileChanged(bool error);
   void LoadOnTaskRunner();
   void LoadDirectlyFromResourcePath();
 
@@ -131,6 +131,7 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
   std::vector<std::unique_ptr<GreaselionRule>> rules_;
   base::FilePath resource_dir_;
   bool is_dev_mode_ = false;
+  scoped_refptr<base::SequencedTaskRunner> dev_mode_task_runner_;
   std::unique_ptr<base::FilePathWatcher> dev_mode_path_watcher_;
 
   SEQUENCE_CHECKER(sequence_checker_);
