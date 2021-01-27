@@ -7,14 +7,15 @@
 #include <memory>
 #include <utility>
 
+#include "base/test/task_environment.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/ledger.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
-#include "base/test/task_environment.h"
+#include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/ledger.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 // npm run test -- brave_unit_tests --filter=UpholdUtilTest.*
 
@@ -207,14 +208,16 @@ TEST_F(UpholdUtilTest, GetWallet) {
   ASSERT_EQ(result->status, type::WalletStatus::VERIFIED);
 }
 
-TEST_F(UpholdUtilTest, GenerateRandomString) {
+TEST_F(UpholdUtilTest, GenerateRandomHexString) {
   // string for testing
-  auto result = uphold::GenerateRandomString(true);
+  ledger::is_testing = true;
+  auto result = ledger::util::GenerateRandomHexString();
   ASSERT_EQ(result, "123456789");
 
   // random string
+  ledger::is_testing = false;
   ledger::_environment = type::Environment::STAGING;
-  result = uphold::GenerateRandomString(false);
+  result = ledger::util::GenerateRandomHexString();
   ASSERT_EQ(result.length(), 64u);
 }
 

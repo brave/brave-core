@@ -24,7 +24,8 @@ enum ContributionProcessor {
   NONE = 0,
   BRAVE_TOKENS = 1,
   UPHOLD = 2,
-  BRAVE_USER_FUNDS = 3
+  BRAVE_USER_FUNDS = 3,
+  BITFLYER = 4
 };
 
 struct ContributionInfo {
@@ -82,6 +83,7 @@ struct PendingContribution {
   uint64 added_date;
   string viewing_id;
   RewardsType type;
+  ContributionProcessor processor = ContributionProcessor.NONE;
 };
 
 struct PendingContributionInfo {
@@ -98,6 +100,7 @@ struct PendingContributionInfo {
   uint64 added_date;
   string viewing_id;
   uint64 expiration_date;
+  ContributionProcessor processor = ContributionProcessor.NONE;
 };
 
 struct VisitData {
@@ -150,6 +153,7 @@ struct ExternalWallet {
   string add_url;
   string withdraw_url;
   string one_time_string;
+  string code_verifier;
   string user_name;
   string account_url;
   string login_url;
@@ -240,7 +244,8 @@ enum Result {
 enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
-  UPHOLD_VERIFIED = 2
+  UPHOLD_VERIFIED = 2,
+  BITFLYER_VERIFIED = 3
 };
 
 enum DrainStatus {

@@ -118,9 +118,6 @@ export const StyledCopyImage = styled('span')<{}>`
   color: #838391;
   width: 27px;
   height: 27px;
-  .icon {
-    margin-right: 2px;
-  }
 `
 
 export const StyledIconAction = styled('button')<{}>`
@@ -304,6 +301,10 @@ export const StyledVerifiedButton = styled('button')<{}>`
   color: #fff;
   background: inherit;
   border: none;
+
+  .icon {
+    padding-top: 1px;
+  }
 `
 
 export const StyledVerifiedButtonText = styled('div')<{}>`

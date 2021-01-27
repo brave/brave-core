@@ -599,6 +599,10 @@ class PageWallet extends React.Component<Props, State> {
         text = getLocale('processorBraveUserFunds')
         break
       }
+      case 4: { // Rewards.Processor.BITFLYER
+        text = getLocale('processorBitflyer')
+        break
+      }
     }
 
     if (text.length === 0) {

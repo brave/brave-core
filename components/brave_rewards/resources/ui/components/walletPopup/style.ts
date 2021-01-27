@@ -52,4 +52,9 @@ export const StyledIcon = styled('span')<{}>`
   width: 24px;
   height: 24px;
   margin-left: -5px;
+
+  .icon {
+    height: 20px;
+    width: auto;
+  }
 `

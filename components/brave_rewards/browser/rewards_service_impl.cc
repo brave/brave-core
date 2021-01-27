@@ -1475,6 +1475,9 @@ void RewardsServiceImpl::ClearState(const std::string& name) {
 bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
   DCHECK(!name.empty());
 
+  if (name == ledger::option::kIsBitflyerRegion)
+    return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
+
   if (name == ledger::option::kContributionsDisabledForBAPMigration) {
     if (OnlyAnonWallet()) {
       base::Time::Exploded cutoff_exploded{
@@ -1488,9 +1491,6 @@ bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
     }
     return false;
   }
-
-  if (name == ledger::option::kShouldReportBAPAmount)
-    return OnlyAnonWallet();
 
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
@@ -2862,7 +2862,8 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
   }
 
   if (action == "authorization") {
-    if (wallet_type == ledger::constant::kWalletUphold) {
+    if (wallet_type == ledger::constant::kWalletUphold ||
+        wallet_type == ledger::constant::kWalletBitflyer) {
       ExternalWalletAuthorization(
           wallet_type,
           query_map,
@@ -2921,27 +2922,16 @@ void RewardsServiceImpl::ShowNotification(
     callback(ledger::type::Result::LEDGER_OK);
 }
 
+// OnlyAnonWallet is used to indicate that a particular region does not support
+// external wallets, and specifically it was used to modify the UI for users in
+// JP to show "BAP" instead of "BAT". When we are sure that those branches are
+// no longer needed, this function should be removed.
 bool RewardsServiceImpl::OnlyAnonWallet() const {
-  int32_t current_country = country_id_;
-  if (!current_country) {
-    current_country =
-        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
-  }
-
-  for (const auto& country : kOnlyAnonWalletCountries) {
-    if (country.length() != 2) {
-      continue;
-    }
-
-    const int id = country_codes::CountryCharsToCountryID(
-        country.at(0), country.at(1));
-
-    if (id == current_country) {
-      return true;
-    }
-  }
-
+#if defined(OS_ANDROID)
+  return GetExternalWalletType() == ledger::constant::kWalletBitflyer;
+#else
   return false;
+#endif
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() {
@@ -3418,6 +3408,23 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
 }
 
 std::string RewardsServiceImpl::GetExternalWalletType() const {
+  int32_t current_country = country_id_;
+
+  if (!current_country) {
+    current_country =
+        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
+  }
+
+  for (const auto& country : kBitflyerCountries) {
+    if (country.length() == 2) {
+      const int id =
+          country_codes::CountryCharsToCountryID(country.at(0), country.at(1));
+
+      if (id == current_country)
+        return ledger::constant::kWalletBitflyer;
+    }
+  }
+
   return ledger::constant::kWalletUphold;
 }
 

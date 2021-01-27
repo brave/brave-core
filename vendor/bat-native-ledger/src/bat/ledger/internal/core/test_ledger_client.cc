@@ -183,27 +183,27 @@ void TestLedgerClient::ClearState(const std::string& name) {
 }
 
 bool TestLedgerClient::GetBooleanOption(const std::string& name) const {
-  auto opt = state_store_.FindBoolPath(name);
+  auto opt = option_store_.FindBoolPath(name);
   return opt ? *opt : false;
 }
 
 int TestLedgerClient::GetIntegerOption(const std::string& name) const {
-  auto opt = state_store_.FindIntPath(name);
+  auto opt = option_store_.FindIntPath(name);
   return opt ? *opt : 0;
 }
 
 double TestLedgerClient::GetDoubleOption(const std::string& name) const {
-  auto opt = state_store_.FindDoublePath(name);
+  auto opt = option_store_.FindDoublePath(name);
   return opt ? *opt : 0.0;
 }
 
 std::string TestLedgerClient::GetStringOption(const std::string& name) const {
-  const std::string* opt = state_store_.FindStringPath(name);
+  const std::string* opt = option_store_.FindStringPath(name);
   return opt ? *opt : "";
 }
 
 int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
-  if (const std::string* opt = state_store_.FindStringPath(name)) {
+  if (const std::string* opt = option_store_.FindStringPath(name)) {
     int64_t value;
     if (base::StringToInt64(*opt, &value)) {
       return value;
@@ -213,7 +213,7 @@ int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
 }
 
 uint64_t TestLedgerClient::GetUint64Option(const std::string& name) const {
-  if (const std::string* opt = state_store_.FindStringPath(name)) {
+  if (const std::string* opt = option_store_.FindStringPath(name)) {
     uint64_t value;
     if (base::StringToUint64(*opt, &value)) {
       return value;

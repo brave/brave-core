@@ -58,6 +58,14 @@ class WalletBalance {
                             const type::Result result,
                             const double balance);
 
+  void FetchBalanceBitflyer(type::BalancePtr balance,
+                            ledger::FetchBalanceCallback callback);
+
+  void OnFetchBalanceBitflyer(type::Balance info,
+                              ledger::FetchBalanceCallback callback,
+                              const type::Result result,
+                              const double balance);
+
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };

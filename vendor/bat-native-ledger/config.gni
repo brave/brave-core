@@ -1,4 +1,9 @@
 declare_args() {
+  bitflyer_client_id = ""
+  bitflyer_client_secret = ""
+  bitflyer_staging_client_id = ""
+  bitflyer_staging_client_secret = ""
+  bitflyer_staging_url = ""
   uphold_client_id = ""
   uphold_client_secret = ""
   uphold_staging_client_id = ""

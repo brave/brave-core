@@ -239,17 +239,6 @@ bool SetWallet(LedgerImpl* ledger, type::ExternalWalletPtr wallet) {
   return success;
 }
 
-std::string GenerateRandomString(bool testing) {
-  if (testing) {
-    return "123456789";
-  }
-
-  const size_t kLength = 32;
-  uint8_t bytes[kLength];
-  crypto::RandBytes(bytes, sizeof(bytes));
-  return base::HexEncode(bytes, sizeof(bytes));
-}
-
 std::string GetAccountUrl() {
   const std::string url = GetUrl();
 

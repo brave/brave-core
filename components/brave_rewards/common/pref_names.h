@@ -51,9 +51,9 @@ extern const char kParametersTipChoices[];
 extern const char kParametersMonthlyTipChoices[];
 extern const char kFetchOldBalance[];
 extern const char kEmptyBalanceChecked[];
-extern const char kBAPReported[];
 extern const char kWalletBrave[];
 extern const char kWalletUphold[];
+extern const char kWalletBitflyer[];
 
 }  // namespace prefs
 }  // namespace brave_rewards

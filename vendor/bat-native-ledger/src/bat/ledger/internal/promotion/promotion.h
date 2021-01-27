@@ -24,7 +24,6 @@ class LedgerImpl;
 namespace promotion {
 
 class PromotionTransfer;
-class BAPReporter;
 
 class Promotion {
  public:
@@ -150,7 +149,6 @@ class Promotion {
 
   std::unique_ptr<ledger::attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
-  std::unique_ptr<BAPReporter> bap_reporter_;
   std::unique_ptr<credential::Credentials> credentials_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
   LedgerImpl* ledger_;  // NOT OWNED

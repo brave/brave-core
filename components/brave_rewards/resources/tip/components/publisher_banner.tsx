@@ -182,6 +182,8 @@ function showUnverifiedNotice (
   switch (publisherInfo.status) {
     case PublisherStatus.UPHOLD_VERIFIED:
       return externalWalletInfo.type !== 'uphold'
+    case PublisherStatus.BITFLYER_VERIFIED:
+      return externalWalletInfo.type !== 'bitflyer'
   }
 
   // Show the notice if the user does not have any brave funds
