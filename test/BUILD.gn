@@ -349,7 +349,9 @@ test("brave_unit_tests") {
       # TODO(keur): Reminder to move this out when we migrate
       # stats browser tests into unit tests.
       "//brave/browser/brave_stats:stats_updater",
+      "//brave/components/brave_ads/browser:testutil",
       "//brave/components/brave_stats/browser",
+      "//brave/vendor/bat-native-ads",
     ]
 
     if (!is_android) {
