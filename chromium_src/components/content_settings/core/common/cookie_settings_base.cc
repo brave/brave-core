@@ -28,7 +28,7 @@ bool BraveIsAllowedThirdParty(
       // url -> first_party_url allow map
       std::vector<std::pair<ContentSettingsPattern,
                             ContentSettingsPattern>>> entity_list({
-          }
+          
       });
 
   GURL first_party_url = site_for_cookies;
