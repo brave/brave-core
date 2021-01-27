@@ -20,25 +20,6 @@ namespace content_settings {
 
 namespace {
 
-constexpr char kWp[] = "https://[*.]wp.com/*";
-constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
-constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
-constexpr char kSonyentertainmentnetwork[] =
-    "https://[*.]sonyentertainmentnetwork.com/*";
-constexpr char kTwitch[] = "https://clips.twitch.tv/embed?*";
-constexpr char kReddit[] = "https://[www|old]*.reddit.com/*";
-constexpr char kDiscord[] = "https://[*.]discord.com/channels/*";
-constexpr char kUbisoft[] = "https://[*.]ubisoft.com/*";
-constexpr char kUbi[] = "https://[*.]ubi.com/*";
-constexpr char kAmericanexpress[] = "https://[*.]americanexpress.com/*";
-constexpr char kAexp[] = "https://[*.]aexp-static.com/*";
-constexpr char kSony[] = "https://[*.]sony.com/*";
-constexpr char kGoogle[] = "https://[*.]google.com/*";
-constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
-constexpr char kBitbucket[] = "https://[*.]bitbucket.org/*";
-constexpr char kAtlassiannet[] = "https://[*.]atlassian.net/*";
-constexpr char kAtlassiancom[] = "https://[*.]atlassian.com/*";
-
 bool BraveIsAllowedThirdParty(
     const GURL& url,
     const GURL& site_for_cookies,
@@ -47,77 +28,6 @@ bool BraveIsAllowedThirdParty(
       // url -> first_party_url allow map
       std::vector<std::pair<ContentSettingsPattern,
                             ContentSettingsPattern>>> entity_list({
-          {
-            ContentSettingsPattern::FromString(kWp),
-            ContentSettingsPattern::FromString(kWordpress)
-          },
-          {
-            ContentSettingsPattern::FromString(kWordpress),
-            ContentSettingsPattern::FromString(kWp)
-          },
-          {
-            ContentSettingsPattern::FromString(kGoogle),
-            ContentSettingsPattern::FromString(kGoogleusercontent)
-          },
-          {
-            ContentSettingsPattern::FromString(kGoogleusercontent),
-            ContentSettingsPattern::FromString(kGoogle)
-          },
-          {
-            ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)
-          },
-          {
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
-            ContentSettingsPattern::FromString(kPlaystation)
-          },
-          {
-            ContentSettingsPattern::FromString(kSony),
-            ContentSettingsPattern::FromString(kPlaystation)
-          },
-          {
-            ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSony)
-          },
-          {
-            ContentSettingsPattern::FromString(kUbisoft),
-            ContentSettingsPattern::FromString(kUbi)
-          },
-          {
-            ContentSettingsPattern::FromString(kUbi),
-            ContentSettingsPattern::FromString(kUbisoft)
-          },
-          {
-            ContentSettingsPattern::FromString(kAmericanexpress),
-            ContentSettingsPattern::FromString(kAexp)
-          },
-          {
-            ContentSettingsPattern::FromString(kAexp),
-            ContentSettingsPattern::FromString(kAmericanexpress)
-          },
-          {
-            ContentSettingsPattern::FromString(kTwitch),
-            ContentSettingsPattern::FromString(kReddit)
-          },
-          {
-            ContentSettingsPattern::FromString(kTwitch),
-            ContentSettingsPattern::FromString(kDiscord)
-          },
-          {
-            ContentSettingsPattern::FromString(kBitbucket),
-            ContentSettingsPattern::FromString(kAtlassiancom)
-          },
-          {
-            ContentSettingsPattern::FromString(kAtlassiancom),
-            ContentSettingsPattern::FromString(kBitbucket)
-          },
-          {
-            ContentSettingsPattern::FromString(kAtlassiancom),
-            ContentSettingsPattern::FromString(kAtlassiannet)
-          },
-          {
-            ContentSettingsPattern::FromString(kAtlassiannet),
-            ContentSettingsPattern::FromString(kAtlassiancom)
           }
       });
 
