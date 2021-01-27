@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index b49d00516d736fb3194bb713dd0a6ddd896105ce..4219b25df764e307706067593c4222ebc3b69f62 100644
+index eb70bf974c76e0c8c0b86d316b007781495990bb..dbe8f62c627509f842c2db2346606f477c982ef3 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -94,12 +94,14 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -33,8 +33,8 @@ index b49d00516d736fb3194bb713dd0a6ddd896105ce..4219b25df764e307706067593c4222eb
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
    // on Chrome OS.
-@@ -241,6 +245,7 @@ class ToolbarView : public views::AccessiblePaneView,
-   views::View* GetViewForDrop() override;
+@@ -244,6 +248,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.
 +  virtual
