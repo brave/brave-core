@@ -193,12 +193,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mIconFetcher = new BraveRewardsHelper(tab);
-        mPopupWindow = showPopupMenu(anchorView, false);
+        mPopupWindow = showPopupMenu(anchorView);
 
         updateValues(mTabId);
     }
 
-    public PopupWindow showPopupMenu(View anchorView, boolean isTooltip) {
+    public PopupWindow showPopupMenu(View anchorView) {
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
@@ -244,12 +244,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         LayoutInflater inflater = (LayoutInflater) anchorView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (! isTooltip) {
-            mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
-            setUpViews();
-        } else {
-            mPopupView = inflater.inflate(R.layout.brave_shields_tooltip_layout, null);
-        }
+        mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
+        setUpViews();
 
         //Specify the length and width through constants
         int width;
@@ -321,6 +317,15 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
         return blockersInfo.mTrackersBlocked;
+    }
+
+    public int getHttpsUpgradeCount(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return 0;
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mHTTPSUpgrades;
     }
 
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
@@ -911,7 +916,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 @Override
                 public void run() {
                     ImageView iv = (ImageView) mPopupView.findViewById(R.id.site_favicon);
-                    iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(bmp));
+                    if (iv != null) iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(bmp));
                 }
             });
         }

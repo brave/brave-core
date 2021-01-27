@@ -48,4 +48,9 @@
 
     <dimen name="brave_tile_view_icon_size_modern">48dp</dimen>
     <dimen name="brave_tile_view_icon_margin_top_modern">0dp</dimen>
+
+    <dimen name="shields_tooltip_margin">-10dp</dimen>
+    <dimen name="shields_tooltip_padding">32dp</dimen>
+    <dimen name="shields_tooltip_arrow_width">30dp</dimen>
+    <dimen name="shields_tooltip_arrow_height">15dp</dimen>
 </resources>
