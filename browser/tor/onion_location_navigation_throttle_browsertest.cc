@@ -107,6 +107,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
   EXPECT_EQ(1U, browser_list->size());
   ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_EQ(browser(), browser_list->get(0));
 
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
@@ -114,10 +115,15 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
   tor_browser_creation_observer.Wait();
   EXPECT_EQ(2U, browser_list->size());
-  ASSERT_TRUE(browser_list->get(1)->profile()->IsTor());
+  Browser* tor_browser = browser_list->get(1);
+  ASSERT_TRUE(tor_browser->profile()->IsTor());
   content::WebContents* web_contents =
-      browser_list->get(1)->tab_strip_model()->GetActiveWebContents();
+      tor_browser->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+  // We don't close the original tab
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
+  // No new tab in Tor window
+  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
@@ -145,7 +151,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   GURL url = test_server()->GetURL("/onion");
   ui_test_utils::NavigateToURL(browser(), url);
   tor_browser_creation_observer.Wait();
-  // Last tab will not be closed
+  // We don't close the original tab
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -161,17 +167,19 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   web_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
 
-  // Open a new tab
+  // Open a new tab and navigate to the url again
   NavigateParams params(
       NavigateParams(browser(), url, ui::PAGE_TRANSITION_TYPED));
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   ui_test_utils::NavigateToURL(&params);
 
-  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
+  // We stll don't close the original tab
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
 
   EXPECT_EQ(2U, browser_list->size());
-  web_contents = tor_browser->tab_strip_model()->GetWebContentsAt(2);
-  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 3);
+  // No new tab in Tor window and unique one tab per site
+  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 1);
+  web_contents = tor_browser->tab_strip_model()->GetWebContentsAt(0);
   EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
 }
 
