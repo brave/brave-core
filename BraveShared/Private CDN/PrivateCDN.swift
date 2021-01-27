@@ -57,24 +57,21 @@ public class PrivateCDN {
 }
 
 /// A custom SDWebImageCoder that will decode padded images that come from the Private CDN
-public class PrivateCDNImageCoder: NSObject, SDWebImageCoder {
+public class PrivateCDNImageCoder: NSObject, SDImageCoder {
     public func canDecode(from data: Data?) -> Bool {
         guard let data = data else { return false }
         return PrivateCDN.payloadLength(for: data) != nil
     }
-    public func decodedImage(with data: Data?) -> UIImage? {
+    public func decodedImage(with data: Data?, options: [SDImageCoderOption: Any]? = nil) -> UIImage? {
         guard let paddedData = data, let unpaddedData = PrivateCDN.unpadded(data: paddedData) else {
             return nil
         }
-        return SDWebImageCodersManager.sharedInstance().decodedImage(with: unpaddedData)
-    }
-    public func decompressedImage(with image: UIImage?, data: AutoreleasingUnsafeMutablePointer<NSData?>, options optionsDict: [String: NSObject]? = nil) -> UIImage? {
-        image
+        return SDImageCodersManager.shared.decodedImage(with: unpaddedData)
     }
     public func canEncode(to format: SDImageFormat) -> Bool {
         return false
     }
-    public func encodedData(with image: UIImage?, format: SDImageFormat) -> Data? {
-        SDWebImageCodersManager.sharedInstance().encodedData(with: image, format: format)
+    public func encodedData(with image: UIImage?, format: SDImageFormat, options: [SDImageCoderOption: Any]? = nil) -> Data? {
+        SDImageCodersManager.shared.encodedData(with: image, format: format)
     }
 }

@@ -28,15 +28,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '11.x'
-      - name: Cache carthage
-        uses: actions/cache@v2
-        with:
-          path: Carthage
-          # New XCode/swift version requires recompiling Carthage dependencies.
-          key: carthage-${{ env.XCODE_VERSION }}-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            carthage-${{ env.XCODE_VERSION }}-
-            carthage-
       - name: Run bootstrap script
         run: ./bootstrap.sh --ci
       - name: Run tests

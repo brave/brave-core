@@ -4,8 +4,8 @@
 
 import Foundation
 import UIKit
-import pop
 import SnapKit
+import pop
 
 extension UILayoutPriority {
     /// The priority used for the container view's width & height when using ContentSizeBehavior.preferredContentSize

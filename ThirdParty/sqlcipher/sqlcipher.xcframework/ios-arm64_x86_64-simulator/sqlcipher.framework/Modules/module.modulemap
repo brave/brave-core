@@ -1,0 +1,6 @@
+framework module sqlcipher {
+  umbrella header "sqlcipher.h"
+
+  export *
+  module * { export * }
+}

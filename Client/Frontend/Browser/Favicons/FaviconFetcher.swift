@@ -289,7 +289,7 @@ class FaviconFetcher {
                 // Return monogram image if there is no cache.
                 if cachedOnly {
                     let cache = WebImageCacheWithNoPrivacyProtectionManager.shared
-                    if !cache.isCached(url) && !cache.isPersisted(url) {
+                    if !cache.isCached(url) {
                         completion(self.url, self.monogramFavicon)
                         return
                     }

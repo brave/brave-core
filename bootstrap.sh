@@ -46,8 +46,6 @@ case $i in
 esac
 done
 
-./carthage_command.sh
-
 # Install Node.js dependencies and build user scripts
 
 if [ "$IS_CI_BUILD" = 0 ]; then
@@ -77,20 +75,3 @@ do
   # `|| true` is used to force continuation if cp fails for a specific item (e.g. already exists)
   cp -n $CONFIG_FILE_TEMPLATE $CONFIG_PATH/Local/ || true
 done
-
-# Build Yubikit
-YUBIKIT_DIR=Carthage/Checkouts/yubikit-ios
-YUBIKIT_OUT=ThirdParty/YubiKit
-SRCDIR=$PWD
-
-rm -rf $YUBIKIT_DIR
-rm -rf $YUBIKIT_OUT
-
-git clone -b 3.0.0-Preview --single-branch https://github.com/Yubico/yubikit-ios/ $YUBIKIT_DIR
-
-mkdir -p $SRCDIR/$YUBIKIT_OUT/include
-pushd $YUBIKIT_DIR/YubiKit
-sh build.sh > yubikit.log 2>&1
-cp -r releases/YubiKit/YubiKit/release_universal/  $SRCDIR/$YUBIKIT_OUT/
-cp -r releases/YubiKit/YubiKit/include/  $SRCDIR/$YUBIKIT_OUT/include/
-popd
