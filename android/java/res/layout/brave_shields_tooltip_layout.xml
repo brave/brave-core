@@ -6,11 +6,10 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/main_layout"
+	android:id="@+id/shields_tooltip_layout"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:background="@drawable/shields_tooltip_background">
+	android:layout_height="wrap_content">
 
 	<TextView
 		android:id="@+id/txt_tooltip_title"
@@ -19,7 +18,6 @@
 		android:textSize="20sp"
 		android:fontFamily="sans-serif"
 		android:layout_marginBottom="8dp"
-		android:text="@string/tooltip_title_1"
 		android:textColor="@android:color/white"/>
 
 	<TextView
@@ -29,7 +27,6 @@
 		android:textSize="16sp"
 		android:fontFamily="sans-serif"
 		android:layout_marginBottom="8dp"
-		android:text="@string/tooltip_text_1"
 		android:textColor="@android:color/white"/>
 
 	<Button
@@ -43,6 +40,7 @@
         android:textAllCaps="false"
         android:textSize="16sp"
         android:padding="8dp"
+        android:visibility="gone"
         android:textColor="@android:color/white"
         style="?android:attr/borderlessButtonStyle"/>
 
