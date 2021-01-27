@@ -46,6 +46,9 @@ export const getUIMessages = (): Record<string, string> => {
     'contributionTips',
     'connectedText',
     'details',
+    'deviceLimitReachedLearnMore',
+    'deviceLimitReachedNotification',
+    'deviceLimitReachedTitle',
     'disabledPanelTextTwo',
     'donateMonthly',
     'donateNow',
@@ -132,7 +135,7 @@ export const getUIMessages = (): Record<string, string> => {
     'walletButtonUnverified',
     'walletButtonVerified',
     'walletGoToVerifyPage',
-    'walletGoToUphold',
+    'walletGoToProvider',
     'walletDisconnect',
     'walletVerificationButton',
     'walletVerificationFooter',
@@ -157,7 +160,7 @@ export const getUIMessages = (): Record<string, string> => {
   let translations = {}
 
   strings.forEach((key: string) => {
-    translations[key] = getMessage(key)
+    translations[key] = getMessage(key, ['$1', '$2', '$3', '$4', '$5', '$6'])
   })
 
   return translations

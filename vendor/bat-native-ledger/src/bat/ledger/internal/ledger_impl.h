@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_LEDGER_IMPL_H_
-#define BAT_LEDGER_LEDGER_IMPL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_IMPL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_IMPL_H_
 
 #include <stdint.h>
 
@@ -297,7 +297,8 @@ class LedgerImpl : public ledger::Ledger {
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
-  void GetUpholdWallet(ledger::UpholdWalletCallback callback) override;
+  void GetExternalWallet(const std::string& wallet_type,
+                         ledger::ExternalWalletCallback callback) override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -386,4 +387,4 @@ class LedgerImpl : public ledger::Ledger {
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_LEDGER_IMPL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_IMPL_H_

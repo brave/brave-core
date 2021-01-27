@@ -202,7 +202,7 @@ window.cr.define('brave_rewards', function () {
 
     // EXPIRED TOKEN
     if (properties.result === 24) {
-      getActions().getExternalWallet('uphold')
+      getActions().getExternalWallet()
     }
   }
 
@@ -214,9 +214,9 @@ window.cr.define('brave_rewards', function () {
     getActions().onProcessRewardsPageUrl(data)
   }
 
-  function disconnectWallet (properties: {walletType: string, result: number}) {
+  function disconnectWallet (properties: {result: number}) {
     if (properties.result === 0) {
-      getActions().getExternalWallet(properties.walletType)
+      getActions().getExternalWallet()
       getActions().getBalance()
     }
   }

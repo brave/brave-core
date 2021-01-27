@@ -105,7 +105,7 @@ std::string GetSecondStepVerify() {
       id.c_str());
 }
 
-type::UpholdWalletPtr GetWallet(LedgerImpl* ledger) {
+type::ExternalWalletPtr GetWallet(LedgerImpl* ledger) {
   DCHECK(ledger);
   const std::string wallet_string =
       ledger->ledger_client()->GetEncryptedStringState(state::kWalletUphold);
@@ -126,7 +126,8 @@ type::UpholdWalletPtr GetWallet(LedgerImpl* ledger) {
     return nullptr;
   }
 
-  auto wallet = ledger::type::UpholdWallet::New();
+  auto wallet = ledger::type::ExternalWallet::New();
+  wallet->type = constant::kWalletUphold;
 
   auto* token = dictionary->FindStringKey("token");
   if (token) {
@@ -197,7 +198,7 @@ type::UpholdWalletPtr GetWallet(LedgerImpl* ledger) {
   return wallet;
 }
 
-bool SetWallet(LedgerImpl* ledger, type::UpholdWalletPtr wallet) {
+bool SetWallet(LedgerImpl* ledger, type::ExternalWalletPtr wallet) {
   DCHECK(ledger);
   if (!wallet) {
     return false;
@@ -251,7 +252,7 @@ std::string GetAccountUrl() {
       url.c_str());
 }
 
-type::UpholdWalletPtr GenerateLinks(type::UpholdWalletPtr wallet) {
+type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
@@ -288,7 +289,7 @@ type::UpholdWalletPtr GenerateLinks(type::UpholdWalletPtr wallet) {
   return wallet;
 }
 
-std::string GenerateVerifyLink(type::UpholdWalletPtr wallet) {
+std::string GenerateVerifyLink(type::ExternalWalletPtr wallet) {
   std::string url;
   if (!wallet) {
     return url;
@@ -314,13 +315,14 @@ std::string GenerateVerifyLink(type::UpholdWalletPtr wallet) {
   return url;
 }
 
-type::UpholdWalletPtr ResetWallet(type::UpholdWalletPtr wallet) {
+type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
 
   const auto status = wallet->status;
-  wallet = type::UpholdWallet::New();
+  wallet = type::ExternalWallet::New();
+  wallet->type = constant::kWalletUphold;
 
   if (status != type::WalletStatus::NOT_CONNECTED) {
     if (status == type::WalletStatus::VERIFIED) {

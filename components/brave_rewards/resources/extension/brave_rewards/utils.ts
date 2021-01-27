@@ -70,7 +70,7 @@ export const isPublisherVerified = (status?: RewardsExtension.PublisherStatus) =
     return false
   }
 
-  return status === 2
+  return status > 1
 }
 
 export const isPublisherConnected = (status?: RewardsExtension.PublisherStatus) => {
@@ -82,11 +82,9 @@ export const isPublisherConnected = (status?: RewardsExtension.PublisherStatus) 
 }
 
 export const isPublisherConnectedOrVerified = (status?: RewardsExtension.PublisherStatus) => {
-  if (status === undefined) {
-    return false
-  }
-
-  return status === 2 || status === 1
+  // Any non-zero publisher status indicates that they are either connected or
+  // verified
+  return Boolean(status)
 }
 
 export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus) => {
@@ -131,7 +129,7 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
   return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
-export const handleUpholdLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
+export const handleExternalWalletLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
   if (!externalWallet) {
     return
   }
@@ -142,7 +140,7 @@ export const handleUpholdLink = (balance: RewardsExtension.Balance, externalWall
     link = 'brave://rewards/#verify'
   }
 
-  if (balance.total < 25) {
+  if (balance.total < 25 && externalWallet && externalWallet.type === 'uphold') {
     link = externalWallet.loginUrl
   }
 
@@ -152,7 +150,7 @@ export const handleUpholdLink = (balance: RewardsExtension.Balance, externalWall
 }
 
 export const getExternalWallet = (actions: any, externalWallet?: RewardsExtension.ExternalWallet) => {
-  chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
+  chrome.braveRewards.getExternalWallet((result: number, wallet: RewardsExtension.ExternalWallet) => {
     // EXPIRED TOKEN
     if (result === 24) {
       getExternalWallet(actions, externalWallet)
@@ -161,4 +159,11 @@ export const getExternalWallet = (actions: any, externalWallet?: RewardsExtensio
 
     actions.onExternalWallet(wallet)
   })
+}
+
+export const getWalletProviderName = (wallet?: RewardsExtension.ExternalWallet) => {
+  switch (wallet ? wallet.type : '') {
+    case 'uphold' : return 'Uphold'
+    default: return ''
+  }
 }

@@ -27,6 +27,7 @@ export interface Props {
   greetings: string
   id?: string
   walletState?: WalletState
+  walletType?: string
 }
 
 export default class WalletPopup extends React.PureComponent<Props, {}> {
@@ -62,6 +63,7 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
       children,
       onClose,
       greetings,
+      walletType,
       id
     } = this.props
     return (
@@ -70,7 +72,10 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
           <StyledContent>
             <StyledHeader>
               <StyledIcon>
-                <UpholdColorIcon />
+                {
+                  walletType === 'uphold' ? <UpholdColorIcon /> :
+                  null
+                }
               </StyledIcon>
               {greetings}
               <StyledStatus isVerified={this.isVerified()}>

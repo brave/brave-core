@@ -468,11 +468,8 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
 
   const double amount = 5.0;
-  contribution_->TipViaCode(
-      "duckduckgo.com",
-      amount,
-      ledger::type::PublisherStatus::VERIFIED,
-      1);
+  contribution_->TipViaCode("duckduckgo.com", amount,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 1);
   contribution_->VerifyTip(amount, true, false, true);
 }
 
@@ -489,25 +486,19 @@ IN_PROC_BROWSER_TEST_F(
   const double amount = 5.0;
   const double fee_percentage = 0.05;
   const double tip_fee = amount * fee_percentage;
-  contribution_->TipViaCode(
-      "duckduckgo.com",
-      amount,
-      ledger::type::PublisherStatus::VERIFIED,
-      1);
+  contribution_->TipViaCode("duckduckgo.com", amount,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 1);
   total_amount += amount;
 
-  contribution_->TipViaCode(
-      "laurenwags.github.io",
-      amount,
-      ledger::type::PublisherStatus::VERIFIED,
-      1);
+  contribution_->TipViaCode("laurenwags.github.io", amount,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 1);
   total_amount += amount;
 
   base::RunLoop run_loop_first;
-  rewards_service_->GetUpholdWallet(
-      base::BindLambdaForTesting([&](
-          const ledger::mojom::Result,
-          ledger::type::UpholdWalletPtr wallet) {
+  rewards_service_->GetExternalWallet(
+      rewards_service_->GetExternalWalletType(),
+      base::BindLambdaForTesting([&](const ledger::mojom::Result,
+                                     ledger::type::ExternalWalletPtr wallet) {
         ASSERT_EQ(wallet->fees.size(), 2UL);
         for (auto const& value : wallet->fees) {
           ASSERT_EQ(value.second, tip_fee);
@@ -659,12 +650,9 @@ IN_PROC_BROWSER_TEST_F(
       true);
 
   // Set monthly recurring
-  contribution_->TipViaCode(
-      "duckduckgo.com",
-      25.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("duckduckgo.com", 25.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
   context_helper_->VisitPublisher(
       rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
@@ -698,33 +686,21 @@ IN_PROC_BROWSER_TEST_F(
   rewards_browsertest_util::CreateWallet(rewards_service_);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
-  contribution_->TipViaCode(
-      "duckduckgo.com",
-      5.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("duckduckgo.com", 5.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
-  contribution_->TipViaCode(
-      "site1.com",
-      10.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("site1.com", 10.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
-  contribution_->TipViaCode(
-      "site2.com",
-      10.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("site2.com", 10.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
-  contribution_->TipViaCode(
-      "site3.com",
-      10.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("site3.com", 10.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   const bool verified = true;
@@ -945,12 +921,9 @@ IN_PROC_BROWSER_TEST_F(
       "3zsistemi.si");
 
   // Add a recurring tip of 10 BAT.
-  contribution_->TipViaCode(
-      "3zsistemi.si",
-      10.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("3zsistemi.si", 10.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
   // Verify current tip amount displayed on panel
   content::WebContents* popup = context_helper_->OpenRewardsPopup();
@@ -973,12 +946,9 @@ IN_PROC_BROWSER_TEST_F(
       "3zsistemi.si");
 
   // Add a recurring tip of 10 BAT.
-  contribution_->TipViaCode(
-      "3zsistemi.si",
-      10.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("3zsistemi.si", 10.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
   // Verify "Change amount" opens monthly tip form
   content::WebContents* banner = context_helper_->OpenSiteBanner(

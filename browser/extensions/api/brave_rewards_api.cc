@@ -1036,25 +1036,24 @@ BraveRewardsGetExternalWalletFunction::Run() {
     return RespondNow(OneArgument(std::move(data)));
   }
 
-  std::unique_ptr<brave_rewards::GetExternalWallet::Params> params(
-    brave_rewards::GetExternalWallet::Params::Create(*args_));
-
-  rewards_service->GetUpholdWallet(
+  rewards_service->GetExternalWallet(
+      rewards_service->GetExternalWalletType(),
       base::BindOnce(
-          &BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet,
-          this));
+          &BraveRewardsGetExternalWalletFunction::OnGetExternalWallet, this));
   return RespondLater();
 }
 
-void BraveRewardsGetExternalWalletFunction::OnGetUpholdWallet(
+void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   if (!wallet) {
     Respond(OneArgument(base::Value(static_cast<int>(result))));
     return;
   }
 
   base::Value data(base::Value::Type::DICTIONARY);
+
+  data.SetStringKey("type", wallet->type);
   data.SetStringKey("token", wallet->token);
   data.SetStringKey("address", wallet->address);
   data.SetIntKey("status", static_cast<int>(wallet->status));
@@ -1081,10 +1080,7 @@ BraveRewardsDisconnectWalletFunction::Run() {
     return RespondNow(NoArguments());
   }
 
-  std::unique_ptr<brave_rewards::DisconnectWallet::Params> params(
-    brave_rewards::DisconnectWallet::Params::Create(*args_));
-
-  rewards_service->DisconnectWallet(params->type);
+  rewards_service->DisconnectWallet(rewards_service->GetExternalWalletType());
   return RespondNow(NoArguments());
 }
 

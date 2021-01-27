@@ -299,11 +299,11 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id) {
   }
 }
 
-type::UpholdWalletPtr Uphold::GetWallet() {
+type::ExternalWalletPtr Uphold::GetWallet() {
   return ::ledger::uphold::GetWallet(ledger_);
 }
 
-bool Uphold::SetWallet(type::UpholdWalletPtr wallet) {
+bool Uphold::SetWallet(type::ExternalWalletPtr wallet) {
   return ::ledger::uphold::SetWallet(ledger_, std::move(wallet));
 }
 

@@ -121,43 +121,42 @@ void WalletBalance::OnGetUnblindedTokens(
 void WalletBalance::ExternalWallets(
     type::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
+  FetchBalanceUphold(std::move(balance), callback);
+}
+
+void WalletBalance::FetchBalanceUphold(type::BalancePtr balance,
+                                       ledger::FetchBalanceCallback callback) {
   if (!balance) {
     BLOG(0, "Balance is null");
     callback(type::Result::LEDGER_ERROR, std::move(balance));
     return;
   }
 
+  auto balance_callback = std::bind(&WalletBalance::OnFetchBalanceUphold, this,
+                                    *balance, callback, _1, _2);
+
   auto wallet = ledger_->uphold()->GetWallet();
   if (!wallet) {
-    callback(type::Result::LEDGER_OK, std::move(balance));
+    balance_callback(type::Result::LEDGER_OK, 0);
     return;
   }
 
-  auto uphold_callback = std::bind(&WalletBalance::OnUpholdFetchBalance,
-                                   this,
-                                   *balance,
-                                   callback,
-                                   _1,
-                                   _2);
-
-  ledger_->uphold()->FetchBalance(uphold_callback);
+  ledger_->uphold()->FetchBalance(balance_callback);
 }
 
-void WalletBalance::OnUpholdFetchBalance(
-    type::Balance info,
-    ledger::FetchBalanceCallback callback,
-    type::Result result,
-    double balance) {
+void WalletBalance::OnFetchBalanceUphold(type::Balance info,
+                                         ledger::FetchBalanceCallback callback,
+                                         type::Result result,
+                                         double balance) {
   type::BalancePtr info_ptr = type::Balance::New(info);
 
-  if (result == type::Result::LEDGER_ERROR) {
+  if (result == type::Result::LEDGER_OK) {
+    info_ptr->wallets.insert(std::make_pair(constant::kWalletUphold, balance));
+    info_ptr->total += balance;
+  } else {
     BLOG(0, "Can't get uphold balance");
-    callback(type::Result::LEDGER_ERROR, std::move(info_ptr));
-    return;
   }
 
-  info_ptr->wallets.insert(std::make_pair(constant::kWalletUphold, balance));
-  info_ptr->total += balance;
   callback(result, std::move(info_ptr));
 }
 

@@ -182,7 +182,8 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
 }
 
 void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
-  DisconnectWallet(constant::kWalletUphold, callback);
+  DisconnectWallet(constant::kWalletUphold, [](const type::Result result) {});
+  callback(type::Result::LEDGER_OK);
 }
 
 type::BraveWalletPtr Wallet::GetWallet() {

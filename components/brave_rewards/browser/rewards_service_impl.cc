@@ -515,13 +515,13 @@ void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
       boot_stamp);
 
   // Don't display notification if user has a verified wallet.
-  GetUpholdWallet(std::move(callback));
+  GetExternalWallet(GetExternalWalletType(), std::move(callback));
 }
 
 void RewardsServiceImpl::WalletBackupNotification(
     const uint64_t boot_stamp,
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   if (wallet &&
       (wallet->status == ledger::type::WalletStatus::VERIFIED ||
       wallet->status == ledger::type::WalletStatus::DISCONNECTED_VERIFIED)) {
@@ -2513,6 +2513,13 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
         should_persist_logs_ = false;
       }
     }
+
+    if (name == "countryid") {
+      int country_id;
+      if (base::StringToInt(value, &country_id)) {
+        country_id_ = country_id;
+      }
+    }
   }
 }
 
@@ -2891,23 +2898,23 @@ std::string RewardsServiceImpl::GetLegacyWallet() {
   return json;
 }
 
-void RewardsServiceImpl::OnGetUpholdWallet(
-    GetUpholdWalletCallback callback,
+void RewardsServiceImpl::OnGetExternalWallet(
+    GetExternalWalletCallback callback,
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   std::move(callback).Run(result, std::move(wallet));
 }
 
-void RewardsServiceImpl::GetUpholdWallet(GetUpholdWalletCallback callback) {
+void RewardsServiceImpl::GetExternalWallet(const std::string& wallet_type,
+                                           GetExternalWalletCallback callback) {
   if (!Connected()) {
     std::move(callback).Run(ledger::type::Result::LEDGER_OK, nullptr);
     return;
   }
 
-  bat_ledger_->GetUpholdWallet(
-      base::BindOnce(&RewardsServiceImpl::OnGetUpholdWallet,
-                     AsWeakPtr(),
-                     std::move(callback)));
+  bat_ledger_->GetExternalWallet(
+      wallet_type, base::BindOnce(&RewardsServiceImpl::OnGetExternalWallet,
+                                  AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnExternalWalletAuthorization(
@@ -2941,6 +2948,13 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     ProcessRewardsPageUrlCallback callback,
     const ledger::type::Result result,
     const base::flat_map<std::string, std::string>& args) {
+  if (result == ledger::type::Result::ALREADY_EXISTS) {
+    notification_service_->AddNotification(
+        RewardsNotificationService::REWARDS_NOTIFICATION_DEVICE_LIMIT_REACHED,
+        RewardsNotificationService::RewardsNotificationArgs(),
+        "rewards_notification_device_limit_reached");
+  }
+
   std::move(callback).Run(result, wallet_type, action, args);
 }
 
@@ -3005,10 +3019,8 @@ void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
   }
 
   bat_ledger_->DisconnectWallet(
-      wallet_type,
-      base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
-                     AsWeakPtr(),
-                     wallet_type));
+      wallet_type, base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
+                                  AsWeakPtr(), wallet_type));
 }
 
 void RewardsServiceImpl::ShowNotification(
@@ -3031,8 +3043,11 @@ void RewardsServiceImpl::ShowNotification(
 }
 
 bool RewardsServiceImpl::OnlyAnonWallet() const {
-  const int32_t current_country =
-      country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
+  int32_t current_country = country_id_;
+  if (!current_country) {
+    current_country =
+        country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
+  }
 
   for (const auto& country : kOnlyAnonWalletCountries) {
     if (country.length() != 2) {
@@ -3548,6 +3563,10 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
   if (ads_service) {
     ads_service->SetEnabled(true);
   }
+}
+
+std::string RewardsServiceImpl::GetExternalWalletType() const {
+  return ledger::constant::kWalletUphold;
 }
 
 }  // namespace brave_rewards

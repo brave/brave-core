@@ -161,29 +161,35 @@ function showUnverifiedNotice (
   balanceInfo?: BalanceInfo,
   externalWalletInfo?: ExternalWalletInfo
 ) {
-  switch (publisherInfo.status) {
-    case PublisherStatus.NOT_VERIFIED: return true
-    case PublisherStatus.VERIFIED: return false
+  // Show the notice if the publisher is not registered
+  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
+    return true
   }
 
+  // If the user does not have a connected wallet, do not show the notice
   if (!externalWalletInfo) {
     return false
   }
-
-  const status = externalWalletInfo.status
-  const connected = publisherInfo.status === PublisherStatus.CONNECTED
-
-  if (connected && (
-    status === ExternalWalletStatus.DISCONNECTED_NOT_VERIFIED ||
-    status === ExternalWalletStatus.DISCONNECTED_VERIFIED)) {
-    return false
+  switch (externalWalletInfo.status) {
+    case ExternalWalletStatus.DISCONNECTED_NOT_VERIFIED:
+    case ExternalWalletStatus.DISCONNECTED_VERIFIED:
+    case ExternalWalletStatus.NOT_CONNECTED:
+      return false
   }
 
-  const hasNonUserFunds = Boolean(balanceInfo && (
-    !balanceInfo.wallets['anonymous'] &&
-    !balanceInfo.wallets['blinded']))
+  // Show the notice if the publisher is verified and their wallet provider does
+  // not match the user's external wallet provider
+  switch (publisherInfo.status) {
+    case PublisherStatus.UPHOLD_VERIFIED:
+      return externalWalletInfo.type !== 'uphold'
+  }
 
-  return connected && hasNonUserFunds
+  // Show the notice if the user does not have any brave funds
+  const hasBraveFunds = Boolean(balanceInfo && (
+    balanceInfo.wallets['anonymous'] ||
+    balanceInfo.wallets['blinded']))
+
+  return !hasBraveFunds
 }
 
 function getUnverifiedNotice (

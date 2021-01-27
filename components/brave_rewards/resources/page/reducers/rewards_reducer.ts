@@ -302,7 +302,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const data = action.payload.data
       const ui = state.ui
 
-      chrome.send('brave_rewards.getExternalWallet', [data.walletType])
+      chrome.send('brave_rewards.getExternalWallet')
+
+      // NOT_FOUND
+      if (data.result === 9) {
+        ui.modalRedirect = 'batLimit'
+        break
+      }
 
       // EXPIRED_TOKEN
       if (data.result === 24) {
@@ -310,14 +316,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
+      // BAT_NOT_ALLOWED
       if (data.result === 25) {
         ui.modalRedirect = 'notAllowed'
         break
       }
 
-      // NOT_FOUND
-      if (data.result === 9) {
-        ui.modalRedirect = 'batLimit'
+      // ALREADY_EXISTS
+      if (data.result === 26) {
+        // User has reached device linking limit; no need to show modal, as we
+        // posted a notification for this
         break
       }
 
@@ -359,7 +367,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.DISCONNECT_WALLET: {
-      chrome.send('brave_rewards.disconnectWallet', [action.payload.walletType])
+      chrome.send('brave_rewards.disconnectWallet')
       break
     }
     case types.ONLY_ANON_WALLET: {

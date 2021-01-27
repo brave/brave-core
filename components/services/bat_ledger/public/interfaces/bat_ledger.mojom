@@ -129,7 +129,7 @@ interface BatLedger {
 
   FetchBalance() => (ledger.mojom.Result result, ledger.mojom.Balance? balance);
 
-  GetUpholdWallet() => (ledger.mojom.Result result, ledger.mojom.UpholdWallet? wallet);
+  GetExternalWallet(string wallet_type) => (ledger.mojom.Result result, ledger.mojom.ExternalWallet? wallet);
 
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 

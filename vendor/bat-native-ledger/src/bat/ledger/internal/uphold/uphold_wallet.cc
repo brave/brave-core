@@ -28,7 +28,8 @@ UpholdWallet::~UpholdWallet() = default;
 void UpholdWallet::Generate(ledger::ResultCallback callback) {
   auto wallet = GetWallet(ledger_);
   if (!wallet) {
-    wallet = type::UpholdWallet::New();
+    wallet = type::ExternalWallet::New();
+    wallet->type = constant::kWalletUphold;
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
 

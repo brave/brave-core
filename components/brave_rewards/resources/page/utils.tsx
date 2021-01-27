@@ -55,11 +55,11 @@ export const constructBackupString = (backupKey: string) => {
 }
 
 export const isPublisherVerified = (status: Rewards.PublisherStatus) => {
-  return status === 2
+  return status > 1
 }
 
 export const isPublisherConnectedOrVerified = (status: Rewards.PublisherStatus) => {
-  return status === 2 || status === 1
+  return status > 0
 }
 
 export const isPublisherNotVerified = (status: Rewards.PublisherStatus) => {
@@ -71,4 +71,11 @@ export const getCurrentBalanceReport = () => {
     new Date().getMonth() + 1,
     new Date().getFullYear()
   ])
+}
+
+export const getWalletProviderName = (wallet?: Rewards.ExternalWallet) => {
+  switch (wallet ? wallet.type : '') {
+    case 'uphold' : return 'Uphold'
+    default: return ''
+  }
 }

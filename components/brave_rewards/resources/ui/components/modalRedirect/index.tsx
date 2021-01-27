@@ -20,6 +20,7 @@ export interface Props {
   errorText?: string
   buttonText?: string
   titleText?: string
+  walletType?: string
   onClick?: () => void
 }
 
@@ -39,10 +40,15 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, errorText, titleText } = this.props
+    const { id, errorText, titleText, walletType } = this.props
     let tags = null
     if (errorText && errorText.includes('$1')) {
       tags = splitStringForTag(errorText)
+    }
+
+    let supportURL = ''
+    if (walletType === 'uphold') {
+      supportURL = 'https://uphold.com/en/brave/support'
     }
 
     return (
@@ -58,15 +64,13 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
               {
                 tags
                 ? <>
-                    {tags.beforeTag}
-                    <a
-                      href='https://uphold.com/en/brave/support'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      {tags.duringTag}
-                    </a>
-                    {tags.afterTag}
+                  {
+                    supportURL
+                    ? <a href={supportURL} target='_blank' rel='noopener noreferrer'>
+                        {tags.duringTag}
+                      </a>
+                    : tags.duringTag
+                  }
                   </>
                 : errorText
               }

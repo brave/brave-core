@@ -96,9 +96,8 @@ class TipMessageHandler : public WebUIMessageHandler,
 
   void GetRecurringTipsCallback(ledger::type::PublisherInfoList list);
 
-  void GetUpholdWalletCallback(
-      const ledger::type::Result result,
-      ledger::type::UpholdWalletPtr wallet);
+  void GetExternalWalletCallback(const ledger::type::Result result,
+                                 ledger::type::ExternalWalletPtr wallet);
 
   void GetPublisherBannerCallback(ledger::type::PublisherBannerPtr banner);
 
@@ -452,9 +451,10 @@ void TipMessageHandler::GetExternalWallet(const base::ListValue* args) {
   if (!rewards_service_) {
     return;
   }
-  rewards_service_->GetUpholdWallet(base::BindOnce(
-      &TipMessageHandler::GetUpholdWalletCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetExternalWallet(
+      rewards_service_->GetExternalWalletType(),
+      base::BindOnce(&TipMessageHandler::GetExternalWalletCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetRecurringTips(const base::ListValue* args) {
@@ -609,9 +609,9 @@ void TipMessageHandler::FetchBalanceCallback(
   FireWebUIListener("balanceUpdated", data);
 }
 
-void TipMessageHandler::GetUpholdWalletCallback(
+void TipMessageHandler::GetExternalWalletCallback(
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -619,6 +619,7 @@ void TipMessageHandler::GetUpholdWalletCallback(
   base::Value data(base::Value::Type::DICTIONARY);
 
   if (wallet) {
+    data.SetStringKey("type", wallet->type);
     data.SetStringKey("token", wallet->token);
     data.SetStringKey("address", wallet->address);
     data.SetStringKey("verifyUrl", wallet->verify_url);

@@ -179,7 +179,7 @@ declare namespace Rewards {
   export enum PublisherStatus {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
-    VERIFIED = 2
+    UPHOLD_VERIFIED = 2
   }
 
   export interface Publisher {

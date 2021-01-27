@@ -47,7 +47,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
   getGeneralInfo = () => {
     this.actions.getRewardsInternalsInfo()
     this.actions.getBalance()
-    this.actions.getExternalWallet('uphold')
+    this.actions.getExternalWallet()
   }
 
   onTabChange = (tabId: string) => {

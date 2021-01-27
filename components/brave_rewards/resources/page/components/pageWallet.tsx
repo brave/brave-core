@@ -318,14 +318,14 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.removeAllPendingContribution()
   }
 
-  handleUpholdLink = () => {
+  handleExternalWalletLink = () => {
     const { ui, externalWallet, balance } = this.props.rewardsData
 
     if (!externalWallet) {
       return
     }
 
-    if (balance.total < 25) {
+    if (balance.total < 25 && externalWallet.type === 'uphold') {
       window.open(externalWallet.loginUrl, '_self')
       return
     }
@@ -342,7 +342,7 @@ class PageWallet extends React.Component<Props, State> {
     const { externalWallet } = this.props.rewardsData
 
     if (!externalWallet || !externalWallet.verifyUrl) {
-      this.actions.getExternalWallet('uphold')
+      this.actions.getExternalWallet()
       return
     }
 
@@ -350,7 +350,7 @@ class PageWallet extends React.Component<Props, State> {
       this.actions.onVerifyOnboardingDisplayed()
     }
 
-    this.handleUpholdLink()
+    this.handleExternalWalletLink()
   }
 
   getWalletStatus = (): WalletState | undefined => {
@@ -406,16 +406,16 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (externalWallet.verifyUrl) {
-      this.handleUpholdLink()
+      this.handleExternalWalletLink()
       return
     }
   }
 
-  goToUphold = () => {
+  goToExternalWallet = () => {
     const { externalWallet } = this.props.rewardsData
 
     if (!externalWallet || !externalWallet.accountUrl) {
-      this.actions.getExternalWallet('uphold')
+      this.actions.getExternalWallet()
       return
     }
 
@@ -432,7 +432,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onDisconnectClick = () => {
-    this.actions.disconnectWallet('uphold')
+    this.actions.disconnectWallet()
   }
 
   getActions = () => {
@@ -757,10 +757,16 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   showLoginMessage = () => {
-    const { balance } = this.props.rewardsData
+    const { balance, externalWallet } = this.props.rewardsData
     const walletStatus = this.getWalletStatus()
+    const walletType = externalWallet ? externalWallet.type : ''
 
-    return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
+    return (
+      (!walletStatus || walletStatus === 'unverified') &&
+      walletType === 'uphold' &&
+      balance &&
+      balance.total < 25
+    )
   }
 
   render () {
@@ -768,12 +774,15 @@ class PageWallet extends React.Component<Props, State> {
       balance,
       ui,
       pendingContributionTotal,
-      recoveryKey
+      recoveryKey,
+      externalWallet
     } = this.props.rewardsData
     const { total } = balance
     const { emptyWallet, modalBackup, onlyAnonWallet } = ui
 
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(3))
+    const walletType = externalWallet ? externalWallet.type : undefined
+    const walletProvider = utils.getWalletProviderName(externalWallet)
 
     let onVerifyClick = undefined
     let showCopy = false
@@ -792,10 +801,12 @@ class PageWallet extends React.Component<Props, State> {
           showCopy={showCopy}
           showSecActions={true}
           alert={this.walletAlerts()}
+          walletType={walletType}
           walletState={this.getWalletStatus()}
+          walletProvider={walletProvider}
           onVerifyClick={onVerifyClick}
           onDisconnectClick={this.onDisconnectClick}
-          goToUphold={this.goToUphold}
+          goToExternalWallet={this.goToExternalWallet}
           greetings={this.getGreetings()}
           onlyAnonWallet={onlyAnonWallet}
           showLoginMessage={this.showLoginMessage()}
@@ -818,6 +829,7 @@ class PageWallet extends React.Component<Props, State> {
               activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
               showBackupNotice={this.showBackupNotice()}
+              walletProvider={walletProvider}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
               onCopy={this.onModalBackupOnCopy}
@@ -846,6 +858,8 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalVerify
               onVerifyClick={this.onVerifyClick.bind(this, true)}
               onClose={this.toggleVerifyModal}
+              walletType={walletType}
+              walletProvider={walletProvider}
             />
             : null
         }

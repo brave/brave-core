@@ -223,9 +223,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const ledger::type::Result result,
         ledger::type::PromotionPtr promotion);
 
-    void OnGetExternalWallet(
-        const ledger::type::Result result,
-        ledger::type::UpholdWalletPtr wallet);
+    void OnGetExternalWallet(const ledger::type::Result result,
+                             ledger::type::ExternalWalletPtr wallet);
 
     void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,

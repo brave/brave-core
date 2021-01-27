@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_LEDGER_H_
-#define BAT_LEDGER_LEDGER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_H_
 
 #include <stdint.h>
 
@@ -37,8 +37,8 @@ using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback =
     std::function<void(type::Result, type::BalancePtr)>;
 
-using UpholdWalletCallback =
-    std::function<void(type::Result, type::UpholdWalletPtr)>;
+using ExternalWalletCallback =
+    std::function<void(type::Result, type::ExternalWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
     std::function<void(type::Result, base::flat_map<std::string, std::string>)>;
@@ -337,7 +337,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
-  virtual void GetUpholdWallet(UpholdWalletCallback callback) = 0;
+  virtual void GetExternalWallet(const std::string& wallet_type,
+                                 ExternalWalletCallback callback) = 0;
 
   virtual void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -399,4 +400,4 @@ class LEDGER_EXPORT Ledger {
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_LEDGER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_H_

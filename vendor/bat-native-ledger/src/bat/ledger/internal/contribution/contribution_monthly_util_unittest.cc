@@ -24,10 +24,9 @@ class ContributionMonthlyUtilTest : public testing::Test {
       std::vector<uint32_t> amounts,
       uint32_t variation) {
     for (uint32_t ix = 0; ix < iterations; ix++) {
-      const auto status =
-          ix < variation
-          ? type::PublisherStatus::VERIFIED
-          : type::PublisherStatus::NOT_VERIFIED;
+      const auto status = ix < variation
+                              ? type::PublisherStatus::UPHOLD_VERIFIED
+                              : type::PublisherStatus::NOT_VERIFIED;
       type::PublisherInfoPtr publisher_info = type::PublisherInfo::New();
       publisher_info->id = "recurringexample" + std::to_string(ix) + ".com";
       publisher_info->weight = amounts[ix % amounts.size()];

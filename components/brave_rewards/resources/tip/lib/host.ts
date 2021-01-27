@@ -79,7 +79,7 @@ export function createHost (): Host {
       chrome.send('getReconcileStamp')
       chrome.send('getAutoContributeAmount')
       chrome.send('getAdsPerHour')
-      chrome.send('getExternalWallet', ['uphold'])
+      chrome.send('getExternalWallet')
       chrome.send('getOnlyAnonWallet')
       chrome.send('getRecurringTips')
       chrome.send('getPublisherBanner', [publisherKey])

@@ -16,7 +16,7 @@ double GetTotalFromVerifiedTips(
       continue;
     }
 
-    if (publisher->status == type::PublisherStatus::VERIFIED) {
+    if (publisher->status == type::PublisherStatus::UPHOLD_VERIFIED) {
       total_amount += publisher->weight;
     }
   }

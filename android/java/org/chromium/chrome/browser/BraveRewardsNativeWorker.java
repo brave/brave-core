@@ -464,8 +464,10 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void OnPublisherInfo(int tabId) {
         @PublisherStatus int pubStatus = GetPublisherStatus(tabId);
-        boolean verified = (pubStatus == BraveRewardsPublisher.CONNECTED ||
-                pubStatus == BraveRewardsPublisher.VERIFIED) ? true : false;
+        boolean verified = (pubStatus == BraveRewardsPublisher.CONNECTED
+                                   || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED)
+                ? true
+                : false;
         NotifyPublisherObservers(verified);
 
         // Notify BraveRewardsObserver (panel).

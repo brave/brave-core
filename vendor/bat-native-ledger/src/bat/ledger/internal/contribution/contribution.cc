@@ -359,8 +359,9 @@ void Contribution::CreateNewEntry(
     queue->amount = 0;
   }
 
-  BLOG(1, "Creating contribution(" << wallet_type << ") for " <<
-      contribution->amount << " type " << queue->type);
+  BLOG(1, "Creating contribution for wallet type "
+              << wallet_type << " (amount: " << contribution->amount
+              << ", type: " << queue->type << ")");
 
   type::ContributionPublisherList publisher_list;
   for (const auto& item : queue_publishers) {

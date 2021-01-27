@@ -10,6 +10,7 @@
 #include "base/test/bind.h"
 #include "base/time/time.h"
 #include "base/time/time_override.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
@@ -310,9 +311,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
 
   base::RunLoop run_loop;
   auto test_callback =
-      [&](
-          const ledger::type::Result result,
-          ledger::type::UpholdWalletPtr wallet) {
+      [&](const ledger::type::Result result,
+          ledger::type::ExternalWalletPtr wallet) {
         auto requests = response_->GetRequests();
         EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
         EXPECT_FALSE(requests.empty());
@@ -330,7 +330,9 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
         run_loop.Quit();
       };
 
-  rewards_service_->GetUpholdWallet(base::BindLambdaForTesting(test_callback));
+  rewards_service_->GetExternalWallet(
+      ledger::constant::kWalletUphold,
+      base::BindLambdaForTesting(test_callback));
   run_loop.Run();
 }
 

@@ -265,6 +265,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
           gradientTop={'249,251,252'}
           balance={text('Tokens', '30.0')}
           converted={text('Converted', '15.50 USD')}
+          walletProvider={'Uphold'}
           actions={[
             {
               name: 'Add funds',
@@ -403,6 +404,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
             'disconnected unverified': 'disconnected_unverified',
             'disconnected verified': 'disconnected_verified'
           }, 'unverified') as WalletState}
+          walletProvider={'Uphold'}
           onVerifyClick={onVerifyClick}
           onDisconnectClick={onDisconnectClick}
           greetings={text('Greetings', 'Hello, Brave!')}

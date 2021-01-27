@@ -78,9 +78,9 @@ using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback = base::OnceCallback<void(
     const ledger::type::Result,
     ledger::type::BalancePtr)>;
-using GetUpholdWalletCallback = base::OnceCallback<void(
-    const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet)>;
+using GetExternalWalletCallback =
+    base::OnceCallback<void(const ledger::type::Result result,
+                            ledger::type::ExternalWalletPtr wallet)>;
 using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const ledger::type::Result result,
     const std::string&,
@@ -313,7 +313,10 @@ class RewardsService : public KeyedService {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
-  virtual void GetUpholdWallet(GetUpholdWalletCallback callback) = 0;
+  virtual std::string GetExternalWalletType() const = 0;
+
+  virtual void GetExternalWallet(const std::string& wallet_type,
+                                 GetExternalWalletCallback callback) = 0;
 
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
