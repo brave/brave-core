@@ -240,7 +240,9 @@ extension Bookmarkv2 {
     
     public func updateWithNewLocation(customTitle: String?, url: String?, location: Bookmarkv2?) {
         if let location = location?.bookmarkNode ?? Bookmarkv2.bookmarksAPI.mobileNode {
-            bookmarkNode.move(toParent: location)
+            if location.guid != bookmarkNode.parent?.guid {
+                bookmarkNode.move(toParent: location)
+            }
             
             if let customTitle = customTitle {
                 bookmarkNode.setTitle(customTitle)
