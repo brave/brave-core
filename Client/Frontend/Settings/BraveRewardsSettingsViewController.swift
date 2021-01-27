@@ -51,7 +51,7 @@ class BraveRewardsSettingsViewController: TableViewController {
             )
         ]
         
-        if let legacyWallet = legacyWallet {
+        if let legacyWallet = legacyWallet, !legacyWallet.isLedgerTransferExpired {
             legacyWallet.transferrableAmount({ [weak self] total in
                 guard let self = self, total > 0 else { return }
                 self.dataSource.sections.insert(.init(

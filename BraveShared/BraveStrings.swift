@@ -1806,6 +1806,12 @@ extension Strings {
             comment: ""
         )
         public static let onProviderText = NSLocalizedString("OnProviderText", bundle: .braveShared, value: "on %@", comment: "This is a suffix statement. example: SomeChannel on Twitter")
+        public static let transferNoLongerAvailableWarningMessage = NSLocalizedString(
+            "rewards.transferNoLongerAvailableWarningMessage",
+            bundle: .braveShared,
+            value: "Please use the wallet transfer by March 13, 2021. Wallet transfer will no longer be available after March 13.",
+            comment: ""
+        )
     }
 }
 
