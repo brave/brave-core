@@ -677,7 +677,7 @@
 
 
   <!-- Default Browser Page -->
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     <message name="IDS_SETTINGS_DEFAULT_BROWSER" desc="Name of the Default Browser page, which allows users to set which browser will open .html files within the OS.">
       Default browser
     </message>
@@ -1230,6 +1230,9 @@
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_PARENT_BUTTON_ARIA_LABEL" desc="Accessibility text for the button with which the user can quickly check whether their safety-related settings are fully protecting them.">
     Run safety check now
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_PARENT_RUN_AGAIN_BUTTON_ARIA_LABEL" desc="Accessibility text for the button with which the user can run the safety check again.">
+    Run safety check again
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_ICON_RUNNING_ARIA_LABEL" desc="Accessibility text for a safety check child icon, that indicates that the child check is running.">
     Running
@@ -3053,7 +3056,7 @@
   </message>
 
   <!-- System Page -->
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     <message name="IDS_SETTINGS_SYSTEM" desc="Title of the system settings.">
       System
     </message>

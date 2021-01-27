@@ -42,7 +42,7 @@
     </if>
   <if expr="chromeos">
     </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     </if>
 
   <if expr="use_nss_certs">
@@ -107,7 +107,7 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     </if>
 
   <if expr="is_win and _google_chrome">
