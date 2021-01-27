@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index b4291ff1872d880f1d2ef3c1429c51ec4e9a5348..ef2a8221856f9004da857f3924a79d2ebd57df0a 100644
+index 030edf26c02cb90bae5a4e26b34a12f4cf583640..c7b8cfe8dc88988decffa319509cb4c5f5b99a41 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -307,14 +307,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
@@ -21,7 +21,7 @@ index b4291ff1872d880f1d2ef3c1429c51ec4e9a5348..ef2a8221856f9004da857f3924a79d2e
 
  const FeatureEntry::Choice kPassiveListenersChoices[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7029,6 +7029,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7019,6 +7019,7 @@ const FeatureEntry kFeatureEntries[] = {
      // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
      // Histograms" in tools/metrics/histograms/README.md (run the
      // AboutFlagsHistogramTest unit test to verify this process).
