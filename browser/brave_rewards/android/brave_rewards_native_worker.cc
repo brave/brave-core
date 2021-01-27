@@ -654,13 +654,14 @@ void BraveRewardsNativeWorker::GetExternalWallet(
     auto callback = base::Bind(
         &BraveRewardsNativeWorker::OnGetExternalWallet,
         base::Unretained(this));
-    brave_rewards_service_->GetUpholdWallet(callback);
+    brave_rewards_service_->GetExternalWallet(
+        brave_rewards_service_->GetExternalWalletType(), callback);
   }
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   std::string json_wallet;
   if (!wallet) {
     json_wallet = "";

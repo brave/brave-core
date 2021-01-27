@@ -235,6 +235,18 @@
     "message": "Please backup your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
+  "deviceLimitReachedLearnMore": {
+    "message": "Learn More",
+    "description": "Notification button text to learn more about device limit"
+  },
+  "deviceLimitReachedTitle": {
+    "message": "Device Limit Reached",
+    "description": "Title for device limit reached notification"
+  },
+  "deviceLimitReachedNotification": {
+    "message": "Your wallet cannot be verified because you've reached the maximum verified device limit.",
+    "description": "Description for device limit reached notification"
+  },
   "insufficientFundsNotification": {
     "message": "Your Brave Rewards account is waiting for a deposit.",
     "description": "Description for new insufficient funds notification"
@@ -515,9 +527,15 @@
     "message": "Wallet Verified",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Go to my Uphold account",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "Go to my $provider$ account",
+    "description": "CTA to open uphold account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Disconnect from Brave Rewards",
@@ -624,8 +642,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Note: Your transactions will be visible to Uphold once you authorize; for instance, they will be able to see the recipient and amount of your tips.",
-    "description": "Displayed in login modal for uphold"
+    "message": "Note: Your transactions will be visible to $provider$ once you authorize; for instance, they will be able to see the recipient and amount of your tips.",
+    "description": "Displayed in login modal for uphold",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "Earn Tokens & Give Back",

@@ -370,12 +370,9 @@ IN_PROC_BROWSER_TEST_F(
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  contribution_->TipViaCode(
-      "duckduckgo.com",
-      20.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("duckduckgo.com", 20.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
   contribution_->TipViaCode(
       "brave.com",
@@ -407,12 +404,9 @@ IN_PROC_BROWSER_TEST_F(
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  contribution_->TipViaCode(
-      "duckduckgo.com",
-      50.0,
-      ledger::type::PublisherStatus::VERIFIED,
-      0,
-      true);
+  contribution_->TipViaCode("duckduckgo.com", 50.0,
+                            ledger::type::PublisherStatus::UPHOLD_VERIFIED, 0,
+                            true);
 
   contribution_->TipViaCode(
       "brave.com",

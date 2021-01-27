@@ -23,7 +23,7 @@ typedef NSString *BATBraveGeneralLedgerNotificationID NS_SWIFT_NAME(GeneralLedge
 OBJC_EXPORT BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified;
 OBJC_EXPORT BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected;
 
-OBJC_EXPORT 
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
@@ -125,9 +125,10 @@ NS_SWIFT_NAME(BraveLedger)
 #pragma mark - User Wallets
 
 /// The last updated external wallet if a user has hooked one up
-@property (nonatomic, readonly, nullable) BATUpholdWallet *upholdWallet;
+@property(nonatomic, readonly, nullable) BATExternalWallet* upholdWallet;
 
-- (void)fetchUpholdWallet:(nullable void (^)(BATUpholdWallet * _Nullable wallet))completion;
+- (void)fetchUpholdWallet:
+    (nullable void (^)(BATExternalWallet* _Nullable wallet))completion;
 
 - (void)disconnectWalletOfType:(BATWalletType)walletType
                     completion:(nullable void (^)(BATResult result))completion;

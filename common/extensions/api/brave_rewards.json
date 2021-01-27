@@ -1080,10 +1080,6 @@
         "description": "Get external wallet for provided wallet type",
         "parameters": [
           {
-            "name": "type",
-            "type": "string"
-          },
-          {
             "type": "function",
             "name": "callback",
             "parameters": [
@@ -1096,6 +1092,9 @@
                 "type": "object",
                 "optional": true,
                 "properties": {
+                  "type": {
+                    "type": "string"
+                  },
                   "token": {
                     "type": "any"
                   },
@@ -1133,12 +1132,7 @@
         "name": "disconnectWallet",
         "type": "function",
         "description": "Disconnect wallet",
-        "parameters": [
-          {
-            "name": "type",
-            "type": "string"
-          }
-        ]
+        "parameters": []
       },
       {
         "name": "onlyAnonWallet",

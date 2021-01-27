@@ -121,6 +121,7 @@ class PageWallet extends React.Component<Props, State> {
               showCopy={showCopy}
               showSecActions={false}
               alert={this.walletAlerts()}
+              walletProvider={''}
               onlyAnonWallet={onlyAnonWallet}
             >
               {

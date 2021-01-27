@@ -65,7 +65,7 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state.fullLog = ''
       break
     case types.GET_EXTERNAL_WALLET:
-      chrome.send('brave_rewards_internals.getExternalWallet', [action.payload.type])
+      chrome.send('brave_rewards_internals.getExternalWallet')
       break
     case types.ON_EXTERNAL_WALLET:
       state = { ...state }

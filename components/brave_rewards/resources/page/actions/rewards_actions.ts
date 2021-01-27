@@ -253,9 +253,7 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
   balance
 })
 
-export const getExternalWallet = (type: Rewards.WalletType) => action(types.GET_EXTERNAL_WALLET, {
-  type
-})
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
 
 export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
   result,
@@ -275,9 +273,7 @@ export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => 
 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
 
-export const disconnectWallet = (walletType: string) => action(types.DISCONNECT_WALLET, {
-  walletType
-})
+export const disconnectWallet = () => action(types.DISCONNECT_WALLET)
 
 export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
 

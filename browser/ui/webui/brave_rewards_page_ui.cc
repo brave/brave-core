@@ -145,10 +145,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     const ledger::type::Result result,
     ledger::type::BalancePtr balance);
 
-  void GetUpholdWallet(const base::ListValue* args);
-  void OnGetUpholdWallet(
-      const ledger::type::Result result,
-      ledger::type::UpholdWalletPtr wallet);
+  void GetExternalWallet(const base::ListValue* args);
+  void OnGetExternalWallet(const ledger::type::Result result,
+                           ledger::type::ExternalWalletPtr wallet);
+
   void ProcessRewardsPageUrl(const base::ListValue* args);
 
   void OnProcessRewardsPageUrl(
@@ -447,9 +447,10 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.fetchBalance",
       base::BindRepeating(&RewardsDOMHandler::FetchBalance,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getExternalWallet",
-      base::BindRepeating(&RewardsDOMHandler::GetUpholdWallet,
-      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.getExternalWallet",
+      base::BindRepeating(&RewardsDOMHandler::GetExternalWallet,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.processRewardsPageUrl",
       base::BindRepeating(&RewardsDOMHandler::ProcessRewardsPageUrl,
       base::Unretained(this)));
@@ -1568,19 +1569,20 @@ void RewardsDOMHandler::FetchBalance(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::GetUpholdWallet(const base::ListValue* args) {
+void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
   if (!rewards_service_) {
     return;
   }
 
-  rewards_service_->GetUpholdWallet(
-      base::BindOnce(&RewardsDOMHandler::OnGetUpholdWallet,
+  rewards_service_->GetExternalWallet(
+      rewards_service_->GetExternalWalletType(),
+      base::BindOnce(&RewardsDOMHandler::OnGetExternalWallet,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetUpholdWallet(
+void RewardsDOMHandler::OnGetExternalWallet(
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   if (web_ui()->CanCallJavascript()) {
     base::Value data(base::Value::Type::DICTIONARY);
 
@@ -1588,6 +1590,7 @@ void RewardsDOMHandler::OnGetUpholdWallet(
     base::Value wallet_dict(base::Value::Type::DICTIONARY);
 
     if (wallet) {
+      wallet_dict.SetStringKey("type", wallet->type);
       wallet_dict.SetStringKey("token", wallet->token);
       wallet_dict.SetStringKey("address", wallet->address);
       wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
@@ -1646,13 +1649,10 @@ void RewardsDOMHandler::ProcessRewardsPageUrl(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::DisconnectWallet(const base::ListValue* args) {
-  CHECK_EQ(1U, args->GetSize());
   if (!rewards_service_) {
     return;
   }
-
-  const std::string wallet_type = args->GetList()[0].GetString();
-  rewards_service_->DisconnectWallet(wallet_type);
+  rewards_service_->DisconnectWallet(rewards_service_->GetExternalWalletType());
 }
 
 void RewardsDOMHandler::OnDisconnectWallet(

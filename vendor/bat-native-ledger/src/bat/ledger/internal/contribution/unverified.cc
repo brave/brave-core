@@ -78,7 +78,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     }
 
     // verified status didn't change
-    if (item->status != type::PublisherStatus::VERIFIED) {
+    if (item->status != type::PublisherStatus::UPHOLD_VERIFIED) {
       continue;
     }
 

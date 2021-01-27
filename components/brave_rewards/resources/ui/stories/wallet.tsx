@@ -67,6 +67,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
         ]}
         alert={showAlert ? alert : undefined}
         walletState={state}
+        walletProvider={'Uphold'}
         onDisconnectClick={doNothing}
         greetings={'Hello, Brave!'}
       >

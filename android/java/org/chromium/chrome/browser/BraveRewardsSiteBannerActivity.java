@@ -276,8 +276,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
         setPublisherNoteText(pubStatus);
 
-        if (pubStatus == BraveRewardsPublisher.CONNECTED ||
-                pubStatus == BraveRewardsPublisher.VERIFIED) {
+        if (pubStatus == BraveRewardsPublisher.CONNECTED
+                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED) {
             findViewById(R.id.publisher_favicon_verified).setVisibility(View.VISIBLE);
         }
 
