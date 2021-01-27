@@ -16,6 +16,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "bat/ledger/internal/api/api.h"
+#include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/legacy/media/media.h"
@@ -72,6 +73,8 @@ class LedgerImpl : public ledger::Ledger {
   sku::SKU* sku() const;
 
   api::API* api() const;
+
+  bitflyer::Bitflyer* bitflyer() const;
 
   uphold::Uphold* uphold() const;
 
@@ -378,6 +381,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<state::State> state_;
   std::unique_ptr<api::API> api_;
   std::unique_ptr<recovery::Recovery> recovery_;
+  std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<uphold::Uphold> uphold_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;

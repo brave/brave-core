@@ -24,7 +24,8 @@ enum ContributionProcessor {
   NONE = 0,
   BRAVE_TOKENS = 1,
   UPHOLD = 2,
-  BRAVE_USER_FUNDS = 3
+  BRAVE_USER_FUNDS = 3,
+  BITFLYER = 4
 };
 
 struct ContributionInfo {
@@ -241,7 +242,8 @@ enum Result {
 enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
-  UPHOLD_VERIFIED = 2
+  UPHOLD_VERIFIED = 2,
+  BITFLYER_VERIFIED = 3
 };
 
 struct ServerPublisherInfo {

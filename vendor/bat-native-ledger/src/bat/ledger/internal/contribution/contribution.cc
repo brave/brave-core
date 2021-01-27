@@ -75,6 +75,7 @@ Contribution::~Contribution() = default;
 
 void Contribution::Initialize() {
   ledger_->uphold()->Initialize();
+  ledger_->bitflyer()->Initialize();
 
   CheckContributionQueue();
   CheckNotCompletedContributions();
@@ -335,6 +336,14 @@ void Contribution::CreateNewEntry(
     return;
   }
 
+  if (wallet_type == constant::kWalletBitflyer &&
+      queue->type == type::RewardsType::AUTO_CONTRIBUTE) {
+    BLOG(1, "AC is not supported for bitFlyer wallets");
+    CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
+                   std::move(queue));
+    return;
+  }
+
   const std::string contribution_id = base::GenerateGUID();
 
   auto contribution = type::ContributionInfo::New();
@@ -425,7 +434,8 @@ void Contribution::OnEntrySaved(
       contribution_id);
 
     sku_->AnonUserFunds(contribution_id, wallet_type, result_callback);
-  } else if (wallet_type == constant::kWalletUphold) {
+  } else if (wallet_type == constant::kWalletUphold ||
+             wallet_type == constant::kWalletBitflyer) {
     auto result_callback = std::bind(&Contribution::Result,
         this,
         _1,
@@ -523,6 +533,12 @@ void Contribution::TransferFunds(
         transaction.amount,
         destination,
         callback);
+    return;
+  }
+
+  if (wallet_type == constant::kWalletBitflyer) {
+    ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
+                                       callback);
     return;
   }
 
@@ -744,7 +760,8 @@ void Contribution::Retry(
           result_callback);
       return;
     }
-    case type::ContributionProcessor::UPHOLD: {
+    case type::ContributionProcessor::UPHOLD:
+    case type::ContributionProcessor::BITFLYER: {
       if ((*shared_contribution)->type ==
           type::RewardsType::AUTO_CONTRIBUTE) {
         sku_->Retry((*shared_contribution)->Clone(), result_callback);

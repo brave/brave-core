@@ -1,0 +1,4 @@
+declare_args() {
+  bitflyer_client_secret = ""
+  bitflyer_staging_url = ""
+}

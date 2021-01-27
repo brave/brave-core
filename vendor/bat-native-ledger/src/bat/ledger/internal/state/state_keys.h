@@ -44,6 +44,7 @@ const char kEmptyBalanceChecked[] = "empty_balance_checked";
 const char kBAPReported[] = "bap_reported";
 const char kWalletBrave[]  ="wallets.brave";
 const char kWalletUphold[] = "wallets.uphold";
+const char kWalletBitflyer[] = "wallets.bitflyer";
 
 }  // namespace state
 }  // namespace ledger

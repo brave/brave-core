@@ -17,8 +17,8 @@
 
 namespace brave_rewards {
 
-const std::vector<std::string> kOnlyAnonWalletCountries = {
-  "JP"  // ID: 19024
+const std::vector<std::string> kBitflyerCountries = {
+    "JP"  // ID: 19024
 };
 
 #if defined(OS_ANDROID)

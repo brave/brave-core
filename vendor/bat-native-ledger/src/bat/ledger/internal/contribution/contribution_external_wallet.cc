@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/contribution/contribution_external_wallet.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -52,6 +53,9 @@ void ContributionExternalWallet::ContributionInfo(
   switch (contribution->processor) {
     case type::ContributionProcessor::UPHOLD:
       wallet = ledger_->uphold()->GetWallet();
+      break;
+    case type::ContributionProcessor::BITFLYER:
+      wallet = ledger_->bitflyer()->GetWallet();
       break;
     default:
       break;
@@ -127,6 +131,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case type::PublisherStatus::UPHOLD_VERIFIED:
       publisher_verified = processor == type::ContributionProcessor::UPHOLD;
       break;
+    case type::PublisherStatus::BITFLYER_VERIFIED:
+      publisher_verified = processor == type::ContributionProcessor::BITFLYER;
+      break;
     default:
       break;
   }
@@ -168,6 +175,10 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case type::ContributionProcessor::UPHOLD:
       ledger_->uphold()->StartContribution(contribution_id, std::move(info),
                                            amount, start_callback);
+      break;
+    case type::ContributionProcessor::BITFLYER:
+      ledger_->bitflyer()->StartContribution(contribution_id, std::move(info),
+                                             amount, start_callback);
       break;
     default:
       NOTREACHED();

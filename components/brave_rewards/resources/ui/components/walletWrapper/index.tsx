@@ -55,6 +55,8 @@ import {
   CaratCircleRightIcon
 } from 'brave-ui/components/icons'
 
+import { BitflyerIcon } from '../../../shared/components/icons/bitflyer_icon'
+
 import giftIconUrl from './assets/gift.svg'
 import loveIconUrl from './assets/love.svg'
 import megaphoneIconUrl from './assets/megaphone.svg'
@@ -334,6 +336,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const { walletType } = this.props
     const walletProviderIcon =
       walletType === 'uphold' ? <UpholdSystemIcon /> :
+      walletType === 'bitflyer' ? <BitflyerIcon white={true} /> :
       null
 
     const buttonProps: Partial<ButtonProps> = {

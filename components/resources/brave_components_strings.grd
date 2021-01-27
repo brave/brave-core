@@ -775,6 +775,7 @@
       <message name="IDS_BRAVE_UI_PROCESSING_REQUEST" desc="">Your request is still being processed, please wait.</message>
       <message name="IDS_BRAVE_UI_PROCESSING_REQUEST_BUTTON" desc="">Try again</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS" desc="">Rewards BAT</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_BITFLYER" desc="">bitFlyer Wallet</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold Wallet</message>
       <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS" desc="">Deposited BAT</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to get started?</message>

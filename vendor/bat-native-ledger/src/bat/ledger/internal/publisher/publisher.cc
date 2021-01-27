@@ -62,7 +62,8 @@ void Publisher::RefreshPublisher(
         // If, after refresh, the publisher is now verified
         // attempt to process any pending contributions for
         // unverified publishers.
-        if (status == type::PublisherStatus::UPHOLD_VERIFIED) {
+        if (status == type::PublisherStatus::UPHOLD_VERIFIED ||
+            status == type::PublisherStatus::BITFLYER_VERIFIED) {
           ledger_->contribution()->ContributeUnverifiedPublishers();
         }
 
@@ -608,7 +609,8 @@ void Publisher::SynopsisNormalizerCallback(
 
 bool Publisher::IsConnectedOrVerified(const type::PublisherStatus status) {
   return status == type::PublisherStatus::CONNECTED ||
-         status == type::PublisherStatus::UPHOLD_VERIFIED;
+         status == type::PublisherStatus::UPHOLD_VERIFIED ||
+         status == type::PublisherStatus::BITFLYER_VERIFIED;
 }
 
 void Publisher::GetPublisherActivityFromUrl(

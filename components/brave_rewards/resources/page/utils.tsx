@@ -76,6 +76,7 @@ export const getCurrentBalanceReport = () => {
 export const getWalletProviderName = (wallet?: Rewards.ExternalWallet) => {
   switch (wallet ? wallet.type : '') {
     case 'uphold' : return 'Uphold'
+    case 'bitflyer': return 'bitFlyer'
     default: return ''
   }
 }

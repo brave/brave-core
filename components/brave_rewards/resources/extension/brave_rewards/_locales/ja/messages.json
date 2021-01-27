@@ -408,7 +408,7 @@
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
-    "message": "BAP",
+    "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
@@ -515,9 +515,15 @@
     "message": "ウォレットが検証済み",
     "description": "Displayed in wallet that tells users that he is verified"
   },
-  "walletGoToUphold":  {
-    "message": "Upholdのアカウントに移動",
-    "description": "CTA to open uphold account"
+  "walletGoToProvider":  {
+    "message": "$provider$のアカウントに移動",
+    "description": "CTA to open uphold account",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "walletDisconnect":  {
     "message": "Braveの報酬から切断",
@@ -624,8 +630,14 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "ご注意：承認するとトランザクションは「Uphold 」に表示されます。 たとえば、受信者とチップの金額を確認できます。",
-    "description": "Displayed in login modal for uphold"
+    "message": "ご注意：承認するとトランザクションは「$provider$ 」に表示されます。 たとえば、受信者とチップの金額を確認できます。",
+    "description": "Displayed in login modal for uphold",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
   },
   "onboardingEarnHeader": {
     "message": "トークンを獲得して還元する",

@@ -13,9 +13,10 @@ class BraveRewardsPublisher {
     //PublisherStatus @
     //vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({NOT_VERIFIED, CONNECTED, UPHOLD_VERIFIED})
+    @IntDef({NOT_VERIFIED, CONNECTED, UPHOLD_VERIFIED, BITFLYER_VERIFIED})
     public @interface PublisherStatus {}
     public static final int NOT_VERIFIED = 0;
     public static final int CONNECTED = 1;
     public static final int UPHOLD_VERIFIED = 2;
+    public static final int BITFLYER_VERIFIED = 3;
 }

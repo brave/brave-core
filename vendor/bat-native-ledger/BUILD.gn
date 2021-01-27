@@ -5,6 +5,8 @@
 
 import("//third_party/protobuf/proto_library.gni")
 
+import("//brave/vendor/bat-native-ledger/config.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -25,6 +27,10 @@ config("internal_config") {
     "//brave/components/brave_rewards/test:*",
     "//brave/test:*",
     "//brave/vendor/bat-native-ledger/test:*",
+  ]
+  defines = [
+    "BITFLYER_CLIENT_SECRET=\"$bitflyer_client_secret\"",
+    "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
   ]
   include_dirs = [
     "src",
@@ -108,6 +114,16 @@ source_set("ledger") {
     "src/bat/ledger/internal/attestation/attestation_impl.h",
     "src/bat/ledger/internal/attestation/attestation_iosx.cc",
     "src/bat/ledger/internal/attestation/attestation_iosx.h",
+    "src/bat/ledger/internal/bitflyer/bitflyer.cc",
+    "src/bat/ledger/internal/bitflyer/bitflyer.h",
+    "src/bat/ledger/internal/bitflyer/bitflyer_authorization.cc",
+    "src/bat/ledger/internal/bitflyer/bitflyer_authorization.h",
+    "src/bat/ledger/internal/bitflyer/bitflyer_transfer.cc",
+    "src/bat/ledger/internal/bitflyer/bitflyer_transfer.h",
+    "src/bat/ledger/internal/bitflyer/bitflyer_util.cc",
+    "src/bat/ledger/internal/bitflyer/bitflyer_util.h",
+    "src/bat/ledger/internal/bitflyer/bitflyer_wallet.cc",
+    "src/bat/ledger/internal/bitflyer/bitflyer_wallet.h",
     "src/bat/ledger/internal/common/brotli_util.cc",
     "src/bat/ledger/internal/common/brotli_util.h",
     "src/bat/ledger/internal/common/request_util.cc",
@@ -251,6 +267,18 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/api/api_util.h",
     "src/bat/ledger/internal/endpoint/api/get_parameters/get_parameters.cc",
     "src/bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h",
+    "src/bat/ledger/internal/endpoint/bitflyer/bitflyer_server.cc",
+    "src/bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h",
+    "src/bat/ledger/internal/endpoint/bitflyer/bitflyer_utils.cc",
+    "src/bat/ledger/internal/endpoint/bitflyer/bitflyer_utils.h",
+    "src/bat/ledger/internal/endpoint/bitflyer/get_balance/get_balance_bitflyer.cc",
+    "src/bat/ledger/internal/endpoint/bitflyer/get_balance/get_balance_bitflyer.h",
+    "src/bat/ledger/internal/endpoint/bitflyer/post_claim/post_claim_bitflyer.cc",
+    "src/bat/ledger/internal/endpoint/bitflyer/post_claim/post_claim_bitflyer.h",
+    "src/bat/ledger/internal/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.cc",
+    "src/bat/ledger/internal/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h",
+    "src/bat/ledger/internal/endpoint/bitflyer/post_transaction/post_transaction_bitflyer.cc",
+    "src/bat/ledger/internal/endpoint/bitflyer/post_transaction/post_transaction_bitflyer.h",
     "src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.cc",
     "src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.h",
     "src/bat/ledger/internal/endpoint/payment/payment_server.cc",

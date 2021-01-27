@@ -11,6 +11,7 @@ source_set("bat_native_ledger_tests") {
   testonly = true
 
   sources = [
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/bitflyer/bitflyer_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_monthly_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unblinded_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/async_result_unittest.cc",
@@ -31,6 +32,11 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/database/database_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/api/api_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/api/get_parameters/get_parameters_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/bitflyer/bitflyer_utils_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/bitflyer/get_balance/get_balance_bitflyer_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/bitflyer/post_claim/post_claim_bitflyer_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/bitflyer/post_oauth/post_oauth_bitflyer_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/bitflyer/post_transaction/post_transaction_bitflyer_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment/payment_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment/post_credentials/post_credentials_unittest.cc",

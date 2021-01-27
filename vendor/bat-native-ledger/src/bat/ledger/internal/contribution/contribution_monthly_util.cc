@@ -16,7 +16,8 @@ double GetTotalFromVerifiedTips(
       continue;
     }
 
-    if (publisher->status == type::PublisherStatus::UPHOLD_VERIFIED) {
+    if (publisher->status == type::PublisherStatus::UPHOLD_VERIFIED ||
+        publisher->status == type::PublisherStatus::BITFLYER_VERIFIED) {
       total_amount += publisher->weight;
     }
   }

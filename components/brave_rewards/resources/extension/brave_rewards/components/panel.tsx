@@ -634,6 +634,8 @@ export class Panel extends React.Component<Props, State> {
         return nonUserFunds === 0
       case 2: // UPHOLD_VERIFIED
         return walletType !== 'uphold'
+      case 3: // BITFLYER_VERIFIED
+        return walletType !== 'bitflyer'
       default:
         return false
     }
@@ -694,11 +696,16 @@ export class Panel extends React.Component<Props, State> {
     const {
       showOnboarding,
       parameters,
+      externalWallet,
       adsPerHour,
       autoContributeAmount
     } = this.props.rewardsPanelData
 
-    const { autoContributeChoices } = parameters
+    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
+    let { autoContributeChoices } = parameters
+    if (externalWallet && externalWallet.type === 'bitflyer') {
+      autoContributeChoices = []
+    }
 
     if (this.state.showRewardsTour) {
       const onDone = () => {

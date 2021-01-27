@@ -78,7 +78,8 @@ void Unverified::OnContributeUnverifiedPublishers(
     }
 
     // verified status didn't change
-    if (item->status != type::PublisherStatus::UPHOLD_VERIFIED) {
+    if (item->status != type::PublisherStatus::UPHOLD_VERIFIED &&
+        item->status != type::PublisherStatus::BITFLYER_VERIFIED) {
       continue;
     }
 

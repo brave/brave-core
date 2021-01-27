@@ -43,10 +43,21 @@ message PaypalWallet {
   PaypalWalletState wallet_state = 1;
 }
 
+message BitflyerWallet {
+  BitflyerWalletState wallet_state = 1;
+  string address = 2;
+}
+
+enum BitflyerWalletState {
+  BITFLYER_ACCOUNT_NO_KYC = 0;
+  BITFLYER_ACCOUNT_KYC = 1;
+}
+
 message Wallet {
   oneof provider {
     UpholdWallet uphold_wallet = 1;
     PaypalWallet paypal_wallet = 2;
+    BitflyerWallet bitflyer_wallet = 3;
   }
 }
 

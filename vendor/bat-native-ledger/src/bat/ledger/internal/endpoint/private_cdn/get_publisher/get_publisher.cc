@@ -72,7 +72,18 @@ void GetPublisherStatusFromMessage(
           info->status = ledger::type::PublisherStatus::UPHOLD_VERIFIED;
           info->address = wallet.uphold_wallet().address();
           return;
-        default: {}
+        default:
+          break;
+      }
+    }
+    if (wallet.has_bitflyer_wallet()) {
+      switch (wallet.bitflyer_wallet().wallet_state()) {
+        case publishers_pb::BITFLYER_ACCOUNT_KYC:
+          info->status = ledger::type::PublisherStatus::BITFLYER_VERIFIED;
+          info->address = wallet.bitflyer_wallet().address();
+          return;
+        default:
+          break;
       }
     }
   }

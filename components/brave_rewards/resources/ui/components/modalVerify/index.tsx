@@ -34,6 +34,8 @@ import {
 } from 'brave-ui/components/icons'
 import { Modal } from 'brave-ui/components'
 
+import { BitflyerIcon } from '../../../shared/components/icons/bitflyer_icon'
+
 export interface Props {
   onVerifyClick: () => void
   onClose: () => void
@@ -85,6 +87,7 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
         <StyledFooterIcon>
           {
             walletType === 'uphold' ? <UpholdColorIcon /> :
+            walletType === 'bitflyer' ? <BitflyerIcon white={true} /> :
             null
           }
         </StyledFooterIcon>
