@@ -128,8 +128,11 @@ public class BytecodeTest {
                 "shouldCloseAppWithZeroTabs", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
                 "insertSiteSectionView", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/query_tiles/QueryTileSection",
                 "getMaxRowsForMostVisitedTiles", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/query_tiles/BraveQueryTileSection",
+                        "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "getPermissionsLinkMessage", false, null));

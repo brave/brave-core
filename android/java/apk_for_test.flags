@@ -36,7 +36,6 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** insertSiteSectionView(...);
-    *** getMaxRowsForMostVisitedTiles(...);
     *** mSiteSectionView;
 }
 
@@ -185,4 +184,12 @@
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
+    *** getMaxRowsForMostVisitedTiles(...);
+}
+
+-keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
+    *** getMaxRowsForMostVisitedTiles(...);
 }
