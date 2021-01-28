@@ -11,7 +11,7 @@ categories = []
 
 [dependencies]
 regex            = "1"
-url              = "1.7"
+url              = "2.2"
 html5ever        = "0.25.1"
 markup5ever_rcdom = "0.1.0"
 lazy_static      = "1.4"

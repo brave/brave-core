@@ -31,7 +31,7 @@ flate2 = { version = "1.0.19", features = ["rust_backend"], default-features = f
 # lifeguard <= 0.6.0 panics at runtime on Rust 1.48+
 lifeguard = "^ 0.6.1"
 # url must be pinned to the same version as adblock
-url = "^ 1.7.2"
+url = "^2.2.0"
 
 readability = { path = "src/readability" }
 lazy_static = "1.4"
