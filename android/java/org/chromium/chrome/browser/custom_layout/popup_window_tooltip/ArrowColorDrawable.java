@@ -18,7 +18,11 @@ import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.ColorInt;
 
 public class ArrowColorDrawable extends ColorDrawable {
-    public static final int LEFT = 0, TOP = 1, RIGHT = 2, BOTTOM = 3, AUTO = 4;
+    public static final int LEFT = 0;
+    public static final int TOP = 1;
+    public static final int RIGHT = 2;
+    public static final int BOTTOM = 3;
+    public static final int AUTO = 4;
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final int mBackgroundColor;
@@ -82,6 +86,7 @@ public class ArrowColorDrawable extends ColorDrawable {
         mPaint.setAlpha(alpha);
     }
 
+    @Override
     public void setColor(@ColorInt int color) {
         mPaint.setColor(color);
     }
