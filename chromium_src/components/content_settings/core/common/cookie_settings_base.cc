@@ -111,27 +111,26 @@ bool IsFirstPartyAccessAllowed(
   return cookie_settings->IsAllowed(setting);
 }
 
-bool ShouldUseEphemeralStorage(
+}  // namespace
+
+bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const GURL& site_for_cookies,
-    const base::Optional<url::Origin>& top_frame_origin,
-    const CookieSettingsBase* const cookie_settings) {
+    const base::Optional<url::Origin>& top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
   if (!top_frame_origin || url::Origin::Create(url) == top_frame_origin)
     return false;
 
-  bool allow_3p = cookie_settings->IsCookieAccessAllowed(url, site_for_cookies,
-                                                         top_frame_origin);
+  bool allow_3p =
+      IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
   bool allow_1p = IsFirstPartyAccessAllowed(
-      GetFirstPartyURL(site_for_cookies, top_frame_origin), cookie_settings);
+      GetFirstPartyURL(site_for_cookies, top_frame_origin), this);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
 }
-
-}  // namespace
 
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
@@ -143,7 +142,7 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
-  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin, this))
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin))
     return true;
 
   return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);

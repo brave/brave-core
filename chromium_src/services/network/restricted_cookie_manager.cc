@@ -21,7 +21,7 @@ bool ShouldUseEphemeralStorage(
     const url::Origin& top_frame_origin,
     const net::SiteForCookies& site_for_cookies,
     const network::CookieSettings* const cookie_settings) {
-  return cookie_settings->IsEphemeralCookieAccessAllowed(
+  return cookie_settings->ShouldUseEphemeralStorage(
       url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
 }
 
