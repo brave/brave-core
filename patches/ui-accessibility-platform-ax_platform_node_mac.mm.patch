@@ -1,0 +1,12 @@
+diff --git a/ui/accessibility/platform/ax_platform_node_mac.mm b/ui/accessibility/platform/ax_platform_node_mac.mm
+index afd130143d7ca5440d9c971764fa038e6c153429..9ee9bff39d24fcf3a453d097914380e29216ca1b 100644
+--- a/ui/accessibility/platform/ax_platform_node_mac.mm
++++ b/ui/accessibility/platform/ax_platform_node_mac.mm
+@@ -1144,6 +1144,7 @@ bool AlsoUseShowMenuActionForDefaultAction(const ui::AXNodeData& data) {
+   if (!_node)
+     return nil;
+ 
++  BRAVE_ACCESSIBILITY_ATTRIBUTED_STRING_FOR_RANGE
+   // TODO(https://crbug.com/958811): Implement this for real.
+   base::scoped_nsobject<NSAttributedString> attributedString(
+       [[NSAttributedString alloc]
