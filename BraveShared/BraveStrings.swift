@@ -145,6 +145,16 @@ extension Strings {
                               tableName: "BraveShared", bundle: .braveShared,
                               value: "Not now",
                               comment: "Button text to close the default browser popup.")
+        public static let notificationTitle =
+            NSLocalizedString("defaultBrowserCallout.notificationTitle",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Brave Web Browser",
+                              comment: "Notification title to promote setting Brave app as default browser")
+        public static let notificationBody =
+            NSLocalizedString("defaultBrowserCallout.notificationBody",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Optimized for iOS 14. Make Brave your default browser today.",
+                              comment: "Notification body to promote setting Brave app as default browser")
     }
 }
 

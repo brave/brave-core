@@ -88,6 +88,10 @@ extension Preferences {
         /// When to show next default browser popup.
         static let nextShowDate =
             Option<Date?>(key: "general.default-browser-intro-next-show-date", default: nil)
+        
+        /// Whether system notification showed or not
+        static let defaultBrowserNotificationScheduled =
+            Option<Bool>(key: "general.default-browser-notification-scheduled", default: false)
     }
     
     final class Search {
