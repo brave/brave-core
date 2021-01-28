@@ -117,6 +117,7 @@ typedef enum {
   kRequestTypeImage,
   kRequestTypeScriptClassic,
   kRequestTypeScriptModule,
+  kRequestTypeSubdocument,
   kRequestTypeSVG,
   kRequestTypeVideo,
   kRequestTypeUnknown

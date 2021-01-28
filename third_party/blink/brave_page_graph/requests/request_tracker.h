@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_REQUESTS_REQUEST_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_REQUESTS_REQUEST_TRACKER_H_
 
+#include "base/optional.h"
+
+#include <chrono>
 #include <map>
 #include <memory>
 #include <string>
@@ -24,6 +27,18 @@ typedef struct TrackedRequestRecord {
   bool is_first_reply;
 } TrackedRequestRecord;
 
+typedef struct DocumentRequest {
+  // Information available at request start
+  InspectorId request_id;
+  std::string url;
+  bool is_main_frame;
+  std::chrono::milliseconds start_timestamp;
+
+  // Information available at request completion
+  int64_t size;
+  std::chrono::milliseconds complete_timestamp;
+} DocumentRequest;
+
 class RequestTracker {
 friend class PageGraph;
  public:
@@ -40,8 +55,19 @@ friend class PageGraph;
   std::shared_ptr<const TrackedRequestRecord> RegisterRequestError(
     const InspectorId request_id);
 
+  void RegisterDocumentRequestStart(const InspectorId request_id,
+      const blink::DOMNodeId frame_id, const std::string url,
+      const bool is_main_frame, const std::chrono::milliseconds timestamp);
+  void RegisterDocumentRequestComplete(const InspectorId request_id,
+      const int64_t size, const std::chrono::milliseconds timestamp);
+  base::Optional<DocumentRequest> GetDocumentRequestInfo(
+      const blink::DOMNodeId frame_id);
+
  private:
   std::map<InspectorId, std::shared_ptr<TrackedRequestRecord> > tracked_requests_;
+
+  std::map<blink::DOMNodeId, InspectorId> document_request_initiators_;
+  std::map<InspectorId, DocumentRequest> document_requests_;
 
   // Returns the record from the above map, and cleans up the record
   // if the final requester has been responded to.

@@ -69,6 +69,8 @@ string RequestTypeToString(const RequestType type) noexcept {
       return "Font";
     case kRequestTypeDocument:
       return "Document";
+    case kRequestTypeSubdocument:
+      return "Subdocument";
     case kRequestTypeUnknown:
     default:
       return "Unknown";

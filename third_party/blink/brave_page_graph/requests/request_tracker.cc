@@ -78,6 +78,56 @@ shared_ptr<const TrackedRequestRecord> RequestTracker::RegisterRequestError(
   return ReturnTrackingRecord(request_id);
 }
 
+void RequestTracker::RegisterDocumentRequestStart(const InspectorId request_id,
+    const blink::DOMNodeId frame_id, const std::string url,
+    const bool is_main_frame, const std::chrono::milliseconds timestamp) {
+  // Any previous document requests from this root should have been canceled.
+  if (document_request_initiators_.count(frame_id) != 0) {
+    PG_LOG_ASSERT(document_request_initiators_.at(frame_id) == request_id);
+    return;
+  }
+
+  // If we get to this point, there should be no previous request with this
+  // request ID.
+  PG_LOG_ASSERT(document_requests_.count(request_id) == 0);
+
+  auto request_record = DocumentRequest {request_id, url, is_main_frame,
+      timestamp, 0, std::chrono::milliseconds::zero()};
+  document_request_initiators_.emplace(frame_id, request_id);
+  document_requests_.emplace(request_id, request_record);
+}
+
+void RequestTracker::RegisterDocumentRequestComplete(
+    const InspectorId request_id, const int64_t size,
+    const std::chrono::milliseconds timestamp) {
+  // The request should have been started previously.
+  PG_LOG_ASSERT(document_requests_.count(request_id) != 0);
+
+  auto& request_record = document_requests_.at(request_id);
+
+  // The request should not have been completed previously.
+  PG_LOG_ASSERT(request_record.size == 0);
+  PG_LOG_ASSERT(request_record.complete_timestamp
+        == std::chrono::milliseconds::zero());
+
+  request_record.size = size;
+  request_record.complete_timestamp = timestamp;
+}
+
+base::Optional<DocumentRequest> RequestTracker::GetDocumentRequestInfo(
+    const blink::DOMNodeId frame_id) {
+  // This can happen if the document was loaded from a `srcdoc` attribute.
+  if (document_request_initiators_.count(frame_id) == 0) {
+    return base::nullopt;
+  }
+
+  auto& request_id = document_request_initiators_.at(frame_id);
+
+  PG_LOG_ASSERT(document_requests_.count(request_id) != 0);
+
+  return document_requests_.at(request_id);
+}
+
 shared_ptr<const TrackedRequestRecord> RequestTracker::ReturnTrackingRecord(
     const InspectorId request_id) {
 
