@@ -133,11 +133,12 @@ public class BraveToolbarManager extends ToolbarManager {
         mActivity = activity;
 
         mBraveHomepageStateListener = () -> {
-            assert (mBottomControlsCoordinatorSupplier != null);
-            assert (mBottomControlsCoordinatorSupplier.get()
-                            instanceof BraveBottomControlsCoordinator);
-            ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
-                    .updateHomeButtonState();
+            if (mBottomControlsCoordinatorSupplier != null
+                    && mBottomControlsCoordinatorSupplier.get()
+                                    instanceof BraveBottomControlsCoordinator) {
+                ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
+                        .updateHomeButtonState();
+            }
         };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
     }
