@@ -628,6 +628,7 @@ class BrowserViewController: UIViewController {
         }
         
         KeyboardHelper.defaultHelper.addDelegate(self)
+        UNUserNotificationCenter.current().delegate = self
         
         view.addLayoutGuide(pageOverlayLayoutGuide)
 
@@ -756,6 +757,10 @@ class BrowserViewController: UIViewController {
             //There is nothing more we can do for the user other than to let them export/import bookmarks.
             Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = true
         }
+        
+        if #available(iOS 14, *), !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
+            scheduleDefaultBrowserNotification()
+        }
     }
     
     private func migrateToChromiumBookmarks(_ completion: @escaping (_ success: Bool) -> Void) {
@@ -788,6 +793,53 @@ class BrowserViewController: UIViewController {
                 completion(true)
             }
         })
+    }
+    
+    fileprivate let defaultBrowserNotificationId = "defaultBrowserNotification"
+    
+    private func scheduleDefaultBrowserNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.provisional, .alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                log.error("Failed to request notifications permissions: \(error)")
+                return
+            }
+            
+            if !granted {
+                log.info("Not authorized to schedule a notification")
+                return
+            }
+            
+            center.getPendingNotificationRequests { [weak self] requests in
+                guard let self = self else { return }
+                if requests.contains(where: { $0.identifier == self.defaultBrowserNotificationId }) {
+                    // Already has one scheduled no need to schedule again.
+                    return
+                }
+                
+                let content = UNMutableNotificationContent().then {
+                    $0.title = Strings.DefaultBrowserCallout.notificationTitle
+                    $0.body = Strings.DefaultBrowserCallout.notificationBody
+                }
+                
+                let timeToShow = AppConstants.buildChannel.isPublic ? 2.hours : 2.minutes
+                let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToShow, repeats: false)
+                
+                let request = UNNotificationRequest(identifier: self.defaultBrowserNotificationId,
+                                                    content: content,
+                                                    trigger: timeTrigger)
+                
+                center.add(request) { error in
+                    if let error = error {
+                        log.error("Failed to add notification: \(error)")
+                        return
+                    }
+                    
+                    Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value = true
+                }
+            }
+        }
     }
     
     fileprivate func setupTabs() {
@@ -3802,4 +3854,17 @@ extension BrowserViewController: OnboardingControllerDelegate {
     
     // 60 days until the next time the user sees the onboarding..
     static let onboardingDaysInterval = TimeInterval(60.days)
+}
+
+extension BrowserViewController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.notification.request.identifier == defaultBrowserNotificationId {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                log.error("Failed to unwrap iOS settings URL")
+                return
+            }
+            UIApplication.shared.open(settingsUrl)
+        }
+        completionHandler()
+    }
 }
