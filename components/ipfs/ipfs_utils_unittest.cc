@@ -28,7 +28,14 @@ class IpfsUtilsUnitTest : public testing::Test {
   void SetUp() override {
     prefs_.registry()->RegisterStringPref(kIPFSPublicGatewayAddress,
                                           ipfs::kDefaultIPFSGateway);
+    prefs_.registry()->RegisterIntegerPref(
+        kIPFSResolveMethod,
+        static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
     user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+  }
+
+  void SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes type) {
+    prefs_.SetInteger(kIPFSResolveMethod, static_cast<int>(type));
   }
 
   content::TestBrowserContext* context() { return browser_context_.get(); }
@@ -162,4 +169,39 @@ TEST_F(IpfsUtilsUnitTest, GetIPFSGatewayURLLocal) {
           ipfs::GetDefaultIPFSLocalGateway(version_info::Channel::UNKNOWN)),
       GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
            "ipfs.localhost:48080"));
+}
+
+TEST_F(IpfsUtilsUnitTest, IsLocalGatewayConfigured) {
+  ASSERT_FALSE(ipfs::IsLocalGatewayConfigured(context()));
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+  ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(context()));
+}
+
+TEST_F(IpfsUtilsUnitTest, GetConfiguredBaseGateway) {
+  GURL url =
+      ipfs::GetConfiguredBaseGateway(context(), version_info::Channel::UNKNOWN);
+  ASSERT_EQ(url, GURL("https://dweb.link/"));
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+  url =
+      ipfs::GetConfiguredBaseGateway(context(), version_info::Channel::UNKNOWN);
+  ASSERT_EQ(url, GURL("http://localhost:48080/"));
+}
+
+TEST_F(IpfsUtilsUnitTest, ResolveIPFSURI) {
+  GURL url =
+      ipfs::GetConfiguredBaseGateway(context(), version_info::Channel::UNKNOWN);
+  GURL gateway_url;
+  ASSERT_TRUE(ipfs::ResolveIPFSURI(context(), version_info::Channel::UNKNOWN,
+                                   GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dl"
+                                        "a6ual3jsgpdr4cjr3oz3evfyavhwq"),
+                                   &gateway_url));
+  ASSERT_EQ(gateway_url, GURL("https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsg"
+                              "pdr4cjr3oz3evfyavhwq.ipfs.dweb.link"));
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+  ASSERT_TRUE(ipfs::ResolveIPFSURI(context(), version_info::Channel::UNKNOWN,
+                                   GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dl"
+                                        "a6ual3jsgpdr4cjr3oz3evfyavhwq"),
+                                   &gateway_url));
+  ASSERT_EQ(gateway_url, GURL("http://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgp"
+                              "dr4cjr3oz3evfyavhwq.ipfs.localhost:48080"));
 }

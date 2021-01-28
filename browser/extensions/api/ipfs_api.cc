@@ -13,15 +13,10 @@
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/extensions/api/ipfs.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/pref_names.h"
-#include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
-#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ipfs::IPFSResolveMethodTypes;
@@ -164,16 +159,9 @@ ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
       ipfs::ResolveIPFSURI::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
   GURL uri(params->uri);
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* prefs = profile->GetPrefs();
-  bool local = static_cast<IPFSResolveMethodTypes>(prefs->GetInteger(
-                   kIPFSResolveMethod)) == IPFSResolveMethodTypes::IPFS_LOCAL;
-  GURL base_gateway_url(
-      local ? ::ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())
-            : ::ipfs::GetDefaultIPFSGateway(browser_context()));
   GURL ipfs_gateway_url;
-  if (!::ipfs::TranslateIPFSURI(uri, &ipfs_gateway_url, base_gateway_url,
-                                true)) {
+  if (!::ipfs::ResolveIPFSURI(browser_context(), chrome::GetChannel(), uri,
+                              &ipfs_gateway_url)) {
     return RespondNow(Error("Could not translate IPFS URI"));
   }
 

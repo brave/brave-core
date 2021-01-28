@@ -134,4 +134,26 @@ GURL GetIPNSGatewayURL(const std::string& cid,
   return GetGatewayURL(cid, path, base_gateway_url, false);
 }
 
+bool IsLocalGatewayConfigured(content::BrowserContext* context) {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  return static_cast<IPFSResolveMethodTypes>(prefs->GetInteger(
+             kIPFSResolveMethod)) == IPFSResolveMethodTypes::IPFS_LOCAL;
+}
+
+GURL GetConfiguredBaseGateway(content::BrowserContext* context,
+                              version_info::Channel channel) {
+  return IsLocalGatewayConfigured(context)
+             ? ::ipfs::GetDefaultIPFSLocalGateway(channel)
+             : ::ipfs::GetDefaultIPFSGateway(context);
+}
+
+bool ResolveIPFSURI(content::BrowserContext* context,
+                    version_info::Channel channel,
+                    const GURL& ipfs_uri,
+                    GURL* resolved_url) {
+  CHECK(resolved_url);
+  return ::ipfs::TranslateIPFSURI(
+      ipfs_uri, resolved_url, GetConfiguredBaseGateway(context, channel), true);
+}
+
 }  // namespace ipfs

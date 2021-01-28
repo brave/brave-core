@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 
+#include "components/version_info/channel.h"
+
 #include <string>
 
 namespace content {
@@ -33,6 +35,13 @@ GURL GetIPFSGatewayURL(const std::string& cid,
 GURL GetIPNSGatewayURL(const std::string& cid,
                        const std::string& path,
                        const GURL& base_gateway_url);
+bool IsLocalGatewayConfigured(content::BrowserContext* context);
+GURL GetConfiguredBaseGateway(content::BrowserContext* context,
+                              version_info::Channel channel);
+bool ResolveIPFSURI(content::BrowserContext* context,
+                    version_info::Channel channel,
+                    const GURL& ipfs_uri,
+                    GURL* resolved_url);
 
 }  // namespace ipfs
 
