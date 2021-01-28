@@ -28,10 +28,11 @@ import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.BraveStatsPreferences;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 
 import java.util.HashMap;
 
@@ -154,7 +155,12 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
         // If gn flag enable_brave_sync is false, hide Sync pref
         if (BraveConfig.SYNC_ENABLED == false) {
-          removePreferenceIfPresent(PREF_SYNC);
+            removePreferenceIfPresent(PREF_SYNC);
+        }
+
+        // We don't have home button on top toolbar at the moment
+        if (!BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+            removePreferenceIfPresent(PREF_HOMEPAGE);
         }
     }
 
