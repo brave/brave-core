@@ -22,6 +22,7 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -156,6 +157,12 @@ bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame))
+    return false;
+
+  auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          top_origin, url::Origin(frame->GetSecurityOrigin()),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
   return  // block 3p
