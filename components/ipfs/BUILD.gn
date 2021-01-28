@@ -27,6 +27,8 @@ source_set("ipfs") {
     "ipfs_utils.h",
     "pref_names.cc",
     "pref_names.h",
+    "repo_stats.cc",
+    "repo_stats.h",
   ]
 
   deps = [

@@ -15,6 +15,7 @@
 
 namespace ipfs {
 struct AddressesConfig;
+struct RepoStats;
 }  // namespace ipfs
 
 class IPFSDOMHandler : public content::WebUIMessageHandler {
@@ -37,6 +38,8 @@ class IPFSDOMHandler : public content::WebUIMessageHandler {
   void OnLaunchDaemon(bool success);
   void HandleShutdownDaemon(const base::ListValue* args);
   void OnShutdownDaemon(bool success);
+  void HandleGetRepoStats(const base::ListValue* args);
+  void OnGetRepoStats(bool success, const ipfs::RepoStats& stats);
 
   base::WeakPtrFactory<IPFSDOMHandler> weak_ptr_factory_;
 

@@ -29,5 +29,12 @@ export const onGetDaemonStatus = (daemonStatus: IPFS.DaemonStatus) =>
     daemonStatus
   })
 
+export const getRepoStats = () => action(types.IPFS_GET_REPO_STATS)
+
+export const onGetRepoStats = (repoStats: IPFS.RepoStats) =>
+  action(types.IPFS_ON_GET_REPO_STATS, {
+    repoStats
+  })
+
 export const launchDaemon = () => action(types.IPFS_LAUNCH_DAEMON)
 export const shutdownDaemon = () => action(types.IPFS_SHUTDOWN_DAEMON)
