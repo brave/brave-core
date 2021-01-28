@@ -35,6 +35,12 @@ import androidx.collection.ArraySet;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+
 import org.json.JSONException;
 
 import org.chromium.base.ApplicationStatus;
@@ -469,6 +475,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 showVpnCalloutDialog();
             }
         }
+
+        setBillingClient();
     }
 
     private void checkFingerPrintingOnUpgrade() {
@@ -545,6 +553,35 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 OnboardingPrefManager.getInstance().setShowDefaultBrowserModalAfterP3A(false);
             }
         }
+    }
+
+    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+        @Override
+        public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+            // To be implemented in a later section.
+        }
+    };
+
+    private void setBillingClient() {
+        BillingClient billingClient = BillingClient.newBuilder(this)
+                                              .setListener(purchasesUpdatedListener)
+                                              .enablePendingPurchases()
+                                              .build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e("BillingClient", "Conection is established");
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
     }
 
     private void checkForYandexSE() {
