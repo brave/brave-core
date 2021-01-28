@@ -616,6 +616,7 @@ if (!is_android) {
       "//brave/browser/widevine:browser_tests",
       "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
       "//brave/components/ipfs/test:brave_ipfs_browser_tests",
+      "//brave/renderer/test:browser_tests",
       "//media:test_support",
       "//testing/gmock",
     ]
