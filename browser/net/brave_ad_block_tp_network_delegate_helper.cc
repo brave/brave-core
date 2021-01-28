@@ -133,6 +133,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
+    // Explicitly specify source to avoid using `HostResolverProc`
+    // which will be handled by system resolver
+    // See https://crbug.com/872665
+    optional_parameters->source = net::HostResolverSource::DNS;
 
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
