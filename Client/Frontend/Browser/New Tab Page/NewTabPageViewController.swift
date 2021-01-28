@@ -130,8 +130,8 @@ class NewTabPageViewController: UIViewController, Themeable {
         ]
       
         // This is a one-off view, adding it to the NTP only if necessary.
-        if DefaultBrowserCalloutProvider.shouldShowCallout {
-            sections.insert(DefaultBrowserCalloutProvider(), at: 0)
+        if NTPDefaultBrowserCalloutProvider.shouldShowCallout {
+            sections.insert(NTPDefaultBrowserCalloutProvider(), at: 0)
         }
         
         #if !NO_BRAVE_TODAY

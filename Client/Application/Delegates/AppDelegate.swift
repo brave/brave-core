@@ -290,6 +290,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             Preferences.VPN.appLaunchCountForVPNPopup.value += 1
         }
         
+        browserViewController.shouldShowIntroScreen =
+            DefaultBrowserIntroManager.prepareAndShowIfNeeded(isNewUser: isFirstLaunch)
+        
         // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
         // There was a bug that when you skipped onboarding, default search engine preference
         // was not set.

@@ -117,6 +117,37 @@ extension Strings {
     public static let suppressAlertsActionMessage = NSLocalizedString("SuppressAlertsActionMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Prevent this page from creating additional alerts", comment: "Message body of alert that seeks permission from user to suppress future JS alerts")
 }
 
+// MARK:-  DefaultBrowserIntroCalloutViewController.swift
+extension Strings {
+    public struct DefaultBrowserCallout {
+        public static let introPrimaryText =
+            NSLocalizedString("defaultBrowserCallout.introPrimaryText",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Open all links with Brave to protect your privacy",
+                              comment: "Primary text on default browser popup screen")
+        public static let introSecondaryText =
+            NSLocalizedString("defaultBrowserCallout.introSecondaryText",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Brave Shields block trackers & ads, saves data, and saves you time on every site you visit",
+                              comment: "Secondary text on default browser popup.")
+        public static let introTertiaryText =
+            NSLocalizedString("defaultBrowserCallout.introTertiaryText",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Open Settings, tap Default Browser App, and select Brave.",
+                              comment: "Tertiary text on default browser popup screen")
+        public static let introOpenSettingsButtonText =
+            NSLocalizedString("defaultBrowserCallout.introOpenSettingsButtonText",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Open Settings",
+                              comment: "Button text to open app settings")
+        public static let introSkipButtonText =
+            NSLocalizedString("defaultBrowserCallout.introCancelButtonText",
+                              tableName: "BraveShared", bundle: .braveShared,
+                              value: "Not now",
+                              comment: "Button text to close the default browser popup.")
+    }
+}
+
 // MARK:-  ErrorPageHelper.swift
 extension Strings {
     public static let errorPageReloadButtonTitle = NSLocalizedString("ErrorPageReloadButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Try again", comment: "Shown in error pages on a button that will try to load the page again")

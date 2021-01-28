@@ -8,7 +8,7 @@ import BraveUI
 import Shared
 import BraveShared
 
-class DefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
+class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     var sectionDidChange: (() -> Void)?
     
     private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<DefaultBrowserCalloutView>
