@@ -378,6 +378,12 @@ void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
   } else {
     PG_LOG_ASSERT(false); // Unsupported parent node type.
   }
+
+  // Check if the document was fetched from a remote source (i.e. not `srcdoc`)
+  const auto document_request = request_tracker_.GetDocumentRequestInfo(node_id);
+  if (document_request) {
+    WriteDocumentRequestIntoGraph(node_id, *document_request);
+  }
 }
 
 void PageGraph::RegisterRemoteFrameCreated(
@@ -705,6 +711,30 @@ void PageGraph::RegisterRequestStartFromCSS(const InspectorId request_id,
   DoRegisterRequestStart(request_id, acting_node, local_url, type);
 }
 
+// Request start for root document and subdocument HTML
+void PageGraph::RegisterRequestStartForDocument(const DOMNodeId frame_id,
+    const InspectorId request_id, const blink::KURL& url,
+    const bool is_main_frame) {
+
+  const milliseconds timestamp = NowInMs() - start_;
+
+  const KURL normalized_url = NormalizeUrl(url);
+  const string local_url(normalized_url.GetString().Utf8().data());
+
+  Log("RegisterRequestStartForDocument) frame id: " + to_string(frame_id)
+      + ", request id: " + to_string(request_id)
+      + ", url: " + local_url
+      + ", is_main_frame: " + to_string(is_main_frame));
+
+  if (frame_id == html_root_node_->GetNodeId()) {
+    root_request_record_ = DocumentRequest {request_id, local_url,
+        is_main_frame, timestamp, 0, std::chrono::milliseconds::zero()};
+  } else {
+    request_tracker_.RegisterDocumentRequestStart(request_id, frame_id,
+        local_url, is_main_frame, timestamp);
+  }
+}
+
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
     const ResourceType type, const ResponseMetadata& metadata,
     const string& resource_hash) {
@@ -722,6 +752,28 @@ void PageGraph::RegisterRequestComplete(const InspectorId request_id,
   }
 
   PossiblyWriteRequestsIntoGraph(request_record);
+}
+
+// TODO we still need some way to record request errors for documents.
+// A good place for this is NavigationBodyLoader::OnConnectionClosed() in
+// content/renderer/loader/navigation_body_loader.cc
+void PageGraph::RegisterRequestCompleteForDocument(const InspectorId request_id,
+    const int64_t size) {
+  Log("RegisterRequestCompleteForDocument) request id: " + to_string(request_id)
+      + ", size: " + to_string(size));
+
+  const milliseconds timestamp = NowInMs() - start_;
+
+  if (root_request_record_.request_id == request_id) {
+    root_request_record_.size = size;
+    root_request_record_.complete_timestamp = timestamp;
+
+    WriteDocumentRequestIntoGraph(html_root_node_->GetNodeId(),
+        root_request_record_);
+    return;
+  }
+
+  request_tracker_.RegisterDocumentRequestComplete(request_id, size, timestamp);
 }
 
 void PageGraph::RegisterRequestError(const InspectorId request_id,
@@ -1491,6 +1543,28 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
     }
     return;
   }
+}
+
+void PageGraph::WriteDocumentRequestIntoGraph(const DOMNodeId initiator,
+    const DocumentRequest request) {
+  NodeResource* const resource_node = new NodeResource(this, request.url);
+  NodeHTML* requester = GetHTMLNode(initiator);
+
+  const RequestType request_type = request.is_main_frame ?
+      RequestType::kRequestTypeDocument : RequestType::kRequestTypeSubdocument;
+
+  AddNode(resource_node);
+
+  AddEdge(new EdgeRequestStart(this, requester, resource_node,
+            request.request_id, request_type));
+  // TODO blink::ResourceType does not include types for Document or
+  // Subdocuments. We'll need to use something else here.
+  // TODO for normal requests, we pass response metadata here. We don't get
+  // access to that from DocumentLoader, so it's omitted. It may be possible
+  // to get it from NavigationBodyLoader::ReadFromDataPipe.
+  AddEdge(new EdgeRequestComplete(this, resource_node, requester,
+            request.request_id, blink::ResourceType::kRaw/*TODO*/,
+            ResponseMetadata()/*TODO*/, ""/*TODO*/));
 }
 
 const NodeUniquePtrList& PageGraph::Nodes() const {

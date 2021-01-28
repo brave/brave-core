@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+#include "base/optional.h"
 #include "third_party/blink/renderer/core/inspector/protocol/Protocol.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -139,9 +140,13 @@ friend NodeHTMLElement;
     const blink::KURL& url, const RequestType type);
   void RegisterRequestStartFromCSS(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
+  void RegisterRequestStartForDocument(const blink::DOMNodeId node_id,
+    const InspectorId request_id, const blink::KURL& url, const bool is_main_frame);
   void RegisterRequestComplete(const InspectorId request_id,
     const blink::ResourceType type, const ResponseMetadata& metadata,
     const std::string& resource_hash);
+  void RegisterRequestCompleteForDocument(const InspectorId request_id,
+    const int64_t size);
   void RegisterRequestError(const InspectorId request_id,
     const ResponseMetadata& metadata);
 
@@ -255,6 +260,8 @@ friend NodeHTMLElement;
     const RequestType type);
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
+  void WriteDocumentRequestIntoGraph(const blink::DOMNodeId initiator,
+    const DocumentRequest request);
 
   // Return true if this PageGraph instance is instrumenting the top level
   // frame tree.
@@ -294,6 +301,12 @@ friend NodeHTMLElement;
 
   // Non-owning reference to the HTML root of the document (i.e. <html>).
   NodeDOMRoot* html_root_node_;
+
+  // Information about the network request to the HTML root of the document.
+  // We need this separately from the RequestTracker because we create the
+  // initial DOM Root node immediately at the initialization of PageGraph,
+  // before the request occurs.
+  DocumentRequest root_request_record_;
 
   // Index structure for storing and looking up webapi nodes.
   // This map does not own the references.
