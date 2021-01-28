@@ -902,6 +902,8 @@ class BrowserViewController: UIViewController {
             self.presentVPNCallout()
         }
         
+        presentDefaultBrowserIntroScreen()
+        
         screenshotHelper.viewIsVisible = true
         screenshotHelper.takePendingScreenshots(tabManager.allTabs)
 
@@ -1073,6 +1075,26 @@ class BrowserViewController: UIViewController {
             nav.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
         }
         present(nav, animated: true)
+    }
+    
+    /// Whether or not to show the Default Browser intro callout. It's set at app launch in AppDelegate
+    var shouldShowIntroScreen = false
+
+    private func presentDefaultBrowserIntroScreen() {
+        if !shouldShowIntroScreen {
+            return
+        }
+        
+        shouldShowIntroScreen = false
+        
+        let vc = DefaultBrowserIntroCalloutViewController(theme: Theme.of(tabManager.selectedTab)) 
+        let idiom = UIDevice.current.userInterfaceIdiom
+        if #available(iOS 13.0, *) {
+            vc.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+        } else {
+            vc.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
+        }
+        present(vc, animated: true)
     }
 
     // THe logic for shouldShowWhatsNewTab is as follows: If we do not have the LatestAppVersionProfileKey in
