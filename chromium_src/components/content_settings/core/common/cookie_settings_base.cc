@@ -120,13 +120,20 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
 
-  if (!top_frame_origin || url::Origin::Create(url) == top_frame_origin)
+  const GURL first_party_url =
+      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+
+  if (!first_party_url.is_valid())
+    return false;
+
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          first_party_url, url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
   bool allow_3p =
       IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
-  bool allow_1p = IsFirstPartyAccessAllowed(
-      GetFirstPartyURL(site_for_cookies, top_frame_origin), this);
+  bool allow_1p = IsFirstPartyAccessAllowed(first_party_url, this);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
