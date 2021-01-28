@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.22.2](https://github.com/brave/brave-ios/releases/tag/v1.22.2)
+
+- Added the "navigator.globalPrivacyControl" property to express do-not-sell or share preference. ([#3133](https://github.com/brave/brave-ios/issues/3133))
+- Updated pre-populated search engine list in certain regions. ([#3177](https://github.com/brave/brave-ios/issues/3177))
+- Fixed startup database crash in certain cases. ([#3169](https://github.com/brave/brave-ios/issues/3169))
+- Fixed crash when deleting bookmarks in certain cases. ([#3194](https://github.com/brave/brave-ios/issues/3194))
+- Fixed crash when selecting tabs from the "Tab Manager" in certain cases. ([#3215](https://github.com/brave/brave-ios/issues/3215))
+
 ## [1.22.1](https://github.com/brave/brave-ios/releases/tag/v1.22.1)
 
 - Fixed Brave Core/Chromium framework causing increased storage usage. ([#3099](https://github.com/brave/brave-ios/issues/3099))
