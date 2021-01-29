@@ -161,7 +161,9 @@ class ErrorPageHelper {
                 "short_description": errDomain,
             ]
 
-            var actions = "<button onclick='webkit.messageHandlers.localRequestHelper.postMessage({ type: \"reload\" })'>\(Strings.errorPageReloadButtonTitle)</button>"
+            var actions = "<button onclick='webkit.messageHandlers.localRequestHelper.postMessage({" +
+                "\"securitytoken\": \"\(UserScriptManager.messageHandlerToken.uuidString)\"," +
+                "\"type\": \"reload\" })'>\(Strings.errorPageReloadButtonTitle)</button>"
 
             if errDomain == kCFErrorDomainCFNetwork as String {
                 if let code = CFNetworkErrors(rawValue: Int32(errCode)) {
@@ -170,7 +172,7 @@ class ErrorPageHelper {
             } else if errDomain == ErrorPageHelper.mozDomain {
                 if errCode == ErrorPageHelper.mozErrorDownloadsNotEnabled {
                     // Overwrite the normal try-again action.
-                    actions = "<button onclick='webkit.messageHandlers.errorPageHelperMessageManager.postMessage({type: \"\(messageOpenInSafari)\"})'>\(Strings.errorPageOpenInSafariButtonTitle)</button>"
+                    actions = "<button onclick='webkit.messageHandlers.errorPageHelperMessageManager.postMessage({\"securitytoken\": \"\(UserScriptManager.messageHandlerToken.uuidString)\", \"type\": \"\(messageOpenInSafari)\"})'>\(Strings.errorPageOpenInSafariButtonTitle)</button>"
                 }
                 errDomain = ""
             } else if certErrors.contains(errCode) {
@@ -189,10 +191,11 @@ class ErrorPageHelper {
                 variables["warning_advanced1"] = Strings.errorPagesAdvancedWarning1
                 variables["warning_advanced2"] = Strings.errorPagesAdvancedWarning2
                 variables["warning_actions"] =
-                    "<p><a href='javascript:webkit.messageHandlers.errorPageHelperMessageManager.postMessage({type: \"\(messageCertVisitOnce)\"})'>\(Strings.errorPagesVisitOnceButton)</button></p>"
+                    "<p><a href='javascript:webkit.messageHandlers.errorPageHelperMessageManager.postMessage({\"securitytoken\": \"\(UserScriptManager.messageHandlerToken.uuidString)\", \"type\": \"\(messageCertVisitOnce)\"})'>\(Strings.errorPagesVisitOnceButton)</button></p>"
             }
 
             variables["actions"] = actions
+            variables["security_token"] = UserScriptManager.messageHandlerToken.uuidString
 
             guard let unwrappedAsset = asset else {
                 log.error("Asset is nil")
@@ -326,10 +329,18 @@ extension ErrorPageHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+        guard let body = message.body as? [String: String] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+        
         if let errorURL = message.frameInfo.request.url, errorURL.isErrorPageURL,
-           let res = message.body as? [String: String],
            let originalURL = errorURL.originalURLFromErrorURL,
-           let type = res["type"] {
+           let type = body["type"] {
 
             switch type {
             case ErrorPageHelper.messageOpenInSafari:

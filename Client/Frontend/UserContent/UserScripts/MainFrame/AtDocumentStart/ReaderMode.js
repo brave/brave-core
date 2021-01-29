@@ -29,7 +29,7 @@ function checkReadability() {
   setTimeout(function() {
     if (document.location.href.match(readerModeURL)) {
       debug({Type: "ReaderModeStateChange", Value: "Active"});
-      webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: "Active"});
+      webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: "Active"}});
       return;
     }
 
@@ -38,8 +38,8 @@ function checkReadability() {
       // back/forward: the page will be cached and the result will still be there.
       if (readabilityResult && readabilityResult.content) {
         debug({Type: "ReaderModeStateChange", Value: "Available"});
-        webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: "Available"});
-        webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderContentParsed", Value: readabilityResult});
+        webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: "Available"}});
+        webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderContentParsed", Value: readabilityResult}});
         return;
       }
 
@@ -61,16 +61,18 @@ function checkReadability() {
       readabilityResult = readability.parse();
 
       // Sanitize the title to prevent a malicious page from inserting HTML in the `<title>`.
-      readabilityResult.title = escapeHTML(readabilityResult.title);
+      if (readabilityResult && readabilityResult.title !== undefined) {
+        readabilityResult.title = escapeHTML(readabilityResult.title);
+      }
 
       debug({Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"});
-      webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"});
-      webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderContentParsed", Value: readabilityResult});
+      webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"}});
+      webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderContentParsed", Value: readabilityResult}});
       return;
     }
 
     debug({Type: "ReaderModeStateChange", Value: "Unavailable"});
-    webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: "Unavailable"});
+    webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: "Unavailable"}});
   }, 100);
 }
 
@@ -80,7 +82,7 @@ function escapeHTML(string) {
     .replace(/\</g, "&lt;")
     .replace(/\>/g, "&gt;")
     .replace(/\"/g, "&quot;")
-    .replace(/\'/g, "&#039;"); 
+    .replace(/\'/g, "&#039;");
 }
 
 // Readerize the document. Since we did the actual readerization already in checkReadability, we
@@ -220,6 +222,6 @@ window.addEventListener("load", function(event) {
 window.addEventListener("pageshow", function(event) {
   // If this is an about:reader page that we are showing, fire an event to the native code
   if (document.location.href.match(readerModeURL)) {
-    webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderPageEvent", Value: "PageShow"});
+    webkit.messageHandlers.readerModeMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {Type: "ReaderPageEvent", Value: "PageShow"}});
   }
 });

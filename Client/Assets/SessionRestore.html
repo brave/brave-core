@@ -16,6 +16,8 @@
    * error pages so that they will redirect to the correct URLs when loaded.
    */
   (function () {
+      const SECURITY_TOKEN = "%SECURITY_TOKEN%"
+
       function getRestoreURL(url) {
           // If the url already points to an error page just return the url as is
           if (url.indexOf(document.location.origin + '/errors/error.html') === 0) {
@@ -43,8 +45,8 @@
       // For some reason (maybe a WebKit bug?), document.location still points to SessionRestore.html at this point,
       // so wait until the next tick when the location points to the correct index and URL.
       setTimeout(function () {
-          webkit.messageHandlers.localRequestHelper.postMessage({ type: "reload" });
-          webkit.messageHandlers.sessionRestoreHelper.postMessage({ name: "didRestoreSession" });
+          webkit.messageHandlers.localRequestHelper.postMessage({"securitytoken": SECURITY_TOKEN, "type": "reload" });
+          webkit.messageHandlers.sessionRestoreHelper.postMessage({"securitytoken": SECURITY_TOKEN, "name": "didRestoreSession" });
       }, 0);
   }) ();
 </script>

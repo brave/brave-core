@@ -19,7 +19,7 @@ window.__firefox__.includeOnce("ContextMenu", function() {
     if (!targetLink && !targetImage) {
       // No link or image was tapped, sending empty callback so the ContextMenu will know that it
       // should not show the menu(only text selection menu if applicable).
-      webkit.messageHandlers.contextMenuMessageHandler.postMessage(data);
+      webkit.messageHandlers.contextMenuMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": data});
       return;
     }
 
@@ -35,7 +35,7 @@ window.__firefox__.includeOnce("ContextMenu", function() {
     }
 
     if (data.link || data.image) {
-      webkit.messageHandlers.contextMenuMessageHandler.postMessage(data);
+      webkit.messageHandlers.contextMenuMessageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": data});
     }
   }, true);
 });

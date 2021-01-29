@@ -4,41 +4,43 @@
 
 "use strict";
 
-var $<downloadManager> = (function() {
-    function postMessage(msg) {
-        if (msg) {
-            webkit.messageHandlers.resourceDownloadManager.postMessage(msg);
-        }
-    }
-                               
-    function downloadPageResource(link) {
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = "arraybuffer";
-        xhr.onreadystatechange = function() {
-            if (this.readyState == XMLHttpRequest.DONE) {
-                if (this.status == 200) {
-                    var byteArray = new Uint8Array(this.response);
-                    var binaryString = new Array(byteArray.length);
+Object.defineProperty(window, "$<downloadManager>", {
+  value: {}
+})
 
-                    for (var i = 0; i < byteArray.length; ++i) {
-                        binaryString[i] = String.fromCharCode(byteArray[i]);
-                    }
+Object.defineProperty($<downloadManager>, "postMessage", {
+  value: function (msg) {
+      if (msg) {
+          webkit.messageHandlers.$<handler>.postMessage(msg);
+      }
+  }
+})
 
-                    var data = binaryString.join('');
-                    var base64 = window.btoa(data);
+Object.defineProperty($<downloadManager>, "download", {
+  value: function (link) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = "arraybuffer";
+      xhr.onreadystatechange = function() {
+          if (this.readyState == XMLHttpRequest.DONE) {
+              if (this.status == 200) {
+                  var byteArray = new Uint8Array(this.response);
+                  var binaryString = new Array(byteArray.length);
 
-                    postMessage({ "statusCode": this.status, "base64Data": base64 });
-                }
-                else {
-                    postMessage({ "statusCode": this.status, "base64Data": "" });
-                }
-            }
-        };
-        xhr.open("GET", link, true);
-        xhr.send(null);
-    };
-                    
-    return {
-        download: downloadPageResource
-    };
-})()
+                  for (var i = 0; i < byteArray.length; ++i) {
+                      binaryString[i] = String.fromCharCode(byteArray[i]);
+                  }
+
+                  var data = binaryString.join('');
+                  var base64 = window.btoa(data);
+
+                  $<downloadManager>.postMessage({ "statusCode": this.status, "base64Data": base64 });
+              }
+              else {
+                  $<downloadManager>.postMessage({ "statusCode": this.status, "base64Data": "" });
+              }
+          }
+      };
+      xhr.open("GET", link, true);
+      xhr.send(null);
+  }
+})

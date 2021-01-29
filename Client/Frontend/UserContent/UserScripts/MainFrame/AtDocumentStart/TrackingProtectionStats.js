@@ -37,7 +37,7 @@ function install() {
 
   function sendMessage(url, resourceType) {
     if (url) {
-      webkit.messageHandlers.trackingProtectionStats.postMessage({ url: url, resourceType: resourceType === undefined ? null : resourceType });
+      webkit.messageHandlers.trackingProtectionStats.postMessage({"securitytoken": SECURITY_TOKEN, "data": { url: url, resourceType: resourceType === undefined ? null : resourceType }});
     }
   }
 

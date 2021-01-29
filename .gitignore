@@ -93,3 +93,11 @@ yubikit.log
 # Fastlane Env
 .env
 .env.*
+
+# Packed Scripts
+Client/Assets/AllFramesAtDocumentStart.js
+Client/Assets/AllFramesAtDocumentEnd.js
+Client/Assets/MainFrameAtDocumentStart.js
+Client/Assets/MainFrameAtDocumentEnd.js
+Client/Assets/AllFramesAtDocumentStartSandboxed.js
+Client/Assets/AllFramesAtDocumentEndSandboxed.js

@@ -40,7 +40,16 @@ class RewardsReporting: TabContentScript {
         }
         
         do {
-            if let body = message.body as? [String: AnyObject] {
+            guard let body = message.body as? [String: AnyObject] else {
+                return
+            }
+            
+            if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+                log.debug("Missing required security token.")
+                return
+            }
+            
+            if let body = body["data"] as? [String: AnyObject] {
                 let json = try JSONSerialization.data(withJSONObject: body, options: [])
                 var content = try JSONDecoder().decode(Content.self, from: json)
                 

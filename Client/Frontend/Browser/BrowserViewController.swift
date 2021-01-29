@@ -1466,11 +1466,11 @@ class BrowserViewController: UIViewController {
             //Block all other contexts such as redirects, downloads, embed, linked, etc..
             if visitType == .bookmark {
                 if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
-                    webView.evaluateJavaScript(code, completionHandler: { _, error in
+                    webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
                         if let error = error {
                             log.error(error)
                         }
-                    })
+                    }
                 }
             }
         } else {
@@ -1481,7 +1481,7 @@ class BrowserViewController: UIViewController {
                 return
             }
 
-            tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+            tab.loadRequest(URLRequest(url: url))
         }
     }
 
@@ -1668,7 +1668,7 @@ class BrowserViewController: UIViewController {
             return
         }
         if NoImageModeHelper.isActivated {
-            webView.evaluateJavaScript("__firefox__.NoImageMode.setEnabled(true)", completionHandler: nil)
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.NoImageMode.setEnabled", args: ["true"])
         }
     }
 
@@ -1911,7 +1911,7 @@ class BrowserViewController: UIViewController {
             findInPageBar.endEditing(true)
             let tab = tab ?? tabManager.selectedTab
             guard let webView = tab?.webView else { return }
-            webView.evaluateJavaScript("__firefox__.findDone()", completionHandler: nil)
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.findDone")
             findInPageBar.removeFromSuperview()
             self.findInPageBar = nil
             updateViewConstraints()
@@ -1935,7 +1935,7 @@ class BrowserViewController: UIViewController {
                 // because that event wil not always fire due to unreliable page caching. This will either let us know that
                 // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
                 // ignore the result because we are being called back asynchronous when the readermode status changes.
-                webView.evaluateJavaScript("\(ReaderModeNamespace).checkReadability()", completionHandler: nil)
+                webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).checkReadability", sandboxed: false)
 
                 // Re-run additional scripts in webView to extract updated favicons and metadata.
                 runScriptsOnWebView(webView)
@@ -2565,12 +2565,12 @@ extension BrowserViewController: TabDelegate {
 
         let readerMode = ReaderMode(tab: tab)
         readerMode.delegate = self
-        tab.addContentScript(readerMode, name: ReaderMode.name())
+        tab.addContentScript(readerMode, name: ReaderMode.name(), sandboxed: false)
 
         // only add the logins helper if the tab is not a private browsing tab
         if !tab.isPrivate {
             let logins = LoginsHelper(tab: tab, profile: profile)
-            tab.addContentScript(logins, name: LoginsHelper.name())
+            tab.addContentScript(logins, name: LoginsHelper.name(), sandboxed: false)
         }
 
         let contextMenuHelper = ContextMenuHelper(tab: tab)
@@ -2578,7 +2578,7 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(contextMenuHelper, name: ContextMenuHelper.name())
 
         let errorHelper = ErrorPageHelper()
-        tab.addContentScript(errorHelper, name: ErrorPageHelper.name())
+        tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), sandboxed: false)
 
         let sessionRestoreHelper = SessionRestoreHelper(tab: tab)
         sessionRestoreHelper.delegate = self
@@ -2586,13 +2586,13 @@ extension BrowserViewController: TabDelegate {
 
         let findInPageHelper = FindInPageHelper(tab: tab)
         findInPageHelper.delegate = self
-        tab.addContentScript(findInPageHelper, name: FindInPageHelper.name())
+        tab.addContentScript(findInPageHelper, name: FindInPageHelper.name(), sandboxed: false)
 
         let noImageModeHelper = NoImageModeHelper(tab: tab)
         tab.addContentScript(noImageModeHelper, name: NoImageModeHelper.name())
         
         let printHelper = PrintHelper(tab: tab)
-        tab.addContentScript(printHelper, name: PrintHelper.name())
+        tab.addContentScript(printHelper, name: PrintHelper.name(), sandboxed: false)
 
         let customSearchHelper = CustomSearchHelper(tab: tab)
         tab.addContentScript(customSearchHelper, name: CustomSearchHelper.name())
@@ -2601,24 +2601,24 @@ extension BrowserViewController: TabDelegate {
         // let spotlightHelper = SpotlightHelper(tab: tab)
         // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
 
-        tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name())
+        tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name(), sandboxed: false)
 
         tab.contentBlocker.setupTabTrackingProtection()
-        tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name())
+        tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name(), sandboxed: false)
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
         
-        tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name())
+        tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name(), sandboxed: false)
         
-        tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name())
+        tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name(), sandboxed: false)
 
         if YubiKitDeviceCapabilities.supportsMFIAccessoryKey {
-            tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name())
+            tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name(), sandboxed: false)
         }
         
-        tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name())
+        tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name(), sandboxed: false)
         
-        tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name())
+        tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name(), sandboxed: false)
         
         tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
         tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
@@ -2930,7 +2930,7 @@ extension BrowserViewController: WKUIDelegate {
                     window.alert=window.confirm=window.prompt=function(n){},
                     [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
                     """
-        webView.evaluateJavaScript(script, completionHandler: nil)
+        webView.evaluateSafeJavaScript(functionName: script, sandboxed: false, asFunction: false)
     }
     
     func handleAlert<T: JSAlertInfo>(webView: WKWebView, alert: inout T, completionHandler: @escaping () -> Void) {
@@ -3410,7 +3410,7 @@ extension BrowserViewController {
         guard let webView = tabManager.selectedTab?.webView else {
             return
         }
-        webView.evaluateJavaScript("__firefox__.searchQueryForField()") { (result, _) in
+        webView.evaluateSafeJavaScript(functionName: "__firefox__.searchQueryForField", sandboxed: false) { (result, _) in
             guard let searchQuery = result as? String, let favicon = self.tabManager.selectedTab!.displayFavicon else {
                 //Javascript responded with an incorrectly formatted message. Show an error.
                 let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
@@ -3467,7 +3467,7 @@ extension BrowserViewController: KeyboardHelperDelegate {
         guard let webView = tabManager.selectedTab?.webView else {
             return
         }
-        webView.evaluateJavaScript("__firefox__.searchQueryForField()") { (result, _) in
+        webView.evaluateSafeJavaScript(functionName: "__firefox__.searchQueryForField", sandboxed: false) { (result, _) in
             guard let _ = result as? String else {
                 return
             }
@@ -3573,8 +3573,7 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageHelperDelegate
 
     fileprivate func find(_ text: String, function: String) {
         guard let webView = tabManager.selectedTab?.webView else { return }
-        let escaped = text.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
-        webView.evaluateJavaScript("__firefox__.\(function)(\"\(escaped)\")", completionHandler: nil)
+        webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], sandboxed: false)
     }
 
     func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateCurrentResult currentResult: Int) {

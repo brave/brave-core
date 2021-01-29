@@ -2,7 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import Shared
 import WebKit
+
+private let log = Logger.browserLogger
 
 protocol ContextMenuHelperDelegate: AnyObject {
     func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didLongPressElements elements: ContextMenuHelper.Elements, gestureRecognizer: UIGestureRecognizer)
@@ -121,7 +124,16 @@ extension ContextMenuHelper: TabContentScript {
             return
         }
         
-        guard let data = message.body as? [String: AnyObject] else {
+        guard let body = message.body as? [String: AnyObject] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+        
+        guard let data = body["data"] as? [String: AnyObject] else {
             return
         }
         

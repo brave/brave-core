@@ -24,10 +24,7 @@ window.__firefox__.includeOnce("FocusHelper", function() {
     // We should also not fire for buttons..
     if (elementType === "INPUT" || elementType === "TEXTAREA" || event.target.isContentEditable) {
       if (!isButton(event.target)) {
-        webkit.messageHandlers.focusHelper.postMessage({
-          eventType,
-          elementType
-        });
+        webkit.messageHandlers.focusHelper.postMessage({"securitytoken": SECURITY_TOKEN, "data": {eventType, elementType}});
       }
     }
   };

@@ -909,7 +909,7 @@ extension TabManager: WKNavigationDelegate {
         tab.noImageMode = isNoImageMode
         
         if !tab.contentBlocker.isEnabled {
-            webView.evaluateJavaScript("window.__firefox__.TrackingProtectionStats.setEnabled(false, \(UserScriptManager.securityToken))", completionHandler: nil)
+            webView.evaluateSafeJavaScript(functionName: "window.__firefox__.TrackingProtectionStats.setEnabled", args: [false, UserScriptManager.securityToken], sandboxed: false)
         }
     }
 

@@ -10,6 +10,7 @@ import BraveShared
 import BraveUI
 import Storage
 import XCGLogger
+import WebKit
 
 private let log = Logger.rewardsLogger
 
@@ -262,19 +263,20 @@ extension Tab {
         
         let group = DispatchGroup()
         group.enter()
-        webView.evaluateJavaScript("document.documentElement.outerHTML.toString()", completionHandler: { html, _ in
+        
+        webView.evaluateSafeJavaScript(functionName: "document.documentElement.outerHTML.toString") { html, _ in
             htmlBlob = html as? String
             group.leave()
-        })
+        }
         
         if shouldClassifyLoadsForAds {
             group.enter()
-            webView.evaluateJavaScript("document.body.innerText", completionHandler: { text, _ in
+            webView.evaluateSafeJavaScript(functionName: "document.body.innerText", asFunction: false) { text, _ in
                 // Get the list of words in the page and join them together with a space
                 // to send to the classifier
                 classifierText = (text as? String)?.words.joined(separator: " ")
                 group.leave()
-            })
+            }
         }
         
         group.notify(queue: .main) {

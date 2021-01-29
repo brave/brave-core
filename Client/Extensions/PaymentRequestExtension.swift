@@ -19,7 +19,7 @@ class PaymentRequestExtension: NSObject {
     fileprivate weak var tab: Tab?
     fileprivate weak var rewards: BraveRewards?
     fileprivate var token: String
-    
+
     fileprivate enum PaymentRequestErrors: String {
         case notSupportedError = "NotSupportedError"
         case abortError = "AbortError"
@@ -44,16 +44,16 @@ extension PaymentRequestExtension: TabContentScript {
     }
     
     func scriptMessageHandlerName() -> String? {
-        return PaymentRequestExtension.name()
+        return "\(PaymentRequestExtension.name())\(UserScriptManager.messageHandlerTokenString)"
     }
     
     private func sendPaymentRequestError(errorName: String, errorMessage: String) {
         ensureMainThread {
-            self.tab?.webView?.evaluateJavaScript("PaymentRequestCallback\(self.token).paymentreq_postCreate('', '\(errorName)', '\(errorMessage)')") { _, error in
+            self.tab?.webView?.evaluateSafeJavaScript(functionName: "PaymentRequestCallback\(self.token).paymentreq_postCreate", args: ["", errorName, errorMessage]) { _, error in
                     if error != nil {
                         log.error(error)
                     }
-                }
+            }
         }
     }
     
@@ -93,10 +93,10 @@ extension PaymentRequestExtension: TabContentScript {
                     }
                 case .completed(let orderId):
                     ensureMainThread {
-                        self.tab?.webView?.evaluateJavaScript("PaymentRequestCallback\(self.token).paymentreq_postCreate('\(orderId)', '', '')") { _, error in
-                            if error != nil {
-                                log.error(error)
-                            }
+                        self.tab?.webView?.evaluateSafeJavaScript(functionName: "PaymentRequestCallback\(self.token).paymentreq_postCreate", args: [orderId, "", ""]) { _, error in
+                                if error != nil {
+                                    log.error(error)
+                                }
                         }
                     }
                 }

@@ -36,7 +36,16 @@ class LoginsHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        guard var res = message.body as? [String: AnyObject] else { return }
+        guard let body = message.body as? [String: AnyObject] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+
+        guard var res = body["data"] as? [String: AnyObject] else { return }
         guard let type = res["type"] as? String else { return }
 
         // Check to see that we're in the foreground before trying to check the logins. We want to
@@ -209,9 +218,15 @@ class LoginsHelper: TabContentScript {
             }
 
             let json = JSON(jsonObj)
-            let src = "window.__firefox__.logins.inject(\(json.stringValue()!))"
-            self.tab?.webView?.evaluateJavaScript(src, completionHandler: { (obj, err) -> Void in
-            })
+            guard let jsonString = json.stringValue() else {
+                return
+            }
+            
+            self.tab?.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.logins.inject", args: [jsonString], sandboxed: false, escapeArgs: false) { (obj, err) -> Void in
+                if err != nil {
+                    log.debug(err)
+                }
+            }
         }
     }
 }

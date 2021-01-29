@@ -3,7 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
+import Shared
 import WebKit
+
+private let log = Logger.browserLogger
 
 protocol SessionRestoreHelperDelegate: class {
     func sessionRestoreHelper(_ helper: SessionRestoreHelper, didRestoreSessionForTab tab: Tab)
@@ -22,8 +25,17 @@ class SessionRestoreHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        if let tab = tab, let params = message.body as? [String: AnyObject] {
-            if params["name"] as? String == "didRestoreSession" {
+        guard let body = message.body as? [String: AnyObject] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+        
+        if let tab = tab {
+            if body["name"] as? String == "didRestoreSession" {
                 DispatchQueue.main.async {
                     self.delegate?.sessionRestoreHelper(self, didRestoreSessionForTab: tab)
                 }

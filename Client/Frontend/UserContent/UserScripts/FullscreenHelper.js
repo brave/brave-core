@@ -12,23 +12,15 @@
     error: ["fullscreenerror", "webkitfullscreenerror", "mozfullscreenerror", "MSFullscreenError"]
 }*/
 
-var $<isFullscreenSupportedNatively> = document.fullscreenEnabled ||
-                                    document.webkitFullscreenEnabled ||
-                                    document.mozFullScreenEnabled ||
-                                    document.msFullscreenEnabled ? true : false;
+Object.defineProperty(window, "isFullscreenSupportedNatively", {
+  value: document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled ? true : false
+});
 
-var $<documentHasFullscreenFunctions> = document.documentElement.requestFullscreen ||
-                                     document.documentElement.webkitRequestFullscreen ||
-                                     document.documentElement.mozRequestFullScreen ||
-                                     document.documentElement.msRequestFullscreen ||
-                                     document.requestFullscreen ||
-                                     document.webkitRequestFullscreen ||
-                                     document.mozRequestFullScreen ||
-                                     document.msRequestFullscreen ? true : false;
+Object.defineProperty(window, "videosSupportFullscreen", {
+  value:  HTMLVideoElement.prototype.webkitEnterFullscreen !== undefined
+});
 
-var $<videosSupportFullscreen> = HTMLVideoElement.prototype.webkitEnterFullscreen !== undefined;
-
-if (!$<isFullscreenSupportedNatively> && $<videosSupportFullscreen> && !/mobile/i.test(navigator.userAgent)) {
+if (!isFullscreenSupportedNatively && videosSupportFullscreen && !/mobile/i.test(navigator.userAgent)) {
     
     HTMLElement.prototype.requestFullscreen = function() {
         if (this.webkitRequestFullscreen !== undefined) {

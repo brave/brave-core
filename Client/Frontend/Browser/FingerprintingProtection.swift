@@ -19,7 +19,7 @@ class FingerprintingProtection: TabContentScript {
     }
     
     func scriptMessageHandlerName() -> String? {
-        return "fingerprintingProtection"
+        return "FingerprintingProtection\(UserScriptManager.messageHandlerTokenString)"
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {

@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="CertError.css" type="text/css" media="all" />
 
     <script type="application/javascript">
+      const SECURITY_TOKEN = "%security_token%"
       // If the user swipes back and forth to this tab, we want to make sure we make an attempt to reload the original page.
       var fresh = true;
       window.addEventListener('popstate', function () {
         if (fresh)
           fresh = false;
         else
-          webkit.messageHandlers.localRequestHelper.postMessage({ type: "reload" });
+          webkit.messageHandlers.localRequestHelper.postMessage({"securitytoken": SECURITY_TOKEN, "type": "reload" });
       });
     </script>
   </head>

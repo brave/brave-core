@@ -14,11 +14,14 @@ struct SessionRestoreHandler {
         webServer.registerHandlerForMethod("GET", module: "about", resource: "sessionrestore") { _ in
             if let sessionRestorePath = Bundle.main.path(forResource: "SessionRestore", ofType: "html") {
                 do {
-                    let sessionRestoreString = try String(contentsOfFile: sessionRestorePath)
+                    var sessionRestoreString = try String(contentsOfFile: sessionRestorePath)
 
                     defer {
                         NotificationCenter.default.post(name: .didRestoreSession, object: self)
                     }
+
+                    let securityToken = UserScriptManager.messageHandlerToken.uuidString
+                    sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SECURITY_TOKEN%", with: securityToken, options: .literal)
 
                     return GCDWebServerDataResponse(html: sessionRestoreString)
                 } catch _ {}

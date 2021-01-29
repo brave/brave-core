@@ -2,31 +2,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-// FIDO - Low Level API
-var $<u2f> = window.u2f
-
-// Default string for toString outputs
-var defaultU2FString = "function () { [native code] }";
-
-
 try {
     var sameOrigin = (window.top.location.origin == window.location.origin)
     if (!sameOrigin) {
-        $<u2f> = {}
+        window.u2f = {}
     }
 } catch (e) {
-    $<u2f> = {}
+    window.u2f = {}
 }
 
-Object.defineProperty($<u2f>, 'receiveChannel', {
+Object.defineProperty(window.u2f, 'receiveChannel', {
   value: new MessageChannel()
 })
 
-Object.defineProperty($<u2f>, 'sendChannel', {
+Object.defineProperty(window.u2f, 'sendChannel', {
   value: new MessageChannel()
 })
 
-Object.defineProperty($<u2f>, 'low_level_id', {
+Object.defineProperty($<u2f-internal>, 'low_level_id', {
   value: 1
 })
 
@@ -36,7 +29,7 @@ Object.defineProperty(window, 'js_api_version', {
 
 // Some implementations of low level legacy APIs use these constants
 // we define the constants here to maintain consistency
-Object.defineProperty($<u2f>, 'ErrorCodes', {
+Object.defineProperty($<u2f-internal>, 'ErrorCodes', {
   value: {
     'U2F_REGISTER_REQUEST': 'u2f_register_request',
     'U2F_SIGN_REQUEST': 'u2f_sign_request',
@@ -45,7 +38,7 @@ Object.defineProperty($<u2f>, 'ErrorCodes', {
   }
 })
 
-Object.defineProperty($<u2f>, 'MessageTypes', {
+Object.defineProperty($<u2f-internal>, 'MessageTypes', {
   value: {
     'OK': 0,
     'OTHER_ERROR': 1,
@@ -56,11 +49,11 @@ Object.defineProperty($<u2f>, 'MessageTypes', {
   }
 })
 
-Object.defineProperty($<u2f>, 'postLowLevelRegister', {
+Object.defineProperty($<u2f-internal>, 'postLowLevelRegister', {
   value: function (requestId, fromNative, version, registerationData, clientData, errorCode, errorMessage) {
     if (fromNative) {
-      caller = window.top.$<u2f>.caller[handle]
-      caller.$<u2f>.postLowLevelRegister(requestId, false, version, registerationData, clientData, errorCode, errorMessage);
+      caller = window.top.$<u2f-internal>.caller[handle]
+      caller.$<u2f-internal>.postLowLevelRegister(requestId, false, version, registerationData, clientData, errorCode, errorMessage);
       return;
     }
     var response = {}
@@ -76,19 +69,19 @@ Object.defineProperty($<u2f>, 'postLowLevelRegister', {
     }
 
     response = {
-      type: $<u2f>.MessageTypes.U2F_REGISTER_RESPONSE,
+      type: $<u2f-internal>.MessageTypes.U2F_REGISTER_RESPONSE,
       requestId: requestId,
       responseData: registerResponse
     }
-    $<u2f>.sendChannel.port1.postMessage(response)
+    window.u2f.sendChannel.port1.postMessage(response)
   }
 })
 
-Object.defineProperty($<u2f>, 'postLowLevelSign', {
+Object.defineProperty($<u2f-internal>, 'postLowLevelSign', {
   value: function (requestId, fromNative, keyHandle, signatureData, clientData, errorCode, errorMessage) {
     if (fromNative) {
-      caller = window.top.$<u2f>.caller[handle]
-      caller.$<u2f>.postLowLevelSign(handle, false, version, registerationData, clientData, errorCode, errorMessage);
+      caller = window.top.$<u2f-internal>.caller[handle]
+      caller.window.$<u2f-internal>.postLowLevelSign(handle, false, version, registerationData, clientData, errorCode, errorMessage);
       return;
     }
 
@@ -105,30 +98,30 @@ Object.defineProperty($<u2f>, 'postLowLevelSign', {
     }
 
     response = {
-      type: $<u2f>.MessageTypes.U2F_SIGN_RESPONSE,
+      type: $<u2f-internal>.MessageTypes.U2F_SIGN_RESPONSE,
       requestId: requestId,
       responseData: signResponse
     }
-    $<u2f>.sendChannel.port1.postMessage(response)
+    window.u2f.sendChannel.port1.postMessage(response)
   }
 })
 
-Object.defineProperty($<u2f>, 'getPortSingleton_', {
+Object.defineProperty($<u2f-internal>, 'getPortSingleton_', {
   value: function (callback) {
-    $<u2f>.sendChannel.port1.onmessage = u2f.responseHandler_
-    $<u2f>.sendChannel.port2.onmessage = u2f.responseHandler_
-    window.top.$<u2f>.caller[handle] = window
+    window.u2f.sendChannel.port1.onmessage = u2f.responseHandler_
+    window.u2f.sendChannel.port2.onmessage = u2f.responseHandler_
+    window.top.$<u2f-internal>.caller[handle] = window
 
-    callback($<u2f>.receiveChannel.port1)
+    callback(window.u2f.receiveChannel.port1)
   }
 })
 
-$<u2f>.receiveChannel.port2.onmessage = function (e) {
-  const handle = $<u2f>.low_level_id++
+window.u2f.receiveChannel.port2.onmessage = function (e) {
+  const handle = $<u2f-internal>.low_level_id++
   webkit.messageHandlers.$<handler>.postMessage({ name: 'fido-low-level', handle: handle, data: JSON.stringify(e.data) })
 }
 
-Object.defineProperty($<u2f>.receiveChannel.port2.onmessage, 'toString', {
+Object.defineProperty(window.u2f.receiveChannel.port2.onmessage, 'toString', {
     value: function () {
         return defaultU2FString
     }
@@ -137,9 +130,9 @@ Object.defineProperty($<u2f>.receiveChannel.port2.onmessage, 'toString', {
 try {
     var sameOrigin = (window.top.location.origin == window.location.origin)
     if (!sameOrigin) {
-        $<u2f> = undefined
+        window.u2f = undefined
     }
 } catch (e) {
-    $<u2f> = undefined
+    window.u2f = undefined
 }
 

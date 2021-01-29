@@ -493,6 +493,127 @@ class TabSessionTests: XCTestCase {
         wait(for: [dataStoreExpectation], timeout: maxTimeout)
     }
     
+    func testIsSecretTokenAvailable() {
+        let url = URL(string: "https://www.brave.com")!
+        let expectation = self.expectation(description: "No secret tokens found")
+
+        var webViewNavigationAdapter = WebViewNavigationAdapter()
+        self.tabManager.addTabsForURLs([url], zombie: false, isPrivate: false)
+        
+        let javascript =
+        """
+        (function() {
+           var found = ''
+           var parsed = []
+
+           // search all user known functions for tokens
+           var functions = [
+             navigator.credentials.create,
+             navigator.credentials.get
+           ]
+
+           // search all enumerable objects for tokens
+           var objects = [
+             document,
+             registerResponse,
+             signResponse,
+             window,
+             navigator.credentials
+           ]
+
+           function isTokenPresent(value) {
+             if (typeof value == "undefined" || typeof value.indexOf == "undefined") {
+               return false;
+             }
+             if (value.indexOf("\(UserScriptManager.messageHandlerToken)") >= 0 || value.indexOf("\(UserScriptManager.messageHandlerTokenString)") >= 0 || value.indexOf("\(UserScriptManager.securityToken)") >= 0 || value.indexOf("\(UserScriptManager.securityTokenString)") >= 0) {
+               return true;
+             }
+             return false;
+           }
+
+           function secretTokensInObject(obj) {
+             if (isTokenPresent(obj.name) || isTokenPresent(obj.toString())) {
+               return '' + obj
+             }
+             for (const [key, value] of Object.entries(obj)) {
+               if (isTokenPresent(key + '') || isTokenPresent(value + '')) {
+                 return key + ': ' + value;
+               }
+
+               if (typeof value == 'function' && isTokenPresent(value.toString())) {
+                 return 'function: ' + value
+               }
+
+               if (typeof value == 'object' && value != null) {
+                 if (isTokenPresent(value.constructor.name)) {
+                   return 'Object: ' + value.constructor.name
+                 } else if (value != obj && parsed.indexOf(value) == -1 && objects.indexOf(value) == -1) {
+                   objects.push(value)
+                 }
+               }
+             }
+             parsed.push(obj)
+             return '';
+           }
+
+           function secretTokensInFunctions(func) {
+             if (isTokenPresent(func.toString())) {
+               return func.toString();
+             }
+             return ''
+           }
+
+           while (objects.length > 0 && found.length == 0) {
+             found = secretTokensInObject(objects.shift())
+           }
+
+           while (functions.length > 0 && found.length == 0) {
+             found = secretTokensInFunctions(functions.shift())
+           }
+           return found
+         })();
+        """
+        
+        let group = DispatchGroup()
+        for tab in self.tabManager.allTabs {
+            // include all scripts
+            tab.userScriptManager?.isFingerprintingProtectionEnabled = true
+            tab.userScriptManager?.isU2FEnabled = true
+            tab.userScriptManager?.isCookieBlockingEnabled = true
+                        
+            group.enter()
+        }
+            
+        webViewNavigationAdapter = WebViewNavigationAdapter(didFailListener: { _ in
+            group.leave()
+        }, didFinishListener: {
+            group.leave()
+        })
+            
+        self.tabManager.addNavigationDelegate(webViewNavigationAdapter)
+            
+        group.notify(queue: .main) {
+            let tab = self.tabManager.selectedTab
+            guard let webView = tab?.webView else {
+                XCTFail("WebView is not created yet")
+                return
+            }
+            webView.evaluateSafeJavaScript(functionName: javascript, sandboxed: false,  asFunction: false) { result, error in
+                guard let keys = result as? String else {
+                    XCTFail("Javascript error while finding secret tokens")
+                    expectation.fulfill()
+                    return
+                }
+                if !keys.isEmpty {
+                    XCTFail("Secret tokens found!" + keys)
+                }
+                expectation.fulfill()
+            }
+        }
+        
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
     func testTabsNormalToPrivate() {
         let dataStoreExpectation = XCTestExpectation(description: "dataStorePersistence")
         var webViewNavigationAdapter = WebViewNavigationAdapter()
