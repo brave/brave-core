@@ -5,7 +5,7 @@ index 1ffd697d0a6882f8e2fa4807be0367881e2584f9..7032f99c0a3fcf18e348d685b57caf02
 @@ -404,7 +404,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
      NOTREACHED();
    }
-
+ 
 -  std::unique_ptr<Profile> profile = base::WrapUnique(new ProfileImpl(
 +  std::unique_ptr<Profile> profile = base::WrapUnique(new BraveProfileImpl(
        path, delegate, create_mode, creation_time, io_task_runner));

@@ -4,10 +4,10 @@ index 69290d5f173cd36b8e4edcae26788656c8468371..254f8b7aace9bb80a634e31a07bd18d3
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 @@ -341,7 +341,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
              new ArrayList<>();
-
+ 
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());
 +        mIntentHandler = new org.chromium.chrome.browser.BraveIntentHandler(this, createIntentHandlerDelegate());
      }
-
+ 
      @Override

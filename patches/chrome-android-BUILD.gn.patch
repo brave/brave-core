@@ -8,14 +8,14 @@ index 62919a64444284bb42a806e050f1d5b398c28ee8..270e30f3030511ba5664a0d31464a392
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
-
+ 
  if (enable_vr) {
 @@ -544,6 +545,7 @@ android_library("chrome_java") {
    ]
-
+ 
    deps += feed_deps
 +  deps += brave_chrome_java_deps
-
+ 
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
 @@ -573,6 +575,7 @@ android_library("chrome_java") {
@@ -23,7 +23,7 @@ index 62919a64444284bb42a806e050f1d5b398c28ee8..270e30f3030511ba5664a0d31464a392
      "//net:effective_connection_type_java",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
-
+ 
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
 @@ -694,6 +697,7 @@ group("jni_headers") {
@@ -32,7 +32,7 @@ index 62919a64444284bb42a806e050f1d5b398c28ee8..270e30f3030511ba5664a0d31464a392
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
-
+ 
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
 @@ -1864,6 +1868,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",

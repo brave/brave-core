@@ -7,6 +7,6 @@ index 8708c2aa33f30270c4d66bd0cb2b02d0b103aa5e..92cdca203c78be635fe17f2c54914dc1
        "android/java/src/org/chromium/base/task/TaskTraitsExtensionDescriptor.java",
      ]
 +    sources += brave_java_base_sources
-
+ 
      annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
-
+ 

@@ -18,7 +18,7 @@ index 030edf26c02cb90bae5a4e26b34a12f4cf583640..c7b8cfe8dc88988decffa319509cb4c5
      {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
 -     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
 +     "https://no-thanks.invalid"}};
-
+ 
  const FeatureEntry::Choice kPassiveListenersChoices[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
 @@ -7019,6 +7019,7 @@ const FeatureEntry kFeatureEntries[] = {
@@ -27,5 +27,5 @@ index 030edf26c02cb90bae5a4e26b34a12f4cf583640..c7b8cfe8dc88988decffa319509cb4c5
      // AboutFlagsHistogramTest unit test to verify this process).
 +    BRAVE_FEATURE_ENTRIES
  };
-
+ 
  class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {

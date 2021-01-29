@@ -7,6 +7,6 @@ index 4bb162a5dd33589325b7c6d678176e1f7de63bde..edee68d1ad0526fd162ccb2734106ccf
      ]
    }
 +  sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps
-
+ 
    if (is_android) {
      sources += [
