@@ -10,3 +10,4 @@ index 77910b96039f26300d99c1f8979e655e9f5517a8..563c41d95f208886079381a619e37233
 +    avatar_ = AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_));
      avatar_->SetVisible(show_avatar_toolbar_button);
    }
+ 

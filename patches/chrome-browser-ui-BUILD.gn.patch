@@ -9,7 +9,7 @@ index 39d06da14ec228f58c0e69439121cd7a9c3db251..456e06d746af986c9f2c1a9ae8898d36
 +  deps+= [ "//brave/browser/ui" ]
    allow_circular_includes_from +=
        [ "//chrome/browser/ui/webui/bluetooth_internals" ]
-
+ 
 @@ -3295,10 +3296,13 @@ static_library("ui") {
        ]
        deps += [ "//google_update" ]

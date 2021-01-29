@@ -1,16 +1,16 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index 99b2dbe228acbe6a8f073d1e20e1919217171859..48079b6141005bc50522ea42d53cbfe9d9e10302 100644
+index 5aec493bedba6707efe0fca36693bc25f69dcb3a..88f4db67c3db25ccb57098cefa0b6bcd7cbd8743 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
-@@ -275,6 +275,7 @@ void RestrictedCookieManager::GetAllForUrl(
+@@ -278,6 +278,7 @@ void RestrictedCookieManager::GetAllForUrl(
    //                                 removing deprecation warnings.
    net_options.set_return_excluded_cookies();
-
+ 
 +  BRAVE_GETALLFORURL
    cookie_store_->GetCookieListWithOptionsAsync(
        url, net_options,
        base::BindOnce(&RestrictedCookieManager::CookieListToGetAllForUrlCallback,
-@@ -415,6 +416,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
+@@ -418,6 +419,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
    net::CookieOptions options = MakeOptionsForSet(
        role_, url, site_for_cookies, isolation_info_, cookie_settings(),
        cookie_store_->cookie_access_delegate());

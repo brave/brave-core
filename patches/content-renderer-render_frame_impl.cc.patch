@@ -10,3 +10,4 @@ index 9a143cc6fd2b180212f65c53ba2b8f5d34365a25..8b8e86f3b9c0fcaea29c2e11399d370b
 +    return true;
    WebLocalFrame* main_frame =
        render_view_->GetWebView()->MainFrame()->ToWebLocalFrame();
+ 
