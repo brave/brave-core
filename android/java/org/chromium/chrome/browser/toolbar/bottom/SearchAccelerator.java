@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStat
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.TintObserver;
+import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.toolbar.ToolbarColors;
 import org.chromium.ui.widget.ChromeImageButton;
 
@@ -95,7 +96,7 @@ class SearchAccelerator extends ChromeImageButton
     private void updateBackground() {
         if (mThemeColorProvider == null || mIncognitoStateProvider == null) return;
 
-        mBackground.setColorFilter(ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
+        mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
                                            mResources, mThemeColorProvider.getThemeColor(),
                                            mIncognitoStateProvider.isIncognitoSelected()
                                                    && mThemeColorProvider.useLight()),
