@@ -38,9 +38,13 @@ public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
     private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
+    private static final String PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE =
+            "next_set_default_browser_modal_date";
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
+    private static final String PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A =
+            "show_default_browser_modal_after_p3a";
     public static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
     public static final String ONBOARDING_TYPE = "onboarding_type";
@@ -230,6 +234,26 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.putLong(PREF_NEXT_CROSS_PROMO_MODAL_DATE, nextDate);
         sharedPreferencesEditor.apply();
     }
+
+    public long getNextSetDefaultBrowserModalDate() {
+        return mSharedPreferences.getLong(PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE, 0);
+    }
+
+    public void setNextSetDefaultBrowserModalDate(long nextDate) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE, nextDate);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean shouldShowDefaultBrowserModalAfterP3A() {
+        return mSharedPreferences.getBoolean(PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A, false);
+    }
+
+    public void setShowDefaultBrowserModalAfterP3A(boolean shouldShow) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A, shouldShow);
+        sharedPreferencesEditor.apply();
+    };
 
     public void setCrossPromoModalShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();

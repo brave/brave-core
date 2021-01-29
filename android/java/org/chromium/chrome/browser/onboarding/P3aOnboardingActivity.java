@@ -38,7 +38,6 @@ public class P3aOnboardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p3a_onboarding);
-        OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
@@ -72,6 +71,8 @@ public class P3aOnboardingActivity extends AppCompatActivity {
                         && BraveActivity.getBraveActivity() != null) {
                     BraveActivity.getBraveActivity().showOnboardingV2(false);
                 }
+                OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
+                OnboardingPrefManager.getInstance().setShowDefaultBrowserModalAfterP3A(true);
                 finish();
             }
         });

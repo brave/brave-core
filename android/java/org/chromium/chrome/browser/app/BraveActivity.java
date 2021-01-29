@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.BraveSyncReflectionUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
+import org.chromium.chrome.browser.SetDefaultBrowserActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -120,6 +121,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String OPEN_URL = "open_url";
 
     private static final int DAYS_4 = 4;
+    private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
 
     /**
@@ -354,6 +356,38 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             openRewardsPanel();
             BraveRewardsHelper.setRewardsOnboardingModalShown(true);
         }
+
+        if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_5);
+            OnboardingPrefManager.getInstance().setNextSetDefaultBrowserModalDate(
+                    calender.getTimeInMillis());
+        }
+        checkSetDefaultBrowserModal();
+    }
+
+    private void checkSetDefaultBrowserModal() {
+        boolean shouldShowDefaultBrowserModal =
+                (OnboardingPrefManager.getInstance().getNextSetDefaultBrowserModalDate() > 0
+                        && System.currentTimeMillis()
+                                > OnboardingPrefManager.getInstance()
+                                          .getNextSetDefaultBrowserModalDate());
+        boolean shouldShowDefaultBrowserModalAfterP3A =
+                OnboardingPrefManager.getInstance().shouldShowDefaultBrowserModalAfterP3A();
+        if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)
+                && (shouldShowDefaultBrowserModalAfterP3A || shouldShowDefaultBrowserModal)) {
+            Intent setDefaultBrowserIntent = new Intent(this, SetDefaultBrowserActivity.class);
+            setDefaultBrowserIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(setDefaultBrowserIntent);
+            if (shouldShowDefaultBrowserModal) {
+                OnboardingPrefManager.getInstance().setNextSetDefaultBrowserModalDate(0);
+            }
+            if (shouldShowDefaultBrowserModalAfterP3A) {
+                OnboardingPrefManager.getInstance().setShowDefaultBrowserModalAfterP3A(false);
+            }
+        }
     }
 
     private void checkForYandexSE() {
@@ -477,7 +511,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return ContextUtils.getAppSharedPreferences().getBoolean(PREF_CLOSE_TABS_ON_EXIT, false);
     }
 
-    private void handleBraveSetDefaultBrowserDialog() {
+    public void handleBraveSetDefaultBrowserDialog() {
         /* (Albert Wang): Default app settings didn't get added until API 24
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
