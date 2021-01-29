@@ -15,9 +15,11 @@ class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinato
     private boolean mIsBottomToolbarVisible;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
 
-    BraveTabSwitcherModeTTCoordinatorPhone(
-            ViewStub tabSwitcherToolbarStub, MenuButtonCoordinator menuButtonCoordinator) {
-        super(tabSwitcherToolbarStub, menuButtonCoordinator);
+    BraveTabSwitcherModeTTCoordinatorPhone(ViewStub tabSwitcherToolbarStub,
+            MenuButtonCoordinator menuButtonCoordinator, boolean isGridTabSwitcherEnabled,
+            boolean isTabToGtsAnimationEnabled) {
+        super(tabSwitcherToolbarStub, menuButtonCoordinator, isGridTabSwitcherEnabled,
+                isTabToGtsAnimationEnabled);
         mBraveMenuButtonCoordinator = menuButtonCoordinator;
     }
 

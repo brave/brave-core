@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.toolbar.top;
 import android.content.Context;
 
 import org.chromium.base.Callback;
+import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -49,14 +50,17 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> identityDiscStateSupplier,
             Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
-            Supplier<ResourceManager> resourceManagerSupplier) {
+            Supplier<ResourceManager> resourceManagerSupplier, BooleanSupplier isInVrSupplier,
+            boolean isGridTabSwitcherEnabled, boolean isTabToGtsAnimationEnabled,
+            boolean isStartSurfaceEnabled) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homeButtonVisibilitySupplier,
                 identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
-                startSurfaceSupplier, resourceManagerSupplier);
+                startSurfaceSupplier, resourceManagerSupplier, isInVrSupplier,
+                isGridTabSwitcherEnabled, isTabToGtsAnimationEnabled, isStartSurfaceEnabled);
 
         mBraveToolbarLayout = toolbarLayout;
 
@@ -64,7 +68,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             if (!StartSurfaceConfiguration.isStartSurfaceEnabled()) {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
-                        overviewModeMenuButtonCoordinator);
+                        overviewModeMenuButtonCoordinator, isGridTabSwitcherEnabled,
+                        isTabToGtsAnimationEnabled);
             }
         }
     }
