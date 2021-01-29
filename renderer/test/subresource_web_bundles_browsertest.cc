@@ -190,7 +190,7 @@ class SubresourceWebBundlesBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_P(SubresourceWebBundlesBrowserTest,
-                       SubresourceWebBundles) {
+                       DISABLED_SubresourceWebBundles) {
   EXPECT_EQ(IsSubresourceWebBundlesEnabled(),
             base::FeatureList::IsEnabled(features::kSubresourceWebBundles));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
