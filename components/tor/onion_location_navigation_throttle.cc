@@ -70,13 +70,17 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   // https://gitweb.torproject.org/tor-browser-spec.git/plain/proposals/100-onion-location-header.txt
   if (headers && GetOnionLocation(headers, &onion_location) &&
       !navigation_handle()->GetURL().DomainIs("onion")) {
+    GURL url(onion_location);
+    // The Onion-Location value must be a valid URL with http: or https:
+    // protocol and a .onion hostname.
+    if (!url.SchemeIsHTTPOrHTTPS() || !url.DomainIs("onion"))
+      return content::NavigationThrottle::PROCEED;
     // If user prefers opening it automatically
     if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
-      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
-                                 GURL(onion_location));
+      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url);
     } else {
       OnionLocationTabHelper::SetOnionLocation(
-          navigation_handle()->GetWebContents(), GURL(onion_location));
+          navigation_handle()->GetWebContents(), url);
     }
   } else {
     OnionLocationTabHelper::SetOnionLocation(
