@@ -21,7 +21,9 @@ SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("NativeFileSystem", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccess", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString(
+      "FileSystemAccessAPIExperimental", false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;

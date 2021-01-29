@@ -22,7 +22,6 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
   // When updating also update the array in the overload below.
   static const char* const kBraveDisabledTrialNames[] = {
       "DigitalGoods",
-      "NativeFileSystem2",
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
   };
@@ -39,9 +38,8 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
 
 bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
-  static const std::array<OriginTrialFeature, 4> kBraveDisabledTrialFeatures = {
+  static const std::array<OriginTrialFeature, 3> kBraveDisabledTrialFeatures = {
       OriginTrialFeature::kDigitalGoods,
-      OriginTrialFeature::kNativeFileSystem,
       OriginTrialFeature::kSignedExchangeSubresourcePrefetch,
       OriginTrialFeature::kSubresourceWebBundles,
   };
