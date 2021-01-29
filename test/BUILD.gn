@@ -507,6 +507,8 @@ static_library("browser_test_support") {
     "base/brave_test_launcher_delegate.cc",
     "base/brave_test_launcher_delegate.h",
   ]
+
+  deps = [ "//chrome/browser" ]
 }
 
 static_library("browser_tests_runner") {
@@ -760,6 +762,7 @@ if (!is_android) {
     }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
     deps += [
       ":brave_browser_tests_deps",
       "//brave/app:brave_generated_resources_grit",
