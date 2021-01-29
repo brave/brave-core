@@ -7,9 +7,7 @@
 
 #include <string>
 
-#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "net/base/net_errors.h"
 
 namespace ipfs {

@@ -6,15 +6,14 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 
-#include "components/version_info/channel.h"
-
 #include <string>
+
+#include "components/version_info/channel.h"
+#include "url/gurl.h"
 
 namespace content {
 class BrowserContext;
 }  // namespace content
-
-class GURL;
 
 namespace ipfs {
 
@@ -42,6 +41,14 @@ bool ResolveIPFSURI(content::BrowserContext* context,
                     version_info::Channel channel,
                     const GURL& ipfs_uri,
                     GURL* resolved_url);
+void SetIPFSDefaultGatewayForTest(const GURL& url);
+GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
+GURL GetDefaultIPFSGateway(content::BrowserContext* context);
+GURL GetAPIServer(version_info::Channel channel);
+bool TranslateIPFSURI(const GURL& url,
+                      GURL* new_url,
+                      const GURL& gateway_url,
+                      bool use_subdomain);
 
 }  // namespace ipfs
 
