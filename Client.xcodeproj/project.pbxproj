@@ -369,6 +369,10 @@
 		27B16C5924E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */; };
 		27B3DDD024AE83710006A7ED /* FeedSourceOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */; };
 		27B3DDD524AF98EA0006A7ED /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3DDD424AF98EA0006A7ED /* FeedItem.swift */; };
+		27B68DE425C48F36002D0826 /* BraveRewards.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD725C48EE9002D0826 /* BraveRewards.xcframework */; };
+		27B68DE525C48F36002D0826 /* BraveRewards.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD725C48EE9002D0826 /* BraveRewards.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27B68DF025C48F39002D0826 /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
+		27B68DF125C48F39002D0826 /* MaterialComponents.xcframework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27C405E3242559AE00347246 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; };
 		27C405E924255A2B00347246 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
 		27C461DE211B76500088A441 /* ShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461DD211B76500088A441 /* ShieldsView.swift */; };
@@ -1316,6 +1320,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				27756A8425ACFFEB00C129AF /* pop.framework in Copy Frameworks */,
+				27B68DF125C48F39002D0826 /* MaterialComponents.xcframework in Copy Frameworks */,
 				5D1DC52920AC9AFB00905E5A /* Data.framework in Copy Frameworks */,
 				E60138661C89EB7D00DF9756 /* Storage.framework in Copy Frameworks */,
 				5DE7689A20B3456E00FF5533 /* BraveShared.framework in Copy Frameworks */,
@@ -1326,6 +1331,7 @@
 				278C468E23F1E6270083347F /* BraveUI.framework in Copy Frameworks */,
 				278655A325C227C8009FFE80 /* AdblockRust.xcframework in Copy Frameworks */,
 				E60138651C89EB7600DF9756 /* Shared.framework in Copy Frameworks */,
+				27B68DE525C48F36002D0826 /* BraveRewards.xcframework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1524,7 +1530,6 @@
 		0AC0D3C1233E889D0091EFA5 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0AC775FF242A282C00139377 /* BuyVPNViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyVPNViewController.swift; sourceTree = "<group>"; };
 		0AC77601242A6AE000139377 /* BuyVPNView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyVPNView.swift; sourceTree = "<group>"; };
-		0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libYubiKit.a; path = ThirdParty/YubiKit/libYubiKit.a; sourceTree = "<group>"; };
 		0ACB38EA23571F5600DDC245 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0ACB3BF723571ED1000AC688 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AD48EEE24AF6E6200938B3B /* FeedSourceOverrideTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverrideTests.swift; sourceTree = "<group>"; };
@@ -1840,6 +1845,8 @@
 		27B16C5824E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageFeedOverlayView.swift; sourceTree = "<group>"; };
 		27B3DDCF24AE83710006A7ED /* FeedSourceOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceOverride.swift; sourceTree = "<group>"; };
 		27B3DDD424AF98EA0006A7ED /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MaterialComponents.xcframework; path = "node_modules/brave-core-ios/MaterialComponents.xcframework"; sourceTree = "<group>"; };
+		27B68DD725C48EE9002D0826 /* BraveRewards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BraveRewards.xcframework; path = "node_modules/brave-core-ios/BraveRewards.xcframework"; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
 		27C626CA25BA198700418F40 /* WalletTransferExpiredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferExpiredViewController.swift; sourceTree = "<group>"; };
 		27C647762550AE16006D72FC /* WalletTransferCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransferCompleteViewController.swift; sourceTree = "<group>"; };
@@ -1866,7 +1873,6 @@
 		27F47A3125AFCECE004922E4 /* AdblockRust.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AdblockRust.xcframework; sourceTree = "<group>"; };
 		27F56F7D24E447020018F2F9 /* DateTools.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DateTools.bundle; sourceTree = "<group>"; };
 		27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsPromptView.swift; sourceTree = "<group>"; };
-		27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BraveRewards.framework; path = "node_modules/brave-core-ios/BraveRewards.framework"; sourceTree = "<group>"; };
 		27FCA8DF2447708300A8CA48 /* FavoritesSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesSectionProvider.swift; sourceTree = "<group>"; };
 		27FCA8E2244770AB00A8CA48 /* FavoritesOverflowSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesOverflowSectionProvider.swift; sourceTree = "<group>"; };
 		27FCA8E62447BCFE00A8CA48 /* DuckDuckGoCalloutSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckDuckGoCalloutSectionProvider.swift; sourceTree = "<group>"; };
@@ -2585,7 +2591,6 @@
 		E6108FF81C84E91C005D25E8 /* BasePasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = BasePasscodeViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		E61453BD1B750A1700C3F9D7 /* RollingFileLoggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RollingFileLoggerTests.swift; sourceTree = "<group>"; };
 		E6231C001B90A44F005ABB0D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		E6231C021B90A466005ABB0D /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		E6231C041B90A472005ABB0D /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		E62AC15F1E956AFC00843532 /* Dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dev.entitlements; sourceTree = "<group>"; };
 		E633E2D91C21EAF8001FFF6C /* LoginDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginDetailViewController.swift; path = ../Settings/LoginDetailViewController.swift; sourceTree = "<group>"; };
@@ -2780,10 +2785,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B68DF025C48F39002D0826 /* MaterialComponents.xcframework in Frameworks */,
 				2748626925AD30A500BC40AA /* sqlcipher.xcframework in Frameworks */,
 				27756C8A25AD153700C129AF /* Static.framework in Frameworks */,
 				5EE5918123A290E000E8E8DE /* CoreNFC.framework in Frameworks */,
 				278C468D23F1E6270083347F /* BraveUI.framework in Frameworks */,
+				27B68DE425C48F36002D0826 /* BraveRewards.xcframework in Frameworks */,
 				5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */,
 				27756A8325ACFFEB00C129AF /* pop.framework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
@@ -4659,15 +4666,14 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27B68DD725C48EE9002D0826 /* BraveRewards.xcframework */,
+				27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */,
 				0A1DF485244A2ECB00541FE4 /* NetworkExtension.framework */,
 				0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */,
 				5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */,
 				27AC169623834510004BE19C /* UserNotifications.framework */,
-				27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */,
 				F926647A234D4EF400359492 /* CoreNFC.framework */,
-				0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */,
 				E6231C041B90A472005ABB0D /* libxml2.2.tbd */,
-				E6231C021B90A466005ABB0D /* libstdc++.6.0.9.tbd */,
 				E6231C001B90A44F005ABB0D /* libz.tbd */,
 			);
 			name = Frameworks;
@@ -5874,7 +5880,6 @@
 			buildConfigurationList = F84B21DD1A090F8100AAB793 /* Build configuration list for PBXNativeTarget "Client" */;
 			buildPhases = (
 				F979BE0F25BCC098009B6ACF /* Build packaged javascript files */,
-				7B604F8F1C494AAA006EEEC3 /* Copy Carthage Dependencies */,
 				2779B7052159297D0044A102 /* Run SwiftLint */,
 				F84B21BA1A090F8100AAB793 /* Sources */,
 				0A43293F21B1CB810041625B /* Headers */,
@@ -5882,7 +5887,6 @@
 				28CE83DE1A1D1E7C00576538 /* Frameworks */,
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
 				E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */,
-				2757538624D9F27100DF54EC /* Copy BraveRewards dSYM */,
 			);
 			buildRules = (
 			);
@@ -6414,25 +6418,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2757538624D9F27100DF54EC /* Copy BraveRewards dSYM */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Copy BraveRewards dSYM";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "sh \"$SRCROOT/node_modules/brave-core-ios/copy_rewards_dsym.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2779B7052159297D0044A102 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6450,22 +6435,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh \"$SRCROOT/swiftlint.sh\"\n\n";
-		};
-		7B604F8F1C494AAA006EEEC3 /* Copy Carthage Dependencies */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/node_modules/brave-core-ios/BraveRewards.framework",
-				"$(SRCROOT)/node_modules/brave-core-ios/MaterialComponents.framework",
-			);
-			name = "Copy Carthage Dependencies";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "rm -rf ${TMPDIR}/TemporaryItems/*carthage*\n/usr/local/bin/carthage copy-frameworks\n";
 		};
 		F979BE0F25BCC098009B6ACF /* Build packaged javascript files */ = {
 			isa = PBXShellScriptBuildPhase;

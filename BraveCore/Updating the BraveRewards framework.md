@@ -84,8 +84,7 @@ When you have changes that need to be fixed in the BraveRewards.framework (such 
     ```shell
     npm run lint
     ```
-1. Copy a FAT framework to `brave-ios` by running `build_in_core.sh --skip-update ~/path/to/brave-browser`.
-    - _Note:_ You must include `--skip-update` or your local changes will be removed
+1. Copy xcframeworks to `brave-ios/node_modules/brave-core-ios` by running `build_in_core.sh ~/path/to/brave-browser`.
     - If your PR is likely to take some time and your branch is on the brave-core remote you can edit `package.json` in brave-browser to point brave-core to your branch. This means any `npm run init` will set brave-core to your branch and not master.
 1. When things are working correctly, open a PR in brave-core and add all recommended reviewers.
     - Add auto-closing words to your PR description that references your original issue created in step 1 (i.e. `resolves https://github.com/brave/brave-ios/issues/9000`)
