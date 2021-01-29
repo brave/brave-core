@@ -74,9 +74,9 @@ const filterTabData = (tabData?: chrome.tabs.Tab) => {
   }
   const url = new window.URL(tabData.url)
   return new Promise(resolve => {
-    if ((url.protocol == 'ipfs:' || url.protocol == 'ipns:') && tabData.url) {
-      chrome.ipfs.resolveIPFSURI(tabData.url, (gateway_url: string) => {
-        tabData.url = gateway_url
+    if ((url.protocol === 'ipfs:' || url.protocol === 'ipns:') && tabData.url) {
+      chrome.ipfs.resolveIPFSURI(tabData.url, (gatewayUrl: string) => {
+        tabData.url = gatewayUrl
         resolve(tabData)
       })
       return

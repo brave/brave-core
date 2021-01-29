@@ -314,7 +314,7 @@ declare namespace chrome.braveWallet {
 }
 
 declare namespace chrome.ipfs {
-  const resolveIPFSURI: (uri: string, callback: (gateway_url: string) => void) => void
+  const resolveIPFSURI: (uri: string, callback: (gatewayUrl: string) => void) => void
 }
 
 declare namespace chrome.test {
