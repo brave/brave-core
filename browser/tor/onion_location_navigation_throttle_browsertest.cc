@@ -54,14 +54,23 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    test_server_.reset(new net::EmbeddedTestServer(
+    test_https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    test_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-    test_server_->RegisterRequestHandler(base::Bind(&HandleOnionLocation));
-    ASSERT_TRUE(test_server_->Start());
+    test_https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    test_https_server_->RegisterRequestHandler(
+        base::Bind(&HandleOnionLocation));
+    ASSERT_TRUE(test_https_server_->Start());
+
+    test_http_server_.reset(new net::EmbeddedTestServer(
+        net::test_server::EmbeddedTestServer::TYPE_HTTP));
+    test_http_server_->RegisterRequestHandler(base::Bind(&HandleOnionLocation));
+    ASSERT_TRUE(test_http_server_->Start());
   }
 
-  net::EmbeddedTestServer* test_server() { return test_server_.get(); }
+  net::EmbeddedTestServer* test_server() { return test_https_server_.get(); }
+  net::EmbeddedTestServer* test_http_server() {
+    return test_http_server_.get();
+  }
 
   void CheckOnionLocationLabel(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
@@ -77,7 +86,8 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  std::unique_ptr<net::EmbeddedTestServer> test_server_;
+  std::unique_ptr<net::EmbeddedTestServer> test_https_server_;
+  std::unique_ptr<net::EmbeddedTestServer> test_http_server_;
 };
 
 // TODO(darkdh): We need modify proxy config in Tor window for test in order to
@@ -239,6 +249,28 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
   GURL url = test_server()->GetURL("/not_onion");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+
+  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
+                                               true);
+  ui_test_utils::NavigateToURL(browser(), url);
+  BrowserList* browser_list = BrowserList::GetInstance();
+  EXPECT_EQ(1U, browser_list->size());
+  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+
+  web_contents =
+      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(web_contents->GetURL(), url);
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
+  GURL url = test_http_server()->GetURL("/onion");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();

@@ -69,7 +69,10 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   // The webpage defining the Onion-Location header must not be an onionsite.
   // https://gitweb.torproject.org/tor-browser-spec.git/plain/proposals/100-onion-location-header.txt
   if (headers && GetOnionLocation(headers, &onion_location) &&
-      !navigation_handle()->GetURL().DomainIs("onion")) {
+      !navigation_handle()->GetURL().DomainIs("onion") &&
+      // The webpage defining the Onion-Location header must be served over
+      // HTTPS.
+      navigation_handle()->GetURL().SchemeIs(url::kHttpsScheme)) {
     GURL url(onion_location);
     // The Onion-Location value must be a valid URL with http: or https:
     // protocol and a .onion hostname.
