@@ -3,6 +3,27 @@ const util = require('../lib/util')
 const path = require('path')
 const fs = require('fs-extra')
 
+const updateFileUTimesIfOverrideIsNewer = (original, override) => {
+  if (fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0) {
+    const date = new Date()
+    fs.utimesSync(original, date, date)
+    console.log(original + ' is touched.')
+  }
+}
+
+const getAdditionalGenLocation = () => {
+  if (config.targetOS === 'android') {
+    if (config.targetArch === 'arm64') {
+      return 'android_clang_arm'
+    } else if (config.targetArch === 'x64') {
+      return 'android_clang_x86'
+    }
+  } else if ((process.platform === 'darwin' || process.platform === 'linux') && config.targetArch === 'arm64') {
+    return 'clang_x64_v8_arm64'
+  }
+  return undefined
+}
+
 const touchOverriddenFiles = () => {
   console.log('touch original files overridden by chromium_src...')
 
@@ -20,22 +41,30 @@ const touchOverriddenFiles = () => {
 
   const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
   var sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
+  const additionalGen = getAdditionalGenLocation()
 
   // Touch original files by updating mtime.
   const chromiumSrcDirLen = chromiumSrcDir.length
   sourceFiles.forEach(chromiumSrcFile => {
-    var overriddenFile = path.join(config.srcDir, chromiumSrcFile.slice(chromiumSrcDirLen))
-    if (!fs.existsSync(overriddenFile)) {
-      // Try to check that original file is in gen dir.
-      overriddenFile = path.join(config.outputDir, 'gen', chromiumSrcFile.slice(chromiumSrcDirLen))
+    const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
+    var overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
+    // If the original file doesn't exist, assume that it's in the gen dir.
+    const tryOverrideGen = !fs.existsSync(overriddenFile)
+    if (tryOverrideGen) {
+      overriddenFile = path.join(config.outputDir, 'gen', relativeChromiumSrcFile)
     }
 
     if (fs.existsSync(overriddenFile)) {
       // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
-      if (fs.statSync(chromiumSrcFile).mtimeMs - fs.statSync(overriddenFile).mtimeMs > 0) {
-        const date = new Date()
-        fs.utimesSync(overriddenFile, date, date)
-        console.log(overriddenFile + ' is touched.')
+      updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
+      // If the original file is in gen dir, then also check for secondary gen dir.
+      if (tryOverrideGen && !!additionalGen) {
+        overriddenFile = path.join(config.outputDir, additionalGen, 'gen', relativeChromiumSrcFile)
+        // Since gen file exists, expecting secondary gen file to exist too.
+        if (!fs.existsSync(overriddenFile)) {
+          throw 'Expected to find [' + overriddenFile + ']. Check if the name of the gen parent directory has changed.'
+        }
+        updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
       }
     }
   })
@@ -61,11 +90,7 @@ const touchOverriddenVectorIconFiles = () => {
     var overriddenFile = path.join(config.srcDir, braveVectorIconFile.slice(braveVectorIconsDirLen))
     if (fs.existsSync(overriddenFile)) {
       // If overriddenFile is older than file in vector_icons, touch it to trigger rebuild.
-      if (fs.statSync(braveVectorIconFile).mtimeMs - fs.statSync(overriddenFile).mtimeMs > 0) {
-        const date = new Date()
-        fs.utimesSync(overriddenFile, date, date)
-        console.log(overriddenFile + ' is touched.')
-      }
+      updateFileUTimesIfOverrideIsNewer(overriddenFile, braveVectorIconFile)
     }
   })
 }
