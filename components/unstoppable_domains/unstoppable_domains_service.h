@@ -36,6 +36,8 @@ class UnstoppableDomainsService : public KeyedService {
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
+  bool IsResolveMethodAsk();
+
  private:
   void OnPreferenceChanged();
 

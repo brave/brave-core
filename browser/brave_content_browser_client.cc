@@ -35,6 +35,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -86,6 +87,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
+#endif
+
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#include "brave/browser/unstoppable_domains/unstoppable_domains_service_factory.h"
+#include "brave/components/unstoppable_domains/unstoppable_domains_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -585,7 +591,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
-#if BUILDFLAG(ENABLE_TOR) ||BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(IPFS_ENABLED) || \
+    BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
   content::BrowserContext* context =
       handle->GetWebContents()->GetBrowserContext();
 #endif
@@ -616,6 +623,19 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           g_brave_browser_process->GetApplicationLocale());
   if (ipfs_navigation_throttle)
     throttles.push_back(std::move(ipfs_navigation_throttle));
+#endif
+
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+  std::unique_ptr<content::NavigationThrottle>
+      unstoppable_domains_navigation_throttle = unstoppable_domains::
+          UnstoppableDomainsNavigationThrottle::MaybeCreateThrottleFor(
+              handle,
+              unstoppable_domains::UnstoppableDomainsServiceFactory::
+                  GetForContext(context),
+              g_brave_browser_process->local_state(),
+              g_brave_browser_process->GetApplicationLocale());
+  if (unstoppable_domains_navigation_throttle)
+    throttles.push_back(std::move(unstoppable_domains_navigation_throttle));
 #endif
 
   return throttles;

@@ -1,3 +1,8 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 source_set("constants") {
   sources = [
     "constants.cc",
@@ -9,15 +14,32 @@ source_set("unstoppable_domains") {
   sources = [
     "pref_names.cc",
     "pref_names.h",
+    "unstoppable_domains_interstitial_controller_client.cc",
+    "unstoppable_domains_interstitial_controller_client.h",
+    "unstoppable_domains_navigation_throttle.cc",
+    "unstoppable_domains_navigation_throttle.h",
+    "unstoppable_domains_opt_in_page.cc",
+    "unstoppable_domains_opt_in_page.h",
     "unstoppable_domains_service.cc",
     "unstoppable_domains_service.h",
     "unstoppable_domains_service_delegate.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [ ":constants" ]
 
   deps = [
+    "//base",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/security_interstitials/content:security_interstitial_page",
+    "//components/security_interstitials/core",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//url",
   ]
 }

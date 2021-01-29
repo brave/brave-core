@@ -22,7 +22,7 @@ UnstoppableDomainsService::UnstoppableDomainsService(
     PrefService* local_state)
     : local_state_(local_state), delegate_(std::move(delegate)) {
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(local_state_);
+  pref_change_registrar_->Init(local_state);
   pref_change_registrar_->Add(
       kResolveMethod,
       base::Bind(&UnstoppableDomainsService::OnPreferenceChanged,
@@ -40,6 +40,11 @@ void UnstoppableDomainsService::RegisterLocalStatePrefs(
 
 void UnstoppableDomainsService::OnPreferenceChanged() {
   delegate_->UpdateNetworkService();
+}
+
+bool UnstoppableDomainsService::IsResolveMethodAsk() {
+  return local_state_->GetInteger(kResolveMethod) ==
+         static_cast<int>(ResolveMethodTypes::ASK);
 }
 
 }  // namespace unstoppable_domains
