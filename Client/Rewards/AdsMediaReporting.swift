@@ -3,8 +3,11 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Shared
 import WebKit
 import BraveRewards
+
+private let log = Logger.rewardsLogger
 
 class AdsMediaReporting: TabContentScript {
     let rewards: BraveRewards
@@ -24,7 +27,16 @@ class AdsMediaReporting: TabContentScript {
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        if let isPlaying = message.body as? Bool, rewards.ledger.isEnabled && rewards.isAdsEnabled {
+        guard let body = message.body as? [String: AnyObject] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+        
+        if let isPlaying = body["data"] as? Bool, rewards.ledger.isEnabled && rewards.isAdsEnabled {
             guard let tab = tab else { return }
             if isPlaying {
                 rewards.reportMediaStarted(tabId: tab.rewardsId)

@@ -63,7 +63,7 @@ function find(query) {
   lastEscapedQuery = escapedQuery;
 
   if (!escapedQuery) {
-    webkit.messageHandlers.findInPageHandler.postMessage({ currentResult: 0, totalResults: 0 });
+    webkit.messageHandlers.findInPageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {currentResult: 0, totalResults: 0 }});
     return;
   }
 
@@ -83,7 +83,7 @@ function find(query) {
     activeHighlightIndex = -1;
 
     let totalResults = highlights.length;
-    webkit.messageHandlers.findInPageHandler.postMessage({ totalResults: totalResults });
+    webkit.messageHandlers.findInPageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": {totalResults: totalResults }});
 
     findNext();
   });
@@ -149,9 +149,9 @@ function updateActiveHighlight() {
     activeHighlight.className = HIGHLIGHT_CLASS_NAME + " " + HIGHLIGHT_CLASS_NAME_ACTIVE;
     scrollToElement(activeHighlight, SCROLL_DURATION);
 
-    webkit.messageHandlers.findInPageHandler.postMessage({ currentResult: activeHighlightIndex + 1 });
+    webkit.messageHandlers.findInPageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": { currentResult: activeHighlightIndex + 1 }});
   } else {
-    webkit.messageHandlers.findInPageHandler.postMessage({ currentResult: 0 });
+    webkit.messageHandlers.findInPageHandler.postMessage({"securitytoken": SECURITY_TOKEN, "data": { currentResult: 0 }});
   }
 }
 

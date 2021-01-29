@@ -146,14 +146,14 @@ extension BrowserViewController {
             webView.go(to: forwardList.first!)
         } else {
             // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-            webView.evaluateJavaScript("\(ReaderModeNamespace).readerize()", completionHandler: { (object, error) -> Void in
+            webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).readerize", sandboxed: false) { (object, error) -> Void in
                 if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
                     try? self.readerModeCache.put(currentURL, readabilityResult)
                     if let nav = webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) {
                         self.ignoreNavigationInTab(tab, navigation: nav)
                     }
                 }
-            })
+            }
         }
     }
 

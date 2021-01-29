@@ -3,7 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
+import Shared
 import WebKit
+
+private let log = Logger.browserLogger
 
 class LocalRequestHelper: TabContentScript {
     func scriptMessageHandlerName() -> String? {
@@ -12,6 +15,11 @@ class LocalRequestHelper: TabContentScript {
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         guard let params = message.body as? [String: String], message.frameInfo.request.url?.isLocal ?? false else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: params) {
+            log.debug("Missing required security token.")
             return
         }
 

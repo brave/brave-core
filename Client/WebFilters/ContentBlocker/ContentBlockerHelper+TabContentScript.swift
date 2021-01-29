@@ -7,6 +7,8 @@ import Shared
 import Data
 import BraveShared
 
+private let log = Logger.rewardsLogger
+
 extension ContentBlockerHelper: TabContentScript {
     class func name() -> String {
         return "TrackingProtectionStats"
@@ -22,9 +24,18 @@ extension ContentBlockerHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+        guard let body = message.body as? [String: AnyObject] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+        
         guard isEnabled,
-            let body = message.body as? [String: String],
-            let urlString = body["url"],
+            let data = body["data"] as? [String: String],
+            let urlString = data["url"],
             let mainDocumentUrl = tab?.webView?.url else {
             return
         }
@@ -37,7 +48,7 @@ extension ContentBlockerHelper: TabContentScript {
     
         guard let url = URL(string: urlString) else { return }
         
-        let resourceType = TPStatsResourceType(rawValue: body["resourceType"] ?? "")
+        let resourceType = TPStatsResourceType(rawValue: data["resourceType"] ?? "")
         
         if resourceType == .script && domain.isShieldExpected(.NoScript, considerAllShieldsOption: true) {
             self.stats = self.stats.addingScriptBlock()

@@ -16,12 +16,12 @@ if (mediaPublisherOrigins.includes(document.location.origin) && webkit.messageHa
 
 function install() {
     function sendMessage(method, url, data, referrerUrl) {
-        webkit.messageHandlers.rewardsReporting.postMessage({
+        webkit.messageHandlers.rewardsReporting.postMessage({"securitytoken": SECURITY_TOKEN, "data": {
             method: method === undefined ? "GET" : method,
             url: url,
             data: (data === undefined || data instanceof Blob) ? null : data,
             referrerUrl: referrerUrl === undefined ? null : referrerUrl,
-        });
+        }});
     }
     
     let originalOpen = XMLHttpRequest.prototype.open;

@@ -86,4 +86,14 @@ force_try: warning
 force_cast: warning
 line_length: 1000
 
+custom_rules:
+  safe_javascript:
+    included: ".*\\.swift"
+    excluded: ".*Test\\.swift"
+    name: "Safe JavaScript"
+    regex: "(evaluateJavaScript)\\("
+    capture_group: 0
+    message: "Using `evaluateJavaScript` directly is not allowed. Use `evaluateSafeJavaScript` instead."
+    severity: error
+
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle)

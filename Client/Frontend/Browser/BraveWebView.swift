@@ -46,31 +46,4 @@ class BraveWebView: WKWebView {
         lastHitPoint = point
         return super.hitTest(point, with: event)
     }
-
-    private func generateJavascriptFunctionString(functionName: String, args: [Any]) -> String {
-        let argsJS = args
-          .map { "'\(String(describing: $0).escapeHTML())'" }
-          .joined(separator: ", ")
-        return "\(functionName)(\(argsJS))"
-    }
-
-    func evaluateSafeJavascript(functionName: String, args: [Any], completion: @escaping ((Any?, Error?) -> Void)) {
-        let javascript = generateJavascriptFunctionString(functionName: functionName, args: args)
-        evaluateJavaScript(javascript) { data, error  in
-            completion(data, error)
-        }
-    }
-}
-
-extension String {
-    /// Encode HTMLStrings
-    func escapeHTML() -> String {
-       return self
-        .replacingOccurrences(of: "&", with: "&amp;", options: .literal)
-        .replacingOccurrences(of: "\"", with: "&quot;", options: .literal)
-        .replacingOccurrences(of: "'", with: "&#39;", options: .literal)
-        .replacingOccurrences(of: "<", with: "&lt;", options: .literal)
-        .replacingOccurrences(of: ">", with: "&gt;", options: .literal)
-        .replacingOccurrences(of: "`", with: "&lsquo;", options: .literal)
-    }
 }

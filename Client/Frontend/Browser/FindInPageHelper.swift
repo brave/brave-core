@@ -30,7 +30,16 @@ class FindInPageHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        guard let data = message.body as? [String: Int] else {
+        guard let body = message.body as? [String: AnyObject] else {
+            return
+        }
+        
+        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+            log.debug("Missing required security token.")
+            return
+        }
+        
+        guard let data = body["data"] as? [String: Int] else {
             log.error("Could not find a message body or the data did not meet expectations: \(message.body)")
             return
         }

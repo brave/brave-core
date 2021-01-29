@@ -144,7 +144,7 @@ class ContentBlockerHelper {
 
         // Async required here to ensure remove() call is processed.
         DispatchQueue.main.async() {
-            self.tab?.webView?.evaluateJavaScript("window.__firefox__.NoImageMode.setEnabled(\(enabled))")
+            self.tab?.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.NoImageMode.setEnabled", args: [enabled])
         }
     }
 

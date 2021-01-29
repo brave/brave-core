@@ -409,6 +409,8 @@ extension Sync {
              @param {string} categoryName, @param {Array.<Object>} records */
             let evaluate = "callbackList['send-sync-records'](null, '\(recordType.rawValue)',\(json))"
             DispatchQueue.main.async {
+                /* This is sync-v1 code, not used anymore*/
+                // swiftlint:disable:next safe_javascript
                 self.webView.evaluateJavaScript(evaluate,
                                                 completionHandler: { (result, error) in
                                                     if let error = error {
@@ -427,6 +429,8 @@ extension Sync {
         let syncSeed = isInSyncGroup ? "new Uint8Array(\(self.syncSeed!))" : "null"
         
         let args = "(null, \(syncSeed), \(deviceId), {apiVersion: '\(apiVersion)', serverUrl: '\(serverUrl)', debug:\(isDebug)})"
+        /* This is sync-v1 code, not used anymore*/
+        // swiftlint:disable:next safe_javascript
         webView.evaluateJavaScript("callbackList['got-init-data']\(args)",
             completionHandler: { (result, error) in
                 //                                    print(result)
@@ -447,6 +451,8 @@ extension Sync {
             
             // Pass in `lastFetch` to get records since that time
             let evaluate = "callbackList['\(self.syncFetchMethod)'](null, ['\(type.rawValue)'], \(type.lastFetchTimeStamp), \(Sync.recordFetchAmount))"
+            /* This is sync-v1 code, not used anymore*/
+            // swiftlint:disable:next safe_javascript
             self.webView.evaluateJavaScript(evaluate,
                                             completionHandler: { (result, error) in
                                                 completion?(error)
@@ -594,6 +600,8 @@ extension Sync {
             }
 	        
             DispatchQueue.main.async {
+                /* This is sync-v1 code, not used anymore*/
+                // swiftlint:disable:next safe_javascript
                 self.webView.evaluateJavaScript("callbackList['resolve-sync-records'](null, '\(recordType.rawValue)', \(serializedData))",
                     completionHandler: { (result, error) in })
             }

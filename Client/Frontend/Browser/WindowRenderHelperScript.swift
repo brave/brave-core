@@ -18,7 +18,7 @@ class WindowRenderHelperScript: TabContentScript {
     }
     
     func scriptMessageHandlerName() -> String? {
-        return "windowRenderHelper"
+        return "WindowRenderHelper\(UserScriptManager.messageHandlerTokenString)"
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
@@ -29,6 +29,6 @@ class WindowRenderHelperScript: TabContentScript {
     static func executeScript(for tab: Tab) {
         let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
         
-        tab.webView?.evaluateJavaScript("W\(token).resizeWindow();", completionHandler: nil)
+        tab.webView?.evaluateSafeJavaScript(functionName: "W\(token).resizeWindow", sandboxed: false)
     }
 }

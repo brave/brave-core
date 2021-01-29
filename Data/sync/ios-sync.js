@@ -19,12 +19,14 @@ if (!self.chrome || !self.chrome.ipc) {
 
     ipc.once = (message, cb) => {
         callbackList[message] = cb
+        /* This is sync-v1 code, not used anymore*/
         window.webkit.messageHandlers.syncToIOS_on.postMessage(JSON.stringify({message: message}, stringifyArrayCleaner));
     }
     
     ipc.on = ipc.once
 
     ipc.send = (message, arg1, arg2, arg3, arg4) => {
+        /* This is sync-v1 code, not used anymore*/
         window.webkit.messageHandlers.syncToIOS_send.postMessage(JSON.stringify({message: message, arg1: arg1, arg2: arg2, arg3: arg3, arg4: arg4}, stringifyArrayCleaner));
     }
 

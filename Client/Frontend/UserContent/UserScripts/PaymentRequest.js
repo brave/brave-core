@@ -65,7 +65,7 @@ class $<paymentreq> {
       function (resolve, reject) {
         $<paymentreqcallback>.resolve = resolve
         $<paymentreqcallback>.reject = reject
-        webkit.messageHandlers.PaymentRequest.postMessage({ name: 'payment-request-show', methodData: methodData, details: details })
+        webkit.messageHandlers.$<handler>.postMessage({ name: 'payment-request-show', methodData: methodData, details: details })
       }
     )
   }
