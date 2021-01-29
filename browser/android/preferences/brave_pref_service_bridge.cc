@@ -21,6 +21,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
