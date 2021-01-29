@@ -130,7 +130,7 @@ void Segments::MigrateToV8(
     DBTransaction* transaction) {
   DCHECK(transaction);
 
-  util::Drop(transaction, "categories");
+  util::Drop(transaction, get_table_name());
 
   CreateTableV8(transaction);
 }
