@@ -27,6 +27,8 @@ class BraveNewTabButton : public NewTabButton {
   SkPath GetBorderPath(const gfx::Point& origin,
                        float scale,
                        bool extend_to_top) const override;
+  gfx::Insets GetInsets() const override;
+
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
 };
 

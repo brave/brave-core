@@ -14,27 +14,20 @@
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/skia_util.h"
 
-namespace {
-  // Returns the size of the button without any margin
-  gfx::Size GetButtonSize() {
-    return gfx::Size(20, 20);
-  }
-}
-
 // static
 const gfx::Size BraveNewTabButton::kButtonSize{20, 20};
 
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   // Overriden so that we use Brave's custom button size
-  gfx::Size size = GetButtonSize();
+  gfx::Size size = kButtonSize;
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
   return size;
 }
 
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                      float scale,
-                                      bool extend_to_top) const {
+                                        float scale,
+                                        bool extend_to_top) const {
   // Overriden to use Brave's non-circular shape
   gfx::PointF scaled_origin(origin);
   scaled_origin.Scale(scale);
@@ -65,4 +58,11 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // Shim base implementation's painting
   canvas->Translate(gfx::Vector2d(offset, offset));
   NewTabButton::PaintIcon(canvas);
+}
+
+gfx::Insets BraveNewTabButton::GetInsets() const {
+  // Give an additional left margin to make more space from tab.
+  // TabStripRegionView::UpdateNewTabButtonBorder() gives this button's inset.
+  // So, adding more insets here is easy solution.
+  return NewTabButton::GetInsets() + gfx::Insets(0, 6, 0, 0);
 }
