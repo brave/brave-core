@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index d75bf82ee420aa67fed211284da20934a6ace39a..c81fac42874465155847109cf629d4e28824ef0a 100644
+index d75bf82ee420aa67fed211284da20934a6ace39a..f32822e36cbdd3ffea1d847df2c9effbfb394928 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-@@ -154,6 +154,7 @@ void DOMPluginArray::UpdatePluginData() {
-       }
-     }
+@@ -131,6 +131,7 @@ PluginData* DOMPluginArray::GetPluginData() const {
+ void DOMPluginArray::UpdatePluginData() {
+   if (base::FeatureList::IsEnabled(features::kNavigatorPluginsEmpty)) {
+     dom_plugins_.clear();
++    BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA
+     return;
    }
-+  BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA
- }
- 
- void DOMPluginArray::ContextDestroyed() {
+   PluginData* data = GetPluginData();
