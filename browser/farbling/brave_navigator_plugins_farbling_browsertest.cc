@@ -116,20 +116,23 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPlugins) {
   // Farbling level: off
-  // get real length of navigator.plugins
+  // get real length of navigator.plugins, which should return an empty array
+  // from Chromium 90 on (see https://crrev.com/c/2629990 for reference).
   AllowFingerprinting();
   NavigateToURLUntilLoadStop(farbling_url());
-  int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  int real_plugins_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(real_plugins_length, 0);
 
-  // Farbling level: balanced (default)
-  // navigator.plugins should contain all real plugins + 2 fake ones
+  // Farbling level: balanced (default) navigator.plugins should contain 2 fake
+  // ones (we used to report 2 real plugins and 2 fake ones before Chromium 90,
+  // but there are no real ones now, see https://crrev.com/c/2629990).
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(farbling_url());
   int balanced_length = ExecScriptGetInt(kPluginsLengthScript, contents());
-  EXPECT_EQ(balanced_length, off_length + 2);
+  EXPECT_EQ(balanced_length, 2);
 
   // Farbling level: maximum
-  // navigator.plugins should contain no real plugins, only 2 fake ones
+  // navigator.plugins should contain no real plugins either, only 2 fake ones.
   BlockFingerprinting();
   NavigateToURLUntilLoadStop(farbling_url());
   int maximum_length = ExecScriptGetInt(kPluginsLengthScript, contents());
@@ -188,65 +191,48 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
 }
 
-// Tests that names of built-in plugins get farbled by default
-// https://github.com/brave/brave-browser/issues/10597
+// Tests that no built-in plugins returned even when fingerprinting is allowed,
+// and that only fake ones are exposed when "balanced" behavior is selected.
 IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
-                       FarbleNavigatorPluginsBuiltin) {
+                       FarbleNavigatorPluginsNoBuiltinAvailable) {
   // Farbling level: off
   AllowFingerprinting();
   NavigateToURLUntilLoadStop(farbling_url());
-  int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
-  EXPECT_EQ(off_length, 2);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
-            "Chrome PDF Plugin");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
-                contents()),
-            "Chrome PDF Viewer");
+  int real_plugins_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(real_plugins_length, 0);
 
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(farbling_url());
   EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0].name);",
+                contents()),
+            "Xr1at27");
+  EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].name);",
                 contents()),
-            "Brave PDF plug in");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[2].name);",
-                contents()),
-            "Chrome PDF and PS plug-in");
+            "8.fPHDhw");
 }
 
-// Tests that names of built-in plugins that get farbled will reset to their
-// original names when fingerprinting is turned off
-// https://github.com/brave/brave-browser/issues/11278
+// Tests that the list of plugins returned by navigator.plugins will reset to
+// being and empty one when fingerprinting is turned off.
 IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPluginsReset) {
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
   NavigateToURLUntilLoadStop(farbling_url());
   EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0].name);",
+                contents()),
+            "Xr1at27");
+  EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].name);",
                 contents()),
-            "Brave PDF plug in");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[2].name);",
-                contents()),
-            "Chrome PDF and PS plug-in");
+            "8.fPHDhw");
 
   // Farbling level: off
   AllowFingerprinting();
   NavigateToURLUntilLoadStop(farbling_url());
-  int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
-  EXPECT_EQ(off_length, 2);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
-            "Chrome PDF Plugin");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
-                contents()),
-            "Chrome PDF Viewer");
+  int real_plugins_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(real_plugins_length, 0);
 }
