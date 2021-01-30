@@ -63,11 +63,11 @@ class ADBLOCK_EXPORT Engine {
  public:
   Engine();
   Engine(const std::string& rules);
-  bool matches(const std::string& url, const std::string& host,
+  void matches(const std::string& url, const std::string& host,
       const std::string& tab_host, bool is_third_party,
-      const std::string& resource_type, bool previously_matched_rule,
-      bool previously_matched_exception, std::string *redirect,
-      bool* did_match_exception, bool* did_match_important);
+      const std::string& resource_type, bool* did_match_rule,
+      bool* did_match_exception, bool* did_match_important,
+      std::string* redirect);
   bool deserialize(const char* data, size_t data_size);
   void addTag(const std::string& tag);
   void addResource(const std::string& key,
