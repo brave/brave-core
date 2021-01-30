@@ -31,43 +31,33 @@ let notYetQueriedIds: string[]
 let cosmeticObserver: MutationObserver | undefined = undefined
 
 window.content_cosmetic = window.content_cosmetic || {}
-window.content_cosmetic.cosmeticStyleSheet =
-  window.content_cosmetic.cosmeticStyleSheet || new CSSStyleSheet()
-window.content_cosmetic.allSelectorsToRules =
-  window.content_cosmetic.allSelectorsToRules || new Map<string, number>()
-window.content_cosmetic.observingHasStarted =
-  window.content_cosmetic.observingHasStarted || false
+const CC = window.content_cosmetic
+
+CC.cosmeticStyleSheet = CC.cosmeticStyleSheet || new CSSStyleSheet()
+CC.allSelectorsToRules = CC.allSelectorsToRules || new Map<string, number>()
+CC.observingHasStarted = CC.observingHasStarted || false
 // All new selectors go in `firstRunQueue`
-window.content_cosmetic.firstRunQueue =
-  window.content_cosmetic.firstRunQueue || new Set<string>()
+CC.firstRunQueue = CC.firstRunQueue || new Set<string>()
 // Third party matches go in the second and third queues.
-window.content_cosmetic.secondRunQueue =
-  window.content_cosmetic.secondRunQueue || new Set<string>()
+CC.secondRunQueue = CC.secondRunQueue || new Set<string>()
 // Once a selector gets in to this queue, it's only evaluated for 1p content one
 // more time.
-window.content_cosmetic.finalRunQueue =
-  window.content_cosmetic.finalRunQueue || new Set<string>()
-window.content_cosmetic.allQueues = window.content_cosmetic.allQueues ||
-  [window.content_cosmetic.firstRunQueue,
-    window.content_cosmetic.secondRunQueue,
-    window.content_cosmetic.finalRunQueue]
-window.content_cosmetic.numQueues =
-  window.content_cosmetic.numQueues || window.content_cosmetic.allQueues.length
-window.content_cosmetic.alreadyUnhiddenSelectors =
-  window.content_cosmetic.alreadyUnhiddenSelectors || new Set<string>()
-window.content_cosmetic.alreadyKnownFirstPartySubtrees =
-  window.content_cosmetic.alreadyKnownFirstPartySubtrees || new WeakSet()
-window.content_cosmetic._hasDelayOcurred =
-  window.content_cosmetic._hasDelayOcurred || false
-window.content_cosmetic._startCheckingId =
-  window.content_cosmetic._startCheckingId || undefined
+CC.finalRunQueue = CC.finalRunQueue || new Set<string>()
+CC.allQueues = CC.allQueues || [
+  CC.firstRunQueue, CC.secondRunQueue, CC.finalRunQueue]
+CC.numQueues = CC.numQueues || CC.allQueues.length
+CC.alreadyUnhiddenSelectors = CC.alreadyUnhiddenSelectors || new Set<string>()
+CC.alreadyKnownFirstPartySubtrees =
+  CC.alreadyKnownFirstPartySubtrees || new WeakSet()
+CC._hasDelayOcurred = CC._hasDelayOcurred || false
+CC._startCheckingId = CC._startCheckingId || undefined
 
 function injectScriptlet (text: string) {
   let script
   try {
     script = document.createElement('script')
-    const textnode: Text = document.createTextNode(text)
-    script.appendChild(textnode);
+    const textNode: Text = document.createTextNode(text)
+    script.appendChild(textNode);
     (document.head || document.documentElement).appendChild(script)
   } catch (ex) {
     /* Unused catch */
@@ -228,15 +218,52 @@ const isFirstPartyUrl = (url: string): boolean => {
   return false
 }
 
-const isTextAd = (text: string): boolean => {
-  const trimmedText = text.trim()
+const stripChildTagsFromText = (elm: HTMLElement, tagName: string, text: string): string => {
+  const childElms = Array.from(elm.getElementsByTagName(tagName)) as HTMLElement[]
+  let localText = text
+  for (const anElm of childElms) {
+    localText = localText.replaceAll(anElm.innerText, '')
+  }
+  return localText
+}
+
+/**
+ * Used to just call innerText on the root of the subtree, but in some cases
+ * this will surprisingly include the text content of script nodes
+ * (possibly of nodes that haven't been executed yet?).
+ *
+ * So instead  * we call innerText on the root, and remove the contents of any
+ * script or style nodes.
+ *
+ * @see https://github.com/brave/brave-browser/issues/9955
+ */
+const showsSignificantText = (elm: Element): boolean => {
+  if (isHTMLElement(elm) === false) {
+    return false
+  }
+
+  const htmlElm = elm as HTMLElement
+  const tagsTextToIgnore = ['script', 'style']
+
+  let currentText = htmlElm.innerText
+  for (const aTagName of tagsTextToIgnore) {
+    currentText = stripChildTagsFromText(htmlElm, aTagName, currentText)
+  }
+
+  const trimmedText = currentText.trim()
   if (trimmedText.length < minAdTextChars) {
     return false
   }
-  if (trimmedText.split(' ').length < minAdTextWords) {
-    return false
+
+  let wordCount = 0
+  for (const aWord of trimmedText.split(' ')) {
+    if (aWord.trim().length === 0) {
+      continue
+    }
+    wordCount += 1
   }
-  return true
+
+  return wordCount >= minAdTextWords
 }
 
 interface IsFirstPartyQueryResult {
@@ -343,23 +370,6 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   if (queryResult.foundThirdPartyResource) {
     return false
   }
-
-  const htmlElement = asHTMLElement(elm)
-  // Check for several things here:
-  // 1. If its not an HTML node (i.e. its a text node), then its definitely
-  //    not the root of first party ad (we'd have caught that it was a text
-  //    add when checking the text node's parent).
-  // 2. If it's a script node, then similarly, its definitely not the root
-  //    of a first party ad on the page.
-  // 3. Last, check the text content on the page.  If the node contains a
-  //    non-trivial amount of text in it, then we _should_ treat it as a
-  //    possible 1p ad.
-  if (!htmlElement ||
-    htmlElement.tagName.toLowerCase() === 'script' ||
-    isTextAd(htmlElement.innerText) === false) {
-    return false
-  }
-
   return true
 }
 
@@ -369,26 +379,26 @@ const unhideSelectors = (selectors: Set<string>) => {
   }
   // Find selectors we have a rule index for
   const rulesToRemove = Array.from(selectors)
-    .map(selector => window.content_cosmetic.allSelectorsToRules.get(selector))
+    .map(selector => CC.allSelectorsToRules.get(selector))
     .filter(i => i !== undefined)
     .sort()
     .reverse()
   // Delete the rules
-  let lastIdx: number = window.content_cosmetic.allSelectorsToRules.size - 1
+  let lastIdx: number = CC.allSelectorsToRules.size - 1
   for (const ruleIdx of rulesToRemove) {
     // Safe to asset ruleIdx is a number because we've already filtered out
     // any `undefined` instances with the filter call above.
-    window.content_cosmetic.cosmeticStyleSheet.deleteRule(ruleIdx as number)
+    CC.cosmeticStyleSheet.deleteRule(ruleIdx as number)
   }
   // Re-sync the indexes
   // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.
-  const ruleLookup = Array.from(window.content_cosmetic.allSelectorsToRules.entries())
+  const ruleLookup = Array.from(CC.allSelectorsToRules.entries())
   let countAtLastHighest = rulesToRemove.length
   for (let i = lastIdx; i > 0; i--) {
     const [selector, oldIdx] = ruleLookup[i]
     // Is this one we removed?
     if (rulesToRemove.includes(i)) {
-      window.content_cosmetic.allSelectorsToRules.delete(selector)
+      CC.allSelectorsToRules.delete(selector)
       countAtLastHighest--
       if (countAtLastHighest === 0) {
         break
@@ -399,7 +409,7 @@ const unhideSelectors = (selectors: Set<string>) => {
       // Probably out of sync
       console.error('Cosmetic Filters: old index did not match lookup index', { selector, oldIdx, i })
     }
-    window.content_cosmetic.allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
+    CC.allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
   }
 }
 
@@ -410,7 +420,7 @@ let queueIsSleeping = false
 
 /**
  * Go through each of the 3 queues, only take 50 items from each one
- * 1. Take 50 selects from the first queue with any items
+ * 1. Take 50 selectors from the first queue with any items
  * 2. Determine partyness of matched element:
  *   - If any are 3rd party, keep 'hide' rule and check again later in next queue.
  *   - If any are 1st party, remove 'hide' rule and never check selector again.
@@ -425,9 +435,9 @@ const pumpCosmeticFilterQueues = () => {
   // For each "pump", walk through each queue until we find selectors
   // to evaluate. This means that nothing in queue N+1 will be evaluated
   // until queue N is completely empty.
-  for (let queueIndex = 0; queueIndex < window.content_cosmetic.numQueues; queueIndex += 1) {
-    const currentQueue = window.content_cosmetic.allQueues[queueIndex]
-    const nextQueue = window.content_cosmetic.allQueues[queueIndex + 1]
+  for (let queueIndex = 0; queueIndex < CC.numQueues; queueIndex += 1) {
+    const currentQueue = CC.allQueues[queueIndex]
+    const nextQueue = CC.allQueues[queueIndex + 1]
     if (currentQueue.size === 0) {
       continue
     }
@@ -444,7 +454,7 @@ const pumpCosmeticFilterQueues = () => {
       // Don't recheck elements / subtrees we already know are first party.
       // Once we know something is third party, we never need to evaluate it
       // again.
-      if (window.content_cosmetic.alreadyKnownFirstPartySubtrees.has(aMatchingElm)) {
+      if (CC.alreadyKnownFirstPartySubtrees.has(aMatchingElm)) {
         continue
       }
 
@@ -456,6 +466,14 @@ const pumpCosmeticFilterQueues = () => {
       if (elmSubtreeIsFirstParty === false) {
         continue
       }
+
+      // If the subtree doesn't have a significant amount of text (e.g., it
+      // just says "Advertisement"), then no need to change anything; it should
+      // stay hidden.
+      if (showsSignificantText(aMatchingElm) === false) {
+        continue
+      }
+
       // Otherwise, we know that the given subtree was evaluated to be
       // first party, so we need to figure out which selector from the combo
       // selector did the matching.
@@ -467,14 +485,14 @@ const pumpCosmeticFilterQueues = () => {
         // Similarly, if we already know a selector matches 1p content,
         // there is no need to notify the background script again, so
         // we don't need to consider further.
-        if (window.content_cosmetic.alreadyUnhiddenSelectors.has(selector) === true) {
+        if (CC.alreadyUnhiddenSelectors.has(selector) === true) {
           continue
         }
 
         newlyIdentifiedFirstPartySelectors.add(selector)
-        window.content_cosmetic.alreadyUnhiddenSelectors.add(selector)
+        CC.alreadyUnhiddenSelectors.add(selector)
       }
-      window.content_cosmetic.alreadyKnownFirstPartySubtrees.add(aMatchingElm)
+      CC.alreadyKnownFirstPartySubtrees.add(aMatchingElm)
     }
 
     unhideSelectors(newlyIdentifiedFirstPartySelectors)
@@ -540,23 +558,23 @@ const startObserving = () => {
   cosmeticObserver.observe(document.documentElement, observerConfig)
 }
 
-const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
+const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // Three states possible here.  First, the delay has already occurred.  If so,
   // pass through to pumpCosmeticFilterQueues immediately.
-  if (window.content_cosmetic._hasDelayOcurred === true) {
+  if (CC._hasDelayOcurred === true) {
     pumpCosmeticFilterQueuesOnIdle()
     return
   }
   // Second possibility is that we're already waiting for the delay to pass /
   // occur.  In this case, do nothing.
-  if (window.content_cosmetic._startCheckingId !== undefined) {
+  if (CC._startCheckingId !== undefined) {
     return
   }
   // Third / final possibility, this is this the first time this has been
-  // called, in which case set up a timmer and quit
-  window.content_cosmetic._startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
-    window.content_cosmetic._hasDelayOcurred = true
-    if (!generichide) {
+  // called, in which case set up a timer and quit
+  CC._startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
+    CC._hasDelayOcurred = true
+    if (!genericHide) {
       startObserving()
     }
     if (!hide1pContent) {
@@ -565,13 +583,12 @@ const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
-if (!window.content_cosmetic.observingHasStarted) {
-  window.content_cosmetic.observingHasStarted = true
-  scheduleQueuePump(window.content_cosmetic.hide1pContent,
-    window.content_cosmetic.generichide)
-} else if (window.content_cosmetic.scriptlet) {
-  let scriptlet = window.content_cosmetic.scriptlet
-  window.content_cosmetic.scriptlet = ''
+if (!CC.observingHasStarted) {
+  CC.observingHasStarted = true
+  scheduleQueuePump(CC.hide1pContent, CC.generichide)
+} else if (CC.scriptlet) {
+  let scriptlet = CC.scriptlet
+  CC.scriptlet = ''
   injectScriptlet(scriptlet)
 } else {
   scheduleQueuePump(false, false)
