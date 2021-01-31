@@ -70,3 +70,26 @@ TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
                 "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001",
                 "/ip4/0.0.0.0/udp/4001/quic", "/ip6/::/udp/4001/quic"}));
 }
+
+TEST_F(IPFSJSONParserTest, GetRepoStatsFromJSON) {
+  ipfs::RepoStats stat;
+
+  ASSERT_EQ(stat.objects, uint64_t(0));
+  ASSERT_EQ(stat.size, uint64_t(0));
+  ASSERT_EQ(stat.storage_max, uint64_t(0));
+
+  ASSERT_TRUE(IPFSJSONParser::GetRepoStatsFromJSON(R"({
+        "NumObjects": 113,
+        "RepoPath": "/some/path/to/repo",
+        "RepoSize": 123456789,
+        "StorageMax": 90000000,
+        "Version": "fs-repo@10"
+      })",
+                                                   &stat));
+
+  ASSERT_EQ(stat.objects, uint64_t(113));
+  ASSERT_EQ(stat.size, uint64_t(123456789));
+  ASSERT_EQ(stat.storage_max, uint64_t(90000000));
+  ASSERT_EQ(stat.path, "/some/path/to/repo");
+  ASSERT_EQ(stat.version, "fs-repo@10");
+}
