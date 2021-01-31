@@ -131,6 +131,25 @@
             ]
           }
         ]
+      }, {
+        "name": "resolveIPFSURI",
+        "type": "function",
+        "description": "Converts an IPFS URI into its gateway URL",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "uri"
+          }, {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "gateway",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

@@ -62,6 +62,16 @@ function shutdownSuccess() {
   })
 }
 
+function resolveIPFSURIMatches(uri, expected_url) {
+  chrome.ipfs.resolveIPFSURI(uri, (gateway_url) => {
+    if (gateway_url === expected_url) {
+      chrome.test.succeed();
+    } else {
+      chrome.test.fail();
+    }
+  })
+}
+
 function testBasics() {
   chrome.test.runTests([
     function ipfsCompanionExtensionHasAccess() {
@@ -71,7 +81,8 @@ function testBasics() {
           chrome.ipfs.launch &&
           chrome.ipfs.shutdown &&
           chrome.ipfs.getConfig &&
-          chrome.ipfs.getExecutableAvailable) {
+          chrome.ipfs.getExecutableAvailable &&
+          chrome.ipfs.resolveIPFSURI) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();

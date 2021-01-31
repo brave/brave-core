@@ -8,8 +8,6 @@ source_set("ipfs") {
     "features.h",
     "ipfs_constants.cc",
     "ipfs_constants.h",
-    "ipfs_gateway.cc",
-    "ipfs_gateway.h",
     "ipfs_interstitial_controller_client.cc",
     "ipfs_interstitial_controller_client.h",
     "ipfs_json_parser.cc",
@@ -29,8 +27,6 @@ source_set("ipfs") {
     "ipfs_utils.h",
     "pref_names.cc",
     "pref_names.h",
-    "translate_ipfs_uri.cc",
-    "translate_ipfs_uri.h",
   ]
 
   deps = [

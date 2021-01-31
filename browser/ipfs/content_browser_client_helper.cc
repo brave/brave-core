@@ -14,10 +14,8 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
@@ -60,8 +58,8 @@ bool HandleIPFSURLRewrite(
       // We instead will translate the URL later.
       IsIPFSLocalGateway(browser_context) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
-    return TranslateIPFSURI(*url, url,
-                            GetDefaultIPFSLocalGateway(chrome::GetChannel()));
+    return TranslateIPFSURI(
+        *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
   }
 
   return false;

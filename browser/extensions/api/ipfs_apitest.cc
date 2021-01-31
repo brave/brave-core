@@ -178,5 +178,24 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, IpfsAPINotAvailable) {
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, ResolveIPFSURIMatches) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
+  ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
+
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ipfs_companion_extension_id,
+      "resolveIPFSURIMatches("
+      "'ipfs://bafybeifk6th5qhox7pffjqjerbjxkpmsmufdcswdgacnmyv3fn53z2wgwe',"
+      "'https://bafybeifk6th5qhox7pffjqjerbjxkpmsmufdcswdgacnmyv3fn53z2wgwe"
+      ".ipfs.dweb.link/')"));
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
 }  // namespace
 }  // namespace extensions

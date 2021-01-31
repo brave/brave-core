@@ -13,13 +13,11 @@ source_set("brave_ipfs_unit_tests") {
   if (ipfs_enabled) {
     sources = [
       "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
-      "//brave/components/ipfs/ipfs_gateway_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
       "//brave/components/ipfs/ipfs_navigation_throttle_unittest.cc",
       "//brave/components/ipfs/ipfs_p3a_unittest.cc",
       "//brave/components/ipfs/ipfs_ports_unittest.cc",
       "//brave/components/ipfs/ipfs_utils_unittest.cc",
-      "//brave/components/ipfs/translate_ipfs_uri_unittest.cc",
     ]
 
     deps = [

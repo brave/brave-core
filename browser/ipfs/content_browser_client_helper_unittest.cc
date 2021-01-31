@@ -12,7 +12,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/channel_info.h"

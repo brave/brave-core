@@ -11,15 +11,25 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
+
+namespace {
+
+GURL AppendLocalPort(const std::string& port) {
+  GURL gateway = GURL(ipfs::kDefaultIPFSLocalGateway);
+  GURL::Replacements replacements;
+  replacements.SetPortStr(port);
+  return gateway.ReplaceComponents(replacements);
+}
+
+}  // namespace
 
 namespace ipfs {
 
@@ -91,7 +101,7 @@ GURL ToPublicGatewayURL(const GURL& url, content::BrowserContext* context) {
 
   // For ipfs/ipns schemes, use TranslateIPFSURI directly.
   if (IsIPFSScheme(url) &&
-      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context))) {
+      TranslateIPFSURI(url, &new_url, GetDefaultIPFSGateway(context), false)) {
     return new_url;
   }
 
@@ -132,6 +142,108 @@ GURL GetIPNSGatewayURL(const std::string& cid,
                        const std::string& path,
                        const GURL& base_gateway_url) {
   return GetGatewayURL(cid, path, base_gateway_url, false);
+}
+
+bool IsLocalGatewayConfigured(content::BrowserContext* context) {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  return static_cast<IPFSResolveMethodTypes>(prefs->GetInteger(
+             kIPFSResolveMethod)) == IPFSResolveMethodTypes::IPFS_LOCAL;
+}
+
+GURL GetConfiguredBaseGateway(content::BrowserContext* context,
+                              version_info::Channel channel) {
+  return IsLocalGatewayConfigured(context)
+             ? ::ipfs::GetDefaultIPFSLocalGateway(channel)
+             : ::ipfs::GetDefaultIPFSGateway(context);
+}
+
+bool ResolveIPFSURI(content::BrowserContext* context,
+                    version_info::Channel channel,
+                    const GURL& ipfs_uri,
+                    GURL* resolved_url) {
+  CHECK(resolved_url);
+  return ::ipfs::TranslateIPFSURI(
+      ipfs_uri, resolved_url, GetConfiguredBaseGateway(context, channel), true);
+}
+
+GURL ipfs_default_gateway_for_test;
+
+void SetIPFSDefaultGatewayForTest(const GURL& url) {
+  ipfs_default_gateway_for_test = url;
+}
+
+GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
+  return AppendLocalPort(GetGatewayPort(channel));
+}
+
+GURL GetDefaultIPFSGateway(content::BrowserContext* context) {
+  if (!ipfs_default_gateway_for_test.is_empty()) {
+    return GURL(ipfs_default_gateway_for_test);
+  }
+
+  DCHECK(context);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  return GURL(prefs->GetString(kIPFSPublicGatewayAddress));
+}
+
+GURL GetAPIServer(version_info::Channel channel) {
+  return AppendLocalPort(GetAPIPort(channel));
+}
+
+bool TranslateIPFSURI(const GURL& url,
+                      GURL* new_url,
+                      const GURL& gateway_url,
+                      bool use_subdomain) {
+  if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
+    return false;
+  }
+
+  std::string path = url.path();
+  // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
+  // host is empty and path is //wiki/Vincent_van_Gogh.html
+  if (url.host().empty() && path.length() > 2 && path.substr(0, 2) == "//") {
+    std::string cid(path.substr(2));
+    // If we have a path after the CID, get at the real resource path
+    size_t pos = cid.find("/");
+    std::string path;
+    if (pos != std::string::npos && pos != 0) {
+      // path would be /wiki/Vincent_van_Gogh.html
+      path = cid.substr(pos, cid.length() - pos);
+      // cid would be [cid]
+      cid = cid.substr(0, pos);
+    }
+    bool ipfs_scheme = url.scheme() == kIPFSScheme;
+    bool ipns_scheme = url.scheme() == kIPNSScheme;
+    if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
+                                    [loc = std::locale{}](char c) {
+                                      return std::isalnum(c, loc);
+                                    })) ||
+        ipns_scheme) {
+      // new_url would be:
+      // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
+      if (new_url) {
+        GURL::Replacements replacements;
+        replacements.SetSchemeStr(gateway_url.scheme_piece());
+        replacements.SetPortStr(gateway_url.port_piece());
+        std::string new_host = gateway_url.host();
+        std::string new_path = path;
+        if (use_subdomain) {
+          new_host = base::StringPrintf("%s.%s.%s", cid.c_str(),
+                                        ipfs_scheme ? "ipfs" : "ipns",
+                                        gateway_url.host().c_str());
+        } else {
+          new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
+        }
+        replacements.SetHostStr(new_host);
+        replacements.SetPathStr(new_path);
+        *new_url = url.ReplaceComponents(replacements);
+        VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
+      }
+
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace ipfs

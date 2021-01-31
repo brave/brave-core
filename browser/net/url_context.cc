@@ -20,10 +20,10 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/common/channel_info.h"
-#include "components/prefs/testing_pref_service.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #endif
 
@@ -139,13 +139,18 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->browser_context = browser_context;
 #if BUILDFLAG(IPFS_ENABLED)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  bool local = static_cast<ipfs::IPFSResolveMethodTypes>(
-                   prefs->GetInteger(kIPFSResolveMethod)) ==
-               ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
   ctx->ipfs_gateway_url =
-      local ? ipfs::GetDefaultIPFSLocalGateway(chrome::GetChannel())
-            : ipfs::GetDefaultIPFSGateway(browser_context);
+      ipfs::GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
   ctx->ipfs_auto_fallback = prefs->GetBoolean(kIPFSAutoRedirectGateway);
+
+  // ipfs:// navigations have no tab origin set, but we want it to be the tab
+  // origin of the gateway so that ad-block in particular won't give up early.
+  if (ipfs::IsLocalGatewayConfigured(browser_context) &&
+      ctx->tab_origin.is_empty() &&
+      ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
+    ctx->tab_url = ctx->initiator_url;
+    ctx->tab_origin = ctx->initiator_url.GetOrigin();
+  }
 #endif
 
   // TODO(fmarier): remove this once the hacky code in
