@@ -40,11 +40,17 @@ window.cr.define('ipfs', function () {
     actions.getRepoStats()
   }
 
+  function getNodeInfo () {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.getNodeInfo()
+  }
+
   function initialize () {
     getDaemonStatus()
     getConnectedPeers()
     getAddressesConfig()
     getRepoStats()
+    getNodeInfo()
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
@@ -75,12 +81,18 @@ window.cr.define('ipfs', function () {
     actions.onGetRepoStats(repoStats)
   }
 
+  function onGetNodeInfo (nodeInfo: IPFS.NodeInfo) {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.onGetNodeInfo(nodeInfo)
+  }
+
   return {
     initialize,
     onGetConnectedPeers,
     onGetAddressesConfig,
     onGetDaemonStatus,
-    onGetRepoStats
+    onGetRepoStats,
+    onGetNodeInfo
   }
 })
 

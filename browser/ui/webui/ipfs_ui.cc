@@ -66,6 +66,10 @@ void IPFSDOMHandler::RegisterMessages() {
       "ipfs.getRepoStats",
       base::BindRepeating(&IPFSDOMHandler::HandleGetRepoStats,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "ipfs.getNodeInfo",
+      base::BindRepeating(&IPFSDOMHandler::HandleGetNodeInfo,
+                          base::Unretained(this)));
 }
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
@@ -213,4 +217,31 @@ void IPFSDOMHandler::OnGetRepoStats(bool success,
 
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetRepoStats",
                                          std::move(stats_value));
+}
+
+void IPFSDOMHandler::HandleGetNodeInfo(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  service->GetNodeInfo(base::BindOnce(&IPFSDOMHandler::OnGetNodeInfo,
+                                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::OnGetNodeInfo(bool success, const ipfs::NodeInfo& info) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  base::Value node_value(base::Value::Type::DICTIONARY);
+  node_value.SetStringKey("id", info.id);
+  node_value.SetStringKey("version", info.version);
+
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetNodeInfo",
+                                         std::move(node_value));
 }

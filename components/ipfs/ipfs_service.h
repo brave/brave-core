@@ -18,6 +18,7 @@
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
+#include "brave/components/ipfs/node_info.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -61,6 +62,8 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::AddressesConfig&)>;
   using GetRepoStatsCallback =
       base::OnceCallback<void(bool, const ipfs::RepoStats&)>;
+  using GetNodeInfoCallback =
+      base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
 
   using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
   using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
@@ -87,6 +90,7 @@ class IpfsService : public KeyedService,
   void ShutdownDaemon(ShutdownDaemonCallback callback);
   void GetConfig(GetConfigCallback);
   void GetRepoStats(GetRepoStatsCallback callback);
+  void GetNodeInfo(GetNodeInfoCallback callback);
 
   void SetAllowIpfsLaunchForTest(bool launched);
   void SetServerEndpointForTest(const GURL& gurl);
@@ -121,6 +125,9 @@ class IpfsService : public KeyedService,
   void OnRepoStats(SimpleURLLoaderList::iterator iter,
                    GetRepoStatsCallback callback,
                    std::unique_ptr<std::string> response_body);
+  void OnNodeInfo(SimpleURLLoaderList::iterator iter,
+                  GetNodeInfoCallback callback,
+                  std::unique_ptr<std::string> response_body);
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
   // bound.

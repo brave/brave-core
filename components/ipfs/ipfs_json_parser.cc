@@ -167,3 +167,43 @@ bool IPFSJSONParser::GetRepoStatsFromJSON(const std::string& json,
   stats->version = *version;
   return true;
 }
+
+// static
+// Response Format for /api/v0/id
+//{
+//  "Addresses": ["<string>"],
+//  "AgentVersion": "<string>",
+//  "ID": "<string>",
+//  "ProtocolVersion": "<string>",
+//  "Protocols": ["<string>"],
+//  "PublicKey": "<string>"
+//}
+bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
+                                         ipfs::NodeInfo* info) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  const std::string* version = response_dict->FindStringKey("AgentVersion");
+  const std::string* peerid = response_dict->FindStringKey("ID");
+
+  if (!peerid || !version) {
+    VLOG(1) << "Invalid response, missing required keys in value dictionary.";
+    return false;
+  }
+
+  info->id = *peerid;
+  info->version = *version;
+  return true;
+}

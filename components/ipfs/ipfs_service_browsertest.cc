@@ -151,6 +151,29 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     return http_response;
   }
 
+  std::unique_ptr<net::test_server::HttpResponse> HandleGetNodeInfo(
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    if (gurl.path_piece() != kNodeInfoPath) {
+      return nullptr;
+    }
+
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("application/json");
+    http_response->set_content(R"({
+      "Addresses": ["111.111.111.111"],
+      "AgentVersion": "1.2.3.4",
+      "ID": "idididid",
+      "ProtocolVersion": "5.6.7.8",
+      "Protocols": ["one", "two"],
+      "PublicKey": "public_key"
+    })");
+
+    return http_response;
+  }
+
   std::unique_ptr<net::test_server::HttpResponse> HandleRequestServerError(
       const net::test_server::HttpRequest& request) {
     auto http_response =
@@ -306,6 +329,23 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ASSERT_EQ(stats.version, "");
   }
 
+  void OnGetNodeInfoSuccess(bool success, const NodeInfo& info) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+
+    EXPECT_EQ(info.id, "idididid");
+    ASSERT_EQ(info.version, "1.2.3.4");
+  }
+
+  void OnGetNodeInfoFail(bool success, const NodeInfo& info) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_EQ(info.id, "");
+    ASSERT_EQ(info.version, "");
+  }
+
   void WaitForRequest() {
     if (wait_for_request_) {
       return;
@@ -378,6 +418,24 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetRepoStatsServerError) {
 
   ipfs_service()->GetRepoStats(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetRepoStatsFail, base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerSuccess) {
+  ResetTestServer(base::BindRepeating(
+      &IpfsServiceBrowserTest::HandleGetNodeInfo, base::Unretained(this)));
+  ipfs_service()->GetNodeInfo(base::BindOnce(
+      &IpfsServiceBrowserTest::OnGetNodeInfoSuccess, base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerError) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
+                          base::Unretained(this)));
+
+  ipfs_service()->GetNodeInfo(base::BindOnce(
+      &IpfsServiceBrowserTest::OnGetNodeInfoFail, base::Unretained(this)));
   WaitForRequest();
 }
 

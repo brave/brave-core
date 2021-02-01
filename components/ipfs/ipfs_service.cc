@@ -456,4 +456,43 @@ void IpfsService::OnRepoStats(SimpleURLLoaderList::iterator iter,
   std::move(callback).Run(success, repo_stats);
 }
 
+void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, NodeInfo());
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(ipfs::kNodeInfoPath);
+  auto url_loader = CreateURLLoader(gurl);
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
+}
+
+void IpfsService::OnNodeInfo(SimpleURLLoaderList::iterator iter,
+                             GetNodeInfoCallback callback,
+                             std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  ipfs::NodeInfo node_info;
+  if (error_code != net::OK || response_code != net::HTTP_OK) {
+    VLOG(1) << "Fail to get node info, error_code = " << error_code
+            << " response_code = " << response_code;
+    std::move(callback).Run(false, node_info);
+    return;
+  }
+
+  bool success =
+      IPFSJSONParser::GetNodeInfoFromJSON(*response_body, &node_info);
+  std::move(callback).Run(success, node_info);
+}
+
 }  // namespace ipfs

@@ -16,6 +16,7 @@
 namespace ipfs {
 struct AddressesConfig;
 struct RepoStats;
+struct NodeInfo;
 }  // namespace ipfs
 
 class IPFSDOMHandler : public content::WebUIMessageHandler {
@@ -40,7 +41,8 @@ class IPFSDOMHandler : public content::WebUIMessageHandler {
   void OnShutdownDaemon(bool success);
   void HandleGetRepoStats(const base::ListValue* args);
   void OnGetRepoStats(bool success, const ipfs::RepoStats& stats);
-
+  void HandleGetNodeInfo(const base::ListValue* args);
+  void OnGetNodeInfo(bool success, const ipfs::NodeInfo& info);
   base::WeakPtrFactory<IPFSDOMHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IPFSDOMHandler);
