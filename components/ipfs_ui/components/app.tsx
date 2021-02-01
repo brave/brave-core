@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { AddressesConfig } from './addressesConfig'
 import { ConnectedPeers } from './connectedPeers'
 import { DaemonStatus } from './daemonStatus'
+import { NodeInfo } from './nodeInfo'
 import { RepoStats } from './repoStats'
 import { UninstalledView } from './uninstalledView'
 
@@ -43,6 +44,7 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.getConnectedPeers()
     this.actions.getAddressesConfig()
     this.actions.getRepoStats()
+    this.actions.getNodeInfo()
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -66,6 +68,7 @@ export class IPFSPage extends React.Component<Props, {}> {
         <ConnectedPeers peerCount={this.props.ipfsData.connectedPeers.peerCount} />
         <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
         <RepoStats repoStats={this.props.ipfsData.repoStats} />
+        <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
       </div>
     )
   }

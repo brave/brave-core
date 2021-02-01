@@ -9,7 +9,8 @@ declare namespace IPFS {
     }
     addressesConfig: AddressesConfig
     daemonStatus: DaemonStatus
-    repoStats: RepoStats
+    repoStats: RepoStats,
+    nodeInfo: NodeInfo
   }
 
   export interface AddressesConfig {
@@ -29,6 +30,10 @@ declare namespace IPFS {
     storage: number
     path: string
     version: string
+  }
+  export interface NodeInfo {
+    peerId: string
+    agentVersion: string
   }
 
 }

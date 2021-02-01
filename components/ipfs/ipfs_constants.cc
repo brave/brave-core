@@ -22,4 +22,5 @@ const char kIPFSLearnMoreURL[] =
 const char kRepoStatsPath[] = "/api/v0/repo/stat";
 const char kRepoStatsHumanReadableParamName[] = "human";
 const char kRepoStatsHumanReadableParamValue[] = "true";
+const char kNodeInfoPath[] = "/api/v0/id";
 }  // namespace ipfs

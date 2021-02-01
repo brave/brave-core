@@ -867,6 +867,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "launch", IDS_IPFS_LAUNCH },
         { "shutdown", IDS_IPFS_SHUTDOWN },
         { "not_installed", IDS_IPFS_NOT_INSTALLED },
+        { "nodeInfoTitle", IDS_IPFS_NODE_ID_INFO_TITLE },
+        { "PeerId", IDS_IPFS_PEER_ID },
+        { "AgentVersion", IDS_IPFS_AGENT_VERSION },
       }
     }, {
 #endif
