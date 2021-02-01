@@ -52,6 +52,10 @@ pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
 }
 
 /// Checks if a `url` matches for the specified `Engine` within the context.
+///
+/// This API is designed for multi-engine use, so block results are used both as inputs and
+/// outputs. They will be updated to reflect additional checking within this engine, rather than
+/// being replaced with results just for this engine.
 #[no_mangle]
 pub unsafe extern "C" fn engine_match(
     engine: *mut Engine,
@@ -60,12 +64,11 @@ pub unsafe extern "C" fn engine_match(
     tab_host: *const c_char,
     third_party: bool,
     resource_type: *const c_char,
+    did_match_rule: *mut bool,
     did_match_exception: *mut bool,
     did_match_important: *mut bool,
     redirect: *mut *mut c_char,
-    previously_matched_rule: bool,
-    force_check_exceptions: bool,
-) -> bool {
+) {
     let url = CStr::from_ptr(url).to_str().unwrap();
     let host = CStr::from_ptr(host).to_str().unwrap();
     let tab_host = CStr::from_ptr(tab_host).to_str().unwrap();
@@ -78,11 +81,14 @@ pub unsafe extern "C" fn engine_match(
         tab_host,
         resource_type,
         Some(third_party),
-        previously_matched_rule,
-        force_check_exceptions,
+        // Checking normal rules is skipped if a normal rule or exception rule was found previously
+        *did_match_rule || *did_match_exception,
+        // Always check exceptions unless one was found previously
+        !*did_match_exception,
     );
-    *did_match_exception = blocker_result.exception.is_some();
-    *did_match_important = blocker_result.important;
+    *did_match_rule |= blocker_result.matched;
+    *did_match_exception |= blocker_result.exception.is_some();
+    *did_match_important |= blocker_result.important;
     *redirect = match blocker_result.redirect {
         Some(x) => match CString::new(x) {
             Ok(y) => y.into_raw(),
@@ -90,7 +96,6 @@ pub unsafe extern "C" fn engine_match(
         },
         None => ptr::null_mut(),
     };
-    blocker_result.matched
 }
 
 /// Adds a tag to the engine for consideration

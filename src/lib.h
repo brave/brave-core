@@ -34,18 +34,21 @@ struct C_Engine *engine_create(const char *rules);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.
+ *
+ * This API is designed for multi-engine use, so block results are used both as inputs and
+ * outputs. They will be updated to reflect additional checking within this engine, rather than
+ * being replaced with results just for this engine.
  */
-bool engine_match(struct C_Engine *engine,
+void engine_match(struct C_Engine *engine,
                   const char *url,
                   const char *host,
                   const char *tab_host,
                   bool third_party,
                   const char *resource_type,
+                  bool *did_match_rule,
                   bool *did_match_exception,
                   bool *did_match_important,
-                  char **redirect,
-                  bool previously_matched_rule,
-                  bool force_check_exceptions);
+                  char **redirect);
 
 /**
  * Adds a tag to the engine for consideration
