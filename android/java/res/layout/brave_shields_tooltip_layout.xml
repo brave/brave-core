@@ -6,39 +6,42 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/main_layout"
+	android:id="@+id/shields_tooltip_layout"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:padding="24dp"
-	android:background="@drawable/shields_tooltip_background">
+	android:layout_height="wrap_content">
 
 	<TextView
-		android:layout_width="wrap_content"
+		android:id="@+id/txt_tooltip_title"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="20sp"
-		android:singleLine="true"
-		android:ellipsize="end"
 		android:fontFamily="sans-serif"
 		android:layout_marginBottom="8dp"
-		android:text="@string/nice"
 		android:textColor="@android:color/white"/>
 
 	<TextView
-		android:layout_width="wrap_content"
+		android:id="@+id/txt_tooltip_text"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="16sp"
 		android:fontFamily="sans-serif"
-		android:layout_marginBottom="16dp"
-		android:text="@string/you_just_blocked"
+		android:layout_marginBottom="8dp"
 		android:textColor="@android:color/white"/>
 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="16sp"
-		android:fontFamily="sans-serif"
-		android:text="@string/take_a_look"
-		android:textColor="@android:color/white"/>
+	<Button
+        android:id="@+id/btn_tooltip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@drawable/white_rounded_holo_button"
+        android:text="@string/take_a_look"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>
