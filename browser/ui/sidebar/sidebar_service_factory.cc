@@ -23,6 +23,11 @@ SidebarService* SidebarServiceFactory::GetForProfile(Profile* profile) {
   if (!base::FeatureList::IsEnabled(kSidebarFeature))
     return nullptr;
 
+  if (profile->IsOffTheRecord()) {
+    // Temporarily disable sidebar except normal window.
+    return nullptr;
+  }
+
   return static_cast<SidebarService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -33,12 +38,6 @@ SidebarServiceFactory::SidebarServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {}
 
 SidebarServiceFactory::~SidebarServiceFactory() = default;
-
-content::BrowserContext* SidebarServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  // Normal & OTR profile share the sidebar configuration.
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
-}
 
 KeyedService* SidebarServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

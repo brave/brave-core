@@ -9,9 +9,8 @@
 #include "chrome/grit/generated_resources.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "base/feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/components/sidebar/features.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -168,7 +167,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   }
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature)) {
+  if (sidebar::CanUseSidebar(browser()->profile())) {
     sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
     InsertSubMenuWithStringIdAt(
         GetIndexOfBraveSidebarItem(), IDC_SIDEBAR_SHOW_OPTION_MENU,

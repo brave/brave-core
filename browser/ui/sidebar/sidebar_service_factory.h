@@ -31,8 +31,6 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
   SidebarServiceFactory& operator=(const SidebarServiceFactory&) = delete;
 
   // BrowserContextKeyedServiceFactory overrides:
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
 };

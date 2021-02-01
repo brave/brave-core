@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/feature_list.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
@@ -37,7 +36,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/components/sidebar/features.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -91,8 +90,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // TODO(simonhong): Remove this when sidebar is shipped by default in all
   // channels.
-  html_source->AddBoolean(
-      "isSidebarFeatureEnabled",
-      base::FeatureList::IsEnabled(sidebar::kSidebarFeature));
+  html_source->AddBoolean("isSidebarFeatureEnabled",
+                          sidebar::CanUseSidebar(profile));
 #endif
 }

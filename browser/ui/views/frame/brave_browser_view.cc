@@ -17,9 +17,9 @@
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/components/sidebar/features.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "ui/views/layout/fill_layout.h"
 #endif
@@ -107,7 +107,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // Only normal window (tabbed) should have sidebar.
-  if (!base::FeatureList::IsEnabled(sidebar::kSidebarFeature) ||
+  if (!sidebar::CanUseSidebar(browser_->profile()) ||
       !browser_->is_type_normal()) {
     return;
   }
@@ -149,7 +149,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
-  if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature) &&
+  if (sidebar::CanUseSidebar(browser_->profile()) &&
       browser_->is_type_normal()) {
     return static_cast<ContentsLayoutManager*>(
         original_contents_container_->GetLayoutManager());

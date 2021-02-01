@@ -28,8 +28,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "base/feature_list.h"
-#include "brave/components/sidebar/features.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
 namespace {
@@ -158,7 +157,7 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
 
 void BraveBrowserCommandController::UpdateCommandForSidebar() {
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature))
+  if (sidebar::CanUseSidebar(browser_->profile()))
     UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
 #endif
 }

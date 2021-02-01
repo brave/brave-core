@@ -6,22 +6,19 @@
 #include "brave/browser/ui/brave_browser.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "base/feature_list.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/components/sidebar/features.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #endif
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (!base::FeatureList::IsEnabled(sidebar::kSidebarFeature) ||
-      !is_type_normal()) {
+  if (!sidebar::CanUseSidebar(profile()) || !is_type_normal())
     return;
-  }
   // Below call order is important.
   // When reaches here, Sidebar UI is setup in BraveBrowserView but
   // not initialized. It's just empty because sidebar controller/model is not
