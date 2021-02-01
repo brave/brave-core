@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_list.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
@@ -23,6 +24,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
+#include "net/base/features.cc"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_request_headers.h"
 #include "net/test/embedded_test_server/default_handlers.h"
@@ -81,8 +83,10 @@ const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
  public:
-  BraveContentSettingsAgentImplBrowserTest() :
-      https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+  BraveContentSettingsAgentImplBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitAndEnableFeature(net::features::kBraveEphemeralStorage);
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -396,6 +400,9 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     EXPECT_FALSE(ExecJs(frame, "sessionStorage"));
   }
 
+ protected:
+  base::test::ScopedFeatureList feature_list_;
+
  private:
   GURL url_;
   GURL cross_site_url_;
@@ -417,6 +424,15 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   base::ScopedTempDir temp_user_data_dir_;
   net::test_server::EmbeddedTestServer https_server_;
+};
+
+class BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest
+    : public BraveContentSettingsAgentImplBrowserTest {
+ public:
+  BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest() {
+    feature_list_.Reset();
+    feature_list_.InitAndDisableFeature(net::features::kBraveEphemeralStorage);
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -892,8 +908,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       BlockThirdPartyCookieByDefault) {
+IN_PROC_BROWSER_TEST_F(
+    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
+    BlockThirdPartyCookieByDefault) {
   NavigateToPageWithIframe();
   CheckCookie(child_frame(), kTestCookie);
 
@@ -901,6 +918,31 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   Check3PCookie(child_frame(), kEmptyCookie);
 }
 
+// With ephemeral storage enabled, the 3p cookie should still appear to be set
+// correctly.
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       BlockThirdPartyCookieByDefault) {
+  NavigateToPageWithIframe();
+  CheckCookie(child_frame(), kTestCookie);
+
+  NavigateIframe(cross_site_url());
+  Check3PCookie(child_frame(), kTestCookie);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
+    ExplicitBlock3PCookies) {
+  Block3PCookies();
+
+  NavigateToPageWithIframe();
+  CheckCookie(child_frame(), kTestCookie);
+
+  NavigateIframe(cross_site_url());
+  Check3PCookie(child_frame(), kEmptyCookie);
+}
+
+// With ephemeral storage enabled, the 3p cookie should still appear to be
+// set correctly.
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        ExplicitBlock3PCookies) {
   Block3PCookies();
@@ -909,7 +951,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(child_frame(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  Check3PCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockCookies) {
@@ -951,6 +993,25 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   Check3PCookie(child_frame(), kTestCookie);
 }
 
+IN_PROC_BROWSER_TEST_F(
+    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
+    ChromiumCookieBlockOverridesBraveAllowCookiesIframe) {
+  AllowCookies();
+  HostContentSettingsMap* content_settings =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  content_settings->SetContentSettingCustomScope(
+      iframe_pattern(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
+
+  NavigateToPageWithIframe();
+  CheckCookie(contents(), kTestCookie);
+
+  NavigateIframe(cross_site_url());
+  Check3PCookie(child_frame(), kEmptyCookie);
+}
+
+// Ephemeral storage still works with the Chromium cookie blocking content
+// setting.
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        ChromiumCookieBlockOverridesBraveAllowCookiesIframe) {
   AllowCookies();
@@ -964,7 +1025,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(contents(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  Check3PCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1002,6 +1063,20 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   Check3PCookie(child_frame(), kEmptyCookie);
 }
 
+IN_PROC_BROWSER_TEST_F(
+    BraveContentSettingsAgentImplNoEphemeralStorageBrowserTest,
+    LocalStorageTest) {
+  NavigateToPageWithIframe();
+
+  // Local storage is null, accessing it shouldn't throw.
+  NavigateIframe(cross_site_url());
+  CheckLocalStorageAccessDenied(child_frame());
+
+  // Local storage is null, accessing it doesn't throw.
+  NavigateIframe(cross_site_url());
+  CheckLocalStorageAccessDenied(child_frame());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        LocalStorageTest) {
   // Brave defaults:
@@ -1011,7 +1086,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Local storage is null, accessing it shouldn't throw.
   NavigateIframe(cross_site_url());
-  CheckLocalStorageAccessDenied(child_frame());
+  CheckLocalStorageAccessible(child_frame());
 
   // Cookies allowed:
   AllowCookies();
@@ -1031,7 +1106,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Local storage is null, accessing it doesn't throw.
   NavigateIframe(cross_site_url());
-  CheckLocalStorageAccessDenied(child_frame());
+  CheckLocalStorageAccessible(child_frame());
 
   // Shields down, third-party cookies still blocked:
   ShieldsDown();
