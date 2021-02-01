@@ -414,4 +414,46 @@ IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
       prefs->GetInteger(kIPFSResolveMethod));
 }
 
+void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, RepoStats());
+    return;
+  }
+
+  GURL gurl =
+      net::AppendQueryParameter(server_endpoint_.Resolve(ipfs::kRepoStatsPath),
+                                ipfs::kRepoStatsHumanReadableParamName,
+                                ipfs::kRepoStatsHumanReadableParamValue);
+  auto url_loader = CreateURLLoader(gurl);
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
+}
+
+void IpfsService::OnRepoStats(SimpleURLLoaderList::iterator iter,
+                              GetRepoStatsCallback callback,
+                              std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  ipfs::RepoStats repo_stats;
+  if (error_code != net::OK || response_code != net::HTTP_OK) {
+    VLOG(1) << "Fail to get repro stats, error_code = " << error_code
+            << " response_code = " << response_code;
+    std::move(callback).Run(false, repo_stats);
+    return;
+  }
+
+  bool success =
+      IPFSJSONParser::GetRepoStatsFromJSON(*response_body, &repo_stats);
+  std::move(callback).Run(success, repo_stats);
+}
+
 }  // namespace ipfs
