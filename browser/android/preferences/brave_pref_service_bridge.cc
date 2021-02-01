@@ -293,7 +293,8 @@ void JNI_BravePrefServiceBridge_SetReferralDownloadId(
 void JNI_BravePrefServiceBridge_SetP3AEnabled(
     JNIEnv* env,
     jboolean value) {
-  // Saving pref value to the disk as soon as the pref value is set to avoid delay in pref value update.
+  /* Saving pref value to the disk as soon as the pref value
+   * is set to avoid delay in pref value update.*/
   g_browser_process->local_state()->SetBoolean(
        brave::kP3AEnabled, value);
   g_browser_process->local_state()->CommitPendingWrite();
