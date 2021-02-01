@@ -497,6 +497,50 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         BraveShieldsUtils.isTooltipShown = true;
     }
 
+    public void showRewardsTooltip() {
+        ShieldsTooltipEnum shieldsTooltipEnum = ShieldsTooltipEnum.BAP_DEPRECATION_TOOLTIP;
+        PopupWindowTooltip mRewardsPopupWindowTooltip =
+                new PopupWindowTooltip.Builder(getContext())
+                        .anchorView(mBraveRewardsButton)
+                        .arrowColor(getResources().getColor(shieldsTooltipEnum.getArrowColor()))
+                        .gravity(Gravity.BOTTOM)
+                        .dismissOnOutsideTouch(true)
+                        .dismissOnInsideTouch(false)
+                        .modal(true)
+                        .contentView(R.layout.brave_shields_tooltip_layout)
+                        .build();
+        mRewardsPopupWindowTooltip.findViewById(R.id.shields_tooltip_layout)
+                .setBackgroundDrawable(ContextCompat.getDrawable(
+                        getContext(), shieldsTooltipEnum.getTooltipBackground()));
+
+        Button btnTooltip = mRewardsPopupWindowTooltip.findViewById(R.id.btn_tooltip);
+        btnTooltip.setText(getContext().getResources().getString(R.string.menu_learn_more));
+        btnTooltip.setVisibility(View.VISIBLE);
+        btnTooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRewardsPopupWindowTooltip.dismiss();
+                if (BraveActivity.getBraveActivity() != null)
+                    BraveActivity.getBraveActivity().showDeprecateBAPDialog();
+            }
+        });
+
+        TextView tooltipTitle = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_title);
+        SpannableStringBuilder ssb =
+                new SpannableStringBuilder(new StringBuilder("\t\t")
+                                                   .append(getContext().getResources().getString(
+                                                           shieldsTooltipEnum.getTitle()))
+                                                   .toString());
+        ssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_warning_triangle), 0, 1,
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        tooltipTitle.setText(ssb, TextView.BufferType.SPANNABLE);
+
+        TextView tooltipText = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_text);
+        tooltipText.setText(getContext().getResources().getString(shieldsTooltipEnum.getText()));
+
+        mRewardsPopupWindowTooltip.show();
+    }
+
     public void dismissShieldsTooltip() {
         if (mShieldsPopupWindowTooltip != null && mShieldsPopupWindowTooltip.isShowing()) {
             mShieldsPopupWindowTooltip.dismiss();
