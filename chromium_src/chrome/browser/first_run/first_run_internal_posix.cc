@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -26,7 +26,7 @@
 #include "components/startup_metric_utils/browser/startup_metric_utils.h"
 
 // All above headers copied from original first_run_internal_posix.cc are
-// included to prevent below GOOGLE_CHROEM_BUILD affect them.
+// included to prevent below GOOGLE_CHROME_BUILD affect them.
 
 // First run dialog is only enabled for google chrome by default.
 #if defined(OFFICIAL_BUILD)
