@@ -31,10 +31,12 @@ class BaseBraveShieldsService : public BraveComponent {
   ~BaseBraveShieldsService() override;
   bool Start();
   bool IsInitialized() const;
-  virtual bool ShouldStartRequest(const GURL& url,
+  virtual void ShouldStartRequest(const GURL& url,
                                   blink::mojom::ResourceType resource_type,
                                   const std::string& tab_host,
+                                  bool* did_match_rule,
                                   bool* did_match_exception,
+                                  bool* did_match_important,
                                   std::string* mock_data_url);
 
  protected:

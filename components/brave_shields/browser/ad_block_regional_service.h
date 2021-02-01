@@ -14,7 +14,7 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 
 class AdBlockServiceTest;
 

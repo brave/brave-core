@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(AdBlockRegionalServiceTest, UserModelLanguages) {

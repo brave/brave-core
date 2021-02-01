@@ -17,7 +17,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -123,25 +123,24 @@ bool AdBlockRegionalServiceManager::Start() {
   return true;
 }
 
-bool AdBlockRegionalServiceManager::ShouldStartRequest(
+void AdBlockRegionalServiceManager::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
-    bool* matching_exception_filter,
+    bool* did_match_rule,
+    bool* did_match_exception,
+    bool* did_match_important,
     std::string* mock_data_url) {
   base::AutoLock lock(regional_services_lock_);
+
   for (const auto& regional_service : regional_services_) {
-    if (!regional_service.second->ShouldStartRequest(
-            url, resource_type, tab_host, matching_exception_filter,
-            mock_data_url)) {
-      return false;
-    }
-    if (matching_exception_filter && *matching_exception_filter) {
-      return true;
+    regional_service.second->ShouldStartRequest(
+        url, resource_type, tab_host, did_match_rule, did_match_exception,
+        did_match_important, mock_data_url);
+    if (did_match_important && *did_match_important) {
+      return;
     }
   }
-
-  return true;
 }
 
 void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,

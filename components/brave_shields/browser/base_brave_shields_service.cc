@@ -49,16 +49,14 @@ bool BaseBraveShieldsService::Start() {
   return false;
 }
 
-bool BaseBraveShieldsService::ShouldStartRequest(
+void BaseBraveShieldsService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    bool* did_match_rule,
     bool* did_match_exception,
+    bool* did_match_important,
     std::string* mock_data_url) {
-  if (did_match_exception) {
-    *did_match_exception = false;
-  }
-  return true;
 }
 
 }  // namespace brave_shields

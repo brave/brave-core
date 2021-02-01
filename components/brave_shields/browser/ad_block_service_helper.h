@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 
 namespace brave_shields {
 
