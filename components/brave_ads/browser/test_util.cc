@@ -29,6 +29,7 @@ std::unique_ptr<Profile> CreateBraveAdsProfile(const base::FilePath& path) {
   std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(
       factory.CreateSyncable(registry.get()));
   brave_rewards::RewardsService::RegisterProfilePrefs(registry.get());
+  AdsService::RegisterProfilePrefs(registry.get());
   RegisterUserProfilePrefs(registry.get());
   TestingProfile::Builder profile_builder;
   profile_builder.SetPrefService(std::move(prefs));

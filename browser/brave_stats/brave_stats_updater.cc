@@ -19,6 +19,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -305,8 +306,11 @@ void BraveStatsUpdater::SendServerPing() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto traffic_annotation = AnonymousStatsAnnotation();
   auto resource_request = std::make_unique<network::ResourceRequest>();
+  auto* profile_pref_service =
+      ProfileManager::GetPrimaryUserProfile()->GetPrefs();
   auto stats_updater_params =
-      std::make_unique<brave_stats::BraveStatsUpdaterParams>(pref_service_);
+      std::make_unique<brave_stats::BraveStatsUpdaterParams>(
+          pref_service_, profile_pref_service);
 
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
