@@ -77,7 +77,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="@string/skip"
-                    android:textColor="#868E96" />
+                    android:textColor="@color/brave_stats_title_color" />
 
               </LinearLayout>
 

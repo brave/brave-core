@@ -388,7 +388,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Set as default browser
       </message>
       <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
-        Select Brave Browser from the list and tap 'Always'
+        Select Brave Browser and tap 'Always'
       </message>
       <message name="IDS_BRAVE_ALREADY_SET_AS_DEFAULT_BROWSER" desc="Toast message for those whom have already set Brave as default browser">
         Brave is already set as your default browser.
@@ -1635,6 +1635,18 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
         Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
+      </message>
+      <message name="IDS_SET_DEFAULT_BROWSER_TITLE" desc="Set default browser modal title">
+        Open all links with Brave to protect your privacy
+      </message>
+      <message name="IDS_SET_DEFAULT_BROWSER_TEXT" desc="Set default browser modal text">
+        Brave Shields blocks trackers &amp; ads, saves data, and saves you time on every site you visit.
+      </message>
+      <message name="IDS_SET_BRAVE_DEFAULT_BROWSER" desc="Set default browser modal button text">
+        Set Brave as default
+      </message>
+      <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
+        Not now
       </message>
     </messages>
   </release>
