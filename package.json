@@ -251,7 +251,7 @@
     "@storybook/react": "5.3.21",
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.33",
-    "@types/chrome": "0.0.123",
+    "@types/chrome": "0.0.129",
     "@types/enzyme": "3.10.8",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "24.9.1",
