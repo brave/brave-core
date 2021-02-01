@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/grit/brave_generated_resources.h"
