@@ -321,10 +321,6 @@ Config.prototype.buildArgs = function () {
     if (this.buildConfig !== 'Release') {
       // treat non-release builds like Debug builds
       args.treat_warnings_as_errors = false
-      // TODO(samartnik): component builds crash at the moment on Android.
-      // We will need to revert this change once this fix is landed in upstream
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=1166748#c14
-      args.is_component_build = false
     } else {
       // otherwise there is build error
       // ld.lld: error: output file too large: 5861255936 bytes
