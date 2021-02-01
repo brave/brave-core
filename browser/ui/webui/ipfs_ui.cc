@@ -231,17 +231,16 @@ void IPFSDOMHandler::HandleGetNodeInfo(const base::ListValue* args) {
   }
 
   service->GetNodeInfo(base::BindOnce(&IPFSDOMHandler::OnGetNodeInfo,
-                                       weak_ptr_factory_.GetWeakPtr()));
+                                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void IPFSDOMHandler::OnGetNodeInfo(bool success,
-                                   const ipfs::NodeInfo& info) {
+void IPFSDOMHandler::OnGetNodeInfo(bool success, const ipfs::NodeInfo& info) {
   if (!web_ui()->CanCallJavascript())
     return;
 
   base::Value node_value(base::Value::Type::DICTIONARY);
-  node_value.SetDoubleKey("peerid", info.objects);
-  node_value.SetDoubleKey("agent_version", info.size);
+  node_value.SetStringKey("id", info.id);
+  node_value.SetStringKey("version", info.version);
 
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetNodeInfo",
                                          std::move(node_value));

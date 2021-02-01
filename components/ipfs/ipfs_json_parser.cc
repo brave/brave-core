@@ -195,7 +195,6 @@ bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
-
   const std::string* version = response_dict->FindStringKey("AgentVersion");
   const std::string* peerid = response_dict->FindStringKey("ID");
 
@@ -204,7 +203,7 @@ bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
     return false;
   }
 
-  stats->peerid = *peerid;
-  stats->version = *version;
+  info->id = *peerid;
+  info->version = *version;
   return true;
 }

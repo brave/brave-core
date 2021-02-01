@@ -456,10 +456,9 @@ void IpfsService::OnRepoStats(SimpleURLLoaderList::iterator iter,
   std::move(callback).Run(success, repo_stats);
 }
 
-
 void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(false, RepoStats());
+    std::move(callback).Run(false, NodeInfo());
     return;
   }
 

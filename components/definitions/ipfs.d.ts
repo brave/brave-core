@@ -31,9 +31,10 @@ declare namespace IPFS {
     path: string
     version: string
   }
+
   export interface NodeInfo {
-    peerId: string
-    agentVersion: string
+    id: string
+    version: string
   }
 
 }
