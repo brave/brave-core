@@ -90,7 +90,7 @@ class IpfsService : public KeyedService,
   void ShutdownDaemon(ShutdownDaemonCallback callback);
   void GetConfig(GetConfigCallback);
   void GetRepoStats(GetRepoStatsCallback callback);
-  void GetNodeInfo(GetRepoStatsCallback callback);
+  void GetNodeInfo(GetNodeInfoCallback callback);
 
   void SetAllowIpfsLaunchForTest(bool launched);
   void SetServerEndpointForTest(const GURL& gurl);

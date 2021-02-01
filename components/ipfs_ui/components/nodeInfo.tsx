@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -25,10 +26,10 @@ export class NodeInfo extends React.Component<Props, {}> {
           {getLocale('nodeInfoTitle')}
         </Title>
         <div>
-          {getLocale('peerId')}: {this.props.nodeInfo.id.toString()}
+          {getLocale('id')}: {this.props.nodeInfo.id}
         </div>
         <div>
-          {getLocale('agentVersion')}: {this.props.nodeInfo.version.toString()}
+          {getLocale('version')}: {this.props.nodeInfo.version}
         </div>
       </Section>
     )

@@ -105,8 +105,8 @@ TEST_F(IPFSJSONParserTest, GetNodeInfoFromJSON) {
       "Protocols": ["one", "two"],
       "PublicKey": "public_key"
     })",
-                                                   &stat));
+                                                  &info));
 
-  ASSERT_EQ(info.peerid, "idididid");
+  ASSERT_EQ(info.id, "idididid");
   ASSERT_EQ(info.version, "1.2.3.4");
 }

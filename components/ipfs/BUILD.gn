@@ -25,12 +25,12 @@ source_set("ipfs") {
     "ipfs_service_observer.h",
     "ipfs_utils.cc",
     "ipfs_utils.h",
+    "node_info.cc",
+    "node_info.h",
     "pref_names.cc",
     "pref_names.h",
     "repo_stats.cc",
     "repo_stats.h",
-    "node_info.cc",
-    "node_info.h",
   ]
 
   deps = [

@@ -81,7 +81,7 @@ window.cr.define('ipfs', function () {
     actions.onGetRepoStats(repoStats)
   }
 
-  function onGetNodeInfo (repoStats: IPFS.NodeInfo) {
+  function onGetNodeInfo (nodeInfo: IPFS.NodeInfo) {
     const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
     actions.onGetNodeInfo(nodeInfo)
   }

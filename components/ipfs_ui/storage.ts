@@ -28,8 +28,8 @@ export const defaultState: IPFS.State = {
     version: ''
   },
   nodeInfo: {
-    peerId: '',
-    agentVersion: ''
+    id: '',
+    version: ''
   }
 }
 

@@ -38,7 +38,7 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
         ...state,
         nodeInfo: action.payload.nodeInfo
       }
-      break  
+      break
     case types.IPFS_GET_REPO_STATS:
       chrome.send('ipfs.getRepoStats')
       break

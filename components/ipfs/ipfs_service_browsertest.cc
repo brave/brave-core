@@ -342,8 +342,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
-    EXPECT_EQ(stats.id, "");
-    ASSERT_EQ(stats.version, "");
+    EXPECT_EQ(info.id, "");
+    ASSERT_EQ(info.version, "");
   }
 
   void WaitForRequest() {
@@ -434,7 +434,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerError) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
                           base::Unretained(this)));
 
-  ipfs_service()->GetRepoStats(base::BindOnce(
+  ipfs_service()->GetNodeInfo(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetNodeInfoFail, base::Unretained(this)));
   WaitForRequest();
 }

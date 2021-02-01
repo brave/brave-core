@@ -42,6 +42,6 @@ export const onGetNodeInfo = (nodeInfo: IPFS.NodeInfo) =>
   action(types.IPFS_ON_GET_NODE_INFO, {
     nodeInfo
   })
-  
+
 export const launchDaemon = () => action(types.IPFS_LAUNCH_DAEMON)
 export const shutdownDaemon = () => action(types.IPFS_SHUTDOWN_DAEMON)
