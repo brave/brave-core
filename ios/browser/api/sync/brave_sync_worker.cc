@@ -15,7 +15,9 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/profile_sync_service_helper.h"
 #include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -162,19 +164,19 @@ const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
       ->GetLocalDeviceInfo();
 }
 
-std::vector<std::unique_ptr<syncer::DeviceInfo>>
+std::vector<std::unique_ptr<syncer::BraveDeviceInfo>>
 BraveSyncWorker::GetDeviceList() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
 
   if (!device_info_service) {
-    return std::vector<std::unique_ptr<syncer::DeviceInfo>>();
+    return std::vector<std::unique_ptr<syncer::BraveDeviceInfo>>();
   }
 
   syncer::DeviceInfoTracker* tracker =
       device_info_service->GetDeviceInfoTracker();
-  return tracker->GetAllDeviceInfo();
+  return tracker->GetAllBraveDeviceInfo();
 }
 
 std::string BraveSyncWorker::GetOrCreateSyncCode() {
@@ -239,39 +241,36 @@ bool BraveSyncWorker::IsFirstSetupComplete() {
          sync_service->GetUserSettings()->IsFirstSetupComplete();
 }
 
-bool BraveSyncWorker::ResetSync() {
+void BraveSyncWorker::ResetSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
-
-  // Do not send self deleted commit if engine is not up and running
-  if (!sync_service || sync_service->GetTransportState() !=
-                           syncer::SyncService::TransportState::ACTIVE) {
-    OnLocalDeviceInfoDeleted();
-    return true;
+  auto* sync_service = GetSyncService();
+  
+  if (!sync_service) {
+    return;
   }
-
-  auto* local_device_info = GetLocalDeviceInfo();
-  if (!local_device_info) {
-    // May happens when we reset the chain immediately after connection
-    VLOG(1) << __func__ << " no local device info, cannot reset sync now";
-    return false;
-  }
-
+  
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
-  auto* tracker = device_info_service->GetDeviceInfoTracker();
+  DCHECK(device_info_service);
+  
+  brave_sync::ResetSync(sync_service, device_info_service,
+                        base::BindOnce(&BraveSyncWorker::OnResetDone,
+                                        weak_ptr_factory_.GetWeakPtr()));
+}
 
-  if (!tracker) {
-    return false;
+void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  auto* sync_service = GetSyncService();
+  
+  if (!sync_service) {
+    return;
   }
-
-  tracker->DeleteDeviceInfo(
-      local_device_info->guid(),
-      base::BindOnce(&BraveSyncWorker::OnLocalDeviceInfoDeleted,
-                     weak_ptr_factory_.GetWeakPtr()));
-
-  return true;
+  
+  auto* device_info_service =
+      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+  DCHECK(device_info_service);
+  
+  brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
 }
 
 syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
@@ -329,16 +328,13 @@ void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
   }
 }
 
-void BraveSyncWorker::OnLocalDeviceInfoDeleted() {
-  auto* sync_service =
-      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
-
+void BraveSyncWorker::OnResetDone() {
+  syncer::SyncService* sync_service = GetSyncService();
   if (sync_service) {
-    sync_service->StopAndClear();
+    if (sync_service_observer_.IsObserving(sync_service)) {
+      sync_service_observer_.Remove(sync_service);
+    }
   }
-
-  brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-  brave_sync_prefs.Clear();
 }
 
 bool BraveSyncWorker::IsSyncEnabled() {
