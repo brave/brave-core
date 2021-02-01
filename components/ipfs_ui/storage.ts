@@ -26,6 +26,10 @@ export const defaultState: IPFS.State = {
     storage: 0,
     path: '',
     version: ''
+  },
+  nodeInfo: {
+    peerId: '',
+    agentVersion: ''
   }
 }
 

@@ -93,3 +93,20 @@ TEST_F(IPFSJSONParserTest, GetRepoStatsFromJSON) {
   ASSERT_EQ(stat.path, "/some/path/to/repo");
   ASSERT_EQ(stat.version, "fs-repo@10");
 }
+
+TEST_F(IPFSJSONParserTest, GetNodeInfoFromJSON) {
+  ipfs::NodeInfo info;
+
+  ASSERT_TRUE(IPFSJSONParser::GetNodeInfoFromJSON(R"({
+      "Addresses": ["111.111.111.111"],
+      "AgentVersion": "1.2.3.4",
+      "ID": "idididid",
+      "ProtocolVersion": "5.6.7.8",
+      "Protocols": ["one", "two"],
+      "PublicKey": "public_key"
+    })",
+                                                   &stat));
+
+  ASSERT_EQ(info.peerid, "idididid");
+  ASSERT_EQ(info.version, "1.2.3.4");
+}
