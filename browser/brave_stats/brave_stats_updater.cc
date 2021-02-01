@@ -175,9 +175,9 @@ void BraveStatsUpdater::SetStatsThresholdCallback(
 GURL BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
   auto stats_updater_url = GURL(usage_server_ + path);
 #if defined(OFFICIAL_BUILD)
-  // Urgent fix for https://github.com/brave/brave-browser/issues/13858
-  stats_updater_url = GURL("https://laptop-updates.brave.com" + path);
-  CHECK(stats_updater_url.is_valid());
+  if(!stats_updater_url.is_valid()) {
+    LOG(ERROR) << "stats_updater_url is not valid! " << stats_updater_url;
+  }
 #endif
   return stats_updater_url;
 }
