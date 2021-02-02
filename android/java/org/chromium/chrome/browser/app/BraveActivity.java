@@ -313,6 +313,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveSyncReflectionUtils.showInformers();
         BraveAndroidSyncDisabledInformer.showInformers();
 
+        if (!PackageUtils.isFirstInstall(this)
+                && !OnboardingPrefManager.getInstance().isP3AEnabledForExistingUsers()) {
+            BravePrefServiceBridge.getInstance().setP3AEnabled(true);
+            OnboardingPrefManager.getInstance().setP3AEnabledForExistingUsers(true);
+        }
+
         if (BraveConfig.P3A_ENABLED
                 && !OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
             Intent p3aOnboardingIntent = new Intent(this, P3aOnboardingActivity.class);
