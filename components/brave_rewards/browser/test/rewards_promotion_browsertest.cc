@@ -201,7 +201,8 @@ IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest,
   ASSERT_EQ(balance, 30.0);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaPanel) {
+// https://github.com/brave/brave-browser/issues/12605
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, DISABLED_ClaimViaPanel) {
   double balance = ClaimPromotion(true);
   ASSERT_EQ(balance, 30.0);
 }
