@@ -133,6 +133,12 @@ bool ShouldShowDefaultBrowserPrompt(Profile* profile) {
 }  // namespace
 
 void ShowDefaultBraveBrowserPrompt(Profile* profile) {
+#if !defined(OFFICIAL_BUILD)
+  // Disable in developer build. Showing with infobar didn't bother much but
+  // modal dialog could distract developers.
+  return;
+#endif
+
   // Do not check if Chrome is the default browser if there is a policy in
   // control of this setting.
   if (g_browser_process->local_state()->IsManagedPreference(
