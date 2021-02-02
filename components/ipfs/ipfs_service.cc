@@ -325,11 +325,6 @@ bool IpfsService::IsDaemonLaunched() const {
 }
 
 void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
-  if (allow_ipfs_launch_for_test_) {
-    std::move(callback).Run(true);
-    return;
-  }
-
   if (IsDaemonLaunched()) {
     std::move(callback).Run(true);
     return;
@@ -341,6 +336,7 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
     return;
   }
 
+  pending_launch_callbacks_.push(std::move(callback));
   base::FilePath path(GetIpfsExecutablePath());
   if (path.empty()) {
     // Daemon will be launched later in OnExecutableReady.
