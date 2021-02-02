@@ -25,6 +25,7 @@ SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
   blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccess", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "FileSystemAccessAPIExperimental", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
