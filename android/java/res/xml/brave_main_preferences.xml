@@ -6,7 +6,9 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:orderingFromXml="false">
-
+    <org.chromium.chrome.browser.settings.VpnCalloutPreference
+            android:key="pref_vpn_callout"
+            android:order="0"/>
     <PreferenceCategory
         android:key="features_section"
         android:order="0"

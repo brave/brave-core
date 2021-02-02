@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/callout_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="@color/vpn_callout_bg_color"
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="16dp">
+
+        <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/ic_card_background"
+          android:padding="16dp">
+
+          <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/brave_vpn"
+                        android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/vpn_settings_callout_text"
+                        android:textColor="@android:color/white"/>
+
+                  <Button
+                        android:id="@+id/btn_learn_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/orange_rounded_button"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:layout_marginBottom="20dp"
+                        android:textAllCaps="false"
+                        android:text="@string/brave_confirm_p3a_infobar_learn_more" 
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/powered_by"
+                        android:drawableEnd="@drawable/ic_guardian"
+                        android:drawablePadding="4dp"
+                        android:drawableTint="@android:color/white"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/modal_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:layout_gravity="end|top"
+                    android:tint="@android:color/white"
+                    android:src="@drawable/btn_close"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

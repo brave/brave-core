@@ -22,12 +22,10 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.DialogFragment;
 
 import org.chromium.chrome.R;
-
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 
 public class VpnCalloutDialogFragment extends DialogFragment implements View.OnClickListener {
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -39,19 +37,21 @@ public class VpnCalloutDialogFragment extends DialogFragment implements View.OnC
         super.onResume();
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
-            public boolean onKey(android.content.DialogInterface dialog,
-                                 int keyCode, android.view.KeyEvent event) {
+            public boolean onKey(android.content.DialogInterface dialog, int keyCode,
+                    android.view.KeyEvent event) {
                 if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
                     dismiss();
                     return true;
-                } else return false;
+                } else
+                    return false;
             }
         });
         setDialogParams();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_vpn_callout_dialog, container, false);
     }
 
