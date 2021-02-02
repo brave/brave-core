@@ -18,6 +18,7 @@ SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableSharedArrayBuffer(false);
+  blink::WebRuntimeFeatures::EnableWebNfc(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
