@@ -218,52 +218,15 @@ const isFirstPartyUrl = (url: string): boolean => {
   return false
 }
 
-const stripChildTagsFromText = (elm: HTMLElement, tagName: string, text: string): string => {
-  const childElms = Array.from(elm.getElementsByTagName(tagName)) as HTMLElement[]
-  let localText = text
-  for (const anElm of childElms) {
-    localText = localText.replaceAll(anElm.innerText, '')
-  }
-  return localText
-}
-
-/**
- * Used to just call innerText on the root of the subtree, but in some cases
- * this will surprisingly include the text content of script nodes
- * (possibly of nodes that haven't been executed yet?).
- *
- * So instead  * we call innerText on the root, and remove the contents of any
- * script or style nodes.
- *
- * @see https://github.com/brave/brave-browser/issues/9955
- */
-const showsSignificantText = (elm: Element): boolean => {
-  if (isHTMLElement(elm) === false) {
-    return false
-  }
-
-  const htmlElm = elm as HTMLElement
-  const tagsTextToIgnore = ['script', 'style']
-
-  let currentText = htmlElm.innerText
-  for (const aTagName of tagsTextToIgnore) {
-    currentText = stripChildTagsFromText(htmlElm, aTagName, currentText)
-  }
-
-  const trimmedText = currentText.trim()
+const isTextAd = (text: string): boolean => {
+  const trimmedText = text.trim()
   if (trimmedText.length < minAdTextChars) {
     return false
   }
-
-  let wordCount = 0
-  for (const aWord of trimmedText.split(' ')) {
-    if (aWord.trim().length === 0) {
-      continue
-    }
-    wordCount += 1
+  if (trimmedText.split(' ').length < minAdTextWords) {
+    return false
   }
-
-  return wordCount >= minAdTextWords
+  return true
 }
 
 interface IsFirstPartyQueryResult {
@@ -370,6 +333,23 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   if (queryResult.foundThirdPartyResource) {
     return false
   }
+
+  const htmlElement = asHTMLElement(elm)
+  // Check for several things here:
+  // 1. If its not an HTML node (i.e. its a text node), then its definitely
+  //    not the root of first party ad (we'd have caught that it was a text
+  //    add when checking the text node's parent).
+  // 2. If it's a script node, then similarly, its definitely not the root
+  //    of a first party ad on the page.
+  // 3. Last, check the text content on the page.  If the node contains a
+  //    non-trivial amount of text in it, then we _should_ treat it as a
+  //    possible 1p ad.
+  if (!htmlElement ||
+    htmlElement.tagName.toLowerCase() === 'script' ||
+    isTextAd(htmlElement.innerText) === false) {
+    return false
+  }
+
   return true
 }
 
@@ -466,14 +446,6 @@ const pumpCosmeticFilterQueues = () => {
       if (elmSubtreeIsFirstParty === false) {
         continue
       }
-
-      // If the subtree doesn't have a significant amount of text (e.g., it
-      // just says "Advertisement"), then no need to change anything; it should
-      // stay hidden.
-      if (showsSignificantText(aMatchingElm) === false) {
-        continue
-      }
-
       // Otherwise, we know that the given subtree was evaluated to be
       // first party, so we need to figure out which selector from the combo
       // selector did the matching.

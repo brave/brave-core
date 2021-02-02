@@ -16,8 +16,7 @@
       "es7",
       "es2017",
       "es2018",
-      "es2019",
-      "esnext"
+      "es2019"
     ],
     "moduleResolution": "node",
     "baseUrl": ".",
