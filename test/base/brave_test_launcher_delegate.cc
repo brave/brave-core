@@ -7,9 +7,19 @@
 
 #include "brave/app/brave_main_delegate.h"
 
+#if defined(OS_MAC) || defined(OS_LINUX)
+#include "chrome/browser/first_run/first_run_internal.h"
+#endif
+
 BraveTestLauncherDelegate::BraveTestLauncherDelegate(
     ChromeTestSuiteRunner* runner)
-    : ChromeTestLauncherDelegate(runner) {}
+    : ChromeTestLauncherDelegate(runner) {
+  // Suppress first run dialg during the test. It can cause some tests timeout.
+  // It's not used on Windows.
+#if defined(OS_MAC) || defined(OS_LINUX)
+  first_run::internal::ForceFirstRunDialogShownForTesting(false);
+#endif
+}
 
 BraveTestLauncherDelegate::~BraveTestLauncherDelegate() = default;
 
