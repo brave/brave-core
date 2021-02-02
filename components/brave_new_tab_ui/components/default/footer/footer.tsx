@@ -32,21 +32,39 @@ import { getLocale } from '../../../../common/locale'
 
 interface Props {
   textDirection: string
-  togetherPrmoptDismissed: boolean
+  supportsTogether: boolean
+  togetherPromptDismissed: boolean
   backgroundImageInfo: any
   showPhotoInfo: boolean
   onClickSettings: () => any
   onDismissTogetherPrompt: () => any
 }
 
+function TogetherItem (props: Props) {
+  if (!props.togetherPromptDismissed) {
+    return (
+      <TogetherTooltip onClose={props.onDismissTogetherPrompt}>
+        <IconLink title={getLocale('togetherPageTitle')} href='https://together.brave.com/widget'>
+          <TogetherIcon />
+        </IconLink>
+      </TogetherTooltip>
+    )
+  }
+
+  return (
+    <IconLink title={getLocale('togetherPageTitle')} href='https://together.brave.com/widget'>
+      <TogetherIcon />
+    </IconLink>
+  )
+}
+
 export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
     const {
       textDirection,
-      togetherPrmoptDismissed,
+      supportsTogether,
       backgroundImageInfo,
       showPhotoInfo,
-      onDismissTogetherPrompt,
       onClickSettings
     } = this.props
 
@@ -84,15 +102,8 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
               <HistoryIcon />
             </IconLink>
-            { !togetherPrmoptDismissed
-              ? <TogetherTooltip onClose={onDismissTogetherPrompt}>
-                  <IconLink title={getLocale('togetherPageTitle')} href='https://together.brave.com/widget'>
-                    <TogetherIcon />
-                  </IconLink>
-                </TogetherTooltip>
-              : <IconLink title={getLocale('togetherPageTitle')} href='https://together.brave.com/widget'>
-                  <TogetherIcon />
-                </IconLink>
+            {supportsTogether &&
+              <TogetherItem {...this.props} />
             }
           </Navigation>
         </S.GridItemNavigation>
