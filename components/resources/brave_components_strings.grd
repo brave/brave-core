@@ -930,12 +930,13 @@
       <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE"
         desc="Title for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
       >
-        Get paid to view this sponsored background image.
+
+        Earn rewards for viewing this sponsored background image.
       </message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE"
         desc="Description for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
       >
-        Turn on Brave Ads to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
+        Turn on Brave Private Ads to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
       </message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
