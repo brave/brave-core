@@ -1,0 +1,28 @@
+import("//brave/build/config.gni")
+import("//brave/components/brave_vpn/browser/buildflags/buildflags.gni")
+
+assert(vpn_enabled)
+
+source_set("browser") {
+  public_deps = [ "buildflags" ]
+  sources = [
+    "vpn_service.cc",
+    "vpn_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common:pref_names",
+    "//brave/components/ntp_widget_utils/browser",
+    "//components/country_codes:country_codes",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/os_crypt:os_crypt",
+    "//components/prefs:prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
