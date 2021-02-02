@@ -15,6 +15,13 @@
 #include "brave/components/sync/driver/profile_sync_service_delegate.h"
 #include "components/prefs/pref_service.h"
 
+namespace {
+// Between each failed commit the timeout is randomly increased,
+// see |BackoffDelayProvider|.
+// 7 attemps gives near 2 minutes before fire re-enable operation
+size_t kNumberOfFailedCommitsToReenable = 7;
+}  // namespace
+
 namespace syncer {
 
 BraveProfileSyncService::BraveProfileSyncService(
@@ -107,6 +114,42 @@ void BraveProfileSyncService::SuspendDeviceObserverForOwnReset() {
 
 void BraveProfileSyncService::ResumeDeviceObserver() {
   profile_service_delegate_->ResumeDeviceObserver();
+}
+
+void BraveProfileSyncService::OnSyncCycleCompleted(
+    const SyncCycleSnapshot& snapshot) {
+  ProfileSyncService::OnSyncCycleCompleted(snapshot);
+  if (IsReenableTypesRequired(snapshot)) {
+    ReenableSyncTypes();
+  }
+}
+
+void BraveProfileSyncService::ReenableSyncTypes() {
+  // TODO(alexeybarabash): P3A
+  SyncUserSettings* sync_user_settings = GetUserSettings();
+  const UserSelectableTypeSet selected_types =
+      sync_user_settings->GetSelectedTypes();
+  const bool sync_everything = sync_user_settings->IsSyncEverythingEnabled();
+
+  // Disable the types
+  sync_user_settings->SetSelectedTypes(false, syncer::UserSelectableTypeSet());
+  // Enable back the types
+  sync_user_settings->SetSelectedTypes(sync_everything, selected_types);
+}
+
+bool BraveProfileSyncService::IsReenableTypesRequired(
+    const SyncCycleSnapshot& snapshot) {
+  SyncerError last_commit_result = snapshot.model_neutral_state().commit_result;
+  if (last_commit_result.value() ==
+          syncer::SyncerError::SERVER_RETURN_TRANSIENT_ERROR ||
+      last_commit_result.value() ==
+          syncer::SyncerError::SERVER_RETURN_CONFLICT) {
+    ++failed_commit_times_;
+  } else {
+    failed_commit_times_ = 0;
+  }
+
+  return failed_commit_times_ >= kNumberOfFailedCommitsToReenable;
 }
 
 }  // namespace syncer

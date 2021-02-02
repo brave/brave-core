@@ -51,6 +51,13 @@ class BraveProfileSyncService : public ProfileSyncService {
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
+  void OnSyncCycleCompleted(const SyncCycleSnapshot& snapshot) override;
+  // Re-enables current sync types to to recover state from being
+  // SERVER_RETURN_CONFLICT or SERVER_RETURN_TRANSIENT_ERROR
+  void ReenableSyncTypes();
+  bool IsReenableTypesRequired(const SyncCycleSnapshot& snapshot);
+  size_t failed_commit_times_ = 0;
+
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
