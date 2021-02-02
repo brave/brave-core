@@ -6,12 +6,15 @@
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_ports.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/channel_info.h"
@@ -135,6 +138,75 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPNSURLRewriteLocal) {
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
   GURL ipns_uri(GetIPNSURI());
   ASSERT_TRUE(HandleIPFSURLRewrite(&ipns_uri, browser_context()));
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  GURL gateway_url("http://localhost/");
+  GURL::Replacements replacements;
+  const std::string& port = ipfs::GetGatewayPort(chrome::GetChannel());
+  replacements.SetPortStr(port);
+  gateway_url = gateway_url.ReplaceComponents(replacements);
+
+  ASSERT_EQ(
+      ipfs::GetConfiguredBaseGateway(browser_context(), chrome::GetChannel()),
+      gateway_url);
+
+  std::string source = "http://test.com.ipns.localhost:8000/";
+  GURL ipns_uri(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  ipns_uri = GURL("http://test.com.ipns.localhost/");
+  ipns_uri = ipns_uri.ReplaceComponents(replacements);
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/");
+}
+
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(browser_context(),
+                                           version_info::Channel::UNKNOWN),
+            GURL("https://dweb.link/"));
+
+  std::string source = "http://test.com.ipns.localhost:8000/";
+  GURL ipns_uri(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  source = "https://ku2jvrakgpiqgx4j6fe.ipfs.dweb.link/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  profile()->GetPrefs()->SetString(kIPFSPublicGatewayAddress,
+                                   "http://localhost:8080");
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(browser_context(),
+                                           version_info::Channel::UNKNOWN),
+            GURL("http://localhost:8080"));
+
+  source = "http://test.com.ipns.localhost:8000/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  source = "https://ku2jvrakgpiqgx4j6fe.ipfs.dweb.link/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  source = "https://ku2jvrakgpiqgx4j6fe.ipfs.dweb.link:8080/";
+  ipns_uri = GURL(source);
+  ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
+
+  ipns_uri = GURL("http://test.com.ipns.localhost:8080/");
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/");
 }
 
 }  // namespace ipfs
