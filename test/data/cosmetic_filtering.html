@@ -22,7 +22,7 @@ let didWait = false;
 
 function checkSelector(selector, property, expected) {
   const checkSelectorInner = () => {
-    let elements = [].slice.call(document.querySelectorAll(selector));
+    let elements = Array.from(document.querySelectorAll(selector));
     let result = elements.every(e => {
       let style = window.getComputedStyle(e);
       return style[property] === expected;
@@ -47,7 +47,7 @@ function checkSelector(selector, property, expected) {
 </script>
 </head>
 <body>
-    <div class="fpsponsored"><img src="b.com/sponsored/640x820.png"></div>
+    <div class="fpsponsored"><img src="/sponsored/640x820.png"></div>
     <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad-banner">
         <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
