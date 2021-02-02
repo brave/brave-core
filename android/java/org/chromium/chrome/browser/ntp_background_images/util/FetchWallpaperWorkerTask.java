@@ -56,14 +56,16 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
                     inputStream.close();
                 } catch(IOException exc) {
                     Log.e("NTP", exc.getMessage());
+                } catch (IllegalArgumentException exc) {
+                    Log.e("NTP", exc.getMessage());
                 } finally {
-                  try {
-                    if (inputStream != null) {
-                      inputStream.close();
+                    try {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                    } catch (IOException exception) {
+                        Log.e("NTP", exception.getMessage());
                     }
-                  } catch (IOException exception) {
-                    Log.e("NTP", exception.getMessage());
-                  }
                 }
             }
         }        
