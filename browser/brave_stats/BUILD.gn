@@ -4,6 +4,8 @@ declare_args() {
   brave_stats_updater_url = ""
 }
 
+if (is_official_build) { assert(brave_stats_updater_url != "") }
+
 source_set("stats_updater") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
