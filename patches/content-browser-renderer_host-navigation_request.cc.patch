@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index c97f3d40a599822f37be0bc92f5f77ef50439b4a..4f34d2b7bab4cb80a8cdc1ffe5b71129bb056d71 100644
+index 02896ba1e3635d9836f43ecf904eb580f2d61758..fa39eeb600a6c83a755df538f9847e465647eb4b 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
 @@ -299,7 +299,7 @@ void AddAdditionalRequestHeaders(
