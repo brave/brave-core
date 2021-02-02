@@ -183,6 +183,13 @@ base::FilePath IpfsService::GetConfigFilePath() const {
   return config_path;
 }
 
+void IpfsService::NotifyDaemonLaunchCallbacks(bool result) {
+  while (!pending_launch_callbacks_.empty()) {
+    std::move(pending_launch_callbacks_.front()).Run(result);
+    pending_launch_callbacks_.pop();
+  }
+}
+
 void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (result) {
     ipfs_pid_ = pid;
@@ -191,9 +198,7 @@ void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
     Shutdown();
   }
 
-  if (!launch_daemon_callback_.is_null()) {
-    std::move(launch_daemon_callback_).Run(result && pid > 0);
-  }
+  NotifyDaemonLaunchCallbacks(result && pid > 0);
 
   for (auto& observer : observers_) {
     observer.OnIpfsLaunched(result, pid);
@@ -320,12 +325,6 @@ bool IpfsService::IsDaemonLaunched() const {
 }
 
 void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
-  // Reject if previous launch request in progress.
-  if (launch_daemon_callback_) {
-    std::move(callback).Run(false);
-    return;
-  }
-
   if (allow_ipfs_launch_for_test_) {
     std::move(callback).Run(true);
     return;
@@ -336,7 +335,12 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
     return;
   }
 
-  launch_daemon_callback_ = std::move(callback);
+  // Wait if previous launch request in progress.
+  if (!pending_launch_callbacks_.empty()) {
+    pending_launch_callbacks_.push(std::move(callback));
+    return;
+  }
+
   base::FilePath path(GetIpfsExecutablePath());
   if (path.empty()) {
     // Daemon will be launched later in OnExecutableReady.
@@ -399,9 +403,7 @@ void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
 }
 
 void IpfsService::RunLaunchDaemonCallbackForTest(bool result) {
-  if (launch_daemon_callback_) {
-    std::move(launch_daemon_callback_).Run(result);
-  }
+  NotifyDaemonLaunchCallbacks(result);
 }
 
 void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {

@@ -13,6 +13,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/navigation_throttle.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
 
 namespace content {
 class NavigationHandle;

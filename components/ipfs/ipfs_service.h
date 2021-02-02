@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/queue.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ipfs/addresses_config.h"
@@ -110,7 +111,8 @@ class IpfsService : public KeyedService,
   void OnIpfsCrashed();
   void OnIpfsLaunched(bool result, int64_t pid);
   void OnIpfsDaemonCrashed(int64_t pid);
-
+  // Notifies tasks waiting to start the service.
+  void NotifyDaemonLaunchCallbacks(bool result);
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
 
@@ -140,7 +142,7 @@ class IpfsService : public KeyedService,
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
 
-  LaunchDaemonCallback launch_daemon_callback_;
+  base::queue<LaunchDaemonCallback> pending_launch_callbacks_;
 
   bool allow_ipfs_launch_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;
