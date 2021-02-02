@@ -99,6 +99,10 @@
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/startup/default_brave_browser_prompt.h"
+#endif
+
 using extensions::FeatureSwitch;
 
 namespace brave {
@@ -339,6 +343,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
+  RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 
   RegisterProfilePrefsForMigration(registry);
