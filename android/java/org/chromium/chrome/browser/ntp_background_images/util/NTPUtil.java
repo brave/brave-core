@@ -303,6 +303,8 @@ public class NTPUtil {
                 inputStream.close();
             } catch (IOException exc) {
                 Log.e("NTP", exc.getMessage());
+            } catch (IllegalArgumentException exc) {
+                Log.e("NTP", exc.getMessage());
             } finally {
                 try {
                     if (inputStream != null) {
@@ -376,15 +378,30 @@ public class NTPUtil {
             }
         }
 
-        imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
+        Bitmap newBitmap = null;
+        Bitmap bitmapWithGradient = null;
+        try {
+            imageBitmap =
+                    Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
 
-        Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, (startX + layoutWidth) <= imageBitmap.getWidth() ? startX : 0, (startY + (int) layoutHeight) <= imageBitmap.getHeight() ? startY : 0, layoutWidth, (int) layoutHeight);
-        Bitmap bitmapWithGradient = ImageUtils.addGradient(newBitmap);
+            newBitmap = Bitmap.createBitmap(imageBitmap,
+                    (startX + layoutWidth) <= imageBitmap.getWidth() ? startX : 0,
+                    (startY + (int) layoutHeight) <= imageBitmap.getHeight() ? startY : 0,
+                    layoutWidth, (int) layoutHeight);
+            bitmapWithGradient = ImageUtils.addGradient(newBitmap);
 
-        imageBitmap.recycle();
-        newBitmap.recycle();
+            if (imageBitmap != null && !imageBitmap.isRecycled()) imageBitmap.recycle();
+            if (newBitmap != null && !newBitmap.isRecycled()) newBitmap.recycle();
 
-        return bitmapWithGradient;
+            return bitmapWithGradient;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            Log.e("NTP", exc.getMessage());
+            return null;
+        } finally {
+            if (imageBitmap != null && !imageBitmap.isRecycled()) imageBitmap.recycle();
+            if (newBitmap != null && !newBitmap.isRecycled()) newBitmap.recycle();
+        }
     }
 
     public static Bitmap getTopSiteBitmap(String iconPath) {
@@ -397,6 +414,7 @@ public class NTPUtil {
             topSiteIcon = BitmapFactory.decodeStream(inputStream);
             inputStream.close();
         } catch (IOException exc) {
+            exc.printStackTrace();
             Log.e("NTP", exc.getMessage());
             topSiteIcon = null;
         } finally {
@@ -405,6 +423,7 @@ public class NTPUtil {
                     inputStream.close();
                 }
             } catch (IOException exception) {
+                exception.printStackTrace();
                 Log.e("NTP", exception.getMessage());
                 topSiteIcon = null;
             }
