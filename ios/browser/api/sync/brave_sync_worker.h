@@ -22,6 +22,7 @@ class ChromeBrowserState;
 namespace syncer {
 class BraveProfileSyncService;
 class DeviceInfo;
+class BraveDeviceInfo;
 class ProfileSyncService;
 }  // namespace syncer
 
@@ -66,11 +67,12 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool SetSyncCode(const std::string& sync_code);
   std::string GetSyncCodeFromHexSeed(const std::string& hex_seed);
   const syncer::DeviceInfo* GetLocalDeviceInfo();
-  std::vector<std::unique_ptr<syncer::DeviceInfo>> GetDeviceList();
+  std::vector<std::unique_ptr<syncer::BraveDeviceInfo>> GetDeviceList();
   bool IsSyncEnabled();
   bool IsSyncFeatureActive();
   bool IsFirstSetupComplete();
-  bool ResetSync();
+  void ResetSync();
+  void DeleteDevice(const std::string& device_guid);
 
  private:
   // syncer::SyncServiceObserver implementation.
@@ -79,7 +81,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   void OnStateChanged(syncer::SyncService* service) override;
   void OnSyncShutdown(syncer::SyncService* service) override;
 
-  void OnLocalDeviceInfoDeleted();
+  void OnResetDone();
 
   ChromeBrowserState* browser_state_;  // NOT OWNED
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>

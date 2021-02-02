@@ -19,7 +19,9 @@ OBJC_EXPORT
 @property(nonatomic) bool syncEnabled;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 
-- (bool)resetSync;
+- (void)resetSync;
+
+- (void)deleteDevice:(NSString*)guid;
 
 - (bool)isValidSyncCode:(NSString*)syncCode;
 
