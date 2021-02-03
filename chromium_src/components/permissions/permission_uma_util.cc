@@ -7,37 +7,14 @@
 
 #include "build/build_config.h"
 
-namespace permissions {
-namespace {
-
-std::string GetPermissionRequestString(RequestTypeForUma type);
-std::string GetPermissionRequestString_ChromiumImpl(RequestTypeForUma type);
-
-}  // namespace
-}  // namespace permissions
-
+// Since we don't do UMA just reuse an existing UMA type instead of adding one.
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
 #define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE \
   case RequestType::kWidevine:               \
-    return RequestTypeForUma::PERMISSION_WIDEVINE;
+    return RequestTypeForUma::PERMISSION_WINDOW_PLACEMENT;
 #else
 #define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
 #endif
 
 #include "../../../../components/permissions/permission_uma_util.cc"
 #undef BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
-
-namespace permissions {
-namespace {
-
-std::string GetPermissionRequestString(RequestTypeForUma type) {
-  if (type == RequestTypeForUma::PERMISSION_WIDEVINE)
-    return "Widevine";
-  if (type == RequestTypeForUma::PERMISSION_WALLET)
-    return "Wallet";
-  return GetPermissionRequestString_ChromiumImpl(type);
-}
-
-}  // namespace
-}  // namespace permissions
-
