@@ -14,11 +14,6 @@ protocol TabsBarViewControllerDelegate: class {
 }
 
 class TabsBarViewController: UIViewController {
-    
-    private struct ReuseIdentifier {
-        static let tabBarCell = "TabBarCell"
-    }
-    
     private let leftOverflowIndicator = CAGradientLayer()
     private let rightOverflowIndicator = CAGradientLayer()
     
@@ -49,7 +44,7 @@ class TabsBarViewController: UIViewController {
         view.dataSource = self
         view.allowsSelection = true
         view.decelerationRate = UIScrollView.DecelerationRate.normal
-        view.register(TabBarCell.self, forCellWithReuseIdentifier: ReuseIdentifier.tabBarCell)
+        view.register(TabBarCell.self, forCellWithReuseIdentifier: "TabCell")
         return view
     }()
     
@@ -57,10 +52,9 @@ class TabsBarViewController: UIViewController {
     
     fileprivate weak var tabManager: TabManager?
     fileprivate var tabList = WeakList<Tab>()
-        
+    
     init(tabManager: TabManager) {
         self.tabManager = tabManager
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -110,31 +104,12 @@ class TabsBarViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // Updating tabs here is especially handy when tabs are reordered from the tab tray.
         updateData()
-        
-        if #available(iOS 13.0, *) {
-            let oldTraitCollection = UITraitCollection.current
-            UITraitCollection.current = traitCollection
-            applyTheme(Theme.of(tabManager?.selectedTab))
-            UITraitCollection.current = oldTraitCollection
-        } else {
-            applyTheme(Theme.of(tabManager?.selectedTab))
-        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         updateOverflowIndicatorsLayout()
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 13.0, *) {
-            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                applyTheme(Theme.of(tabManager?.selectedTab))
-            }
-        }
     }
     
     deinit {
@@ -304,10 +279,8 @@ extension TabsBarViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReuseIdentifier.tabBarCell, for: indexPath) as? TabBarCell else {
-            return UICollectionViewCell()
-        }
-        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabCell", for: indexPath) as? TabBarCell
+            else { return UICollectionViewCell() }
         guard let tab = tabList[indexPath.row] else { return cell }
         
         cell.tabManager = tabManager
@@ -315,20 +288,17 @@ extension TabsBarViewController: UICollectionViewDataSource {
         cell.titleLabel.text = tab.displayTitle
         cell.currentIndex = indexPath.row
         cell.separatorLineRight.isHidden = (indexPath.row != tabList.count() - 1)
-        cell.applyTheme(Theme.of(tab))
-
+        
         cell.closeTabCallback = { [weak self] tab in
-            guard let self = self,
-                  let tabManager = self.tabManager,
-                  let previousIndex = self.tabList.index(of: tab) else { return }
+            guard let strongSelf = self, let tabManager = strongSelf.tabManager, let previousIndex = strongSelf.tabList.index(of: tab) else { return }
             
             tabManager.removeTab(tab)
-            self.updateData()
+            strongSelf.updateData()
             
             let previousOrNext = max(0, previousIndex - 1)
-            tabManager.selectTab(self.tabList[previousOrNext])
+            tabManager.selectTab(strongSelf.tabList[previousOrNext])
             
-            self.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+            strongSelf.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: true, scrollPosition: .centeredHorizontally)
         }
         
         return cell
@@ -373,10 +343,6 @@ extension TabsBarViewController: TabManagerDelegate {
 }
 
 extension TabsBarViewController: Themeable {
-    var themeableChildren: [Themeable?]? {
-        collectionView.visibleCells.compactMap({ $0 as? TabBarCell })
-    }
-    
     func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
         

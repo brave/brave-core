@@ -5,7 +5,7 @@
 import UIKit
 import BraveShared
 
-class TabBarCell: UICollectionViewCell, Themeable {
+class TabBarCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -17,11 +17,9 @@ class TabBarCell: UICollectionViewCell, Themeable {
         let button = UIButton()
         button.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
         button.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
-        button.tintColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? .white : .black
-        
+        button.tintColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UIColor.white : UIColor.black
         // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
         button.imageEdgeInsets.left = 6
-        
         return button
     }()
     
@@ -117,7 +115,6 @@ class TabBarCell: UICollectionViewCell, Themeable {
     }
     
     fileprivate var titleUpdateScheduled = false
-    
     func updateTitleThrottled(for tab: Tab) {
         if titleUpdateScheduled {
             return
@@ -128,11 +125,5 @@ class TabBarCell: UICollectionViewCell, Themeable {
             strongSelf.titleUpdateScheduled = false
             strongSelf.titleLabel.text = tab.displayTitle
         }
-    }
-    
-    func applyTheme(_ theme: Theme) {        
-        backgroundColor = .clear
-        titleLabel.textColor = theme.colors.tints.header
-        closeButton.tintColor = theme.colors.tints.header
     }
 }
