@@ -534,6 +534,26 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   EXPECT_EQ(title, "Altered");
 }
 
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  EXPECT_EQ(title, "Altered");
+
+  CloseAllBrowsers();
+  ui_test_utils::WaitForBrowserToClose(browser());
+}
+
 #if !defined(OS_MAC)
 IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
                        ScriptInjectionWithMessagesDefaultLocale) {
