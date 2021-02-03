@@ -72,15 +72,17 @@ class BraveRewardsSettingsViewController: TableViewController {
             })
         }
         
-        if rewards.ledger.isWalletCreated {
-            dataSource.sections += [
-                Section(rows: [
-                    Row(text: Strings.RewardsInternals.title, selection: {
-                        let controller = RewardsInternalsViewController(ledger: self.rewards.ledger)
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }, accessory: .disclosureIndicator)
-                ])
-            ]
+        rewards.ledger.rewardsInternalInfo { info in
+            if let info = info, !info.paymentId.isEmpty {
+                dataSource.sections += [
+                    Section(rows: [
+                        Row(text: Strings.RewardsInternals.title, selection: {
+                            let controller = RewardsInternalsViewController(ledger: self.rewards.ledger)
+                            self.navigationController?.pushViewController(controller, animated: true)
+                        }, accessory: .disclosureIndicator)
+                    ])
+                ]
+            }
         }
     }
 }

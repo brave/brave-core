@@ -20,14 +20,13 @@ extension BraveRewards {
     /// Whether or not rewards is enabled
     @objc public var isEnabled: Bool {
         get {
-            ledger.isWalletCreated && ledger.isEnabled && isAdsEnabled
+            isAdsEnabled
         }
         set {
             willChangeValue(for: \.isEnabled)
             Preferences.Rewards.rewardsToggledOnce.value = true
             createWalletIfNeeded { [weak self] in
                 guard let self = self else { return }
-                self.ledger.isEnabled = newValue
                 self.ledger.isAutoContributeEnabled = newValue
                 self.isAdsEnabled = newValue
                 self.didChangeValue(for: \.isEnabled)
@@ -36,10 +35,6 @@ extension BraveRewards {
     }
     
     public func createWalletIfNeeded(_ completion: (() -> Void)? = nil) {
-        if ledger.isWalletCreated {
-            completion?()
-            return
-        }
         if isCreatingWallet {
             // completion block will be hit by previous call
             return
