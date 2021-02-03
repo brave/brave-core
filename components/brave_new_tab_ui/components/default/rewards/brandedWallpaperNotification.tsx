@@ -73,7 +73,7 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
           brand={'rewards'}
           text={getLocale('rewardsWidgetTurnOnAds')}
         />
-        <StyledTOS title={getLocale('rewardsWidgetEarnAndGive')} />
+        <StyledTOS title={getLocale('rewardsWidgetTurnOnAds')} />
       </StyleCenter>
     )
   }
