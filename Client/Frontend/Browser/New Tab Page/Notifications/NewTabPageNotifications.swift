@@ -22,14 +22,11 @@ class NewTabPageNotifications {
     
     func notificationToShow(isShowingBackgroundImage: Bool,
                             isShowingSponseredImage: Bool) -> NotificationType? {
-        let isRewardsEnabled = rewards.ledger.isEnabled
-        
         if !isShowingBackgroundImage {
             return nil
         }
         
         let state = BrandedImageCalloutState.getState(
-            rewardsEnabled: isRewardsEnabled,
             adsEnabled: rewards.isAdsEnabled,
             adsAvailableInRegion: BraveAds.isCurrentLocaleSupported(),
             isSponsoredImage: isShowingSponseredImage

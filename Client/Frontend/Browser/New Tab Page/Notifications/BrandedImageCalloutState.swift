@@ -12,9 +12,9 @@ enum BrandedImageCalloutState {
     /// Don't show any callout
     case dontShow
     
-    static func getState(rewardsEnabled: Bool, adsEnabled: Bool, adsAvailableInRegion: Bool,
+    static func getState(adsEnabled: Bool, adsAvailableInRegion: Bool,
                          isSponsoredImage: Bool) -> BrandedImageCalloutState {
-        if rewardsEnabled && adsEnabled && isSponsoredImage {
+        if adsEnabled && isSponsoredImage {
             return brandedImageSupport
         }
         // If any of remaining callouts were shown once, we skip showing any other state.
@@ -22,11 +22,9 @@ enum BrandedImageCalloutState {
         
         if wasCalloutShowed { return .dontShow }
         
-        if rewardsEnabled {
-            if !adsAvailableInRegion { return .dontShow }
-            
-            if adsEnabled && isSponsoredImage { return .brandedImageSupport }
-        }
+        if !adsAvailableInRegion { return .dontShow }
+        
+        if adsEnabled && isSponsoredImage { return .brandedImageSupport }
         
         return .dontShow
     }

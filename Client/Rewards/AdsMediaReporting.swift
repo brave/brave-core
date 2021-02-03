@@ -36,7 +36,7 @@ class AdsMediaReporting: TabContentScript {
             return
         }
         
-        if let isPlaying = body["data"] as? Bool, rewards.ledger.isEnabled && rewards.isAdsEnabled {
+        if let isPlaying = body["data"] as? Bool, rewards.isAdsEnabled {
             guard let tab = tab else { return }
             if isPlaying {
                 rewards.reportMediaStarted(tabId: tab.rewardsId)

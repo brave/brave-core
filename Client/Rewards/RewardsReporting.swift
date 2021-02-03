@@ -35,7 +35,7 @@ class RewardsReporting: TabContentScript {
             var referrerUrl: String?
         }
         
-        if PrivateBrowsingManager.shared.isPrivateBrowsing || !rewards.ledger.isEnabled {
+        if PrivateBrowsingManager.shared.isPrivateBrowsing || !rewards.isEnabled {
             return
         }
         
