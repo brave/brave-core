@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index bbeda5c83d65a8280e3c1114793966b092a27929..263becedb204b5bd07796c8c82dceaa3b9c77b31 100644
+index 0096bead803507ffb0856548bae26431daf24d9d..6eb57b3e46fd59cb23595ef778bda80663eb8d39 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -878,6 +878,7 @@ if (!is_android) {
@@ -10,3 +10,11 @@ index bbeda5c83d65a8280e3c1114793966b092a27929..263becedb204b5bd07796c8c82dceaa3
      # Runtime dependencies
      data_deps = [
        "//chrome:browser_tests_pak",
+@@ -4215,6 +4216,7 @@ test("unit_tests") {
+     "//ui/web_dialogs:web_dialogs_unittests",
+     "//v8",
+   ]
++  deps += [ "//brave/test:brave_test_support_unit", ]
+ 
+   if (is_mac) {
+     data_deps += [ "//chrome:chrome_framework" ]
