@@ -239,14 +239,12 @@ void BraveSyncWorker::OnResetDone() {
   }
 }
 
-void BraveSyncWorker::SetEncryptionPassphrase() {
-  syncer::SyncService* service = GetSyncService();
+void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
   DCHECK(service);
   DCHECK(service->IsEngineInitialized());
   DCHECK(!this->passphrase_.empty());
 
-  syncer::SyncUserSettings* sync_user_settings =
-      GetSyncService()->GetUserSettings();
+  syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(!sync_user_settings->IsPassphraseRequired());
 
   if (sync_user_settings->IsEncryptEverythingAllowed() &&
@@ -258,13 +256,11 @@ void BraveSyncWorker::SetEncryptionPassphrase() {
   }
 }
 
-void BraveSyncWorker::SetDecryptionPassphrase() {
-  syncer::SyncService* service = GetSyncService();
+void BraveSyncWorker::SetDecryptionPassphrase(syncer::SyncService* service) {
   DCHECK(service);
   DCHECK(service->IsEngineInitialized());
   DCHECK(!this->passphrase_.empty());
-  syncer::SyncUserSettings* sync_user_settings =
-      GetSyncService()->GetUserSettings();
+  syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(sync_user_settings->IsPassphraseRequired());
 
   if (sync_user_settings->SetDecryptionPassphrase(this->passphrase_)) {
@@ -273,8 +269,7 @@ void BraveSyncWorker::SetDecryptionPassphrase() {
   }
 }
 
-void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
-  syncer::SyncService* service = GetSyncService();
+void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   // If the sync engine has shutdown for some reason, just give up
   if (!service || !service->IsEngineInitialized()) {
     VLOG(3) << "[BraveSync] " << __func__ << " sync engine is not initialized";
@@ -286,10 +281,10 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* sync) {
     return;
   }
 
-  if (GetSyncService()->GetUserSettings()->IsPassphraseRequired()) {
-    SetDecryptionPassphrase();
+  if (service->GetUserSettings()->IsPassphraseRequired()) {
+    SetDecryptionPassphrase(service);
   } else {
-    SetEncryptionPassphrase();
+    SetEncryptionPassphrase(service);
   }
 }
 
