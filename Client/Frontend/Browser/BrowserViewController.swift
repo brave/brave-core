@@ -2941,7 +2941,7 @@ extension BrowserViewController: WKUIDelegate {
             return
         }
         promptingTab.alertShownCount += 1
-        let suppressBlock: JSAlertInfo.SuppressHandler = {[unowned self] suppress in
+        var suppressBlock: JSAlertInfo.SuppressHandler = {[unowned self] suppress in
             if suppress {
                 func suppressDialogues(_: UIAlertAction) {
                     self.suppressJSAlerts(webView: webView)
@@ -3090,23 +3090,6 @@ extension BrowserViewController: WKUIDelegate {
                 }
             
                 actions.append(linkPreviewAction)
-                
-                guard let contextHelper = currentTab.getContentScript(name: ContextMenuHelper.name()) as? ContextMenuHelper,
-                let elements = contextHelper.elements else { return nil }
-                
-                if let imageURL = elements.image {
-                    actions.append(UIAction(title: Strings.saveImageActionTitle, identifier: UIAction.Identifier("linkContextMenu.saveImage")) { _ in
-                        self.writePhotoToAlbumAction(imageURL)
-                    })
-
-                    actions.append(UIAction(title: Strings.copyImageActionTitle, identifier: UIAction.Identifier("linkContextMenu.copyImage")) { _ in
-                        self.copyImageClipBoardAction(imageURL)
-                    })
-
-                    actions.append(UIAction(title: Strings.copyImageActionTitle, identifier: UIAction.Identifier("linkContextMenu.copyImageLink")) { _ in
-                        UIPasteboard.general.url = imageURL as URL
-                    })
-                }
             }
             
             return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
@@ -3239,13 +3222,46 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             }
             actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
 
-            let saveImageAction = UIAlertAction(title: Strings.saveImageActionTitle, style: .default) { [weak self] _ in
-                self?.writePhotoToAlbumAction(url)
+            let saveImageAction = UIAlertAction(title: Strings.saveImageActionTitle, style: .default) { _ in
+                self.getData(url) { [weak self] data in
+                    guard let self = self, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
+                        return
+                    }
+                    
+                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(image:didFinishSavingwithError:contextInfo:)), nil)
+                }
             }
             actionSheetController.addAction(saveImageAction, accessibilityIdentifier: "linkContextMenu.saveImage")
 
-            let copyAction = UIAlertAction(title: Strings.copyImageActionTitle, style: .default) { [weak self] _ in
-                self?.copyImageClipBoardAction(url)
+            let copyAction = UIAlertAction(title: Strings.copyImageActionTitle, style: .default) { _ in
+                // put the actual image on the clipboard
+                // do this asynchronously just in case we're in a low bandwidth situation
+                let pasteboard = UIPasteboard.general
+                pasteboard.url = url as URL
+                let changeCount = pasteboard.changeCount
+                let application = UIApplication.shared
+                var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
+                taskId = application.beginBackgroundTask (expirationHandler: {
+                    application.endBackgroundTask(taskId)
+                })
+                
+                URLSession(configuration: .default, delegate: nil, delegateQueue: .main).dataTask(with: url, completionHandler: { data, response, error in
+                    
+                    if let response = response as? HTTPURLResponse {
+                        if !(200..<300).contains(response.statusCode) {
+                            return application.endBackgroundTask(taskId)
+                        }
+                    }
+                    
+                    // Only set the image onto the pasteboard if the pasteboard hasn't changed since
+                    // fetching the image; otherwise, in low-bandwidth situations,
+                    // we might be overwriting something that the user has subsequently added.
+                    if changeCount == pasteboard.changeCount, let imageData = data, error == nil {
+                        pasteboard.addImageWithData(imageData, forURL: url)
+                    }
+                    
+                    application.endBackgroundTask(taskId)
+                }).resume()
             }
             actionSheetController.addAction(copyAction, accessibilityIdentifier: "linkContextMenu.copyImage")
         }
@@ -3289,46 +3305,6 @@ extension BrowserViewController: ContextMenuHelperDelegate {
     func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didCancelGestureRecognizer: UIGestureRecognizer) {
         displayedPopoverController?.dismiss(animated: true) {
             self.displayedPopoverController = nil
-        }
-    }
-    
-    private func copyImageClipBoardAction(_ url: URL) {
-        // put the actual image on the clipboard
-        // do this asynchronously just in case we're in a low bandwidth situation
-        let pasteboard = UIPasteboard.general
-        pasteboard.url = url as URL
-        let changeCount = pasteboard.changeCount
-        let application = UIApplication.shared
-        var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskId = application.beginBackgroundTask(expirationHandler: {
-            application.endBackgroundTask(taskId)
-        })
-        
-        URLSession(configuration: .default, delegate: nil, delegateQueue: .main).dataTask(with: url, completionHandler: { data, response, error in
-            
-            if let response = response as? HTTPURLResponse {
-                if !(200..<300).contains(response.statusCode) {
-                    return application.endBackgroundTask(taskId)
-                }
-            }
-            
-            // Only set the image onto the pasteboard if the pasteboard hasn't changed since
-            // fetching the image; otherwise, in low-bandwidth situations,
-            // we might be overwriting something that the user has subsequently added.
-            if changeCount == pasteboard.changeCount, let imageData = data, error == nil {
-                pasteboard.addImageWithData(imageData, forURL: url)
-            }
-            
-            application.endBackgroundTask(taskId)
-        }).resume()
-    }
-    
-    private func writePhotoToAlbumAction(_ url: URL) {
-        self.getData(url) { [weak self] data in
-            guard let self = self,
-                  let image = data.isGIF ? UIImage.imageFromGIFDataThreadSafe(data) : UIImage.imageFromDataThreadSafe(data) else { return }
-
-            UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(image:didFinishSavingwithError:contextInfo:)), nil)
         }
     }
 }
