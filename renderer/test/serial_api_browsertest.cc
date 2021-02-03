@@ -21,8 +21,7 @@
 
 class SerialAPIBrowserTest : public InProcessBrowserTest {
  public:
-  SerialAPIBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+  SerialAPIBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
