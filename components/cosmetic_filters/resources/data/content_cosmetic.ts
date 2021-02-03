@@ -6,7 +6,6 @@
 // That script is executed from
 // components/cosmetic_filters/content/renderer/cosmetic_filters_js_handler.cc
 // several times:
-// - for scriptlets injection;
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.
 
@@ -51,24 +50,6 @@ CC.alreadyKnownFirstPartySubtrees =
   CC.alreadyKnownFirstPartySubtrees || new WeakSet()
 CC._hasDelayOcurred = CC._hasDelayOcurred || false
 CC._startCheckingId = CC._startCheckingId || undefined
-
-function injectScriptlet (text: string) {
-  let script
-  try {
-    script = document.createElement('script')
-    const textNode: Text = document.createTextNode(text)
-    script.appendChild(textNode);
-    (document.head || document.documentElement).appendChild(script)
-  } catch (ex) {
-    /* Unused catch */
-  }
-  if (script) {
-    if (script.parentNode) {
-      script.parentNode.removeChild(script)
-    }
-    script.textContent = ''
-  }
-}
 
 /**
  * Provides a new function which can only be scheduled once at a time.
@@ -586,10 +567,6 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
 if (!CC.observingHasStarted) {
   CC.observingHasStarted = true
   scheduleQueuePump(CC.hide1pContent, CC.generichide)
-} else if (CC.scriptlet) {
-  let scriptlet = CC.scriptlet
-  CC.scriptlet = ''
-  injectScriptlet(scriptlet)
 } else {
   scheduleQueuePump(false, false)
 }
