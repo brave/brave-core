@@ -39,7 +39,7 @@ BraveProfileImpl::BraveProfileImpl(
   if (brave::IsSessionProfilePath(path) &&
       create_mode == CREATE_MODE_ASYNCHRONOUS) {
     auto* parent_profile = brave::CreateParentProfileData(this);
-    parent_profile->AddObserver(this);
+    parent_observation_.Observe(parent_profile);
 
     content::GetUIThreadTaskRunner({})->PostTaskAndReply(
         FROM_HERE, base::DoNothing(),
