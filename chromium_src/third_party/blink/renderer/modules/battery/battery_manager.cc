@@ -24,15 +24,6 @@ ScriptPromise BatteryManager::getBattery(ScriptState* script_state,
   if (!navigator.DomWindow())
     return ScriptPromise();
 
-  // Check to see if this request would be blocked according to the Battery
-  // Status API specification.
-  LocalDOMWindow* window = navigator.DomWindow();
-  if (!window->IsSecureContext())
-    UseCounter::Count(window, WebFeature::kBatteryStatusInsecureOrigin);
-  window->GetFrame()->CountUseIfFeatureWouldBeBlockedByFeaturePolicy(
-      WebFeature::kBatteryStatusCrossOrigin,
-      WebFeature::kBatteryStatusSameOriginABA);
-
   auto* supplement = Supplement<Navigator>::From<BatteryManager>(navigator);
   if (!supplement) {
     supplement = MakeGarbageCollected<BatteryManager>(navigator);
