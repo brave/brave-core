@@ -946,6 +946,18 @@
       >
         Hide sponsored images
       </message>
+      <!-- Rewards BAP Deprecation Notice -->
+      <message name="IDS_REWARDS_BAP_DEPRECATION_ALERT_TEXT" desc="">
+        The tipping feature will be unavailable from March 13th until April
+        13th. All BAPs will be discontinued by April 13th. Please use your BAP
+        by March 13th. Any BAP remaining in your Brave browser after March 13th
+        cannot be held or transferred by you or Brave, and will be lost. A new
+        and improved system awaits!
+      </message>
+      <message name="IDS_REWARDS_BAP_DEPRECATION_HEADER" desc="">
+        Brave Rewards in Japan is switching to a new system!
+      </message>
+      <message name="IDS_REWARDS_BAP_DEPRECATION_OK" desc="">OK</message>
       <message name="IDS_EDIT_CARDS_TITLE" desc="">Edit Cards</message>
       <message name="IDS_REWARDS_WIDGET_TOS_AND_PP" desc="">By clicking {{title}}, you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
       <message name="IDS_REWARDS_WIDGET_START_USING" desc="">Start using Brave Rewards</message>
