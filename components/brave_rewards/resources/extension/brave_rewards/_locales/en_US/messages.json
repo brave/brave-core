@@ -764,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards in Japan is switching to a new system!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Learn more",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Please use your BAP by March 13th. After that, BAP will be discontinued.",
+    "description": "Text for BAP deprecation popup"
   }
 }

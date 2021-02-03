@@ -13,6 +13,8 @@ namespace option {
 
 const char kPublisherListRefreshInterval[] = "publisher_list_refresh_interval";
 const char kClaimUGP[] = "claim_ugp";
+const char kContributionsDisabledForBAPMigration[] =
+    "contributions_disabled_for_bap_migration";
 
 }  // namespace option
 }  // namespace ledger
