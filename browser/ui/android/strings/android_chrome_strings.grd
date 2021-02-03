@@ -253,6 +253,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_PRICE_DROP" desc="Label for notification that indicates there is a lower price in an open tab, within a list of notification categories. [CHAR-LIMIT=32]">
+        Price drop alerts
+      </message>
 
       <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
         Unsupported
@@ -4195,6 +4198,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
 
       <message name="IDS_LINK_TO_TEXT_FAILURE_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
         Can't create link to text. Share link to page.
+      </message>
+
+      <message name="IDS_NEW_BADGE" desc="Notification displayed to indicate that there is a new sharing feature.">
+        New
       </message>
 
       <!-- Share Screenshot strings -->
