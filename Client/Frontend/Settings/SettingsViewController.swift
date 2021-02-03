@@ -229,6 +229,11 @@ class SettingsViewController: TableViewController {
                 }, image: #imageLiteral(resourceName: "settings-search").template, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.sync, selection: { [unowned self] in
                     if BraveSyncAPI.shared.isInSyncGroup {
+                        if !DeviceInfo.hasConnectivity() {
+                            self.present(SyncAlerts.noConnection, animated: true)
+                            return
+                        }
+                        
                         self.navigationController?
                             .pushViewController(SyncSettingsTableViewController(style: .grouped), animated: true)
                     } else {

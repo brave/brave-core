@@ -236,6 +236,11 @@ class SyncWelcomeViewController: SyncViewController {
     }
     
     private func pushSettings() {
+        if !DeviceInfo.hasConnectivity() {
+            present(SyncAlerts.noConnection, animated: true)
+            return
+        }
+        
         let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
         syncSettingsVC.disableBackButton = true
         navigationController?.pushViewController(syncSettingsVC, animated: true)

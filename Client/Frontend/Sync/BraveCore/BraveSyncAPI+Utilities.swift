@@ -26,10 +26,9 @@ extension BraveSyncAPI {
         return false
     }
     
-    //See: BraveSyncDevice.remove() for more info.
-    /*func removeDeviceFromSyncGroup(deviceGuid: String) {
-        BraveSyncAPI.shared.removeDevice(deviceGuid)
-    }*/
+    func removeDeviceFromSyncGroup(deviceGuid: String) {
+        BraveSyncAPI.shared.deleteDevice(deviceGuid)
+    }
     
     func leaveSyncGroup() {
         // Remove all observers before leaving the sync chain
