@@ -121,7 +121,7 @@ class SyncSettingsTableViewController: UITableViewController {
             return
         }
         
-        guard device.isCurrentDevice else {
+        guard device.isCurrentDevice || (!device.isCurrentDevice && device.supportsSelfDelete) else {
             //See: `BraveSyncDevice.remove()` for more info.
             return
         }
@@ -274,7 +274,20 @@ extension SyncSettingsTableViewController {
             do {
                 let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
                 self.devices = devices
-                self.tableView.reloadData()
+                
+                if self.devices.count <= 0 {
+                    // Technically we shouldn't be calling this function..
+                    // If Desktop deletes an iOS device from the chain, we're already removed..
+                    // We should be just updating our UI and calling
+                    // `Preferences.Chromium.syncEnabled.value = false`
+                    // But I don't have a TRUE way to tell if the current device
+                    // was removed from the sync chain because `OnSelfDeviceInfoDeleted` has no callback.
+                    // So instead, we call `reset_sync` which won't hurt.
+                    BraveSyncAPI.shared.leaveSyncGroup()
+                    self.navigationController?.popToRootViewController(animated: true)
+                } else {
+                    self.tableView.reloadData()
+                }
             } catch {
                 log.error(error)
             }
@@ -290,6 +303,7 @@ private struct BraveSyncDevice: Codable {
     let id: String
     let guid: String
     let isCurrentDevice: Bool
+    let supportsSelfDelete: Bool
     let lastUpdatedTimestamp: TimeInterval
     let name: String?
     let os: String
@@ -297,9 +311,11 @@ private struct BraveSyncDevice: Codable {
     let type: String
     
     func remove() {
-        // Desktop and Android CANNOT delete devices from sync chain
-        // iOS will remove it from BraveCore and iOS side to match
-        // Once Desktop and Android catch up, we will add it back
-        //BraveSyncAPI.shared.removeDeviceFromSyncGroup(deviceGuid: self.guid)
+        // Devices other than `isCurrentDevice` can only be deleted if
+        // `supportsSelfDelete` is true. Attempting to delete another device
+        // from the sync chain that does not support it, will crash or
+        // have undefined behaviour as the other device won't know that
+        // it was deleted.
+        BraveSyncAPI.shared.removeDeviceFromSyncGroup(deviceGuid: self.guid)
     }
 }
