@@ -96,6 +96,8 @@ class IpfsService : public KeyedService,
   void SetAllowIpfsLaunchForTest(bool launched);
   void SetServerEndpointForTest(const GURL& gurl);
   void SetSkipGetConnectedPeersCallbackForTest(bool skip);
+  bool WasConnectedPeersCalledForTest() const;
+  void SetGetConnectedPeersCalledForTest(bool value);
   void RunLaunchDaemonCallbackForTest(bool result);
 
  protected:
@@ -146,6 +148,8 @@ class IpfsService : public KeyedService,
 
   bool allow_ipfs_launch_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;
+  bool connected_peers_function_called_ = false;
+
   GURL server_endpoint_;
 
   base::FilePath user_data_dir_;

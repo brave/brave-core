@@ -241,6 +241,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
   if (skip_get_connected_peers_callback_for_test_) {
     // Early return for tests that wish to  manually run the callback with
     // desired values directly, could be useful in unit tests.
+    connected_peers_function_called_ = true;
     return;
   }
 
@@ -404,6 +405,14 @@ void IpfsService::RunLaunchDaemonCallbackForTest(bool result) {
 
 void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {
   skip_get_connected_peers_callback_for_test_ = skip;
+}
+
+void IpfsService::SetGetConnectedPeersCalledForTest(bool value) {
+  connected_peers_function_called_ = value;
+}
+
+bool IpfsService::WasConnectedPeersCalledForTest() const {
+  return connected_peers_function_called_;
 }
 
 IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
