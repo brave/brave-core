@@ -60,9 +60,6 @@ public class DeprecateBAPModalDialogFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Button mDoneButton = view.findViewById(R.id.btn_done);
         mDoneButton.setOnClickListener(this);
-
-        AppCompatImageView mCloseButton = view.findViewById(R.id.modal_close);
-        mCloseButton.setOnClickListener(this);
     }
 
     @Override
