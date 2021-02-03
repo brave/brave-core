@@ -20,8 +20,8 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/net/secure_dns_util.h"
-#include "components/country_codes/country_codes.h"
+#include "chrome/browser/net/secure_dns_config.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -29,12 +29,9 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "net/dns/public/doh_provider_entry.h"
 #include "services/network/network_context.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/url_canon.h"
-
-namespace secure_dns = chrome_browser_net::secure_dns;
 
 namespace brave {
 
@@ -57,13 +54,6 @@ content::WebContents* GetWebContents(int render_process_id,
   return web_contents;
 }
 
-net::DohProviderEntry::List GetFilteredProviders() {
-  const auto local_providers = secure_dns::ProvidersForCountry(
-      net::DohProviderEntry::GetList(), country_codes::GetCurrentCountryID());
-  return secure_dns::RemoveDisabledProviders(
-      local_providers, secure_dns::GetDisabledProviders());
-}
-
 }  // namespace
 
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
@@ -77,16 +67,15 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
   std::string source_host = ctx->initiator_url.host();
 
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-        ctx->request_url, ctx->resource_type, source_host,
-        &did_match_rule, &did_match_exception, &did_match_important,
-        &ctx->mock_data_url);
+      ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
+      &did_match_exception, &did_match_important, &ctx->mock_data_url);
   if (did_match_important) {
     ctx->blocked_by = kAdBlocked;
     return;
   }
 
-  if (canonical_name.has_value() && ctx->request_url.host() != *canonical_name
-      && *canonical_name != "") {
+  if (canonical_name.has_value() &&
+      ctx->request_url.host() != *canonical_name && *canonical_name != "") {
     GURL::Replacements replacements = GURL::Replacements();
     replacements.SetHost(
         canonical_name->c_str(),
@@ -94,9 +83,8 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
     g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-        ctx->request_url, ctx->resource_type, source_host,
-        &did_match_rule, &did_match_exception, &did_match_important,
-        &ctx->mock_data_url);
+        ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
+        &did_match_exception, &did_match_important, &ctx->mock_data_url);
   }
 
   if (did_match_important || (did_match_rule && !did_match_exception)) {
@@ -129,7 +117,6 @@ void ShouldBlockAdWithOptionalCname(
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
-  mojo::Remote<network::mojom::HostResolver> host_resolver_;
   base::OnceCallback<void(base::Optional<std::string>)> cb_;
   base::TimeTicks start_time_;
 
@@ -161,35 +148,13 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     // See https://crbug.com/872665
     optional_parameters->source = net::HostResolverSource::DNS;
 
-    net::DnsConfigOverrides dns_config_overrides;
-    if (context->IsTor()) {
-      // Enforce DoH for Tor
-      // TODO(darkdh): we can consider implementing
-      // "Proxy DNS when using SOCKS v5" (network.proxy.socks_remote_dns)
-      // like Firefox has so that we don't have to enforce DoH
-      dns_config_overrides.secure_dns_mode = net::SecureDnsMode::kSecure;
-      std::vector<net::DnsOverHttpsServerConfig> doh_servers;
-      for (const auto* entry : GetFilteredProviders()) {
-        doh_servers.emplace_back(entry->dns_over_https_template, true);
-      }
-      dns_config_overrides.dns_over_https_servers.emplace(doh_servers);
-    }
-
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
             ->GetNetworkContext();
 
     start_time_ = base::TimeTicks::Now();
 
-    host_resolver_.reset();
-    network_context->CreateHostResolver(
-        dns_config_overrides, host_resolver_.BindNewPipeAndPassReceiver());
-
-    if (!host_resolver_) {
-      this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(), base::nullopt);
-      return;
-    }
-    host_resolver_->ResolveHost(
+    network_context->ResolveHost(
         net::HostPortPair::FromURL(ctx->request_url), network_isolation_key,
         std::move(optional_parameters), receiver_.BindNewPipeAndPassRemote());
 
@@ -258,6 +223,19 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
     return net::OK;
   }
 
+  DCHECK(ctx->browser_context);
+  if (ctx->browser_context->IsTor()) {
+    SecureDnsConfig secure_dns_config =
+        SystemNetworkContextManager::GetStubResolverConfigReader()
+            ->GetSecureDnsConfiguration(false);
+    // We can only proceed when DoH mode is SECURE and DoH server list is not
+    // empty. AUTOMATIC mode will fallback to insecure when DoH attempt failed
+    // so we need to abort it either.
+    if (secure_dns_config.mode() != net::SecureDnsMode::kSecure ||
+        secure_dns_config.servers().empty()) {
+      return net::OK;
+    }
+  }
   OnBeforeURLRequestAdBlockTP(next_callback, ctx);
 
   return net::ERR_IO_PENDING;

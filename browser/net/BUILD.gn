@@ -55,7 +55,6 @@ source_set("net") {
     "//brave/components/ipfs/buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
-    "//components/country_codes",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
