@@ -1079,7 +1079,8 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
-              togetherPrmoptDismissed={newTabData.togetherPromptDismissed}
+              supportsTogether={newTabData.togetherSupported}
+              togetherPromptDismissed={newTabData.togetherPromptDismissed}
               backgroundImageInfo={newTabData.backgroundImage}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
