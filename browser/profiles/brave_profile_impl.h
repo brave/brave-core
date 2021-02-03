@@ -9,8 +9,8 @@
 #include "chrome/browser/profiles/profile_impl.h"
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
-#include "content/public/browser/notification_registrar.h"
 
 class PrefStore;
 
@@ -28,7 +28,7 @@ class BraveProfileImpl : public ProfileImpl, public ProfileObserver {
 
  private:
   // Listens for parent profile destruction.
-  content::NotificationRegistrar notification_registrar_;
+  base::ScopedObservation<Profile, ProfileObserver> parent_observation_{this};
 
   base::WeakPtrFactory<BraveProfileImpl> weak_ptr_factory_;
 
