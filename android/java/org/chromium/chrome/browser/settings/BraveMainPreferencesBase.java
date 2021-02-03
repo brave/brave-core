@@ -159,7 +159,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         }
 
         // We don't have home button on top toolbar at the moment
-        if (!BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        if (!DeviceFormFactor.isTablet() && !BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             removePreferenceIfPresent(PREF_HOMEPAGE);
         }
     }
