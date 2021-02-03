@@ -266,7 +266,7 @@ const showsSignificantText = (elm: Element): boolean => {
   return wordCount >= minAdTextWords
 }
 
-interface IsFirstPartyQueryResult {
+interface AdPartyQueryResult {
   foundFirstPartyResource: boolean,
   foundThirdPartyResource: boolean,
   foundKnownThirdPartyAd: boolean
@@ -290,20 +290,11 @@ interface IsFirstPartyQueryResult {
  *
  * Finally, special case some ids we know are used only for third party ads.
  */
-const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQueryResult): boolean => {
-  let queryResult: IsFirstPartyQueryResult
-  let isTopLevel: boolean
-
-  if (possibleQueryResult) {
-    queryResult = possibleQueryResult
-    isTopLevel = false
-  } else {
-    queryResult = {
-      foundFirstPartyResource: false,
-      foundThirdPartyResource: false,
-      foundKnownThirdPartyAd: false
-    }
-    isTopLevel = true
+const getSubTreePartyInfo = (elm: Element): AdPartyQueryResult => {
+  const queryResult = {
+    foundFirstPartyResource: false,
+    foundThirdPartyResource: false,
+    foundKnownThirdPartyAd: false
   }
 
   if (elm.getAttribute) {
@@ -313,7 +304,6 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
         elmId.startsWith('div-gpt-ad') ||
         elmId.startsWith('adfox_')) {
         queryResult.foundKnownThirdPartyAd = true
-        return false
       }
     }
 
@@ -322,15 +312,14 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
       const elmSrcIsFirstParty = isFirstPartyUrl(elmSrc)
       if (elmSrcIsFirstParty === true) {
         queryResult.foundFirstPartyResource = true
-        return true
+      } else {
+        queryResult.foundThirdPartyResource = true
       }
-      queryResult.foundThirdPartyResource = true
     }
 
     if (elm.hasAttribute('style')) {
       const elmStyle = elm.getAttribute('style') as string
-      if (elmStyle.includes('url(') ||
-        elmStyle.includes('//')) {
+      if (elmStyle.includes('url(') || elmStyle.includes('//')) {
         queryResult.foundThirdPartyResource = true
       }
     }
@@ -344,33 +333,36 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   }
 
   if (elm.firstChild) {
-    isSubTreeFirstParty(elm.firstChild as Element, queryResult)
-    if (queryResult.foundKnownThirdPartyAd === true) {
-      return false
+    const childQueryResult = getSubTreePartyInfo(elm.firstChild as Element)
+    if (childQueryResult.foundKnownThirdPartyAd) {
+      queryResult.foundKnownThirdPartyAd = true
     }
-    if (queryResult.foundFirstPartyResource === true) {
-      return true
+
+    if (childQueryResult.foundFirstPartyResource) {
+      queryResult.foundKnownThirdPartyAd = true
+    }
+
+    if (childQueryResult.foundThirdPartyResource) {
+      queryResult.foundThirdPartyResource = true
     }
   }
 
   if (elm.nextSibling) {
-    isSubTreeFirstParty(elm.nextSibling as Element, queryResult)
-    if (queryResult.foundKnownThirdPartyAd === true) {
-      return false
+    const siblingQueryResult = getSubTreePartyInfo(elm.nextSibling as Element)
+    if (siblingQueryResult.foundKnownThirdPartyAd) {
+      queryResult.foundKnownThirdPartyAd = true
     }
-    if (queryResult.foundFirstPartyResource === true) {
-      return true
+
+    if (siblingQueryResult.foundFirstPartyResource) {
+      queryResult.foundKnownThirdPartyAd = true
+    }
+
+    if (siblingQueryResult.foundThirdPartyResource) {
+      queryResult.foundThirdPartyResource = true
     }
   }
 
-  if (isTopLevel === false) {
-    return (queryResult.foundThirdPartyResource === false)
-  }
-
-  if (queryResult.foundThirdPartyResource) {
-    return false
-  }
-  return true
+  return queryResult
 }
 
 const unhideSelectors = (selectors: Set<string>) => {
@@ -419,14 +411,17 @@ const maxWorkSize = 60
 let queueIsSleeping = false
 
 /**
+ * Check for items that were hidden previously, but should now be unhidden,
+ * bc they look like first-party ads.
+ *
  * Go through each of the 3 queues, only take 50 items from each one
  * 1. Take 50 selectors from the first queue with any items
- * 2. Determine partyness of matched element:
+ * 2. Determine party-ness of matched element:
  *   - If any are 3rd party, keep 'hide' rule and check again later in next queue.
  *   - If any are 1st party, remove 'hide' rule and never check selector again.
  * 3. If we're looking at the 3rd queue, don't requeue any selectors.
  */
-const pumpCosmeticFilterQueues = () => {
+const checkFor1pItemsToUnhide = () => {
   if (queueIsSleeping === true) {
     return
   }
@@ -458,19 +453,27 @@ const pumpCosmeticFilterQueues = () => {
         continue
       }
 
-      const elmSubtreeIsFirstParty = isSubTreeFirstParty(aMatchingElm)
-      // If we find that a subtree is third party, then no need to change
-      // anything, leave the selector as "hiding" and move on.
-      // This element will likely be checked again on the next 'pump'
-      // as long as another element from the selector does not match 1st party.
-      if (elmSubtreeIsFirstParty === false) {
-        continue
-      }
+      // Determine whether the ad-subtree should be unhidden (its currently
+      // hidden to reach this point. We decide this with the following:
+      //
+      // Show the subtree if:
+      //    the subtree does not match a known 3p ad selector AND (
+      //      it includes any first party resources OR (
+      //        the subtree includes no third party resources AND
+      //        includes significant text
+      //      )
+      //    )
+      const subTreePartyInfo = getSubTreePartyInfo(aMatchingElm)
+      const shouldUnhideAd = (
+        subTreePartyInfo.foundKnownThirdPartyAd === false && (
+          subTreePartyInfo.foundFirstPartyResource === true || (
+            subTreePartyInfo.foundThirdPartyResource === false &&
+            showsSignificantText(aMatchingElm)
+          )
+        )
+      )
 
-      // If the subtree doesn't have a significant amount of text (e.g., it
-      // just says "Advertisement"), then no need to change anything; it should
-      // stay hidden.
-      if (showsSignificantText(aMatchingElm) === false) {
+      if (shouldUnhideAd === false) {
         continue
       }
 
@@ -515,17 +518,17 @@ const pumpCosmeticFilterQueues = () => {
     queueIsSleeping = true
     window.setTimeout(() => {
       // Set this to false now even though there's a gap in time between now and
-      // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
-      // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
+      // idle since all other calls to `checkFor1pItemsToUnhideOnIdle` that occur during this time
+      // will be ignored (and nothing else should be calling `checkFor1pItemsToUnhide` straight).
       queueIsSleeping = false
       // tslint:disable-next-line:no-use-before-declare
-      pumpCosmeticFilterQueuesOnIdle()
+      checkFor1pItemsToUnhideOnIdle()
     }, pumpIntervalMinMs)
   }
 }
 
-const pumpCosmeticFilterQueuesOnIdle = idleize(
-  pumpCosmeticFilterQueues,
+const checkFor1pItemsToUnhideOnIdle = idleize(
+  checkFor1pItemsToUnhide,
   pumpIntervalMaxMs
 )
 
@@ -560,9 +563,9 @@ const startObserving = () => {
 
 const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // Three states possible here.  First, the delay has already occurred.  If so,
-  // pass through to pumpCosmeticFilterQueues immediately.
+  // pass through to checkFor1pItemsToUnhide immediately.
   if (CC._hasDelayOcurred === true) {
-    pumpCosmeticFilterQueuesOnIdle()
+    checkFor1pItemsToUnhideOnIdle()
     return
   }
   // Second possibility is that we're already waiting for the delay to pass /
@@ -578,7 +581,7 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
       startObserving()
     }
     if (!hide1pContent) {
-      pumpCosmeticFilterQueuesOnIdle()
+      checkFor1pItemsToUnhideOnIdle()
     }
   }, { timeout: maxTimeMSBeforeStart })
 }

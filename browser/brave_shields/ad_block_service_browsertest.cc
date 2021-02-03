@@ -919,13 +919,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 }
 
 // Test cosmetic filtering ignores content determined to be 1st party
-// This is disabled due to https://github.com/brave/brave-browser/issues/13882
-#if defined(OS_WIN)
-#define MAYBE_CosmeticFilteringProtect1p DISABLED_CosmeticFilteringProtect1p
-#else
-#define MAYBE_CosmeticFilteringProtect1p CosmeticFilteringProtect1p
-#endif
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_CosmeticFilteringProtect1p) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
   WaitForBraveExtensionShieldsDataReady();
@@ -937,8 +931,17 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_CosmeticFilteringProtect1p) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.fpsponsored', 'display', 'block')"));
+  auto result = EvalJsWithManualReply(contents,
+                                      R"(function waitCSSSelector() {
+          if (checkSelector('.fpsponsored', 'display', 'block')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
 }
 
 // Test cosmetic filtering bypasses 1st party checks when toggled
