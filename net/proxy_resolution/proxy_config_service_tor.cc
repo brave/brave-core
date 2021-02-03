@@ -144,7 +144,6 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
       network_isolation_key.GetTopFrameSite();
   DCHECK(schemeful_site.has_value());
   std::string host = GURL(schemeful_site->Serialize()).host();
-  DCHECK(host == schemeful_site->GetInternalOriginForTesting().host());
   return host;
 }
 
