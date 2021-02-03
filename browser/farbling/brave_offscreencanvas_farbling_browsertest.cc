@@ -30,9 +30,9 @@ using brave_shields::ControlType;
 
 const char kEmbeddedTestServerDirectory[] = "canvas";
 const char kTitleScript[] = "domAutomationController.send(document.title);";
-const char kExpectedImageDataHashFarblingBalanced[] = "83";
+const char kExpectedImageDataHashFarblingBalanced[] = "107";
 const char kExpectedImageDataHashFarblingOff[] = "0";
-const char kExpectedImageDataHashFarblingMaximum[] = "83";
+const char kExpectedImageDataHashFarblingMaximum[] = "107";
 
 class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
  public:
