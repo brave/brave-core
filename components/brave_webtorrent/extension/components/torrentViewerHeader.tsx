@@ -8,8 +8,6 @@ import { Button, Heading } from 'brave-ui/components'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 
-let clipboardCopy = require('clipboard-copy')
-
 interface Props {
   name?: string | string[]
   torrent?: TorrentObj
@@ -78,9 +76,14 @@ export default class TorrentViewerHeader extends React.PureComponent<
     })
   }
 
-  onCopyClick = () => {
+  onCopyClick = async () => {
     if (this.props.torrentId.startsWith('magnet:')) {
-      clipboardCopy(this.props.torrentId)
+      try {
+        await navigator.clipboard.writeText(this.props.torrentId)
+        console.log('Copy succeeded')
+      } catch (e) {
+        console.log('Copy failed')
+      }
     } else {
       // Listen for malicious files pretending to be .torrents (#11488)
       chrome.downloads.onDeterminingFilename.addListener(this.downloadListener)

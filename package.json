@@ -314,7 +314,6 @@
     "array-move": "^2.2.1",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",
-    "clipboard-copy": "^2.0.0",
     "date-fns": "^2.15.0",
     "jszip": "^3.2.2",
     "parse-domain": "^3.0.2",
