@@ -153,6 +153,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
+    private PopupWindowTooltip mRewardsPopupWindowTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
@@ -499,7 +500,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     public void showRewardsTooltip() {
         ShieldsTooltipEnum shieldsTooltipEnum = ShieldsTooltipEnum.BAP_DEPRECATION_TOOLTIP;
-        PopupWindowTooltip mRewardsPopupWindowTooltip =
+        mRewardsPopupWindowTooltip =
                 new PopupWindowTooltip.Builder(getContext())
                         .anchorView(mBraveRewardsButton)
                         .arrowColor(getResources().getColor(shieldsTooltipEnum.getArrowColor()))
@@ -519,7 +520,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         btnTooltip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRewardsPopupWindowTooltip.dismiss();
+                dismissRewardsTooltip();
                 if (BraveActivity.getBraveActivity() != null)
                     BraveActivity.getBraveActivity().showDeprecateBAPDialog();
             }
@@ -531,8 +532,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                                                    .append(getContext().getResources().getString(
                                                            shieldsTooltipEnum.getTitle()))
                                                    .toString());
-        ssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_warning_triangle), 0, 1,
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new ImageSpan(
+                            getContext(), R.drawable.ic_warning_triangle, ImageSpan.ALIGN_BASELINE),
+                0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tooltipTitle.setText(ssb, TextView.BufferType.SPANNABLE);
 
         TextView tooltipText = mRewardsPopupWindowTooltip.findViewById(R.id.txt_tooltip_text);
@@ -555,9 +557,17 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
+    public void dismissRewardsTooltip() {
+        if (mRewardsPopupWindowTooltip != null && mRewardsPopupWindowTooltip.isShowing()) {
+            mRewardsPopupWindowTooltip.dismiss();
+            mRewardsPopupWindowTooltip = null;
+        }
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        dismissRewardsTooltip();
         dismissShieldsTooltip();
         reopenShieldsPanel();
     }
