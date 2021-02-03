@@ -242,7 +242,16 @@ class UserTextInputAlert {
     private func textFieldConfig(text: String?, placeholder: String?, keyboardType: UIKeyboardType?, forcedInput: Bool)
         -> (UITextField) -> Void {
             return { textField in
-                textField.placeholder = placeholder
+                if #available(iOS 13.0, *) {
+                    textField.attributedPlaceholder = NSAttributedString(
+                        string: placeholder ?? "",
+                        attributes: [.foregroundColor: UIColor.placeholderText])
+                } else {
+                    textField.placeholder = placeholder
+                }
+                
+                textField.keyboardAppearance = .default
+
                 textField.isSecureTextEntry = false
                 textField.keyboardAppearance = .dark
                 textField.autocapitalizationType = keyboardType == .URL ? .none : .words

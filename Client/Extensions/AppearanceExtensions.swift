@@ -87,6 +87,11 @@ extension Theme {
             // See #1548.
             // Using tint color of iOS 13 UISwitch to match better with our light theme
             UISwitch.appearance().tintColor = #colorLiteral(red: 0.8392156863, green: 0.8392156863, blue: 0.8431372549, alpha: 1)
+            
+            // See #3250.
+            // Default Text attributes have to be changed in order to textfield text visible
+            UITextField.appearance(whenContainedInInstancesOf: [UIAlertController.self]).defaultTextAttributes =
+                                        [.foregroundColor: UIColor.black]
         }
     }
 }
