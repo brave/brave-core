@@ -55,10 +55,19 @@ def replace_cc_arg(args):
     # Filter away out and out_x86
     # Maybe this dir can be queried from env variable instead of hardcoding
     OUT_DIR_NAMES = ['out', 'out_x86']
-    start_dir = rel_path.split(os.sep)[0]
-    if start_dir in OUT_DIR_NAMES:
-        # Don't even try to substitute path for auto-generated cc
-        return
+    rel_path_parts = rel_path.split(os.sep, 4)
+    if rel_path_parts[0] in OUT_DIR_NAMES:
+        if rel_path_parts[2] == 'gen':
+            rel_path = os.path.join(rel_path_parts[3], rel_path_parts[4])
+        elif rel_path_parts[3] == 'gen':
+            # In addition to the regular gen location above, 64-bit builds may
+            # have the directory stucture like out/<BUILD>/android_clang_arm or
+            # out/<BUILD>/android_clang_x86 on Android, or
+            # out/<BUILD>/clang_x64_v8_arm64 on MacOS
+            rel_path = rel_path_parts[4]
+        else:
+            # Don't even try to substitute path for other auto-generated cc
+            return
 
     # Build possible brave/chromium_src_path
     brave_path = os.path.join(chromium_original_dir, 'brave', 'chromium_src',
