@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
-index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..2b9f684c17d0d93802ee755e843b3c85a9909e6b 100644
+index 5bcdb42a7d8f1443fefa4c81eb7e9757bc45eaa0..9e7ab09670452b3a9db5b768edc6696076b14ba6 100644
 --- a/chrome/browser/resources/tools/optimize_webui.gni
 +++ b/chrome/browser/resources/tools/optimize_webui.gni
-@@ -48,6 +48,7 @@ template("optimize_webui") {
-     }
- 
-     deps = invoker.deps
-+    deps += [ "//brave/ui/webui/resources:modulize", ]
- 
-     # Note that we have to manually pass the sources to our script if the
-     # script needs them as inputs.
-@@ -78,6 +79,7 @@ template("optimize_webui") {
+@@ -78,6 +78,7 @@ template("optimize_webui") {
        "chrome://resources/polymer/v3_0/|$polymer_path",
        "chrome://resources/|$resources_path",
      ]
-+    brave_resources_path = rebase_path("$root_gen_dir/brave/ui/webui/resources/", root_build_dir) external_paths += [ "chrome://brave-resources/|$brave_resources_path" ]
++    import("//brave/browser/resources/tools/brave_optimize_webui.gni") deps += brave_webui_deps external_paths += brave_webui_external_paths
      if (defined(invoker.external_paths)) {
        external_paths += invoker.external_paths
      }
