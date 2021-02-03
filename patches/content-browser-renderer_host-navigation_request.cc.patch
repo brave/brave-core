@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index c97f3d40a599822f37be0bc92f5f77ef50439b4a..4f34d2b7bab4cb80a8cdc1ffe5b71129bb056d71 100644
+index b469e327a1dc6c3183d7487a54e7fd8cce0035e5..f5242c2c0cfec6fcad92d767c94759d30be830bf 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
 @@ -299,7 +299,7 @@ void AddAdditionalRequestHeaders(
@@ -19,7 +19,7 @@ index c97f3d40a599822f37be0bc92f5f77ef50439b4a..4f34d2b7bab4cb80a8cdc1ffe5b71129
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -2864,6 +2865,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -2870,6 +2871,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
@@ -27,7 +27,7 @@ index c97f3d40a599822f37be0bc92f5f77ef50439b4a..4f34d2b7bab4cb80a8cdc1ffe5b71129
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
-@@ -4970,7 +4972,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
+@@ -4976,7 +4978,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
    auto user_agent_override = GetUserAgentOverride();
    headers.SetHeader(net::HttpRequestHeaders::kUserAgent,
                      user_agent_override.empty()
