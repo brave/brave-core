@@ -193,9 +193,6 @@ BraveSessionCache::PerturbPixelsInternal(
   // dimensions are less than SIZE_T_MAX. (Width and height are each
   // limited to 32,767 pixels.)
   const size_t pixel_count = data_buffer->Width() * data_buffer->Height();
-  // choose which channel (R, G, or B) to perturb
-  const uint8_t* first_byte = reinterpret_cast<const uint8_t*>(domain_key_);
-  uint8_t channel = *first_byte % 3;
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
   crypto::HMAC h(crypto::HMAC::SHA256);
@@ -209,11 +206,14 @@ BraveSessionCache::PerturbPixelsInternal(
       canvas_key, sizeof canvas_key));
   uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
   uint64_t pixel_index;
+  // choose which channel (R, G, or B) to perturb
+  uint8_t channel;
   // iterate through 32-byte canvas key and use each bit to determine how to
   // perturb the current pixel
   for (int i = 0; i < 32; i++) {
     uint8_t bit = canvas_key[i];
     for (int j = 8; j >= 0; j--) {
+      channel = v % 3;
       pixel_index = 4 * (v % pixel_count) + channel;
       pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
