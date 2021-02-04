@@ -155,9 +155,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public void onResumeWithNative() {
         super.onResumeWithNative();
         nativeRestartStatsUpdater();
-        if (mBraveRewardsNativeWorker == null)
-            mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            if (mBraveRewardsNativeWorker == null)
+                mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+            mBraveRewardsNativeWorker.AddObserver(this);
+        }
     }
 
     @Override
@@ -389,7 +392,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
-        if (mBraveRewardsNativeWorker != null) {
+        if (mBraveRewardsNativeWorker != null
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             mBraveRewardsNativeWorker.StartProcess();
         }
     }
