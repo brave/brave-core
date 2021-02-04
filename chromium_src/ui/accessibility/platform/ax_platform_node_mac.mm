@@ -8,8 +8,10 @@
 
 // Assumed to be a temporary fix for
 // https://github.com/brave/brave-browser/issues/13778
+// and
+// https://github.com/brave/brave-browser/issues/13837
 #define BRAVE_ACCESSIBILITY_ATTRIBUTED_STRING_FOR_RANGE             \
-  id value = [self getAXValueAsString];                             \
+  id value = [self AXValue];                                        \
   if (![value isKindOfClass:[NSString class]]) {                    \
     ax::mojom::Role role = _node->GetData().role;                   \
     base::debug::Alias(&role);                                      \
@@ -17,6 +19,12 @@
     LOG(ERROR) << "Trying to get a range from a non-string object." \
                << " Role: " << static_cast<int>(role)               \
                << " Name: " << _node->GetName();                    \
+    base::debug::DumpWithoutCrashing();                             \
+    return nil;                                                     \
+  }                                                                 \
+  NSString* str = value;                                            \
+  if (range.location == NSNotFound ||                               \
+      range.location + range.length > str.length) {                 \
     base::debug::DumpWithoutCrashing();                             \
     return nil;                                                     \
   }
