@@ -21,6 +21,7 @@
 #include "brave/components/sidebar/features.h"
 #endif
 
+#define BRAVE_BROWSER_CREATE return new BraveBrowser(params);
 #define BrowserContentSettingBubbleModelDelegate \
   BraveBrowserContentSettingBubbleModelDelegate
 #define BrowserCommandController BraveBrowserCommandController
@@ -33,6 +34,7 @@
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
+#undef BRAVE_BROWSER_CREATE
 
 #if !defined(OS_ANDROID)
 #undef BookmarkTabHelper
