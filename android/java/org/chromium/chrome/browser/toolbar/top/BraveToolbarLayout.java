@@ -653,7 +653,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             @Override
             public void onClick(View v) {
                 BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
-                BraveActivity.getBraveActivity().openRewardsPanel();
+                openRewardsPanel();
                 dialog.dismiss();
             }
         }));
@@ -971,6 +971,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     public void openRewardsPanel() {
         onClick(mBraveRewardsButton);
+    }
+
+    public boolean isRewardsPanelOpened() {
+        if (mRewardsPopup != null) {
+            return mRewardsPopup.isShowing();
+        }
+        return false;
     }
 
     @Override
