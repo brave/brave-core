@@ -56,6 +56,7 @@ source_set("pref_names") {
                  "//brave/components/content_settings/core/browser",
                  "//brave/components/p3a",
                  "//brave/components/binance/browser",
+                 "//brave/ios/app",
                  "//components/omnibox/browser",
                ]
 
@@ -89,6 +90,7 @@ source_set("common") {
         "//brave/components/brave_referrals/browser",
         "//brave/components/brave_ads/browser",
         "//brave/components/content_settings/renderer",
+        "//brave/components/external_intents/android",
         "//brave/components/webcompat_reporter/browser",
         "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
         "//brave/components/ipfs/test:brave_ipfs_browser_tests",
