@@ -45,7 +45,6 @@ public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
-    private static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
     private static final String PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A =
             "show_default_browser_modal_after_p3a";
     public static final String PREF_BRAVE_STATS = "brave_stats";
@@ -190,16 +189,6 @@ public class OnboardingPrefManager {
     public void setSearchEngineOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_SEARCH_ENGINE_ONBOARDING, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean hasShieldsTooltipShown() {
-        return mSharedPreferences.getBoolean(PREF_SHIELDS_TOOLTIP, false);
-    }
-
-    public void setShieldsTooltipShown(boolean isShown) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHIELDS_TOOLTIP, isShown);
         sharedPreferencesEditor.apply();
     }
 
