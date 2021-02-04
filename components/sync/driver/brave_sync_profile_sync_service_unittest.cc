@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
+#include <vector>
 
 #include "base/logging.h"
 #include "base/test/task_environment.h"
@@ -14,6 +15,7 @@
 #include "components/sync/driver/fake_data_type_controller.h"
 #include "components/sync/driver/profile_sync_service_bundle.h"
 #include "components/sync/driver/sync_api_component_factory_mock.h"
+#include "components/sync/driver/sync_user_settings_mock.h"
 #include "components/sync/test/engine/fake_sync_engine.h"
 #include "components/sync/test/engine/mock_sync_engine.h"
 #include "content/public/test/browser_task_environment.h"
@@ -41,6 +43,14 @@ class ProfileSyncServiceDelegateMock : public ProfileSyncServiceDelegate {
   ~ProfileSyncServiceDelegateMock() override {}
   void SuspendDeviceObserverForOwnReset() override {}
   void ResumeDeviceObserver() override {}
+};
+
+class MockSyncPrefObserver : public SyncPrefObserver {
+ public:
+  MOCK_METHOD(void, OnSyncManagedPrefChange, (bool), (override));
+  MOCK_METHOD(void, OnFirstSetupCompletePrefChange, (bool), (override));
+  MOCK_METHOD(void, OnSyncRequestedPrefChange, (bool), (override));
+  MOCK_METHOD(void, OnPreferredDataTypesPrefChange, (), (override));
 };
 
 class BraveProfileSyncServiceTest : public testing::Test {
@@ -194,6 +204,69 @@ TEST_F(BraveProfileSyncServiceTest, NoIdentityManagerCalls) {
       WeakHandle<DataTypeDebugInfoListener>(), "", "", true);
 
   OSCryptMocker::TearDown();
+}
+
+namespace {
+
+SyncCycleSnapshot MakeDefaultCycleSnapshot(const SyncerError& commit_result) {
+  ModelNeutralState model_neutral_state;
+  model_neutral_state.commit_result = commit_result;
+
+  return SyncCycleSnapshot(
+      /*birthday=*/"", /*bag_of_chips=*/"", model_neutral_state,
+      ProgressMarkerMap(), /*is_silenced-*/ false,
+      /*num_encryption_conflicts=*/0, /*num_hierarchy_conflicts=*/0,
+      /*num_server_conflicts=*/0, /*notifications_enabled=*/false,
+      /*num_entries=*/0, /*sync_start_time=*/base::Time::Now(),
+      /*poll_finish_time=*/base::Time::Now(),
+      /*num_entries_by_type=*/std::vector<int>(ModelType::NUM_ENTRIES, 0),
+      /*num_to_delete_entries_by_type=*/
+      std::vector<int>(ModelType::NUM_ENTRIES, 0),
+      /*get_updates_origin=*/sync_pb::SyncEnums::UNKNOWN_ORIGIN,
+      /*poll_interval=*/base::TimeDelta::FromMinutes(30),
+      /*has_remaining_local_changes=*/false);
+}
+
+}  // namespace
+
+TEST_F(BraveProfileSyncServiceTest, ReenableTypes) {
+  CreateSyncService(ProfileSyncService::MANUAL_START);
+  brave_sync_service()->Initialize();
+
+  testing::StrictMock<MockSyncPrefObserver> mock_sync_pref_observer;
+  brave_sync_service()->sync_prefs_.AddSyncPrefObserver(
+      &mock_sync_pref_observer);
+
+  SyncCycleSnapshot snapshot_unset(
+      MakeDefaultCycleSnapshot(SyncerError(SyncerError::UNSET)));
+
+  SyncerError::Value err_codes[] = {SyncerError::SERVER_RETURN_CONFLICT,
+                                    SyncerError::SERVER_RETURN_TRANSIENT_ERROR,
+                                    SyncerError::UNSET};
+
+  for (const auto& err : err_codes) {
+    // Cleanup failures counter
+    brave_sync_service()->OnSyncCycleCompleted(snapshot_unset);
+
+    SyncCycleSnapshot snapshot_maybe_error(
+        MakeDefaultCycleSnapshot(SyncerError(err)));
+
+    for (size_t i = 0;
+         i <
+         brave_sync_service()->GetNumberOfFailedCommitsToReenableForTests() - 1;
+         ++i) {
+      brave_sync_service()->OnSyncCycleCompleted(snapshot_maybe_error);
+    }
+
+    // Expect re-enables types on some errors
+    EXPECT_CALL(mock_sync_pref_observer, OnPreferredDataTypesPrefChange())
+        .Times((err == SyncerError::UNSET) ? 0 : 2);
+
+    brave_sync_service()->OnSyncCycleCompleted(snapshot_maybe_error);
+  }
+
+  brave_sync_service()->sync_prefs_.RemoveSyncPrefObserver(
+      &mock_sync_pref_observer);
 }
 
 }  // namespace syncer

@@ -16,6 +16,8 @@
 
 class Profile;
 
+FORWARD_DECLARE_TEST(BraveProfileSyncServiceTest, ReenableTypes);
+
 namespace syncer {
 
 class BraveSyncAuthManager;
@@ -47,6 +49,7 @@ class BraveProfileSyncService : public ProfileSyncService {
   void Initialize() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveProfileSyncServiceTest, ReenableTypes);
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
@@ -57,6 +60,7 @@ class BraveProfileSyncService : public ProfileSyncService {
   void ReenableSyncTypes();
   bool IsReenableTypesRequired(const SyncCycleSnapshot& snapshot);
   size_t failed_commit_times_ = 0;
+  static size_t GetNumberOfFailedCommitsToReenableForTests();
 
   brave_sync::Prefs brave_sync_prefs_;
 
