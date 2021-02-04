@@ -13,6 +13,7 @@ import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
@@ -148,6 +149,7 @@ source_set("browser_process") {
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",
     "//brave/components/resources",
+    "//brave/components/sidebar/buildflags",
     "//brave/components/speedreader:buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/weekly_storage",
@@ -222,6 +224,10 @@ source_set("browser_process") {
     ]
   } else {
     deps += [ "android:android_browser_process" ]
+  }
+
+  if (enable_sidebar) {
+    deps += [ "//brave/components/sidebar" ]
   }
 
   if (binance_enabled) {

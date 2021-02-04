@@ -1,18 +1,19 @@
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
 import("//tools/grit/grit_rule.gni")
 
 source_set("command_ids") {
-  sources = [
-    "brave_command_ids.h",
-  ]
+  sources = [ "brave_command_ids.h" ]
 }
 
 grit("brave_generated_resources_grit") {
+  defines = [ "enable_sidebar=$enable_sidebar" ]
   source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"
   outputs = [
     "grit/brave_generated_resources.h",
+
     # This is needed for the includes and not the localized messages
     "brave_generated_resources.pak",
   ]
@@ -29,4 +30,5 @@ grit("brave_generated_resources_grit") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-group("app") {}
+group("app") {
+}
