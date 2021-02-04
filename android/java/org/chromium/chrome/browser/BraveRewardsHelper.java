@@ -54,6 +54,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final String PREF_SHOW_ONBOARDING_MINI_MODAL = "show_onboarding_mini_modal";
     private static final String PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE =
             "next_rewards_onboarding_modal_date";
+    private static final String PREF_NEXT_BAP_MODAL_DATE = "next_bap_modal_date";
     private static final String PREF_REWARDS_ENV_CHANGE = "rewards_env_change";
     private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
@@ -94,6 +95,17 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
         sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, nextDate);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static long getNextBAPModalDate() {
+        return ContextUtils.getAppSharedPreferences().getLong(PREF_NEXT_BAP_MODAL_DATE, 0);
+    }
+
+    public static void setNextBAPModalDate(long nextDate) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putLong(PREF_NEXT_BAP_MODAL_DATE, nextDate);
         sharedPreferencesEditor.apply();
     }
 
