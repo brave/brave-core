@@ -10,6 +10,7 @@
 
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
 #include "brave/components/unstoppable_domains/constants.h"
+#include "brave/components/unstoppable_domains/utils.h"
 #endif
 
 namespace {
@@ -20,7 +21,8 @@ bool GetNextIndex(const std::string& hostname,
                   size_t* doh_server_index) {
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
   // Skip unstoppable domains resolver for non-crypto domains.
-  if (!base::EndsWith(hostname, unstoppable_domains::kCryptoDomain) &&
+  if (unstoppable_domains::IsUnstoppableDomainsEnabled() &&
+      !base::EndsWith(hostname, unstoppable_domains::kCryptoDomain) &&
       config.dns_over_https_servers[*doh_server_index].server_template ==
           unstoppable_domains::kDoHResolver) {
     // No next available index to attempt.

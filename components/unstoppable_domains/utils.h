@@ -7,10 +7,14 @@
 #define BRAVE_COMPONENTS_UNSTOPPABLE_DOMAINS_UTILS_H_
 
 class GURL;
+class PrefService;
 
 namespace unstoppable_domains {
 
 bool IsUnstoppableDomainsTLD(const GURL& url);
+bool IsUnstoppableDomainsEnabled();
+bool IsResolveMethodAsk(PrefService* local_state);
+bool IsResolveMethodDoH(PrefService* local_state);
 
 }  // namespace unstoppable_domains
 

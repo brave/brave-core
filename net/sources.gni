@@ -10,5 +10,6 @@ brave_net_sources = [
 
 brave_net_deps = [
   "//brave/components/unstoppable_domains:constants",
+  "//brave/components/unstoppable_domains:utils",
   "//brave/components/unstoppable_domains/buildflags",
 ]

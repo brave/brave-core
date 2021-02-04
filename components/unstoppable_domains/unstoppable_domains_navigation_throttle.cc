@@ -11,7 +11,6 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/unstoppable_domains/unstoppable_domains_interstitial_controller_client.h"
 #include "brave/components/unstoppable_domains/unstoppable_domains_opt_in_page.h"
-#include "brave/components/unstoppable_domains/unstoppable_domains_service.h"
 #include "brave/components/unstoppable_domains/utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -27,23 +26,20 @@ namespace unstoppable_domains {
 std::unique_ptr<UnstoppableDomainsNavigationThrottle>
 UnstoppableDomainsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
-    UnstoppableDomainsService* unstoppable_domains_service,
     PrefService* local_state,
     const std::string& locale) {
-  if (!unstoppable_domains_service)
+  if (!IsUnstoppableDomainsEnabled())
     return nullptr;
 
   return std::make_unique<UnstoppableDomainsNavigationThrottle>(
-      navigation_handle, unstoppable_domains_service, local_state, locale);
+      navigation_handle, local_state, locale);
 }
 
 UnstoppableDomainsNavigationThrottle::UnstoppableDomainsNavigationThrottle(
     content::NavigationHandle* navigation_handle,
-    UnstoppableDomainsService* unstoppable_domains_service,
     PrefService* local_state,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
-      unstoppable_domains_service_(unstoppable_domains_service),
       local_state_(local_state),
       locale_(locale) {
   content::BrowserContext* context =
@@ -57,8 +53,7 @@ UnstoppableDomainsNavigationThrottle::~UnstoppableDomainsNavigationThrottle() =
 content::NavigationThrottle::ThrottleCheckResult
 UnstoppableDomainsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if (!IsUnstoppableDomainsTLD(url) ||
-      !unstoppable_domains_service_->IsResolveMethodAsk()) {
+  if (!IsUnstoppableDomainsTLD(url) || !IsResolveMethodAsk(local_state_)) {
     return content::NavigationThrottle::PROCEED;
   }
 

@@ -85,12 +85,14 @@
         sub-label="$i18n{hangoutsEnabledDesc}"
         on-settings-boolean-control-change="onHangoutsEnabledChange_">
     </settings-toggle-button>
-    <div class="settings-box">
-      <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
-      <settings-dropdown-menu id="udResolveMethodType"
-                              pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
-                              menu-options="[[udResolveMethod_]]">
-    </div>
+    <template is="dom-if" if="{{ udEnabled_ }}">
+      <div class="settings-box">
+        <div class="start">$i18n{resolveUnstoppableDomainsDesc}</div>
+        <settings-dropdown-menu id="udResolveMethodType"
+                                pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
+                                menu-options="[[udResolveMethod_]]">
+      </div>
+    </template>
     <settings-toggle-button id="mediaRouterEnabled"
         class="cr-row"
         pref="{{prefs.brave.enable_media_router}}"

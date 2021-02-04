@@ -7,13 +7,36 @@ source_set("constants") {
   sources = [
     "constants.cc",
     "constants.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("utils") {
+  sources = [
+    "utils.cc",
+    "utils.h",
+  ]
+
+  deps = [
+    ":constants",
+    ":features",
+    "//components/prefs",
+    "//url",
   ]
 }
 
 source_set("unstoppable_domains") {
   sources = [
-    "pref_names.cc",
-    "pref_names.h",
     "unstoppable_domains_interstitial_controller_client.cc",
     "unstoppable_domains_interstitial_controller_client.h",
     "unstoppable_domains_navigation_throttle.cc",
@@ -23,11 +46,13 @@ source_set("unstoppable_domains") {
     "unstoppable_domains_service.cc",
     "unstoppable_domains_service.h",
     "unstoppable_domains_service_delegate.h",
-    "utils.cc",
-    "utils.h",
   ]
 
-  public_deps = [ ":constants" ]
+  public_deps = [
+    ":constants",
+    ":features",
+    ":utils",
+  ]
 
   deps = [
     "//base",

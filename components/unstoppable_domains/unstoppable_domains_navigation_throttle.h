@@ -20,14 +20,11 @@ class PrefService;
 
 namespace unstoppable_domains {
 
-class UnstoppableDomainsService;
-
 class UnstoppableDomainsNavigationThrottle
     : public content::NavigationThrottle {
  public:
   explicit UnstoppableDomainsNavigationThrottle(
       content::NavigationHandle* navigation_handle,
-      UnstoppableDomainsService* unstoppable_domains_service,
       PrefService* local_state,
       const std::string& locale);
   ~UnstoppableDomainsNavigationThrottle() override;
@@ -39,7 +36,6 @@ class UnstoppableDomainsNavigationThrottle
 
   static std::unique_ptr<UnstoppableDomainsNavigationThrottle>
   MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle,
-                         UnstoppableDomainsService* unstoppable_domains_service,
                          PrefService* local_state,
                          const std::string& locale);
 
@@ -50,7 +46,6 @@ class UnstoppableDomainsNavigationThrottle
  private:
   void ShowInterstitial();
 
-  UnstoppableDomainsService* unstoppable_domains_service_ = nullptr;
   PrefService* user_prefs_ = nullptr;
   PrefService* local_state_ = nullptr;
   std::string locale_;

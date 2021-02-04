@@ -629,10 +629,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle>
       unstoppable_domains_navigation_throttle = unstoppable_domains::
           UnstoppableDomainsNavigationThrottle::MaybeCreateThrottleFor(
-              handle,
-              unstoppable_domains::UnstoppableDomainsServiceFactory::
-                  GetForContext(context),
-              g_brave_browser_process->local_state(),
+              handle, g_brave_browser_process->local_state(),
               g_brave_browser_process->GetApplicationLocale());
   if (unstoppable_domains_navigation_throttle)
     throttles.push_back(std::move(unstoppable_domains_navigation_throttle));

@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/unstoppable_domains/unstoppable_domains_service_delegate_impl.h"
 #include "brave/components/unstoppable_domains/unstoppable_domains_service.h"
+#include "brave/components/unstoppable_domains/utils.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace unstoppable_domains {
@@ -30,6 +31,9 @@ UnstoppableDomainsServiceFactory::GetInstance() {
 // static
 UnstoppableDomainsService* UnstoppableDomainsServiceFactory::GetForContext(
     content::BrowserContext* context) {
+  if (!IsUnstoppableDomainsEnabled())
+    return nullptr;
+
   return static_cast<UnstoppableDomainsService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }

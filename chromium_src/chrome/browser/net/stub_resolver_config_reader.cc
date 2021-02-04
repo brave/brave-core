@@ -9,7 +9,7 @@
 
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
 #include "brave/components/unstoppable_domains/constants.h"
-#include "brave/components/unstoppable_domains/pref_names.h"
+#include "brave/components/unstoppable_domains/utils.h"
 #endif
 
 namespace {
@@ -17,13 +17,7 @@ namespace {
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
 void AddUnstoppableDomainsResolver(std::string* doh_templates,
                                    PrefService* local_state) {
-  bool resolve_ud_enabled =
-      local_state->FindPreference(unstoppable_domains::kResolveMethod) &&
-      local_state->GetInteger(unstoppable_domains::kResolveMethod) ==
-          static_cast<int>(
-              unstoppable_domains::ResolveMethodTypes::DNS_OVER_HTTPS);
-
-  if (resolve_ud_enabled &&
+  if (unstoppable_domains::IsResolveMethodDoH(local_state) &&
       doh_templates->find(unstoppable_domains::kDoHResolver) ==
           std::string::npos) {
     *doh_templates =

@@ -13,6 +13,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -45,6 +46,10 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
+#endif
+
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#include "brave/components/unstoppable_domains/utils.h"
 #endif
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
@@ -108,6 +113,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "isWidevineEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsWidevineEnabled,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isUnstoppableDomainsEnabled",
+      base::BindRepeating(
+          &BraveDefaultExtensionsHandler::IsUnstoppableDomainsEnabled,
+          base::Unretained(this)));
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -394,3 +404,16 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
   }
 }
 #endif
+
+void BraveDefaultExtensionsHandler::IsUnstoppableDomainsEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+      base::Value(unstoppable_domains::IsUnstoppableDomainsEnabled()));
+#else
+      base::Value(false));
+#endif
+}

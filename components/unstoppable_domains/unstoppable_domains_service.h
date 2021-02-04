@@ -36,12 +36,9 @@ class UnstoppableDomainsService : public KeyedService {
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
-  bool IsResolveMethodAsk();
-
  private:
   void OnPreferenceChanged();
 
-  PrefService* local_state_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   std::unique_ptr<UnstoppableDomainsServiceDelegate> delegate_;
 };

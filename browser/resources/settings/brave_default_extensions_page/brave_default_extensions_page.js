@@ -21,6 +21,7 @@ Polymer({
     torEnabled_: Boolean,
     widevineEnabled_: Boolean,
     disableTorOption_: Boolean,
+    udEnabled_: Boolean,
     udResolveMethod_: {
       readOnly: true,
       type: Array,
@@ -74,6 +75,9 @@ Polymer({
     this.browserProxy_.isWidevineEnabled().then(enabled => {
       this.widevineEnabled_ = enabled
     })
+    this.browserProxy_.isUnstoppableDomainsEnabled().then(enabled => {
+      this.udEnabled_ = enabled
+    });
   },
 
   onWebTorrentEnabledChange_: function() {
