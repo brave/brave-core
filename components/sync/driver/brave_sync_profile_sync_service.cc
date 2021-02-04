@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -128,7 +129,9 @@ void BraveProfileSyncService::OnSyncCycleCompleted(
 }
 
 void BraveProfileSyncService::ReenableSyncTypes() {
-  // TODO(alexeybarabash): P3A
+  // Normal reenabling types due to 7th failure
+  // P3A sample is 1
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Sync.TypesEverReenabled", 1, 2);
   last_reenable_types_time_ = base::Time::Now();
   SyncUserSettings* sync_user_settings = GetUserSettings();
   const UserSelectableTypeSet selected_types =
@@ -146,7 +149,10 @@ bool BraveProfileSyncService::IsReenableTypesRequired(
   if (!last_reenable_types_time_.is_null() &&
       base::Time::Now() - last_reenable_types_time_ <
           kMinimalTimeBetweenReenable) {
-    // Can't do reenable more often than once in a specified amount
+    // Reenabling types aborted due to 7th failure happening twice in a row
+    // in less than 30mins
+    // P3A sample is 2
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Sync.TypesEverReenabled", 2, 2);
     return false;
   }
 
