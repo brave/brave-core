@@ -42,6 +42,7 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -56,6 +57,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -154,9 +156,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     public void onResumeWithNative() {
         super.onResumeWithNative();
         nativeRestartStatsUpdater();
-        if (mBraveRewardsNativeWorker == null)
-            mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            if (mBraveRewardsNativeWorker == null)
+                mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+            mBraveRewardsNativeWorker.AddObserver(this);
+        }
     }
 
     @Override
@@ -387,7 +392,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
-        if (mBraveRewardsNativeWorker != null) {
+        if (mBraveRewardsNativeWorker != null
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             mBraveRewardsNativeWorker.StartProcess();
         }
     }
