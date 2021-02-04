@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
+#include <memory>
+
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -111,37 +113,7 @@ void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue* args) {
 BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kBraveAdblockGenerated,
         kBraveAdblockGeneratedSize, IDR_BRAVE_ADBLOCK_HTML) {
-  Profile* profile = Profile::FromWebUI(web_ui);
-  PrefService* prefs = profile->GetPrefs();
-  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(prefs);
-  pref_change_registrar_->Add(kAdsBlocked,
-    base::Bind(&BraveAdblockUI::OnPreferenceChanged, base::Unretained(this)));
   web_ui->AddMessageHandler(std::make_unique<AdblockDOMHandler>());
 }
 
-BraveAdblockUI::~BraveAdblockUI() {
-}
-
-void BraveAdblockUI::CustomizeWebUIProperties(
-    content::RenderFrameHost* render_frame_host) {
-  DCHECK(IsSafeToSetWebUIProperties());
-  Profile* profile = Profile::FromWebUI(web_ui());
-  PrefService* prefs = profile->GetPrefs();
-  if (render_frame_host) {
-    render_frame_host->SetWebUIProperty(
-        "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked) +
-            prefs->GetUint64(kTrackersBlocked)));
-  }
-}
-
-void BraveAdblockUI::UpdateWebUIProperties() {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeWebUIProperties(GetRenderFrameHost());
-    web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.statsUpdated");
-  }
-}
-
-void BraveAdblockUI::OnPreferenceChanged() {
-  UpdateWebUIProperties();
-}
+BraveAdblockUI::~BraveAdblockUI() = default;

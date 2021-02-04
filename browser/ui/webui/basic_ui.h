@@ -42,18 +42,7 @@ class BasicUI : public content::WebUIController {
           bool disable_trusted_types_csp = false);
   ~BasicUI() override;
 
-  // Called when subclass can set its webui properties.
-  virtual void UpdateWebUIProperties() {}
-
- protected:
-  bool IsSafeToSetWebUIProperties() const;
-  content::RenderFrameHost* GetRenderFrameHost();
-
  private:
-  class BasicUIWebContentsObserver;
-
-  std::unique_ptr<BasicUIWebContentsObserver> observer_;
-
   DISALLOW_COPY_AND_ASSIGN(BasicUI);
 };
 

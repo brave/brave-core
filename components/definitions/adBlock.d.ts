@@ -7,10 +7,6 @@ declare namespace AdBlock {
     settings: {
       customFilters: string
       regionalLists: FilterList[]
-    },
-    stats: {
-      adsBlockedStat?: number
-      numBlocked: number
     }
   }
 

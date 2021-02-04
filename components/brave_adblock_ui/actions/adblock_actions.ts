@@ -27,8 +27,6 @@ export const onGetRegionalLists = (regionalLists: AdBlock.FilterList[]) =>
     regionalLists
   })
 
-export const statsUpdated = () => action(types.ADBLOCK_STATS_UPDATED)
-
 export const updateCustomFilters = (customFilters: string) =>
   action(types.ADBLOCK_UPDATE_CUSTOM_FILTERS, {
     customFilters
