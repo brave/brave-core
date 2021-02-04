@@ -29,15 +29,13 @@ namespace brave {
 namespace {
 
 bool IsUAWhitelisted(const GURL& gurl) {
-  static std::vector<URLPattern> whitelist_patterns({
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
-    // For Widevine
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")
-  });
-  return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-      [&gurl](URLPattern pattern){
-        return pattern.MatchesURL(gurl);
-      });
+  static std::vector<URLPattern> whitelist_patterns(
+      {URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
+       // For Widevine
+       URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")});
+  return std::any_of(
+      whitelist_patterns.begin(), whitelist_patterns.end(),
+      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
 const std::string& GetQueryStringTrackers() {
