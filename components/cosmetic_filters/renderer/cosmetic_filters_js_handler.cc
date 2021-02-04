@@ -134,7 +134,7 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     const int32_t isolated_world_id)
     : render_frame_(render_frame),
       isolated_world_id_(isolated_world_id),
-      enabled_1st_party_cf_filtering_(false) {
+      enabled_1st_party_cf_(false) {
   if (g_observing_script->empty()) {
     *g_observing_script = LoadDataResource(kCosmeticFiltersGenerated[0].value);
   }
@@ -235,7 +235,7 @@ void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
   if (!enabled || !EnsureConnected())
     return;
 
-  enabled_1st_party_cf_filtering_ = first_party_enabled;
+  enabled_1st_party_cf_ = first_party_enabled;
   cosmetic_filters_resources_->UrlCosmeticResources(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
@@ -261,10 +261,9 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
   if (render_frame_->IsMainFrame()) {
     bool generichide = false;
     resources_dict->GetBoolean("generichide", &generichide);
-    non_scriptlet_init_script =
-        base::StringPrintf(kNonScriptletInitScript,
-                           enabled_1st_party_cf_filtering_ ? "true" : "false",
-                           generichide ? "true" : "false");
+    non_scriptlet_init_script = base::StringPrintf(
+        kNonScriptletInitScript, enabled_1st_party_cf_ ? "true" : "false",
+        generichide ? "true" : "false");
   }
   pre_init_script =
       base::StringPrintf(kPreInitScript, scriptlet_init_script.c_str(),
@@ -286,10 +285,14 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
     base::DictionaryValue* resources_dict) {
-  if (url_.is_empty() || !url_.is_valid() ||
-      IsVettedSearchEngine(url_.host())) {
+  // Trivially, don't make exceptions for malformed URLs.
+  if (url_.is_empty() || !url_.is_valid())
     return;
-  }
+
+  // Otherwise, if its a vetted engine AND we're not in aggressive
+  // mode, also don't do cosmetic filtering.
+  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_.host()))
+    return;
 
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   base::ListValue* cf_exceptions_list;
@@ -331,17 +334,25 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     }
   }
 
-  if (!enabled_1st_party_cf_filtering_) {
+  if (!enabled_1st_party_cf_) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
   }
 }
 
 void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
-  base::ListValue* selectors_list;
-  if (IsVettedSearchEngine(url_.host()) || !result.GetAsList(&selectors_list)) {
+  // If its a vetted engine AND we're not in aggressive
+  // mode, don't do cosmetic filtering.
+  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_.host()))
     return;
-  }
+
+  // We expect a List value from adblock service. That is
+  // an extra check to be sure that adblock file exist and gives us
+  // rules that we expect
+  base::ListValue* selectors_list;
+  if (!result.GetAsList(&selectors_list))
+    return;
+
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   std::string json_selectors;
   if (!base::JSONWriter::Write(*selectors_list, &json_selectors) ||
@@ -356,7 +367,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
         isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
   }
 
-  if (!enabled_1st_party_cf_filtering_) {
+  if (!enabled_1st_party_cf_) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
   }
