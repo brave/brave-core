@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/rand_util.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_interstitial_controller_client.h"
@@ -26,6 +27,18 @@
 #include "net/base/net_errors.h"
 
 namespace {
+
+// Used to retry request if we got zero peers from ipfs service
+// Actual value will be generated randomly in range
+// (kMinimalPeersRetryIntervalMs, kPeersRetryRate*kMinimalPeersRetryIntervalMs)
+const int kMinimalPeersRetryIntervalMs = 50;
+const int kPeersRetryRate = 3;
+
+base::TimeDelta CalculatePeersRetryTime() {
+  return base::TimeDelta::FromMilliseconds(
+      base::RandInt(kMinimalPeersRetryIntervalMs,
+                    kPeersRetryRate * kMinimalPeersRetryIntervalMs));
+}
 
 // Used to scope the posted navigation task to the lifetime of |web_contents|.
 class IPFSWebContentsLifetimeHelper
@@ -107,13 +120,17 @@ IpfsNavigationThrottle::WillStartRequest() {
   // Check # of connected peers before using local node.
   if (is_local_mode && ipfs_service_->IsDaemonLaunched()) {
     resume_pending_ = true;
-    ipfs_service_->GetConnectedPeers(
-        base::BindOnce(&IpfsNavigationThrottle::OnGetConnectedPeers,
-                       weak_ptr_factory_.GetWeakPtr()));
+    GetConnectedPeers();
     return content::NavigationThrottle::DEFER;
   }
 
   return content::NavigationThrottle::PROCEED;
+}
+
+void IpfsNavigationThrottle::GetConnectedPeers() {
+  ipfs_service_->GetConnectedPeers(
+      base::BindOnce(&IpfsNavigationThrottle::OnGetConnectedPeers,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IpfsNavigationThrottle::OnGetConnectedPeers(
@@ -130,6 +147,15 @@ void IpfsNavigationThrottle::OnGetConnectedPeers(
     return;
   }
 
+  if (success && peers.empty()) {
+    resume_pending_ = true;
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&IpfsNavigationThrottle::GetConnectedPeers,
+                       weak_ptr_factory_.GetWeakPtr()),
+        CalculatePeersRetryTime());
+    return;
+  }
   // Show interstitial page if kIPFSAutoFallbackToGateway is not set to true,
   // which will cancel the deferred navigation.
   if (!pref_service_->FindPreference(kIPFSAutoFallbackToGateway) ||
