@@ -162,14 +162,13 @@ bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
 
   auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
-    const std::string error_msg =
-          sync_service
-          ? "invalid sync code:" + sync_code
-          : "sync service is not available";
-        LOG(ERROR) << error_msg;
+    const std::string error_msg = sync_service
+                                      ? "invalid sync code:" + sync_code
+                                      : "sync service is not available";
+    LOG(ERROR) << error_msg;
     return false;
   }
-  
+
   passphrase_ = sync_code;
   return true;
 }
@@ -247,15 +246,15 @@ void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
   DCHECK(service);
   DCHECK(service->IsEngineInitialized());
   DCHECK(!this->passphrase_.empty());
-  
+
   syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(!sync_user_settings->IsPassphraseRequired());
-  
+
   if (sync_user_settings->IsEncryptEverythingAllowed() &&
       !sync_user_settings->IsUsingSecondaryPassphrase() &&
       !sync_user_settings->IsTrustedVaultKeyRequired()) {
     sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
-    
+
     VLOG(3) << "[BraveSync] " << __func__ << " SYNC_CREATED_NEW_PASSPHRASE";
   }
 }
@@ -264,12 +263,13 @@ void BraveSyncWorker::SetDecryptionPassphrase(syncer::SyncService* service) {
   DCHECK(service);
   DCHECK(service->IsEngineInitialized());
   DCHECK(!this->passphrase_.empty());
-  
+
   syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(sync_user_settings->IsPassphraseRequired());
-  
+
   if (sync_user_settings->SetDecryptionPassphrase(this->passphrase_)) {
-    VLOG(3) << "[BraveSync] " << __func__ << " SYNC_ENTERED_EXISTING_PASSPHRASE";
+    VLOG(3) << "[BraveSync] " << __func__
+            << " SYNC_ENTERED_EXISTING_PASSPHRASE";
   }
 }
 
