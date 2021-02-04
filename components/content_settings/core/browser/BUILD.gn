@@ -15,7 +15,6 @@ source_set("browser") {
       "//base",
       "//brave/common:network_constants",
       "//brave/common:pref_names",
-      "//brave/common:shield_exceptions",
       "//brave/components/brave_shields/common",
       "//brave/components/content_settings/core/common",
 

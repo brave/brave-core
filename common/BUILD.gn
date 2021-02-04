@@ -98,7 +98,6 @@ source_set("common") {
     "//base",
     ":network_constants",
     ":pref_names",
-    ":shield_exceptions",
     ":switches",
     "//brave/chromium_src:common",
     "//brave/components/resources",
@@ -118,20 +117,6 @@ source_set("common") {
       "//content/public/common",
     ]
   }
-}
-
-source_set("shield_exceptions") {
-  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
-  check_includes = false
-  sources = [
-    "shield_exceptions.cc",
-    "shield_exceptions.h",
-  ]
-
-  deps = [
-    "//brave/extensions:common",
-    "//url",
-  ]
 }
 
 config("constants_configs") {
