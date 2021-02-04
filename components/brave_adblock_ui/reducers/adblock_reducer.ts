@@ -46,9 +46,6 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
     case types.ADBLOCK_ON_GET_REGIONAL_LISTS:
       state = { ...state, settings: { ...state.settings, regionalLists: action.payload.regionalLists } }
       break
-    case types.ADBLOCK_STATS_UPDATED:
-      state = storage.getLoadTimeData(state)
-      break
     case types.ADBLOCK_UPDATE_CUSTOM_FILTERS:
       state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
       updateCustomFilters(state.settings.customFilters)
