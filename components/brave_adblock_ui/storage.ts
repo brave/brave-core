@@ -10,26 +10,7 @@ export const defaultState: AdBlock.State = {
   settings: {
     customFilters: '',
     regionalLists: []
-  },
-  stats: {
-    numBlocked: 0
   }
-}
-
-export const getLoadTimeData = (state: AdBlock.State): AdBlock.State => {
-  state = { ...state }
-  state.stats = defaultState.stats
-
-  // Expected to be numbers
-  ;['adsBlockedStat'].forEach((stat) => {
-    state.stats[stat] = parseInt(chrome.getVariableValue(stat), 10)
-  })
-
-  return state
-}
-
-export const cleanData = (state: AdBlock.State): AdBlock.State => {
-  return getLoadTimeData(state)
 }
 
 export const load = (): AdBlock.State => {
@@ -42,11 +23,11 @@ export const load = (): AdBlock.State => {
       console.error('Could not parse local storage data: ', e)
     }
   }
-  return cleanData(state)
+  return state
 }
 
 export const debouncedSave = debounce((data: AdBlock.State) => {
   if (data) {
-    window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
+    window.localStorage.setItem(keyName, JSON.stringify(data))
   }
 }, 50)

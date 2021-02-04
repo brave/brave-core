@@ -48,16 +48,10 @@ window.cr.define('brave_adblock', function () {
     actions.onGetRegionalLists(regionalLists)
   }
 
-  function statsUpdated () {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.statsUpdated()
-  }
-
   return {
     initialize,
     onGetCustomFilters,
-    onGetRegionalLists,
-    statsUpdated
+    onGetRegionalLists
   }
 })
 
