@@ -7,11 +7,10 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/resources/grit/webui_resources_map.h"
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(
@@ -50,30 +49,6 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
   return source;
 }
 
-// This is used to know proper timing for setting webui properties.
-// So far, content::WebUIController::RenderFrameCreated() is used.
-// However, it doesn't get called sometimes when reloading, or called when
-// RenderFrameHost is not prepared during renderer process is in changing.
-class BasicUI::BasicUIWebContentsObserver
-    : public content::WebContentsObserver {
- public:
-  BasicUIWebContentsObserver(BasicUI* host, content::WebContents* web_contents)
-      : WebContentsObserver(web_contents),
-        host_(host) {
-  }
-  ~BasicUIWebContentsObserver() override {}
-
-  // content::WebContentsObserver overrides:
-  void RenderViewReady() override {
-    host_->UpdateWebUIProperties();
-  }
-
- private:
-  BasicUI* host_;
-
-  DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
-};
-
 BasicUI::BasicUI(content::WebUI* web_ui,
                  const std::string& name,
                  const GritResourceMap* resource_map,
@@ -81,8 +56,6 @@ BasicUI::BasicUI(content::WebUI* web_ui,
                  int html_resource_id,
                  bool disable_trusted_types_csp)
     : WebUIController(web_ui) {
-  observer_.reset(
-      new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       resource_map, resource_map_size, html_resource_id,
@@ -90,25 +63,4 @@ BasicUI::BasicUI(content::WebUI* web_ui,
   content::WebUIDataSource::Add(profile, source);
 }
 
-BasicUI::~BasicUI() {
-}
-
-content::RenderFrameHost* BasicUI::GetRenderFrameHost() {
-  auto* web_contents = web_ui()->GetWebContents();
-  if (web_contents) {
-    return web_contents->GetMainFrame();
-  }
-  return nullptr;
-}
-
-bool BasicUI::IsSafeToSetWebUIProperties() const {
-  // Allow `web_ui()->CanCallJavascript()` to be false.
-  // Allow `web_ui()->CanCallJavascript()` to be true if
-  // `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) != 0`
-  // Disallow `web_ui()->CanCallJavascript()` to be true if
-  // `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) == 0`
-  DCHECK(!web_ui()->CanCallJavascript() ||
-         (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI));
-  return web_ui()->CanCallJavascript() &&
-         (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI);
-}
+BasicUI::~BasicUI() = default;
