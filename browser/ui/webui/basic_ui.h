@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
 
-#include <memory>
-
 #include <string>
 
 #include "base/compiler_specific.h"
@@ -15,10 +13,9 @@
 #include "content/public/browser/web_ui_controller.h"
 
 namespace content {
-class RenderFrameHost;
 class WebUIDataSource;
 class WebUI;
-}
+}  // namespace content
 
 class Profile;
 

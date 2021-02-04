@@ -7,10 +7,10 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/resources/grit/webui_resources_map.h"
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(
