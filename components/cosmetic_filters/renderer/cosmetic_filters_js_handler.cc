@@ -37,12 +37,6 @@ const char kPreInitScript[] =
           %s
         })();)";
 
-const char kScriptletInitScript[] =
-    R"(if (window.content_cosmetic.scriptlet == undefined) {
-         let text = %s;
-         window.content_cosmetic.scriptlet = `${text}`;
-       })";
-
 const char kNonScriptletInitScript[] =
     R"(if (window.content_cosmetic.hide1pContent === undefined) {
         window.content_cosmetic.hide1pContent = %s;
@@ -261,8 +255,7 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
   if (injected_script &&
       base::JSONWriter::Write(*injected_script, &json_to_inject) &&
       json_to_inject.length() > 1) {
-    scriptlet_init_script =
-        base::StringPrintf(kScriptletInitScript, json_to_inject.c_str());
+    scriptlet_init_script = json_to_inject;
   }
   if (render_frame_->IsMainFrame()) {
     bool generichide = false;
