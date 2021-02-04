@@ -59,7 +59,7 @@ class CosmeticFiltersJSHandler {
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
       cosmetic_filters_resources_;
   int32_t isolated_world_id_;
-  bool enabled_1st_party_cf_filtering_;
+  bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;
   GURL url_;
 };
