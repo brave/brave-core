@@ -8,13 +8,12 @@
 #include <utility>
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ui/webui/webui_utils.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -73,7 +72,9 @@ void IPFSDOMHandler::RegisterMessages() {
 }
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kIpfsGenerated, kIpfsGeneratedSize, IDR_IPFS_HTML) {
+    : WebUIController(web_ui) {
+  CreateAndAddWebUIDataSource(web_ui, name, kIpfsGenerated,
+      kIpfsGeneratedSize, IDR_IPFS_HTML);
   web_ui->AddMessageHandler(std::make_unique<IPFSDOMHandler>());
 }
 

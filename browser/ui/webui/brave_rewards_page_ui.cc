@@ -9,13 +9,13 @@
 
 #include <utility>
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/ui/webui/webui_utils.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -23,6 +23,8 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/l10n/browser/locale_helper.h"
@@ -35,20 +37,11 @@
 #include "content/public/common/bindings_policy.h"
 #include "bat/ledger/mojom_structs.h"
 
-#if defined(BRAVE_CHROMIUM_BUILD)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
-#else
-#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
-#include "components/grit/components_resources.h"
-#include "components/grit/components_scaled_resources.h"
-#endif
 #if defined(OS_ANDROID)
 #include "content/public/browser/url_data_source.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #endif
-
 
 using content::WebUIMessageHandler;
 
@@ -1977,21 +1970,15 @@ void RewardsDOMHandler::SaveOnboardingResult(const base::ListValue* args) {
 
 BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
                                        const std::string& name)
-    : BasicUI(web_ui,
-              name,
-#if defined(BRAVE_CHROMIUM_BUILD)
-              kBraveRewardsPageGenerated,
-              kBraveRewardsPageGeneratedSize,
-#else
-              kBraveRewardsSettingsGenerated,
-              kBraveRewardsSettingsGeneratedSize,
-#endif
+    : WebUIController(web_ui) {
+  CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsPageGenerated,
+      kBraveRewardsPageGeneratedSize,
 #if defined(OS_ANDROID)
-              IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML,
+      IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML,
 #else
-              IDR_BRAVE_REWARDS_PAGE_HTML,
+      IDR_BRAVE_REWARDS_PAGE_HTML,
 #endif
-              /*disable_trusted_types_csp=*/true) {
+      /*disable_trusted_types_csp=*/true);
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));

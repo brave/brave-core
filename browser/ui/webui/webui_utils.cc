@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/browser/ui/webui/webui_utils.h"
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/resources/grit/webui_resources_map.h"
 
-content::WebUIDataSource* CreateBasicUIHTMLSource(
-    Profile* profile,
+namespace {
+
+content::WebUIDataSource* CreateWebUIDataSource(
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resource_map_size,
@@ -49,18 +49,18 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
   return source;
 }
 
-BasicUI::BasicUI(content::WebUI* web_ui,
-                 const std::string& name,
-                 const GritResourceMap* resource_map,
-                 size_t resource_map_size,
-                 int html_resource_id,
-                 bool disable_trusted_types_csp)
-    : WebUIController(web_ui) {
-  Profile* profile = Profile::FromWebUI(web_ui);
-  content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
-      resource_map, resource_map_size, html_resource_id,
-      disable_trusted_types_csp);
-  content::WebUIDataSource::Add(profile, source);
-}
+}  // namespace
 
-BasicUI::~BasicUI() = default;
+content::WebUIDataSource* CreateAndAddWebUIDataSource(
+    content::WebUI* web_ui,
+    const std::string& name,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
+    int html_resource_id,
+    bool disable_trusted_types_csp) {
+  content::WebUIDataSource* data_source = CreateWebUIDataSource(
+      name, resource_map, resource_map_size, html_resource_id,
+      disable_trusted_types_csp);
+  content::WebUIDataSource::Add(Profile::FromWebUI(web_ui), data_source);
+  return data_source;
+}

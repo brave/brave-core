@@ -34,8 +34,6 @@ source_set("ui") {
   # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
   check_includes = false
   sources = [
-    "webui/basic_ui.cc",
-    "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
@@ -44,6 +42,8 @@ source_set("ui") {
     "webui/brave_webui_source.h",
     "webui/webcompat_reporter_ui.cc",
     "webui/webcompat_reporter_ui.h",
+    "webui/webui_utils.cc",
+    "webui/webui_utils.h",
   ]
 
   if (ipfs_enabled) {

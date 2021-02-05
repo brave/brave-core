@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ui/webui/webui_utils.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
@@ -103,9 +104,11 @@ void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue* args) {
 
 }  // namespace
 
-BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kBraveAdblockGenerated,
-        kBraveAdblockGeneratedSize, IDR_BRAVE_ADBLOCK_HTML) {
+BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui,
+                               const std::string& name)
+    : WebUIController(web_ui) {
+  CreateAndAddWebUIDataSource(web_ui, name, kBraveAdblockGenerated,
+      kBraveAdblockGeneratedSize, IDR_BRAVE_ADBLOCK_HTML);
   web_ui->AddMessageHandler(std::make_unique<AdblockDOMHandler>());
 }
 
