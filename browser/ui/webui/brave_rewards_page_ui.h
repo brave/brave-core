@@ -16,7 +16,6 @@ class BraveRewardsPageUI : public content::WebUIController {
   ~BraveRewardsPageUI() override;
   BraveRewardsPageUI(const BraveRewardsPageUI&) = delete;
   BraveRewardsPageUI& operator=(const BraveRewardsPageUI&) = delete;
-
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_PAGE_UI_H_

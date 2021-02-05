@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/browser/ui/webui/webui_utils.h"
 #include "brave/common/webui_url_constants.h"
@@ -64,9 +65,9 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
 WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui,
                                          const std::string& name)
     : ConstrainedWebDialogUI(web_ui) {
-  CreateAndAddWebUIDataSource(
-      web_ui, name, kWebcompatReporterGenerated,
-      kWebcompatReporterGeneratedSize, IDR_WEBCOMPAT_REPORTER_HTML);
+  CreateAndAddWebUIDataSource(web_ui, name, kWebcompatReporterGenerated,
+                              kWebcompatReporterGeneratedSize,
+                              IDR_WEBCOMPAT_REPORTER_HTML);
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->AddMessageHandler(std::make_unique<WebcompatReporterDOMHandler>(
       profile->GetURLLoaderFactory()));

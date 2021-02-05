@@ -28,13 +28,13 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
     content::WebUIDataSource::Add(profile, source);
   } else {
-    content::WebUIDataSource* source = CreateAndAddWebUIDataSource(web_ui,
-        name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
+    content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
+        web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
         IDR_BRAVE_NEW_TAB_HTML);
-    web_ui->AddMessageHandler(base::WrapUnique(
-        BraveNewTabMessageHandler::Create(source, profile)));
-    web_ui->AddMessageHandler(base::WrapUnique(
-        new InstantServiceMessageHandler(profile)));
+    web_ui->AddMessageHandler(
+        base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
+    web_ui->AddMessageHandler(
+        base::WrapUnique(new InstantServiceMessageHandler(profile)));
   }
 
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));

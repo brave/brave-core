@@ -14,8 +14,8 @@
 BraveWalletUI::BraveWalletUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kBraveWalletGenerated,
-      kBraveWalletGeneratedSize, IDR_BRAVE_WALLET_HTML,
-      true /*disable_trusted_types_csp*/);
+                              kBraveWalletGeneratedSize, IDR_BRAVE_WALLET_HTML,
+                              true /*disable_trusted_types_csp*/);
 }
 
 BraveWalletUI::~BraveWalletUI() = default;

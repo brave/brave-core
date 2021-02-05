@@ -85,7 +85,8 @@ void TorInternalsDOMHandler::OnTorInitializing(const std::string& percentage) {
 TorInternalsUI::TorInternalsUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kTorInternalsGenerated,
-      kTorInternalsGeneratedSize, IDR_TOR_INTERNALS_HTML);
+                              kTorInternalsGeneratedSize,
+                              IDR_TOR_INTERNALS_HTML);
   web_ui->AddMessageHandler(std::make_unique<TorInternalsDOMHandler>());
 }
 

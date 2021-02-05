@@ -73,8 +73,8 @@ void IPFSDOMHandler::RegisterMessages() {
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kIpfsGenerated,
-      kIpfsGeneratedSize, IDR_IPFS_HTML);
+  CreateAndAddWebUIDataSource(web_ui, name, kIpfsGenerated, kIpfsGeneratedSize,
+                              IDR_IPFS_HTML);
   web_ui->AddMessageHandler(std::make_unique<IPFSDOMHandler>());
 }
 

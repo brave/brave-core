@@ -12,9 +12,9 @@
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/webui_utils.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -407,7 +407,8 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
                                                  const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsInternalsGenerated,
-      kBraveRewardsInternalsGeneratedSize, IDR_BRAVE_REWARDS_INTERNALS_HTML);
+                              kBraveRewardsInternalsGeneratedSize,
+                              IDR_BRAVE_REWARDS_INTERNALS_HTML);
 
   auto handler_owner = std::make_unique<RewardsInternalsDOMHandler>();
   RewardsInternalsDOMHandler* handler = handler_owner.get();

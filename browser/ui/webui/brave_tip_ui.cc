@@ -643,7 +643,8 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
   }
 
   CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsTipGenerated,
-      kBraveRewardsTipGeneratedSize, IDR_BRAVE_REWARDS_TIP_HTML);
+                              kBraveRewardsTipGeneratedSize,
+                              IDR_BRAVE_REWARDS_TIP_HTML);
 
   web_ui->AddMessageHandler(std::make_unique<TipMessageHandler>());
 }

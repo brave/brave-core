@@ -20,8 +20,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
     size_t resource_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(name);
+  content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
   // Some parts of Brave's UI pages are not yet migrated to work without doing
   // assignments of strings directly into |innerHTML| elements (i.e. see usage
   // of |dangerouslySetInnerHTML| in .tsx files). This will break Brave due to
@@ -35,15 +34,14 @@ content::WebUIDataSource* CreateWebUIDataSource(
     // Allow a policy to be created so that we
     // can allow trusted HTML and trusted lazy-load script sources.
     source->OverrideContentSecurityPolicy(
-        network::mojom::CSPDirectiveName::TrustedTypes,
-        "default");
+        network::mojom::CSPDirectiveName::TrustedTypes, "default");
   }
 
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);
   // Add generated resource paths
   for (size_t i = 0; i < resource_map_size; ++i) {
-    source->AddResourcePath(resource_map[i].name,  resource_map[i].value);
+    source->AddResourcePath(resource_map[i].name, resource_map[i].value);
   }
   CustomizeWebUIHTMLSource(name, source);
   return source;
@@ -58,9 +56,9 @@ content::WebUIDataSource* CreateAndAddWebUIDataSource(
     size_t resource_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  content::WebUIDataSource* data_source = CreateWebUIDataSource(
-      name, resource_map, resource_map_size, html_resource_id,
-      disable_trusted_types_csp);
+  content::WebUIDataSource* data_source =
+      CreateWebUIDataSource(name, resource_map, resource_map_size,
+                            html_resource_id, disable_trusted_types_csp);
   content::WebUIDataSource::Add(Profile::FromWebUI(web_ui), data_source);
   return data_source;
 }
