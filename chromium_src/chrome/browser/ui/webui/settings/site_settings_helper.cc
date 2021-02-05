@@ -38,7 +38,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   return HasRegisteredGroupName_ChromiumImpl(type);
 }
 
-std::string ContentSettingsTypeToGroupName(ContentSettingsType type) {
+base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::AUTOPLAY)
     return "autoplay";
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);

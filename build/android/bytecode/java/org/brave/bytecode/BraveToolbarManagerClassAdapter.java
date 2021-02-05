@@ -15,6 +15,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
     public BraveToolbarManagerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        redirectConstructor(sToolbarManagerClassName, sBraveToolbarManagerClassName);
+
         deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
         makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
 
@@ -62,6 +64,21 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveToolbarManagerClassName, "mBookmarkBridgeSupplier");
         makeProtectedField(sToolbarManagerClassName, "mBookmarkBridgeSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mLayoutManager");
+        makeProtectedField(sToolbarManagerClassName, "mLayoutManager");
+
+        deleteField(sBraveToolbarManagerClassName, "mOverlayPanelVisibilitySupplier");
+        makeProtectedField(sToolbarManagerClassName, "mOverlayPanelVisibilitySupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mTabModelSelector");
+        makeProtectedField(sToolbarManagerClassName, "mTabModelSelector");
+
+        deleteField(sBraveToolbarManagerClassName, "mIncognitoStateProvider");
+        makeProtectedField(sToolbarManagerClassName, "mIncognitoStateProvider");
+
+        deleteField(sBraveToolbarManagerClassName, "mTabCountProvider");
+        makeProtectedField(sToolbarManagerClassName, "mTabCountProvider");
 
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(

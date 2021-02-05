@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index a97bb23faaac78dbc96a0882841f8abc4544da42..02afc7f8052b75c3c6a88104a6b6493d7d496065 100644
+index 935d3a89990fc39b52e90dd4ae36787a22f83432..2dbe0e328dd945e2e3f1e36fd0213749f8589b28 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -330,7 +330,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-     NightModeReparentingController mNightModeReparentingController;
+@@ -339,7 +339,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+             new ArrayList<>();
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());

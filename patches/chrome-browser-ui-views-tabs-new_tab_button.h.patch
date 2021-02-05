@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index 0a9554f6e697eaeb12aba9c59e34c349f1dfd283..d2ddc77ad8817bf74a544b4d498eeab79d0dee8d 100644
+index 036774a38b690b5d42cfb6deecb28c8e72216e96..5ce53ca747fce0c904e20025b9452a4095d368f5 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
-@@ -45,6 +45,7 @@ class NewTabButton : public views::ImageButton,
-   const char* GetClassName() const override;
+@@ -46,6 +46,7 @@ class NewTabButton : public views::ImageButton,
+   // views::ImageButton:
    void AddLayerBeneathView(ui::Layer* new_layer) override;
    void RemoveLayerBeneathView(ui::Layer* old_layer) override;
 +  BRAVE_NEW_TAB_BUTTON_H_

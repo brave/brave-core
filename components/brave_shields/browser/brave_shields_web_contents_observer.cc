@@ -340,11 +340,19 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   // when the main frame navigate away
+  content::ReloadType reload_type = navigation_handle->GetReloadType();
   if (navigation_handle->IsInMainFrame() &&
-      !navigation_handle->IsSameDocument() &&
-      navigation_handle->GetReloadType() == content::ReloadType::NONE) {
-    allowed_script_origins_.clear();
-    blocked_url_paths_.clear();
+      !navigation_handle->IsSameDocument()) {
+    if (reload_type == content::ReloadType::NONE) {
+      // For new loads, we reset the counters for both blocked scripts and URLs.
+      allowed_script_origins_.clear();
+      blocked_url_paths_.clear();
+    } else if (reload_type == content::ReloadType::NORMAL) {
+      // For normal reloads (or loads to the current URL, internally converted
+      // into reloads i.e see NavigationControllerImpl::NavigateWithoutEntry),
+      // we only reset the counter for blocked URLs, not the one for scripts.
+      blocked_url_paths_.clear();
+    }
   }
 
   navigation_handle->GetWebContents()->SendToAllFrames(

@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/identity_manager/BUILD.gn b/components/signin/public/identity_manager/BUILD.gn
-index 6aaf413ab7b92eb27ad1bd8c4e073297e343857d..3085013d1beefb21c2d0adbced5b12744ba664b2 100644
+index 5ba621b1bfebd22fe8811307a6f480c0bbf6f7da..1573f93c47e4d4669738c239737b025a2702dee7 100644
 --- a/components/signin/public/identity_manager/BUILD.gn
 +++ b/components/signin/public/identity_manager/BUILD.gn
-@@ -5,6 +5,7 @@
+@@ -7,6 +7,7 @@ import("//build/config/chromeos/ui_mode.gni")
  if (is_android) {
    import("//build/config/android/rules.gni")
  }
@@ -10,7 +10,7 @@ index 6aaf413ab7b92eb27ad1bd8c4e073297e343857d..3085013d1beefb21c2d0adbced5b1274
  
  source_set("identity_manager") {
    sources = [
-@@ -75,6 +76,7 @@ source_set("identity_manager") {
+@@ -80,6 +81,7 @@ source_set("identity_manager") {
      # together and include headers from each other.
      "//components/signin/internal/identity_manager",
    ]

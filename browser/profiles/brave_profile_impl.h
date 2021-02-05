@@ -9,13 +9,12 @@
 #include "chrome/browser/profiles/profile_impl.h"
 
 #include "base/memory/weak_ptr.h"
-#include "content/public/browser/notification_observer.h"
-#include "content/public/browser/notification_registrar.h"
+#include "base/scoped_observation.h"
+#include "chrome/browser/profiles/profile_observer.h"
 
 class PrefStore;
 
-class BraveProfileImpl : public ProfileImpl,
-                         public content::NotificationObserver {
+class BraveProfileImpl : public ProfileImpl, public ProfileObserver {
  public:
   BraveProfileImpl(const base::FilePath& path,
                    Delegate* delegate,
@@ -24,14 +23,12 @@ class BraveProfileImpl : public ProfileImpl,
                    scoped_refptr<base::SequencedTaskRunner> io_task_runner);
   ~BraveProfileImpl() override;
 
-  // content::NotificationObserver override.
-  void Observe(int type,
-               const content::NotificationSource& source,
-               const content::NotificationDetails& details) override;
+  // ProfileObserver:
+  void OnProfileWillBeDestroyed(Profile* profile) override;
 
  private:
   // Listens for parent profile destruction.
-  content::NotificationRegistrar notification_registrar_;
+  base::ScopedObservation<Profile, ProfileObserver> parent_observation_{this};
 
   base::WeakPtrFactory<BraveProfileImpl> weak_ptr_factory_;
 

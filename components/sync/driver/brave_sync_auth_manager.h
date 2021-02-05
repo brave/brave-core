@@ -27,17 +27,11 @@ class BraveSyncAuthManager : public SyncAuthManager {
   void RequestAccessToken() override;
 
   // signin::IdentityManager::Observer implementation.
-  void OnPrimaryAccountSet(
-      const CoreAccountInfo& primary_account_info) override {}
-  void OnPrimaryAccountCleared(
-      const CoreAccountInfo& previous_primary_account_info) override {}
   void OnRefreshTokenUpdatedForAccount(
       const CoreAccountInfo& account_info) override {}
   void OnRefreshTokenRemovedForAccount(
       const CoreAccountId& account_id) override {}
   void OnRefreshTokensLoaded() override {}
-  void OnUnconsentedPrimaryAccountChanged(
-      const CoreAccountInfo& unconsented_primary_account_info) override {}
 
  private:
   SyncAccountInfo DetermineAccountToUse() const override;

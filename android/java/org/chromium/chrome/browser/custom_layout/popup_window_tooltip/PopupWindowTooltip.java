@@ -64,7 +64,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private final float mPadding;
     private final float mArrowWidth;
     private final float mArrowHeight;
-    private boolean dismissed = false;
+    private boolean dismissed;
     private int width;
     private int height;
 
@@ -311,7 +311,8 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     RectF achorRect = PopupWindowTooltipUtils.calculeRectOnScreen(mAnchorView);
                     RectF contentViewRect =
                             PopupWindowTooltipUtils.calculeRectOnScreen(mContentLayout);
-                    float x, y;
+                    float x;
+                    float y;
                     if (mArrowDirection == ArrowColorDrawable.TOP
                             || mArrowDirection == ArrowColorDrawable.BOTTOM) {
                         x = mContentLayout.getPaddingLeft() + dpToPx(mContext, 2);
@@ -379,7 +380,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         private final Context context;
         private boolean dismissOnInsideTouch = true;
         private boolean dismissOnOutsideTouch = true;
-        private boolean modal = false;
+        private boolean modal;
         private View contentView;
         private View anchorView;
         private int arrowDirection = ArrowColorDrawable.AUTO;

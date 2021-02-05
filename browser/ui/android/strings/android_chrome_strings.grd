@@ -253,6 +253,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_PRICE_DROP" desc="Label for notification that indicates there is a lower price in an open tab, within a list of notification categories. [CHAR-LIMIT=32]">
+        Price drop alerts
+      </message>
 
       <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
         Unsupported
@@ -463,6 +466,9 @@ CHAR-LIMIT guidelines:
      <message name="IDS_AUTOFILL_PROFILE_EDITOR_COUNTRY" desc="Label for a spinner input field containing a list of countries or regions [CHAR-LIMIT=32]">
         Country/Region
       </message>
+      <message name="IDS_AUTOFILL_PROFILE_EDITOR_HONORIFIC_PREFIX" desc="Label for text input field containing a title that can be auto-filled by Brave. [CHAR-LIMIT=32]" meaning="A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi.">
+        Title
+      </message>
       <message name="IDS_AUTOFILL_PROFILE_EDITOR_EMAIL_ADDRESS" desc="Label for text input field containing an e-mail address. [CHAR-LIMIT=32]">
         Email
       </message>
@@ -672,26 +678,6 @@ CHAR-LIMIT guidelines:
         Brave’s homepage
       </message>
 
-      <!-- Homepage Promo card -->
-      <message name="IDS_HOMEPAGE_PROMO_TITLE" desc="The title displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage.">
-        Get here quicker
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_TITLE_SLIM" desc="The title displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage. Used for the one liner variation.">
-        Make this page your homepage
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_DESCRIPTION" desc="The description displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage.">
-        See your top sites and recent stories whenever you tap the Home button
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_PRIMARY_BUTTON" desc="The text displayed on homepage promo card's primary button compat, which will change the user's homepage to new tab page when they tab.">
-        Change homepage
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_PRIMARY_BUTTON_SLIM" desc="The text displayed on homepage promo card's primary button compat, which will change the user's homepage to new tab page when they tab. Used for the slim variation that has a smaller space for the button.">
-        Change
-      </message>
-      <message name="IDS_HOMEPAGE_PROMO_SNACKBAR_MESSAGE" desc="The text displayed on the snackbar that appears after setting homepage by click on homepage promo card's primary button, which will change the user's homepage to new tab page.">
-        Homepage changed
-      </message>
-
       <!-- Enhanced Protection Promo card -->
       <message name="IDS_ENHANCED_PROTECTION_PROMO_TITLE" desc="The title displayed on homepage promo card, which guides the user to the chrome settings page to select the enhanced protection option.">
         Get Brave’s strongest security
@@ -775,6 +761,12 @@ Touch &amp; hold any word to search. To refine your search, select more or fewer
       <message name="IDS_CONTEXTUAL_SEARCH_NO_THANKS_BUTTON" desc="A button to confirm and dismiss opt out promo">
         No thanks
       </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_HELP_BODY" desc="Some help text that is shown in the body of a paragraph. The text tells the user what gesture to use instead of a previous gesture in order to search.">
+        To search for a word or phrase, touch and hold it instead of tapping it
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_HELP_HEADER" desc="Summary help text that is shown at the top of a paragraph. The text tells the user what gesture to use in order to search.">
+        Touch &amp; hold to search
+      </message>
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for 'Do Not Track' preference">
         “Do Not Track”
       </message>
@@ -785,6 +777,26 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
       <message name="IDS_CAN_MAKE_PAYMENT_TITLE" desc="Title for preference to allow websites to know whether you have payment methods available through PaymentRequest.CanMakePayment interface">
         Access payment methods
+      </message>
+
+      <!-- Privacy Sandbox Settings. Used by //chrome/browser/privacy/settings. -->
+      <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy sandbox' page.">
+        Privacy sandbox
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_TITLE" desc="Title for the Privacy Sandbox toggle.">
+        Web crowd and ad measurement
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_SUBTITLE" desc="Description for the privacy sandbox toggle.">
+        By joining a Web Crowd, you allow websites to make your web experience relevant without using personally identifiable information. Similar to a crowd in a concert, websites and advertisers can only know thousands of users share a similar interest.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_BULLET_ONE" desc="First bullet point of the Privacy Sandbox description.">
+        Allow websites and apps to give you a more relevant experience using a non-identifiable alias.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_BULLET_TWO" desc="Second bullet point of the Privacy Sandbox description">
+        Allow advertisers to study ad campaigns using non-identifiable information.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_SNACKBAR_MESSAGE" desc="The text displayed in the snackbar, which gives the user an option to navigate to the Privacy Sandbox settings page. 'Privacy sandbox' has TC ID 5753235213964358658.">
+        Explore the Privacy Sandbox
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1179,12 +1191,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_ITEM_OPTION_OFFER_TO_TRANSLATE" desc="Option in language item menu. User can click the 'Offer to translate' option to toggle whether they want Brave to translate pages in this language. [CHAR-LIMIT=32]">
         Offer to translate
       </message>
-      <message name="IDS_LANGUAGES_SET_APPLICATION_LANGUAGE_PROMPT" desc="Option in language item menu. User can click the 'App Language' option to toggle whether or not the Brave user interface should be displayed in this language. [CHAR-LIMIT=32]">
-        Use as Brave’s language
-      </message>
-      <message name="IDS_LANGUAGES_SET_AS_APPLICATION_LANGUAGE" desc="Toast to display after selecting language to use for Brave's user interface.">
-        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> will use <ph name="language">%2$s<ex>Hindi</ex></ph> on restart.
-      </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
         What languages do you read?
       </message>
@@ -1544,7 +1550,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Brave Terms of Service
       </message>
       <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
-        https://policies.google.com/terms
+        https://policies.google.com/terms/embedded
       </message>
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
         Brave &amp; Chrome OS Additional Terms of Service
@@ -2216,6 +2222,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_INFOBAR_ADD_TO_HOME_SCREEN_DESCRIPTION_TABLET" desc="The description of in-product-help infobar encouraging users to add a commonly visited webpage to the home screen. Shown on tablets.">
         Add this site to your tablet’s Home screen so you can get here more easily
       </message>
+      <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_ACCESSIBILITY" desc="The content description for the bottom sheet install UI.">
+        Install this app
+      </message>
+      <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_CATEGORIES" desc="The content description for the bottom sheet install UI.">
+        Categories: <ph name="COMMA_SEPERATED_CATEGORY_LIST">%1$s<ex>cats, memes</ex></ph>.
+      </message>
 
       <!-- Page info popup -->
       <message name="IDS_PAGE_INFO_CONNECTION_OFFLINE" desc="Message to display in the page info bubble when viewing and offline page.">
@@ -2591,6 +2603,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_AUTH_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when there is an authentication error with the credentials of the account selected.">
         Sorry, we couldn’t validate your credentials
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_DISMISS_BUTTON" desc="Dismiss button text of the account picker bottom sheet">
+        Skip
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_BUTTON" desc="Button text of the account picker bottom sheet when something went wrong in the sign-in process. User can try again if they click it.">
         Try again
@@ -3079,6 +3094,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_READING_LIST_TITLE" desc="The title for the reading list page in main bookmark UI.">
         Reading list
       </message>
+      <message name="IDS_READING_LIST_TITLE_NEW" desc="The title for the reading list with a new text.">
+        Reading list <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
       <message name="IDS_READING_LIST_READ" desc="The header for the read section in the reading list UI.">
         Read
       </message>
@@ -3117,7 +3135,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Save this page for later and get a reminder
       </message>
       <message name="IDS_READING_LIST_SAVE_PAGES_FOR_LATER" desc="The text on the reading list in product help bubble to introduce the feature to the user.">
-        Save pages for later and get a reminder
+        Add pages to your Reading List to get a reminder
       </message>
       <message name="IDS_READING_LIST_FIND_IN_BOOKMARKS" desc="The text to inform the user to find the reading list in bookmarks UI.">
         Find your reading list in Bookmarks
@@ -3989,13 +4007,13 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_PREFS_WEB_ASSISTANCE_SECTION_TITLE" desc="Title for the web assistance section">
         Web Assistance
       </message>
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_TITLE" desc="Title for the switch toggling whether Autofill Assistant is enabled. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_TITLE" desc="Title for the switch toggling whether Autofill Assistant is enabled.">
         Get help with tasks on the web
       </message>
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_GET_HELP_SUMMARY" desc="Description for the Autofill Assistant toggle.">
         To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant
       </message>
-      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_TITLE" desc="Title for the switch toggling whether proactive help is enabled. When turned on, the Assistant will be able to proactively show up (without explicit user prompt) and offer to help. [CHAR-LIMIT=32]">
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_TITLE" desc="Title for the switch toggling whether proactive help is enabled. When turned on, the Assistant will be able to proactively show up (without explicit user prompt) and offer to help.">
         Proactive Help
       </message>
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_PROACTIVE_HELP_SUMMARY" desc="Description for the proactive help toggle. It explains that the Assistant may appear proactively when it detects that it can help the user. ">
@@ -4114,6 +4132,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Screenshot
       </message>
 
+      <message name="IDS_SHARING_LONG_SCREENSHOT" desc="Label for Long Screenshot button in the sharing hub.">
+        Long Screenshot
+      </message>
+
       <message name="IDS_SHARING_HIGHLIGHTS" desc="Label for Link-to-text button in the sharing hub.">
         Link to text
       </message>
@@ -4178,6 +4200,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Can't create link to text. Share link to page.
       </message>
 
+      <message name="IDS_NEW_BADGE" desc="Notification displayed to indicate that there is a new sharing feature.">
+        New
+      </message>
+
       <!-- Share Screenshot strings -->
       <message name="IDS_SCREENSHOT_EDIT_TITLE" desc="The text shown on the share option for screenshots.">
         Edit
@@ -4238,29 +4264,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Viewing live page
       </message>
 
-      <!-- Default Browser Promo Strings-->
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_TITLE" desc="Title of the default browser promo dialog">
-        Set <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> as your default?
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DESC" desc="Description in the default browser promo dialog, which is concatenated with one of the following steps strings">
-        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> has the smarts and speed you need to safely do, create, and explore online
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DISAMBIGUATION_SHEET_STEPS" desc="Description of the steps to set the default browser throught disambiguation sheet. 'Always' should match TC ID 5575222334666843269.">
-        1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Always”
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_SYSTEM_SETTINGS_STEPS" desc="Description of the steps to set the default browser throught system settings.         'Go to Settings' should match TC ID 4431460803004659888. 'Browser App' should match TC ID 6222206565850006894.">
-        1. Go to Settings\n2. Tap “Browser App”\n3. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_ROLE_MANAGER_STEPS" desc="Description of the steps to set the default browser throught role manager. 'Set as default' should match TC ID 5706081295230541240.">
-        1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Set as default”
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_CHOOSE_CHROME_BUTTON" desc="A button in the default browser promo dialog to choose chrome as default">
-        Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_GO_TO_SETTINGS_BUTTON" desc="A button in the default browser promo to navigate users to systen settings. 'Go to Settings' should match TC ID 4431460803004659888.">
-        Go to Settings
-      </message>
-
       <!-- HTTPS image compression InfoBar -->
       <message name="IDS_LITE_MODE_HTTPS_IMAGE_COMPRESSION_MESSAGE" desc="The text of the infobar notifying the user that Brave's Lite mode will now also compresses HTTPS images.">
         Lite mode now saves you more data by optimizing images on HTTPS pages.
@@ -4317,6 +4320,18 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_IMAGE_DESCRIPTIONS_SETTINGS_USE_MOBILE_DATA_CONTENT" desc="Content of radio button to allow user to specify getting accessibility image descriptions while on mobile data.">
         Wi-Fi is used when available
       </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_OFF" desc="Content for a toast that will appear when a user disables the image descriptions feature to confirm to the user it is now off.">
+        Image descriptions are off
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_JUST_ONCE" desc="Content for a toast that will appear when a user chooses to get image descriptions just once for the current page.">
+        Image descriptions added for this page
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_ON" desc="Content for a toast that will appear when a user enables the image descriptions feature to confirm to the user it is now on.">
+        Image descriptions are on
+      </message>
+      <message name="IDS_IMAGE_DESCRIPTIONS_TOAST_ON_NO_WIFI" desc="Content for a toast that will appear when a user enables the image descriptions feature with the wifi only requirement while the user is not currently on a wifi connection.">
+        Image descriptions will resume when you connect to Wi-Fi
+      </message>
 
       <!-- Assistant voice search consent ui. -->
       <message name="IDS_AVS_CONSENT_UI_TITLE" desc="Title for a dialog asking the user's permission to use Assistant for voice search.">
@@ -4350,6 +4365,11 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_AVS_SETTING_ENABLED_DESCRIPTION" desc="Description of the Assistant voice search setting.">
       Brave Assistant provides a better voice experience for searching the web and engaging with sites you have open. Brave Assistant will receive the URL and contents of sites you use with it.
+      </message>
+
+      <!-- Continuous Search Navigation strings -->
+      <message name="IDS_CSN_AD_LABEL" desc="Label for identifying an ad in search results." translateable="false">
+      Ad
       </message>
     </messages>
   </release>

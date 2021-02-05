@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 64f0d79916d9d56f6fe29f54116c3089f41afd12..68abb8377be5b806fc78c6ff78252dbcd7126350 100644
+index 1d7591379e5252ea8edd7737d26f068c801bbb1f..99aa94dc64185a7838da5edfc6e9a1b5f62fd435 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
-@@ -80,7 +80,7 @@ class ComponentLoader {
+@@ -81,7 +81,7 @@ class ComponentLoader {
    // the loader will skip loading component extensions that weren't supposed to
    // be loaded unless we are in signed user session (ChromeOS). For all other
    // platforms this |skip_session_components| is expected to be unset.

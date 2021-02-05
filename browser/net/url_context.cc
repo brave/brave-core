@@ -38,8 +38,9 @@ std::string GetUploadData(const network::ResourceRequest& request) {
   }
   const auto* elements = request.request_body->elements();
   for (const network::DataElement& element : *elements) {
-    if (element.type() == network::mojom::DataElementType::kBytes) {
-      upload_data.append(element.bytes(), element.length());
+    if (element.type() == network::mojom::DataElementDataView::Tag::kBytes) {
+      const auto& bytes = element.As<network::DataElementBytes>().bytes();
+      upload_data.append(bytes.begin(), bytes.end());
     }
   }
 

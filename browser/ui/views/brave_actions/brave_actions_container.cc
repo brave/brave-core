@@ -70,7 +70,7 @@ class BraveActionsContainer::EmptyExtensionsContainer
 
   void PopOutAction(ToolbarActionViewController* action,
                     bool is_sticky,
-                    const base::Closure& closure) override {}
+                    base::OnceClosure closure) override {}
 
   bool ShowToolbarActionPopupForAPICall(const std::string& action_id) override {
     return false;
@@ -81,6 +81,10 @@ class BraveActionsContainer::EmptyExtensionsContainer
 
   void ShowToolbarActionBubbleAsync(
       std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
+
+  void ToggleExtensionsMenu() override {}
+
+  bool HasAnyExtensions() const override { return false; }
 
  private:
   DISALLOW_COPY_AND_ASSIGN(EmptyExtensionsContainer);

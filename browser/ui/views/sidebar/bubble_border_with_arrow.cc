@@ -73,7 +73,7 @@ void BubbleBorderWithArrow::Paint(const views::View& view,
   canvas->DrawPath(arrow_bg_path, flags);
 
   // Platform window will draw border & shadow.
-  if (shadow() == NO_ASSETS)
+  if (shadow() == NO_SHADOW)
     return;
 
   // Draw the arrow border.

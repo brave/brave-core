@@ -9,7 +9,7 @@
 #define BRAVE_COOKIE_DELETION_INFO_H \
   base::Optional<std::string> ephemeral_storage_domain;
 
-#include "../../../../../../net/cookies/cookie_deletion_info.h"
+#include "../../../../net/cookies/cookie_deletion_info.h"
 
 #undef BRAVE_COOKIE_DELETION_INFO_H
 

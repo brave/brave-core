@@ -19,10 +19,6 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(sBraveNewTabPageLayoutClassName, "insertSiteSectionView",
                 "Ljava/lang/Override;");
 
-        makePublicMethod(sNewTabPageLayoutClassName, "getMaxRowsForMostVisitedTiles");
-        addMethodAnnotation(sBraveNewTabPageLayoutClassName, "getMaxRowsForMostVisitedTiles",
-                "Ljava/lang/Override;");
-
         deleteField(sBraveNewTabPageLayoutClassName, "mSiteSectionView");
         makeProtectedField(sNewTabPageLayoutClassName, "mSiteSectionView");
 
