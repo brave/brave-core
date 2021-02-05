@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Om Brave-skjold";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Nettsteder inkluderer ofte informasjonskapsler og skript som prøver å identifisere deg og enheten din. De vil finne ut hvem du er og følge deg på nettet – spore hva du gjør på hvert nettsted.\n\nBrave blokkerer disse tingene slik at du kan surfe uten å bli forfulgt.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Åpne";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Avanserte kontroller";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Trykk her for å lære mer.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Dette er den første Brave-annonsen din";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nei";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards støtter innholdsskapere";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Begynn å støtte skapere med private og anonymiserte annonser mens du er på nettet?";
+"OBRewardsDetail" = "Begynn å støtte skapere med private og anonymiserte annonser mens du surfer";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer.";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Hopp over";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "%@";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Lukk kontekstmenyen";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Antall innholdsskapere du støtter denne måneden.";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "Bruk lommebokoverføringen innen 13. mars 2021. Lommebokoverføringer vil ikke lenger være tilgjengelige etter 13. mars.";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Denne skaperen har ikke blitt verifisert og vil ikke bli inkludert i skaperstøtten";
 
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "Overføringen din har startet. En eksisterende BAT-saldo kan ta flere minutter før den vises på Brave Rewards-lommeboken din på skrivebordet. Sjekk Rewards-sammendraget ditt på skrivebordet for detaljer når overføringen er fullført.\n\nDu kan lukke dette vinduet og fortsette å bruke Brave mens overføringen pågår.";
+
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Saldooverføring startet";
+"rewards.walletTransferCompleteTitle" = "Saldooverføring er igangsatt";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave fikk ikke tilgang, noe gikk i stykker, eller vi dummet oss ut.";
+"rewards.walletTransferFailureAlertMessage" = "Brave Rewards-serveren svarte ikke. Prøv igjen om et øyeblikk.";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Prøv igjen";
+"rewards.walletTransferFailureAlertTitle" = "Kommunikasjonsfeil";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "Brave Rewards-saldoen din kan overføres til en eksisterende stasjonær Brave Rewards-lommebok, én gang.\n\n1. Åpne Brave Browser på skrivebordet\n2. Gå til brave://rewards\n3. Klikk på “QR-kode”\n4. Skann QR-kode med enheten din";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Lommebokens betalings-ID";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Gratulerer. Du er en del av en eksklusiv klubb.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Gratulerer. Du har blitt stormester.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Gratulerer. Du er legendarisk.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Gratulerer. Du har blitt en mester.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Gratulerer. Du ble med på proffene.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Gratulerer. Du er noe for deg selv.";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "Om tilgjengelig, oppgraderer Brave deg automatisk til en sikker tilkobling.";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "Tilkoblingen din er nå kryptert.";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "Ta en titt";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields beskytter personvernet ditt på hvert nettsted.";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "%ld+ sporere og annonser blokkerte på denne siden.";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields beskyttet nettopp personvernet ditt på nettet.";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "Sporere og annonser blokkert på denne siden.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Gratulerer. Du er noe for deg selv.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld sporere og annonser blokkerte";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Videoer uten annonser bruker mindre data.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Annonser blokkeres mens du ser på videoer på dette nettstedet.";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Du surfer på dette nettstedet uten Braves personvernsbeskyttelse. Fungerer det ikke med Skjold oppe?";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "Oops …";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today matcher interessene dine på enheten din, slik at din personlige informasjon aldri forlater nettleseren din. Nytt innhold oppdatert gjennom hele dagen.";
+"today.introCardBody" = "Interessene dine samsvares på enheten din, slik at din personlige informasjon aldri forlater nettleseren din. Nytt innhold oppdatert gjennom dagen.";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Dagens topphistorier i en helt privat feed, bare for deg.";
+"today.introCardTitle" = "Brave Today viser topphistorier i en helt privat feed, kun for deg.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Vis Brave Today";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Prøv å sjekke tilkoblingen din eller koble til Wi-Fi på nytt.";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Reklamert";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Oppdater";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "Nettstedet fungerer ikke";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Feillogger";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Nettverkstype";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Installer VPN";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Prøv GRATIS";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Fornyes månedlig";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Gjenopprett";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Beskytt forbindelsen din og blokker invasive trackere.";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Oppgrader til en VPN for å beskytte forbindelsen din og blokkere invasive sporere overalt.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Abonnementer belastes via iTunes-kontoen din.\n\nEnhver ubrukt del av den gratis prøveperioden, hvis den tilbys, går tapt når du kjøper et abonnement.\n\nAbonnementet ditt fornyes automatisk med mindre det blir kansellert minst 24 timer før inneværende periode utløper.\n\nDu kan administrere abonnementene dine i innstillingene.\n\nVed å bruke Brave godtar du bruksvilkårene og retningslinjene for personvern.";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "Brave-VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Dette vil tilbakestille Brave-brannmuren + VPN-konfigurasjonen din og fikse eventuelle feil. Denne prosessen kan ta et øyeblikk.";

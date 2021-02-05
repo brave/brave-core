@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Data Jangkaan \nDisimpan";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "Ya";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Carian peribadi dengan DuckDuckGo?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Bukan sekarang";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Buka Tetapan";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Buka semua pautan dengan Brave untuk melindungi privasi anda  ";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields menyekat penjejak & iklan, menjimatkan data, dan menjimatkan masa anda pada setiap laman yang anda lawati     ";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Buka Tetapan, ketik Aplikasi Penyemak Imbas Lalai, dan pilih Brave.  ";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Dioptimumkan untuk iOS 14. Jadikan Brave sebagai penyemak imbas lalai anda hari ini.  ";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Penyemk Imbas Web Brave";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup timbul penyemak imbas lalai";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat berbanding HTTP biasa.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS \nNaik Taraf";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Naik Taraf HTTPS";

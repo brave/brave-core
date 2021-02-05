@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Mesin pencari yang digunakan saat ini";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Perkiraan Data \nTersimpan";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "Ya";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Lakukan pencarian pribadi dengan DuckDuckGo?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Tidak sekarang";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Buka Pengaturan";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Buka semua tautan dengan Brave untuk menjaga privasi Anda";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields dirancang untuk memblokir pelacak & iklan, menghemat data dan waktu Anda di setiap situs yang Anda kunjungi";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Buka pengaturan, ketuk Default Browser App, dan pilih Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Telah dioptimalkan untuk iOS 14. Jadikan Brave peramban utama Anda sekarang juga.";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Brave Peramban Web";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup penyorot peramban bawaan";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Membuka beberapa situs menggunakan koneksi HTTPS yang aman, bukan sekadar HTTP.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "Peningkatan \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Peningkatan HTTPS";

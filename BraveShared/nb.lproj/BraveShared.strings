@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Est. data \nlagret";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "Ja";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Søke privat med DuckDuckGo?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Ikke nå";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Åpne innstillinger";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Åpne alle lenkene med Brave for å beskytte personvernet ditt";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields blokkerer sporere og annonser, sparer data og sparer deg tid på hvert nettsted du besøker";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Åpne Innstillinger, trykk på Standard Nettleser-appen, og velg Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Optimalisert for iOS 14. Gjør Brave til din standard nettleser i dag.";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Brave-nettleser";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Lukk infomelding om standard nettleser";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Åpner noen nettsteder med en sikker HTTPS-tilkobling i stedet for vanlig HTTP.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS-\noppgraderinger";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-oppgraderinger";

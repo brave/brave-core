@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Заощаджено\nданих (приблизно)";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "Так";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Використати DuckDuckGo для приватного пошуку?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Не зараз";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Відкрити налаштування";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Відкривайте всі посилання у Brave, щоб захистити свою конфіденційність";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields блокує трекери та рекламу, а також дозволяє заощадити дані й час під час перегляду вебсайтів";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Відкрийте меню «Параметри», торкніться пункту «Програма браузера за замовчуванням» і виберіть Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Оптимізовано для iOS 14. Зробіть Brave браузером за замовчуванням уже сьогодні.";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Браузер Brave";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрити запит на встановлення браузера за замовчуванням";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Відкриває деякі вебсайти за допомогою безпечного підключення HTTPS замість простого HTTP.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "Перенаправлення \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Оновлення HTTPS";

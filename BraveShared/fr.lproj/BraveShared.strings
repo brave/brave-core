@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Moteurs de recherches actuellement utilisés";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Données économisées \nest.";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "Oui";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Effectuer une recherche privée avec DuckDuckGo ?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Pas maintenant";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Ouvrir les paramètres";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Ouvrez tous les liens avec Brave pour protéger votre vie privée";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields bloque les traceurs et les publicités, économise les données et vous fait gagner du temps sur chaque site que vous consultez";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Ouvrez les paramètres, appuyez sur Application de navigateur par défaut et sélectionnez Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Optimisé pour iOS 14. Faites de Brave votre navigateur par défaut.";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Navigateur Web Brave";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Fermer la légende du navigateur par défaut";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Ouvre certains sites via une connexion HTTPS sécurisée au lieu d'une connexion HTTP normale.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "Mises à niveau \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Mises à jour HTTPS";

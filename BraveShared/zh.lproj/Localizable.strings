@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "关于 Brave Shields";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "网站通常包含试图识别您和您的设备的 cookie 和脚本。它们想弄清楚您是谁，并在网上跟踪您，即跟踪您在每个站点上所执行的操作。\n\nBrave 会屏蔽这些操作，这样您就可以随意浏览，而不会被跟踪。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "打开";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "进阶控件";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "点击此处了解更多信息。";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "这是您的第一个 Brave 广告";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards 支持创建者";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "要在浏览时开始为创作者提供私人和匿名广告支持吗？";
+"OBRewardsDetail" = "浏览时开始为创作者提供私人广告支持和匿名广告支持";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "跳过";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "（在 %@ 上）";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "关闭 Context 菜单";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "您本月要帮助支持的内容创建者的数量。";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "请在 2021 年 3 月 13 日之前使用钱包转账。钱包转账在 3 月 13 日之后将不再可用。";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "该创建者尚未验证，因此不会受创建者支持";
 
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "您的转账程序已启动。现有，所有 BAT 余额可能都需要几分钟才能显示在您桌面的 Brave Reward 钱包中。完成转账后，请在桌面上查看您的“奖励”摘要以了解详情。\n\n您可以关闭此窗口，并在转账过程中继续使用 Brave。";
+
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "余额转账已启动";
+"rewards.walletTransferCompleteTitle" = "余额转移已启动";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave 无法连接、出了故障或我们不知怎么出了错。";
+"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 服务器未响应。请稍后重试。";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "请重试";
+"rewards.walletTransferFailureAlertTitle" = "连接错误";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "您的 Brave Rewards 代币余额可以一次转到现有的 Brave Rewards 桌面钱包中。\n\n1. 在桌面上打开 Brave 浏览器 \n2. 导航至 brave://rewards\n3. 点击“QR 码”\n4. 使用设备扫描 QR 码";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "钱包付款 ID";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "您是独家俱乐部的成员了。恭喜您！";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "您已经成为一个大师了。恭喜您！";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "您是传奇人物了。恭喜您！";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "您已经成为一个大师了。恭喜您！";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "您加入了职业选手团队。恭喜您！";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "您很特别。恭喜您！";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "如果可用，Brave 会自动将您升级到安全连接。";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "您的连接现已加密。";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "看一看";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields 保护您在每个站点上的在线隐私。";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "页面上屏蔽了 %ld 多个跟踪器和广告";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields 只是保护了您的在线隐私。";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "跟踪器和广告已在此页面上被屏蔽。";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "您很特别。恭喜您！";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld 个跟踪器和广告已被屏蔽";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "没有广告的视频使用的数据更少。";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "在此网站上观看视频时，广告被屏蔽。";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "你正在没有 Brave 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "哎呀...";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "今日 Brave 会在您的设备上匹配您的兴趣爱好，让您的个人信息绝不离开您的浏览器。新内容会全天候不间断更新。";
+"today.introCardBody" = "您的兴趣在您的设备上进行匹配的，因此您的个人信息永远不会离开浏览器。全天更新新内容。";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "今日热门故事，专属于您的私人订阅。";
+"today.introCardTitle" = "Brave Today 专为您而打造，以完全私密的状态显示热门新闻。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "显示今日 Brave";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "请检查您的网络连接，或重新连接至 Wi-Fi。";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "已优惠";
 
 /* No comment provided by engineer. */
 "today.refresh" = "刷新";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "网站无法正常运作";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "错误日志";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "网络类型";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "安装 VPN";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "免费试用";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "每月续约";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "恢复";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "保护您的连接并屏蔽侵入性跟踪器。";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "升级到 VPN，以保护您的连接并在各处阻止侵入式跟踪器。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "联系技术支持部门";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "我们会通过您的 iTunes 帐户收取订阅费用。\n\n购买订阅后，免费试用的任何未使用部分（如已提供）会被没收。\n\n您的订阅会自动更新，除非在当前订阅期结束前至少 24 小时以前取消该订阅。\n\n您可以在“设置”中管理您的订阅。\n\n使用 Brave，即表示您同意使用条款和隐私政策。";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "Brave VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "这将重置您的 Brave Firewall + VPN 配置并修复所有错误。此过程可能需要一分钟。";

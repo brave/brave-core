@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Brave Shieldについて";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "多くのサイトには、お客様とお客様のデバイスを識別するためのクッキーやスクリプトが含まれています。これによってインターネット上のいたる所であなたを特定・追跡し、行動データを収集しようとしています。\n\nBraveはそういったものをブロックするので、あなたが追跡されることなくブラウジングすることが可能になります。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "開く";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "詳細設定";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "詳しくはこちら";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "これは初めてのBrave広告です";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "いいえ";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewardsでクリエイターを支援する";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "ブラウジング中にプライバシーを重視した匿名広告を表示して、クリエイターの支援しませんか？";
+"OBRewardsDetail" = "ブラウジング中にプライバシーを重視した匿名広告を表示して、クリエイターを支援しましょう";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "スキップ";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "on %@";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "コンテキストメニューを閉じる";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "今月支援中のコンテンツクリエイター数";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "2021年3月13日までにウォレット移行を行ってください。ウォレット移行は3月14日以降は利用できません。";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "このクリエイターは認証が完了していないため、支援対象になりません";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "移行が開始されました。デスクトップのBraveリワードウォレットに反映されるまで数分かかる場合があります。完了したらデスクトップでリワードのサマリを確認してください。\n\nこのウィンドウを閉じても移行を続けることができます。";
 
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
 "rewards.walletTransferCompleteTitle" = "残高の移行が開始されました";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Braveが接続に失敗した、または何らかの不具合が発生しています。";
+"rewards.walletTransferFailureAlertMessage" = "Brave Rewardsのサーバーが応答しませんでした。しばらく経ってからもう一度お試しください。";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "やり直す";
+"rewards.walletTransferFailureAlertTitle" = "接続エラー";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "Brave Rewardsの残高は、一度限りデスクトップ版のBraveのウォレットに移行することができます。\n\n1.   デスクトップでBraveブラウザを開く\n2.  brave://rewards に移動\n3. 「QRコード」をクリック\n4.  QRコードを端末でスキャン";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "ウォレットペイメントID";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "おめでとうございます。あなたはもう上級者クラブの一員です。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "おめでとうございます。あなたはもうグランドマスターです。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "おめでとうございます。あなたは伝説となりました。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "おめでとうございます。あなたはもうマスターです。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "おめでとうございます。プロへの仲間入りです。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "おめでとうございます。あなたは特別な存在です。";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "可能な場合、Braveは安全な接続に自動でアップグレードします。";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "接続は暗号化されています。";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "見てみる";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shieldsはすべてのサイトであなたのオンラインでのプライバシーを保護します。";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "%ld+ トラッカーと広告がこのページでブロックされました。";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shieldsがあなたのオンラインでのプライバシーを保護しました。";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "トラッカーと広告がこのページでブロックされました。";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld トラッカーと広告がブロックされました。";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "広告がなければ動画のデータ量はより少なくなります。";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "このサイトで動画を見ているとき広告はブロックされています。";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "現在Braveのプライバシー保護機能オフの状態でブラウジングしています。Shieldをオンにした状態では不具合が発生しますか？";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "うーん...";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Todayは、あなたの関心に合わせてデバイス上で最適化されているため、個人情報がブラウザからどこかに送られることはありません。コンテンツは随時更新されます。";
+"today.introCardBody" = "あなたの関心はあなたのデバイス上で最適化されるため、個人情報がブラウザからどこかに送られることはありません。コンテンツは随時更新されます。";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "今日の注目記事を、あなた専用のプライベートなフィードにお届けいたします。";
+"today.introCardTitle" = "Brave Todayは今日の注目記事を、あなた専用のプライベートなフィードにお届けいたします。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Brave Todayを表示";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "接続を確認するか、Wi-Fiに再接続してみてください。";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "プロモーション";
 
 /* No comment provided by engineer. */
 "today.refresh" = "更新";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "ウェブサイトが機能しなかった";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "エラーログ";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "ネットワークタイプ";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "VPNをインストール";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "無料で試してみる";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "毎月更新";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "復元";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "接続を保護し、デバイス全体で広告やトラッカーをブロックします。";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "VPN接続にアップグレードして接続を保護し、デバイス全体で広告やトラッカーをブロックします。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "サブスクリプションは、iTunesアカウントを介して請求されます。\n\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\n\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "Brave VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "この操作を実行するとBrave ファイアウォール+ VPNの構成はリセットされ、すべてのエラーが修正されます。このプロセスには1分かかる場合があります。";

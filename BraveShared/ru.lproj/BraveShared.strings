@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Используемые поисковые системы";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Прим. данных\nСохранено";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "Да";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "Использовать DuckDuckGo?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Не сейчас";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Открыть настройки";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Для безопасности открывайте ссылки с помощью Brave";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Пользуйтесь Интернетом без помех. Brave Shields блокирует рекламу и трекеры, а также защищает данные.";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Откройте настройки, нажмите «Браузерное приложение по умолчанию» и выберите Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Оптимизировано для iOS 14. Сделайте Brave браузером по умолчанию.";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Браузер Brave";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрыть сообщение о браузере по умолчанию";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Открывает некоторые сайты с помощью защищенного соединения HTTPS, а не обычного протокола HTTP.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "Смена HTTP\nна HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Смена HTTP на HTTPS";

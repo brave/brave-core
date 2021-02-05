@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "節約できた\nデータ量(推定)";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "はい";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "DuckDuckGo によるプライベート検索を有効にしますか？";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "今はしない";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "設定を開く";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "プライバシーを保護するためすべてのリンクをBraveで開く";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shieldはすべてのサイトでトラッカーと広告をブロックし、データ通信量と時間を節約します。";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "アプリ設定画面で、「デフォルトのブラウザApp」をタップし、Braveを選択してください。";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "BraveはiOS14に最適化されています。今すぐBraveをデフォルトブラウザに設定しましょう";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Braveブラウザ";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "デフォルトブラウザの設定メッセージを閉じる";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "ウェブサイトをHTTPではなく、よりセキュアなHTTPSで接続する";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS\nアップグレード";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS アップグレード";

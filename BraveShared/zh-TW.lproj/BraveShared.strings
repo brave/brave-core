@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "預計節省\n數據量";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "是";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "使用 DuckDuckGo 執行隱私搜尋？";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "稍後再說";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "開啟設定";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "使用 Brave 開啟所有連結以保護隱私";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "dBrave Shields 會在您造訪網站時，封鎖網站上的追蹤程式和廣告，為您節省數據用量和寶貴時間";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Brave」。";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "已針對 iOS 14 最佳化。立即將 Brave 設為預設瀏覽器。";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Brave 網頁瀏覽器";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "關閉預設瀏覽器標註";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "使用安全的 HTTPS 連線開啟部分網站，取代普通的 HTTP。";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS\n升級";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 更新";
