@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
 
-#include <memory>
-
 #include <string>
 
 #include "base/compiler_specific.h"
@@ -15,10 +13,9 @@
 #include "content/public/browser/web_ui_controller.h"
 
 namespace content {
-class RenderFrameHost;
 class WebUIDataSource;
 class WebUI;
-}
+}  // namespace content
 
 class Profile;
 
@@ -42,18 +39,7 @@ class BasicUI : public content::WebUIController {
           bool disable_trusted_types_csp = false);
   ~BasicUI() override;
 
-  // Called when subclass can set its webui properties.
-  virtual void UpdateWebUIProperties() {}
-
- protected:
-  bool IsSafeToSetWebUIProperties() const;
-  content::RenderFrameHost* GetRenderFrameHost();
-
  private:
-  class BasicUIWebContentsObserver;
-
-  std::unique_ptr<BasicUIWebContentsObserver> observer_;
-
   DISALLOW_COPY_AND_ASSIGN(BasicUI);
 };
 
