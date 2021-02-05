@@ -322,6 +322,9 @@
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
 
+/* Data Saved Shield Stat */
+"DataSavedStat" = "절약된 \n예상 데이터";
+
 /* DuckDuckGo callout enable action. */
 "DDGCalloutEnable" = "예";
 
@@ -333,6 +336,27 @@
 
 /* DuckDuckGo callout title. */
 "DDGCalloutTitle" = "DuckDuckGo로 비공개 검색을 하시겠습니까?";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "나중에";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "설정 열기";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "모든 링크를 Brave로 열어 프라이버시를 보호하세요.";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields가 트래커와 광고를 차단하여 사이트를 방문할 때마다 데이터와 시간을 절약합니다.";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "설정을 열고 기본 브라우저 앱을 탭한 다음 Brave를 선택하세요.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "iOS 14에 최적. Brave를 기본 브라우저로 설정하세요.";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Brave 웹브라우저";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "기본 브라우저 설정 안내 닫기";
@@ -537,9 +561,6 @@
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "일부 사이트를 평범한 HTTP가 아닌 보안 HTTPS 연결을 사용하여 엽니다.";
-
-/* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS \n업그레이드";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 업그레이드";

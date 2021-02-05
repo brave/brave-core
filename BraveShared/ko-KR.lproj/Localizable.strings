@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Brave Shields 정보";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "사이트에는 방문자와 방문자의 기기를 식별하기 위한 쿠키 및 스크립트가 포함되어 있을 수 있습니다. 이러한 요소는 방문자를 식별하고 방문자가 방문하는 웹사이트를 따라다니며 모든 사이트에서의 방문자 행동 패턴을 추적합니다.\n\nBrave는 이러한 요소를 차단하므로 추적되지 않고 브라우징을 즐길 수 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "열기";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "고급 컨트롤";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "자세히 알아보려면 여기를 탭하세요.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "첫 번째로 표시되는 Brave 광고";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "아니요";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards, 제작자를 지원하는 방법";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "브라우징할 때 비공개 익명 광고를 보는 방법으로 제작자를 지원해보시겠어요?";
+"OBRewardsDetail" = "브라우징 시 비공개/익명 광고를 보고 콘텐츠 크리에이터 지원을 시작하세요.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하세요.";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "건너뛰기";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "- %@";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "맥락 메뉴 닫기";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "이번 달 여러 콘텐츠 제작자를 지원하고 계십니다.";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "2021년 3월 13일까지 월렛 이전을 이용하세요. 3월 13일 이후에는 월렛 이전이 더 이상 지원되지 않습니다.";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "확인되지 않은 제작자이기 때문에 제작자 지원에 포함되지 않습니다.";
 
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "이전이 시작되었습니다. 기존 BAT 잔액이 데스크톱 Brave Rewards 잔액에 표시되려면 몇 분 정도 소요될 수 있습니다. 이전이 완료되었을 때 자세한 내용을 보려면 데스크톱에서 Rewards 요약을 확인하세요.\n\n이 창을 닫고 Brave 사용을 계속해도 이전이 진행됩니다.";
+
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "잔액 이전이 시작되었습니다.";
+"rewards.walletTransferCompleteTitle" = "잔액 이전 시작됨";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave가 연결할 수 없습니다. 문제가 생겼거나 오류가 발생한 것 같습니다.";
+"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 서버가 응답하지 않습니다. 잠시 후 다시 시도하세요.";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "다시 시도";
+"rewards.walletTransferFailureAlertTitle" = "연결 오류";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "Brave Rewards 토큰 잔액을 기존 Brave Rewards 데스크톱 월렛으로 단 한 번 이전할 수 있습니다.\n\n1. 데스크톱에서 Brave 브라우저를 엽니다.\n2. brave://rewards 페이지로 이동합니다.\n3. “QR Code”를 클릭합니다.\n4. 기기로 QR 코드를 스캔합니다.";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "월렛 결제 ID";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "축하합니다. 익스클루시브 클럽원이십니다.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "축하합니다. 그랜드 마스터가 되셨습니다.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "축하합니다. 레전드가 되셨습니다.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "축하합니다. 마스터가 되셨습니다.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "축하합니다. 프로이십니다.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "축하합니다. 정말 특별하십니다.";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "가능한 경우 Brave가 안전한 연결로 자동 업그레이드합니다.";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "연결이 암호화되었습니다.";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "살펴보기";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields가 모든 사이트에서 온라인 프라이버시를 보호해드립니다.";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "이 페이지에서 %ld개 이상의 트래커와 광고가 차단되었습니다.";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields가 방금 온라인 프라이버시를 보호해드렸습니다.";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "이 페이지에서 트래커와 광고가 차단되었습니다.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "축하합니다. 정말 특별하십니다.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld개의 트래커 및 광고 차단됨";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "동영상에서 광고가 제외되면 데이터를 덜 사용합니다.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "이 웹사이트에서 동영상을 시청하는 동안 광고가 차단되었습니다.";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Brave의 개인정보 보호 없이 이 사이트를 브라우징하고 계십니다. Shields 사용 시 제대로 작동하지 않나요?";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "죄송합니다...";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today는 기기의 관심사를 매칭하므로 어떠한 개인정보도 브라우저에 남지 않습니다. 새 콘텐츠가 하루 종일 업데이트됩니다.";
+"today.introCardBody" = "관심사가 기기에 매칭되므로 어떠한 개인정보도 브라우저에 남지 않습니다. 새 콘텐츠가 하루 종일 업데이트됩니다.";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "오늘의 인기 스토리는 맞춤형 완전 비공개 피드입니다.";
+"today.introCardTitle" = "Brave Today에는 인기 스토리가 완전한 비공개 맞춤 피드로 표시됩니다.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Brave Today 표시";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Wi-Fi 연결 상태를 확인하고 다시 연결해보세요.";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "프로모션";
 
 /* No comment provided by engineer. */
 "today.refresh" = "새로고침";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "웹사이트가 작동하지 않음";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "오류 로그";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "네트워크 유형";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "VPN 설치";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "무료로 사용해보기";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "매월 갱신";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "복원";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "연결을 보호하고 침입성 트래커를 차단합니다.";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "VPN으로 업그레이드하면 연결을 보호하고 침입성 트래커를 차단합니다.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "기술 지원에 문의";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "구독 대금은 iTunes 계정을 통해 청구됩니다.\n\n구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "Brave VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Brave Firewall + VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";

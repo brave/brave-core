@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "О щитах Brave";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Чтобы распознавать пользователей и их устройства, сайты используют файлы cookie и скрипты. Это значит, что действия в Интернете могут отслеживаться.\n\nBrave защищает вашу конфиденциальность, поэтому блокирует скрипты и файлы cookie.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Открыть";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Дополнительные настройки";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Нажмите, чтобы узнать больше.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Это ваше первое объявление в Brave!";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Нет";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards поддерживает создателей контента";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Хотите поддерживать создателей контента, просматривая в Интернете объявления, которые не будут нарушать конфиденциальность ваших данных?";
+"OBRewardsDetail" = "Начните поддерживать создателей контента, просматривая в Интернете объявления, которые не будут нарушать конфиденциальность ваших данных.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Зарабатывайте баллы и вознаграждайте авторов контента, пользуясь браузером.";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Пропустить";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "в %@";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Закрыть контекстное меню";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Количество создателей контента, которых вы поддерживаете в этом месяце.";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "Пожалуйста, перенесите кошелек до 13 марта 2021 года. Это невозможно будет сделать после указанного срока.";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Этот создатель контента не прошел проверку, поэтому поддержка для него недоступна.";
 
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "Перенос начался! Ваши баллы BAT скоро появятся в кошельке полной версии Brave Rewards. Чтобы узнать больше, ознакомьтесь со сводкой Rewards после завершения процесса.\n\nПока идет перенос, вы можете закрыть это окно и продолжить работу в браузере Brave.";
+
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Баланс перенесен";
+"rewards.walletTransferCompleteTitle" = "Перенос завершен";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Не удалось подключиться к Brave, или произошла другая ошибка.";
+"rewards.walletTransferFailureAlertMessage" = "Сервер программы Brave Rewards не отвечает. Повторите попытку позже.";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Попробуйте снова";
+"rewards.walletTransferFailureAlertTitle" = "Ошибка подключения";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "Вы можете один раз перенести баллы Brave Rewards в кошелек Brave Rewards на компьютере.\n\n1. Откройте браузер Brave на компьютере.\n2. Перейдите по адресу brave://rewards.\n3. Нажмите «QR-код».\n4. Отсканируйте QR-код с помощью своего устройства.";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Платежный идентификатор кошелька";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Поздравляем! Прекрасная работа!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Поздравляем! Вы — мастер блокировки!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Поздравляем! Вы — легенда!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Поздравляем! Вы — мастер!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Поздравляем! Вы — профи!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Поздравляем! Отличный результат!";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "Brave устанавливает защищенное соединение автоматически (когда возможно).";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "Ваше подключение зашифровано";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "Посмотрите";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields защищает вашу конфиденциальность на каждом сайте.";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "Трекеров и рекламы заблокировано на странице: %ld+";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields защищает вашу конфиденциальность.";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "Трекеры и реклама блокируются на этой странице";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Поздравляем! Отличный результат!";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "Трекеров и рекламы заблокировано: %ld";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Видео без рекламы используют меньше данных.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Реклама блокируется во время просмотра видео на этом сайте";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Вы выключили защиту конфиденциальности. Сайт неправильно отображается при включенных щитах?";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "Ошибочка…";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today подбирает контент по вашим интересам прямо на устройстве, поэтому ваши персональные данные надежно защищены. Новые материалы появляются в течение дня.";
+"today.introCardBody" = "Сервис подбирает статьи по вашим интересам прямо на устройстве, поэтому ваши персональные данные надежно защищены. Новый контент появляется в течение дня.";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Все главные сегодняшние статьи опубликованы в приватной ленте, которую можете читать только вы.";
+"today.introCardTitle" = "Будьте в курсе событий! Brave Today показывает новости в полностью приватной ленте";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Показать Brave Today";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Проверьте подключение к Интернету или повторно подключитесь к Wi-Fi.";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Бонусы";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Обновить";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "Веб-сайт не работает";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Ошибка";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Тип сети";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Установить VPN";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Попробовать БЕСПЛАТНО";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Продлевается ежемесячно";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Восстановить";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Защитите соединение и заблокируйте трекеры-шпионы.";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Чтобы защищать соединение и блокировать трекеры на всех сайтах, вы можете приобрести VPN.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Обратиться в службу технической поддержки";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Плата за подписку будет взиматься с вашего счета iTunes.\n\nПри покупке подписки неиспользованный остаток бесплатного пробного периода будет аннулирован.\n\nПодписка будет автоматически продлена на следующий период, если не отменить ее как минимум за 24 часа до окончания текущего периода.\n\nЧтобы управлять подписками, перейдите в настройки.\n\nИспользуя Brave, вы соглашаетесь с Условиями использования и Политикой конфиденциальности.";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "VPN-расширение для браузера Brave";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Это позволит сбросить настройки файрвола и VPN-расширения для браузера Brave и исправить любые ошибки. Процесс может занять около минуты.";

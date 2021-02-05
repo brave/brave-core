@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "關於 Brave Shields";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nBrave 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "開啟";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "進階控制項";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "點選此處以瞭解詳細資訊。";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "這是您的第一則 Brave 廣告";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards 全力支持創作者";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "想開始在瀏覽時透過私人匿名廣告支持創作者嗎？";
+"OBRewardsDetail" = "開始在瀏覽時透過私密的匿名廣告支持創作者";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "跳過";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "(%@)";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "關閉內容選單";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "本月您支持的內容創作者人數。";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "請在 2021 年 3 月 13 日前使用錢包轉帳。3 月 13 日後將無法再使用錢包轉帳。";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "這位創作者尚未通過驗證，不會納入您支持的創作者名單";
 
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "已啟動轉帳程序。BAT 餘額可能需要幾分鐘後，才會顯示於桌面版 Brave Rewards 錢包。轉帳完成後，請查看桌面版 Rewards 摘要以瞭解詳細資訊。\n\n您可以關閉此視窗，在轉帳期間繼續使用 Brave。";
+
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "已轉出金額";
+"rewards.walletTransferCompleteTitle" = "已啟動餘額轉帳程序";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave 發生故障或錯誤，無法連線。";
+"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 伺服器未回應，請稍後再試。";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "再試一次";
+"rewards.walletTransferFailureAlertTitle" = "連線錯誤";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "您可將 Brave Rewards 代幣餘額一次轉至現有 Brave Rewards 桌面版錢包。\n\n1. 在桌上型電腦上開啟 Brave 瀏覽器\n2. 瀏覽至 brave://rewards\n3. 按一下「QR 碼」\n4. 以裝置掃描 QR 碼";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "錢包付款 ID";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "恭喜，您已加入獨家社團。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "恭喜，您已是大師等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "恭喜，您已是傳奇人物等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "恭喜，您已是達人等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "恭喜，您已是專家等級。";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "恭喜，您已具有特別的地位。";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "如果條件允許，Brave 會自動將您升級為安全連線。";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "您的連線現已加密。";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "立即查看";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields 會在每個網站上保護您線上活動的隱私。";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "已封鎖此頁面上超過 %ld 個追蹤程式和廣告。";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields 剛剛保護了您線上活動的隱私。";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "已封鎖此頁面上的追蹤程式和廣告。";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "恭喜，您已具有特別的地位。";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "已封鎖 %ld 個追蹤程式和廣告";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "不含廣告的影片會耗用較少數據量。";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "當您在此網站上觀看影片時，為您封鎖廣告。";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "糟糕…";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today 會在您的裝置上匹配感興趣的內容，因此您的個人資料不會從瀏覽器流出。內容更新從不間斷。";
+"today.introCardBody" = "系統會在您的裝置上比對您感興趣的主題，因此您的個人資訊不會傳送至瀏覽器以外的地方。全天候更新，為您提供最新內容。";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Today 的重點消息是完全私人的摘要，專屬於您。";
+"today.introCardTitle" = "Brave Today 會根據您的個人喜好，在完全私密的摘要中顯示專屬的熱門內容。";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "顯示 Brave Today";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "嘗試確認連線或重新連線至 Wi-Fi。";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "推廣內容";
 
 /* No comment provided by engineer. */
 "today.refresh" = "重新整理";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "網站無法運作";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "錯誤記錄";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "網路類型";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "安裝 VPN";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "免費試用";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "每月自動續約";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "還原";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "保護您的連線並封鎖侵入式追蹤程式。";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "我們會透過您的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款和隱私政策。";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "Brave VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";

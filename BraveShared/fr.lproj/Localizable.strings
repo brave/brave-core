@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "À propos de Brave Shields";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Les sites comprennent souvent des cookies et des scripts qui tentent de vous identifier et d'identifier votre appareil. Ils cherchent à savoir qui vous êtes et vous suivent sur le Web, traquant vos actions sur chaque site.\n\nBrave bloque cela pour que vous puissiez naviguer sans vous sentir épié.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Ouvrir";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Contrôles avancés";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Appuyez ici pour en savoir plus.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Voici votre première publicité Brave";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Non";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards soutient les créateurs";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Commencer à soutenir les créateurs en visualisant des publicités privées et anonymes pendant la navigation ?";
+"OBRewardsDetail" = "Commencez à soutenir les créateurs en visualisant des publicités privées et anonymes pendant la navigation";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Gagnez des jetons et récompensez les créateurs de contenu de qualité tout en naviguant.";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Ignorer";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "sur %@";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Fermer le menu contextuel";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Nombre de créateurs de contenu que vous avez soutenu ce mois-ci.";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "Utilisez le portefeuille avant le 13 mars 2021. Il ne sera plus accessible passée cette date.";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Ce créateur n'est pas vérifié et ne fera pas partie des créateurs soutenus";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "Votre transfert a démarré. Plusieurs minutes peuvent être nécessaires avant qu'un solde BAT s'affiche dans votre portefeuille Brave Rewards sur ordinateur. Pour connaître les détails du statut du transfert, consultez votre résumé Rewards sur un ordinateur.\n\nVous pouvez fermer cette fenêtre et continuer à utiliser Brave pendant que votre transfert est en cours.";
 
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
 "rewards.walletTransferCompleteTitle" = "Le transfert du solde a démarré";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave n'a pas pu se connecter, une erreur est survenue, ou nous nous sommes trompés quelque part.";
+"rewards.walletTransferFailureAlertMessage" = "Le serveur Brave Rewards ne répond pas. Réessayez dans quelques instants.";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Réessayer";
+"rewards.walletTransferFailureAlertTitle" = "Erreur de connexion";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "Votre solde de jetons Brave Rewards peut être transféré vers un portefeuille Brave Rewards sur ordinateur, une seule fois seulement.\n\n1. Ouvrez le navigateur Brave sur votre ordinateur\n2. Accédez à brave://rewards\n3. Cliquez sur « Code QR »\n4. Scannez le code QR avec votre appareil";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "Identifiant de paiement du portefeuille";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Félicitations, vous avez rejoint le club exclusif.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Félicitations, vous êtes passé grand maître.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Félicitations, vous êtes une légende.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Félicitations, vous êtes passé maître.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Félicitations, vous avez rejoint les pros.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Félicitations, vous êtes exceptionnel.";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "Si une connexion sécurisée est disponible, Brave vous en fait profiter automatiquement.";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "Votre connexion est maintenant chiffrée.";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "Jetez-y un coup d'œil";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields protège votre confidentialité en ligne sur chaque site.";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "Plus de %ld traceurs et publicités bloqués sur cette page.";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields vient de protéger votre confidentialité en ligne.";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "Des traceurs et des publicités ont été bloqués sur cette page.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Félicitations, vous êtes exceptionnel.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld traceurs et publicités bloqués";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Les vidéos sans publicités utilisent moins de données.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Les publicités sont bloquées pendant le visionnage de vidéos sur ce site Web.";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Vous utilisez ce site sans les protections de confidentialité de Brave. Ne fonctionne-t-il pas correctement avec Shields activé ?";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "Oups…";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Today prend en compte vos centres d'intérêt sur votre appareil. Vos informations personnelles ne quittent jamais votre navigateur. Le contenu nouveau est actualisé au cours de la journée.";
+"today.introCardBody" = "Vos centres d'intérêt sont pris en compte sur votre appareil. Vos informations personnelles ne quittent donc jamais votre navigateur. Le contenu nouveau s'actualise tout au long de la journée.";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Les meilleurs articles du jour dans un fil entièrement privé, rien que pour vous.";
+"today.introCardTitle" = "Brave Today affiche les meilleurs articles du jour dans un fil entièrement privé, rien que pour vous.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Afficher Brave Today";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Vérifiez votre connexion ou reconnectez-vous au Wi-Fi.";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Promu";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Actualiser";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "Un site ne fonctionne pas";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Journaux d'erreur";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Type de réseau";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Installer le VPN";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Essayer GRATUITEMENT";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Renouvelé chaque mois";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restaurer";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Protégez votre connexion et bloquez les traqueurs invasifs.";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Passez à un VPN pour protéger votre connexion et bloquer les traceurs invasifs partout où vous allez.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contacter l'assistance technique";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Les abonnements seront facturés via votre compte iTunes.\n\nToute période d'essai gratuite non utilisée sera annulée en cas d'achat d'un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d'annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les Paramètres.\n\nEn utilisant Brave, vous acceptez les Conditions d'utilisation et la Politique de confidentialité.";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "Brave VPN";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Votre configuration Brave Firewall + VPN sera réinitialisée afin de résoudre les problèmes. Cette opération peut prendre quelques instants.";

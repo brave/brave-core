@@ -1,6 +1,15 @@
 /* The title of the screen explaining Brave Shields */
 "AboutBraveShields" = "Tentang Perisai Brave";
 
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Sering kali saat membuka situs terdapat cookies dan skrip yang berusaha mengidentifikasi pengguna dan perangkatnya.  Mereka ingin mengetahui siapa Anda dan mengikuti Anda di seluruh situs - melacak apa yang Anda lakukan di setiap situs.\n\nBrave memblokir hal-hal tersebut sehingga Anda dapat menjelajah tanpa merasa diikuti.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Buka";
+
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Kontrol Tingkat Lanjut";
 
@@ -36,6 +45,12 @@
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
 "MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Ketuk di sini untuk mempelajari selengkapnya.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Ini adalah iklan Brave perdana Anda";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Tidak";
@@ -98,7 +113,7 @@
 "OBRewardsAgreementTitle" = "Brave Rewards mendukung para kreator";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Mulailah mendukung kreator dengan iklan privat dan anonim selagi Anda meramban?";
+"OBRewardsDetail" = "Mulailah mendukung kreator dengan dengan pengaturan iklan anonim dan privat saat Anda menjelajah";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
@@ -132,6 +147,9 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Lewati";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "pada %@";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Tutup Menu Konteks";
@@ -190,20 +208,25 @@
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Jumlah kreator konten yang Anda bantu dukung bulan ini.";
 
+/* No comment provided by engineer. */
+"rewards.transferNoLongerAvailableWarningMessage" = "Harap gunakan transfer dompet sebelum 13 Maret 2021. Transfer dompet tidak lagi tersedia setelah 13 Maret.";
+
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Kreator ini belum diverifikasi dan tidak akan disertakan dalam dukungan kreator.";
+
+/* A confirmation message shown to the user after completing a wallet transfer successfully */
+"rewards.walletTransferCompleteBody" = "Transfer Anda telah dimulai. Semua saldo BAT yang ada mungkin memerlukan beberapa menit untuk muncul di dompet Brave Rewards pada desktop Anda. Periksa ringkasan Rewards Anda pada Desktop untuk mengetahui detail saat proses transfer telah selesai.\n\nAnda dapat menutup jendela ini dan lanjut menggunakan Brave saat transfer Anda sedang berlangsung.";
 
 /* Title shown above the confirmation message after completing a wallet transfer successfully */
 "rewards.walletTransferCompleteTitle" = "Transfer saldo telah dimulai";
 
 /* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave tidak mendapatkan koneksi, ada yang salah atau rusak.";
+"rewards.walletTransferFailureAlertMessage" = "Server Brave Rewards tidak merespon. Silakan coba beberapa saat lagi.";
 
 /* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Coba Lagi";
+"rewards.walletTransferFailureAlertTitle" = "Koneksi Gagal";
 
-/* A confirmation message shown to the user after completing a wallet transfer successfully
-   Describes the steps for using wallet transfer */
+/* Describes the steps for using wallet transfer */
 "rewards.walletTransferStepsBody" = "Saldo token Brave Rewards Anda dapat ditransfer to dompet desktop Brave Rewards yang ada, satu demi satu.\n\n1. Buka Peramban Brave pada desktop Anda\n2. Navigasi ke brave://rewards\n3. Klik \"Kode QR\"'\n4. Pindai Kode QR dengan perangkat Anda";
 
 /* Title above the steps to use wallet transfer */
@@ -428,6 +451,57 @@
 /* No comment provided by engineer. */
 "RewardsInternalsWalletPaymentID" = "ID Pembayaran Dompet";
 
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Selamat. Anda menjadi bagian klub eksklusif.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Selamat. Anda telah menjadi Grand Master.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Selamat. Anda sungguh legendaris.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Selamat. Anda telah menjadi master.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Selamat. Anda telah tergabung dengan para profesional";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Selamat. Anda cukup spesial.";
+
+/* Subtitle for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningSubtitle" = "Jika tersedia, Brave membawa Anda pada tingkat koneksi paling aman secara otomatis.";
+
+/* Title for Shield Education Encrypted Connection Warning */
+"shieldEducation.encryptedConnectionWarningTitle" = "Koneksi Anda sedang dienkripsi.";
+
+/* Action title for inspectable Education warnings */
+"shieldEducation.inspectTitle" = "Tengok";
+
+/* Subtitle for Shield Education Tracker Ad Count Block */
+"shieldEducation.trackerAdCountBlockSubtitle" = "Brave Shields menjaga privasi online Anda di setiap situs.";
+
+/* Title for Shield Education Tracker Ad Count Block when block count raises over the defined limit. The parameter substituted for \"%ld\" is the limit of the trackers and ads blocked on the page when education pop over is presented. E.g.: 10+ trackers & ads blocked on the page */
+"shieldEducation.trackerAdCountBlockTitle" = "%ldentitas+ pelacak & iklan terblokir pada halaman ini.";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shield telah menjaga privasi online Anda.";
+
+/* Title for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningTitle" = "Iklan & pelacak terblokir pada halaman ini.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Selamat. Anda cukup spesial.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ldentitas+ pelacak & iklan terblokir";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Video tanpa iklan menghabiskan sedikit data.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Iklan diblok selagi melihat video pada situs ini.";
+
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Anda menjelajahi situs ini tanpa perlindungan privasi Brave. Apakah situs tidak berfungsi benar dengan Perisai?";
 
@@ -498,10 +572,10 @@
 "today.errorGeneralTitle" = "Aduh...";
 
 /* No comment provided by engineer. */
-"today.introCardBody" = "Brave Hari Ini menyesuaikan dengan selera Anda pada perangkat Anda, sehingga informasi pribadi Anda tidak akan meninggalkan peramban Anda. Konten baru akan diperbarui sepanjang hari.";
+"today.introCardBody" = "Selera Anda disesuaikan dengan perangkat Anda, sehingga informasi pribadi Anda tersimpan pada peramban. Konten baru akan diperbarui setiap hari.";
 
 /* No comment provided by engineer. */
-"today.introCardTitle" = "Cerita terpopuler hari ini dalam daftar konten yang sangat rahasia, hanya untuk Anda.";
+"today.introCardTitle" = "Brave Today menampilkan cerita terpopuler dalam daftar konten yang sangat rahasia, hanya untuk Anda.";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Tunjukkan Brave Hari Ini";
@@ -517,6 +591,9 @@
 
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Cobalah periksa koneksi Anda atau coba sambungkan kembali Wi-Fi Anda.";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Dipromosikan";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Perbarui";
@@ -620,6 +697,9 @@
 /* Website problem for contact form issue field. */
 "vpn.contactFormIssueWebsiteProblems" = "Situs web tidak bekerja";
 
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Error Logs";
+
 /* Network Type field for customer support contact form. */
 "vpn.contactFormNetworkType" = "Jenis jaringan";
 
@@ -668,6 +748,9 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Pasang VPN";
 
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Cobalah secara GRATIS";
+
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Perbarui setiap bulan";
 
@@ -695,8 +778,8 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Kembalikan";
 
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "Lindungi koneksi Anda dan blokir pelacak yang menyerang.";
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Tingkatkan dengan VPN untuk mejaga koneksi Anda dan memblokir serangan pelacak di mana pun.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Dukungan Teknis";
@@ -763,9 +846,6 @@
 
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Langganan akan ditagihkan melalui akun iTunes Anda.\n\nBagian dari uji coba gratis yang tidak digunakan, akan dimasukkan ke paket saat Anda berlangganan.\n\nLangganan Anda akan diperbarui secara otomatis kecuali dibatalkan minimum 24 jam sebelum akhir periode berjalanan.\n\nAnda dapat mengelola langganan Anda di Pengaturan.\n\nDengan menggunakan Brave, anda menyetujui Syarat Penggunaan dan Kebijakan Privasi.";
-
-/* Title Brave VPN menu item. */
-"vpn.vpnMenuItemTitle" = "VPN Brave";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Ini akan mengatur ulang konfigurasi Firewall + VPN Brave Anda dan memperbaiki kesalahan apa pun. Proses ini dapat memakan waktu beberapa saat.";
