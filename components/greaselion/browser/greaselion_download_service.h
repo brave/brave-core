@@ -52,6 +52,10 @@ struct GreaselionPreconditions {
 class GreaselionRule {
  public:
   explicit GreaselionRule(const std::string& name);
+  explicit GreaselionRule(const GreaselionRule& name);
+  GreaselionRule& operator=(const GreaselionRule& name);
+  ~GreaselionRule();
+
   void Parse(base::DictionaryValue* preconditions_value,
              base::ListValue* urls_value,
              base::ListValue* scripts_value,
@@ -59,8 +63,6 @@ class GreaselionRule {
              const std::string& minimum_brave_version_value,
              const base::FilePath& messages_value,
              const base::FilePath& resource_dir);
-  ~GreaselionRule();
-
   bool Matches(
       GreaselionFeatures state, const base::Version& browser_version) const;
   std::string name() const { return name_; }
@@ -88,8 +90,6 @@ class GreaselionRule {
   base::FilePath messages_;
   GreaselionPreconditions preconditions_;
   bool has_unknown_preconditions_ = false;
-  base::WeakPtrFactory<GreaselionRule> weak_factory_;
-  DISALLOW_COPY_AND_ASSIGN(GreaselionRule);
 };
 
 // The Greaselion download service is in charge

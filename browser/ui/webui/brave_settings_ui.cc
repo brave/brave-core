@@ -22,6 +22,7 @@
 #include "brave/browser/version_info.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -32,6 +33,10 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -82,4 +87,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   NavigationBarDataProvider::Initialize(html_source);
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile))
     service->InitializeWebUIDataSource(html_source);
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  // TODO(simonhong): Remove this when sidebar is shipped by default in all
+  // channels.
+  html_source->AddBoolean("isSidebarFeatureEnabled",
+                          sidebar::CanUseSidebar(profile));
+#endif
 }

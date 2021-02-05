@@ -68,6 +68,12 @@ const char kAds[] = "ads-enabled";
 const char kSupportsMinimumBraveVersion[] =
     "supports-minimum-brave-version";
 
+GreaselionRule::GreaselionRule(const std::string& name) : name_(name) {}
+
+GreaselionRule::GreaselionRule(const GreaselionRule& name) = default;
+
+GreaselionRule& GreaselionRule::operator=(const GreaselionRule& name) = default;
+
 GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
     const base::Value& value) {
   GreaselionPreconditionValue condition = kAny;
@@ -76,9 +82,6 @@ GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
   }
   return condition;
 }
-
-GreaselionRule::GreaselionRule(const std::string& name)
-    : name_(name), weak_factory_(this) {}
 
 void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            base::ListValue* urls_value,

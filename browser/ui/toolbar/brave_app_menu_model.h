@@ -6,11 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_
 
+#include <memory>
+#include <vector>
+
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 
 class BraveAppMenuModel : public AppMenuModel {
  public:
-  using AppMenuModel::AppMenuModel;
+  BraveAppMenuModel(ui::AcceleratorProvider* provider,
+                    Browser* browser,
+                    AppMenuIconController* app_menu_icon_controller = nullptr);
   ~BraveAppMenuModel() override;
 
   BraveAppMenuModel(const BraveAppMenuModel&) = delete;
@@ -24,6 +30,11 @@ class BraveAppMenuModel : public AppMenuModel {
   int GetIndexOfBraveRewardsItem() const;
   int GetIndexOfBraveAdBlockItem() const;
   int GetIndexOfBraveSyncItem() const;
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  int GetIndexOfBraveSidebarItem() const;
+#endif
+
+  std::vector<std::unique_ptr<ui::SimpleMenuModel>> sub_menus_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_

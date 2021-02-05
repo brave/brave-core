@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//components/vector_icons/vector_icons.gni")
 
 aggregate_vector_icons("brave_vector_icons") {
@@ -16,6 +17,21 @@ aggregate_vector_icons("brave_vector_icons") {
     "speedreader_on_active.icon",
     "speedreader_on_inactive.icon",
   ]
+
+  if (enable_sidebar) {
+    sources += [
+      "sidebar_add_item.icon",
+      "sidebar_bookmarks.icon",
+      "sidebar_brave_together.icon",
+      "sidebar_crypto_wallet.icon",
+      "sidebar_history.icon",
+      "sidebar_item_added_check.icon",
+      "sidebar_items_down_arrow.icon",
+      "sidebar_items_up_arrow.icon",
+      "sidebar_settings.icon",
+      "sidebar_trash.icon",
+    ]
+  }
 }
 
 source_set("vector_icons") {

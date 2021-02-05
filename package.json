@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.21.42",
+  "version": "1.22.5",
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -310,7 +310,7 @@
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
-    "@types/webtorrent": "^0.98.5",
+    "@types/webtorrent": "^0.109.0",
     "array-move": "^2.2.1",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",
@@ -327,6 +327,6 @@
     "throttleit": "^1.0.0",
     "unique-selector": "^0.4.1",
     "webext-redux": "^2.1.4",
-    "webtorrent": "^0.107.16"
+    "webtorrent": "^0.113.0"
   }
 }

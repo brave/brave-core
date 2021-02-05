@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 // Components
 import { AdBlockItemList } from './adBlockItemList'
 import { CustomFilters } from './customFilters'
-import { NumBlockedStat } from './numBlockedStat'
 
 // Utils
 import * as adblockActions from '../actions/adblock_actions'
@@ -32,7 +31,6 @@ export class AdblockPage extends React.Component<Props, {}> {
     const { actions, adblockData } = this.props
     return (
       <div id='adblockPage'>
-        <NumBlockedStat adsBlockedStat={adblockData.stats.adsBlockedStat || 0} />
         <AdBlockItemList
           actions={actions}
           resources={adblockData.settings.regionalLists}
