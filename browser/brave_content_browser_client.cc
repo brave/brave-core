@@ -90,7 +90,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-#include "brave/browser/unstoppable_domains/unstoppable_domains_service_factory.h"
 #include "brave/components/unstoppable_domains/unstoppable_domains_navigation_throttle.h"
 #endif
 
