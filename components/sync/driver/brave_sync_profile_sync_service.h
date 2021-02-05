@@ -44,6 +44,8 @@ class BraveProfileSyncService : public ProfileSyncService {
   void SuspendDeviceObserverForOwnReset();
   void ResumeDeviceObserver();
 
+  void Initialize() override;
+
  private:
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 

@@ -5,7 +5,8 @@
 
 #include "components/safe_browsing/core/proto/csd.pb.h"
 
-#define BRAVE_SEND_REQUEST_FILTER BraveFilterRequest(request.get());
+#define BRAVE_ON_REQUEST_BUILT_FILTER \
+  BraveFilterRequest(client_download_request_.get());
 
 namespace safe_browsing {
 

@@ -52,7 +52,7 @@ public class BraveSiteSettingsPreferencesBase extends SiteSettingsPreferenceFrag
     public Preference findPreference(CharSequence key) {
         Preference result = super.findPreference(key);
         if (result == null) {
-            result = mRemovedPreferences.get(key);
+            result = mRemovedPreferences.get((String) key);
         }
         return result;
     }

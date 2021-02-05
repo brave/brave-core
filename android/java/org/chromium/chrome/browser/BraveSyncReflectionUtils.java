@@ -14,9 +14,8 @@ import org.chromium.chrome.browser.BraveConfig;
 // The purpose of this class is to hide BraveSyncWorker object under `enable_brave_sync`
 // and create it without explict import
 public class BraveSyncReflectionUtils {
-
-    private static Object sBraveSyncWorker = null;
-    private static boolean sInitialized = false;
+    private static Object sBraveSyncWorker;
+    private static boolean sInitialized;
     private static String TAG = "SYNC";
 
     public static Object getSyncWorker() {

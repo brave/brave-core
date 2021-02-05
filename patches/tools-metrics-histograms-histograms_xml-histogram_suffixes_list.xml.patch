@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml b/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml
-index fbe52bd9e55a57720275ac1eb6c1baffad3211ca..ea2e0a20577a914612f06f48c4523de25b623f0e 100644
+index c42cebda69d94d3b04cdc96ed93a1e4931e94914..3771f865a5ee00de38bb4489eb7ba3c705bbe657 100644
 --- a/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml
 +++ b/tools/metrics/histograms/histograms_xml/histogram_suffixes_list.xml
-@@ -13748,6 +13748,7 @@ reviews. Googlers can read more about this at go/gwsq-gerrit.
+@@ -13893,6 +13893,7 @@ reviews. Googlers can read more about this at go/gwsq-gerrit.
    <suffix name="ProtectedMedia" label="Protected media permission"/>
    <suffix name="PushMessaging" label="Push messaging permission"/>
    <suffix name="Quota" label="Quota permission"/>

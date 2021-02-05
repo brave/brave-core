@@ -70,9 +70,12 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   void MarkFirstSetupComplete();
 
   // syncer::SyncServiceObserver implementation.
-  void OnStateChanged(syncer::SyncService* sync) override;
+  void OnStateChanged(syncer::SyncService* service) override;
 
   void OnResetDone();
+
+  void SetEncryptionPassphrase(syncer::SyncService* service);
+  void SetDecryptionPassphrase(syncer::SyncService* service);
 
   JavaObjectWeakGlobalRef weak_java_brave_sync_worker_;
   Profile* profile_ = nullptr;

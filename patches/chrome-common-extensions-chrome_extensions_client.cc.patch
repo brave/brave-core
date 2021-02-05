@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 70e950a537abbf1c708fa2c08d30c00ff25c07e6..5084f62d8381b0c9d9533cb18843d5a147061e1e 100644
+index db156f06c84b74361bed5b0e8b848b33aa72e072..6cf4db463ae3380c7718b3355c2a5d3ae89a4ec3 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@
@@ -10,7 +10,7 @@ index 70e950a537abbf1c708fa2c08d30c00ff25c07e6..5084f62d8381b0c9d9533cb18843d5a1
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/chrome_extensions_api_provider.h"
  #include "chrome/common/extensions/manifest_handlers/theme_handler.h"
-@@ -57,6 +58,7 @@ const char kThumbsWhiteListedExtension[] = "khopmbdjffemhegeeobelklnbglcdgfh";
+@@ -55,6 +56,7 @@ const char kThumbsWhiteListedExtension[] = "khopmbdjffemhegeeobelklnbglcdgfh";
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());

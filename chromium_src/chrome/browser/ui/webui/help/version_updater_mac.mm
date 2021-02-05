@@ -73,10 +73,9 @@ VersionUpdaterMac::VersionUpdaterMac()
 VersionUpdaterMac::~VersionUpdaterMac() {
 }
 
-void VersionUpdaterMac::CheckForUpdate(
-    const StatusCallback& status_callback,
-    const PromoteCallback& promote_callback) {
-  status_callback_ = status_callback;
+void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
+                                       PromoteCallback promote_callback) {
+  status_callback_ = std::move(status_callback);
 
 #if BUILDFLAG(ENABLE_SPARKLE)
   if (SparkleGlue* sparkle_glue = [SparkleGlue sharedSparkleGlue]) {

@@ -82,7 +82,7 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/ic_warning_circle"
-                    android:tint="@android:color/black" />
+                    app:tint="@android:color/black" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

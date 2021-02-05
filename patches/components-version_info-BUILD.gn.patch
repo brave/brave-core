@@ -1,5 +1,5 @@
 diff --git a/components/version_info/BUILD.gn b/components/version_info/BUILD.gn
-index 1ded15a7c6b67edb3ce47149df5f8447e52c4a51..3765935e25948b7ca9d179f78705eeedef8f24be 100644
+index 931da8429699964ffe18dc37bf257edd577cf830..e3d7907fdf808e3fbfa5f4f179df0070d89537c3 100644
 --- a/components/version_info/BUILD.gn
 +++ b/components/version_info/BUILD.gn
 @@ -11,6 +11,7 @@ declare_args() {

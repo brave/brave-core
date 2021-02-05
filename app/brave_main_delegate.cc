@@ -230,9 +230,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kTabHoverCards.name,
     features::kWebOTP.name,
     network_time::kNetworkTimeServiceQuerying.name,
-    password_manager::features::kPasswordCheck.name,
     safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
+    features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     translate::kTranslate.name,

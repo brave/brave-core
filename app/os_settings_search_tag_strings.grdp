@@ -256,6 +256,21 @@
   <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Nearby Share settings. Alternate phrase for: 'Turn off Nearby Share'">
     Disable Nearby Share
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICE_NAME" desc="Text for search result item which, when clicked, navigates the user to Nearby Share change device name setting.">
+    Nearby Share device name
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICE_VISIBILITY" desc="Text for search result item which, when clicked, navigates the user to Nearby Share change device visibility button in settings. Alternate phrase for: 'Nearby Share discoverability'">
+    Nearby Share visibility
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICE_VISIBILITY_ALT1" desc="Text for search result item which, when clicked, navigates the user to Nearby Share change device visibility button in settings. Alternate phrase for: 'Nearby Share visibility'">
+    Nearby Share discoverability
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_CONTACTS" desc="Text for search result item which, when clicked, navigates the user to Nearby Share manage contacts row in settings that opens Brave Contacts.">
+    Nearby Share contacts
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DATA_USAGE" desc="Text for search result item which, when clicked, navigates the user to Nearby Share edit data usage button in settings.">
+    Nearby Share data usage
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub settings, with a toggle to enable/disable the feature. Phone hub provides the user with information about their Android phone and allows the user to perform phone-side actions directly in the Chrome OS UI.">
     Phone Hub
   </message>
@@ -274,11 +289,17 @@
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE" desc="Text for search result item which, when clicked, navigates the user to profiles settings.">
     Profiles
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_PEOPLE_V2" desc="Text for search result item which, when clicked, navigates the user to profiles settings.">
+    Accounts
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS" desc="Text for search result item which, when clicked, navigates the user to accounts settings.">
     My accounts
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS_ADD" desc="Text for search result item which, when clicked, navigates the user to accounts settings, with a button to add a new account.">
     Add account
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS_ADD_V2" desc="Text for search result item which, when clicked, navigates the user to accounts settings, with a button to add a new account.">
+    Add Brave sync chain
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS_REMOVE" desc="Text for search result item which, when clicked, navigates the user to accounts settings, with an option to remove an account.">
     Remove account
@@ -337,18 +358,6 @@
   <message name="IDS_OS_SETTINGS_TAG_SYNC_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to turn on syncing. Alternate phrase for: 'Turn on sync'">
     Enable sync
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_KERBEROS" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings.">
-    Kerberos settings
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_ADD" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings, with an option to add a new ticket.">
-    Add Kerberos ticket
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_REMOVE" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings, with an option to remove an existing ticket.">
-    Remove Kerberos ticket
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_ACTIVE" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings, with an option to set the active ticket.">
-    Set active Kerberos ticket
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_FINGERPRINT" desc="Text for search result item which, when clicked, navigates the user to fingerprint authentication settings.">
     Fingerprint settings
   </message>
@@ -387,6 +396,23 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_GOOGLE_DRIVE_SEARCH_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to Brave services settings, with a toggle to enable/disable a feature which provides suggestions to visit Google Drive items when the user types in the address bar.">
     Google Drive search suggestions
+  </message>
+
+  <!-- Kerberos section. -->
+  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_SECTION" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) settings section.">
+    Kerberos
+  </message>
+   <message name="IDS_OS_SETTINGS_TAG_KERBEROS" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings.">
+    Kerberos settings
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_ADD" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings, with an option to add a new ticket.">
+    Add Kerberos ticket
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_REMOVE" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings, with an option to remove an existing ticket.">
+    Remove Kerberos ticket
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_KERBEROS_ACTIVE" desc="Text for search result item which, when clicked, navigates the user to Kerberos (authentication mechanism) account settings, with an option to set the active ticket.">
+    Set active Kerberos ticket
   </message>
 
   <!-- Device section. -->
@@ -509,6 +535,15 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_MOUSE_SPEED" desc="Text for search result item which, when clicked, navigates the user to mouse settings, with a slider to set speed.">
     Mouse speed
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_POINTING_STICK_PRIMARY_BUTTON" desc="Text for search result item which, when clicked, navigates the user to pointing stick (TrackPoint) settings, with a dropdown to choose the primary button. (TrackPoint is a trademark that's not translated.)">
+    Primary TrackPoint button
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_POINTING_STICK_ACCELERATION" desc="Text for search result item which, when clicked, navigates the user to pointing stick (TrackPoint) settings, with a toggle to enable/disable acceleration. (TrackPoint is a trademark that's not translated.)">
+    TrackPoint acceleration
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_POINTING_STICK_SPEED" desc="Text for search result item which, when clicked, navigates the user to pointing stick settings (normally known as TrackPoint settings), with a slider to set speed.">
+    TrackPoint speed
   </message>
   <message name="IDS_OS_SETTINGS_TAG_STYLUS" desc="Text for search result item which, when clicked, navigates the user to stylus settings.">
     Stylus
@@ -752,11 +787,14 @@
   </message>
 
   <!-- Crostini section. -->
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Crostini, Developers'">
     Linux
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux, Developers'">
     Crostini
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux, Crostini'">
+    Developers
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Bravebook. Alternate phrase for: 'Linux shared directories', 'Crostini shared folders', 'Crostini shared directories'">
     Linux shared folders
@@ -795,9 +833,9 @@
     Delete Crostini
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Bravebook. Alternate phrase for: 'Set up Crostini'">
-    Set up Linux
+    Set up Linux development environment
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Bravebook. Alternate phrase for: 'Set up Linux'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Bravebook. Alternate phrase for: 'Set up Linux development environment'">
     Set up Crostini
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_BACKUP_RESTORE" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to back up and restore Linux apps/files. Alternate phrase for: 'Crostini backup'">
@@ -959,6 +997,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT2" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print Jobs'">
     Print history
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SCANNING_APP" desc="text for search result item which, when clicked, navigates the user to the printing section to open the scanning app.">
+    Scan
   </message>
 
   <!-- Accessibility section. -->
@@ -1133,5 +1174,19 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_TERMS_OF_SERVICE" desc="Text for search result item which, when clicked, navigates the user to 'About Chrome OS' settings, with a link to the Terms of Service.">
     Terms of Service
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_DIAGNOSTICS" desc="Text for search result item which, when clicked, navigates the user to 'Diagnostics' settings, with a link which opens the Diagnostics App. Alternate phrase for 'Troubleshooting'">
+    Diagnostics
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_DIAGNOSTICS_ALT1" desc="Text for search result item which, when clicked, navigates the user to 'Diagnostics' settings, with a link which opens the Diagnostics App. Alternate phrase for 'Diagnostics'">
+    Troubleshooting
+  </message>
+
+  <!-- On Startup section. -->
+  <message name="IDS_OS_SETTINGS_TAG_ON_STARTUP" desc="Text for search result item which, when clicked, navigates the user to On Startup settings, with a radio group to configure the restore apps and pages options">
+    On Startup
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_RESTORE_APPS_AND_PAGES" desc="Text for search result item which, when clicked, navigates the user to On Startup settings, with a radio group to configure the restore apps and pages options">
+    Restore apps and pages
   </message>
 </grit-part>

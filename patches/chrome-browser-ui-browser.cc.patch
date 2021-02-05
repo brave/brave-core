@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 2c9d816e1aff340615061e888cbbcd69300befcd..b96c37ddc7b0fb68dcd6ed3ce82f2a30c06287f2 100644
+index 409f908148b3d2885216a12048fc3f2e3ea47c89..7fd7cde18b84749ca7c4146e46d35e89460b4448 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -434,6 +434,7 @@ Browser::BrowserCreationStatus Browser::GetBrowserCreationStatusForProfile(
+@@ -431,6 +431,7 @@ Browser::CreationStatus Browser::GetCreationStatusForProfile(Profile* profile) {
+ // static
  Browser* Browser::Create(const CreateParams& params) {
-   CHECK_EQ(BrowserCreationStatus::kOk,
-            GetBrowserCreationStatusForProfile(params.profile));
+   CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
 +  BRAVE_BROWSER_CREATE
    return new Browser(params);
  }
  
-@@ -445,7 +446,7 @@ Browser::Browser(const CreateParams& params)
+@@ -442,7 +443,7 @@ Browser::Browser(const CreateParams& params)
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
        tab_strip_model_(

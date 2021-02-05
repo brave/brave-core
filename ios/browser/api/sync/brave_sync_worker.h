@@ -83,6 +83,11 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   void OnResetDone();
 
+  void SetEncryptionPassphrase(syncer::SyncService* service);
+  void SetDecryptionPassphrase(syncer::SyncService* service);
+
+  std::string passphrase_;
+
   ChromeBrowserState* browser_state_;  // NOT OWNED
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};

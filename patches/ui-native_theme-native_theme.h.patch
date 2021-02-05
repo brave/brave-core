@@ -1,8 +1,8 @@
 diff --git a/ui/native_theme/native_theme.h b/ui/native_theme/native_theme.h
-index 726f588a682e810aad32441cbd5cfe744c719d7d..db966cb4d73c801becd61b4c89f526fdf0578b40 100644
+index d254838cfb21ec2135691b84fd0432cbdbb92e24..b3f5c720642e147f25ba69adad881d27bf308965 100644
 --- a/ui/native_theme/native_theme.h
 +++ b/ui/native_theme/native_theme.h
-@@ -448,6 +448,7 @@ class NATIVE_THEME_EXPORT NativeTheme {
+@@ -455,6 +455,7 @@ class NATIVE_THEME_EXPORT NativeTheme {
  
    // Returns the system's caption style.
    virtual base::Optional<CaptionStyle> GetSystemCaptionStyle() const;

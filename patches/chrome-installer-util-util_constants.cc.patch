@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
-index 72633f21023ebc75a702752eb8b8d4d1e1bfb372..647762456c1216dda0f9fb542ae703911549c8bc 100644
+index 77b5f3f11edc90875a8ee6cbf53f6c0909223c73..fa66387ad755a57fbc4eb23fb5016dd36061400d 100644
 --- a/chrome/installer/util/util_constants.cc
 +++ b/chrome/installer/util/util_constants.cc
 @@ -182,7 +182,13 @@ namespace env_vars {

@@ -48,6 +48,10 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsNavigationThrottleUnitTest,
                            DeferUntilIpfsProcessLaunched);
+  FRIEND_TEST_ALL_PREFIXES(IpfsNavigationThrottleUnitTest,
+                           DeferUntilPeersFetched);
+
+  void GetConnectedPeers();
   void ShowInterstitial();
   void LoadPublicGatewayURL();
   void OnGetConnectedPeers(bool success, const std::vector<std::string>& peers);

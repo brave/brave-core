@@ -10,12 +10,12 @@ package org.chromium.chrome.browser.omnibox.suggestions.editurl;
 import android.content.Context;
 
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestion;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.omnibox.AutocompleteMatch;
 
 public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor {
     private boolean mHasClearedOmniboxForFocus;
@@ -28,7 +28,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
     }
 
     @Override
-    public boolean doesProcessSuggestion(OmniboxSuggestion suggestion, int position) {
+    public boolean doesProcessSuggestion(AutocompleteMatch suggestion, int position) {
         // We don't want to clear omnibox for focus, so just pretend that it's already happened
         mHasClearedOmniboxForFocus = true;
         return super.doesProcessSuggestion(suggestion, position);

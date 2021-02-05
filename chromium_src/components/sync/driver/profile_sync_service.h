@@ -10,7 +10,18 @@
  private:                             \
   friend class BraveProfileSyncService;
 
+// Forcing this include before define virtual to avoid error of
+// "duplicate 'virtual' declaration specifier" at SyncEngine's
+// 'virtual void Initialize(InitParams params) = 0'
+// This also resolves confusion with existing 'Initialize' methods in
+//   third_party/protobuf/src/google/protobuf/map_type_handler.h,
+//   third_party/protobuf/src/google/protobuf/map_entry_lite.h
+#include "components/sync/engine/sync_engine.h"
+#define Initialize virtual Initialize
+
 #include "../../../../../components/sync/driver/profile_sync_service.h"
+
+#undef Initialize
 
 #undef BRAVE_PROFILE_SYNC_SERVICE_H_
 

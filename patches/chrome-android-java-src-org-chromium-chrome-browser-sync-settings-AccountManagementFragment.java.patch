@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java
-index 9d311837a93cf20cdbcf1dfa64c8d9241ef8209f..709dd99056c990525a425807e0a1878ab268d21f 100644
+index 8d1b68f57f359d274cac6019e4dc06c5e3ab768f..d0d27394902c315531e081d4f7e585aa212e4ed4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java
-@@ -63,7 +63,7 @@ import java.util.List;
+@@ -62,7 +62,7 @@ import java.util.List;
   *
   * Note: This can be triggered from a web page, e.g. a GAIA sign-in page.
   */

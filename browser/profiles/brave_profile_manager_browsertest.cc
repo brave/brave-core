@@ -104,10 +104,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   bool has_entry1 = storage.GetProfileAttributesWithPath(
       profile_data[0].profile_path, &entry1);
   ASSERT_EQ(has_entry1, true);
-  entry1->SetLocalProfileName(profile_data[0].profile_name);
-  if (profile_data[0].force_default_name) {
-    entry1->SetIsUsingDefaultName(true);
-  }
+  entry1->SetLocalProfileName(profile_data[0].profile_name,
+                              profile_data[0].force_default_name);
   // Rest are generated
   for (size_t i = 0; i != profile_data.size(); i++) {
     base::RunLoop run_loop;
@@ -120,8 +118,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     bool has_entry = storage.GetProfileAttributesWithPath(
         profile_data[i].profile_path, &entry);
     ASSERT_EQ(has_entry, true);
-    entry->SetLocalProfileName(profile_data[i].profile_name);
-    entry->SetIsUsingDefaultName(profile_data[i].force_default_name);
+    entry->SetLocalProfileName(profile_data[i].profile_name,
+                               profile_data[i].force_default_name);
   }
 }
 

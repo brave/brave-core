@@ -197,6 +197,49 @@ TEST_F(IpfsNavigationThrottleUnitTest, SequentialRequests) {
   ASSERT_TRUE(service->WasConnectedPeersCalledForTest());
 }
 
+TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilPeersFetched) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+  auto* service = ipfs_service(profile());
+  ASSERT_TRUE(service);
+  service->SetSkipGetConnectedPeersCallbackForTest(true);
+
+  service->SetAllowIpfsLaunchForTest(true);
+  service->RunLaunchDaemonCallbackForTest(true);
+
+  bool was_navigation_resumed1 = false;
+  auto throttle1 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed1 = true; }));
+
+  bool was_navigation_resumed2 = false;
+  auto throttle2 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed2 = true; }));
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  auto peers = std::vector<std::string>();
+  throttle1->OnGetConnectedPeers(true, peers);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  throttle2->OnGetConnectedPeers(true, peers);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  peers = std::vector<std::string>{
+      "/ip4/101.101.101.101/tcp/4001/p2p/"
+      "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
+  throttle1->OnGetConnectedPeers(true, peers);
+  EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  throttle2->OnGetConnectedPeers(true, peers);
+  EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_TRUE(was_navigation_resumed2);
+}
+
 TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));

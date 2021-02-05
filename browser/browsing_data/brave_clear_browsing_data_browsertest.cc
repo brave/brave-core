@@ -13,7 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -153,13 +153,13 @@ class BraveClearDataOnExitTest
   }
 
   int GetRemoveMaskAll() {
-    return ChromeBrowsingDataRemoverDelegate::DATA_TYPE_HISTORY |
+    return chrome_browsing_data_remover::DATA_TYPE_HISTORY |
            content::BrowsingDataRemover::DATA_TYPE_DOWNLOADS |
            content::BrowsingDataRemover::DATA_TYPE_CACHE |
-           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_SITE_DATA |
-           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_PASSWORDS |
-           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_FORM_DATA |
-           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_CONTENT_SETTINGS;
+           chrome_browsing_data_remover::DATA_TYPE_SITE_DATA |
+           chrome_browsing_data_remover::DATA_TYPE_PASSWORDS |
+           chrome_browsing_data_remover::DATA_TYPE_FORM_DATA |
+           chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
   }
 
   int GetOriginMaskAll() {
