@@ -172,6 +172,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
     @Override
     public void onPauseWithNative() {
+        super.onPauseWithNative();
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.RemoveObserver(this);
         }
