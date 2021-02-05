@@ -15,7 +15,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.$(MOZ_BUNDLE_ID).unique</string>
+		<string>group.$(MOZ_BUNDLE_ID)</string>
 	</array>
 </dict>
 </plist>
