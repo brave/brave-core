@@ -36,49 +36,6 @@ namespace {
 static const size_t SEED_BYTES_COUNT = 32u;
 }  // namespace
 
-namespace {
-
-// A structure which contains all the configuration information for sync.
-struct SyncConfigInfo {
-  SyncConfigInfo();
-  ~SyncConfigInfo();
-
-  bool encrypt_all;
-  bool set_new_passphrase;
-};
-
-SyncConfigInfo::SyncConfigInfo()
-    : encrypt_all(false), set_new_passphrase(false) {}
-
-SyncConfigInfo::~SyncConfigInfo() {}
-
-// Return false if we are not interested configure encryption
-bool FillSyncConfigInfo(syncer::SyncService* service,
-                        SyncConfigInfo* configuration) {
-  bool first_setup_in_progress =
-      service && !service->GetUserSettings()->IsFirstSetupComplete();
-
-  configuration->encrypt_all =
-      service->GetUserSettings()->IsEncryptEverythingEnabled();
-
-  bool sync_prefs_passphrase_required =
-      service->GetUserSettings()->IsPassphraseRequired();
-
-  if (!first_setup_in_progress) {
-    if (!configuration->encrypt_all) {
-      configuration->encrypt_all = true;
-      configuration->set_new_passphrase = true;
-    } else if (sync_prefs_passphrase_required) {
-      configuration->set_new_passphrase = false;
-    } else {
-      return false;
-    }
-  }
-  return true;
-}
-
-}  // namespace
-
 BraveSyncDeviceTracker::BraveSyncDeviceTracker(
     syncer::DeviceInfoTracker* device_info_tracker,
     std::function<void()> on_device_info_changed_callback)
@@ -205,8 +162,14 @@ bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
 
   auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
+    const std::string error_msg = sync_service
+                                      ? "invalid sync code:" + sync_code
+                                      : "sync service is not available";
+    LOG(ERROR) << error_msg;
     return false;
   }
+
+  passphrase_ = sync_code;
   return true;
 }
 
@@ -244,15 +207,15 @@ bool BraveSyncWorker::IsFirstSetupComplete() {
 void BraveSyncWorker::ResetSync() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service = GetSyncService();
-  
+
   if (!sync_service) {
     return;
   }
-  
+
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   DCHECK(device_info_service);
-  
+
   brave_sync::ResetSync(sync_service, device_info_service,
                         base::BindOnce(&BraveSyncWorker::OnResetDone,
                                         weak_ptr_factory_.GetWeakPtr()));
@@ -261,15 +224,15 @@ void BraveSyncWorker::ResetSync() {
 void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* sync_service = GetSyncService();
-  
+
   if (!sync_service) {
     return;
   }
-  
+
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
   DCHECK(device_info_service);
-  
+
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
 }
 
@@ -279,6 +242,37 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_));
 }
 
+void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
+  DCHECK(service);
+  DCHECK(service->IsEngineInitialized());
+  DCHECK(!this->passphrase_.empty());
+
+  syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
+  DCHECK(!sync_user_settings->IsPassphraseRequired());
+
+  if (sync_user_settings->IsEncryptEverythingAllowed() &&
+      !sync_user_settings->IsUsingSecondaryPassphrase() &&
+      !sync_user_settings->IsTrustedVaultKeyRequired()) {
+    sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
+
+    VLOG(3) << "[BraveSync] " << __func__ << " SYNC_CREATED_NEW_PASSPHRASE";
+  }
+}
+
+void BraveSyncWorker::SetDecryptionPassphrase(syncer::SyncService* service) {
+  DCHECK(service);
+  DCHECK(service->IsEngineInitialized());
+  DCHECK(!this->passphrase_.empty());
+
+  syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
+  DCHECK(sync_user_settings->IsPassphraseRequired());
+
+  if (sync_user_settings->SetDecryptionPassphrase(this->passphrase_)) {
+    VLOG(3) << "[BraveSync] " << __func__
+            << " SYNC_ENTERED_EXISTING_PASSPHRASE";
+  }
+}
+
 void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   // If the sync engine has shutdown for some reason, just give up
   if (!service || !service->IsEngineInitialized()) {
@@ -286,10 +280,8 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
     return;
   }
 
-  SyncConfigInfo configuration = {};
-  if (!FillSyncConfigInfo(service, &configuration)) {
-    VLOG(3) << "[BraveSync] " << __func__
-            << " operations with passphrase are not required";
+  if (this->passphrase_.empty()) {
+    VLOG(3) << "[BraveSync] " << __func__ << " empty passphrase";
     return;
   }
 
@@ -297,28 +289,10 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   std::string sync_code = brave_sync_prefs.GetSeed();
   DCHECK_NE(sync_code.size(), 0u);
 
-  if (!service->GetUserSettings()->IsEncryptEverythingAllowed()) {
-    configuration.set_new_passphrase = false;
-  }
-
-  bool passphrase_failed = false;
-  if (!sync_code.empty()) {
-    if (service->GetUserSettings()->IsPassphraseRequired()) {
-      passphrase_failed =
-          !service->GetUserSettings()->SetDecryptionPassphrase(sync_code);
-    } else if (service->GetUserSettings()->IsTrustedVaultKeyRequired()) {
-      passphrase_failed = true;
-    } else {
-      if (configuration.set_new_passphrase &&
-          !service->GetUserSettings()->IsUsingSecondaryPassphrase()) {
-        service->GetUserSettings()->SetEncryptionPassphrase(sync_code);
-      }
-    }
-  }
-
-  if (passphrase_failed ||
-      service->GetUserSettings()->IsPassphraseRequiredForPreferredDataTypes()) {
-    VLOG(1) << __func__ << " setup passphrase failed";
+  if (service->GetUserSettings()->IsPassphraseRequired()) {
+    SetDecryptionPassphrase(service);
+  } else {
+    SetEncryptionPassphrase(service);
   }
 }
 

@@ -1,8 +1,8 @@
 diff --git a/ui/accessibility/platform/ax_platform_node_mac.mm b/ui/accessibility/platform/ax_platform_node_mac.mm
-index afd130143d7ca5440d9c971764fa038e6c153429..9ee9bff39d24fcf3a453d097914380e29216ca1b 100644
+index ce50a0a509ca151c7e406729b78655f60eaa4c98..fda4ab3480b2c4eb9fc2515879acef73fceb1050 100644
 --- a/ui/accessibility/platform/ax_platform_node_mac.mm
 +++ b/ui/accessibility/platform/ax_platform_node_mac.mm
-@@ -1144,6 +1144,7 @@ bool AlsoUseShowMenuActionForDefaultAction(const ui::AXNodeData& data) {
+@@ -1165,6 +1165,7 @@ bool IsAXSetter(SEL selector) {
    if (!_node)
      return nil;
  

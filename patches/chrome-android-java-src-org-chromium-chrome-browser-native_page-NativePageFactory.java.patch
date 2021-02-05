@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-index b7752eedeba7baa1f1db12264fd8e05a5359c7f1..f8fe6482d9a8934f081b2a718fc7b16c1c37700c 100644
+index 92a53752d48e9711cc5ec914acf9008648649675..3595a396be5521dfa4440b990e86738884d20054 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-@@ -85,7 +85,7 @@ public class NativePageFactory {
+@@ -86,7 +86,7 @@ public class NativePageFactory {
              NativePageHost nativePageHost = new TabShim(tab, mActivity);
              if (tab.isIncognito()) return new IncognitoNewTabPage(mActivity, nativePageHost);
  
@@ -10,4 +10,4 @@ index b7752eedeba7baa1f1db12264fd8e05a5359c7f1..f8fe6482d9a8934f081b2a718fc7b16c
 +            return new org.chromium.chrome.browser.ntp.BraveNewTabPage(mActivity, mActivity.getBrowserControlsManager(),
                      mActivity.getActivityTabProvider(), mActivity.getSnackbarManager(),
                      mActivity.getLifecycleDispatcher(), mActivity.getTabModelSelector(),
-                     mActivity.isTablet(), mUma.get(),
+                     mActivity.isTablet(), mUma.get(), ColorUtils.inNightMode(mActivity),

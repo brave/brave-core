@@ -9,10 +9,10 @@
 #include "../../../../../components/invalidation/impl/fcm_network_handler.cc"
 #undef StartListening
 
-namespace syncer {
+namespace invalidation {
 
 void FCMNetworkHandler::StartListening() {
   return;
 }
 
-}  // namespace syncer
+}  // namespace invalidation

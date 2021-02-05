@@ -419,16 +419,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mSiteSectionView.setLayoutParams(layoutParams);
     }
 
-    protected int getMaxRowsForMostVisitedTiles() {
-        if (NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0
-                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-            return 2;
-        } else {
-            return 1;
-        }
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();

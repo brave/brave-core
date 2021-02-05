@@ -414,6 +414,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HISTORY_ITEMS_SELECTED" desc="Label displayed in history toolbar telling the user how many items they have selected.">
         <ph name="NUMBER_OF_ITEMS_SELECTED">$1</ph> selected
       </message>
+      <message name="IDS_HISTORY_ITEMS_UNSELECTED" desc="Message screen readers read out when unselecting all history items.">
+        All items unselected, selection mode exited.
+      </message>
       <message name="IDS_HISTORY_HISTORY_MENU_DESCRIPTION" desc="Tooltip for the history sidebar menu button.">
         Main menu
       </message>
@@ -1153,6 +1156,12 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
           Move window to <ph name="USER_NAME">$1<ex>User name</ex></ph> (<ph name="USER_EMAIL">$2<ex>john@google.com</ex></ph>)
         </message>
+        <message name="IDS_MOVE_TO_DESKS_MENU" desc="The text label of the Move to Desks submenu">
+          Move window to desk
+        </message>
+        <message name="IDS_ASSIGN_TO_ALL_DESKS" desc="The text label of the Assign to All Desks menu item">
+          All desks
+        </message>
       </if>
 
       <message name="IDS_ACCNAME_ZOOM_PLUS2" desc="The accessible description of the Make Text Larger menu item in the merged menu">
@@ -1273,8 +1282,8 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users" formatter_data="android_java">
         Managed by your organization
       </message>
-      <message name="IDS_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
-        Managed by <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph>
+      <message name="IDS_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users. MANAGER can be a domain or an email address.">
+        Managed by <ph name="MANAGER">$1<ex>example.com</ex></ph>
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_IMPORT_SETTINGS_MENU_LABEL" desc="In sentence case: The app menu label to import bookmarks and settings.">
@@ -1904,6 +1913,18 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
         <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> is being scanned.
       </message>
+      <if expr="is_macosx">
+        <then>
+          <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the download was delivered insecurely. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> can't be downloaded securely.
+          </message>
+        </then>
+        <else>
+          <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the download was delivered insecurely. This message is for screen reader users">
+            <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> can't be downloaded securely. Press Shift+F6 to cycle to the downloads bar area.
+          </message>
+        </else>
+      </if>
 
       <!-- Download Notification Labels -->
       <message name="IDS_DOWNLOAD_NOTIFICATION_COPY_TO_CLIPBOARD" desc="In the download notification, the text of 'Copy to clipboard' button, which is to copy the file content (eg. an image for image files) to the clipboard">
@@ -2100,19 +2121,6 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
-      <!-- Ambient badge -->
-      <if expr="is_android">
-        <message name="IDS_AMBIENT_BADGE_INSTALL" desc="String for the ambient badge promoting an app installation">
-          Add <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> to Home screen
-        </message>
-        <message name="IDS_AMBIENT_BADGE_INSTALL_ALTERNATIVE" desc="String for the ambient badge promoting an app installation. Alternative used for experimentation.">
-          Install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
-        </message>
-        <message name="IDS_AMBIENT_BADGE_INSTALL_ALTERNATIVE_NO_DOWNLOAD_REQUIRED" desc="String for the ambient badge promoting an app installation. Alternative used for experimentation.">
-          Install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> (no download required)
-        </message>
-      </if>
-
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
         <message name="IDS_OMNIBOX_PWA_INSTALL_ICON_LABEL" desc="String for the omnibox icon label promoting an app installation">
@@ -2147,12 +2155,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_INSTALL_PWA_BUTTON_LABEL" desc="Text for button that installs a web app to the operating system.">
         Install
-      </message>
-      <message name="IDS_INSTALL_PWA_RUN_ON_OS_LOGIN_LABEL" desc="Text for checkbox label for auto starting the web app with user login to the operating system session.">
-        {0, select,
-        tablet {Start app when you sign in to your tablet}
-        computer {Start app when you sign in to your computer}
-        other {Start app when you sign in to your device}}
       </message>
 
       <message name="IDS_BOOKMARK_APP_AX_BUBBLE_NAME_LABEL" desc="Text preceding the name of a bookmark app, read by spoken feedback.">
@@ -2505,9 +2507,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_BLOCKED_POPUPS_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when popup is blocked">
         Pop-up blocked
       </message>
-      <message name="IDS_BLOCKED_PLUGIN_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when plugin is blocked">
-        Plugin blocked
-      </message>
       <message name="IDS_BLOCKED_JAVASCRIPT_TITLE" desc="Title for the bubble shown when a page is not allowed to run JavaScript.">
         JavaScript blocked
       </message>
@@ -2519,15 +2518,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_BLOCKED_JAVASCRIPT_NO_ACTION" desc="Radio button choice to continue blocking a site from running JavaScript, displayed in bubble when a page tries to run JavaScript.">
         Continue blocking JavaScript
-      </message>
-      <message name="IDS_BLOCKED_PLUGINS_TITLE" desc="Bubble info header text when a page is not allowed to run Flash. 'Flash' is the name of a plugin and should not be translated.">
-        Flash was blocked on this page
-      </message>
-      <message name="IDS_BLOCKED_PLUGINS_MESSAGE" desc="Tooltip on the icon when a page is not allowed to run Flash. 'Flash' is the name of a plugin and should not be translated.">
-        Flash was blocked on this page.
-      </message>
-      <message name="IDS_BLOCKED_PLUGINS_LOAD_ALL" desc="Button to load all blocked plugins on a page, displayed in bubble when a page tries to display plugins. 'Flash' is the name of a plugin and should not be translated.">
-        Run Flash this time
       </message>
       <message name="IDS_BLOCKED_SOUND_TITLE" desc="Tooltip and bubble info header text when a page is not allowed to play sound.">
         Sound was muted on this page
@@ -4753,11 +4743,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_UPDATE_PASSWORD_DIFFERENT_DOMAINS_TITLE" desc="The title of the update password bubble when the submitted form origin isn't equal to saved credentials origin.">
         Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
       </message>
-      <message name="IDS_SAVE_PASSWORD_TO_GOOGLE" desc="The title of the save password bubble when the user syncs passswors to thir Brave account.">
-        Save password to your Brave sync chain?
+      <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of save password message when the user is signed in.">
+        <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to your Brave sync chain, <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
       </message>
-      <message name="IDS_SAVE_ACCOUNT_TO_GOOGLE" desc="The title of the save password bubble when a federated credential can be saved to the user's Brave account.">
-        Save username to your Brave sync chain?
+      <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The alternative description of save password message when the user is signed in.">
+        <ph name="USERNAME">$1<ex>Username</ex></ph> <ph name="MASKED_PASSWORD">$2<ex>*****</ex></ph> will be saved to <ph name="ACCOUNT">$3<ex>user@gmail.com</ex></ph>
       </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
@@ -5269,6 +5259,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_ADDED" desc="The title of the shortcut added confirmation message when adding a custom link. (On the New Tab Page)">
         Shortcut added
       </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_ALREADY_EXISTS" desc="When adding/editing a custom link, this error is shown when the URL already exists in another custom link. (On the New Tab Page)">
+        Shortcut already exists
+      </message>
       <message name="IDS_NTP_CONFIRM_MSG_RESTORE_DEFAULTS" desc="The text label of the restore default shortcuts button when editing a custom link. (On the New Tab Page)">
         Restore default shortcuts
       </message>
@@ -5377,11 +5370,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
         Shortcuts are curated by you
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_HIDE_MODULES_LABEL" desc="The label for the option to hide modules in the customization menu on the New Tab Page">
-        Hide cards
-      </message>
-      <message name="IDS_NTP_CUSTOMIZE_HIDE_MODULES_DESC" desc="The description for the option to hide modules in the customization menu on the New Tab Page">
-        Don't show cards on this page
+      <message name="IDS_NTP_CUSTOMIZE_SHOW_MODULES_LABEL" desc="The label for the option to show modules in the customization menu on the New Tab Page">
+        Show cards
       </message>
       <message name="IDS_NTP_CUSTOMIZE_3PT_THEME_DESC" desc="The description for the installed third-party themes in the customization menu on the New Tab Page">
         Current theme you have installed
@@ -5390,7 +5380,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Uninstall
       </message>
       <message name="IDS_NTP_CUSTOMIZE_COLOR_PICKER_LABEL" desc="The label for the color picker in the customization menu on the New Tab Page">
-        Select color
+        Custom color
       </message>
       <message name="IDS_NTP_CUSTOMIZE_DEFAULT_LABEL" desc="The label for the Default theme in the customization menu on the New Tab Page">
         Default
@@ -5476,6 +5466,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DUMMY2_TITLE" translateable="false" desc="Title shown in the header of the dummy 2 module.">
         Even Better Module
       </message>
+      <message name="IDS_NTP_MODULES_DRIVE_TITLE" desc="Title shown in the header of the drive module.">
+        Recently from Google Drive
+      </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
       </message>
@@ -5490,6 +5483,39 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_CLOSE" desc="Text shown on close button of a task module.">
         Close
+      </message>
+      <message name="IDS_NTP_MODULES_CART_HEADER_CHIP_NEW" desc="Text shown on the header chip of chrome cart module.">
+        New
+      </message>
+      <message name="IDS_NTP_MODULES_CART_TITLE" desc="Title shown in the header of the chrome cart module.">
+        Your carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_WARM_WELCOME" desc="Text shown in the module header when module shows for the first couple of times. This is served as welcome message and user education.">
+        Find what you added to shopping carts and check out when you're ready
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_HIDE" desc="An option in the chrome cart module action menu to temporarily hide the module.">
+        Hide these carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_HIDE_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart module has been temporarily hidden.">
+        Carts hidden. They’ll reappear when you make changes.
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_REMOVE" desc="An option in the chrome cart module action menu to permanently remove the module.">
+        Never show carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_MODULE_MENU_REMOVE_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart module has been permanently removed.">
+        You won’t see your carts again on this page
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_HIDE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant will be temporarily hidden. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com). ">
+        Hide <ph name="MERCHANT">$1<ex>Amazon</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_HIDE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been temporarily hidden. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+        <ph name="MERCHANT">$1<ex>Amazon</ex> hidden. You’ll see it again when you revisit your cart.</ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant wil be permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+        Never show <ph name="MERCHANT">$1<ex>Amazon</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+        You won't see <ph name="MERCHANT">$1<ex>Amazon</ex></ph> again
       </message>
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -5560,6 +5586,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READ_LATER_MENU_TOOLTIP_MARK_AS_UNREAD" desc="Tooltip for the button to mark a read later entry as unread.">
         Mark as unread
+      </message>
+      <message name="IDS_READ_LATER_MENU_EMPTY_STATE_HEADER" desc="Header for the read later menu when there are no unread or read entries.">
+        You'll find your reading list here
+      </message>
+      <message name="IDS_READ_LATER_MENU_EMPTY_STATE_SUBHEADER" desc="Subheader for the read later menu when there are no unread or read entries.">
+        To save a page for later, click the Bookmark icon
       </message>
 
       <!--Tooltip strings-->
@@ -5688,8 +5720,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_BOOKMARKS_CHEVRON" desc="The accessible name for the chevron visible if not all the bookmark buttons fit.">
         Menu containing hidden bookmarks
       </message>
-      <message name="IDS_ACCNAME_BOOKMARKS_MENU" desc="The accessible name for the Bookmarks menu.">
-        Bookmarks menu
+      <message name="IDS_ACCNAME_BOOKMARK_BUTTON_ROLE_DESCRIPTION" desc="The accessible role description for bookmark buttons.">
+        Bookmark button
+      </message>
+      <message name="IDS_ACCNAME_BOOKMARK_FOLDER_BUTTON_ROLE_DESCRIPTION" desc="The accessible role description for bookmark folders.">
+        Bookmark folder button
       </message>
       <message name="IDS_ACCNAME_SEPARATOR" desc="The accessible name for a separator.">
         Separator
@@ -5771,10 +5806,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         To browse privately, click the dots icon menu to open a private window
       </message>
       <message name="IDS_LIVE_CAPTION_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button">
-        Get captions for your media
+        Get captions for your audio and video
       </message>
       <message name="IDS_LIVE_CAPTION_PROMO_SCREENREADER" desc="Text announced encouraging users to open live caption">
-        Get captions for your media by enabling Live Caption in settings
+        Get captions for your audio and video by enabling Live Caption in settings
       </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
@@ -5789,7 +5824,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Reopen a tab if you accidentally closed it
       </message>
       <message name="IDS_DESKTOP_PWA_INSTALL_PROMO" desc="Text shown on promotional UI appearing next to the PWA install icon">
-        To get back to here quickly, install this app
+        To get back here quickly, install <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> by clicking the install button
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
@@ -7076,7 +7111,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Brave Pay
       </message>
 
-      <if expr="is_linux and not chromeos">
+      <if expr="is_linux and not chromeos and not lacros">
         <message name="IDS_SHOW_WINDOW_DECORATIONS" desc="The label of a radio button in the options dialog for using the system title bar and borders.">
           Use system title bar and borders
         </message>
@@ -7346,6 +7381,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ENTERPRISE_SIGNIN_CREATE_NEW_PROFILE" desc="Text of the button to create a new profile after enterprise account sign-in">
           Create a New Profile
         </message>
+        <message name="IDS_ENTERPRISE_SIGNIN_CREATE_NEW_WORK_PROFILE" desc="Text of the button to create a new work profile after enterprise account sign-in">
+          Add Work Profile
+        </message>
         <message name="IDS_ENTERPRISE_SIGNIN_CONTINUE" desc="Text of the button to link the current profile with the signed-in enterprise account">
           Link Data
         </message>
@@ -7353,6 +7391,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="not use_titlecase">
         <message name="IDS_ENTERPRISE_SIGNIN_CREATE_NEW_PROFILE" desc="Text of the button to create a new profile after enterprise account sign-in">
           Create a new profile
+        </message>
+        <message name="IDS_ENTERPRISE_SIGNIN_CREATE_NEW_WORK_PROFILE" desc="Text of the button to create a new work profile after enterprise account sign-in">
+          Add work profile
         </message>
         <message name="IDS_ENTERPRISE_SIGNIN_CONTINUE" desc="Text of the button to link the current profile with the signed-in enterprise account">
           Link data
@@ -7384,8 +7425,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
           Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
         </message>
-        <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
-          Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$2<ex>example.com</ex></ph>
+        <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS). MANAGER can be a domain or an email address.">
+          Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="MANAGER">$2<ex>example.com</ex></ph>
         </message>
       </if>
 
@@ -7736,7 +7777,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Dice Web Signin Interception Bubble-->
       <if expr="not chromeos and not is_android">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
-          Create
+          Ok
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL_V2" desc="Label of the confirmation button in the web signin interception bubble">
+          Continue
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
@@ -7745,28 +7789,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Cancel
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
-          Switch
+          Ok
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
-          To keep your browsing separate, you can create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL_V2" desc="Label of the profile switch button in the web signin interception bubble">
+          Continue
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
-          To separate personal and <ph name="EXISTING_USER">$2<ex>example.com</ex></ph> browsing, create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_GUEST_LINK" desc="Text of the link to offer switching to a Guest profile">
+            Not your device? Use <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>Guest mode<ph name="END_LINK">&lt;/a&gt;</ph>.
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when both accounts are managed">
-          To separate your <ph name="NEW_USER">$1<ex>example.com</ex></ph> browsing from your <ph name="EXISTING_USER">$2<ex>example.com</ex></ph> browsing, create a new profile
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
-          Create a new profile for work?
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
+          This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_TITLE" desc="Title for the profile switch interception bubble">
-          Switch to another profile?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC" desc="Description for the profile switch interception bubble">
-          <ph name="EXISTING_USER">$2<ex>Bob</ex></ph>'s profile is already signed in to <ph name="NEW_USER">$1<ex>bob@gmail.com</ex></ph>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_SWITCH_BUBBLE_DESC_V2" desc="Description for the profile switch interception bubble">
+          <ph name="NAME">$2<ex>Bob</ex></ph>'s profile is linked to <ph name="EMAIL">$1<ex>bob@gmail.com</ex></ph>
         </message>
       </if>
 
@@ -7996,7 +8034,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Set as default
       </message>
 
-      <if expr="is_linux and not chromeos">
+      <if expr="is_linux and not chromeos and not lacros">
         <message name="IDS_MINIMIZE_WINDOW_MENU" desc="The Linux browser window menu item text for minimizing the window.">
           Minimize
         </message>
@@ -8240,6 +8278,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE_TITLE" desc="Title text for the translate bubble label when the page could not be translated.">
           This page could not be translated
         </message>
+        <message name="IDS_TRANSLATE_BUBBLE_SOURCE_LANG_COMBOBOX_ACCNAME" desc="Accessible name for the source language selection combobox.">
+          Choose the page language to translate from
+        </message>
         <message name="IDS_TRANSLATE_BUBBLE_TARGET_LANG_COMBOBOX_ACCNAME" desc="Accessible name for the target language selection combobox.">
           Choose the language to translate the page to
         </message>
@@ -8376,9 +8417,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
         Send message
       </message>
-      <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification.">
-        Details are hidden while you share your screen
-      </message>
+      <if expr="not chromeos">
+        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="Not on Chrome OS.">
+          Details are hidden while you share your screen
+        </message>
+      </if>
+      <if expr="chromeos">
+        <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="On Chrome OS only.">
+          Details are hidden while you share your screen
+        </message>
+      </if>
       <if expr="not use_titlecase">
         <message name="IDS_NOTIFICATION_MUTED_TITLE" desc="Title of a notification showing how many new notifications are currently hidden. The number is always greater than zero.">
           {MUTED_NOTIFICATIONS_COUNT, plural,
@@ -9273,20 +9321,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
 
-      <!-- High-contrast mode. -->
-      <message name="IDS_HIGH_CONTRAST_TITLE" desc="Text for the dialog asking if the user may be interested in a High-Contrast extension or a dark theme. Note to translators: this is the name of a feature in Windows, so please try to find the correct name of that feature in your region.">
-        Browse the web in high contrast mode
-      </message>
-      <message name="IDS_HIGH_CONTRAST_HEADER" desc="Section header for list of extensions or themes to try in conjunction with the High Contrast mode">
-        Try:
-      </message>
-      <message name="IDS_HIGH_CONTRAST_EXT" desc="The title of a link that will open the Web Store with a High Contrast extension the user can install.">
-        High Contrast Extension
-      </message>
-      <message name="IDS_DARK_THEME" desc="The title of a link that will open the Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
-        Dark Theme
-      </message>
-
       <!-- Live caption. -->
       <message name="IDS_LIVE_CAPTION_BUBBLE_TITLE" desc="Title of the Live Caption bubble">
         Live Caption
@@ -9494,6 +9528,21 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_MULTIPLE_SCREEN_NAME" desc="Name for screens in the desktop media picker UI when there are multiple monitors.">
         {SCREEN_INDEX, plural, =1{Screen #} other{Screen #}}
       </message>
+
+      <!-- Confirmation dialog for getCurrentBrowsingContextMedia API -->
+      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_TITLE" desc="Title for the confirmation dialog shown when getCurrentBrowsingContextMedia is requested by an app.">
+        Share this tab
+      </message>
+      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_TEXT_REQUESTED_BY_APP" desc="Text for the confirmation dialog shown when getCurrentBrowsingContextMedia is requested by an app.">
+        <ph name="TARGET_NAME">$1<ex>https://google.com</ex></ph> is asking for permission to capture the contents of this tab.
+      </message>
+      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_AUDIO_SHARE" desc="Text for the checkbox on the confirmation dialog for getCurrentBrowsingContextMedia API, when checked, audio will be shared, otherwise just video sharing">
+        Share audio
+      </message>
+      <message name="IDS_GET_CURRENT_BROWSING_CONTEXT_MEDIA_DIALOG_SHARE_BUTTON" desc="Used for Share on buttons">
+        Share
+      </message>
+
       <!-- Local Device Discovery display strings -->
       <if expr="enable_service_discovery">
         <message name="IDS_LOCAL_DISCOVERY_NOTIFICATION_TITLE_PRINTER" desc="Title of notification for one or more new printer showing up on your network. [ICU Syntax]">
@@ -9700,6 +9749,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_PERMISSIONS_DIALOG_SELECT" desc="Button confirming the devices selected for access by the app.">
         Select
       </message>
+      <message name="IDS_DEVICE_PERMISSIONS_DIALOG_LOADING_LABEL" desc="Text on label that the browser is loading the list of selectable devices.">
+        Finding devices...
+      </message>
+      <message name="IDS_DEVICE_PERMISSIONS_DIALOG_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of selectable devices.">
+        Finding devices...
+      </message>
 
       <!-- About device logs UI display strings -->
       <message name="IDS_DEVICE_LOG_TITLE" desc="Title of the chrome://device-log page">
@@ -9761,6 +9816,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_DEVICE_LOG_TYPE_SERIAL" desc="Checkbox to enable showing events related to serial devices">
         Serial
+      </message>
+      <message name="IDS_DEVICE_LOG_TYPE_CAMERA" desc="Checkbox to enable showing events of type Camera">
+        Camera
       </message>
       <message name="IDS_DEVICE_LOG_FILEINFO" desc="File info checkbox in device event log">
         File Info
@@ -9831,9 +9889,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_TURN_ON_BLUETOOTH_LINK_TEXT" desc="Text of the 'Turn on Bluetooth' link when Bluetooth adapter is turned off.">
         Turn on Bluetooth
       </message>
-      <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_SCANNING" desc="The label that is used to indicate the chooser is scanning for Bluetooth devices.">
-        ''' while scanning for devices...
-      </message>
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_RE_SCAN" desc="Text of a button the user can click to start a new scan for Bluetooth devices.">
         Re-scan
       </message>
@@ -9879,6 +9934,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_USB_DEVICE_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the USB chooser popup and connects the selected device.">
       Connect
+    </message>
+    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of USB devices.">
+      Finding devices...
+    </message>
+    <message name="IDS_USB_DEVICE_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of USB devices.">
+      Finding USB devices...
     </message>
     <message name="IDS_DEVICE_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
       Cancel
@@ -9943,6 +10004,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
         Connect
       </message>
+      <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of serial devices.">
+        Finding devices...
+      </message>
+      <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of serial devices.">
+        Finding serial devices...
+      </message>
     </if>
 
     <!-- HID (Human Interface Device) chooser -->
@@ -9958,6 +10025,37 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_HID_CHOOSER_ITEM_WITH_NAME" desc="User option displaying the device name, vendor ID, and product ID for a Human Interface Device (HID).">
         <ph name="DEVICE_NAME">$1<ex>Wireless Controller</ex></ph> (Vendor: <ph name="VENDOR_ID">$2<ex>0x1234</ex></ph>, Product: <ph name="PRODUCT_ID">$3<ex>0xabcd</ex></ph>)
+      </message>
+      <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
+        Finding devices...
+      </message>
+      <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
+        Finding HID devices...
+      </message>
+    </if>
+
+    <!-- Font Access chooser -->
+    <if expr="not is_android">
+      <message name="IDS_FONT_ACCESS_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce Local Font Access chooser details to the user in a popup when it is from a website.">
+        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to use local fonts
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_NO_FONTS_FOUND_PROMPT" desc="The label shown to the user to inform them that no fonts were found matching the requirements that the application provided.">
+        No matching font found.
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_IMPORT_BUTTON_TEXT" desc="Label on the button that closes the Local Font Access chooser popup and returns the selected fonts.">
+        Import
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
+        Cancel
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_SELECT_ALL_CHECKBOX_TEXT" desc="Label for the checkbox that allows the selection of all fonts.">
+        Select all fonts
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of available fonts.">
+        Loading fonts...
+      </message>
+      <message name="IDS_FONT_ACCESS_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of available fonts.">
+        Loading fonts...
       </message>
     </if>
 
@@ -10379,7 +10477,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         PIN contains invalid characters
       </message>
       <message name="IDS_WEBAUTHN_PIN_ENTRY_ERROR_TOO_SHORT" desc="Error message. Displayed when the user attempts to set a PIN code for their security key (an external physical device for user authentication), and the PIN chosen by them is too short.">
-        PIN must be at least 4 characters
+        {NUM_CHARACTERS, plural,
+          =1 {PIN must be at least one character}
+          other {PIN must be at least # characters}}
       </message>
       <message name="IDS_WEBAUTHN_PIN_ENTRY_ERROR_FAILED_RETRIES" desc="Error message. Displayed when the user enters the wrong PIN code for their security key (an external physical device for user authentication)">
         {NUM_ATTEMPTS, plural,
@@ -10407,6 +10507,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CLIENT_PIN_AUTHENTICATOR_REMOVED_DESCRIPTION" desc="Description in the error dialog shown after their security key (an external physical device for user authentication) was removed while the application was waiting for the security key PIN to be entered.">
         Reinsert your security key and try again
       </message>
+      <message name="IDS_WEBAUTHN_PIN_ENTRY_ERROR_SAME_AS_CURRENT" desc="Error message. Displayed when the user attempts to set a new PIN code for their security key (an external physical device for user authentication), and the new PIN is the same as the currently set PIN.">
+        Create a new PIN that's different from your current PIN
+      </message>
 
       <!-- WebAuthn authenticator internal user verification -->
       <message name="IDS_WEBAUTHN_INLINE_ENROLLMENT_CANCEL_LABEL" desc="The label on a button allowing users to skip fingerprint registration when setting up a fingerprint enabled authenticator.">
@@ -10425,6 +10528,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_UV_ERROR_LOCKED" desc="Error message. Displayed when the user's authenticator has been locked due to too many failed attempts to read their fingerprint, and they are required to enter a PIN to unlock it.">
         Your security key is locked because your fingerprint couldn't be recognized. To unlock it, enter your PIN.
+      </message>
+      <message name="IDS_WEBAUTHN_FORCE_PIN_CHANGE" desc="An error message shown when a user attempts to use a security key (an authentication hardware device) that has a default PIN (short, often numeric codes that are often used with, for example, ATM cards) set. Before using the key, the user needs to change the PIN to a new code.">
+        To use your new security key, set a new PIN
       </message>
 
       <!-- WebAuthn account selection for resident keys -->
@@ -10753,6 +10859,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_COMMANDER_LABEL" desc="Label to identify the Commander feature in Task Manager">
       Commander
+    </message>
+    <message name="IDS_SHOW_KALEIDOSCOPE" desc="Menu item to launch the Brave watch feature">
+      Watch
+    </message>
+
+    <!-- BraveLabs bubble -->
+    <message name="IDS_CHROMELABS_RELAUNCH_BUTTON_LABEL" desc="Label on the button in the footer of the Brave Labs bubble which will relaunch the browser.">
+      Relaunch
+    </message>
+    <message name="IDS_WINDOW_TITLE_EXPERIMENTS" desc="Window title for the Brave Labs bubble">
+      Experiments
     </message>
   </messages>
 </release>

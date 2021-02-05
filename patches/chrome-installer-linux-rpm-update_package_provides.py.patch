@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/update_package_provides.py b/chrome/installer/linux/rpm/update_package_provides.py
-index 0f38d92d83e8baef7fabc5cf0a274970d98bcdc7..572ea3af09d2f6c0db23cefa7eaaa91f6c75ac1c 100755
+index f6ea0bfbf8692a4c67ac542de22206c472b04f74..8abdeed98b1c9085ac341d484ceb538943741f5d 100755
 --- a/chrome/installer/linux/rpm/update_package_provides.py
 +++ b/chrome/installer/linux/rpm/update_package_provides.py
 @@ -33,6 +33,7 @@ LIBRARY_FILTER = set([
@@ -21,10 +21,10 @@ index 0f38d92d83e8baef7fabc5cf0a274970d98bcdc7..572ea3af09d2f6c0db23cefa7eaaa91f
      "librt.so",
      "libsmime3.so",
      "libstdc++.so",
-@@ -61,6 +65,7 @@ LIBRARY_FILTER = set([
-     "libxkbcommon.so.0",
-     "libxcb.so",
+@@ -62,6 +66,7 @@ LIBRARY_FILTER = set([
      "libxcb-dri3.so.0",
+     "libxkbcommon.so.0",
+     "libxshmfence.so.1",
 +    "libz.so.1",
      "rtld(GNU_HASH)",
  ])

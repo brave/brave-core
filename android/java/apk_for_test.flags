@@ -9,7 +9,6 @@
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
 -keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
-    *** notifyObservers(...);
     *** updateCachedSettings(...);
     *** setChromeSyncEnabled(...);
     *** mIsSyncable;
@@ -37,7 +36,6 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** insertSiteSectionView(...);
-    *** getMaxRowsForMostVisitedTiles(...);
     *** mSiteSectionView;
 }
 
@@ -83,6 +81,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
+    public <init>(...);
     *** mBottomControlsCoordinatorSupplier;
     *** mCallbackController;
     *** mBrowserControlsSizer;
@@ -99,6 +98,11 @@
     *** mLocationBarModel;
     *** mToolbar;
     *** mBookmarkBridgeSupplier;
+    *** mLayoutManager;
+    *** mOverlayPanelVisibilitySupplier;
+    *** mTabModelSelector;
+    *** mIncognitoStateProvider;
+    *** mTabCountProvider;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
@@ -145,10 +149,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate {
     public <init>(...);
 }
@@ -172,4 +172,24 @@
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** showBookmarkBottomSheet(...);
     *** addBookmarkAndShowSnackbar(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
+    *** getMaxRowsForMostVisitedTiles(...);
+}
+
+-keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
+    *** getMaxRowsForMostVisitedTiles(...);
 }

@@ -57,17 +57,24 @@
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
     Live Caption
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When media is playing (such as a video) the user will see captions on the screen. Only works in Brave browser initially.">
-    Automatically creates captions for media in Brave browser (currently available in English only)
-  </message>
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Only works in Brave browser initially. Currently only works for English media.">
+      Automatically creates captions for English audio and video (currently available in Brave browser only). Audio and captions never leave your device.
+    </message>
+  </if>
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_SUBTITLE" desc="Description text for Live Caption feature. When audio or video is playing, the user will see captions on the screen. Currently only works for English media.">
+      Automatically creates captions for English audio and video. Audio and captions never leave your device.
+    </message>
+  </if>
   <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_PROGRESS" desc="Download progress indicator after Live Caption is enabled. The user needs to download certain files for the feature to work.">
     Downloading speech recognition files... <ph name="PERCENT">$1<ex>17</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_COMPLETE" desc="Success message when Live Caption files have completed downloading.">
-    Speech recognition files downloaded
+    Speech files downloaded
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_LIVE_CAPTION_DOWNLOAD_ERROR" desc="Error message when Live Caption files can’t be downloaded.">
-    The required files can't be downloaded. Try again later.
+    Can't download speech files. Try again later.
   </message>
   <message name="IDS_SETTINGS_ENABLE_CARET_BROWSING_TITLE" desc="Name of the setting to enable Caret Browsing, which allows you to move around any web page using a text caret.">
     Navigate pages with a text cursor
@@ -101,17 +108,17 @@
   <message name="IDS_SETTINGS_HOME_BUTTON_DISABLED" desc="Sub label for the Show home button setting when disabled.">
     Disabled
   </message>
-  <if expr="chromeos">
+  <if expr="chromeos or lacros">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
       Browser themes
     </message>
   </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
       Theme
     </message>
   </if>
-  <if expr="is_linux and not chromeos">
+  <if expr="is_linux and not chromeos and not lacros">
     <message name="IDS_SETTINGS_SYSTEM_THEME" desc="Text of the label describing the system (GTK+) browser theme on Linux">
       GTK+
     </message>
@@ -125,7 +132,7 @@
       Use Classic
     </message>
   </if>
-  <if expr="not is_linux or chromeos">
+  <if expr="not is_linux or chromeos or lacros">
     <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Name of the control which resets the browser theme back to the default theme.">
       Reset to default
     </message>
@@ -359,17 +366,29 @@
       =1 {{COUNT} compromised password}
       other {{COUNT} compromised passwords}}
   </message>
-  <message name="IDS_SETTINGS_INSECURE_PASSWORDS_COUNT" desc="Number of insecure passwords present in the database">
-    {COUNT, plural,
-      =0 {No security issues found}
-      =1 {Found {COUNT} security issue}
-      other {Found {COUNT} security issues}}
+  <message name="IDS_SETTINGS_COMPROMISED_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of compromised passwords that the Brave password check found.">
+    {NUM_COMPROMISED, plural,
+      =0 {No compromised passwords}
+      =1 {1 compromised password}
+      other {{NUM_COMPROMISED} compromised passwords}}
   </message>
   <message name="IDS_SETTINGS_WEAK_PASSWORDS_COUNT" desc="Number of weak passwords present in the database. Displayed when the user is signed out and no compromised passwords exist">
     {COUNT, plural,
       =0 {No weak passwords found}
       =1 {Found {COUNT} weak password}
       other {Found {COUNT} weak passwords}}
+  </message>
+  <message name="IDS_SETTINGS_WEAK_PASSWORDS_COUNT_SHORT" desc="This short text shows the amount of weak passwords that the Brave password check found.">
+    {NUM_WEAK, plural,
+      =0 {No weak passwords}
+      =1 {1 weak password}
+      other {{NUM_WEAK} weak passwords}}
+  </message>
+  <message name="IDS_SETTINGS_INSECURE_PASSWORDS_COUNT" desc="Number of insecure passwords present in the database">
+    {COUNT, plural,
+      =0 {No security issues found}
+      =1 {Found {COUNT} security issue}
+      other {Found {COUNT} security issues}}
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_AGAIN" desc="Button to start bulk password check manually in passwords check section.">
     Check again
@@ -548,6 +567,23 @@
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT_AND_DEVICE" desc="Label for an undo tooltip following deletion of a password from the account and the device.">
     Password deleted from this device and your Brave sync chain
   </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT" desc="Message displayed in the moving multiple passwords to the user Brave sync chain banner.">
+    To use them on all your devices, move them to your Brave sync chain
+  </message>
+   <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_COUNT" desc="Label shown in the link that open moving multiple password dialog.">
+    {COUNT, plural,
+      =1 {{COUNT} password is accessible on this device}
+      other {{COUNT} passwords are accessible on this device}}
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_FOOTER" desc="Footer for the dialog that asks the user to select which passwords to move to their Brave sync chain.">
+    Passwords will be moved from your device to your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that asks the user to select which passwords to move to their Brave sync chain.">
+    Choose which passwords to move
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT_SNACKBAR" desc="Text in the snackbar that appears after the user successfuly moved local passwords to their Brave sync chain.">
+    Passwords moved to your Brave sync chain
+  </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_TITLE" desc="Title for the dialog that confirms whether the user wishes to move a password to their Brave sync chain.">
     Move to Brave sync chain?
   </message>
@@ -558,7 +594,10 @@
     Move
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT_DIALOG_CANCEL_BUTTON_TEXT" desc="Text for the button that cancels the action of moving a password to the user Brave sync chain.">
-    No thanks
+    Cancel
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_OPEN_MOVE_MULTIPLE_PASSWORDS_TO_ACCOUNT_DIALOG_BUTTON_TEXT" desc="Text for the button that opens the dialog that moves multiple passwords to the user Brave sync chain.">
+    Move passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Brave sync chain or both).">
     Delete password?
@@ -578,14 +617,8 @@
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_FROM_DEVICE_CHECKBOX_LABEL" desc="The label for the checkbox that represents whether the user wishes to remove a password from the device.">
     From this device
   </message>
-  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL_SINGULAR" desc="The label for the link on settings leading to the 'device passwords' page, when there is 1 device password.">
-    You have 1 password saved on this device
-  </message>
-  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL_PLURAL" desc="The label for the link on settings leading to the 'device passwords' page, when there is more than 1 device password.">
-    You have <ph name="NUMBER_OF_DEVICE_PASSWORDS">$1<ex>2</ex></ph> passwords saved on this device
-  </message>
-  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_SUB_LABEL" desc="The sub-label for the link on settings leading to the 'device passwords' page.">
-    Save all your passwords in your Brave sync chain, so you can use them on all your devices
+  <message name="IDS_SETTINGS_DEVICE_PASSWORDS_LINK_LABEL" desc="The label for the link on settings leading to the 'device passwords' page.">
+    See and manage passwords saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
     View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -865,8 +898,11 @@
       <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS_CANCELED" desc="Status description of a certificate provisioning process that has been canceled">
         Canceled
       </message>
-      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_CERTIFICATE_PROFILE" desc="Label of the field that displays the client certificate profile of a certificate provisioning process">
-        Certificate Profile
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_CERTIFICATE_PROFILE_NAME" desc="Label of the field that displays the human-readable client certificate profile name of a certificate provisioning process">
+        Certificate Profile Name
+      </message>
+      <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_CERTIFICATE_PROFILE_ID" desc="Label of the field that displays the internal ID of the client certificate profile of a certificate provisioning process">
+        Certificate Profile ID
       </message>
       <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_PROVISIONING_STATUS" desc="Label of the field that displays certificate provisioning status">
         Status
@@ -1143,6 +1179,14 @@
     More
   </message>
 
+  <!-- Privacy Sandbox -->
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TITLE" desc="The title of the Privacy Sandbox page">
+    Privacy Sandbox
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_HEADING" desc="The heading displayed at the top of the Privacy Sandbox page">
+    The Privacy Sandbox
+  </message>
+
   <!-- Safety check -->
   <message name="IDS_SETTINGS_SAFETY_CHECK_SECTION_TITLE" desc="'Safety check' is a noun phrase (sentence case). 'Safety check' refers to an area of the Settings page where users can quickly check whether their safety-related settings are fully protecting them.">
     Safety check
@@ -1317,7 +1361,7 @@
       Something went wrong. Click for more details.
     </message>
   </if>
-  
+
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
     Preload pages for faster browsing and searching
   </message>
@@ -1476,6 +1520,12 @@
   </message>
   <message name="IDS_SETTINGS_CLEAR_DATA" desc="Text for clear browsing data button in Privacy options in the tabbed UI">
     Clear data
+  </message>
+  <message name="IDS_SETTINGS_CLEARING_DATA" desc="Accessibility text for after the clear browsing data button is clicked and while the data is being cleared">
+    Clearing data...
+  </message>
+  <message name="IDS_SETTINGS_CLEARED_DATA" desc="Accessibility text for after the data has been cleared">
+    Data cleared.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA" desc="Text for clear browsing data button in Privacy options">
     Clear browsing data
@@ -1662,6 +1712,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS" desc="Label for the site settings exceptions.">
     Customized behaviors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS_DESCRIPTION" desc="Description for the site settings exceptions.">
+    Sites listed below follow a custom setting instead of the default
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_DESCRIPTION" desc="Description of the ads content setting.">
     Sites usually show ads so they can provide content or services for free. But, some sites are known to show intrusive or misleading ads.
@@ -3187,6 +3240,9 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN" desc="A header that appears in the Settings subpage for security keys (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the heading for the section about settings them.">
     Create a PIN
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_BUTTON" desc="The label of a button that appears in the Settings subpage for security keys (which are external devices for user authentication). The button takes the user to a page where they can set or change their PIN. PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys.">
+    Set PIN
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_DESC" desc="A description that appears in the Settings subpage for security keys (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the description for the section about settings them.">
     Protect your security key with a PIN (Personal Identification Number)
   </message>
@@ -3245,7 +3301,9 @@
     Incorrect PIN. You have <ph name="RETRIES">$1<ex>8</ex></ph> attempts remaining.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_NEW_PIN" desc="A message shown when a user is trying to set a PIN on a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
-    Enter your new PIN. A PIN must be at least four characters long and can contain letters, numbers, and other characters.
+    {MIN_PIN_LENGTH, plural,
+     =1 {Enter your new PIN. A PIN must be at least one character long and can contain letters, numbers, and other characters.}
+     other {Enter your new PIN. A PIN must be at least # characters long and can contain letters, numbers, and other characters.}}
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_CONFIRM" desc="The label of the button shown when a user is trying to set a PIN on a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     Save
@@ -3367,10 +3425,16 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_DELETE" desc="The label for a button that when clicked deletes a fingerprint from a security key (an authentication hardware device) with a built-in fingerprint reader.">
     Delete this fingerprint
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NO_PIN" desc="An error message shown when a user attempts to enroll a fingerprint on their security key (an authentication hardware device), but the user has not set up a PIN (short, often numeric codes that are often used with, for example, ATM cards) for that security key.">
+    Your security key is not protected with a PIN. To manage fingerprints, first create a PIN.
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_TOUCH_TO_CONTINUE" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
     To continue, insert and touch your security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_PROMPT" desc="A label instructing the user to enter the PIN (short, often numeric codes that are often used with, for example, ATM cards) for their security key (an authentication hardware device).">
     Enter the PIN for your security key. If you don’t know the PIN, you’ll need to reset the security key.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_FORCE_PIN_CHANGE" desc="An error message shown when a user attempts to use a security key (an authentication hardware device) that has a default PIN (short, often numeric codes that are often used with, for example, ATM cards) set. Before using the key, the user needs to change the PIN to a new code.">
+    To use your new security key, set a new PIN
   </message>
 </grit-part>

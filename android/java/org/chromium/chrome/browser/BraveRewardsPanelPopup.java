@@ -180,7 +180,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     private BraveRewardsExternalWallet mExternal_wallet;
 
-    private double walletBalance = .0;
+    private double walletBalance;
 
     private View braveRewardsOnboardingModalView;
     private View braveRewardsOptInView;

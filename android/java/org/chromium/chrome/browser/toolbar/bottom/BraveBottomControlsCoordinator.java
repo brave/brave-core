@@ -24,12 +24,12 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
-import org.chromium.chrome.browser.toolbar.ThemeColorProvider;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.ui.base.WindowAndroid;
@@ -42,7 +42,6 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     private OnLongClickListener mTabSwitcherLongclickListener;
     private ActivityTabProvider mTabProvider;
     private ThemeColorProvider mThemeColorProvider;
-    private ObservableSupplier<ShareDelegate> mShareDelegateSupplier;
     private ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
     private Runnable mOpenHomepageAction;
     private Callback<Integer> mSetUrlBarFocusAction;
@@ -52,48 +51,39 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
-            BrowserControlsSizer controlsSizer, FullscreenManager fullscreenManager, ViewStub stub,
-            ThemeColorProvider themeColorProvider,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier,
-            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
-            ScrimCoordinator scrimCoordinator,
-            ObservableSupplier<Boolean> omniboxFocusStateSupplier) {
-        super(controlsSizer, fullscreenManager, stub, themeColorProvider, shareDelegateSupplier,
-                menuButtonHelperSupplier, openHomepageAction, setUrlBarFocusAction,
-                scrimCoordinator, omniboxFocusStateSupplier);
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            /* Below are parameters from BottomControlsCoordinator */
+            Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
+            ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
+            ThemeColorProvider themeColorProvider, BottomControlsContentDelegate contentDelegate,
+            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
+        super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
+                fullscreenManager, root, themeColorProvider, contentDelegate,
+                overlayPanelVisibilitySupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
         mThemeColorProvider = themeColorProvider;
-        mShareDelegateSupplier = shareDelegateSupplier;
         mOpenHomepageAction = openHomepageAction;
         mSetUrlBarFocusAction = setUrlBarFocusAction;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mMenuButtonHelperSupplier = menuButtonHelperSupplier;
+        mRoot = root;
     }
 
-    public void setRootView(View root) {
-        assert (root != null);
-        mRoot = (ScrollingBottomViewResourceFrameLayout) root;
-    }
-
-    @Override
     public void initializeWithNative(Activity activity, ResourceManager resourceManager,
             LayoutManagerImpl layoutManager, OnClickListener tabSwitcherListener,
             OnClickListener newTabClickListener, WindowAndroid windowAndroid,
             TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
             ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
-        super.initializeWithNative(activity, resourceManager, layoutManager, tabSwitcherListener,
-                newTabClickListener, windowAndroid, tabCountProvider, incognitoStateProvider,
-                topToolbarRoot, closeAllTabsAction);
-
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             mBottomToolbarCoordinator = new BottomToolbarCoordinator(mRoot,
                     mRoot.findViewById(R.id.bottom_toolbar_stub), mTabProvider,
-                    mTabSwitcherLongclickListener, mThemeColorProvider, mShareDelegateSupplier,
-                    mOpenHomepageAction, mSetUrlBarFocusAction, mLayoutStateProviderSupplier,
-                    mMenuButtonHelperSupplier, mMediator);
+                    mTabSwitcherLongclickListener, mThemeColorProvider, mOpenHomepageAction,
+                    mSetUrlBarFocusAction, mLayoutStateProviderSupplier, mMenuButtonHelperSupplier,
+                    mMediator);
 
             mBottomToolbarCoordinator.initializeWithNative(tabSwitcherListener, newTabClickListener,
                     tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);

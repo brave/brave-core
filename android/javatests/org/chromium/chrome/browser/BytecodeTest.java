@@ -9,6 +9,8 @@ import android.content.Context;
 import android.support.test.filters.SmallTest;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,21 +21,35 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.findinpage.FindToolbarManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.init.StartupTabPreloader;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.ChromeTabCreator;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
+import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.ui.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.modelutil.PropertyModel;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation.
@@ -63,6 +79,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/ToolbarManager"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/BraveToolbarManager"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator"));
         Assert.assertTrue(classExists(
@@ -80,21 +97,21 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator"));
-        Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator"));
     }
 
     @Test
     @SmallTest
     public void testMethodsExist() throws Exception {
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
-                "notifyObservers", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
                 "updateCachedSettings", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
@@ -111,8 +128,11 @@ public class BytecodeTest {
                 "shouldCloseAppWithZeroTabs", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
                 "insertSiteSectionView", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/query_tiles/QueryTileSection",
                 "getMaxRowsForMostVisitedTiles", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/query_tiles/BraveQueryTileSection",
+                        "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "getPermissionsLinkMessage", false, null));
@@ -165,14 +185,6 @@ public class BytecodeTest {
     @SmallTest
     public void testConstructorsExistAndMatch() throws Exception {
         Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
-                "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator",
-                ChromeActivity.class, Callback.class, OneshotSupplier.class,
-                ObservableSupplier.class, ActivityTabProvider.class, ObservableSupplierImpl.class,
-                ObservableSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                Supplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, Supplier.class));
-        Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate",
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
@@ -182,6 +194,24 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tabmodel/BraveTabCreator", ChromeActivity.class,
                 WindowAndroid.class, StartupTabPreloader.class, Supplier.class, boolean.class,
                 ChromeTabCreator.OverviewNTPCreator.class, AsyncTabParamsManager.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/toolbar/ToolbarManager",
+                "org/chromium/chrome/browser/toolbar/BraveToolbarManager", AppCompatActivity.class,
+                BrowserControlsSizer.class, FullscreenManager.class, ToolbarControlContainer.class,
+                CompositorViewHolder.class, Callback.class, TopUiThemeColorProvider.class,
+                TabObscuringHandler.class, ObservableSupplier.class, IdentityDiscController.class,
+                List.class, ActivityTabProvider.class, ScrimCoordinator.class,
+                ToolbarActionModeCallback.class, FindToolbarManager.class, ObservableSupplier.class,
+                ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
+                OneshotSupplier.class, boolean.class, ObservableSupplier.class,
+                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
+                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
+                ActivityLifecycleDispatcher.class, Supplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
+                WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
+                FullscreenManager.class, int.class, ObservableSupplier.class));
     }
 
     @Test
@@ -236,8 +266,6 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mAppThemeColorProvider"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mShareDelegateSupplier"));
-        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mShowStartSurfaceSupplier"));
@@ -255,6 +283,16 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mToolbar"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mBookmarkBridgeSupplier"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
+                "mOverlayPanelVisibilitySupplier"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabModelSelector"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mIncognitoStateProvider"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCountProvider"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mTabSwitcherModeCoordinatorPhone"));
@@ -347,8 +385,8 @@ public class BytecodeTest {
             return false;
         }
         try {
-            Constructor ctor1 = c1.getConstructor(parameterTypes);
-            Constructor ctor2 = c2.getConstructor(parameterTypes);
+            Constructor ctor1 = c1.getDeclaredConstructor(parameterTypes);
+            Constructor ctor2 = c2.getDeclaredConstructor(parameterTypes);
             if (ctor1 != null && ctor2 != null) {
                 return true;
             }
