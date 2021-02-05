@@ -1015,7 +1015,6 @@
 		F979BE3225BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js in Resources */ = {isa = PBXBuildFile; fileRef = F979BE2E25BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js */; };
 		F979BE4725BCC5D3009B6ACF /* MainFrameAtDocumentEnd.js in Resources */ = {isa = PBXBuildFile; fileRef = F979BE4525BCC5D3009B6ACF /* MainFrameAtDocumentEnd.js */; };
 		F979BE4825BCC5D3009B6ACF /* MainFrameAtDocumentStart.js in Resources */ = {isa = PBXBuildFile; fileRef = F979BE4625BCC5D3009B6ACF /* MainFrameAtDocumentStart.js */; };
-		F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */; };
 		F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */ = {isa = PBXBuildFile; fileRef = F99505FE22937E3900CC6543 /* U2F-low-level.js */; };
 		F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */ = {isa = PBXBuildFile; fileRef = F9B23EE123F61173000EB3D8 /* PaymentRequest.js */; };
 		F9B23EE523F613E8000EB3D8 /* PaymentRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B23EE423F613E8000EB3D8 /* PaymentRequestExtension.swift */; };
@@ -7858,11 +7857,13 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = L6556KQ6XT;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -7878,6 +7879,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.brave.SPMLibraries;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
