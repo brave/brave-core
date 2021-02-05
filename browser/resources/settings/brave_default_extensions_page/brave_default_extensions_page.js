@@ -2,8 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import './change_ipfs_gateway_dialog.js';
-
 (function() {
 'use strict';
 
@@ -22,9 +20,7 @@ Polymer({
     showRestartToast_: Boolean,
     torEnabled_: Boolean,
     widevineEnabled_: Boolean,
-    disableTorOption_: Boolean,
-    ipfsEnabled_: Boolean,
-    showChangeIPFSGatewayDialog_: Boolean,
+    disableTorOption_: Boolean
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -40,7 +36,6 @@ Polymer({
     this.onWebTorrentEnabledChange_ = this.onWebTorrentEnabledChange_.bind(this)
     this.onBraveWalletEnabledChange_ = this.onBraveWalletEnabledChange_.bind(this)
     this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
-    this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
     this.openKeyboardShortcutsPage_ = this.openKeyboardShortcutsPage_.bind(this)
     this.onWidevineEnabledChange_ = this.onWidevineEnabledChange_.bind(this)
@@ -72,12 +67,6 @@ Polymer({
     this.browserProxy_.getWeb3ProviderList().then(list => {
       this.braveWeb3Providers_ = JSON.parse(list)
     });
-    this.browserProxy_.getIPFSResolveMethodList().then(list => {
-      this.ipfsResolveMethod_ = JSON.parse(list)
-    });
-    this.browserProxy_.getIPFSEnabled().then(enabled => {
-      this.ipfsEnabled_ = enabled
-    });
   },
 
   onWebTorrentEnabledChange_: function() {
@@ -90,10 +79,6 @@ Polymer({
 
   onHangoutsEnabledChange_: function() {
     this.browserProxy_.setHangoutsEnabled(this.$.hangoutsEnabled.checked);
-  },
-
-  onIPFSCompanionEnabledChange_: function() {
-    this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
   },
 
   restartBrowser_: function(e) {
@@ -127,15 +112,7 @@ Polymer({
 
   shouldShowRestartForGoogleLogin_: function(value) {
     return this.browserProxy_.wasSignInEnabledAtStartup() != value;
-  },
-
-  onChangeIPFSGatewayDialogTapped_: function() {
-    this.showChangeIPFSGatewayDialog_ = true;
-  },
-
-  onChangeIPFSGatewayDialogClosed_: function() {
-    this.showChangeIPFSGatewayDialog_ = false;
-  },
+  }
 
 });
 })();

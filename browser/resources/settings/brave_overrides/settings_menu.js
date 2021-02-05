@@ -166,6 +166,7 @@ RegisterPolymerTemplateModifications({
     // Move Appearance item
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
+
     // Add New Tab item
     const newTabEl = createMenuElement(
       loadTimeData.getString('braveNewTab'),
@@ -173,7 +174,6 @@ RegisterPolymerTemplateModifications({
       'brave_settings:new-tab',
       'newTab'
     )
-    appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Sync and Help Tips item
     const helpTipsEl = createMenuElement(
       loadTimeData.getString('braveHelpTips'),
@@ -216,6 +216,13 @@ RegisterPolymerTemplateModifications({
       'extensions',
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
+    const ipfsEl = createMenuElement(
+      loadTimeData.getString('braveIPFS'),
+      '/ipfs',
+      'brave_settings:ipfs',
+      'ipfs',
+    )
+    extensionEl.insertAdjacentElement('afterend', ipfsEl)
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
