@@ -18,13 +18,10 @@ namespace brave_ads {
 
 void RegisterP2APrefs(PrefRegistrySimple* prefs);
 
-void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(
-    PrefService* prefs,
-    const std::string& name);
+void RecordInWeeklyStorageAndEmitP2AHistogramAnswer(PrefService* prefs,
+                                                    const std::string& name);
 
-void EmitP2AHistogramAnswer(
-    const std::string& name,
-    uint16_t count_value);
+void EmitP2AHistogramAnswer(const std::string& name, uint16_t count_value);
 
 void SuspendP2AHistograms();
 

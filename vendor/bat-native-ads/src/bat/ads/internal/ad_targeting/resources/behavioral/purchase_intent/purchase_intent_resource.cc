@@ -8,11 +8,11 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_country_codes.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/result.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -30,8 +30,7 @@ bool PurchaseIntent::IsInitialized() const {
   return is_initialized_;
 }
 
-void PurchaseIntent::LoadForLocale(
-    const std::string& locale) {
+void PurchaseIntent::LoadForLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   const auto iter = kPurchaseIntentCountryCodes.find(country_code);
@@ -44,11 +43,9 @@ void PurchaseIntent::LoadForLocale(
   LoadForId(iter->second);
 }
 
-void PurchaseIntent::LoadForId(
-    const std::string& id) {
-  AdsClientHelper::Get()->LoadUserModelForId(id, [=](
-      const Result result,
-      const std::string& json) {
+void PurchaseIntent::LoadForId(const std::string& id) {
+  AdsClientHelper::Get()->LoadUserModelForId(id, [=](const Result result,
+                                                     const std::string& json) {
     if (result != SUCCESS) {
       BLOG(1, "Failed to load " << id << " purchase intent resource");
       is_initialized_ = false;
@@ -75,8 +72,7 @@ PurchaseIntentInfo PurchaseIntent::get() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool PurchaseIntent::FromJson(
-    const std::string& json) {
+bool PurchaseIntent::FromJson(const std::string& json) {
   PurchaseIntentInfo purchase_intent;
 
   base::Optional<base::Value> root = base::JSONReader::Read(json);
@@ -137,7 +133,7 @@ bool PurchaseIntent::FromJson(
   }
 
   for (base::DictionaryValue::Iterator it(*dict2); !it.IsAtEnd();
-      it.Advance()) {
+       it.Advance()) {
     PurchaseIntentSegmentKeywordInfo info;
     info.keywords = it.key();
     for (const auto& segment_ix : it.value().GetList()) {
@@ -148,8 +144,7 @@ bool PurchaseIntent::FromJson(
   }
 
   // Parsing field: "funnel_keywords"
-  base::Value* incoming_funnel_keywords =
-      root->FindDictPath("funnel_keywords");
+  base::Value* incoming_funnel_keywords = root->FindDictPath("funnel_keywords");
   if (!incoming_funnel_keywords) {
     BLOG(1, "Failed to load from JSON, funnel keywords missing");
     return false;
@@ -231,8 +226,8 @@ bool PurchaseIntent::FromJson(
 
   purchase_intent_ = purchase_intent;
 
-  BLOG(1, "Parsed purchase intent user model version "
-      << purchase_intent.version);
+  BLOG(1,
+       "Parsed purchase intent user model version " << purchase_intent.version);
 
   return true;
 }

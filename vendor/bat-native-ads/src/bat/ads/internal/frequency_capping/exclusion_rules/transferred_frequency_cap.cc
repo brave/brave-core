@@ -21,20 +21,19 @@ namespace {
 const uint64_t kTransferredFrequencyCap = 1;
 }  // namespace
 
-TransferredFrequencyCap::TransferredFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+TransferredFrequencyCap::TransferredFrequencyCap(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 TransferredFrequencyCap::~TransferredFrequencyCap() = default;
 
-bool TransferredFrequencyCap::ShouldExclude(
-    const CreativeAdInfo& ad) {
+bool TransferredFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
-    last_message_ = base::StringPrintf("campaignId %s has exceeded the "
-        "frequency capping for transferred", ad.campaign_id.c_str());
+    last_message_ = base::StringPrintf(
+        "campaignId %s has exceeded the "
+        "frequency capping for transferred",
+        ad.campaign_id.c_str());
     return true;
   }
 
@@ -45,8 +44,7 @@ std::string TransferredFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool TransferredFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
+bool TransferredFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
   const std::deque<uint64_t> history =
       GetTimestampHistoryForAdEvents(ad_events);
 
@@ -62,12 +60,13 @@ AdEventList TransferredFrequencyCap::FilterAdEvents(
     const CreativeAdInfo& ad) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kAdNotification ||
-        ad_event.campaign_id != ad.campaign_id ||
-        ad_event.confirmation_type != ConfirmationType::kTransferred;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&ad](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kAdNotification ||
+               ad_event.campaign_id != ad.campaign_id ||
+               ad_event.confirmation_type != ConfirmationType::kTransferred;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

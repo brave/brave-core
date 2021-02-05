@@ -22,12 +22,7 @@ std::string GetHardware() {
 }
 
 std::vector<std::string> GetKeywords() {
-  return {
-    "amazon",
-    "virtualbox",
-    "vmware",
-    "xen"
-  };
+  return {"amazon", "virtualbox", "vmware", "xen"};
 }
 
 bool IsVirtualMachine() {

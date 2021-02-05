@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CATALOG_CATALOG_PROMOTED_CONTENT_AD_PAYLOAD_INFO_H_
-#define BAT_ADS_INTERNAL_CATALOG_CATALOG_PROMOTED_CONTENT_AD_PAYLOAD_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_PROMOTED_CONTENT_AD_PAYLOAD_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_PROMOTED_CONTENT_AD_PAYLOAD_INFO_H_
 
 #include <string>
 
@@ -16,10 +16,8 @@ struct CatalogPromotedContentAdPayloadInfo {
       const CatalogPromotedContentAdPayloadInfo& info);
   ~CatalogPromotedContentAdPayloadInfo();
 
-  bool operator==(
-      const CatalogPromotedContentAdPayloadInfo& rhs) const;
-  bool operator!=(
-      const CatalogPromotedContentAdPayloadInfo& rhs) const;
+  bool operator==(const CatalogPromotedContentAdPayloadInfo& rhs) const;
+  bool operator!=(const CatalogPromotedContentAdPayloadInfo& rhs) const;
 
   std::string title;
   std::string description;
@@ -28,4 +26,4 @@ struct CatalogPromotedContentAdPayloadInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_PROMOTED_CONTENT_AD_PAYLOAD_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_PROMOTED_CONTENT_AD_PAYLOAD_INFO_H_

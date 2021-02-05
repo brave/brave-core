@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
-#define BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 
 #include <stdint.h>
 
@@ -17,11 +17,11 @@
 #include "base/files/file_path.h"
 #include "base/optional.h"
 #include "base/time/time.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/database.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ads {
 
@@ -87,67 +87,49 @@ base::FilePath GetResourcesPath();
 base::Optional<std::string> ReadFileFromResourcePathToString(
     const std::string& name);
 
-void SetEnvironment(
-    const Environment environment);
+void SetEnvironment(const Environment environment);
 
-void SetSysInfo(
-    const SysInfo& sys_info);
+void SetSysInfo(const SysInfo& sys_info);
 
-void SetBuildChannel(
-    const bool is_release,
-    const std::string& name);
+void SetBuildChannel(const bool is_release, const std::string& name);
 
-void MockLocaleHelper(
-    const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
-    const std::string& locale);
+void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
+                      const std::string& locale);
 
-void MockPlatformHelper(
-    const std::unique_ptr<PlatformHelperMock>& mock,
-    const PlatformType platform_type);
+void MockPlatformHelper(const std::unique_ptr<PlatformHelperMock>& mock,
+                        const PlatformType platform_type);
 
 void MockIsNetworkConnectionAvailable(
     const std::unique_ptr<AdsClientMock>& mock,
     const bool is_available);
 
-void MockIsForeground(
-    const std::unique_ptr<AdsClientMock>& mock,
-    const bool is_foreground);
+void MockIsForeground(const std::unique_ptr<AdsClientMock>& mock,
+                      const bool is_foreground);
 
-void MockShouldShowNotifications(
-    const std::unique_ptr<AdsClientMock>& mock,
-    const bool should_show);
+void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
+                                 const bool should_show);
 
-void MockShowNotification(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockCloseNotification(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockSave(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockSave(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockLoad(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockLoadUserModelForId(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadUserModelForId(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockLoadResourceForId(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockUrlRequest(
-    const std::unique_ptr<AdsClientMock>& mock,
-    const URLEndpoints& endpoints);
+void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
+                    const URLEndpoints& endpoints);
 
-void MockRunDBTransaction(
-    const std::unique_ptr<AdsClientMock>& mock,
-    const std::unique_ptr<Database>& database);
+void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
+                          const std::unique_ptr<Database>& database);
 
-void MockPrefs(
-    const std::unique_ptr<AdsClientMock>& mock);
+void MockPrefs(const std::unique_ptr<AdsClientMock>& mock);
 
-base::Time TimeFromDateString(
-    const std::string& date);
+base::Time TimeFromDateString(const std::string& date);
 
 int64_t DistantPast();
 std::string DistantPastAsISO8601();
@@ -160,4 +142,4 @@ std::string DistantFutureAsISO8601();
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_

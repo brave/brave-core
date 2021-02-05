@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATION_SERVING_H_
-#define BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATION_SERVING_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATIONS_AD_NOTIFICATION_SERVING_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATIONS_AD_NOTIFICATION_SERVING_H_
 
 #include "base/gtest_prod_util.h"
 #include "base/time/time.h"
@@ -47,58 +47,47 @@ class AdServing {
   // TODO(https://github.com/brave/brave-browser/issues/12315): Update
   // BatAdsAdNotificationPacingTest to test the contract, not the implementation
   FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-      PacingDisableDelivery);
+                           PacingDisableDelivery);
+  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest, NoPacing);
+  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest, SimplePacing);
+  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest, NoPacingPrioritized);
   FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-      NoPacing);
+                           PacingDisableDeliveryPrioritized);
   FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-      SimplePacing);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-      NoPacingPrioritized);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-      PacingDisableDeliveryPrioritized);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-      PacingAndPrioritization);
+                           PacingAndPrioritization);
 
   bool NextIntervalHasElapsed();
 
-  base::Time MaybeServeAfter(
-      const base::TimeDelta delay);
+  base::Time MaybeServeAfter(const base::TimeDelta delay);
 
-  void MaybeServeAdForSegments(
-      const SegmentList& segments,
-      MaybeServeAdForSegmentsCallback callback);
+  void MaybeServeAdForSegments(const SegmentList& segments,
+                               MaybeServeAdForSegmentsCallback callback);
 
   void MaybeServeAdForParentChildSegments(
       const SegmentList& segments,
       const AdEventList& ad_events,
       MaybeServeAdForSegmentsCallback callback);
 
-  void MaybeServeAdForParentSegments(
-      const SegmentList& segments,
-      const AdEventList& ad_events,
-      MaybeServeAdForSegmentsCallback callback);
+  void MaybeServeAdForParentSegments(const SegmentList& segments,
+                                     const AdEventList& ad_events,
+                                     MaybeServeAdForSegmentsCallback callback);
 
-  void MaybeServeAdForUntargeted(
-      const AdEventList& ad_events,
-      MaybeServeAdForSegmentsCallback callback);
+  void MaybeServeAdForUntargeted(const AdEventList& ad_events,
+                                 MaybeServeAdForSegmentsCallback callback);
 
-  void MaybeServeAd(
-      const CreativeAdNotificationList& ads,
-      MaybeServeAdForSegmentsCallback callback);
+  void MaybeServeAd(const CreativeAdNotificationList& ads,
+                    MaybeServeAdForSegmentsCallback callback);
 
-  CreativeAdNotificationList PaceAds(
-      const CreativeAdNotificationList& ads);
+  CreativeAdNotificationList PaceAds(const CreativeAdNotificationList& ads);
 
-  void MaybeDeliverAd(
-      const CreativeAdNotificationInfo& ad,
-      MaybeServeAdForSegmentsCallback callback);
+  void MaybeDeliverAd(const CreativeAdNotificationInfo& ad,
+                      MaybeServeAdForSegmentsCallback callback);
 
   void FailedToDeliverAd();
 
   void DeliveredAd();
 
-  void RecordAdOpportunityForSegments(
-      const SegmentList& segments);
+  void RecordAdOpportunityForSegments(const SegmentList& segments);
 
   Timer timer_;
 
@@ -113,4 +102,4 @@ class AdServing {
 }  // namespace ad_notifications
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATION_SERVING_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATIONS_AD_NOTIFICATION_SERVING_H_

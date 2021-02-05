@@ -8,9 +8,9 @@
 namespace ads {
 
 RedeemUnblindedPaymentTokensDelegateMock::
-RedeemUnblindedPaymentTokensDelegateMock() = default;
+    RedeemUnblindedPaymentTokensDelegateMock() = default;
 
 RedeemUnblindedPaymentTokensDelegateMock::
-~RedeemUnblindedPaymentTokensDelegateMock() = default;
+    ~RedeemUnblindedPaymentTokensDelegateMock() = default;
 
 }  // namespace ads

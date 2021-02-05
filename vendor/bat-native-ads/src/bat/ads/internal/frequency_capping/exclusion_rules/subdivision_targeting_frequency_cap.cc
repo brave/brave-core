@@ -9,11 +9,11 @@
 
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/locale/subdivision_code_util.h"
 #include "bat/ads/internal/logging.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {
 
@@ -25,12 +25,13 @@ bool DoesAdSupportSubdivisionTargetingCode(
   const std::string country_code =
       locale::GetCountryCode(subdivision_targeting_code);
 
-  const auto iter = std::find_if(ad.geo_targets.begin(), ad.geo_targets.end(),
-      [&subdivision_targeting_code, &country_code](
-          const std::string& geo_target) {
-    return geo_target == subdivision_targeting_code ||
-        geo_target == country_code;
-  });
+  const auto iter =
+      std::find_if(ad.geo_targets.begin(), ad.geo_targets.end(),
+                   [&subdivision_targeting_code,
+                    &country_code](const std::string& geo_target) {
+                     return geo_target == subdivision_targeting_code ||
+                            geo_target == country_code;
+                   });
 
   if (iter == ad.geo_targets.end()) {
     return false;
@@ -39,15 +40,15 @@ bool DoesAdSupportSubdivisionTargetingCode(
   return true;
 }
 
-bool DoesAdTargetSubdivision(
-    const CreativeAdInfo& ad) {
-  const auto iter = std::find_if(ad.geo_targets.begin(), ad.geo_targets.end(),
+bool DoesAdTargetSubdivision(const CreativeAdInfo& ad) {
+  const auto iter = std::find_if(
+      ad.geo_targets.begin(), ad.geo_targets.end(),
       [](const std::string& geo_target) {
-    const std::vector<std::string> components = base::SplitString(
-        geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+        const std::vector<std::string> components = base::SplitString(
+            geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
-    return components.size() == 2;
-  });
+        return components.size() == 2;
+      });
 
   if (iter == ad.geo_targets.end()) {
     return false;
@@ -66,11 +67,12 @@ SubdivisionTargetingFrequencyCap::SubdivisionTargetingFrequencyCap(
 
 SubdivisionTargetingFrequencyCap::~SubdivisionTargetingFrequencyCap() = default;
 
-bool SubdivisionTargetingFrequencyCap::ShouldExclude(
-    const CreativeAdInfo& ad) {
+bool SubdivisionTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   if (!DoesRespectCap(ad)) {
-    last_message_ = base::StringPrintf("creativeSetId %s excluded as not "
-        "within the targeted subdivision", ad.creative_set_id.c_str());
+    last_message_ = base::StringPrintf(
+        "creativeSetId %s excluded as not "
+        "within the targeted subdivision",
+        ad.creative_set_id.c_str());
 
     return true;
   }

@@ -16,9 +16,7 @@ EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;
 
 bool EpsilonGreedyBanditArmInfo::operator==(
     const EpsilonGreedyBanditArmInfo& rhs) const {
-  return segment == rhs.segment &&
-      value == rhs.value &&
-      pulls == rhs.pulls;
+  return segment == rhs.segment && value == rhs.value && pulls == rhs.pulls;
 }
 
 bool EpsilonGreedyBanditArmInfo::operator!=(

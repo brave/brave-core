@@ -7,10 +7,10 @@
 
 namespace ads {
 
-RefillUnblindedTokensDelegateMock::
-RefillUnblindedTokensDelegateMock() = default;
+RefillUnblindedTokensDelegateMock::RefillUnblindedTokensDelegateMock() =
+    default;
 
-RefillUnblindedTokensDelegateMock::
-~RefillUnblindedTokensDelegateMock() = default;
+RefillUnblindedTokensDelegateMock::~RefillUnblindedTokensDelegateMock() =
+    default;
 
 }  // namespace ads

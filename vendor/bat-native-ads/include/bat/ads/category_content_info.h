@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_CATEGORY_CONTENT_H_
-#define BAT_ADS_CATEGORY_CONTENT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CATEGORY_CONTENT_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CATEGORY_CONTENT_INFO_H_
 
 #include <string>
 
@@ -15,24 +15,16 @@ namespace ads {
 
 struct ADS_EXPORT CategoryContentInfo {
   CategoryContentInfo();
-  CategoryContentInfo(
-      const CategoryContentInfo& info);
+  CategoryContentInfo(const CategoryContentInfo& info);
   ~CategoryContentInfo();
 
-  bool operator==(
-      const CategoryContentInfo& rhs) const;
-  bool operator!=(
-      const CategoryContentInfo& rhs) const;
+  bool operator==(const CategoryContentInfo& rhs) const;
+  bool operator!=(const CategoryContentInfo& rhs) const;
 
-  enum class OptAction {
-    kNone = 0,
-    kOptIn,
-    kOptOut
-  };
+  enum class OptAction { kNone = 0, kOptIn, kOptOut };
 
   std::string ToJson() const;
-  Result FromJson(
-      const std::string& json);
+  Result FromJson(const std::string& json);
 
   std::string category;
   OptAction opt_action = OptAction::kNone;
@@ -40,4 +32,4 @@ struct ADS_EXPORT CategoryContentInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_CATEGORY_CONTENT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CATEGORY_CONTENT_INFO_H_

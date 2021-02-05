@@ -10,18 +10,16 @@
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
+#include "bat/ads/internal/logging.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 #include "third_party/sqlite/sqlite3.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 namespace {
 
-void Bind(
-    sql::Statement* statement,
-    const DBCommandBinding& binding) {
+void Bind(sql::Statement* statement, const DBCommandBinding& binding) {
   DCHECK(statement);
 
   switch (binding.value->which()) {
@@ -104,20 +102,17 @@ DBRecordPtr CreateRecord(
 
 }  // namespace
 
-Database::Database(
-    const base::FilePath& path)
-    : db_path_(path) {
+Database::Database(const base::FilePath& path) : db_path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  db_.set_error_callback(base::BindRepeating(&Database::OnErrorCallback,
-      base::Unretained(this)));
+  db_.set_error_callback(
+      base::BindRepeating(&Database::OnErrorCallback, base::Unretained(this)));
 }
 
 Database::~Database() = default;
 
-void Database::RunTransaction(
-    DBTransactionPtr transaction,
-    DBCommandResponse* command_response) {
+void Database::RunTransaction(DBTransactionPtr transaction,
+                              DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(command_response);
@@ -141,7 +136,7 @@ void Database::RunTransaction(
     switch (command->type) {
       case DBCommand::Type::INITIALIZE: {
         status = Initialize(transaction->version,
-            transaction->compatible_version, command_response);
+                            transaction->compatible_version, command_response);
         break;
       }
 
@@ -203,9 +198,9 @@ DBCommandResponse::Status Database::Initialize(
     }
 
     is_initialized_ = true;
-    memory_pressure_listener_.reset(new base::MemoryPressureListener(FROM_HERE,
-        base::BindRepeating(
-            &Database::OnMemoryPressure, base::Unretained(this))));
+    memory_pressure_listener_.reset(new base::MemoryPressureListener(
+        FROM_HERE, base::BindRepeating(&Database::OnMemoryPressure,
+                                       base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
@@ -221,8 +216,7 @@ DBCommandResponse::Status Database::Initialize(
   return DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status Database::Execute(
-    DBCommand* command) {
+DBCommandResponse::Status Database::Execute(DBCommand* command) {
   DCHECK(command);
 
   if (!is_initialized_) {
@@ -238,8 +232,7 @@ DBCommandResponse::Status Database::Execute(
   return DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status Database::Run(
-    DBCommand* command) {
+DBCommandResponse::Status Database::Run(DBCommand* command) {
   DCHECK(command);
 
   if (!is_initialized_) {
@@ -264,9 +257,8 @@ DBCommandResponse::Status Database::Run(
   return DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status Database::Read(
-    DBCommand* command,
-    DBCommandResponse* command_response) {
+DBCommandResponse::Status Database::Read(DBCommand* command,
+                                         DBCommandResponse* command_response) {
   DCHECK(command);
   DCHECK(command_response);
 
@@ -298,9 +290,8 @@ DBCommandResponse::Status Database::Read(
   return DBCommandResponse::Status::RESPONSE_OK;
 }
 
-DBCommandResponse::Status Database::Migrate(
-    const int32_t version,
-    const int32_t compatible_version) {
+DBCommandResponse::Status Database::Migrate(const int32_t version,
+                                            const int32_t compatible_version) {
   if (!is_initialized_) {
     return DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
@@ -311,9 +302,7 @@ DBCommandResponse::Status Database::Migrate(
   return DBCommandResponse::Status::RESPONSE_OK;
 }
 
-void Database::OnErrorCallback(
-    const int error,
-    sql::Statement* statement) {
+void Database::OnErrorCallback(const int error, sql::Statement* statement) {
   BLOG(0, "Database error: " << db_.GetDiagnosticInfo(error, statement));
 }
 

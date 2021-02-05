@@ -19,8 +19,7 @@ class BatAdsUserActivityTest : public UnitTestBase {
   ~BatAdsUserActivityTest() override = default;
 };
 
-TEST_F(BatAdsUserActivityTest,
-    HasInstance) {
+TEST_F(BatAdsUserActivityTest, HasInstance) {
   // Arrange
 
   // Act
@@ -30,8 +29,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsUserActivityTest,
-    RecordOpenedNewOrFocusedOnExistingTabEvent) {
+TEST_F(BatAdsUserActivityTest, RecordOpenedNewOrFocusedOnExistingTabEvent) {
   // Arrange
 
   const UserActivityEventType event_type =
@@ -48,8 +46,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_NE(history.end(), history.find(event_type));
 }
 
-TEST_F(BatAdsUserActivityTest,
-    RecordClosedTabEvent) {
+TEST_F(BatAdsUserActivityTest, RecordClosedTabEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
 
@@ -63,8 +60,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_NE(history.end(), history.find(event_type));
 }
 
-TEST_F(BatAdsUserActivityTest,
-    RecordPlayedMediaEvent) {
+TEST_F(BatAdsUserActivityTest, RecordPlayedMediaEvent) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kPlayedMedia;
 
@@ -78,8 +74,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_NE(history.end(), history.find(event_type));
 }
 
-TEST_F(BatAdsUserActivityTest,
-    RecordBrowserWindowDidBecomeActiveEvent) {
+TEST_F(BatAdsUserActivityTest, RecordBrowserWindowDidBecomeActiveEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserWindowDidBecomeActive;
@@ -94,8 +89,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_NE(history.end(), history.find(event_type));
 }
 
-TEST_F(BatAdsUserActivityTest,
-    RecordBrowserWindowDidEnterBackgroundEvent) {
+TEST_F(BatAdsUserActivityTest, RecordBrowserWindowDidEnterBackgroundEvent) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kBrowserWindowDidEnterBackground;
@@ -110,8 +104,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_NE(history.end(), history.find(event_type));
 }
 
-TEST_F(BatAdsUserActivityTest,
-    RecordTheSameEventMultipleTimes) {
+TEST_F(BatAdsUserActivityTest, RecordTheSameEventMultipleTimes) {
   // Arrange
   const UserActivityEventType event_type =
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab;
@@ -130,17 +123,14 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_EQ(2UL, user_activity_event_history.size());
 }
 
-TEST_F(BatAdsUserActivityTest,
-    GetHistory) {
+TEST_F(BatAdsUserActivityTest, GetHistory) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kClosedTab);
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kPlayedMedia);
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kBrowserWindowDidBecomeActive);
   UserActivity::Get()->RecordEvent(
@@ -154,8 +144,7 @@ TEST_F(BatAdsUserActivityTest,
   EXPECT_EQ(5UL, history.size());
 }
 
-TEST_F(BatAdsUserActivityTest,
-    MaximumUserActivityEventHistoryEntries) {
+TEST_F(BatAdsUserActivityTest, MaximumUserActivityEventHistoryEntries) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
 

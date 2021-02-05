@@ -16,8 +16,7 @@ namespace {
 
 const char kEmptyCatalog[] = "empty_catalog.json";
 
-const char kCatalogWithSingleCampaign[] =
-    "catalog_with_single_campaign.json";
+const char kCatalogWithSingleCampaign[] = "catalog_with_single_campaign.json";
 
 const char kCatalogWithMultipleCampaigns[] =
     "catalog_with_multiple_campaigns.json";
@@ -337,8 +336,7 @@ class BatAdsCatalogTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsCatalogTest,
-    ParseCatalog) {
+TEST_F(BatAdsCatalogTest, ParseCatalog) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -354,8 +352,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_TRUE(success);
 }
 
-TEST_F(BatAdsCatalogTest,
-    ParseEmptyCatalog) {
+TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kEmptyCatalog);
@@ -371,8 +368,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_TRUE(success);
 }
 
-TEST_F(BatAdsCatalogTest,
-    InvalidCatalog) {
+TEST_F(BatAdsCatalogTest, InvalidCatalog) {
   // Arrange
 
   // Act
@@ -383,8 +379,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_FALSE(success);
 }
 
-TEST_F(BatAdsCatalogTest,
-    HasChanged) {
+TEST_F(BatAdsCatalogTest, HasChanged) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -403,8 +398,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_TRUE(has_changed);
 }
 
-TEST_F(BatAdsCatalogTest,
-    HasNotChanged) {
+TEST_F(BatAdsCatalogTest, HasNotChanged) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -423,8 +417,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_FALSE(has_changed);
 }
 
-TEST_F(BatAdsCatalogTest,
-    GetId) {
+TEST_F(BatAdsCatalogTest, GetId) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -442,8 +435,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_EQ("29e5c8bc0ba319069980bb390d8e8f9b58c05a20", id);
 }
 
-TEST_F(BatAdsCatalogTest,
-    GetVersion) {
+TEST_F(BatAdsCatalogTest, GetVersion) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -461,8 +453,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_EQ(6, version);
 }
 
-TEST_F(BatAdsCatalogTest,
-    GetPing) {
+TEST_F(BatAdsCatalogTest, GetPing) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -480,8 +471,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_EQ(7200, ping);
 }
 
-TEST_F(BatAdsCatalogTest,
-    GetIssuers) {
+TEST_F(BatAdsCatalogTest, GetIssuers) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
@@ -514,8 +504,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_EQ(expected_catalog_issuers, catalog_issuers);
 }
 
-TEST_F(BatAdsCatalogTest,
-    GetCampaign) {
+TEST_F(BatAdsCatalogTest, GetCampaign) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithSingleCampaign);
@@ -537,8 +526,7 @@ TEST_F(BatAdsCatalogTest,
   EXPECT_EQ(expected_catalog_campaigns, catalog_campaigns);
 }
 
-TEST_F(BatAdsCatalogTest,
-    GetCampaigns) {
+TEST_F(BatAdsCatalogTest, GetCampaigns) {
   // Arrange
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);

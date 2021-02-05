@@ -11,8 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsSubdivisionCodeUtilTest,
-    GetCountryCode) {
+TEST(BatAdsSubdivisionCodeUtilTest, GetCountryCode) {
   // Arrange
 
   // Act
@@ -22,8 +21,7 @@ TEST(BatAdsSubdivisionCodeUtilTest,
   EXPECT_EQ("US", country_code);
 }
 
-TEST(BatAdsSubdivisionCodeUtilTest,
-    GetSubdivisionCode) {
+TEST(BatAdsSubdivisionCodeUtilTest, GetSubdivisionCode) {
   // Arrange
 
   // Act

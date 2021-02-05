@@ -13,9 +13,9 @@
 namespace brave_ads {
 
 BackgroundHelperAndroid::BackgroundHelperAndroid() {
-  app_status_listener_ = base::android::ApplicationStatusListener::New(
-      base::BindRepeating(&BackgroundHelperAndroid::OnApplicationStateChange,
-      AsWeakPtr()));
+  app_status_listener_ =
+      base::android::ApplicationStatusListener::New(base::BindRepeating(
+          &BackgroundHelperAndroid::OnApplicationStateChange, AsWeakPtr()));
 
   last_state_ = base::android::ApplicationStatusListener::GetState();
 }
@@ -37,8 +37,9 @@ void BackgroundHelperAndroid::OnApplicationStateChange(
     base::android::ApplicationState state) {
   if (state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnForeground();
-  } else if (last_state_ != state && last_state_ ==
-      base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+  } else if (last_state_ != state &&
+             last_state_ ==
+                 base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnBackground();
   }
 

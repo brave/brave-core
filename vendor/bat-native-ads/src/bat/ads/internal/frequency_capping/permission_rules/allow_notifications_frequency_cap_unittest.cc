@@ -12,15 +12,14 @@
 
 namespace ads {
 
-class BatAdsAllowNotificationsFrequencyCapTest : public UnitTestBase{
+class BatAdsAllowNotificationsFrequencyCapTest : public UnitTestBase {
  protected:
   BatAdsAllowNotificationsFrequencyCapTest() = default;
 
   ~BatAdsAllowNotificationsFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsAllowNotificationsFrequencyCapTest,
-    AllowAd) {
+TEST_F(BatAdsAllowNotificationsFrequencyCapTest, AllowAd) {
   // Arrange
   MockShouldShowNotifications(ads_client_mock_, true);
 
@@ -32,8 +31,7 @@ TEST_F(BatAdsAllowNotificationsFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsAllowNotificationsFrequencyCapTest,
-    DoNotAllowAd) {
+TEST_F(BatAdsAllowNotificationsFrequencyCapTest, DoNotAllowAd) {
   // Arrange
   MockShouldShowNotifications(ads_client_mock_, false);
 

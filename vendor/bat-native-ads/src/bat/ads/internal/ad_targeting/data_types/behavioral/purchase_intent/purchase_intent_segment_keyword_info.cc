@@ -14,8 +14,7 @@ PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo() = default;
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
     const std::vector<std::string>& segments,
     const std::string& keywords)
-    : segments(segments),
-      keywords(keywords) {}
+    : segments(segments), keywords(keywords) {}
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo(
     const PurchaseIntentSegmentKeywordInfo& info) = default;

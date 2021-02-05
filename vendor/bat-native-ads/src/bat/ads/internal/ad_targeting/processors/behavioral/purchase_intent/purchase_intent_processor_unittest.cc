@@ -27,7 +27,7 @@ class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsPurchaseIntentProcessorTest,
-    DoNotProcessIfResourceIsNotInitialized) {
+       DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
   resource::PurchaseIntent resource;
 
@@ -43,8 +43,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    DoNotProcessForInvalidUrl) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForLocale("en-US");
@@ -61,8 +60,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    NeverProcessed) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForLocale("en-US");
@@ -78,8 +76,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    ProcessUrl) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForLocale("en-US");
@@ -97,23 +94,13 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-    {
-      "segment 2", {
-        PurchaseIntentSignalHistoryInfo(now, weight)
-      }
-    },
-    {
-      "segment 3", {
-        PurchaseIntentSignalHistoryInfo(now, weight)
-      }
-    }
-  };
+      {"segment 2", {PurchaseIntentSignalHistoryInfo(now, weight)}},
+      {"segment 3", {PurchaseIntentSignalHistoryInfo(now, weight)}}};
 
   EXPECT_TRUE(CompareMaps(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    ProcessMultipleMatchingUrls) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForId(kUnitedStatesCountryCode);
@@ -133,25 +120,17 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-    {
-      "segment 2", {
-        PurchaseIntentSignalHistoryInfo(now, weight),
-        PurchaseIntentSignalHistoryInfo(now, weight)
-      }
-    },
-    {
-      "segment 3", {
-        PurchaseIntentSignalHistoryInfo(now, weight),
-        PurchaseIntentSignalHistoryInfo(now, weight)
-      }
-    }
-  };
+      {"segment 2",
+       {PurchaseIntentSignalHistoryInfo(now, weight),
+        PurchaseIntentSignalHistoryInfo(now, weight)}},
+      {"segment 3",
+       {PurchaseIntentSignalHistoryInfo(now, weight),
+        PurchaseIntentSignalHistoryInfo(now, weight)}}};
 
   EXPECT_TRUE(CompareMaps(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    ProcessMultipleUniqueUrls) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForId(kUnitedStatesCountryCode);
@@ -176,25 +155,17 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-    {
-      "segment 2", {
-        PurchaseIntentSignalHistoryInfo(now_1, weight),
-        PurchaseIntentSignalHistoryInfo(now_2, weight)
-      }
-    },
-    {
-      "segment 3", {
-        PurchaseIntentSignalHistoryInfo(now_1, weight),
-        PurchaseIntentSignalHistoryInfo(now_2, weight)
-      }
-    }
-  };
+      {"segment 2",
+       {PurchaseIntentSignalHistoryInfo(now_1, weight),
+        PurchaseIntentSignalHistoryInfo(now_2, weight)}},
+      {"segment 3",
+       {PurchaseIntentSignalHistoryInfo(now_1, weight),
+        PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
   EXPECT_TRUE(CompareMaps(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    ProcessMultipleMatchingKeywords) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForId(kUnitedStatesCountryCode);
@@ -221,24 +192,15 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-    {
-      "segment 1", {
-        PurchaseIntentSignalHistoryInfo(now_1, weight),
-        PurchaseIntentSignalHistoryInfo(now_2, weight)
-      }
-    },
-    {
-      "segment 2", {
-        PurchaseIntentSignalHistoryInfo(now_2, weight)
-      }
-    }
-  };
+      {"segment 1",
+       {PurchaseIntentSignalHistoryInfo(now_1, weight),
+        PurchaseIntentSignalHistoryInfo(now_2, weight)}},
+      {"segment 2", {PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
   EXPECT_TRUE(CompareMaps(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    ProcessMultipleUniqueKeywords) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForId(kUnitedStatesCountryCode);
@@ -264,19 +226,14 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-    {
-      "segment 1", {
-        PurchaseIntentSignalHistoryInfo(now_1, weight),
-        PurchaseIntentSignalHistoryInfo(now_2, weight)
-      }
-    }
-  };
+      {"segment 1",
+       {PurchaseIntentSignalHistoryInfo(now_1, weight),
+        PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
   EXPECT_TRUE(CompareMaps(expected_history, history));
 }
 
-TEST_F(BatAdsPurchaseIntentProcessorTest,
-    ProcessSegmentAndFunnelKeywords) {
+TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.LoadForId(kUnitedStatesCountryCode);
@@ -296,12 +253,10 @@ TEST_F(BatAdsPurchaseIntentProcessorTest,
   const uint16_t weight = 3;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-    {
-      "segment 1", {
-        PurchaseIntentSignalHistoryInfo(now, weight),
-      }
-    }
-  };
+      {"segment 1",
+       {
+           PurchaseIntentSignalHistoryInfo(now, weight),
+       }}};
 
   EXPECT_TRUE(CompareMaps(expected_history, history));
 }

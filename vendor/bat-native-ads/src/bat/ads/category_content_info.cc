@@ -5,26 +5,23 @@
 
 #include "bat/ads/category_content_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 CategoryContentInfo::CategoryContentInfo() = default;
 
-CategoryContentInfo::CategoryContentInfo(
-    const CategoryContentInfo& info) = default;
+CategoryContentInfo::CategoryContentInfo(const CategoryContentInfo& info) =
+    default;
 
 CategoryContentInfo::~CategoryContentInfo() = default;
 
-bool CategoryContentInfo::operator==(
-    const CategoryContentInfo& rhs) const {
-  return category == rhs.category &&
-      opt_action == rhs.opt_action;
+bool CategoryContentInfo::operator==(const CategoryContentInfo& rhs) const {
+  return category == rhs.category && opt_action == rhs.opt_action;
 }
 
-bool CategoryContentInfo::operator!=(
-    const CategoryContentInfo& rhs) const {
+bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
   return !(*this == rhs);
 }
 
@@ -34,8 +31,7 @@ std::string CategoryContentInfo::ToJson() const {
   return json;
 }
 
-Result CategoryContentInfo::FromJson(
-    const std::string& json) {
+Result CategoryContentInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -55,9 +51,7 @@ Result CategoryContentInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const CategoryContentInfo& content) {
+void SaveToJson(JsonWriter* writer, const CategoryContentInfo& content) {
   writer->StartObject();
 
   writer->String("category");

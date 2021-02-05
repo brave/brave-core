@@ -9,22 +9,18 @@ namespace ads {
 
 ConversionInfo::ConversionInfo() = default;
 
-ConversionInfo::ConversionInfo(
-    const ConversionInfo& info) = default;
+ConversionInfo::ConversionInfo(const ConversionInfo& info) = default;
 
 ConversionInfo::~ConversionInfo() = default;
 
-bool ConversionInfo::operator==(
-    const ConversionInfo& rhs) const {
-  return creative_set_id == rhs.creative_set_id &&
-      type == rhs.type &&
-      url_pattern == rhs.url_pattern &&
-      observation_window == rhs.observation_window &&
-      expiry_timestamp == rhs.expiry_timestamp;
+bool ConversionInfo::operator==(const ConversionInfo& rhs) const {
+  return creative_set_id == rhs.creative_set_id && type == rhs.type &&
+         url_pattern == rhs.url_pattern &&
+         observation_window == rhs.observation_window &&
+         expiry_timestamp == rhs.expiry_timestamp;
 }
 
-bool ConversionInfo::operator!=(
-    const ConversionInfo& rhs) const {
+bool ConversionInfo::operator!=(const ConversionInfo& rhs) const {
   return !(*this == rhs);
 }
 

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_
-#define BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_
 
 #include <string>
 #include <vector>
@@ -17,14 +17,11 @@ namespace ads {
 
 struct CatalogCampaignInfo {
   CatalogCampaignInfo();
-  CatalogCampaignInfo(
-      const CatalogCampaignInfo& info);
+  CatalogCampaignInfo(const CatalogCampaignInfo& info);
   ~CatalogCampaignInfo();
 
-  bool operator==(
-      const CatalogCampaignInfo& rhs) const;
-  bool operator!=(
-      const CatalogCampaignInfo& rhs) const;
+  bool operator==(const CatalogCampaignInfo& rhs) const;
+  bool operator!=(const CatalogCampaignInfo& rhs) const;
 
   std::string campaign_id;
   unsigned int priority = 0;
@@ -42,4 +39,4 @@ using CatalogCampaignList = std::vector<CatalogCampaignInfo>;
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CAMPAIGN_INFO_H_

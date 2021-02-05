@@ -13,8 +13,7 @@
 
 namespace ads {
 
-TEST(BatAdsAdGrantsTest,
-    InvalidJson) {
+TEST(BatAdsAdGrantsTest, InvalidJson) {
   // Arrange
   const std::string json = "{FOOBAR}";
 
@@ -27,8 +26,7 @@ TEST(BatAdsAdGrantsTest,
   EXPECT_FALSE(success);
 }
 
-TEST(BatAdsAdGrantsTest,
-    DoubleForAmount) {
+TEST(BatAdsAdGrantsTest, DoubleForAmount) {
   // Arrange
   const std::string json = R"(
     {
@@ -48,8 +46,7 @@ TEST(BatAdsAdGrantsTest,
   EXPECT_EQ(5.0, balance);
 }
 
-TEST(BatAdsAdGrantsTest,
-    IntegerForAmount) {
+TEST(BatAdsAdGrantsTest, IntegerForAmount) {
   // Arrange
   const std::string json = R"(
     {
@@ -69,8 +66,7 @@ TEST(BatAdsAdGrantsTest,
   EXPECT_EQ(5.0, balance);
 }
 
-TEST(BatAdsAdGrantsTest,
-     InvalidStringForAmount) {
+TEST(BatAdsAdGrantsTest, InvalidStringForAmount) {
   // Arrange
   const std::string json = R"(
     {
@@ -90,8 +86,7 @@ TEST(BatAdsAdGrantsTest,
   EXPECT_EQ(0.0, balance);
 }
 
-TEST(BatAdsAdGrantsTest,
-    InvalidTypeForAmount) {
+TEST(BatAdsAdGrantsTest, InvalidTypeForAmount) {
   // Arrange
   const std::string json = R"(
     {

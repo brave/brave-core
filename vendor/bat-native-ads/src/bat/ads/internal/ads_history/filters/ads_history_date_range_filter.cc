@@ -17,12 +17,12 @@ std::deque<AdHistoryInfo> AdsHistoryDateRangeFilter::Apply(
     const uint64_t to_timestamp) const {
   std::deque<AdHistoryInfo> filtered_ads_history = history;
 
-  const auto iter = std::remove_if(filtered_ads_history.begin(),
-      filtered_ads_history.end(), [from_timestamp, to_timestamp](
-          AdHistoryInfo& ad_history) {
-    return ad_history.timestamp_in_seconds < from_timestamp ||
-        ad_history.timestamp_in_seconds > to_timestamp;
-  });
+  const auto iter = std::remove_if(
+      filtered_ads_history.begin(), filtered_ads_history.end(),
+      [from_timestamp, to_timestamp](AdHistoryInfo& ad_history) {
+        return ad_history.timestamp_in_seconds < from_timestamp ||
+               ad_history.timestamp_in_seconds > to_timestamp;
+      });
 
   filtered_ads_history.erase(iter, filtered_ads_history.end());
 

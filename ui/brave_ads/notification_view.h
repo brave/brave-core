@@ -35,10 +35,9 @@ namespace brave_ads {
 class Notification;
 class NotificationControlButtonsView;
 
-class NotificationView
-    : public views::InkDropHostView,
-      public views::SlideOutControllerDelegate,
-      public views::FocusChangeListener {
+class NotificationView : public views::InkDropHostView,
+                         public views::SlideOutControllerDelegate,
+                         public views::FocusChangeListener {
  public:
   explicit NotificationView(const Notification& notification);
   class Observer {

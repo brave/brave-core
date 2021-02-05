@@ -10,8 +10,7 @@
 
 namespace ads {
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
-    EpsilonGreedyBanditEnabled) {
+TEST(BatAdsEpsilonGreedyBanditFeaturesTest, EpsilonGreedyBanditEnabled) {
   // Arrange
 
   // Act
@@ -20,8 +19,7 @@ TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
   EXPECT_FALSE(features::IsEpsilonGreedyBanditEnabled());
 }
 
-TEST(BatAdsEpsilonGreedyBanditFeaturesTest,
-    EpsilonGreedyBanditEpsilon) {
+TEST(BatAdsEpsilonGreedyBanditFeaturesTest, EpsilonGreedyBanditEpsilon) {
   // Arrange
 
   // Act

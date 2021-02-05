@@ -5,8 +5,8 @@
 
 #include "bat/ads/promoted_content_ad_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -24,8 +24,7 @@ bool PromotedContentAdInfo::IsValid() const {
     return false;
   }
 
-  if (title.empty() ||
-      description.empty()) {
+  if (title.empty() || description.empty()) {
     return false;
   }
 
@@ -38,8 +37,7 @@ std::string PromotedContentAdInfo::ToJson() const {
   return json;
 }
 
-Result PromotedContentAdInfo::FromJson(
-    const std::string& json) {
+Result PromotedContentAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -87,9 +85,7 @@ Result PromotedContentAdInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const PromotedContentAdInfo& info) {
+void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
   writer->StartObject();
 
   writer->String("type");

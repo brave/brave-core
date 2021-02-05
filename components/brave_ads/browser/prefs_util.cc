@@ -8,9 +8,7 @@
 namespace brave_ads {
 namespace prefs {
 
-const base::Value* GetValue(
-    PrefService* prefs,
-    const std::string& path) {
+const base::Value* GetValue(PrefService* prefs, const std::string& path) {
   DCHECK(prefs);
   DCHECK(!path.empty());
   DCHECK(prefs->FindPreference(path));

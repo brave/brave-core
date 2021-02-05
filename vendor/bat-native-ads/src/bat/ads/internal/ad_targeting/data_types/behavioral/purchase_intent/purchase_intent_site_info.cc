@@ -9,13 +9,10 @@ namespace ads {
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo() = default;
 
-PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
-    const SegmentList& segments,
-    const std::string& url_netloc,
-    const uint16_t weight)
-    : segments(segments),
-      url_netloc(url_netloc),
-      weight(weight) {}
+PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(const SegmentList& segments,
+                                               const std::string& url_netloc,
+                                               const uint16_t weight)
+    : segments(segments), url_netloc(url_netloc), weight(weight) {}
 
 PurchaseIntentSiteInfo::PurchaseIntentSiteInfo(
     const PurchaseIntentSiteInfo& info) = default;
@@ -24,9 +21,8 @@ PurchaseIntentSiteInfo::~PurchaseIntentSiteInfo() = default;
 
 bool PurchaseIntentSiteInfo::operator==(
     const PurchaseIntentSiteInfo& rhs) const {
-  return segments == rhs.segments &&
-      url_netloc == rhs.url_netloc &&
-          weight == rhs.weight;
+  return segments == rhs.segments && url_netloc == rhs.url_netloc &&
+         weight == rhs.weight;
 }
 
 bool PurchaseIntentSiteInfo::operator!=(

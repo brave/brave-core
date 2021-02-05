@@ -22,7 +22,7 @@ import git_common
 def HasFormatErrors():
   # For more options, see vendor/depot_tools/git_cl.py
   cmd = ['cl', 'format', '--diff']
-  diff = git_cl.RunGit(cmd)
+  diff = git_cl.RunGit(cmd).encode('utf-8')
   print(diff)
   return bool(diff)
 

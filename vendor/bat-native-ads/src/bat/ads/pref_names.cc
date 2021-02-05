@@ -35,20 +35,16 @@ const char kAutoDetectedAdsSubdivisionTargetingCode[] =
     "brave.brave_ads.automatically_detected_ads_subdivision_targeting_code";
 
 // Stores catalog id
-const char kCatalogId[] =
-    "brave.brave_ads.catalog_id";
+const char kCatalogId[] = "brave.brave_ads.catalog_id";
 
 // Stores catalog version
-const char kCatalogVersion[] =
-    "brave.brave_ads.catalog_version";
+const char kCatalogVersion[] = "brave.brave_ads.catalog_version";
 
 // Stores catalog ping
-const char kCatalogPing[] =
-    "brave.brave_ads.catalog_ping";
+const char kCatalogPing[] = "brave.brave_ads.catalog_ping";
 
 // Stores catalog last updated
-const char kCatalogLastUpdated[] =
-    "brave.brave_ads.catalog_last_updated";
+const char kCatalogLastUpdated[] = "brave.brave_ads.catalog_last_updated";
 
 // Stores epsilon greedy bandit arms
 const char kEpsilonGreedyBanditArms[] =

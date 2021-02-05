@@ -11,9 +11,7 @@
 namespace ads {
 namespace database {
 
-void OnResultCallback(
-    DBCommandResponsePtr response,
-    ResultCallback callback) {
+void OnResultCallback(DBCommandResponsePtr response, ResultCallback callback) {
   DCHECK(response);
 
   if (response->status != DBCommandResponse::Status::RESPONSE_OK) {

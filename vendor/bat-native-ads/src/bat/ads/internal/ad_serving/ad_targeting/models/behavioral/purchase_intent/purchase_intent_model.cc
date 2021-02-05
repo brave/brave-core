@@ -31,7 +31,7 @@ uint16_t CalculateScoreForHistory(
   for (const auto& signal_segment : history) {
     const base::Time signal_decayed_time =
         base::Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
-            base::TimeDelta::FromSeconds(time_window_in_seconds);
+        base::TimeDelta::FromSeconds(time_window_in_seconds);
 
     const base::Time now = base::Time::Now();
 

@@ -13,9 +13,9 @@
 #include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "build/build_config.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
@@ -50,9 +50,12 @@ using OnToggleSaveAdCallback =
 using OnToggleFlagAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
 
-using GetStatementCallback = base::OnceCallback<void(
-    const bool, const double, const uint64_t, const uint64_t,
-        const double, const double)>;
+using GetStatementCallback = base::OnceCallback<void(const bool,
+                                                     const double,
+                                                     const uint64_t,
+                                                     const uint64_t,
+                                                     const double,
+                                                     const double)>;
 
 class AdsService : public KeyedService {
  public:
@@ -62,24 +65,19 @@ class AdsService : public KeyedService {
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
 
-  void AddObserver(
-      AdsServiceObserver* observer);
-  void RemoveObserver(
-      AdsServiceObserver* observer);
+  void AddObserver(AdsServiceObserver* observer);
+  void RemoveObserver(AdsServiceObserver* observer);
 
   virtual bool IsSupportedLocale() const = 0;
   virtual bool IsNewlySupportedLocale() = 0;
 
   virtual bool IsEnabled() const = 0;
-  virtual void SetEnabled(
-      const bool is_enabled) = 0;
+  virtual void SetEnabled(const bool is_enabled) = 0;
 
-  virtual void SetAllowConversionTracking(
-      const bool should_allow) = 0;
+  virtual void SetAllowConversionTracking(const bool should_allow) = 0;
 
   virtual uint64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(
-      const uint64_t ads_per_hour) = 0;
+  virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
 
   virtual bool ShouldAllowAdsSubdivisionTargeting() const = 0;
   virtual std::string GetAdsSubdivisionTargetingCode() const = 0;
@@ -89,30 +87,23 @@ class AdsService : public KeyedService {
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
-  virtual void ChangeLocale(
-      const std::string& locale) = 0;
+  virtual void ChangeLocale(const std::string& locale) = 0;
 
-  virtual void OnPageLoaded(
-      const SessionID& tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& content) = 0;
+  virtual void OnPageLoaded(const SessionID& tab_id,
+                            const std::vector<GURL>& redirect_chain,
+                            const std::string& content) = 0;
 
-  virtual void OnMediaStart(
-      const SessionID& tab_id) = 0;
-  virtual void OnMediaStop(
-      const SessionID& tab_id) = 0;
+  virtual void OnMediaStart(const SessionID& tab_id) = 0;
+  virtual void OnMediaStop(const SessionID& tab_id) = 0;
 
-  virtual void OnTabUpdated(
-      const SessionID& tab_id,
-      const GURL& url,
-      const bool is_active,
-      const bool is_browser_active) = 0;
+  virtual void OnTabUpdated(const SessionID& tab_id,
+                            const GURL& url,
+                            const bool is_active,
+                            const bool is_browser_active) = 0;
 
-  virtual void OnTabClosed(
-      const SessionID& tab_id) = 0;
+  virtual void OnTabClosed(const SessionID& tab_id) = 0;
 
-  virtual void OnUserModelUpdated(
-      const std::string& id) = 0;
+  virtual void OnUserModelUpdated(const std::string& id) = 0;
 
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,
@@ -126,49 +117,40 @@ class AdsService : public KeyedService {
 
   virtual void ReconcileAdRewards() = 0;
 
-  virtual void GetAdsHistory(
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp,
-      OnGetAdsHistoryCallback callback) = 0;
+  virtual void GetAdsHistory(const uint64_t from_timestamp,
+                             const uint64_t to_timestamp,
+                             OnGetAdsHistoryCallback callback) = 0;
 
-  virtual void GetStatement(
-      GetStatementCallback callback) = 0;
+  virtual void GetStatement(GetStatementCallback callback) = 0;
 
-  virtual void ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      OnToggleAdThumbUpCallback callback) = 0;
-  virtual void ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      OnToggleAdThumbDownCallback callback) = 0;
-  virtual void ToggleAdOptInAction(
-      const std::string& category,
-      const int action,
-      OnToggleAdOptInActionCallback callback) = 0;
+  virtual void ToggleAdThumbUp(const std::string& creative_instance_id,
+                               const std::string& creative_set_id,
+                               const int action,
+                               OnToggleAdThumbUpCallback callback) = 0;
+  virtual void ToggleAdThumbDown(const std::string& creative_instance_id,
+                                 const std::string& creative_set_id,
+                                 const int action,
+                                 OnToggleAdThumbDownCallback callback) = 0;
+  virtual void ToggleAdOptInAction(const std::string& category,
+                                   const int action,
+                                   OnToggleAdOptInActionCallback callback) = 0;
   virtual void ToggleAdOptOutAction(
       const std::string& category,
       const int action,
       OnToggleAdOptOutActionCallback callback) = 0;
-  virtual void ToggleSaveAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool saved,
-      OnToggleSaveAdCallback callback) = 0;
-  virtual void ToggleFlagAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool flagged,
-      OnToggleFlagAdCallback callback) = 0;
+  virtual void ToggleSaveAd(const std::string& creative_instance_id,
+                            const std::string& creative_set_id,
+                            const bool saved,
+                            OnToggleSaveAdCallback callback) = 0;
+  virtual void ToggleFlagAd(const std::string& creative_instance_id,
+                            const std::string& creative_set_id,
+                            const bool flagged,
+                            OnToggleFlagAdCallback callback) = 0;
 
-  virtual void ResetAllState(
-      const bool should_shutdown) = 0;
+  virtual void ResetAllState(const bool should_shutdown) = 0;
 
   // static
-  static void RegisterProfilePrefs(
-      user_prefs::PrefRegistrySyncable* registry);
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
  protected:
   base::ObserverList<AdsServiceObserver> observers_;

@@ -14,8 +14,7 @@ namespace ads {
 GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
     const WalletInfo& wallet,
     const std::string& nonce)
-    : wallet_(wallet),
-      nonce_(nonce) {
+    : wallet_(wallet), nonce_(nonce) {
   DCHECK(wallet_.IsValid());
   DCHECK(!nonce_.empty());
 }
@@ -36,8 +35,8 @@ UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
 
 std::string GetSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/token/%s?nonce=%s",
-      confirmations::server::GetHost().c_str(), wallet_.id.c_str(),
-          nonce_.c_str());
+                            confirmations::server::GetHost().c_str(),
+                            wallet_.id.c_str(), nonce_.c_str());
 }
 
 }  // namespace ads

@@ -18,9 +18,8 @@ namespace ads {
 namespace {
 
 const std::vector<std::string> kCreativeSetIds = {
-  "654f10df-fbc4-4a92-8d43-2edf73734a60",
-  "465f10df-fbc4-4a92-8d43-4edf73734a60"
-};
+    "654f10df-fbc4-4a92-8d43-2edf73734a60",
+    "465f10df-fbc4-4a92-8d43-4edf73734a60"};
 
 }  // namespace
 
@@ -31,8 +30,7 @@ class BatAdsTotalMaxFrequencyCapTest : public UnitTestBase {
   ~BatAdsTotalMaxFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsTotalMaxFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsTotalMaxFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -48,8 +46,7 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsTotalMaxFrequencyCapTest,
-    AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsTotalMaxFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -57,8 +54,8 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -71,7 +68,7 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 }
 
 TEST_F(BatAdsTotalMaxFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapForMultipleTypes) {
+       AllowAdIfDoesNotExceedCapForMultipleTypes) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -79,16 +76,16 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification,
-      ad, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_1 =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd,
-      ad, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_2 =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
-      ad, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
+                                                 ConfirmationType::kViewed);
   ad_events.push_back(ad_event_3);
 
   // Act
@@ -100,7 +97,7 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 }
 
 TEST_F(BatAdsTotalMaxFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
+       AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_set_id = kCreativeSetIds.at(0);
@@ -111,8 +108,8 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad_2, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -125,8 +122,7 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsTotalMaxFrequencyCapTest,
-    DoNotAllowAdIfExceedsZeroCap) {
+TEST_F(BatAdsTotalMaxFrequencyCapTest, DoNotAllowAdIfExceedsZeroCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -142,8 +138,7 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsTotalMaxFrequencyCapTest,
-    DoNotAllowAdIfExceedsCap) {
+TEST_F(BatAdsTotalMaxFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -151,8 +146,8 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

@@ -9,19 +9,15 @@ namespace ads {
 
 CatalogIssuerInfo::CatalogIssuerInfo() = default;
 
-CatalogIssuerInfo::CatalogIssuerInfo(
-    const CatalogIssuerInfo& info) = default;
+CatalogIssuerInfo::CatalogIssuerInfo(const CatalogIssuerInfo& info) = default;
 
 CatalogIssuerInfo::~CatalogIssuerInfo() = default;
 
-bool CatalogIssuerInfo::operator==(
-    const CatalogIssuerInfo& rhs) const {
-  return name == rhs.name &&
-      public_key == rhs.public_key;
+bool CatalogIssuerInfo::operator==(const CatalogIssuerInfo& rhs) const {
+  return name == rhs.name && public_key == rhs.public_key;
 }
 
-bool CatalogIssuerInfo::operator!=(
-    const CatalogIssuerInfo& rhs) const {
+bool CatalogIssuerInfo::operator!=(const CatalogIssuerInfo& rhs) const {
   return !(*this == rhs);
 }
 

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FREQUENCY_CAPPING_H_  // NOLINT
-#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FREQUENCY_CAPPING_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FREQUENCY_CAPPING_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FREQUENCY_CAPPING_H_
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 
@@ -16,20 +16,16 @@ namespace new_tab_page_ads {
 
 class FrequencyCapping {
  public:
-  FrequencyCapping(
-      const AdEventList& ad_events);
+  explicit FrequencyCapping(const AdEventList& ad_events);
 
   ~FrequencyCapping();
 
-  FrequencyCapping(
-      const FrequencyCapping&) = delete;
-  FrequencyCapping& operator=(
-      const FrequencyCapping&) = delete;
+  FrequencyCapping(const FrequencyCapping&) = delete;
+  FrequencyCapping& operator=(const FrequencyCapping&) = delete;
 
   bool IsAdAllowed();
 
-  bool ShouldExcludeAd(
-      const AdInfo& ad);
+  bool ShouldExcludeAd(const AdInfo& ad);
 
  private:
   AdEventList ad_events_;
@@ -38,4 +34,4 @@ class FrequencyCapping {
 }  // namespace new_tab_page_ads
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FREQUENCY_CAPPING_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FREQUENCY_CAPPING_H_

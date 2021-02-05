@@ -10,8 +10,8 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
 
@@ -23,8 +23,7 @@ Payments::Payments() = default;
 
 Payments::~Payments() = default;
 
-bool Payments::SetFromJson(
-    const std::string& json) {
+bool Payments::SetFromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_list()) {
     return false;
@@ -40,8 +39,7 @@ bool Payments::SetFromJson(
   return true;
 }
 
-bool Payments::SetFromDictionary(
-    base::Value* dictionary) {
+bool Payments::SetFromDictionary(base::Value* dictionary) {
   DCHECK(dictionary);
 
   base::Value* payments_list = dictionary->FindListKey("payments");
@@ -54,7 +52,7 @@ bool Payments::SetFromDictionary(
   for (auto& value : payments_list->GetList()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
-     continue;
+      continue;
     }
 
     PaymentInfo payment;
@@ -101,7 +99,7 @@ base::Value Payments::GetAsList() {
     dictionary.SetKey("balance", base::Value(payment.balance));
     dictionary.SetKey("month", base::Value(payment.month));
     dictionary.SetKey("transaction_count",
-        base::Value(std::to_string(payment.transaction_count)));
+                      base::Value(std::to_string(payment.transaction_count)));
 
     list.Append(std::move(dictionary));
   }
@@ -195,14 +193,13 @@ base::Time Payments::CalculateNextPaymentDate(
 
   base::Time next_payment_date;
   const bool success = base::Time::FromUTCExploded(next_payment_date_exploded,
-      &next_payment_date);
+                                                   &next_payment_date);
   DCHECK(success);
 
   return next_payment_date;
 }
 
-PaymentInfo Payments::GetForThisMonth(
-    const base::Time& time) const {
+PaymentInfo Payments::GetForThisMonth(const base::Time& time) const {
   const std::string month = GetTransactionMonth(time);
   const PaymentInfo payment = GetPaymentForTransactionMonth(month);
   return payment;
@@ -210,8 +207,7 @@ PaymentInfo Payments::GetForThisMonth(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-PaymentList Payments::GetFromList(
-    base::ListValue* list) const {
+PaymentList Payments::GetFromList(base::ListValue* list) const {
   DCHECK(list);
 
   PaymentList payments;
@@ -232,8 +228,8 @@ PaymentList Payments::GetFromList(
       continue;
     }
 
-    if (!GetTransactionCountFromDictionary(
-        dictionary, &payment.transaction_count)) {
+    if (!GetTransactionCountFromDictionary(dictionary,
+                                           &payment.transaction_count)) {
       continue;
     }
 
@@ -243,9 +239,8 @@ PaymentList Payments::GetFromList(
   return payments;
 }
 
-bool Payments::GetBalanceFromDictionary(
-    base::DictionaryValue* dictionary,
-    double* balance) const {
+bool Payments::GetBalanceFromDictionary(base::DictionaryValue* dictionary,
+                                        double* balance) const {
   DCHECK(dictionary);
   DCHECK(balance);
 
@@ -266,9 +261,8 @@ bool Payments::GetBalanceFromDictionary(
   return true;
 }
 
-bool Payments::GetMonthFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* month) const {
+bool Payments::GetMonthFromDictionary(base::DictionaryValue* dictionary,
+                                      std::string* month) const {
   DCHECK(dictionary);
   DCHECK(month);
 
@@ -331,8 +325,7 @@ PaymentInfo Payments::GetPaymentForTransactionMonth(
   return PaymentInfo();
 }
 
-std::string Payments::GetTransactionMonth(
-    const base::Time& time) const {
+std::string Payments::GetTransactionMonth(const base::Time& time) const {
   base::Time::Exploded time_exploded;
   time.UTCExplode(&time_exploded);
 
@@ -353,9 +346,8 @@ std::string Payments::GetPreviousTransactionMonth(
   return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
 }
 
-std::string Payments::GetFormattedTransactionMonth(
-    const int year,
-    const int month) const {
+std::string Payments::GetFormattedTransactionMonth(const int year,
+                                                   const int month) const {
   return base::StringPrintf("%04d-%02d", year, month);
 }
 

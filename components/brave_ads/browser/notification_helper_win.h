@@ -39,12 +39,11 @@ class NotificationHelperWin
   HRESULT InitializeToastNotifier();
 
   template <unsigned int size, typename T>
-  HRESULT CreateActivationFactory(
-      wchar_t const (&class_name)[size],
-      T** object) const;
+  HRESULT CreateActivationFactory(wchar_t const (&class_name)[size],
+                                  T** object) const;
 
-  Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::
-      IToastNotifier> notifier_;
+  Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
+      notifier_;
 
   // NotificationHelper impl
   bool ShouldShowNotifications() override;

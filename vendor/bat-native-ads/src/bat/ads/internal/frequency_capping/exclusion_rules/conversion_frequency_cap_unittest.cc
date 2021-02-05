@@ -19,9 +19,8 @@ namespace ads {
 namespace {
 
 const std::vector<std::string> kCreativeSetIds = {
-  "654f10df-fbc4-4a92-8d43-2edf73734a60",
-  "465f10df-fbc4-4a92-8d43-4edf73734a60"
-};
+    "654f10df-fbc4-4a92-8d43-2edf73734a60",
+    "465f10df-fbc4-4a92-8d43-4edf73734a60"};
 
 }  // namespace
 
@@ -32,8 +31,7 @@ class BatAdsConversionFrequencyCapTest : public UnitTestBase {
   ~BatAdsConversionFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    AllowAdIfThereIsNoConversionHistory) {
+TEST_F(BatAdsConversionFrequencyCapTest, AllowAdIfThereIsNoConversionHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = "654f10df-fbc4-4a92-8d43-2edf73734a60";
@@ -49,10 +47,10 @@ TEST_F(BatAdsConversionFrequencyCapTest,
 }
 
 TEST_F(BatAdsConversionFrequencyCapTest,
-    DoNotAllowAdIfShouldNotAllowConversionTracking) {
+       DoNotAllowAdIfShouldNotAllowConversionTracking) {
   // Arrange
-  ads_client_mock_->SetBooleanPref(
-      prefs::kShouldAllowConversionTracking, false);
+  ads_client_mock_->SetBooleanPref(prefs::kShouldAllowConversionTracking,
+                                   false);
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -60,7 +58,7 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kConversion);
+                                               ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 
@@ -72,8 +70,7 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    DoNotAllowAdIfAlreadyConverted) {
+TEST_F(BatAdsConversionFrequencyCapTest, DoNotAllowAdIfAlreadyConverted) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
@@ -81,7 +78,7 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kConversion);
+                                               ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 
@@ -93,8 +90,7 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    AllowAdIfNotAlreadyConverted) {
+TEST_F(BatAdsConversionFrequencyCapTest, AllowAdIfNotAlreadyConverted) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_set_id = kCreativeSetIds.at(0);
@@ -105,7 +101,7 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-      ConfirmationType::kConversion);
+                                               ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 

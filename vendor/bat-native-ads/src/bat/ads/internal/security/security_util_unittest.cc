@@ -12,12 +12,10 @@
 
 namespace ads {
 
-TEST(BatAdsSecurityUtilsTest,
-    Sign) {
+TEST(BatAdsSecurityUtilsTest, Sign) {
   // Arrange
   const std::map<std::string, std::string> headers = {
-    { "digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY=" }
-  };
+      {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "primary";
 
@@ -29,13 +27,13 @@ TEST(BatAdsSecurityUtilsTest,
   const std::string signature = security::Sign(headers, key_id, secret_key);
 
   // Assert
-  const std::string expected_signature = R"(keyId="primary",algorithm="ed25519",headers="digest",signature="m5CxS9uqI7DbZ5UDo51bcLRP2awqcUSU8tfc4t/ysrH47B8OJUG1roQyi6/pjSZj9VJuj296v77c/lxBlCn2DA==")";
+  const std::string expected_signature =
+      R"(keyId="primary",algorithm="ed25519",headers="digest",signature="m5CxS9uqI7DbZ5UDo51bcLRP2awqcUSU8tfc4t/ysrH47B8OJUG1roQyi6/pjSZj9VJuj296v77c/lxBlCn2DA==")";
 
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest,
-    SignWithInvalidheaders) {
+TEST(BatAdsSecurityUtilsTest, SignWithInvalidheaders) {
   // Arrange
   const std::map<std::string, std::string> headers = {};
 
@@ -54,12 +52,10 @@ TEST(BatAdsSecurityUtilsTest,
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest,
-    SignWithInvalidKeyId) {
+TEST(BatAdsSecurityUtilsTest, SignWithInvalidKeyId) {
   // Arrange
   const std::map<std::string, std::string> headers = {
-    { "digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY=" }
-  };
+      {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "";
 
@@ -76,12 +72,10 @@ TEST(BatAdsSecurityUtilsTest,
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest,
-    SignWithInvalidSecretKey) {
+TEST(BatAdsSecurityUtilsTest, SignWithInvalidSecretKey) {
   // Arrange
   const std::map<std::string, std::string> headers = {
-    { "digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY=" }
-  };
+      {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "primary";
 
@@ -96,8 +90,7 @@ TEST(BatAdsSecurityUtilsTest,
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest,
-    Sha256) {
+TEST(BatAdsSecurityUtilsTest, Sha256) {
   // Arrange
   const std::string body = R"(
     {
@@ -167,8 +160,7 @@ TEST(BatAdsSecurityUtilsTest,
   EXPECT_EQ(expected_sha256_base64, sha256_base64);
 }
 
-TEST(BatAdsSecurityUtilsTest,
-    Sha256WithEmptyString) {
+TEST(BatAdsSecurityUtilsTest, Sha256WithEmptyString) {
   // Arrange
   const std::string body = "";
 

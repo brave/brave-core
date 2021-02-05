@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/client/preferences/ad_preferences_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 AdPreferencesInfo::AdPreferencesInfo() = default;
 
-AdPreferencesInfo::AdPreferencesInfo(
-    const AdPreferencesInfo& info) = default;
+AdPreferencesInfo::AdPreferencesInfo(const AdPreferencesInfo& info) = default;
 
 AdPreferencesInfo::~AdPreferencesInfo() = default;
 
@@ -23,8 +22,7 @@ std::string AdPreferencesInfo::ToJson() const {
   return json;
 }
 
-Result AdPreferencesInfo::FromJson(
-    const std::string& json) {
+Result AdPreferencesInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -79,9 +77,7 @@ Result AdPreferencesInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const AdPreferencesInfo& info) {
+void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info) {
   writer->StartObject();
 
   writer->String("filtered_ads");

@@ -9,8 +9,7 @@
 
 namespace ads {
 
-uint64_t MigrateTimestampToDoubleT(
-    const uint64_t timestamp_in_seconds) {
+uint64_t MigrateTimestampToDoubleT(const uint64_t timestamp_in_seconds) {
   if (timestamp_in_seconds < 10000000000) {
     // Already migrated as DoubleT will never reach 10000000000 in our lifetime
     // and legacy timestamps are above 10000000000

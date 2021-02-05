@@ -20,9 +20,8 @@ namespace {
 const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
 const std::vector<std::string> kCampaignIds = {
-  "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-  "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
-};
+    "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
+    "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
 
 }  // namespace
 
@@ -33,8 +32,7 @@ class BatAdsDismissedFrequencyCapTest : public UnitTestBase {
   ~BatAdsDismissedFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsDismissedFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsDismissedFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
@@ -51,22 +49,22 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissed) {
+       AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissed) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
+      ConfirmationType::kViewed,
+      ConfirmationType::kDismissed,
   };
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -83,7 +81,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDismissedFrequencyCapTest,
+TEST_F(
+    BatAdsDismissedFrequencyCapTest,
     AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissedForMultipleTypes) {
   // Arrange
   CreativeAdInfo ad;
@@ -93,15 +92,15 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kDismissed);
+                                                 ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd, ad,
-      ConfirmationType::kDismissed);
+  const AdEventInfo ad_event_2 =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-      ConfirmationType::kDismissed);
+                                                 ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_3);
 
   // Act
@@ -113,24 +112,21 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissedThenClicked) {
+       AdAllowedForAdWithSameCampaignIdWithin48HoursIfDismissedThenClicked) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
-    ConfirmationType::kViewed,
-    ConfirmationType::kClicked
-  };
+      ConfirmationType::kViewed, ConfirmationType::kDismissed,
+      ConfirmationType::kViewed, ConfirmationType::kClicked};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -148,24 +144,21 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdAfter48HoursIfDismissedThenClicked) {
+       AdAllowedForAdWithSameCampaignIdAfter48HoursIfDismissedThenClicked) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
-    ConfirmationType::kViewed,
-    ConfirmationType::kClicked
-  };
+      ConfirmationType::kViewed, ConfirmationType::kDismissed,
+      ConfirmationType::kViewed, ConfirmationType::kClicked};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -183,24 +176,21 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdWithin48HoursIfClickedThenDismissed) {
+       AdAllowedForAdWithSameCampaignIdWithin48HoursIfClickedThenDismissed) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kClicked,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed
-  };
+      ConfirmationType::kViewed, ConfirmationType::kClicked,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -218,24 +208,21 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdAfter48HoursIfClickedThenDismissed) {
+       AdAllowedForAdWithSameCampaignIdAfter48HoursIfClickedThenDismissed) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kClicked,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed
-  };
+      ConfirmationType::kViewed, ConfirmationType::kClicked,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -252,7 +239,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDismissedFrequencyCapTest,
+TEST_F(
+    BatAdsDismissedFrequencyCapTest,
     AdAllowedForAdWithSameCampaignIdAfter48HoursIfClickedThenDismissedTwice) {
   // Arrange
   CreativeAdInfo ad;
@@ -260,19 +248,15 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kClicked,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed
-  };
+      ConfirmationType::kViewed, ConfirmationType::kClicked,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -289,7 +273,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDismissedFrequencyCapTest,
+TEST_F(
+    BatAdsDismissedFrequencyCapTest,
     AdNotAllowedForAdWithSameCampaignIdWithin48HoursIfClickedThenDismissedTwice) {  // NOLINT
   // Arrange
   CreativeAdInfo ad;
@@ -297,19 +282,15 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kClicked,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed
-  };
+      ConfirmationType::kViewed, ConfirmationType::kClicked,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -327,7 +308,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithDifferentCampaignIdWithin48Hours) {
+       AdAllowedForAdWithDifferentCampaignIdWithin48Hours) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_instance_id = kCreativeInstanceId;
@@ -338,17 +319,14 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad_2.campaign_id = kCampaignIds.at(1);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed
-  };
+      ConfirmationType::kViewed, ConfirmationType::kDismissed,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad_2, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -366,7 +344,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 }
 
 TEST_F(BatAdsDismissedFrequencyCapTest,
-    AdAllowedForAdWithDifferentCampaignIdAfter48Hours) {
+       AdAllowedForAdWithDifferentCampaignIdAfter48Hours) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_instance_id = kCreativeInstanceId;
@@ -377,17 +355,14 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   ad_2.campaign_id = kCampaignIds.at(1);
 
   const std::vector<ConfirmationType> confirmation_types = {
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed,
-    ConfirmationType::kViewed,
-    ConfirmationType::kDismissed
-  };
+      ConfirmationType::kViewed, ConfirmationType::kDismissed,
+      ConfirmationType::kViewed, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-        confirmation_type);
+    const AdEventInfo ad_event =
+        GenerateAdEvent(AdType::kAdNotification, ad_2, confirmation_type);
 
     ad_events.push_back(ad_event);
 

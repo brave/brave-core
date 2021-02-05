@@ -9,8 +9,7 @@
 
 namespace ads {
 
-std::string GetLocalWeekDay(
-    const base::Time& time) {
+std::string GetLocalWeekDay(const base::Time& time) {
   base::Time::Exploded exploded;
 
   time.LocalExplode(&exploded);
@@ -19,8 +18,7 @@ std::string GetLocalWeekDay(
   return base::NumberToString(exploded.day_of_week);
 }
 
-int ConvertHoursAndMinutesToMinutes(
-    const base::Time& time) {
+int ConvertHoursAndMinutesToMinutes(const base::Time& time) {
   base::Time::Exploded exploded;
 
   time.LocalExplode(&exploded);

@@ -24,8 +24,7 @@ class BatAdsTextClassificationResourceTest : public UnitTestBase {
   ~BatAdsTextClassificationResourceTest() override = default;
 };
 
-TEST_F(BatAdsTextClassificationResourceTest,
-    DoNotLoadForInvalidId) {
+TEST_F(BatAdsTextClassificationResourceTest, DoNotLoadForInvalidId) {
   // Arrange
   resource::TextClassification resource;
 
@@ -37,8 +36,7 @@ TEST_F(BatAdsTextClassificationResourceTest,
   EXPECT_FALSE(is_initialized);
 }
 
-TEST_F(BatAdsTextClassificationResourceTest,
-    LoadForId) {
+TEST_F(BatAdsTextClassificationResourceTest, LoadForId) {
   // Arrange
   resource::TextClassification resource;
 
@@ -50,8 +48,7 @@ TEST_F(BatAdsTextClassificationResourceTest,
   EXPECT_TRUE(is_initialized);
 }
 
-TEST_F(BatAdsTextClassificationResourceTest,
-    DoNotLoadForInvalidLocale) {
+TEST_F(BatAdsTextClassificationResourceTest, DoNotLoadForInvalidLocale) {
   // Arrange
   resource::TextClassification resource;
 
@@ -63,8 +60,7 @@ TEST_F(BatAdsTextClassificationResourceTest,
   EXPECT_FALSE(is_initialized);
 }
 
-TEST_F(BatAdsTextClassificationResourceTest,
-    LoadForLocale) {
+TEST_F(BatAdsTextClassificationResourceTest, LoadForLocale) {
   // Arrange
   resource::TextClassification resource;
 

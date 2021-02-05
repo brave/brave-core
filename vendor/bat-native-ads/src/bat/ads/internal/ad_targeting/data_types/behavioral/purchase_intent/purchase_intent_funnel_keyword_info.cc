@@ -12,8 +12,7 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo() = default;
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
     const std::string& keywords,
     const uint16_t weight)
-    : keywords(keywords),
-      weight(weight) {}
+    : keywords(keywords), weight(weight) {}
 
 PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
 

@@ -25,8 +25,7 @@ class BatAdsMinimumWaitTimeFrequencyCapTest : public UnitTestBase {
   ~BatAdsMinimumWaitTimeFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   const AdEventList ad_events;
 
@@ -38,8 +37,7 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
-    AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, 5);
 
@@ -48,8 +46,8 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -63,8 +61,7 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
-    DoNotAllowAdIfExceedsCap) {
+TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   AdsClientHelper::Get()->SetUint64Pref(prefs::kAdsPerHour, 5);
 
@@ -73,8 +70,8 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 

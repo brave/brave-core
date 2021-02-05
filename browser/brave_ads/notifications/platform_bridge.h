@@ -10,9 +10,9 @@
 #include <string>
 
 #include "base/macros.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 #include "brave/ui/brave_ads/public/cpp/notification.h"
-#include "brave/browser/profiles/profile_util.h"
 
 class Profile;
 
@@ -22,18 +22,15 @@ class PlatformBridge {
   ~PlatformBridge();
 
   void Display(Profile* profile,
-               const std::unique_ptr<
-                  brave_ads::Notification>& notification);
+               const std::unique_ptr<brave_ads::Notification>& notification);
   void Close(Profile* profile, const std::string& notification_id);
 
   void ShowAndroidAdsNotification(
       Profile* profile,
-      const std::unique_ptr<
-          brave_ads::Notification>& notification);
+      const std::unique_ptr<brave_ads::Notification>& notification);
 
-  void CloseAndroidAdsNotification(
-      Profile* profile,
-      const std::string& notification_id);
+  void CloseAndroidAdsNotification(Profile* profile,
+                                   const std::string& notification_id);
 
  private:
   Profile* profile_;

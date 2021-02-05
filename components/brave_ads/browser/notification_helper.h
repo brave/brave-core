@@ -19,14 +19,14 @@ class NotificationHelper {
 
   static NotificationHelper* GetInstance();
 
-  void set_for_testing(
-      NotificationHelper* notification_helper);
+  void set_for_testing(NotificationHelper* notification_helper);
 
   virtual bool ShouldShowNotifications();
 
   virtual bool ShowMyFirstAdNotification();
 
   virtual bool CanShowBackgroundNotifications() const;
+
  protected:
   friend struct base::DefaultSingletonTraits<NotificationHelper>;
 

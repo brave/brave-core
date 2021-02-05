@@ -16,16 +16,13 @@ namespace ads {
 class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
  protected:
   BatAdsCreativeNewTabPageAdsDatabaseTableTest()
-      : database_table_(std::make_unique<
-            database::table::CreativeNewTabPageAds>()) {
-  }
+      : database_table_(
+            std::make_unique<database::table::CreativeNewTabPageAds>()) {}
 
   ~BatAdsCreativeNewTabPageAdsDatabaseTableTest() override = default;
 
-  void Save(
-      const CreativeNewTabPageAdList creative_new_tab_page_ads) {
-    database_table_->Save(creative_new_tab_page_ads, [](
-        const Result result) {
+  void Save(const CreativeNewTabPageAdList creative_new_tab_page_ads) {
+    database_table_->Save(creative_new_tab_page_ads, [](const Result result) {
       ASSERT_EQ(Result::SUCCESS, result);
     });
   }
@@ -34,7 +31,7 @@ class BatAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    SaveEmptyCreativeNewTabPageAds) {
+       SaveEmptyCreativeNewTabPageAds) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads = {};
 
@@ -45,7 +42,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    SaveCreativeNewTabPageAds) {
+       SaveCreativeNewTabPageAds) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -63,7 +60,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.total_max = 4;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
-  info_1.geo_targets = { "US" };
+  info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.company_name = "Test Ad 1 Title";
   info_1.alt = "Test Ad 1 Body";
@@ -83,7 +80,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
-  info_2.geo_targets = { "US" };
+  info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com";
   info_2.company_name = "Test Ad 2 Title";
   info_2.alt = "Test Ad 2 Body";
@@ -97,23 +94,20 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList expected_creative_new_tab_page_ads =
       creative_new_tab_page_ads;
 
-  const SegmentList segments = {
-    "Technology & Computing-Software"
-  };
+  const SegmentList segments = {"Technology & Computing-Software"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    SaveCreativeNewTabPageAdsInBatches) {
+       SaveCreativeNewTabPageAdsInBatches) {
   // Arrange
   database_table_->set_batch_size(2);
 
@@ -133,7 +127,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.total_max = 4;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
-  info_1.geo_targets = { "US" };
+  info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.company_name = "Test Ad 1 Title";
   info_1.alt = "Test Ad 1 Body";
@@ -153,7 +147,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
-  info_2.geo_targets = { "US" };
+  info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com";
   info_2.company_name = "Test Ad 2 Title";
   info_2.alt = "Test Ad 2 Body";
@@ -173,7 +167,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_3.total_max = 4;
   info_3.segment = "Technology & Computing-Software";
   info_3.dayparts.push_back(daypart_info);
-  info_3.geo_targets = { "US" };
+  info_3.geo_targets = {"US"};
   info_3.target_url = "https://brave.com";
   info_3.company_name = "Test Ad 3 Title";
   info_3.alt = "Test Ad 3 Body";
@@ -187,23 +181,20 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList expected_creative_new_tab_page_ads =
       creative_new_tab_page_ads;
 
-  const SegmentList segments = {
-    "Technology & Computing-Software"
-  };
+  const SegmentList segments = {"Technology & Computing-Software"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    DoNotSaveDuplicateCreativeNewTabPageAds) {
+       DoNotSaveDuplicateCreativeNewTabPageAds) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -221,7 +212,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.total_max = 4;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = { "US" };
+  info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
   info.company_name = "Test Ad 1 Title";
   info.alt = "Test Ad 1 Body";
@@ -237,23 +228,19 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList expected_creative_new_tab_page_ads =
       creative_new_tab_page_ads;
 
-  const SegmentList segments = {
-    "Technology & Computing-Software"
-  };
+  const SegmentList segments = {"Technology & Computing-Software"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetForCategories) {
+TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForCategories) {
   // Arrange
 
   CreativeNewTabPageAdList creative_new_tab_page_ads;
@@ -272,7 +259,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.total_max = 4;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
-  info_1.geo_targets = { "US" };
+  info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.company_name = "Test Ad 1 Title";
   info_1.alt = "Test Ad 1 Body";
@@ -292,7 +279,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
-  info_2.geo_targets = { "US" };
+  info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com";
   info_2.company_name = "Test Ad 2 Title";
   info_2.alt = "Test Ad 2 Body";
@@ -307,23 +294,20 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList expected_creative_new_tab_page_ads =
       creative_new_tab_page_ads;
 
-  const SegmentList segments = {
-    "Technology & Computing-Software"
-  };
+  const SegmentList segments = {"Technology & Computing-Software"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetCreativeNewTabPageAdsForCreativeInstanceId) {
+       GetCreativeNewTabPageAdsForCreativeInstanceId) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -341,7 +325,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.total_max = 4;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = { "US" };
+  info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
   info.company_name = "Test Ad 1 Title";
   info.alt = "Test Ad 1 Body";
@@ -358,18 +342,18 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   const std::string creative_instance_id =
       "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 
-  database_table_->GetForCreativeInstanceId(creative_instance_id,
+  database_table_->GetForCreativeInstanceId(
+      creative_instance_id,
       [&expected_creative_new_tab_page_ad](
-          const Result result,
-          const std::string& creative_instance_id,
+          const Result result, const std::string& creative_instance_id,
           const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_EQ(expected_creative_new_tab_page_ad, creative_new_tab_page_ad);
-  });
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_EQ(expected_creative_new_tab_page_ad, creative_new_tab_page_ad);
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetCreativeNewTabPageAdsForNonExistentCreativeInstanceId) {
+       GetCreativeNewTabPageAdsForNonExistentCreativeInstanceId) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -387,7 +371,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.total_max = 4;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = { "US" };
+  info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
   info.company_name = "Test Ad 1 Title";
   info.alt = "Test Ad 1 Body";
@@ -402,16 +386,16 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   const std::string creative_instance_id =
       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
-  database_table_->GetForCreativeInstanceId(creative_instance_id, [](
-      const Result result,
-      const std::string& creative_instance_id,
-      const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
-    EXPECT_EQ(Result::FAILED, result);
-  });
+  database_table_->GetForCreativeInstanceId(
+      creative_instance_id,
+      [](const Result result, const std::string& creative_instance_id,
+         const CreativeNewTabPageAdInfo& creative_new_tab_page_ad) {
+        EXPECT_EQ(Result::FAILED, result);
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetCreativeNewTabPageAdsForEmptyCategories) {
+       GetCreativeNewTabPageAdsForEmptyCategories) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -429,7 +413,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.total_max = 4;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = { "US" };
+  info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
   info.company_name = "Test Ad 1 Title";
   info.alt = "Test Ad 1 Body";
@@ -445,19 +429,18 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   const SegmentList segments = {};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetCreativeNewTabPageAdsForNonExistentCategory) {
+       GetCreativeNewTabPageAdsForNonExistentCategory) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -475,7 +458,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.total_max = 4;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = { "US" };
+  info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
   info.company_name = "Test Ad 1 Title";
   info.alt = "Test Ad 1 Body";
@@ -489,23 +472,20 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Assert
   const CreativeNewTabPageAdList expected_creative_new_tab_page_ads = {};
 
-  const SegmentList segments = {
-    "Food & Drink"
-  };
+  const SegmentList segments = {"Food & Drink"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetCreativeNewTabPageAdsFromMultipleCategories) {
+       GetCreativeNewTabPageAdsFromMultipleCategories) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -523,7 +503,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.total_max = 4;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
-  info_1.geo_targets = { "US" };
+  info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.company_name = "Test Ad 1 Title";
   info_1.alt = "Test Ad 1 Body";
@@ -543,7 +523,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.segment = "Food & Drink";
   info_2.dayparts.push_back(daypart_info);
-  info_2.geo_targets = { "US" };
+  info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com";
   info_2.company_name = "Test Ad 2 Title";
   info_2.alt = "Test Ad 2 Body";
@@ -563,7 +543,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_3.total_max = 4;
   info_3.segment = "Automobiles";
   info_3.dayparts.push_back(daypart_info);
-  info_3.geo_targets = { "US" };
+  info_3.geo_targets = {"US"};
   info_3.target_url = "https://brave.com";
   info_3.company_name = "Test Ad 3 Title";
   info_3.alt = "Test Ad 3 Body";
@@ -579,24 +559,21 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   expected_creative_new_tab_page_ads.push_back(info_1);
   expected_creative_new_tab_page_ads.push_back(info_2);
 
-  const SegmentList segments = {
-    "Technology & Computing-Software",
-    "Food & Drink"
-  };
+  const SegmentList segments = {"Technology & Computing-Software",
+                                "Food & Drink"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetNonExpiredCreativeNewTabPageAds) {
+       GetNonExpiredCreativeNewTabPageAds) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -614,7 +591,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.total_max = 4;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
-  info_1.geo_targets = { "US" };
+  info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.company_name = "Test Ad 1 Title";
   info_1.alt = "Test Ad 1 Body";
@@ -634,7 +611,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.segment = "Technology & Computing-Software";
   info_2.dayparts.push_back(daypart_info);
-  info_2.geo_targets = { "US" };
+  info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com";
   info_2.company_name = "Test Ad 2 Title";
   info_2.alt = "Test Ad 2 Body";
@@ -650,23 +627,20 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   CreativeNewTabPageAdList expected_creative_new_tab_page_ads;
   expected_creative_new_tab_page_ads.push_back(info_2);
 
-  const SegmentList segments = {
-    "Technology & Computing-Software"
-  };
+  const SegmentList segments = {"Technology & Computing-Software"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    GetCreativeNewTabPageAdsMatchingCaseInsensitiveCategories) {
+       GetCreativeNewTabPageAdsMatchingCaseInsensitiveCategories) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
@@ -684,7 +658,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_1.total_max = 4;
   info_1.segment = "Technology & Computing-Software";
   info_1.dayparts.push_back(daypart_info);
-  info_1.geo_targets = { "US" };
+  info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.company_name = "Test Ad 1 Title";
   info_1.alt = "Test Ad 1 Body";
@@ -704,7 +678,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info_2.total_max = 4;
   info_2.segment = "Food & Drink";
   info_2.dayparts.push_back(daypart_info);
-  info_2.geo_targets = { "US" };
+  info_2.geo_targets = {"US"};
   info_2.target_url = "https://brave.com";
   info_2.company_name = "Test Ad 2 Title";
   info_2.alt = "Test Ad 2 Body";
@@ -719,23 +693,19 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   CreativeNewTabPageAdList expected_creative_new_tab_page_ads;
   expected_creative_new_tab_page_ads.push_back(info_2);
 
-  const SegmentList segments = {
-    "FoOd & DrInK"
-  };
+  const SegmentList segments = {"FoOd & DrInK"};
 
-  database_table_->GetForSegments(segments,
-      [&expected_creative_new_tab_page_ads](
-          const Result result,
-          const SegmentList& segments,
-          const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
-        creative_new_tab_page_ads));
-  });
+  database_table_->GetForSegments(
+      segments, [&expected_creative_new_tab_page_ads](
+                    const Result result, const SegmentList& segments,
+                    const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_TRUE(CompareAsSets(expected_creative_new_tab_page_ads,
+                                  creative_new_tab_page_ads));
+      });
 }
 
-TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-    TableName) {
+TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
   // Arrange
 
   // Act

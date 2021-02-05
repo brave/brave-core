@@ -38,10 +38,8 @@ bool EpsilonGreedyBandit::IsInitialized() const {
 
 void EpsilonGreedyBandit::LoadFromDatabase() {
   database::table::CreativeAdNotifications database_table;
-  database_table.GetAll([=](
-      const Result result,
-      const SegmentList& segments,
-      const CreativeAdNotificationList& ads) {
+  database_table.GetAll([=](const Result result, const SegmentList& segments,
+                            const CreativeAdNotificationList& ads) {
     if (result != SUCCESS) {
       BLOG(2, "Failed to load epsilon greedy bandit segments");
 

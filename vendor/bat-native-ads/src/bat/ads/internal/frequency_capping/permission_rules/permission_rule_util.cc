@@ -11,8 +11,7 @@
 
 namespace ads {
 
-bool ShouldAllow(
-    PermissionRule* permission_rule) {
+bool ShouldAllow(PermissionRule* permission_rule) {
   DCHECK(permission_rule);
 
   if (permission_rule->ShouldAllow()) {

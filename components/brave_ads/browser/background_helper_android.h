@@ -8,17 +8,17 @@
 
 #include <memory>
 
+#include "base/android/application_status_listener.h"
 #include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
-#include "base/android/application_status_listener.h"
 
 namespace brave_ads {
 
-class BackgroundHelperAndroid :
-    public BackgroundHelper,
-    public base::SupportsWeakPtr<BackgroundHelperAndroid> {
+class BackgroundHelperAndroid
+    : public BackgroundHelper,
+      public base::SupportsWeakPtr<BackgroundHelperAndroid> {
  public:
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
@@ -32,7 +32,7 @@ class BackgroundHelperAndroid :
   ~BackgroundHelperAndroid() override;
 
   std::unique_ptr<base::android::ApplicationStatusListener>
-    app_status_listener_;
+      app_status_listener_;
 
   base::android::ApplicationState last_state_;
 

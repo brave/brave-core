@@ -12,8 +12,6 @@
 #include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
-#include "net/http/http_status_code.h"
-#include "wrapper.hpp"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
@@ -25,6 +23,8 @@
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
+#include "net/http/http_status_code.h"
+#include "wrapper.hpp"
 
 namespace ads {
 
@@ -44,8 +44,7 @@ void RedeemUnblindedToken::set_delegate(
   delegate_ = delegate;
 }
 
-void RedeemUnblindedToken::Redeem(
-    const ConfirmationInfo& confirmation) {
+void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
   BLOG(1, "Redeem unblinded token");
 
   if (!confirmation.created) {
@@ -68,8 +67,8 @@ void RedeemUnblindedToken::CreateConfirmation(
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation,
-      this, std::placeholders::_1, confirmation);
+  auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation, this,
+                            std::placeholders::_1, confirmation);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
@@ -108,8 +107,8 @@ void RedeemUnblindedToken::FetchPaymentToken(
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken,
-      this, std::placeholders::_1, confirmation);
+  auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken, this,
+                            std::placeholders::_1, confirmation);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
@@ -169,7 +168,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   // Validate id
   if (*id != confirmation.id) {
     BLOG(0, "Response id " << *id << " does not match confirmation id "
-        << confirmation.id);
+                           << confirmation.id);
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
     return;
   }
@@ -246,17 +245,14 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   }
 
   // Verify and unblind tokens
-  const std::vector<Token> tokens = {
-    confirmation.payment_token
-  };
+  const std::vector<Token> tokens = {confirmation.payment_token};
 
   const std::vector<BlindedToken> blinded_tokens = {
-    confirmation.blinded_payment_token
-  };
+      confirmation.blinded_payment_token};
 
   const std::vector<UnblindedToken> batch_dleq_proof_unblinded_tokens =
-      batch_dleq_proof.verify_and_unblind(tokens, blinded_tokens,
-          signed_tokens, public_key);
+      batch_dleq_proof.verify_and_unblind(tokens, blinded_tokens, signed_tokens,
+                                          public_key);
   if (privacy::ExceptionOccurred()) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);

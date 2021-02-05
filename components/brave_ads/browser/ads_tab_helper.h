@@ -57,11 +57,9 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void TabUpdated();
 
-  void RunIsolatedJavaScript(
-      content::RenderFrameHost* render_frame_host);
+  void RunIsolatedJavaScript(content::RenderFrameHost* render_frame_host);
 
-  void OnJavaScriptResult(
-      base::Value value);
+  void OnJavaScriptResult(base::Value value);
 
   // content::WebContentsObserver overrides
   void DidFinishNavigation(

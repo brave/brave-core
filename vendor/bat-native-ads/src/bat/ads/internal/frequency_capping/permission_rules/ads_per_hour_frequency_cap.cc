@@ -17,10 +17,8 @@
 
 namespace ads {
 
-AdsPerHourFrequencyCap::AdsPerHourFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+AdsPerHourFrequencyCap::AdsPerHourFrequencyCap(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 AdsPerHourFrequencyCap::~AdsPerHourFrequencyCap() = default;
 
@@ -42,8 +40,7 @@ std::string AdsPerHourFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool AdsPerHourFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
+bool AdsPerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
   const std::deque<uint64_t> history =
       GetTimestampHistoryForAdEvents(ad_events);
 
@@ -52,19 +49,20 @@ bool AdsPerHourFrequencyCap::DoesRespectCap(
   const uint64_t cap =
       AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
 
-  return DoesHistoryRespectCapForRollingTimeConstraint(
-      history, time_constraint, cap);
+  return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
+                                                       cap);
 }
 
 AdEventList AdsPerHourFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kAdNotification ||
-        ad_event.confirmation_type != ConfirmationType::kViewed;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kAdNotification ||
+               ad_event.confirmation_type != ConfirmationType::kViewed;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

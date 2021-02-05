@@ -17,10 +17,8 @@
 namespace ads {
 namespace new_tab_page_ads {
 
-FrequencyCapping::FrequencyCapping(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+FrequencyCapping::FrequencyCapping(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 FrequencyCapping::~FrequencyCapping() = default;
 
@@ -43,8 +41,7 @@ bool FrequencyCapping::IsAdAllowed() {
   return true;
 }
 
-bool FrequencyCapping::ShouldExcludeAd(
-    const AdInfo& ad) {
+bool FrequencyCapping::ShouldExcludeAd(const AdInfo& ad) {
   NewTabPageAdUuidFrequencyCap frequency_cap(ad_events_);
   return ShouldExclude(ad, &frequency_cap);
 }

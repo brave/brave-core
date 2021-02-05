@@ -13,8 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "brave/components/l10n/browser/locale_helper.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.h"
@@ -24,6 +22,8 @@
 #include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -37,7 +37,7 @@ const int64_t kFetchSubdivisionTargetingPing = 24 * base::Time::kSecondsPerHour;
 const int64_t kDebugFetchSubdivisionTargetingPing =
     5 * base::Time::kSecondsPerMinute;
 
-}   // namespace
+}  // namespace
 
 SubdivisionTargeting::SubdivisionTargeting() = default;
 
@@ -76,15 +76,14 @@ bool SubdivisionTargeting::IsDisabled() const {
   return true;
 }
 
-void SubdivisionTargeting::MaybeFetchForLocale(
-    const std::string& locale) {
+void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
   if (retry_timer_.IsRunning()) {
     return;
   }
 
   if (!IsSupportedLocale(locale)) {
     BLOG(1, "Ads subdivision targeting is not supported for " << locale
-        << " locale");
+                                                              << " locale");
 
     AdsClientHelper::Get()->SetBooleanPref(
         prefs::kShouldAllowAdsSubdivisionTargeting, false);
@@ -103,7 +102,7 @@ void SubdivisionTargeting::MaybeFetchForLocale(
             prefs::kAdsSubdivisionTargetingCode);
 
     BLOG(1, "Ads subdivision targeting is enabled for "
-        << subdivision_targeting_code);
+                << subdivision_targeting_code);
 
     return;
   }
@@ -132,8 +131,7 @@ std::string SubdivisionTargeting::GetAdsSubdivisionTargetingCode() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool SubdivisionTargeting::IsSupportedLocale(
-    const std::string& locale) const {
+bool SubdivisionTargeting::IsSupportedLocale(const std::string& locale) const {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   const auto iter = kSupportedSubdivisionCodes.find(country_code);
@@ -144,8 +142,7 @@ bool SubdivisionTargeting::IsSupportedLocale(
   return true;
 }
 
-void SubdivisionTargeting::MaybeAllowForLocale(
-    const std::string& locale) {
+void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   const bool should_allow = ShouldAllowForLocale(locale);
 
   AdsClientHelper::Get()->SetBooleanPref(
@@ -173,13 +170,12 @@ void SubdivisionTargeting::Fetch() {
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  const auto callback = std::bind(&SubdivisionTargeting::OnFetch, this,
-      std::placeholders::_1);
+  const auto callback =
+      std::bind(&SubdivisionTargeting::OnFetch, this, std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void SubdivisionTargeting::OnFetch(
-    const UrlResponse& url_response) {
+void SubdivisionTargeting::OnFetch(const UrlResponse& url_response) {
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
@@ -207,7 +203,7 @@ void SubdivisionTargeting::OnFetch(
   const std::string subdivision_targeting_code =
       GetAdsSubdivisionTargetingCode();
   BLOG(1, "Automatically detected subdivision targeting code as "
-      << subdivision_targeting_code);
+              << subdivision_targeting_code);
 
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
@@ -216,8 +212,7 @@ void SubdivisionTargeting::OnFetch(
   FetchAfterDelay();
 }
 
-bool SubdivisionTargeting::ParseJson(
-    const std::string& json) {
+bool SubdivisionTargeting::ParseJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
@@ -250,18 +245,19 @@ bool SubdivisionTargeting::ParseJson(
 void SubdivisionTargeting::Retry() {
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-          base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
+      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Retry fetching subdivision target " << FriendlyDateAndTime(time));
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const uint64_t ping = g_is_debug ? kDebugFetchSubdivisionTargetingPing :
-      kFetchSubdivisionTargetingPing;
+  const uint64_t ping = g_is_debug ? kDebugFetchSubdivisionTargetingPing
+                                   : kFetchSubdivisionTargetingPing;
 
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(ping);
 
-  const base::Time time = timer_.StartWithPrivacy(delay,
+  const base::Time time = timer_.StartWithPrivacy(
+      delay,
       base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch ads subdivision target " << FriendlyDateAndTime(time));

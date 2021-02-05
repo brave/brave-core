@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_UTIL_H_  // NOLINT
-#define BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_UTIL_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_UTIL_H_
 
 #include <string>
 
@@ -14,15 +14,13 @@ struct ConfirmationInfo;
 
 namespace privacy {
 struct UnblindedTokenInfo;
-}  // privacy
+}  // namespace privacy
 
-std::string CreateConfirmationRequestDTO(
-    const ConfirmationInfo& confirmation);
+std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation);
 
-std::string CreateCredential(
-    const privacy::UnblindedTokenInfo& unblinded_token,
-    const std::string& payload);
+std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
+                             const std::string& payload);
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_UTIL_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_UTIL_H_

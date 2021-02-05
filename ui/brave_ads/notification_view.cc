@@ -67,9 +67,8 @@ class NotificationView::HighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
-NotificationView::NotificationView(const Notification& notification) :
-    notification_id_(notification.id()),
-    slide_out_controller_(this, this) {
+NotificationView::NotificationView(const Notification& notification)
+    : notification_id_(notification.id()), slide_out_controller_(this, this) {
   SetFocusBehavior(FocusBehavior::ALWAYS);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<HighlightPathGenerator>());
@@ -84,9 +83,8 @@ NotificationView::NotificationView(const Notification& notification) :
 
   // If Aero is enabled, set shadow border.
   if (ShouldShowAeroShadowBorder()) {
-    const auto& shadow = gfx::ShadowDetails::Get(
-        kWindowsShadowElevation,
-        kWindowsShadowRadius);
+    const auto& shadow =
+        gfx::ShadowDetails::Get(kWindowsShadowElevation, kWindowsShadowRadius);
     gfx::Insets ninebox_insets = gfx::ShadowValue::GetBlurRegion(shadow.values);
     SetBorder(views::CreateBorderPainter(
         views::Painter::CreateImagePainter(shadow.ninebox_image,
@@ -243,11 +241,10 @@ void NotificationView::OnSlideOut() {
     observer.OnSlideOut(notification_id_);
 }
 
-void NotificationView::OnWillChangeFocus(
-    views::View* before, views::View* now) {}
+void NotificationView::OnWillChangeFocus(views::View* before,
+                                         views::View* now) {}
 
-void NotificationView::OnDidChangeFocus(
-    views::View* before, views::View* now) {
+void NotificationView::OnDidChangeFocus(views::View* before, views::View* now) {
   if (Contains(before) || Contains(now) ||
       (GetControlButtonsView() && (GetControlButtonsView()->Contains(before) ||
                                    GetControlButtonsView()->Contains(now)))) {
@@ -256,7 +253,7 @@ void NotificationView::OnDidChangeFocus(
 }
 
 views::SlideOutController::SlideMode NotificationView::CalculateSlideMode()
-  const {
+    const {
   if (disable_slide_)
     return views::SlideOutController::SlideMode::kNone;
 

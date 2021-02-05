@@ -9,8 +9,7 @@ namespace ads {
 
 WalletInfo::WalletInfo() = default;
 
-WalletInfo::WalletInfo(
-    const WalletInfo& info) = default;
+WalletInfo::WalletInfo(const WalletInfo& info) = default;
 
 WalletInfo::~WalletInfo() = default;
 
@@ -18,14 +17,11 @@ bool WalletInfo::IsValid() const {
   return !id.empty() && !secret_key.empty();
 }
 
-bool WalletInfo::operator==(
-    const WalletInfo& rhs) const {
-  return id == rhs.id &&
-      secret_key == rhs.secret_key;
+bool WalletInfo::operator==(const WalletInfo& rhs) const {
+  return id == rhs.id && secret_key == rhs.secret_key;
 }
 
-bool WalletInfo::operator!=(
-    const WalletInfo& rhs) const {
+bool WalletInfo::operator!=(const WalletInfo& rhs) const {
   return !(*this == rhs);
 }
 

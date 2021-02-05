@@ -24,7 +24,7 @@ class BatAdsMarkedAsInappropriateFrequencyCapTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
-    AllowAdIfNotMarkedAsInappropriate) {
+       AllowAdIfNotMarkedAsInappropriate) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -38,13 +38,13 @@ TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
 }
 
 TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest,
-    DoNotAllowAdIfMarkedAsInappropriate) {
+       DoNotAllowAdIfMarkedAsInappropriate) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  Client::Get()->ToggleFlagAd(ad.creative_instance_id,
-      ad.creative_set_id, false);
+  Client::Get()->ToggleFlagAd(ad.creative_instance_id, ad.creative_set_id,
+                              false);
 
   // Act
   MarkedAsInappropriateFrequencyCap frequency_cap;

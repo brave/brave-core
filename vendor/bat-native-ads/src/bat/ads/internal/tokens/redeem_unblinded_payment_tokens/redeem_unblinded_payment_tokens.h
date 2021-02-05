@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
-#define BAT_ADS_INTERNAL_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
 
 #include "base/time/time.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -21,11 +21,9 @@ class RedeemUnblindedPaymentTokens {
 
   ~RedeemUnblindedPaymentTokens();
 
-  void set_delegate(
-      RedeemUnblindedPaymentTokensDelegate* delegate);
+  void set_delegate(RedeemUnblindedPaymentTokensDelegate* delegate);
 
-  void MaybeRedeemAfterDelay(
-      const WalletInfo& wallet);
+  void MaybeRedeemAfterDelay(const WalletInfo& wallet);
 
  private:
   WalletInfo wallet_;
@@ -33,8 +31,7 @@ class RedeemUnblindedPaymentTokens {
   Timer timer_;
 
   void Redeem();
-  void OnRedeem(
-      const UrlResponse& url_response);
+  void OnRedeem(const UrlResponse& url_response);
 
   void OnDidRedeemUnblindedPaymentTokens();
 
@@ -56,4 +53,4 @@ class RedeemUnblindedPaymentTokens {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_

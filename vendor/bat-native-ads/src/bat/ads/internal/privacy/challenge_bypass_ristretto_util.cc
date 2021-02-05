@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 
-#include "wrapper.hpp"
 #include "bat/ads/internal/logging.h"
+#include "wrapper.hpp"
 
 namespace ads {
 namespace privacy {

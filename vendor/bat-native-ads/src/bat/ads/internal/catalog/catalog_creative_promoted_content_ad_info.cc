@@ -7,14 +7,14 @@
 
 namespace ads {
 
-CatalogCreativePromotedContentAdInfo::
-CatalogCreativePromotedContentAdInfo() = default;
+CatalogCreativePromotedContentAdInfo::CatalogCreativePromotedContentAdInfo() =
+    default;
 
 CatalogCreativePromotedContentAdInfo::CatalogCreativePromotedContentAdInfo(
     const CatalogCreativePromotedContentAdInfo& info) = default;
 
-CatalogCreativePromotedContentAdInfo::
-~CatalogCreativePromotedContentAdInfo() = default;
+CatalogCreativePromotedContentAdInfo::~CatalogCreativePromotedContentAdInfo() =
+    default;
 
 bool CatalogCreativePromotedContentAdInfo::operator==(
     const CatalogCreativePromotedContentAdInfo& rhs) const {

@@ -25,8 +25,7 @@ class BatAdsUnblindedTokensFrequencyCapTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
-    AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsUnblindedTokensFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   const privacy::UnblindedTokenList unblinded_tokens =
       privacy::GetUnblindedTokens(10);
@@ -41,8 +40,7 @@ TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
-    DoNotAllowAdIfNoUnblindedTokens) {
+TEST_F(BatAdsUnblindedTokensFrequencyCapTest, DoNotAllowAdIfNoUnblindedTokens) {
   // Arrange
 
   // Act
@@ -53,8 +51,7 @@ TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
   EXPECT_FALSE(is_allowed);
 }
 
-TEST_F(BatAdsUnblindedTokensFrequencyCapTest,
-    DoNotAllowAdIfExceedsCap) {
+TEST_F(BatAdsUnblindedTokensFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   const privacy::UnblindedTokenList unblinded_tokens =
       privacy::GetUnblindedTokens(9);

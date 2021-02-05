@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_PROMOTED_CONTENT_ADS_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
-#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_PROMOTED_CONTENT_ADS_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_PROMOTED_CONTENT_ADS_PER_HOUR_FREQUENCY_CAP_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_PROMOTED_CONTENT_ADS_PER_HOUR_FREQUENCY_CAP_H_
 
 #include <stdint.h>
 
@@ -19,8 +19,7 @@ const uint64_t kPromotedContentAdsPerHourFrequencyCap = 4;
 
 class PromotedContentAdsPerHourFrequencyCap : public PermissionRule {
  public:
-  PromotedContentAdsPerHourFrequencyCap(
-      const AdEventList& ad_events);
+  explicit PromotedContentAdsPerHourFrequencyCap(const AdEventList& ad_events);
 
   ~PromotedContentAdsPerHourFrequencyCap() override;
 
@@ -38,13 +37,11 @@ class PromotedContentAdsPerHourFrequencyCap : public PermissionRule {
 
   std::string last_message_;
 
-  bool DoesRespectCap(
-      const AdEventList& ad_events);
+  bool DoesRespectCap(const AdEventList& ad_events);
 
-  AdEventList FilterAdEvents(
-      const AdEventList& ad_events) const;
+  AdEventList FilterAdEvents(const AdEventList& ad_events) const;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_PROMOTED_CONTENT_ADS_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_PERMISSION_RULES_PROMOTED_CONTENT_ADS_PER_HOUR_FREQUENCY_CAP_H_

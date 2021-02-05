@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 
-#include "net/http/http_status_code.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -25,18 +25,10 @@ class BatAdsCatalogFrequencyCapTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsCatalogFrequencyCapTest,
-    AllowAd) {
+TEST_F(BatAdsCatalogFrequencyCapTest, AllowAd) {
   // Arrange
   const URLEndpoints endpoints = {
-    {
-      "/v6/catalog", {
-        {
-          net::HTTP_OK, "/catalog.json"
-        }
-      }
-    }
-  };
+      {"/v6/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -51,24 +43,17 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
 }
 
 TEST_F(BatAdsCatalogFrequencyCapTest,
-    AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
+       AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-    {
-      "/v6/catalog", {
-        {
-          net::HTTP_OK, "/catalog.json"
-        }
-      }
-    }
-  };
+      {"/v6/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
   InitializeAds();
 
   AdvanceClock(base::TimeDelta::FromHours(23) +
-      base::TimeDelta::FromMinutes(59));
+               base::TimeDelta::FromMinutes(59));
 
   // Act
   CatalogFrequencyCap frequency_cap;
@@ -79,17 +64,10 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
 }
 
 TEST_F(BatAdsCatalogFrequencyCapTest,
-    DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
+       DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-    {
-      "/v6/catalog", {
-        {
-          net::HTTP_OK, "/catalog.json"
-        }
-      }
-    }
-  };
+      {"/v6/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -105,8 +83,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
   EXPECT_FALSE(is_allowed);
 }
 
-TEST_F(BatAdsCatalogFrequencyCapTest,
-    DoNotAllowAdIfCatalogDoesNotExist) {
+TEST_F(BatAdsCatalogFrequencyCapTest, DoNotAllowAdIfCatalogDoesNotExist) {
   // Arrange
   AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, 0);
 

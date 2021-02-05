@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_TARGETING_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_  // NOLINT
-#define BAT_ADS_INTERNAL_AD_TARGETING_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_
 
 #include <string>
 
@@ -21,13 +21,11 @@ namespace processor {
 
 class TextClassification : public Processor<std::string> {
  public:
-  TextClassification(
-      resource::TextClassification* resource);
+  explicit TextClassification(resource::TextClassification* resource);
 
   ~TextClassification() override;
 
-  void Process(
-      const std::string& text) override;
+  void Process(const std::string& text) override;
 
  private:
   resource::TextClassification* resource_;
@@ -37,4 +35,4 @@ class TextClassification : public Processor<std::string> {
 }  // namespace ad_targeting
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_TARGETING_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_PROCESSORS_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_PROCESSOR_H_

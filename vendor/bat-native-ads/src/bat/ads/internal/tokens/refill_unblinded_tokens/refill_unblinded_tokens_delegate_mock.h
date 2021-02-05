@@ -3,23 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_  // NOLINT
-#define BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_
 
-#include "testing/gmock/include/gmock/gmock.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace ads {
 
-class RefillUnblindedTokensDelegateMock
-    : public RefillUnblindedTokensDelegate {
+class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
  public:
   RefillUnblindedTokensDelegateMock();
 
   ~RefillUnblindedTokensDelegateMock() override;
 
-  RefillUnblindedTokensDelegateMock(
-      const RefillUnblindedTokensDelegateMock&) = delete;
+  RefillUnblindedTokensDelegateMock(const RefillUnblindedTokensDelegateMock&) =
+      delete;
   RefillUnblindedTokensDelegateMock& operator=(
       const RefillUnblindedTokensDelegateMock&) = delete;
 
@@ -33,4 +32,4 @@ class RefillUnblindedTokensDelegateMock
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_

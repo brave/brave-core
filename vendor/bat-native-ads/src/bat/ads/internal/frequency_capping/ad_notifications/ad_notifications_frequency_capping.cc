@@ -40,8 +40,7 @@ namespace ad_notifications {
 FrequencyCapping::FrequencyCapping(
     ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
     const AdEventList& ad_events)
-    : subdivision_targeting_(subdivision_targeting),
-      ad_events_(ad_events) {
+    : subdivision_targeting_(subdivision_targeting), ad_events_(ad_events) {
   DCHECK(subdivision_targeting_);
 }
 
@@ -106,8 +105,7 @@ bool FrequencyCapping::IsAdAllowed() {
   return true;
 }
 
-bool FrequencyCapping::ShouldExcludeAd(
-    const CreativeAdInfo& ad) {
+bool FrequencyCapping::ShouldExcludeAd(const CreativeAdInfo& ad) {
   bool should_exclude = false;
 
   DailyCapFrequencyCap daily_cap_frequency_cap(ad_events_);
@@ -135,8 +133,8 @@ bool FrequencyCapping::ShouldExcludeAd(
     should_exclude = true;
   }
 
-  SubdivisionTargetingFrequencyCap
-      subdivision_frequency_cap(subdivision_targeting_);
+  SubdivisionTargetingFrequencyCap subdivision_frequency_cap(
+      subdivision_targeting_);
   if (ShouldExclude(ad, &subdivision_frequency_cap)) {
     should_exclude = true;
   }

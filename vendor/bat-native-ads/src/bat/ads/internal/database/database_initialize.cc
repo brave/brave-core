@@ -20,8 +20,7 @@ Initialize::Initialize() = default;
 
 Initialize::~Initialize() = default;
 
-void Initialize::CreateOrOpen(
-    ResultCallback callback) {
+void Initialize::CreateOrOpen(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->version = version();
   transaction->compatible_version = compatible_version();
@@ -31,9 +30,9 @@ void Initialize::CreateOrOpen(
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
-      std::bind(&Initialize::OnCreateOrOpen, this, std::placeholders::_1,
-          callback));
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction), std::bind(&Initialize::OnCreateOrOpen, this,
+                                        std::placeholders::_1, callback));
 }
 
 std::string Initialize::get_last_message() const {
@@ -42,9 +41,8 @@ std::string Initialize::get_last_message() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Initialize::OnCreateOrOpen(
-    DBCommandResponsePtr response,
-    ResultCallback callback) {
+void Initialize::OnCreateOrOpen(DBCommandResponsePtr response,
+                                ResultCallback callback) {
   DCHECK(response);
 
   if (response->status != DBCommandResponse::Status::RESPONSE_OK) {
@@ -53,8 +51,8 @@ void Initialize::OnCreateOrOpen(
     return;
   }
 
-  if (!response->result || response->result->get_value()->which() !=
-      DBValue::Tag::INT_VALUE) {
+  if (!response->result ||
+      response->result->get_value()->which() != DBValue::Tag::INT_VALUE) {
     last_message_ = "Invalid response result type";
     callback(Result::FAILED);
     return;

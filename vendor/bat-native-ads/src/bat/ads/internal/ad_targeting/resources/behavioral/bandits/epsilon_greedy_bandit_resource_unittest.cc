@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
 
+#include <memory>
+
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -17,16 +19,13 @@ namespace ad_targeting {
 class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
  protected:
   BatAdsEpsilonGreedyBanditResourceTest()
-      : database_table_(std::make_unique<
-            database::table::CreativeAdNotifications>()) {
-  }
+      : database_table_(
+            std::make_unique<database::table::CreativeAdNotifications>()) {}
 
   ~BatAdsEpsilonGreedyBanditResourceTest() override = default;
 
-  void Save(
-      const CreativeAdNotificationList creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications, [](
-        const Result result) {
+  void Save(const CreativeAdNotificationList creative_ad_notifications) {
+    database_table_->Save(creative_ad_notifications, [](const Result result) {
       ASSERT_EQ(Result::SUCCESS, result);
     });
   }
@@ -34,8 +33,7 @@ class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
   std::unique_ptr<database::table::CreativeAdNotifications> database_table_;
 };
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-    LoadFromDatabase) {
+TEST_F(BatAdsEpsilonGreedyBanditResourceTest, LoadFromDatabase) {
   // Arrange
   CreativeAdNotificationList creative_ad_notifications;
 
@@ -53,7 +51,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   info.total_max = 4;
   info.segment = "Technology & Computing-Software";
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = { "US" };
+  info.geo_targets = {"US"};
   info.target_url = "https://brave.com";
   info.title = "Test Ad Title";
   info.body = "Test Ad Body";
@@ -71,8 +69,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   EXPECT_TRUE(is_initialized);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-    LoadFromEmptyDatabase) {
+TEST_F(BatAdsEpsilonGreedyBanditResourceTest, LoadFromEmptyDatabase) {
   // Arrange
 
   // Act
@@ -84,8 +81,7 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   EXPECT_TRUE(is_initialized);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
-    DoNotLoadFromDatabase) {
+TEST_F(BatAdsEpsilonGreedyBanditResourceTest, DoNotLoadFromDatabase) {
   // Arrange
 
   // Act

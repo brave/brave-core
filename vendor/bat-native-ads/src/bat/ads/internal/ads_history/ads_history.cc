@@ -23,17 +23,16 @@
 namespace ads {
 namespace history {
 
-AdsHistoryInfo Get(
-    const AdsHistoryInfo::FilterType filter_type,
-    const AdsHistoryInfo::SortType sort_type,
-    const uint64_t from_timestamp,
-    const uint64_t to_timestamp) {
+AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
+                   const AdsHistoryInfo::SortType sort_type,
+                   const uint64_t from_timestamp,
+                   const uint64_t to_timestamp) {
   std::deque<AdHistoryInfo> ads_history = Client::Get()->GetAdsHistory();
 
   const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();
   if (date_range_filter) {
-    ads_history = date_range_filter->Apply(ads_history,
-        from_timestamp, to_timestamp);
+    ads_history =
+        date_range_filter->Apply(ads_history, from_timestamp, to_timestamp);
   }
 
   const auto filter = AdsHistoryFilterFactory::Build(filter_type);
@@ -54,9 +53,8 @@ AdsHistoryInfo Get(
   return normalized_ads_history;
 }
 
-void AddAdNotification(
-    const AdNotificationInfo& ad,
-    const ConfirmationType& confirmation_type) {
+void AddAdNotification(const AdNotificationInfo& ad,
+                       const ConfirmationType& confirmation_type) {
   AdHistoryInfo ad_history;
 
   ad_history.timestamp_in_seconds =
@@ -76,9 +74,8 @@ void AddAdNotification(
   Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
 }
 
-void AddNewTabPageAd(
-    const NewTabPageAdInfo& ad,
-    const ConfirmationType& confirmation_type) {
+void AddNewTabPageAd(const NewTabPageAdInfo& ad,
+                     const ConfirmationType& confirmation_type) {
   AdHistoryInfo ad_history;
 
   ad_history.timestamp_in_seconds =
@@ -98,9 +95,8 @@ void AddNewTabPageAd(
   Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
 }
 
-void AddPromotedContentAd(
-    const PromotedContentAdInfo& ad,
-    const ConfirmationType& confirmation_type) {
+void AddPromotedContentAd(const PromotedContentAdInfo& ad,
+                          const ConfirmationType& confirmation_type) {
   AdHistoryInfo ad_history;
 
   ad_history.timestamp_in_seconds =

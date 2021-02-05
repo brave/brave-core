@@ -20,8 +20,7 @@ const char kPromotedContentAdType[] = "promoted_content_ad";
 
 }  // namespace
 
-AdType::AdType(
-    const std::string& value) {
+AdType::AdType(const std::string& value) {
   if (value == kUndefinedType) {
     value_ = kUndefined;
   } else if (value == kAdNotificationType) {
@@ -59,13 +58,11 @@ AdType::operator std::string() const {
   }
 }
 
-bool AdType::operator==(
-    const AdType& rhs) const {
+bool AdType::operator==(const AdType& rhs) const {
   return value_ == rhs.value_;
 }
 
-bool AdType::operator!=(
-    const AdType& rhs) const {
+bool AdType::operator!=(const AdType& rhs) const {
   return value_ != rhs.value_;
 }
 

@@ -32,8 +32,7 @@ namespace ads {
 
 namespace {
 
-bool DoesOsSupportCreativeSet(
-    const CatalogCreativeSetInfo& creative_set) {
+bool DoesOsSupportCreativeSet(const CatalogCreativeSetInfo& creative_set) {
   if (creative_set.oses.empty()) {
     // Creative set supports all OSes
     return true;
@@ -57,8 +56,7 @@ Bundle::Bundle() = default;
 
 Bundle::~Bundle() = default;
 
-void Bundle::BuildFromCatalog(
-    const Catalog& catalog) {
+void Bundle::BuildFromCatalog(const Catalog& catalog) {
   const BundleState bundle_state = FromCatalog(catalog);
 
   // TODO(https://github.com/brave/brave-browser/issues/3661): Merge in diffs
@@ -77,8 +75,7 @@ void Bundle::BuildFromCatalog(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-BundleState Bundle::FromCatalog(
-    const Catalog& catalog) const {
+BundleState Bundle::FromCatalog(const Catalog& catalog) const {
   CreativeAdNotificationList creative_ad_notifications;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
   CreativePromotedContentAdList creative_promoted_content_ads;
@@ -91,8 +88,8 @@ BundleState Bundle::FromCatalog(
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
-      if (std::find(geo_targets.begin(), geo_targets.end(), code)
-          != geo_targets.end()) {
+      if (std::find(geo_targets.begin(), geo_targets.end(), code) !=
+          geo_targets.end()) {
         continue;
       }
 
@@ -120,7 +117,7 @@ BundleState Bundle::FromCatalog(
               PlatformHelper::GetInstance()->GetPlatformName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " does not support " << platform_name);
+                                     << " does not support " << platform_name);
 
           continue;
         }
@@ -132,26 +129,24 @@ BundleState Bundle::FromCatalog(
 
         base::Time start_at_time;
         if (base::Time::FromUTCString(campaign.start_at.c_str(),
-            &start_at_time)) {
+                                      &start_at_time)) {
           info.start_at_timestamp =
               static_cast<int64_t>(start_at_time.ToDoubleT());
         } else {
           info.start_at_timestamp = std::numeric_limits<int64_t>::min();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " has an invalid startAt timestamp");
+                                     << " has an invalid startAt timestamp");
         }
 
         base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(),
-            &end_at_time)) {
-          info.end_at_timestamp =
-              static_cast<int64_t>(end_at_time.ToDoubleT());
+        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
+          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
         } else {
           info.end_at_timestamp = std::numeric_limits<int64_t>::max();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " has an invalid endAt timestamp");
+                                     << " has an invalid endAt timestamp");
         }
 
         info.daily_cap = campaign.daily_cap;
@@ -173,11 +168,11 @@ BundleState Bundle::FromCatalog(
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                  base::SPLIT_WANT_NONEMPTY);
+                                base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
             BLOG(1, "creative set id " << creative_set.creative_set_id
-                << " segment name should not be empty");
+                                       << " segment name should not be empty");
 
             continue;
           }
@@ -202,7 +197,7 @@ BundleState Bundle::FromCatalog(
               PlatformHelper::GetInstance()->GetPlatformName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " does not support " << platform_name);
+                                     << " does not support " << platform_name);
 
           continue;
         }
@@ -214,26 +209,24 @@ BundleState Bundle::FromCatalog(
 
         base::Time start_at_time;
         if (base::Time::FromUTCString(campaign.start_at.c_str(),
-            &start_at_time)) {
+                                      &start_at_time)) {
           info.start_at_timestamp =
               static_cast<int64_t>(start_at_time.ToDoubleT());
         } else {
           info.start_at_timestamp = std::numeric_limits<int64_t>::min();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " has an invalid startAt timestamp");
+                                     << " has an invalid startAt timestamp");
         }
 
         base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(),
-            &end_at_time)) {
-          info.end_at_timestamp =
-              static_cast<int64_t>(end_at_time.ToDoubleT());
+        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
+          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
         } else {
           info.end_at_timestamp = std::numeric_limits<int64_t>::max();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " has an invalid endAt timestamp");
+                                     << " has an invalid endAt timestamp");
         }
 
         info.daily_cap = campaign.daily_cap;
@@ -255,11 +248,11 @@ BundleState Bundle::FromCatalog(
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                  base::SPLIT_WANT_NONEMPTY);
+                                base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
             BLOG(1, "creative set id " << creative_set.creative_set_id
-                << " segment name should not be empty");
+                                       << " segment name should not be empty");
 
             continue;
           }
@@ -284,7 +277,7 @@ BundleState Bundle::FromCatalog(
               PlatformHelper::GetInstance()->GetPlatformName();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " does not support " << platform_name);
+                                     << " does not support " << platform_name);
 
           continue;
         }
@@ -296,26 +289,24 @@ BundleState Bundle::FromCatalog(
 
         base::Time start_at_time;
         if (base::Time::FromUTCString(campaign.start_at.c_str(),
-            &start_at_time)) {
+                                      &start_at_time)) {
           info.start_at_timestamp =
               static_cast<int64_t>(start_at_time.ToDoubleT());
         } else {
           info.start_at_timestamp = std::numeric_limits<int64_t>::min();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " has an invalid startAt timestamp");
+                                     << " has an invalid startAt timestamp");
         }
 
         base::Time end_at_time;
-        if (base::Time::FromUTCString(campaign.end_at.c_str(),
-            &end_at_time)) {
-          info.end_at_timestamp =
-              static_cast<int64_t>(end_at_time.ToDoubleT());
+        if (base::Time::FromUTCString(campaign.end_at.c_str(), &end_at_time)) {
+          info.end_at_timestamp = static_cast<int64_t>(end_at_time.ToDoubleT());
         } else {
           info.end_at_timestamp = std::numeric_limits<int64_t>::max();
 
           BLOG(1, "Creative set id " << creative_set.creative_set_id
-              << " has an invalid endAt timestamp");
+                                     << " has an invalid endAt timestamp");
         }
 
         info.daily_cap = campaign.daily_cap;
@@ -337,11 +328,11 @@ BundleState Bundle::FromCatalog(
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                  base::SPLIT_WANT_NONEMPTY);
+                                base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
             BLOG(1, "creative set id " << creative_set.creative_set_id
-                << " segment name should not be empty");
+                                       << " segment name should not be empty");
 
             continue;
           }
@@ -361,14 +352,14 @@ BundleState Bundle::FromCatalog(
 
       if (entries == 0) {
         BLOG(1, "creative set id " << creative_set.creative_set_id
-            << " has no entries");
+                                   << " has no entries");
 
         continue;
       }
 
       // Conversions
       conversions.insert(conversions.end(), creative_set.conversions.begin(),
-          creative_set.conversions.end());
+                         creative_set.conversions.end());
     }
   }
 
@@ -394,8 +385,7 @@ void Bundle::DeleteDatabaseTables() {
 
 void Bundle::DeleteCreativeAdNotifications() {
   database::table::CreativeAdNotifications database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete creative ad notifications state");
       return;
@@ -407,8 +397,7 @@ void Bundle::DeleteCreativeAdNotifications() {
 
 void Bundle::DeleteCreativeNewTabPageAds() {
   database::table::CreativeNewTabPageAds database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete creative new tab page ads state");
       return;
@@ -420,8 +409,7 @@ void Bundle::DeleteCreativeNewTabPageAds() {
 
 void Bundle::DeleteCreativePromotedContentAds() {
   database::table::CreativePromotedContentAds database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete creative promoted content ads state");
       return;
@@ -433,8 +421,7 @@ void Bundle::DeleteCreativePromotedContentAds() {
 
 void Bundle::DeleteCampaigns() {
   database::table::Campaigns database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete campaigns state");
       return;
@@ -446,8 +433,7 @@ void Bundle::DeleteCampaigns() {
 
 void Bundle::DeleteSegments() {
   database::table::Segments database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete segments state");
       return;
@@ -459,8 +445,7 @@ void Bundle::DeleteSegments() {
 
 void Bundle::DeleteCreativeAds() {
   database::table::CreativeAds database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete creative ads state");
       return;
@@ -472,8 +457,7 @@ void Bundle::DeleteCreativeAds() {
 
 void Bundle::DeleteDayparts() {
   database::table::Dayparts database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete dayparts state");
       return;
@@ -485,8 +469,7 @@ void Bundle::DeleteDayparts() {
 
 void Bundle::DeleteGeoTargets() {
   database::table::GeoTargets database_table;
-  database_table.Delete([](
-      const Result result) {
+  database_table.Delete([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to delete geo targets state");
       return;
@@ -500,8 +483,7 @@ void Bundle::SaveCreativeAdNotifications(
     const CreativeAdNotificationList& creative_ad_notifications) {
   database::table::CreativeAdNotifications database_table;
 
-  database_table.Save(creative_ad_notifications, [](
-      const Result result) {
+  database_table.Save(creative_ad_notifications, [](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to save creative ad notifications state");
       return;
@@ -515,8 +497,7 @@ void Bundle::SaveCreativeNewTabPageAds(
     const CreativeNewTabPageAdList& creative_new_tab_page_ads) {
   database::table::CreativeNewTabPageAds database_table;
 
-  database_table.Save(creative_new_tab_page_ads, [](
-      const Result result) {
+  database_table.Save(creative_new_tab_page_ads, [](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to save creative new tab page ads state");
       return;
@@ -530,8 +511,7 @@ void Bundle::SaveCreativePromotedContentAds(
     const CreativePromotedContentAdList& creative_promoted_content_ads) {
   database::table::CreativePromotedContentAds database_table;
 
-  database_table.Save(creative_promoted_content_ads, [](
-      const Result result) {
+  database_table.Save(creative_promoted_content_ads, [](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to save creative promoted content ads state");
       return;
@@ -543,8 +523,7 @@ void Bundle::SaveCreativePromotedContentAds(
 
 void Bundle::PurgeExpiredConversions() {
   database::table::Conversions database_table;
-  database_table.PurgeExpired([](
-      const Result result) {
+  database_table.PurgeExpired([](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to purge expired conversions");
       return;
@@ -554,11 +533,9 @@ void Bundle::PurgeExpiredConversions() {
   });
 }
 
-void Bundle::SaveConversions(
-    const ConversionList& conversions) {
+void Bundle::SaveConversions(const ConversionList& conversions) {
   database::table::Conversions database_table;
-  database_table.Save(conversions, [](
-      const Result result) {
+  database_table.Save(conversions, [](const Result result) {
     if (result != SUCCESS) {
       BLOG(0, "Failed to save conversions state");
       return;

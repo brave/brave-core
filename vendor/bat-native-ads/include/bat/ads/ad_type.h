@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_AD_TYPE_H_
-#define BAT_ADS_AD_TYPE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_
 
 #include <string>
 
@@ -12,30 +12,21 @@ namespace ads {
 
 class AdType {
  public:
-  enum Value {
-    kUndefined,
-    kAdNotification,
-    kNewTabPageAd,
-    kPromotedContentAd
-  };
+  enum Value { kUndefined, kAdNotification, kNewTabPageAd, kPromotedContentAd };
 
   AdType() = default;
 
   // Allow implicit conversion of the enum value to this wrapper
-  constexpr AdType(
-      const Value& value)
+  constexpr AdType(const Value& value)  // NOLINT(runtime/explicit)
       : value_(value) {}
 
-  AdType(
-      const std::string& value);
+  explicit AdType(const std::string& value);
 
   Value value() const;
   operator std::string() const;
 
-  bool operator==(
-      const AdType& rhs) const;
-  bool operator!=(
-      const AdType& rhs) const;
+  bool operator==(const AdType& rhs) const;
+  bool operator!=(const AdType& rhs) const;
 
  private:
   Value value_;
@@ -43,4 +34,4 @@ class AdType {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_AD_TYPE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_

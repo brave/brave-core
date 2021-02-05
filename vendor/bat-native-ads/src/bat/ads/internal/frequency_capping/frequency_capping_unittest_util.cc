@@ -12,10 +12,9 @@
 
 namespace ads {
 
-AdEventInfo GenerateAdEvent(
-    const AdType type,
-    const CreativeAdInfo& ad,
-    const ConfirmationType& confirmation_type) {
+AdEventInfo GenerateAdEvent(const AdType type,
+                            const CreativeAdInfo& ad,
+                            const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
   ad_event.type = type;
@@ -29,10 +28,9 @@ AdEventInfo GenerateAdEvent(
   return ad_event;
 }
 
-AdEventInfo GenerateAdEvent(
-    const AdType type,
-    const AdInfo& ad,
-    const ConfirmationType& confirmation_type) {
+AdEventInfo GenerateAdEvent(const AdType type,
+                            const AdInfo& ad,
+                            const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
   ad_event.type = type;

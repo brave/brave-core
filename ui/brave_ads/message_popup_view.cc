@@ -16,10 +16,10 @@
 #include "build/build_config.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/controls/textfield/textfield.h"
-#include "ui/views/controls/label.h"
 
 #if defined(OS_WIN)
 #include "ui/views/widget/desktop_aura/desktop_native_widget_aura.h"
@@ -68,8 +68,8 @@ void MessagePopupView::Clicked(const std::string& notification_id) {
 
 // static
 void MessagePopupView::ClosePopup(const bool by_user) {
-  for (auto iter = g_notifications_.begin();
-      iter != g_notifications_.end(); ++iter) {
+  for (auto iter = g_notifications_.begin(); iter != g_notifications_.end();
+       ++iter) {
     MessagePopupView* message_popup_view = g_notifications_[iter->first];
     NotificationDelegate* notification_delegate =
         message_popup_view->notification_.delegate();
@@ -81,8 +81,8 @@ void MessagePopupView::ClosePopup(const bool by_user) {
   g_notifications_.clear();
 }
 
-MessagePopupView::MessagePopupView(const Notification& notification) :
-  notification_(notification) {
+MessagePopupView::MessagePopupView(const Notification& notification)
+    : notification_(notification) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
@@ -96,11 +96,9 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
 #else
   const uint64_t screen_y = kPopupYDeltaOther;
 #endif
-  params.bounds = {
-    screen_size.width() - kPopupBaseWidth - kPopupPadding,
-    screen_y,
-    kPopupBaseWidth,
-    kPopupBaseHeight + GetBodyHeight(notification.message())};
+  params.bounds = {screen_size.width() - kPopupBaseWidth - kPopupPadding,
+                   screen_y, kPopupBaseWidth,
+                   kPopupBaseHeight + GetBodyHeight(notification.message())};
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
   // Make the widget explicitly activatable as TYPE_POPUP is not activatable by
   // default but we need focus for the inline reply textarea.
@@ -126,7 +124,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) :
   popup_window_->ShowInactive();
 
   NotificationView* message_view_ =
-    NotificationViewFactory::Create(notification);
+      NotificationViewFactory::Create(notification);
   popup_window_->SetContentsView(message_view_);
   SetNotifyEnterExitOnChild(true);
 }
@@ -153,8 +151,7 @@ void MessagePopupView::SetOpacity(float opacity) {
   GetWidget()->SetOpacity(opacity);
 }
 
-void MessagePopupView::Show() {
-}
+void MessagePopupView::Show() {}
 
 void MessagePopupView::Close() {
   if (popup_window_ && !popup_window_->IsClosed()) {

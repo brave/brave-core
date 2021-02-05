@@ -19,19 +19,19 @@ const uint64_t kPromotedContentAdUuidFrequencyCap = 1;
 
 PromotedContentAdUuidFrequencyCap::PromotedContentAdUuidFrequencyCap(
     const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+    : ad_events_(ad_events) {}
 
-PromotedContentAdUuidFrequencyCap::
-~PromotedContentAdUuidFrequencyCap() = default;
+PromotedContentAdUuidFrequencyCap::~PromotedContentAdUuidFrequencyCap() =
+    default;
 
-bool PromotedContentAdUuidFrequencyCap::ShouldExclude(
-    const AdInfo& ad) {
+bool PromotedContentAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
-    last_message_ = base::StringPrintf("uuid %s has exceeded the "
-        "frequency capping for new tab page ad", ad.uuid.c_str());
+    last_message_ = base::StringPrintf(
+        "uuid %s has exceeded the "
+        "frequency capping for new tab page ad",
+        ad.uuid.c_str());
     return true;
   }
 
@@ -56,12 +56,13 @@ AdEventList PromotedContentAdUuidFrequencyCap::FilterAdEvents(
     const AdInfo& ad) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
-    return ad_event.uuid != ad.uuid ||
-        ad_event.confirmation_type != ConfirmationType::kViewed ||
-            ad_event.type != AdType::kPromotedContentAd;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&ad](const AdEventInfo& ad_event) {
+        return ad_event.uuid != ad.uuid ||
+               ad_event.confirmation_type != ConfirmationType::kViewed ||
+               ad_event.type != AdType::kPromotedContentAd;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

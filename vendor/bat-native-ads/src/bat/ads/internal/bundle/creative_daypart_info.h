@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_BUNDLE_CREATIVE_DAYPART_INFO_H_
-#define BAT_ADS_INTERNAL_BUNDLE_CREATIVE_DAYPART_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_DAYPART_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_DAYPART_INFO_H_
 
 #include <string>
 #include <vector>
@@ -23,5 +23,4 @@ using CreativeDaypartList = std::vector<CreativeDaypartInfo>;
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_DAYPART_INFO_H_
-
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_DAYPART_INFO_H_

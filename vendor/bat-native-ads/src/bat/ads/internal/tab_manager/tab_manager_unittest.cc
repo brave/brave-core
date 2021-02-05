@@ -32,8 +32,7 @@ class BatAdsTabManagerTest : public UnitTestBase {
     return count;
   }
 
-  int UserActivityCountForEventType(
-      const UserActivityEventType event_type) {
+  int UserActivityCountForEventType(const UserActivityEventType event_type) {
     const UserActivityEventHistoryMap history =
         UserActivity::Get()->get_history();
 
@@ -44,8 +43,7 @@ class BatAdsTabManagerTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsTabManagerTest,
-    HasInstance) {
+TEST_F(BatAdsTabManagerTest, HasInstance) {
   // Arrange
 
   // Act
@@ -55,8 +53,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_TRUE(has_instance);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    BrowserWindowDidBecomeActive) {
+TEST_F(BatAdsTabManagerTest, BrowserWindowDidBecomeActive) {
   // Arrange
 
   // Act
@@ -66,8 +63,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_TRUE(TabManager::Get()->IsForegrounded());
 }
 
-TEST_F(BatAdsTabManagerTest,
-    BrowserWindowDidBecomeActiveUserActivityEvent) {
+TEST_F(BatAdsTabManagerTest, BrowserWindowDidBecomeActiveUserActivityEvent) {
   // Arrange
 
   // Act
@@ -80,8 +76,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(1, count);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    BrowserWindowDidEnterBackground) {
+TEST_F(BatAdsTabManagerTest, BrowserWindowDidEnterBackground) {
   // Arrange
 
   // Act
@@ -91,8 +86,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_FALSE(TabManager::Get()->IsForegrounded());
 }
 
-TEST_F(BatAdsTabManagerTest,
-    BrowserWindowDidEnterBackgroundUserActivityEvent) {
+TEST_F(BatAdsTabManagerTest, BrowserWindowDidEnterBackgroundUserActivityEvent) {
   // Arrange
 
   // Act
@@ -105,8 +99,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(1, count);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    IsTabVisible) {
+TEST_F(BatAdsTabManagerTest, IsTabVisible) {
   // Arrange
 
   // Act
@@ -116,8 +109,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_TRUE(TabManager::Get()->IsVisible(1));
 }
 
-TEST_F(BatAdsTabManagerTest,
-    IsTabOccluded) {
+TEST_F(BatAdsTabManagerTest, IsTabOccluded) {
   // Arrange
 
   // Act
@@ -127,8 +119,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_FALSE(TabManager::Get()->IsVisible(1));
 }
 
-TEST_F(BatAdsTabManagerTest,
-    UpdatedTab) {
+TEST_F(BatAdsTabManagerTest, UpdatedTab) {
   // Arrange
 
   // Act
@@ -144,8 +135,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(expected_tab, tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    UpdatedTabUserActivityEvent) {
+TEST_F(BatAdsTabManagerTest, UpdatedTabUserActivityEvent) {
   // Arrange
 
   // Act
@@ -158,8 +148,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(1, count);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    UpdatedIncognitoTab) {
+TEST_F(BatAdsTabManagerTest, UpdatedIncognitoTab) {
   // Arrange
 
   // Act
@@ -172,8 +161,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(base::nullopt, tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    UpdatedOccludedTab) {
+TEST_F(BatAdsTabManagerTest, UpdatedOccludedTab) {
   // Arrange
 
   // Act
@@ -186,8 +174,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(base::nullopt, tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    UpdatedExistingTab) {
+TEST_F(BatAdsTabManagerTest, UpdatedExistingTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -206,8 +193,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(expected_tab, tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    ClosedTab) {
+TEST_F(BatAdsTabManagerTest, ClosedTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -221,8 +207,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(base::nullopt, tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    ClosedTabUserActivityEvent) {
+TEST_F(BatAdsTabManagerTest, ClosedTabUserActivityEvent) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -230,14 +215,13 @@ TEST_F(BatAdsTabManagerTest,
   TabManager::Get()->OnClosed(1);
 
   // Assert
-  const int count = UserActivityCountForEventType(
-      UserActivityEventType::kClosedTab);
+  const int count =
+      UserActivityCountForEventType(UserActivityEventType::kClosedTab);
 
   EXPECT_EQ(1, count);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    PlayingMedia) {
+TEST_F(BatAdsTabManagerTest, PlayingMedia) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
 
@@ -249,8 +233,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_TRUE(TabManager::Get()->IsPlayingMedia(1));
 }
 
-TEST_F(BatAdsTabManagerTest,
-    PlayingMediaUserActivityEvent) {
+TEST_F(BatAdsTabManagerTest, PlayingMediaUserActivityEvent) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
 
@@ -258,14 +241,13 @@ TEST_F(BatAdsTabManagerTest,
   TabManager::Get()->OnMediaPlaying(1);
 
   // Assert
-  const int count = UserActivityCountForEventType(
-      UserActivityEventType::kPlayedMedia);
+  const int count =
+      UserActivityCountForEventType(UserActivityEventType::kPlayedMedia);
 
   EXPECT_EQ(1, count);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    AlreadyPlayingMedia) {
+TEST_F(BatAdsTabManagerTest, AlreadyPlayingMedia) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
   TabManager::Get()->OnMediaPlaying(1);
@@ -278,8 +260,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_TRUE(TabManager::Get()->IsPlayingMedia(1));
 }
 
-TEST_F(BatAdsTabManagerTest,
-    StoppedPlayingMedia) {
+TEST_F(BatAdsTabManagerTest, StoppedPlayingMedia) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
   TabManager::Get()->OnMediaPlaying(1);
@@ -291,8 +272,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_FALSE(TabManager::Get()->IsPlayingMedia(1));
 }
 
-TEST_F(BatAdsTabManagerTest,
-    GetVisibleTab) {
+TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
   TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
@@ -308,8 +288,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(expected_tab, *tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    GetLastVisibleTab) {
+TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://foobar.com", true, false);
   TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
@@ -325,8 +304,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(expected_tab, *tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    GetTabForId) {
+TEST_F(BatAdsTabManagerTest, GetTabForId) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -341,8 +319,7 @@ TEST_F(BatAdsTabManagerTest,
   EXPECT_EQ(expected_tab, *tab);
 }
 
-TEST_F(BatAdsTabManagerTest,
-    GetTabWithInvalidId) {
+TEST_F(BatAdsTabManagerTest, GetTabWithInvalidId) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 

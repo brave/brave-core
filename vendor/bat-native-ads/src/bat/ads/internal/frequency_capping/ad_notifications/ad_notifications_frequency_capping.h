@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_AD_NOTIFICATIONS_AD_NOTIFICATIONS_FREQUENCY_CAPPING_H_  // NOLINT
-#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_AD_NOTIFICATIONS_AD_NOTIFICATIONS_FREQUENCY_CAPPING_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_AD_NOTIFICATIONS_AD_NOTIFICATIONS_FREQUENCY_CAPPING_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_AD_NOTIFICATIONS_AD_NOTIFICATIONS_FREQUENCY_CAPPING_H_
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 
@@ -28,15 +28,12 @@ class FrequencyCapping {
 
   ~FrequencyCapping();
 
-  FrequencyCapping(
-      const FrequencyCapping&) = delete;
-  FrequencyCapping& operator=(
-      const FrequencyCapping&) = delete;
+  FrequencyCapping(const FrequencyCapping&) = delete;
+  FrequencyCapping& operator=(const FrequencyCapping&) = delete;
 
   bool IsAdAllowed();
 
-  bool ShouldExcludeAd(
-      const CreativeAdInfo& ad);
+  bool ShouldExcludeAd(const CreativeAdInfo& ad);
 
  private:
   ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting_;
@@ -47,4 +44,4 @@ class FrequencyCapping {
 }  // namespace ad_notifications
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_AD_NOTIFICATIONS_AD_NOTIFICATIONS_FREQUENCY_CAPPING_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_AD_NOTIFICATIONS_AD_NOTIFICATIONS_FREQUENCY_CAPPING_H_

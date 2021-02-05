@@ -15,14 +15,12 @@ namespace {
 const char kSegmentSeparator[] = "-";
 }  // namespace
 
-std::vector<std::string> SplitSegment(
-    const std::string& segment) {
+std::vector<std::string> SplitSegment(const std::string& segment) {
   return base::SplitString(segment, kSegmentSeparator, base::KEEP_WHITESPACE,
-      base::SPLIT_WANT_ALL);
+                           base::SPLIT_WANT_ALL);
 }
 
-std::string GetParentSegment(
-    const std::string& segment) {
+std::string GetParentSegment(const std::string& segment) {
   std::string parent_segment;
   if (segment.empty()) {
     return parent_segment;
@@ -34,14 +32,13 @@ std::string GetParentSegment(
   return parent_segment;
 }
 
-SegmentList GetParentSegments(
-    const SegmentList& segments) {
+SegmentList GetParentSegments(const SegmentList& segments) {
   SegmentList parent_segments;
 
   for (const auto& segment : segments) {
     const std::string parent_segment = GetParentSegment(segment);
     if (std::find(parent_segments.begin(), parent_segments.end(),
-        parent_segment) != parent_segments.end()) {
+                  parent_segment) != parent_segments.end()) {
       continue;
     }
 
@@ -51,8 +48,7 @@ SegmentList GetParentSegments(
   return parent_segments;
 }
 
-bool ShouldFilterSegment(
-    const std::string& segment) {
+bool ShouldFilterSegment(const std::string& segment) {
   // If passed in segment has a sub segment and the current filter does not,
   // check if it's a child of the filter. Conversely, if the passed in segment
   // has no sub segment but the current filter does, it can't be a match at all
@@ -70,12 +66,11 @@ bool ShouldFilterSegment(
 
     if (segment_components.size() > 1 &&
         filtered_segment_components.size() == 1) {
-      if (segment_components.front() ==
-          filtered_segment_components.front()) {
+      if (segment_components.front() == filtered_segment_components.front()) {
         return true;
       }
     } else if (segment_components.size() == 1 &&
-        filtered_segment_components.size() > 1) {
+               filtered_segment_components.size() > 1) {
       continue;
     } else if (filtered_segment.name == segment) {
       return true;

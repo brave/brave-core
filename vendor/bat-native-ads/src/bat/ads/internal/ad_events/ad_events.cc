@@ -15,10 +15,9 @@
 
 namespace ads {
 
-void LogAdEvent(
-    const AdInfo& ad,
-    const ConfirmationType& confirmation_type,
-    AdEventCallback callback) {
+void LogAdEvent(const AdInfo& ad,
+                const ConfirmationType& confirmation_type,
+                AdEventCallback callback) {
   AdEventInfo ad_event;
   ad_event.type = ad.type;
   ad_event.uuid = ad.uuid;
@@ -31,23 +30,16 @@ void LogAdEvent(
   LogAdEvent(ad_event, callback);
 }
 
-void LogAdEvent(
-    const AdEventInfo& ad_event,
-    AdEventCallback callback) {
+void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
   database::table::AdEvents database_table;
-  database_table.LogEvent(ad_event, [callback](
-      const Result result) {
-    callback(result);
-  });
+  database_table.LogEvent(
+      ad_event, [callback](const Result result) { callback(result); });
 }
 
-void PurgeExpiredAdEvents(
-    AdEventCallback callback) {
+void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
-  database_table.PurgeExpired([callback](
-      const Result result) {
-    callback(result);
-  });
+  database_table.PurgeExpired(
+      [callback](const Result result) { callback(result); });
 }
 
 }  // namespace ads

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
 #include <string>
+#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
@@ -27,21 +28,18 @@ class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {
 
   ~BatAdsEpsilonGreedyBanditModelTest() override = default;
 
-  void SaveSegments(
-      const std::vector<std::string>& segments) {
+  void SaveSegments(const std::vector<std::string>& segments) {
     const std::string json = SerializeSegments(segments);
 
     AdsClientHelper::Get()->SetStringPref(
         prefs::kEpsilonGreedyBanditEligibleSegments, json);
   }
 
-  void SaveAllSegments() {
-    SaveSegments(kSegments);
-  }
+  void SaveAllSegments() { SaveSegments(kSegments); }
 };
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
-    GetSegmentsIfProcessorNeverInitialized) {
+       GetSegmentsIfProcessorNeverInitialized) {
   // Arrange
   SaveAllSegments();
 
@@ -53,8 +51,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   EXPECT_TRUE(segments.empty());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditModelTest,
-    GetSegmentsIfNeverProcessed) {
+TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   // Arrange
   SaveAllSegments();
 
@@ -72,8 +69,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   EXPECT_EQ(3U, segments.size());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditModelTest,
-    GetSegmentsForExploration) {
+TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   // Arrange
   SaveAllSegments();
 
@@ -97,8 +93,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   EXPECT_EQ(3U, segments.size());
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditModelTest,
-    GetSegmentsForExploitation) {
+TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Arrange
   SaveAllSegments();
 
@@ -133,23 +128,16 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {
-    "science",
-    "travel",
-    "technology & computing"
-  };
+  const SegmentList expected_segments = {"science", "travel",
+                                         "technology & computing"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsEpsilonGreedyBanditModelTest,
-    GetSegmentsForEligibleSegments) {
+TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Arrange
   const std::vector<std::string> eligible_segments = {
-    "science",
-    "technology & computing",
-    "invalid_segment"
-  };
+      "science", "technology & computing", "invalid_segment"};
   SaveSegments(eligible_segments);
 
   base::test::ScopedFeatureList scoped_feature_list;
@@ -183,10 +171,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {
-    "science",
-    "technology & computing"
-  };
+  const SegmentList expected_segments = {"science", "technology & computing"};
 
   EXPECT_EQ(expected_segments, segments);
 }

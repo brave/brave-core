@@ -7,14 +7,14 @@
 
 namespace ads {
 
-CatalogCreativeAdNotificationInfo::
-CatalogCreativeAdNotificationInfo() = default;
+CatalogCreativeAdNotificationInfo::CatalogCreativeAdNotificationInfo() =
+    default;
 
 CatalogCreativeAdNotificationInfo::CatalogCreativeAdNotificationInfo(
     const CatalogCreativeAdNotificationInfo& info) = default;
 
-CatalogCreativeAdNotificationInfo::
-~CatalogCreativeAdNotificationInfo() = default;
+CatalogCreativeAdNotificationInfo::~CatalogCreativeAdNotificationInfo() =
+    default;
 
 bool CatalogCreativeAdNotificationInfo::operator==(
     const CatalogCreativeAdNotificationInfo& rhs) const {

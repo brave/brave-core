@@ -9,19 +9,15 @@ namespace ads {
 
 CatalogOsInfo::CatalogOsInfo() = default;
 
-CatalogOsInfo::CatalogOsInfo(
-    const CatalogOsInfo& info) = default;
+CatalogOsInfo::CatalogOsInfo(const CatalogOsInfo& info) = default;
 
 CatalogOsInfo::~CatalogOsInfo() = default;
 
-bool CatalogOsInfo::operator==(
-    const CatalogOsInfo& rhs) const {
-  return code == rhs.code &&
-      name == rhs.name;
+bool CatalogOsInfo::operator==(const CatalogOsInfo& rhs) const {
+  return code == rhs.code && name == rhs.name;
 }
 
-bool CatalogOsInfo::operator!=(
-    const CatalogOsInfo& rhs) const {
+bool CatalogOsInfo::operator!=(const CatalogOsInfo& rhs) const {
   return !(*this == rhs);
 }
 

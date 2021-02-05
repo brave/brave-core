@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_CATALOG_ISSUERS_INFO_H_
-#define BAT_ADS_CATALOG_ISSUERS_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_ISSUERS_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_ISSUERS_INFO_H_
 
 #include <string>
 
@@ -16,24 +16,19 @@ namespace ads {
 
 struct CatalogIssuersInfo {
   CatalogIssuersInfo();
-  CatalogIssuersInfo(
-      const CatalogIssuersInfo& info);
+  CatalogIssuersInfo(const CatalogIssuersInfo& info);
   ~CatalogIssuersInfo();
 
-  bool operator==(
-      const CatalogIssuersInfo& rhs) const;
-  bool operator!=(
-      const CatalogIssuersInfo& rhs) const;
+  bool operator==(const CatalogIssuersInfo& rhs) const;
+  bool operator!=(const CatalogIssuersInfo& rhs) const;
 
   base::Value ToDictionary() const;
 
-  bool FromDictionary(
-      base::Value* dictionary);
+  bool FromDictionary(base::Value* dictionary);
 
   bool IsValid() const;
 
-  bool PublicKeyExists(
-      const std::string& public_key) const;
+  bool PublicKeyExists(const std::string& public_key) const;
 
   base::Optional<double> GetEstimatedRedemptionValue(
       const std::string& public_key) const;
@@ -44,4 +39,4 @@ struct CatalogIssuersInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_CATALOG_ISSUERS_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_ISSUERS_INFO_H_

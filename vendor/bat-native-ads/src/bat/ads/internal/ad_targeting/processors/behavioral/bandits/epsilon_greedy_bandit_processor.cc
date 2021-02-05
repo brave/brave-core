@@ -6,8 +6,8 @@
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
 #include <algorithm>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
@@ -34,8 +34,8 @@ EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     const auto iter = updated_arms.find(segment);
 
     if (iter != updated_arms.end()) {
-      BLOG(3, "Epsilon greedy bandit arm already exists for "
-          << segment << " segment");
+      BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
+                                                              << " segment");
 
       continue;
     }
@@ -47,8 +47,8 @@ EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
 
       updated_arms[segment] = new_arm;
 
-      BLOG(2, "Epsilon greedy bandit invalid arm was reset for "
-          << segment << " segment");
+      BLOG(2, "Epsilon greedy bandit invalid arm was reset for " << segment
+                                                                 << " segment");
 
       continue;
     }
@@ -59,8 +59,8 @@ EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
 
     updated_arms[segment] = arm;
 
-    BLOG(2, "Epsilon greedy bandit arm was added for "
-        << segment << " segment");
+    BLOG(2,
+         "Epsilon greedy bandit arm was added for " << segment << " segment");
   }
 
   return updated_arms;
@@ -78,8 +78,8 @@ EpsilonGreedyBanditArmMap MaybeDeleteArms(
 
     updated_arms.erase(arm.first);
 
-    BLOG(2, "Epsilon greedy bandit arm was deleted for "
-        << arm.first << " segment ");
+    BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm.first
+                                                         << " segment ");
   }
 
   return updated_arms;
@@ -93,8 +93,7 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() {
 
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
-void EpsilonGreedyBandit::Process(
-    const BanditFeedbackInfo& feedback) {
+void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   const std::string segment = GetParentSegment(feedback.segment);
 
   switch (feedback.ad_event_type) {
@@ -121,8 +120,8 @@ void EpsilonGreedyBandit::Process(
 ///////////////////////////////////////////////////////////////////////////////
 
 void EpsilonGreedyBandit::InitializeArms() const {
-  std::string json = AdsClientHelper::Get()->GetStringPref(
-      prefs::kEpsilonGreedyBanditArms);
+  std::string json =
+      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
 
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
 
@@ -136,11 +135,10 @@ void EpsilonGreedyBandit::InitializeArms() const {
   BLOG(1, "Successfully initialized epsilon greedy bandit arms");
 }
 
-void EpsilonGreedyBandit::UpdateArm(
-    const uint64_t reward,
-    const std::string& segment) const {
-  std::string json = AdsClientHelper::Get()->GetStringPref(
-      prefs::kEpsilonGreedyBanditArms);
+void EpsilonGreedyBandit::UpdateArm(const uint64_t reward,
+                                    const std::string& segment) const {
+  std::string json =
+      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
 
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
 
@@ -151,8 +149,8 @@ void EpsilonGreedyBandit::UpdateArm(
 
   const auto iter = arms.find(segment);
   if (iter == arms.end()) {
-    BLOG(1, "Epsilon greedy bandit arm was not found for "
-        << segment << " segment");
+    BLOG(1, "Epsilon greedy bandit arm was not found for " << segment
+                                                           << " segment");
     return;
   }
 
@@ -163,11 +161,10 @@ void EpsilonGreedyBandit::UpdateArm(
 
   json = EpsilonGreedyBanditArms::ToJson(arms);
 
-  AdsClientHelper::Get()->SetStringPref(
-      prefs::kEpsilonGreedyBanditArms, json);
+  AdsClientHelper::Get()->SetStringPref(prefs::kEpsilonGreedyBanditArms, json);
 
-  BLOG(1, "Epsilon greedy bandit arm was updated for "
-      << segment << " segment");
+  BLOG(1,
+       "Epsilon greedy bandit arm was updated for " << segment << " segment");
 }
 
 }  // namespace processor

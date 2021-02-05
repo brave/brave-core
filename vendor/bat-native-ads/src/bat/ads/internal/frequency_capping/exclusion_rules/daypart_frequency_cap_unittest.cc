@@ -24,8 +24,7 @@ class BatAdsDaypartFrequencyCapTest : public UnitTestBase {
   ~BatAdsDaypartFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    AllowIfDaypartsIsEmpty) {
+TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfDaypartsIsEmpty) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -38,16 +37,15 @@ TEST_F(BatAdsDaypartFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    AllowIfRightDayAndHours) {
+TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfRightDayAndHours) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  const int current_time = base::Time::kMinutesPerHour * exploded.hour
-      + exploded.minute;
+  const int current_time =
+      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
   CreativeDaypartInfo daypart_info;
   daypart_info.dow = base::NumberToString(exploded.day_of_week);
@@ -63,16 +61,15 @@ TEST_F(BatAdsDaypartFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    AllowForMultipleDays) {
+TEST_F(BatAdsDaypartFrequencyCapTest, AllowForMultipleDays) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  const int current_time = base::Time::kMinutesPerHour * exploded.hour
-      + exploded.minute;
+  const int current_time =
+      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
   CreativeDaypartInfo daypart_info;
   daypart_info.start_minute = current_time - base::Time::kMinutesPerHour;
@@ -87,16 +84,15 @@ TEST_F(BatAdsDaypartFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    AllowIfOneMatchExists) {
+TEST_F(BatAdsDaypartFrequencyCapTest, AllowIfOneMatchExists) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  const int current_time = base::Time::kMinutesPerHour * exploded.hour
-      + exploded.minute;
+  const int current_time =
+      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
   std::string current_dow = base::NumberToString(exploded.day_of_week);
@@ -127,16 +123,15 @@ TEST_F(BatAdsDaypartFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    DisallowIfNoMatches) {
+TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfNoMatches) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  const int current_time = base::Time::kMinutesPerHour * exploded.hour
-      + exploded.minute;
+  const int current_time =
+      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   std::string tomorrow_dow =
       base::NumberToString((exploded.day_of_week + 1) % 7);
   std::string current_dow = base::NumberToString(exploded.day_of_week);
@@ -167,16 +162,15 @@ TEST_F(BatAdsDaypartFrequencyCapTest,
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    DisallowIfWrongDay) {
+TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongDay) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  const int current_time = base::Time::kMinutesPerHour * exploded.hour
-      + exploded.minute;
+  const int current_time =
+      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
 
   // Go to next day
   std::string tomorrow_dow =
@@ -196,16 +190,15 @@ TEST_F(BatAdsDaypartFrequencyCapTest,
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsDaypartFrequencyCapTest,
-    DisallowIfWrongHours) {
+TEST_F(BatAdsDaypartFrequencyCapTest, DisallowIfWrongHours) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
   base::Time::Exploded exploded;
   base::Time::Now().LocalExplode(&exploded);
-  const int current_time = base::Time::kMinutesPerHour * exploded.hour
-      + exploded.minute;
+  const int current_time =
+      base::Time::kMinutesPerHour * exploded.hour + exploded.minute;
   std::string current_dow = base::NumberToString(exploded.day_of_week);
 
   CreativeDaypartInfo daypart_info;

@@ -9,8 +9,8 @@ namespace ads {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
 
-PurchaseIntentInfo::PurchaseIntentInfo(
-    const PurchaseIntentInfo& info) = default;
+PurchaseIntentInfo::PurchaseIntentInfo(const PurchaseIntentInfo& info) =
+    default;
 
 PurchaseIntentInfo::~PurchaseIntentInfo() = default;
 

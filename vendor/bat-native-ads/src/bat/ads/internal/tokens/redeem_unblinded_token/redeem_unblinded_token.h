@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
-#define BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 
 #include <string>
 
@@ -18,7 +18,7 @@ struct ConfirmationInfo;
 
 namespace privacy {
 struct UnblindedTokenInfo;
-}  // privacy
+}  // namespace privacy
 
 class RedeemUnblindedToken {
  public:
@@ -26,36 +26,29 @@ class RedeemUnblindedToken {
 
   ~RedeemUnblindedToken();
 
-  void set_delegate(
-      RedeemUnblindedTokenDelegate* delegate);
+  void set_delegate(RedeemUnblindedTokenDelegate* delegate);
 
-  void Redeem(
-      const ConfirmationInfo& confirmation);
+  void Redeem(const ConfirmationInfo& confirmation);
 
  private:
-  void CreateConfirmation(
-      const ConfirmationInfo& confirmation);
-  void OnCreateConfirmation(
-      const UrlResponse& url_response,
-      const ConfirmationInfo& confirmation);
+  void CreateConfirmation(const ConfirmationInfo& confirmation);
+  void OnCreateConfirmation(const UrlResponse& url_response,
+                            const ConfirmationInfo& confirmation);
 
-  void FetchPaymentToken(
-      const ConfirmationInfo& confirmation);
-  void OnFetchPaymentToken(
-      const UrlResponse& url_response,
-      const ConfirmationInfo& confirmation);
+  void FetchPaymentToken(const ConfirmationInfo& confirmation);
+  void OnFetchPaymentToken(const UrlResponse& url_response,
+                           const ConfirmationInfo& confirmation);
 
   void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const privacy::UnblindedTokenInfo& unblinded_payment_token);
 
-  void OnFailedToRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation,
-      const bool should_retry);
+  void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
+                                      const bool should_retry);
 
   RedeemUnblindedTokenDelegate* delegate_ = nullptr;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TOKENS_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_

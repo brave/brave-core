@@ -17,16 +17,12 @@ namespace ads {
 namespace {
 
 bool ShouldAllowHeader(const std::string& header) {
-  const std::vector<std::string> allowed_headers {
-    "digest",
-    "signature",
-    "accept",
-    "content-type"
-  };
+  const std::vector<std::string> allowed_headers{"digest", "signature",
+                                                 "accept", "content-type"};
 
   for (const auto& allowed_header : allowed_headers) {
     if (base::StartsWith(header, allowed_header,
-        base::CompareCase::INSENSITIVE_ASCII)) {
+                         base::CompareCase::INSENSITIVE_ASCII)) {
       return true;
     }
   }
@@ -34,9 +30,8 @@ bool ShouldAllowHeader(const std::string& header) {
   return false;
 }
 
-std::string HeadersToString(
-    const std::vector<std::string>& headers,
-    const int indent = 4) {
+std::string HeadersToString(const std::vector<std::string>& headers,
+                            const int indent = 4) {
   std::vector<std::string> formatted_headers;
 
   const std::string spaces = std::string(' ', indent);
@@ -66,8 +61,8 @@ std::string HeadersToString(
     const std::string key = header.first;
     const std::string value = header.second;
 
-    const std::string formatted_header = base::StringPrintf("%s%s: %s",
-        spaces.c_str(), key.c_str(), value.c_str());
+    const std::string formatted_header = base::StringPrintf(
+        "%s%s: %s", spaces.c_str(), key.c_str(), value.c_str());
 
     formatted_headers.push_back(formatted_header);
   }
@@ -77,8 +72,7 @@ std::string HeadersToString(
 
 }  // namespace
 
-std::string UrlRequestToString(
-    const UrlRequestPtr& url_request) {
+std::string UrlRequestToString(const UrlRequestPtr& url_request) {
   std::string log = "URL Request:\n";
 
   log += base::StringPrintf("  URL: %s\n", url_request->url.c_str());
@@ -89,7 +83,7 @@ std::string UrlRequestToString(
 
   if (!url_request->content_type.empty()) {
     log += base::StringPrintf("  Content Type: %s\n",
-        url_request->content_type.c_str());
+                              url_request->content_type.c_str());
   }
 
   std::ostringstream ss;
@@ -100,8 +94,7 @@ std::string UrlRequestToString(
   return log;
 }
 
-std::string UrlRequestHeadersToString(
-    const UrlRequestPtr& url_request) {
+std::string UrlRequestHeadersToString(const UrlRequestPtr& url_request) {
   std::string log = "  Headers:\n";
 
   if (!url_request->headers.empty()) {
@@ -111,20 +104,18 @@ std::string UrlRequestHeadersToString(
   return log;
 }
 
-std::string UrlResponseToString(
-    const UrlResponse& url_response) {
-  const std::string formatted_headers =
-      HeadersToString(url_response.headers);
+std::string UrlResponseToString(const UrlResponse& url_response) {
+  const std::string formatted_headers = HeadersToString(url_response.headers);
 
-  return base::StringPrintf("URL Response:\n  URL: %s\n  Response "
-      "Status Code: %d\n  Response: %s", url_response.url.c_str(),
-          url_response.status_code, url_response.body.c_str());
+  return base::StringPrintf(
+      "URL Response:\n  URL: %s\n  Response "
+      "Status Code: %d\n  Response: %s",
+      url_response.url.c_str(), url_response.status_code,
+      url_response.body.c_str());
 }
 
-std::string UrlResponseHeadersToString(
-    const UrlResponse& url_response) {
-  const std::string formatted_headers =
-      HeadersToString(url_response.headers);
+std::string UrlResponseHeadersToString(const UrlResponse& url_response) {
+  const std::string formatted_headers = HeadersToString(url_response.headers);
 
   return base::StringPrintf("  Headers:\n%s", formatted_headers.c_str());
 }

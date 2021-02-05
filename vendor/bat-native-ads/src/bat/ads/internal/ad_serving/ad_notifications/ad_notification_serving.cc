@@ -81,9 +81,8 @@ void AdServing::StopServing() {
 void AdServing::MaybeServe() {
   const SegmentList segments = ad_targeting_->GetSegments();
 
-  MaybeServeAdForSegments(segments, [&](
-      const Result result,
-      const AdNotificationInfo& ad) {
+  MaybeServeAdForSegments(segments, [&](const Result result,
+                                        const AdNotificationInfo& ad) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Ad notification not delivered");
       FailedToDeliverAd();
@@ -91,14 +90,14 @@ void AdServing::MaybeServe() {
     }
 
     BLOG(1, "Ad notification delivered:\n"
-        << "  uuid: " << ad.uuid << "\n"
-        << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
-        << "  creativeSetId: " << ad.creative_set_id << "\n"
-        << "  campaignId: " << ad.campaign_id << "\n"
-        << "  segment: " << ad.segment << "\n"
-        << "  title: " << ad.title << "\n"
-        << "  body: " << ad.body << "\n"
-        << "  targetUrl: " << ad.target_url);
+                << "  uuid: " << ad.uuid << "\n"
+                << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
+                << "  creativeSetId: " << ad.creative_set_id << "\n"
+                << "  campaignId: " << ad.campaign_id << "\n"
+                << "  segment: " << ad.segment << "\n"
+                << "  title: " << ad.title << "\n"
+                << "  body: " << ad.body << "\n"
+                << "  targetUrl: " << ad.target_url);
 
     DeliveredAd();
   });
@@ -109,8 +108,7 @@ void AdServing::MaybeServe() {
 bool AdServing::NextIntervalHasElapsed() {
   const base::Time now = base::Time::Now();
 
-  const base::Time next_interval =
-      Client::Get()->GetNextAdServingInterval();
+  const base::Time next_interval = Client::Get()->GetNextAdServingInterval();
 
   if (now < next_interval) {
     return false;
@@ -119,19 +117,16 @@ bool AdServing::NextIntervalHasElapsed() {
   return true;
 }
 
-base::Time AdServing::MaybeServeAfter(
-    const base::TimeDelta delay) {
-  return timer_.Start(delay, base::BindOnce(&AdServing::MaybeServe,
-      base::Unretained(this)));
+base::Time AdServing::MaybeServeAfter(const base::TimeDelta delay) {
+  return timer_.Start(
+      delay, base::BindOnce(&AdServing::MaybeServe, base::Unretained(this)));
 }
 
 void AdServing::MaybeServeAdForSegments(
     const SegmentList& segments,
     MaybeServeAdForSegmentsCallback callback) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](
-      const Result result,
-      const AdEventList& ad_events) {
+  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Ad notification not served: Failed to get ad events");
       callback(Result::FAILED, AdNotificationInfo());
@@ -168,24 +163,23 @@ void AdServing::MaybeServeAdForParentChildSegments(
   }
 
   database::table::CreativeAdNotifications database_table;
-  database_table.GetForSegments(segments, [=](
-      const Result result,
-      const SegmentList& segments,
-      const CreativeAdNotificationList& ads) {
-    EligibleAds eligible_ad_notifications(subdivision_targeting_);
+  database_table.GetForSegments(
+      segments, [=](const Result result, const SegmentList& segments,
+                    const CreativeAdNotificationList& ads) {
+        EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
-    const CreativeAdNotificationList eligible_ads =
-        eligible_ad_notifications.Get(ads,
-            last_delivered_creative_ad_, ad_events);
+        const CreativeAdNotificationList eligible_ads =
+            eligible_ad_notifications.Get(ads, last_delivered_creative_ad_,
+                                          ad_events);
 
-    if (eligible_ads.empty()) {
-      BLOG(1, "No eligible ads found for segments");
-      MaybeServeAdForParentSegments(segments, ad_events, callback);
-      return;
-    }
+        if (eligible_ads.empty()) {
+          BLOG(1, "No eligible ads found for segments");
+          MaybeServeAdForParentSegments(segments, ad_events, callback);
+          return;
+        }
 
-    MaybeServeAd(eligible_ads, callback);
-  });
+        MaybeServeAd(eligible_ads, callback);
+      });
 }
 
 void AdServing::MaybeServeAdForParentSegments(
@@ -200,24 +194,23 @@ void AdServing::MaybeServeAdForParentSegments(
   }
 
   database::table::CreativeAdNotifications database_table;
-  database_table.GetForSegments(parent_segments, [=](
-      const Result result,
-      const SegmentList& segments,
-      const CreativeAdNotificationList& ads) {
-    EligibleAds eligible_ad_notifications(subdivision_targeting_);
+  database_table.GetForSegments(
+      parent_segments, [=](const Result result, const SegmentList& segments,
+                           const CreativeAdNotificationList& ads) {
+        EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
-    const CreativeAdNotificationList eligible_ads =
-        eligible_ad_notifications.Get(ads,
-            last_delivered_creative_ad_, ad_events);
+        const CreativeAdNotificationList eligible_ads =
+            eligible_ad_notifications.Get(ads, last_delivered_creative_ad_,
+                                          ad_events);
 
-    if (eligible_ads.empty()) {
-      BLOG(1, "No eligible ads found for parent segments");
-      MaybeServeAdForUntargeted(ad_events, callback);
-      return;
-    }
+        if (eligible_ads.empty()) {
+          BLOG(1, "No eligible ads found for parent segments");
+          MaybeServeAdForUntargeted(ad_events, callback);
+          return;
+        }
 
-    MaybeServeAd(eligible_ads, callback);
-  });
+        MaybeServeAd(eligible_ads, callback);
+      });
 }
 
 void AdServing::MaybeServeAdForUntargeted(
@@ -225,35 +218,31 @@ void AdServing::MaybeServeAdForUntargeted(
     MaybeServeAdForSegmentsCallback callback) {
   BLOG(1, "Serve untargeted ad");
 
-  const std::vector<std::string> segments = {
-    ad_targeting::kUntargeted
-  };
+  const std::vector<std::string> segments = {ad_targeting::kUntargeted};
 
   database::table::CreativeAdNotifications database_table;
-  database_table.GetForSegments(segments, [=](
-      const Result result,
-      const SegmentList& segments,
-      const CreativeAdNotificationList& ads) {
-    EligibleAds eligible_ad_notifications(subdivision_targeting_);
+  database_table.GetForSegments(
+      segments, [=](const Result result, const SegmentList& segments,
+                    const CreativeAdNotificationList& ads) {
+        EligibleAds eligible_ad_notifications(subdivision_targeting_);
 
-    const CreativeAdNotificationList eligible_ads =
-        eligible_ad_notifications.Get(ads,
-            last_delivered_creative_ad_, ad_events);
+        const CreativeAdNotificationList eligible_ads =
+            eligible_ad_notifications.Get(ads, last_delivered_creative_ad_,
+                                          ad_events);
 
-    if (eligible_ads.empty()) {
-      BLOG(1, "No eligible ads found for untargeted segment");
-      BLOG(1, "Ad notification not served: No eligible ads found");
-      callback(Result::FAILED, AdNotificationInfo());
-      return;
-    }
+        if (eligible_ads.empty()) {
+          BLOG(1, "No eligible ads found for untargeted segment");
+          BLOG(1, "Ad notification not served: No eligible ads found");
+          callback(Result::FAILED, AdNotificationInfo());
+          return;
+        }
 
-    MaybeServeAd(eligible_ads, callback);
-  });
+        MaybeServeAd(eligible_ads, callback);
+      });
 }
 
-void AdServing::MaybeServeAd(
-    const CreativeAdNotificationList& ads,
-    MaybeServeAdForSegmentsCallback callback) {
+void AdServing::MaybeServeAd(const CreativeAdNotificationList& ads,
+                             MaybeServeAdForSegmentsCallback callback) {
   CreativeAdNotificationList eligible_ads = PaceAds(ads);
   if (eligible_ads.empty()) {
     BLOG(1, "Ad notification not served: No eligible ads found");
@@ -280,9 +269,8 @@ CreativeAdNotificationList AdServing::PaceAds(
   return paced_ads;
 }
 
-void AdServing::MaybeDeliverAd(
-    const CreativeAdNotificationInfo& ad,
-    MaybeServeAdForSegmentsCallback callback) {
+void AdServing::MaybeDeliverAd(const CreativeAdNotificationInfo& ad,
+                               MaybeServeAdForSegmentsCallback callback) {
   AdNotificationInfo ad_notification;
   ad_notification.type = AdType::kAdNotification;
   ad_notification.uuid = base::GenerateGUID();
@@ -326,7 +314,8 @@ void AdServing::DeliveredAd() {
     return;
   }
 
-  const int64_t seconds = base::Time::kSecondsPerHour /
+  const int64_t seconds =
+      base::Time::kSecondsPerHour /
       AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
 
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
@@ -338,8 +327,7 @@ void AdServing::DeliveredAd() {
   MaybeServeAfter(delay);
 }
 
-void AdServing::RecordAdOpportunityForSegments(
-    const SegmentList& segments) {
+void AdServing::RecordAdOpportunityForSegments(const SegmentList& segments) {
   const std::vector<std::string> question_list =
       p2a::CreateAdOpportunityQuestionList(segments);
 

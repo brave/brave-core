@@ -19,15 +19,14 @@ AdEventClicked::AdEventClicked() = default;
 
 AdEventClicked::~AdEventClicked() = default;
 
-void AdEventClicked::FireEvent(
-    const AdNotificationInfo& ad) {
+void AdEventClicked::FireEvent(const AdNotificationInfo& ad) {
   BLOG(3, "Clicked ad notification with uuid " << ad.uuid
-      << " and creative instance id " << ad.creative_instance_id);
+                                               << " and creative instance id "
+                                               << ad.creative_instance_id);
 
   AdNotifications::Get()->Remove(ad.uuid, /* should dismiss */ true);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](
-      const Result result) {
+  LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log ad notification clicked event");
       return;

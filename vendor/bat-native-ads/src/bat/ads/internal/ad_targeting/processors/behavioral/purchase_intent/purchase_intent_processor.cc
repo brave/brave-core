@@ -34,27 +34,25 @@ void AppendIntentSignalToHistory(
     history.timestamp_in_seconds = purchase_intent_signal.timestamp_in_seconds;
     history.weight = purchase_intent_signal.weight;
 
-    Client::Get()->AppendToPurchaseIntentSignalHistoryForSegment(
-        segment, history);
+    Client::Get()->AppendToPurchaseIntentSignalHistoryForSegment(segment,
+                                                                 history);
   }
 }
 
-KeywordList ToKeywords(
-    const std::string& value) {
+KeywordList ToKeywords(const std::string& value) {
   const std::string lowercase_value = base::ToLowerASCII(value);
 
   const std::string stripped_value =
       StripNonAlphaNumericCharacters(lowercase_value);
 
-  const KeywordList keywords = base::SplitString(stripped_value, " ",
-      base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  const KeywordList keywords = base::SplitString(
+      stripped_value, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   return keywords;
 }
 
-bool IsSubset(
-    const KeywordList& keywords_lhs,
-    const KeywordList& keywords_rhs) {
+bool IsSubset(const KeywordList& keywords_lhs,
+              const KeywordList& keywords_rhs) {
   KeywordList sorted_keywords_lhs = keywords_lhs;
   std::sort(sorted_keywords_lhs.begin(), sorted_keywords_lhs.end());
 
@@ -62,31 +60,31 @@ bool IsSubset(
   std::sort(sorted_keywords_rhs.begin(), sorted_keywords_rhs.end());
 
   return std::includes(sorted_keywords_lhs.begin(), sorted_keywords_lhs.end(),
-      sorted_keywords_rhs.begin(), sorted_keywords_rhs.end());
+                       sorted_keywords_rhs.begin(), sorted_keywords_rhs.end());
 }
 
 }  // namespace
 
-PurchaseIntent::PurchaseIntent(
-    resource::PurchaseIntent* resource)
+PurchaseIntent::PurchaseIntent(resource::PurchaseIntent* resource)
     : resource_(resource) {
   DCHECK(resource_);
 }
 
 PurchaseIntent::~PurchaseIntent() = default;
 
-void PurchaseIntent::Process(
-    const GURL& url) {
+void PurchaseIntent::Process(const GURL& url) {
   if (!resource_->IsInitialized()) {
-    BLOG(1, "Failed to process purchase intent signal for visited URL due to "
-        "uninitialized purchase intent resource");
+    BLOG(1,
+         "Failed to process purchase intent signal for visited URL due to "
+         "uninitialized purchase intent resource");
 
     return;
   }
 
   if (!url.is_valid()) {
-    BLOG(1, "Failed to process purchase intent signal for visited URL due to "
-        "an invalid url");
+    BLOG(1,
+         "Failed to process purchase intent signal for visited URL due to "
+         "an invalid url");
 
     return;
   }
@@ -105,8 +103,7 @@ void PurchaseIntent::Process(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
-    const GURL& url) const {
+PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(const GURL& url) const {
   PurchaseIntentSignalInfo signal_info;
 
   const std::string search_query =
@@ -139,8 +136,7 @@ PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(
   return signal_info;
 }
 
-PurchaseIntentSiteInfo PurchaseIntent::GetSite(
-    const GURL& url) const {
+PurchaseIntentSiteInfo PurchaseIntent::GetSite(const GURL& url) const {
   PurchaseIntentSiteInfo info;
 
   const PurchaseIntentInfo purchase_intent = resource_->get();

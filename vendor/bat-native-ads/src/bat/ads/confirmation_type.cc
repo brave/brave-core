@@ -25,8 +25,7 @@ const char kConversionConfirmationType[] = "conversion";
 
 }  // namespace
 
-ConfirmationType::ConfirmationType(
-    const std::string& value) {
+ConfirmationType::ConfirmationType(const std::string& value) {
   if (value == kUndefinedConfirmationType) {
     value_ = kUndefined;
   } else if (value == kClickedConfirmationType) {
@@ -94,13 +93,11 @@ ConfirmationType::operator std::string() const {
   }
 }
 
-bool ConfirmationType::operator==(
-    const ConfirmationType& rhs) const {
+bool ConfirmationType::operator==(const ConfirmationType& rhs) const {
   return value_ == rhs.value_;
 }
 
-bool ConfirmationType::operator!=(
-    const ConfirmationType& rhs) const {
+bool ConfirmationType::operator!=(const ConfirmationType& rhs) const {
   return value_ != rhs.value_;
 }
 

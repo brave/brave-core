@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CONFIRMATIONS_CONFIRMATIONS_H_
-#define BAT_ADS_INTERNAL_CONFIRMATIONS_CONFIRMATIONS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_
 
 #include <memory>
 #include <string>
@@ -24,26 +24,20 @@ class RedeemUnblindedToken;
 struct CatalogIssuersInfo;
 struct UnblindedTokenInfo;
 
-class Confirmations
-    : public RedeemUnblindedTokenDelegate {
+class Confirmations : public RedeemUnblindedTokenDelegate {
  public:
-  Confirmations(
-      privacy::TokenGeneratorInterface* token_generator,
-      AdRewards* ad_rewards);
+  Confirmations(privacy::TokenGeneratorInterface* token_generator,
+                AdRewards* ad_rewards);
 
   ~Confirmations() override;
 
-  void AddObserver(
-      ConfirmationsObserver* observer);
-  void RemoveObserver(
-      ConfirmationsObserver* observer);
+  void AddObserver(ConfirmationsObserver* observer);
+  void RemoveObserver(ConfirmationsObserver* observer);
 
-  void SetCatalogIssuers(
-      const CatalogIssuersInfo& catalog_issuers);
+  void SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers);
 
-  void ConfirmAd(
-      const std::string& creative_instance_id,
-      const ConfirmationType& confirmation_type);
+  void ConfirmAd(const std::string& creative_instance_id,
+                 const ConfirmationType& confirmation_type);
 
   void RetryAfterDelay();
 
@@ -62,29 +56,24 @@ class Confirmations
   Timer retry_timer_;
   void CreateNewConfirmationAndAppendToRetryQueue(
       const ConfirmationInfo& confirmation);
-  void AppendToRetryQueue(
-      const ConfirmationInfo& confirmation);
-  void RemoveFromRetryQueue(
-      const ConfirmationInfo& confirmation);
+  void AppendToRetryQueue(const ConfirmationInfo& confirmation);
+  void RemoveFromRetryQueue(const ConfirmationInfo& confirmation);
   void Retry();
 
-  void NotifyConfirmAd(
-      const double estimated_redemption_value,
-      const ConfirmationInfo& confirmation);
+  void NotifyConfirmAd(const double estimated_redemption_value,
+                       const ConfirmationInfo& confirmation);
 
-  void NotifyConfirmAdFailed(
-      const ConfirmationInfo& confirmation);
+  void NotifyConfirmAdFailed(const ConfirmationInfo& confirmation);
 
   // RedeemUnblindedTokenDelegate implementation
   void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const privacy::UnblindedTokenInfo& unblinded_payment_token) override;
 
-  void OnFailedToRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation,
-      const bool should_retry) override;
+  void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
+                                      const bool should_retry) override;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CONFIRMATIONS_CONFIRMATIONS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_

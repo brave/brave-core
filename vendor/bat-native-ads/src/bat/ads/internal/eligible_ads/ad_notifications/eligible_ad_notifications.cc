@@ -21,8 +21,7 @@ namespace ad_notifications {
 
 namespace {
 
-bool ShouldCapLastDeliveredAd(
-    const CreativeAdNotificationList& ads) {
+bool ShouldCapLastDeliveredAd(const CreativeAdNotificationList& ads) {
   return ads.size() != 1;
 }
 
@@ -49,8 +48,10 @@ CreativeAdNotificationList EligibleAds::Get(
 
   eligible_ads = RemoveSeenAdsAndRoundRobinIfNeeded(eligible_ads);
 
-  eligible_ads = FrequencyCap(eligible_ads, ShouldCapLastDeliveredAd(ads) ?
-      last_delivered_ad : CreativeAdInfo(), ad_events);
+  eligible_ads = FrequencyCap(
+      eligible_ads,
+      ShouldCapLastDeliveredAd(ads) ? last_delivered_ad : CreativeAdInfo(),
+      ad_events);
 
   return eligible_ads;
 }
@@ -98,11 +99,13 @@ CreativeAdNotificationList EligibleAds::FrequencyCap(
   CreativeAdNotificationList eligible_ads = ads;
 
   FrequencyCapping frequency_capping(subdivision_targeting_, ad_events);
-  const auto iter = std::remove_if(eligible_ads.begin(), eligible_ads.end(),
+  const auto iter = std::remove_if(
+      eligible_ads.begin(), eligible_ads.end(),
       [&frequency_capping, &last_delivered_ad](CreativeAdInfo& ad) {
-    return frequency_capping.ShouldExcludeAd(ad) ||
-        ad.creative_instance_id == last_delivered_ad.creative_instance_id;
-  });
+        return frequency_capping.ShouldExcludeAd(ad) ||
+               ad.creative_instance_id ==
+                   last_delivered_ad.creative_instance_id;
+      });
 
   eligible_ads.erase(iter, eligible_ads.end());
 

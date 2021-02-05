@@ -12,7 +12,6 @@
 
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
-#include "net/http/http_status_code.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
@@ -25,6 +24,7 @@
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/tokens/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 
@@ -55,16 +55,15 @@ void RefillUnblindedTokens::set_delegate(
   delegate_ = delegate;
 }
 
-void RefillUnblindedTokens::MaybeRefill(
-    const WalletInfo& wallet) {
+void RefillUnblindedTokens::MaybeRefill(const WalletInfo& wallet) {
   if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
 
   if (!ShouldRefillUnblindedTokens()) {
     BLOG(1, "No need to refill unblinded tokens as we already have "
-        << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
-            << " unblinded tokens which is above the minimum threshold of "
+                << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
+                << " unblinded tokens which is above the minimum threshold of "
                 << kMinimumUnblindedTokens);
     return;
   }
@@ -121,14 +120,14 @@ void RefillUnblindedTokens::RequestSignedTokens() {
 
   blinded_tokens_ = privacy::BlindTokens(tokens_);
 
-  RequestSignedTokensUrlRequestBuilder
-      url_request_builder(wallet_, blinded_tokens_);
+  RequestSignedTokensUrlRequestBuilder url_request_builder(wallet_,
+                                                           blinded_tokens_);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&RefillUnblindedTokens::OnRequestSignedTokens,
-      this, std::placeholders::_1);
+  auto callback = std::bind(&RefillUnblindedTokens::OnRequestSignedTokens, this,
+                            std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
@@ -176,13 +175,12 @@ void RefillUnblindedTokens::GetSignedTokens() {
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&RefillUnblindedTokens::OnGetSignedTokens,
-      this, std::placeholders::_1);
+  auto callback = std::bind(&RefillUnblindedTokens::OnGetSignedTokens, this,
+                            std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void RefillUnblindedTokens::OnGetSignedTokens(
-    const UrlResponse& url_response) {
+void RefillUnblindedTokens::OnGetSignedTokens(const UrlResponse& url_response) {
   BLOG(1, "OnGetSignedTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -220,8 +218,10 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   // Validate public key
   if (*public_key_base64 != public_key_) {
-    BLOG(0, "Response public key " << *public_key_base64 << " does not match "
-        "catalog issuers public key " << public_key_);
+    BLOG(0, "Response public key " << *public_key_base64
+                                   << " does not match "
+                                      "catalog issuers public key "
+                                   << public_key_);
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
     return;
   }
@@ -270,7 +270,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   // Verify and unblind tokens
   const std::vector<UnblindedToken> batch_dleq_proof_unblinded_tokens =
       batch_dleq_proof.verify_and_unblind(tokens_, blinded_tokens_,
-          signed_tokens, public_key);
+                                          signed_tokens, public_key);
   if (privacy::ExceptionOccurred()) {
     BLOG(1, "Failed to verify and unblind tokens");
     BLOG(1, "  Batch proof: " << *batch_proof_base64);
@@ -283,7 +283,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   // Add unblinded tokens
   privacy::UnblindedTokenList unblinded_tokens;
   for (const auto& batch_dleq_proof_unblinded_token :
-      batch_dleq_proof_unblinded_tokens) {
+       batch_dleq_proof_unblinded_tokens) {
     privacy::UnblindedTokenInfo unblinded_token;
     unblinded_token.value = batch_dleq_proof_unblinded_token;
     unblinded_token.public_key = public_key;
@@ -295,9 +295,11 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       unblinded_tokens);
   ConfirmationsState::Get()->Save();
 
-  BLOG(1, "Added " << unblinded_tokens.size() << " unblinded tokens, you now "
-      "have " << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
-          << " unblinded tokens");
+  BLOG(1, "Added " << unblinded_tokens.size()
+                   << " unblinded tokens, you now "
+                      "have "
+                   << ConfirmationsState::Get()->get_unblinded_tokens()->Count()
+                   << " unblinded tokens");
 
   OnDidRefillUnblindedTokens();
 }
@@ -336,8 +338,7 @@ void RefillUnblindedTokens::Retry() {
 
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-          base::BindOnce(&RefillUnblindedTokens::OnRetry,
-              base::Unretained(this)));
+      base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(time));
 }
@@ -365,7 +366,7 @@ bool RefillUnblindedTokens::ShouldRefillUnblindedTokens() const {
 
 int RefillUnblindedTokens::CalculateAmountOfTokensToRefill() const {
   return kMaximumUnblindedTokens -
-      ConfirmationsState::Get()->get_unblinded_tokens()->Count();
+         ConfirmationsState::Get()->get_unblinded_tokens()->Count();
 }
 
 }  // namespace ads

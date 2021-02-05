@@ -20,18 +20,16 @@ void BackoffTimer::set_timer_for_testing(
   timer_.set_timer_for_testing(std::move(timer));
 }
 
-base::Time BackoffTimer::Start(
-    const base::TimeDelta& delay,
-    base::OnceClosure user_task) {
+base::Time BackoffTimer::Start(const base::TimeDelta& delay,
+                               base::OnceClosure user_task) {
   timer_.Stop();
 
   const base::TimeDelta backoff_delay = CalculateDelay(delay);
   return timer_.Start(backoff_delay, std::move(user_task));
 }
 
-base::Time BackoffTimer::StartWithPrivacy(
-    const base::TimeDelta& delay,
-    base::OnceClosure user_task) {
+base::Time BackoffTimer::StartWithPrivacy(const base::TimeDelta& delay,
+                                          base::OnceClosure user_task) {
   timer_.Stop();
 
   const base::TimeDelta backoff_delay = CalculateDelay(delay);
@@ -52,15 +50,13 @@ void BackoffTimer::Stop() {
   backoff_count_ = 0;
 }
 
-void BackoffTimer::set_max_backoff_delay(
-    const base::TimeDelta& max_delay) {
+void BackoffTimer::set_max_backoff_delay(const base::TimeDelta& max_delay) {
   max_backoff_delay_ = max_delay;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::TimeDelta BackoffTimer::CalculateDelay(
-    const base::TimeDelta& delay) {
+base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta& delay) {
   int64_t delay_as_int64 = static_cast<int64_t>(delay.InSeconds());
   delay_as_int64 <<= backoff_count_++;
 

@@ -24,7 +24,7 @@ class BatAdsMarkedToNoLongerReceiveFrequencyCapTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
-    AllowAdIfNotMarkedToNoLongerReceive) {
+       AllowAdIfNotMarkedToNoLongerReceive) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
@@ -38,13 +38,13 @@ TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
 }
 
 TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
-    DoNotAllowAdIfMarkedToNoLongerReceive) {
+       DoNotAllowAdIfMarkedToNoLongerReceive) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  Client::Get()->ToggleAdThumbDown(ad.creative_instance_id,
-      ad.creative_set_id, AdContentInfo::LikeAction::kThumbsUp);
+  Client::Get()->ToggleAdThumbDown(ad.creative_instance_id, ad.creative_set_id,
+                                   AdContentInfo::LikeAction::kThumbsUp);
 
   // Act
   MarkedToNoLongerReceiveFrequencyCap frequency_cap;

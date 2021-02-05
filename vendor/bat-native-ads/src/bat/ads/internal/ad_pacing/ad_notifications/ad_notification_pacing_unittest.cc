@@ -25,7 +25,8 @@ namespace {
 Matcher<const AdNotificationInfo&> IsNotification(
     const std::string& creative_instance_id) {
   return AllOf(Field("creative_instance_id",
-      &AdNotificationInfo::creative_instance_id, creative_instance_id));
+                     &AdNotificationInfo::creative_instance_id,
+                     creative_instance_id));
 }
 
 }  // namespace
@@ -34,11 +35,11 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
  protected:
   BatAdsAdNotificationPacingTest()
       : ad_targeting_(std::make_unique<AdTargeting>()),
-        subdivision_targeting_(std::make_unique<
-            ad_targeting::geographic::SubdivisionTargeting>()),
+        subdivision_targeting_(
+            std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
         ad_serving_(std::make_unique<ad_notifications::AdServing>(
-            ad_targeting_.get(), subdivision_targeting_.get())) {
-  }
+            ad_targeting_.get(),
+            subdivision_targeting_.get())) {}
 
   ~BatAdsAdNotificationPacingTest() override = default;
 
@@ -48,9 +49,7 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
     SetupTestAds();
   }
 
-  void TearDown() override {
-    UnitTestBase::TearDown();
-  }
+  void TearDown() override { UnitTestBase::TearDown(); }
 
   void SetupTestAds() {
     CreativeAdNotificationInfo ad_creative_1;
@@ -100,8 +99,7 @@ class BatAdsAdNotificationPacingTest : public UnitTestBase {
   std::vector<CreativeAdNotificationInfo> test_creative_notifications_;
 };
 
-TEST_F(BatAdsAdNotificationPacingTest,
-    PacingDisableDelivery) {
+TEST_F(BatAdsAdNotificationPacingTest, PacingDisableDelivery) {
   CreativeAdNotificationList creative_ad_notifications;
   test_creative_notifications_[0].ptr = 0;
   creative_ad_notifications.push_back(test_creative_notifications_[0]);
@@ -110,15 +108,13 @@ TEST_F(BatAdsAdNotificationPacingTest,
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
   for (int i = 0; i < iterations; i++) {
-    ad_serving_->MaybeServeAd(creative_ad_notifications, [](
-        const Result result,
-        const AdNotificationInfo& ad) {
-    });
+    ad_serving_->MaybeServeAd(
+        creative_ad_notifications,
+        [](const Result result, const AdNotificationInfo& ad) {});
   }
 }
 
-TEST_F(BatAdsAdNotificationPacingTest,
-    NoPacing) {
+TEST_F(BatAdsAdNotificationPacingTest, NoPacing) {
   CreativeAdNotificationList creative_ad_notifications;
   test_creative_notifications_[0].ptr = 1.0;
   creative_ad_notifications.push_back(test_creative_notifications_[0]);
@@ -127,15 +123,13 @@ TEST_F(BatAdsAdNotificationPacingTest,
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(iterations);
 
   for (int i = 0; i < iterations; i++) {
-    ad_serving_->MaybeServeAd(creative_ad_notifications, [](
-        const Result result,
-        const AdNotificationInfo& ad) {
-    });
+    ad_serving_->MaybeServeAd(
+        creative_ad_notifications,
+        [](const Result result, const AdNotificationInfo& ad) {});
   }
 }
 
-TEST_F(BatAdsAdNotificationPacingTest,
-    SimplePacing) {
+TEST_F(BatAdsAdNotificationPacingTest, SimplePacing) {
   CreativeAdNotificationList creative_ad_notifications;
   test_creative_notifications_[0].ptr = 0.2;
   creative_ad_notifications.push_back(test_creative_notifications_[0]);
@@ -146,15 +140,13 @@ TEST_F(BatAdsAdNotificationPacingTest,
                      iterations * test_creative_notifications_[0].ptr * 1.2));
 
   for (int i = 0; i < iterations; i++) {
-    ad_serving_->MaybeServeAd(creative_ad_notifications, [](
-        const Result result,
-        const AdNotificationInfo& ad) {
-    });
+    ad_serving_->MaybeServeAd(
+        creative_ad_notifications,
+        [](const Result result, const AdNotificationInfo& ad) {});
   }
 }
 
-TEST_F(BatAdsAdNotificationPacingTest,
-    NoPacingPrioritized) {
+TEST_F(BatAdsAdNotificationPacingTest, NoPacingPrioritized) {
   CreativeAdNotificationList creative_ad_notifications;
   creative_ad_notifications.push_back(test_creative_notifications_[0]);
   creative_ad_notifications.push_back(test_creative_notifications_[1]);
@@ -164,14 +156,12 @@ TEST_F(BatAdsAdNotificationPacingTest,
                   test_creative_notifications_[0].creative_instance_id)))
       .Times(1);
 
-  ad_serving_->MaybeServeAd(creative_ad_notifications, [](
-      const Result result,
-      const AdNotificationInfo& ad) {
-  });
+  ad_serving_->MaybeServeAd(
+      creative_ad_notifications,
+      [](const Result result, const AdNotificationInfo& ad) {});
 }
 
-TEST_F(BatAdsAdNotificationPacingTest,
-    PacingDisableDeliveryPrioritized) {
+TEST_F(BatAdsAdNotificationPacingTest, PacingDisableDeliveryPrioritized) {
   CreativeAdNotificationList creative_ad_notifications;
   test_creative_notifications_[0].ptr = 0;
   creative_ad_notifications.push_back(test_creative_notifications_[0]);
@@ -182,14 +172,12 @@ TEST_F(BatAdsAdNotificationPacingTest,
                   test_creative_notifications_[1].creative_instance_id)))
       .Times(1);
 
-  ad_serving_->MaybeServeAd(creative_ad_notifications, [](
-      const Result result,
-      const AdNotificationInfo& ad) {
-  });
+  ad_serving_->MaybeServeAd(
+      creative_ad_notifications,
+      [](const Result result, const AdNotificationInfo& ad) {});
 }
 
-TEST_F(BatAdsAdNotificationPacingTest,
-    PacingAndPrioritization) {
+TEST_F(BatAdsAdNotificationPacingTest, PacingAndPrioritization) {
   CreativeAdNotificationList creative_ad_notifications;
   test_creative_notifications_[0].ptr = 0.5;
   creative_ad_notifications.push_back(test_creative_notifications_[0]);
@@ -215,10 +203,9 @@ TEST_F(BatAdsAdNotificationPacingTest,
                          test_creative_notifications_[1].ptr));
 
   for (int i = 0; i < iterations; i++) {
-    ad_serving_->MaybeServeAd(creative_ad_notifications, [](
-        const Result result,
-        const AdNotificationInfo& ad) {
-    });
+    ad_serving_->MaybeServeAd(
+        creative_ad_notifications,
+        [](const Result result, const AdNotificationInfo& ad) {});
   }
 }
 

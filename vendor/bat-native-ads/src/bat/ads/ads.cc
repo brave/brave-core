@@ -21,8 +21,7 @@ bool g_is_debug = false;
 
 const char g_catalog_schema_resource_id[] = "catalog-schema.json";
 
-bool IsSupportedLocale(
-    const std::string& locale) {
+bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   for (const auto& schema : kSupportedCountryCodes) {
@@ -37,9 +36,8 @@ bool IsSupportedLocale(
   return false;
 }
 
-bool IsNewlySupportedLocale(
-    const std::string& locale,
-    const int last_schema_version) {
+bool IsNewlySupportedLocale(const std::string& locale,
+                            const int last_schema_version) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   for (const auto& schema : kSupportedCountryCodes) {
@@ -60,8 +58,7 @@ bool IsNewlySupportedLocale(
 }
 
 // static
-Ads* Ads::CreateInstance(
-    AdsClient* ads_client) {
+Ads* Ads::CreateInstance(AdsClient* ads_client) {
   DCHECK(ads_client);
   return new AdsImpl(ads_client);
 }

@@ -21,30 +21,30 @@ std::string GetTopSegmentFromPageProbabilities(
     return "";
   }
 
-  const auto iter = std::max_element(probabilities.begin(), probabilities.end(),
-      [](const SegmentProbabilityPair& a,
-          const SegmentProbabilityPair& b) -> bool {
-    return a.second < b.second;
-  });
+  const auto iter =
+      std::max_element(probabilities.begin(), probabilities.end(),
+                       [](const SegmentProbabilityPair& a,
+                          const SegmentProbabilityPair& b) -> bool {
+                         return a.second < b.second;
+                       });
 
   return iter->first;
 }
 
 }  // namespace
 
-TextClassification::TextClassification(
-    resource::TextClassification* resource)
+TextClassification::TextClassification(resource::TextClassification* resource)
     : resource_(resource) {
   DCHECK(resource_);
 }
 
 TextClassification::~TextClassification() = default;
 
-void TextClassification::Process(
-    const std::string& text) {
+void TextClassification::Process(const std::string& text) {
   if (!resource_->IsInitialized()) {
-    BLOG(1, "Failed to process text classification as user model "
-        "not initialized");
+    BLOG(1,
+         "Failed to process text classification as user model "
+         "not initialized");
     return;
   }
 

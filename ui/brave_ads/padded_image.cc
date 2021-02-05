@@ -7,9 +7,9 @@
 #include <memory>
 #include <utility>
 
+#include "brave/ui/brave_ads/public/cpp/constants.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
-#include "brave/ui/brave_ads/public/cpp/constants.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"

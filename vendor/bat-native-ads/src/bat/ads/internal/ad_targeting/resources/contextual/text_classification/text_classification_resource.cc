@@ -6,12 +6,12 @@
 #include "bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h"
 
 #include "base/json/json_reader.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_language_codes.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_language_codes.h"
 #include "bat/ads/result.h"
 #include "bat/usermodel/user_model.h"
+#include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -27,8 +27,7 @@ bool TextClassification::IsInitialized() const {
   return user_model_ && user_model_->IsInitialized();
 }
 
-void TextClassification::LoadForLocale(
-    const std::string& locale) {
+void TextClassification::LoadForLocale(const std::string& locale) {
   const std::string language_code = brave_l10n::GetLanguageCode(locale);
 
   const auto iter = kTextClassificationLanguageCodes.find(language_code);
@@ -41,11 +40,9 @@ void TextClassification::LoadForLocale(
   LoadForId(iter->second);
 }
 
-void TextClassification::LoadForId(
-    const std::string& id) {
-  AdsClientHelper::Get()->LoadUserModelForId(id, [=](
-      const Result result,
-      const std::string& json) {
+void TextClassification::LoadForId(const std::string& id) {
+  AdsClientHelper::Get()->LoadUserModelForId(id, [=](const Result result,
+                                                     const std::string& json) {
     user_model_.reset(usermodel::UserModel::CreateInstance());
 
     if (result != SUCCESS) {
@@ -60,8 +57,8 @@ void TextClassification::LoadForId(
       return;
     }
 
-    BLOG(1, "Successfully initialized " << id
-        << " text classification resource");
+    BLOG(1,
+         "Successfully initialized " << id << " text classification resource");
   });
 }
 

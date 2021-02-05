@@ -20,8 +20,7 @@ class BatAdsBrowserIsActiveFrequencyCapTest : public UnitTestBase {
   ~BatAdsBrowserIsActiveFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
-    AllowAd) {
+TEST_F(BatAdsBrowserIsActiveFrequencyCapTest, AllowAd) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -34,8 +33,7 @@ TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
-    AlwaysAllowAdForAndroid) {
+TEST_F(BatAdsBrowserIsActiveFrequencyCapTest, AlwaysAllowAdForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
@@ -48,8 +46,7 @@ TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsBrowserIsActiveFrequencyCapTest,
-    DoNotAllowAd) {
+TEST_F(BatAdsBrowserIsActiveFrequencyCapTest, DoNotAllowAd) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 

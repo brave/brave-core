@@ -26,7 +26,7 @@ class BatAdsTextClassificationProcessorTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsTextClassificationProcessorTest,
-    DoNotProcessIfResourceIsNotInitialized) {
+       DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
   resource::TextClassification resource;
 
@@ -42,8 +42,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest,
-    DoNotProcessForUntargetedLocale) {
+TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForUntargetedLocale) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("ja-JP");
@@ -60,8 +59,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest,
-    DoNotProcessForEmptyText) {
+TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
@@ -78,8 +76,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest,
-    NeverProcessed) {
+TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
@@ -95,8 +92,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   EXPECT_TRUE(list.empty());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest,
-    ProcessText) {
+TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
@@ -113,8 +109,7 @@ TEST_F(BatAdsTextClassificationProcessorTest,
   EXPECT_EQ(1UL, list.size());
 }
 
-TEST_F(BatAdsTextClassificationProcessorTest,
-    ProcessMultipleText) {
+TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForId(kEnLanguageCode);

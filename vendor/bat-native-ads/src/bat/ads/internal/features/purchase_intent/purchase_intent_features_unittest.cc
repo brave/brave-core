@@ -3,16 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/time/time.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsPurchaseIntentFeaturesTest,
-    PurchaseIntentEnabled) {
+TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentEnabled) {
   // Arrange
 
   // Act
@@ -21,8 +20,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest,
   EXPECT_TRUE(features::IsPurchaseIntentEnabled());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest,
-    PurchaseIntentTreshold) {
+TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTreshold) {
   // Arrange
 
   // Act
@@ -31,8 +29,7 @@ TEST(BatAdsPurchaseIntentFeaturesTest,
   EXPECT_EQ(3u, features::GetPurchaseIntentThreshold());
 }
 
-TEST(BatAdsPurchaseIntentFeaturesTest,
-    PurchaseIntentTimeWindowInSeconds) {
+TEST(BatAdsPurchaseIntentFeaturesTest, PurchaseIntentTimeWindowInSeconds) {
   // Arrange
 
   // Act

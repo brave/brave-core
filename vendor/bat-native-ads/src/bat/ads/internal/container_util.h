@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
-#define BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 
 #include <vector>
 
@@ -12,10 +12,9 @@
 
 namespace ads {
 
-template<typename T>
-std::vector<std::vector<T>> SplitVector(
-    const std::vector<T>& elements,
-    const int chunk_size) {
+template <typename T>
+std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
+                                        const int chunk_size) {
   DCHECK_NE(0, chunk_size);
 
   std::vector<std::vector<T>> result;
@@ -24,8 +23,8 @@ std::vector<std::vector<T>> SplitVector(
   auto begin = elements.begin();
   const auto end = elements.end();
   while (begin != end) {
-    auto next = std::distance(begin, end) >= chunk_size ?
-        begin + chunk_size : end;
+    auto next =
+        std::distance(begin, end) >= chunk_size ? begin + chunk_size : end;
 
     result.emplace_back(begin, next);
 
@@ -36,11 +35,9 @@ std::vector<std::vector<T>> SplitVector(
 }
 
 template <typename T>
-bool CompareMaps(
-    const T &lhs,
-    const T &rhs) {
+bool CompareMaps(const T& lhs, const T& rhs) {
   return lhs.size() == rhs.size() &&
-     std::equal(lhs.begin(), lhs.end(), rhs.begin());
+         std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 // Checks that |c1| and |c2| contain the same number of elements and each
@@ -48,9 +45,7 @@ bool CompareMaps(
 // comparing). Returns true if it is the case. Note that this method will return
 // true for (aab, abb)
 template <typename T>
-bool CompareAsSets(
-    const T& c1,
-    const T& c2) {
+bool CompareAsSets(const T& c1, const T& c2) {
   if (c1.size() != c2.size()) {
     return false;
   }
@@ -72,4 +67,4 @@ bool CompareAsSets(
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONTAINER_UTIL_H_

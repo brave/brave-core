@@ -9,19 +9,16 @@ namespace ads {
 
 CatalogSegmentInfo::CatalogSegmentInfo() = default;
 
-CatalogSegmentInfo::CatalogSegmentInfo(
-    const CatalogSegmentInfo& info) = default;
+CatalogSegmentInfo::CatalogSegmentInfo(const CatalogSegmentInfo& info) =
+    default;
 
 CatalogSegmentInfo::~CatalogSegmentInfo() = default;
 
-bool CatalogSegmentInfo::operator==(
-    const CatalogSegmentInfo& rhs) const {
-  return code == rhs.code &&
-      name == rhs.name;
+bool CatalogSegmentInfo::operator==(const CatalogSegmentInfo& rhs) const {
+  return code == rhs.code && name == rhs.name;
 }
 
-bool CatalogSegmentInfo::operator!=(
-    const CatalogSegmentInfo& rhs) const {
+bool CatalogSegmentInfo::operator!=(const CatalogSegmentInfo& rhs) const {
   return !(*this == rhs);
 }
 

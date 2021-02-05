@@ -8,8 +8,8 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
@@ -49,24 +49,24 @@ struct ModelCombinationsParamInfo {
 // Expected number of segments for all possible model combinations for both,
 // never processed and previously processed state
 const ModelCombinationsParamInfo kTests[] = {
-  // Never processed
-  {false, false, false, false, 0},
-  {false, false, true, false, 1},
-  {false, true, false, false, 0},
-  {false, true, true, false, 1},
-  {true, false, false, false, 3},
-  {true, false, true, false, 4},
-  {true, true, false, false, 3},
-  {true, true, true, false, 4},
-  // Previously processed
-  {false, false, false, true, 0},
-  {false, false, true, true, 3},
-  {false, true, false, true, 2},
-  {false, true, true, true, 5},
-  {true, false, false, true, 3},
-  {true, false, true, true, 6},
-  {true, true, false, true, 5},
-  {true, true, true, true, 8},
+    // Never processed
+    {false, false, false, false, 0},
+    {false, false, true, false, 1},
+    {false, true, false, false, 0},
+    {false, true, true, false, 1},
+    {true, false, false, false, 3},
+    {true, false, true, false, 4},
+    {true, true, false, false, 3},
+    {true, true, true, false, 4},
+    // Previously processed
+    {false, false, false, true, 0},
+    {false, false, true, true, 3},
+    {false, true, false, true, 2},
+    {false, true, true, true, 5},
+    {true, false, false, true, 3},
+    {true, false, true, true, 6},
+    {true, true, false, true, 5},
+    {true, true, true, true, 8},
 };
 
 }  // namespace
@@ -95,33 +95,29 @@ class BatAdsAdTargetingTest
     text_classification_resource_->LoadForLocale("en-US");
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
-              text_classification_resource_.get());
+            text_classification_resource_.get());
   }
 
-  void SaveSegments(
-      const std::vector<std::string>& segments) {
+  void SaveSegments(const std::vector<std::string>& segments) {
     const std::string json = SerializeSegments(segments);
 
     AdsClientHelper::Get()->SetStringPref(
         prefs::kEpsilonGreedyBanditEligibleSegments, json);
   }
 
-  void SaveAllSegments() {
-    SaveSegments(kSegments);
-  }
+  void SaveAllSegments() { SaveSegments(kSegments); }
 
   void ProcessBandit() {
     const std::vector<processor::BanditFeedbackInfo> feedbacks = {
-      {"science", AdNotificationEventType::kClicked},
-      {"science", AdNotificationEventType::kClicked},
-      {"science", AdNotificationEventType::kClicked},
-      {"travel", AdNotificationEventType::kDismissed},
-      {"travel", AdNotificationEventType::kClicked},
-      {"travel", AdNotificationEventType::kClicked},
-      {"technology & computing", AdNotificationEventType::kDismissed},
-      {"technology & computing", AdNotificationEventType::kDismissed},
-      {"technology & computing", AdNotificationEventType::kClicked}
-    };
+        {"science", AdNotificationEventType::kClicked},
+        {"science", AdNotificationEventType::kClicked},
+        {"science", AdNotificationEventType::kClicked},
+        {"travel", AdNotificationEventType::kDismissed},
+        {"travel", AdNotificationEventType::kClicked},
+        {"travel", AdNotificationEventType::kClicked},
+        {"technology & computing", AdNotificationEventType::kDismissed},
+        {"technology & computing", AdNotificationEventType::kDismissed},
+        {"technology & computing", AdNotificationEventType::kClicked}};
 
     for (const auto& segment : kSegments) {
       bandit_processor_->Process(
@@ -135,10 +131,9 @@ class BatAdsAdTargetingTest
 
   void ProcessTextClassification() {
     const std::vector<std::string> texts = {
-      "Some content about cooking food",
-      "Some content about finance & banking",
-      "Some content about technology & computing"
-    };
+        "Some content about cooking food",
+        "Some content about finance & banking",
+        "Some content about technology & computing"};
 
     for (const auto& text : texts) {
       text_classification_processor_->Process(text);
@@ -147,10 +142,9 @@ class BatAdsAdTargetingTest
 
   void ProcessPurchaseIntent() {
     const std::vector<GURL> urls = {
-      GURL("https://www.brave.com/test?foo=bar"),
-      GURL("https://www.basicattentiontoken.org/test?bar=foo"),
-      GURL("https://www.brave.com/test?foo=bar")
-    };
+        GURL("https://www.brave.com/test?foo=bar"),
+        GURL("https://www.basicattentiontoken.org/test?bar=foo"),
+        GURL("https://www.brave.com/test?foo=bar")};
 
     for (const auto& url : urls) {
       purchase_intent_processor_->Process(url);
@@ -164,8 +158,7 @@ class BatAdsAdTargetingTest
   std::unique_ptr<processor::TextClassification> text_classification_processor_;
 };
 
-TEST_P(BatAdsAdTargetingTest,
-    GetSegments) {
+TEST_P(BatAdsAdTargetingTest, GetSegments) {
   // Arrange
   SaveAllSegments();
 
@@ -184,8 +177,8 @@ TEST_P(BatAdsAdTargetingTest,
     base::FieldTrialParams kEpsilonGreedyBanditParameters;
     // Set bandit to always exploit for deterministic execution
     kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
-    enabled_features.push_back({features::kEpsilonGreedyBandit,
-        kEpsilonGreedyBanditParameters});
+    enabled_features.push_back(
+        {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters});
   } else {
     disabled_features.push_back(features::kEpsilonGreedyBandit);
   }
@@ -204,7 +197,7 @@ TEST_P(BatAdsAdTargetingTest,
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-      disabled_features);
+                                                    disabled_features);
 
   // Act
   AdTargeting ad_targeting;
@@ -217,31 +210,35 @@ TEST_P(BatAdsAdTargetingTest,
 static std::string GetTestCaseName(
     ::testing::TestParamInfo<ModelCombinationsParamInfo> param_info) {
   const std::string epsilon_greedy_bandits_enabled =
-      param_info.param.epsilon_greedy_bandits_enabled ?
-          "EpsilonGreedyBanditEnabledAnd" : "";
+      param_info.param.epsilon_greedy_bandits_enabled
+          ? "EpsilonGreedyBanditEnabledAnd"
+          : "";
 
   const std::string purchase_intent_enabled =
-      param_info.param.purchase_intent_enabled ?
-          "PurchaseIntentEnabledAnd" : "";
+      param_info.param.purchase_intent_enabled ? "PurchaseIntentEnabledAnd"
+                                               : "";
 
   const std::string text_classification_enabled =
-      param_info.param.text_classification_enabled ?
-          "TextClassificationEnabledAnd" : "";
+      param_info.param.text_classification_enabled
+          ? "TextClassificationEnabledAnd"
+          : "";
 
-  const std::string previously_processed =
-      param_info.param.previously_processed ?
-          "PreviouslyProcessed" : "NeverProcessed";
+  const std::string previously_processed = param_info.param.previously_processed
+                                               ? "PreviouslyProcessed"
+                                               : "NeverProcessed";
 
-  return base::StringPrintf("For%s%s%s%s",
-      epsilon_greedy_bandits_enabled.c_str(), purchase_intent_enabled.c_str(),
-          text_classification_enabled.c_str(), previously_processed.c_str());
+  return base::StringPrintf(
+      "For%s%s%s%s", epsilon_greedy_bandits_enabled.c_str(),
+      purchase_intent_enabled.c_str(), text_classification_enabled.c_str(),
+      previously_processed.c_str());
 }
 
 INSTANTIATE_TEST_SUITE_P(BatAdsAdTargetingTest,
-    BatAdsAdTargetingTest, ::testing::ValuesIn(kTests), GetTestCaseName);
+                         BatAdsAdTargetingTest,
+                         ::testing::ValuesIn(kTests),
+                         GetTestCaseName);
 
-TEST_F(BatAdsAdTargetingTest,
-    GetSegmentsForAllModelsIfPreviouslyProcessed) {
+TEST_F(BatAdsAdTargetingTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
   SaveAllSegments();
 
@@ -255,10 +252,11 @@ TEST_F(BatAdsAdTargetingTest,
   kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
 
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters({
-      {features::kPurchaseIntent, /* default params */ {}},
-      {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters},
-      {features::kTextClassification, /* default params */ {}}}, {});
+  scoped_feature_list.InitWithFeaturesAndParameters(
+      {{features::kPurchaseIntent, /* default params */ {}},
+       {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters},
+       {features::kTextClassification, /* default params */ {}}},
+      {});
 
   // Act
   AdTargeting ad_targeting;
@@ -266,21 +264,19 @@ TEST_F(BatAdsAdTargetingTest,
 
   // Assert
   const SegmentList expected_segments = {
-    "technology & computing-technology & computing",
-    "personal finance-banking",
-    "food & drink-cooking",
-    "segment 3",
-    "segment 2",
-    "science",
-    "travel",
-    "technology & computing"
-  };
+      "technology & computing-technology & computing",
+      "personal finance-banking",
+      "food & drink-cooking",
+      "segment 3",
+      "segment 2",
+      "science",
+      "travel",
+      "technology & computing"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsAdTargetingTest,
-    GetSegmentsForFieldTrialParticipationPath) {
+TEST_F(BatAdsAdTargetingTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
   SaveAllSegments();
 

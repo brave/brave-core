@@ -13,8 +13,6 @@
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
 
-#include <iostream>
-
 namespace ads {
 namespace ad_targeting {
 
@@ -24,9 +22,8 @@ const char kSegmentKey[] = "segment";
 const char kValueKey[] = "value";
 const char kPullsKey[] = "pulls";
 
-bool GetArmFromDictionary(
-    const base::DictionaryValue* dictionary,
-    EpsilonGreedyBanditArmInfo* info) {
+bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
+                          EpsilonGreedyBanditArmInfo* info) {
   DCHECK(dictionary);
   DCHECK(info);
 

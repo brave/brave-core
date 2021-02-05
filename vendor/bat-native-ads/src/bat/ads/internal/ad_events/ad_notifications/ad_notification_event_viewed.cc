@@ -18,13 +18,12 @@ AdEventViewed::AdEventViewed() = default;
 
 AdEventViewed::~AdEventViewed() = default;
 
-void AdEventViewed::FireEvent(
-    const AdNotificationInfo& ad) {
+void AdEventViewed::FireEvent(const AdNotificationInfo& ad) {
   BLOG(3, "Viewed ad notification with uuid " << ad.uuid
-      << " and creative instance id " << ad.creative_instance_id);
+                                              << " and creative instance id "
+                                              << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kViewed, [](
-      const Result result) {
+  LogAdEvent(ad, ConfirmationType::kViewed, [](const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log ad notification viewed event");
       return;
