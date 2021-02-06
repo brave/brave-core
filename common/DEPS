@@ -1,0 +1,12 @@
+include_rules = [
+  "+chrome/common",
+  "+chrome/test",
+  "+content/public/common",
+  "+content/public/test",
+  "+components/gcm_driver/gcm_buildflags.h",
+  "+components/grit/brave_components_resources.h",
+  "+components/grit/components_resources.h",
+  "+components/version_info",
+  "+extensions/common/url_pattern.h",
+  "+third_party/widevine/cdm/buildflags.h",
+]

@@ -51,3 +51,35 @@ hooks = [
     'action': ['python', 'script/generate_licenses.py'],
   },
 ]
+
+include_rules = [
+  # Everybody can use some things.
+  "+brave_base",
+  "+crypto",
+  "+net",
+  "+sql",
+  "+ui/base",
+
+  "-chrome",
+  "-brave/app",
+  "-brave/browser",
+  "-brave/common",
+  "-brave/renderer",
+  "-brave/services",
+  "-ios",
+]
+
+# Temporary workaround for massive nummber of incorrect test includes
+specific_include_rules = {
+  ".*test.*(\.cc|\.mm|\.h)": [
+    "+bat",
+    "+brave",
+    "+chrome",
+    "+components",
+    "+content",
+    "+extensions",
+    "+mojo",
+    "+services",
+    "+third_party",
+  ],
+}

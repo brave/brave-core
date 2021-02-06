@@ -1,0 +1,8 @@
+include_rules = [
+  "+components/favicon_base",
+  "+components/os_crypt",
+  "+components/password_manager/core/browser",
+  "+components/password_manager/core/common",
+  "+components/prefs",
+  "+components/webdata/common",
+]

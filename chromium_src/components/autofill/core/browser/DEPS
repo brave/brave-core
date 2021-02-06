@@ -1,0 +1,5 @@
+include_rules = [
+  "+components/autofill/core/browser",
+  "+components/autofill/core/common",
+  "+components/prefs",
+]

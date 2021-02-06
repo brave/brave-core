@@ -1,0 +1,18 @@
+include_rules = [
+  "+content/public/browser",
+  "+extensions/browser",
+  "+extensions/common",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "content_browser_client_helper.h": [
+    "+brave/common/url_constants.h",
+    "+chrome/browser/external_protocol/external_protocol_handler.h",
+  ],
+  "webtorrent_util.cc": [
+    "+brave/common/network_constants.h",
+    "+brave/common/pref_names.h",
+    "+chrome/browser/profiles/profile.h",
+  ],
+}

@@ -1,0 +1,135 @@
+include_rules = [
+  "+cc/metrics",
+  "+cc/paint",
+  "+cc/test",
+
+  "+bat/ads/pref_names.h",
+  "+brave/app",
+  "+brave/common",
+  "+brave/services/network/public",
+  "+chrome/app",
+  "+chrome/browser",
+  "+chrome/common",
+  "+chrome/grit",
+  "+chrome/installer/util",
+  "+chrome/test",
+  "+content/public/browser",
+  "+content/public/common",
+  "+content/public/test",
+  # TODO(bridiver) - narrow this down
+  "+components",
+  "+device",
+  "+extensions/browser",
+  "+extensions/common",
+  "+extensions/buildflags",
+  "+extensions/grit",
+  "+extensions/test",
+  "+google_apis",
+  "+media/media_buildflags.h",
+  "+media/audio", # For media audio hang monitor.
+  "+media/base",  # For media switches
+  "+media/capabilities", # For InMemoryVideoDecodeStatsDB
+  "+media/cdm/cdm_paths.h",
+  "+media/capture",
+  "+media/midi",  # For midi switches
+  "+media/mojo",  # For mojo media services.
+  "+media/renderers",
+  "+media/webrtc",  # For webrtc media switches.
+  "+mojo/public",
+  "+net",
+  "+sandbox/mac",
+  "+sandbox/win/src",
+  "+services/audio/public",
+  "+services/cert_verifier",
+  "+services/data_decoder/public",
+  "+services/device/public",
+  "+services/image_annotation/public",
+  "+services/media_session/public",
+  "+services/metrics/public",
+  "+services/network/network_context.h",
+  "+services/network/network_service.h",
+  "+services/network/public",
+  "+services/network/test",
+  "+services/preferences/public/cpp",
+  "+services/preferences/public/mojom",
+  "+services/proxy_resolver",
+  "+services/proxy_resolver/public/mojom",
+  "+services/resource_coordinator/public/cpp",
+  "+services/resource_coordinator/public/mojom",
+  "+services/strings",
+  "+third_party/boringssl/src/include",
+  "+third_party/crashpad",
+  "+third_party/widevine/cdm/buildflags.h",
+  "+third_party/widevine/cdm/widevine_cdm_common.h",
+  "+ui",
+
+  # Code under //ash should be accessed via its public API. See //ash/README.md.
+  "-ash",
+  "+ash/public",
+  "+ash/keyboard/ui/grit",
+  "+ash/keyboard/ui/resources",
+  "+ash/components/shortcut_viewer",
+
+  # The message center should only be accessed through
+  # //chrome/browser/notifications.
+  "-ui/message_center",
+  "+ui/message_center/public",
+
+  # chrome only needs switches and features flags from cc. All usage of the
+  # compositor is from content. Definitely don't include generic stuff from
+  # cc/base here, if this is needed these files need to move to base/
+  "+cc/base/features.h",
+  "+cc/base/switches.h",
+
+  # Unsafe to use from //chrome, see http://goo.gl/QQG5wo
+  "-content/public/test/test_browser_context.h",
+
+  "+storage/browser",
+  "+storage/common",
+
+  # chrome/browser/ui/views/ is an implementation, not a public interface.
+  # Parent directories should not depend on it directly.
+  # TODO(crbug.com/1112591): Remove the exceptions below.
+  "-chrome/browser/ui/views",
+
+  # Explicitly disallow using SyncMessageFilter to prevent browser from
+  # sending synchronous IPC messages on non-UI threads.
+  "-ipc/ipc_sync_message_filter.h",
+
+  # Allows in-process use of NetworkService for URLRequestContext configuration.
+  # Should be removed once the actual network service ships.
+  "+content/public/network",
+
+  # Other libraries.
+  "+third_party/google_toolbox_for_mac/src",
+  "+third_party/icu/source/common/unicode",
+  "+third_party/icu/source/i18n/unicode",
+  "+third_party/leveldatabase",
+  "+third_party/libxml/chromium/xml_writer.h",
+  "+third_party/mozilla",     # Mozilla interface headers.
+  "+third_party/ocmock/gtest_support.h",
+  "+third_party/protobuf/src/google/protobuf",
+  "+third_party/re2",
+  "+third_party/skia",
+  "+third_party/smhasher",
+  "+third_party/sqlite",
+  "+third_party/zlib",
+
+  # No inclusion of WebKit from the browser, other than the ones in
+  # WebKit/public/{mojom,common}.
+  # TODO(crbug.com/1008303) clarify dependency and remove or move these individual headers
+  # into public/common.
+  "-third_party/blink",
+  "+third_party/blink/public/common",
+  "+third_party/blink/public/mojom",
+  "+third_party/blink/public/public_buildflags.h",
+]
+
+specific_include_rules = {
+  "brave_browser_main_loop.h": [
+    "+content/browser/browser_main_loop.h",
+  ],
+  "brave_content_browser_client.cc": [
+    "+content/browser/renderer_host/render_frame_host_impl.h",
+  ],
+}

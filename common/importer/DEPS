@@ -1,0 +1,5 @@
+include_rules = [
+  "+components/webdata/common",
+  "+extensions/buildflags/buildflags.h",
+  "+extensions/common",
+]

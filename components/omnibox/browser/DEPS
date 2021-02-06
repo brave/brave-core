@@ -1,0 +1,12 @@
+# Existing exceptions
+specific_include_rules = {
+  "topsites_provider.cc": [
+    "+brave/common/pref_names.h",
+  ],
+  "fake_autocomplete_provider_client.cc": [
+    "+brave/common/pref_names.h",
+  ],
+  "suggested_sites_provider.cc": [
+    "+brave/common/pref_names.h",
+  ],
+}

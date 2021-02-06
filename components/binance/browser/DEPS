@@ -1,0 +1,11 @@
+include_rules = [
+  "+content/public/browser",
+  "+services/network/public",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "binance_service.cc": [
+    "+brave/common/pref_names.h",
+  ],
+}

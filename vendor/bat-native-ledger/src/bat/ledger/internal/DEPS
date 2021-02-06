@@ -1,0 +1,9 @@
+include_rules = [
+  "+third_party/brotli",
+]
+
+specific_include_rules = {
+  "json_helper.h": [
+    "+rapidjson",
+  ],
+}
