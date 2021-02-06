@@ -9,11 +9,11 @@
 #include <memory>
 #include <utility>
 
-#include "base/i18n/case_conversion.h"
 #include "base/files/file_path.h"
+#include "base/i18n/case_conversion.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/string_util.h"
 #include "base/path_service.h"
+#include "base/strings/string_util.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "brave/grit/brave_unscaled_resources.h"
@@ -26,10 +26,10 @@
 #include "brave/ui/brave_ads/public/cpp/notification.h"
 #include "build/build_config.h"
 #include "components/url_formatter/elide_url.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "ui/base/class_property.h"
 #include "ui/base/cursor/cursor.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/gesture_detection/gesture_provider_config_helper.h"
 #include "ui/gfx/canvas.h"
@@ -57,8 +57,8 @@
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/fill_layout.h"
+#include "ui/views/layout/flex_layout.h"
 #include "ui/views/native_cursor.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
@@ -197,8 +197,8 @@ void AdNotificationViewMD::CreateOrUpdateViews(
   // Ideally, we should fix the original bug, but it seems there's no obvious
   // solution for the bug according to https://crbug.com/678337#c7, we should
   // ensure that the change won't break any of the users of BoxLayout class.
-  const int message_view_width = kNotificationViewWidthWithIcon -
-      GetInsets().width();
+  const int message_view_width =
+      kNotificationViewWidthWithIcon - GetInsets().width();
   if (message_view_)
     message_view_->SizeToFit(message_view_width);
 
@@ -209,14 +209,14 @@ AdNotificationViewMD::AdNotificationViewMD(const Notification& notification)
     : NotificationView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
-        views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
+      views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
 
   SetInkDropVisibleOpacity(1);
 
   AddChildView(ink_drop_container_);
 
   control_buttons_view_ =
-    std::make_unique<NotificationControlButtonsView>(this);
+      std::make_unique<NotificationControlButtonsView>(this);
   control_buttons_view_->set_owned_by_client();
 
   // |header_row_| contains app_icon, app_name, control buttons, etc...
@@ -293,7 +293,7 @@ void AdNotificationViewMD::RemoveLayerBeneathView(ui::Layer* layer) {
 }
 
 void AdNotificationViewMD::Layout() {
-    NotificationView::Layout();
+  NotificationView::Layout();
 
   // We need to call IsExpandable() at the end of Layout() call, since whether
   // we should show expand button or not depends on the current view layout.
@@ -413,7 +413,6 @@ void AdNotificationViewMD::CreateOrUpdateContextTitleView(
 
 void AdNotificationViewMD::CreateOrUpdateNotificationView(
     const Notification& notification) {
-
   base::string16 text = gfx::TruncateString(
       notification.message(), kMessageCharacterLimitMD, gfx::WORD_BREAK);
 
@@ -461,8 +460,8 @@ void AdNotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
   SchedulePaint();
 }
 
-void AdNotificationViewMD::UpdateCornerRadius(
-    int top_radius, int bottom_radius) {
+void AdNotificationViewMD::UpdateCornerRadius(int top_radius,
+                                              int bottom_radius) {
   NotificationView::UpdateCornerRadius(top_radius, bottom_radius);
   highlight_path_generator_->set_top_radius(top_radius);
   highlight_path_generator_->set_bottom_radius(bottom_radius);
@@ -516,8 +515,7 @@ std::unique_ptr<views::InkDrop> AdNotificationViewMD::CreateInkDrop() {
 }
 
 std::unique_ptr<views::InkDropRipple>
-    AdNotificationViewMD::CreateInkDropRipple()
-    const {
+AdNotificationViewMD::CreateInkDropRipple() const {
   return std::make_unique<views::FloodFillInkDropRipple>(
       GetPreferredSize(), GetInkDropCenterBasedOnLastEvent(),
       GetInkDropBaseColor(), GetInkDropVisibleOpacity());

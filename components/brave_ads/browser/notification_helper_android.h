@@ -17,8 +17,8 @@ class NotificationHelperAndroid
       public base::SupportsWeakPtr<NotificationHelperAndroid> {
  public:
   NotificationHelperAndroid(const NotificationHelperAndroid&) = delete;
-  NotificationHelperAndroid& operator=(
-      const NotificationHelperAndroid&) = delete;
+  NotificationHelperAndroid& operator=(const NotificationHelperAndroid&) =
+      delete;
 
   static NotificationHelperAndroid* GetInstanceImpl();
 

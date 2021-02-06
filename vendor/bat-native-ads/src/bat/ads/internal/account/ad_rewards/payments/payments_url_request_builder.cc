@@ -17,8 +17,7 @@
 
 namespace ads {
 
-PaymentsUrlRequestBuilder::PaymentsUrlRequestBuilder(
-    const WalletInfo& wallet)
+PaymentsUrlRequestBuilder::PaymentsUrlRequestBuilder(const WalletInfo& wallet)
     : wallet_(wallet) {
   DCHECK(wallet_.IsValid());
 }
@@ -41,7 +40,8 @@ UrlRequestPtr PaymentsUrlRequestBuilder::Build() {
 
 std::string PaymentsUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/payment/%s",
-      confirmations::server::GetHost().c_str(), wallet_.id.c_str());
+                            confirmations::server::GetHost().c_str(),
+                            wallet_.id.c_str());
 }
 
 std::vector<std::string> PaymentsUrlRequestBuilder::BuildHeaders(
@@ -56,11 +56,7 @@ std::vector<std::string> PaymentsUrlRequestBuilder::BuildHeaders(
 
   const std::string accept_header = "accept: application/json";
 
-  return {
-    digest_header,
-    signature_header,
-    accept_header
-  };
+  return {digest_header, signature_header, accept_header};
 }
 
 std::string PaymentsUrlRequestBuilder::BuildDigestHeaderValue(
@@ -79,8 +75,8 @@ std::string PaymentsUrlRequestBuilder::BuildSignatureHeaderValue(
 
   const std::string digest_header_value = BuildDigestHeaderValue(body);
 
-  return security::Sign({{"digest", digest_header_value}},
-      "primary", wallet_.secret_key);
+  return security::Sign({{"digest", digest_header_value}}, "primary",
+                        wallet_.secret_key);
 }
 
 std::string PaymentsUrlRequestBuilder::BuildBody() const {

@@ -26,7 +26,7 @@ class BatAdsTextClassificationModelTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsTextClassificationModelTest,
-    GetUntargetedSegmentForUnsupportedLocale) {
+       GetUntargetedSegmentForUnsupportedLocale) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("XX-XX");
@@ -40,15 +40,12 @@ TEST_F(BatAdsTextClassificationModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {
-    "untargeted"
-  };
+  const SegmentList expected_segments = {"untargeted"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsTextClassificationModelTest,
-    GetUntargetedSegmentForEmptyText) {
+TEST_F(BatAdsTextClassificationModelTest, GetUntargetedSegmentForEmptyText) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
@@ -62,15 +59,13 @@ TEST_F(BatAdsTextClassificationModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {
-    "untargeted"
-  };
+  const SegmentList expected_segments = {"untargeted"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
 TEST_F(BatAdsTextClassificationModelTest,
-    GetSegmentsForPreviouslyClassifiedText) {
+       GetSegmentsForPreviouslyClassifiedText) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
@@ -85,25 +80,21 @@ TEST_F(BatAdsTextClassificationModelTest,
 
   // Assert
   const SegmentList expected_segments = {
-    "technology & computing-technology & computing",
-    "technology & computing-unix",
-    "science-geology"
-  };
+      "technology & computing-technology & computing",
+      "technology & computing-unix", "science-geology"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
 TEST_F(BatAdsTextClassificationModelTest,
-    GetSegmentsForPreviouslyClassifiedTexts) {
+       GetSegmentsForPreviouslyClassifiedTexts) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
 
   const std::vector<std::string> texts = {
-    "Some content about cooking food",
-    "Some content about finance & banking",
-    "Some content about technology & computing"
-  };
+      "Some content about cooking food", "Some content about finance & banking",
+      "Some content about technology & computing"};
 
   processor::TextClassification processor(&resource);
   for (const auto& text : texts) {
@@ -116,16 +107,14 @@ TEST_F(BatAdsTextClassificationModelTest,
 
   // Assert
   const SegmentList expected_segments = {
-    "technology & computing-technology & computing",
-    "personal finance-banking",
-    "food & drink-cooking"
-  };
+      "technology & computing-technology & computing",
+      "personal finance-banking", "food & drink-cooking"};
 
   EXPECT_EQ(expected_segments, segments);
 }
 
 TEST_F(BatAdsTextClassificationModelTest,
-    GetUntargetedSegmentIfNeverProcessed) {
+       GetUntargetedSegmentIfNeverProcessed) {
   // Arrange
   resource::TextClassification resource;
   resource.LoadForLocale("en-US");
@@ -135,9 +124,7 @@ TEST_F(BatAdsTextClassificationModelTest,
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments = {
-    "untargeted"
-  };
+  const SegmentList expected_segments = {"untargeted"};
 
   EXPECT_EQ(expected_segments, segments);
 }

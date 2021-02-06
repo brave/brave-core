@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
-#define BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
 
 #include "bat/ads/ads_client.h"
 
@@ -12,8 +12,7 @@ namespace ads {
 
 class AdsClientHelper {
  public:
-  AdsClientHelper(
-      AdsClient* ads_client);
+  explicit AdsClientHelper(AdsClient* ads_client);
 
   ~AdsClientHelper();
 
@@ -24,4 +23,4 @@ class AdsClientHelper {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_

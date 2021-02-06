@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/client/preferences/saved_ad_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 SavedAdInfo::SavedAdInfo() = default;
 
-SavedAdInfo::SavedAdInfo(
-    const SavedAdInfo& ad) = default;
+SavedAdInfo::SavedAdInfo(const SavedAdInfo& ad) = default;
 
 SavedAdInfo::~SavedAdInfo() = default;
 
@@ -23,8 +22,7 @@ std::string SavedAdInfo::ToJson() const {
   return json;
 }
 
-Result SavedAdInfo::FromJson(
-    const std::string& json) {
+Result SavedAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -44,9 +42,7 @@ Result SavedAdInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const SavedAdInfo& ad) {
+void SaveToJson(JsonWriter* writer, const SavedAdInfo& ad) {
   writer->StartObject();
 
   writer->String("uuid");

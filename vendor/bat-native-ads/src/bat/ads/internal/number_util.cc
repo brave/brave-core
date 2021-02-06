@@ -13,9 +13,7 @@ namespace {
 const double kEpsilon = .0001;
 }  // namespace
 
-bool DoubleEquals(
-    const double a,
-    const double b) {
+bool DoubleEquals(const double a, const double b) {
   // Choice of epsilon for double comparison allows for proper comparison, we
   // want it to be relatively high to avoid false negative comparison results
   return std::abs(a - b) < kEpsilon;

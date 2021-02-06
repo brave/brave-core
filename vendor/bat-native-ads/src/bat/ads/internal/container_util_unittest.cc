@@ -5,23 +5,20 @@
 
 #include "bat/ads/internal/container_util.h"
 
+#include <deque>
+#include <map>
+#include <string>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsContainerUtilTest,
-    SplitVectorIntoSingleChunk) {
+TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
-  const std::vector<std::string> vector = {
-    "item 1",
-    "item 2",
-    "item 3",
-    "item 4",
-    "item 5",
-    "item 6"
-  };
+  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
+                                           "item 4", "item 5", "item 6"};
 
   // Act
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 6);
@@ -33,16 +30,10 @@ TEST(BatAdsContainerUtilTest,
 }
 
 TEST(BatAdsContainerUtilTest,
-    SplitVectorIntoSingleChunkWhenChunkSizeIsLargerThanVectorSize) {
+     SplitVectorIntoSingleChunkWhenChunkSizeIsLargerThanVectorSize) {
   // Arrange
-  const std::vector<std::string> vector = {
-    "item 1",
-    "item 2",
-    "item 3",
-    "item 4",
-    "item 5",
-    "item 6"
-  };
+  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
+                                           "item 4", "item 5", "item 6"};
 
   // Act
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 7);
@@ -53,16 +44,10 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_EQ(expected_vector, vector);
 }
 
-TEST(BatAdsContainerUtilTest,
-    SplitVectorIntoMultipleEvenChunks) {
+TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
   // Arrange
   const std::vector<std::string> vector = {
-    "item 1",
-    "item 2",
-    "item 3",
-    "item 4",
-    "item 5",
-    "item 6",
+      "item 1", "item 2", "item 3", "item 4", "item 5", "item 6",
   };
 
   // Act
@@ -70,53 +55,27 @@ TEST(BatAdsContainerUtilTest,
 
   // Assert
   const std::vector<std::vector<std::string>> expected_vectors = {
-    {
-      "item 1",
-      "item 2",
-      "item 3"
-    },
-    {
-      "item 4",
-      "item 5",
-      "item 6"
-    }
-  };
+      {"item 1", "item 2", "item 3"}, {"item 4", "item 5", "item 6"}};
 
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-TEST(BatAdsContainerUtilTest,
-    SplitVectorIntoMultipleUnevenChunks) {
+TEST(BatAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   // Arrange
-  const std::vector<std::string> vector = {
-    "item 1",
-    "item 2",
-    "item 3",
-    "item 4",
-    "item 5"
-  };
+  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
+                                           "item 4", "item 5"};
 
   // Act
   const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 3);
 
   // Assert
   const std::vector<std::vector<std::string>> expected_vectors = {
-    {
-      "item 1",
-      "item 2",
-      "item 3"
-    },
-    {
-      "item 4",
-      "item 5"
-    }
-  };
+      {"item 1", "item 2", "item 3"}, {"item 4", "item 5"}};
 
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-TEST(BatAdsContainerUtilTest,
-    SplitEmptyVector) {
+TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
   // Arrange
   const std::vector<std::string> vector = {};
 
@@ -129,26 +88,13 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_EQ(expected_vector, vector);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareMatchingMaps) {
+TEST(BatAdsContainerUtilTest, CompareMatchingMaps) {
   // Arrange
-  const std::map<std::string, std::string> map_1 = {
-    {
-      "key 1", "value 1"
-    },
-    {
-      "key 2", "value 2"
-    }
-  };
+  const std::map<std::string, std::string> map_1 = {{"key 1", "value 1"},
+                                                    {"key 2", "value 2"}};
 
-  const std::map<std::string, std::string> map_2 = {
-    {
-      "key 2", "value 2"
-    },
-    {
-      "key 1", "value 1"
-    }
-  };
+  const std::map<std::string, std::string> map_2 = {{"key 2", "value 2"},
+                                                    {"key 1", "value 1"}};
 
   // Act
   const bool does_equal = CompareMaps(map_1, map_2);
@@ -157,17 +103,10 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_TRUE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareIdenticalMatchingMaps) {
+TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingMaps) {
   // Arrange
-  const std::map<std::string, std::string> map = {
-    {
-      "key 1", "value 1"
-    },
-    {
-      "key 2", "value 2"
-    }
-  };
+  const std::map<std::string, std::string> map = {{"key 1", "value 1"},
+                                                  {"key 2", "value 2"}};
 
   // Act
   const bool does_equal = CompareMaps(map, map);
@@ -176,26 +115,13 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_TRUE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareNonMatchingMaps) {
+TEST(BatAdsContainerUtilTest, CompareNonMatchingMaps) {
   // Arrange
-  const std::map<std::string, std::string> map_1 = {
-    {
-      "key 1", "value 1"
-    },
-    {
-      "key 2", "value 2"
-    }
-  };
+  const std::map<std::string, std::string> map_1 = {{"key 1", "value 1"},
+                                                    {"key 2", "value 2"}};
 
-  const std::map<std::string, std::string> map_2 = {
-    {
-      "key 3", "value 3"
-    },
-    {
-      "key 4", "value 4"
-    }
-  };
+  const std::map<std::string, std::string> map_2 = {{"key 3", "value 3"},
+                                                    {"key 4", "value 4"}};
 
   // Act
   const bool does_equal = CompareMaps(map_1, map_2);
@@ -204,8 +130,7 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_FALSE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareEmptyMaps) {
+TEST(BatAdsContainerUtilTest, CompareEmptyMaps) {
   // Arrange
   const std::map<std::string, std::string> map = {};
 
@@ -216,18 +141,11 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_TRUE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareMatchingSets) {
+TEST(BatAdsContainerUtilTest, CompareMatchingSets) {
   // Arrange
-  const std::deque<std::string> deque_1 = {
-    "deque 1",
-    "deque 2"
-  };
+  const std::deque<std::string> deque_1 = {"deque 1", "deque 2"};
 
-  const std::deque<std::string> deque_2 = {
-    "deque 2",
-    "deque 1"
-  };
+  const std::deque<std::string> deque_2 = {"deque 2", "deque 1"};
 
   // Act
   const bool does_equal = CompareAsSets(deque_1, deque_2);
@@ -236,13 +154,9 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_TRUE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareIdenticalMatchingSets) {
+TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingSets) {
   // Arrange
-  const std::deque<std::string> deque = {
-    "deque 1",
-    "deque 2"
-  };
+  const std::deque<std::string> deque = {"deque 1", "deque 2"};
 
   // Act
   const bool does_equal = CompareAsSets(deque, deque);
@@ -251,18 +165,11 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_TRUE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareNonMatchingSets) {
+TEST(BatAdsContainerUtilTest, CompareNonMatchingSets) {
   // Arrange
-  const std::deque<std::string> deque_1 = {
-    "deque 1",
-    "deque 2"
-  };
+  const std::deque<std::string> deque_1 = {"deque 1", "deque 2"};
 
-  const std::deque<std::string> deque_2 = {
-    "deque 3",
-    "deque 4"
-  };
+  const std::deque<std::string> deque_2 = {"deque 3", "deque 4"};
 
   // Act
   const bool does_equal = CompareAsSets(deque_1, deque_2);
@@ -271,8 +178,7 @@ TEST(BatAdsContainerUtilTest,
   EXPECT_FALSE(does_equal);
 }
 
-TEST(BatAdsContainerUtilTest,
-    CompareEmptySets) {
+TEST(BatAdsContainerUtilTest, CompareEmptySets) {
   // Arrange
   const std::deque<std::string> deque = {};
 

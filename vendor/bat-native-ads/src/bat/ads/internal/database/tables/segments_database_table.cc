@@ -27,9 +27,8 @@ Segments::Segments() = default;
 
 Segments::~Segments() = default;
 
-void Segments::InsertOrUpdate(
-    DBTransaction* transaction,
-    const CreativeAdList& creative_ads) {
+void Segments::InsertOrUpdate(DBTransaction* transaction,
+                              const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
   if (creative_ads.empty()) {
@@ -43,13 +42,13 @@ void Segments::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-void Segments::Delete(
-    ResultCallback callback) {
+void Segments::Delete(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
@@ -57,9 +56,7 @@ std::string Segments::get_table_name() const {
   return kTableName;
 }
 
-void Segments::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void Segments::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -76,9 +73,8 @@ void Segments::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int Segments::BindParameters(
-    DBCommand* command,
-    const CreativeAdList& creative_ads) {
+int Segments::BindParameters(DBCommand* command,
+                             const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
@@ -101,22 +97,21 @@ std::string Segments::BuildInsertOrUpdateQuery(
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(creative_set_id, "
-          "segment) VALUES %s",
+      "(creative_set_id, "
+      "segment) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Segments::CreateTableV9(
-    DBTransaction* transaction) {
+void Segments::CreateTableV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(creative_set_id TEXT NOT NULL, "
-          "segment TEXT NOT NULL, "
-          "PRIMARY KEY (creative_set_id, segment), "
-          "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)",
+      "(creative_set_id TEXT NOT NULL, "
+      "segment TEXT NOT NULL, "
+      "PRIMARY KEY (creative_set_id, segment), "
+      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -126,8 +121,7 @@ void Segments::CreateTableV9(
   transaction->commands.push_back(std::move(command));
 }
 
-void Segments::MigrateToV9(
-    DBTransaction* transaction) {
+void Segments::MigrateToV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

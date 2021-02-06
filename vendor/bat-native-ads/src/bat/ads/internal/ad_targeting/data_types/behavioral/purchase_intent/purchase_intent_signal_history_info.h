@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_  // NOLINT
-#define BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_
 
 #include <stdint.h>
 
@@ -16,21 +16,16 @@ namespace ads {
 
 struct PurchaseIntentSignalHistoryInfo {
   PurchaseIntentSignalHistoryInfo();
-  PurchaseIntentSignalHistoryInfo(
-      const int64_t timestamp_in_seconds,
-      const uint16_t weight);
-  PurchaseIntentSignalHistoryInfo(
-      const PurchaseIntentSignalHistoryInfo& info);
+  PurchaseIntentSignalHistoryInfo(const int64_t timestamp_in_seconds,
+                                  const uint16_t weight);
+  PurchaseIntentSignalHistoryInfo(const PurchaseIntentSignalHistoryInfo& info);
   ~PurchaseIntentSignalHistoryInfo();
 
-  bool operator==(
-      const PurchaseIntentSignalHistoryInfo& rhs) const;
-  bool operator!=(
-      const PurchaseIntentSignalHistoryInfo& rhs) const;
+  bool operator==(const PurchaseIntentSignalHistoryInfo& rhs) const;
+  bool operator!=(const PurchaseIntentSignalHistoryInfo& rhs) const;
 
   std::string ToJson() const;
-  Result FromJson(
-      const std::string& json);
+  Result FromJson(const std::string& json);
 
   int64_t timestamp_in_seconds = 0;
   uint16_t weight = 0;
@@ -38,4 +33,4 @@ struct PurchaseIntentSignalHistoryInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_

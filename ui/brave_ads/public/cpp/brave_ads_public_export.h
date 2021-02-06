@@ -17,8 +17,7 @@
 
 #else  // defined(WIN32)
 #if defined(BRAVE_ADS_UI_PUBLIC_IMPLEMENTATION)
-#define BRAVE_ADS_PUBLIC_EXPORT \
-  __attribute__((visibility("default")))
+#define BRAVE_ADS_PUBLIC_EXPORT __attribute__((visibility("default")))
 #else
 #define BRAVE_ADS_PUBLIC_EXPORT
 #endif  // defined(BRAVE_ADS_UI_PUBLIC_IMPLEMENTATION)

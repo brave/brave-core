@@ -19,8 +19,7 @@ class BatAdsMediaFrequencyCapTest : public UnitTestBase {
   ~BatAdsMediaFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsMediaFrequencyCapTest,
-    AllowAdIfMediaIsNotPlaying) {
+TEST_F(BatAdsMediaFrequencyCapTest, AllowAdIfMediaIsNotPlaying) {
   // Arrange
 
   // Act
@@ -31,8 +30,7 @@ TEST_F(BatAdsMediaFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMediaFrequencyCapTest,
-    AllowAdIfMediaIsStoppedForSingleTab) {
+TEST_F(BatAdsMediaFrequencyCapTest, AllowAdIfMediaIsStoppedForSingleTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -47,8 +45,7 @@ TEST_F(BatAdsMediaFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMediaFrequencyCapTest,
-    AllowAdIfMediaIsStoppedOnMultipleTabs) {
+TEST_F(BatAdsMediaFrequencyCapTest, AllowAdIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -66,7 +63,7 @@ TEST_F(BatAdsMediaFrequencyCapTest,
 }
 
 TEST_F(BatAdsMediaFrequencyCapTest,
-    AllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
+       AllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -82,8 +79,7 @@ TEST_F(BatAdsMediaFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsMediaFrequencyCapTest,
-    DoNotAllowAdIfMediaIsPlayingOnVisibleTab) {
+TEST_F(BatAdsMediaFrequencyCapTest, DoNotAllowAdIfMediaIsPlayingOnVisibleTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -98,7 +94,7 @@ TEST_F(BatAdsMediaFrequencyCapTest,
 }
 
 TEST_F(BatAdsMediaFrequencyCapTest,
-    DoNotAllowAdIfMediaIsPlayingOnMultipleTabs) {
+       DoNotAllowAdIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
@@ -114,7 +110,7 @@ TEST_F(BatAdsMediaFrequencyCapTest,
 }
 
 TEST_F(BatAdsMediaFrequencyCapTest,
-    DoNotAllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
+       DoNotAllowAdIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 

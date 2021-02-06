@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
-#define BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
 
 #include "base/values.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
@@ -22,20 +22,15 @@ class UnblindedTokens {
   UnblindedTokenList GetAllTokens() const;
   base::Value GetTokensAsList();
 
-  void SetTokens(
-      const UnblindedTokenList& unblinded_tokens);
-  void SetTokensFromList(
-      const base::Value& list);
+  void SetTokens(const UnblindedTokenList& unblinded_tokens);
+  void SetTokensFromList(const base::Value& list);
 
-  void AddTokens(
-      const UnblindedTokenList& unblinded_tokens);
+  void AddTokens(const UnblindedTokenList& unblinded_tokens);
 
-  bool RemoveToken(
-      const UnblindedTokenInfo& unblinded_token);
+  bool RemoveToken(const UnblindedTokenInfo& unblinded_token);
   void RemoveAllTokens();
 
-  bool TokenExists(
-      const UnblindedTokenInfo& unblinded_token);
+  bool TokenExists(const UnblindedTokenInfo& unblinded_token);
 
   int Count() const;
 
@@ -48,4 +43,4 @@ class UnblindedTokens {
 }  // namespace privacy
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKENS_H_

@@ -24,8 +24,7 @@ class BatAdsPurchaseIntentResourceTest : public UnitTestBase {
   ~BatAdsPurchaseIntentResourceTest() override = default;
 };
 
-TEST_F(BatAdsPurchaseIntentResourceTest,
-    DoNotLoadForInvalidId) {
+TEST_F(BatAdsPurchaseIntentResourceTest, DoNotLoadForInvalidId) {
   // Arrange
   resource::PurchaseIntent resource;
 
@@ -37,8 +36,7 @@ TEST_F(BatAdsPurchaseIntentResourceTest,
   EXPECT_FALSE(is_initialized);
 }
 
-TEST_F(BatAdsPurchaseIntentResourceTest,
-    LoadForId) {
+TEST_F(BatAdsPurchaseIntentResourceTest, LoadForId) {
   // Arrange
   resource::PurchaseIntent resource;
 
@@ -50,8 +48,7 @@ TEST_F(BatAdsPurchaseIntentResourceTest,
   EXPECT_TRUE(is_initialized);
 }
 
-TEST_F(BatAdsPurchaseIntentResourceTest,
-    DoNotLoadForInvalidLocale) {
+TEST_F(BatAdsPurchaseIntentResourceTest, DoNotLoadForInvalidLocale) {
   // Arrange
   resource::PurchaseIntent resource;
 
@@ -63,8 +60,7 @@ TEST_F(BatAdsPurchaseIntentResourceTest,
   EXPECT_FALSE(is_initialized);
 }
 
-TEST_F(BatAdsPurchaseIntentResourceTest,
-    LoadForLocale) {
+TEST_F(BatAdsPurchaseIntentResourceTest, LoadForLocale) {
   // Arrange
   resource::PurchaseIntent resource;
 

@@ -11,17 +11,14 @@
 
 namespace ads {
 
-Statement::Statement(
-    AdRewards* ad_rewards)
-    : ad_rewards_(ad_rewards) {
+Statement::Statement(AdRewards* ad_rewards) : ad_rewards_(ad_rewards) {
   DCHECK(ad_rewards_);
 }
 
 Statement::~Statement() = default;
 
-StatementInfo Statement::Get(
-    const int64_t from_timestamp,
-    const int64_t to_timestamp) const {
+StatementInfo Statement::Get(const int64_t from_timestamp,
+                             const int64_t to_timestamp) const {
   DCHECK(to_timestamp >= from_timestamp);
 
   StatementInfo statement;

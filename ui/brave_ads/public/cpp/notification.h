@@ -207,8 +207,7 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
   // A display string for the source of the notification.
   const base::string16& display_source() const { return display_source_; }
 
-  void set_profile_id(const std::string& profile_id) {
-  }
+  void set_profile_id(const std::string& profile_id) {}
 
   // This vibration_pattern property currently has no effect on
   // non-Android platforms.

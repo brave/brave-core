@@ -16,9 +16,7 @@ CatalogAdNotificationPayloadInfo::~CatalogAdNotificationPayloadInfo() = default;
 
 bool CatalogAdNotificationPayloadInfo::operator==(
     const CatalogAdNotificationPayloadInfo& rhs) const {
-  return body == rhs.body &&
-      title == rhs.title &&
-      target_url == rhs.target_url;
+  return body == rhs.body && title == rhs.title && target_url == rhs.target_url;
 }
 
 bool CatalogAdNotificationPayloadInfo::operator!=(

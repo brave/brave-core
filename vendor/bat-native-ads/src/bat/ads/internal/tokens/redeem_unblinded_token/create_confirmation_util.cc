@@ -12,9 +12,6 @@
 #include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/l10n/browser/locale_helper.h"
-#include "brave/components/l10n/common/locale_util.h"
-#include "wrapper.hpp"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/features/features.h"
@@ -22,26 +19,27 @@
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "wrapper.hpp"
 
 namespace ads {
 
+using challenge_bypass_ristretto::TokenPreimage;
 using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
-using challenge_bypass_ristretto::TokenPreimage;
 
-std::string CreateConfirmationRequestDTO(
-    const ConfirmationInfo& confirmation) {
+std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   base::Value dto(base::Value::Type::DICTIONARY);
 
   dto.SetKey("creativeInstanceId",
-      base::Value(confirmation.creative_instance_id));
+             base::Value(confirmation.creative_instance_id));
 
   dto.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
 
   const std::string blinded_payment_token_base64 =
       confirmation.blinded_payment_token.encode_base64();
-  dto.SetKey("blindedPaymentToken",
-      base::Value(blinded_payment_token_base64));
+  dto.SetKey("blindedPaymentToken", base::Value(blinded_payment_token_base64));
 
   const std::string type = std::string(confirmation.type);
   dto.SetKey("type", base::Value(type));
@@ -89,9 +87,8 @@ std::string CreateConfirmationRequestDTO(
   return json;
 }
 
-std::string CreateCredential(
-    const privacy::UnblindedTokenInfo& unblinded_token,
-    const std::string& payload) {
+std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
+                             const std::string& payload) {
   DCHECK(!payload.empty());
 
   VerificationKey verification_key =
@@ -137,7 +134,7 @@ std::string CreateCredential(
 
   std::string credential_base64url;
   base::Base64UrlEncode(json, base::Base64UrlEncodePolicy::INCLUDE_PADDING,
-      &credential_base64url);
+                        &credential_base64url);
 
   return credential_base64url;
 }

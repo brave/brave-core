@@ -16,12 +16,12 @@
 #include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "tweetnacl.h"  // NOLINT
-#include "wrapper.hpp"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
+#include "tweetnacl.h"  // NOLINT
+#include "wrapper.hpp"
 
 namespace ads {
 namespace security {
@@ -35,18 +35,13 @@ namespace {
 const int kHKDFSeedLength = 32;
 
 const uint8_t kHKDFSalt[] = {
-  126, 244,  99, 158,  51,  68, 253,  80,
-  133, 183,  51, 180,  77,  62,  74, 252,
-   62, 106,  96, 125, 241, 110, 134,  87,
-  190, 208, 158,  84, 125,  69, 246, 207,
-  162, 247, 107, 172,  37,  34,  53, 246,
-  105,  20, 215,   5, 248, 154, 179, 191,
-   46,  17,   6,  72, 210,  91,  10, 169,
-  145, 248,  22, 147, 117,  24, 105,  12
-};
+    126, 244, 99,  158, 51,  68,  253, 80,  133, 183, 51,  180, 77,
+    62,  74,  252, 62,  106, 96,  125, 241, 110, 134, 87,  190, 208,
+    158, 84,  125, 69,  246, 207, 162, 247, 107, 172, 37,  34,  53,
+    246, 105, 20,  215, 5,   248, 154, 179, 191, 46,  17,  6,   72,
+    210, 91,  10,  169, 145, 248, 22,  147, 117, 24,  105, 12};
 
-std::vector<uint8_t> GetHKDF(
-    const std::string& secret) {
+std::vector<uint8_t> GetHKDF(const std::string& secret) {
   if (secret.empty()) {
     return {};
   }
@@ -56,11 +51,12 @@ std::vector<uint8_t> GetHKDF(
 
   std::vector<uint8_t> derived_key(kHKDFSeedLength);
 
-  const uint8_t info[] = { 0 };
+  const uint8_t info[] = {0};
 
-  const int result = HKDF(&derived_key.front(), kHKDFSeedLength, EVP_sha512(),
-      &raw_secret.front(), raw_secret.size(), kHKDFSalt, base::size(kHKDFSalt),
-          info, sizeof(info) / sizeof(info[0]));
+  const int result =
+      HKDF(&derived_key.front(), kHKDFSeedLength, EVP_sha512(),
+           &raw_secret.front(), raw_secret.size(), kHKDFSalt,
+           base::size(kHKDFSalt), info, sizeof(info) / sizeof(info[0]));
 
   if (result == 0) {
     return {};
@@ -69,10 +65,9 @@ std::vector<uint8_t> GetHKDF(
   return derived_key;
 }
 
-bool GenerateKeyPair(
-    const std::vector<uint8_t>& seed,
-    std::vector<uint8_t>* public_key,
-    std::vector<uint8_t>* secret_key) {
+bool GenerateKeyPair(const std::vector<uint8_t>& seed,
+                     std::vector<uint8_t>* public_key,
+                     std::vector<uint8_t>* secret_key) {
   if (seed.empty() || !public_key || !secret_key) {
     return false;
   }
@@ -93,8 +88,7 @@ bool GenerateKeyPair(
 
 }  // namespace
 
-std::vector<uint8_t> GenerateSecretKeyFromSeed(
-    const std::string& seed_base64) {
+std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64) {
   std::string seed;
   if (!base::Base64Decode(seed_base64, &seed)) {
     return {};
@@ -111,10 +105,9 @@ std::vector<uint8_t> GenerateSecretKeyFromSeed(
   return secret_key;
 }
 
-std::string Sign(
-    const std::map<std::string, std::string>& headers,
-    const std::string& key_id,
-    const std::string& secret_key) {
+std::string Sign(const std::map<std::string, std::string>& headers,
+                 const std::string& key_id,
+                 const std::string& secret_key) {
   if (headers.empty() || key_id.empty() || secret_key.empty()) {
     return "";
   }
@@ -136,7 +129,7 @@ std::string Sign(
   }
 
   std::vector<uint8_t> signed_message(crypto_sign_BYTES +
-      concatenated_message.length());
+                                      concatenated_message.length());
 
   std::vector<uint8_t> raw_secret_key;
   if (!base::HexStringToBytes(secret_key, &raw_secret_key)) {
@@ -145,21 +138,21 @@ std::string Sign(
 
   // Resolving the following linter error breaks the build on Windows
   unsigned long long signed_message_length = 0;  // NOLINT
-  crypto_sign(&signed_message.front(), &signed_message_length,
+  crypto_sign(
+      &signed_message.front(), &signed_message_length,
       reinterpret_cast<const unsigned char*>(concatenated_message.c_str()),
-          concatenated_message.length(), &raw_secret_key.front());
+      concatenated_message.length(), &raw_secret_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
-  std::copy(signed_message.begin(), signed_message.begin() +
-      crypto_sign_BYTES, signature.begin());
+  std::copy(signed_message.begin(), signed_message.begin() + crypto_sign_BYTES,
+            signature.begin());
 
   return "keyId=\"" + key_id + "\",algorithm=\"" + crypto_sign_PRIMITIVE +
-      "\",headers=\"" + concatenated_header + "\",signature=\"" +
-          base::Base64Encode(signature) + "\"";
+         "\",headers=\"" + concatenated_header + "\",signature=\"" +
+         base::Base64Encode(signature) + "\"";
 }
 
-std::vector<uint8_t> Sha256Hash(
-    const std::string& value) {
+std::vector<uint8_t> Sha256Hash(const std::string& value) {
   if (value.empty()) {
     return {};
   }
@@ -169,8 +162,7 @@ std::vector<uint8_t> Sha256Hash(
   return sha256;
 }
 
-bool Verify(
-    const ConfirmationInfo& confirmation) {
+bool Verify(const ConfirmationInfo& confirmation) {
   std::string credential;
   base::Base64Decode(confirmation.credential, &credential);
 

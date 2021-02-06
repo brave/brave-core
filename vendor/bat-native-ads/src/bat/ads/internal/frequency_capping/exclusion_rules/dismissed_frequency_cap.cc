@@ -14,20 +14,19 @@
 
 namespace ads {
 
-DismissedFrequencyCap::DismissedFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+DismissedFrequencyCap::DismissedFrequencyCap(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 DismissedFrequencyCap::~DismissedFrequencyCap() = default;
 
-bool DismissedFrequencyCap::ShouldExclude(
-    const CreativeAdInfo& ad) {
+bool DismissedFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
-    last_message_ = base::StringPrintf("campaignId %s has exceeded the "
-        "frequency capping for dismissed", ad.campaign_id.c_str());
+    last_message_ = base::StringPrintf(
+        "campaignId %s has exceeded the "
+        "frequency capping for dismissed",
+        ad.campaign_id.c_str());
     return true;
   }
 
@@ -38,8 +37,7 @@ std::string DismissedFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool DismissedFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
+bool DismissedFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
   int count = 0;
 
   for (const auto& ad_event : ad_events) {
@@ -69,12 +67,13 @@ AdEventList DismissedFrequencyCap::FilterAdEvents(
 
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [&ad, now](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kAdNotification ||
-        ad_event.campaign_id != ad.campaign_id ||
-        now - ad_event.timestamp >= time_constraint;
-  });
+  const auto iter =
+      std::remove_if(filtered_ad_events.begin(), filtered_ad_events.end(),
+                     [&ad, now](const AdEventInfo& ad_event) {
+                       return ad_event.type != AdType::kAdNotification ||
+                              ad_event.campaign_id != ad.campaign_id ||
+                              now - ad_event.timestamp >= time_constraint;
+                     });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

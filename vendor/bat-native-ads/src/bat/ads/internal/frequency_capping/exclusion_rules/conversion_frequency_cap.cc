@@ -18,18 +18,17 @@ namespace {
 const uint64_t kConversionFrequencyCap = 1;
 }  // namespace
 
-ConversionFrequencyCap::ConversionFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+ConversionFrequencyCap::ConversionFrequencyCap(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 ConversionFrequencyCap::~ConversionFrequencyCap() = default;
 
-bool ConversionFrequencyCap::ShouldExclude(
-    const CreativeAdInfo& ad) {
+bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   if (!ShouldAllow(ad)) {
-    last_message_ = base::StringPrintf("creativeSetId %s excluded due to ad "
-        " conversion tracking being disabled", ad.creative_set_id.c_str());
+    last_message_ = base::StringPrintf(
+        "creativeSetId %s excluded due to ad "
+        " conversion tracking being disabled",
+        ad.creative_set_id.c_str());
 
     return true;
   }
@@ -37,8 +36,10 @@ bool ConversionFrequencyCap::ShouldExclude(
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
-    last_message_ = base::StringPrintf("creativeSetId %s has exceeded the "
-        "frequency capping for conversions", ad.creative_set_id.c_str());
+    last_message_ = base::StringPrintf(
+        "creativeSetId %s has exceeded the "
+        "frequency capping for conversions",
+        ad.creative_set_id.c_str());
 
     return true;
   }
@@ -50,18 +51,16 @@ std::string ConversionFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool ConversionFrequencyCap::ShouldAllow(
-    const CreativeAdInfo& ad) {
+bool ConversionFrequencyCap::ShouldAllow(const CreativeAdInfo& ad) {
   if (ad.conversion && !AdsClientHelper::Get()->GetBooleanPref(
-      prefs::kShouldAllowConversionTracking)) {
+                           prefs::kShouldAllowConversionTracking)) {
     return false;
   }
 
   return true;
 }
 
-bool ConversionFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
+bool ConversionFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
   if (ad_events.size() >= kConversionFrequencyCap) {
     return false;
   }
@@ -74,12 +73,13 @@ AdEventList ConversionFrequencyCap::FilterAdEvents(
     const CreativeAdInfo& ad) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kAdNotification ||
-        ad_event.creative_set_id != ad.creative_set_id ||
-            ad_event.confirmation_type != ConfirmationType::kConversion;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&ad](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kAdNotification ||
+               ad_event.creative_set_id != ad.creative_set_id ||
+               ad_event.confirmation_type != ConfirmationType::kConversion;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

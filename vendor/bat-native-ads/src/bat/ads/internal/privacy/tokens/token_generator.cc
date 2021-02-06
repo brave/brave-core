@@ -14,8 +14,7 @@ TokenGenerator::TokenGenerator() = default;
 
 TokenGenerator::~TokenGenerator() = default;
 
-std::vector<Token> TokenGenerator::Generate(
-    const int count) const {
+std::vector<Token> TokenGenerator::Generate(const int count) const {
   std::vector<Token> tokens;
 
   for (int i = 0; i < count; i++) {

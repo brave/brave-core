@@ -13,8 +13,7 @@ CreativePromotedContentAdInfo::~CreativePromotedContentAdInfo() = default;
 
 bool CreativePromotedContentAdInfo::operator==(
     const CreativePromotedContentAdInfo& rhs) const {
-  return title == rhs.title &&
-      description == rhs.description;
+  return title == rhs.title && description == rhs.description;
 }
 
 bool CreativePromotedContentAdInfo::operator!=(

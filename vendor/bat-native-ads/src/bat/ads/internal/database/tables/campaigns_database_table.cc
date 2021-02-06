@@ -27,19 +27,18 @@ Campaigns::Campaigns() = default;
 
 Campaigns::~Campaigns() = default;
 
-void Campaigns::Delete(
-    ResultCallback callback) {
+void Campaigns::Delete(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void Campaigns::InsertOrUpdate(
-    DBTransaction* transaction,
-    const CreativeAdList& creative_ads) {
+void Campaigns::InsertOrUpdate(DBTransaction* transaction,
+                               const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
   if (creative_ads.empty()) {
@@ -57,9 +56,7 @@ std::string Campaigns::get_table_name() const {
   return kTableName;
 }
 
-void Campaigns::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void Campaigns::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -76,9 +73,8 @@ void Campaigns::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int Campaigns::BindParameters(
-    DBCommand* command,
-    const CreativeAdList& creative_ads) {
+int Campaigns::BindParameters(DBCommand* command,
+                              const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
@@ -106,30 +102,29 @@ std::string Campaigns::BuildInsertOrUpdateQuery(
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(campaign_id, "
-          "start_at_timestamp, "
-          "end_at_timestamp, "
-          "daily_cap, "
-          "advertiser_id, "
-          "priority, "
-          "ptr) VALUES %s",
+      "(campaign_id, "
+      "start_at_timestamp, "
+      "end_at_timestamp, "
+      "daily_cap, "
+      "advertiser_id, "
+      "priority, "
+      "ptr) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void Campaigns::CreateTableV9(
-    DBTransaction* transaction) {
+void Campaigns::CreateTableV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
-          "start_at_timestamp TIMESTAMP NOT NULL, "
-          "end_at_timestamp TIMESTAMP NOT NULL, "
-          "daily_cap INTEGER DEFAULT 0 NOT NULL, "
-          "advertiser_id TEXT NOT NULL, "
-          "priority INTEGER NOT NULL DEFAULT 0, "
-          "ptr DOUBLE NOT NULL DEFAULT 1)",
+      "(campaign_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE, "
+      "start_at_timestamp TIMESTAMP NOT NULL, "
+      "end_at_timestamp TIMESTAMP NOT NULL, "
+      "daily_cap INTEGER DEFAULT 0 NOT NULL, "
+      "advertiser_id TEXT NOT NULL, "
+      "priority INTEGER NOT NULL DEFAULT 0, "
+      "ptr DOUBLE NOT NULL DEFAULT 1)",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -139,8 +134,7 @@ void Campaigns::CreateTableV9(
   transaction->commands.push_back(std::move(command));
 }
 
-void Campaigns::MigrateToV9(
-    DBTransaction* transaction) {
+void Campaigns::MigrateToV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

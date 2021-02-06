@@ -29,8 +29,7 @@ class BatAdsUnblindedTokensTest : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsUnblindedTokensTest,
-    GetToken) {
+TEST_F(BatAdsUnblindedTokensTest, GetToken) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(10);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -48,8 +47,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(expected_unblinded_token, unblinded_token);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    GetAllTokens) {
+TEST_F(BatAdsUnblindedTokensTest, GetAllTokens) {
   // Arrange
   UnblindedTokenList unblinded_tokens = GetUnblindedTokens(8);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -59,23 +57,22 @@ TEST_F(BatAdsUnblindedTokensTest,
 
   // Assert
   const std::vector<std::string> expected_unblinded_tokens_base64 = {
-    "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuY"
-    "L5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",
-    "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
-    "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",
-    "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
-    "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",
-    "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEp"
-    "BrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",
-    "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbV"
-    "T3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi",
-    "+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKul"
-    "bCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm",
-    "CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqq"
-    "fhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW",
-    "hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav4"
-    "4+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z"
-  };
+      "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuY"
+      "L5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",
+      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
+      "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",
+      "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
+      "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",
+      "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEp"
+      "BrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",
+      "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbV"
+      "T3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi",
+      "+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKul"
+      "bCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm",
+      "CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqq"
+      "fhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW",
+      "hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav4"
+      "4+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z"};
 
   UnblindedTokenList expected_unblinded_tokens =
       CreateUnblindedTokens(expected_unblinded_tokens_base64);
@@ -83,8 +80,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    GetTokensAsList) {
+TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(8);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -119,7 +115,7 @@ TEST_F(BatAdsUnblindedTokensTest,
 
     UnblindedTokenInfo unblinded_token;
     unblinded_token.value =
-       UnblindedToken::decode_base64(unblinded_token_base64);
+        UnblindedToken::decode_base64(unblinded_token_base64);
     unblinded_token.public_key = PublicKey::decode_base64(public_key_base64);
 
     if (!get_unblinded_tokens()->TokenExists(unblinded_token)) {
@@ -130,8 +126,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   SUCCEED();
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    GetTokensAsListWithEmptyList) {
+TEST_F(BatAdsUnblindedTokensTest, GetTokensAsListWithEmptyList) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = {};
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -143,8 +138,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_TRUE(list.GetList().empty());
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    SetTokens) {
+TEST_F(BatAdsUnblindedTokensTest, SetTokens) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(10);
 
@@ -158,8 +152,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    SetTokensWithEmptyList) {
+TEST_F(BatAdsUnblindedTokensTest, SetTokensWithEmptyList) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = {};
 
@@ -171,8 +164,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(0, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    SetTokensFromList) {
+TEST_F(BatAdsUnblindedTokensTest, SetTokensFromList) {
   // Arrange
   const base::Value list = GetUnblindedTokensAsList(5);
 
@@ -184,17 +176,16 @@ TEST_F(BatAdsUnblindedTokensTest,
       get_unblinded_tokens()->GetAllTokens();
 
   const std::vector<std::string> expected_unblinded_tokens_base64 = {
-    "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuY"
-    "L5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",
-    "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
-    "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",
-    "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
-    "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",
-    "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEp"
-    "BrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",
-    "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbV"
-    "T3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi"
-  };
+      "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuY"
+      "L5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",
+      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6"
+      "NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",
+      "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2"
+      "AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",
+      "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEp"
+      "BrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",
+      "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbV"
+      "T3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi"};
 
   UnblindedTokenList expected_unblinded_tokens;
   for (const auto& unblinded_token_base64 : expected_unblinded_tokens_base64) {
@@ -210,8 +201,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    SetTokensFromListWithEmptyList) {
+TEST_F(BatAdsUnblindedTokensTest, SetTokensFromListWithEmptyList) {
   // Arrange
   const base::Value list = GetUnblindedTokensAsList(0);
 
@@ -223,8 +213,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(0, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    AddTokens) {
+TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
   // Arrange
   UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -243,8 +232,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   SUCCEED();
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    DoNotAddDuplicateTokens) {
+TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -258,8 +246,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(3, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    AddTokensCount) {
+TEST_F(BatAdsUnblindedTokensTest, AddTokensCount) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(5);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -274,8 +261,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(8, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-     AddTokensWithEmptyList) {
+TEST_F(BatAdsUnblindedTokensTest, AddTokensWithEmptyList) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -289,8 +275,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(3, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    RemoveTokenCount) {
+TEST_F(BatAdsUnblindedTokensTest, RemoveTokenCount) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -310,8 +295,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(2, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    RemoveToken) {
+TEST_F(BatAdsUnblindedTokensTest, RemoveToken) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -330,8 +314,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_FALSE(get_unblinded_tokens()->TokenExists(unblinded_token));
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    DoNotRemoveTokensThatDoNotExist) {
+TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTokensThatDoNotExist) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -350,8 +333,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(3, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    DoNotRemoveTheSameTokenTwice) {
+TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTheSameTokenTwice) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -372,8 +354,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(2, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    RemoveAllTokens) {
+TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokens) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(7);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -386,8 +367,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(0, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    RemoveAllTokensWithEmptyList) {
+TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokensWithEmptyList) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = {};
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -400,8 +380,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(0, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    TokenExists) {
+TEST_F(BatAdsUnblindedTokensTest, TokenExists) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -420,8 +399,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_TRUE(exists);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    TokenDoesNotExist) {
+TEST_F(BatAdsUnblindedTokensTest, TokenDoesNotExist) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(3);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -439,8 +417,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_FALSE(exists);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    Count) {
+TEST_F(BatAdsUnblindedTokensTest, Count) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(6);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -452,8 +429,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_EQ(6, count);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    IsEmpty) {
+TEST_F(BatAdsUnblindedTokensTest, IsEmpty) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = {};
   get_unblinded_tokens()->SetTokens(unblinded_tokens);
@@ -465,8 +441,7 @@ TEST_F(BatAdsUnblindedTokensTest,
   EXPECT_TRUE(is_empty);
 }
 
-TEST_F(BatAdsUnblindedTokensTest,
-    IsNotEmpty) {
+TEST_F(BatAdsUnblindedTokensTest, IsNotEmpty) {
   // Arrange
   const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(9);
   get_unblinded_tokens()->SetTokens(unblinded_tokens);

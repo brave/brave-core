@@ -38,8 +38,7 @@ bool UserActivity::HasInstance() {
   return g_user_activity;
 }
 
-void UserActivity::RecordEvent(
-    const UserActivityEventType event_type) {
+void UserActivity::RecordEvent(const UserActivityEventType event_type) {
   if (history_.find(event_type) == history_.end()) {
     history_.insert({event_type, {}});
   }

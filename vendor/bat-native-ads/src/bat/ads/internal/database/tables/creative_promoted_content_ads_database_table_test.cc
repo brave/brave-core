@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 
-#include "net/http/http_status_code.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -18,8 +18,8 @@ class BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest
  protected:
   BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest() = default;
 
-  ~BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest()
-      override = default;
+  ~BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest() override =
+      default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* integration_test */ true);
@@ -27,17 +27,10 @@ class BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest
 };
 
 TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
-    GetCreativePromotedContentAdsFromCatalogEndpoint) {
+       GetCreativePromotedContentAdsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-    {
-      "/v6/catalog", {
-        {
-          net::HTTP_OK, "/catalog.json"
-        }
-      }
-    }
-  };
+      {"/v6/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -46,18 +39,16 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const std::vector<std::string> segments = {
-    "Technology & Computing"
-  };
+  const std::vector<std::string> segments = {"Technology & Computing"};
 
   database::table::CreativePromotedContentAds creative_promoted_content_ads;
-  creative_promoted_content_ads.GetForSegments(segments, [](
-      const Result result,
-      const SegmentList& segments,
-      const CreativePromotedContentAdList& creative_promoted_content_ads) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_EQ(1UL, creative_promoted_content_ads.size());
-  });
+  creative_promoted_content_ads.GetForSegments(
+      segments,
+      [](const Result result, const SegmentList& segments,
+         const CreativePromotedContentAdList& creative_promoted_content_ads) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_EQ(1UL, creative_promoted_content_ads.size());
+      });
 }
 
 }  // namespace ads

@@ -20,9 +20,8 @@ namespace {
 const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
 const std::vector<std::string> kCampaignIds = {
-  "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-  "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
-};
+    "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
+    "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
 
 }  // namespace
 
@@ -33,8 +32,7 @@ class BatAdsTransferredFrequencyCapTest : public UnitTestBase {
   ~BatAdsTransferredFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsTransferredFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsTransferredFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
@@ -51,7 +49,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 }
 
 TEST_F(BatAdsTransferredFrequencyCapTest,
-    AdAllowedForAdWithDifferentCampaignIdWithin48Hours) {
+       AdAllowedForAdWithDifferentCampaignIdWithin48Hours) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_instance_id = kCreativeInstanceId;
@@ -64,7 +62,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-      ConfirmationType::kTransferred);
+                                               ConfirmationType::kTransferred);
 
   ad_events.push_back(ad_event);
 
@@ -79,7 +77,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 }
 
 TEST_F(BatAdsTransferredFrequencyCapTest,
-    AdAllowedForAdWithDifferentCampaignIdWithin48HoursForMultipleTypes) {
+       AdAllowedForAdWithDifferentCampaignIdWithin48HoursForMultipleTypes) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_instance_id = kCreativeInstanceId;
@@ -91,16 +89,16 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification,
-      ad_2, ConfirmationType::kTransferred);
+  const AdEventInfo ad_event_1 = GenerateAdEvent(
+      AdType::kAdNotification, ad_2, ConfirmationType::kTransferred);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd,
-      ad_2, ConfirmationType::kTransferred);
+  const AdEventInfo ad_event_2 = GenerateAdEvent(
+      AdType::kNewTabPageAd, ad_2, ConfirmationType::kTransferred);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
-      ad_2, ConfirmationType::kTransferred);
+  const AdEventInfo ad_event_3 = GenerateAdEvent(
+      AdType::kPromotedContentAd, ad_2, ConfirmationType::kTransferred);
   ad_events.push_back(ad_event_3);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
@@ -114,7 +112,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 }
 
 TEST_F(BatAdsTransferredFrequencyCapTest,
-    AdNotAllowedForAdWithSameCampaignIdWithin48Hours) {
+       AdNotAllowedForAdWithSameCampaignIdWithin48Hours) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
@@ -123,7 +121,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kTransferred);
+                                               ConfirmationType::kTransferred);
 
   ad_events.push_back(ad_event);
 
@@ -138,7 +136,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 }
 
 TEST_F(BatAdsTransferredFrequencyCapTest,
-    AdAllowedForAdWithSameCampaignIdAfter48Hours) {
+       AdAllowedForAdWithSameCampaignIdAfter48Hours) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
@@ -147,7 +145,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kTransferred);
+                                               ConfirmationType::kTransferred);
 
   ad_events.push_back(ad_event);
 
@@ -162,7 +160,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 }
 
 TEST_F(BatAdsTransferredFrequencyCapTest,
-    AdAllowedForAdWithDifferentCampaignIdAfter48Hours) {
+       AdAllowedForAdWithDifferentCampaignIdAfter48Hours) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.creative_instance_id = kCreativeInstanceId;
@@ -175,7 +173,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-      ConfirmationType::kTransferred);
+                                               ConfirmationType::kTransferred);
 
   ad_events.push_back(ad_event);
 

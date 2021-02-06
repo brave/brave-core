@@ -21,16 +21,15 @@
 
 namespace ads {
 
-Account::Account(
-    privacy::TokenGeneratorInterface* token_generator)
+Account::Account(privacy::TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator),
       ad_rewards_(std::make_unique<AdRewards>()),
-      confirmations_(std::make_unique<
-          Confirmations>(token_generator, ad_rewards_.get())),
-      redeem_unblinded_payment_tokens_(std::make_unique<
-          RedeemUnblindedPaymentTokens>()),
-      refill_unblinded_tokens_(std::make_unique<
-          RefillUnblindedTokens>(token_generator)),
+      confirmations_(
+          std::make_unique<Confirmations>(token_generator, ad_rewards_.get())),
+      redeem_unblinded_payment_tokens_(
+          std::make_unique<RedeemUnblindedPaymentTokens>()),
+      refill_unblinded_tokens_(
+          std::make_unique<RefillUnblindedTokens>(token_generator)),
       statement_(std::make_unique<Statement>(ad_rewards_.get())),
       wallet_(std::make_unique<Wallet>()) {
   DCHECK(token_generator_);
@@ -47,21 +46,17 @@ Account::~Account() {
   redeem_unblinded_payment_tokens_->set_delegate(nullptr);
 }
 
-void Account::AddObserver(
-    AccountObserver* observer) {
+void Account::AddObserver(AccountObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Account::RemoveObserver(
-    AccountObserver* observer) {
+void Account::RemoveObserver(AccountObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-bool Account::SetWallet(
-    const std::string& id,
-    const std::string& seed) {
+bool Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo last_wallet = wallet_->Get();
 
   if (!wallet_->Set(id, seed)) {
@@ -84,20 +79,17 @@ WalletInfo Account::GetWallet() const {
   return wallet_->Get();
 }
 
-void Account::SetCatalogIssuers(
-    const CatalogIssuersInfo& catalog_issuers) {
+void Account::SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers) {
   confirmations_->SetCatalogIssuers(catalog_issuers);
 }
 
-void Account::Deposit(
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type) {
+void Account::Deposit(const std::string& creative_instance_id,
+                      const ConfirmationType& confirmation_type) {
   confirmations_->ConfirmAd(creative_instance_id, confirmation_type);
 }
 
-StatementInfo Account::GetStatement(
-    const int64_t from_timestamp,
-    const int64_t to_timestamp) const {
+StatementInfo Account::GetStatement(const int64_t from_timestamp,
+                                    const int64_t to_timestamp) const {
   DCHECK(to_timestamp >= from_timestamp);
   return statement_->Get(from_timestamp, to_timestamp);
 }
@@ -125,15 +117,13 @@ void Account::ProcessUnclearedTransactions() {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
-void Account::NotifyWalletChanged(
-    const WalletInfo& wallet) {
+void Account::NotifyWalletChanged(const WalletInfo& wallet) {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletChanged(wallet);
   }
 }
 
-void Account::NotifyWalletRestored(
-    const WalletInfo& wallet) {
+void Account::NotifyWalletRestored(const WalletInfo& wallet) {
   for (AccountObserver& observer : observers_) {
     observer.OnWalletRestored(wallet);
   }
@@ -170,17 +160,15 @@ void Account::NotifyUnclearedTransactionsProcessed() {
   }
 }
 
-void Account::OnConfirmAd(
-    const double estimated_redemption_value,
-    const ConfirmationInfo& confirmation) {
+void Account::OnConfirmAd(const double estimated_redemption_value,
+                          const ConfirmationInfo& confirmation) {
   transactions::Add(estimated_redemption_value, confirmation);
   NotifyTransactionsChanged();
 
   TopUpUnblindedTokens();
 }
 
-void Account::OnConfirmAdFailed(
-    const ConfirmationInfo& confirmation) {
+void Account::OnConfirmAdFailed(const ConfirmationInfo& confirmation) {
   TopUpUnblindedTokens();
 
   confirmations_->RetryAfterDelay();

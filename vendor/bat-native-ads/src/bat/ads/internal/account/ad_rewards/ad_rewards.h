@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_REWARDS_AD_REWARDS_H_
-#define BAT_ADS_INTERNAL_AD_REWARDS_AD_REWARDS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_AD_REWARDS_AD_REWARDS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_AD_REWARDS_AD_REWARDS_H_
 
 #include <stdint.h>
 
@@ -13,8 +13,8 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/transaction_info.h"
@@ -30,23 +30,19 @@ class AdRewards {
 
   ~AdRewards();
 
-  void set_delegate(
-      AdRewardsDelegate* delegate);
+  void set_delegate(AdRewardsDelegate* delegate);
 
-  void MaybeReconcile(
-      const WalletInfo& wallet);
+  void MaybeReconcile(const WalletInfo& wallet);
 
   double GetEstimatedPendingRewards() const;
 
   uint64_t GetNextPaymentDate() const;
 
   uint64_t GetAdsReceivedThisMonth() const;
-  uint64_t GetAdsReceivedForMonth(
-      const base::Time& time) const;
+  uint64_t GetAdsReceivedForMonth(const base::Time& time) const;
 
   double GetEarningsForThisMonth() const;
-  double GetEarningsForMonth(
-      const base::Time& time) const;
+  double GetEarningsForMonth(const base::Time& time) const;
 
   double GetUnclearedEarningsForThisMonth() const;
 
@@ -54,8 +50,7 @@ class AdRewards {
       const TransactionList& unreconciled_transactions);
 
   base::Value GetAsDictionary();
-  bool SetFromDictionary(
-      base::Value* dictionary);
+  bool SetFromDictionary(base::Value* dictionary);
 
  private:
   bool is_processing_ = false;
@@ -72,12 +67,10 @@ class AdRewards {
       const std::string& json) const;
 
   void GetPayments();
-  void OnGetPayments(
-      const UrlResponse& url_response);
+  void OnGetPayments(const UrlResponse& url_response);
 
   void GetAdGrants();
-  void OnGetAdGrants(
-      const UrlResponse& url_response);
+  void OnGetAdGrants(const UrlResponse& url_response);
 
   void OnDidReconcileAdRewards();
 
@@ -93,4 +86,4 @@ class AdRewards {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_REWARDS_AD_REWARDS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_AD_REWARDS_AD_REWARDS_H_

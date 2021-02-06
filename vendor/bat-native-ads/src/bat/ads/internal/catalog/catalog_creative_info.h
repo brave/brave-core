@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_INFO_H_
-#define BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_INFO_H_
 
 #include <string>
 
@@ -14,14 +14,11 @@ namespace ads {
 
 struct CatalogCreativeInfo {
   CatalogCreativeInfo();
-  CatalogCreativeInfo(
-      const CatalogCreativeInfo& info);
+  CatalogCreativeInfo(const CatalogCreativeInfo& info);
   ~CatalogCreativeInfo();
 
-  bool operator==(
-      const CatalogCreativeInfo& rhs) const;
-  bool operator!=(
-      const CatalogCreativeInfo& rhs) const;
+  bool operator==(const CatalogCreativeInfo& rhs) const;
+  bool operator!=(const CatalogCreativeInfo& rhs) const;
 
   std::string creative_instance_id;
   CatalogTypeInfo type;
@@ -29,4 +26,4 @@ struct CatalogCreativeInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_CREATIVE_INFO_H_

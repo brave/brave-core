@@ -19,13 +19,12 @@ AdEventClicked::AdEventClicked() = default;
 
 AdEventClicked::~AdEventClicked() = default;
 
-void AdEventClicked::FireEvent(
-    const NewTabPageAdInfo& ad) {
+void AdEventClicked::FireEvent(const NewTabPageAdInfo& ad) {
   BLOG(3, "Clicked new tab page ad with uuid " << ad.uuid
-      << " and creative instance id " << ad.creative_instance_id);
+                                               << " and creative instance id "
+                                               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](
-      const Result result) {
+  LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log new tab page ad clicked event");
       return;

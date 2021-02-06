@@ -24,17 +24,16 @@ bool BackgroundHelperWin::IsForeground() const {
   auto* browser = BrowserList::GetInstance()->GetLastActive();
   if (browser && browser->window() && browser->window()->GetNativeWindow()) {
     return ::GetForegroundWindow() ==
-        views::HWNDForNativeWindow(browser->window()->GetNativeWindow());
+           views::HWNDForNativeWindow(browser->window()->GetNativeWindow());
   }
 
   return false;
 }
 
-void BackgroundHelperWin::OnWndProc(
-    HWND hwnd,
-    UINT message,
-    WPARAM wparam,
-    LPARAM lparam) {
+void BackgroundHelperWin::OnWndProc(HWND hwnd,
+                                    UINT message,
+                                    WPARAM wparam,
+                                    LPARAM lparam) {
   if (message != WM_ACTIVATEAPP) {
     return;
   }

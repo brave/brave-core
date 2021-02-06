@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -15,8 +15,7 @@ PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo() = default;
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const int64_t timestamp_in_seconds,
     const uint16_t weight)
-    : timestamp_in_seconds(timestamp_in_seconds),
-      weight(weight) {}
+    : timestamp_in_seconds(timestamp_in_seconds), weight(weight) {}
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const PurchaseIntentSignalHistoryInfo& info) = default;
@@ -26,7 +25,7 @@ PurchaseIntentSignalHistoryInfo::~PurchaseIntentSignalHistoryInfo() = default;
 bool PurchaseIntentSignalHistoryInfo::operator==(
     const PurchaseIntentSignalHistoryInfo& rhs) const {
   return timestamp_in_seconds == rhs.timestamp_in_seconds &&
-      weight == rhs.weight;
+         weight == rhs.weight;
 }
 
 bool PurchaseIntentSignalHistoryInfo::operator!=(
@@ -40,8 +39,7 @@ std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
   return json;
 }
 
-Result PurchaseIntentSignalHistoryInfo::FromJson(
-    const std::string& json) {
+Result PurchaseIntentSignalHistoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -62,7 +60,7 @@ Result PurchaseIntentSignalHistoryInfo::FromJson(
 }
 
 void SaveToJson(JsonWriter* writer,
-    const PurchaseIntentSignalHistoryInfo& history) {
+                const PurchaseIntentSignalHistoryInfo& history) {
   writer->StartObject();
 
   writer->String("timestamp_in_seconds");

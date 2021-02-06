@@ -13,8 +13,7 @@
 
 namespace ads {
 
-TEST(BatAdsStringUtilTest,
-    StripNonAlphaCharactersFromEmptyContent) {
+TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
   const std::string content = "";
 
@@ -27,8 +26,7 @@ TEST(BatAdsStringUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest,
-    StripNonAlphaCharactersFromWhitespace) {
+TEST(BatAdsStringUtilTest, StripNonAlphaCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
@@ -68,8 +66,7 @@ TEST(BatAdsStringUtilTest, StripNonAlphaCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest,
-    StripNonAlphaNumericCharactersFromEmptyContent) {
+TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromEmptyContent) {
   // Arrange
   const std::string content = "";
 
@@ -82,8 +79,7 @@ TEST(BatAdsStringUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest,
-    StripNonAlphaNumericCharactersFromWhitespace) {
+TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharactersFromWhitespace) {
   // Arrange
   const std::string content = "   ";
 
@@ -96,8 +92,7 @@ TEST(BatAdsStringUtilTest,
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest,
-    StripNonAlphaNumericCharacters) {
+TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharacters) {
   // Arrange
   const std::string content =
       "  The quick brown fox jumps over the lazy dog. "

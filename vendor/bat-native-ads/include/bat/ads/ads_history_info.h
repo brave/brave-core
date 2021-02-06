@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_ADS_HISTORY_INFO_H_
-#define BAT_ADS_ADS_HISTORY_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_HISTORY_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_HISTORY_INFO_H_
 
 #include <string>
 #include <vector>
@@ -17,28 +17,19 @@ namespace ads {
 
 struct ADS_EXPORT AdsHistoryInfo {
   AdsHistoryInfo();
-  AdsHistoryInfo(
-      const AdsHistoryInfo& info);
+  AdsHistoryInfo(const AdsHistoryInfo& info);
   ~AdsHistoryInfo();
 
-  enum class FilterType {
-    kNone = 0,
-    kConfirmationType
-  };
+  enum class FilterType { kNone = 0, kConfirmationType };
 
-  enum class SortType {
-    kNone = 0,
-    kAscendingOrder,
-    kDescendingOrder
-  };
+  enum class SortType { kNone = 0, kAscendingOrder, kDescendingOrder };
 
   std::string ToJson() const;
-  Result FromJson(
-      const std::string& json);
+  Result FromJson(const std::string& json);
 
   std::vector<AdHistoryInfo> items;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_ADS_HISTORY_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_HISTORY_INFO_H_

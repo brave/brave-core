@@ -12,16 +12,13 @@ namespace ads {
 namespace features {
 
 namespace {
-  const char kFeatureName[] = "PurchaseIntent";
-  const char kFieldTrialParameterThreshold[] = "threshold";
-  const char kFieldTrialParameterTimeWindowInSeconds[] =
-      "time_window_in_seconds";
+const char kFeatureName[] = "PurchaseIntent";
+const char kFieldTrialParameterThreshold[] = "threshold";
+const char kFieldTrialParameterTimeWindowInSeconds[] = "time_window_in_seconds";
 }  // namespace
 
-const base::Feature kPurchaseIntent {
-  kFeatureName,
-  base::FEATURE_ENABLED_BY_DEFAULT
-};
+const base::Feature kPurchaseIntent{kFeatureName,
+                                    base::FEATURE_ENABLED_BY_DEFAULT};
 
 bool IsPurchaseIntentEnabled() {
   return base::FeatureList::IsEnabled(kPurchaseIntent);
@@ -29,13 +26,14 @@ bool IsPurchaseIntentEnabled() {
 
 uint16_t GetPurchaseIntentThreshold() {
   return GetFieldTrialParamByFeatureAsInt(kPurchaseIntent,
-      kFieldTrialParameterThreshold, ad_targeting::model::kThreshold);
+                                          kFieldTrialParameterThreshold,
+                                          ad_targeting::model::kThreshold);
 }
 
 int64_t GetPurchaseIntentTimeWindowInSeconds() {
-  return GetFieldTrialParamByFeatureAsInt(kPurchaseIntent,
-      kFieldTrialParameterTimeWindowInSeconds,
-          ad_targeting::model::kTimeWindowInSeconds);
+  return GetFieldTrialParamByFeatureAsInt(
+      kPurchaseIntent, kFieldTrialParameterTimeWindowInSeconds,
+      ad_targeting::model::kTimeWindowInSeconds);
 }
 
 }  // namespace features

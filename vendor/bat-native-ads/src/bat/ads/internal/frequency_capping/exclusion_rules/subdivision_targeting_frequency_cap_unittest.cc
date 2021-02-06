@@ -24,11 +24,10 @@ const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 class BatAdsSubdivisionTargetingFrequencyCapTest : public UnitTestBase {
  protected:
   BatAdsSubdivisionTargetingFrequencyCapTest()
-      : subdivision_targeting_(std::make_unique<
-            ad_targeting::geographic::SubdivisionTargeting>()),
+      : subdivision_targeting_(
+            std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
         frequency_cap_(std::make_unique<SubdivisionTargetingFrequencyCap>(
-            subdivision_targeting_.get())) {
-  }
+            subdivision_targeting_.get())) {}
 
   ~BatAdsSubdivisionTargetingFrequencyCapTest() override = default;
 
@@ -38,7 +37,7 @@ class BatAdsSubdivisionTargetingFrequencyCapTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
+       AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
   ads_client_mock_->SetStringPref(
       prefs::kAutoDetectedAdsSubdivisionTargetingCode, "US-FL");
@@ -47,7 +46,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US-FL" };
+  ad.geo_targets = {"US-FL"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -56,7 +55,8 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
+TEST_F(
+    BatAdsSubdivisionTargetingFrequencyCapTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
   ads_client_mock_->SetStringPref(
@@ -66,7 +66,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US" };
+  ad.geo_targets = {"US"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -76,13 +76,13 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
+       AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US-FL" };
+  ad.geo_targets = {"US-FL"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -91,14 +91,15 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
+TEST_F(
+    BatAdsSubdivisionTargetingFrequencyCapTest,
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US" };
+  ad.geo_targets = {"US"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -108,7 +109,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    DoNotAllowAdIfSubdivisionTargetingIsSupportedAndNotInitialized) {
+       DoNotAllowAdIfSubdivisionTargetingIsSupportedAndNotInitialized) {
   // Arrange
   ads_client_mock_->SetStringPref(
       prefs::kAutoDetectedAdsSubdivisionTargetingCode, "");
@@ -117,7 +118,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US-FL" };
+  ad.geo_targets = {"US-FL"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -127,13 +128,13 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
+       DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
   ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode, "US-FL");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US-XX" };
+  ad.geo_targets = {"US-XX"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -142,14 +143,15 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
   EXPECT_TRUE(should_exclude);
 }
 
-TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
+TEST_F(
+    BatAdsSubdivisionTargetingFrequencyCapTest,
     DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
   MockLocaleHelper(locale_helper_mock_, "en-XX");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "XX-DEV" };
+  ad.geo_targets = {"XX-DEV"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -159,13 +161,13 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
+       AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
   MockLocaleHelper(locale_helper_mock_, "en-XX");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "XX" };
+  ad.geo_targets = {"XX"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -175,14 +177,14 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
+       DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetStringPref(
-      prefs::kAdsSubdivisionTargetingCode, "DISABLED");
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                  "DISABLED");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US-FL" };
+  ad.geo_targets = {"US-FL"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -192,14 +194,14 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
+       AllowAdIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
-  ads_client_mock_->SetStringPref(
-      prefs::kAdsSubdivisionTargetingCode, "DISABLED");
+  ads_client_mock_->SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+                                  "DISABLED");
 
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
-  ad.geo_targets = { "US" };
+  ad.geo_targets = {"US"};
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);

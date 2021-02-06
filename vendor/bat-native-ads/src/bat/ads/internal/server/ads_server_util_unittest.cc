@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/server/ads_server_util.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsServerUtilTest,
-    Production) {
+TEST(BatAdsServerUtilTest, Production) {
   // Arrange
   SetEnvironment(Environment::PRODUCTION);
 
@@ -25,8 +24,7 @@ TEST(BatAdsServerUtilTest,
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerUtilTest,
-    Staging) {
+TEST(BatAdsServerUtilTest, Staging) {
   // Arrange
   SetEnvironment(Environment::STAGING);
 
@@ -38,8 +36,7 @@ TEST(BatAdsServerUtilTest,
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsServerUtilTest,
-    Development) {
+TEST(BatAdsServerUtilTest, Development) {
   // Arrange
   SetEnvironment(Environment::DEVELOPMENT);
 

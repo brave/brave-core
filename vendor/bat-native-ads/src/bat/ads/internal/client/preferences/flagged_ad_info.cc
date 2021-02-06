@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/client/preferences/flagged_ad_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 FlaggedAdInfo::FlaggedAdInfo() = default;
 
-FlaggedAdInfo::FlaggedAdInfo(
-    const FlaggedAdInfo& ad) = default;
+FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& ad) = default;
 
 FlaggedAdInfo::~FlaggedAdInfo() = default;
 
@@ -23,8 +22,7 @@ std::string FlaggedAdInfo::ToJson() const {
   return json;
 }
 
-Result FlaggedAdInfo::FromJson(
-    const std::string& json) {
+Result FlaggedAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -44,9 +42,7 @@ Result FlaggedAdInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const FlaggedAdInfo& ad) {
+void SaveToJson(JsonWriter* writer, const FlaggedAdInfo& ad) {
   writer->StartObject();
 
   writer->String("uuid");

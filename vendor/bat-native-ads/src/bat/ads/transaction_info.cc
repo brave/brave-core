@@ -12,40 +12,34 @@ namespace ads {
 
 TransactionInfo::TransactionInfo() = default;
 
-TransactionInfo::TransactionInfo(
-    const TransactionInfo& info) = default;
+TransactionInfo::TransactionInfo(const TransactionInfo& info) = default;
 
 TransactionInfo::~TransactionInfo() = default;
 
-bool TransactionInfo::operator==(
-    const TransactionInfo& rhs) const {
+bool TransactionInfo::operator==(const TransactionInfo& rhs) const {
   return timestamp == rhs.timestamp &&
-      DoubleEquals(estimated_redemption_value,
-          rhs.estimated_redemption_value) &&
-      confirmation_type == rhs.confirmation_type;
+         DoubleEquals(estimated_redemption_value,
+                      rhs.estimated_redemption_value) &&
+         confirmation_type == rhs.confirmation_type;
 }
 
-bool TransactionInfo::operator!=(
-    const TransactionInfo& rhs) const {
+bool TransactionInfo::operator!=(const TransactionInfo& rhs) const {
   return !(*this == rhs);
 }
 
-void TransactionInfo::ToDictionary(
-    base::Value* dictionary) const {
+void TransactionInfo::ToDictionary(base::Value* dictionary) const {
   DCHECK(dictionary);
 
   dictionary->SetKey("timestamp_in_seconds",
-      base::Value(std::to_string(timestamp)));
+                     base::Value(std::to_string(timestamp)));
 
   dictionary->SetKey("estimated_redemption_value",
-      base::Value(estimated_redemption_value));
+                     base::Value(estimated_redemption_value));
 
-  dictionary->SetKey("confirmation_type",
-      base::Value(confirmation_type));
+  dictionary->SetKey("confirmation_type", base::Value(confirmation_type));
 }
 
-void TransactionInfo::FromDictionary(
-    base::DictionaryValue* dictionary) {
+void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
 
   // Timestamp
@@ -56,8 +50,8 @@ void TransactionInfo::FromDictionary(
   }
 
   // Estimated redemption value
-  estimated_redemption_value = dictionary->FindDoubleKey(
-      "estimated_redemption_value").value_or(0.0);
+  estimated_redemption_value =
+      dictionary->FindDoubleKey("estimated_redemption_value").value_or(0.0);
 
   // Confirmation type
   const std::string* confirmation_type_value =

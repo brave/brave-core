@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_DATABASE_SEGMENTS_DATABASE_TABLE_H_
-#define BAT_ADS_INTERNAL_DATABASE_SEGMENTS_DATABASE_TABLE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_SEGMENTS_DATABASE_TABLE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_SEGMENTS_DATABASE_TABLE_H_
 
 #include <string>
 
@@ -23,36 +23,27 @@ class Segments : public Table {
 
   ~Segments() override;
 
-  void InsertOrUpdate(
-      DBTransaction* transaction,
-      const CreativeAdList& creative_ads);
+  void InsertOrUpdate(DBTransaction* transaction,
+                      const CreativeAdList& creative_ads);
 
-  void Delete(
-      ResultCallback callback);
+  void Delete(ResultCallback callback);
 
   std::string get_table_name() const override;
 
-  void Migrate(
-      DBTransaction* transaction,
-      const int to_version) override;
+  void Migrate(DBTransaction* transaction, const int to_version) override;
 
  private:
-  int BindParameters(
-      DBCommand* command,
-      const CreativeAdList& creative_ads);
+  int BindParameters(DBCommand* command, const CreativeAdList& creative_ads);
 
-  std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
-      const CreativeAdList& creative_ads);
+  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+                                       const CreativeAdList& creative_ads);
 
-  void CreateTableV9(
-      DBTransaction* transaction);
-  void MigrateToV9(
-      DBTransaction* transaction);
+  void CreateTableV9(DBTransaction* transaction);
+  void MigrateToV9(DBTransaction* transaction);
 };
 
 }  // namespace table
 }  // namespace database
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_DATABASE_SEGMENTS_DATABASE_TABLE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_SEGMENTS_DATABASE_TABLE_H_

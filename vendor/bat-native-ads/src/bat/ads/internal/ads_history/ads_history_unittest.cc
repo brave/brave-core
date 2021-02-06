@@ -24,8 +24,7 @@ class BatAdsAdsHistoryTest : public UnitTestBase {
   ~BatAdsAdsHistoryTest() override = default;
 };
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddAdNotificationToEmptyHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddAdNotificationToEmptyHistory) {
   // Arrange
   AdNotificationInfo ad;
 
@@ -37,8 +36,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddAdNotificationsToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddAdNotificationsToHistory) {
   // Arrange
   AdNotificationInfo ad;
 
@@ -51,8 +49,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(2UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    HistoryRespectsMaximumSizeForAdNotifications) {
+TEST_F(BatAdsAdsHistoryTest, HistoryRespectsMaximumSizeForAdNotifications) {
   // Arrange
   AdNotificationInfo ad;
 
@@ -66,8 +63,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(history::kMaximumEntries, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddNewTabPageAdToEmptyHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAdToEmptyHistory) {
   // Arrange
   NewTabPageAdInfo ad;
 
@@ -79,8 +75,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddNewTabPageAdsToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAdsToHistory) {
   // Arrange
   NewTabPageAdInfo ad;
 
@@ -93,8 +88,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(2UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    HistoryRespectsMaximumSizeForNewTabPageAds) {
+TEST_F(BatAdsAdsHistoryTest, HistoryRespectsMaximumSizeForNewTabPageAds) {
   // Arrange
   NewTabPageAdInfo ad;
 
@@ -108,8 +102,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(history::kMaximumEntries, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddPromotedContentAdToEmptyHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddPromotedContentAdToEmptyHistory) {
   // Arrange
   PromotedContentAdInfo ad;
 
@@ -121,8 +114,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddPromotedContentAdsToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddPromotedContentAdsToHistory) {
   // Arrange
   PromotedContentAdInfo ad;
 
@@ -135,8 +127,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(2UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    HistoryRespectsMaximumSizeForPromotedContentAds) {
+TEST_F(BatAdsAdsHistoryTest, HistoryRespectsMaximumSizeForPromotedContentAds) {
   // Arrange
   PromotedContentAdInfo ad;
 
@@ -150,8 +141,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(history::kMaximumEntries, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    AddMultipleAdTypesToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddMultipleAdTypesToHistory) {
   // Arrange
 
   // Act
@@ -169,8 +159,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(3UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest,
-    HistoryRespectsMaximumSizeForMultipleAdTypes) {
+TEST_F(BatAdsAdsHistoryTest, HistoryRespectsMaximumSizeForMultipleAdTypes) {
   // Arrange
 
   // Act
@@ -191,7 +180,7 @@ TEST_F(BatAdsAdsHistoryTest,
       case 2: {
         PromotedContentAdInfo promoted_content_ad;
         history::AddPromotedContentAd(promoted_content_ad,
-            ConfirmationType::kViewed);
+                                      ConfirmationType::kViewed);
         break;
       }
     }
@@ -202,12 +191,7 @@ TEST_F(BatAdsAdsHistoryTest,
   ASSERT_EQ(history::kMaximumEntries, history.size());
 }
 
-
-
-
-
-TEST_F(BatAdsAdsHistoryTest,
-    MaximumHistoryEntries) {
+TEST_F(BatAdsAdsHistoryTest, MaximumHistoryEntries) {
   // Arrange
 
   // Act

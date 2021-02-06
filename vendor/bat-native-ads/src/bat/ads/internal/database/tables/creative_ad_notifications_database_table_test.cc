@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
-#include "net/http/http_status_code.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -18,8 +18,8 @@ class BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest
  protected:
   BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest() = default;
 
-  ~BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest() override
-      = default;
+  ~BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest() override =
+      default;
 
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/* integration_test */ true);
@@ -27,17 +27,10 @@ class BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest
 };
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest,
-    GetCreativeAdNotificationsFromCatalogEndpoint) {
+       GetCreativeAdNotificationsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-    {
-      "/v6/catalog", {
-        {
-          net::HTTP_OK, "/catalog.json"
-        }
-      }
-    }
-  };
+      {"/v6/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -46,18 +39,16 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const std::vector<std::string> segments = {
-    "Technology & Computing"
-  };
+  const std::vector<std::string> segments = {"Technology & Computing"};
 
   database::table::CreativeAdNotifications creative_ad_notifications;
-  creative_ad_notifications.GetForSegments(segments, [](
-      const Result result,
-      const SegmentList& segments,
-      const CreativeAdNotificationList& creative_ad_notifications) {
-    EXPECT_EQ(Result::SUCCESS, result);
-    EXPECT_EQ(2UL, creative_ad_notifications.size());
-  });
+  creative_ad_notifications.GetForSegments(
+      segments,
+      [](const Result result, const SegmentList& segments,
+         const CreativeAdNotificationList& creative_ad_notifications) {
+        EXPECT_EQ(Result::SUCCESS, result);
+        EXPECT_EQ(2UL, creative_ad_notifications.size());
+      });
 }
 
 }  // namespace ads

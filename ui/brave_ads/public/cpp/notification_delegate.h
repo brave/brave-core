@@ -34,8 +34,9 @@ class NotificationObserver {
 
 // Ref counted version of NotificationObserver, required to satisfy
 // brave_ads::Notification::delegate_.
-class NotificationDelegate : public NotificationObserver,
-  public base::RefCountedThreadSafe<NotificationDelegate> {
+class NotificationDelegate
+    : public NotificationObserver,
+      public base::RefCountedThreadSafe<NotificationDelegate> {
  protected:
   virtual ~NotificationDelegate() = default;
 
@@ -45,8 +46,7 @@ class NotificationDelegate : public NotificationObserver,
 
 // A simple notification delegate which invokes the passed closure when the body
 // or a button is clicked.
-class HandleNotificationClickDelegate
-    : public NotificationDelegate {
+class HandleNotificationClickDelegate : public NotificationDelegate {
  public:
   // The parameter is the index of the button that was clicked, or nullopt if
   // the body was clicked.

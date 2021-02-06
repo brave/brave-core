@@ -15,16 +15,16 @@
 namespace ads {
 namespace transactions {
 
-TransactionList GetCleared(
-    const int64_t from_timestamp,
-    const int64_t to_timestamp) {
+TransactionList GetCleared(const int64_t from_timestamp,
+                           const int64_t to_timestamp) {
   TransactionList transactions = ConfirmationsState::Get()->get_transactions();
 
-  const auto iter = std::remove_if(transactions.begin(), transactions.end(),
+  const auto iter = std::remove_if(
+      transactions.begin(), transactions.end(),
       [from_timestamp, to_timestamp](TransactionInfo& transaction) {
-    return transaction.timestamp < from_timestamp ||
-        transaction.timestamp > to_timestamp;
-  });
+        return transaction.timestamp < from_timestamp ||
+               transaction.timestamp > to_timestamp;
+      });
 
   transactions.erase(iter, transactions.end());
 
@@ -52,13 +52,12 @@ TransactionList GetUncleared() {
   }
 
   const TransactionList tail_transactions(transactions.end() - count,
-      transactions.end());
+                                          transactions.end());
 
   return tail_transactions;
 }
 
-uint64_t GetCountForMonth(
-    const base::Time& time) {
+uint64_t GetCountForMonth(const base::Time& time) {
   const TransactionList transactions =
       ConfirmationsState::Get()->get_transactions();
 
@@ -91,9 +90,8 @@ uint64_t GetCountForMonth(
   return count;
 }
 
-void Add(
-    const double estimated_redemption_value,
-    const ConfirmationInfo& confirmation) {
+void Add(const double estimated_redemption_value,
+         const ConfirmationInfo& confirmation) {
   TransactionInfo transaction;
 
   transaction.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());

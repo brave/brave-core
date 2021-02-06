@@ -25,8 +25,7 @@
 namespace brave_ads {
 
 // static
-AdsService* AdsServiceFactory::GetForProfile(
-    Profile* profile) {
+AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
   if (!brave::IsRegularProfile(profile)) {
     return nullptr;
   }
@@ -36,8 +35,7 @@ AdsService* AdsServiceFactory::GetForProfile(
 }
 
 // static
-AdsServiceImpl* AdsServiceFactory::GetImplForProfile(
-    Profile* profile) {
+AdsServiceImpl* AdsServiceFactory::GetImplForProfile(Profile* profile) {
   if (!brave::IsRegularProfile(profile)) {
     return nullptr;
   }

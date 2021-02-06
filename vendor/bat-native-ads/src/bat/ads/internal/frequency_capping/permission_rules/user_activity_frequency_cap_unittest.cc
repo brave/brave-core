@@ -20,7 +20,7 @@ class BatAdsUserActivityFrequencyCapTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    AllowAdIfActivityWasReportedForTwoTypes) {
+       AllowAdIfActivityWasReportedForTwoTypes) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
@@ -37,7 +37,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    AllowAdIfActivityWasReportedForTwoOfTheSameType) {
+       AllowAdIfActivityWasReportedForTwoOfTheSameType) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
@@ -55,7 +55,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    AllowAdIfActivityWasReportedForMoreThanTwoTypes) {
+       AllowAdIfActivityWasReportedForMoreThanTwoTypes) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
@@ -73,7 +73,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    AllowAdIfActivityWasReportedForMoreThanTwoOfTheSameType) {
+       AllowAdIfActivityWasReportedForMoreThanTwoOfTheSameType) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
@@ -93,14 +93,13 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    AllowAdIfDuplicateActivityWasReportedForMoreThanTwoTypes) {
+       AllowAdIfDuplicateActivityWasReportedForMoreThanTwoTypes) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kClosedTab);
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(59));
 
@@ -113,7 +112,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    DoNotAllowAdIfActivityWasReportedForLessThanTwoTypes) {
+       DoNotAllowAdIfActivityWasReportedForLessThanTwoTypes) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
@@ -129,7 +128,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    DoNotAllowAdIfNoActivityWasReported) {
+       DoNotAllowAdIfNoActivityWasReported) {
   // Arrange
 
   // Act
@@ -141,7 +140,7 @@ TEST_F(BatAdsUserActivityFrequencyCapTest,
 }
 
 TEST_F(BatAdsUserActivityFrequencyCapTest,
-    DoNotAllowAdIfActivityWasReportedInThePreviousHour) {
+       DoNotAllowAdIfActivityWasReportedInThePreviousHour) {
   // Arrange
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);

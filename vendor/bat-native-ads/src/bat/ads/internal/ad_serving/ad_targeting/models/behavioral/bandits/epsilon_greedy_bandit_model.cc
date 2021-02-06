@@ -34,8 +34,7 @@ using ArmList = std::vector<EpsilonGreedyBanditArmInfo>;
 using ArmBucketPair = std::pair<double, ArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;
 
-SegmentList ToSegmentList(
-    const ArmList& arms) {
+SegmentList ToSegmentList(const ArmList& arms) {
   SegmentList segments;
 
   for (const auto& arm : arms) {
@@ -45,8 +44,7 @@ SegmentList ToSegmentList(
   return segments;
 }
 
-ArmList ToArmList(
-    const EpsilonGreedyBanditArmMap& arms) {
+ArmList ToArmList(const EpsilonGreedyBanditArmMap& arms) {
   ArmList arm_list;
 
   for (const auto& arm : arms) {
@@ -56,8 +54,7 @@ ArmList ToArmList(
   return arm_list;
 }
 
-ArmBucketMap BucketSortArms(
-    const ArmList& arms) {
+ArmBucketMap BucketSortArms(const ArmList& arms) {
   ArmBucketMap buckets;
 
   for (const auto& arm : arms) {
@@ -88,7 +85,7 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 
   for (const auto& arm : arms) {
     if (std::find(eligible_segments.begin(), eligible_segments.end(),
-        arm.first) == eligible_segments.end()) {
+                  arm.first) == eligible_segments.end()) {
       continue;
     }
 
@@ -98,22 +95,20 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
   return eligible_arms;
 }
 
-ArmBucketList GetSortedBuckets(
-    const ArmBucketMap& arms) {
+ArmBucketList GetSortedBuckets(const ArmBucketMap& arms) {
   const ArmBucketList unsorted_buckets{arms.begin(), arms.end()};
   ArmBucketList sorted_buckets(arms.size());
-  std::partial_sort_copy(unsorted_buckets.begin(), unsorted_buckets.end(),
-      sorted_buckets.begin(), sorted_buckets.end(), [](
-          const ArmBucketPair& lhs, const ArmBucketPair& rhs) {
-    return lhs.first > rhs.first;
-  });
+  std::partial_sort_copy(
+      unsorted_buckets.begin(), unsorted_buckets.end(), sorted_buckets.begin(),
+      sorted_buckets.end(),
+      [](const ArmBucketPair& lhs, const ArmBucketPair& rhs) {
+        return lhs.first > rhs.first;
+      });
 
   return sorted_buckets;
 }
 
-ArmList GetTopArms(
-    const ArmBucketList& buckets,
-    const size_t count) {
+ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
   ArmList top_arms;
 
   for (const auto& bucket : buckets) {
@@ -135,8 +130,7 @@ ArmList GetTopArms(
   return top_arms;
 }
 
-SegmentList ExploreSegments(
-    const EpsilonGreedyBanditArmMap& arms) {
+SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
   SegmentList segments;
 
   for (const auto& arm : arms) {
@@ -154,8 +148,7 @@ SegmentList ExploreSegments(
   return segments;
 }
 
-SegmentList ExploitSegments(
-    const EpsilonGreedyBanditArmMap& arms) {
+SegmentList ExploitSegments(const EpsilonGreedyBanditArmMap& arms) {
   const ArmList arm_list = ToArmList(arms);
   const ArmBucketMap unsorted_buckets = BucketSortArms(arm_list);
   const ArmBucketList sorted_buckets = GetSortedBuckets(unsorted_buckets);
@@ -170,8 +163,7 @@ SegmentList ExploitSegments(
   return segments;
 }
 
-SegmentList GetSegmentsForArms(
-    const EpsilonGreedyBanditArmMap& arms) {
+SegmentList GetSegmentsForArms(const EpsilonGreedyBanditArmMap& arms) {
   SegmentList segments;
 
   if (arms.size() < kTopArmCount) {
@@ -196,8 +188,8 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() = default;
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 SegmentList EpsilonGreedyBandit::GetSegments() const {
-  const std::string json = AdsClientHelper::Get()->GetStringPref(
-      prefs::kEpsilonGreedyBanditArms);
+  const std::string json =
+      AdsClientHelper::Get()->GetStringPref(prefs::kEpsilonGreedyBanditArms);
 
   const EpsilonGreedyBanditArmMap arms =
       EpsilonGreedyBanditArms::FromJson(json);

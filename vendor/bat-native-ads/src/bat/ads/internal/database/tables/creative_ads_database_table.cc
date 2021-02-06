@@ -26,9 +26,8 @@ CreativeAds::CreativeAds() = default;
 
 CreativeAds::~CreativeAds() = default;
 
-void CreativeAds::InsertOrUpdate(
-    DBTransaction* transaction,
-    const CreativeAdList& creative_ads) {
+void CreativeAds::InsertOrUpdate(DBTransaction* transaction,
+                                 const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
   if (creative_ads.empty()) {
@@ -42,13 +41,13 @@ void CreativeAds::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::Delete(
-    ResultCallback callback) {
+void CreativeAds::Delete(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
@@ -56,9 +55,7 @@ std::string CreativeAds::get_table_name() const {
   return kTableName;
 }
 
-void CreativeAds::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void CreativeAds::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -75,9 +72,8 @@ void CreativeAds::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int CreativeAds::BindParameters(
-    DBCommand* command,
-    const CreativeAdList& creative_ads) {
+int CreativeAds::BindParameters(DBCommand* command,
+                                const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
@@ -103,27 +99,26 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(creative_instance_id, "
-          "conversion, "
-          "per_day, "
-          "total_max, "
-          "target_url) VALUES %s",
+      "(creative_instance_id, "
+      "conversion, "
+      "per_day, "
+      "total_max, "
+      "target_url) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
-void CreativeAds::CreateTableV9(
-    DBTransaction* transaction) {
+void CreativeAds::CreateTableV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
-              "ON CONFLICT REPLACE, "
-          "conversion INTEGER NOT NULL DEFAULT 0, "
-          "per_day INTEGER NOT NULL DEFAULT 0, "
-          "total_max INTEGER NOT NULL DEFAULT 0, "
-          "target_url TEXT NOT NULL)",
+      "(creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE "
+      "ON CONFLICT REPLACE, "
+      "conversion INTEGER NOT NULL DEFAULT 0, "
+      "per_day INTEGER NOT NULL DEFAULT 0, "
+      "total_max INTEGER NOT NULL DEFAULT 0, "
+      "target_url TEXT NOT NULL)",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -133,8 +128,7 @@ void CreativeAds::CreateTableV9(
   transaction->commands.push_back(std::move(command));
 }
 
-void CreativeAds::MigrateToV9(
-    DBTransaction* transaction) {
+void CreativeAds::MigrateToV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

@@ -17,9 +17,7 @@ namespace ads {
 
 namespace {
 
-std::string Strip(
-    const std::string& value,
-    const std::string& pattern) {
+std::string Strip(const std::string& value, const std::string& pattern) {
   DCHECK(!pattern.empty());
 
   if (value.empty()) {
@@ -40,26 +38,28 @@ std::string Strip(
 
 }  // namespace
 
-std::string StripNonAlphaCharacters(
-    const std::string& value) {
+std::string StripNonAlphaCharacters(const std::string& value) {
   const std::string escaped_characters =
       RE2::QuoteMeta("!\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~");
 
-  const std::string pattern = base::StringPrintf("[[:cntrl:]]|"
+  const std::string pattern = base::StringPrintf(
+      "[[:cntrl:]]|"
       "\\\\(t|n|v|f|r)|[\\t\\n\\v\\f\\r]|\\\\x[[:xdigit:]][[:xdigit:]]|"
-          "[%s]|\\S*\\d+\\S*", escaped_characters.c_str());
+      "[%s]|\\S*\\d+\\S*",
+      escaped_characters.c_str());
 
   return Strip(value, pattern);
 }
 
-std::string StripNonAlphaNumericCharacters(
-    const std::string& value) {
+std::string StripNonAlphaNumericCharacters(const std::string& value) {
   const std::string escaped_characters =
       RE2::QuoteMeta("!\"#$%&'()*+,-./:<=>?@\\[]^_`{|}~");
 
-  const std::string pattern = base::StringPrintf("[[:cntrl:]]|"
+  const std::string pattern = base::StringPrintf(
+      "[[:cntrl:]]|"
       "\\\\(t|n|v|f|r)|[\\t\\n\\v\\f\\r]|\\\\x[[:xdigit:]][[:xdigit:]]|"
-          "[%s]", escaped_characters.c_str());
+      "[%s]",
+      escaped_characters.c_str());
 
   return Strip(value, pattern);
 }

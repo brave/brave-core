@@ -10,8 +10,6 @@
 #include <functional>
 #include <utility>
 
-#include "brave_base/random.h"
-#include "net/http/http_status_code.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
@@ -21,6 +19,8 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
+#include "brave_base/random.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 
@@ -66,9 +66,9 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   const base::TimeDelta delay = CalculateTokenRedemptionDelay();
 
-  const base::Time time = timer_.Start(delay,
-      base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
-          base::Unretained(this)));
+  const base::Time time =
+      timer_.Start(delay, base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
+                                         base::Unretained(this)));
 
   BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(time));
 }
@@ -94,19 +94,18 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   const privacy::UnblindedTokenList unblinded_tokens =
       ConfirmationsState::Get()->get_unblinded_payment_tokens()->GetAllTokens();
 
-  RedeemUnblindedPaymentTokensUrlRequestBuilder
-      url_request_builder(wallet_, unblinded_tokens);
+  RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
+      wallet_, unblinded_tokens);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&RedeemUnblindedPaymentTokens::OnRedeem, this,
-      std::placeholders::_1);
+                            std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void RedeemUnblindedPaymentTokens::OnRedeem(
-    const UrlResponse& url_response) {
+void RedeemUnblindedPaymentTokens::OnRedeem(const UrlResponse& url_response) {
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -164,11 +163,11 @@ void RedeemUnblindedPaymentTokens::Retry() {
 
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-          base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
-              base::Unretained(this)));
+      base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
+                     base::Unretained(this)));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
-      << FriendlyDateAndTime(time));
+              << FriendlyDateAndTime(time));
 }
 
 void RedeemUnblindedPaymentTokens::OnRetry() {
@@ -198,8 +197,8 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
   base::TimeDelta delay;
   if (now >= next_token_redemption_date) {
     // Browser was launched after the next token redemption date
-    delay = base::TimeDelta::FromSeconds(
-        kExpiredNextTokenRedemptionAfterSeconds);
+    delay =
+        base::TimeDelta::FromSeconds(kExpiredNextTokenRedemptionAfterSeconds);
   } else {
     delay = next_token_redemption_date - now;
   }

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
-#define BAT_ADS_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
 
 #include <string>
 
@@ -21,15 +21,12 @@ class Initialize {
 
   ~Initialize();
 
-  void CreateOrOpen(
-      ResultCallback callback);
+  void CreateOrOpen(ResultCallback callback);
 
   std::string get_last_message() const;
 
  private:
-  void OnCreateOrOpen(
-      DBCommandResponsePtr response,
-      ResultCallback callback);
+  void OnCreateOrOpen(DBCommandResponsePtr response, ResultCallback callback);
 
   std::string last_message_;
 };
@@ -37,4 +34,4 @@ class Initialize {
 }  // namespace database
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_INITIALIZE_H_

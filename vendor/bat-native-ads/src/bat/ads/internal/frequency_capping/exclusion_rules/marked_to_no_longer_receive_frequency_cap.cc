@@ -8,23 +8,25 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
 
 namespace ads {
 
-MarkedToNoLongerReceiveFrequencyCap::
-MarkedToNoLongerReceiveFrequencyCap() = default;
+MarkedToNoLongerReceiveFrequencyCap::MarkedToNoLongerReceiveFrequencyCap() =
+    default;
 
-MarkedToNoLongerReceiveFrequencyCap::
-~MarkedToNoLongerReceiveFrequencyCap() = default;
+MarkedToNoLongerReceiveFrequencyCap::~MarkedToNoLongerReceiveFrequencyCap() =
+    default;
 
 bool MarkedToNoLongerReceiveFrequencyCap::ShouldExclude(
     const CreativeAdInfo& ad) {
   if (!DoesRespectCap(ad)) {
-    last_message_ = base::StringPrintf("creativeSetId %s excluded due to being "
-        "marked to no longer receive ads", ad.creative_set_id.c_str());
+    last_message_ = base::StringPrintf(
+        "creativeSetId %s excluded due to being "
+        "marked to no longer receive ads",
+        ad.creative_set_id.c_str());
 
     return true;
   }
@@ -43,10 +45,11 @@ bool MarkedToNoLongerReceiveFrequencyCap::DoesRespectCap(
     return true;
   }
 
-  const auto iter = std::find_if(filtered_ads.begin(), filtered_ads.end(),
-      [&ad](const FilteredAdInfo& filtered_ad) {
-    return filtered_ad.creative_set_id == ad.creative_set_id;
-  });
+  const auto iter =
+      std::find_if(filtered_ads.begin(), filtered_ads.end(),
+                   [&ad](const FilteredAdInfo& filtered_ad) {
+                     return filtered_ad.creative_set_id == ad.creative_set_id;
+                   });
 
   if (iter == filtered_ads.end()) {
     return true;

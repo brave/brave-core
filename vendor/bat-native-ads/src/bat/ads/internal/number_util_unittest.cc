@@ -13,8 +13,7 @@
 
 namespace ads {
 
-TEST(BatAdsNumberUtilTest,
-    DoubleEquals) {
+TEST(BatAdsNumberUtilTest, DoubleEquals) {
   // Arrange
   const double value = 1.0;
 
@@ -25,8 +24,7 @@ TEST(BatAdsNumberUtilTest,
   EXPECT_TRUE(does_equal);
 }
 
-TEST(BatAdsNumberUtilTest,
-    DoubleNotEquals) {
+TEST(BatAdsNumberUtilTest, DoubleNotEquals) {
   // Arrange
   const double value = 1.0;
 
@@ -37,8 +35,7 @@ TEST(BatAdsNumberUtilTest,
   EXPECT_FALSE(does_equal);
 }
 
-TEST(BatAdsNumberUtilTest,
-    DoubleEqualsBelowEpsilon) {
+TEST(BatAdsNumberUtilTest, DoubleEqualsBelowEpsilon) {
   // Arrange
   const double value = 0.9999;
 

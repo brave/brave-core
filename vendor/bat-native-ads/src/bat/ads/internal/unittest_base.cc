@@ -7,8 +7,8 @@
 
 #include "base/files/file_path.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/result.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/result.h"
 
 using ::testing::NiceMock;
 
@@ -21,8 +21,8 @@ const char kDatabaseFilename[] = "database.sqlite";
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
-      locale_helper_mock_(std::make_unique<NiceMock<
-          brave_l10n::LocaleHelperMock>>()),
+      locale_helper_mock_(
+          std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()),
       platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()) {
   // You can do set-up work for each test here
   brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -48,8 +48,7 @@ void UnitTestBase::SetUp() {
   SetUpForTesting(/* integration_test */ false);
 }
 
-void UnitTestBase::SetUpForTesting(
-    const bool integration_test) {
+void UnitTestBase::SetUpForTesting(const bool integration_test) {
   setup_called_ = true;
 
   integration_test_ = integration_test;
@@ -66,13 +65,11 @@ void UnitTestBase::TearDown() {
 
 // Objects declared here can be used by all tests in the test case
 
-void UnitTestBase::FastForwardClockBy(
-    const base::TimeDelta& time_delta) {
+void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
 
-void UnitTestBase::FastForwardClockTo(
-    const base::Time& time) {
+void UnitTestBase::FastForwardClockTo(const base::Time& time) {
   const base::TimeDelta time_delta = time - base::Time::Now();
 
   FastForwardClockBy(time_delta);
@@ -80,20 +77,19 @@ void UnitTestBase::FastForwardClockTo(
 
 void UnitTestBase::AdvanceClockToMidnightUTC() {
   const base::TimeDelta time_delta = base::Time::Now().LocalMidnight() +
-      base::TimeDelta::FromHours(24) - base::Time::Now();
+                                     base::TimeDelta::FromHours(24) -
+                                     base::Time::Now();
 
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(
-     const base::Time& time) {
+void UnitTestBase::AdvanceClock(const base::Time& time) {
   const base::TimeDelta time_delta = time - base::Time::Now();
 
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(
-    const base::TimeDelta& time_delta) {
+void UnitTestBase::AdvanceClock(const base::TimeDelta& time_delta) {
   task_environment_.AdvanceClock(time_delta);
 }
 
@@ -143,7 +139,7 @@ void UnitTestBase::Initialize() {
     ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
 
     ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-        "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
+                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
 
     return;
   }
@@ -154,25 +150,19 @@ void UnitTestBase::Initialize() {
   client_ = std::make_unique<Client>();
 
   ad_notifications_ = std::make_unique<AdNotifications>();
-  ad_notifications_->Initialize([](
-      const Result result) {
-    ASSERT_EQ(Result::SUCCESS, result);
-  });
+  ad_notifications_->Initialize(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 
   ad_rewards_ = std::make_unique<AdRewards>();
 
   confirmations_state_ =
       std::make_unique<ConfirmationsState>(ad_rewards_.get());
-  confirmations_state_->Initialize([](
-      const Result result) {
-    ASSERT_EQ(Result::SUCCESS, result);
-  });
+  confirmations_state_->Initialize(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 
   database_initialize_ = std::make_unique<database::Initialize>();
-  database_initialize_->CreateOrOpen([](
-      const Result result) {
-    ASSERT_EQ(Result::SUCCESS, result);
-  });
+  database_initialize_->CreateOrOpen(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 
   tab_manager_ = std::make_unique<TabManager>();
 
@@ -184,13 +174,12 @@ void UnitTestBase::Initialize() {
 }
 
 void UnitTestBase::InitializeAds() {
-  CHECK(integration_test_) << "|InitializeAds| should only be called if "
-      "|SetUpForTesting| was initialized for integration testing";
+  CHECK(integration_test_)
+      << "|InitializeAds| should only be called if "
+         "|SetUpForTesting| was initialized for integration testing";
 
-  ads_->Initialize([](
-      const Result result) {
-    ASSERT_EQ(Result::SUCCESS, result);
-  });
+  ads_->Initialize(
+      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
 
   task_environment_.RunUntilIdle();
 }

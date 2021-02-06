@@ -5,38 +5,28 @@
 
 #include "bat/ads/ad_content_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 AdContentInfo::AdContentInfo() = default;
-
-AdContentInfo::AdContentInfo(
-    const AdContentInfo& info) = default;
-
+AdContentInfo::AdContentInfo(const AdContentInfo& info) = default;
 AdContentInfo::~AdContentInfo() = default;
 
-bool AdContentInfo::operator==(
-    const AdContentInfo& rhs) const {
-  return type == rhs.type &&
-      uuid == rhs.uuid &&
-      creative_instance_id == rhs.creative_instance_id &&
-      creative_set_id == rhs.creative_set_id &&
-      campaign_id == rhs.campaign_id &&
-      brand == rhs.brand &&
-      brand_info == rhs.brand_info &&
-      brand_logo == rhs.brand_logo &&
-      brand_display_url == rhs.brand_display_url &&
-      brand_url == rhs.brand_url &&
-      like_action == rhs.like_action &&
-      ad_action == rhs.ad_action &&
-      saved_ad == rhs.saved_ad &&
-      flagged_ad == rhs.flagged_ad;
+bool AdContentInfo::operator==(const AdContentInfo& rhs) const {
+  return type == rhs.type && uuid == rhs.uuid &&
+         creative_instance_id == rhs.creative_instance_id &&
+         creative_set_id == rhs.creative_set_id &&
+         campaign_id == rhs.campaign_id && brand == rhs.brand &&
+         brand_info == rhs.brand_info && brand_logo == rhs.brand_logo &&
+         brand_display_url == rhs.brand_display_url &&
+         brand_url == rhs.brand_url && like_action == rhs.like_action &&
+         ad_action == rhs.ad_action && saved_ad == rhs.saved_ad &&
+         flagged_ad == rhs.flagged_ad;
 }
 
-bool AdContentInfo::operator!=(
-    const AdContentInfo& rhs) const {
+bool AdContentInfo::operator!=(const AdContentInfo& rhs) const {
   return !(*this == rhs);
 }
 
@@ -46,8 +36,7 @@ std::string AdContentInfo::ToJson() const {
   return json;
 }
 
-Result AdContentInfo::FromJson(
-    const std::string& json) {
+Result AdContentInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -118,9 +107,7 @@ Result AdContentInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const AdContentInfo& ad_content) {
+void SaveToJson(JsonWriter* writer, const AdContentInfo& ad_content) {
   writer->StartObject();
 
   writer->String("type");

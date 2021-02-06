@@ -13,8 +13,7 @@ namespace {
 AdsClient* g_ads_client = nullptr;
 }  // namespace
 
-AdsClientHelper::AdsClientHelper(
-    AdsClient* ads_client) {
+AdsClientHelper::AdsClientHelper(AdsClient* ads_client) {
   DCHECK(ads_client);
   DCHECK_EQ(g_ads_client, nullptr);
   g_ads_client = ads_client;

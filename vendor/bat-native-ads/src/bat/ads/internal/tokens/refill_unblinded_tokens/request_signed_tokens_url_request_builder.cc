@@ -22,14 +22,13 @@ namespace ads {
 RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
     const WalletInfo& wallet,
     const std::vector<BlindedToken>& blinded_tokens)
-    : wallet_(wallet),
-      blinded_tokens_(blinded_tokens) {
+    : wallet_(wallet), blinded_tokens_(blinded_tokens) {
   DCHECK(wallet_.IsValid());
   DCHECK(!blinded_tokens_.empty());
 }
 
-RequestSignedTokensUrlRequestBuilder::
-~RequestSignedTokensUrlRequestBuilder() = default;
+RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
+    default;
 
 // POST /v1/confirmation/token/{payment_id}
 
@@ -49,7 +48,8 @@ UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/token/%s",
-      confirmations::server::GetHost().c_str(), wallet_.id.c_str());
+                            confirmations::server::GetHost().c_str(),
+                            wallet_.id.c_str());
 }
 
 std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
@@ -94,8 +94,8 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
 
   const std::string digest_header_value = BuildDigestHeaderValue(body);
 
-  return security::Sign({{"digest", digest_header_value}},
-      "primary", wallet_.secret_key);
+  return security::Sign({{"digest", digest_header_value}}, "primary",
+                        wallet_.secret_key);
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildViaHeader() const {

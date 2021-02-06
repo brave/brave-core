@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
-#define BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 
 #include <stdint.h>
 
@@ -17,20 +17,17 @@ struct ConfirmationInfo;
 
 namespace transactions {
 
-TransactionList GetCleared(
-    const int64_t from_timestamp,
-    const int64_t to_timestamp);
+TransactionList GetCleared(const int64_t from_timestamp,
+                           const int64_t to_timestamp);
 
 TransactionList GetUncleared();
 
-uint64_t GetCountForMonth(
-    const base::Time& time);
+uint64_t GetCountForMonth(const base::Time& time);
 
-void Add(
-    const double estimated_redemption_value,
-    const ConfirmationInfo& confirmation);
+void Add(const double estimated_redemption_value,
+         const ConfirmationInfo& confirmation);
 
 }  // namespace transactions
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_

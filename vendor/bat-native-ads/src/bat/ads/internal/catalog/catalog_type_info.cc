@@ -9,21 +9,16 @@ namespace ads {
 
 CatalogTypeInfo::CatalogTypeInfo() = default;
 
-CatalogTypeInfo::CatalogTypeInfo(
-    const CatalogTypeInfo& info) = default;
+CatalogTypeInfo::CatalogTypeInfo(const CatalogTypeInfo& info) = default;
 
 CatalogTypeInfo::~CatalogTypeInfo() = default;
 
-bool CatalogTypeInfo::operator==(
-    const CatalogTypeInfo& rhs) const {
-  return code == rhs.code &&
-      name == rhs.name &&
-      platform == rhs.platform &&
-      version == rhs.version;
+bool CatalogTypeInfo::operator==(const CatalogTypeInfo& rhs) const {
+  return code == rhs.code && name == rhs.name && platform == rhs.platform &&
+         version == rhs.version;
 }
 
-bool CatalogTypeInfo::operator!=(
-    const CatalogTypeInfo& rhs) const {
+bool CatalogTypeInfo::operator!=(const CatalogTypeInfo& rhs) const {
   return !(*this == rhs);
 }
 

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_REWARDS_PAYMENTS_PAYMENTS_URL_REQUEST_BUILDER_H_
-#define BAT_ADS_INTERNAL_AD_REWARDS_PAYMENTS_PAYMENTS_URL_REQUEST_BUILDER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_AD_REWARDS_PAYMENTS_PAYMENTS_URL_REQUEST_BUILDER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_AD_REWARDS_PAYMENTS_PAYMENTS_URL_REQUEST_BUILDER_H_
 
 #include <string>
 #include <vector>
@@ -16,8 +16,7 @@ namespace ads {
 
 class PaymentsUrlRequestBuilder : UrlRequestBuilder {
  public:
-  PaymentsUrlRequestBuilder(
-      const WalletInfo& wallet);
+  explicit PaymentsUrlRequestBuilder(const WalletInfo& wallet);
 
   ~PaymentsUrlRequestBuilder() override;
 
@@ -28,16 +27,13 @@ class PaymentsUrlRequestBuilder : UrlRequestBuilder {
 
   std::string BuildUrl() const;
 
-  std::vector<std::string> BuildHeaders(
-      const std::string& body) const;
-  std::string BuildDigestHeaderValue(
-      const std::string& body) const;
-  std::string BuildSignatureHeaderValue(
-      const std::string& body) const;
+  std::vector<std::string> BuildHeaders(const std::string& body) const;
+  std::string BuildDigestHeaderValue(const std::string& body) const;
+  std::string BuildSignatureHeaderValue(const std::string& body) const;
 
   std::string BuildBody() const;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_REWARDS_PAYMENTS_PAYMENTS_URL_REQUEST_BUILDER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_AD_REWARDS_PAYMENTS_PAYMENTS_URL_REQUEST_BUILDER_H_

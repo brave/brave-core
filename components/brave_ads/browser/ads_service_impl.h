@@ -27,9 +27,9 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_user_model/browser/user_model_file_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -81,15 +81,12 @@ class AdsServiceImpl : public AdsService,
   bool IsNewlySupportedLocale() override;
 
   bool IsEnabled() const override;
-  void SetEnabled(
-      const bool is_enabled) override;
+  void SetEnabled(const bool is_enabled) override;
 
-  void SetAllowConversionTracking(
-      const bool should_allow) override;
+  void SetAllowConversionTracking(const bool should_allow) override;
 
   uint64_t GetAdsPerHour() const override;
-  void SetAdsPerHour(
-      const uint64_t ads_per_hour) override;
+  void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   std::string GetAdsSubdivisionTargetingCode() const override;
@@ -99,30 +96,23 @@ class AdsServiceImpl : public AdsService,
   void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
-  void ChangeLocale(
-      const std::string& locale) override;
+  void ChangeLocale(const std::string& locale) override;
 
-  void OnPageLoaded(
-      const SessionID& tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& content) override;
+  void OnPageLoaded(const SessionID& tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& content) override;
 
-  void OnMediaStart(
-      const SessionID& tab_id) override;
-  void OnMediaStop(
-      const SessionID& tab_id) override;
+  void OnMediaStart(const SessionID& tab_id) override;
+  void OnMediaStop(const SessionID& tab_id) override;
 
-  void OnTabUpdated(
-      const SessionID& tab_id,
-      const GURL& url,
-      const bool is_active,
-      const bool is_browser_active) override;
+  void OnTabUpdated(const SessionID& tab_id,
+                    const GURL& url,
+                    const bool is_active,
+                    const bool is_browser_active) override;
 
-  void OnTabClosed(
-      const SessionID& tab_id) override;
+  void OnTabClosed(const SessionID& tab_id) override;
 
-  void OnUserModelUpdated(
-      const std::string& id) override;
+  void OnUserModelUpdated(const std::string& id) override;
 
   void OnNewTabPageAdEvent(
       const std::string& uuid,
@@ -136,45 +126,37 @@ class AdsServiceImpl : public AdsService,
 
   void ReconcileAdRewards() override;
 
-  void GetAdsHistory(
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp,
-      OnGetAdsHistoryCallback callback) override;
+  void GetAdsHistory(const uint64_t from_timestamp,
+                     const uint64_t to_timestamp,
+                     OnGetAdsHistoryCallback callback) override;
 
-  void GetStatement(
-      GetStatementCallback callback) override;
+  void GetStatement(GetStatementCallback callback) override;
 
-  void ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      OnToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      OnToggleAdThumbDownCallback callback) override;
+  void ToggleAdThumbUp(const std::string& creative_instance_id,
+                       const std::string& creative_set_id,
+                       const int action,
+                       OnToggleAdThumbUpCallback callback) override;
+  void ToggleAdThumbDown(const std::string& creative_instance_id,
+                         const std::string& creative_set_id,
+                         const int action,
+                         OnToggleAdThumbDownCallback callback) override;
   void ToggleAdOptInAction(
       const std::string& category,
       const int action,
       const OnToggleAdOptInActionCallback callback) override;
-  void ToggleAdOptOutAction(
-      const std::string& category,
-      const int action,
-      OnToggleAdOptOutActionCallback callback) override;
-  void ToggleSaveAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool saved,
-      OnToggleSaveAdCallback callback) override;
-  void ToggleFlagAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool flagged,
-      OnToggleFlagAdCallback callback) override;
+  void ToggleAdOptOutAction(const std::string& category,
+                            const int action,
+                            OnToggleAdOptOutActionCallback callback) override;
+  void ToggleSaveAd(const std::string& creative_instance_id,
+                    const std::string& creative_set_id,
+                    const bool saved,
+                    OnToggleSaveAdCallback callback) override;
+  void ToggleFlagAd(const std::string& creative_instance_id,
+                    const std::string& creative_set_id,
+                    const bool flagged,
+                    OnToggleFlagAdCallback callback) override;
 
-  void ResetAllState(
-      const bool should_shutdown) override;
+  void ResetAllState(const bool should_shutdown) override;
 
   // KeyedService implementation
   void Shutdown() override;
@@ -184,38 +166,30 @@ class AdsServiceImpl : public AdsService,
 
   void MaybeInitialize();
   void Initialize();
-  void OnMigrateConfirmationsState(
-      const bool success);
+  void OnMigrateConfirmationsState(const bool success);
 
   void OnCreate();
 
-  void OnInitialize(
-      const int32_t result);
+  void OnInitialize(const int32_t result);
 
   void ShutdownBatAds();
-  void OnShutdownBatAds(
-      const int32_t result);
+  void OnShutdownBatAds(const int32_t result);
 
   bool StartService();
 
-  void MaybeStart(
-      const bool should_restart);
+  void MaybeStart(const bool should_restart);
   void Start();
   void Stop();
 
   void ResetState();
-  void OnShutdownAndResetBatAds(
-      const int32_t result);
-  void OnResetAllState(
-      const bool success);
+  void OnShutdownAndResetBatAds(const int32_t result);
+  void OnResetAllState(const bool success);
 
   void GetHardwareInfo();
-  void OnGetHardwareInfo(
-      base::SysInfo::HardwareInfo hardware);
+  void OnGetHardwareInfo(base::SysInfo::HardwareInfo hardware);
 
   void EnsureBaseDirectoryExists();
-  void OnEnsureBaseDirectoryExists(
-      const bool success);
+  void OnEnsureBaseDirectoryExists(const bool success);
 
   void SetEnvironment();
 
@@ -226,105 +200,78 @@ class AdsServiceImpl : public AdsService,
 
   void StartCheckIdleStateTimer();
   void CheckIdleState();
-  void ProcessIdleState(
-      const ui::IdleState idle_state);
+  void ProcessIdleState(const ui::IdleState idle_state);
   int GetIdleThreshold();
 
-  void OnShow(
-      Profile* profile,
-      const std::string& uuid);
-  void OnClose(
-      Profile* profile,
-      const GURL& origin,
-      const std::string& uuid,
-      const bool by_user,
-      base::OnceClosure completed_closure);
+  void OnShow(Profile* profile, const std::string& uuid);
+  void OnClose(Profile* profile,
+               const GURL& origin,
+               const std::string& uuid,
+               const bool by_user,
+               base::OnceClosure completed_closure);
 
   void MaybeViewAdNotification();
-  void ViewAdNotification(
-      const std::string& uuid);
-  void OnViewAdNotification(
-      const std::string& json);
-  void RetryViewingAdNotification(
-      const std::string& uuid);
+  void ViewAdNotification(const std::string& uuid);
+  void OnViewAdNotification(const std::string& json);
+  void RetryViewingAdNotification(const std::string& uuid);
 
   void SetAdsServiceForNotificationHandler();
   void ClearAdsServiceForNotificationHandler();
 
-  void OpenNewTabWithUrl(
-      const std::string& url);
+  void OpenNewTabWithUrl(const std::string& url);
 
-  void NotificationTimedOut(
-      const std::string& uuid);
+  void NotificationTimedOut(const std::string& uuid);
 
-  void RegisterUserModelComponentsForLocale(
-      const std::string& locale);
+  void RegisterUserModelComponentsForLocale(const std::string& locale);
 
   void OnURLRequestStarted(
       const GURL& final_url,
       const network::mojom::URLResponseHead& response_head);
 
-  void OnURLRequestComplete(
-      network::SimpleURLLoader* loader,
-      ads::UrlRequestCallback callback,
-      const std::unique_ptr<std::string> response_body);
+  void OnURLRequestComplete(network::SimpleURLLoader* loader,
+                            ads::UrlRequestCallback callback,
+                            const std::unique_ptr<std::string> response_body);
 
-  void OnGetBraveWallet(
-      ledger::type::BraveWalletPtr wallet);
+  void OnGetBraveWallet(ledger::type::BraveWalletPtr wallet);
 
-  void OnGetAdsHistory(
-      OnGetAdsHistoryCallback callback,
-      const std::string& json);
+  void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
+                       const std::string& json);
 
-  void OnGetStatement(
-      GetStatementCallback callback,
-      const bool success,
-      const std::string& json);
+  void OnGetStatement(GetStatementCallback callback,
+                      const bool success,
+                      const std::string& json);
 
-  void OnRemoveAllHistory(
-      const int32_t result);
+  void OnRemoveAllHistory(const int32_t result);
 
-  void OnToggleAdThumbUp(
-      OnToggleAdThumbUpCallback callback,
-      const std::string& creative_instance_id,
-      const int action);
-  void OnToggleAdThumbDown(
-      const OnToggleAdThumbDownCallback callback,
-      const std::string& creative_instance_id,
-      const int action);
-  void OnToggleAdOptInAction(
-      OnToggleAdOptInActionCallback callback,
-      const std::string& category,
-      const int action);
-  void OnToggleAdOptOutAction(
-      OnToggleAdOptOutActionCallback callback,
-      const std::string& category,
-      const int action);
-  void OnToggleSaveAd(
-      OnToggleSaveAdCallback callback,
-      const std::string& creative_instance_id,
-      const bool saved);
-  void OnToggleFlagAd(
-      OnToggleSaveAdCallback callback,
-      const std::string& creative_instance_id,
-      const bool flagged);
+  void OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,
+                         const std::string& creative_instance_id,
+                         const int action);
+  void OnToggleAdThumbDown(const OnToggleAdThumbDownCallback callback,
+                           const std::string& creative_instance_id,
+                           const int action);
+  void OnToggleAdOptInAction(OnToggleAdOptInActionCallback callback,
+                             const std::string& category,
+                             const int action);
+  void OnToggleAdOptOutAction(OnToggleAdOptOutActionCallback callback,
+                              const std::string& category,
+                              const int action);
+  void OnToggleSaveAd(OnToggleSaveAdCallback callback,
+                      const std::string& creative_instance_id,
+                      const bool saved);
+  void OnToggleFlagAd(OnToggleSaveAdCallback callback,
+                      const std::string& creative_instance_id,
+                      const bool flagged);
 
-  void OnLoaded(
-      const ads::LoadCallback& callback,
-      const std::string& value);
-  void OnSaved(
-      const ads::ResultCallback& callback,
-      const bool success);
+  void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
+  void OnSaved(const ads::ResultCallback& callback, const bool success);
 
-  void OnRunDBTransaction(
-      ads::RunDBTransactionCallback callback,
-      ads::DBCommandResponsePtr response);
+  void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
+                          ads::DBCommandResponsePtr response);
 
   void MigratePrefs();
-  bool MigratePrefs(
-      const int source_version,
-      const int dest_version,
-      const bool is_dry_run = false);
+  bool MigratePrefs(const int source_version,
+                    const int dest_version,
+                    const bool is_dry_run = false);
   void MigratePrefsVersion1To2();
   void MigratePrefsVersion2To3();
   void MigratePrefsVersion3To4();
@@ -341,26 +288,20 @@ class AdsServiceImpl : public AdsService,
   void DisableAdsForUnsupportedCountryCodes(
       const std::string& country_code,
       const std::vector<std::string>& country_codes);
-  uint64_t MigrateTimestampToDoubleT(
-      const uint64_t timestamp_in_seconds) const;
+  uint64_t MigrateTimestampToDoubleT(const uint64_t timestamp_in_seconds) const;
 
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;
 
-  bool PrefExists(
-      const std::string& path) const;
-  void OnPrefsChanged(
-      const std::string& pref);
+  bool PrefExists(const std::string& path) const;
+  void OnPrefsChanged(const std::string& pref);
 
   std::string GetLocale() const;
 
-  std::string LoadDataResourceAndDecompressIfNeeded(
-      const int id) const;
+  std::string LoadDataResourceAndDecompressIfNeeded(const int id) const;
 
-  void StartNotificationTimeoutTimer(
-      const std::string& uuid);
-  bool StopNotificationTimeoutTimer(
-      const std::string& uuid);
+  void StartNotificationTimeoutTimer(const std::string& uuid);
+  bool StopNotificationTimeoutTimer(const std::string& uuid);
 
   bool connected();
 
@@ -376,102 +317,73 @@ class AdsServiceImpl : public AdsService,
   void ShowNotification(
       const ads::AdNotificationInfo& ad_notification) override;
 
-  void CloseNotification(
-      const std::string& uuid) override;
+  void CloseNotification(const std::string& uuid) override;
 
-  void UrlRequest(
-      ads::UrlRequestPtr url_request,
-      ads::UrlRequestCallback callback) override;
+  void UrlRequest(ads::UrlRequestPtr url_request,
+                  ads::UrlRequestCallback callback) override;
 
-  void Save(
-      const std::string& name,
-      const std::string& value,
-      ads::ResultCallback callback) override;
+  void Save(const std::string& name,
+            const std::string& value,
+            ads::ResultCallback callback) override;
 
-  void Load(
-      const std::string& name,
-      ads::LoadCallback callback) override;
+  void Load(const std::string& name, ads::LoadCallback callback) override;
 
-  void LoadUserModelForId(
-      const std::string& id,
-      ads::LoadCallback callback) override;
+  void LoadUserModelForId(const std::string& id,
+                          ads::LoadCallback callback) override;
 
-  std::string LoadResourceForId(
-      const std::string& id) override;
+  std::string LoadResourceForId(const std::string& id) override;
 
-  void RunDBTransaction(
-      ads::DBTransactionPtr transaction,
-      ads::RunDBTransactionCallback callback) override;
+  void RunDBTransaction(ads::DBTransactionPtr transaction,
+                        ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
 
-  void RecordP2AEvent(
-      const std::string& name,
-      const ads::P2AEventType type,
-      const std::string& value) override;
+  void RecordP2AEvent(const std::string& name,
+                      const ads::P2AEventType type,
+                      const std::string& value) override;
 
-  void DiagnosticLog(
-      const std::string& file,
-      const int line,
-      const int verbose_level,
-      const std::string& message);
+  void DiagnosticLog(const std::string& file,
+                     const int line,
+                     const int verbose_level,
+                     const std::string& message);
 
-  void Log(
-      const char* file,
-      const int line,
-      const int verbose_level,
-      const std::string& message) override;
+  void Log(const char* file,
+           const int line,
+           const int verbose_level,
+           const std::string& message) override;
 
-  bool GetBooleanPref(
-      const std::string& path) const override;
+  bool GetBooleanPref(const std::string& path) const override;
 
-  void SetBooleanPref(
-      const std::string& path,
-      const bool value) override;
+  void SetBooleanPref(const std::string& path, const bool value) override;
 
-  int GetIntegerPref(
-      const std::string& path) const override;
+  int GetIntegerPref(const std::string& path) const override;
 
-  void SetIntegerPref(
-      const std::string& path,
-      const int value) override;
+  void SetIntegerPref(const std::string& path, const int value) override;
 
-  double GetDoublePref(
-      const std::string& path) const override;
+  double GetDoublePref(const std::string& path) const override;
 
-  void SetDoublePref(
-      const std::string& path,
-      const double value) override;
+  void SetDoublePref(const std::string& path, const double value) override;
 
-  std::string GetStringPref(
-      const std::string& path) const override;
+  std::string GetStringPref(const std::string& path) const override;
 
-  void SetStringPref(
-      const std::string& path,
-      const std::string& value) override;
+  void SetStringPref(const std::string& path,
+                     const std::string& value) override;
 
-  int64_t GetInt64Pref(
-      const std::string& path) const override;
+  int64_t GetInt64Pref(const std::string& path) const override;
 
-  void SetInt64Pref(
-      const std::string& path,
-      const int64_t value) override;
+  void SetInt64Pref(const std::string& path, const int64_t value) override;
 
-  uint64_t GetUint64Pref(
-      const std::string& path) const override;
+  uint64_t GetUint64Pref(const std::string& path) const override;
 
-  void SetUint64Pref(
-      const std::string& path,
-      const uint64_t value) override;
+  void SetUint64Pref(const std::string& path, const uint64_t value) override;
 
-  void ClearPref(
-      const std::string& path) override;
+  void ClearPref(const std::string& path) override;
 
   // BackgroundHelper::Observer implementation
   void OnBackground() override;
   void OnForeground() override;
 
-///////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////
 
   Profile* profile_;  // NOT OWNED
 
@@ -500,7 +412,7 @@ class AdsServiceImpl : public AdsService,
 
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
-  NotificationDisplayService* display_service_;  // NOT OWNED
+  NotificationDisplayService* display_service_;     // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>

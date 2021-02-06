@@ -26,7 +26,7 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   const AdEventList ad_events;
 
@@ -38,14 +38,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
-    AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
 
   const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap - 1, ad_event);
 
@@ -58,13 +57,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 }
 
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapAfter1Day) {
+       AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
 
   const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap, ad_event);
 
@@ -79,13 +78,13 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 }
 
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
-    DoNotAllowAdIfExceedsCapWithin1Day) {
+       DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kNewTabPageAd, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
 
   const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap, ad_event);
 
@@ -99,8 +98,7 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   EXPECT_FALSE(is_allowed);
 }
 
-TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
-    AdsPerDay) {
+TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest, AdsPerDay) {
   // Arrange
 
   // Act

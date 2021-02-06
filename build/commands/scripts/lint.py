@@ -22,9 +22,21 @@ import git_common
 def HasFormatErrors():
   # For more options, see vendor/depot_tools/git_cl.py
   cmd = ['cl', 'format', '--diff']
-  diff = git_cl.RunGit(cmd)
-  print(diff)
-  return bool(diff)
+  diff = git_cl.RunGit(cmd).encode('utf-8')
+  if diff:
+    # Verify that git cl format generates a diff
+    if git_common.is_dirty_git_tree('git cl format'):
+      # Skip verification if there are uncommitted changes
+      print(diff)
+      print('Format errors detected. Run npm format locally to fix.')
+      return True
+    git_cl.RunGit(['cl', 'format'])
+    git_diff = git_common.run('diff').encode('utf-8')
+    if git_diff:
+      print(git_diff)
+      print('Format errors have been auto-fixed. Please review and commit these changes if lint was run locally. Otherwise run npm format to fix.')
+      return True
+  return False
 
 def RunFormatCheck(upstream_branch):
   # XXX: upstream_branch is hard-coded in git_cl and is not changed
@@ -33,7 +45,7 @@ def RunFormatCheck(upstream_branch):
   print('Running git cl/gn format on the diff from %s...' % upstream_commit)
   try:
     if HasFormatErrors():
-      return 'Format check failed. Run npm format to fix.'
+      return 'Format check failed.'
   except:
     e = traceback.format_exc()
     return 'Error running format check:\n' + e

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_AD_CONTENT_INFO_H_
-#define BAT_ADS_AD_CONTENT_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_CONTENT_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_CONTENT_INFO_H_
 
 #include <string>
 
@@ -17,24 +17,16 @@ namespace ads {
 
 struct ADS_EXPORT AdContentInfo {
   AdContentInfo();
-  AdContentInfo(
-      const AdContentInfo& info);
+  AdContentInfo(const AdContentInfo& info);
   ~AdContentInfo();
 
-  bool operator==(
-      const AdContentInfo& rhs) const;
-  bool operator!=(
-      const AdContentInfo& rhs) const;
+  bool operator==(const AdContentInfo& rhs) const;
+  bool operator!=(const AdContentInfo& rhs) const;
 
   std::string ToJson() const;
-  Result FromJson(
-      const std::string& json);
+  Result FromJson(const std::string& json);
 
-  enum class LikeAction {
-    kNeutral = 0,
-    kThumbsUp,
-    kThumbsDown
-  };
+  enum class LikeAction { kNeutral = 0, kThumbsUp, kThumbsDown };
 
   AdType type = AdType::kUndefined;
   std::string uuid;
@@ -54,4 +46,4 @@ struct ADS_EXPORT AdContentInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_AD_CONTENT_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_CONTENT_INFO_H_

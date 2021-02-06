@@ -11,8 +11,8 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
 #include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
+#include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -39,8 +39,8 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     return;
   }
 
-  Profile* profile = Profile::FromBrowserContext(
-      web_contents->GetBrowserContext());
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
 
 #if !defined(OS_ANDROID)
@@ -69,22 +69,21 @@ void AdsTabHelper::TabUpdated() {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(),
-      is_active_, is_browser_active_);
+  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(), is_active_,
+                             is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
     content::RenderFrameHost* render_frame_host) {
   DCHECK(render_frame_host);
 
-  dom_distiller::RunIsolatedJavaScript(render_frame_host,
-      "document.body.innerText",
-          base::BindOnce(&AdsTabHelper::OnJavaScriptResult,
-              weak_factory_.GetWeakPtr()));
+  dom_distiller::RunIsolatedJavaScript(
+      render_frame_host, "document.body.innerText",
+      base::BindOnce(&AdsTabHelper::OnJavaScriptResult,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void AdsTabHelper::OnJavaScriptResult(
-    base::Value value) {
+void AdsTabHelper::OnJavaScriptResult(base::Value value) {
   DCHECK(ads_service_ && ads_service_->IsEnabled());
 
   DCHECK(value.is_string());
@@ -97,8 +96,7 @@ void AdsTabHelper::OnJavaScriptResult(
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
-      !navigation_handle->HasCommitted() ||
-      !tab_id_.is_valid()) {
+      !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
     return;
   }
 
@@ -140,9 +138,8 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
   RunIsolatedJavaScript(render_frame_host);
 }
 
-void AdsTabHelper::DidFinishLoad(
-    content::RenderFrameHost* render_frame_host,
-    const GURL& validated_url) {
+void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                                 const GURL& validated_url) {
   if (render_frame_host->GetParent()) {
     return;
   }
@@ -150,9 +147,8 @@ void AdsTabHelper::DidFinishLoad(
   TabUpdated();
 }
 
-void AdsTabHelper::MediaStartedPlaying(
-    const MediaPlayerInfo& video_type,
-    const content::MediaPlayerId& id) {
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
+                                       const content::MediaPlayerId& id) {
   if (!IsAdsEnabled()) {
     return;
   }

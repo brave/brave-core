@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/rpill/rpill.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -20,8 +20,7 @@ class BatAdsRPillTest : public UnitTestBase {
   ~BatAdsRPillTest() override = default;
 };
 
-TEST_F(BatAdsRPillTest,
-    IsUncertainFutureForAmazon) {
+TEST_F(BatAdsRPillTest, IsUncertainFutureForAmazon) {
   // Arrange
   SysInfo sys_info;
   sys_info.manufacturer = "Amazon";
@@ -35,8 +34,7 @@ TEST_F(BatAdsRPillTest,
   EXPECT_TRUE(is_uncertain_future);
 }
 
-TEST_F(BatAdsRPillTest,
-    IsUncertainFutureForVirtualBox) {
+TEST_F(BatAdsRPillTest, IsUncertainFutureForVirtualBox) {
   // Arrange
   SysInfo sys_info;
   sys_info.manufacturer = "VirtualBox";
@@ -50,8 +48,7 @@ TEST_F(BatAdsRPillTest,
   EXPECT_TRUE(is_uncertain_future);
 }
 
-TEST_F(BatAdsRPillTest,
-    IsUncertainFutureForVMWare) {
+TEST_F(BatAdsRPillTest, IsUncertainFutureForVMWare) {
   // Arrange
   SysInfo sys_info;
   sys_info.manufacturer = "VMWare";
@@ -65,8 +62,7 @@ TEST_F(BatAdsRPillTest,
   EXPECT_TRUE(is_uncertain_future);
 }
 
-TEST_F(BatAdsRPillTest,
-    IsUncertainFutureForXen) {
+TEST_F(BatAdsRPillTest, IsUncertainFutureForXen) {
   // Arrange
   SysInfo sys_info;
   sys_info.manufacturer = "Xen";
@@ -80,8 +76,7 @@ TEST_F(BatAdsRPillTest,
   EXPECT_TRUE(is_uncertain_future);
 }
 
-TEST_F(BatAdsRPillTest,
-    IsCertainFuture) {
+TEST_F(BatAdsRPillTest, IsCertainFuture) {
   // Arrange
   SysInfo sys_info;
   sys_info.manufacturer = "SAMSUNG ELECTRONICS CO., LTD.";
@@ -95,8 +90,7 @@ TEST_F(BatAdsRPillTest,
   EXPECT_FALSE(is_uncertain_future);
 }
 
-TEST_F(BatAdsRPillTest,
-    IsCertainFutureForMissingSysInfo) {
+TEST_F(BatAdsRPillTest, IsCertainFutureForMissingSysInfo) {
   // Arrange
   SysInfo sys_info;
   SetSysInfo(sys_info);

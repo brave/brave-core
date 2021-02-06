@@ -10,8 +10,7 @@
 
 namespace ads {
 
-TEST(BatAdsTextClassificationFeaturesTest,
-    TextClassificationEnabled) {
+TEST(BatAdsTextClassificationFeaturesTest, TextClassificationEnabled) {
   // Arrange
 
   // Act
@@ -21,7 +20,7 @@ TEST(BatAdsTextClassificationFeaturesTest,
 }
 
 TEST(BatAdsTextClassificationFeaturesTest,
-    TextClassificationProbabilitiesHistorySize) {
+     TextClassificationProbabilitiesHistorySize) {
   // Arrange
 
   // Act

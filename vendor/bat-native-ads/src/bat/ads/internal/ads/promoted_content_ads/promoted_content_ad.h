@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
-#define BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
 
 #include <string>
 
@@ -16,44 +16,36 @@ namespace ads {
 
 struct PromotedContentAdInfo;
 
-class PromotedContentAd
-    : public PromotedContentAdObserver {
+class PromotedContentAd : public PromotedContentAdObserver {
  public:
   PromotedContentAd();
 
   ~PromotedContentAd() override;
 
-  void AddObserver(
-      PromotedContentAdObserver* observer);
-  void RemoveObserver(
-      PromotedContentAdObserver* observer);
+  void AddObserver(PromotedContentAdObserver* observer);
+  void RemoveObserver(PromotedContentAdObserver* observer);
 
-  void FireEvent(
-      const std::string& uuid,
-      const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type);
+  void FireEvent(const std::string& uuid,
+                 const std::string& creative_instance_id,
+                 const PromotedContentAdEventType event_type);
 
  private:
   base::ObserverList<PromotedContentAdObserver> observers_;
 
-  bool ShouldFireEvent(
-      const PromotedContentAdInfo& ad,
-      const AdEventList& ad_events);
+  bool ShouldFireEvent(const PromotedContentAdInfo& ad,
+                       const AdEventList& ad_events);
 
-  void FireEvent(
-      const PromotedContentAdInfo& ad,
-      const std::string& uuid,
-      const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type);
+  void FireEvent(const PromotedContentAdInfo& ad,
+                 const std::string& uuid,
+                 const std::string& creative_instance_id,
+                 const PromotedContentAdEventType event_type);
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
       const PromotedContentAdEventType event_type);
 
-  void NotifyPromotedContentAdViewed(
-      const PromotedContentAdInfo& ad);
-  void NotifyPromotedContentAdClicked(
-      const PromotedContentAdInfo& ad);
+  void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad);
+  void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad);
 
   void NotifyPromotedContentAdEventFailed(
       const std::string& uuid,
@@ -63,4 +55,4 @@ class PromotedContentAd
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_H_

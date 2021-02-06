@@ -14,11 +14,10 @@ namespace ads {
 
 PromotedContentAdsPerHourFrequencyCap::PromotedContentAdsPerHourFrequencyCap(
     const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+    : ad_events_(ad_events) {}
 
 PromotedContentAdsPerHourFrequencyCap::
-~PromotedContentAdsPerHourFrequencyCap() = default;
+    ~PromotedContentAdsPerHourFrequencyCap() = default;
 
 bool PromotedContentAdsPerHourFrequencyCap::ShouldAllow() {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_);
@@ -50,11 +49,12 @@ AdEventList PromotedContentAdsPerHourFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kPromotedContentAd ||
-        ad_event.confirmation_type != ConfirmationType::kViewed;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kPromotedContentAd ||
+               ad_event.confirmation_type != ConfirmationType::kViewed;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

@@ -9,9 +9,9 @@
 
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"

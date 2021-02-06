@@ -16,21 +16,18 @@ AdNotification::AdNotification() = default;
 
 AdNotification::~AdNotification() = default;
 
-void AdNotification::AddObserver(
-    AdNotificationObserver* observer) {
+void AdNotification::AddObserver(AdNotificationObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void AdNotification::RemoveObserver(
-    AdNotificationObserver* observer) {
+void AdNotification::RemoveObserver(AdNotificationObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void AdNotification::FireEvent(
-    const std::string& uuid,
-    const AdNotificationEventType event_type) {
+void AdNotification::FireEvent(const std::string& uuid,
+                               const AdNotificationEventType event_type) {
   DCHECK(!uuid.empty());
 
   AdNotificationInfo ad;
@@ -76,15 +73,13 @@ void AdNotification::NotifyAdNotificationEvent(
   }
 }
 
-void AdNotification::NotifyAdNotificationViewed(
-    const AdNotificationInfo& ad) {
+void AdNotification::NotifyAdNotificationViewed(const AdNotificationInfo& ad) {
   for (AdNotificationObserver& observer : observers_) {
     observer.OnAdNotificationViewed(ad);
   }
 }
 
-void AdNotification::NotifyAdNotificationClicked(
-    const AdNotificationInfo& ad) {
+void AdNotification::NotifyAdNotificationClicked(const AdNotificationInfo& ad) {
   for (AdNotificationObserver& observer : observers_) {
     observer.OnAdNotificationClicked(ad);
   }

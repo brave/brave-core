@@ -24,8 +24,7 @@ class BatAdsPerHourFrequencyCapTest : public UnitTestBase {
   ~BatAdsPerHourFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsPerHourFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsPerHourFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
@@ -40,16 +39,15 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerHourFrequencyCapTest,
-    AdAllowedAfter1Hour) {
+TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1Hour) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -63,24 +61,23 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerHourFrequencyCapTest,
-    AdAllowedAfter1HourForMultipleTypes) {
+TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1HourForMultipleTypes) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification,
-      ad, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_1 =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd,
-      ad, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_2 =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
-      ad, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
+                                                 ConfirmationType::kViewed);
   ad_events.push_back(ad_event_3);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
@@ -93,16 +90,15 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerHourFrequencyCapTest,
-    DoNotAllowTheSameAdWithin1Hour) {
+TEST_F(BatAdsPerHourFrequencyCapTest, DoNotAllowTheSameAdWithin1Hour) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 

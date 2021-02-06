@@ -33,8 +33,7 @@ std::deque<AdHistoryInfo> GetUnsortedAdsHistory() {
 
 }  // namespace
 
-TEST(BatAdsAdsHistorySortTest,
-    NoSortOrder) {
+TEST(BatAdsAdsHistorySortTest, NoSortOrder) {
   // Arrange
 
   // Act
@@ -45,11 +44,10 @@ TEST(BatAdsAdsHistorySortTest,
   EXPECT_EQ(nullptr, sort);
 }
 
-TEST(BatAdsAdsHistorySortTest,
-    DescendingSortOrder) {
+TEST(BatAdsAdsHistorySortTest, DescendingSortOrder) {
   // Arrange
-  const auto sort = AdsHistorySortFactory::Build(
-      AdsHistoryInfo::SortType::kDescendingOrder);
+  const auto sort =
+      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kDescendingOrder);
 
   std::deque<AdHistoryInfo> history = GetUnsortedAdsHistory();
 
@@ -73,11 +71,10 @@ TEST(BatAdsAdsHistorySortTest,
   EXPECT_EQ(expected_history, history);
 }
 
-TEST(BatAdsAdsHistorySortTest,
-    DescendingSortOrderForEmptyHistory) {
+TEST(BatAdsAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   // Arrange
-  const auto sort = AdsHistorySortFactory::Build(
-      AdsHistoryInfo::SortType::kDescendingOrder);
+  const auto sort =
+      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kDescendingOrder);
 
   std::deque<AdHistoryInfo> history = {};
 
@@ -90,11 +87,10 @@ TEST(BatAdsAdsHistorySortTest,
   EXPECT_EQ(expected_history, history);
 }
 
-TEST(BatAdsAdsHistorySortTest,
-    AscendingSortOrder) {
+TEST(BatAdsAdsHistorySortTest, AscendingSortOrder) {
   // Arrange
-  const auto sort = AdsHistorySortFactory::Build(
-      AdsHistoryInfo::SortType::kAscendingOrder);
+  const auto sort =
+      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kAscendingOrder);
 
   std::deque<AdHistoryInfo> expected_history;
   AdHistoryInfo ad_history;
@@ -118,11 +114,10 @@ TEST(BatAdsAdsHistorySortTest,
   EXPECT_EQ(expected_history, history);
 }
 
-TEST(BatAdsAdsHistorySortTest,
-    AscendingSortOrderForEmptyHistory) {
+TEST(BatAdsAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   // Arrange
-  const auto sort = AdsHistorySortFactory::Build(
-      AdsHistoryInfo::SortType::kAscendingOrder);
+  const auto sort =
+      AdsHistorySortFactory::Build(AdsHistoryInfo::SortType::kAscendingOrder);
 
   std::deque<AdHistoryInfo> expected_history;
   std::deque<AdHistoryInfo> history;

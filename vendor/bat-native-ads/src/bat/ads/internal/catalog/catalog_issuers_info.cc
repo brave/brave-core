@@ -8,26 +8,23 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
 
 CatalogIssuersInfo::CatalogIssuersInfo() = default;
 
-CatalogIssuersInfo::CatalogIssuersInfo(
-    const CatalogIssuersInfo& info) = default;
+CatalogIssuersInfo::CatalogIssuersInfo(const CatalogIssuersInfo& info) =
+    default;
 
 CatalogIssuersInfo::~CatalogIssuersInfo() = default;
 
-bool CatalogIssuersInfo::operator==(
-    const CatalogIssuersInfo& rhs) const {
-  return public_key == rhs.public_key &&
-      issuers == rhs.issuers;
+bool CatalogIssuersInfo::operator==(const CatalogIssuersInfo& rhs) const {
+  return public_key == rhs.public_key && issuers == rhs.issuers;
 }
 
-bool CatalogIssuersInfo::operator!=(
-    const CatalogIssuersInfo& rhs) const {
+bool CatalogIssuersInfo::operator!=(const CatalogIssuersInfo& rhs) const {
   return !(*this == rhs);
 }
 
@@ -51,8 +48,7 @@ base::Value CatalogIssuersInfo::ToDictionary() const {
   return dictionary;
 }
 
-bool CatalogIssuersInfo::FromDictionary(
-    base::Value* dictionary) {
+bool CatalogIssuersInfo::FromDictionary(base::Value* dictionary) {
   DCHECK(dictionary);
 
   // Public key
@@ -110,16 +106,16 @@ bool CatalogIssuersInfo::IsValid() const {
   return true;
 }
 
-bool CatalogIssuersInfo::PublicKeyExists(
-    const std::string& public_key) const {
+bool CatalogIssuersInfo::PublicKeyExists(const std::string& public_key) const {
   if (this->public_key == public_key) {
     return true;
   }
 
-  const auto iter = std::find_if(issuers.begin(), issuers.end(),
-      [&public_key](const CatalogIssuerInfo& issuer) {
-    return issuer.public_key == public_key;
-  });
+  const auto iter =
+      std::find_if(issuers.begin(), issuers.end(),
+                   [&public_key](const CatalogIssuerInfo& issuer) {
+                     return issuer.public_key == public_key;
+                   });
 
   if (iter == issuers.end()) {
     return false;
@@ -131,9 +127,9 @@ bool CatalogIssuersInfo::PublicKeyExists(
 base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
     const std::string& public_key) const {
   const auto iter = std::find_if(issuers.begin(), issuers.end(),
-      [&public_key](const auto& issuer) {
-    return issuer.public_key == public_key;
-  });
+                                 [&public_key](const auto& issuer) {
+                                   return issuer.public_key == public_key;
+                                 });
 
   if (iter == issuers.end()) {
     return base::nullopt;
@@ -144,16 +140,18 @@ base::Optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
   std::string name = catalog_issuer.name;
 
   if (!re2::RE2::Replace(&name, "BAT", "")) {
-    BLOG(1, "Failed to get estimated redemption value due to invalid catalog "
-        "issuer name");
+    BLOG(1,
+         "Failed to get estimated redemption value due to invalid catalog "
+         "issuer name");
 
     return base::nullopt;
   }
 
   double estimated_redemption_value;
   if (!base::StringToDouble(name, &estimated_redemption_value)) {
-    BLOG(1, "Failed to get estimated redemption value due to invalid catalog "
-        "issuer name");
+    BLOG(1,
+         "Failed to get estimated redemption value due to invalid catalog "
+         "issuer name");
 
     return base::nullopt;
   }

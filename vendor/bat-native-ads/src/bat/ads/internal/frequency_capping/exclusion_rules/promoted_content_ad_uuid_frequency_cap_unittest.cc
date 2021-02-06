@@ -18,13 +18,12 @@ namespace ads {
 namespace {
 
 const std::vector<std::string> kUuids = {
-  "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-  "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
-};
+    "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
+    "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
 
 }  // namespace
 
-class BatAdsPromotedContentAdUuidFrequencyCapTest : public UnitTestBase{
+class BatAdsPromotedContentAdUuidFrequencyCapTest : public UnitTestBase {
  protected:
   BatAdsPromotedContentAdUuidFrequencyCapTest() = default;
 
@@ -32,7 +31,7 @@ class BatAdsPromotedContentAdUuidFrequencyCapTest : public UnitTestBase{
 };
 
 TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   AdInfo ad;
   ad.uuid = kUuids.at(0);
@@ -48,7 +47,7 @@ TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
 }
 
 TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
-    AdAllowedForAdWithDifferentUuid) {
+       AdAllowedForAdWithDifferentUuid) {
   // Arrange
   AdInfo ad_1;
   ad_1.uuid = kUuids.at(0);
@@ -59,7 +58,7 @@ TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad_2,
-      ConfirmationType::kViewed);
+                                               ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -72,7 +71,7 @@ TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
 }
 
 TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
-    AdAllowedForAdWithDifferentUuidForMultipleTypes) {
+       AdAllowedForAdWithDifferentUuidForMultipleTypes) {
   // Arrange
   AdInfo ad_1;
   ad_1.uuid = kUuids.at(0);
@@ -82,16 +81,16 @@ TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kNewTabPageAd,
-      ad_2, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_1 =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad_2, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kPromotedContentAd,
-      ad_2, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_2 = GenerateAdEvent(
+      AdType::kPromotedContentAd, ad_2, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd,
-      ad_2, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_3 = GenerateAdEvent(
+      AdType::kPromotedContentAd, ad_2, ConfirmationType::kViewed);
   ad_events.push_back(ad_event_3);
 
   // Act
@@ -103,7 +102,7 @@ TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
 }
 
 TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
-    AdNotAllowedForAdWithSameUuid) {
+       AdNotAllowedForAdWithSameUuid) {
   // Arrange
   AdInfo ad;
   ad.uuid = kUuids.at(0);
@@ -111,7 +110,7 @@ TEST_F(BatAdsPromotedContentAdUuidFrequencyCapTest,
   AdEventList ad_events;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-      ConfirmationType::kViewed);
+                                               ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 

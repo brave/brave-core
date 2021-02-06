@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
-#define BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
 
 #include <stdint.h>
 
@@ -24,11 +24,9 @@ class Catalog {
 
   ~Catalog();
 
-  bool FromJson(
-      const std::string& json);
+  bool FromJson(const std::string& json);
 
-  bool HasChanged(
-      const std::string& catalog_id) const;
+  bool HasChanged(const std::string& catalog_id) const;
 
   std::string GetId() const;
   int GetVersion() const;
@@ -42,4 +40,4 @@ class Catalog {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_H_

@@ -7,12 +7,12 @@
 
 #include <string>
 
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_values.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
+#include "brave/components/l10n/browser/locale_helper.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -54,13 +54,12 @@ SegmentProbabilitiesList GetTopSegmentProbabilities(
     const int count) {
   SegmentProbabilitiesList top_segment_probabilities(count);
 
-  std::partial_sort_copy(segment_probabilities.begin(),
-      segment_probabilities.end(), top_segment_probabilities.begin(),
-          top_segment_probabilities.end(), [](
-              const SegmentProbabilityPair& lhs,
-                  const SegmentProbabilityPair& rhs) {
-    return lhs.second > rhs.second;
-  });
+  std::partial_sort_copy(
+      segment_probabilities.begin(), segment_probabilities.end(),
+      top_segment_probabilities.begin(), top_segment_probabilities.end(),
+      [](const SegmentProbabilityPair& lhs, const SegmentProbabilityPair& rhs) {
+        return lhs.second > rhs.second;
+      });
 
   return top_segment_probabilities;
 }
@@ -91,11 +90,9 @@ SegmentList TextClassification::GetSegments() const {
     const std::string locale =
         brave_l10n::LocaleHelper::GetInstance()->GetLocale();
     BLOG(1, "No text classification probabilities found for " << locale
-        << " locale");
+                                                              << " locale");
 
-    return {
-      kUntargeted
-    };
+    return {kUntargeted};
   }
 
   const SegmentProbabilitiesMap segment_probabilities =

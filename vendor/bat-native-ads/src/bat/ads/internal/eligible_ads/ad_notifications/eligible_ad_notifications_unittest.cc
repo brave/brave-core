@@ -21,16 +21,14 @@ namespace ad_notifications {
 class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
  protected:
   BatAdsEligibleAdNotificationsTest()
-      : subdivision_targeting_(std::make_unique<
-            ad_targeting::geographic::SubdivisionTargeting>()),
-        eligible_ads_(std::make_unique<EligibleAds>(
-            subdivision_targeting_.get())) {
-  }
+      : subdivision_targeting_(
+            std::make_unique<ad_targeting::geographic::SubdivisionTargeting>()),
+        eligible_ads_(
+            std::make_unique<EligibleAds>(subdivision_targeting_.get())) {}
 
   ~BatAdsEligibleAdNotificationsTest() override = default;
 
-  CreativeAdNotificationList GetAds(
-      const int count) {
+  CreativeAdNotificationList GetAds(const int count) {
     CreativeAdNotificationList ads;
 
     for (int i = 0; i < count; i++) {
@@ -57,8 +55,7 @@ class BatAdsEligibleAdNotificationsTest : public UnitTestBase {
   std::unique_ptr<EligibleAds> eligible_ads_;
 };
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    NoSeenAdvertisersOrAds) {
+TEST_F(BatAdsEligibleAdNotificationsTest, NoSeenAdvertisersOrAds) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -73,8 +70,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    EligibleAd) {
+TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAd) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -95,15 +91,12 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   ad.creative_instance_id = "6";
   ad.advertiser_id = "3";
 
-  const CreativeAdNotificationList expected_ads = {
-    ad
-  };
+  const CreativeAdNotificationList expected_ads = {ad};
 
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    EligibleAds) {
+TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAds) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -127,16 +120,12 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   ad_2.creative_instance_id = "6";
   ad_2.advertiser_id = "3";
 
-  const CreativeAdNotificationList expected_ads = {
-    ad_1,
-    ad_2
-  };
+  const CreativeAdNotificationList expected_ads = {ad_1, ad_2};
 
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    EligibleAdsRoundRobin) {
+TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdsRoundRobin) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -158,8 +147,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    EligibleAdvertiser) {
+TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdvertiser) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -181,16 +169,12 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   ad_2.creative_instance_id = "6";
   ad_2.advertiser_id = "3";
 
-  const CreativeAdNotificationList expected_ads = {
-    ad_1,
-    ad_2
-  };
+  const CreativeAdNotificationList expected_ads = {ad_1, ad_2};
 
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    EligibleAdvertisers) {
+TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdvertisers) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -219,18 +203,12 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   ad_4.creative_instance_id = "6";
   ad_4.advertiser_id = "3";
 
-  const CreativeAdNotificationList expected_ads = {
-    ad_1,
-    ad_2,
-    ad_3,
-    ad_4
-  };
+  const CreativeAdNotificationList expected_ads = {ad_1, ad_2, ad_3, ad_4};
 
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    EligibleAdvertisersRoundRobin) {
+TEST_F(BatAdsEligibleAdNotificationsTest, EligibleAdvertisersRoundRobin) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -249,8 +227,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    RoundRobin) {
+TEST_F(BatAdsEligibleAdNotificationsTest, RoundRobin) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(6);
 
@@ -275,8 +252,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    LastDeliveredAd) {
+TEST_F(BatAdsEligibleAdNotificationsTest, LastDeliveredAd) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(2);
 
@@ -293,15 +269,12 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   ad.creative_instance_id = "2";
   ad.advertiser_id = "1";
 
-  const CreativeAdNotificationList expected_ads = {
-    ad
-  };
+  const CreativeAdNotificationList expected_ads = {ad};
 
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }
 
-TEST_F(BatAdsEligibleAdNotificationsTest,
-    LastDeliveredAdForSingleAd) {
+TEST_F(BatAdsEligibleAdNotificationsTest, LastDeliveredAdForSingleAd) {
   // Arrange
   const CreativeAdNotificationList ads = GetAds(2);
 
@@ -318,9 +291,7 @@ TEST_F(BatAdsEligibleAdNotificationsTest,
   ad.creative_instance_id = "1";
   ad.advertiser_id = "1";
 
-  const CreativeAdNotificationList expected_ads = {
-    ad
-  };
+  const CreativeAdNotificationList expected_ads = {ad};
 
   EXPECT_TRUE(CompareAsSets(expected_ads, eligible_ads));
 }

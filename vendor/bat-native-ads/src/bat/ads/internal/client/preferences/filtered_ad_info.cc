@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 FilteredAdInfo::FilteredAdInfo() = default;
 
-FilteredAdInfo::FilteredAdInfo(
-    const FilteredAdInfo& ad) = default;
+FilteredAdInfo::FilteredAdInfo(const FilteredAdInfo& ad) = default;
 
 FilteredAdInfo::~FilteredAdInfo() = default;
 
@@ -23,8 +22,7 @@ std::string FilteredAdInfo::ToJson() const {
   return json;
 }
 
-Result FilteredAdInfo::FromJson(
-    const std::string& json) {
+Result FilteredAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -44,9 +42,7 @@ Result FilteredAdInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const FilteredAdInfo& ad) {
+void SaveToJson(JsonWriter* writer, const FilteredAdInfo& ad) {
   writer->StartObject();
 
   writer->String("uuid");

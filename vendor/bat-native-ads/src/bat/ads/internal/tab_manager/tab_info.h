@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_TAB_MANAGER_TAB_INFO_H_
-#define BAT_ADS_INTERNAL_TAB_MANAGER_TAB_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TAB_MANAGER_TAB_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TAB_MANAGER_TAB_INFO_H_
 
 #include <stdint.h>
 
@@ -14,14 +14,11 @@ namespace ads {
 
 struct TabInfo {
   TabInfo();
-  TabInfo(
-      const TabInfo& info);
+  TabInfo(const TabInfo& info);
   ~TabInfo();
 
-  bool operator==(
-      const TabInfo& rhs) const;
-  bool operator!=(
-      const TabInfo& rhs) const;
+  bool operator==(const TabInfo& rhs) const;
+  bool operator!=(const TabInfo& rhs) const;
 
   int32_t id = 0;
   std::string url;
@@ -30,4 +27,4 @@ struct TabInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_TAB_MANAGER_TAB_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TAB_MANAGER_TAB_INFO_H_

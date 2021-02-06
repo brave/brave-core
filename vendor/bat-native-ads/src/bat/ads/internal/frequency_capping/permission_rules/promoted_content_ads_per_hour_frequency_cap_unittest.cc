@@ -26,7 +26,7 @@ class BatAdsPromotedContentAdsPerHourFrequencyCapTest : public UnitTestBase {
 };
 
 TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+       AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   const AdEventList ad_events;
 
@@ -39,16 +39,16 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
 }
 
 TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
-    AllowAdIfDoesNotExceedCap) {
+       AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-      ConfirmationType::kViewed);
+                                               ConfirmationType::kViewed);
 
   const AdEventList ad_events(kPromotedContentAdsPerHourFrequencyCap - 1,
-      ad_event);
+                              ad_event);
 
   // Act
   PromotedContentAdsPerHourFrequencyCap frequency_cap(ad_events);
@@ -59,13 +59,13 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
 }
 
 TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapAfter1Hour) {
+       AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-      ConfirmationType::kViewed);
+                                               ConfirmationType::kViewed);
 
   const AdEventList ad_events(kPromotedContentAdsPerHourFrequencyCap, ad_event);
 
@@ -80,13 +80,13 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
 }
 
 TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
-    DoNotAllowAdIfExceedsCapWithin1Hour) {
+       DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-      ConfirmationType::kViewed);
+                                               ConfirmationType::kViewed);
 
   const AdEventList ad_events(kPromotedContentAdsPerHourFrequencyCap, ad_event);
 
@@ -100,8 +100,7 @@ TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
   EXPECT_FALSE(is_allowed);
 }
 
-TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest,
-    AdsPerHour) {
+TEST_F(BatAdsPromotedContentAdsPerHourFrequencyCapTest, AdsPerHour) {
   // Arrange
 
   // Act

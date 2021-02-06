@@ -17,20 +17,19 @@
 
 namespace ads {
 
-DailyCapFrequencyCap::DailyCapFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+DailyCapFrequencyCap::DailyCapFrequencyCap(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 DailyCapFrequencyCap::~DailyCapFrequencyCap() = default;
 
-bool DailyCapFrequencyCap::ShouldExclude(
-    const CreativeAdInfo& ad) {
+bool DailyCapFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events, ad)) {
-    last_message_ = base::StringPrintf("campaignId %s has exceeded the "
-        "frequency capping for dailyCap", ad.campaign_id.c_str());
+    last_message_ = base::StringPrintf(
+        "campaignId %s has exceeded the "
+        "frequency capping for dailyCap",
+        ad.campaign_id.c_str());
 
     return true;
   }
@@ -42,17 +41,16 @@ std::string DailyCapFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool DailyCapFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events,
-    const CreativeAdInfo& ad) {
+bool DailyCapFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
+                                          const CreativeAdInfo& ad) {
   const std::deque<uint64_t> history =
       GetTimestampHistoryForAdEvents(ad_events);
 
   const uint64_t time_constraint =
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
-  return DoesHistoryRespectCapForRollingTimeConstraint(
-      history, time_constraint, ad.daily_cap);
+  return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
+                                                       ad.daily_cap);
 }
 
 AdEventList DailyCapFrequencyCap::FilterAdEvents(
@@ -60,12 +58,13 @@ AdEventList DailyCapFrequencyCap::FilterAdEvents(
     const CreativeAdInfo& ad) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kAdNotification ||
-        ad_event.campaign_id != ad.campaign_id ||
-        ad_event.confirmation_type != ConfirmationType::kViewed;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&ad](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kAdNotification ||
+               ad_event.campaign_id != ad.campaign_id ||
+               ad_event.confirmation_type != ConfirmationType::kViewed;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

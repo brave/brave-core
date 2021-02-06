@@ -99,8 +99,8 @@ void JNI_BraveAdsNativeHelper_AdNotificationClicked(
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  brave_ads::AdsServiceImpl* ads_service = brave_ads::
-      AdsServiceFactory::GetImplForProfile(profile);
+  brave_ads::AdsServiceImpl* ads_service =
+      brave_ads::AdsServiceFactory::GetImplForProfile(profile);
   if (!ads_service) {
     NOTREACHED();
     return;
@@ -111,12 +111,8 @@ void JNI_BraveAdsNativeHelper_AdNotificationClicked(
       std::make_unique<brave_ads::AdsNotificationHandler>(
           static_cast<content::BrowserContext*>(profile));
   handler->SetAdsService(ads_service);
-  handler->OnClick(profile,
-      GURL(""),
-      notification_id,
-      base::nullopt,
-      base::nullopt,
-      base::OnceClosure());
+  handler->OnClick(profile, GURL(""), notification_id, base::nullopt,
+                   base::nullopt, base::OnceClosure());
 }
 
 void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
@@ -126,7 +122,7 @@ void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
     jboolean j_by_user) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
   brave_ads::AdsServiceImpl* ads_service =
-        brave_ads::AdsServiceFactory::GetImplForProfile(profile);
+      brave_ads::AdsServiceFactory::GetImplForProfile(profile);
   if (!ads_service) {
     NOTREACHED();
     return;
@@ -137,11 +133,8 @@ void JNI_BraveAdsNativeHelper_AdNotificationDismissed(
       std::make_unique<brave_ads::AdsNotificationHandler>(
           static_cast<content::BrowserContext*>(profile));
   handler->SetAdsService(ads_service);
-  handler->OnClose(profile,
-      GURL(""),
-      notification_id,
-      j_by_user,
-      base::OnceClosure());
+  handler->OnClose(profile, GURL(""), notification_id, j_by_user,
+                   base::OnceClosure());
 }
 
 }  // namespace brave_ads

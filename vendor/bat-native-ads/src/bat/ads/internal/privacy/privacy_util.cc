@@ -10,8 +10,7 @@
 namespace ads {
 namespace privacy {
 
-std::vector<BlindedToken> BlindTokens(
-    const std::vector<Token>& tokens) {
+std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
   DCHECK(!tokens.empty());
 
   std::vector<BlindedToken> blinded_tokens;

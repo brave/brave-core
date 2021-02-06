@@ -5,16 +5,15 @@
 
 #include "bat/ads/internal/ads_history/filters/ads_history_confirmation_filter.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/internal/container_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsHistoryConfirmationFilterTest,
-    FilterActions) {
+TEST(BatAdsHistoryConfirmationFilterTest, FilterActions) {
   // Arrange
   AdHistoryInfo ad1;  // Ad 1 (Viewed)
   ad1.ad_content.uuid = "b7a0aa61-7c3a-40f8-aa29-d416b64cebd9";
@@ -58,15 +57,7 @@ TEST(BatAdsHistoryConfirmationFilterTest,
   ad7.ad_content.creative_instance_id = "dc540882-6927-4e22-8597-aa80f339f0fd";
   ad7.ad_content.ad_action = ConfirmationType::kViewed;
 
-  std::deque<AdHistoryInfo> history = {
-    ad1,
-    ad2,
-    ad3,
-    ad4,
-    ad5,
-    ad6,
-    ad7
-  };
+  std::deque<AdHistoryInfo> history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7};
 
   // Act
   AdsHistoryConfirmationFilter filter;
@@ -74,18 +65,17 @@ TEST(BatAdsHistoryConfirmationFilterTest,
 
   // Assert
   const std::deque<AdHistoryInfo> expected_history = {
-    ad2,  // Ad 2
-    ad3,  // Ad 1 (Click) which should supersede Ad 1 (View)
-    ad4,  // Ad 3 (Dismiss) which should supersede Ad 3 (View)
-    ad6,  // Ad 4
-    ad7   // Ad 5
+      ad2,  // Ad 2
+      ad3,  // Ad 1 (Click) which should supersede Ad 1 (View)
+      ad4,  // Ad 3 (Dismiss) which should supersede Ad 3 (View)
+      ad6,  // Ad 4
+      ad7   // Ad 5
   };
 
   EXPECT_TRUE(CompareAsSets(expected_history, history));
 }
 
-TEST(BatAdsHistoryConfirmationFilterTest,
-    FilterUnsupportedActions) {
+TEST(BatAdsHistoryConfirmationFilterTest, FilterUnsupportedActions) {
   // Arrange
   AdHistoryInfo ad1;  // Unsupported
   ad1.ad_content.uuid = "54ee85b3-b84e-4e80-a6db-8954b554f466";
@@ -135,16 +125,7 @@ TEST(BatAdsHistoryConfirmationFilterTest,
   ad8.ad_content.creative_instance_id = "e00ccc4a-3186-4b56-9725-aeaf19095f96";
   ad8.ad_content.ad_action = ConfirmationType::kClicked;
 
-  std::deque<AdHistoryInfo> history = {
-    ad1,
-    ad2,
-    ad3,
-    ad4,
-    ad5,
-    ad6,
-    ad7,
-    ad8
-  };
+  std::deque<AdHistoryInfo> history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7, ad8};
 
   // Act
   AdsHistoryConfirmationFilter filter;
@@ -152,9 +133,9 @@ TEST(BatAdsHistoryConfirmationFilterTest,
 
   // Assert
   const std::deque<AdHistoryInfo> expected_history = {
-    ad6,  // View
-    ad7,  // Dismiss
-    ad8   // Click
+      ad6,  // View
+      ad7,  // Dismiss
+      ad8   // Click
   };
 
   EXPECT_TRUE(CompareAsSets(expected_history, history));

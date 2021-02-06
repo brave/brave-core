@@ -12,14 +12,12 @@ namespace ads {
 namespace features {
 
 namespace {
-  const char kFeatureName[] = "EpsilonGreedyBandit";
-  const char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
+const char kFeatureName[] = "EpsilonGreedyBandit";
+const char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
 }  // namespace
 
-const base::Feature kEpsilonGreedyBandit {
-  kFeatureName,
-  base::FEATURE_DISABLED_BY_DEFAULT
-};
+const base::Feature kEpsilonGreedyBandit{kFeatureName,
+                                         base::FEATURE_DISABLED_BY_DEFAULT};
 
 bool IsEpsilonGreedyBanditEnabled() {
   return base::FeatureList::IsEnabled(kEpsilonGreedyBandit);
@@ -27,9 +25,9 @@ bool IsEpsilonGreedyBanditEnabled() {
 
 double GetEpsilonGreedyBanditEpsilonValue() {
   return GetFieldTrialParamByFeatureAsDouble(kEpsilonGreedyBandit,
-      kFieldTrialParameterEpsilonValue, ad_targeting::model::kEpsilon);
+                                             kFieldTrialParameterEpsilonValue,
+                                             ad_targeting::model::kEpsilon);
 }
-
 
 }  // namespace features
 }  // namespace ads

@@ -12,8 +12,7 @@
 
 namespace ads {
 
-SegmentList DeserializeSegments(
-    const std::string& json) {
+SegmentList DeserializeSegments(const std::string& json) {
   SegmentList segments;
 
   base::Optional<base::Value> value = base::JSONReader::Read(json);
@@ -38,8 +37,7 @@ SegmentList DeserializeSegments(
   return segments;
 }
 
-std::string SerializeSegments(
-    const SegmentList& segments) {
+std::string SerializeSegments(const SegmentList& segments) {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& segment : segments) {

@@ -9,20 +9,17 @@ namespace ads {
 
 CatalogDaypartInfo::CatalogDaypartInfo() = default;
 
-CatalogDaypartInfo::CatalogDaypartInfo(
-    const CatalogDaypartInfo& info) = default;
+CatalogDaypartInfo::CatalogDaypartInfo(const CatalogDaypartInfo& info) =
+    default;
 
 CatalogDaypartInfo::~CatalogDaypartInfo() = default;
 
-bool CatalogDaypartInfo::operator==(
-    const CatalogDaypartInfo& rhs) const {
-  return dow == rhs.dow &&
-      start_minute == rhs.start_minute &&
-      end_minute == rhs.end_minute;
+bool CatalogDaypartInfo::operator==(const CatalogDaypartInfo& rhs) const {
+  return dow == rhs.dow && start_minute == rhs.start_minute &&
+         end_minute == rhs.end_minute;
 }
 
-bool CatalogDaypartInfo::operator!=(
-    const CatalogDaypartInfo& rhs) const {
+bool CatalogDaypartInfo::operator!=(const CatalogDaypartInfo& rhs) const {
   return !(*this == rhs);
 }
 

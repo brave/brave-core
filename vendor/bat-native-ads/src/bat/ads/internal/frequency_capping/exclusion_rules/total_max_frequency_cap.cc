@@ -11,20 +11,19 @@
 
 namespace ads {
 
-TotalMaxFrequencyCap::TotalMaxFrequencyCap(
-    const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+TotalMaxFrequencyCap::TotalMaxFrequencyCap(const AdEventList& ad_events)
+    : ad_events_(ad_events) {}
 
 TotalMaxFrequencyCap::~TotalMaxFrequencyCap() = default;
 
-bool TotalMaxFrequencyCap::ShouldExclude(
-    const CreativeAdInfo& ad) {
+bool TotalMaxFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
   const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
 
   if (!DoesRespectCap(filtered_ad_events, ad)) {
-    last_message_ = base::StringPrintf("creativeSetId %s has exceeded the "
-        "frequency capping for totalMax", ad.creative_set_id.c_str());
+    last_message_ = base::StringPrintf(
+        "creativeSetId %s has exceeded the "
+        "frequency capping for totalMax",
+        ad.creative_set_id.c_str());
 
     return true;
   }
@@ -36,9 +35,8 @@ std::string TotalMaxFrequencyCap::get_last_message() const {
   return last_message_;
 }
 
-bool TotalMaxFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events,
-    const CreativeAdInfo& ad) {
+bool TotalMaxFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
+                                          const CreativeAdInfo& ad) {
   if (ad_events.size() >= ad.total_max) {
     return false;
   }
@@ -51,12 +49,13 @@ AdEventList TotalMaxFrequencyCap::FilterAdEvents(
     const CreativeAdInfo& ad) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [&ad](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kAdNotification ||
-        ad_event.creative_set_id != ad.creative_set_id ||
-        ad_event.confirmation_type != ConfirmationType::kViewed;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [&ad](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kAdNotification ||
+               ad_event.creative_set_id != ad.creative_set_id ||
+               ad_event.confirmation_type != ConfirmationType::kViewed;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

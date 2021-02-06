@@ -16,8 +16,7 @@ namespace ads {
 
 namespace {
 
-double GetPointsForEventType(
-  const UserActivityEventType event_type) {
+double GetPointsForEventType(const UserActivityEventType event_type) {
   switch (event_type) {
     case UserActivityEventType::kOpenedNewOrFocusedOnExistingTab:
     case UserActivityEventType::kClosedTab:

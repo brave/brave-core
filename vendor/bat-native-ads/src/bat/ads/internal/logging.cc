@@ -9,11 +9,10 @@
 
 namespace ads {
 
-void Log(
-    const char* file,
-    const int line,
-    const int verbose_level,
-    const std::string& message) {
+void Log(const char* file,
+         const int line,
+         const int verbose_level,
+         const std::string& message) {
   if (!AdsClientHelper::HasInstance()) {
     return;
   }

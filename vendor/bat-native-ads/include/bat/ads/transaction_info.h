@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_TRANSACTION_INFO_
-#define BAT_ADS_TRANSACTION_INFO_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_
 
 #include <stdint.h>
 
@@ -18,28 +18,23 @@ namespace ads {
 
 struct ADS_EXPORT TransactionInfo {
   TransactionInfo();
-  TransactionInfo(
-        const TransactionInfo& info);
+  TransactionInfo(const TransactionInfo& info);
   ~TransactionInfo();
 
-  bool operator==(
-    const TransactionInfo& rhs) const;
-  bool operator!=(
-      const TransactionInfo& rhs) const;
+  bool operator==(const TransactionInfo& rhs) const;
+  bool operator!=(const TransactionInfo& rhs) const;
 
   int64_t timestamp = 0;
   double estimated_redemption_value = 0.0;
   std::string confirmation_type;
 
-  void ToDictionary(
-      base::Value* dictionary) const;
+  void ToDictionary(base::Value* dictionary) const;
 
-  void FromDictionary(
-      base::DictionaryValue* dictionary);
+  void FromDictionary(base::DictionaryValue* dictionary);
 };
 
 using TransactionList = std::vector<TransactionInfo>;
 
 }  // namespace ads
 
-#endif  // BAT_LEDGER_TRANSACTION_INFO_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_TRANSACTION_INFO_H_

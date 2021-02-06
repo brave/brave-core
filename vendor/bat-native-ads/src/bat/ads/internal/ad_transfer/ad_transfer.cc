@@ -25,21 +25,17 @@ AdTransfer::AdTransfer() = default;
 
 AdTransfer::~AdTransfer() = default;
 
-void AdTransfer::AddObserver(
-    AdTransferObserver* observer) {
+void AdTransfer::AddObserver(AdTransferObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void AdTransfer::RemoveObserver(
-    AdTransferObserver* observer) {
+void AdTransfer::RemoveObserver(AdTransferObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void AdTransfer::MaybeTransferAd(
-    const int32_t tab_id,
-    const std::string& url) {
+void AdTransfer::MaybeTransferAd(const int32_t tab_id, const std::string& url) {
   if (!last_clicked_ad_.IsValid()) {
     return;
   }
@@ -64,13 +60,11 @@ void AdTransfer::MaybeTransferAd(
   TransferAd(tab_id, url);
 }
 
-void AdTransfer::set_last_clicked_ad(
-    const AdInfo& ad) {
+void AdTransfer::set_last_clicked_ad(const AdInfo& ad) {
   last_clicked_ad_ = ad;
 }
 
-void AdTransfer::Cancel(
-    const int32_t tab_id) {
+void AdTransfer::Cancel(const int32_t tab_id) {
   if (transferring_ad_tab_id_ != tab_id) {
     return;
   }
@@ -90,9 +84,7 @@ void AdTransfer::clear_last_clicked_ad() {
   last_clicked_ad_ = AdInfo();
 }
 
-void AdTransfer::TransferAd(
-    const int32_t tab_id,
-    const std::string& url) {
+void AdTransfer::TransferAd(const int32_t tab_id, const std::string& url) {
   const base::TimeDelta delay =
       base::TimeDelta::FromSeconds(kTransferAdAfterSeconds);
 
@@ -102,16 +94,14 @@ void AdTransfer::TransferAd(
 
   transferring_ad_tab_id_ = tab_id;
 
-  const base::Time time = timer_.Start(
-      delay, base::BindOnce(&AdTransfer::OnTransferAd,
-          base::Unretained(this), tab_id, url));
+  const base::Time time =
+      timer_.Start(delay, base::BindOnce(&AdTransfer::OnTransferAd,
+                                         base::Unretained(this), tab_id, url));
 
   BLOG(1, "Transfer ad for " << url << " " << FriendlyDateAndTime(time));
 }
 
-void AdTransfer::OnTransferAd(
-    const int32_t tab_id,
-    const std::string& url) {
+void AdTransfer::OnTransferAd(const int32_t tab_id, const std::string& url) {
   const AdInfo ad = last_clicked_ad_;
 
   clear_last_clicked_ad();
@@ -139,8 +129,7 @@ void AdTransfer::OnTransferAd(
 
   BLOG(1, "Transferred ad for " << url);
 
-  LogAdEvent(ad, ConfirmationType::kTransferred,
-      [](const Result result) {
+  LogAdEvent(ad, ConfirmationType::kTransferred, [](const Result result) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Failed to log transferred ad event");
       return;
@@ -152,15 +141,13 @@ void AdTransfer::OnTransferAd(
   NotifyAdTransfer(ad);
 }
 
-void AdTransfer::NotifyAdTransfer(
-    const AdInfo& ad) {
+void AdTransfer::NotifyAdTransfer(const AdInfo& ad) {
   for (AdTransferObserver& observer : observers_) {
     observer.OnAdTransfer(ad);
   }
 }
 
-void AdTransfer::NotifyAdTransferFailed(
-    const AdInfo& ad) {
+void AdTransfer::NotifyAdTransferFailed(const AdInfo& ad) {
   for (AdTransferObserver& observer : observers_) {
     observer.OnAdTransferFailed(ad);
   }

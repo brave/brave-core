@@ -8,18 +8,12 @@
 namespace ads {
 
 AdInfo::AdInfo() = default;
-
-AdInfo::AdInfo(
-    const AdInfo& info) = default;
-
+AdInfo::AdInfo(const AdInfo& info) = default;
 AdInfo::~AdInfo() = default;
 
 bool AdInfo::IsValid() const {
-  if (type == AdType::kUndefined ||
-      creative_instance_id.empty() ||
-      creative_set_id.empty() ||
-      campaign_id.empty() ||
-      segment.empty() ||
+  if (type == AdType::kUndefined || creative_instance_id.empty() ||
+      creative_set_id.empty() || campaign_id.empty() || segment.empty() ||
       target_url.empty()) {
     return false;
   }

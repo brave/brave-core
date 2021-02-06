@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_DATABASE_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_  // NOLINT
-#define BAT_ADS_INTERNAL_DATABASE_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_
 
 #include <memory>
 #include <string>
@@ -25,11 +25,14 @@
 namespace ads {
 
 using GetCreativePromotedContentAdCallback =
-    std::function<void(const Result, const std::string& creative_instance_id,
-        const CreativePromotedContentAdInfo&)>;
+    std::function<void(const Result,
+                       const std::string& creative_instance_id,
+                       const CreativePromotedContentAdInfo&)>;
 
-using GetCreativePromotedContentAdsCallback = std::function<void(const Result,
-    const std::vector<std::string>&, const CreativePromotedContentAdList&)>;
+using GetCreativePromotedContentAdsCallback =
+    std::function<void(const Result,
+                       const std::vector<std::string>&,
+                       const CreativePromotedContentAdList&)>;
 
 namespace database {
 namespace table {
@@ -40,32 +43,24 @@ class CreativePromotedContentAds : public Table {
 
   ~CreativePromotedContentAds() override;
 
-  void Save(
-      const CreativePromotedContentAdList& creative_promoted_content_ads,
-      ResultCallback callback);
+  void Save(const CreativePromotedContentAdList& creative_promoted_content_ads,
+            ResultCallback callback);
 
-  void Delete(
-      ResultCallback callback);
+  void Delete(ResultCallback callback);
 
-  void GetForCreativeInstanceId(
-      const std::string& creative_instance_id,
-      GetCreativePromotedContentAdCallback callback);
+  void GetForCreativeInstanceId(const std::string& creative_instance_id,
+                                GetCreativePromotedContentAdCallback callback);
 
-  void GetForSegments(
-      const SegmentList& segments,
-      GetCreativePromotedContentAdsCallback callback);
+  void GetForSegments(const SegmentList& segments,
+                      GetCreativePromotedContentAdsCallback callback);
 
-  void GetAll(
-      GetCreativePromotedContentAdsCallback callback);
+  void GetAll(GetCreativePromotedContentAdsCallback callback);
 
-  void set_batch_size(
-      const int batch_size);
+  void set_batch_size(const int batch_size);
 
   std::string get_table_name() const override;
 
-  void Migrate(
-      DBTransaction* transaction,
-      const int to_version) override;
+  void Migrate(DBTransaction* transaction, const int to_version) override;
 
  private:
   void InsertOrUpdate(
@@ -85,22 +80,17 @@ class CreativePromotedContentAds : public Table {
       const std::string& creative_instance_id,
       GetCreativePromotedContentAdCallback callback);
 
-  void OnGetForSegments(
-      DBCommandResponsePtr response,
-      const SegmentList& segments,
-      GetCreativePromotedContentAdsCallback callback);
+  void OnGetForSegments(DBCommandResponsePtr response,
+                        const SegmentList& segments,
+                        GetCreativePromotedContentAdsCallback callback);
 
-  void OnGetAll(
-      DBCommandResponsePtr response,
-      GetCreativePromotedContentAdsCallback callback);
+  void OnGetAll(DBCommandResponsePtr response,
+                GetCreativePromotedContentAdsCallback callback);
 
-  CreativePromotedContentAdInfo GetFromRecord(
-      DBRecord* record) const;
+  CreativePromotedContentAdInfo GetFromRecord(DBRecord* record) const;
 
-  void CreateTableV9(
-      DBTransaction* transaction);
-  void MigrateToV9(
-      DBTransaction* transaction);
+  void CreateTableV9(DBTransaction* transaction);
+  void MigrateToV9(DBTransaction* transaction);
 
   int batch_size_;
 
@@ -115,4 +105,4 @@ class CreativePromotedContentAds : public Table {
 }  // namespace database
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_DATABASE_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_

@@ -41,25 +41,23 @@ PromotedContentAd::PromotedContentAd() = default;
 
 PromotedContentAd::~PromotedContentAd() = default;
 
-void PromotedContentAd::AddObserver(
-    PromotedContentAdObserver* observer) {
+void PromotedContentAd::AddObserver(PromotedContentAdObserver* observer) {
   DCHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void PromotedContentAd::RemoveObserver(
-    PromotedContentAdObserver* observer) {
+void PromotedContentAd::RemoveObserver(PromotedContentAdObserver* observer) {
   DCHECK(observer);
   observers_.RemoveObserver(observer);
 }
 
-void PromotedContentAd::FireEvent(
-    const std::string& uuid,
-    const std::string& creative_instance_id,
-    const PromotedContentAdEventType event_type) {
+void PromotedContentAd::FireEvent(const std::string& uuid,
+                                  const std::string& creative_instance_id,
+                                  const PromotedContentAdEventType event_type) {
   if (uuid.empty() || creative_instance_id.empty()) {
-    BLOG(1, "Failed to fire promoted content ad event for uuid " << uuid
-        << " and creative instance id " << creative_instance_id);
+    BLOG(1, "Failed to fire promoted content ad event for uuid "
+                << uuid << " and creative instance id "
+                << creative_instance_id);
 
     NotifyPromotedContentAdEventFailed(uuid, creative_instance_id, event_type);
 
@@ -67,31 +65,30 @@ void PromotedContentAd::FireEvent(
   }
 
   database::table::CreativePromotedContentAds database_table;
-  database_table.GetForCreativeInstanceId(creative_instance_id, [=](
-      const Result result,
-      const std::string& creative_instance_id,
-      const CreativePromotedContentAdInfo& creative_promoted_content_ad) {
-    if (result != SUCCESS) {
-      BLOG(1, "Failed to fire promoted content ad event for uuid");
+  database_table.GetForCreativeInstanceId(
+      creative_instance_id,
+      [=](const Result result, const std::string& creative_instance_id,
+          const CreativePromotedContentAdInfo& creative_promoted_content_ad) {
+        if (result != SUCCESS) {
+          BLOG(1, "Failed to fire promoted content ad event for uuid");
 
-      NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
-          event_type);
+          NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
+                                             event_type);
 
-      return;
-    }
+          return;
+        }
 
-    const PromotedContentAdInfo ad =
-        CreatePromotedContentAd(uuid, creative_promoted_content_ad);
+        const PromotedContentAdInfo ad =
+            CreatePromotedContentAd(uuid, creative_promoted_content_ad);
 
-    FireEvent(ad, uuid, creative_instance_id, event_type);
-  });
+        FireEvent(ad, uuid, creative_instance_id, event_type);
+      });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool PromotedContentAd::ShouldFireEvent(
-    const PromotedContentAdInfo& ad,
-    const AdEventList& ad_events) {
+bool PromotedContentAd::ShouldFireEvent(const PromotedContentAdInfo& ad,
+                                        const AdEventList& ad_events) {
   promoted_content_ads::FrequencyCapping frequency_capping(ad_events);
 
   if (!frequency_capping.IsAdAllowed()) {
@@ -105,20 +102,17 @@ bool PromotedContentAd::ShouldFireEvent(
   return true;
 }
 
-void PromotedContentAd::FireEvent(
-    const PromotedContentAdInfo& ad,
-    const std::string& uuid,
-    const std::string& creative_instance_id,
-    const PromotedContentAdEventType event_type) {
+void PromotedContentAd::FireEvent(const PromotedContentAdInfo& ad,
+                                  const std::string& uuid,
+                                  const std::string& creative_instance_id,
+                                  const PromotedContentAdEventType event_type) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](
-      const Result result,
-      const AdEventList& ad_events) {
+  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
     if (result != Result::SUCCESS) {
       BLOG(1, "Promoted content ad: Failed to get ad events");
 
       NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
-          event_type);
+                                         event_type);
 
       return;
     }
@@ -128,7 +122,7 @@ void PromotedContentAd::FireEvent(
       BLOG(1, "Promoted content ad: Not allowed");
 
       NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
-          event_type);
+                                         event_type);
 
       return;
     }
@@ -177,7 +171,7 @@ void PromotedContentAd::NotifyPromotedContentAdEventFailed(
     const PromotedContentAdEventType event_type) {
   for (PromotedContentAdObserver& observer : observers_) {
     observer.OnPromotedContentAdEventFailed(uuid, creative_instance_id,
-        event_type);
+                                            event_type);
   }
 }
 

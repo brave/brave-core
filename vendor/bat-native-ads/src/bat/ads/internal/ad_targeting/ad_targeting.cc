@@ -26,7 +26,7 @@ SegmentList AdTargeting::GetSegments() const {
     const SegmentList text_classification_segments =
         text_classification_model.GetSegments();
     segments.insert(segments.end(), text_classification_segments.begin(),
-        text_classification_segments.end());
+                    text_classification_segments.end());
   }
 
   if (features::IsPurchaseIntentEnabled()) {
@@ -34,7 +34,7 @@ SegmentList AdTargeting::GetSegments() const {
     const SegmentList purchase_intent_segments =
         purchase_intent_model.GetSegments();
     segments.insert(segments.end(), purchase_intent_segments.begin(),
-        purchase_intent_segments.end());
+                    purchase_intent_segments.end());
   }
 
   if (features::IsEpsilonGreedyBanditEnabled()) {
@@ -42,7 +42,7 @@ SegmentList AdTargeting::GetSegments() const {
     const SegmentList epsilon_greedy_bandit_segments =
         epsilon_greedy_bandit_model.GetSegments();
     segments.insert(segments.end(), epsilon_greedy_bandit_segments.begin(),
-        epsilon_greedy_bandit_segments.end());
+                    epsilon_greedy_bandit_segments.end());
   }
 
   return segments;

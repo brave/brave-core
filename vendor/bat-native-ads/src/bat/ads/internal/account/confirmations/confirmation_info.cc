@@ -8,36 +8,28 @@
 namespace ads {
 
 ConfirmationInfo::ConfirmationInfo()
-    : payment_token(nullptr),
-      blinded_payment_token(nullptr) {}
+    : payment_token(nullptr), blinded_payment_token(nullptr) {}
 
-ConfirmationInfo::ConfirmationInfo(
-    const ConfirmationInfo& info) = default;
+ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
 
 ConfirmationInfo::~ConfirmationInfo() = default;
 
-bool ConfirmationInfo::operator==(
-    const ConfirmationInfo& rhs) const {
-  return id == rhs.id &&
-      creative_instance_id == rhs.creative_instance_id &&
-      type == rhs.type &&
-      unblinded_token == rhs.unblinded_token &&
-      payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
-      blinded_payment_token.encode_base64() ==
-          rhs.blinded_payment_token.encode_base64() &&
-      credential == rhs.credential &&
-      timestamp == rhs.timestamp &&
-      created == rhs.created;
+bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
+  return id == rhs.id && creative_instance_id == rhs.creative_instance_id &&
+         type == rhs.type && unblinded_token == rhs.unblinded_token &&
+         payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
+         blinded_payment_token.encode_base64() ==
+             rhs.blinded_payment_token.encode_base64() &&
+         credential == rhs.credential && timestamp == rhs.timestamp &&
+         created == rhs.created;
 }
 
-bool ConfirmationInfo::operator!=(
-    const ConfirmationInfo& rhs) const {
+bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
   return !(*this == rhs);
 }
 
 bool ConfirmationInfo::IsValid() const {
-  if (id.empty() ||
-      type == ConfirmationType::kUndefined ||
+  if (id.empty() || type == ConfirmationType::kUndefined ||
       creative_instance_id.empty()) {
     return false;
   }

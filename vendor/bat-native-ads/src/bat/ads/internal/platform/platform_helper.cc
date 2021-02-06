@@ -13,8 +13,7 @@ PlatformHelper::PlatformHelper() = default;
 
 PlatformHelper::~PlatformHelper() = default;
 
-void PlatformHelper::set_for_testing(
-    PlatformHelper* platform_helper) {
+void PlatformHelper::set_for_testing(PlatformHelper* platform_helper) {
   g_platform_helper_for_testing = platform_helper;
 }
 
@@ -38,9 +37,7 @@ PlatformHelper* PlatformHelper::GetInstance() {
   return GetInstanceImpl();
 }
 
-#if !defined(OS_ANDROID) && \
-    !defined(OS_APPLE) && \
-    !defined(OS_LINUX) && \
+#if !defined(OS_ANDROID) && !defined(OS_APPLE) && !defined(OS_LINUX) && \
     !defined(OS_WIN)
 PlatformHelper* PlatformHelper::GetInstanceImpl() {
   // Return a default platform helper for unsupported platforms

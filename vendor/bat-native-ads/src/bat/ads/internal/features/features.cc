@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/features/features.h"
 
+#include "base/metrics/field_trial.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
-#include "base/metrics/field_trial.h"
-#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -37,8 +37,7 @@ base::Optional<std::string> GetStudy() {
 }
 
 base::Optional<std::string> GetGroup() {
-  base::FieldTrial* field_trial =
-      base::FieldTrialList::Find(kActiveStudyName);
+  base::FieldTrial* field_trial = base::FieldTrialList::Find(kActiveStudyName);
   if (!field_trial) {
     return base::nullopt;
   }
@@ -56,11 +55,11 @@ void Log() {
   }
 
   BLOG(1, "Text classification feature is "
-      << (IsTextClassificationEnabled() ? "enabled" : "disabled"));
+              << (IsTextClassificationEnabled() ? "enabled" : "disabled"));
   BLOG(1, "Epsilon greedy bandit feature is "
-      << (IsEpsilonGreedyBanditEnabled() ? "enabled" : "disabled"));
+              << (IsEpsilonGreedyBanditEnabled() ? "enabled" : "disabled"));
   BLOG(1, "Purchase intent feature is "
-      << (IsPurchaseIntentEnabled() ? "enabled" : "disabled"));
+              << (IsPurchaseIntentEnabled() ? "enabled" : "disabled"));
 }
 
 }  // namespace features

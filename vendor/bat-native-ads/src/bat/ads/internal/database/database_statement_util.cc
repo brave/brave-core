@@ -15,19 +15,17 @@
 namespace ads {
 namespace database {
 
-std::string BuildBindingParameterPlaceholder(
-    const size_t parameters_count) {
+std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
   DCHECK_NE(0UL, parameters_count);
 
   const std::vector<std::string> placeholders(parameters_count, "?");
 
   return base::StringPrintf("(%s)",
-      base::JoinString(placeholders, ", ").c_str());
+                            base::JoinString(placeholders, ", ").c_str());
 }
 
-std::string BuildBindingParameterPlaceholders(
-    const size_t parameters_count,
-    const size_t values_count) {
+std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
+                                              const size_t values_count) {
   DCHECK_NE(0UL, values_count);
 
   const std::string value = BuildBindingParameterPlaceholder(parameters_count);
@@ -40,9 +38,7 @@ std::string BuildBindingParameterPlaceholders(
   return base::JoinString(values, ", ");
 }
 
-void BindNull(
-    DBCommand* command,
-    const int_fast16_t index) {
+void BindNull(DBCommand* command, const int_fast16_t index) {
   DCHECK(command);
 
   DBCommandBindingPtr binding = DBCommandBinding::New();
@@ -53,10 +49,7 @@ void BindNull(
   command->bindings.push_back(std::move(binding));
 }
 
-void BindInt(
-    DBCommand* command,
-    const int index,
-    const int32_t value) {
+void BindInt(DBCommand* command, const int index, const int32_t value) {
   DCHECK(command);
 
   DBCommandBindingPtr binding = DBCommandBinding::New();
@@ -67,10 +60,7 @@ void BindInt(
   command->bindings.push_back(std::move(binding));
 }
 
-void BindInt64(
-    DBCommand* command,
-    const int index,
-    const int64_t value) {
+void BindInt64(DBCommand* command, const int index, const int64_t value) {
   DCHECK(command);
 
   DBCommandBindingPtr binding = DBCommandBinding::New();
@@ -81,10 +71,7 @@ void BindInt64(
   command->bindings.push_back(std::move(binding));
 }
 
-void BindDouble(
-    DBCommand* command,
-    const int index,
-    const double value) {
+void BindDouble(DBCommand* command, const int index, const double value) {
   DCHECK(command);
 
   DBCommandBindingPtr binding = DBCommandBinding::New();
@@ -95,10 +82,7 @@ void BindDouble(
   command->bindings.push_back(std::move(binding));
 }
 
-void BindBool(
-    DBCommand* command,
-    const int index,
-    const bool value) {
+void BindBool(DBCommand* command, const int index, const bool value) {
   DCHECK(command);
 
   DBCommandBindingPtr binding = DBCommandBinding::New();
@@ -109,10 +93,7 @@ void BindBool(
   command->bindings.push_back(std::move(binding));
 }
 
-void BindString(
-    DBCommand* command,
-    const int index,
-    const std::string& value) {
+void BindString(DBCommand* command, const int index, const std::string& value) {
   DCHECK(command);
 
   DBCommandBindingPtr binding = DBCommandBinding::New();
@@ -123,9 +104,7 @@ void BindString(
   command->bindings.push_back(std::move(binding));
 }
 
-int ColumnInt(
-    DBRecord* record,
-    const size_t index) {
+int ColumnInt(DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(DBValue::Tag::INT_VALUE, record->fields.at(index)->which());
@@ -133,9 +112,7 @@ int ColumnInt(
   return record->fields.at(index)->get_int_value();
 }
 
-int64_t ColumnInt64(
-    DBRecord* record,
-    const size_t index) {
+int64_t ColumnInt64(DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(DBValue::Tag::INT64_VALUE, record->fields.at(index)->which());
@@ -143,9 +120,7 @@ int64_t ColumnInt64(
   return record->fields.at(index)->get_int64_value();
 }
 
-double ColumnDouble(
-    DBRecord* record,
-    const size_t index) {
+double ColumnDouble(DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(DBValue::Tag::DOUBLE_VALUE, record->fields.at(index)->which());
@@ -153,9 +128,7 @@ double ColumnDouble(
   return record->fields.at(index)->get_double_value();
 }
 
-bool ColumnBool(
-    DBRecord* record,
-    const size_t index) {
+bool ColumnBool(DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(DBValue::Tag::BOOL_VALUE, record->fields.at(index)->which());
@@ -163,9 +136,7 @@ bool ColumnBool(
   return record->fields.at(index)->get_bool_value();
 }
 
-std::string ColumnString(
-    DBRecord* record,
-    const size_t index) {
+std::string ColumnString(DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
   DCHECK_EQ(DBValue::Tag::STRING_VALUE, record->fields.at(index)->which());
