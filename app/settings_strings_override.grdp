@@ -62,19 +62,6 @@
   <if expr="is_win and _google_chrome">
     </if>
 
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_ONE_ITEM_INCOGNITO" desc="A list containing a single permission which has recently changed in the users private session">
-    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_TWO_ITEMS_INCOGNITO" desc="A list containing two permissions which have recently changed in the users private session">
-    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_1">$2<ex>blocked Location</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_THREE_ITEMS_INCOGNITO" desc="A list containing three permissions which have recently changed in the users private session">
-    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_1">$2<ex>blocked Location</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_2">$3<ex>allowed Camera</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_OVER_THREE_ITEMS_INCOGNITO" desc="A list containing three permissions that have recently changed, but indicating that more have also changed recently">
-    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_1">$2<ex>blocked Location</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_2">$3<ex>allowed Camera</ex></ph>, and more
-  </message>
-
   <if expr="is_win and _google_chrome">
     </if>
 
@@ -93,7 +80,7 @@
     Current private session only
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current private session.">
-    This exception will be automatically removed after you exit the current Private session
+    This custom setting will be removed when you close all your Private windows
   </message>
   <if expr="chromeos">
     </if>
