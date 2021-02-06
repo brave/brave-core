@@ -4,9 +4,9 @@ index d87906676548af1ef77303ef03cf7fc709ed2f6e..fc5773a6c93f91c7e9b251462c0ea7b2
 +++ b/components/component_updater/component_updater_service.h
 @@ -156,6 +156,7 @@ class OnDemandUpdater {
    enum class Priority { BACKGROUND = 0, FOREGROUND = 1 };
-
+ 
    virtual ~OnDemandUpdater() = default;
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_
-
+ 
   private:
    friend class OnDemandTester;

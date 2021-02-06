@@ -1,5 +1,5 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index 31ddf626343d9cd69bd56896e80c71ca10a569a9..ef2de3d3076938042f0098ca047974287da1073c 100755
+index 154b624322d49bb19d7ab81aca83e70d17d6b29b..c87b75dab6fb23cb60bafe60241ecc9ada4379c4 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
 @@ -42,6 +42,7 @@ PLATFORM_STRINGS = {

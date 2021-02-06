@@ -1,8 +1,8 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index b116f39258664e6ae64cf6df56f57688160fd7b0..36696ae14a16e8821e11827651deb8ef4f74e589 100644
+index 1a907db2b8fab0d6541a509937f00e49abe10132..fac51c03a6135c383a09dd3a8308e76085712257 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -2061,6 +2061,7 @@ if (enable_java_templates) {
+@@ -2060,6 +2060,7 @@ if (enable_java_templates) {
          _deps = [ ":$_desugar_target" ]
          _previous_output_jar = _desugar_output_jar
        }

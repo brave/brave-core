@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 13b5a97dd968726e4bb0d79ed871fc97c43c1161..b8f8de0a5d491978526e2260f9f23b478b076597 100644
+index e7900100fd01f6dd19801e7ac60927f9c848bfab..88d3ce5901efcf393d2efb9ba54a41188f445e1e 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -300,7 +300,7 @@ void AddAdditionalRequestHeaders(
+@@ -301,7 +301,7 @@ void AddAdditionalRequestHeaders(
    headers->SetHeaderIfMissing(
        net::HttpRequestHeaders::kUserAgent,
        user_agent_override.empty()
@@ -11,7 +11,7 @@ index 13b5a97dd968726e4bb0d79ed871fc97c43c1161..b8f8de0a5d491978526e2260f9f23b47
            : user_agent_override);
  
    if (!render_prefs.enable_referrers) {
-@@ -1987,6 +1987,7 @@ void NavigationRequest::OnRequestRedirected(
+@@ -2010,6 +2010,7 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -19,7 +19,7 @@ index 13b5a97dd968726e4bb0d79ed871fc97c43c1161..b8f8de0a5d491978526e2260f9f23b47
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -2959,6 +2960,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -2998,6 +2999,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
@@ -27,7 +27,7 @@ index 13b5a97dd968726e4bb0d79ed871fc97c43c1161..b8f8de0a5d491978526e2260f9f23b47
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
-@@ -5258,7 +5260,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
+@@ -5306,7 +5308,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
    auto user_agent_override = GetUserAgentOverride();
    headers.SetHeader(net::HttpRequestHeaders::kUserAgent,
                      user_agent_override.empty()

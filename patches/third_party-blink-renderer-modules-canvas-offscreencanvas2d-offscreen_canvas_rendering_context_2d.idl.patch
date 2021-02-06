@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index ed256a54a0c8ea3d3e3aab5ba4e0227306bcc194..b3da53fa2be42fa10537683bbea2b09809ed2b8e 100644
+index 4a05c55a3bda42a76434e29d92ca017cae459d90..d1a78d61d6768608cad2e74b5bd355e44a81e0c0 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-@@ -65,10 +65,10 @@
+@@ -72,10 +72,10 @@
      void stroke(Path2D path);
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
@@ -17,7 +17,7 @@ index ed256a54a0c8ea3d3e3aab5ba4e0227306bcc194..b3da53fa2be42fa10537683bbea2b098
  
      // text (see also the CanvasDrawingStyles interface)
      void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -83,7 +83,7 @@
+@@ -90,7 +90,7 @@
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData(long sw, long sh);

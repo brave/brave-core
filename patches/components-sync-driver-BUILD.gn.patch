@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/BUILD.gn b/components/sync/driver/BUILD.gn
-index 0f91c41e563f026f473af4a57f5c6de23c5bde58..ba961c5a9f56a2aa99e1ca53084661e03edabc2b 100644
+index 6e787fca0688ce434ad22cea95af5946db6c0bf5..bb0e16aff61263e0cc10aa20648d7fa131b3d006 100644
 --- a/components/sync/driver/BUILD.gn
 +++ b/components/sync/driver/BUILD.gn
 @@ -114,6 +114,7 @@ static_library("driver") {
