@@ -90,7 +90,8 @@ void OnCheckIsDefaultBrowserFinished(
     const base::FilePath& profile_path,
     bool show_prompt,
     shell_integration::DefaultWebClientState state) {
-  if (state == shell_integration::IS_DEFAULT) {
+  if (state == shell_integration::IS_DEFAULT ||
+      state == shell_integration::OTHER_MODE_IS_DEFAULT) {
     // Notify the user in the future if Chrome ceases to be the user's chosen
     // default browser.
     ResetCheckDefaultBrowserPref(profile_path);
