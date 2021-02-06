@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_shortcut_manager_win.cc b/chrome/browser/profiles/profile_shortcut_manager_win.cc
-index 57f7d7d9762300757c1a38d5d5a19baae13e7fd5..bc369298325e3fbf9eee41ac2fad0205adf542ae 100644
+index 7cb9e516203025e263fd2bfbcfd5b79ad6d9048d..70606e9301da70fc6309489d5f5019fcb8e39e8d 100644
 --- a/chrome/browser/profiles/profile_shortcut_manager_win.cc
 +++ b/chrome/browser/profiles/profile_shortcut_manager_win.cc
 @@ -744,7 +744,7 @@ bool ProfileShortcutManager::IsFeatureEnabled() {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 5da199f1bea9c4a53ce5db2ab88a7fb3c7f2e66f..74d66968eab76ffba31b2bb327d2a0a2cb9247d2 100644
+index ae21a216287416985a8498cf5917e14a3b599083..be0746661177a033eb0fde363786aad1519c8840 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
 @@ -854,7 +854,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
@@ -19,7 +19,7 @@ index 5da199f1bea9c4a53ce5db2ab88a7fb3c7f2e66f..74d66968eab76ffba31b2bb327d2a0a2
  
    const sync_ui_util::StatusLabels status_labels =
        sync_ui_util::GetStatusLabels(profile_);
-@@ -1052,6 +1053,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
+@@ -1053,6 +1054,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {

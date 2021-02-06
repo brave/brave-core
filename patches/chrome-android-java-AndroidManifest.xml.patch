@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 5e699b5e3dca15782ba1eaa1b5134b2dec2470d3..694cb929e89d0ca1a8211f8f993935c8f2f88c7e 100644
+index 9d44cc4f4f998dfe32e4933de20029584924877d..d4bec46b54c5a16804b8fffa7219bdc738916dfd 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -39,7 +39,9 @@ by a child template that "extends" this file.
@@ -11,7 +11,7 @@ index 5e699b5e3dca15782ba1eaa1b5134b2dec2470d3..694cb929e89d0ca1a8211f8f993935c8
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
- 
+
 @@ -47,9 +49,13 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
@@ -39,11 +39,11 @@ index 5e699b5e3dca15782ba1eaa1b5134b2dec2470d3..694cb929e89d0ca1a8211f8f993935c8
 @@ -106,7 +114,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
- 
+
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +-->
- 
+
      {% block extra_uses_permissions %}
      {% endblock %}
 @@ -159,6 +169,7 @@ by a child template that "extends" this file.
@@ -54,19 +54,19 @@ index 5e699b5e3dca15782ba1eaa1b5134b2dec2470d3..694cb929e89d0ca1a8211f8f993935c8
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -1122,6 +1133,7 @@ by a child template that "extends" this file.
+@@ -1121,6 +1132,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
- 
+
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1204,6 +1216,7 @@ by a child template that "extends" this file.
+@@ -1203,6 +1215,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />
 +        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
        {% endif %}
- 
+
        <!-- Cast support -->
