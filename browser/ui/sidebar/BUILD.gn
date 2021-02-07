@@ -32,6 +32,10 @@ source_set("sidebar") {
     "//skia",
     "//url",
   ]
+
+  # included from chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h
+  # see check_includes comment above
+  deps += [ "//chrome/browser/promo_browser_command:mojo_bindings" ]
 }
 
 source_set("browser_tests") {
