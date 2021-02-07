@@ -1022,6 +1022,9 @@ up to 6x faster on major news sites.
       <message name="IDS_BRAVE_IPFS_INSTALL" desc="Install IPFS daemon infobar text">
         IPFS resources detected. Would you like Brave to load them using a local IPFS node?
       </message>
+      <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
+        IPFS Settings
+      </message>
       <message name="IDS_BRAVE_IPFS_SETTINGS" desc="Open IPFS settings">
         Settings
       </message>

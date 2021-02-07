@@ -13,6 +13,7 @@ import '../getting_started_page/getting_started.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
 import '../default_brave_shields_page/default_brave_shields_page.m.js'
 import '../social_blocking_page/social_blocking_page.m.js'
+import '../brave_ipfs_page/brave_ipfs_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
@@ -78,6 +79,10 @@ RegisterPolymerTemplateModifications({
       r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
       r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
     }
+    if (pageVisibility.braveIPFS) {
+      r.BRAVE_IPFS = r.BASIC.createSection('/ipfs', 'ipfs')
+    }
+
     r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
     r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
     if (r.SITE_SETTINGS) {
@@ -131,6 +136,18 @@ RegisterPolymerTemplateModifications({
         'extensions',
         'braveDefaultExtensions',
         'settings-brave-default-extensions-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+      const sectionIPFS = document.createElement('template')
+      sectionIPFS.setAttribute('is', 'dom-if')
+      sectionIPFS.setAttribute('restamp', true)
+      sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.ipfs)]]')
+      sectionIPFS.content.appendChild(createSectionElement(
+        'ipfs',
+        'braveIPFS',
+        'settings-brave-ipfs-page',
         {
           prefs: '{{prefs}}'
         }
@@ -199,8 +216,10 @@ RegisterPolymerTemplateModifications({
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
       sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
+      // Insert IPFS
+      sectionAppearance.insertAdjacentElement('afterend', sectionIPFS)
       // Insert New Tab
-      sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
+      sectionIPFS.insertAdjacentElement('afterend', sectionNewTab)
       // Insert sync
       sectionNewTab.insertAdjacentElement('afterend', sectionSync)
       // Insert shields

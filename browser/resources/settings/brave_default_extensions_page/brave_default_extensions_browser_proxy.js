@@ -15,7 +15,6 @@ cr.define('settings', function () {
     setWebTorrentEnabled (value) {}
     setBraveWalletEnabled (value) {}
     setHangoutsEnabled (value) {}
-    setIPFSCompanionEnabled (value) {}
     setTorEnabled (value) {}
     isTorEnabled () {}
     isTorManaged () {}
@@ -24,8 +23,6 @@ cr.define('settings', function () {
     getRestartNeeded () {}
     getWeb3ProviderList () {}
     wasSignInEnabledAtStartup () {}
-    getIPFSResolveMethodList () {}
-    getIPFSEnabled () {}
   }
 
   /**
@@ -43,10 +40,6 @@ cr.define('settings', function () {
 
     setHangoutsEnabled (value) {
       chrome.send('setHangoutsEnabled', [value])
-    }
-
-    setIPFSCompanionEnabled (value) {
-      chrome.send('setIPFSCompanionEnabled', [value])
     }
 
     setMediaRouterEnabled (value) {
@@ -86,27 +79,6 @@ cr.define('settings', function () {
       return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
     }
 
-    /** @override */
-    getIPFSResolveMethodList () {
-      return new Promise(resolve => {
-        if (!chrome.ipfs) {
-          resolve(false)
-          return
-        }
-        chrome.ipfs.getResolveMethodList(resolve)
-      })
-    }
-
-    /** @override */
-    getIPFSEnabled () {
-      return new Promise(resolve => {
-        if (!chrome.ipfs) {
-          resolve(false)
-          return
-        }
-        chrome.ipfs.getIPFSEnabled(resolve)
-      })
-    }
   }
 
   cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl)
