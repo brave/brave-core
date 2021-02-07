@@ -10,18 +10,19 @@ import static org.junit.Assert.assertNotEquals;
 
 import android.support.test.filters.SmallTest;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.util.browser.Features;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.runner.RunWith;
-import org.junit.Test;
-
 // Currently safety check setion is not used in Brave.
-// Main purpose of these tests id to detect that something new, that we may consider valuable, is appeared in this section .
+// Main purpose of these tests id to detect that something new, that we may consider valuable, is
+// appeared in this section .
 @RunWith(ChromeJUnit4ClassRunner.class)
 @Features.EnableFeatures(ChromeFeatureList.SAFETY_CHECK_ANDROID)
 public class BraveSafetyCheckSettingsFragmentTest {
@@ -45,7 +46,7 @@ public class BraveSafetyCheckSettingsFragmentTest {
     @Test
     @SmallTest
     public void testNumberOfItemsNotChanged() {
-        assertEquals(NUMBER_OF_ITEMS, mFragment.getPreferenceScreen().getPreferenceCount());        
+        assertEquals(NUMBER_OF_ITEMS, mFragment.getPreferenceScreen().getPreferenceCount());
     }
 
     @Test

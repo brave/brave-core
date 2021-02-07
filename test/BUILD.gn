@@ -878,10 +878,10 @@ if (is_android) {
     }
 
     sources = [
-      "//brave/android/javatests/org/chromium/chrome/browser/safety_check/BraveSafetyCheckSettingsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BravePrivateTabTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/safety_check/BraveSafetyCheckSettingsFragmentTest.java",
     ]
 
     deps = [
