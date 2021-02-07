@@ -312,7 +312,7 @@
     "@types/parse-torrent": "^5.8.3",
     "@types/webtorrent": "^0.109.0",
     "array-move": "^2.2.1",
-    "bignumber.js": "^7.2.1",
+    "bignumber.js": "^9.0.0",
     "bluebird": "^3.5.1",
     "clipboard-copy": "^2.0.0",
     "date-fns": "^2.15.0",
