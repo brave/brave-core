@@ -217,6 +217,13 @@ TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSGateway) {
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://example.com/");
   EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()),
             GURL("https://example.com/"));
+  prefs()->SetString(kIPFSPublicGatewayAddress, "https://127.0.0.1:8888/");
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()),
+            GURL("https://localhost:8888/"));
+  prefs()->SetString(kIPFSPublicGatewayAddress, "https://127.0.0.1/");
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()), GURL("https://localhost/"));
+  prefs()->SetString(kIPFSPublicGatewayAddress, "https://localhost/");
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()), GURL("https://localhost/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {

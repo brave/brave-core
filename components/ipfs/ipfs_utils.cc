@@ -183,7 +183,13 @@ GURL GetDefaultIPFSGateway(content::BrowserContext* context) {
 
   DCHECK(context);
   PrefService* prefs = user_prefs::UserPrefs::Get(context);
-  return GURL(prefs->GetString(kIPFSPublicGatewayAddress));
+  GURL gateway_url(prefs->GetString(kIPFSPublicGatewayAddress));
+  if (gateway_url.DomainIs(kLocalhostIP)) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(kLocalhostDomain);
+    return gateway_url.ReplaceComponents(replacements);
+  }
+  return gateway_url;
 }
 
 GURL GetAPIServer(version_info::Channel channel) {

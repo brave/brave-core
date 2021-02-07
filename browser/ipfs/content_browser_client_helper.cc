@@ -75,6 +75,10 @@ bool HandleIPFSURLReverseRewrite(
   if (ipfs_pos == std::string::npos && ipns_pos == std::string::npos)
     return false;
 
+  GURL configured_gateway =
+      GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
+  if (configured_gateway.port() != url->port())
+    return false;
   GURL::Replacements scheme_replacements;
   GURL::Replacements host_replacements;
   if (ipfs_pos != std::string::npos) {
