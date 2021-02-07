@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/ui/webui/webui_utils.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"

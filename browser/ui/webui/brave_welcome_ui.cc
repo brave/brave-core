@@ -11,8 +11,8 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
-#include "brave/browser/ui/webui/webui_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"

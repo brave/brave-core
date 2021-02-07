@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/ui/webui/webui_utils.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"

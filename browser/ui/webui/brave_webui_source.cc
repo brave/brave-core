@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
-// clang-format off
-
 #include <map>
 #include <vector>
 
@@ -15,11 +13,14 @@
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/resources/grit/webui_resources_map.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
@@ -50,8 +51,6 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
   }
 }
 
-}  // namespace
-
 void CustomizeWebUIHTMLSource(const std::string &name,
     content::WebUIDataSource* source) {
 #if !defined(OS_ANDROID)
@@ -59,6 +58,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     NavigationBarDataProvider::Initialize(source);
   }
 #endif
+
+  // clang-format off
   static std::map<std::string, std::vector<WebUISimpleItem> > resources = {
     {
       std::string("newtab"), {
@@ -1074,3 +1075,52 @@ void CustomizeWebUIHTMLSource(const std::string &name,
   // clang-format on
   AddLocalizedStringsBulk(source, localized_strings[name]);
 }  // NOLINT(readability/fn_size)
+
+content::WebUIDataSource* CreateWebUIDataSource(
+    const std::string& name,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
+    int html_resource_id,
+    bool disable_trusted_types_csp) {
+  content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
+  // Some parts of Brave's UI pages are not yet migrated to work without doing
+  // assignments of strings directly into |innerHTML| elements (i.e. see usage
+  // of |dangerouslySetInnerHTML| in .tsx files). This will break Brave due to
+  // committing a Trusted Types related violation now that Trusted Types are
+  // enforced on WebUI pages (see crrev.com/c/2234238 and crrev.com/c/2353547).
+  // We should migrate those pages not to require using |innerHTML|, but for now
+  // we just restore pre-Cromium 87 behaviour for pages that are not ready yet.
+  if (disable_trusted_types_csp) {
+    source->DisableTrustedTypesCSP();
+  } else {
+    // Allow a policy to be created so that we
+    // can allow trusted HTML and trusted lazy-load script sources.
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::TrustedTypes, "default");
+  }
+
+  source->UseStringsJs();
+  source->SetDefaultResource(html_resource_id);
+  // Add generated resource paths
+  for (size_t i = 0; i < resource_map_size; ++i) {
+    source->AddResourcePath(resource_map[i].name, resource_map[i].value);
+  }
+  CustomizeWebUIHTMLSource(name, source);
+  return source;
+}
+
+}  // namespace
+
+content::WebUIDataSource* CreateAndAddWebUIDataSource(
+    content::WebUI* web_ui,
+    const std::string& name,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
+    int html_resource_id,
+    bool disable_trusted_types_csp) {
+  content::WebUIDataSource* data_source =
+      CreateWebUIDataSource(name, resource_map, resource_map_size,
+                            html_resource_id, disable_trusted_types_csp);
+  content::WebUIDataSource::Add(Profile::FromWebUI(web_ui), data_source);
+  return data_source;
+}

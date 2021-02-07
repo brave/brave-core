@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/ui/webui/webui_utils.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/tor/resources/grit/tor_internals_generated_map.h"
 #include "brave/components/tor/resources/grit/tor_resources.h"
 #include "brave/components/tor/tor_launcher_factory.h"

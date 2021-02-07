@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/ui/webui/webui_utils.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ui/webui/webui_utils.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/repo_stats.h"
