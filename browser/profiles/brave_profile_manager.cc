@@ -15,7 +15,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
