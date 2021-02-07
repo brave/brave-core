@@ -5,6 +5,7 @@ include_rules = [
   "+content/public/browser",
   "+services/network/public",
   "+ui/base",
+  "+ui/gfx",
   "+ui/message_center/public",
 ]
 
