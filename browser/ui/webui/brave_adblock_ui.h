@@ -8,15 +8,14 @@
 
 #include <string>
 
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 
-class BraveAdblockUI : public BasicUI {
+class BraveAdblockUI : public content::WebUIController {
  public:
   BraveAdblockUI(content::WebUI* web_ui, const std::string& host);
   ~BraveAdblockUI() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveAdblockUI);
+  BraveAdblockUI(const BraveAdblockUI&) = delete;
+  BraveAdblockUI& operator=(const BraveAdblockUI&) = delete;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ADBLOCK_UI_H_

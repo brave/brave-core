@@ -34,8 +34,6 @@ source_set("ui") {
   # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
   check_includes = false
   sources = [
-    "webui/basic_ui.cc",
-    "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
     "webui/brave_web_ui_controller_factory.cc",

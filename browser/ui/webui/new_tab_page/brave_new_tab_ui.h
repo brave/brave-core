@@ -8,15 +8,14 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "content/public/browser/web_ui_controller.h"
 
 class BraveNewTabUI : public content::WebUIController {
  public:
   BraveNewTabUI(content::WebUI* web_ui, const std::string& name);
   ~BraveNewTabUI() override;
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveNewTabUI);
+  BraveNewTabUI(const BraveNewTabUI&) = delete;
+  BraveNewTabUI& operator=(const BraveNewTabUI&) = delete;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_UI_H_
