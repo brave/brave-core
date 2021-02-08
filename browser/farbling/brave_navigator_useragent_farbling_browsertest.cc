@@ -22,6 +22,7 @@
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/embedder_support/user_agent_utils.h"
 #include "components/permissions/permission_request.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
@@ -142,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   GURL url_b = embedded_test_server()->GetURL(domain_b, "/simple.html");
   GURL url_z = embedded_test_server()->GetURL(domain_z, "/simple.html");
   // get real navigator.userAgent
-  std::string real_ua = ::GetUserAgent();
+  std::string real_ua = embedder_support::GetUserAgent();
   // Farbling level: off
   AllowFingerprinting(domain_b);
   NavigateToURLUntilLoadStop(url_b);
