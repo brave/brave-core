@@ -57,7 +57,9 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS,
                                          kSafeBrowsingPrefix);
   static URLPattern safebrowsingfilecheck_pattern(URLPattern::SCHEME_HTTPS,
-                                         kSafeBrowsingFileCheckPrefix);
+                                                  kSafeBrowsingFileCheckPrefix);
+  static URLPattern safebrowsingcrxlist_pattern(URLPattern::SCHEME_HTTPS,
+                                                kSafeBrowsingCrxListPrefix);
 
   // To-Do (@jumde) - Update the naming for the variables below
   // https://github.com/brave/brave-browser/issues/10314
@@ -105,8 +107,16 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (safebrowsingfilecheck_pattern.MatchesHost(request_url)) {
-    replacements.SetHostStr(kBraveSafeBrowsingFileCheckProxy);
+  if (!safebrowsing_endpoint.empty() &&
+      safebrowsingfilecheck_pattern.MatchesHost(request_url)) {
+    replacements.SetHostStr(kBraveSafeBrowsingSslProxy);
+    *new_url = request_url.ReplaceComponents(replacements);
+    return net::OK;
+  }
+
+  if (!safebrowsing_endpoint.empty() &&
+      safebrowsingcrxlist_pattern.MatchesHost(request_url)) {
+    replacements.SetHostStr(kBraveSafeBrowsing2Proxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
