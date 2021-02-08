@@ -170,8 +170,8 @@
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
-    *** addBookmarkInternal(...);
-    *** createSnackbarControllerForEditButton(...);
+    *** showBookmarkBottomSheet(...);
+    *** addBookmarkAndShowSnackbar(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {

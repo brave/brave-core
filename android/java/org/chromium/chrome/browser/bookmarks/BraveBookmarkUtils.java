@@ -51,7 +51,6 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             BottomSheetController bottomSheetController, Activity activity, boolean fromCustomTab,
             Callback<BookmarkId> callback) {
         assert bookmarkModel.isBookmarkModelLoaded();
-        Log.e("NTP", "Inside");
         if (existingBookmarkItem != null) {
             if (snackbarManager.isShowing()) {
                 snackbarManager.dismissAllSnackbars();
@@ -77,26 +76,6 @@ public class BraveBookmarkUtils extends BookmarkUtils {
         BookmarkId newBookmarkId = addBookmarkAndShowSnackbar(
                 bookmarkModel, tab, snackbarManager, activity, fromCustomTab);
         callback.onResult(newBookmarkId);
-    }
-
-    /**
-     * An internal version of {@link #addBookmarkSilently(Context, BookmarkModel, String, String)}.
-     * Will reset last used parent if it fails to add a bookmark
-     */
-    protected static BookmarkId addBookmarkInternal(
-            Context context, BookmarkModel bookmarkModel, String title, String url) {
-        assert (false);
-        return null;
-    }
-
-    /**
-     * Creates a snackbar controller for a case where "Edit" button is shown to edit the newly
-     * created bookmark.
-     */
-    protected static SnackbarController createSnackbarControllerForEditButton(
-            final Activity activity, final BookmarkId bookmarkId) {
-        assert (false);
-        return null;
     }
 
     protected static void showBookmarkBottomSheet(BookmarkModel bookmarkModel, Tab tab,
