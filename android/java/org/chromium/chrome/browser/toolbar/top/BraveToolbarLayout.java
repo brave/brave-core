@@ -125,8 +125,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
 
-    private boolean shouldShowHttpsUpgradeToolitip;
-
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
 
@@ -250,9 +248,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                                                              .RESOURCE_IDENTIFIER_TRACKERS))) {
                     addStatsToDb(block_type, subresource, currentTab.getUrlString());
                 }
-                if (mBraveShieldsButton != null && mBraveShieldsHandler != null
-                        && !mBraveShieldsHandler.isShowing())
-                    checkForTooltip(currentTab);
             }
 
             @Override
@@ -359,9 +354,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                                 getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
                         OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
                     }
-                    if (shouldShowHttpsUpgradeToolitip) {
-                        showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP);
-                        shouldShowHttpsUpgradeToolitip = false;
+                    if (mBraveShieldsButton != null && mBraveShieldsHandler != null
+                        && !mBraveShieldsHandler.isShowing()) {
+                      checkForTooltip(tab);
                     }
                 }
             }
@@ -431,7 +426,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                                BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP)
                     && mBraveShieldsHandler.getHttpsUpgradeCount(tab.getId()) > 0) {
-                shouldShowHttpsUpgradeToolitip = true;
+                showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP);
                 BraveShieldsUtils.setShieldsTooltipShown(
                         BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP, true);
             }
