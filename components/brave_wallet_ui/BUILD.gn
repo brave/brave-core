@@ -1,16 +1,15 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_wallet_ui") {
-  entry_points = [
-    ["brave_wallet", rebase_path("brave_wallet.tsx")]
-  ]
+  entry_points = [ [
+        "brave_wallet",
+        rebase_path("brave_wallet.tsx"),
+      ] ]
   resource_name = "brave_wallet"
 }
 
 pack_web_resources("generated_resources") {
   resource_name = "brave_wallet"
   output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
-  deps = [
-    ":brave_wallet_ui"
-  ]
+  deps = [ ":brave_wallet_ui" ]
 }

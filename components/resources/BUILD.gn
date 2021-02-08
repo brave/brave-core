@@ -97,12 +97,8 @@ repack("resources") {
   }
 
   if (enable_playlist) {
-    deps += [
-      "//brave/components/playlist/resources:generated_resources",
-    ]
-    sources += [
-      "$root_gen_dir/brave/components/playlist/resources/playlist_generated.pak",
-    ]
+    deps += [ "//brave/components/playlist/resources:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/playlist/resources/playlist_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"

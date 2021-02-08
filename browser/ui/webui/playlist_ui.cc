@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -27,8 +27,7 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
 PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kPlaylistGenerated,
-                              kPlaylistGeneratedSize,
-                              IDR_PLAYLIST_HTML);
+                              kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
 }
 
 PlaylistUI::~PlaylistUI() = default;
