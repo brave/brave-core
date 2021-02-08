@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -38,10 +39,12 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable SectionHeaderView sectionHeaderView, FeedV1ActionOptions actionOptions,
             boolean showDarkBackground, FeedSurfaceDelegate delegate,
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
-            boolean isPlaceholderRequested, BottomSheetController bottomSheetController) {
+            boolean isPlaceholderRequested, BottomSheetController bottomSheetController,
+            Supplier<ShareDelegate> shareDelegateSupplier) {
         super(activity, snackbarManager, tabModelSelector, tabProvider, snapScrollHelper, ntpHeader,
                 sectionHeaderView, actionOptions, showDarkBackground, delegate,
-                pageNavigationDelegate, profile, isPlaceholderRequested, bottomSheetController);
+                pageNavigationDelegate, profile, isPlaceholderRequested, bottomSheetController,
+                shareDelegateSupplier);
     }
 
     @Override
