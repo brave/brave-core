@@ -165,9 +165,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
                 "addOrEditBookmark", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                "addBookmarkInternal", false, null));
+                "showBookmarkBottomSheet", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                "createSnackbarControllerForEditButton", false, null));
+                "addBookmarkAndShowSnackbar", false, null));
     }
 
     @Test
