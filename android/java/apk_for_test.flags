@@ -170,6 +170,6 @@
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
-    *** addBookmarkInternal(...);
-    *** createSnackbarControllerForEditButton(...);
+    *** showBookmarkBottomSheet(...);
+    *** addBookmarkAndShowSnackbar(...);
 }
