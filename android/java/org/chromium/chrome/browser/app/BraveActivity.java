@@ -527,9 +527,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            if (!UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
+            if (getActivityTab() != null && getActivityTab().getUrlString() != null
+                    && !UrlUtilities.isNTPUrl(getActivityTab().getUrlString())) {
                 OnboardingPrefManager.getInstance().setFromNotification(true);
-                getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                if (getTabCreator(false) != null) {
+                    getTabCreator(false).launchUrl(
+                            UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                }
             } else {
                 showOnboardingV2(false);
             }
