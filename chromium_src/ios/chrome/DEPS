@@ -1,0 +1,34 @@
+include_rules = [
+  "+crypto",
+  "+ios/shared/chrome/common",
+  "+ios/third_party",
+  "+net",
+  "+services/network/test",
+  "+services/network/public/cpp",
+  "+ui/base",
+  "+ui/gfx",
+
+  # The subdirectories in ios/chrome/ will manually allow their own include
+  # directories in ios/chrome/ so we disallow all of them.
+  "-ios/chrome",
+  "+ios/chrome/common",
+  "+ios/chrome/test",
+
+  "+ios/web/common",
+  "+ios/web/public",
+
+  # Chrome cannot use any ios/web APIs inside ios/web/public that are
+  # designed only for ios/web_view.
+  "-ios/web/public/web_view_only",
+
+  # Disallow direct uses of libraries that compose MaterialComponents.
+  "+ios/third_party/material_components_ios",
+  "-ios/third_party/material_font_disk_loader_ios",
+  "-ios/third_party/material_internationalization_ios",
+  "-ios/third_party/material_roboto_font_loader_ios",
+  "-ios/third_party/material_sprited_animation_view_ios",
+  "-ios/third_party/material_text_accessibility_ios",
+  "-ios/third_party/motion_animator_objc",
+  "-ios/third_party/motion_interchange_objc",
+  "-ios/third_party/motion_transitioning_objc",
+]

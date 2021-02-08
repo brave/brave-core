@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/app",
+  "+brave/browser",
+  "+brave/common",
+  "+chrome/app",
+  "+chrome/browser",
+  "+chrome/common",
+]

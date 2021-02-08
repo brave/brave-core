@@ -1,0 +1,13 @@
+include_rules = [
+  "+content/public/browser",
+  "+extensions/browser",
+  "+extensions/common",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "greaselion_service_impl.cc": [
+    "+chrome/browser/extensions/extension_service.h",
+    "+brave/browser/version_info.h",
+  ],
+}

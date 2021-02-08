@@ -1,0 +1,16 @@
+include_rules = [
+  "+content/public/browser",
+  "+services/metrics/public",
+  "+third_party/blink/public/mojom",
+  "+ui/base",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "named_third_party_registry_factory.cc": [
+    "+chrome/browser/profiles/profile.h",
+  ],
+  "perf_predictor_tab_helper.cc": [
+    "+brave/browser/android/brave_shields_content_settings.h",
+  ],
+}

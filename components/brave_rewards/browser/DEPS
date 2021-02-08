@@ -1,0 +1,43 @@
+include_rules = [
+  "+bat/ads",
+  "-bat/ads/internal",
+  "+bat/ledger",
+  "-bat/ledger/internal",
+  "+content/public/browser",
+  "+content/public/common",
+  "+extensions/buildflags",
+  "+extensions/common",
+  "+services/network/public",
+  "+ui/base",
+  "+ui/gfx",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "rewards_protocol_handler.h": [
+    "+chrome/browser/external_protocol/external_protocol_handler.h",
+    "+chrome/browser/profiles/profile.h",
+  ],
+  "rewards_service_impl.cc": [
+    "+brave/browser/brave_rewards/rewards_service_factory.h",
+    "+brave/browser/ui/webui/brave_rewards_source.h",
+    "+chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h",
+    "+chrome/browser/browser_process_impl.h",
+    "+chrome/browser/favicon/favicon_service_factory.h",
+    "+chrome/browser/profiles/profile.h",
+    "+chrome/browser/service_sandbox_type.h",
+  ],
+  "rewards_service_impl.h": [
+    "+chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h",
+  ],
+  "rewards_notification_service_impl.cc": [
+    "+chrome/browser/profiles/profile.h",
+  ],
+  "network_delegate_helper.cc": [
+    "+brave/browser/brave_rewards/rewards_service_factory.h",
+    "+chrome/browser/profiles/profile.h",
+  ],
+  "network_delegate_helper.h": [
+    "+brave/browser/net/url_context.h",
+  ],
+}

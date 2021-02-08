@@ -7,10 +7,13 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 

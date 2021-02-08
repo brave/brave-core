@@ -1,0 +1,11 @@
+include_rules = [
+  "+components/os_crypt",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "os_crypt_win.cc": [
+    "+brave/common/brave_switches.h",
+  ],
+}
+

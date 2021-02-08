@@ -5,6 +5,7 @@ script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
 Jenkinsfile @mihaiplesa
+DEPS @bridiver
 
 # Rewards
 browser/brave_rewards/ @brave/rewards

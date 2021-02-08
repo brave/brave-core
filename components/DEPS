@@ -1,0 +1,12 @@
+include_rules = [
+  # Do not add chrome/ or brave/ as an allowed include.
+
+  # TODO(bridiver) - narrow this down
+  "+components",
+  "+net",
+  "+mojo/public",
+
+  # Components that wish to use the content API or IPC must explicitly declare
+  # these dependencies; see /components/README.
+  "-ipc",
+]

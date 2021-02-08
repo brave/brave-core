@@ -157,7 +157,12 @@ source_set("common") {
       "brave_content_client.h",
     ]
 
-    deps += [ "//content/public/common" ]
+    deps += [
+      "//brave/components/resources",
+      "//components/resources",
+      "//content/public/common",
+      "//third_party/widevine/cdm:buildflags",
+    ]
   }
 }
 
