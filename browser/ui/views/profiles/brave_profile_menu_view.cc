@@ -25,10 +25,10 @@
 void BraveProfileMenuView::BuildIdentity() {
   ProfileMenuView::BuildIdentity();
   Profile* profile = browser()->profile();
-  ProfileAttributesEntry* profile_attributes;
-  g_browser_process->profile_manager()
-      ->GetProfileAttributesStorage()
-      .GetProfileAttributesWithPath(profile->GetPath(), &profile_attributes);
+  ProfileAttributesEntry* profile_attributes =
+      g_browser_process->profile_manager()
+          ->GetProfileAttributesStorage()
+          .GetProfileAttributesWithPath(profile->GetPath());
   // Reset IdentityInfo to get rid of the subtitle string
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
   SetProfileIdentityInfo(
