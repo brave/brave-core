@@ -10,6 +10,7 @@
 
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/profile_sync_service_delegate.h"
@@ -20,6 +21,8 @@ namespace {
 // see |BackoffDelayProvider|.
 // 7 attemps gives near 2 minutes before fire re-enable operation
 size_t kNumberOfFailedCommitsToReenable = 7;
+// Allow re-enable types not often than once in 30 minutes
+base::TimeDelta kMinimalTimeBetweenReenable = base::TimeDelta::FromMinutes(30);
 }  // namespace
 
 namespace syncer {
@@ -126,6 +129,7 @@ void BraveProfileSyncService::OnSyncCycleCompleted(
 
 void BraveProfileSyncService::ReenableSyncTypes() {
   // TODO(alexeybarabash): P3A
+  last_reenable_types_time_ = base::Time::Now();
   SyncUserSettings* sync_user_settings = GetUserSettings();
   const UserSelectableTypeSet selected_types =
       sync_user_settings->GetSelectedTypes();
@@ -139,6 +143,13 @@ void BraveProfileSyncService::ReenableSyncTypes() {
 
 bool BraveProfileSyncService::IsReenableTypesRequired(
     const SyncCycleSnapshot& snapshot) {
+  if (!last_reenable_types_time_.is_null() &&
+      base::Time::Now() - last_reenable_types_time_ <
+          kMinimalTimeBetweenReenable) {
+    // Can't do reenable more often than once in a specified amount
+    return false;
+  }
+
   SyncerError last_commit_result = snapshot.model_neutral_state().commit_result;
   if (last_commit_result.value() ==
           syncer::SyncerError::SERVER_RETURN_TRANSIENT_ERROR ||
@@ -155,6 +166,11 @@ bool BraveProfileSyncService::IsReenableTypesRequired(
 /*static*/
 size_t BraveProfileSyncService::GetNumberOfFailedCommitsToReenableForTests() {
   return kNumberOfFailedCommitsToReenable;
+}
+
+/*static*/
+base::TimeDelta BraveProfileSyncService::MinimalTimeBetweenReenableForTests() {
+  return kMinimalTimeBetweenReenable;
 }
 
 }  // namespace syncer

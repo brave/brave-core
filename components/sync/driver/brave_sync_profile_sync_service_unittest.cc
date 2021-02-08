@@ -227,9 +227,34 @@ SyncCycleSnapshot MakeDefaultCycleSnapshot(const SyncerError& commit_result) {
       /*has_remaining_local_changes=*/false);
 }
 
+base::TimeDelta g_overridden_time_delta;
+base::Time g_overridden_now;
+
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForTimeDelta(
+    base::TimeDelta overridden_time_delta,
+    const base::Time& now = base::subtle::TimeNowIgnoringOverride()) {
+  g_overridden_time_delta = overridden_time_delta;
+  g_overridden_now = now;
+  return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
+      []() { return g_overridden_now + g_overridden_time_delta; }, nullptr,
+      nullptr);
+}
+
+base::TimeDelta g_minimal_time_between_reenable;
+
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides>
+AdvanceTimeToAllowReenable() {
+  DCHECK(!g_minimal_time_between_reenable.is_zero());
+  static base::TimeDelta override_total_delta;
+  override_total_delta += g_minimal_time_between_reenable;
+  return OverrideForTimeDelta(override_total_delta);
+}
+
 }  // namespace
 
 TEST_F(BraveProfileSyncServiceTest, ReenableTypes) {
+  g_minimal_time_between_reenable =
+      BraveProfileSyncService::MinimalTimeBetweenReenableForTests();
   CreateSyncService(ProfileSyncService::MANUAL_START);
   brave_sync_service()->Initialize();
 
@@ -244,17 +269,24 @@ TEST_F(BraveProfileSyncServiceTest, ReenableTypes) {
                                     SyncerError::SERVER_RETURN_TRANSIENT_ERROR,
                                     SyncerError::UNSET};
 
+  std::unique_ptr<base::subtle::ScopedTimeClockOverrides> time_override;
+
   for (const auto& err : err_codes) {
-    // Cleanup failures counter
-    brave_sync_service()->OnSyncCycleCompleted(snapshot_unset);
+    {
+      auto time_override = AdvanceTimeToAllowReenable();
+      // Cleanup failures counter
+      brave_sync_service()->OnSyncCycleCompleted(snapshot_unset);
+    }
 
     SyncCycleSnapshot snapshot_maybe_error(
         MakeDefaultCycleSnapshot(SyncerError(err)));
 
     for (size_t i = 0;
          i <
-         brave_sync_service()->GetNumberOfFailedCommitsToReenableForTests() - 1;
+         BraveProfileSyncService::GetNumberOfFailedCommitsToReenableForTests() -
+             1;
          ++i) {
+      auto time_override = AdvanceTimeToAllowReenable();
       brave_sync_service()->OnSyncCycleCompleted(snapshot_maybe_error);
     }
 
@@ -262,8 +294,57 @@ TEST_F(BraveProfileSyncServiceTest, ReenableTypes) {
     EXPECT_CALL(mock_sync_pref_observer, OnPreferredDataTypesPrefChange())
         .Times((err == SyncerError::UNSET) ? 0 : 2);
 
+    auto time_override = AdvanceTimeToAllowReenable();
     brave_sync_service()->OnSyncCycleCompleted(snapshot_maybe_error);
   }
+
+  brave_sync_service()->sync_prefs_.RemoveSyncPrefObserver(
+      &mock_sync_pref_observer);
+}
+
+TEST_F(BraveProfileSyncServiceTest, ReenableTypesMaxPeriod) {
+  CreateSyncService(ProfileSyncService::MANUAL_START);
+  brave_sync_service()->Initialize();
+
+  testing::StrictMock<MockSyncPrefObserver> mock_sync_pref_observer;
+  brave_sync_service()->sync_prefs_.AddSyncPrefObserver(
+      &mock_sync_pref_observer);
+
+  SyncCycleSnapshot snapshot_unset(
+      MakeDefaultCycleSnapshot(SyncerError(SyncerError::UNSET)));
+  SyncCycleSnapshot snapshot_error(MakeDefaultCycleSnapshot(
+      SyncerError(SyncerError::SERVER_RETURN_CONFLICT)));
+
+  for (size_t i = 0;
+       i <
+       BraveProfileSyncService::GetNumberOfFailedCommitsToReenableForTests() -
+           1;
+       ++i) {
+    brave_sync_service()->OnSyncCycleCompleted(snapshot_error);
+  }
+
+  // Expect re-enables types happened
+  EXPECT_CALL(mock_sync_pref_observer, OnPreferredDataTypesPrefChange())
+      .Times(2);
+  brave_sync_service()->OnSyncCycleCompleted(snapshot_error);
+
+  // Doing the same, expecting re-enable will not happened because the allowed
+  // period not yet passed
+
+  // Cleanup failures counter
+  brave_sync_service()->OnSyncCycleCompleted(snapshot_unset);
+  for (size_t i = 0;
+       i <
+       BraveProfileSyncService::GetNumberOfFailedCommitsToReenableForTests() -
+           1;
+       ++i) {
+    brave_sync_service()->OnSyncCycleCompleted(snapshot_error);
+  }
+
+  // Expect re-enables types not happened
+  EXPECT_CALL(mock_sync_pref_observer, OnPreferredDataTypesPrefChange())
+      .Times(0);
+  brave_sync_service()->OnSyncCycleCompleted(snapshot_error);
 
   brave_sync_service()->sync_prefs_.RemoveSyncPrefObserver(
       &mock_sync_pref_observer);

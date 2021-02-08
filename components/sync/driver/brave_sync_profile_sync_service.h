@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/profile_sync_service.h"
@@ -17,6 +18,7 @@
 class Profile;
 
 FORWARD_DECLARE_TEST(BraveProfileSyncServiceTest, ReenableTypes);
+FORWARD_DECLARE_TEST(BraveProfileSyncServiceTest, ReenableTypesMaxPeriod);
 
 namespace syncer {
 
@@ -50,6 +52,8 @@ class BraveProfileSyncService : public ProfileSyncService {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveProfileSyncServiceTest, ReenableTypes);
+  FRIEND_TEST_ALL_PREFIXES(BraveProfileSyncServiceTest, ReenableTypesMaxPeriod);
+
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
@@ -60,7 +64,9 @@ class BraveProfileSyncService : public ProfileSyncService {
   void ReenableSyncTypes();
   bool IsReenableTypesRequired(const SyncCycleSnapshot& snapshot);
   size_t failed_commit_times_ = 0;
+  base::Time last_reenable_types_time_;
   static size_t GetNumberOfFailedCommitsToReenableForTests();
+  static base::TimeDelta MinimalTimeBetweenReenableForTests();
 
   brave_sync::Prefs brave_sync_prefs_;
 

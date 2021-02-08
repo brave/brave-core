@@ -7,10 +7,13 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
 
 FORWARD_DECLARE_TEST(BraveProfileSyncServiceTest, ReenableTypes);
+FORWARD_DECLARE_TEST(BraveProfileSyncServiceTest, ReenableTypesMaxPeriod);
 
 #define BRAVE_PROFILE_SYNC_SERVICE_H_                                   \
  private:                                                               \
   FRIEND_TEST_ALL_PREFIXES(BraveProfileSyncServiceTest, ReenableTypes); \
+  FRIEND_TEST_ALL_PREFIXES(BraveProfileSyncServiceTest,                 \
+                           ReenableTypesMaxPeriod);                     \
   friend class BraveProfileSyncService;
 
 // Forcing this include before define virtual to avoid error of
