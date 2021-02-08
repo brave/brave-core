@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/files/file_util.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -82,8 +83,8 @@ std::string BraveWalletService::GetBitGoSeedFromRootSeed(
     const std::string& seed) {
   base::StringPiece salt("brave-bitgo-salt");
   base::StringPiece info("bitgo");
-  return crypto::HkdfSha256(base::StringPiece(seed.begin(), seed.end()), salt,
-                            info, kSeedByteLength);
+  return crypto::HkdfSha256(base::MakeStringPiece(seed.begin(), seed.end()),
+                            salt, info, kSeedByteLength);
 }
 
 // Returns 32 bytes of output from HKDF-SHA256.
@@ -97,8 +98,8 @@ std::string BraveWalletService::GetEthereumRemoteClientSeedFromRootSeed(
     const std::string& seed) {
   base::StringPiece salt("brave-ethwallet-salt");
   base::StringPiece info("ethwallet");
-  return crypto::HkdfSha256(base::StringPiece(seed.begin(), seed.end()), salt,
-                            info, kSeedByteLength);
+  return crypto::HkdfSha256(base::MakeStringPiece(seed.begin(), seed.end()),
+                            salt, info, kSeedByteLength);
 }
 
 // static
@@ -155,7 +156,7 @@ bool BraveWalletService::SealSeed(const std::string& seed,
                                   std::string* cipher_seed) {
   crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
   aes_256_gcm_siv.Init(&key);
-  return aes_256_gcm_siv.Seal(base::StringPiece(seed.begin(), seed.end()),
+  return aes_256_gcm_siv.Seal(base::MakeStringPiece(seed.begin(), seed.end()),
                               nonce, base::StringPiece(""), cipher_seed);
 }
 
@@ -170,8 +171,9 @@ void BraveWalletService::SaveToPrefs(PrefService* prefs,
   std::string base64_nonce;
   std::string base64_cipher_seed;
   base::Base64Encode(nonce, &base64_nonce);
-  base::Base64Encode(base::StringPiece(cipher_seed.begin(), cipher_seed.end()),
-                     &base64_cipher_seed);
+  base::Base64Encode(
+      base::MakeStringPiece(cipher_seed.begin(), cipher_seed.end()),
+      &base64_cipher_seed);
   prefs->SetString(kBraveWalletAES256GCMSivNonce, base64_nonce);
   prefs->SetString(kBraveWalletEncryptedSeed, base64_cipher_seed);
 }
