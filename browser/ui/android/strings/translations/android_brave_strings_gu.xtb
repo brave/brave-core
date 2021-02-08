@@ -60,7 +60,6 @@
 <translation id="4930714375720679147">ચાલુ કરો</translation>
 <translation id="2453860139492968684">સમાપ્ત</translation>
 <translation id="3570367516044491911">ડિફૉલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
-<translation id="7493053924837150477">સૂચિમાંથી Brave બ્રાઉઝર પસંદ કરો અને 'હંમેશાં' ને ટૅપ કરો</translation>
 <translation id="3546439402724649282">Brave પહેલીથી તમારું ડિફૉલ્ટ બ્રાઉઝર છે.</translation>
 <translation id="8389661903259423907">તમે પહેલેથી જ ડિફૉલ્ટ બ્રાઉઝર સેટ કર્યું છે. તમે તમારી એપ્લિકેશન સેટિંગ્સમાં જઈને ડિફૉલ્ટ બ્રાઉઝર બદલી શકો છો.</translation>
 <translation id="7091885296442320770">Brave વીજળીની જેમ ઝડપી છે</translation>
@@ -195,6 +194,8 @@
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
 <translation id="4394049700291259645">બંધ કરો</translation>
 <translation id="8446884382197647889">વધુ જાણો</translation>
+<translation id="7173114856073700355">સેટિંગ ખોલો</translation>
+<translation id="6965382102122355670">બરાબર, સમજાઇ ગયું</translation>
 <translation id="6336451774241870485">નવું ખાનગી ટૅબ</translation>
 <translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
 <translation id="3368922792935385530">કનેક્ટેડ</translation>
@@ -208,4 +209,5 @@
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
 <translation id="8688672835843460752">ઉપલબ્ધ</translation>
 <translation id="1078265935778232285">Brave Browser માં સ્વાગત છે</translation>
+<translation id="3479552764303398839">હમણાં નહીં</translation>
 </translationbundle>
