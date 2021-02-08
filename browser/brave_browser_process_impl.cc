@@ -30,9 +30,9 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/buildflags.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -41,6 +41,7 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/child_process_security_policy.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -70,6 +71,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -145,7 +147,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-
+#if BUILDFLAG(IPFS_ENABLED)
+  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
+      ipfs::kIPFSScheme);
+  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
+      ipfs::kIPNSScheme);
+#endif
   brave_component_updater::BraveOnDemandUpdater::GetInstance()->
       RegisterOnDemandUpdateCallback(
           base::BindRepeating(&component_updater::BraveOnDemandUpdate));
