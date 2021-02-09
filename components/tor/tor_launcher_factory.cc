@@ -55,7 +55,7 @@ TorLauncherFactory::TorLauncherFactory()
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      control_(tor::TorControl::Create(this)),
+      control_(new tor::TorControl(this)),
       weak_ptr_factory_(this) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 }

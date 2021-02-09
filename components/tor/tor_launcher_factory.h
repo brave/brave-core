@@ -96,7 +96,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
-  std::unique_ptr<tor::TorControl> control_;
+  scoped_refptr<tor::TorControl> control_;
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 

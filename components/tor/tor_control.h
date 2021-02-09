@@ -17,6 +17,7 @@
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
+#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "base/process/process.h"
@@ -35,7 +36,7 @@ class TCPClientSocket;
 
 namespace tor {
 
-class TorControl {
+class TorControl : public base::RefCountedThreadSafe<TorControl> {
  public:
   using PerLineCallback =
       base::RepeatingCallback<void(const std::string& status,
@@ -66,9 +67,6 @@ class TorControl {
   };
 
   explicit TorControl(TorControl::Delegate* delegate);
-  virtual ~TorControl();
-
-  static std::unique_ptr<TorControl> Create(Delegate* delegate);
 
   // This has to called before Start(), it will check if orphaned tor process
   // exists and reap it.
@@ -113,6 +111,9 @@ class TorControl {
                           size_t* end);
 
  private:
+  friend class base::RefCountedThreadSafe<TorControl>;
+  virtual ~TorControl();
+
   bool running_;
   SEQUENCE_CHECKER(sequence_checker_);
 

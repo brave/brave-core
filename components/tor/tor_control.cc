@@ -99,11 +99,6 @@ static std::string escapify(const char* buf, int len) {
 
 }  // namespace
 
-// static
-std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
-  return std::make_unique<TorControl>(delegate);
-}
-
 TorControl::TorControl(TorControl::Delegate* delegate)
     : running_(false),
       watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
@@ -126,9 +121,8 @@ void TorControl::PreStartCheck(const base::FilePath& watchDirPath,
                                base::OnceClosure check_complete) {
   watch_dir_path_ = std::move(watchDirPath);
   watch_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::CheckingOldTorProcess, base::Unretained(this),
-                     std::move(check_complete)));
+      FROM_HERE, base::BindOnce(&TorControl::CheckingOldTorProcess, this,
+                                std::move(check_complete)));
 }
 
 // Start()
@@ -143,8 +137,7 @@ void TorControl::Start() {
 
   running_ = true;
   watch_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::StartWatching, base::Unretained(this)));
+      FROM_HERE, base::BindOnce(&TorControl::StartWatching, this));
 }
 
 void TorControl::StartWatching() {
@@ -154,10 +147,9 @@ void TorControl::StartWatching() {
   // Create a watcher and start watching.
   watcher_ = std::make_unique<base::FilePathWatcher>();
 
-  if (!watcher_->Watch(watch_dir_path_,
-                       base::FilePathWatcher::Type::kNonRecursive,
-                       base::BindRepeating(&TorControl::WatchDirChanged,
-                                           base::Unretained(this)))) {
+  if (!watcher_->Watch(
+          watch_dir_path_, base::FilePathWatcher::Type::kNonRecursive,
+          base::BindRepeating(&TorControl::WatchDirChanged, this))) {
     // Never mind -- destroy the watcher and stop everything else.
     VLOG(0) << "tor: failed to watch directory";
     watcher_.reset();
@@ -180,11 +172,10 @@ void TorControl::Stop() {
 
   running_ = false;
   async_events_.clear();
-  watch_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::StopWatching, base::Unretained(this)));
-  io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::Error, base::Unretained(this)));
+  watch_task_runner_->PostTask(FROM_HERE,
+                               base::BindOnce(&TorControl::StopWatching, this));
+  io_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(&TorControl::Error, this));
 }
 
 void TorControl::StopWatching() {
@@ -258,9 +249,9 @@ void TorControl::Poll() {
   }
 
   // Blocking shenanigans all done; move back to the regular sequence.
-  io_task_runner_->PostTask(FROM_HERE, base::BindOnce(&TorControl::OpenControl,
-                                                      base::Unretained(this),
-                                                      port, std::move(cookie)));
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TorControl::OpenControl, this, port, std::move(cookie)));
 }
 
 // EatControlCookie(cookie, mtime)
@@ -426,8 +417,8 @@ void TorControl::PollDone() {
   if (repoll_) {
     VLOG(2) << "tor: retrying control connection";
     repoll_ = false;
-    watch_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&TorControl::Poll, base::Unretained(this)));
+    watch_task_runner_->PostTask(FROM_HERE,
+                                 base::BindOnce(&TorControl::Poll, this));
   } else {
     VLOG(2) << "tor: control connection not yet ready";
     polling_ = false;
@@ -450,8 +441,8 @@ void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
       net::IPAddress::IPv4Localhost(), portno);
   socket_ = std::make_unique<net::TCPClientSocket>(
       addrlist, nullptr, nullptr, net::NetLog::Get(), net::NetLogSource());
-  int rv = socket_->Connect(base::BindOnce(
-      &TorControl::Connected, base::Unretained(this), std::move(cookie)));
+  int rv = socket_->Connect(
+      base::BindOnce(&TorControl::Connected, this, std::move(cookie)));
   if (rv == net::ERR_IO_PENDING)
     return;
   Connected(std::move(cookie), rv);
@@ -471,14 +462,13 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
     // activity while we were waiting.  If so, try again; if not, go
     // back to watching and waiting.
     VLOG(1) << "tor: control connection failed: " << net::ErrorToString(rv);
-    watch_task_runner_->PostTask(
-        FROM_HERE,
-        base::BindOnce(&TorControl::PollDone, base::Unretained(this)));
+    watch_task_runner_->PostTask(FROM_HERE,
+                                 base::BindOnce(&TorControl::PollDone, this));
     return;
   }
 
   Cmd1("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-       base::BindOnce(&TorControl::Authenticated, base::Unretained(this)));
+       base::BindOnce(&TorControl::Authenticated, this));
 }
 
 // Authenticated(error, status, reply)
@@ -518,9 +508,8 @@ void TorControl::Authenticated(bool error,
 void TorControl::Subscribe(TorControlEvent event,
                            base::OnceCallback<void(bool error)> callback) {
   io_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::DoSubscribe, base::Unretained(this), event,
-                     std::move(callback)));
+      FROM_HERE, base::BindOnce(&TorControl::DoSubscribe, this, event,
+                                std::move(callback)));
 }
 
 void TorControl::DoSubscribe(TorControlEvent event,
@@ -533,9 +522,8 @@ void TorControl::DoSubscribe(TorControlEvent event,
   }
 
   async_events_[event] = 1;
-  Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControl::Subscribed, base::Unretained(this), event,
-                      std::move(callback)));
+  Cmd1(SetEventsCmd(), base::BindOnce(&TorControl::Subscribed, this, event,
+                                      std::move(callback)));
 }
 
 void TorControl::Subscribed(TorControlEvent event,
@@ -568,9 +556,8 @@ void TorControl::Subscribed(TorControlEvent event,
 void TorControl::Unsubscribe(TorControlEvent event,
                              base::OnceCallback<void(bool error)> callback) {
   io_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::DoUnsubscribe, base::Unretained(this), event,
-                     std::move(callback)));
+      FROM_HERE, base::BindOnce(&TorControl::DoUnsubscribe, this, event,
+                                std::move(callback)));
 }
 
 void TorControl::DoUnsubscribe(TorControlEvent event,
@@ -586,9 +573,8 @@ void TorControl::DoUnsubscribe(TorControlEvent event,
 
   DCHECK_EQ(async_events_[event], 0u);
   async_events_.erase(event);
-  Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControl::Unsubscribed, base::Unretained(this), event,
-                      std::move(callback)));
+  Cmd1(SetEventsCmd(), base::BindOnce(&TorControl::Unsubscribed, this, event,
+                                      std::move(callback)));
 }
 
 void TorControl::Unsubscribed(TorControlEvent event,
@@ -646,7 +632,7 @@ void TorControl::Cmd(const std::string& cmd,
                      PerLineCallback perline,
                      CmdCallback callback) {
   io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::DoCmd, base::Unretained(this), cmd,
+      FROM_HERE, base::BindOnce(&TorControl::DoCmd, this, cmd,
                                 std::move(perline), std::move(callback)));
 }
 
@@ -685,10 +671,9 @@ void TorControl::GetVersion(
   std::unique_ptr<std::string> version = std::make_unique<std::string>();
   std::string* versionp = version.get();
   Cmd(kGetVersionCmd,
-      base::BindRepeating(&TorControl::GetVersionLine, base::Unretained(this),
-                          versionp),
-      base::BindOnce(&TorControl::GetVersionDone, base::Unretained(this),
-                     std::move(version), std::move(callback)));
+      base::BindRepeating(&TorControl::GetVersionLine, this, versionp),
+      base::BindOnce(&TorControl::GetVersionDone, this, std::move(version),
+                     std::move(callback)));
 }
 
 void TorControl::GetVersionLine(std::string* version,
@@ -726,9 +711,9 @@ void TorControl::GetSOCKSListeners(
       std::make_unique<std::vector<std::string>>();
   std::vector<std::string>* listeners_p = listeners.get();
   Cmd(kGetSOCKSListenersCmd,
-      base::BindRepeating(&TorControl::GetSOCKSListenersLine,
-                          base::Unretained(this), listeners_p),
-      base::BindOnce(&TorControl::GetSOCKSListenersDone, base::Unretained(this),
+      base::BindRepeating(&TorControl::GetSOCKSListenersLine, this,
+                          listeners_p),
+      base::BindOnce(&TorControl::GetSOCKSListenersDone, this,
                      std::move(listeners), std::move(callback)));
 }
 
@@ -792,11 +777,10 @@ void TorControl::DoWrites() {
   DCHECK(writing_);
   DCHECK(writeiobuf_);
   int rv;
-  while (
-      (rv = socket_->Write(
-           writeiobuf_.get(), writeiobuf_->size(),
-           base::BindOnce(&TorControl::WriteDoneAsync, base::Unretained(this)),
-           tor_control_traffic_annotation)) != net::ERR_IO_PENDING) {
+  while ((rv = socket_->Write(writeiobuf_.get(), writeiobuf_->size(),
+                              base::BindOnce(&TorControl::WriteDoneAsync, this),
+                              tor_control_traffic_annotation)) !=
+         net::ERR_IO_PENDING) {
     WriteDone(rv);
     if (!writing_)
       break;
@@ -891,8 +875,7 @@ void TorControl::DoReads() {
   DCHECK(readiobuf_->RemainingCapacity());
   while ((rv = socket_->Read(readiobuf_.get(), readiobuf_->RemainingCapacity(),
                              base::BindOnce(&TorControl::ReadDoneAsync,
-                                            base::Unretained(this)))) !=
-         net::ERR_IO_PENDING) {
+                                            this))) != net::ERR_IO_PENDING) {
     ReadDone(rv);
     if (!reading_)
       break;
@@ -1225,8 +1208,8 @@ void TorControl::Error() {
   //
   // XXX Rate limit in case of flapping?
   if (running_) {
-    watch_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&TorControl::Poll, base::Unretained(this)));
+    watch_task_runner_->PostTask(FROM_HERE,
+                                 base::BindOnce(&TorControl::Poll, this));
   }
 }
 
