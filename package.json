@@ -300,7 +300,7 @@
     "tslint-config-standard": "7.1.0",
     "tslint-react": "3.6.0",
     "typesafe-actions": "2.2.0",
-    "typescript": "3.9.7",
+    "typescript": "3.9.8",
     "typescript-plugin-styled-components": "1.4.4",
     "url-loader": "0.6.2",
     "webpack": "4.46.0",
