@@ -1,0 +1,42 @@
+<link rel="import" href="chrome://resources/html/cr.html">
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/cr_elements/cr_link_row/cr_link_row.html">
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="brave_wallet_browser_proxy.html">
+<link rel="import" href="../settings_page/settings_section.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+
+<dom-module id="settings-brave-wallet-page">
+  <template>
+  <style include="settings-shared md-select iron-flex">
+      .settings-row:not(:first-child) {
+        border-top: var(--cr-separator-line);
+      }
+      .flex {
+        align-self: center;
+        flex: 1 1 auto;
+      }
+
+      .flex-container {
+        display: flex;
+        padding: 8px 1em;
+      }
+  </style>
+  <div class="settings-box first">
+    <div class="start">$i18n{braveWeb3ProviderDesc}</div>
+      <settings-dropdown-menu id="braveWeb3ProvidersType"
+                              pref="{{prefs.brave.wallet.web3_provider}}"
+                              menu-options="[[braveWeb3Providers_]]">
+      </settings-dropdown-menu>
+    </div>
+    <settings-toggle-button id="braveWalletEnabled"
+        class="cr-row"
+        pref="{{prefs.brave.wallet.load_on_startup}}"
+        label="$i18n{loadCryptoWalletsOnStartupDesc}">
+    </settings-toggle-button>
+  </template>
+  <script src="brave_wallet_page.js"></script>
+</dom-module> 
