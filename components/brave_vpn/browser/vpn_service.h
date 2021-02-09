@@ -25,15 +25,6 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
-const char vpn_host[] = "housekeeping.sudosecuritygroup.com";
-
-const char all_server_regions[] = "api/v1/servers/all-server-regions";
-const char timezones_for_regions[] = "api/v1.1/servers/timezones-for-regions";
-const char hostname_for_region[] = "api/v1/servers/hostnames-for-region";
-const char create_subscriber_credential[] =
-    "api/v1/subscriber-credential/create";
-const char verify_purchase_token[] = "api/v1.1/verify-purchase-token";
-
 typedef std::string JsonResponse;
 
 class VpnService : public KeyedService {

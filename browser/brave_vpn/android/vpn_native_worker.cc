@@ -50,7 +50,7 @@ void VpnNativeWorker::OnGetAllServerRegions(
     const std::string& server_regions_json,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_VpnNativeWorker_OnGetAllServerRegions(
+  Java_VpnNativeWorker_onGetAllServerRegions(
       env, weak_java_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, server_regions_json),
       success);
@@ -70,7 +70,7 @@ void VpnNativeWorker::OnGetTimezonesForRegions(
     const std::string& timezones_json,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_VpnNativeWorker_OnGetTimezonesForRegions(
+  Java_VpnNativeWorker_onGetTimezonesForRegions(
       env, weak_java_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, timezones_json), success);
 }
@@ -90,7 +90,7 @@ void VpnNativeWorker::GetHostnamesForRegion(
 void VpnNativeWorker::OnGetHostnamesForRegion(const std::string& hostnames_json,
                                               bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_VpnNativeWorker_OnGetHostnamesForRegion(
+  Java_VpnNativeWorker_onGetHostnamesForRegion(
       env, weak_java_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, hostnames_json), success);
 }
@@ -117,7 +117,7 @@ void VpnNativeWorker::OnGetSubscriberCredential(
     const std::string& subscriber_credential,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_VpnNativeWorker_OnGetSubscriberCredential(
+  Java_VpnNativeWorker_onGetSubscriberCredential(
       env, weak_java_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, subscriber_credential),
       success);
@@ -142,7 +142,7 @@ void VpnNativeWorker::VerifyPurchaseToken(
 void VpnNativeWorker::OnVerifyPurchaseToken(const std::string& json_response,
                                             bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_VpnNativeWorker_OnVerifyPurchaseToken(
+  Java_VpnNativeWorker_onVerifyPurchaseToken(
       env, weak_java_vpn_native_worker_.get(env),
       base::android::ConvertUTF8ToJavaString(env, json_response), success);
 }
