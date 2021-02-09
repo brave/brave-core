@@ -5,5 +5,9 @@
     <include name="IDR_IPFS_INTERSTITIAL_HTML" file="../ipfs/resources/ipfs_interstitial.html" flattenhtml="true" type="BINDATA" />
     <include name="IDR_IPFS_INTERSTITIAL_JS" file="../ipfs/resources/ipfs_interstitial.js" type="BINDATA" />
     <include name="IDR_INTERSTITIAL_IPFS_CSS" file="../ipfs/resources/interstitial_ipfs.css" type="BINDATA" />
+    <include name="IDR_IPFS_INTERSTITIAL_ONBOARDING_HTML" file="../ipfs/resources/onboarding/ipfs_onboarding.html" flattenhtml="true" type="BINDATA" />
+    <include name="IDR_IPFS_INTERSTITIAL_ONBOARDING_JS" file="../ipfs/resources/onboarding/ipfs_onboarding.js" type="BINDATA" />
+    <include name="IDR_IPFS_INTERSTITIAL_ONBOARDING_CSS" file="../ipfs/resources/onboarding/ipfs_onboarding.css" type="BINDATA" />
+
   </if>
 </grit-part>

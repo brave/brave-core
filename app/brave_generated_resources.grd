@@ -1019,20 +1019,11 @@ up to 6x faster on major news sites.
         Don't ask again
       </message>
       <!-- IPFS -->
-      <message name="IDS_BRAVE_IPFS_INSTALL" desc="Install IPFS daemon infobar text">
-        IPFS resources detected. Would you like Brave to load them using a local IPFS node?
-      </message>
       <message name="IDS_BRAVE_WALLET_SETTINGS_SECTION" desc="Open Wallet settings section">
         Wallet Settings
       </message>
       <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
         IPFS Settings
-      </message>
-      <message name="IDS_BRAVE_IPFS_SETTINGS" desc="Open IPFS settings">
-        Settings
-      </message>
-      <message name="IDS_BRAVE_IPFS_ENABLE_IPFS" desc="Install and Enable IPFS">
-        Enable IPFS
       </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy

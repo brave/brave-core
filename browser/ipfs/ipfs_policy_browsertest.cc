@@ -7,7 +7,6 @@
 #include "base/values.h"
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
@@ -146,14 +145,6 @@ IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, NavigationThrottle) {
       &test_handle, ipfs::IpfsServiceFactory::GetForContext(browser_context()),
       "en-US");
   EXPECT_TRUE(throttle == nullptr);
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, TabHelper) {
-  EXPECT_TRUE(ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents()));
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsDisabledPolicyTest, TabHelper) {
-  EXPECT_FALSE(ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents()));
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsEnabledPolicyTest, HandleIPFSURLRewrite) {

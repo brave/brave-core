@@ -16,6 +16,8 @@ source_set("ipfs") {
     "ipfs_navigation_throttle.h",
     "ipfs_not_connected_page.cc",
     "ipfs_not_connected_page.h",
+    "ipfs_onboarding_page.cc",
+    "ipfs_onboarding_page.h",
     "ipfs_p3a.cc",
     "ipfs_p3a.h",
     "ipfs_ports.cc",
