@@ -27,7 +27,7 @@ public class VpnNativeWorker {
         synchronized (lock) {
             if (instance == null) {
                 instance = new VpnNativeWorker();
-                instance.Init();
+                instance.init();
             }
         }
         return instance;
@@ -37,7 +37,7 @@ public class VpnNativeWorker {
         mObservers = new ArrayList<VpnObserver>();
     }
 
-    private void Init() {
+    private void init() {
         if (mNativeVpnNativeWorker == 0) {
             nativeInit();
         }
@@ -45,23 +45,23 @@ public class VpnNativeWorker {
 
     @Override
     protected void finalize() {
-        Destroy();
+        destroy();
     }
 
-    private void Destroy() {
+    private void destroy() {
         if (mNativeVpnNativeWorker != 0) {
             nativeDestroy(mNativeVpnNativeWorker);
             mNativeVpnNativeWorker = 0;
         }
     }
 
-    public void AddObserver(VpnObserver observer) {
+    public void addObserver(VpnObserver observer) {
         synchronized (lock) {
             mObservers.add(observer);
         }
     }
 
-    public void RemoveObserver(VpnObserver observer) {
+    public void removeObserver(VpnObserver observer) {
         synchronized (lock) {
             mObservers.remove(observer);
         }
@@ -74,37 +74,37 @@ public class VpnNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {
+    public void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {
         for (VpnObserver observer : mObservers) {
-            observer.OnGetAllServerRegions(jsonServerRegions, isSuccess);
+            observer.onGetAllServerRegions(jsonServerRegions, isSuccess);
         }
     }
 
     @CalledByNative
-    public void OnGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
+    public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
         for (VpnObserver observer : mObservers) {
-            observer.OnGetTimezonesForRegions(jsonTimezones, isSuccess);
+            observer.onGetTimezonesForRegions(jsonTimezones, isSuccess);
         }
     }
 
     @CalledByNative
-    public void OnGetHostnamesForRegion(String jsonHostnames, boolean isSuccess) {
+    public void onGetHostnamesForRegion(String jsonHostnames, boolean isSuccess) {
         for (VpnObserver observer : mObservers) {
-            observer.OnGetHostnamesForRegion(jsonHostnames, isSuccess);
+            observer.onGetHostnamesForRegion(jsonHostnames, isSuccess);
         }
     }
 
     @CalledByNative
-    public void OnGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
+    public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
         for (VpnObserver observer : mObservers) {
-            observer.OnGetSubscriberCredential(subscriberCredential, isSuccess);
+            observer.onGetSubscriberCredential(subscriberCredential, isSuccess);
         }
     }
 
     @CalledByNative
-    public void OnVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+    public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         for (VpnObserver observer : mObservers) {
-            observer.OnVerifyPurchaseToken(jsonResponse, isSuccess);
+            observer.onVerifyPurchaseToken(jsonResponse, isSuccess);
         }
     }
 

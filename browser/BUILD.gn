@@ -262,8 +262,8 @@ source_set("browser_process") {
     ]
 
     deps += [
+      "//base",
       "//brave/components/brave_vpn/browser",
-      "//components/country_codes",
     ]
 
     if (is_android) {

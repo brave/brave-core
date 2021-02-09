@@ -13,6 +13,14 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 
 namespace {
+const char kVpnHost[] = "housekeeping.sudosecuritygroup.com";
+
+const char kAllServerRegions[] = "api/v1/servers/all-server-regions";
+const char kTimezonesForRegions[] = "api/v1.1/servers/timezones-for-regions";
+const char kHostnameForRegion[] = "api/v1/servers/hostnames-for-region";
+const char kCreateSubscriberCredential[] =
+    "api/v1/subscriber-credential/create";
+const char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("vpn_service", R"(
@@ -122,7 +130,7 @@ void VpnService::GetAllServerRegions(ResponseCallback callback) {
   auto internal_callback =
       base::BindOnce(&VpnService::OnGetAllServerRegions, base::Unretained(this),
                      std::move(callback));
-  GURL base_url = GetURLWithPath(vpn_host, all_server_regions);
+  GURL base_url = GetURLWithPath(kVpnHost, kAllServerRegions);
   OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
 }
 
@@ -144,7 +152,7 @@ void VpnService::GetTimezonesForRegions(ResponseCallback callback) {
   auto internal_callback =
       base::BindOnce(&VpnService::OnGetTimezonesForRegions,
                      base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(vpn_host, timezones_for_regions);
+  GURL base_url = GetURLWithPath(kVpnHost, kTimezonesForRegions);
   OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
 }
 
@@ -167,7 +175,7 @@ void VpnService::GetHostnamesForRegion(ResponseCallback callback,
   auto internal_callback =
       base::BindOnce(&VpnService::OnGetHostnamesForRegion,
                      base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(vpn_host, hostname_for_region);
+  GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegion);
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("region", region);
   std::string request_body = CreateJSONRequestBody(dict);
@@ -197,7 +205,7 @@ void VpnService::GetSubscriberCredential(ResponseCallback callback,
   auto internal_callback =
       base::BindOnce(&VpnService::OnGetSubscriberCredential,
                      base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(vpn_host, create_subscriber_credential);
+  GURL base_url = GetURLWithPath(kVpnHost, kCreateSubscriberCredential);
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("product-type", product_type);
   dict.SetStringKey("product-id", product_id);
@@ -229,7 +237,7 @@ void VpnService::VerifyPurchaseToken(ResponseCallback callback,
   auto internal_callback =
       base::BindOnce(&VpnService::OnVerifyPurchaseToken, base::Unretained(this),
                      std::move(callback));
-  GURL base_url = GetURLWithPath(vpn_host, verify_purchase_token);
+  GURL base_url = GetURLWithPath(kVpnHost, kVerifyPurchaseToken);
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("purchase-token", purchase_token);
   dict.SetStringKey("product-id", product_id);
