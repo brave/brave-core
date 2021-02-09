@@ -124,7 +124,8 @@ public class OnboardingV2Fragment extends Fragment {
 		mAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				highlightDialogListener.onNextPage();
+				if (highlightDialogListener != null)
+					highlightDialogListener.onNextPage();
 			}
 		});
 
@@ -132,7 +133,8 @@ public class OnboardingV2Fragment extends Fragment {
 		mLearnMoreButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				highlightDialogListener.onLearnMore();
+				if (highlightDialogListener != null)
+					highlightDialogListener.onLearnMore();
 			}
 		});
 
