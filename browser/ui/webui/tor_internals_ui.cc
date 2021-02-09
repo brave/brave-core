@@ -7,15 +7,12 @@
 
 #include <utility>
 
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/tor/resources/grit/tor_internals_generated_map.h"
 #include "brave/components/tor/resources/grit/tor_resources.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/render_view_host.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
-#include "content/public/browser/web_ui_data_source.h"
 
 TorInternalsDOMHandler::TorInternalsDOMHandler()
     : tor_launcher_factory_(TorLauncherFactory::GetInstance()),
@@ -86,11 +83,10 @@ void TorInternalsDOMHandler::OnTorInitializing(const std::string& percentage) {
 }
 
 TorInternalsUI::TorInternalsUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui,
-              name,
-              kTorInternalsGenerated,
-              kTorInternalsGeneratedSize,
-              IDR_TOR_INTERNALS_HTML) {
+    : WebUIController(web_ui) {
+  CreateAndAddWebUIDataSource(web_ui, name, kTorInternalsGenerated,
+                              kTorInternalsGeneratedSize,
+                              IDR_TOR_INTERNALS_HTML);
   web_ui->AddMessageHandler(std::make_unique<TorInternalsDOMHandler>());
 }
 

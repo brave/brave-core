@@ -17,7 +17,7 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -28,7 +28,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "components/grit/brave_components_strings.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -643,14 +642,10 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
     return;
   }
 
-  content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(
-      profile,
-      name,
-      kBraveRewardsTipGenerated,
-      kBraveRewardsTipGeneratedSize,
-      IDR_BRAVE_REWARDS_TIP_HTML);
+  CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsTipGenerated,
+                              kBraveRewardsTipGeneratedSize,
+                              IDR_BRAVE_REWARDS_TIP_HTML);
 
-  content::WebUIDataSource::Add(profile, data_source);
   web_ui->AddMessageHandler(std::make_unique<TipMessageHandler>());
 }
 

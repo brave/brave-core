@@ -8,15 +8,14 @@
 
 #include <string>
 
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 
-class BraveWalletUI : public BasicUI {
+class BraveWalletUI : public content::WebUIController {
  public:
   BraveWalletUI(content::WebUI* web_ui, const std::string& host);
   ~BraveWalletUI() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveWalletUI);
+  BraveWalletUI(const BraveWalletUI&) = delete;
+  BraveWalletUI& operator=(const BraveWalletUI&) = delete;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_UI_H_

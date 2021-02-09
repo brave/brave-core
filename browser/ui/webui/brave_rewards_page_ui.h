@@ -6,18 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_PAGE_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_PAGE_UI_H_
 
-#include <memory>
 #include <string>
 
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 
-class BraveRewardsPageUI : public BasicUI {
+class BraveRewardsPageUI : public content::WebUIController {
  public:
   BraveRewardsPageUI(content::WebUI* web_ui, const std::string& host);
   ~BraveRewardsPageUI() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsPageUI);
+  BraveRewardsPageUI(const BraveRewardsPageUI&) = delete;
+  BraveRewardsPageUI& operator=(const BraveRewardsPageUI&) = delete;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_REWARDS_PAGE_UI_H_
