@@ -76,18 +76,9 @@ Polymer({
     },
   },
 
-  observers: [
-    'possiblyShowMenuPromo_(showMenu, showMenuPromo, showingSearch_)',
-  ],
-
   /** @return {!CrToolbarSearchFieldElement} */
   getSearchField: function() {
     return this.$.search;
-  },
-
-  /** @private */
-  onClosePromoTap_: function() {
-    console.debug('[br_toolbar] Not Implemented: onClosePromoTap_')
   },
 
   /** @private */
@@ -95,9 +86,14 @@ Polymer({
     console.debug('[br_toolbar] Not Implemented: onMenuTap_')
   },
 
-  /** @private */
-  possiblyShowMenuPromo_: function() {
-    console.debug('[br_toolbar] Not Implemented: possiblyShowMenuPromo')
+  focusMenuButton() {
+    console.debug('[br_toolbar] Not Implemented: focusMenuButton')
+  },
+
+  /** @return {boolean} */
+  isMenuFocused() {
+    console.debug('[br_toolbar] Not Implemented: isMenuFocused (no menuButton)')
+    return false;
   },
 
   /** @private */
