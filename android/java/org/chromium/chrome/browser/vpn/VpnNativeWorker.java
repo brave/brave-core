@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.vpn;
 
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.vpn.VpnObserver;
@@ -73,9 +74,37 @@ public class VpnNativeWorker {
     }
 
     @CalledByNative
-    public void OnGetAllServerRegions(String jsonBalances, boolean isSuccess) {
+    public void OnGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {
         for (VpnObserver observer : mObservers) {
-            observer.OnGetAllServerRegions(jsonBalances, isSuccess);
+            observer.OnGetAllServerRegions(jsonServerRegions, isSuccess);
+        }
+    }
+
+    @CalledByNative
+    public void OnGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
+        for (VpnObserver observer : mObservers) {
+            observer.OnGetTimezonesForRegions(jsonTimezones, isSuccess);
+        }
+    }
+
+    @CalledByNative
+    public void OnGetHostnamesForRegion(String jsonHostnames, boolean isSuccess) {
+        for (VpnObserver observer : mObservers) {
+            observer.OnGetHostnamesForRegion(jsonHostnames, isSuccess);
+        }
+    }
+
+    @CalledByNative
+    public void OnGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
+        for (VpnObserver observer : mObservers) {
+            observer.OnGetSubscriberCredential(subscriberCredential, isSuccess);
+        }
+    }
+
+    @CalledByNative
+    public void OnVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+        for (VpnObserver observer : mObservers) {
+            observer.OnVerifyPurchaseToken(jsonResponse, isSuccess);
         }
     }
 
@@ -83,7 +112,31 @@ public class VpnNativeWorker {
         nativeGetAllServerRegions(mNativeVpnNativeWorker);
     }
 
+    public void getTimezonesForRegions() {
+        nativeGetTimezonesForRegions(mNativeVpnNativeWorker);
+    }
+
+    public void getHostnamesForRegion(String region) {
+        nativeGetHostnamesForRegion(mNativeVpnNativeWorker, region);
+    }
+
+    public void getSubscriberCredential(
+            String productType, String productId, String validationMethod, String purchaseToken) {
+        nativeGetSubscriberCredential(
+                mNativeVpnNativeWorker, productType, productId, validationMethod, purchaseToken);
+    }
+
+    public void verifyPurchaseToken(String purchaseToken, String productId, String productType) {
+        nativeVerifyPurchaseToken(mNativeVpnNativeWorker, purchaseToken, productId, productType);
+    }
+
     private native void nativeInit();
     private native void nativeDestroy(long nativeVpnNativeWorker);
     private native void nativeGetAllServerRegions(long nativeVpnNativeWorker);
+    private native void nativeGetTimezonesForRegions(long nativeVpnNativeWorker);
+    private native void nativeGetHostnamesForRegion(long nativeVpnNativeWorker, String region);
+    private native void nativeGetSubscriberCredential(long nativeVpnNativeWorker,
+            String productType, String productId, String validationMethod, String purchaseToken);
+    private native void nativeVerifyPurchaseToken(
+            long nativeVpnNativeWorker, String purchaseToken, String productId, String productType);
 }
