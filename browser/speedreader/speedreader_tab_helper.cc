@@ -12,15 +12,16 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
-#include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/dom_distiller/tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
 #include "components/dom_distiller/content/browser/uma_helper.h"
 #include "components/dom_distiller/core/url_utils.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 
 using dom_distiller::UMAHelper;
+using dom_distiller::url_utils::GetOriginalUrlFromDistillerUrl;
 using dom_distiller::url_utils::IsDistilledPage;
 
 namespace speedreader {
@@ -30,10 +31,10 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() = default;
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {}
 
-bool SpeedreaderTabHelper::IsReaderEnabled() const {
+bool SpeedreaderTabHelper::IsDistilled() const {
   if (speedreader_active_)
     return true;
-  auto url = web_contents()->GetURL();
+  auto url = web_contents()->GetLastCommittedURL();
   return IsDistilledPage(url);
 }
 
@@ -86,9 +87,29 @@ void SpeedreaderTabHelper::DidRedirectNavigation(
   }
 }
 
+void SpeedreaderTabHelper::NavigationEntryCommitted(
+    const content::LoadCommittedDetails& load_details) {
+  if (!load_details.is_navigation_to_different_page())
+    return;
+
+  auto& controller = web_contents()->GetController();
+  if (load_details.previous_entry_index != -1) {
+    // Prevent infinite oscillation between the original page and the distilled
+    // page. If we are navigating from a distilled page to original undistilled
+    // page, skip over that navigation entry.
+    auto* last_entry =
+        controller.GetEntryAtIndex(load_details.previous_entry_index);
+    if (IsDistilledPage(last_entry->GetURL()) &&
+        GetOriginalUrlFromDistillerUrl(last_entry->GetURL()) ==
+            load_details.entry->GetURL()) {
+      controller.GoToOffset(-1);
+    }
+  }
+}
+
 void SpeedreaderTabHelper::OnResult(
     const dom_distiller::DistillabilityResult& result) {
-  auto url = web_contents()->GetURL();
+  auto url = web_contents()->GetLastCommittedURL();
   if (result.is_last && result.is_distillable && !IsDistilledPage(url)) {
     std::unique_ptr<dom_distiller::SourcePageHandleWebContents> handle =
         std::make_unique<dom_distiller::SourcePageHandleWebContents>(

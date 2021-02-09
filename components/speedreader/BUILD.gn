@@ -35,7 +35,6 @@ source_set("speedreader") {
   ]
 
   deps = [
-    "//components/dom_distiller/content/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources",

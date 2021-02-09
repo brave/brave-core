@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
+#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -29,7 +30,7 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
   bool IsActiveForMainFrame() const { return speedreader_active_; }
-  bool IsReaderEnabled() const;
+  bool IsDistilled() const;
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
@@ -43,6 +44,8 @@ class SpeedreaderTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void NavigationEntryCommitted(
+      const content::LoadCommittedDetails& load_details) override;
 
   // dom_distiller::DistillabilityObserver overrides:
   void OnResult(const dom_distiller::DistillabilityResult& result) override;

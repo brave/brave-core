@@ -401,7 +401,10 @@ source_set("browser_process") {
       "//brave/browser/speedreader/speedreader_tab_helper.cc",
       "//brave/browser/speedreader/speedreader_tab_helper.h",
     ]
-    deps += [ "//brave/components/speedreader" ]
+    deps += [
+      "//brave/components/speedreader",
+      "//components/dom_distiller/content/browser",
+    ]
   }
 
   if (is_win && is_official_build) {
