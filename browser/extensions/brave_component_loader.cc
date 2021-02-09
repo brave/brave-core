@@ -133,15 +133,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   // Enable rewards extension if already opted-in
   CheckRewardsStatus();
 #endif
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  // Only load if the eagerly load Crypto Wallets setting is on and there is a
-  // project id configured in the build.
-  if (HasInfuraProjectID() &&
-      profile_prefs_->GetBoolean(kLoadCryptoWalletsOnStartup)) {
-    AddEthereumRemoteClientExtension();
-  }
-#endif
 }
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -172,6 +163,15 @@ void BraveComponentLoader::AddEthereumRemoteClientExtension() {
   AddExtension(ethereum_remote_client_extension_id,
                ethereum_remote_client_extension_name,
                ethereum_remote_client_extension_public_key);
+}
+
+void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
+  // Only load if the eagerly load Crypto Wallets setting is on and there is a
+  // project id configured in the build.
+  if (HasInfuraProjectID() &&
+      profile_prefs_->GetBoolean(kLoadCryptoWalletsOnStartup)) {
+    AddEthereumRemoteClientExtension();
+  }
 }
 #endif
 
