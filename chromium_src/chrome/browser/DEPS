@@ -1,6 +1,9 @@
 include_rules = [
   "+../../../../chrome/browser",
   "+../../../../../chrome/browser/android",
+  "+../../../../../../chrome/browser/android/browsing_data",
+  "+../../../../../../chrome/browser/android/preferences",
+  "+../../../../../../chrome/browser/android/signin",
   "+../../../../../chrome/browser/autocomplete",
   "+../../../../../chrome/browser/bitmap_fetcher",
   "+../../../../../chrome/browser/bookmarks",
@@ -37,7 +40,6 @@ include_rules = [
   "+../../../../../chrome/browser/sync",
   "+../../../../../chrome/browser/themes",
   "+../../../../../chrome/browser/ui",
-  "+../../../../../../chrome/browser/android/signin",
   "+../../../../../../chrome/browser/flags/android",
   "+../../../../../../chrome/browser/media/router",
   "+../../../../../../chrome/browser/safe_browsing/download_protection",
