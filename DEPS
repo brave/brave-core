@@ -52,11 +52,6 @@ hooks = [
   },
 ]
 
-# windows fails on relative includes from chromium_src
-skip_child_includes = [
-  "chromium_src",
-]
-
 include_rules = [
   # Everybody can use some things.
   "+brave_base",

@@ -1,3 +1,10 @@
+include_rules = [
+  "+../../../base",
+  "+../../../../base/debug",
+  "+../../../../base/mac",
+  "+../../../../base/threading",
+]
+
 # Existing exceptions
 specific_include_rules = {
   "foundation_util.mm": [
