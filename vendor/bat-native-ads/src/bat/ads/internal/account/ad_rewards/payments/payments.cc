@@ -10,14 +10,11 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/logging.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
-
-namespace {
-const int kNextPaymentDay = 5;
-}  // namespace
 
 Payments::Payments() = default;
 
@@ -140,7 +137,7 @@ base::Time Payments::CalculateNextPaymentDate(
 
   int month = now_exploded.month;
 
-  if (now_exploded.day_of_month <= kNextPaymentDay) {
+  if (now_exploded.day_of_month <= features::GetAdRewardsNextPaymentDay()) {
     const std::string previous_month = GetPreviousTransactionMonth(time);
     if (HasPendingBalanceForTransactionMonth(previous_month)) {
       // If last month has a pending balance, then the next payment date will
@@ -185,7 +182,8 @@ base::Time Payments::CalculateNextPaymentDate(
   base::Time::Exploded next_payment_date_exploded = now_exploded;
   next_payment_date_exploded.year = year;
   next_payment_date_exploded.month = month;
-  next_payment_date_exploded.day_of_month = kNextPaymentDay;
+  next_payment_date_exploded.day_of_month =
+      features::GetAdRewardsNextPaymentDay();
   next_payment_date_exploded.hour = 23;
   next_payment_date_exploded.minute = 59;
   next_payment_date_exploded.second = 59;
