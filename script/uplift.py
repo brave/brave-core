@@ -26,14 +26,6 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         get_title_from_first_commit, push_branches_to_remote)
 
 
-# TODOs
-#####
-# - parse out issue (so it can be included in body). ex: git log --pretty=format:%b
-# - discover associated issues
-#    - put them in the uplift / original PR body
-#    - set milestone! (on the ISSUE)
-
-
 class PrConfig:
     channel_names = channels()
     channels_to_process = channels()
@@ -447,12 +439,18 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
                 for fixed in issues_fixed:
                     pr_body += (fixed[0] + '\n')
 
-            pr_body += '\nApproved, please ensure that before merging: \n'
-            pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
-                       'pass or are not related to your PR. \n'
+            pr_body += '\nPre-approval checklist: \n'
             pr_body += '- [ ] You have tested your change on Nightly. \n'
+            pr_body += '- [ ] This contains text which needs to be translated. \n'
+            pr_body += '    - [ ] There are more than 7 days before the release. \n'
+            pr_body += '    - [ ] I\'ve notified folks in #l10n on Slack that translations are needed. \n'
             pr_body += '- [ ] The PR milestones match the branch they are landing to. \n\n'
-            pr_body += 'After you merge: \n'
+
+            pr_body += '\nPre-merge checklist: \n'
+            pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
+                       'pass or are not related to your PR. \n\n'
+
+            pr_body += 'Post-merge checklist: \n'
             pr_body += '- [ ] The associated issue milestone is set to the smallest version ' \
                        'that the changes is landed on.'
 
