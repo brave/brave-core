@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 
+#include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
