@@ -232,12 +232,8 @@ RegisterPolymerTemplateModifications({
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
       sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
-      // Insert Wallet
-      sectionAppearance.insertAdjacentElement('afterend', sectionWallet)
-      // Insert IPFS
-      sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
       // Insert New Tab
-      sectionIPFS.insertAdjacentElement('afterend', sectionNewTab)
+      sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
       // Insert sync
       sectionNewTab.insertAdjacentElement('afterend', sectionSync)
       // Insert shields
@@ -249,6 +245,10 @@ RegisterPolymerTemplateModifications({
       sectionSocialBlocking.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
       sectionSearch.insertAdjacentElement('afterend', sectionExtensions)
+      // Insert Wallet
+      sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
+      // Insert IPFS
+      sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {
