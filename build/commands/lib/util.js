@@ -436,23 +436,10 @@ const util = {
         '--private_key_passphrase=' + passwd])
   },
 
-  copyRedirectCC: () => {
-    // On Windows copy redirect-cc.py to the output dir so we can execute it
-    // from there to shorten the command line in brave/script/redirect-cc.cmd
-    console.log('Copying redirect-cc.py...')
-    const src = path.join(config.braveCoreDir, 'script', 'redirect-cc.py')
-    const dst = path.join(config.outputDir, 'redirect.py')
-    if (!fs.existsSync(config.outputDir)) {
-      fs.mkdirSync(config.outputDir);
-    }
-    fs.copyFileSync(src, dst)
-  },
-
   buildTarget: (options = config.defaultOptions) => {
     console.log('building ' + config.buildTarget + '...')
 
     if (process.platform === 'win32') {
-      util.copyRedirectCC()
       util.updateOmahaMidlFiles()
     }
 
