@@ -5,5 +5,9 @@
 package org.chromium.chrome.browser.vpn;
 
 public interface VpnObserver {
-    default public void OnGetAllServerRegions(String jsonBalances, boolean isSuccess){};
+    default public void OnGetAllServerRegions(String jsonServerRegions, boolean isSuccess){};
+    default public void OnGetTimezonesForRegions(String jsonTimezones, boolean isSuccess){};
+    default public void OnGetHostnamesForRegion(String jsonHostnames, boolean isSuccess){};
+    default public void OnGetSubscriberCredential(String subscriberCredential, boolean isSuccess){};
+    default public void OnVerifyPurchaseToken(String jsonResponse, boolean isSuccess){};
 }

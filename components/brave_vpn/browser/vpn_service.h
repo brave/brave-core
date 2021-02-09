@@ -8,24 +8,13 @@
 
 #include <list>
 #include <map>
-#include <memory>
 #include <string>
-#include <vector>
 
 #include "base/callback_forward.h"
-#include "base/containers/queue.h"
-#include "base/files/file_path.h"
-#include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
-
-namespace base {
-class FilePath;
-class SequencedTaskRunner;
-}  // namespace base
 
 namespace content {
 class BrowserContext;
@@ -36,23 +25,38 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
-class Profile;
+const char vpn_host[] = "housekeeping.sudosecuritygroup.com";
 
-const char all_server_regions[] =
-    "https://housekeeping.sudosecuritygroup.com/api/v1/servers/"
-    "all-server-regions";
+const char all_server_regions[] = "api/v1/servers/all-server-regions";
+const char timezones_for_regions[] = "api/v1.1/servers/timezones-for-regions";
+const char hostname_for_region[] = "api/v1/servers/hostnames-for-region";
+const char create_subscriber_credential[] =
+    "api/v1/subscriber-credential/create";
+const char verify_purchase_token[] = "api/v1.1/verify-purchase-token";
 
-typedef std::map<std::string, std::vector<std::string>> ServerRegions;
+typedef std::string JsonResponse;
 
 class VpnService : public KeyedService {
  public:
   explicit VpnService(content::BrowserContext* context);
   ~VpnService() override;
 
-  using GetAllServerRegionsCallback =
-      base::OnceCallback<void(const ServerRegions&, bool success)>;
+  using ResponseCallback =
+      base::OnceCallback<void(const JsonResponse&, bool success)>;
 
-  void GetAllServerRegions(GetAllServerRegionsCallback callback);
+  void GetAllServerRegions(ResponseCallback callback);
+  void GetTimezonesForRegions(ResponseCallback callback);
+  void GetHostnamesForRegion(ResponseCallback callback,
+                             const std::string& region);
+  void GetSubscriberCredential(ResponseCallback callback,
+                               const std::string& product_type,
+                               const std::string& product_id,
+                               const std::string& validation_method,
+                               const std::string& purchase_token);
+  void VerifyPurchaseToken(ResponseCallback callback,
+                           const std::string& purchase_token,
+                           const std::string& product_id,
+                           const std::string& product_type);
 
  private:
   static GURL oauth_endpoint_;
@@ -68,12 +72,36 @@ class VpnService : public KeyedService {
   bool OAuthRequest(const GURL& url,
                     const std::string& method,
                     const std::string& post_data,
+                    bool set_app_ident,
                     URLRequestCallback callback);
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
                            URLRequestCallback callback,
                            const std::unique_ptr<std::string> response_body);
 
-  void OnGetAllServerRegions(GetAllServerRegionsCallback callback,
+  void OnGetAllServerRegions(ResponseCallback callback,
+                             const int status,
+                             const std::string& body,
+                             const std::map<std::string, std::string>& headers);
+
+  void OnGetTimezonesForRegions(
+      ResponseCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+
+  void OnGetHostnamesForRegion(
+      ResponseCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+
+  void OnGetSubscriberCredential(
+      ResponseCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
+
+  void OnVerifyPurchaseToken(ResponseCallback callback,
                              const int status,
                              const std::string& body,
                              const std::map<std::string, std::string>& headers);
@@ -83,11 +111,6 @@ class VpnService : public KeyedService {
   SimpleURLLoaderList url_loaders_;
   base::WeakPtrFactory<VpnService> weak_factory_;
   base::WeakPtrFactory<VpnService> vpn_weak_factory_{this};
-
-  // FRIEND_TEST_ALL_PREFIXES(BinanceAPIBrowserTest, GetOAuthClientURL);
-  // FRIEND_TEST_ALL_PREFIXES(BinanceAPIBrowserTest,
-  //     SetAndGetAuthTokenRevokesPref);
-  // friend class BinanceAPIBrowserTest;
 
   DISALLOW_COPY_AND_ASSIGN(VpnService);
 };

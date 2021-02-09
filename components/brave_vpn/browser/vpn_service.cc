@@ -5,65 +5,50 @@
 
 #include "brave/components/brave_vpn/browser/vpn_service.h"
 
-#include <algorithm>
-#include <string>
-#include <utility>
-
-#include "base/base64.h"
-#include "base/bind.h"
-#include "base/containers/flat_set.h"
-#include "base/files/file_enumerator.h"
-#include "base/files/file_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
-#include "base/task_runner_util.h"
-#include "base/time/time.h"
-#include "base/token.h"
-#include "brave/common/pref_names.h"
-#include "brave/components/binance/browser/binance_json_parser.h"
-#include "brave/components/binance/browser/regions.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
-#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
-#include "components/country_codes/country_codes.h"
-#include "components/os_crypt/os_crypt.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-#include "net/base/load_flags.h"
-#include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("binance_service", R"(
+  return net::DefineNetworkTrafficAnnotation("vpn_service", R"(
       semantics {
-        sender: "Binance Service"
+        sender: "VPN Service"
         description:
-          "This service is used to communicate with Binance "
-          "on behalf of the user interacting with the Binance widget."
+          "This service is used to communicate with Guardian VPN apis"
+          "on behalf of the user interacting with the Brave VPN."
         trigger:
-          "Triggered by user connecting the Binance widget."
+          "Triggered by user connecting the Brave VPN."
         data:
-          "Account balance for the widget."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        setting:
-          "You can enable or disable this feature on the new tab page."
-        policy_exception_justification:
-          "Not implemented."
+          "Servers, hosts and credentials for Brave VPN"
+        destination: Android
       }
     )");
 }
 
-// GURL GetURLWithPath(const std::string& host, const std::string& path) {
-//   return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
-// }
+GURL GetURLWithPath(const std::string& host, const std::string& path) {
+  return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
+}
+
+std::string CreateJSONRequestBody(const base::Value& dict) {
+  std::string json;
+  base::JSONWriter::Write(dict, &json);
+  return json;
+}
+
+std::string GetSubscriberCredentialFromJson(const std::string& json) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  const base::Value* subscriber_credential =
+      records_v->FindKey("subscriber-credential");
+  return subscriber_credential->GetString();
+}
 
 }  // namespace
 
@@ -73,7 +58,6 @@ VpnService::VpnService(content::BrowserContext* context)
           content::BrowserContext::GetDefaultStoragePartition(context_)
               ->GetURLLoaderFactoryForBrowserProcess()),
       weak_factory_(this) {
-  // LoadTokensFromPrefs();
 }
 
 VpnService::~VpnService() {}
@@ -81,40 +65,29 @@ VpnService::~VpnService() {}
 bool VpnService::OAuthRequest(const GURL& url,
                               const std::string& method,
                               const std::string& post_data,
+                              bool set_app_ident,
                               URLRequestCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
-  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-
-  // if (!send_save_cookies) {
-  //   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  //   request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
-  // }
-
   request->method = method;
-
+  if (set_app_ident) {
+    request->headers.SetHeader("GRD-App-Ident", "Brave-Client");
+  }
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data, "application/json");
   }
-  // url_loader->SetRetryOptions(
-  //     kRetriesCountOnNetworkChange,
-  //     auto_retry_on_network_change ?
-  //         network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE :
-  //         network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
   auto* default_storage_partition =
       content::BrowserContext::GetDefaultStoragePartition(context_);
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
-
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory,
       base::BindOnce(&VpnService::OnURLLoaderComplete, base::Unretained(this),
                      std::move(iter), std::move(callback)));
-
   return true;
 }
 
@@ -145,34 +118,137 @@ void VpnService::OnURLLoaderComplete(
                           headers);
 }
 
-void VpnService::GetAllServerRegions(GetAllServerRegionsCallback callback) {
+void VpnService::GetAllServerRegions(ResponseCallback callback) {
   auto internal_callback =
       base::BindOnce(&VpnService::OnGetAllServerRegions, base::Unretained(this),
                      std::move(callback));
-  GURL base_url = GURL(all_server_regions);
-  GURL url = base_url;
-  url = net::AppendQueryParameter(url, "region", "en-us");
-  LOG(ERROR) << "NTP"
-             << "VpnService::GetAllServerRegions" << base_url;
-  OAuthRequest(base_url, "GET", url.query(), std::move(internal_callback));
+  GURL base_url = GetURLWithPath(vpn_host, all_server_regions);
+  OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
 }
 
 void VpnService::OnGetAllServerRegions(
-    GetAllServerRegionsCallback callback,
+    ResponseCallback callback,
     const int status,
     const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  ServerRegions regions;
+  JsonResponse json_response;
 
-  bool success = status >= 200 && status <= 299;
-  LOG(ERROR) << "NTP"
-             << "VpnService::OnGetAllServerRegions"
-             << "Status code" << status;
+  bool success = status == 200;
   if (success) {
-    LOG(ERROR) << "NTP"
-               << "VpnService::OnGetAllServerRegions"
-               << "Body : " << body;
-    // BinanceJSONParser::GetAccountBalancesFromJSON(body, &regions);
+    json_response = body;
   }
-  std::move(callback).Run(regions, success);
+  std::move(callback).Run(json_response, success);
+}
+
+void VpnService::GetTimezonesForRegions(ResponseCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&VpnService::OnGetTimezonesForRegions,
+                     base::Unretained(this), std::move(callback));
+  GURL base_url = GetURLWithPath(vpn_host, timezones_for_regions);
+  OAuthRequest(base_url, "GET", "", false, std::move(internal_callback));
+}
+
+void VpnService::OnGetTimezonesForRegions(
+    ResponseCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  JsonResponse json_response;
+
+  bool success = status == 200;
+  if (success) {
+    json_response = body;
+  }
+  std::move(callback).Run(json_response, success);
+}
+
+void VpnService::GetHostnamesForRegion(ResponseCallback callback,
+                                       const std::string& region) {
+  auto internal_callback =
+      base::BindOnce(&VpnService::OnGetHostnamesForRegion,
+                     base::Unretained(this), std::move(callback));
+  GURL base_url = GetURLWithPath(vpn_host, hostname_for_region);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("region", region);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, false,
+               std::move(internal_callback));
+}
+
+void VpnService::OnGetHostnamesForRegion(
+    ResponseCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  JsonResponse json_response;
+
+  bool success = status == 200;
+  if (success) {
+    json_response = body;
+  }
+  std::move(callback).Run(json_response, success);
+}
+
+void VpnService::GetSubscriberCredential(ResponseCallback callback,
+                                         const std::string& product_type,
+                                         const std::string& product_id,
+                                         const std::string& validation_method,
+                                         const std::string& purchase_token) {
+  auto internal_callback =
+      base::BindOnce(&VpnService::OnGetSubscriberCredential,
+                     base::Unretained(this), std::move(callback));
+  GURL base_url = GetURLWithPath(vpn_host, create_subscriber_credential);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("product-type", product_type);
+  dict.SetStringKey("product-id", product_id);
+  dict.SetStringKey("validation-method", validation_method);
+  dict.SetStringKey("purchase-token", purchase_token);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, true,
+               std::move(internal_callback));
+}
+
+void VpnService::OnGetSubscriberCredential(
+    ResponseCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string subscriber_credential;
+
+  bool success = status == 200;
+  if (success) {
+    subscriber_credential = GetSubscriberCredentialFromJson(body);
+  }
+  std::move(callback).Run(subscriber_credential, success);
+}
+
+void VpnService::VerifyPurchaseToken(ResponseCallback callback,
+                                     const std::string& purchase_token,
+                                     const std::string& product_id,
+                                     const std::string& product_type) {
+  auto internal_callback =
+      base::BindOnce(&VpnService::OnVerifyPurchaseToken, base::Unretained(this),
+                     std::move(callback));
+  GURL base_url = GetURLWithPath(vpn_host, verify_purchase_token);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("purchase-token", purchase_token);
+  dict.SetStringKey("product-id", product_id);
+  dict.SetStringKey("product-type", product_type);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, true,
+               std::move(internal_callback));
+}
+
+void VpnService::OnVerifyPurchaseToken(
+    ResponseCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  JsonResponse json_response;
+
+  bool success = status == 200;
+  if (success) {
+    json_response = body;
+  }
+  std::move(callback).Run(json_response, success);
 }
