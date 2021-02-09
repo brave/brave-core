@@ -174,6 +174,7 @@ RegisterPolymerTemplateModifications({
       'brave_settings:new-tab',
       'newTab'
     )
+    appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Sync and Help Tips item
     const helpTipsEl = createMenuElement(
       loadTimeData.getString('braveHelpTips'),
