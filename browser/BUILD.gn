@@ -295,8 +295,6 @@ source_set("browser_process") {
       "ipfs/content_browser_client_helper.h",
       "ipfs/ipfs_service_factory.cc",
       "ipfs/ipfs_service_factory.h",
-      "ipfs/ipfs_tab_helper.cc",
-      "ipfs/ipfs_tab_helper.h",
     ]
 
     deps += [

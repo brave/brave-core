@@ -14,6 +14,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_interstitial_controller_client.h"
 #include "brave/components/ipfs/ipfs_not_connected_page.h"
+#include "brave/components/ipfs/ipfs_onboarding_page.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -100,6 +101,15 @@ IpfsNavigationThrottle::~IpfsNavigationThrottle() = default;
 content::NavigationThrottle::ThrottleCheckResult
 IpfsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
+
+  bool should_ask =
+      pref_service_->FindPreference(kIPFSResolveMethod) &&
+      pref_service_->GetInteger(kIPFSResolveMethod) ==
+          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+
+  if (IsIPFSScheme(url) && should_ask)
+    return ShowIPFSOnboardingInterstitial();
+
   if (!IsLocalGatewayURL(url)) {
     return content::NavigationThrottle::PROCEED;
   }
@@ -167,6 +177,28 @@ void IpfsNavigationThrottle::OnGetConnectedPeers(
   // Fallback to the public gateway.
   LoadPublicGatewayURL();
   CancelDeferredNavigation(content::NavigationThrottle::CANCEL_AND_IGNORE);
+}
+
+content::NavigationThrottle::ThrottleCheckResult
+IpfsNavigationThrottle::ShowIPFSOnboardingInterstitial() {
+  content::NavigationHandle* handle = navigation_handle();
+  content::WebContents* web_contents = handle->GetWebContents();
+  const GURL& request_url = handle->GetURL();
+
+  auto controller_client = std::make_unique<IPFSInterstitialControllerClient>(
+      web_contents, request_url, pref_service_, locale_);
+  auto page = std::make_unique<IPFSOnboardingPage>(
+      ipfs_service_, web_contents, handle->GetURL(),
+      std::move(controller_client));
+
+  // Get the page content before giving up ownership of |page|.
+  std::string page_content = page->GetHTMLContents();
+
+  security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
+      web_contents, handle->GetNavigationId(), std::move(page));
+  return content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
+      page_content);
 }
 
 void IpfsNavigationThrottle::ShowInterstitial() {

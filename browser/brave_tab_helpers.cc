@@ -17,7 +17,6 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
@@ -62,12 +61,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_tab_helper.h"
-#endif
-
-#if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/infobars/ipfs_infobar_delegate.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #endif
 
 namespace brave {
@@ -121,10 +114,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   tor::TorTabHelper::MaybeCreateForWebContents(
       web_contents, web_contents->GetBrowserContext()->IsTor());
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(IPFS_ENABLED)
-  ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
   brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
