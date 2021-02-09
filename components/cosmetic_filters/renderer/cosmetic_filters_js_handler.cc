@@ -112,10 +112,11 @@ bool IsVettedSearchEngine(const std::string& host) {
     size_t found_pos = host.find((*g_vetted_search_engines)[i]);
     if (found_pos != std::string::npos) {
       size_t last_dot_pos = host.find(".", found_pos + 1);
-      if (last_dot_pos == std::string::npos) {
+      if (last_dot_pos == std::string::npos)
         return false;
-      }
-      if (host.find(".", last_dot_pos + 1) == std::string::npos) {
+      if (host.find(".", last_dot_pos + 1) == std::string::npos &&
+          (found_pos == 0 || host[found_pos - 1] == '/' ||
+           host[found_pos - 1] == '\\' || host[found_pos - 1] == ':')) {
         return true;
       }
     }
