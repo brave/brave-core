@@ -400,15 +400,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             mBraveRewardsNativeWorker.StartProcess();
         }
-        VpnNativeWorker.getInstance().getAllServerRegions();
-        VpnNativeWorker.getInstance().getTimezonesForRegions();
-        VpnNativeWorker.getInstance().getHostnamesForRegion("en-us");
-        // VpnNativeWorker.getInstance().getSubscriberCredential("subscription", "product_3",
-        //         "iap-android",
-        //         "naidfnhceaodnahcefgkaefl.AO-J1OyR07Clya4ej_W4klnMwdpO3hYAvQy3JUlnTkOgtoiQHGjj6eUIfIPOK-s5b-8coE_iX19boIseLUsF92qkqG5bgw5klNAoqtsZ-QTf_gABgE2bR3Q");
-        // VpnNativeWorker.getInstance().verifyPurchaseToken(
-        //         "oljchoaamngedoehicbjdgdg.AO-J1OzjYUPUPQWC1cvzaUAND5IESJEERil0KWGYCJgAbejGZxpwkw0Bo800BWSO7SqIbwoTDTHXnfYHy-AunCJrtBZaZoOuHtiDyiCn93EDpKYLpQsqJhc",
-        //         "product_3", "subscription");
     }
 
     @Override
