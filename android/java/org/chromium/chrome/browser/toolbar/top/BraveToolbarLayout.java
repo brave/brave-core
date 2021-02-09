@@ -354,9 +354,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                                 getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
                         OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
                     }
-                    if (mBraveShieldsButton != null && mBraveShieldsHandler != null
-                        && !mBraveShieldsHandler.isShowing()) {
-                      checkForTooltip(tab);
+                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
+                        checkForTooltip(tab);
                     }
                 }
             }
