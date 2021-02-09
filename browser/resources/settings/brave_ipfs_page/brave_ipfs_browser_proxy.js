@@ -2,57 +2,47 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// clang-format off
-// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
-// clang-format on
+import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
 
-cr.define('settings', function () {
-  /** @interface */
-  /* #export */ class BraveIPFSBrowserProxy {
-    /**
-     * @param {boolean} value name.
-     */
-    setIPFSCompanionEnabled (value) {}
-    getIPFSResolveMethodList () {}
-    getIPFSEnabled () {}
-  }
-
+/** @interface */
+export class BraveIPFSBrowserProxy {
   /**
-   * @implements {settings.BraveIPFSBrowserProxy}
+   * @param {boolean} value name.
    */
-  /* #export */ class BraveIPFSBrowserProxyImpl {
-    setIPFSCompanionEnabled (value) {
-      chrome.send('setIPFSCompanionEnabled', [value])
-    }
+  setIPFSCompanionEnabled (value) {}
+  getIPFSResolveMethodList () {}
+  getIPFSEnabled () {}
+}
 
-    /** @override */
-    getIPFSResolveMethodList () {
-      return new Promise(resolve => {
-        if (!chrome.ipfs) {
-          resolve(false)
-          return
-        }
-        chrome.ipfs.getResolveMethodList(resolve)
-      })
-    }
-
-    /** @override */
-    getIPFSEnabled () {
-      return new Promise(resolve => {
-        if (!chrome.ipfs) {
-          resolve(false)
-          return
-        }
-        chrome.ipfs.getIPFSEnabled(resolve)
-      })
-    }
+/**
+ * @implements {settings.BraveIPFSBrowserProxy}
+ */
+export class BraveIPFSBrowserProxyImpl {
+  setIPFSCompanionEnabled (value) {
+    chrome.send('setIPFSCompanionEnabled', [value])
   }
 
-  cr.addSingletonGetter(BraveIPFSBrowserProxyImpl)
-
-  // #cr_define_end
-  return {
-    BraveIPFSBrowserProxy,
-    BraveIPFSBrowserProxyImpl
+  /** @override */
+  getIPFSResolveMethodList () {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.getResolveMethodList(resolve)
+    })
   }
-})
+
+  /** @override */
+  getIPFSEnabled () {
+    return new Promise(resolve => {
+      if (!chrome.ipfs) {
+        resolve(false)
+        return
+      }
+      chrome.ipfs.getIPFSEnabled(resolve)
+    })
+  }
+}
+
+cr.addSingletonGetter(BraveIPFSBrowserProxyImpl)
