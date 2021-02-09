@@ -1,4 +1,6 @@
 include_rules = [
+  "+../../../../chrome/app",
+  "+../../../../../chrome/app/android",
   "+brave/app",
   "+brave/browser",
   "+brave/common",

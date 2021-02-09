@@ -1,4 +1,5 @@
 include_rules = [
+  "+../../../../../services/preferences/tracked",
   "+services/preferences/tracked",
 ]
 

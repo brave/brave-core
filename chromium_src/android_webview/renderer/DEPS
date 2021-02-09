@@ -1,5 +1,5 @@
 include_rules = [
-  "+android_webview",
+  "+../../../../android_webview/renderer",
   "+media/base",
   "+third_party/widevine/cdm/buildflags.h"
 ]
