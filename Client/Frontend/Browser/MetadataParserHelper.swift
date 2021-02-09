@@ -35,12 +35,12 @@ class MetadataParserHelper: TabEventHandler {
             guard error == nil else {
                 return
             }
-
+            
             guard let dict = result as? [String: Any],
-                let pageURL = tab.url?.displayURL,
-                let pageMetadata = PageMetadata.fromDictionary(dict) else {
-                    log.debug("Page contains no metadata!")
-                    return
+                  let data = try? JSONSerialization.data(withJSONObject: dict, options: []),
+                  let pageMetadata = try? JSONDecoder().decode(PageMetadata.self, from: data) else {
+                log.debug("Page contains no metadata!")
+                return
             }
 
             tab.pageMetadata = pageMetadata
