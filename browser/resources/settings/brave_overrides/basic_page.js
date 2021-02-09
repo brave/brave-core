@@ -14,6 +14,7 @@ import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
 import '../default_brave_shields_page/default_brave_shields_page.m.js'
 import '../social_blocking_page/social_blocking_page.m.js'
 import '../brave_ipfs_page/brave_ipfs_page.m.js'
+import '../brave_wallet_page/brave_wallet_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
@@ -81,6 +82,9 @@ RegisterPolymerTemplateModifications({
     }
     if (pageVisibility.braveIPFS) {
       r.BRAVE_IPFS = r.BASIC.createSection('/ipfs', 'ipfs')
+    }
+    if (pageVisibility.braveWallet) {
+      r.BRAVE_WALLET = r.BASIC.createSection('/wallet', 'wallet')
     }
 
     r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
@@ -152,6 +156,18 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+      const sectionWallet = document.createElement('template')
+      sectionWallet.setAttribute('is', 'dom-if')
+      sectionWallet.setAttribute('restamp', true)
+      sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.wallet)]]')
+      sectionWallet.content.appendChild(createSectionElement(
+        'wallet',
+        'braveWallet',
+        'settings-brave-wallet-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
       sectionSync.setAttribute('restamp', true)
@@ -216,10 +232,8 @@ RegisterPolymerTemplateModifications({
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
       sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
-      // Insert IPFS
-      sectionAppearance.insertAdjacentElement('afterend', sectionIPFS)
       // Insert New Tab
-      sectionIPFS.insertAdjacentElement('afterend', sectionNewTab)
+      sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
       // Insert sync
       sectionNewTab.insertAdjacentElement('afterend', sectionSync)
       // Insert shields
@@ -231,6 +245,10 @@ RegisterPolymerTemplateModifications({
       sectionSocialBlocking.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
       sectionSearch.insertAdjacentElement('afterend', sectionExtensions)
+      // Insert Wallet
+      sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
+      // Insert IPFS
+      sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {

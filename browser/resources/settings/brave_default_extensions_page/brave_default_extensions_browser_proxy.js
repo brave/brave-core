@@ -13,7 +13,6 @@ cr.define('settings', function () {
      * @param {boolean} value name.
      */
     setWebTorrentEnabled (value) {}
-    setBraveWalletEnabled (value) {}
     setHangoutsEnabled (value) {}
     setTorEnabled (value) {}
     isTorEnabled () {}
@@ -21,7 +20,6 @@ cr.define('settings', function () {
     setWidevineEnabled() {}
     isWidevineEnabled() {}
     getRestartNeeded () {}
-    getWeb3ProviderList () {}
     wasSignInEnabledAtStartup () {}
   }
 
@@ -32,10 +30,6 @@ cr.define('settings', function () {
     /** @override */
     setWebTorrentEnabled (value) {
       chrome.send('setWebTorrentEnabled', [value])
-    }
-
-    setBraveWalletEnabled (value) {
-      chrome.send('setBraveWalletEnabled', [value])
     }
 
     setHangoutsEnabled (value) {
@@ -70,15 +64,9 @@ cr.define('settings', function () {
       return cr.sendWithPromise('getRestartNeeded')
     }
 
-    /** @override */
-    getWeb3ProviderList () {
-      return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
-    }
-
     wasSignInEnabledAtStartup () {
       return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
     }
-
   }
 
   cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl)

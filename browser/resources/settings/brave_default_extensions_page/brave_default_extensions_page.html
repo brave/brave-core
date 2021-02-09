@@ -66,20 +66,8 @@
       }
     </style>
 
-    <div class="settings-box first">
-      <div class="start">$i18n{braveWeb3ProviderDesc}</div>
-      <settings-dropdown-menu id="braveWeb3ProvidersType"
-                              pref="{{prefs.brave.wallet.web3_provider}}"
-                              menu-options="[[braveWeb3Providers_]]">
-      </settings-dropdown-menu>
-    </div>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDesc}">
-    </settings-toggle-button>
     <settings-toggle-button id="googleLoginForExtensions"
-        class="cr-row"
+        class="cr-row first"
         pref="{{prefs.signin.allowed_on_next_startup}}"
         learn-more-url="$i18n{googleLoginLearnMoreURL}"
         label="$i18n{googleLoginForExtensionsDesc}">

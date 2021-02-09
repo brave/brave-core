@@ -174,6 +174,7 @@ RegisterPolymerTemplateModifications({
       'brave_settings:new-tab',
       'newTab'
     )
+    appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Sync and Help Tips item
     const helpTipsEl = createMenuElement(
       loadTimeData.getString('braveHelpTips'),
@@ -216,13 +217,23 @@ RegisterPolymerTemplateModifications({
       'extensions',
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
+
+    const walletEl = createMenuElement(
+      loadTimeData.getString('braveWallet'),
+      '/wallet',
+      'brave_settings:wallet',
+      'wallet',
+    )
+    extensionEl.insertAdjacentElement('afterend', walletEl)
+
     const ipfsEl = createMenuElement(
       loadTimeData.getString('braveIPFS'),
       '/ipfs',
       'brave_settings:ipfs',
       'ipfs',
     )
-    extensionEl.insertAdjacentElement('afterend', ipfsEl)
+    walletEl.insertAdjacentElement('afterend', ipfsEl)
+
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
