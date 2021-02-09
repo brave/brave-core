@@ -12,17 +12,9 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//brave/common:pref_names",
-    "//brave/components/ntp_widget_utils/browser",
-    "//components/country_codes:country_codes",
-    "//components/keyed_service/content",
     "//components/keyed_service/core",
-    "//components/os_crypt:os_crypt",
-    "//components/prefs:prefs",
-    "//components/user_prefs",
     "//content/public/browser",
     "//net",
-    "//services/network/public/cpp",
     "//url",
   ]
 }
