@@ -9,9 +9,7 @@ if (is_android) {
 dep_base = rebase_path("../..", "//")
 
 config("external_config") {
-  visibility = [
-    ":*",
-  ]
+  visibility = [ ":*" ]
   include_dirs = [
     "include",
     "$target_gen_dir/include",
@@ -29,13 +27,9 @@ config("internal_config") {
 }
 
 group("bat-native-ads") {
-  public_deps = [
-    ":ads",
-  ]
+  public_deps = [ ":ads" ]
 
-  data_deps = [
-    ":bat-native-ads-standalone",
-  ]
+  data_deps = [ ":bat-native-ads-standalone" ]
 }
 
 static_library("bat-native-ads-standalone") {
@@ -46,20 +40,16 @@ static_library("bat-native-ads-standalone") {
 
   configs -= [ "//build/config/compiler:thin_archive" ]
 
-  defines = [
-    "STANDALONE_BUILD",
-  ]
+  defines = [ "STANDALONE_BUILD" ]
 
-  deps = [
-    ":ads"
-  ]
+  deps = [ ":ads" ]
 }
 
 source_set("headers") {
   visibility = [
     ":*",
-    "//brave/components/brave_ads/test:*",
     "//brave/browser/extensions:extensions",
+    "//brave/components/brave_ads/test:*",
     "//brave/test:*",
   ]
 
@@ -71,9 +61,9 @@ source_set("headers") {
     "include/bat/ads/ad_info.h",
     "include/bat/ads/ad_notification_info.h",
     "include/bat/ads/ad_type.h",
+    "include/bat/ads/ads.h",
     "include/bat/ads/ads_client.h",
     "include/bat/ads/ads_history_info.h",
-    "include/bat/ads/ads.h",
     "include/bat/ads/category_content_info.h",
     "include/bat/ads/confirmation_type.h",
     "include/bat/ads/database.h",
@@ -390,6 +380,8 @@ source_set("ads") {
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_priority_filter.cc",
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_priority_filter.h",
     "src/bat/ads/internal/eligible_ads/eligible_ads_util.h",
+    "src/bat/ads/internal/features/ad_rewards/ad_rewards_features.cc",
+    "src/bat/ads/internal/features/ad_rewards/ad_rewards_features.h",
     "src/bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.cc",
     "src/bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h",
     "src/bat/ads/internal/features/features.cc",
@@ -579,15 +571,15 @@ source_set("ads") {
 
   if (is_mac) {
     sources += [
-      "src/bat/ads/internal/platform/platform_helper_mac.mm",
       "src/bat/ads/internal/platform/platform_helper_mac.h",
+      "src/bat/ads/internal/platform/platform_helper_mac.mm",
     ]
   }
 
   if (is_ios) {
     sources += [
-      "src/bat/ads/internal/platform/platform_helper_ios.mm",
       "src/bat/ads/internal/platform/platform_helper_ios.h",
+      "src/bat/ads/internal/platform/platform_helper_ios.mm",
     ]
   }
 
@@ -617,7 +609,5 @@ source_set("ads") {
     rebase_path("brave_base", dep_base),
   ]
 
-  public_deps = [
-    ":headers",
-  ]
+  public_deps = [ ":headers" ]
 }

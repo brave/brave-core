@@ -7,6 +7,7 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
@@ -60,6 +61,8 @@ void Log() {
               << (IsEpsilonGreedyBanditEnabled() ? "enabled" : "disabled"));
   BLOG(1, "Purchase intent feature is "
               << (IsPurchaseIntentEnabled() ? "enabled" : "disabled"));
+  BLOG(1, "Ad rewards feature is "
+              << (IsAdRewardsEnabled() ? "enabled" : "disabled"));
 }
 
 }  // namespace features
