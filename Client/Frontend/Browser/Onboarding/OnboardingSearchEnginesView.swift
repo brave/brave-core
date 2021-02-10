@@ -152,7 +152,9 @@ extension OnboardingSearchEnginesViewController {
                 self.braveLogoBounceEffect()
                 
                 UIView.animate(withDuration: 0.5, animations: self.showTitle) { _ in
-                    UIView.animate(withDuration: 0.5, animations: self.showRemainingViews)
+                    UIView.animate(withDuration: 0.5, animations: self.showRemainingViews) { _ in
+                        self.searchEnginesTable.flashScrollIndicators()
+                    }
                 }
             }
         }
