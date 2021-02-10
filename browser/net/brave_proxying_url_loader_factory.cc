@@ -19,7 +19,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/common/url_utils.h"
-#include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/system/data_pipe_producer.h"
 #include "mojo/public/cpp/system/string_data_source.h"
 #include "net/base/completion_repeating_callback.h"
