@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-index fc84f5a8bf44ac17473998f20c8bd36d920ffee4..3ac52d26e17280e2bf60a57c6e86c5e1c35515e0 100644
+index 06a803846f388fdfcd9a83c378bc184dccc1e7ca..e03d18f9650580202ceade1c827f5f06dd524047 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
 @@ -86,7 +86,7 @@ public class NativePageFactory {

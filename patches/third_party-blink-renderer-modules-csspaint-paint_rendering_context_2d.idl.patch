@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-index 838922007720806ed10f851e5252c416f283759f..e925d266eec617b9595724324361864f9e6ba876 100644
+index ad42a67a93cdc138a5820e618865045842bf4297..194abb07f84e85398a60e7b72f43b402e62db136 100644
 --- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-@@ -65,10 +65,10 @@
+@@ -66,10 +66,10 @@
  
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);

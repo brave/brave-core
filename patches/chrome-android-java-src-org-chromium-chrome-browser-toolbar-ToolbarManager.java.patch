@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index efd1dd8e0e7a5e96af861ce53ce0349e26e9c6b1..b1d2b23694eb1e127da238c67c618b210528c319 100644
+index 59ef7f071d459b3d2f85029cc38df2448a356775..d33f28383da1494dc4386f0570e5c52962ed26ed 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -451,14 +451,14 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
@@ -19,7 +19,7 @@ index efd1dd8e0e7a5e96af861ce53ce0349e26e9c6b1..b1d2b23694eb1e127da238c67c618b21
                  appMenuCoordinatorSupplier, mControlsVisibilityDelegate, mWindowAndroid,
                  (focus, type)
                          -> setUrlBarFocus(focus, type),
-@@ -863,7 +863,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
+@@ -864,7 +864,7 @@ public class ToolbarManager implements UrlFocusChangeListener, ThemeColorObserve
              OneshotSupplier<StartSurface> startSurfaceSupplier, boolean isGridTabSwitcherEnabled,
              boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled) {
          // clang-format off
