@@ -264,7 +264,7 @@
     "@types/react-sortable-hoc": "0.7.1",
     "@types/react-window": "1.8.2",
     "@types/redux-logger": "3.0.8",
-    "acorn": "7.4.1",
+    "acorn": "8.0.5",
     "babel-loader": "8.2.2",
     "brave-ui": "github:brave/brave-ui#9727652a47f014c70cda71520bb7f847bd48a4f2",
     "chalk": "2.4.2",
