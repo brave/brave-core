@@ -34,10 +34,9 @@ const char kPreInitScript[] =
             window.content_cosmetic = {};
           }
           %s
-          %s
         })();)";
 
-const char kNonScriptletInitScript[] =
+const char kCosmeticFilteringInitScript[] =
     R"(if (window.content_cosmetic.hide1pContent === undefined) {
         window.content_cosmetic.hide1pContent = %s;
        }
@@ -244,39 +243,30 @@ void CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering(
 
 void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
   base::DictionaryValue* resources_dict;
-  if (!result.GetAsDictionary(&resources_dict)) {
-    return;
-  }
-
-  std::string pre_init_script;
-  std::string scriptlet_init_script;
-  std::string non_scriptlet_init_script;
-  std::string json_to_inject;
-  base::Value* injected_script = resources_dict->FindPath("injected_script");
-  if (injected_script &&
-      base::JSONWriter::Write(*injected_script, &json_to_inject) &&
-      json_to_inject.length() > 1) {
-    scriptlet_init_script = json_to_inject;
-  }
-  if (render_frame_->IsMainFrame()) {
-    bool generichide = false;
-    resources_dict->GetBoolean("generichide", &generichide);
-    non_scriptlet_init_script = base::StringPrintf(
-        kNonScriptletInitScript, enabled_1st_party_cf_ ? "true" : "false",
-        generichide ? "true" : "false");
-  }
-  pre_init_script =
-      base::StringPrintf(kPreInitScript, scriptlet_init_script.c_str(),
-                         non_scriptlet_init_script.c_str());
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (web_frame->IsProvisional())
+  if (!result.GetAsDictionary(&resources_dict) || web_frame->IsProvisional())
     return;
-  web_frame->ExecuteScriptInIsolatedWorld(
-      isolated_world_id_, blink::WebString::FromUTF8(pre_init_script));
+
+  std::string scriptlet_script;
+  resources_dict->GetString("injected_script", &scriptlet_script);
+  // Execute scriptlets on all frames
+  if (!scriptlet_script.empty()) {
+    web_frame->ExecuteScript(blink::WebString::FromUTF8(scriptlet_script));
+  }
   if (!render_frame_->IsMainFrame())
     return;
 
   // Working on css rules, we do that on a main frame only
+  bool generichide = false;
+  resources_dict->GetBoolean("generichide", &generichide);
+  std::string cosmetic_filtering_init_script = base::StringPrintf(
+      kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
+      generichide ? "true" : "false");
+  std::string pre_init_script = base::StringPrintf(
+      kPreInitScript, cosmetic_filtering_init_script.c_str());
+
+  web_frame->ExecuteScriptInIsolatedWorld(
+      isolated_world_id_, blink::WebString::FromUTF8(pre_init_script));
   web_frame->ExecuteScriptInIsolatedWorld(
       isolated_world_id_, blink::WebString::FromUTF8(*g_observing_script));
 
