@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-const clipboardCopy = require('clipboard-copy')
 
 import createWidget from '../widget/index'
 import {
@@ -615,7 +614,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   copyToClipboard = async (address: string) => {
     try {
-      await clipboardCopy(address)
+      await navigator.clipboard.writeText(address)
     } catch (e) {
       console.log(`Could not copy address ${e.toString()}`)
     }
