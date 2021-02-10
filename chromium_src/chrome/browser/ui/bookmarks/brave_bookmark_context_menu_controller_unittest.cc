@@ -42,6 +42,12 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
     bookmarks::test::WaitForBookmarkModelToLoad(model_);
   }
 
+  static base::RepeatingCallback<content::PageNavigator*()>
+  NullNavigatorGetter() {
+    return base::BindRepeating(
+        []() -> content::PageNavigator* { return nullptr; });
+  }
+
  protected:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
@@ -51,7 +57,7 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
   BookmarkContextMenuController controller(
-      NULL, NULL, NULL, profile_.get(), NULL,
+      NULL, NULL, NULL, profile_.get(), NullNavigatorGetter(),
       BOOKMARK_LAUNCH_LOCATION_CONTEXT_MENU, model_->bookmark_bar_node(),
       std::vector<const BookmarkNode*>());
 
