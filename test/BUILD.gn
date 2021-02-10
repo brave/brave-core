@@ -107,7 +107,6 @@ test("brave_unit_tests") {
     "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth_unittest.cc",
     "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_region_unittest.cc",
     "//brave/components/p3a/brave_p2a_protocols_unittest.cc",
-    "//brave/components/rappor/log_uploader_unittest.cc",
     "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/components/weekly_storage/weekly_storage_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
