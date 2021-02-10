@@ -31,6 +31,8 @@ fi
 git clone https://github.com/brave/adblock-rust-ffi.git
 pushd adblock-rust-ffi
 git checkout "$1"
+cargo lipo --release
+cbindgen -o ../AdblockRust/adblock_rust_lib.h
 popd
 
 ./create-xcframework.sh

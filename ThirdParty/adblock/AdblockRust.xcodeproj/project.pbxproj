@@ -85,7 +85,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27756F0225AFBAD500C129AF /* Build configuration list for PBXNativeTarget "AdblockRust" */;
 			buildPhases = (
-				27756F2B25AFCABF00C129AF /* ShellScript */,
 				27756EF525AFBAD500C129AF /* Headers */,
 				27756EF625AFBAD500C129AF /* Sources */,
 				27756EF725AFBAD500C129AF /* Frameworks */,
@@ -141,26 +140,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		27756F2B25AFCABF00C129AF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=$PATH:~/.cargo/bin\n\ncd adblock-rust-ffi\ncargo clean\ncargo lipo --xcode-integ\ncbindgen -o ../AdblockRust/adblock_rust_lib.h\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		27756EF625AFBAD500C129AF /* Sources */ = {
@@ -309,6 +288,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdblockRust/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -337,6 +317,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdblockRust/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
