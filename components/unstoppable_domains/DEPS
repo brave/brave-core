@@ -1,0 +1,14 @@
+include_rules = [
+  "+base",
+  "+components/keyed_service/core",
+  "+components/grit",
+  "+components/prefs",
+  "+components/security_interstitials/content",
+  "+components/security_interstitials/core",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+net",
+  "+ui/base",
+  "+url",
+]
