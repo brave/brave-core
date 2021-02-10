@@ -10605,6 +10605,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_RESIDENT_KEY_PRIVACY" desc="A message included in dialogs when activating a security key (an external physical device for user authentication) may cause information about a site visit to be recorded on that security key. Since this is a privacy concern, a message is shown to the user.">
         A record of your visit to this site will be kept on your security key.
       </message>
+      <message name="IDS_WEBAUTHN_RESIDENT_KEY_PREFERRED_PRIVACY" desc="A message included in dialogs when activating a security key (an external physical device for user authentication) may cause information about a site visit to be recorded on that security key. Since this is a privacy concern, a message is shown to the user. Whether the information is actually kept depends on which type of security key the user presents in response to this prompt. The translation of this message should mirror TC ID 6581223593622729386 (but 'may' replaces 'will').">
+        A record of your visit to this site may be kept on your security key.
+      </message>
       <message name="IDS_WEBAUTHN_ERROR_MISSING_CAPABILITY_TITLE" desc="Title of the dialog informing the user that the security key (an external physical device for user authentication) that they selected does not support some capability that the site requested.">
         Your security key can't be used with this site
       </message>
@@ -10628,6 +10631,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_ALLOW_ATTESTATION" desc="Label on button to allow a website to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
         Allow
+      </message>
+      <message name="IDS_WEBAUTHN_DENY_ATTESTATION" desc="Label on button to deny a website's request to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key. This was previously the word 'Block', but that is used in contexts where the decision is persistent so we wanted a different word for this because it is a one-time decision: the user will be asked again if the website requests again. Thus the translation would hopefully be distinct from the translation for 'Block' as used, for example, in IDS_COLLECTED_COOKIES_BLOCK_BUTTON.">
+        Skip
       </message>
       <message name="IDS_WEBAUTHN_RETRY" desc="Button text. The user clicks this to retry the authentication flow after an error happened, e.g. to try with a different Security Key.">
         Try again

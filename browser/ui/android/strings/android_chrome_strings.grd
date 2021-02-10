@@ -780,6 +780,12 @@ For example, some websites may respond to this request by showing you ads that a
       <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy sandbox' page.">
         Privacy sandbox
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_STATUS_ENABLED" desc="Status text, displayed when the Privacy sandbox APIs are enabled.">
+        Trial is enabled
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_STATUS_DISABLED" desc="Status text, displayed when the Privacy sandbox APIs are disabled.">
+        Trial is disabled
+      </message>
       <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION" desc="">
         Privacy Sandbox is a set of new technologies that will eventually protect profiles from cross-site tracking mechanisms, like third-party cookies, while preserving web content and services that depend on those mechanisms today. Brave is working with website developers, publishers, advertisers, and other browsers to develop this new technology.
       </message>
@@ -2210,6 +2216,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_ACCESSIBILITY" desc="The content description for the bottom sheet install UI.">
         Install this app
+      </message>
+      <message name="IDS_IMAGE_ZOOM_CONTENT_DESCRIPTION" desc="The content description string for the screenshot in the image zoom view.">
+        Screenshot. Tap to close.
       </message>
 
       <!-- Page info popup -->
