@@ -197,16 +197,13 @@ void BraveAppMenuModel::InsertAlternateProfileItems() {
 
   // Open Guest Window
   if (IsCommandIdEnabled(IDC_OPEN_GUEST_PROFILE)) {
-    InsertItemWithStringIdAt(index,
-                             IDC_OPEN_GUEST_PROFILE,
+    InsertItemWithStringIdAt(index, IDC_OPEN_GUEST_PROFILE,
                              IDS_OPEN_GUEST_PROFILE);
   }
 
   // Create New Profile
   if (IsCommandIdEnabled(IDC_ADD_NEW_PROFILE)) {
-    InsertItemWithStringIdAt(index,
-                             IDC_ADD_NEW_PROFILE,
-                             IDS_ADD_NEW_PROFILE);
+    InsertItemWithStringIdAt(index, IDC_ADD_NEW_PROFILE, IDS_ADD_NEW_PROFILE);
   }
 
   if (zoom_index != GetIndexOfCommandId(IDC_ZOOM_MENU))
