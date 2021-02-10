@@ -107,9 +107,16 @@ class BraveShieldStatsView: UIView, Themeable {
     }
     
     var dataSaved: String {
-        let estimatedDataSavedInBytes = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * bytesPerItem
+        var estimatedDataSavedInBytes = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * bytesPerItem
         
         if estimatedDataSavedInBytes <= 0 { return "0" }
+        let _1MB = 1000 * 1000
+        
+        // Byte formatted megabytes value can be too long to display nicely(#3274).
+        // As a workaround we cut fraction value from megabytes by rounding it down.
+        if estimatedDataSavedInBytes > _1MB {
+            estimatedDataSavedInBytes = (estimatedDataSavedInBytes / _1MB) * _1MB
+        }
         
         let formatter = ByteCountFormatter().then {
             $0.allowsNonnumericFormatting = false
@@ -173,8 +180,9 @@ private class StatView: UIView {
     fileprivate var statLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 32, weight: UIFont.Weight.medium)
+        label.font = .systemFont(ofSize: 32, weight: UIFont.Weight.medium)
+        label.minimumScaleFactor = 0.5
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
