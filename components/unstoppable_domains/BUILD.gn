@@ -3,35 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-source_set("constants") {
-  sources = [
-    "constants.h",
-    "pref_names.h",
-  ]
-}
-
-source_set("features") {
-  sources = [ "features.h" ]
-
-  deps = [ "//base" ]
-}
-
-source_set("utils") {
-  sources = [
-    "utils.cc",
-    "utils.h",
-  ]
-
-  deps = [
-    ":constants",
-    ":features",
-    "//components/prefs",
-    "//url",
-  ]
-}
-
 source_set("unstoppable_domains") {
   sources = [
+    "constants.h",
+    "features.h",
+    "pref_names.h",
     "unstoppable_domains_interstitial_controller_client.cc",
     "unstoppable_domains_interstitial_controller_client.h",
     "unstoppable_domains_navigation_throttle.cc",
@@ -41,12 +17,8 @@ source_set("unstoppable_domains") {
     "unstoppable_domains_service.cc",
     "unstoppable_domains_service.h",
     "unstoppable_domains_service_delegate.h",
-  ]
-
-  public_deps = [
-    ":constants",
-    ":features",
-    ":utils",
+    "utils.cc",
+    "utils.h",
   ]
 
   deps = [

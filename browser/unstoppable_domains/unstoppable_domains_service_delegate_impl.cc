@@ -11,6 +11,7 @@
 namespace unstoppable_domains {
 
 void UnstoppableDomainsServiceDelegateImpl::UpdateNetworkService() {
+  // Trigger a DoH config update in network service.
   SystemNetworkContextManager::GetStubResolverConfigReader()
       ->UpdateNetworkService(false /* record_metrics */);
 }

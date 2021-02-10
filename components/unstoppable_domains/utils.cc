@@ -10,6 +10,7 @@
 #include "brave/components/unstoppable_domains/constants.h"
 #include "brave/components/unstoppable_domains/features.h"
 #include "brave/components/unstoppable_domains/pref_names.h"
+#include "brave/net/unstoppable_domains/constants.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 

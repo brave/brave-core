@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/test/scoped_feature_list.h"
-#include "brave/components/unstoppable_domains/constants.h"
-#include "brave/components/unstoppable_domains/features.h"
+#include "brave/net/unstoppable_domains/constants.h"
 
 #include "../../../../net/dns/dns_transaction_unittest.cc"
 
@@ -27,10 +25,7 @@ namespace net {
 class BraveDnsTransactionTest : public DnsTransactionTestBase,
                                 public WithTaskEnvironment {
  public:
-  BraveDnsTransactionTest() {
-    feature_list_.InitAndEnableFeature(
-        unstoppable_domains::features::kUnstoppableDomains);
-  }
+  BraveDnsTransactionTest() = default;
 
   ~BraveDnsTransactionTest() override = default;
 
@@ -56,9 +51,6 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
           server_index, true /* is_doh_server */, session_.get());
     }
   }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(BraveDnsTransactionTest, SkipUDResolverForNonCryptoDomainsSingleServer) {

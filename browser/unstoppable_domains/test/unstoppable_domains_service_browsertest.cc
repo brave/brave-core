@@ -7,6 +7,7 @@
 #include "brave/components/unstoppable_domains/constants.h"
 #include "brave/components/unstoppable_domains/features.h"
 #include "brave/components/unstoppable_domains/pref_names.h"
+#include "brave/net/unstoppable_domains/constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"

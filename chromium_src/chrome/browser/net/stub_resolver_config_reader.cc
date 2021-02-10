@@ -8,8 +8,8 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-#include "brave/components/unstoppable_domains/constants.h"
 #include "brave/components/unstoppable_domains/utils.h"
+#include "brave/net/unstoppable_domains/constants.h"
 #endif
 
 namespace {

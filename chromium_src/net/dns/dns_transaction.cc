@@ -4,14 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_util.h"
-#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
+#include "brave/net/unstoppable_domains/constants.h"
 #include "net/dns/dns_config.h"
 #include "net/dns/dns_server_iterator.h"
-
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-#include "brave/components/unstoppable_domains/constants.h"
-#include "brave/components/unstoppable_domains/utils.h"
-#endif
 
 namespace {
 
@@ -19,12 +14,10 @@ bool GetNextIndex(const std::string& hostname,
                   const net::DnsConfig& config,
                   net::DnsServerIterator* dns_server_iterator,
                   size_t* doh_server_index) {
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
   // Skip unstoppable domains resolver for non-crypto domains.
-  if (unstoppable_domains::IsUnstoppableDomainsEnabled() &&
-      !base::EndsWith(hostname, unstoppable_domains::kCryptoDomain) &&
-      config.dns_over_https_servers[*doh_server_index].server_template ==
-          unstoppable_domains::kDoHResolver) {
+  if (config.dns_over_https_servers[*doh_server_index].server_template ==
+          unstoppable_domains::kDoHResolver &&
+      !base::EndsWith(hostname, unstoppable_domains::kCryptoDomain)) {
     // No next available index to attempt.
     if (!dns_server_iterator->AttemptAvailable()) {
       return false;
@@ -32,7 +25,6 @@ bool GetNextIndex(const std::string& hostname,
 
     *doh_server_index = dns_server_iterator->GetNextAttemptIndex();
   }
-#endif
 
   return true;
 }

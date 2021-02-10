@@ -7,7 +7,7 @@
 #include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-#include "brave/components/unstoppable_domains/constants.h"
+#include "brave/net/unstoppable_domains/constants.h"
 #endif
 
 namespace settings {
@@ -24,7 +24,7 @@ namespace {
 
 // Hide Unstoppable Domains resolver in the custom provider list in settings
 // because it will be used for name resolution only for TLDs from Unstoppable
-// Domains, instaed of a global DoH settings.
+// Domains, instead of a global DoH setting.
 std::unique_ptr<base::DictionaryValue> CreateSecureDnsSettingDict() {
   auto dict = CreateSecureDnsSettingDict_ChromiumImpl();
 #if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
