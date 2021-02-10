@@ -1,12 +1,12 @@
 diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
-index 9793ece3c2d1052e53696ce15a5b85f5052478ab..7f00e7f7e9bb187d1e0bfdc61ad6186fd4ca0f4e 100644
+index 5bbd40420cffe8f7cce6e7dc3e19269197908a57..a9f33809cc628dc6db2d877df8b8d2c4aab463ed 100644
 --- a/sandbox/policy/win/sandbox_win.cc
 +++ b/sandbox/policy/win/sandbox_win.cc
-@@ -933,6 +933,7 @@ ResultCode SandboxWin::StartSandboxedProcess(
+@@ -926,6 +926,7 @@ ResultCode SandboxWin::StartSandboxedProcess(
        launcher_process_command_line.HasSwitch(switches::kNoSandbox)) {
      base::LaunchOptions options;
      options.handles_to_inherit = handles_to_inherit;
 +    BRAVE_START_SANDBOXED_PROCESS
-     BOOL in_job = true;
-     // Prior to Windows 8 nested jobs aren't possible.
-     if (sandbox_type == SandboxType::kNetwork &&
+     // Network process runs in a job even when unsandboxed. This is to ensure it
+     // does not outlive the browser, which could happen if there is a lot of I/O
+     // on process shutdown, in which case TerminateProcess can fail. See
