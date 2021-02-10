@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.cc b/chrome/browser/sync/profile_sync_service_factory.cc
-index 39f723c3fa89cec00b4536320ebe6223e603cdb5..fb6957f82827a0fd4cb83b55fe4f37287e05a77a 100644
+index 89e796cc53fc107597838419f7ce0c00db05c518..6265dcd01a9c4d803f2c57e02f3fe8e11ecc6b39 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.cc
 +++ b/chrome/browser/sync/profile_sync_service_factory.cc
 @@ -264,7 +264,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(

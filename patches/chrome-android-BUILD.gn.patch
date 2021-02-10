@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 347e13323c843b05c436f44bd227321102454a10..ac51039231f2ee4a6851036d67fe0c071815bdab 100644
+index 4102f30bb453ec5f6a79df40caed7ff48ed1390d..54f65044d352ad319b37597e6acf6eb57a4f5a0a 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -235,6 +235,7 @@ android_resources("chrome_app_java_resources") {

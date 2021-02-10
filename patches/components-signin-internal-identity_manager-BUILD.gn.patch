@@ -1,5 +1,5 @@
 diff --git a/components/signin/internal/identity_manager/BUILD.gn b/components/signin/internal/identity_manager/BUILD.gn
-index c9843fc59a7702c8011010b2233d357622763b6e..eed778ceb7fdda6f766c6f3240e7a1da31cb2c39 100644
+index 9d17ea275d9313d0fa0b47e418014eb02eadb842..e9f9df8f5413fcd698e25fbb3cf7371024d1ea9b 100644
 --- a/components/signin/internal/identity_manager/BUILD.gn
 +++ b/components/signin/internal/identity_manager/BUILD.gn
 @@ -4,6 +4,7 @@
@@ -10,7 +10,7 @@ index c9843fc59a7702c8011010b2233d357622763b6e..eed778ceb7fdda6f766c6f3240e7a1da
  
  # This target forms the core of the IdentityManager implementation
  # (//components/signin/public/identity_manager/identity_manager.*).
-@@ -129,6 +130,7 @@ source_set("identity_manager") {
+@@ -126,6 +127,7 @@ source_set("identity_manager") {
        "device_accounts_synchronizer_impl.h",
      ]
    }

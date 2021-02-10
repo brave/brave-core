@@ -1,30 +1,30 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bcd3c134b8 100644
+index 6f386508b11746fb9d313b51642e3450bfdf2ef5..cd60c40ffe63f70e481641938c3b584da75e2bf2 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -166,6 +166,7 @@ if (!is_android && !is_mac) {
+@@ -168,6 +168,7 @@ if (!is_android && !is_mac) {
          "common/crash_keys.cc",
          "common/crash_keys.h",
        ]
 +      sources -= [ "app/chrome_exe.rc", ] sources += [ "//brave/app/brave_exe.rc", ]
-
+ 
        deps += [
          ":chrome_dll",
-@@ -433,11 +434,12 @@ if (is_win) {
+@@ -437,11 +438,12 @@ if (is_win) {
        args += [ "--keystone=0" ]
      }
    }
 +  copy("brave_app_plist") { deps = [ "//brave:brave_app_plist" ] sources = [ "$root_gen_dir/brave/brave_app_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] }
-
+ 
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
-
+ 
 -    info_plist_target = ":chrome_app_plist"
 +    info_plist_target = ":brave_app_plist"
      extra_substitutions = [
        "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
        "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -458,6 +463,7 @@ if (is_win) {
+@@ -459,6 +461,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -32,7 +32,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
  
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
-@@ -524,7 +530,7 @@ if (is_win) {
+@@ -525,7 +528,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -41,7 +41,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
            "-v",
            chrome_version_full,
            "-g",
-@@ -593,6 +599,7 @@ if (is_win) {
+@@ -594,6 +597,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
@@ -49,7 +49,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
      }
    }
  
-@@ -625,9 +632,11 @@ if (is_win) {
+@@ -626,9 +630,11 @@ if (is_win) {
        "--scm=0",
      ]
    }
@@ -61,7 +61,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
      if (is_chrome_branded) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -648,7 +657,7 @@ if (is_win) {
+@@ -649,7 +655,7 @@ if (is_win) {
  
        output_name = chrome_helper_name + invoker.helper_name_suffix
  
@@ -70,7 +70,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
        extra_substitutions = [
          "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
          "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1044,6 +1050,7 @@ if (is_win) {
+@@ -1051,6 +1057,7 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -78,7 +78,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1205,6 +1212,7 @@ if (is_win) {
+@@ -1212,6 +1219,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -86,7 +86,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/app:shutdown_signal_handlers",
-@@ -1312,12 +1326,13 @@ group("child_dependencies") {
+@@ -1313,12 +1321,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -101,7 +101,7 @@ index c28309a07dd643523e4a6d52bf90a9291a521399..1ec8e01842d71078f12c0783c59f41bc
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1371,6 +1386,7 @@ group("resources") {
+@@ -1372,6 +1381,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
