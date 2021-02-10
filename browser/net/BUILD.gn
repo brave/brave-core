@@ -54,11 +54,11 @@ source_set("net") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/extensions:common",
+    "//components/content_settings/core/browser",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
-    "//components/content_settings/core/browser",
     "//extensions/common:common_constants",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
@@ -88,9 +88,7 @@ source_set("net") {
       "brave_referrals_network_delegate_helper.h",
     ]
 
-    deps += [
-      "//brave/components/brave_referrals/browser",
-    ]
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (enable_brave_webtorrent) {
