@@ -26,8 +26,6 @@ import * as utils from '../utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 
-const clipboardCopy = require('clipboard-copy')
-
 interface State {
   activeTabId: number
   modalActivity: boolean
@@ -91,7 +89,7 @@ class PageWallet extends React.Component<Props, State> {
   onModalBackupOnCopy = async (backupKey: string) => {
     // TODO(jsadler) possibly flash a message that copy was completed
     try {
-      await clipboardCopy(backupKey)
+      await navigator.clipboard.writeText(backupKey)
       console.log('Copy successful')
       chrome.send('brave_rewards.setBackupCompleted')
     } catch (e) {
