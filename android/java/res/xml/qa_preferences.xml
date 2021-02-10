@@ -35,7 +35,7 @@
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="qa_vlog_rewards"
-        android:title="Enable vlog for rewards"
+        android:title="Verbose Logs for Ad-Rewards"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off"
         android:defaultValue="false" />
