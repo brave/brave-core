@@ -568,6 +568,23 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
+// Requests made by a service worker should be blocked as well.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 0, 0, 1);"
+                         "installBlockingServiceWorker()"));
+  // https://github.com/brave/brave-browser/issues/14087
+  // EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 // Load a page with an ad image which is matched on the regional blocker,
 // but make sure it is saved by the default ad_block_client's exception.
 // This test is the same as AdsGetBlockedByRegionalBlocker except for at
