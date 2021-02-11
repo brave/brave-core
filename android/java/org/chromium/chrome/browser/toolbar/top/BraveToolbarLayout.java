@@ -352,9 +352,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                                 getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
                         OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
                     }
-                    if (mBraveShieldsButton != null && mBraveShieldsHandler != null
-                        && !mBraveShieldsHandler.isShowing()) {
-                      checkForTooltip(tab);
+                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
+                        checkForTooltip(tab);
                     }
                 }
             }
@@ -404,29 +404,25 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                     && mBraveShieldsHandler.getTackersBlockedCount(tab.getId())
                                     + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
                             > 0) {
-                showTooltip(ShieldsTooltipEnum.ONE_TIME_ADS_TRACKER_BLOCKED_TOOLTIP);
-                BraveShieldsUtils.setShieldsTooltipShown(
-                        BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, true);
+                showTooltip(ShieldsTooltipEnum.ONE_TIME_ADS_TRACKER_BLOCKED_TOOLTIP,
+                        BraveShieldsUtils.PREF_SHIELDS_TOOLTIP);
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                                BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP)
                     && shouldShowVideoTooltip(tab.getUrlString())) {
-                showTooltip(ShieldsTooltipEnum.VIDEO_ADS_BLOCKED_TOOLTIP);
-                BraveShieldsUtils.setShieldsTooltipShown(
-                        BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP, true);
+                showTooltip(ShieldsTooltipEnum.VIDEO_ADS_BLOCKED_TOOLTIP,
+                        BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP);
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                                BraveShieldsUtils.PREF_SHIELDS_ADS_TRACKER_BLOCKED_TOOLTIP)
                     && mBraveShieldsHandler.getTackersBlockedCount(tab.getId())
                                     + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
                             > 10) {
-                showTooltip(ShieldsTooltipEnum.ADS_TRACKER_BLOCKED_TOOLTIP);
-                BraveShieldsUtils.setShieldsTooltipShown(
-                        BraveShieldsUtils.PREF_SHIELDS_ADS_TRACKER_BLOCKED_TOOLTIP, true);
+                showTooltip(ShieldsTooltipEnum.ADS_TRACKER_BLOCKED_TOOLTIP,
+                        BraveShieldsUtils.PREF_SHIELDS_ADS_TRACKER_BLOCKED_TOOLTIP);
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                                BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP)
                     && mBraveShieldsHandler.getHttpsUpgradeCount(tab.getId()) > 0) {
-                showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP);
-                BraveShieldsUtils.setShieldsTooltipShown(
-                        BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP, true);
+                showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP,
+                        BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP);
             }
         }
     }
@@ -454,7 +450,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         }
     }
 
-    private void showTooltip(ShieldsTooltipEnum shieldsTooltipEnum) {
+    private void showTooltip(ShieldsTooltipEnum shieldsTooltipEnum, String tooltipPref) {
         mShieldsPopupWindowTooltip =
                 new PopupWindowTooltip.Builder(getContext())
                         .anchorView(mBraveShieldsButton)
@@ -494,8 +490,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         TextView tooltipText = mShieldsPopupWindowTooltip.findViewById(R.id.txt_tooltip_text);
         tooltipText.setText(getContext().getResources().getString(shieldsTooltipEnum.getText()));
 
-        mShieldsPopupWindowTooltip.show();
-        BraveShieldsUtils.isTooltipShown = true;
+        if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
+            mShieldsPopupWindowTooltip.show();
+            BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
+            BraveShieldsUtils.isTooltipShown = true;
+        }
     }
 
     public void dismissShieldsTooltip() {
