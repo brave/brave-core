@@ -27,7 +27,8 @@ extension BrowserViewController {
     
     private func presentEducationalProductNotifications() {
         guard let selectedTab = tabManager.selectedTab,
-              !benchmarkNotificationPresented else {
+              !benchmarkNotificationPresented,
+              !topToolbar.inOverlayMode else {
             return
         }
         
