@@ -70,7 +70,10 @@ source_set("pref_names") {
 source_set("tor_unit_tests") {
   testonly = true
   if (enable_tor) {
-    sources = [ "tor_control_unittest.cc" ]
+    sources = [
+      "tor_control_unittest.cc",
+      "tor_file_watcher_unittest.cc",
+    ]
 
     deps = [
       "//base/test:test_support",

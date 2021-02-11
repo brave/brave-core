@@ -23,6 +23,9 @@ struct OnTaskRunnerDeleter;
 
 namespace tor {
 
+FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlCookie);
+FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlPort);
+
 class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
  public:
   using ReapTorCallback =
@@ -40,6 +43,9 @@ class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
 
  private:
   friend class base::RefCountedThreadSafe<TorFileWatcher>;
+  // friend class TorFileWatcherTest;
+  FRIEND_TEST_ALL_PREFIXES(TorFileWatcherTest, EatControlCookie);
+  FRIEND_TEST_ALL_PREFIXES(TorFileWatcherTest, EatControlPort);
   virtual ~TorFileWatcher();
 
   void StartWatchingOnTaskRunner();

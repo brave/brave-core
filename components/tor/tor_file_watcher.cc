@@ -212,7 +212,7 @@ bool TorFileWatcher::EatControlCookie(std::vector<uint8_t>& cookie,
   constexpr size_t kBufSiz = 33;
   char buf[kBufSiz];
   int nread = cookiefile.ReadAtCurrentPos(buf, kBufSiz);
-  if (nread < 0) {
+  if (nread <= 0) {
     VLOG(0) << "tor: failed to read Tor control auth cookie";
     return false;
   }
@@ -290,6 +290,10 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
   if (!base::StringToInt(portstr, &port)) {
     VLOG(0) << "tor: failed to parse control port: "
             << "`" << portstr << "'";  // XXX escape
+    return false;
+  }
+  if (port > 65535) {
+    VLOG(0) << "tor: port overflow";
     return false;
   }
   mtime = info.last_modified;
