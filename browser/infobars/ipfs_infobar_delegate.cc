@@ -6,6 +6,7 @@
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "brave/browser/brave_browser_process_impl.h"
@@ -15,6 +16,7 @@
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
+#include "chrome/browser/shell_integration.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
@@ -22,6 +24,29 @@
 #include "content/public/browser/browser_context.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
+
+namespace {
+// Sets current executable as default protocol handler in a system.
+void SetupIPFSProtocolHandler(const std::string& protocol) {
+  auto isDefaultCallback = [](const std::string& protocol,
+                              shell_integration::DefaultWebClientState state) {
+    if (state == shell_integration::IS_DEFAULT) {
+      VLOG(1) << protocol << " already has a handler";
+      return;
+    }
+    VLOG(1) << "Set as default handler for " << protocol;
+    // The worker pointer is reference counted. While it is running, the
+    // sequence it runs on will hold references it will be automatically
+    // freed once all its tasks have finished.
+    base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(
+        protocol)
+        ->StartSetAsDefault(base::NullCallback());
+  };
+
+  base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(protocol)
+      ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
+}
+}  // namespace
 
 // static
 void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service,
@@ -80,6 +105,8 @@ bool IPFSInfoBarDelegate::Accept() {
       ->SetInteger(kIPFSResolveMethod,
                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   g_brave_browser_process->ipfs_client_updater()->Register();
+  SetupIPFSProtocolHandler(ipfs::kIPFSScheme);
+  SetupIPFSProtocolHandler(ipfs::kIPNSScheme);
   return true;
 }
 
