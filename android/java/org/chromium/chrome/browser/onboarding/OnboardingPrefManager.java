@@ -230,7 +230,7 @@ public class OnboardingPrefManager {
         context.startActivity(intent);
     }
 
-    public void onboardingNotification(Context context) {
+    public void onboardingNotification() {
         if (!isOnboardingNotificationShown()) {
             BraveOnboardingNotification.showOnboardingNotification();
             setOnboardingNotificationShown(true);
