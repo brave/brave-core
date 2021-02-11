@@ -39,6 +39,8 @@ BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     : ChromeBrowsingDataRemoverDelegate(browser_context),
       profile_(Profile::FromBrowserContext(browser_context)) {}
 
+BraveBrowsingDataRemoverDelegate::~BraveBrowsingDataRemoverDelegate() = default;
+
 void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     const base::Time& delete_begin,
     const base::Time& delete_end,
@@ -170,9 +172,11 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
   }
 
   base::ThreadPool::PostTaskAndReply(
-      FROM_HERE, {base::TaskPriority::USER_VISIBLE, base::MayBlock()},
+      FROM_HERE,
+      {base::TaskPriority::USER_VISIBLE, base::MayBlock(),
+       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(&BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC,
-                     base::Unretained(this), base::Passed(&process)),
+                     weak_ptr_factory_.GetWeakPtr(), base::Passed(&process)),
       CreateTaskCompletionClosure(TracingDataType::kIPFSCache));
 }
 #endif  // BUILDFLAG(IPFS_ENABLED)

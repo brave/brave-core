@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 #define BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
@@ -25,7 +26,7 @@ class BraveBrowsingDataRemoverDelegate
  public:
   explicit BraveBrowsingDataRemoverDelegate(
       content::BrowserContext* browser_context);
-  ~BraveBrowsingDataRemoverDelegate() override = default;
+  ~BraveBrowsingDataRemoverDelegate() override;
 
   BraveBrowsingDataRemoverDelegate(
       const BraveBrowsingDataRemoverDelegate&) = delete;
@@ -52,6 +53,8 @@ class BraveBrowsingDataRemoverDelegate
 #endif
 
   Profile* profile_;
+  base::WeakPtrFactory<BraveBrowsingDataRemoverDelegate> weak_ptr_factory_{
+      this};
 };
 
 #endif  // BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
