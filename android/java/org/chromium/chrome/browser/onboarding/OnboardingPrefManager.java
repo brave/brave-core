@@ -232,7 +232,7 @@ public class OnboardingPrefManager {
 
     public void onboardingNotification(Context context) {
         if (!isOnboardingNotificationShown()) {
-            BraveOnboardingNotification.showOnboardingNotification((Activity) context);
+            BraveOnboardingNotification.showOnboardingNotification();
             setOnboardingNotificationShown(true);
         }
     }
