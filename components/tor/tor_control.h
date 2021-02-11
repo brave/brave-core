@@ -48,8 +48,7 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
    public:
     virtual ~Delegate() = default;
     virtual void OnTorControlReady() = 0;
-    virtual void OnTorClosed() = 0;
-    virtual void OnTorCleanupNeeded(base::ProcessId id) = 0;
+    virtual void OnTorControlClosed(bool was_running) = 0;
 
     virtual void OnTorEvent(
         TorControlEvent,
@@ -68,11 +67,7 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
 
   explicit TorControl(TorControl::Delegate* delegate);
 
-  // This has to called before Start(), it will check if orphaned tor process
-  // exists and reap it.
-  void PreStartCheck(const base::FilePath& watchDirPath,
-                     base::OnceClosure check_complete);
-  void Start();
+  void Start(std::vector<uint8_t> cookie, int port);
   void Stop();
 
   void Cmd1(const std::string& cmd, CmdCallback callback);
@@ -117,16 +112,8 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
   bool running_;
   SEQUENCE_CHECKER(sequence_checker_);
 
-  scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
-  SEQUENCE_CHECKER(watch_sequence_checker_);
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   SEQUENCE_CHECKER(io_sequence_checker_);
-
-  // Connection state machine.
-  base::FilePath watch_dir_path_;
-  std::unique_ptr<base::FilePathWatcher> watcher_;
-  bool polling_;
-  bool repoll_;
 
   std::unique_ptr<net::TCPClientSocket> socket_;
 
@@ -155,16 +142,6 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
   std::unique_ptr<Async> async_;
 
   TorControl::Delegate* delegate_;
-
-  void StartWatching();
-  void StopWatching();
-  void CheckingOldTorProcess(base::OnceClosure callback);
-  void WatchDirChanged(const base::FilePath& path, bool error);
-  void Poll();
-  void PollDone();
-  bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
-  bool EatControlPort(int&, base::Time&);
-  bool EatOldPid(base::ProcessId* id);
 
   void OpenControl(int port, std::vector<uint8_t> cookie);
   void Connected(std::vector<uint8_t> cookie, int rv);
@@ -212,8 +189,7 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
 
   // Notify delegate on UI thread
   void NotifyTorControlReady();
-  void NotifyTorClosed();
-  void NotifyTorCleanupNeeded(base::ProcessId id);
+  void NotifyTorControlClosed();
 
   void NotifyTorEvent(TorControlEvent,
                       const std::string& initial,

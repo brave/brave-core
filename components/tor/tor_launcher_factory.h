@@ -19,6 +19,7 @@
 #include "base/observer_list.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/tor/tor_control.h"
+#include "brave/components/tor/tor_file_watcher.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace base {
@@ -47,8 +48,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   // tor::TorControl::Delegate
   void OnTorControlReady() override;
-  void OnTorClosed() override;
-  void OnTorCleanupNeeded(base::ProcessId id) override;
+  void OnTorControlClosed(bool was_running) override;
   void OnTorEvent(tor::TorControlEvent event,
                   const std::string& initial,
                   const std::map<std::string, std::string>& extra) override;
@@ -68,6 +68,10 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
 
   void OnTorControlCheckComplete();
+  void OnTorCleanupNeeded(bool cleanup_needed, base::ProcessId id);
+  void OnTorControlPrerequisitesReady(bool ready,
+                                      std::vector<uint8_t> cookie,
+                                      int port);
 
   void OnTorLauncherCrashed();
   void OnTorCrashed(int64_t pid);
@@ -97,6 +101,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
   scoped_refptr<tor::TorControl> control_;
+
+  scoped_refptr<tor::TorFileWatcher> tor_file_watcher_;
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 

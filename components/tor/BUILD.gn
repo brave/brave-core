@@ -29,6 +29,8 @@ source_set("tor") {
       "tor_control_event.cc",
       "tor_control_event.h",
       "tor_control_event_list.h",
+      "tor_file_watcher.cc",
+      "tor_file_watcher.h",
       "tor_launcher_factory.cc",
       "tor_launcher_factory.h",
       "tor_navigation_throttle.cc",
