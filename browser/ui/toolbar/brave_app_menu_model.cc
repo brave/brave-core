@@ -97,6 +97,7 @@ void BraveAppMenuModel::Build() {
   // Insert brave items after build chromium items.
   AppMenuModel::Build();
   InsertBraveMenuItems();
+  InsertAlternateProfileItems();
 }
 
 void BraveAppMenuModel::InsertBraveMenuItems() {
@@ -181,22 +182,32 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                            IDC_SHOW_BRAVE_ADBLOCK,
                            IDS_SHOW_BRAVE_ADBLOCK);
 
-  // Insert Create New Profile item
-  if (IsCommandIdEnabled(IDC_OPEN_GUEST_PROFILE)) {
-    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ZOOM_MENU) - 1,
-                             IDC_OPEN_GUEST_PROFILE,
-                             IDS_OPEN_GUEST_PROFILE);
-    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_OPEN_GUEST_PROFILE),
-                             IDC_ADD_NEW_PROFILE,
-                             IDS_ADD_NEW_PROFILE);
-    InsertSeparatorAt(GetIndexOfCommandId(IDC_ADD_NEW_PROFILE),
-                      ui::NORMAL_SEPARATOR);
-  }
-
   // Insert webcompat reporter item.
   InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_ABOUT),
                            IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
                            IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
+}
+
+void BraveAppMenuModel::InsertAlternateProfileItems() {
+  // Insert Open Guest Window and Create New Profile items just above
+  // the zoom item unless these items are disabled.
+
+  const int zoom_index = GetIndexOfCommandId(IDC_ZOOM_MENU);
+  const int index = zoom_index - 1;
+
+  // Open Guest Window
+  if (IsCommandIdEnabled(IDC_OPEN_GUEST_PROFILE)) {
+    InsertItemWithStringIdAt(index, IDC_OPEN_GUEST_PROFILE,
+                             IDS_OPEN_GUEST_PROFILE);
+  }
+
+  // Create New Profile
+  if (IsCommandIdEnabled(IDC_ADD_NEW_PROFILE)) {
+    InsertItemWithStringIdAt(index, IDC_ADD_NEW_PROFILE, IDS_ADD_NEW_PROFILE);
+  }
+
+  if (zoom_index != GetIndexOfCommandId(IDC_ZOOM_MENU))
+    InsertSeparatorAt(index, ui::NORMAL_SEPARATOR);
 }
 
 int BraveAppMenuModel::GetIndexOfBraveAdBlockItem() const {
