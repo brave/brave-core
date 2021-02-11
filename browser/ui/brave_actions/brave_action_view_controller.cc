@@ -63,6 +63,11 @@ bool BraveActionViewController::TriggerPopupWithUrl(
     PopupShowAction show_action,
     const GURL& popup_url,
     bool grant_tab_permissions) {
+  // If this extension is currently showing a popup, hide it. This behavior is
+  // a bit different than ExtensionActionViewController, which will hide any
+  // popup, regardless of extension. Consider duplicating the original behavior.
+  HidePopup();
+
   std::unique_ptr<extensions::ExtensionViewHost> host =
       extensions::ExtensionViewHostFactory::CreatePopupHost(popup_url,
                                                             browser_);
