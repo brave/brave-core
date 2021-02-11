@@ -5887,6 +5887,7 @@
 				28CE83DE1A1D1E7C00576538 /* Frameworks */,
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
 				E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */,
+				27C2856425D5CDEF00429881 /* Fix MaterialComponents Info.plist */,
 			);
 			buildRules = (
 			);
@@ -6435,6 +6436,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh \"$SRCROOT/swiftlint.sh\"\n\n";
+		};
+		27C2856425D5CDEF00429881 /* Fix MaterialComponents Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Fix MaterialComponents Info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# MaterialComponents.framework doesn't seem to have a `CFBundleShortVersionString`\n/usr/libexec/PlistBuddy -c 'Add :CFBundleShortVersionString string 1.0' \"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework/Info.plist\" || echo \"CFBundleShortVersionString already set\"\n";
 		};
 		F979BE0F25BCC098009B6ACF /* Build packaged javascript files */ = {
 			isa = PBXShellScriptBuildPhase;
