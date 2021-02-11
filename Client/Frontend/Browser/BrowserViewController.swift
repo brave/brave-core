@@ -152,10 +152,6 @@ class BrowserViewController: UIViewController {
     /// in order to not to try to present another one over existing popover
     var benchmarkNotificationPresented = false
     
-    /// Boolean which is tracking If a benchmark notification is presented
-    /// in single application instance
-    var shieldStatChangesNotified = false
-    
     /// Number of Ads/Trackers used a limit to show benchmark notification
     let benchmarkNumberOfTrackers = 10
 

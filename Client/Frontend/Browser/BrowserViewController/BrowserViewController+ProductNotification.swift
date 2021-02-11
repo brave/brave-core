@@ -37,43 +37,38 @@ extension BrowserViewController {
         // Step 1: First Time Block Notification
         if !Preferences.ProductNotificationBenchmarks.firstTimeBlockingShown.value,
            contentBlockerStats.total > 0 {
-
-            notifyFirstTimeBlock(theme: Theme.of(selectedTab))
             
+            notifyFirstTimeBlock(theme: Theme.of(selectedTab))
             Preferences.ProductNotificationBenchmarks.firstTimeBlockingShown.value = true
+            
+            return
         }
         
         // Step 2: Load a video on a streaming site
-        if benchmarkNotificationPresented || shieldStatChangesNotified { return }
-
         if !Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value,
            selectedTab.url?.isVideoSteamingSiteURL == true {
 
             notifyVideoAdsBlocked(theme: Theme.of(selectedTab))
             
-            shieldStatChangesNotified = true
+            return
         }
         
         // Step 3: Pre-determined # of Trackers and Ads Blocked
-        if benchmarkNotificationPresented || shieldStatChangesNotified { return }
-
         if !Preferences.ProductNotificationBenchmarks.privacyProtectionBlockShown.value,
            contentBlockerStats.total > benchmarkNumberOfTrackers {
             
             notifyPrivacyProtectBlock(theme: Theme.of(selectedTab))
             
-            shieldStatChangesNotified = true
+            return
         }
         
         // Step 4: Https Upgrade
-        if benchmarkNotificationPresented || shieldStatChangesNotified { return }
-
         if !Preferences.ProductNotificationBenchmarks.httpsUpgradeShown.value,
            contentBlockerStats.httpsCount > 0 {
 
             notifyHttpsUpgrade(theme: Theme.of(selectedTab))
             
-            shieldStatChangesNotified = true
+            return
         }
     }
     
@@ -116,31 +111,22 @@ extension BrowserViewController {
     }
     
     private func showBenchmarkNotificationPopover(controller: (UIViewController & PopoverContentComponent)) {
+        benchmarkNotificationPresented = true
+
         let popover = PopoverController(contentController: controller, contentSizeBehavior: .autoLayout)
         popover.addsConvenientDismissalMargins = false
-        popover.popoverDidDismiss = { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.benchmarkNotificationPresented = false
-        }
-                    
         popover.present(from: self.topToolbar.locationView.shieldsButton, on: self)
-        benchmarkNotificationPresented = true
     }
     
     // MARK: Actions
     
     func showShieldsScreen() {
-        benchmarkNotificationPresented = false
-
         dismiss(animated: true) {
             self.presentBraveShieldsViewController()
         }
     }
     
     func dismissAndAddNoShowList(_ type: TrackingType) {
-        benchmarkNotificationPresented = false
-        
         dismiss(animated: true) {
             switch type {
                 case .videoAdBlock:
