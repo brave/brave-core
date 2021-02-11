@@ -36,10 +36,11 @@ namespace {
 
 base::Time GetDate(int year, int month, int day_of_month) {
   base::Time time;
-  DCHECK(base::Time::FromUTCExploded(
+  bool ok = base::Time::FromUTCExploded(
       base::Time::Exploded{
           .year = year, .month = month, .day_of_month = day_of_month},
-      &time));
+      &time);
+  DCHECK(ok);
   return time;
 }
 
@@ -482,8 +483,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BAPCutoffBefore) {
 
   {
     base::subtle::ScopedTimeClockOverrides time_override(
-        []() { return GetDate(2021, 3, 13) - base::TimeDelta::FromSeconds(1); },
-        nullptr, nullptr);
+        []() { return GetDate(2021, 3, 12); }, nullptr, nullptr);
     ASSERT_EQ(FetchBalance(), 30.0);
   }
 }
