@@ -8,8 +8,9 @@
 
 namespace unstoppable_domains {
 
-extern const char kCryptoDomain[];
-extern const char kDoHResolver[];
+constexpr char kCryptoDomain[] = ".crypto";
+constexpr char kDoHResolver[] =
+    "https://resolver.unstoppable.io/dns-query{?brave_UD}";
 
 enum class ResolveMethodTypes {
   ASK,

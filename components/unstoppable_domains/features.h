@@ -6,14 +6,13 @@
 #ifndef BRAVE_COMPONENTS_UNSTOPPABLE_DOMAINS_FEATURES_H_
 #define BRAVE_COMPONENTS_UNSTOPPABLE_DOMAINS_FEATURES_H_
 
-namespace base {
-struct Feature;
-}  // namespace base
+#include "base/feature_list.h"
 
 namespace unstoppable_domains {
 namespace features {
 
-extern const base::Feature kUnstoppableDomains;
+constexpr base::Feature kUnstoppableDomains{"UnstoppableDomains",
+                                            base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace unstoppable_domains
