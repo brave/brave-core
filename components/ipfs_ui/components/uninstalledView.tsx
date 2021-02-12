@@ -11,7 +11,7 @@ import { PaddedButton, Section, Title } from '../style'
 
 interface Props {
   daemonStatus: IPFS.DaemonStatus
-  onLaunch: () => void
+  onInstall: () => void
 }
 
 export class UninstalledView extends React.Component<Props, {}> {
@@ -26,13 +26,13 @@ export class UninstalledView extends React.Component<Props, {}> {
           {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          {getLocale('not_installed')}
+          {this.props.daemonStatus.installing ? getLocale('installing') : getLocale('notInstalled')}
         </div>
         {!this.props.daemonStatus.installed && (
           <PaddedButton
-            text={getLocale('install_and_launch')}
+            text={getLocale('installAndLaunch')}
             size={'small'}
-            onClick={this.props.onLaunch}
+            onClick={this.props.onInstall}
           />
         )}
       </Section>

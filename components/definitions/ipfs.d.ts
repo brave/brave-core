@@ -23,6 +23,7 @@ declare namespace IPFS {
     installed: bool
     launched: bool
     restarting: bool
+    installing: bool
   }
 
   export interface RepoStats {

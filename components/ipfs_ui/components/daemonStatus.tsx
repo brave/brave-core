@@ -30,7 +30,7 @@ export class DaemonStatus extends React.Component<Props, {}> {
           {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          {this.props.daemonStatus.launched ? getLocale('launched') : getLocale('not_launched')}
+          {this.props.daemonStatus.launched ? getLocale('launched') : getLocale('notLaunched')}
         </div>
         <SideBySideButtons>
           {(!this.props.daemonStatus.launched && !this.props.daemonStatus.restarting) && (<PaddedButton
@@ -51,7 +51,7 @@ export class DaemonStatus extends React.Component<Props, {}> {
           )}
           {this.props.addressesConfig.api && !this.props.daemonStatus.restarting && (
           <PaddedButton
-            text={getLocale('open_webui')}
+            text={getLocale('openWebUI')}
             size={'small'}
             onClick={this.props.onOpenNodeWebUI}
           />

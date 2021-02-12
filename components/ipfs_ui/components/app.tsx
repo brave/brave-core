@@ -14,7 +14,8 @@ import { DaemonStatus } from './daemonStatus'
 import { NodeInfo } from './nodeInfo'
 import { RepoStats } from './repoStats'
 import { UninstalledView } from './uninstalledView'
-import { GreyStyle } from '../style'
+import { LearnMoreLink, GrayStyle } from '../style'
+import { getLocale } from '../../common/locale'
 
 // Utils
 import * as ipfsActions from '../actions/ipfs_actions'
@@ -45,6 +46,10 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.restartDaemon()
   }
 
+  installDaemon = () => {
+    this.actions.installDaemon()
+  }
+
   openNodeWebUI = () => {
     this.actions.openNodeWebUI()
   }
@@ -70,7 +75,7 @@ export class IPFSPage extends React.Component<Props, {}> {
     return (
       <div id='ipfsPage'>
         {!this.props.ipfsData.daemonStatus.installed && (
-        <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon}/>
+        <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onInstall={this.installDaemon}/>
         )}
         {this.props.ipfsData.daemonStatus.installed && (
         <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} addressesConfig={this.props.ipfsData.addressesConfig} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon} onOpenNodeWebUI={this.openNodeWebUI} />
@@ -79,13 +84,16 @@ export class IPFSPage extends React.Component<Props, {}> {
         <div
           style={(!this.props.ipfsData.daemonStatus.installed ||
           this.props.ipfsData.daemonStatus.restarting ||
-          !this.props.ipfsData.daemonStatus.launched) ? GreyStyle : {}}
+          !this.props.ipfsData.daemonStatus.launched) ? GrayStyle : {}}
         >
           <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
           <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
           <RepoStats repoStats={this.props.ipfsData.repoStats} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
         </div>
+        <a style={LearnMoreLink} href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
+          {getLocale('learnMore')}
+        </a>
       </div>
     )
   }

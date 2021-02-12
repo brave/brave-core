@@ -31,7 +31,7 @@ export class ConnectedPeers extends React.Component<Props, {}> {
               style={BlueLink}
               onClick={this.props.onOpenPeersWebUI}
             >
-              {getLocale('peers_details_link')}
+              {getLocale('peerDetailsLink')}
             </a>
           )}
         </div>

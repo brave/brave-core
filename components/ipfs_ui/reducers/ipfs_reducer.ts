@@ -77,6 +77,18 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
         daemonStatus: action.payload.daemonStatus
       }
       break
+    case types.IPFS_INSTALL_DAEMON:
+      chrome.send('ipfs.launchDaemon')
+      state = {
+        ...state,
+        daemonStatus: {
+          installed: false,
+          launched: false,
+          restarting: false,
+          installing: true
+        }
+      }
+      break
     case types.IPFS_LAUNCH_DAEMON:
       chrome.send('ipfs.launchDaemon')
       break
@@ -93,7 +105,12 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
       chrome.send('ipfs.restartDaemon')
       state = {
         ...state,
-        daemonStatus: { installed: true, launched: false, restarting: true }
+        daemonStatus: {
+          installed: true,
+          launched: false,
+          restarting: true,
+          installing: false
+        }
       }
       break
     default:
