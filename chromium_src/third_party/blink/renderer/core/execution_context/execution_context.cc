@@ -203,7 +203,9 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   // perturb the current pixel
   for (int i = 0; i < 32; i++) {
     uint8_t bit = canvas_key[i];
-    for (int j = 8; j >= 0; j--) {
+    for (int j = 0; j < 16; j++) {
+      if (j % 8 == 0)
+        bit = canvas_key[i];
       channel = v % 3;
       pixel_index = 4 * (v % pixel_count) + channel;
       pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
