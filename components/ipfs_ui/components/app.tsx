@@ -14,6 +14,7 @@ import { DaemonStatus } from './daemonStatus'
 import { NodeInfo } from './nodeInfo'
 import { RepoStats } from './repoStats'
 import { UninstalledView } from './uninstalledView'
+import { GreyStyle } from '../style'
 
 // Utils
 import * as ipfsActions from '../actions/ipfs_actions'
@@ -58,23 +59,21 @@ export class IPFSPage extends React.Component<Props, {}> {
   }
 
   render () {
-    if (!this.props.ipfsData.daemonStatus.installed) {
-      return (
-        <div id='ipfsPage'>
-          <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon}/>
-        </div>
-      )
-    }
-
     return (
       <div id='ipfsPage'>
+        {!this.props.ipfsData.daemonStatus.installed && (
+        <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon}/>
+        )}
+        {this.props.ipfsData.daemonStatus.installed && (
         <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon}/>
-        {this.props.ipfsData.daemonStatus.launched && (<div>
+        )}
+
+        <div style={!this.props.ipfsData.daemonStatus.installed || this.props.ipfsData.daemonStatus.restarting ? GreyStyle : {}}>
           <ConnectedPeers peerCount={this.props.ipfsData.connectedPeers.peerCount} />
           <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
           <RepoStats repoStats={this.props.ipfsData.repoStats} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
-        </div>)}
+        </div>
       </div>
     )
   }

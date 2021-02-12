@@ -24,3 +24,7 @@ export const SideBySideButtons = styled<{}, 'div'>('div')`
 export const PaddedButton = styled(Button as React.ComponentType<ButtonProps>)`
   margin: 5px;
 `
+
+export const GreyStyle = {
+  color:"grey"
+}
