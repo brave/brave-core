@@ -12,8 +12,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/rpill/rpill.h"
 #include "bat/ads/internal/security/security_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
@@ -99,7 +99,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildViaHeader() const {
-  if (IsUncertainFuture()) {
+  if (g_sys_info.is_uncertain_future) {
     return "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)";
   }
 

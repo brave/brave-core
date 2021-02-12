@@ -195,16 +195,14 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 + (BATBraveAdsSysInfo *)sysInfo
 {
   auto sys_info = [[BATBraveAdsSysInfo alloc] init];
-  sys_info.manufacturer = [NSString stringWithUTF8String: ads::g_sys_info.manufacturer.c_str()];
-  sys_info.model = [NSString stringWithUTF8String: ads::g_sys_info.model.c_str()];
+  sys_info.isUncertainFuture = ads::g_sys_info.is_uncertain_future;
 
   return sys_info;
 }
 
 + (void)setSysInfo:(BATBraveAdsSysInfo *)sysInfo
 {
-  ads::g_sys_info.manufacturer = sysInfo.manufacturer.UTF8String;
-  ads::g_sys_info.model = sysInfo.model.UTF8String;
+  ads::g_sys_info.is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
 + (BATBraveAdsBuildChannel *)buildChannel

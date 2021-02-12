@@ -54,6 +54,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -728,7 +729,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
 }
 
 void AdsServiceImpl::Start() {
-  GetHardwareInfo();
+  DetectUncertainFuture();
 }
 
 void AdsServiceImpl::Stop() {
@@ -782,15 +783,15 @@ void AdsServiceImpl::OnResetAllState(const bool success) {
   VLOG(1) << "Successfully reset ads state";
 }
 
-void AdsServiceImpl::GetHardwareInfo() {
-  base::SysInfo::GetHardwareInfo(base::BindOnce(
-      &AdsServiceImpl::OnGetHardwareInfo, base::Unretained(this)));
+void AdsServiceImpl::DetectUncertainFuture() {
+  auto callback =
+      base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture, AsWeakPtr());
+  brave_rpill::DetectUncertainFuture(base::BindOnce(std::move(callback)));
 }
 
-void AdsServiceImpl::OnGetHardwareInfo(base::SysInfo::HardwareInfo hardware) {
+void AdsServiceImpl::OnDetectUncertainFuture(const bool is_uncertain_future) {
   ads::SysInfoPtr sys_info = ads::SysInfo::New();
-  sys_info->manufacturer = hardware.manufacturer;
-  sys_info->model = hardware.model;
+  sys_info->is_uncertain_future = is_uncertain_future;
 
   bat_ads_service_->SetSysInfo(std::move(sys_info), base::NullCallback());
 

@@ -11,8 +11,7 @@ enum BraveAdsEnvironment {
 };
 
 struct BraveAdsSysInfo {
-  string manufacturer;
-  string model;
+  bool is_uncertain_future;
 };
 
 struct BraveAdsBuildChannel {
