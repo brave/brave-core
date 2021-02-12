@@ -49,7 +49,8 @@ extension BrowserViewController {
            selectedTab.url?.isVideoSteamingSiteURL == true {
 
             notifyVideoAdsBlocked(theme: Theme.of(selectedTab))
-            
+            Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value = true
+
             return
         }
         
@@ -58,7 +59,8 @@ extension BrowserViewController {
            contentBlockerStats.total > benchmarkNumberOfTrackers {
             
             notifyPrivacyProtectBlock(theme: Theme.of(selectedTab))
-            
+            Preferences.ProductNotificationBenchmarks.privacyProtectionBlockShown.value = true
+
             return
         }
         
@@ -67,7 +69,8 @@ extension BrowserViewController {
            contentBlockerStats.httpsCount > 0 {
 
             notifyHttpsUpgrade(theme: Theme.of(selectedTab))
-            
+            Preferences.ProductNotificationBenchmarks.httpsUpgradeShown.value = true
+
             return
         }
     }
@@ -92,21 +95,19 @@ extension BrowserViewController {
     private func notifyVideoAdsBlocked(theme: Theme) {
         let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .videoAdBlock)
         
-        dismissAndAddNoShowList(.videoAdBlock)
+        dismiss(animated: true)
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
     }
     
     private func notifyPrivacyProtectBlock(theme: Theme) {
         let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .trackerAdCountBlock(count: benchmarkNumberOfTrackers))
-        dismissAndAddNoShowList(.trackerAdCountBlock(count: benchmarkNumberOfTrackers))
-        
+        dismiss(animated: true)
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
     }
     
     private func notifyHttpsUpgrade(theme: Theme) {
         let shareTrackersViewController = ShareTrackersController(theme: theme, trackingType: .encryptedConnectionWarning)
-        
-        dismissAndAddNoShowList(.encryptedConnectionWarning)
+        dismiss(animated: true)
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
     }
     
@@ -123,21 +124,6 @@ extension BrowserViewController {
     func showShieldsScreen() {
         dismiss(animated: true) {
             self.presentBraveShieldsViewController()
-        }
-    }
-    
-    func dismissAndAddNoShowList(_ type: TrackingType) {
-        dismiss(animated: true) {
-            switch type {
-                case .videoAdBlock:
-                    Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value = true
-                case .trackerAdCountBlock:
-                    Preferences.ProductNotificationBenchmarks.privacyProtectionBlockShown.value = true
-                case .encryptedConnectionWarning:
-                    Preferences.ProductNotificationBenchmarks.httpsUpgradeShown.value = true
-                default:
-                    break
-            }
         }
     }
 }
