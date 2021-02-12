@@ -14,6 +14,8 @@ interface Props {
   onLaunch: () => void
   onShutdown: () => void
   onRestart: () => void
+  onOpenNodeWebUI: () => void
+  addressesConfig: IPFS.AddressesConfig
 }
 
 export class DaemonStatus extends React.Component<Props, {}> {
@@ -45,6 +47,13 @@ export class DaemonStatus extends React.Component<Props, {}> {
             text={getLocale('restart')}
             size={'small'}
             onClick={this.props.onRestart}
+          />
+          )}
+          {this.props.addressesConfig.api && !this.props.daemonStatus.restarting && (
+          <PaddedButton
+            text={getLocale('open_webui')}
+            size={'small'}
+            onClick={this.props.onOpenNodeWebUI}
           />
           )}
         </SideBySideButtons>

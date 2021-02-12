@@ -7,12 +7,10 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { Section, Title, BlueLink } from '../style'
+import { Section, Title } from '../style'
 
 interface Props {
   addressesConfig: IPFS.AddressesConfig
-  daemonStatus: IPFS.DaemonStatus
-  onOpenNodeWebUI: () => void
 }
 
 export class AddressesConfig extends React.Component<Props, {}> {
@@ -28,14 +26,6 @@ export class AddressesConfig extends React.Component<Props, {}> {
         </Title>
         <div>
           {getLocale('api')}: {this.props.addressesConfig.api}
-          <span>&#8195;</span>
-          {this.props.addressesConfig.api && !this.props.daemonStatus.restarting && (
-          <a
-            style={BlueLink}
-            onClick={this.props.onOpenNodeWebUI}
-          >
-            {getLocale('open_webui')}
-          </a>)}
         </div>
         <div>
           {getLocale('gateway')}: {this.props.addressesConfig.gateway}

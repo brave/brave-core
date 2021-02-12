@@ -73,7 +73,7 @@ export class IPFSPage extends React.Component<Props, {}> {
         <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon}/>
         )}
         {this.props.ipfsData.daemonStatus.installed && (
-        <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon}/>
+        <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} addressesConfig={this.props.ipfsData.addressesConfig} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon} onOpenNodeWebUI={this.openNodeWebUI} />
         )}
 
         <div
@@ -82,7 +82,7 @@ export class IPFSPage extends React.Component<Props, {}> {
           !this.props.ipfsData.daemonStatus.launched) ? GreyStyle : {}}
         >
           <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
-          <AddressesConfig daemonStatus={this.props.ipfsData.daemonStatus} addressesConfig={this.props.ipfsData.addressesConfig} onOpenNodeWebUI={this.openNodeWebUI} />
+          <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
           <RepoStats repoStats={this.props.ipfsData.repoStats} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
         </div>
