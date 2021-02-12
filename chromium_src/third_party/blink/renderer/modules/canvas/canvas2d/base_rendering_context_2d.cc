@@ -12,19 +12,16 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+#include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
-#define BRAVE_GET_IMAGE_DATA                                              \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-    if (WebContentSettingsClient* settings =                              \
-            brave::GetContentSettingsClientFor(context)) {                \
-      snapshot = brave::BraveSessionCache::From(*context).PerturbPixels(  \
-          settings, snapshot);                                            \
-      if (!snapshot) {                                                    \
-        exception_state.ThrowRangeError(                                  \
-            "Out of memory at ImageData creation");                       \
-        return nullptr;                                                   \
-      }                                                                   \
-    }                                                                     \
+#define BRAVE_GET_IMAGE_DATA                                                \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {   \
+    if (WebContentSettingsClient* settings =                                \
+            brave::GetContentSettingsClientFor(context)) {                  \
+      auto data_buffer = blink::ImageDataBuffer::Create(snapshot);          \
+      brave::BraveSessionCache::From(*context).PerturbPixels(               \
+          settings, data_buffer->Pixels(), data_buffer->ComputeByteSize()); \
+    }                                                                       \
   }
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
