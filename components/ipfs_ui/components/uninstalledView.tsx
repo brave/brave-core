@@ -35,9 +35,6 @@ export class UninstalledView extends React.Component<Props, {}> {
             onClick={this.props.onLaunch}
           />
         )}
-        <a href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
-        {getLocale('learn_more')}
-        </a>
       </Section>
     )
   }

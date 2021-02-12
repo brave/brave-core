@@ -31,6 +31,9 @@ export class NodeInfo extends React.Component<Props, {}> {
         <div>
           {getLocale('version')}: {this.props.nodeInfo.version}
         </div>
+        <a href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
+        {getLocale('learn_more')}
+        </a>
       </Section>
     )
   }
