@@ -65,8 +65,7 @@ VpnService::VpnService(content::BrowserContext* context)
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context_)
               ->GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {
-}
+      weak_factory_(this) {}
 
 VpnService::~VpnService() {}
 
