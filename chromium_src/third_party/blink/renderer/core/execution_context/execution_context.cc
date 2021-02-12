@@ -183,7 +183,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   // later for content hashing. This is safe because the maximum canvas
   // dimensions are less than SIZE_T_MAX. (Width and height are each
   // limited to 32,767 pixels.)
-  // TODO(bridiver) - we need to pass this value in because it will be different for encoded data
+  // Four bits per pixel
   const size_t pixel_count = size / 4;
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
@@ -193,9 +193,8 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_plus_domain_key),
                sizeof session_plus_domain_key));
   uint8_t canvas_key[32];
-  CHECK(h.Sign(
-      base::StringPiece(reinterpret_cast<const char*>(pixels), size),
-      canvas_key, sizeof canvas_key));
+  CHECK(h.Sign(base::StringPiece(reinterpret_cast<const char*>(pixels), size),
+               canvas_key, sizeof canvas_key));
   uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
   uint64_t pixel_index;
   // choose which channel (R, G, or B) to perturb
