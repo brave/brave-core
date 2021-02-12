@@ -36,8 +36,10 @@ class IPFSDOMHandler : public content::WebUIMessageHandler {
                             const ipfs::AddressesConfig& config);
   void HandleGetDaemonStatus(const base::ListValue* args);
   void HandleLaunchDaemon(const base::ListValue* args);
+  void LaunchDaemon();
   void OnLaunchDaemon(bool success);
   void HandleShutdownDaemon(const base::ListValue* args);
+  void HandleRestartDaemon(const base::ListValue* args);
   void OnShutdownDaemon(bool success);
   void HandleGetRepoStats(const base::ListValue* args);
   void OnGetRepoStats(bool success, const ipfs::RepoStats& stats);

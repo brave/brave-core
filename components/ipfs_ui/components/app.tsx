@@ -40,6 +40,10 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.shutdownDaemon()
   }
 
+  restartDaemon = () => {
+    this.actions.restartDaemon()
+  }
+
   refreshActions = () => {
     this.actions.getConnectedPeers()
     this.actions.getAddressesConfig()
@@ -64,11 +68,13 @@ export class IPFSPage extends React.Component<Props, {}> {
 
     return (
       <div id='ipfsPage'>
-        <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon}/>
-        <ConnectedPeers peerCount={this.props.ipfsData.connectedPeers.peerCount} />
-        <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
-        <RepoStats repoStats={this.props.ipfsData.repoStats} />
-        <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
+        <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon}/>
+        {this.props.ipfsData.daemonStatus.launched && (<div>
+          <ConnectedPeers peerCount={this.props.ipfsData.connectedPeers.peerCount} />
+          <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
+          <RepoStats repoStats={this.props.ipfsData.repoStats} />
+          <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
+        </div>)}
       </div>
     )
   }

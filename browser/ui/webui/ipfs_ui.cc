@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/task/post_task.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ipfs/addresses_config.h"
@@ -14,6 +15,7 @@
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -61,6 +63,11 @@ void IPFSDOMHandler::RegisterMessages() {
       "ipfs.shutdownDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleShutdownDaemon,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "ipfs.restartDaemon",
+      base::BindRepeating(&IPFSDOMHandler::HandleRestartDaemon,
+                          base::Unretained(this)));
+
   web_ui()->RegisterMessageCallback(
       "ipfs.getRepoStats",
       base::BindRepeating(&IPFSDOMHandler::HandleGetRepoStats,
@@ -149,7 +156,10 @@ void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
+  LaunchDaemon();
+}
 
+void IPFSDOMHandler::LaunchDaemon() {
   ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
@@ -163,7 +173,6 @@ void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
 void IPFSDOMHandler::OnLaunchDaemon(bool success) {
   if (!web_ui()->CanCallJavascript() || !success)
     return;
-
   CallOnGetDaemonStatus(web_ui());
 }
 
@@ -180,6 +189,31 @@ void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
 
   service->ShutdownDaemon(base::BindOnce(&IPFSDOMHandler::OnShutdownDaemon,
                                          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+  auto launch_callback = base::BindOnce(&IPFSDOMHandler::LaunchDaemon,
+                                        weak_ptr_factory_.GetWeakPtr());
+  service->ShutdownDaemon(base::BindOnce(
+      [](base::OnceCallback<void()> launch_callback, const bool success) {
+        if (!success) {
+          VLOG(1) << "Unable to shutdown daemon";
+          return;
+        }
+        if (launch_callback) {
+          std::move(launch_callback).Run();
+        }
+      },
+      std::move(launch_callback)));
 }
 
 void IPFSDOMHandler::OnShutdownDaemon(bool success) {

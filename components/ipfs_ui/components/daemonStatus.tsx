@@ -13,6 +13,7 @@ interface Props {
   daemonStatus: IPFS.DaemonStatus
   onLaunch: () => void
   onShutdown: () => void
+  onRestart: () => void
 }
 
 export class DaemonStatus extends React.Component<Props, {}> {
@@ -30,7 +31,7 @@ export class DaemonStatus extends React.Component<Props, {}> {
           {getLocale('launched')}: {this.props.daemonStatus.launched.toString()}
         </div>
         <SideBySideButtons>
-          {!this.props.daemonStatus.launched && (<PaddedButton
+          {!this.props.daemonStatus.launched && !this.props.daemonStatus.restarting && (<PaddedButton
             text={getLocale('launch')}
             size={'small'}
             onClick={this.props.onLaunch}
@@ -40,6 +41,12 @@ export class DaemonStatus extends React.Component<Props, {}> {
             size={'small'}
             onClick={this.props.onShutdown}
           />)}
+          {(this.props.daemonStatus.launched || this.props.daemonStatus.restarting) && (<PaddedButton
+            text={getLocale('restart')}
+            size={'small'}
+            onClick={this.props.onRestart}
+          />
+          )}
         </SideBySideButtons>
       </Section>
     )
