@@ -1,0 +1,11 @@
+diff --git a/chrome/test/include_js_tests.gni b/chrome/test/include_js_tests.gni
+index 72a439884d2be78df848ceaddca6fe7237f30a6c..67212f0a7b902bec22a89d0fc56999fc7a510b6c 100644
+--- a/chrome/test/include_js_tests.gni
++++ b/chrome/test/include_js_tests.gni
+@@ -3,5 +3,6 @@ import("//build/config/sanitizers/sanitizers.gni")
+ if (!is_android) {
+   # js_tests don't work in cross builds, https://crbug.com/1010561
+   include_js_tests =
++      false &&
+       !(is_asan || is_msan || is_tsan || is_cfi || (is_win && host_os != "win"))
+ }
