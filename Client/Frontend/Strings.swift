@@ -134,6 +134,7 @@ extension Strings {
     public static let thirdPartySearchFailedMessage = NSLocalizedString("ThirdPartySearchFailedMessage", bundle: Bundle.shared, value: "The search provider could not be added.", comment: "A title explaining that we failed to add a search engine")
     public static let customEngineFormErrorMessage = NSLocalizedString("CustomEngineFormErrorMessage", bundle: Bundle.shared, value: "Please fill all fields correctly.", comment: "A message explaining fault in custom search engine form.")
     public static let customEngineDuplicateErrorMessage = NSLocalizedString("CustomEngineDuplicateErrorMessage", bundle: Bundle.shared, value: "A search engine with this title or URL has already been added.", comment: "A message explaining fault in custom search engine form.")
+    public static let customEngineFillAllFieldsErrorMessage = NSLocalizedString("CustomEngineFillAllFieldsErrorMessage", bundle: Bundle.shared, value: "Please fill all the form fields.", comment: "A message explaining that all form fields are to be filled.")
 }
 
 // Tabs Delete All Undo Toast

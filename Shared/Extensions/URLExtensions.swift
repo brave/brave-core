@@ -306,6 +306,10 @@ extension URL {
         let schemes = includeDataURIs ? ["http", "https", "data"] : ["http", "https"]
         return scheme.map { schemes.contains($0) } ?? false
     }
+    
+    public func isSecureWebPage() -> Bool {
+        return scheme?.contains("https") ?? false
+    }
 
     // This helps find local urls that we do not want to show loading bars on.
     // These utility pages should be invisible to the user

@@ -42,6 +42,8 @@ extension Strings {
                                              bundle: .braveShared, value: "Learn More", comment: "")
     public static let termsOfService = NSLocalizedString("TermsOfService", tableName: "BraveShared",
                                                   bundle: .braveShared, value: "Terms of Service", comment: "")
+    public static let title = NSLocalizedString("Title", tableName: "BraveShared",
+                                                  bundle: .braveShared, value: "Title", comment: "")
     public static let monthAbbreviation =
         NSLocalizedString("monthAbbreviation", tableName: "BraveShared",
                           bundle: .braveShared, value: "mo.", comment: "Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language")
@@ -286,6 +288,42 @@ extension Strings {
 extension Strings {
     public static let searchSettingNavTitle = NSLocalizedString("SearchSettingNavTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search", comment: "Navigation title for search settings.")
     public static let searchSettingSuggestionCellTitle = NSLocalizedString("SearchSettingSuggestionCellTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Search Suggestions", comment: "Label for show search suggestions setting.")
+    public static let searchSettingAddCustomEngineCellTitle =
+        NSLocalizedString("searchSettingAddCustomEngineCellTitle",
+                          bundle: .braveShared,
+                          value: "Add Custom Search Engine",
+                          comment: "Add Custom Search Engine Table Cell Row Title")
+}
+
+// MARK: - SearchCustomEngineViewController
+
+extension Strings {
+    public struct CustomSearchEngine {
+        public static let customEngineNavigationTitle = NSLocalizedString(
+            "customSearchEngine.navigationTitle",
+            bundle: .braveShared,
+            value: "Add Search Engine",
+            comment: "Navigation Bar title")
+        
+        public static let customEngineAddDesription = NSLocalizedString(
+            "customSearchEngine.addEngineDescription",
+            bundle: Bundle.braveShared,
+            value: "Write the search url and replace the query with %s.\nFor example: https://youtube.com/search?q=%s \n(If the site supports OpenSearch an option to add automatically will be provided while editing this field.)",
+            comment: "Label explaining how to add search engine.")
+        
+        public static let customEngineAutoAddTitle = NSLocalizedString(
+            "customSearchEngine.autoAddTitle",
+            bundle: Bundle.braveShared,
+            value: "Auto Add",
+            comment: "Button title for Auto Add in header")
+        
+        public static let customEngineAddButtonTitle = NSLocalizedString(
+            "customSearchEngine.addButtonTitle",
+            bundle: Bundle.braveShared,
+            value: "Add",
+            comment: "Button title for Adding Engine in navigation Bar")
+
+    }
 }
 
 // MARK:-  SettingsContentViewController.swift
@@ -476,6 +514,7 @@ extension Strings {
     
     public static let currentlyUsedSearchEngines = NSLocalizedString("CurrentlyUsedSearchEngines", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Currently used search engines", comment: "Currently usedd search engines section name.")
     public static let quickSearchEngines = NSLocalizedString("QuickSearchEngines", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Quick-Search Engines", comment: "Title for quick-search engines settings section.")
+    public static let customSearchEngines = NSLocalizedString("CustomSearchEngines", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Custom-Search Engines", comment: "Title for quick-search engines settings section.")
     public static let standardTabSearch = NSLocalizedString("StandardTabSearch", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Standard Tab", comment: "Open search section of settings")
     public static let privateTabSearch = NSLocalizedString("PrivateTabSearch", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Private Tab", comment: "Default engine for private search.")
     public static let searchEngines = NSLocalizedString("SearchEngines", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search Engines", comment: "Search engines section of settings")

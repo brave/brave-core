@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Shared
+import BraveUI
 import UIKit
 
 struct SettingsUX {
@@ -24,7 +25,7 @@ private struct SettingsTableSectionHeaderFooterViewUX {
     static let titleVerticalLongPadding: CGFloat = 20
 }
 
-class SettingsTableSectionHeaderFooterView: UITableViewHeaderFooterView {
+class SettingsTableSectionHeaderFooterView: UITableViewHeaderFooterView, TableViewReusable {
 
     enum TitleAlignment {
         case top

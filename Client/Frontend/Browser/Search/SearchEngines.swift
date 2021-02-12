@@ -12,6 +12,16 @@ private let log = Logger.browserLogger
 
 private let customSearchEnginesFileName = "customEngines.plist"
 
+// MARK: - SearchEngineError
+
+enum SearchEngineError: Error {
+    case duplicate
+    case failedToSave
+    case invalidQuery
+    case missingInformation
+    case insecureURL
+}
+
 // BRAVE TODO: Move to newer Preferences class(#259)
 enum DefaultEngineType: String {
     case standard = "search.default.name"
@@ -174,22 +184,36 @@ class SearchEngines {
         disabledEngineNames[engine.shortName] = true
     }
 
-    func deleteCustomEngine(_ engine: OpenSearchEngine) {
+    func deleteCustomEngine(_ engine: OpenSearchEngine) throws {
         // We can't delete a preinstalled engine or an engine that is currently the default.
         if !engine.isCustomEngine || isEngineDefault(engine) {
             return
         }
 
         customEngines.remove(at: customEngines.firstIndex(of: engine)!)
-        saveCustomEngines()
+        do {
+            try saveCustomEngines()
+        } catch {
+            throw SearchEngineError.failedToSave
+        }
+
         orderedEngines = getOrderedEngines()
     }
 
     /// Adds an engine to the front of the search engines list.
-    func addSearchEngine(_ engine: OpenSearchEngine) {
+    func addSearchEngine(_ engine: OpenSearchEngine) throws {
+        guard orderedEngines.contains(where: { $0.searchTemplate != engine.searchTemplate}) else {
+            throw SearchEngineError.duplicate
+        }
+        
         customEngines.append(engine)
         orderedEngines.insert(engine, at: 1)
-        saveCustomEngines()
+        
+        do {
+            try saveCustomEngines()
+        } catch {
+            throw SearchEngineError.failedToSave
+        }
     }
 
     func queryForSearchURL(_ url: URL?) -> String? {
@@ -223,7 +247,7 @@ class SearchEngines {
         }
     }()
 
-    fileprivate func saveCustomEngines() {
+    fileprivate func saveCustomEngines() throws {
         do {
             let data = try NSKeyedArchiver.archivedData(withRootObject: customEngines, requiringSecureCoding: true)
             try data.write(to: URL(fileURLWithPath: customEngineFilePath()))

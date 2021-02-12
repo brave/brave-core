@@ -354,8 +354,6 @@ extension RewardsDebugSettingsViewController: KeyboardHelperDelegate {
     public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
         self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
-    public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardDidShowWithState state: KeyboardState) {
-    }
 }
 
 extension RewardsDebugSettingsViewController: UITextFieldDelegate {
