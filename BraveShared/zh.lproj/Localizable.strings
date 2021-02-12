@@ -8,7 +8,7 @@
 "BraveRewardsAdNotificationTitle" = "Brave Rewards";
 
 /* No comment provided by engineer. */
-"BraveRewardsOpen" = "打开";
+"BraveRewardsOpen" = "公开的设置";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "进阶控件";
@@ -452,7 +452,7 @@
 "RewardsInternalsWalletPaymentID" = "钱包付款 ID";
 
 /* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkExclusiveTierTitle" = "您是独家俱乐部的成员了。恭喜您！";
+"shieldEducation.benchmarkExclusiveTierTitle" = "您是独家奖励俱乐部的成员了。恭喜您！";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkGrandTierTitle" = "您已经成为一个大师了。恭喜您！";
@@ -593,7 +593,7 @@
 "today.noInternetBody" = "请检查您的网络连接，或重新连接至 Wi-Fi。";
 
 /* A button title that is placed on promoted cards */
-"today.promoted" = "已优惠";
+"today.promoted" = "已推广";
 
 /* No comment provided by engineer. */
 "today.refresh" = "刷新";
