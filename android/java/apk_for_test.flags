@@ -193,3 +193,10 @@
 -keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
     *** getMaxRowsForMostVisitedTiles(...);
 }
+
+-keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout {
+    *** updateModernLocationBarColorImpl(...);
+    *** onClickImpl(...);
+    *** populateUrlAnimatorSet(...);
+    *** getBoundsAfterAccountingForRightButtons(...);
+}

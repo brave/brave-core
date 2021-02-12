@@ -1,52 +1,36 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 115464039040dd5ece6d40fb8b305417b011f6e1..96e9ac9e0038eaddb7421e1eccb7500ce9a1498c 100644
+index 115464039040dd5ece6d40fb8b305417b011f6e1..25c2bb2af8c9c93aaabd717667e499bba335add7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -86,7 +86,7 @@ import java.util.List;
- /**
-  * Phone specific toolbar implementation.
-  */
--public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabCountObserver {
-+public class ToolbarPhone extends BraveToolbarLayout implements OnClickListener, TabCountObserver {
-     /** The amount of time transitioning from one theme color to another should take in ms. */
-     public static final long THEME_COLOR_TRANSITION_DURATION = 250;
- 
-@@ -402,10 +402,12 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
-     /**
-      * Set the background color of the location bar to appropriately match the theme color.
-      */
--    private void updateModernLocationBarColor(int color) {
-+    @Override
-+    protected void updateModernLocationBarColor(int color) {
+@@ -406,6 +406,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          if (mCurrentLocationBarColor == color) return;
          mCurrentLocationBarColor = color;
          mLocationBarBackground.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-+        super.updateModernLocationBarColor(color);
++        org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "updateModernLocationBarColorImpl", int.class, color);
      }
  
      /**
-@@ -527,6 +529,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -527,6 +528,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
-+        super.onClick(v);
++        org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "onClickImpl", View.class, v);
      }
  
      @Override
-@@ -696,7 +699,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -696,6 +698,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
--        return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
-+        return Math.max(mToolbarSidePadding, super.getBoundsAfterAccountingForRightButtons(mToolbarButtonsContainer));
++        if (true) return Math.max(mToolbarSidePadding, (int) org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "getBoundsAfterAccountingForRightButtons", ViewGroup.class, mToolbarButtonsContainer));
+         return Math.max(mToolbarSidePadding, mToolbarButtonsContainer.getMeasuredWidth());
      }
  
-     private void updateToolbarBackground(int color) {
 @@ -2108,6 +2111,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }
-+        populateUrlAnimatorSet(hasFocus, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, animators);
++        org.chromium.base.BraveReflectionUtil.InvokeMethod(BraveToolbarLayout.class, this, "populateUrlAnimatorSet", boolean.class, hasFocus, int.class, URL_FOCUS_TOOLBAR_BUTTONS_DURATION_MS, int.class, URL_CLEAR_FOCUS_TABSTACK_DELAY_MS, List.class, animators);
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  

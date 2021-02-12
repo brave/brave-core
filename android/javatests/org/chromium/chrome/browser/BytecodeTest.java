@@ -8,6 +8,7 @@ package org.chromium.chrome.browser;
 import android.content.Context;
 import android.support.test.filters.SmallTest;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -107,6 +108,9 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
     }
 
     @Test
@@ -179,6 +183,15 @@ public class BytecodeTest {
                 "openNewOrSelectExistingTab", true, Tab.class, String.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/app/BraveActivity",
                 "selectExistingTab", true, Tab.class, String.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
+                "updateModernLocationBarColorImpl", true, void.class, int.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
+                "onClickImpl", true, void.class, View.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
+                "populateUrlAnimatorSet", true, void.class, boolean.class, int.class, int.class,
+                List.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
+                "getBoundsAfterAccountingForRightButtons", true, int.class, ViewGroup.class));
     }
 
     @Test
