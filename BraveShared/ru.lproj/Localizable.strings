@@ -452,7 +452,7 @@
 "RewardsInternalsWalletPaymentID" = "Платежный идентификатор кошелька";
 
 /* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkExclusiveTierTitle" = "Поздравляем! Прекрасная работа!";
+"shieldEducation.benchmarkExclusiveTierTitle" = "Поздравляем! Вы теперь с нами!";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkGrandTierTitle" = "Поздравляем! Вы — мастер блокировки!";
@@ -467,7 +467,7 @@
 "shieldEducation.benchmarkProfessionalTierTitle" = "Поздравляем! Вы — профи!";
 
 /* Subtitle for tracker benchmark Share */
-"shieldEducation.benchmarkSpecialTierTitle" = "Поздравляем! Отличный результат!";
+"shieldEducation.benchmarkSpecialTierTitle" = "Добро пожаловать в наш клуб!";
 
 /* Subtitle for Shield Education Encrypted Connection Warning */
 "shieldEducation.encryptedConnectionWarningSubtitle" = "Brave устанавливает защищенное соединение автоматически (когда возможно).";

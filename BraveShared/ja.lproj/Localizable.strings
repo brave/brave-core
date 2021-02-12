@@ -209,7 +209,7 @@
 "rewards.totalSupportedCount" = "今月支援中のコンテンツクリエイター数";
 
 /* No comment provided by engineer. */
-"rewards.transferNoLongerAvailableWarningMessage" = "2021年3月13日までにウォレット移行を行ってください。ウォレット移行は3月14日以降は利用できません。";
+"rewards.transferNoLongerAvailableWarningMessage" = "2021年3月13日までにウォレット移行をお済ませください。ウォレット移行機能は3月13日以降に停止されます。";
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "このクリエイターは認証が完了していないため、支援対象になりません";

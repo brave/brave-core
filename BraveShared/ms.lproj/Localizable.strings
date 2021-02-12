@@ -593,7 +593,7 @@
 "today.noInternetBody" = "Cuba periksa sambungan anda atau sambungkan semula ke Wi-Fi.";
 
 /* A button title that is placed on promoted cards */
-"today.promoted" = "Dinaikkan pangkat";
+"today.promoted" = "Dipromosi";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Segar semula";
