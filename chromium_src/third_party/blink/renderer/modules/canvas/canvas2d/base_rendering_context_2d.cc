@@ -10,14 +10,15 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
-#define BRAVE_GET_IMAGE_DATA                                                \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {   \
-    if (WebContentSettingsClient* settings =                                \
-            brave::GetContentSettingsClientFor(context)) {                  \
-      auto data_buffer = blink::ImageDataBuffer::Create(snapshot);          \
-      brave::BraveSessionCache::From(*context).PerturbPixels(               \
-          settings, data_buffer->Pixels(), data_buffer->ComputeByteSize()); \
-    }                                                                       \
+#define BRAVE_GET_IMAGE_DATA                                                  \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {     \
+    if (WebContentSettingsClient* settings =                                  \
+            brave::GetContentSettingsClientFor(context)) {                    \
+      brave::BraveSessionCache::From(*context).PerturbPixels(                 \
+          settings,                                                           \
+          static_cast<const unsigned char*>(data_array->BaseAddress()), \
+          data_array->byteLength());                                           \
+    }                                                                         \
   }
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
