@@ -16,6 +16,11 @@ function MetadataWrapper() {
        ['link[rel="shortcut icon"]', element => element.getAttribute('href')],
        ['link[rel="Shortcut Icon"]', element => element.getAttribute('href')],
     ];
+    customRuleSets.search = {
+      rules: [
+        ['link[type="application/opensearchdescription+xml"]', element => { return { title: element.title, href: element.href } }]
+      ]
+    };
     customRuleSets.largeIcon = {
       rules: [
         ['link[rel="apple-touch-icon"]', element => element.getAttribute('href')],

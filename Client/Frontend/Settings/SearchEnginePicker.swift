@@ -11,10 +11,12 @@ class SearchEnginePicker: UITableViewController {
     var selectedSearchEngineName: String?
     
     var type: DefaultEngineType?
+    private var showCancel: Bool = true
     
-    convenience init(type: DefaultEngineType) {
+    convenience init(type: DefaultEngineType, showCancel: Bool = true) {
         self.init(style: .plain)
         self.type = type
+        self.showCancel = showCancel
     }
     
     override init(style: UITableView.Style) {
@@ -30,7 +32,9 @@ class SearchEnginePicker: UITableViewController {
         super.viewDidLoad()
 
         navigationItem.title = Strings.searchEnginePickerNavTitle
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
+        if showCancel {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
+        }
         tableView.tableFooterView = UIView()
     }
     

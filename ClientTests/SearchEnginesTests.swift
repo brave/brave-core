@@ -54,10 +54,11 @@ class SearchEnginesTests: XCTestCase {
         let testEngine = OpenSearchEngine(engineID: "ATester", shortName: "ATester", image: UIImage(), searchTemplate: "http://firefox.com/find?q={searchTerm}", suggestTemplate: nil, isCustomEngine: true)
         let profile = MockProfile()
         let engines = SearchEngines(files: profile.files)
-        engines.addSearchEngine(testEngine)
+        try! engines.addSearchEngine(testEngine)
+
         XCTAssertEqual(engines.orderedEngines[1].engineID, testEngine.engineID)
 
-        engines.deleteCustomEngine(testEngine)
+        try! engines.deleteCustomEngine(testEngine)
         let deleted = engines.orderedEngines.filter {$0 == testEngine}
         XCTAssertEqual(deleted, [])
     }

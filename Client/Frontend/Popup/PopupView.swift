@@ -583,9 +583,6 @@ extension PopupView: KeyboardHelperDelegate {
         _dialogFrameWithKeyboardHeight(height: keyboardHeight)
     }
     
-    func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardDidShowWithState state: KeyboardState) {
-    }
-    
     func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
         keyboardState = nil
         if !automaticallyMovesWithKeyboard {

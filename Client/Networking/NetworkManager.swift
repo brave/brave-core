@@ -28,7 +28,8 @@ class NetworkManager {
     
     /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
     /// when the file was last time modified on the server.
-    func downloadResource(with url: URL, resourceType: NetworkResourceType,
+    func downloadResource(with url: URL,
+                          resourceType: NetworkResourceType = .regular,
                           retryTimeout: TimeInterval? = 60,
                           checkLastServerSideModification: Bool = false) -> Deferred<CachedNetworkResource> {
         let completion = Deferred<CachedNetworkResource>()
