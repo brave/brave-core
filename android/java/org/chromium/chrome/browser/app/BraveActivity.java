@@ -125,6 +125,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String OPEN_URL = "open_url";
 
+    public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
+    public static final String BRAVE_BETA_PACKAGE_NAME = "com.brave.browser_beta";
+    public static final String BRAVE_NIGHTLY_PACKAGE_NAME = "com.brave.browser_nightly";
+
     private static final int DAYS_3 = 3;
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;

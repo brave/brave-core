@@ -22,6 +22,7 @@ import android.provider.Settings;
 import androidx.core.app.NotificationCompat;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -63,8 +64,13 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
                 || ContextUtils.getApplicationContext() == null) {
             return false;
         }
+        Log.e("NTP", "isBraveSetAsDefaultBrowser : " + resolveInfo.activityInfo.packageName);
         return resolveInfo.activityInfo.packageName.equals(
-                ContextUtils.getApplicationContext().getPackageName());
+                       BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                || resolveInfo.activityInfo.packageName.equals(
+                        BraveActivity.BRAVE_BETA_PACKAGE_NAME)
+                || resolveInfo.activityInfo.packageName.equals(
+                        BraveActivity.BRAVE_NIGHTLY_PACKAGE_NAME);
     }
 
     private boolean shouldShowNotification() {
