@@ -7,10 +7,12 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { Section } from '../style'
+import { Section, BlueLink } from '../style'
 
 interface Props {
+  addressesConfig: IPFS.AddressesConfig
   peerCount: number
+  onOpenPeersWebUI: () => void
 }
 
 export class ConnectedPeers extends React.Component<Props, {}> {
@@ -23,6 +25,15 @@ export class ConnectedPeers extends React.Component<Props, {}> {
       <Section>
         <div>
           {getLocale('connectedPeersTitle')} {this.props.peerCount}
+          <span>&#8195;</span>
+          {this.props.addressesConfig.api && (
+            <a
+              style={BlueLink}
+              onClick={this.props.onOpenPeersWebUI}
+            >
+              {getLocale('peers_details_link')}
+            </a>
+          )}
         </div>
       </Section>
     )

@@ -26,5 +26,10 @@ export const PaddedButton = styled(Button as React.ComponentType<ButtonProps>)`
 `
 
 export const GreyStyle = {
-  color:"grey"
+  color: 'grey'
+}
+
+export const BlueLink = {
+  color: 'blue',
+  cursor: 'pointer'
 }

@@ -45,6 +45,14 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.restartDaemon()
   }
 
+  openNodeWebUI = () => {
+    this.actions.openNodeWebUI()
+  }
+
+  openPeersWebUI = () => {
+    this.actions.openPeersWebUI()
+  }
+
   refreshActions = () => {
     this.actions.getConnectedPeers()
     this.actions.getAddressesConfig()
@@ -68,9 +76,13 @@ export class IPFSPage extends React.Component<Props, {}> {
         <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon}/>
         )}
 
-        <div style={!this.props.ipfsData.daemonStatus.installed || this.props.ipfsData.daemonStatus.restarting ? GreyStyle : {}}>
-          <ConnectedPeers peerCount={this.props.ipfsData.connectedPeers.peerCount} />
-          <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
+        <div
+          style={(!this.props.ipfsData.daemonStatus.installed ||
+          this.props.ipfsData.daemonStatus.restarting ||
+          !this.props.ipfsData.daemonStatus.launched) ? GreyStyle : {}}
+        >
+          <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
+          <AddressesConfig daemonStatus={this.props.ipfsData.daemonStatus} addressesConfig={this.props.ipfsData.addressesConfig} onOpenNodeWebUI={this.openNodeWebUI} />
           <RepoStats repoStats={this.props.ipfsData.repoStats} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
         </div>

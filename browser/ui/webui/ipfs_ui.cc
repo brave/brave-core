@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/task/post_task.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ipfs/addresses_config.h"
@@ -15,7 +14,6 @@
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"

@@ -16,16 +16,21 @@
     <message name="IDS_IPFS_REPO_VERSION" desc="Title of the version repo stats section">Version</message>
     <message name="IDS_IPFS_NODE_INFO_ID" desc="Title of the id node info section">Peer ID</message>
     <message name="IDS_IPFS_NODE_INFO_VERSION" desc="Title of the version node info section">Agent version</message>
-    <message name="IDS_IPFS_LAUNCHED" desc="Title of the launched status">Launched</message>
+    <message name="IDS_IPFS_LAUNCHED" desc="Title of the launched status">Node is running</message>
+    <message name="IDS_IPFS_NOT_LAUNCHED" desc="Title of not launched status">Node is not running</message>
     <message name="IDS_IPFS_LAUNCH" desc="Text of launch action">Start</message>
     <message name="IDS_IPFS_SHUTDOWN" desc="Text of shutdown action">Stop</message>
     <message name="IDS_IPFS_RESTART" desc="Text of shutdown action">Restart</message>
     <message name="IDS_IPFS_NOT_INSTALLED" desc="Text of not installed state">Not Installed</message>
     <message name="IDS_UTILITY_PROCESS_IPFS_NAME" desc="The utility process which manages IPFS daemon">IPFS Service</message>
-    <message name="IDS_IPFS_INSTALL_AND_LAUNCH" desc="Title of IPFS not connected interstitial page.">
+    <message name="IDS_IPFS_OPEN_WEBUI" desc="Title of brave://ipfs webui button">My Node</message>
+    <message name="IDS_IPFS_PEERS_DETAILS_LINK" desc="Link to open details about peers on brave://ipfs.">
+      (details)
+    </message>
+    <message name="IDS_IPFS_INSTALL_AND_LAUNCH" desc="Title of brave://ipfs install and launch button.">
       Install and start
     </message>
-    <message name="IDS_IPFS_LEARN_MORE" desc="Title of IPFS not connected interstitial page.">
+    <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
       Learn more about IPFS and privacy
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_TITLE" desc="Title of IPFS not connected interstitial page.">

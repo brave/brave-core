@@ -869,6 +869,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "path", IDS_IPFS_REPO_PATH },
         { "version", IDS_IPFS_REPO_VERSION },
         { "launched", IDS_IPFS_LAUNCHED },
+        { "not_launched", IDS_IPFS_NOT_LAUNCHED },
         { "launch", IDS_IPFS_LAUNCH },
         { "shutdown", IDS_IPFS_SHUTDOWN },
         { "not_installed", IDS_IPFS_NOT_INSTALLED },
@@ -878,7 +879,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "restart", IDS_IPFS_RESTART },
         { "learn_more", IDS_IPFS_LEARN_MORE },
         { "install_and_launch", IDS_IPFS_INSTALL_AND_LAUNCH },
-
+        { "open_webui", IDS_IPFS_OPEN_WEBUI },
+        { "peers_details_link", IDS_IPFS_PEERS_DETAILS_LINK },
       }
     }, {
 #endif

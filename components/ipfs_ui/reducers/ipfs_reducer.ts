@@ -11,6 +11,17 @@ import { types } from '../constants/ipfs_types'
 // Utils
 import * as storage from '../storage'
 
+const kNodeWebUIUrl = 'http://127.0.0.1:{api-port}/webui'
+const kPeersWebUIUrl = 'http://127.0.0.1:{api-port}/webui/#/peers'
+
+const openURlInNewTab = (target: string, api: string) => {
+  if (!api.length) {
+    return
+  }
+  const port = api.slice(api.lastIndexOf('/') + 1, api.length)
+  window.open(target.replace('{api-port}', port), '_blank')
+}
+
 const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefined, action) => {
   if (state === undefined) {
     state = storage.load()
@@ -72,13 +83,19 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
     case types.IPFS_SHUTDOWN_DAEMON:
       chrome.send('ipfs.shutdownDaemon')
       break
+    case types.IPFS_OPEN_NODE_WEBUI:
+      openURlInNewTab(kNodeWebUIUrl, state.addressesConfig.api)
+      break
+    case types.IPFS_OPEN_PEERS_WEBUI:
+      openURlInNewTab(kPeersWebUIUrl, state.addressesConfig.api)
+      break
     case types.IPFS_RESTART_DAEMON:
-        chrome.send('ipfs.restartDaemon')
-        state = {
-          ...state,
-          daemonStatus: {installed: true, launched: false, restarting: true }
-        }
-        break
+      chrome.send('ipfs.restartDaemon')
+      state = {
+        ...state,
+        daemonStatus: { installed: true, launched: false, restarting: true }
+      }
+      break
     default:
       break
   }

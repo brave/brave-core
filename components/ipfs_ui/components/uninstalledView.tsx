@@ -28,11 +28,13 @@ export class UninstalledView extends React.Component<Props, {}> {
         <div>
           {getLocale('not_installed')}
         </div>
-        {!this.props.daemonStatus.installed && (<PaddedButton
+        {!this.props.daemonStatus.installed && (
+          <PaddedButton
             text={getLocale('install_and_launch')}
             size={'small'}
             onClick={this.props.onLaunch}
-          />)}
+          />
+        )}
         <a href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
         {getLocale('learn_more')}
         </a>

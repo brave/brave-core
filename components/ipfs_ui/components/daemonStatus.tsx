@@ -28,7 +28,7 @@ export class DaemonStatus extends React.Component<Props, {}> {
           {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          {getLocale('launched')}: {this.props.daemonStatus.launched.toString()}
+          {this.props.daemonStatus.launched ? getLocale('launched') : getLocale('not_launched')}
         </div>
         <SideBySideButtons>
           {(!this.props.daemonStatus.launched && !this.props.daemonStatus.restarting) && (<PaddedButton
