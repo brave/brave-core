@@ -81,6 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &federated_learning::kFlocIdComputedEventLogging,
       &kEnableProfilePickerOnStartupFeature,
       &net::features::kFirstPartySets,
+      &network::features::kTrustTokens,
       &network_time::kNetworkTimeServiceQuerying,
   };
 

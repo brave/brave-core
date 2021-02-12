@@ -24,6 +24,7 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
       "DigitalGoods",
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
+      "TrustTokens",
   };
 
   if (base::Contains(kBraveDisabledTrialNames, trial_name)) {
@@ -38,10 +39,11 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
 
 bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
-  static const std::array<OriginTrialFeature, 3> kBraveDisabledTrialFeatures = {
+  static const std::array<OriginTrialFeature, 4> kBraveDisabledTrialFeatures = {
       OriginTrialFeature::kDigitalGoods,
       OriginTrialFeature::kSignedExchangeSubresourcePrefetch,
       OriginTrialFeature::kSubresourceWebBundles,
+      OriginTrialFeature::kTrustTokens,
   };
 
   return base::Contains(kBraveDisabledTrialFeatures, feature);
