@@ -61,7 +61,7 @@ export class IPFSPage extends React.Component<Props, {}> {
     if (!this.props.ipfsData.daemonStatus.installed) {
       return (
         <div id='ipfsPage'>
-          <UninstalledView />
+          <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon}/>
         </div>
       )
     }
