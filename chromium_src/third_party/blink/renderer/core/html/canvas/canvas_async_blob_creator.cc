@@ -5,9 +5,6 @@
 
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/local_dom_window.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
 #define BRAVE_CANVAS_ASYNC_BLOB_CREATOR                                \
   if (WebContentSettingsClient* settings =                             \
