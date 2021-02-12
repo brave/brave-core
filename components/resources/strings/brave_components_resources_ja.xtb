@@ -354,6 +354,8 @@
 <translation id="6042317056594735519">チッピングは、あなたが好きなコンテンツやクリエイターを個人的に応援し、サポートする方法の1つです。チッピングしよう！</translation>
 <translation id="7509452925943421624">トークンで何ができますか？</translation>
 <translation id="5876169128756792273">トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。</translation>
+<translation id="1402530520078693620">最後に、基本設定を設定しましょう</translation>
+<translation id="3494356595346329740">これを後で変更できます。</translation>
 <translation id="827315274423079662">やったー、準備完了です！</translation>
 <translation id="8268038362451312235">Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！</translation>
 <translation id="5094577350232361255">について</translation>
@@ -630,14 +632,14 @@
 <translation id="8344084848798035850">今月のこれまでの推定収益</translation>
 <translation id="5235444069025581717">今月のチップと支援実績</translation>
 <translation id="1210965535849006928">報酬を受け取る</translation>
-<translation id="8092889639392847252">スポンサー背景画像を見て、報酬を受け取りましょう</translation>
-<translation id="7914961605852877459">Brave Adsをオンにして、分け前をもらいましょう。また<ph name="LINK_BEGIN"/>スポンサー画像を隠す<ph name="LINK_END"/>ことも選択できます。</translation>
 <translation id="8568666589217601917">おめでとうございます！</translation>
 <translation id="764235488372037377">Adsから得た報酬はこちらです！</translation>
 <translation id="7091215606170476659">UGPからポイントが付与されました。</translation>
 <translation id="6759185676704303656">この背景画像を見ると、報酬が支払われます。</translation>
 <translation id="1749232564087138444">Brave Rewardsのスポンサー画像に関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/>。</translation>
 <translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
+<translation id="5806719784451018360">3月13日から4月13日チップを送る機能が停止されます。すべてのBATポイント(BAP)は4月13日に廃止されます。お持ちのBAPは、3月13日までにご使用ください。3月13日以降にBraveブラウザ上に残っているBAPについては、ユーザーもBraveも保持・移転をできず、消失されます。改良された新システムへの移行をご期待ください！</translation>
+<translation id="6232491755501685494">日本でのBrave Rewardsが新システムに移行します！</translation>
 <translation id="3787061634640932557">カードを編集</translation>
 <translation id="4925543565930352284">{{title}}をクリックすることで、 <ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/> および <ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意することとなります。</translation>
 <translation id="5977237145327845546">友人や同僚とプライベートなビデオ通話を開始する。</translation>
@@ -718,6 +720,8 @@
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">ゲートウェイ</translation>
 <translation id="2551123942222622809">Swarm</translation>
+<translation id="8028993641010258682">サイズ</translation>
+<translation id="3202131003361292969">パス</translation>
 <translation id="3967335629471284781">ローンチ済み</translation>
 <translation id="1272079795634619415">中止</translation>
 <translation id="6762417584993757344">インストールされていません</translation>
