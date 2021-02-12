@@ -82,7 +82,7 @@ class ShareExtensionHelper: NSObject {
                     UIPasteboard.general.urls = [url]
                 }
                 
-                if self.shareActivityType(activityType.map { $0.rawValue }) != .password {
+                if self.shareActivityType(activityType.map { $0.rawValue }) == .password {
                     if let logins = returnedItems {
                         self.fillPasswords(logins as [AnyObject])
                     }
