@@ -30,28 +30,6 @@ const char kResponseScript[] =
 const char kBraveSettingsURL[] = "brave://settings/ipfs";
 constexpr int kOnboardingIsolatedWorldId =
     content::ISOLATED_WORLD_ID_CONTENT_END + 1;
-
-// Sets current executable as default protocol handler in a system.
-void SetupIPFSProtocolHandler(const std::string& protocol) {
-  auto isDefaultCallback = [](const std::string& protocol,
-                              shell_integration::DefaultWebClientState state) {
-    if (state == shell_integration::IS_DEFAULT) {
-      VLOG(1) << protocol << " already has a handler";
-      return;
-    }
-    VLOG(1) << "Set as default handler for " << protocol;
-    // The worker pointer is reference counted. While it is running, the
-    // sequence it runs on will hold references it will be automatically
-    // freed once all its tasks have finished.
-    base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(
-        protocol)
-        ->StartSetAsDefault(base::NullCallback());
-  };
-
-  base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(protocol)
-      ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
-}
-
 }  // namespace
 namespace ipfs {
 
@@ -72,11 +50,6 @@ IPFSOnboardingPage::IPFSOnboardingPage(
       ipfs_service_(ipfs_service) {}
 
 IPFSOnboardingPage::~IPFSOnboardingPage() = default;
-
-void IFPSOnboardingPage::SetupProtocolHandlers() {
-  SetupIPFSProtocolHandler(ipfs::kIPFSScheme);
-  SetupIPFSProtocolHandler(ipfs::kIPNSScheme);
-}
 
 void IPFSOnboardingPage::UseLocalNode() {
   auto* context = web_contents()->GetBrowserContext();
