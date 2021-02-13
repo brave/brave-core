@@ -18,9 +18,6 @@ const IPFSOnboardingResponse = {
 
 
 function setupEvents() {
-  $('body').classList.add('ipfs');
-  $('icon').classList.add('icon');
-
   $('local-node-button').addEventListener('click', function() {
     sendCommand(IPFSOnboardingCommandId.USE_LOCAL_NODE);
   });
@@ -29,8 +26,15 @@ function setupEvents() {
     sendCommand(IPFSOnboardingCommandId.USE_PUBLIC_GATEWAY);
   });
 
-  $('main-content').classList.remove(HIDDEN_CLASS);
-
+  // ToDo: Either grant the interstitial page access to chrome.braveTheme
+  // or find another way to grab it.
+  /*
+  const setTheme = (theme) => {
+    document.body.className = `${theme.toLowerCase()}`;
+  }
+  chrome.braveTheme.getBraveThemeType((type) => setTheme(type));
+  chrome.braveTheme.onBraveThemeTypeChanged.addListener((type) => setTheme(type));
+  */
 }
 
 document.addEventListener('DOMContentLoaded', setupEvents);

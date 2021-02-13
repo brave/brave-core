@@ -14,6 +14,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "chrome/browser/shell_integration.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -130,11 +131,23 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "primaryParagraph",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PRIMARY_PARAGRAPH));
   load_time_data->SetString(
-      "localNodeText",
+      "localNodeButton",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON));
   load_time_data->SetString(
-      "publicGatewayText",
+      "publicGatewayButton",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON));
+  load_time_data->SetString(
+      "learnMore", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_LEARN_MORE));
+  load_time_data->SetString(
+      "localNodeText",
+      l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_LOCAL_NODE_TEXT));
+  load_time_data->SetString(
+      "publicGatewayText",
+      l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_TEXT));
+  load_time_data->SetString(
+      "footerText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_FOOTER_TEXT));
+  load_time_data->SetString(
+      "settings", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_SETTINGS));
 }
 
 int IPFSOnboardingPage::GetHTMLTemplateId() {

@@ -3,9 +3,8 @@
   <meta charset="utf-8">
   <meta name="theme-color" content="#fff">
   <title>$i18n{tabTitle}</title>
-  <link rel="stylesheet" href="../../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
-  <link rel="stylesheet" href="../../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
   <link rel="stylesheet" href="ipfs_onboarding.css">
+  <link rel="stylesheet" href="chrome://brave-resources/fonts/poppins.css">
   <script src="../../../../../ui/webui/resources/js/assert.js"></script>
   <script src="../../../../../ui/webui/resources/js/util.js"></script>
   <script src="../../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
@@ -14,15 +13,59 @@
 <body id="body">
   <div class="interstitial-wrapper">
     <div id="main-content">
-      <div class="icon" id="icon"></div>
+      <div class="header-logo">
+        <img src="./assets/brave-ipfs.svg" />
+      </div>
       <div id="main-message">
-        <h1>$i18nRaw{heading}</h1>
-        <p>$i18nRaw{primaryParagraph}</p>
+        <span class="heading">
+          $i18nRaw{heading}
+        </span>
+        <p class="copy">
+          $i18nRaw{primaryParagraph}
+          <a
+          class="info-link"
+          target="_blank"
+          href="https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-">
+            $i18nRaw{learnMore}
+          </a>
+        </p>
       </div>
     </div>
     <div class="nav-wrapper">
-      <button id="local-node-button">$i18n{localNodeText}</button>
-      <button id="public-gateway-button">$i18n{publicGatewayText}</button>
+      <div class="control-box">
+        <div class="button-wrapper">
+          <button class="button" id="local-node-button">
+            $i18n{localNodeButton}
+          </button>
+        </div>
+        <div class="copy-wrapper">
+          <p>$i18n{localNodeText}</p>
+        </div>
+      </div>
+      <div class="control-box">
+        <div class="button-wrapper">
+          <button class="button" id="public-gateway-button">
+            $i18n{publicGatewayButton}
+          </button>
+        </div>
+        <div class="copy-wrapper">
+          <p>$i18n{publicGatewayText}</p>
+        </div>
+      </div>
     </div>
+    <div class="footer">
+      <p class="copy">
+        $i18nRaw{footerText}
+        <a
+        class="info-link"
+        target="_blank"
+        href="https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-">
+          $i18nRaw{settings}.
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="background-container">
+    <div class="background"></div>
   </div>
 </body>
