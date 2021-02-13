@@ -1,14 +1,126 @@
-.ipfs #main-content a {
-  color: var(--google-blue-700);
-  text-decoration: none;
+body {
+  margin: 0px;
+  background: #FAF9FE;
 }
 
-.ipfs button {
-  background: var(--primary-button-fill-color);
+.interstitial-wrapper {
+  text-align: center;
 }
 
-.ipfs .icon {
-  background-image: -webkit-image-set(
-      url(../../../../../components/security_interstitials/core/browser/resources/images/1x/info.png) 1x,
-      url(../../../../../components/security_interstitials/core/browser/resources/images/2x/info.png) 2x);
+.interstitial-wrapper span, p, button {
+  color: #212529;
+  letter-spacing: .5px;
+  font-family: Poppins, sans-serif;
+}
+
+.header-logo {
+  margin: 60px 0 30px 0;
+}
+
+.heading {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.copy {
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.info-link {
+  display: inline-block;
+}
+
+.nav-wrapper {
+  max-width: 725px;
+  margin: 15px auto 0 auto;
+}
+
+.control-box {
+  background: #fff;
+  border-radius: 16px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.button-wrapper {
+  width: 35%;
+  float: left;
+}
+
+.button {
+  border-radius: 100px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+#local-node-button {
+  color: #fff;
+  border: none;
+  background: #4C54D2;
+  padding: 10px 40px;
+}
+
+#public-gateway-button {
+  background: inherit;
+  border: 1px solid #AEB1C2;
+  padding: 10px 24px;
+}
+
+.copy-wrapper {
+  width: 65%;
+  float: right;
+  text-align: left;
+}
+
+.copy-wrapper p {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.footer {
+  margin-top: 20px;
+}
+
+.background-container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 136px;
+  position: absolute;
+  bottom: 0px;
+}
+
+.background {
+  box-sizing: border-box;
+  background: url('./assets/background.svg');
+  width: 100%;
+  height: 136px;
+  background-size: cover;
+  background-position-x: center;
+}
+
+/* Dark theme styles */
+body.dark {
+  background: #17171F;
+}
+
+.dark *,
+.dark > .interstitial-wrapper span {
+  color: #F0F2FF;
+  letter-spacing: .5px;
+  font-family: Poppins, sans-serif;
+}
+
+.dark .control-box {
+  background: #1E2029;
+}
+
+.dark #local-node-button {
+  background: #FB542B;
 }
