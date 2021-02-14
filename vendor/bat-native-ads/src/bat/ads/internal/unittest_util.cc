@@ -459,8 +459,7 @@ void SetEnvironment(const Environment environment) {
 }
 
 void SetSysInfo(const SysInfo& sys_info) {
-  g_sys_info.manufacturer = sys_info.manufacturer;
-  g_sys_info.model = sys_info.model;
+  g_sys_info.is_uncertain_future = sys_info.is_uncertain_future;
 }
 
 void SetBuildChannel(const bool is_release, const std::string& name) {

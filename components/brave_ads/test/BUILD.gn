@@ -105,7 +105,6 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h",
-      "//brave/vendor/bat-native-ads/src/bat/ads/internal/rpill/rpill_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/security/security_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_serve_server_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_server_util_unittest.cc",

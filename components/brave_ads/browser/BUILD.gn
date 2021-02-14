@@ -5,9 +5,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
   check_includes = false
-  public_deps = [
-    "buildflags",
-  ]
+  public_deps = [ "buildflags" ]
 
   sources = [
     "ads_service.cc",
@@ -23,21 +21,23 @@ source_set("browser") {
     "//base",
     "//brave/common",
     "//brave/components/brave_ads/common",
-    "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
     "//brave/components/l10n/browser",
+    "//brave/components/rpill/common",
     "//chrome/common:buildflags",
     "//components/dom_distiller/content/browser",
     "//components/dom_distiller/core",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/pref_registry",
-    "//components/sessions",
-    "//url",
+
     # for profile.h
     "//components/domain_reliability",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/sessions",
     "//content/public/browser",
+    "//url",
   ]
 
   if (brave_ads_enabled) {
@@ -60,10 +60,10 @@ source_set("browser") {
 
     deps += [
       "//brave/app:brave_generated_resources_grit",
-      "//brave/vendor/bat-native-ads",
       "//brave/browser/notifications",
       "//brave/components/brave_ads/resources",
       "//brave/components/services/bat_ads/public/cpp",
+      "//brave/vendor/bat-native-ads",
       "//components/history/core/browser",
       "//components/history/core/common",
       "//components/wifi",
@@ -76,12 +76,12 @@ source_set("browser") {
 
     if (is_android) {
       sources += [
+        "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
+        "//brave/browser/brave_ads/android/brave_ads_native_helper.h",
         "background_helper_android.cc",
         "background_helper_android.h",
         "notification_helper_android.cc",
         "notification_helper_android.h",
-        "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-        "//brave/browser/brave_ads/android/brave_ads_native_helper.h",
       ]
       deps += [
         "//brave/browser/brave_ads/android:jni_headers",
@@ -117,8 +117,8 @@ source_set("browser") {
         "notification_helper_win.h",
       ]
       deps += [
-        "//ui/views",
         "//ui/gfx",
+        "//ui/views",
       ]
     }
   }
@@ -131,19 +131,15 @@ source_set("testutil") {
     ":browser",
     "//base",
     "//brave/components/brave_rewards/browser:browser",
-    "//content/public/browser",
     "//chrome/test:test_support",
+    "//content/public/browser",
     "//testing/gtest",
   ]
 
   if (brave_ads_enabled) {
-    deps += [
-      "//brave/vendor/bat-native-ads",
-    ]
+    deps += [ "//brave/vendor/bat-native-ads" ]
 
-    configs += [
-      "//brave/vendor/bat-native-ads:internal_config"
-    ]
+    configs += [ "//brave/vendor/bat-native-ads:internal_config" ]
   }
 
   sources = [

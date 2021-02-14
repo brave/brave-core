@@ -74,8 +74,7 @@ class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   // Arrange
   SysInfo sys_info;
-  sys_info.manufacturer = "VirtualBox";
-  sys_info.model = "innotek GmbH";
+  sys_info.is_uncertain_future = true;
   SetSysInfo(sys_info);
 
   WalletInfo wallet;
@@ -114,8 +113,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
 TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   // Arrange
   SysInfo sys_info;
-  sys_info.manufacturer = "SAMSUNG ELECTRONICS CO., LTD.";
-  sys_info.model = "900X3N";
+  sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
   WalletInfo wallet;

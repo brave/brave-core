@@ -44,8 +44,7 @@ void BatAdsServiceImpl::SetSysInfo(
     ads::SysInfoPtr sys_info,
     SetSysInfoCallback callback) {
   DCHECK(!is_initialized_);
-  ads::g_sys_info.manufacturer = sys_info->manufacturer;
-  ads::g_sys_info.model = sys_info->model;
+  ads::g_sys_info.is_uncertain_future = sys_info->is_uncertain_future;
   std::move(callback).Run();
 }
 
