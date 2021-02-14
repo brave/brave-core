@@ -3,6 +3,7 @@ import(
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
@@ -42,6 +43,7 @@ grit("static_resources") {
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
+    "ftx_enabled=$ftx_enabled",
   ]
 
   grit_flags = [
@@ -98,6 +100,7 @@ grit("strings") {
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",
     "enable_sidebar=$enable_sidebar",
+    "ftx_enabled=$ftx_enabled",
   ]
 
   foreach(locale, locales_with_fake_bidi) {

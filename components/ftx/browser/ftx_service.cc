@@ -155,6 +155,7 @@ std::string FTXService::GetTokenHeader() {
 
 std::string FTXService::GetOAuthClientUrl() {
   GURL url = GetOAuthURL(oauth_path);
+  url = net::AppendQueryParameter(url, "response_type", "code");
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(
       url, "state", ntp_widget_utils::GetCryptoRandomString(false));
@@ -198,7 +199,7 @@ bool FTXService::SetAccessToken(const std::string& access_token) {
   std::string encrypted_access_token;
 
   if (!OSCrypt::EncryptString(access_token, &encrypted_access_token)) {
-    LOG(ERROR) << "Could not encrypt and save Binance token info";
+    LOG(ERROR) << "Could not encrypt and save FTX token info";
     return false;
   }
 

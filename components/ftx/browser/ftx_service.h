@@ -40,8 +40,7 @@ class Profile;
 
 const char get_futures_data_path[] = "/api/futures";
 const char get_market_data_path[] = "/api/markets";
-// To do, ask FTX to make response_type a property query param
-const char oauth_path[] = "/oauth/response_type=code";
+const char oauth_path[] = "/oauth";
 const char oauth_token_path[] = "/api/oauth/token";
 const char oauth_balances_path[] = "/api/wallet/balances";
 const char futures_filter[] = "perpetual";

@@ -1074,6 +1074,7 @@
       <part file="ipfs_strings.grdp" />
       <part file="crypto_dot_com_strings.grdp" />
       <part file="tor_strings.grdp" />
+      <part file="ftx_strings.grdp" />
     </messages>
   </release>
 </grit>
