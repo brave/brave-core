@@ -57,6 +57,7 @@ source_set("ipfs") {
     "//services/network/public/cpp",
     "//third_party/re2",
     "//ui/base",
+    "//ui/native_theme:native_theme",
     "//url",
   ]
 }

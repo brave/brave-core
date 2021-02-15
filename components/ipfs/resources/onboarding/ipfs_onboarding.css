@@ -124,3 +124,13 @@ body.dark {
 .dark #local-node-button {
   background: #FB542B;
 }
+
+.error-container-hidden {
+  display: none
+}
+
+.error-container-visible {
+  display: block;
+  color: red;
+  margin-top: 10px;
+}

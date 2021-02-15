@@ -11,7 +11,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -27,7 +26,8 @@
 
 namespace {
 const char kResponseScript[] =
-    "window.postMessage({command: 'ipfs-error', value: {value}}, '*')";
+    "window.postMessage({command: 'ipfs', value: {value}, text: '{text}'}, "
+    "'*')";
 const char kBraveSettingsURL[] = "brave://settings/ipfs";
 constexpr int kOnboardingIsolatedWorldId =
     content::ISOLATED_WORLD_ID_CONTENT_END + 1;
@@ -48,7 +48,9 @@ IPFSOnboardingPage::IPFSOnboardingPage(
     : security_interstitials::SecurityInterstitialPage(web_contents,
                                                        request_url,
                                                        std::move(controller)),
-      ipfs_service_(ipfs_service) {}
+      ipfs_service_(ipfs_service) {
+  theme_observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
+}
 
 IPFSOnboardingPage::~IPFSOnboardingPage() = default;
 
@@ -71,7 +73,8 @@ void IPFSOnboardingPage::UsePublicGateway() {
 
 void IPFSOnboardingPage::OnIpfsLaunched(bool result) {
   if (!result) {
-    RespondToPage(LOCAL_NODE_ERROR);
+    RespondToPage(LOCAL_NODE_ERROR, base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+                                        IDS_IPFS_SERVICE_LAUNCH_ERROR)));
     return;
   }
   Proceed();
@@ -81,13 +84,15 @@ void IPFSOnboardingPage::Proceed() {
   controller()->OpenUrlInCurrentTab(request_url());
 }
 
-void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse value) {
+void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse value,
+                                       const std::string& text) {
   auto* main_frame = web_contents()->GetMainFrame();
   DCHECK(main_frame);
 
   std::string script(kResponseScript);
   base::ReplaceSubstringsAfterOffset(&script, 0, "{value}",
                                      std::to_string(value));
+  base::ReplaceSubstringsAfterOffset(&script, 0, "{text}", text);
   main_frame->ExecuteJavaScriptInIsolatedWorld(base::ASCIIToUTF16(script), {},
                                                kOnboardingIsolatedWorldId);
 }
@@ -111,10 +116,10 @@ void IPFSOnboardingPage::CommandReceived(const std::string& command) {
       UsePublicGateway();
       break;
     case IPFSOnboardingCommandId::LEARN_MORE:
-      controller()->OpenUrlInCurrentTab(GURL(kIPFSLearnMoreURL));
+      controller()->OpenUrlInNewForegroundTab(GURL(kIPFSLearnMoreURL));
       break;
     case IPFSOnboardingCommandId::OPEN_SETTINGS:
-      controller()->OpenUrlInCurrentTab(GURL(kBraveSettingsURL));
+      controller()->OpenUrlInNewForegroundTab(GURL(kBraveSettingsURL));
       break;
     default:
       NOTREACHED() << "Unsupported command: " << command;
@@ -148,10 +153,13 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "footerText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_FOOTER_TEXT));
   load_time_data->SetString(
       "settings", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_SETTINGS));
-  const std::string theme_type =
-      dark_mode::GetStringFromBraveDarkModeType(
-          dark_mode::GetActiveBraveDarkModeType());
-  load_time_data->SetString("braveTheme", base::ToLowerASCII(theme_type));
+  load_time_data->SetString(
+      "retryText", l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_LAUNCH_RETRY));
+  load_time_data->SetString(
+      "installationText",
+      l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_INSTALLATION));
+  load_time_data->SetString(
+      "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
 }
 
 int IPFSOnboardingPage::GetHTMLTemplateId() {
@@ -161,6 +169,14 @@ int IPFSOnboardingPage::GetHTMLTemplateId() {
 security_interstitials::SecurityInterstitialPage::TypeID
 IPFSOnboardingPage::GetTypeForTesting() {
   return IPFSOnboardingPage::kTypeForTesting;
+}
+
+std::string IPFSOnboardingPage::GetThemeType(ui::NativeTheme* theme) const {
+  return theme->ShouldUseDarkColors() ? "dark" : "light";
+}
+
+void IPFSOnboardingPage::OnNativeThemeUpdated(ui::NativeTheme* observed_theme) {
+  RespondToPage(THEME_CHANGED, GetThemeType(observed_theme));
 }
 
 }  // namespace ipfs

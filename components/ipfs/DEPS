@@ -6,4 +6,5 @@ include_rules = [
   "+third_party/re2",
   "+services/network/public",
   "+ui/base",
+  "+ui/native_theme",
 ]
