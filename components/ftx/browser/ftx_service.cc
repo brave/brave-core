@@ -190,6 +190,69 @@ void FTXService::OnGetAccessToken(
   std::move(callback).Run(!access_token.empty());
 }
 
+bool FTXService::GetConvertQuote(
+    const std::string& from,
+    const std::string& to,
+    const std::string& amount,
+    GetConvertQuoteCallback callback) {
+  auto internal_callback = base::BindOnce(&FTXService::OnGetConvertQuote,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetOAuthURL(oauth_quote_path);
+  url = net::AppendQueryParameter(url, "fromCoin", from);
+  url = net::AppendQueryParameter(url, "toCoin", to);
+  url = net::AppendQueryParameter(url, "size", amount);
+  return NetworkRequest(url, "POST", url.query(), std::move(internal_callback),
+                        true);
+}
+
+void FTXService::OnGetConvertQuote(
+    GetConvertQuoteCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string quote_id;
+  if (status >= 200 && status <= 299) {
+    FTXJSONParser::GetQuoteIdJSON(body, &quote_id);
+  }
+  std::move(callback).Run(quote_id);
+}
+
+bool FTXService::GetConvertQuoteInfo(const std::string& quote_id,
+                                     GetConvertQuoteInfoCallback callback) {
+  auto internal_callback = base::BindOnce(&FTXService::OnGetConvertQuoteInfo,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetOAuthURL(std::string(oauth_quote_path) + "/" + quote_id);
+  return NetworkRequest(url, "GET", "", std::move(internal_callback), true);
+}
+
+void FTXService::OnGetConvertQuoteInfo(
+    GetConvertQuoteInfoCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string price;
+  std::string cost;
+  std::string proceeds;
+  if (status >= 200 && status <= 299) {
+    FTXJSONParser::GetQuoteStatusJSON(body, &cost, &price, &proceeds);
+  }
+  std::move(callback).Run(cost, price, proceeds);
+}
+
+bool FTXService::ExecuteConvertQuote(const std::string& quote_id,
+                                     ExecuteConvertQuoteCallback callback) {
+  auto internal_callback = base::BindOnce(&FTXService::OnExecuteConvertQuote,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetOAuthURL(
+      std::string(oauth_quote_path) + "/" + quote_id + "/accept");
+  return NetworkRequest(url, "POST", "", std::move(internal_callback), true);
+}
+
+void FTXService::OnExecuteConvertQuote(
+    ExecuteConvertQuoteCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::move(callback).Run(status >= 200 && status <= 299);
+}
+
 void FTXService::SetAuthToken(const std::string& auth_token) {
   auth_token_ = auth_token;
 }

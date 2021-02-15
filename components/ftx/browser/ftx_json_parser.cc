@@ -177,3 +177,64 @@ bool FTXJSONParser::GetAccountBalancesFromJSON(const std::string& json,
 
   return true;
 }
+
+bool FTXJSONParser::GetQuoteIdJSON(const std::string& json,
+                                   std::string* quote_id) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* result = records_v->FindKey("result");
+  if (!result) {
+    return false;
+  }
+
+  const base::Value* quote_id_val = result->FindKey("quoteId");
+  if (!quote_id_val) {
+    return false;
+  }
+
+  *quote_id = std::to_string(quote_id_val->GetInt());
+  return true;
+}
+
+bool FTXJSONParser::GetQuoteStatusJSON(const std::string& json,
+                                       std::string* cost,
+                                       std::string* price,
+                                       std::string* proceeds) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* result = records_v->FindKey("result");
+  if (!result || !result->is_list() || result->GetList().size() == 0) {
+    return false;
+  }
+
+  const base::Value& quote_obj = result->GetList()[0];
+  const base::Value* price_val = quote_obj.FindKey("price");
+  const base::Value* proceeds_val = quote_obj.FindKey("proceeds");
+  const base::Value* cost_val = quote_obj.FindKey("cost");
+
+  if (!price_val || !proceeds_val || !cost_val) {
+    return false;
+  }
+
+  *cost = std::to_string(cost_val->GetDouble());
+  *price = std::to_string(price_val->GetDouble());
+  *proceeds = std::to_string(proceeds_val->GetDouble());
+
+  return true;
+}

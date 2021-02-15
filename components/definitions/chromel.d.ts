@@ -217,6 +217,9 @@ declare namespace chrome.ftx {
   const getAccessToken: (callback: (success: boolean) => void) => {}
 
   const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
+  const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
+  const getConvertQuoteInfo: (quoteId: string, callback: (quote: any) => void) => {}
+  const executeConvertQuote: (quoteId: string, callback: (success: boolean) => void) => {}
   const isSupported: (callback: (supported: boolean) => void) => {}
 }
 

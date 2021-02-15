@@ -166,6 +166,77 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getConvertQuote",
+        "type": "function",
+        "description": "Gets an FTX crypto conversion quote",
+        "parameters": [
+          {
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "type": "string"
+          },
+          {
+            "name": "amount",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "quoteId",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getConvertQuoteInfo",
+        "type": "function",
+        "description": "Gets info given a conversion quote ID",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "quote",
+                "type": "any"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "executeConvertQuote",
+        "type": "function",
+        "description": "Executes a conversion quote given a quote ID",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

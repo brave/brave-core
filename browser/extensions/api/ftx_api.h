@@ -101,6 +101,41 @@ class FtxIsSupportedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class FtxGetConvertQuoteFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.getConvertQuote", UNKNOWN)
+
+ protected:
+  ~FtxGetConvertQuoteFunction() override {}
+  void OnConvertQuote(const std::string& quote_id);
+
+  ResponseAction Run() override;
+};
+
+class FtxGetConvertQuoteInfoFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.getConvertQuoteInfo", UNKNOWN)
+
+ protected:
+  ~FtxGetConvertQuoteInfoFunction() override {}
+  void OnConvertQuoteInfo(const std::string& cost,
+                          const std::string& price,
+                          const std::string& proceeds);
+
+  ResponseAction Run() override;
+};
+
+class FtxExecuteConvertQuoteFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ftx.executeConvertQuote", UNKNOWN)
+
+ protected:
+  ~FtxExecuteConvertQuoteFunction() override {}
+  void OnExecuteConvertQuote(bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

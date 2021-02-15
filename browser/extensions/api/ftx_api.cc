@@ -200,5 +200,88 @@ ExtensionFunction::ResponseAction FtxIsSupportedFunction::Run() {
   return RespondNow(OneArgument(base::Value(is_supported)));
 }
 
+ExtensionFunction::ResponseAction FtxGetConvertQuoteFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<ftx::GetConvertQuote::Params> params(
+      ftx::GetConvertQuote::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetFTXService(browser_context());
+  bool data_request = service->GetConvertQuote(
+      params->from, params->to, params->amount,
+      base::BindOnce(&FtxGetConvertQuoteFunction::OnConvertQuote, this));
+
+  if (!data_request) {
+    return RespondNow(Error("Could not make request for convert quote"));
+  }
+
+  return RespondLater();
+}
+
+void FtxGetConvertQuoteFunction::OnConvertQuote(const std::string& quote_id) {
+  Respond(OneArgument(base::Value(quote_id)));
+}
+
+ExtensionFunction::ResponseAction FtxGetConvertQuoteInfoFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<ftx::GetConvertQuoteInfo::Params> params(
+      ftx::GetConvertQuoteInfo::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetFTXService(browser_context());
+  bool data_request = service->GetConvertQuoteInfo(
+      params->quote_id,
+      base::BindOnce(
+          &FtxGetConvertQuoteInfoFunction::OnConvertQuoteInfo, this));
+
+  if (!data_request) {
+    return RespondNow(Error("Could not make request for convert quote info"));
+  }
+
+  return RespondLater();
+}
+
+void FtxGetConvertQuoteInfoFunction::OnConvertQuoteInfo(const std::string& cost,
+                                                 const std::string& price,
+                                                 const std::string& proceeds) {
+  base::Value quote(base::Value::Type::DICTIONARY);
+  quote.SetStringKey("cost", cost);
+  quote.SetStringKey("price", price);
+  quote.SetStringKey("proceeds", proceeds);
+  Respond(OneArgument(std::move(quote)));
+}
+
+ExtensionFunction::ResponseAction FtxExecuteConvertQuoteFunction::Run() {
+  if (!IsFTXAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<ftx::ExecuteConvertQuote::Params> params(
+      ftx::ExecuteConvertQuote::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetFTXService(browser_context());
+  bool data_request = service->ExecuteConvertQuote(
+      params->quote_id,
+      base::BindOnce(
+          &FtxExecuteConvertQuoteFunction::OnExecuteConvertQuote, this));
+
+  if (!data_request) {
+    return RespondNow(Error("Could not make request to execute quote"));
+  }
+
+  return RespondLater();
+}
+
+void FtxExecuteConvertQuoteFunction::OnExecuteConvertQuote(bool success) {
+  Respond(OneArgument(base::Value(success)));
+}
+
 }  // namespace api
 }  // namespace extensions

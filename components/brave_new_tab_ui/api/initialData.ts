@@ -79,8 +79,9 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        // TODO: add Chromium function
-        resolve(true)
+        chrome.ftx.isSupported((supported: boolean) => {
+          resolve(supported)
+        })
       }),
       new Promise((resolve) => {
         chrome.binance.isSupportedRegion((supported: boolean) => {

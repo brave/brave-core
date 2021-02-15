@@ -22,6 +22,12 @@ class FTXJSONParser {
                                      std::string* value);
   static bool GetAccountBalancesFromJSON(const std::string& json,
                                          FTXAccountBalances* balances);
+  static bool GetQuoteIdJSON(const std::string& json,
+                             std::string* quote_id);
+  static bool GetQuoteStatusJSON(const std::string& json,
+                                 std::string* cost,
+                                 std::string* price,
+                                 std::string* proceeds);
 };
 
 #endif  // BRAVE_COMPONENTS_FTX_BROWSER_FTX_JSON_PARSER_H_

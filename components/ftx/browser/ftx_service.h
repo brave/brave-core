@@ -43,6 +43,7 @@ const char get_market_data_path[] = "/api/markets";
 const char oauth_path[] = "/oauth";
 const char oauth_token_path[] = "/api/oauth/token";
 const char oauth_balances_path[] = "/api/wallet/balances";
+const char oauth_quote_path[] = "/otc/quotes";
 const char futures_filter[] = "perpetual";
 
 typedef std::vector<std::map<std::string, std::string>> FTXChartData;
@@ -60,6 +61,12 @@ class FTXService : public KeyedService {
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
   using GetAccountBalancesCallback =
       base::OnceCallback<void(const FTXAccountBalances&, bool)>;
+  using GetConvertQuoteCallback = base::OnceCallback<void(const std::string&)>;
+  using GetConvertQuoteInfoCallback =
+      base::OnceCallback<void(const std::string&,
+                              const std::string&,
+                              const std::string&)>;
+  using ExecuteConvertQuoteCallback = base::OnceCallback<void(bool)>;
 
   bool GetFuturesData(GetFuturesDataCallback callback);
   bool GetChartData(const std::string& symbol,
@@ -67,6 +74,14 @@ class FTXService : public KeyedService {
                     const std::string& end,
                     GetChartDataCallback callback);
   bool GetAccountBalances(GetAccountBalancesCallback callback);
+  bool GetConvertQuote(const std::string& from,
+                       const std::string& to,
+                       const std::string& amount,
+                       GetConvertQuoteCallback callback);
+  bool GetConvertQuoteInfo(const std::string& quote_id,
+                           GetConvertQuoteInfoCallback callback);
+  bool ExecuteConvertQuote(const std::string& quote_id,
+                           ExecuteConvertQuoteCallback callback);
   std::string GetOAuthClientUrl();
   bool GetAccessToken(GetAccessTokenCallback callback);
   void SetAuthToken(const std::string& auth_token);
@@ -91,6 +106,15 @@ class FTXService : public KeyedService {
                             const int status,
                             const std::string& body,
                             const std::map<std::string, std::string>& headers);
+  void OnGetConvertQuote(GetConvertQuoteCallback callback,
+                         const int status, const std::string& body,
+                         const std::map<std::string, std::string>& headers);
+  void OnGetConvertQuoteInfo(GetConvertQuoteInfoCallback callback,
+                             const int status, const std::string& body,
+                             const std::map<std::string, std::string>& headers);
+  void OnExecuteConvertQuote(ExecuteConvertQuoteCallback callback,
+                             const int status, const std::string& body,
+                             const std::map<std::string, std::string>& headers);
   GURL GetOAuthURL(const std::string& path);
   std::string GetTokenHeader();
   bool SetAccessToken(const std::string& access_token);
