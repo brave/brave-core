@@ -240,7 +240,7 @@
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
   "devDependencies": {
-    "@babel/core": "7.12.13",
+    "@babel/core": "7.12.16",
     "@dump247/storybook-state": "1.6.1",
     "@storybook/addon-actions": "5.3.21",
     "@storybook/addon-backgrounds": "5.3.21",
