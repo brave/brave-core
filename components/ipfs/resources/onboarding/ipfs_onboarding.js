@@ -15,12 +15,18 @@ const IPFSOnboardingCommandId = {
 // Should match ipfs::IPFSOnboardingPage::IPFSOnboardingResponse
 /** @enum {number} */
 const IPFSOnboardingResponse = {
-  LOCAL_NODE_ERROR: 0
+  LOCAL_NODE_ERROR: 0,
+  THEME_CHANGED: 1
 };
 
+const setTheme = (theme) => {
+  document.body.className = `${theme.toLowerCase()}`;
+}
 
 function setupEvents() {
   $('local-node-button').addEventListener('click', function() {
+    $('local-node-button').textContent = '$i18nRaw{installationText}'
+    $('error-container').className = 'error-container-hidden'
     sendCommand(IPFSOnboardingCommandId.USE_LOCAL_NODE);
   });
 
@@ -35,29 +41,23 @@ function setupEvents() {
   $('open-settings').addEventListener('click', function() {
     sendCommand(IPFSOnboardingCommandId.OPEN_SETTINGS);
   });
-
-  // ToDo: Either grant the interstitial page access to chrome.braveTheme
-  // or find another way to grab it.
-  /*
-  const setTheme = (theme) => {
-    document.body.className = `${theme.toLowerCase()}`;
-  }
-
-  chrome.braveTheme.getBraveThemeType((type) => setTheme(type));
-  chrome.braveTheme.onBraveThemeTypeChanged.addListener((type) => setTheme(type));
-  */
 }
 
 document.addEventListener('DOMContentLoaded', setupEvents);
 
-function handleError(code) {
+function handleCommand(code, text) {
   if (code == IPFSOnboardingResponse.LOCAL_NODE_ERROR) {
-    console.log("TODO(Serge): Show message about fallback to public gateway");
+    $('error-container').textContent = text
+    $('error-container').className = 'error-container-visible'
+    $('local-node-button').textContent = '$i18nRaw{retryText}'
+  } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
+    setTheme(text)
   }
+
 }
 
 window.addEventListener("message", function(event) {
-  if (!event.data || event.data.command != "ipfs-error")
+  if (!event.data || event.data.command != "ipfs")
     return
-  handleError(event.data.value);
+  handleCommand(event.data.value, event.data.text);
 }, false);

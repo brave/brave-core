@@ -10,8 +10,11 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/values.h"
 #include "components/security_interstitials/content/security_interstitial_page.h"
+#include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/native_theme_observer.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -29,7 +32,8 @@ class IpfsService;
 // IPFSOnboardingPage is the interstitial page which will be shown when the
 // browser tries to access IPFS contents if ASK mode is selected in settings.
 class IPFSOnboardingPage
-    : public security_interstitials::SecurityInterstitialPage {
+    : public security_interstitials::SecurityInterstitialPage,
+      public ui::NativeThemeObserver {
  public:
   // Interstitial type, used in tests.
   static const security_interstitials::SecurityInterstitialPage::TypeID
@@ -45,7 +49,7 @@ class IPFSOnboardingPage
   };
 
   // In case of an error when starting a local node, we notify a page.
-  enum IPFSOnboardingResponse { LOCAL_NODE_ERROR = 0 };
+  enum IPFSOnboardingResponse { LOCAL_NODE_ERROR = 0, THEME_CHANGED = 1 };
 
   explicit IPFSOnboardingPage(
       IpfsService* ipfs_service,
@@ -67,6 +71,9 @@ class IPFSOnboardingPage
   void OnIpfsLaunched(bool result);
   void Proceed();
 
+  // ui::NativeThemeObserver overrides:
+  void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
+
  protected:
   // SecurityInterstitialPage::
   void PopulateInterstitialStrings(
@@ -76,12 +83,15 @@ class IPFSOnboardingPage
  private:
   friend class IpfsNavigationThrottleBrowserTest;
 
+  std::string GetThemeType(ui::NativeTheme* theme) const;
   void SetupProtocolHandlers();
-  void RespondToPage(IPFSOnboardingResponse command);
+  void RespondToPage(IPFSOnboardingResponse command, const std::string& text);
   void UseLocalNode();
   void UsePublicGateway();
 
   IpfsService* ipfs_service_ = nullptr;
+  base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
+      theme_observer_{this};
   base::WeakPtrFactory<IPFSOnboardingPage> weak_ptr_factory_{this};
 };
 

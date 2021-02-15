@@ -34,6 +34,15 @@
     <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
       Learn more about IPFS and privacy
     </message>
+    <message name="IDS_IPFS_SERVICE_INSTALLATION" desc="Title of button for IPFS interstitial page.">
+      Installing...
+    </message>
+    <message name="IDS_IPFS_SERVICE_LAUNCH_RETRY" desc="Retry button text for IPFS interstitial page.">
+      Try again
+    </message>
+    <message name="IDS_IPFS_SERVICE_LAUNCH_ERROR" desc="IPFS service launch error message.">
+      IPFS Service launch error
+    </message>
     <message name="IDS_IPFS_NOT_CONNECTED_TITLE" desc="Title of IPFS not connected interstitial page.">
       IPFS Not Connected
     </message>
