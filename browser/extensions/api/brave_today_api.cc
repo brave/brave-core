@@ -11,13 +11,17 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/common/extensions/api/brave_theme.h"
-#include "brave/components/brave_today/common/urls.h"
+#include "brave/components/brave_today/browser/urls.h"
 
 namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction BraveTodayGetHostnameFunction::Run() {
   return RespondNow(OneArgument(base::Value(brave_today::GetHostname())));
+}
+
+ExtensionFunction::ResponseAction BraveTodayGetRegionUrlPartFunction::Run() {
+  return RespondNow(OneArgument(base::Value(brave_today::GetRegionUrlPart())));
 }
 
 }  // namespace api
