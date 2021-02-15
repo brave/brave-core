@@ -24,6 +24,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday from '../../components/default/braveToday'
+import BAPDeprecationModal from '../../components/default/rewards/bapDeprecationModal'
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
@@ -1157,6 +1158,7 @@ class NewTabPage extends React.Component<Props, State> {
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.toggleAllCards}
         />
+        <BAPDeprecationModal rewardsState={this.props.newTabData.rewardsState} />
       </Page.App>
     )
   }
