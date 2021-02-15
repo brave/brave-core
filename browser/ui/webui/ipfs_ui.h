@@ -10,6 +10,9 @@
 #include <string>
 #include <vector>
 
+#include "base/scoped_observation.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -19,13 +22,18 @@ struct RepoStats;
 struct NodeInfo;
 }  // namespace ipfs
 
-class IPFSDOMHandler : public content::WebUIMessageHandler {
+class IPFSDOMHandler : public content::WebUIMessageHandler,
+                       public ipfs::IpfsServiceObserver {
  public:
   IPFSDOMHandler();
   ~IPFSDOMHandler() override;
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
+
+  // ipfs::IpfsServiceObserver overrides:
+  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsShutdown() override;
 
  private:
   void HandleGetConnectedPeers(const base::ListValue* args);
@@ -45,6 +53,9 @@ class IPFSDOMHandler : public content::WebUIMessageHandler {
   void OnGetRepoStats(bool success, const ipfs::RepoStats& stats);
   void HandleGetNodeInfo(const base::ListValue* args);
   void OnGetNodeInfo(bool success, const ipfs::NodeInfo& info);
+
+  base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
+      service_observer_{this};
   base::WeakPtrFactory<IPFSDOMHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(IPFSDOMHandler);

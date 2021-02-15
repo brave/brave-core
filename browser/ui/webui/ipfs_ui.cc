@@ -74,6 +74,13 @@ void IPFSDOMHandler::RegisterMessages() {
       "ipfs.getNodeInfo",
       base::BindRepeating(&IPFSDOMHandler::HandleGetNodeInfo,
                           base::Unretained(this)));
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  service_observer_.Observe(service);
 }
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
@@ -164,13 +171,16 @@ void IPFSDOMHandler::LaunchDaemon() {
     return;
   }
 
-  service->LaunchDaemon(base::BindOnce(&IPFSDOMHandler::OnLaunchDaemon,
-                                       weak_ptr_factory_.GetWeakPtr()));
+  service->LaunchDaemon(base::NullCallback());
 }
 
-void IPFSDOMHandler::OnLaunchDaemon(bool success) {
+void IPFSDOMHandler::OnIpfsLaunched(bool success, int64_t pid) {
   if (!web_ui()->CanCallJavascript() || !success)
     return;
+  CallOnGetDaemonStatus(web_ui());
+}
+
+void IPFSDOMHandler::OnIpfsShutdown() {
   CallOnGetDaemonStatus(web_ui());
 }
 
@@ -185,8 +195,7 @@ void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
     return;
   }
 
-  service->ShutdownDaemon(base::BindOnce(&IPFSDOMHandler::OnShutdownDaemon,
-                                         weak_ptr_factory_.GetWeakPtr()));
+  service->ShutdownDaemon(base::NullCallback());
 }
 
 void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
@@ -212,13 +221,6 @@ void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
         }
       },
       std::move(launch_callback)));
-}
-
-void IPFSDOMHandler::OnShutdownDaemon(bool success) {
-  if (!web_ui()->CanCallJavascript() || !success)
-    return;
-
-  CallOnGetDaemonStatus(web_ui());
 }
 
 void IPFSDOMHandler::HandleGetRepoStats(const base::ListValue* args) {
