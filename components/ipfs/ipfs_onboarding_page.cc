@@ -11,10 +11,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/shell_integration.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -148,6 +148,10 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "footerText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_FOOTER_TEXT));
   load_time_data->SetString(
       "settings", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_SETTINGS));
+  const std::string theme_type =
+      dark_mode::GetStringFromBraveDarkModeType(
+          dark_mode::GetActiveBraveDarkModeType());
+  load_time_data->SetString("braveTheme", base::ToLowerASCII(theme_type));
 }
 
 int IPFSOnboardingPage::GetHTMLTemplateId() {

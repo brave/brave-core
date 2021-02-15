@@ -7,7 +7,9 @@
 /** @enum {number} */
 const IPFSOnboardingCommandId = {
   USE_LOCAL_NODE: 0,
-  USE_PUBLIC_GATEWAY: 1
+  USE_PUBLIC_GATEWAY: 1,
+  LEARN_MORE: 2,
+  OPEN_SETTINGS: 3
 };
 
 // Should match ipfs::IPFSOnboardingPage::IPFSOnboardingResponse
@@ -26,12 +28,21 @@ function setupEvents() {
     sendCommand(IPFSOnboardingCommandId.USE_PUBLIC_GATEWAY);
   });
 
+  $('learn-more').addEventListener('click', function() {
+    sendCommand(IPFSOnboardingCommandId.LEARN_MORE);
+  });
+
+  $('open-settings').addEventListener('click', function() {
+    sendCommand(IPFSOnboardingCommandId.OPEN_SETTINGS);
+  });
+
   // ToDo: Either grant the interstitial page access to chrome.braveTheme
   // or find another way to grab it.
   /*
   const setTheme = (theme) => {
     document.body.className = `${theme.toLowerCase()}`;
   }
+
   chrome.braveTheme.getBraveThemeType((type) => setTheme(type));
   chrome.braveTheme.onBraveThemeTypeChanged.addListener((type) => setTheme(type));
   */

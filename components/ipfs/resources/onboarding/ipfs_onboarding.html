@@ -4,13 +4,12 @@
   <meta name="theme-color" content="#fff">
   <title>$i18n{tabTitle}</title>
   <link rel="stylesheet" href="ipfs_onboarding.css">
-  <link rel="stylesheet" href="chrome://brave-resources/fonts/poppins.css">
   <script src="../../../../../ui/webui/resources/js/assert.js"></script>
   <script src="../../../../../ui/webui/resources/js/util.js"></script>
   <script src="../../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
   <script src="ipfs_onboarding.js"></script>
 </head>
-<body id="body">
+<body id="body" class="$i18nRaw{braveTheme}" >
   <div class="interstitial-wrapper">
     <div id="main-content">
       <div class="header-logo">
@@ -22,10 +21,9 @@
         </span>
         <p class="copy">
           $i18nRaw{primaryParagraph}
-          <a
+          <a id="learn-more"
           class="info-link"
-          target="_blank"
-          href="https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-">
+          href>
             $i18nRaw{learnMore}
           </a>
         </p>
@@ -56,10 +54,9 @@
     <div class="footer">
       <p class="copy">
         $i18nRaw{footerText}
-        <a
+        <a id="open-settings"
         class="info-link"
-        target="_blank"
-        href="https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-">
+        href>
           $i18nRaw{settings}.
         </a>
       </p>
