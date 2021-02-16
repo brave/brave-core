@@ -1,12 +1,12 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index 0626baa25d07770e6643b1078bf53889f7f67947..34a8fea6196da767fc25b8254d407f1ad5604330 100644
+index 0626baa25d07770e6643b1078bf53889f7f67947..5deba756a23909912f4c20987803b31ff62e0a5d 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
 @@ -24,7 +24,11 @@ namespace {
  bool GetGoogleUpdateIsMachineEnvVar() {
    const DWORD kBufferSize = 2;
    StackString<kBufferSize> value;
-+#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
++#if defined(OFFICIAL_BUILD)
 +  DWORD length = ::GetEnvironmentVariableW(L"BraveSoftwareUpdateIsMachine",
 +#else
    DWORD length = ::GetEnvironmentVariableW(L"GoogleUpdateIsMachine",
@@ -19,7 +19,7 @@ index 0626baa25d07770e6643b1078bf53889f7f67947..34a8fea6196da767fc25b8254d407f1a
      if (0 == ::lstrcmpi(args_[i], L"--system-level"))
        is_system_level_ = true;
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-+#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
 +    // Use original install switch because it isn't visible to user.
 +    // Sync this switch with brave/.../chromium_install_modes.cc
      else if (0 == ::lstrcmpi(args_[i], L"--chrome-beta"))

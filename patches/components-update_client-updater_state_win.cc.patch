@@ -1,22 +1,20 @@
 diff --git a/components/update_client/updater_state_win.cc b/components/update_client/updater_state_win.cc
-index 89c2c186f9c095d6c2a9210ca2c4e8a94ee64b98..9f7ba1eb42bb50d21cdc2a905dd45e5d5bf7d82c 100644
+index 89c2c186f9c095d6c2a9210ca2c4e8a94ee64b98..7aa7afec5dc013785973a5ef2d13bf8367ebe5d6 100644
 --- a/components/update_client/updater_state_win.cc
 +++ b/components/update_client/updater_state_win.cc
-@@ -25,20 +25,35 @@ namespace {
+@@ -25,20 +25,32 @@ namespace {
  
  // Google Update group policy settings.
  const wchar_t kGoogleUpdatePoliciesKey[] =
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +    L"SOFTWARE\\Policies\\BraveSoftware\\Update";
-+#else
++#if 0
      L"SOFTWARE\\Policies\\Google\\Update";
 +#endif
  const wchar_t kCheckPeriodOverrideMinutes[] = L"AutoUpdateCheckPeriodMinutes";
  const wchar_t kUpdatePolicyValue[] = L"UpdateDefault";
  const wchar_t kChromeUpdatePolicyOverride[] =
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +    L"Update{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
-+#else
++#if 0
      L"Update{8A69D345-D564-463C-AFF1-A69D9E530F96}";
 +#endif
  
@@ -24,12 +22,11 @@ index 89c2c186f9c095d6c2a9210ca2c4e8a94ee64b98..9f7ba1eb42bb50d21cdc2a905dd45e5d
  const int kCheckPeriodOverrideMinutesMax = 60 * 24 * 7 * 6;
  
  // Google Update registry settings.
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +const wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\Update";
 +const wchar_t kRegPathClientsGoogleUpdate[] =
 +    L"Software\\BraveSoftware\\Update\\Clients\\"
 +    L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
-+#else
++#if 0
  const wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";
  const wchar_t kRegPathClientsGoogleUpdate[] =
      L"Software\\Google\\Update\\Clients\\"

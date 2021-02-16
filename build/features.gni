@@ -1,6 +1,4 @@
 declare_args() {
-  brave_chromium_build = true
-
   brave_services_key = ""
 }
 

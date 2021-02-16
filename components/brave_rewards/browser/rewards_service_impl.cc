@@ -51,6 +51,7 @@
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
@@ -61,6 +62,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
+#include "components/grit/brave_components_resources.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -78,13 +80,6 @@
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
-
-#if defined(BRAVE_CHROMIUM_BUILD)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "components/grit/brave_components_resources.h"
-#else
-#include "components/grit/components_resources.h"
-#endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_service.h"

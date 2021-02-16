@@ -6,14 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_METRICS_REPORTING_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_METRICS_REPORTING_HANDLER_H_
 
-#if defined(BRAVE_CHROMIUM_BUILD)
+#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+
 #define GOOGLE_CHROME_BUILD
-#endif
-
 #include "../../../../../../../chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
-
-#if defined(BRAVE_CHROMIUM_BUILD)
 #undef GOOGLE_CHROME_BUILD
-#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_METRICS_REPORTING_HANDLER_H_

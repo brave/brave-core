@@ -21,13 +21,13 @@
 #include "base/strings/sys_string_conversions.h"
 #endif
 
-#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
+#if defined(OS_ANDROID)
 #include "ui/base/resource/resource_bundle_android.h"
 #endif
 
 namespace {
 
-#if !defined(BRAVE_CHROMIUM_BUILD) || !defined(OS_ANDROID)
+#if !defined(OS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
 #if defined(OS_MAC)
   return base::mac::PathForFrameworkBundleResource(
@@ -67,7 +67,7 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
 namespace brave {
 
 void InitializeResourceBundle() {
-#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
+#if defined(OS_ANDROID)
   ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
                                    base::FilePath());
   ui::BraveLoadBrave100PercentPackFile("assets/brave_100_percent.pak",
@@ -81,7 +81,7 @@ void InitializeResourceBundle() {
     rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_200P),
                            ui::SCALE_FACTOR_200P);
   }
-#endif  // OS_ANDROID && defined(BRAVE_CHROMIUM_BUILD)
+#endif  // OS_ANDROID
 }
 
 // Returns true if this subprocess type needs the ResourceBundle initialized

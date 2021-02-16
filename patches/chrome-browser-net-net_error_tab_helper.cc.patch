@@ -1,14 +1,12 @@
 diff --git a/chrome/browser/net/net_error_tab_helper.cc b/chrome/browser/net/net_error_tab_helper.cc
-index 313758372e0fcb842ee6a5b5cd69a64b8a95b2ac..cc920fb9459462075a1a9c123ae7af34ea5c8ac8 100644
+index 313758372e0fcb842ee6a5b5cd69a64b8a95b2ac..bc8c3c243dd2f05b5fa9708d1d72bfa9f6dffcc0 100644
 --- a/chrome/browser/net/net_error_tab_helper.cc
 +++ b/chrome/browser/net/net_error_tab_helper.cc
-@@ -200,6 +200,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
+@@ -200,6 +200,7 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
  }
  
  bool NetErrorTabHelper::ProbesAllowed() const {
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +  return false;
-+#endif
    if (testing_state_ != TESTING_DEFAULT)
      return testing_state_ == TESTING_FORCE_ENABLED;
  

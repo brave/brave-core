@@ -1,14 +1,12 @@
 diff --git a/extensions/common/manifest_url_handlers.cc b/extensions/common/manifest_url_handlers.cc
-index 39450837d2a4ab5e1ab2dc91a234524523f1e36b..ad5ceab85f08a5d3baa153a5a893b96585257f36 100644
+index 39450837d2a4ab5e1ab2dc91a234524523f1e36b..86973a35883c7b5f4cd6d3cd1d050d4cd91f7fbf 100644
 --- a/extensions/common/manifest_url_handlers.cc
 +++ b/extensions/common/manifest_url_handlers.cc
-@@ -55,6 +55,9 @@ const GURL ManifestURL::GetManifestHomePageURL(const Extension* extension) {
+@@ -55,6 +55,7 @@ const GURL ManifestURL::GetManifestHomePageURL(const Extension* extension) {
  
  // static
  const GURL ManifestURL::GetWebStoreURL(const Extension* extension) {
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +  return GURL::EmptyGURL();
-+#endif
    bool use_webstore_url = UpdatesFromGallery(extension) &&
                            !SharedModuleInfo::IsSharedModule(extension);
    return use_webstore_url

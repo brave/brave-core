@@ -1,12 +1,12 @@
 diff --git a/chrome/installer/launcher_support/chrome_launcher_support.cc b/chrome/installer/launcher_support/chrome_launcher_support.cc
-index 36afdc96da27a8fa5e3d1ed798b89edd845b3107..a171f22c0c2bfc3655193c99a2081bdcd98d9292 100644
+index 36afdc96da27a8fa5e3d1ed798b89edd845b3107..0f0b9fae49dd19aac9f00ddb8389da3094f8d766 100644
 --- a/chrome/installer/launcher_support/chrome_launcher_support.cc
 +++ b/chrome/installer/launcher_support/chrome_launcher_support.cc
-@@ -26,12 +26,23 @@ const wchar_t kUpdateClientsRegKey[] = L"Software\\Google\\Update\\Clients";
+@@ -26,12 +26,22 @@ const wchar_t kUpdateClientsRegKey[] = L"Software\\Google\\Update\\Clients";
  // Copied from google_chrome_install_modes.cc.
  const wchar_t kBrowserAppGuid[] = L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
  const wchar_t kSxSBrowserAppGuid[] = L"{4ea16ac7-fd5a-47c3-875b-dbf4a2008c20}";
-+#elif defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
++#elif defined(OFFICIAL_BUILD)
 +const wchar_t kInstallationRegKey[] =
 +    L"Software\\BraveSoftware\\Update\\ClientState";
 +// Copied from
@@ -18,29 +18,28 @@ index 36afdc96da27a8fa5e3d1ed798b89edd845b3107..a171f22c0c2bfc3655193c99a2081bdc
  #endif
  
  // Copied from util_constants.cc.
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +const wchar_t kChromeExe[] = L"brave.exe";
-+#else
++#if 0
  const wchar_t kChromeExe[] = L"chrome.exe";
 +#endif
  const wchar_t kUninstallStringField[] = L"UninstallString";
  const wchar_t kVersionStringField[] = L"pv";
  
-@@ -95,7 +106,7 @@ base::FilePath GetSetupExeFromRegistry(InstallationLevel level,
+@@ -95,7 +105,7 @@ base::FilePath GetSetupExeFromRegistry(InstallationLevel level,
  // Returns the path to an existing setup.exe at the specified level, if it can
  // be found via the registry.
  base::FilePath GetSetupExeForInstallationLevel(InstallationLevel level) {
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-+#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
    // Look in the registry for Chrome.
    return GetSetupExeFromRegistry(level, kBrowserAppGuid);
  #else
-@@ -131,7 +142,7 @@ base::FilePath FindExeRelativeToSetupExe(const base::FilePath setup_exe_path,
+@@ -131,7 +141,7 @@ base::FilePath FindExeRelativeToSetupExe(const base::FilePath setup_exe_path,
  base::FilePath GetChromePathForInstallationLevel(InstallationLevel level,
                                                   bool is_sxs) {
    if (is_sxs) {
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-+#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
      return FindExeRelativeToSetupExe(
          GetSetupExeFromRegistry(level, kSxSBrowserAppGuid), kChromeExe);
  #else
