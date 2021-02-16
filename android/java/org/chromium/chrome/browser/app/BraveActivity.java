@@ -42,18 +42,22 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveSyncReflectionUtils;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
+import org.chromium.chrome.browser.DeprecateBAPModalDialogFragment;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.SetDefaultBrowserActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -103,7 +107,8 @@ import java.util.Locale;
  * Brave's extension for ChromeActivity
  */
 @JNINamespace("chrome::android")
-public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity {
+public abstract class BraveActivity<C extends ChromeActivityComponent>
+        extends ChromeActivity implements BraveRewardsObserver {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
@@ -119,6 +124,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String OPEN_URL = "open_url";
 
+    private static final int DAYS_3 = 3;
     private static final int DAYS_4 = 4;
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
@@ -131,9 +137,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
 
+    private static final String JAPAN_COUNTRY_CODE = "JP";
+
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
     protected ObservableSupplier<Profile> mTabModelProfileSupplier;
+    private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
@@ -147,6 +156,19 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onResumeWithNative() {
         super.onResumeWithNative();
         nativeRestartStatsUpdater();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            if (mBraveRewardsNativeWorker == null)
+                mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+            mBraveRewardsNativeWorker.AddObserver(this);
+        }
+    }
+
+    @Override
+    public void onPauseWithNative() {
+        if (mBraveRewardsNativeWorker != null) {
+            mBraveRewardsNativeWorker.RemoveObserver(this);
+        }
     }
 
     @Override
@@ -370,6 +392,69 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
+        if (mBraveRewardsNativeWorker != null
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            mBraveRewardsNativeWorker.StartProcess();
+        }
+    }
+
+    @Override
+    public void OnRewardsParameters(int errorCode) {
+        if (errorCode == BraveRewardsNativeWorker.LEDGER_OK && mBraveRewardsNativeWorker != null
+                && mBraveRewardsNativeWorker.GetWalletBalance() != null
+                && mBraveRewardsNativeWorker.GetWalletBalance().getTotal() > 0) {
+            checkForDeprecateBAPDialog();
+        }
+    }
+
+    @Override
+    public void OnStartProcess() {
+        mBraveRewardsNativeWorker.GetRewardsParameters();
+    }
+
+    private void checkForDeprecateBAPDialog() {
+        String countryCode = Locale.getDefault().getCountry();
+        if (countryCode.equals(JAPAN_COUNTRY_CODE) && !isRewardsPanelOpened()
+                && System.currentTimeMillis() > BraveRewardsHelper.getNextBAPModalDate()) {
+            Calendar toDayCalendar = Calendar.getInstance();
+            Date todayDate = toDayCalendar.getTime();
+
+            Calendar march6Calendar = Calendar.getInstance();
+            march6Calendar.set(Calendar.DAY_OF_MONTH, 6);
+            march6Calendar.set(Calendar.YEAR, 2021);
+            march6Calendar.set(Calendar.MONTH, 2);
+            march6Calendar.set(Calendar.HOUR_OF_DAY, 0);
+            march6Calendar.set(Calendar.MINUTE, 0);
+            march6Calendar.set(Calendar.SECOND, 0);
+            march6Calendar.set(Calendar.MILLISECOND, 0);
+            Date march6Date = march6Calendar.getTime();
+
+            Calendar march13Calendar = Calendar.getInstance();
+            march13Calendar.set(Calendar.DAY_OF_MONTH, 13);
+            march13Calendar.set(Calendar.YEAR, 2021);
+            march13Calendar.set(Calendar.MONTH, 2);
+            march13Calendar.set(Calendar.HOUR_OF_DAY, 0);
+            march13Calendar.set(Calendar.MINUTE, 0);
+            march13Calendar.set(Calendar.SECOND, 0);
+            march13Calendar.set(Calendar.MILLISECOND, 0);
+            Date march13Date = march13Calendar.getTime();
+
+            boolean shouldSetNextDate = false;
+            if (todayDate.compareTo(march6Date) < 0) {
+                showRewardsTooltip();
+                shouldSetNextDate = true;
+            } else if (todayDate.compareTo(march6Date) > 0
+                    && todayDate.compareTo(march13Date) < 0) {
+                showDeprecateBAPDialog();
+                shouldSetNextDate = true;
+            }
+            if (shouldSetNextDate) {
+                Calendar calender = toDayCalendar;
+                calender.add(Calendar.DATE, DAYS_3);
+                BraveRewardsHelper.setNextBAPModalDate(calender.getTimeInMillis());
+            }
+        }
     }
 
     private void checkSetDefaultBrowserModal() {
@@ -481,6 +566,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         assert layout != null;
         if (layout != null) {
             layout.hideRewardsOnboardingIcon();
+        }
+    }
+
+    public void showRewardsTooltip() {
+        BraveToolbarLayout layout = (BraveToolbarLayout) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.showRewardsTooltip();
         }
     }
 
@@ -604,6 +697,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    public boolean isRewardsPanelOpened() {
+        BraveToolbarLayout layout = (BraveToolbarLayout) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            return layout.isRewardsPanelOpened();
+        }
+        return false;
+    }
+
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
         if (tab != null && tab.getUrlString().equals(url)) {
@@ -649,6 +751,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.setCancelable(false);
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
+    }
+
+    public void showDeprecateBAPDialog() {
+        DeprecateBAPModalDialogFragment mDeprecateBAPModalDialogFragment =
+                new DeprecateBAPModalDialogFragment();
+        mDeprecateBAPModalDialogFragment.setCancelable(false);
+        mDeprecateBAPModalDialogFragment.show(
+                getSupportFragmentManager(), "DeprecateBAPModalDialogFragment");
     }
 
     private native void nativeRestartStatsUpdater();

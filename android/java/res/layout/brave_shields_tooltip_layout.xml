@@ -15,8 +15,8 @@
 		android:id="@+id/txt_tooltip_title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="20sp"
-		android:fontFamily="sans-serif"
+		android:textSize="16sp"
+		android:fontFamily="sans-serif-medium"
 		android:layout_marginBottom="8dp"
 		android:textColor="@android:color/white"/>
 
@@ -25,7 +25,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textSize="16sp"
-		android:fontFamily="sans-serif"
+		android:fontFamily="sans-serif-medium"
 		android:layout_marginBottom="8dp"
 		android:textColor="@android:color/white"/>
 
