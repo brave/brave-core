@@ -148,41 +148,4 @@ TEST_F(BraveProfileSyncServiceTest, ValidPassphraseLeadingTrailingWhitespace) {
   OSCryptMocker::TearDown();
 }
 
-TEST_F(BraveProfileSyncServiceTest, NoIdentityManagerCalls) {
-  OSCryptMocker::SetUp();
-
-  CreateSyncService(ProfileSyncService::MANUAL_START);
-  brave_sync_service()->Initialize();
-  component_factory()->AllowFakeEngineInitCompletion(false);
-
-  bool set_code_result = brave_sync_service()->SetSyncCode(kValidSyncCode);
-  EXPECT_TRUE(set_code_result);
-
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
-
-  EXPECT_TRUE(engine());
-  engine()->TriggerInitializationCompletion(/*success=*/true);
-
-  // We need to test that during `ProfileSyncService::OnEngineInitialized`
-  // the stubbed call identity_manager_->GetAccountsInCookieJar() is invoked.
-  // We can do it indirectly. The stubbed method returns result where
-  // `accounts_in_cookie_jar_info.accounts_are_fresh` is set to `false`,
-  // this makes following sequence of calls:
-  //   `ProfileSyncService::OnAccountsInCookieUpdated`,
-  //   `ProfileSyncService::OnAccountsInCookieUpdatedWithCallback`,
-  //   `engine_->OnCookieJarChanged`
-  // will not be invoked.
-  // So the indirect way to ensure is to see there is no call of
-  // `SyncEngine::OnCookieJarChanged`
-
-  // TODO: Migrate this EXPECT_CALL
-  //EXPECT_CALL(*engine(), OnCookieJarChanged(_, _)).Times(0);
-
-  brave_sync_service()->OnEngineInitialized(
-      WeakHandle<JsBackend>(), WeakHandle<DataTypeDebugInfoListener>(),
-      /*success=*/true, /*is_first_time_sync_configure=*/false);
-
-  OSCryptMocker::TearDown();
-}
-
 }  // namespace syncer
