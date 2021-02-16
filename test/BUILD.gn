@@ -408,6 +408,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/components/brave_sync:crypto",
       "//brave/components/brave_sync:network_time_helper",
+      "//brave/components/signin/public/identity_manager:unit_tests",
       "//brave/components/sync/driver:unit_tests",
       "//components/signin/public/identity_manager:test_support",
     ]
