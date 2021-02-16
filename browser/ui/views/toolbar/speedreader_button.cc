@@ -18,19 +18,15 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
-#include "ui/accessibility/ax_enums.mojom.h"
-#include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/views/controls/button/button.h"
 
 SpeedreaderButton::SpeedreaderButton(PressedCallback callback,
                                      PrefService* prefs)
     : ToolbarButton(callback), prefs_(prefs) {
   SetID(BRAVE_VIEW_ID_SPEEDREADER_BUTTON);
   set_tag(IDC_TOGGLE_SPEEDREADER);
-  SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
 
   on_ = prefs_->GetBoolean(speedreader::kSpeedreaderPrefEnabled);
   pref_change_registrar_.Init(prefs_);
@@ -40,23 +36,10 @@ SpeedreaderButton::SpeedreaderButton(PressedCallback callback,
                           base::Unretained(this)));
 }
 
-SpeedreaderButton::~SpeedreaderButton() {}
+SpeedreaderButton::~SpeedreaderButton() = default;
 
 const char* SpeedreaderButton::GetClassName() const {
   return "SpeedreaderButton";
-}
-
-base::string16 SpeedreaderButton::GetTooltipText(const gfx::Point& p) const {
-  int textId =
-      on_ ? IDS_TOOLTIP_TURN_OFF_SPEEDREADER : IDS_TOOLTIP_TURN_ON_SPEEDREADER;
-  return l10n_util::GetStringUTF16(textId);
-}
-
-void SpeedreaderButton::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  int textId =
-      on_ ? IDS_TOOLTIP_TURN_OFF_SPEEDREADER : IDS_TOOLTIP_TURN_ON_SPEEDREADER;
-  node_data->role = ax::mojom::Role::kButton;
-  node_data->SetName(l10n_util::GetStringUTF16(textId));
 }
 
 void SpeedreaderButton::SetHighlighted(bool bubble_visible) {
@@ -67,7 +50,7 @@ void SpeedreaderButton::SetHighlighted(bool bubble_visible) {
 
 void SpeedreaderButton::OnPreferenceChanged() {
   on_ = prefs_->GetBoolean(speedreader::kSpeedreaderPrefEnabled);
-  UpdateImage();
+  UpdateImageAndText();
 }
 
 void SpeedreaderButton::Update(content::WebContents* active_contents) {
@@ -78,13 +61,13 @@ void SpeedreaderButton::Update(content::WebContents* active_contents) {
       const bool active = tab_helper->IsActiveForMainFrame();
       if (active_ != active) {
         active_ = active;
-        UpdateImage();
+        UpdateImageAndText();
       }
     }
   }
 }
 
-void SpeedreaderButton::UpdateImage() {
+void SpeedreaderButton::UpdateImageAndText() {
   const ui::ThemeProvider* tp = GetThemeProvider();
 
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
@@ -93,4 +76,8 @@ void SpeedreaderButton::UpdateImage() {
           : kSpeedreaderIcon;
   SetImage(views::Button::STATE_NORMAL,
            gfx::CreateVectorIcon(icon, icon_color));
+
+  int tooltip_id =
+      on_ ? IDS_TOOLTIP_TURN_OFF_SPEEDREADER : IDS_TOOLTIP_TURN_ON_SPEEDREADER;
+  SetTooltipText(l10n_util::GetStringUTF16(tooltip_id));
 }

@@ -7,8 +7,12 @@
 
 #include <algorithm>
 
+#include "chrome/grit/generated_resources.h"
+
+#include "base/strings/utf_string_conversions.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/canvas.h"
 #include "ui/native_theme/native_theme.h"
 
@@ -43,6 +47,7 @@ gfx::Size RoundedSeparator::CalculatePreferredSize() const {
 }
 
 void RoundedSeparator::GetAccessibleNodeData(ui::AXNodeData* node_data) {
+  node_data->SetName(l10n_util::GetStringUTF8(IDS_ACCNAME_SEPARATOR));
   node_data->role = ax::mojom::Role::kSplitter;
 }
 
