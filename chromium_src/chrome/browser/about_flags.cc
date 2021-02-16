@@ -11,6 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -78,6 +79,19 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_IPFS_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/components/brave_wallet/features.h"
+
+#define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                  \
+    {"native-brave-wallet",                                                  \
+     flag_descriptions::kNativeBraveWalletName,                              \
+     flag_descriptions::kNativeBraveWalletDescription,                       \
+     kOsDesktop | flags_ui::kOsAndroid,                                      \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},
+#else
+#define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_FEATURE_ENTRIES \
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
@@ -98,6 +112,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     SPEEDREADER_FEATURE_ENTRIES                                            \
     BRAVE_SYNC_FEATURE_ENTRIES                                             \
     BRAVE_IPFS_FEATURE_ENTRIES                                             \
+    BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
     SIDEBAR_FEATURE_ENTRIES                                                \
     {"brave-super-referral",                                               \
      flag_descriptions::kBraveSuperReferralName,                           \
