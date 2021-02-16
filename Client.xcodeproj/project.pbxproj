@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -5908,6 +5908,7 @@
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
 				E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */,
 				27C2856425D5CDEF00429881 /* Fix MaterialComponents Info.plist */,
+				272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */,
 			);
 			buildRules = (
 			);
@@ -6439,6 +6440,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Fix Embedded Frameworks Signing";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Thanks to folks at PSPDFKit for this workaround:\n# https://pspdfkit.com/guides/ios/current/knowledge-base/library-not-found-swiftpm/\n#\n# Required because of some XCFrameorks not codesigning properly when building for Device\nfind \"${CODESIGNING_FOLDER_PATH}\" -name '*.framework' -print0 | while read -d $'\\0' framework \ndo \n    codesign --force --deep --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\" --preserve-metadata=identifier,entitlements --timestamp=none \"${framework}\" \ndone\n\n";
+		};
 		2779B7052159297D0044A102 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
