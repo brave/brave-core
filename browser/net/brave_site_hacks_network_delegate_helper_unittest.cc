@@ -170,6 +170,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {
       "https://example.com/?%20fbclid=1",
       "https://example.com/#fbclid=1",
       "https://example.com/1;k=v;&a=b&c=d&gclid=1234;%3fhttp://ad.co/?e=f&g=1",
+      "https://example.com/?__ss=1234-abcd",
   });
   for (const auto& url : urls) {
     auto brave_request_info =
@@ -251,6 +252,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
            "https://example.com/?fbclid=&foo=1&bar=2"},
           {"http://u:p@example.com/path/file.html?foo=1&fbclid=abcd#fragment",
            "http://u:p@example.com/path/file.html?foo=1#fragment"},
+          {"https://example.com/?__s=1234-abcd", "https://example.com/"},
           // Obscure edge cases that break most parsers:
           {"https://example.com/?fbclid&foo&&gclid=2&bar=&%20",
            "https://example.com/?fbclid&foo&&bar=&%20"},
