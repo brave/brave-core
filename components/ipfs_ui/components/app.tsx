@@ -63,6 +63,9 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.getAddressesConfig()
     this.actions.getRepoStats()
     this.actions.getNodeInfo()
+    if (this.props.ipfsData.daemonStatus.launched) {
+      setTimeout(this.refreshActions, 2000)
+    }
   }
 
   componentDidUpdate (prevProps: Props) {
