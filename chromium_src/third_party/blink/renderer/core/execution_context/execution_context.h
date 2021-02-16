@@ -13,7 +13,6 @@
 #include "base/callback.h"
 
 namespace blink {
-class StaticBitmapImage;
 class WebContentSettingsClient;
 }  // namespace blink
 
@@ -45,9 +44,9 @@ class CORE_EXPORT BraveSessionCache final
 
   AudioFarblingCallback GetAudioFarblingCallback(
       blink::WebContentSettingsClient* settings);
-  scoped_refptr<blink::StaticBitmapImage> PerturbPixels(
-      blink::WebContentSettingsClient* settings,
-      scoped_refptr<blink::StaticBitmapImage> image_bitmap);
+  void PerturbPixels(blink::WebContentSettingsClient* settings,
+                     const unsigned char* data,
+                     size_t size);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
   std::mt19937_64 MakePseudoRandomGenerator();
@@ -57,8 +56,7 @@ class CORE_EXPORT BraveSessionCache final
   uint64_t session_key_;
   uint8_t domain_key_[32];
 
-  scoped_refptr<blink::StaticBitmapImage> PerturbPixelsInternal(
-      scoped_refptr<blink::StaticBitmapImage> image_bitmap);
+  void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };
 }  // namespace brave
 

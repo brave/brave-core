@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 0d526abe45fa3dc58874e1cbbb27ac3cbc8e1109..5f1a80c89cd3e7f40ab47391f8b4d8390490c33b 100644
+index 0d526abe45fa3dc58874e1cbbb27ac3cbc8e1109..9327c64ec3dc335fb1919e44617fdd01bc5a1152 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -1617,6 +1617,7 @@ ImageData* BaseRenderingContext2D::getImageData(
@@ -10,11 +10,11 @@ index 0d526abe45fa3dc58874e1cbbb27ac3cbc8e1109..5f1a80c89cd3e7f40ab47391f8b4d839
      int sx,
      int sy,
      int sw,
-@@ -1764,6 +1765,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
- 
-   // Read pixels into |contents|.
-   if (snapshot) {
-+    BRAVE_GET_IMAGE_DATA
-     const bool read_pixels_successful =
-         snapshot->PaintImageForCurrentFrame().readPixels(
-             image_info, contents.Data(), image_info.minRowBytes(), sx, sy);
+@@ -1799,6 +1800,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+     default:
+       NOTREACHED();
+   }
++  BRAVE_GET_IMAGE_DATA
+   ImageData* image_data = ImageData::ValidateAndCreate(
+       sw, sh, data_array, image_data_settings, exception_state,
+       ImageData::Context2DErrorMode);

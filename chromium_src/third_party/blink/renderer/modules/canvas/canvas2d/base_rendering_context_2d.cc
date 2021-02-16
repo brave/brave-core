@@ -7,23 +7,17 @@
 
 #include "base/notreached.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
-#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/local_dom_window.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+#include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
 #define BRAVE_GET_IMAGE_DATA                                              \
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
     if (WebContentSettingsClient* settings =                              \
             brave::GetContentSettingsClientFor(context)) {                \
-      snapshot = brave::BraveSessionCache::From(*context).PerturbPixels(  \
-          settings, snapshot);                                            \
-      if (!snapshot) {                                                    \
-        exception_state.ThrowRangeError(                                  \
-            "Out of memory at ImageData creation");                       \
-        return nullptr;                                                   \
-      }                                                                   \
+      brave::BraveSessionCache::From(*context).PerturbPixels(             \
+          settings,                                                       \
+          static_cast<const unsigned char*>(data_array->BaseAddress()),   \
+          data_array->byteLength());                                      \
     }                                                                     \
   }
 
