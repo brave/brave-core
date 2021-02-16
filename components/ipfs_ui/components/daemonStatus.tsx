@@ -13,6 +13,9 @@ interface Props {
   daemonStatus: IPFS.DaemonStatus
   onLaunch: () => void
   onShutdown: () => void
+  onRestart: () => void
+  onOpenNodeWebUI: () => void
+  addressesConfig: IPFS.AddressesConfig
 }
 
 export class DaemonStatus extends React.Component<Props, {}> {
@@ -27,10 +30,10 @@ export class DaemonStatus extends React.Component<Props, {}> {
           {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          {getLocale('launched')}: {this.props.daemonStatus.launched.toString()}
+          {this.props.daemonStatus.launched ? getLocale('launched') : getLocale('notLaunched')}
         </div>
         <SideBySideButtons>
-          {!this.props.daemonStatus.launched && (<PaddedButton
+          {(!this.props.daemonStatus.launched && !this.props.daemonStatus.restarting) && (<PaddedButton
             text={getLocale('launch')}
             size={'small'}
             onClick={this.props.onLaunch}
@@ -40,6 +43,19 @@ export class DaemonStatus extends React.Component<Props, {}> {
             size={'small'}
             onClick={this.props.onShutdown}
           />)}
+          {(this.props.daemonStatus.launched || this.props.daemonStatus.restarting) && (<PaddedButton
+            text={getLocale('restart')}
+            size={'small'}
+            onClick={this.props.onRestart}
+          />
+          )}
+          {this.props.addressesConfig.api && !this.props.daemonStatus.restarting && (
+          <PaddedButton
+            text={getLocale('openWebUI')}
+            size={'small'}
+            onClick={this.props.onOpenNodeWebUI}
+          />
+          )}
         </SideBySideButtons>
       </Section>
     )
