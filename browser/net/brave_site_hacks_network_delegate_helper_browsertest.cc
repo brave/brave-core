@@ -7,9 +7,13 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -44,6 +48,10 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     cross_site_url_ = https_server_.GetURL("b.com", "/navigate-to-site.html");
     same_site_url_ =
         https_server_.GetURL("sub.a.com", "/navigate-to-site.html");
+  }
+
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -138,6 +146,21 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     NavigateToURLAndWaitForRedirects(
         url(landing_url(inputs[i], simple_landing_url()), cross_site_url()),
         landing_url(outputs[i], simple_landing_url()));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       QueryStringFilterShieldsDown) {
+  const std::string inputs[] = {
+      "", "foo=bar", "fbclid=1", "fbclid=2&key=value", "key=value&fbclid=3",
+  };
+
+  constexpr size_t input_count = base::size(inputs);
+
+  for (size_t i = 0; i < input_count; i++) {
+    const GURL dest_url = landing_url(inputs[i], simple_landing_url());
+    brave_shields::SetBraveShieldsEnabled(content_settings(), false, dest_url);
+    NavigateToURLAndWaitForRedirects(url(dest_url, cross_site_url()), dest_url);
   }
 }
 
