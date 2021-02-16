@@ -200,3 +200,11 @@
     *** populateUrlAnimatorSet(...);
     *** getBoundsAfterAccountingForRightButtons(...);
 }
+
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
+    public <init>(...);
+}
