@@ -7,9 +7,8 @@
 
 #include <algorithm>
 
-#include "chrome/grit/generated_resources.h"
-
 #include "base/strings/utf_string_conversions.h"
+#include "chrome/grit/generated_resources.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
