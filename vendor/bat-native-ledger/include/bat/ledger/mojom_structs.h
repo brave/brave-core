@@ -15,6 +15,10 @@
 
 namespace ledger {
 namespace type {
+
+// DEPRECATED. Use the "ledger::mojom" namespace directly, and for clarity,
+// generally avoid aliasing standard library containers.
+
 /**
  * LEDGER
  */
@@ -186,26 +190,26 @@ using WalletStatus = mojom::WalletStatus;
 /**
  * DATABASE
  */
-using DBCommand = ledger_database::mojom::DBCommand;
-using DBCommandPtr = ledger_database::mojom::DBCommandPtr;
+using DBCommand = mojom::DBCommand;
+using DBCommandPtr = mojom::DBCommandPtr;
 
-using DBCommandBinding = ledger_database::mojom::DBCommandBinding;
-using DBCommandBindingPtr = ledger_database::mojom::DBCommandBindingPtr;
+using DBCommandBinding = mojom::DBCommandBinding;
+using DBCommandBindingPtr = mojom::DBCommandBindingPtr;
 
-using DBCommandResult = ledger_database::mojom::DBCommandResult;
-using DBCommandResultPtr = ledger_database::mojom::DBCommandResultPtr;
+using DBCommandResult = mojom::DBCommandResult;
+using DBCommandResultPtr = mojom::DBCommandResultPtr;
 
-using DBCommandResponse = ledger_database::mojom::DBCommandResponse;
-using DBCommandResponsePtr = ledger_database::mojom::DBCommandResponsePtr;
+using DBCommandResponse = mojom::DBCommandResponse;
+using DBCommandResponsePtr = mojom::DBCommandResponsePtr;
 
-using DBRecord = ledger_database::mojom::DBRecord;
-using DBRecordPtr = ledger_database::mojom::DBRecordPtr;
+using DBRecord = mojom::DBRecord;
+using DBRecordPtr = mojom::DBRecordPtr;
 
-using DBTransaction = ledger_database::mojom::DBTransaction;
-using DBTransactionPtr = ledger_database::mojom::DBTransactionPtr;
+using DBTransaction = mojom::DBTransaction;
+using DBTransactionPtr = mojom::DBTransactionPtr;
 
-using DBValue = ledger_database::mojom::DBValue;
-using DBValuePtr = ledger_database::mojom::DBValuePtr;
+using DBValue = mojom::DBValue;
+using DBValuePtr = mojom::DBValuePtr;
 
 }  // namespace type
 }  // namespace ledger
