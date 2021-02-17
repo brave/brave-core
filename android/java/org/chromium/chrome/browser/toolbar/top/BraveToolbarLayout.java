@@ -356,8 +356,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                     }
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
                             && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
-                            && !isRewardsTooltipShown()
-                            && !isRewardsPanelOpened()) {
+                            && !isRewardsTooltipShown() && !isRewardsPanelOpened()) {
                         checkForTooltip(tab);
                     }
                 }
