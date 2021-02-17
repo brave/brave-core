@@ -4,23 +4,9 @@
 
 import("//brave/build/cargo.gni")
 
-group("adblock_rust_ffi") {
-  public_configs = [ ":external_config" ]
-  public_deps = [ "//brave/build/rust" ]
-}
-
-config("external_config") {
-  if (is_mac) {
-    defines = [ "ADBLOCK_SHARED_LIBRARY"]
-  }
-}
-
-source_set("rust_ffi") {
-  visibility = [ "//brave/build/rust:*" ]
-
-  public_configs = [ ":external_config" ]
-
-  defines = [ "ADBLOCK_IMPLEMENTATION" ]
+rust_ffi("adblock_rust_ffi") {
+  shared_library_define = "ADBLOCK_SHARED_LIBRARY"
+  implementation_define = "ADBLOCK_IMPLEMENTATION"
 
   sources = [
     "src/lib.h",
@@ -29,11 +15,10 @@ source_set("rust_ffi") {
   ]
 }
 
-source_set("rust_lib") {
-  visibility = [ "//brave/build/rust:*" ]
-
+rust_crate("rust_lib") {
   inputs = [
     "Cargo.toml",
+    "cbindgen.toml",
     "src/lib.rs",
   ]
 }
