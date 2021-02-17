@@ -266,16 +266,18 @@ void IpfsService::OnGetConnectedPeers(
     response_code = url_loader->ResponseInfo()->headers->response_code();
   url_loaders_.erase(iter);
   LOG(ERROR) << "On get connected peers, error_code = " << error_code
-        << " response_code = " << response_code;
+             << " response_code = " << response_code;
 
   std::vector<std::string> peers;
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);
-  if (success)
-    success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
-  else {
-      VLOG(1) << "Fail to get connected peers, error_code = " << error_code
+  if (!success) {
+    VLOG(1) << "Fail to get connected peers, error_code = " << error_code
             << " response_code = " << response_code;
   }
+
+  if (success)
+    success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
+
   if (callback)
     std::move(callback).Run(success, peers);
 

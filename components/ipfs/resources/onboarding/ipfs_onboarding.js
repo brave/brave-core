@@ -17,7 +17,9 @@ const IPFSOnboardingCommandId = {
 const IPFSOnboardingResponse = {
   LOCAL_NODE_ERROR: 0,
   THEME_CHANGED: 1,
-  LOCAL_NODE_LAUNCHED: 2
+  LOCAL_NODE_LAUNCHED: 2,
+  NO_PEERS_AVAILABLE: 3,
+  NO_PEERS_LIMIT: 4
 };
 
 const setTheme = (theme) => {
@@ -46,15 +48,23 @@ function setupEvents() {
 
 document.addEventListener('DOMContentLoaded', setupEvents);
 
+function showErrorMessage(text) {
+  $('error-container').textContent = text
+  $('error-container').className = 'error-container-visible'
+}
+
 function handleCommand(code, text) {
   if (code == IPFSOnboardingResponse.LOCAL_NODE_ERROR) {
-    $('error-container').textContent = text
-    $('error-container').className = 'error-container-visible'
+    showErrorMessage(text)
     $('local-node-button').textContent = '$i18nRaw{retryText}'
   } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
     setTheme(text)
   } else if (code == IPFSOnboardingResponse.LOCAL_NODE_LAUNCHED) {
     $('local-node-button').textContent = '$i18nRaw{watingPeersText}'
+  } else if (code == IPFSOnboardingResponse.NO_PEERS_AVAILABLE) {
+    showErrorMessage(text)
+  } else if (code == IPFSOnboardingResponse.NO_PEERS_LIMIT) {
+    showErrorMessage('$i18nRaw{retryLimitPeersText}')
   }
 }
 
