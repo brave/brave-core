@@ -107,6 +107,10 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase"));
     }
 
     @Test
