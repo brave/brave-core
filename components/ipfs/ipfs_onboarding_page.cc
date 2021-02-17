@@ -6,11 +6,14 @@
 #include "brave/components/ipfs/ipfs_onboarding_page.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/notreached.h"
+#include "base/strings/string16.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -31,6 +34,14 @@ const char kResponseScript[] =
 const char kBraveSettingsURL[] = "brave://settings/ipfs";
 constexpr int kOnboardingIsolatedWorldId =
     content::ISOLATED_WORLD_ID_CONTENT_END + 1;
+
+// The period in seconds during which we will repeat requests
+// to get connected peers if no peers available
+constexpr int kConnectedPeersRetryLimitSec = 120;
+
+// The period in seconds between requests to get connected peers information.
+constexpr int kConnectedPeersRetryStepSec = 1;
+
 }  // namespace
 namespace ipfs {
 
@@ -61,10 +72,10 @@ void IPFSOnboardingPage::UseLocalNode() {
   prefs->SetInteger(kIPFSResolveMethod,
                     static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
 
-  if (!ipfs_service_->IsDaemonLaunched())
+  if (!ipfs_service_->IsDaemonLaunched()) {
     ipfs_service_->LaunchDaemon(base::NullCallback());
-  else {
-    RespondToPage(LOCAL_NODE_LAUNCHED, std::string());
+  } else {
+    RespondToPage(LOCAL_NODE_LAUNCHED, base::string16());
     GetConnectedPeers();
   }
 }
@@ -81,22 +92,37 @@ void IPFSOnboardingPage::OnIpfsShutdown() {
   ReportDaemonStopped();
 }
 
-void IPFSOnboardingPage::OnGetConnectedPeers(bool success,
-  const std::vector<std::string>& peers) {
-  LOG(ERROR) << "Peers success:" << success << " amount:" << peers.size();
+void IPFSOnboardingPage::OnGetConnectedPeers(
+    bool success,
+    const std::vector<std::string>& peers) {
   if (!success || peers.empty()) {
-    RespondToPage(NO_PEERS_AVAILABLE, base::UTF16ToUTF8(l10n_util::GetStringUTF16(
-                IDS_IPFS_ONBOARDING_PEERS_ERROR)));
+    base::TimeDelta delta = base::TimeTicks::Now() - start_time_ticks_;
+    if (delta.InSeconds() < kConnectedPeersRetryLimitSec) {
+      int retries = (kConnectedPeersRetryLimitSec - delta.InSeconds()) /
+                    kConnectedPeersRetryStepSec;
+      RespondToPage(NO_PEERS_AVAILABLE, l10n_util::GetStringFUTF16(
+                                            IDS_IPFS_ONBOARDING_PEERS_ERROR,
+                                            base::NumberToString16(retries)));
+
+      base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+          FROM_HERE,
+          base::BindOnce(&IPFSOnboardingPage::GetConnectedPeers,
+                         weak_ptr_factory_.GetWeakPtr()),
+          base::TimeDelta::FromSeconds(kConnectedPeersRetryStepSec));
+    } else {
+      RespondToPage(NO_PEERS_LIMIT, l10n_util::GetStringUTF16(
+                                        IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
+    }
     return;
-  };
+  }
   if (IsLocalNodeMode()) {
     Proceed();
   }
 }
 
 void IPFSOnboardingPage::ReportDaemonStopped() {
-  RespondToPage(LOCAL_NODE_ERROR, base::UTF16ToUTF8(l10n_util::GetStringUTF16(
-                IDS_IPFS_SERVICE_LAUNCH_ERROR)));
+  RespondToPage(LOCAL_NODE_ERROR,
+                l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_LAUNCH_ERROR));
 }
 
 void IPFSOnboardingPage::GetConnectedPeers() {
@@ -111,15 +137,16 @@ bool IPFSOnboardingPage::IsLocalNodeMode() {
 }
 
 void IPFSOnboardingPage::OnIpfsLaunched(bool result, int64_t pid) {
+  start_time_ticks_ = base::TimeTicks::Now();
   if (!result) {
     ReportDaemonStopped();
     return;
   }
 
-  if (IsLocalNodeMode()) {
-    RespondToPage(LOCAL_NODE_LAUNCHED, std::string());
-    GetConnectedPeers();
-  }
+  if (!IsLocalNodeMode())
+    return;
+  RespondToPage(LOCAL_NODE_LAUNCHED, base::string16());
+  GetConnectedPeers();
 }
 
 void IPFSOnboardingPage::Proceed() {
@@ -128,15 +155,16 @@ void IPFSOnboardingPage::Proceed() {
 }
 
 void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse value,
-                                       const std::string& text) {
+                                       const base::string16& text) {
   auto* main_frame = web_contents()->GetMainFrame();
   DCHECK(main_frame);
 
-  std::string script(kResponseScript);
-  base::ReplaceSubstringsAfterOffset(&script, 0, "{value}",
-                                     std::to_string(value));
-  base::ReplaceSubstringsAfterOffset(&script, 0, "{text}", text);
-  main_frame->ExecuteJavaScriptInIsolatedWorld(base::ASCIIToUTF16(script), {},
+  base::string16 script(base::UTF8ToUTF16(kResponseScript));
+  base::ReplaceSubstringsAfterOffset(&script, 0, base::UTF8ToUTF16("{value}"),
+                                     base::NumberToString16(value));
+  base::ReplaceSubstringsAfterOffset(&script, 0, base::UTF8ToUTF16("{text}"),
+                                     text);
+  main_frame->ExecuteJavaScriptInIsolatedWorld(script, {},
                                                kOnboardingIsolatedWorldId);
 }
 
@@ -205,6 +233,9 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "watingPeersText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS));
   load_time_data->SetString(
+      "retryLimitPeersText",
+      l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
+  load_time_data->SetString(
       "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
 }
 
@@ -222,7 +253,7 @@ std::string IPFSOnboardingPage::GetThemeType(ui::NativeTheme* theme) const {
 }
 
 void IPFSOnboardingPage::OnNativeThemeUpdated(ui::NativeTheme* observed_theme) {
-  RespondToPage(THEME_CHANGED, GetThemeType(observed_theme));
+  RespondToPage(THEME_CHANGED, base::UTF8ToUTF16(GetThemeType(observed_theme)));
 }
 
 }  // namespace ipfs
