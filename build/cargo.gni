@@ -26,7 +26,11 @@ template("rust_ffi") {
         defined(invoker.implementation_define),
         "Must specify an implementation define for exporting symbols on mac ex: ADBLOCK_IMPLEMENTATION")
   } else {
-    not_needed(invoker, ["shared_library_define", "implementation_define"])
+    not_needed(invoker,
+               [
+                 "shared_library_define",
+                 "implementation_define",
+               ])
   }
 
   config(config_target_name) {

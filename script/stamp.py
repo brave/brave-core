@@ -16,6 +16,7 @@ Usage:
 import argparse
 import sys
 
+
 def main(args):
   parser = argparse.ArgumentParser(description=__doc__)
   parser.add_argument('--stamp',
@@ -29,6 +30,7 @@ def main(args):
     return 1
 
   return 0
+
 
 if __name__ == '__main__':
   sys.exit(main(sys.argv[1:]))
