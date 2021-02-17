@@ -5,20 +5,14 @@
 import("//brave/build/cargo.gni")
 
 config("external_config") {
-  defines = [
-    "NO_CXXEXCEPTIONS=1"
-  ]
-  if (is_mac) {
-    defines += [ "CHALLENGE_BYPASS_RISTRETTO_SHARED_LIBRARY" ]
-  }
+  defines = [ "NO_CXXEXCEPTIONS=1" ]
 
   include_dirs = [ "//brave/vendor/challenge_bypass_ristretto_ffi/src" ]
 }
 
-source_set("rust_ffi") {
-  visibility = [ "//brave/build/rust:*" ]
-
-  defines = [ "CHALLENGE_BYPASS_RISTRETTO_IMPLEMENTATION" ]
+rust_ffi("challenge_bypass_ristretto") {
+  shared_library_define = "CHALLENGE_BYPASS_RISTRETTO_SHARED_LIBRARY"
+  implementation_define = "CHALLENGE_BYPASS_RISTRETTO_IMPLEMENTATION"
 
   public_configs = [ ":external_config" ]
 
@@ -28,28 +22,14 @@ source_set("rust_ffi") {
     "//brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp",
   ]
 
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 
-  if (is_mac || is_ios ) {
-    frameworks = [
-      "Security.framework"
-    ]
+  if (is_mac || is_ios) {
+    frameworks = [ "Security.framework" ]
   }
 }
 
-group("challenge_bypass_ristretto") {
-  public_configs = [ ":external_config" ]
-
-  public_deps = [
-    "//brave/build/rust",
-  ]
-}
-
-source_set("rust_lib") {
-  visibility = [ "//brave/build/rust:*" ]
-
+rust_crate("rust_lib") {
   inputs = [
     "//brave/vendor/challenge_bypass_ristretto_ffi/Cargo.toml",
     "//brave/vendor/challenge_bypass_ristretto_ffi/src/lib.rs",

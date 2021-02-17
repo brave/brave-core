@@ -1,6 +1,5 @@
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/build/rust/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import(
@@ -876,9 +875,9 @@ if (is_android) {
     }
 
     sources = [
-      "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BravePrivateTabTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsTest.java",
     ]
 
     deps = [

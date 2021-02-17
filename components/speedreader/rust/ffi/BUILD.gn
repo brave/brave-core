@@ -4,13 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/cargo.gni")
-import("//brave/build/rust/config.gni")
-
-config("external_config") {
-  if (is_mac) {
-    defines = [ "SPEEDREADER_SHARED_LIBRARY" ]
-  }
-}
 
 # Generate FFI header from Rust source
 cargo_cbindgen("speedreader_ffi_header") {
@@ -28,18 +21,17 @@ cargo_cbindgen("speedreader_ffi_header") {
   ]
 }
 
-source_set("ffi") {
-  public_configs = [ ":external_config" ]
-  visibility = [ "//brave/build/rust:*" ]
-  defines = [ "SPEEDREADER_IMPLEMENTATION" ]
+rust_ffi("ffi") {
+  shared_library_define = "SPEEDREADER_SHARED_LIBRARY"
+  implementation_define = "SPEEDREADER_IMPLEMENTATION"
 
   sources = [
     "speedreader.cc",
-    "speedreader.h"
+    "speedreader.h",
   ]
 
   deps = [
-    "//base",
     ":speedreader_ffi_header",
+    "//base",
   ]
 }
