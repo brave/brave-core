@@ -15,6 +15,8 @@
 #include "components/security_interstitials/content/security_interstitial_page.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -33,6 +35,7 @@ class IpfsService;
 // browser tries to access IPFS contents if ASK mode is selected in settings.
 class IPFSOnboardingPage
     : public security_interstitials::SecurityInterstitialPage,
+      public ipfs::IpfsServiceObserver,
       public ui::NativeThemeObserver {
  public:
   // Interstitial type, used in tests.
@@ -49,7 +52,12 @@ class IPFSOnboardingPage
   };
 
   // In case of an error when starting a local node, we notify a page.
-  enum IPFSOnboardingResponse { LOCAL_NODE_ERROR = 0, THEME_CHANGED = 1 };
+  enum IPFSOnboardingResponse {
+    LOCAL_NODE_ERROR = 0,
+    THEME_CHANGED = 1,
+    LOCAL_NODE_LAUNCHED = 2,
+    NO_PEERS_AVAILABLE = 3
+  };
 
   explicit IPFSOnboardingPage(
       IpfsService* ipfs_service,
@@ -68,8 +76,12 @@ class IPFSOnboardingPage
   void CommandReceived(const std::string& command) override;
   security_interstitials::SecurityInterstitialPage::TypeID GetTypeForTesting()
       override;
-  void OnIpfsLaunched(bool result);
   void Proceed();
+
+  // ipfs::IpfsServiceObserver
+  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsShutdown() override;
+  void OnGetConnectedPeers(bool succes, const std::vector<std::string>& peers) override;
 
   // ui::NativeThemeObserver overrides:
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
@@ -88,8 +100,13 @@ class IPFSOnboardingPage
   void RespondToPage(IPFSOnboardingResponse command, const std::string& text);
   void UseLocalNode();
   void UsePublicGateway();
+  void GetConnectedPeers();
+  void ReportDaemonStopped();
+  bool IsLocalNodeMode();
 
   IpfsService* ipfs_service_ = nullptr;
+  base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
+      service_observer_{this};
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
       theme_observer_{this};
   base::WeakPtrFactory<IPFSOnboardingPage> weak_ptr_factory_{this};

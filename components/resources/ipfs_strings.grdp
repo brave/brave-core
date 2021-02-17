@@ -34,9 +34,6 @@
     <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
       Learn more about IPFS and privacy
     </message>
-    <message name="IDS_IPFS_SERVICE_INSTALLATION" desc="Title of button for IPFS interstitial page.">
-      Installing...
-    </message>
     <message name="IDS_IPFS_SERVICE_LAUNCH_RETRY" desc="Retry button text for IPFS interstitial page.">
       Try again
     </message>
@@ -93,6 +90,15 @@
     </message>
     <message name="IDS_IPFS_ONBOARDING_SETTINGS" desc="Settings link at the end of footer text">
       settings
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_INSTALLATION_STATUS" desc="Title of button for IPFS interstitial page.">
+      Installing...
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS" desc="Title of button for IPFS interstitial page.">
+      Waiting for peers...
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_PEERS_ERROR" desc="Error message about no peers for IPFS interstitial page.">
+      No peers available...Please try again later.
     </message>
   </if>
 </grit-part>
