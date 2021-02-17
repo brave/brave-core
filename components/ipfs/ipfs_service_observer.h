@@ -15,6 +15,8 @@ class IpfsServiceObserver : public base::CheckedObserver {
   ~IpfsServiceObserver() override {}
   virtual void OnIpfsLaunched(bool result, int64_t pid) {}
   virtual void OnIpfsShutdown() {}
+  virtual void OnGetConnectedPeers(bool succes,
+    const std::vector<std::string>& peers) {}
 };
 
 }  // namespace ipfs

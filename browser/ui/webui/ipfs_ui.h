@@ -34,11 +34,11 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
   // ipfs::IpfsServiceObserver overrides:
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
+  void OnGetConnectedPeers(bool success,
+                           const std::vector<std::string>& peers) override;
 
  private:
   void HandleGetConnectedPeers(const base::ListValue* args);
-  void OnGetConnectedPeers(bool success,
-                           const std::vector<std::string>& peers);
   void HandleGetAddressesConfig(const base::ListValue* args);
   void OnGetAddressesConfig(bool success,
                             const ipfs::AddressesConfig& config);

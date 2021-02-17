@@ -49,6 +49,7 @@ IPFSOnboardingPage::IPFSOnboardingPage(
                                                        request_url,
                                                        std::move(controller)),
       ipfs_service_(ipfs_service) {
+  service_observer_.Observe(ipfs_service_);
   theme_observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
 }
 
@@ -59,8 +60,13 @@ void IPFSOnboardingPage::UseLocalNode() {
   auto* prefs = user_prefs::UserPrefs::Get(context);
   prefs->SetInteger(kIPFSResolveMethod,
                     static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-  ipfs_service_->LaunchDaemon(base::BindOnce(
-      &IPFSOnboardingPage::OnIpfsLaunched, weak_ptr_factory_.GetWeakPtr()));
+
+  if (!ipfs_service_->IsDaemonLaunched())
+    ipfs_service_->LaunchDaemon(base::NullCallback());
+  else {
+    RespondToPage(LOCAL_NODE_LAUNCHED, std::string());
+    GetConnectedPeers();
+  }
 }
 
 void IPFSOnboardingPage::UsePublicGateway() {
@@ -71,16 +77,53 @@ void IPFSOnboardingPage::UsePublicGateway() {
   Proceed();
 }
 
-void IPFSOnboardingPage::OnIpfsLaunched(bool result) {
+void IPFSOnboardingPage::OnIpfsShutdown() {
+  ReportDaemonStopped();
+}
+
+void IPFSOnboardingPage::OnGetConnectedPeers(bool success,
+  const std::vector<std::string>& peers) {
+  LOG(ERROR) << "Peers success:" << success << " amount:" << peers.size();
+  if (!success || peers.empty()) {
+    RespondToPage(NO_PEERS_AVAILABLE, base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+                IDS_IPFS_ONBOARDING_PEERS_ERROR)));
+    return;
+  };
+  if (IsLocalNodeMode()) {
+    Proceed();
+  }
+}
+
+void IPFSOnboardingPage::ReportDaemonStopped() {
+  RespondToPage(LOCAL_NODE_ERROR, base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+                IDS_IPFS_SERVICE_LAUNCH_ERROR)));
+}
+
+void IPFSOnboardingPage::GetConnectedPeers() {
+  ipfs_service_->GetConnectedPeers(base::NullCallback());
+}
+
+bool IPFSOnboardingPage::IsLocalNodeMode() {
+  auto* context = web_contents()->GetBrowserContext();
+  auto* prefs = user_prefs::UserPrefs::Get(context);
+  return (prefs->GetInteger(kIPFSResolveMethod) ==
+          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+}
+
+void IPFSOnboardingPage::OnIpfsLaunched(bool result, int64_t pid) {
   if (!result) {
-    RespondToPage(LOCAL_NODE_ERROR, base::UTF16ToUTF8(l10n_util::GetStringUTF16(
-                                        IDS_IPFS_SERVICE_LAUNCH_ERROR)));
+    ReportDaemonStopped();
     return;
   }
-  Proceed();
+
+  if (IsLocalNodeMode()) {
+    RespondToPage(LOCAL_NODE_LAUNCHED, std::string());
+    GetConnectedPeers();
+  }
 }
 
 void IPFSOnboardingPage::Proceed() {
+  service_observer_.Reset();
   controller()->OpenUrlInCurrentTab(request_url());
 }
 
@@ -157,7 +200,10 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "retryText", l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_LAUNCH_RETRY));
   load_time_data->SetString(
       "installationText",
-      l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_INSTALLATION));
+      l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_INSTALLATION_STATUS));
+  load_time_data->SetString(
+      "watingPeersText",
+      l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS));
   load_time_data->SetString(
       "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
 }

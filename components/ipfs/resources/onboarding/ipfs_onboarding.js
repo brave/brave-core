@@ -16,7 +16,8 @@ const IPFSOnboardingCommandId = {
 /** @enum {number} */
 const IPFSOnboardingResponse = {
   LOCAL_NODE_ERROR: 0,
-  THEME_CHANGED: 1
+  THEME_CHANGED: 1,
+  LOCAL_NODE_LAUNCHED: 2
 };
 
 const setTheme = (theme) => {
@@ -52,8 +53,9 @@ function handleCommand(code, text) {
     $('local-node-button').textContent = '$i18nRaw{retryText}'
   } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
     setTheme(text)
+  } else if (code == IPFSOnboardingResponse.LOCAL_NODE_LAUNCHED) {
+    $('local-node-button').textContent = '$i18nRaw{watingPeersText}'
   }
-
 }
 
 window.addEventListener("message", function(event) {

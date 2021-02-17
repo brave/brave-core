@@ -265,17 +265,23 @@ void IpfsService::OnGetConnectedPeers(
   if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
     response_code = url_loader->ResponseInfo()->headers->response_code();
   url_loaders_.erase(iter);
-
-  if (error_code != net::OK || response_code != net::HTTP_OK) {
-    VLOG(1) << "Fail to get connected peers, error_code = " << error_code
-            << " response_code = " << response_code;
-    std::move(callback).Run(false, std::vector<std::string>{});
-    return;
-  }
+  LOG(ERROR) << "On get connected peers, error_code = " << error_code
+        << " response_code = " << response_code;
 
   std::vector<std::string> peers;
-  bool success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
-  std::move(callback).Run(success, peers);
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  if (success)
+    success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
+  else {
+      VLOG(1) << "Fail to get connected peers, error_code = " << error_code
+            << " response_code = " << response_code;
+  }
+  if (callback)
+    std::move(callback).Run(success, peers);
+
+  for (auto& observer : observers_) {
+    observer.OnGetConnectedPeers(success, peers);
+  }
 }
 
 void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
