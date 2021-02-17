@@ -708,6 +708,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         return false;
     }
 
+    public boolean isShieldsTooltipShown() {
+        BraveToolbarLayout layout = (BraveToolbarLayout) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            return layout.isShieldsTooltipShown();
+        }
+        return false;
+    }
+
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
         if (tab != null && tab.getUrlString().equals(url)) {

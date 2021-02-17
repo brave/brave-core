@@ -355,7 +355,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
                     }
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
+                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
+                            && !isRewardsTooltipShown()) {
                         checkForTooltip(tab);
                     }
                 }
@@ -563,6 +564,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             mRewardsPopupWindowTooltip.dismiss();
             mRewardsPopupWindowTooltip = null;
         }
+    }
+
+    public boolean isRewardsTooltipShown() {
+        if (mRewardsPopupWindowTooltip != null) {
+            return mRewardsPopupWindowTooltip.isShowing();
+        }
+        return false;
     }
 
     @Override
@@ -986,6 +994,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     public boolean isRewardsPanelOpened() {
         if (mRewardsPopup != null) {
             return mRewardsPopup.isShowing();
+        }
+        return false;
+    }
+
+    public boolean isShieldsTooltipShown() {
+        if (mShieldsPopupWindowTooltip != null) {
+            return mShieldsPopupWindowTooltip.isShowing();
         }
         return false;
     }
