@@ -1,0 +1,23 @@
+diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
+index bba833d2f3abeb8f0a6fefa59ace416db3dc2b63..956f251527c4728ae51d934b46e64cb6d20ff3f2 100644
+--- a/chrome/installer/util/shell_util.cc
++++ b/chrome/installer/util/shell_util.cc
+@@ -748,6 +748,7 @@ base::string16 GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
+     return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Browser");
+   if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
+     return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Email");
++  BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS
+   return L"SettingsPageAppsDefaultsProtocolView";
+ }
+ 
+@@ -1619,8 +1620,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+     L".htm", L".html",  L".pdf",  L".shtml", L".svg",
+     L".xht", L".xhtml", L".webp", nullptr};
+ const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",
++                                                            BRAVE_IPFS, BRAVE_IPNS,
+                                                             L"https", nullptr};
+ const wchar_t* ShellUtil::kPotentialProtocolAssociations[] = {
++    BRAVE_IPFS, BRAVE_IPNS,
+     L"ftp", L"http",  L"https", L"irc", L"mailto", L"mms",    L"news", L"nntp",
+     L"sms", L"smsto", L"snews", L"tel", L"urn",    L"webcal", nullptr};
+ const wchar_t* ShellUtil::kRegUrlProtocol = L"URL Protocol";
