@@ -1,5 +1,5 @@
-import("//build/buildflag_header.gni")
 import("//brave/components/speedreader/buildflags.gni")
+import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -36,8 +36,8 @@ source_set("speedreader") {
 
   deps = [
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/resources:static_resources_grit",
     "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
     "//brave/components/weekly_storage",
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",

@@ -19,9 +19,12 @@ template("rust_ffi") {
   cpp_target_name = "rust_ffi"
 
   if (is_mac) {
-    assert(defined(invoker.shared_library_define),
+    assert(
+        defined(invoker.shared_library_define),
         "Must specify a shared library define for importing symbols on mac ex: ADBLOCK_SHARED_LIB")
-    assert(defined(invoker.implementation_define), "Must specify an implementation define for exporting symbols on mac ex: ADBLOCK_IMPLEMENTATION")
+    assert(
+        defined(invoker.implementation_define),
+        "Must specify an implementation define for exporting symbols on mac ex: ADBLOCK_IMPLEMENTATION")
   }
 
   config(config_target_name) {
@@ -55,8 +58,13 @@ template("rust_ffi") {
     }
 
     forward_variables_from(invoker,
-                            ["sources", "deps", "public_deps", "configs",
-                              "frameworks"])
+                           [
+                             "sources",
+                             "deps",
+                             "public_deps",
+                             "configs",
+                             "frameworks",
+                           ])
   }
 }
 
@@ -65,11 +73,9 @@ template("rust_crate") {
     script = "//brave/script/stamp.py"
     visibility = [ "//brave/build/rust:*" ]
 
-    forward_variables_from(invoker, ["deps"])
+    forward_variables_from(invoker, [ "deps" ])
 
-    inputs = [
-      script,
-    ]
+    inputs = [ script ]
 
     inputs += invoker.inputs
 
@@ -80,9 +86,7 @@ template("rust_crate") {
       rebase_path(_stamp, root_build_dir),
     ]
 
-    outputs = [
-      _stamp,
-    ]
+    outputs = [ _stamp ]
   }
 }
 
@@ -97,7 +101,7 @@ template("cargo_build") {
     # make sure rebuilds when files change
     forward_variables_from(invoker, "*")
 
-    outputs = [output]
+    outputs = [ output ]
 
     if (!defined(target)) {
       target = rustc_target  # defined by //brave/build/rust/config.gni,
@@ -109,7 +113,8 @@ template("cargo_build") {
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
       "--build_path=" + rebase_path(build_path, root_build_dir),
       "--target=" + target,
-      "--toolchain=" + rustc_toolchain, # defined by //brave/build/rust/config.gni,
+      "--toolchain=" +
+          rustc_toolchain,  # defined by //brave/build/rust/config.gni,
       "--is_debug=$is_debug",
     ]
 
@@ -131,9 +136,7 @@ template("cargo_build") {
 
   group(group_target) {
     public_configs = [ ":$config_target" ]
-    public_deps = [
-      ":$cargo_build_target",
-    ]
+    public_deps = [ ":$cargo_build_target" ]
   }
 }
 
@@ -142,15 +145,19 @@ template("cargo_cbindgen") {
   action(target_name) {
     script = "//brave/script/cargo_cbindgen.py"
 
-    forward_variables_from(invoker, ["config", "sources", "output", "visibility"])
+    forward_variables_from(invoker,
+                           [
+                             "config",
+                             "sources",
+                             "output",
+                             "visibility",
+                           ])
 
     assert(defined(config), "Must specify cbindgen.toml config to use")
     assert(defined(sources), "Must specify sources to generate bindings for")
     assert(defined(output), "Must specify output header file")
 
-    sources += [
-      config,
-    ]
+    sources += [ config ]
     outputs = [ output ]
 
     args = [

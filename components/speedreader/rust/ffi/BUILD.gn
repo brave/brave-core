@@ -27,11 +27,11 @@ rust_ffi("ffi") {
 
   sources = [
     "speedreader.cc",
-    "speedreader.h"
+    "speedreader.h",
   ]
 
   deps = [
-    "//base",
     ":speedreader_ffi_header",
+    "//base",
   ]
 }

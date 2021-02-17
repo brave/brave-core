@@ -5,9 +5,7 @@
 import("//brave/build/cargo.gni")
 
 config("external_config") {
-  defines = [
-    "NO_CXXEXCEPTIONS=1"
-  ]
+  defines = [ "NO_CXXEXCEPTIONS=1" ]
 
   include_dirs = [ "//brave/vendor/challenge_bypass_ristretto_ffi/src" ]
 }
@@ -24,17 +22,12 @@ rust_ffi("challenge_bypass_ristretto") {
     "//brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp",
   ]
 
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 
-  if (is_mac || is_ios ) {
-    frameworks = [
-      "Security.framework"
-    ]
+  if (is_mac || is_ios) {
+    frameworks = [ "Security.framework" ]
   }
 }
-
 
 rust_crate("rust_lib") {
   inputs = [
