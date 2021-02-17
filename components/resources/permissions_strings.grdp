@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL" desc="The label that is used to describe a combobox with permission lifetime choices.">
+    Permission lifetime
+  </message>
+  <message name="IDS_PERMISSIONS_BUBBLE_PERMANENT_LIFETIME_OPTION" desc="The predifined value in a permission lifetime combobox.">
+    Permanent
+  </message>
+</grit-part>

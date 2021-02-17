@@ -1,0 +1,14 @@
+source_set("permissions") {
+  sources = [
+    "permission_lifetime_utils.cc",
+    "permission_lifetime_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base:i18n",
+    "//brave/components/resources:strings_grit",
+    "//components/permissions",
+    "//ui/base",
+  ]
+}

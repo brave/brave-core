@@ -5,9 +5,17 @@
 
 #include <vector>
 
+#include "base/feature_list.h"
+#include "brave/components/permissions/permission_lifetime_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/permissions/features.h"
+#include "components/permissions/permission_prompt.h"
 #include "components/permissions/permission_request.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "ui/base/models/combobox_model.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/combobox/combobox.h"
+#include "ui/views/layout/box_layout.h"
 #include "ui/views/window/dialog_delegate.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -28,13 +36,13 @@ namespace {
 class DontAskAgainCheckbox : public views::Checkbox {
  public:
   explicit DontAskAgainCheckbox(WidevinePermissionRequest* request);
+  DontAskAgainCheckbox(const DontAskAgainCheckbox&) = delete;
+  DontAskAgainCheckbox& operator=(const DontAskAgainCheckbox&) = delete;
 
  private:
   void ButtonPressed();
 
   WidevinePermissionRequest* request_;
-
-  DISALLOW_COPY_AND_ASSIGN(DontAskAgainCheckbox);
 };
 
 DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
@@ -87,10 +95,88 @@ void AddAdditionalWidevineViewControlsIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<permissions::PermissionRequest*>& requests) {}
 #endif
+
+// Custom combobox, shows permission lifetime options and applies selected value
+// to all permissions currently visible in the bubble.
+class PermissionLifetimeCombobox : public views::Combobox,
+                                   public ui::ComboboxModel {
+ public:
+  explicit PermissionLifetimeCombobox(
+      permissions::PermissionPrompt::Delegate* delegate)
+      : delegate_(delegate),
+        lifetime_options_(permissions::CreatePermissionLifetimeOptions()) {
+    DCHECK(delegate_);
+    SetCallback(base::BindRepeating(&PermissionLifetimeCombobox::OnItemSelected,
+                                    base::Unretained(this)));
+    SetModel(this);
+    OnItemSelected();
+  }
+
+  PermissionLifetimeCombobox(const PermissionLifetimeCombobox&) = delete;
+  PermissionLifetimeCombobox& operator=(const PermissionLifetimeCombobox&) =
+      delete;
+
+  // ui::ComboboxModel:
+  int GetItemCount() const override { return lifetime_options_.size(); }
+
+  base::string16 GetItemAt(int index) const override {
+    return lifetime_options_[index].label;
+  }
+
+ private:
+  void OnItemSelected() {
+    const auto& lifetime = lifetime_options_[GetSelectedIndex()].lifetime;
+    DLOG(INFO) << "Set permission lifetime "
+               << (lifetime ? lifetime->InSeconds() : -1);
+    // TODO(https://github.com/brave/brave-browser/issues/14126): Set the
+    // lifetime for all current requests.
+    // for (auto* request : delegate_->Requests()) {
+    //   request->SetLifetime(lifetime);
+    // }
+  }
+
+  permissions::PermissionPrompt::Delegate* const delegate_;
+  std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
+};
+
+void AddPermissionLifetimeComboboxIfNeeded(
+    views::BubbleDialogDelegateView* dialog_delegate_view,
+    permissions::PermissionPrompt::Delegate* delegate) {
+  if (!base::FeatureList::IsEnabled(
+          permissions::features::kPermissionLifetime)) {
+    return;
+  }
+
+  // Create a single line container for a label and a combobox.
+  auto container = std::make_unique<views::View>();
+  container->SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(),
+      views::LayoutProvider::Get()->GetDistanceMetric(
+          views::DISTANCE_RELATED_BUTTON_HORIZONTAL)));
+
+  // Add the label.
+  auto* label = new views::Label(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL),
+      views::style::CONTEXT_LABEL, views::style::STYLE_SECONDARY);
+  label->SetMultiLine(true);
+  label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  container->AddChildView(label);
+
+  // Add the combobox.
+  auto* combobox = new PermissionLifetimeCombobox(delegate);
+  container->AddChildView(combobox);
+  static_cast<views::BoxLayout*>(container->GetLayoutManager())
+      ->SetFlexForView(combobox, 1);
+
+  // Add the container to the view.
+  dialog_delegate_view->AddChildView(std::move(container));
+}
+
 }  // namespace
 
-#define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW \
-  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
+#define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW                               \
+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
+  AddPermissionLifetimeComboboxIfNeeded(this, delegate_);
 
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
