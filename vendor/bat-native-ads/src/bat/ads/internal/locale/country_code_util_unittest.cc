@@ -11,8 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsCountryCodeUtilTest,
-    IsMemberOfAnonymitySet) {
+TEST(BatAdsCountryCodeUtilTest, IsMemberOfAnonymitySet) {
   // Arrange
 
   // Act
@@ -23,8 +22,7 @@ TEST(BatAdsCountryCodeUtilTest,
   EXPECT_TRUE(is_member_of_anonymity_set);
 }
 
-TEST(BatAdsCountryCodeUtilTest,
-    IsNotMemberOfAnonymitySet) {
+TEST(BatAdsCountryCodeUtilTest, IsNotMemberOfAnonymitySet) {
   // Arrange
 
   // Act
@@ -35,8 +33,7 @@ TEST(BatAdsCountryCodeUtilTest,
   EXPECT_FALSE(is_member_of_anonymity_set);
 }
 
-TEST(BatAdsCountryCodeUtilTest,
-    ShouldClassifyAsOther) {
+TEST(BatAdsCountryCodeUtilTest, ShouldClassifyAsOther) {
   // Arrange
 
   // Act
@@ -46,8 +43,7 @@ TEST(BatAdsCountryCodeUtilTest,
   EXPECT_TRUE(is_anonymous);
 }
 
-TEST(BatAdsCountryCodeUtilTest,
-    ShouldNotClassifyAsOther) {
+TEST(BatAdsCountryCodeUtilTest, ShouldNotClassifyAsOther) {
   // Arrange
 
   // Act

@@ -1,13 +1,12 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
-index cd57f1a2a0b352df389b41fa85d6c35286a0f0f5..37297345a3b15f411bfd91a8a891b9cf5c351ac0 100644
+index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..c8b5a71c38dc3a9f5b508b3752f7379f463fc038 100644
 --- a/components/content_settings/core/browser/content_settings_pref.cc
 +++ b/components/content_settings/core/browser/content_settings_pref.cc
-@@ -141,7 +141,7 @@ ContentSettingsPref::ContentSettingsPref(
-       restore_session_(restore_session),
-       updating_preferences_(false),
-       notify_callback_(notify_callback),
--      allow_resource_identifiers_(false) {
-+      allow_resource_identifiers_(true) {
+@@ -160,6 +160,7 @@ bool ContentSettingsPref::SetWebsiteSetting(
+   DCHECK(thread_checker_.CalledOnValidThread());
    DCHECK(prefs_);
+   DCHECK(primary_pattern != ContentSettingsPattern::Wildcard() ||
++         BRAVE_SET_WEBSITE_SETTING
+          secondary_pattern != ContentSettingsPattern::Wildcard());
  
-   ReadContentSettingsFromPref();
+   // At this point take the ownership of the |in_value|.

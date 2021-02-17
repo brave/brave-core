@@ -72,10 +72,9 @@ void BatAdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
 
 void BatAdsImpl::OnPageLoaded(
     const int32_t tab_id,
-    const std::string& original_url,
-    const std::string& url,
+    const std::vector<std::string>& redirect_chain,
     const std::string& content) {
-  ads_->OnPageLoaded(tab_id, original_url, url, content);
+  ads_->OnPageLoaded(tab_id, redirect_chain, content);
 }
 
 void BatAdsImpl::OnUnIdle() {
@@ -133,10 +132,17 @@ void BatAdsImpl::OnAdNotificationEvent(
 }
 
 void BatAdsImpl::OnNewTabPageAdEvent(
-    const std::string& wallpaper_id,
+    const std::string& uuid,
     const std::string& creative_instance_id,
     const ads::NewTabPageAdEventType event_type) {
-  ads_->OnNewTabPageAdEvent(wallpaper_id, creative_instance_id, event_type);
+  ads_->OnNewTabPageAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void BatAdsImpl::OnPromotedContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const ads::PromotedContentAdEventType event_type) {
+  ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
 void BatAdsImpl::RemoveAllHistory(

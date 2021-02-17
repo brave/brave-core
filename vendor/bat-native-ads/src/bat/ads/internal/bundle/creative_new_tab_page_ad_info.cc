@@ -13,8 +13,7 @@ CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 
 bool CreativeNewTabPageAdInfo::operator==(
     const CreativeNewTabPageAdInfo& rhs) const {
-  return company_name == rhs.company_name &&
-      alt == rhs.alt;
+  return company_name == rhs.company_name && alt == rhs.alt;
 }
 
 bool CreativeNewTabPageAdInfo::operator!=(

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_TAB_MANAGER_TAB_MANAGER_H_
-#define BAT_ADS_INTERNAL_TAB_MANAGER_TAB_MANAGER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TAB_MANAGER_TAB_MANAGER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TAB_MANAGER_TAB_MANAGER_H_
 
 #include <stdint.h>
 
@@ -34,32 +34,25 @@ class TabManager {
   void OnForegrounded();
   void OnBackgrounded();
 
-  bool IsVisible(
-      const int32_t id) const;
+  bool IsVisible(const int32_t id) const;
 
-  void OnUpdated(
-      const int32_t id,
-      const std::string& url,
-      const bool is_visible,
-      const bool is_incognito);
+  void OnUpdated(const int32_t id,
+                 const std::string& url,
+                 const bool is_visible,
+                 const bool is_incognito);
 
-  void OnClosed(
-      const int32_t id);
+  void OnClosed(const int32_t id);
 
-  void OnMediaPlaying(
-      const int32_t id);
-  void OnMediaStopped(
-      const int32_t id);
+  void OnMediaPlaying(const int32_t id);
+  void OnMediaStopped(const int32_t id);
 
-  bool IsPlayingMedia(
-      const int32_t id) const;
+  bool IsPlayingMedia(const int32_t id) const;
 
   base::Optional<TabInfo> GetVisible() const;
 
   base::Optional<TabInfo> GetLastVisible() const;
 
-  base::Optional<TabInfo> GetForId(
-      const int32_t id) const;
+  base::Optional<TabInfo> GetForId(const int32_t id) const;
 
  private:
   bool is_foregrounded_ = false;
@@ -72,4 +65,4 @@ class TabManager {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_TAB_MANAGER_TAB_MANAGER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_TAB_MANAGER_TAB_MANAGER_H_

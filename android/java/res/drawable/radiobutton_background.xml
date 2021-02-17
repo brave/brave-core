@@ -7,5 +7,5 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true" android:drawable="@drawable/radio_button_selected_bg" />
-    <item android:state_checked="false" android:drawable="@color/onboarding_bg_color" />
+    <item android:state_checked="false" android:drawable="@drawable/radio_button_holo_bg" />
 </selector>

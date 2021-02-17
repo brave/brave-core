@@ -49,18 +49,21 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.chromium.base.SysUtils;
 import org.chromium.base.Log;
+import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,6 +111,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private LinearLayout mAboutLayout;
     private LinearLayout mToggleLayout;
     private LinearLayout mThankYouLayout;
+    private LinearLayout mPrivacyReportLayout;
     private LinearLayout mReportBrokenSiteLayout;
     private TextView mSiteBlockCounterText;
     private TextView mShieldsDownText;
@@ -189,12 +193,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mIconFetcher = new BraveRewardsHelper(tab);
-        mPopupWindow = showPopupMenu(anchorView, false);
+        mPopupWindow = showPopupMenu(anchorView);
 
         updateValues(mTabId);
     }
 
-    public PopupWindow showPopupMenu(View anchorView, boolean isTooltip) {
+    public PopupWindow showPopupMenu(View anchorView) {
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
@@ -240,15 +244,16 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         LayoutInflater inflater = (LayoutInflater) anchorView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (! isTooltip) {
-            mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
-            setUpViews();
-        } else {
-            mPopupView = inflater.inflate(R.layout.brave_shields_tooltip_layout, null);
-        }
+        mPopupView = inflater.inflate(R.layout.brave_shields_main_layout, null);
+        setUpViews();
 
         //Specify the length and width through constants
-        int width = (int)((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
+        int width;
+        if (ConfigurationUtils.isLandscape(mContext)) {
+            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.50);
+        } else {
+            width = (int) ((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
+        }
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         //Make Inactive Items Outside Of PopupWindow
@@ -314,6 +319,15 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return blockersInfo.mTrackersBlocked;
     }
 
+    public int getHttpsUpgradeCount(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return 0;
+        }
+
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        return blockersInfo.mHTTPSUpgrades;
+    }
+
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
         if (mContext == null) {
             return;
@@ -365,6 +379,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         mReportBrokenSiteLayout = mPopupView.findViewById(R.id.brave_shields_report_site_layout_id);
         mThankYouLayout = mPopupView.findViewById(R.id.brave_shields_thank_you_layout_id);
+        mPrivacyReportLayout = mPopupView.findViewById(R.id.brave_shields_privacy_report_layout_id);
 
         mBottomDivider = mToggleLayout.findViewById(R.id.bottom_divider);
         mToggleIcon = mToggleLayout.findViewById(R.id.toggle_favicon);
@@ -407,6 +422,25 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 setToggleView(!mSecondaryLayout.isShown());
             }
         });
+
+        ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
+        mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
+        mPrivacyReportIcon.setColorFilter(
+                mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+        TextView mViewPrivacyReportText = mPrivacyReportLayout.findViewById(R.id.toggle_text);
+        mViewPrivacyReportText.setText(R.string.view_full_privacy_report);
+        mPrivacyReportLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BraveStatsUtil.showBraveStats();
+                hideBraveShieldsMenu();
+            }
+        });
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            mPrivacyReportLayout.setVisibility(View.VISIBLE);
+        } else {
+            mPrivacyReportLayout.setVisibility(View.GONE);
+        }
 
         setUpSecondaryLayout();
 
@@ -882,7 +916,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 @Override
                 public void run() {
                     ImageView iv = (ImageView) mPopupView.findViewById(R.id.site_favicon);
-                    iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(bmp));
+                    if (iv != null) iv.setImageBitmap(BraveRewardsHelper.getCircularBitmap(bmp));
                 }
             });
         }

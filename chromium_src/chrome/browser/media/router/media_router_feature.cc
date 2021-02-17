@@ -26,7 +26,9 @@ void UpdateMediaRouterPref(content::BrowserContext* context) {
 }
 
 bool MediaRouterEnabled(content::BrowserContext* context) {
-#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
+#if defined(OS_ANDROID)
+  return MediaRouterEnabled_ChromiumImpl(context);
+#elif BUILDFLAG(ENABLE_EXTENSIONS)
   UpdateMediaRouterPref(context);
   const PrefService::Preference* pref = GetMediaRouterPref(context);
   bool allowed = false;
@@ -35,9 +37,9 @@ bool MediaRouterEnabled(content::BrowserContext* context) {
   // The component extension cannot be loaded in guest sessions.
   // crbug.com/756243
   return allowed && !Profile::FromBrowserContext(context)->IsGuestSession();
-#else   // !(defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS))
+#else
   return false;
-#endif  // defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
+#endif  // defined(OS_ANDROID)
 }
 
 }  // namespace media_router

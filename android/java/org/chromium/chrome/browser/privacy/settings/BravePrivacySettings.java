@@ -36,12 +36,12 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
     private static final String PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES = "autocomplete_brave_suggested_sites";
-    private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_SOCIAL_BLOCKING = "brave_shields_social_blocking";
     private static final String PREF_SOCIAL_BLOCKING_GOOGLE = "social_blocking_google";
     private static final String PREF_SOCIAL_BLOCKING_FACEBOOK = "social_blocking_facebook";
     private static final String PREF_SOCIAL_BLOCKING_TWITTER = "social_blocking_twitter";
     private static final String PREF_SOCIAL_BLOCKING_LINKEDIN = "social_blocking_linkedin";
+    private static final String PREF_DO_NOT_TRACK = "do_not_track";
 
     private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
@@ -164,7 +164,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private void updatePreferences() {
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
-        int order = findPreference(PREF_CLEAR_BROWSING_DATA).getOrder();
+        int order = findPreference(PREF_DO_NOT_TRACK).getOrder();
         mCloseTabsOnExitPref.setOrder(++order);
         if (BraveConfig.P3A_ENABLED) {
             mSendP3A.setOrder(++order);

@@ -8,12 +8,12 @@
 #include <utility>
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -61,10 +61,32 @@ void IPFSDOMHandler::RegisterMessages() {
       "ipfs.shutdownDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleShutdownDaemon,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "ipfs.restartDaemon",
+      base::BindRepeating(&IPFSDOMHandler::HandleRestartDaemon,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "ipfs.getRepoStats",
+      base::BindRepeating(&IPFSDOMHandler::HandleGetRepoStats,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "ipfs.getNodeInfo",
+      base::BindRepeating(&IPFSDOMHandler::HandleGetNodeInfo,
+                          base::Unretained(this)));
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  service_observer_.Observe(service);
 }
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kIpfsGenerated, kIpfsGeneratedSize, IDR_IPFS_HTML) {
+    : WebUIController(web_ui) {
+  CreateAndAddWebUIDataSource(web_ui, name, kIpfsGenerated, kIpfsGeneratedSize,
+                              IDR_IPFS_HTML);
   web_ui->AddMessageHandler(std::make_unique<IPFSDOMHandler>());
 }
 
@@ -139,21 +161,26 @@ void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
+  LaunchDaemon();
+}
 
+void IPFSDOMHandler::LaunchDaemon() {
   ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
 
-  service->LaunchDaemon(base::BindOnce(&IPFSDOMHandler::OnLaunchDaemon,
-                                       weak_ptr_factory_.GetWeakPtr()));
+  service->LaunchDaemon(base::NullCallback());
 }
 
-void IPFSDOMHandler::OnLaunchDaemon(bool success) {
+void IPFSDOMHandler::OnIpfsLaunched(bool success, int64_t pid) {
   if (!web_ui()->CanCallJavascript() || !success)
     return;
+  CallOnGetDaemonStatus(web_ui());
+}
 
+void IPFSDOMHandler::OnIpfsShutdown() {
   CallOnGetDaemonStatus(web_ui());
 }
 
@@ -168,13 +195,88 @@ void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
     return;
   }
 
-  service->ShutdownDaemon(base::BindOnce(&IPFSDOMHandler::OnShutdownDaemon,
-                                         weak_ptr_factory_.GetWeakPtr()));
+  service->ShutdownDaemon(base::NullCallback());
 }
 
-void IPFSDOMHandler::OnShutdownDaemon(bool success) {
-  if (!web_ui()->CanCallJavascript() || !success)
+void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
     return;
 
-  CallOnGetDaemonStatus(web_ui());
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+  auto launch_callback = base::BindOnce(&IPFSDOMHandler::LaunchDaemon,
+                                        weak_ptr_factory_.GetWeakPtr());
+  service->ShutdownDaemon(base::BindOnce(
+      [](base::OnceCallback<void()> launch_callback, const bool success) {
+        if (!success) {
+          VLOG(1) << "Unable to shutdown daemon";
+          return;
+        }
+        if (launch_callback) {
+          std::move(launch_callback).Run();
+        }
+      },
+      std::move(launch_callback)));
+}
+
+void IPFSDOMHandler::HandleGetRepoStats(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  service->GetRepoStats(base::BindOnce(&IPFSDOMHandler::OnGetRepoStats,
+                                       weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::OnGetRepoStats(bool success,
+                                    const ipfs::RepoStats& stats) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  base::Value stats_value(base::Value::Type::DICTIONARY);
+  stats_value.SetDoubleKey("objects", stats.objects);
+  stats_value.SetDoubleKey("size", stats.size);
+  stats_value.SetDoubleKey("storage", stats.storage_max);
+  stats_value.SetStringKey("path", stats.path);
+  stats_value.SetStringKey("version", stats.version);
+
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetRepoStats",
+                                         std::move(stats_value));
+}
+
+void IPFSDOMHandler::HandleGetNodeInfo(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  service->GetNodeInfo(base::BindOnce(&IPFSDOMHandler::OnGetNodeInfo,
+                                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::OnGetNodeInfo(bool success, const ipfs::NodeInfo& info) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  base::Value node_value(base::Value::Type::DICTIONARY);
+  node_value.SetStringKey("id", info.id);
+  node_value.SetStringKey("version", info.version);
+
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetNodeInfo",
+                                         std::move(node_value));
 }

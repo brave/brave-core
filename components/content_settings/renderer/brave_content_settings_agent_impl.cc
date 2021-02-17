@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/feature_list.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -21,12 +21,8 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "services/service_manager/public/cpp/interface_provider.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom-blink-forward.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom.h"
+#include "net/base/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
@@ -35,6 +31,14 @@
 
 namespace content_settings {
 namespace {
+
+bool IsFrameWithOpaqueOrigin(blink::WebFrame* frame) {
+  // Storage access is keyed off the top origin and the frame's origin.
+  // It will be denied any opaque origins so have this method to return early
+  // instead of making a Sync IPC call.
+  return frame->GetSecurityOrigin().IsOpaque() ||
+         frame->Top()->GetSecurityOrigin().IsOpaque();
+}
 
 GURL GetOriginOrURL(const blink::WebFrame* frame) {
   url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
@@ -141,6 +145,68 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   ContentSettingsAgentImpl::DidNotAllowScript();
 }
 
+bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
+    StorageType storage_type) {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
+    return false;
+
+  if (storage_type != StorageType::kLocalStorage &&
+      storage_type != StorageType::kSessionStorage)
+    return false;
+
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+
+  if (!frame || IsFrameWithOpaqueOrigin(frame))
+    return false;
+
+  auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          top_origin, url::Origin(frame->GetSecurityOrigin()),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
+    return false;
+
+  return  // block 3p
+      !ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type) &&
+      // allow 1p
+      AllowStorageAccessForMainFrameSync(storage_type);
+}
+
+bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
+    StorageType storage_type) {
+  bool result = ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type);
+
+  if (result || UseEphemeralStorageSync(storage_type))
+    return true;
+
+  return false;
+}
+
+bool BraveContentSettingsAgentImpl::AllowStorageAccessForMainFrameSync(
+    StorageType storage_type) {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+
+  if (IsFrameWithOpaqueOrigin(frame))
+    return false;
+
+  bool result = false;
+
+  StoragePermissionsKey key(url::Origin(frame->GetSecurityOrigin()),
+                            storage_type);
+  const auto permissions = cached_storage_permissions_.find(key);
+  if (permissions != cached_storage_permissions_.end())
+    return permissions->second;
+
+  // check for block all by looking at top domain only
+  GetContentSettingsManager().AllowStorageAccess(
+      routing_id(), ConvertToMojoStorageType(storage_type),
+      frame->GetDocument().TopFrameOrigin(),
+      url::Origin(frame->GetDocument().TopFrameOrigin()).GetURL(),
+      frame->GetDocument().TopFrameOrigin(), &result);
+  cached_storage_permissions_[key] = result;
+
+  return result;
+}
+
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     bool enabled_per_settings,
     const blink::WebURL& script_url) {
@@ -151,7 +217,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
 
   // scripts with whitelisted protocols, such as chrome://extensions should
   // be allowed
-  bool should_white_list = IsWhitelistedForContentSettings(
+  bool should_white_list = IsAllowlistedForContentSettings(
       blink::WebSecurityOrigin::Create(script_url),
       render_frame()->GetWebFrame()->GetDocument().Url());
 
@@ -218,7 +284,7 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   }
 }
 
-bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
+bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetSecurityOrigin();
   // default allow local files
@@ -228,51 +294,28 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   }
 
   // respect user's site blocklist, if any
-  bool ask = false;
   if (content_setting_rules_) {
     ContentSetting setting =
         GetContentSettingFromRules(content_setting_rules_->autoplay_rules,
                                    frame, url::Origin(origin).GetURL());
     if (setting == CONTENT_SETTING_BLOCK) {
       VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
-      DidBlockContentType(ContentSettingsType::AUTOPLAY);
+      if (play_requested)
+        DidBlockContentType(ContentSettingsType::AUTOPLAY);
       return false;
-    } else if (setting == CONTENT_SETTING_ASK) {
-      VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
-      ask = true;
     } else if (setting == CONTENT_SETTING_ALLOW) {
       VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
       return true;
     }
   }
 
-  if (ask) {
-    mojo::Remote<blink::mojom::PermissionService> permission_service;
-
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
-        permission_service.BindNewPipeAndPassReceiver());
-
-    if (permission_service.get()) {
-      // Request permission (asynchronously) but exit this function without
-      // allowing autoplay. Depending on settings and previous user choices,
-      // this may display visible permissions UI, or an "autoplay blocked"
-      // message, or nothing. In any case, we can't wait for it now.
-      auto request_permission_descriptor =
-          blink::mojom::PermissionDescriptor::New();
-      request_permission_descriptor->name =
-          blink::mojom::PermissionName::AUTOPLAY;
-      permission_service->RequestPermission(
-          std::move(request_permission_descriptor), true, base::DoNothing());
-    }
-    return false;
-  }
-
-  bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);
+  bool allow = ContentSettingsAgentImpl::AllowAutoplay(play_requested);
   if (allow) {
     VLOG(1) << "AllowAutoplay=true because "
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   } else {
-    DidBlockContentType(ContentSettingsType::AUTOPLAY);
+    if (play_requested)
+      DidBlockContentType(ContentSettingsType::AUTOPLAY);
     VLOG(1) << "AllowAutoplay=false because "
                "ContentSettingsAgentImpl::AllowAutoplay says so";
   }

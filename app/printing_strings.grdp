@@ -8,6 +8,10 @@
     </message>
   </if>
 
+  <message name="IDS_UTILITY_PROCESS_PRINT_BACKEND_SERVICE_NAME" desc="The name of the utility process used for backend interactions with printer drivers.">
+    Print Backend Service
+  </message>
+
   <message name="IDS_PRINT_INVALID_PRINTER_SETTINGS" desc="Message to display when selected printer is not reachable or its settings are invalid.">
     The selected printer is not available or not installed correctly. Check your printer or try selecting another printer.
   </message>
@@ -16,6 +20,9 @@
   <if expr="enable_print_preview">
     <message name="IDS_PRINT_PREVIEW_TITLE" desc="Fallback title for print preview page.">
       Print
+    </message>
+    <message name="IDS_PRINT_PREVIEW_DESCRIPTION" desc="Accessibility text: title/description of the Print Preview dialog Web Contents, read by screenreaders.">
+      Print preview dialog
     </message>
     <message name="IDS_PRINT_PREVIEW_LOADING" desc="Message to display while the print preview is still loading.">
       Loading preview
@@ -298,6 +305,9 @@
       These settings are enforced by your administrator
     </message>
     <if expr="chromeos">
+      <message name="IDS_PRINT_PREVIEW_SERVER_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a print server search box when user has not entered a search query.">
+        Print servers
+      </message>
       <message name="IDS_PRINT_PREVIEW_OPTION_PIN" desc="Option to print with pin.">
         Enable user pin
       </message>
@@ -404,29 +414,5 @@
     <message name="IDS_SERVICE_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the service process has crashed.">
       The <ph name="CLOUD_PRINT_NAME">$1<ex>Google Cloud Print</ex></ph> connector process has crashed. Restart?
     </message>
-  </if>
-
-  <!-- Cloud Print deprecation strings -->
-  <if expr="not is_android">
-    <message name="IDS_PRINTER_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that a particular printer will no longer be supported.">
-      This printer won't be supported after December. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$1<ex>https://google.com/</ex>" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
-    </message>
-    <message name="IDS_PRINTER_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that a particular printer will no longer be supported.">
-      This printer won't be supported after December. Contact your admin.
-    </message>
-    <message name="IDS_DESTINATION_NOT_SUPPORTED_WARNING" desc="Warning shown next to a destination to the user to inform them that the destination will no longer be supported.">
-      Not supported after December
-    </message>
-    <message name="IDS_WARNING_ICON_ARIA_LABEL" desc="Accessibility text for a warning icon that is next to a string indicating cloud printing will no longer be supported.">
-      Warning
-    </message>
-    <if expr="not chromeos">
-      <message name="IDS_GOOGLE_DRIVE_OPTION_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that saving to Google Drive will no longer be supported.">
-        This option won't be supported after December. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$1<ex>https://google.com/</ex>" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
-      </message>
-      <message name="IDS_GOOGLE_DRIVE_OPTION_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that saving to Google Drive will no longer be supported.">
-        This option won't be supported after December. Contact your admin.
-      </message>
-    </if>
   </if>
 </grit-part>

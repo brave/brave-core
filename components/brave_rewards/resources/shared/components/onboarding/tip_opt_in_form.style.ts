@@ -20,7 +20,9 @@ export const content = styled.div`
 `
 
 export const batIcon = styled.div`
-  height: 55px;
+  .icon {
+    height: 55px;
+  }
 `
 
 export const heading = styled.div`
@@ -38,8 +40,24 @@ export const text = styled.div`
   max-width: 300px;
 `
 
+export const takeTour = styled.div`
+  margin-top: 20px;
+  color: var(--brave-color-brandBat);
+
+  button {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    border: 0;
+    background: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+`
+
 export const enable = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
 `
 
 export const dismiss = styled.div`
@@ -59,7 +77,7 @@ export const dismiss = styled.div`
 
 export const footer = styled.div`
   flex: 0 0 auto;
-  padding: 54px 40px 20px;
+  padding: 30px 40px 20px;
   color: var(--brave-palette-neutral600);
   font-size: 11px;
   line-height: 16px;

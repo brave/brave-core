@@ -44,8 +44,10 @@ export const defaultState: NewTab.State = {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
     bandwidthSavedStat: 0,
+    httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
+  togetherPromptDismissed: false,
   rewardsState: {
     adsEstimatedEarnings: 0,
     balance: {
@@ -66,9 +68,11 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['cryptoDotCom', 'bitcoinDotCom', 'binance', 'gemini', 'rewards'],
+  widgetStackOrder: ['cryptoDotCom', 'binance', 'gemini', 'rewards'],
+  savedWidgetStackOrder: [],
   binanceState: {
     userTLD: 'com',
+    userLocale: 'en',
     initialFiat: 'USD',
     initialAmount: '',
     initialAsset: 'BTC',
@@ -265,6 +269,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
+      togetherPromptDismissed: data.togetherPromptDismissed,
       binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
@@ -273,7 +278,8 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       geminiState: data.geminiState,
       cryptoDotComState: data.cryptoDotComState,
       removedStackWidgets: data.removedStackWidgets,
-      widgetStackOrder: data.widgetStackOrder
+      widgetStackOrder: data.widgetStackOrder,
+      savedWidgetStackOrder: data.savedWidgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }

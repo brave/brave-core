@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "Los puntos BAT",
+    "message": "Puntos BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Autocontribuir",
+    "message": "Contribución automática",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Desactivado",
+    "message": "No",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Desactivado",
+    "message": "No",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Reintentar",
+    "message": "Intentar nuevamente",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -360,7 +360,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "¡Sus recompensas por las publicidades están aquí!",
+    "message": "¡Aquí están tus recompensas por los anuncios!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -412,7 +412,7 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
-    "message": "PBAT",
+    "message": "BAP",
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
@@ -520,7 +520,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Desconectar de Recompensas de Brave",
+    "message": "Desconectar de Recompensas Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
@@ -626,5 +626,119 @@
   "walletVerificationNote3":  {
     "message": "Nota: Uphold tendrá visibilidad de tus transacciones cuando des tu autorización. Por ejemplo, podrá ver el destinatario y el importe de tus propinas.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Gana tokens y retribuye",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma automática.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Comenzar a utilizar Recompensas Brave",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "Haz un recorrido rápido",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Al continuar, aceptas las $tos_link_begin$Condiciones del servicio$tos_link_end$ y la $pp_link_begin$Política de privacidad$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "Regresar",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Hagamos un recorrido rápido",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuar",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Listo",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Omitir",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Omitir por el momento",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "¡Te damos la bienvenida a Recompensas Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Los anuncios privados de Brave te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "¿Dónde se muestran los anuncios?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Los anuncios privados de Brave se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "¿Cuándo recibes recompensas?",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Recibirás los tokens que ganaste de los anuncios de Brave durante el mes actual el día 5 del mes siguiente.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Retribuye sin demasiado esfuerzo",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Los creadores reciben tus contribuciones de tokens de forma automática en función de tus niveles de participación que medimos como \"Atención\".",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Agradece con propinas",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Dar propinas es una forma de animar y apoyar personalmente al contenido o a los creadores que te encantan. ¡Es hora de dar propinas!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "¿Qué puedes hacer con los tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Los tokens pueden utilizarse para otras cosas además de apoyar a creadores. Puedes comprar contenido digital y otros bienes a medida que los comercios se incorporan.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "¡Felicitaciones, has terminado!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Al utilizar Brave Rewards, estás ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!",
+    "description": ""
   }
 }

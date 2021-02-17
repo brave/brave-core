@@ -7,15 +7,14 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/confirmations_server_util.h"
 
 namespace ads {
 
 GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
     const WalletInfo& wallet,
     const std::string& nonce)
-    : wallet_(wallet),
-      nonce_(nonce) {
+    : wallet_(wallet), nonce_(nonce) {
   DCHECK(wallet_.IsValid());
   DCHECK(!nonce_.empty());
 }
@@ -36,7 +35,8 @@ UrlRequestPtr GetSignedTokensUrlRequestBuilder::Build() {
 
 std::string GetSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/token/%s?nonce=%s",
-      server::GetHost().c_str(), wallet_.id.c_str(), nonce_.c_str());
+                            confirmations::server::GetHost().c_str(),
+                            wallet_.id.c_str(), nonce_.c_str());
 }
 
 }  // namespace ads

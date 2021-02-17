@@ -1,0 +1,12 @@
+include_rules = [
+  "+../../../../../services/preferences/tracked",
+  "+services/preferences/tracked",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "device_id_win.cc": [
+    "+brave/common/brave_switches.h",
+  ],
+}
+

@@ -12,18 +12,20 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ButtonData;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
-import org.chromium.chrome.browser.toolbar.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
+import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.chrome.features.start_surface.StartSurfaceConfiguration;
+import org.chromium.ui.resources.ResourceManager;
 
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ToolbarLayout toolbarLayout, ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, UserEducationHelper userEducationHelper,
             List<ButtonDataProvider> buttonDataProviders,
-            OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
             ThemeColorProvider overviewThemeColorProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
@@ -45,18 +47,20 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> homeButtonVisibilitySupplier,
             ObservableSupplier<Boolean> identityDiscStateSupplier,
-            Callback<Runnable> invalidatorCallback,
-            Supplier<ButtonData> identityDiscButtonSupplier) {
+            Callback<Runnable> invalidatorCallback, Supplier<ButtonData> identityDiscButtonSupplier,
+            OneshotSupplier<StartSurface> startSurfaceSupplier,
+            Supplier<ResourceManager> resourceManagerSupplier) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
-                userEducationHelper, buttonDataProviders, overviewModeBehaviorSupplier,
+                userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homeButtonVisibilitySupplier,
-                identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier);
+                identityDiscStateSupplier, invalidatorCallback, identityDiscButtonSupplier,
+                startSurfaceSupplier, resourceManagerSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
 
-        if (toolbarLayout instanceof ToolbarPhone) {
+        if (isToolbarPhone()) {
             if (!StartSurfaceConfiguration.isStartSurfaceEnabled()) {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
@@ -74,5 +78,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     .onBottomToolbarVisibilityChanged(isVisible);
         }
         mOptionalButtonController.updateButtonVisibility();
+    }
+
+    public boolean isToolbarPhone() {
+        return mBraveToolbarLayout instanceof ToolbarPhone;
     }
 }

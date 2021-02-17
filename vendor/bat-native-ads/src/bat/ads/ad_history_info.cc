@@ -5,28 +5,25 @@
 
 #include "bat/ads/ad_history_info.h"
 
+#include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
 AdHistoryInfo::AdHistoryInfo() = default;
 
-AdHistoryInfo::AdHistoryInfo(
-    const AdHistoryInfo& info) = default;
+AdHistoryInfo::AdHistoryInfo(const AdHistoryInfo& info) = default;
 
 AdHistoryInfo::~AdHistoryInfo() = default;
 
-bool AdHistoryInfo::operator==(
-    const AdHistoryInfo& rhs) const {
+bool AdHistoryInfo::operator==(const AdHistoryInfo& rhs) const {
   return timestamp_in_seconds == rhs.timestamp_in_seconds &&
-      ad_content == rhs.ad_content &&
-      category_content == rhs.category_content;
+         ad_content == rhs.ad_content &&
+         category_content == rhs.category_content;
 }
 
-bool AdHistoryInfo::operator!=(
-    const AdHistoryInfo& rhs) const {
+bool AdHistoryInfo::operator!=(const AdHistoryInfo& rhs) const {
   return !(*this == rhs);
 }
 
@@ -36,8 +33,7 @@ std::string AdHistoryInfo::ToJson() const {
   return json;
 }
 
-Result AdHistoryInfo::FromJson(
-    const std::string& json) {
+Result AdHistoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -47,8 +43,8 @@ Result AdHistoryInfo::FromJson(
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
-    timestamp_in_seconds = MigrateTimestampToDoubleT(
-        document["timestamp_in_seconds"].GetUint64());
+    timestamp_in_seconds =
+        MigrateTimestampToDoubleT(document["timestamp_in_seconds"].GetUint64());
   }
 
   if (document.HasMember("ad_content")) {
@@ -74,8 +70,7 @@ Result AdHistoryInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(JsonWriter* writer,
-    const AdHistoryInfo& ad_history) {
+void SaveToJson(JsonWriter* writer, const AdHistoryInfo& ad_history) {
   writer->StartObject();
 
   writer->String("timestamp_in_seconds");

@@ -6,72 +6,63 @@
 #include "bat/ads/internal/features/features.h"
 
 #include "base/metrics/field_trial.h"
-#include "base/metrics/field_trial_params.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
+#include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
+#include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
+#include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace features {
 
 namespace {
-
-const char kPageProbabilitiesStudyName[] = "PageProbabilitiesHistoryStudy";
-
-const int kDefaultHistorySize = 5;
-
+const char kActiveStudyName[] = "EpsilonGreedyBanditStudy";
 }  // namespace
 
-// Controls behavior of the contextual ad matching mechanism, e.g. by adjusting
-// the number of page classifications used to infer user interest
-const base::Feature kContextualAdsControl { "ContextualAdsControl",
-    base::FEATURE_DISABLED_BY_DEFAULT };
-
-bool IsPageProbabilitiesStudyActive() {
-  if (!base::FieldTrialList::Find(kPageProbabilitiesStudyName)) {
+bool HasActiveStudy() {
+  if (!base::FieldTrialList::Find(kActiveStudyName)) {
     return false;
   }
 
   return true;
 }
 
-std::string GetPageProbabilitiesStudy() {
-  return kPageProbabilitiesStudyName;
+base::Optional<std::string> GetStudy() {
+  std::string study_name(kActiveStudyName);
+  if (study_name.empty()) {
+    return base::nullopt;
+  }
+
+  return study_name;
 }
 
-std::string GetPageProbabilitiesFieldTrialGroup() {
-  std::string group_name;
-  base::FieldTrial* field_trial = base::FieldTrialList::Find(
-      kPageProbabilitiesStudyName);
+base::Optional<std::string> GetGroup() {
+  base::FieldTrial* field_trial = base::FieldTrialList::Find(kActiveStudyName);
   if (!field_trial) {
-    return group_name;
+    return base::nullopt;
   }
 
-  group_name = field_trial->group_name();
-  return group_name;
+  return field_trial->group_name();
 }
 
-int GetPageProbabilitiesHistorySize() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kContextualAdsControl,
-      "page_probabilities_history_size",
-      kDefaultHistorySize);
-}
-
-void LogPageProbabilitiesStudy() {
-  std::string log;
-  if (!IsPageProbabilitiesStudyActive()) {
-    BLOG(1, "No active experiment");
+void Log() {
+  const base::Optional<std::string> study = GetStudy();
+  const base::Optional<std::string> group = GetGroup();
+  if (HasActiveStudy() && study.has_value() && group.has_value()) {
+    BLOG(1, "Active study " << study.value() << " in group " << group.value());
   } else {
-    const std::string study = GetPageProbabilitiesStudy();
-    const std::string group = GetPageProbabilitiesFieldTrialGroup();
-    const std::string history_size =
-        base::NumberToString(GetPageProbabilitiesHistorySize());
-
-    BLOG(1, "Running active experiment:\n"
-      << "  name: " << study << "\n"
-      << "  group: " << group << "\n"
-      << "  value: " << history_size);
+    BLOG(1, "No active study found");
   }
+
+  BLOG(1, "Text classification feature is "
+              << (IsTextClassificationEnabled() ? "enabled" : "disabled"));
+  BLOG(1, "Epsilon greedy bandit feature is "
+              << (IsEpsilonGreedyBanditEnabled() ? "enabled" : "disabled"));
+  BLOG(1, "Purchase intent feature is "
+              << (IsPurchaseIntentEnabled() ? "enabled" : "disabled"));
+  BLOG(1, "Ad rewards feature is "
+              << (IsAdRewardsEnabled() ? "enabled" : "disabled"));
 }
 
 }  // namespace features

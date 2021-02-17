@@ -30,7 +30,6 @@ const char kAdBlockCheckedDefaultRegion[] =
 const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
-const char kWidevineInstalledVersion[] = "brave.widevine_installed_version";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
@@ -105,6 +104,8 @@ const char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 const char kSafetynetStatus[] = "safetynet.status";
 #endif
 
+const char kDefaultBrowserLaunchingCount[] =
+    "brave.default_browser.launching_count";
 const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
 
 // deprecated

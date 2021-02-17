@@ -1,0 +1,17 @@
+{
+  "version": 6,
+  "issuers": [
+    {
+      "name": "confirmation",
+      "publicKey": "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34="
+    },
+    {
+      "name": "0.05BAT",
+      "publicKey": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk="
+    }
+  ],
+  "ping": 7200000,
+  "campaigns": [
+  ],
+  "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+}

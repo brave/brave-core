@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "بیشتر بیاموزید",
+    "message": "بیشتر بدانید",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "تأیید",
+    "message": "قبول",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -304,7 +304,7 @@
     "description": "Error title when user is having problems claiming a grant."
   },
   "unVerifiedCheck": {
-    "message": "بازخوانی وضعیت",
+    "message": "تازه‌سازی وضعیت",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "امتحان مجدد",
+    "message": "سعی مجدد",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -380,7 +380,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "خط‌مشی رازداری",
+    "message": "خط‌مشی حریم‌خصوصی",
     "description": "Privacy Policy"
   },
   "serviceText": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "مشارکت معلق",
+    "message": "مشارکت در حال انتظار",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "هدیه امتیاز رایگان",
+    "message": "امتیاز هدیه رایگان",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -570,7 +570,7 @@
     "description": "BAT Point text"
   },
   "token":  {
-    "message": "رمزیاب",
+    "message": "توکن",
     "description": "BAT Token text"
   },
   "points":  {
@@ -626,5 +626,119 @@
   "walletVerificationNote3":  {
     "message": "توجه: تراکنش‌های شما به‌محض این‌که اجازه دهید برای Uphold قابل‌مشاهده خواهد بود؛ برای مثال، آن‌ها قادر به دیدن گیرنده و مقدار انعام‌های شما خواهند بود.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "کسب توکن و برگرداندن",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "با مشاهده آگهی‌هایی که به حریم خصوصی احترام می‌گذارند، توکن کسب کنید و به‌طور خودکار از سایت‌ها و سازندگان محتوای دلخواهتان پشتیبانی کنید.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "شروع استفاده از Brave Rewards",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "گشتی سریع بزنید",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "با ادامه دادن، با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ موافقت می‌کنید.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "برگشتن",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "بیایید گشت سریعی بزنیم",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "ادامه",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "تمام",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "رد شدن",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "فعلاً رد شود",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "به Brave Rewards خوش آمدید!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads به شما توکن جایزه می‌دهد تا از سازندگان محتوا پشتیبانی شود (کاملاً برعکس آگهی‌های قدیمی)، همه این کارها را در حالی انجام می‌دهد که اطلاعات شخصی شما را خصوصی نگه می‌دارد.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "آگهی‌ها کجا نمایش داده می‌شوند؟",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads به‌عنوان اعلانی معمولی نشان داده خواهد شد. شما می‌توانید تعداد دفعات مشاهده این آگهی‌ها را در تنظیمات کنترل کنید.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "چه زمانی پاداش دریافت می‌کنید",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "توکن‌های به‌دست‌آمده از Brave Private Ads در ماه فعلی، در 5ام ماه بعدی دریافت خواهند شد.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "برگرداندن بی‌دردسر شده است",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "سازندگان همیاری‌های توکن شما را به‌طور خودکار بر اساس سطح مشارکتتان دریافت می‌کنند که ما آن را به‌عنوان «توجه» می‌سنجیم.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "با انعام‌ها سپاس‌گزاری خود را اعلام کنید",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "انعام دادن روشی است برای تشویق شخصی و پشتیبانی از محتوا یا سازندگان مورد علاقه‌تان. انعام بدهید!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "با توکن‌ها چه‌کارهایی می‌توانید انجام دهید؟",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "توکن‌ها را فراتر از پشتیبانی از سازندگان می‌توان استفاده کرد. با پیوستن فروشندگان به تیم، می‌توانید محتوای دیجیتال و کالاهای دیگر خریداری کنید.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "وو هوو، کاملاً آماده هستید!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!",
+    "description": ""
   }
 }

@@ -10,6 +10,7 @@ import { TipKind, MediaMetaData } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 
+import { RewardsTour } from '../../shared/components/onboarding'
 import { SliderSwitch, SliderSwitchOption } from './slider_switch'
 import { TipComplete } from './tip_complete'
 import { OptInForm } from './opt_in_form'
@@ -69,8 +70,15 @@ export function TipForm () {
     host.state.rewardsParameters)
   const [showOnboarding, setShowOnboarding] = React.useState(
     host.state.showOnboarding)
+  const [showTour, setShowTour] = React.useState(false)
   const [currentMonthlyTip, setCurrentMonthlyTip] = React.useState(
     host.state.currentMonthlyTip || 0)
+  const [autoContributeAmount, setAutoContributeAmount] = React.useState(
+    host.state.autoContributeAmount || 0)
+  const [adsPerHour, setAdsPerHour] = React.useState(
+    host.state.adsPerHour || 0)
+  const [onlyAnonWallet, setOnlyAnonWallet] = React.useState(
+    Boolean(host.state.onlyAnonWallet))
 
   const [tipAmount, setTipAmount] = React.useState(0)
   const [tipProcessed, setTipProcessed] = React.useState(false)
@@ -90,6 +98,9 @@ export function TipForm () {
       setBalanceInfo(state.balanceInfo)
       setShowOnboarding(state.showOnboarding)
       setCurrentMonthlyTip(state.currentMonthlyTip || 0)
+      setAutoContributeAmount(state.autoContributeAmount || 0)
+      setAdsPerHour(state.adsPerHour || 0)
+      setOnlyAnonWallet(Boolean(state.onlyAnonWallet))
     })
   }, [host])
 
@@ -101,8 +112,45 @@ export function TipForm () {
     return <TipComplete tipKind={tipKind} tipAmount={tipAmount} />
   }
 
+  if (showTour) {
+    const onTourDone = () => setShowTour(false)
+    return (
+      <style.tour>
+        <RewardsTour
+          firstTimeSetup={!showOnboarding}
+          onlyAnonWallet={onlyAnonWallet}
+          adsPerHour={adsPerHour}
+          autoContributeAmount={autoContributeAmount}
+          autoContributeAmountOptions={rewardsParameters.autoContributeChoices}
+          onAdsPerHourChanged={host.setAdsPerHour}
+          onAutoContributeAmountChanged={host.setAutoContributeAmount}
+          onDone={onTourDone}
+        />
+      </style.tour>
+    )
+  }
+
   if (showOnboarding) {
-    return <OptInForm />
+    const onTakeTour = () => {
+      setShowTour(true)
+    }
+
+    const onEnable = () => {
+      host.saveOnboardingResult('opted-in')
+      onTakeTour()
+    }
+
+    const onDismiss = () => {
+      host.saveOnboardingResult('dismissed')
+    }
+
+    return (
+      <OptInForm
+        onTakeTour={onTakeTour}
+        onEnable={onEnable}
+        onDismiss={onDismiss}
+      />
+    )
   }
 
   const { mediaMetaData } = host.getDialogArgs()

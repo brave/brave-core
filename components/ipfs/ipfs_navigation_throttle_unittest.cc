@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
@@ -96,6 +96,20 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
 
   content::WebContents* web_contents() { return web_contents_.get(); }
 
+  std::unique_ptr<IpfsNavigationThrottle> CreateDeferredNavigation(
+      IpfsService* service,
+      const base::RepeatingClosure& resume_callback) {
+    content::MockNavigationHandle test_handle(web_contents());
+    test_handle.set_url(GetIPFSURL());
+    std::unique_ptr<IpfsNavigationThrottle> throttle =
+        IpfsNavigationThrottle::MaybeCreateThrottleFor(&test_handle, service,
+                                                       locale());
+    throttle->set_resume_callback_for_testing(resume_callback);
+    EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
+        << GetIPFSURL();
+    return throttle;
+  }
+
   IpfsService* ipfs_service(content::BrowserContext* context) {
     return IpfsServiceFactory::GetForContext(context);
   }
@@ -123,6 +137,109 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   DISALLOW_COPY_AND_ASSIGN(IpfsNavigationThrottleUnitTest);
 };
 
+TEST_F(IpfsNavigationThrottleUnitTest, DeferMultipleUntilIpfsProcessLaunched) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  auto* service = ipfs_service(profile());
+  ASSERT_TRUE(service);
+  service->SetSkipGetConnectedPeersCallbackForTest(true);
+
+  bool was_navigation_resumed1 = false;
+  auto throttle1 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed1 = true; }));
+
+  bool was_navigation_resumed2 = false;
+  auto throttle2 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed2 = true; }));
+
+  bool was_navigation_resumed3 = false;
+  auto throttle3 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed3 = true; }));
+
+  service->SetAllowIpfsLaunchForTest(true);
+  service->RunLaunchDaemonCallbackForTest(true);
+  EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_TRUE(was_navigation_resumed2);
+  EXPECT_TRUE(was_navigation_resumed3);
+}
+
+TEST_F(IpfsNavigationThrottleUnitTest, SequentialRequests) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  auto* service = ipfs_service(profile());
+  ASSERT_TRUE(service);
+  service->SetSkipGetConnectedPeersCallbackForTest(true);
+  service->SetGetConnectedPeersCalledForTest(false);
+  bool was_navigation_resumed1 = false;
+  auto throttle1 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed1 = true; }));
+
+  bool was_navigation_resumed2 = false;
+  auto throttle2 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed2 = true; }));
+
+  service->SetAllowIpfsLaunchForTest(true);
+  service->RunLaunchDaemonCallbackForTest(true);
+
+  EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_TRUE(was_navigation_resumed2);
+  ASSERT_FALSE(service->WasConnectedPeersCalledForTest());
+
+  auto throttle3 = CreateDeferredNavigation(service, base::RepeatingClosure());
+
+  ASSERT_TRUE(service->WasConnectedPeersCalledForTest());
+}
+
+TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilPeersFetched) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+  auto* service = ipfs_service(profile());
+  ASSERT_TRUE(service);
+  service->SetSkipGetConnectedPeersCallbackForTest(true);
+
+  service->SetAllowIpfsLaunchForTest(true);
+  service->RunLaunchDaemonCallbackForTest(true);
+
+  bool was_navigation_resumed1 = false;
+  auto throttle1 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed1 = true; }));
+
+  bool was_navigation_resumed2 = false;
+  auto throttle2 = CreateDeferredNavigation(
+      service,
+      base::BindLambdaForTesting([&]() { was_navigation_resumed2 = true; }));
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  auto peers = std::vector<std::string>();
+  throttle1->OnGetConnectedPeers(true, peers);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  throttle2->OnGetConnectedPeers(true, peers);
+  EXPECT_FALSE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  peers = std::vector<std::string>{
+      "/ip4/101.101.101.101/tcp/4001/p2p/"
+      "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
+  throttle1->OnGetConnectedPeers(true, peers);
+  EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_FALSE(was_navigation_resumed2);
+
+  throttle2->OnGetConnectedPeers(true, peers);
+  EXPECT_TRUE(was_navigation_resumed1);
+  EXPECT_TRUE(was_navigation_resumed2);
+}
+
 TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
@@ -131,11 +248,12 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       "/ip4/101.101.101.101/tcp/4001/p2p/"
       "QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"};
 
-  ipfs_service(profile())->SetSkipGetConnectedPeersCallbackForTest(true);
+  auto* service = ipfs_service(profile());
+  ASSERT_TRUE(service);
+  service->SetSkipGetConnectedPeersCallbackForTest(true);
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());
-  auto* service = ipfs_service(profile());
   auto throttle = IpfsNavigationThrottle::MaybeCreateThrottleFor(
       &test_handle, service, locale());
   ASSERT_TRUE(throttle != nullptr);
@@ -144,7 +262,7 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       base::BindLambdaForTesting([&]() { was_navigation_resumed = true; }));
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPFSURL();
-  service->SetIpfsLaunchedForTest(true);
+  service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
   EXPECT_TRUE(was_navigation_resumed);
 
@@ -154,13 +272,13 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
   throttle->OnGetConnectedPeers(true, peers);
   EXPECT_TRUE(was_navigation_resumed);
 
-  service->SetIpfsLaunchedForTest(false);
+  service->SetAllowIpfsLaunchForTest(false);
 
   was_navigation_resumed = false;
   test_handle.set_url(GetIPNSURL());
   EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
       << GetIPNSURL();
-  service->SetIpfsLaunchedForTest(true);
+  service->SetAllowIpfsLaunchForTest(true);
   service->RunLaunchDaemonCallbackForTest(true);
   EXPECT_TRUE(was_navigation_resumed);
 

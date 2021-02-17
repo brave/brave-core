@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../components/assist_ranker",
+  "+components/assist_ranker",
+]

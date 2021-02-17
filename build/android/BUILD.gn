@@ -1,12 +1,14 @@
 import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
+import("//tools/grit/grit_rule.gni")
 
 action("sign_app") {
   script = "//brave/build/android/sign_apk.py"
   _apksigner = "$android_sdk_build_tools/apksigner"
   _zipalign = "$android_sdk_build_tools/zipalign"
 
-  deps = []
+  deps = [ "//brave/app/android:create_dist_zips" ]
+
   target_sign_app_path = ""
   if (target_cpu == "arm64" || target_cpu == "x64" ||
       target_apk_base == "mono") {
@@ -135,6 +137,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
+    "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",

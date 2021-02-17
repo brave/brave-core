@@ -10,12 +10,14 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveToolbarLayoutClassAdapter extends BraveClassVisitor {
     static String sCustomTabToolbarClassName =
             "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar";
-
-    static String sBraveCustomTabToolbarBaseClassName =
+    static String sToolbarPhoneClassName = "org/chromium/chrome/browser/toolbar/top/ToolbarPhone";
+    static String sBraveToolbarLayoutClassName =
             "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout";
 
     public BraveToolbarLayoutClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeSuperName(sCustomTabToolbarClassName, sBraveCustomTabToolbarBaseClassName);
+        changeSuperName(sCustomTabToolbarClassName, sBraveToolbarLayoutClassName);
+
+        changeSuperName(sToolbarPhoneClassName, sBraveToolbarLayoutClassName);
     }
 }

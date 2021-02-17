@@ -8,11 +8,11 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Приєднатись до нагород",
+    "message": "Приєднуйтеся до винагород",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Отримуйте плату за перегляд реклами і перенаправляйте її своїм улюбленим творцям вмісту. ",
+    "message": "Отримуйте плату за перегляд реклами і перенаправляйте її своїм улюбленим авторам вмісту. ",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -32,11 +32,11 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Ми дали Brave Rewards велике оновлення.",
+    "message": "Ми зробили велике оновлення Винагород Brave.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Приготуйтесь до наступного інтернету.",
+    "message": "Приготуйтесь до кращого Інтернету.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -44,11 +44,11 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Пожертвування",
+    "message": "Внески",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
-    "message": "Деталі",
+    "message": "Подробиці",
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT Points",
+    "message": "Бали BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -68,7 +68,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Верифікований творець Brave",
+    "message": "Перевірений автор Brave",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -84,7 +84,7 @@
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
-    "message": "Надіслати гроші...",
+    "message": "Надіслати чайові…",
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Гранти у балах отримано",
+    "message": "Запитано грантів у балах",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,15 +170,15 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Робити внески автоматично",
+    "message": "Автоматичний внесок",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
-    "message": "Одноразове відрахування",
+    "message": "Разові чайові",
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "строк дії закінчується",
+    "message": "завершується",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Вимкнути",
+    "message": "Вимк.",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -194,19 +194,19 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Тепер ви можете заробляти, переглядаючи рекламні оголошення.",
+    "message": "Тепер ви можете заробляти, переглядаючи рекламу.",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
-    "message": "Оголошення Brave",
+    "message": "Реклама Brave",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Зробити автоматичний внесок",
+    "message": "Автоматичний внесок",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Ви зробили внесок у сумі $amount$ $currency$",
+    "message": "Ви зробили внесок $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -220,15 +220,15 @@
     }
   },
   "grantNotification": {
-    "message": "На вас очікує грошова сума.",
+    "message": "На вас очікує грант.",
     "description": "Description for new grant notification"
   },
   "backupNow": {
-    "message": "Створити резевну копію",
+    "message": "Створити резервну копію",
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Резервний гаманець",
+    "message": "Резервна копія гаманця",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
@@ -236,7 +236,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Ваш Brave Rewards аккаунт чекає на депозит.",
+    "message": "Ваш обліковий запис Винагород Brave Rewards очікує на депозит.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -252,11 +252,11 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Ваш плановий щомісячний платіж за автоматичний внесок та щомісячні внески неможливо виконати через недостатню кількість коштів. Ми спробуємо знову за 30 днів.",
+    "message": "Ваш плановий щомісячний платіж для автоматичних та щомісячних внесків неможливо виконати через недостатню кількість коштів. Ми спробуємо знову через 30 днів.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Неможливо надіслати чайові. Будь ласка, спробуйте пізніше.",
+    "message": "Неможливо надіслати чайові. Спробуйте знову пізніше.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "Гаразд",
+    "message": "OK",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -328,7 +328,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Вимкнено",
+    "message": "Вимк.",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -340,7 +340,7 @@
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Винагороди Brave - це",
+    "message": "Винагороди Brave -  це",
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Повторити",
+    "message": "Повторити спробу",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -368,7 +368,7 @@
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
-    "message": "Отримайте винагороду за перегляд сайтів!",
+    "message": "Отримуйте винагороду за перегляд сайтів!",
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Увімкнути рекламні оголошення",
+    "message": "Увімкнути Рекламу",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Внесок у розгляді",
+    "message": "Внески в очікуванні",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Безкоштовний грант у балах",
+    "message": "Грант безкоштовних балів",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -624,7 +624,121 @@
     "description": "Status button that tells user that he is currently pending"
   },
   "walletVerificationNote3":  {
-    "message": "Зауважте: Ваші транзакції будуть видимі для Uphold, щойно ви надасте дозвіл; наприклад, вони зможуть бачити отримувача та розмір ваших чайових.",
+    "message": "Зауважте: Ваші транзакції будуть видимі для Uphold, щойно ви надасте дозвіл; наприклад, вони зможуть бачити отримувача та суму ваших чайових.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Заробляйте токени та допомагайте іншим",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Заробляйте токени, переглядаючи рекламні оголошення, що не порушують вашу конфіденційність, та автоматично підтримуйте улюблені сайти та творців контенту.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Почати користуватися Brave Rewards",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "Пройдіть швидке ознайомлення",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Продовжуючи, ви погоджуєтесь із положеннями $tos_link_begin$Умов користування$tos_link_end$ та $pp_link_begin$Політики конфіденційності$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "Повернутися",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Давайте коротко розглянемо",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Продовжити",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Готово\n",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Пропустити",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Поки пропустити",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Ласкаво просимо до Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "На відміну від звичайних рекламних оголошень, приватна реклама Brave не порушує конфіденційність вашої особистої інформації та винагороджує токенами, якими можна підтримувати творців контенту. ",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Де з'являються рекламні оголошення?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Приватна реклама Brave з'являтиметься у вигляді звичайних сповіщень. Частоту їхньої появи можна змінити у налаштуваннях.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Коли ви отримуєте винагороди",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Токени, зароблені за перегляд приватної реклами Brave цього місяця, будуть нараховані вам 5-го числа наступного місяця.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Допомагати іншим тепер ще простіше",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Творці отримують ваші токенові внески автоматично на основі вашого рівня залученості, який ми називаємо \"Увагою\".",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Дякуйте, даючи чайові",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Чайові – це спосіб особисто підбадьорити та підтримати контент чи творців контенту, які вам до вподоби. Тож не соромтеся лишати на чай!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Як ви можете використати токени?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Токени можна витрачати не лише на підтримку творців. З появою продавців за них можна буде придбати цифровий контент та інші товари.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Ура, все налаштовано!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Користуючись нагородами Brave, ви допомагаєте зробити мережу кращим місцем для кожного. І це чудово!",
+    "description": ""
   }
 }

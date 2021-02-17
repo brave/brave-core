@@ -9,73 +9,76 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
     android:background="@color/onboarding_bg_color">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:paddingTop="36dp"
+        android:paddingBottom="16dp"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/search_engine_layout"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="48dp"
-            android:orientation="vertical">
+            android:text="@string/choose_default_search_engine"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textSize="20sp"
+            android:textColor="@color/onboarding_text_color"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/choose_default_search_engine"
-                android:lineSpacingMultiplier="1.2"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:textSize="20sp"
-                android:textColor="@color/onboarding_text_color"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/onboarding_se_text"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="14sp"
+            android:textColor="@color/onboarding_text_color"/>
 
-            <RadioGroup
-                android:id="@+id/radio_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/search_engine_text"
-                android:lineSpacingMultiplier="1.2"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:textSize="14sp"
-                android:textColor="@color/onboarding_text_color"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/search_engine_text"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textSize="14sp"
+            android:textColor="@color/onboarding_text_color"/>
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/orange_rounded_button"
-                android:text="@string/save"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/onboarding_text_size"
-                style="?android:attr/borderlessButtonStyle"/>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/orange_rounded_button"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/onboarding_text_size"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 

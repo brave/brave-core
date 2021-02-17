@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/features.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
@@ -41,8 +42,12 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ui/webui/ipfs_ui.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/webui/tor_internals_ui.h"
 #endif
 
 using content::WebUI;
@@ -55,14 +60,7 @@ namespace {
 typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
                                                  const GURL& url);
 
-// Template for defining WebUIFactoryFunction.
-template<class T>
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
-  return new T(web_ui);
-}
-
-template<>
-WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
@@ -70,7 +68,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
   } else if (host == kIPFSHost &&
-             ipfs::IpfsServiceFactory::IsIpfsEnabled(
+             ipfs::IsIpfsEnabled(
                  web_ui->GetWebContents()->GetBrowserContext())) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(IPFS_ENABLED)
@@ -96,6 +94,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
 #endif  // !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_TOR)
+  } else if (host == kTorInternalsHost) {
+    return new TorInternalsUI(web_ui, url.host());
+#endif
   }
   return nullptr;
 }
@@ -109,7 +111,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kWebcompatReporterHost ||
 #if BUILDFLAG(IPFS_ENABLED)
       (url.host_piece() == kIPFSHost &&
-          base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
+       base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
       url.host_piece() == kWalletHost ||
@@ -119,11 +121,18 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
 #endif
+#if BUILDFLAG(ENABLE_TOR)
+      url.host_piece() == kTorInternalsHost ||
+#endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
+#if !defined(OS_ANDROID)
+      // On Android New Tab is a native page implemented in Java, so no need in
+      // WebUI.
       url.host_piece() == chrome::kChromeUINewTabHost ||
+#endif  // !defined(OS_ANDROID)
       url.host_piece() == chrome::kChromeUISettingsHost) {
-    return &NewWebUI<BasicUI>;
+    return &NewWebUI;
   }
 
   return nullptr;

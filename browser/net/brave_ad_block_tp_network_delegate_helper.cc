@@ -56,29 +56,37 @@ content::WebContents* GetWebContents(int render_process_id,
 
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx,
                                base::Optional<std::string> canonical_name) {
+  bool did_match_rule = false;
   bool did_match_exception = false;
+  bool did_match_important = false;
   if (!ctx->initiator_url.is_valid()) {
     return;
   }
   std::string source_host = ctx->initiator_url.host();
-  if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          ctx->request_url, ctx->resource_type, source_host,
-          &did_match_exception, &ctx->mock_data_url)) {
+
+  g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+      ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
+      &did_match_exception, &did_match_important, &ctx->mock_data_url);
+  if (did_match_important) {
     ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception && canonical_name.has_value() &&
-             ctx->request_url.host() != *canonical_name &&
-             *canonical_name != "") {
+    return;
+  }
+
+  if (canonical_name.has_value() &&
+      ctx->request_url.host() != *canonical_name && *canonical_name != "") {
     GURL::Replacements replacements = GURL::Replacements();
     replacements.SetHost(
         canonical_name->c_str(),
         url::Component(0, static_cast<int>(canonical_name->length())));
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
 
-    if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-            canonical_url, ctx->resource_type, source_host,
-            &did_match_exception, &ctx->mock_data_url)) {
-      ctx->blocked_by = kAdBlocked;
-    }
+    g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+        ctx->request_url, ctx->resource_type, source_host, &did_match_rule,
+        &did_match_exception, &did_match_important, &ctx->mock_data_url);
+  }
+
+  if (did_match_important || (did_match_rule && !did_match_exception)) {
+    ctx->blocked_by = kAdBlocked;
   }
 }
 
@@ -133,6 +141,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
+    // Explicitly specify source to avoid using `HostResolverProc`
+    // which will be handled by system resolver
+    // See https://crbug.com/872665
+    optional_parameters->source = net::HostResolverSource::DNS;
 
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
@@ -159,7 +171,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
       std::move(cb_).Run(
-          base::Optional<std::string>(resolved_addresses->canonical_name()));
+          base::Optional<std::string>(resolved_addresses->GetCanonicalName()));
     } else {
       std::move(cb_).Run(base::nullopt);
     }
@@ -181,29 +193,31 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
                                  std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  // If the following info isn't available, then proper content settings can't
-  // be looked up, so do nothing.
-  if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
-      ctx->request_url.is_empty()) {
-    return;
-  }
   DCHECK_NE(ctx->request_identifier, 0UL);
+  DCHECK(!ctx->request_url.is_empty());
+  DCHECK(!ctx->initiator_url.is_empty());
 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  new AdblockCnameResolveHostClient(std::move(next_callback), task_runner, ctx);
+  DCHECK(ctx->browser_context);
+  // DoH or standard DNS quries won't be routed through Tor, so we need to skip
+  // it.
+  if (ctx->browser_context->IsTor()) {
+    ShouldBlockAdWithOptionalCname(task_runner, std::move(next_callback), ctx,
+                                   base::nullopt);
+  } else {
+    new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
+                                      ctx);
+  }
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
-  if (ctx->request_url.is_empty()) {
-    return net::OK;
-  }
-
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->tab_origin.is_empty() || !ctx->allow_brave_shields ||
+  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
+      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
       ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;

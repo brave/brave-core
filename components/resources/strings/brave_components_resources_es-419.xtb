@@ -40,19 +40,34 @@
 <translation id="3446024864193919737">Mostrar recompensas de Brave</translation>
 <translation id="6274899614137380422">Mostrar Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
-<translation id="4799744519698299121">Más tarjetas</translation>
+<translation id="5585019845078534178">Tarjetas</translation>
 <translation id="3870475560794762985">Mostrar las imágenes patrocinadas</translation>
 <translation id="2875302873837723333">sitios populares</translation>
 <translation id="8173998484743827990">Estadísticas de Brave</translation>
 <translation id="383680190590774040">reloj</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="3159285901314605198">Imagen de fondo</translation>
+<translation id="385051799172605136">Atrás</translation>
+<translation id="9024104284526126630">Puedes iniciar una llamada privada en Brave.</translation>
+<translation id="5735801688206890393">Inicia llamadas ilimitadas con amigos y colegas en Brave Together.</translation>
+<translation id="7115051913071512405">Pruébalo</translation>
+<translation id="7415602225677446066">Las mejores noticias de hoy en un feed completamente privado, solo para ti.</translation>
+<translation id="8607689491789524900">Brave Today coteja tus intereses en tu dispositivo para que tu información personal nunca salga de tu navegador. Nuevo contenido actualizado a lo largo del día.</translation>
+<translation id="9164544612367905452">Buscando…</translation>
+<translation id="1276592121036104130">Cargar contenido nuevo</translation>
+<translation id="4210987321913275328">Desplázate para ver Brave Today</translation>
+<translation id="3122595178900736207">Restablecer fuentes de Brave Today</translation>
+<translation id="2197023915568148978">¿Deseas restablecer todas las opciones del editor de Brave Today a sus valores predeterminados?</translation>
+<translation id="954001034349395856">Todas las fuentes</translation>
+<translation id="8890516388109605451">Fuentes</translation>
+<translation id="5158129253322921540">Desactivar contenido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="1776831331757823105">Reloj</translation>
 <translation id="4643117005422448078">Sitios populares</translation>
 <translation id="7791543448312431591">Agregar</translation>
 <translation id="7679334366167089823">Gana tokens por ver anuncios que respetan la privacidad.</translation>
 <translation id="1531133232292396145">Opera con criptomonedas en Binance directamente en tu navegador.</translation>
 <translation id="2166494527623220386">Opera con criptomonedas en Gemini directamente en tu navegador.</translation>
+<translation id="7191394989411626168">Al desactivar Tarjetas, se ocultarán todas las tarjetas actualmente visibles. Sin embargo, es posible que continúes recibiendo notificaciones de nuevas tarjetas.</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="6248988683584659830">Buscar en configuración</translation>
@@ -92,9 +107,10 @@
 <translation id="2974339193389078578">Disfrute de una nueva Internet con Brave</translation>
 <translation id="7735138632831241257">Prepárese para disfrutar de una experiencia de navegación más rápida y segura con un navegador diseñado para proteger su privacidad.</translation>
 <translation id="6001839398155993679">Vamos</translation>
-<translation id="8050847734948770789">Activar las Recompensas Brave</translation>
-<translation id="2862598513212603756">Su atención es valiosa. Gane mirando publicidades que respetan la privacidad y pague para apoyar a los creadores que le encantan.</translation>
-<translation id="4942016616604700968">Activar Recompensas</translation>
+<translation id="4225189922025976867"><ph name="BEGIN_BOLD"/>Gana tokens<ph name="END_BOLD"/> por ver anuncios privados de Brave y apoya a creadores de contenido de forma automática.</translation>
+<translation id="5477721706074111257">Al hacer clic, aceptas las <ph name="BEGIN_LINK"/>condiciones del servicio<ph name="END_LINK"/> y la <ph name="BEGIN_LINK"/>política de privacidad<ph name="END_LINK"/>.</translation>
+<translation id="3505541710659461355">Puedes desactivar esto en la configuración en cualquier momento.</translation>
+<translation id="2965798296974325760">Comenzar a utilizar Rewards</translation>
 <translation id="3958088479270651626">Importar favoritos y configuración</translation>
 <translation id="2609701960545338618">Configura tu entorno de navegación habitual importando favoritos y ajustes de tu navegador anterior. Las opciones de importación avanzada se encuentran en Configuración.</translation>
 <translation id="8275038454117074363">Importar</translation>
@@ -118,7 +134,7 @@
 <translation id="3742599705619405136">Una forma automática de apoyar a quienes publican y crean contenido. Configura un pago mensual y navega como siempre. Los sitios verificados de Brave que visitas reciben contribuciones de manera automática en función de tu atención, que mide Brave.</translation>
 <translation id="20281847067919078">Recompensas pendientes estimadas</translation>
 <translation id="8593551638387217772">Próxima fecha de pago</translation>
-<translation id="319209088187794725">Notificaciones de anuncios recibidas este mes</translation>
+<translation id="4428871418618312983">Anuncios recibidos este mes</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en tu región.</translation>
 <translation id="2539279826042558064">Brave Rewards y Brave Ads no están disponibles en este momento en tu dispositivo.</translation>
 <translation id="5421369907811917952">Otros ajustes</translation>
@@ -291,11 +307,14 @@
 <translation id="1723857724166389190">Tu contribución mensual a este creador se ha cancelado.</translation>
 <translation id="534368327994110883">Actualmente estás apoyando a este creador</translation>
 <translation id="2621124276654521177">Contribución mensual actual</translation>
-<translation id="3084276630953238154">Vaya, ha ocurrido un error.</translation>
+<translation id="3084276630953238154">Un error inesperado ha aparecido.</translation>
+<translation id="3263379510325043678">Error de conexión del servidor</translation>
+<translation id="8994556588732085585">Cierra el banner de propinas, ábrelo otra vez e inténtalo de nuevo.</translation>
 <translation id="4371618764691059036">Se ha establecido la contribución mensual.</translation>
 <translation id="6356822617569064293">Fecha de la próxima contribución:</translation>
 <translation id="4622723187300249546">Propina por única vez</translation>
 <translation id="5268142130226208198">Importe de propina por única vez:</translation>
+<translation id="3669086939205397942">Espera, todavía no puedes dar propinas.</translation>
 <translation id="1142440886533556131">Publicación de {{user}}</translation>
 <translation id="3489551030916418665">Tuit de {{user}}</translation>
 <translation id="5531915212947569943">Lamentamos que te vayas…</translation>
@@ -305,6 +324,35 @@
 <translation id="379596083010863211">Tu propina única se ha enviado.</translation>
 <translation id="5096821444729034955">por su publicación</translation>
 <translation id="2978223787436054634">Tuit sobre tu ayuda</translation>
+<translation id="7285784253840999376"><ph name="LINK_BEGIN"/>Haz un recorrido rápido<ph name="LINK_END"/> u <ph name="LINK_BEGIN"/>obtén más información<ph name="LINK_END"/> para conocer los detalles.</translation>
+<translation id="7465614181960492526">Gana tokens y retribuye</translation>
+<translation id="2731539192954672606">Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma automática.</translation>
+<translation id="1275213816424141989">Tal vez luego</translation>
+<translation id="5187052478998910855">¿Necesitas una actualización sobre Rewards?</translation>
+<translation id="8622329973403382303">¡Haz un recorrido rápido para repasar cómo funciona y pasar a la historia como una estrella de Rewards!</translation>
+<translation id="2070991379950719711">Comenzar a utilizar Recompensas Brave</translation>
+<translation id="6318696841371191107">Haz un recorrido rápido</translation>
+<translation id="2404165674840145940">Da propinas con recompensas de Brave</translation>
+<translation id="5820285701794581330">Al utilizar las recompensas de Brave, comenzarás a ganar BAT que podrás emplear para dar propinas a creadores.</translation>
+<translation id="5705882733397021510">Regresar</translation>
+<translation id="185034574799484512">Hagamos un recorrido rápido</translation>
+<translation id="2359808026110333948">Continuar</translation>
+<translation id="8281886186245836920">Omitir</translation>
+<translation id="1377600615067678409">Omitir por el momento</translation>
+<translation id="7930505144430343145">¡Te damos la bienvenida a Recompensas Brave!</translation>
+<translation id="3477340970981564961">Los anuncios privados de Brave te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.</translation>
+<translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
+<translation id="7556325460112047619">Los anuncios privados de Brave se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.</translation>
+<translation id="5816125157889950051">¿Cuándo recibes recompensas?</translation>
+<translation id="310863932297733723">Recibirás los tokens que ganaste de los anuncios de Brave durante el mes actual el día 5 del mes siguiente.</translation>
+<translation id="7712287524451429139">Retribuye sin demasiado esfuerzo</translation>
+<translation id="105037569026952831">Los creadores reciben tus contribuciones de tokens de forma automática en función de tus niveles de participación que medimos como ‘Atención’.</translation>
+<translation id="5323267338679539010">Agradece con propinas</translation>
+<translation id="6042317056594735519">Dar propinas es una forma de animar y apoyar personalmente al contenido o a los creadores que te encantan. ¡Es hora de dar propinas!</translation>
+<translation id="7509452925943421624">¿Qué puedes hacer con los tokens?</translation>
+<translation id="5876169128756792273">Los tokens pueden utilizarse para otras cosas además de apoyar a creadores. Puedes comprar contenido digital y otros bienes a medida que los comercios se incorporan.</translation>
+<translation id="827315274423079662">¡Felicitaciones, has terminado!</translation>
+<translation id="8268038362451312235">Al utilizar Brave Rewards, estás ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="5916290544882167205">Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas de los propietarios de los sitios.</translation>
@@ -505,8 +553,8 @@
 <translation id="1193434225710679930">Donaciones de puntos</translation>
 <translation id="4395099108822007284">Cargando imagen...</translation>
 <translation id="3535654229833214438">Transacciones</translation>
-<translation id="7952665812649667034">Todo listo para Ganar y otorgar</translation>
-<translation id="2623808496299703826">Gana tokens por ver anuncios que respetan la privacidad y apoya a tus creadores de contenido web favoritos de forma predeterminada.</translation>
+<translation id="244362569344671266">Gana tokens por ver anuncios privados de Brave y apoya a creadores de contenido de forma automática.</translation>
+<translation id="3903419925307046908">Gana tokens y retribuye</translation>
 <translation id="8987812599455325915">Esto activa tanto las publicidades como las contribuciones automáticas. Puedes activarlas o desactivarlas por separado en cualquier momento.</translation>
 <translation id="1485484147452131556">Activar recompensas</translation>
 <translation id="8772672608371898774">Publicador verificado de Brave</translation>
@@ -575,7 +623,7 @@
 <translation id="7840362246306242214">Hay acciones de EE. UU. disponibles en Uphold</translation>
 <translation id="3345432088196080137">Invierte solo $1 en acciones y fondos cotizados en bolsa, como AAPL, TSLA o AMZN</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de Brave Rewards</translation>
-<translation id="4342305967788502343">Al hacer clic en Ganar y donar, aceptas las <ph name="LINK_BEGIN"/>condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>política de privacidad<ph name="LINK_END"/>.</translation>
+<translation id="629521674505004728">Al hacer clic en Comenzar a utilizar Recompensas Brave, aceptas las <ph name="LINK_BEGIN"/>Condiciones del servicio<ph name="LINK_END"/> y la <ph name="LINK_BEGIN"/>Política de privacidad<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Ingresos estimados en lo que va de mes</translation>
 <translation id="5235444069025581717">Propinas y contribuciones de este mes</translation>
 <translation id="1210965535849006928">Reclamar mis recompensas</translation>
@@ -587,9 +635,8 @@
 <translation id="6759185676704303656">Estás ganando dinero por ver esta imagen de fondo.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de las imágenes patrocinadas en Brave Rewards.</translation>
 <translation id="6113004497629356998">Ocultar las imágenes patrocinadas</translation>
-<translation id="2148613324460538318">Agregar tarjeta</translation>
+<translation id="3787061634640932557">Editar Tarjetas</translation>
 <translation id="4925543565930352284">Al hacer clic en {{title}}, aceptas las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>política de privacidad<ph name="END_LINK2"/>.</translation>
-<translation id="7983303953939627894">Ganar y otorgar</translation>
 <translation id="5977237145327845546">Inicia una videollamada privada con tus amigos y colegas.</translation>
 <translation id="5850325887346946383">Iniciar videollamada</translation>
 <translation id="3651550649176056334">Acerca de tus datos</translation>
@@ -614,7 +661,6 @@
 <translation id="7384441892795736634">Actualizar datos</translation>
 <translation id="5308380583665731573">Conectar</translation>
 <translation id="7942389053031334372">Convertiste</translation>
-<translation id="2359808026110333948">Continuar</translation>
 <translation id="3348017612272241424">No se puede convertir</translation>
 <translation id="3909193058140362331">No se pudo procesar la conversión. Inténtalo de nuevo.</translation>
 <translation id="5721542149042740780">El monto introducido supera el monto que tienes disponible actualmente.</translation>
@@ -661,34 +707,25 @@
 <translation id="8327818101454798856">Por lo tanto, dirígete allí si buscabas apoyar tus sitios favoritos.</translation>
 <translation id="412480955826088549">Descargando componente...</translation>
 <translation id="4894106830958548828">Lo comprendo</translation>
-<translation id="453977518730680921">Reproducir automáticamente el contenido multimedia</translation>
 <translation id="7701466644604753106">Activar Speedreader</translation>
 <translation id="763042262431778831">Desactivar Speedreader</translation>
 <translation id="9020818404803201080">Peers conectados:</translation>
-<translation id="6717690610234999751">Configuración de direcciones</translation>
-<translation id="9182285671734219088">Estado de daemon</translation>
+<translation id="2903493209154104877">Direcciones</translation>
+<translation id="5789886980848929155">Estado del nodo de IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Puerta de enlace</translation>
 <translation id="2551123942222622809">Swarm</translation>
 <translation id="3967335629471284781">Iniciado</translation>
-<translation id="1515163294334130951">Iniciar</translation>
-<translation id="1895658205118569222">Cierre</translation>
+<translation id="1272079795634619415">Interrumpir</translation>
 <translation id="6762417584993757344">No instalado</translation>
 <translation id="8428368469058794536">Servicio de IPFS</translation>
 <translation id="5357895013476183089">IPFS sin conexión</translation>
-<translation id="8237116764941266924">No se puede establecer conexión con el contenido de IPFS</translation>
-<translation id="7602558611695320510">No ha sido posible conectarse al contenido de IPFS mediante el nodo local de IPFS. Haz clic en el botón "Continuar" que aparece más abajo para conectarte a través de la puerta de enlace pública esta vez y volver automáticamente a la puerta de enlace pública en el futuro.</translation>
+<translation id="1196783328762622576">No se pueden cargar recursos de IPFS utilizando el nodo local</translation>
+<translation id="1141556610026845297">No ha sido posible utilizar el nodo de IPFS local para cargar los recursos de IPFS solicitados. Haz clic en el botón "Continuar" para utilizar la puerta de enlace pública en su lugar y recurrir automáticamente a la puerta de enlace pública en el futuro.</translation>
 <translation id="3373798179786163193">Continuar con puerta de enlace pública</translation>
 <translation id="1974060860693918893">Configuración avanzada</translation>
 <translation id="9096577886148726047">Ocultar opciones avanzadas</translation>
-<translation id="6334164481400727517">No podemos conectarnos al contenido solicitado mediante el nodo local IPFS porque el nodo local no se inició o porque no hay peers conectados en este momento. Si continúas, iremos automáticamente a la puerta de enlace pública predeterminada en el futuro cuando no podamos conectarnos al contenido IPFS mediante el nodo local IPFS. Esto se puede desactivar más adelante en la configuración.</translation>
-<translation id="2901715907314796027">Comprar criptomonedas en Bitcoin.com</translation>
-<translation id="4065681313949497252">Moneda</translation>
-<translation id="3833315885381772739">Ingresar el importe</translation>
-<translation id="4011828592358027165">¿Eres nuevo en esto de las criptomonedas?</translation>
-<translation id="3358050091139900813">Consigue la billetera aquí para empezar</translation>
-<translation id="3449068867189933593">El importe ingresado debe ser de al menos {{minimumAmount}} {{fiat}}</translation>
-<translation id="3105412115725259537">Bitcoin.com</translation>
+<translation id="7716995370131231171">Brave no puede cargar los recursos de IPFS solicitados porque el nodo local no se inició o porque no hay pares conectados disponibles en este momento. Si seleccionas "Continuar", Brave recurrirá automáticamente a la puerta de enlace pública predeterminada siempre que falle el uso del nodo local. Puedes cambiar este comportamiento en cualquier momento en la configuración de Brave.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Ver mercados y comprar criptomonedas de crypto.com.</translation>
 <translation id="4292334826913000023">Mostrar precio</translation>

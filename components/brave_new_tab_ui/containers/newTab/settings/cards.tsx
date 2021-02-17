@@ -13,7 +13,8 @@ import {
   StyledSettingsCopy,
   StyledWidgetToggle,
   SettingsWidget,
-  StyledButtonIcon,
+  StyledAddButtonIcon,
+  StyledHideButtonIcon,
   StyledWidgetSettings,
   StyledButtonLabel,
   ToggleCardsWrapper,
@@ -26,11 +27,10 @@ import togetherBanner from './assets/bravetogether.png'
 import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
-import bitcoinDotComBanner from './assets/bitcoin-dot-com.png'
 import cryptoDotComBanner from './assets/crypto-dot-com.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
-import AddIcon from './assets/add-icon'
+import { PlusIcon } from 'brave-ui/components/icons'
 
 import { getLocale } from '../../../../common/locale'
 
@@ -46,9 +46,6 @@ interface Props {
   toggleShowGemini: () => void
   geminiSupported: boolean
   showGemini: boolean
-  showBitcoinDotCom: boolean
-  bitcoinDotComSupported: boolean
-  toggleShowBitcoinDotCom: () => void
   toggleShowCryptoDotCom: () => void
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
@@ -59,19 +56,18 @@ interface Props {
 class CardsSettings extends React.PureComponent<Props, {}> {
 
   renderToggleButton = (on: boolean, toggleFunc: any, float: boolean = true) => {
+    const ButtonContainer = on ? StyledHideButtonIcon : StyledAddButtonIcon
+    const ButtonIcon = on ? HideIcon : PlusIcon
+
     return (
       <StyledWidgetToggle
         isAdd={!on}
         float={float}
         onClick={toggleFunc}
       >
-        <StyledButtonIcon>
-          {
-            on
-            ? <HideIcon />
-            : <AddIcon />
-          }
-        </StyledButtonIcon>
+        <ButtonContainer>
+          <ButtonIcon />
+        </ButtonContainer>
         <StyledButtonLabel>
           {
             on
@@ -96,9 +92,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
       geminiSupported,
       toggleShowGemini,
       showGemini,
-      toggleShowBitcoinDotCom,
-      showBitcoinDotCom,
-      bitcoinDotComSupported,
       cryptoDotComSupported,
       toggleShowCryptoDotCom,
       showCryptoDotCom,
@@ -152,22 +145,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
                 </StyledSettingsCopy>
               </StyledSettingsInfo>
               {this.renderToggleButton(showBinance, toggleShowBinance, false)}
-            </SettingsWidget>
-          : null
-        }
-        {
-          bitcoinDotComSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={bitcoinDotComBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'Bitcoin.com'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('bitcoinDotComWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showBitcoinDotCom, toggleShowBitcoinDotCom, false)}
             </SettingsWidget>
           : null
         }

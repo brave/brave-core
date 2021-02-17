@@ -30,9 +30,9 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/buildflags.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -41,11 +41,13 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/child_process_security_policy.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
+#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+#include "chrome/browser/notifications/notification_platform_bridge.h"
+#include "brave/browser/notifications/brave_notification_platform_bridge.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
@@ -69,6 +71,7 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -144,7 +147,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-
+#if BUILDFLAG(IPFS_ENABLED)
+  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
+      ipfs::kIPFSScheme);
+  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
+      ipfs::kIPNSScheme);
+#endif
   brave_component_updater::BraveOnDemandUpdater::GetInstance()->
       RegisterOnDemandUpdateCallback(
           base::BindRepeating(&component_updater::BraveOnDemandUpdate));
@@ -334,15 +342,6 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   return brave_p3a_service_.get();
 }
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-BraveWidevineBundleManager*
-BraveBrowserProcessImpl::brave_widevine_bundle_manager() {
-  if (!brave_widevine_bundle_manager_)
-    brave_widevine_bundle_manager_.reset(new BraveWidevineBundleManager);
-  return brave_widevine_bundle_manager_.get();
-}
-#endif
-
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)
     brave_stats_updater_ = brave_stats::BraveStatsUpdaterFactory(local_state());
@@ -356,6 +355,31 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
+}
+
+NotificationPlatformBridge*
+BraveBrowserProcessImpl::notification_platform_bridge() {
+#if !defined(OS_MAC)
+  return BrowserProcessImpl::notification_platform_bridge();
+#else
+#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+  if (!created_notification_bridge_)
+    CreateNotificationPlatformBridge();
+  return notification_bridge_.get();
+#else
+  return nullptr;
+#endif
+#endif
+}
+
+void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
+#if defined(OS_MAC)
+#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+  DCHECK(!notification_bridge_);
+  notification_bridge_ = BraveNotificationPlatformBridge::Create();
+  created_notification_bridge_ = true;
+#endif
+#endif
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

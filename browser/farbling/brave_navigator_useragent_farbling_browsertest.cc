@@ -5,6 +5,7 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
@@ -27,6 +28,8 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
 
 using brave_shields::ControlType;
 using content::TitleWatcher;
@@ -51,6 +54,10 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    embedded_test_server()->RegisterRequestMonitor(base::BindRepeating(
+        &BraveNavigatorUserAgentFarblingBrowserTest::MonitorHTTPRequest,
+        base::Unretained(this)));
+    user_agents_.clear();
 
     ASSERT_TRUE(embedded_test_server()->Start());
   }
@@ -58,6 +65,21 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   void TearDown() override {
     browser_content_client_.reset();
     content_client_.reset();
+  }
+
+  void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
+    user_agents_.push_back(request.headers.at("user-agent"));
+  }
+
+  std::string last_requested_http_user_agent() {
+    if (user_agents_.empty())
+      return "";
+    return user_agents_[user_agents_.size() - 1];
+  }
+
+  std::string effective_user_agent() {
+    return browser_content_client_->GetEffectiveUserAgent(
+        browser()->profile(), contents()->GetLastCommittedURL());
   }
 
   HostContentSettingsMap* content_settings() {
@@ -108,6 +130,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+  std::vector<std::string> user_agents_;
 };
 
 // Tests results of farbling user agent
@@ -123,11 +146,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // Farbling level: off
   AllowFingerprinting(domain_b);
   NavigateToURLUntilLoadStop(url_b);
+  EXPECT_EQ(last_requested_http_user_agent(), real_ua);
   std::string off_ua_b = ExecScriptGetStr(kUserAgentScript, contents());
   // user agent should be the same as the real user agent
   EXPECT_EQ(off_ua_b, real_ua);
   AllowFingerprinting(domain_z);
   NavigateToURLUntilLoadStop(url_z);
+  // HTTP User-Agent header we just sent in that request should be the same as
+  // the real user agent
+  EXPECT_EQ(last_requested_http_user_agent(), real_ua);
   std::string off_ua_z = ExecScriptGetStr(kUserAgentScript, contents());
   // user agent should be the same on every domain if farbling is off
   EXPECT_EQ(off_ua_z, real_ua);
@@ -173,6 +200,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // (farbling level is still maximum)
   NavigateToURLUntilLoadStop(embedded_test_server()->GetURL(
       domain_b, "/navigator/workers-useragent.html"));
+  // HTTP User-Agent header we just sent in that request should be the same as
+  // the real user agent
+  EXPECT_EQ(last_requested_http_user_agent(), effective_user_agent());
   TitleWatcher watcher3(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
 
@@ -180,6 +210,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // verify that user agent is reset properly after having been farbled
   AllowFingerprinting(domain_b);
   NavigateToURLUntilLoadStop(url_b);
+  EXPECT_EQ(last_requested_http_user_agent(), real_ua);
   std::string off_ua_b2 = ExecScriptGetStr(kUserAgentScript, contents());
   EXPECT_EQ(off_ua_b, off_ua_b2);
 }

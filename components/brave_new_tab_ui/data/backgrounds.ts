@@ -23,7 +23,7 @@ export const images: NewTab.Image[] = [
     'name': 'ntp-2020/2021-3',
     'source': 'corwin-prescott_olympic.avif',
     'author': 'Corwin Prescott',
-    'link': '',
+    'link': 'https://community.brave.com/',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   },
@@ -63,7 +63,7 @@ export const images: NewTab.Image[] = [
     'name': 'ntp-2020/2021-8',
     'source': 'zane-lee.avif',
     'author': 'Zane Lee',
-    'link': 'https://unsplash.com/@zane4004',
+    'link': 'https://unsplash.com/@zane404',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'https://unsplash.com/photos/ZiDa9i7dY1E'
   }

@@ -78,6 +78,10 @@ public class BinanceNativeWorker {
         }
     }
 
+    public String getLocaleForURL() {
+        return nativeGetLocaleForURL(mNativeBinanceNativeWorker);
+    }
+
     @CalledByNative
     private void setNativePtr(long nativePtr) {
         assert mNativeBinanceNativeWorker == 0;
@@ -182,6 +186,7 @@ public class BinanceNativeWorker {
     private native String nativeGetOAuthClientUrl(long nativeBinanceNativeWorker);
     private native void nativeGetAccessToken(long nativeBinanceNativeWorker);
     private native boolean nativeIsSupportedRegion(long nativeBinanceNativeWorker);
+    private native String nativeGetLocaleForURL(long nativeBinanceNativeWorker);
     private native void nativeSetAuthToken(long nativeBinanceNativeWorker, String authToken);
     private native void nativeGetAccountBalances(long nativeBinanceNativeWorker);
     private native void nativeGetConvertQuote(

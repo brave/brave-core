@@ -36,7 +36,15 @@ void BatAdsServiceImpl::SetEnvironment(
     const ads::Environment environment,
     SetEnvironmentCallback callback) {
   DCHECK(!is_initialized_);
-  ads::_environment = environment;
+  ads::g_environment = environment;
+  std::move(callback).Run();
+}
+
+void BatAdsServiceImpl::SetSysInfo(
+    ads::SysInfoPtr sys_info,
+    SetSysInfoCallback callback) {
+  DCHECK(!is_initialized_);
+  ads::g_sys_info.is_uncertain_future = sys_info->is_uncertain_future;
   std::move(callback).Run();
 }
 
@@ -44,8 +52,8 @@ void BatAdsServiceImpl::SetBuildChannel(
     ads::BuildChannelPtr build_channel,
     SetBuildChannelCallback callback) {
   DCHECK(!is_initialized_);
-  ads::_build_channel.is_release = build_channel->is_release;
-  ads::_build_channel.name = build_channel->name;
+  ads::g_build_channel.is_release = build_channel->is_release;
+  ads::g_build_channel.name = build_channel->name;
   std::move(callback).Run();
 }
 
@@ -53,7 +61,7 @@ void BatAdsServiceImpl::SetDebug(
     const bool is_debug,
     SetDebugCallback callback) {
   DCHECK(!is_initialized_);
-  ads::_is_debug = is_debug;
+  ads::g_is_debug = is_debug;
   std::move(callback).Run();
 }
 

@@ -73,8 +73,9 @@ OBJC_EXPORT
 @property(nonatomic, readonly) NSUInteger childCount;
 
 - (nullable IOSBookmarkNode*)childAtIndex:(NSUInteger)index;
-- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:(BOOL(^)(BookmarkFolder*))included
-                                                NS_SWIFT_NAME(nestedChildFolders(where:));
+- (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:
+                                          (BOOL(^)(BookmarkFolder*))included
+                                  NS_SWIFT_NAME(nestedChildFolders(where:));
 
 - (void)setTitle:(NSString*)title;
 - (bool)getMetaInfo:(NSString*)key value:(NSString* _Nonnull* _Nullable)value;

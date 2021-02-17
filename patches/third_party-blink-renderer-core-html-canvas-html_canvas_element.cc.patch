@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index b8e22fa0d72dee59cd41130ae8c23b51959d8023..c3f5ced91eef0058aa1ad5d1d0b5cb4571813434 100644
+index bbc4a8c29f6daab8fb1e1a60ed8efb02ada7583d..1126d8cac4ce9c15ec403139afaeb07b2d79e4d1 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -942,6 +942,7 @@ String HTMLCanvasElement::ToDataURLInternal(
- 
-   scoped_refptr<StaticBitmapImage> image_bitmap = Snapshot(source_buffer);
-   if (image_bitmap) {
-+    BRAVE_TO_DATA_URL_INTERNAL
-     std::unique_ptr<ImageDataBuffer> data_buffer =
-         ImageDataBuffer::Create(image_bitmap);
+@@ -951,6 +951,7 @@ String HTMLCanvasElement::ToDataURLInternal(
      if (!data_buffer)
+       return String("data:,");
+ 
++    BRAVE_TO_DATA_URL_INTERNAL
+     String data_url = data_buffer->ToDataURL(encoding_mime_type, quality);
+     base::TimeDelta elapsed_time = base::TimeTicks::Now() - start_time;
+     float sqrt_pixels =

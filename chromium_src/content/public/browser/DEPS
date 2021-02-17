@@ -1,0 +1,8 @@
+include_rules = [
+  "+../../../../../content/public/browser",
+  "+content/browser",
+  "+content/common",
+  "+content/public/browser",
+  "+content/public/common",
+  "+third_party/blink/public/mojom/loader/referrer.mojom.h",
+]

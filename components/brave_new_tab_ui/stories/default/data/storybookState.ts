@@ -1,4 +1,4 @@
-import { select, boolean, number } from '@storybook/addon-knobs/react'
+import { select, boolean, number } from '@storybook/addon-knobs'
 import { images } from '../../../data/backgrounds'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'
 import dummyBrandedWallpaper from './brandedWallpaper'
@@ -74,6 +74,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   showRewards: boolean('Show rewards?', true),
   showTogether: boolean('Show together?', true),
   togetherSupported: boolean('Together supported?', true),
+  togetherPromptDismissed: !boolean('Together prompt?', false),
   geminiSupported: boolean('Gemini Supported?', true),
   cryptoDotComSupported: boolean('Crypto.com supported?', true),
   showBinance: boolean('Show Binance?', true),

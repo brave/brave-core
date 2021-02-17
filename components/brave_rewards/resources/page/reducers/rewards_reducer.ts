@@ -214,11 +214,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const key = action.payload.key
       const value = action.payload.value
       if (key) {
-        state[key] = value
         chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
-
         if (key === 'adsEnabledMigrated') {
           state.enabledAdsMigrated = true
+        } else {
+          state.adsData = { ...(state.adsData || defaultState.adsData) }
+          state.adsData[key] = value
         }
       }
       break
@@ -443,10 +444,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_ONBOARDING_STATUS: {
-      const completed = onboardingCompletedStore.load()
+      let { showOnboarding } = action.payload
+      // Once the user has been onboarded (perhaps through another rewards
+      // UI entry point) and has viewed the settings page, do not hide the
+      // settings page with onboarding again.
+      if (!showOnboarding) {
+        onboardingCompletedStore.save()
+      }
       state = {
         ...state,
-        showOnboarding: action.payload.showOnboarding && !completed
+        showOnboarding: showOnboarding && !onboardingCompletedStore.load()
       }
       break
     }

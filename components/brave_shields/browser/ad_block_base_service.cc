@@ -21,7 +21,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -113,11 +113,13 @@ AdBlockBaseService::~AdBlockBaseService() {
   GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
 }
 
-bool AdBlockBaseService::ShouldStartRequest(
+void AdBlockBaseService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    bool* did_match_rule,
     bool* did_match_exception,
+    bool* did_match_important,
     std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
@@ -128,29 +130,15 @@ bool AdBlockBaseService::ShouldStartRequest(
       url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
-  // TODO(spinda): Remove explicit_cancel here when removed from adblock-rust.
-  bool explicit_cancel;
-  bool saved_from_exception;
-  if (ad_block_client_->matches(
-          url.spec(), url.host(), tab_host, is_third_party,
-          ResourceTypeToString(resource_type), &explicit_cancel,
-          &saved_from_exception, mock_data_url)) {
-    // We'd only possibly match an exception filter if we're returning true.
-    if (did_match_exception) {
-      *did_match_exception = false;
-    }
-    // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
-    //  << tab_host
-    //  << ", resource type: " << resource_type
-    //  << ", url.spec(): " << url.spec();
-    return false;
-  }
+  ad_block_client_->matches(
+      url.spec(), url.host(), tab_host, is_third_party,
+      ResourceTypeToString(resource_type), did_match_rule,
+      did_match_exception, did_match_important, mock_data_url);
 
-  if (did_match_exception) {
-    *did_match_exception = saved_from_exception;
-  }
-
-  return true;
+  // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
+  //  << tab_host
+  //  << ", resource type: " << resource_type
+  //  << ", url.spec(): " << url.spec();
 }
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {

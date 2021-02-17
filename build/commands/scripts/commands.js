@@ -30,6 +30,19 @@ function commaSeparatedList(value, dummyPrevious) {
   return value.split(',')
 }
 
+// Use this wrapper function instead of JavaScript's parseInt() with option()
+// when defining integer optional parameters, or the default value might get
+// passed as well into the radix parameter of parseInt(), causing wrong results.
+// https://github.com/brave/brave-browser/issues/13724
+function parseInteger(string) {
+  // As per the spec [1], not passing the optional radix parameter to parseInt()
+  // will make parsing to interpret the string passed as a decimal number unless
+  // it's prefixed with '0' (octal) or '0x' (hexadecimal). We only need decimal
+  // in this particular case so let's be explicit about that.
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+  return parseInt(string, 10)
+}
+
 const parsedArgs = program.parseOptions(process.argv)
 
 program
@@ -104,6 +117,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_apk_base <target_apk_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
   .option('--is_asan', 'is asan enabled')
+  .option('--universal', 'build a universal binary distribution')
   .arguments('[build_config]')
   .action(createDist)
 
@@ -118,7 +132,7 @@ program
   .command('start')
   .allowUnknownOption(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInt, '0')
+  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--user_data_dir_name [base_name]', 'set user data directory base name to [base_name]')
   .option('--no_sandbox', 'disable the sandbox')
@@ -186,25 +200,31 @@ program
 
 program
   .command('test <suite>')
+  .allowUnknownOption(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInt, '0')
+  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
   .option('--output <output>', 'set test output (results) file path')
   .option('--disable_brave_extension', 'disable loading the Brave extension')
   .option('--single_process', 'uses a single process to run tests to help with debugging')
-  .option('--test_launcher_jobs <test_launcher_jobs>', 'Number of jobs to launch', parseInt, '4')
+  .option('--test_launcher_jobs <test_launcher_jobs>', 'Number of jobs to launch', parseInteger, '4')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
   .arguments('[build_config]')
-  .action(test)
+  .action(test.bind(null, parsedArgs.unknown))
 
 program
   .command('lint')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .action(util.lint)
+
+program
+  .command('format')
+  .option('--full', 'format all lines in changed files instead of only the changed lines')
+  .action(util.format)
 
 program
   .parse(process.argv)

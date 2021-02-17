@@ -33,16 +33,14 @@
 
     NSNotificationCenter* notificationCenter =
         [NSNotificationCenter defaultCenter];
-    [notificationCenter
-        addObserver:self
-           selector:@selector(appDidBecomeActive:)
-               name:NSApplicationDidBecomeActiveNotification
-             object:nil];
-    [notificationCenter
-        addObserver:self
-           selector:@selector(appDidResignActive:)
-               name:NSApplicationDidResignActiveNotification
-             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(appDidBecomeActive:)
+                               name:NSApplicationDidBecomeActiveNotification
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(appDidResignActive:)
+                               name:NSApplicationDidResignActiveNotification
+                             object:nil];
   }
   return self;
 }
@@ -60,8 +58,7 @@
 namespace brave_ads {
 
 BackgroundHelperMac::BackgroundHelperMac() {
-  delegate_.reset(
-      [[BackgroundHelperDelegate alloc] initWithHelper:this]);
+  delegate_.reset([[BackgroundHelperDelegate alloc] initWithHelper:this]);
 }
 
 BackgroundHelperMac::~BackgroundHelperMac() {}

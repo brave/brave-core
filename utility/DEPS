@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/common",
+  "+chrome/common",
+  "+chrome/grit",
+  "+chrome/utility",
+  "+content/public/utility",
+  "+mojo/public/cpp",
+]

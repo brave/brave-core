@@ -253,6 +253,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getLocaleForURL",
+        "type": "function",
+        "description": "Returns the users locale to set the appropriate language on Binance.com",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "locale",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

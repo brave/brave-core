@@ -11,6 +11,7 @@
 namespace brave {
 
 std::string GetChannelName();
+bool IsNightlyOrDeveloperBuild();
 
 }
 

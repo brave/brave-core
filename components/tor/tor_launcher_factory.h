@@ -9,8 +9,11 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/callback.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -18,14 +21,16 @@
 #include "brave/components/tor/tor_control.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
-namespace tor {
-class TorProfileServiceImpl;
-}
+namespace base {
+class SequencedTaskRunner;
+}  // namespace base
 
 class MockTorLauncherFactory;
+class TorLauncherObserver;
 
 class TorLauncherFactory : public tor::TorControl::Delegate {
  public:
+  using GetLogCallback = base::OnceCallback<void(bool, const std::string&)>;
   static TorLauncherFactory* GetInstance();
 
   virtual void Init();
@@ -34,9 +39,11 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   virtual int64_t GetTorPid() const;
   virtual bool IsTorConnected() const;
   virtual std::string GetTorProxyURI() const;
+  virtual std::string GetTorVersion() const;
+  virtual void GetTorLog(GetLogCallback);
 
-  void AddObserver(tor::TorProfileServiceImpl* serice);
-  void RemoveObserver(tor::TorProfileServiceImpl* service);
+  void AddObserver(TorLauncherObserver* observer);
+  void RemoveObserver(TorLauncherObserver* observer);
 
   // tor::TorControl::Delegate
   void OnTorControlReady() override;
@@ -58,6 +65,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory();
   ~TorLauncherFactory() override;
 
+  void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
+
   void OnTorControlCheckComplete();
 
   void OnTorLauncherCrashed();
@@ -77,12 +86,15 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   mojo::Remote<tor::mojom::TorLauncher> tor_launcher_;
 
   std::string tor_proxy_uri_;
+  std::string tor_version_;
 
   int64_t tor_pid_;
 
   tor::mojom::TorConfig config_;
 
-  base::ObserverList<tor::TorProfileServiceImpl> observers_;
+  base::ObserverList<TorLauncherObserver> observers_;
+
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
   std::unique_ptr<tor::TorControl> control_;
 

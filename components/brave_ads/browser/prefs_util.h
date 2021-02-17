@@ -14,9 +14,7 @@
 namespace brave_ads {
 namespace prefs {
 
-const base::Value* GetValue(
-    PrefService* prefs,
-    const std::string& path);
+const base::Value* GetValue(PrefService* prefs, const std::string& path);
 
 }  // namespace prefs
 }  // namespace brave_ads

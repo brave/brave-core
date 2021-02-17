@@ -18,16 +18,11 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
 namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
 }  // namespace brave
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-class BraveWidevineBundleManager;
-#endif
 
 namespace brave_component_updater {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -82,6 +77,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   // BrowserProcess implementation.
 
   ProfileManager* profile_manager() override;
+  NotificationPlatformBridge* notification_platform_bridge() override;
 
   void StartBraveServices();
   brave_shields::AdBlockService* ad_block_service();
@@ -105,9 +101,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater();
 #endif
   brave::BraveP3AService* brave_p3a_service();
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  BraveWidevineBundleManager* brave_widevine_bundle_manager();
-#endif
   brave_stats::BraveStatsUpdater* brave_stats_updater();
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service();
@@ -123,6 +116,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   void Init() override;
 
   void CreateProfileManager();
+  void CreateNotificationPlatformBridge();
 
 #if BUILDFLAG(ENABLE_TOR)
   void OnTorEnabledChanged();
@@ -162,9 +156,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
-#endif
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>

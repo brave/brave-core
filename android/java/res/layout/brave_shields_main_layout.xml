@@ -156,6 +156,10 @@
 				android:id="@+id/brave_shields_secondary_layout_id"
 				layout="@layout/brave_shields_secondary_layout"/>
 
+			<include 
+				android:id="@+id/brave_shields_privacy_report_layout_id"
+				layout="@layout/brave_shields_toggle_layout"/>
+
 		</LinearLayout>
 
 		<include 

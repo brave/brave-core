@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/browser/notification_helper_linux.h"
 
 #include "base/logging.h"
+#include "brave/common/brave_channel_info.h"
 #include "chrome/browser/fullscreen.h"
 
 namespace brave_ads {
@@ -20,11 +21,23 @@ bool NotificationHelperLinux::ShouldShowNotifications() {
     return false;
   }
 
+  if (brave::IsNightlyOrDeveloperBuild()) {
+    return true;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/5542): Investigate how
+  // we can detect if notifications are enabled within the Linux operating
+  // system
+
   return true;
 }
 
 bool NotificationHelperLinux::ShowMyFirstAdNotification() {
   return false;
+}
+
+bool NotificationHelperLinux::CanShowBackgroundNotifications() const {
+  return true;
 }
 
 NotificationHelperLinux* NotificationHelperLinux::GetInstanceImpl() {

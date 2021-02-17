@@ -7,7 +7,6 @@ import styled from 'brave-ui/theme'
 import {
   Block as StandardBlock,
   Heading as StandardHeading,
-  Image as StandardImage,
   Text as StandardText,
   Time as StandardTime
 } from './default'
@@ -58,7 +57,11 @@ export const ListImageFrame = styled(ImageFrame)`
   padding-top: 0;
 `
 
-export const Image = styled(StandardImage)`
+type ImageProps = {
+  isPromoted?: boolean
+}
+export const Image = styled<ImageProps, 'img'>('img')`
+  box-sizing: border-box;
   display: block;
   position: absolute;
   border: none;
@@ -69,7 +72,7 @@ export const Image = styled(StandardImage)`
   right: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: ${p => p.isPromoted ? 'contain' : 'cover'};
   background-color: rgba(188,188,188,0.2);
 `
 
@@ -105,12 +108,41 @@ export const Time = styled(StandardTime)`
   }
 `
 
+export const Source = styled('div')`
+  margin: 10px 0 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
 export const Publisher = styled('div')`
   box-sizing: border-box;
-  margin: 10px 0 0 0;
-  padding: 0;
   font: 500 14px ${p => p.theme.fontFamily.heading};
   color: #fff;
+`
+
+export const PromotedLabel = styled('a')`
+  border-radius: 4px;
+  background: #495057;
+  color: rgba(255, 255, 255, .8);
+  padding: 4px 8px;
+  font: 400 12px ${p => p.theme.fontFamily.heading};
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`
+
+export const PromotedIcon = styled('div')`
+  width: 16px;
+  height: 9px;
+  color: inherit;
+  svg {
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    fill: currentColor;
+  }
 `
 
 export const ContainerForTwo = styled<{}, 'div'>('div')`

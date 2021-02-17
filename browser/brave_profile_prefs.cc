@@ -27,8 +27,8 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/moonpay/browser/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -72,11 +72,6 @@
 #include "brave/components/gemini/browser/pref_names.h"
 #endif
 
-#if BUILDFLAG(MOONPAY_ENABLED)
-#include "brave/components/moonpay/browser/moonpay_pref_utils.h"
-#include "brave/components/moonpay/common/pref_names.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -103,6 +98,14 @@
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
+#endif
+
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/startup/default_brave_browser_prompt.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/components/sidebar/sidebar_service.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -324,16 +327,16 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   speedreader::SpeedreaderService::RegisterPrefs(registry);
 #endif
 
-#if BUILDFLAG(MOONPAY_ENABLED)
-  moonpay::MoonpayPrefUtils::RegisterPrefs(registry);
-#endif
-
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   crypto_dot_com::RegisterPrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  sidebar::SidebarService::RegisterPrefs(registry);
 #endif
 
 #if !defined(OS_ANDROID)
@@ -349,6 +352,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
+  RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 
   RegisterProfilePrefsForMigration(registry);

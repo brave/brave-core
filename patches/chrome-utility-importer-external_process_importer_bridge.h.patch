@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/external_process_importer_bridge.h b/chrome/utility/importer/external_process_importer_bridge.h
-index ffa0448258db541927c3c84ea7673819641f2b52..9dd4142fd0c1b355839845d03857ecf26c9318e9 100644
+index 29633eb670b7ac36f28f255c65d12c467e65bae9..1bf66a423598b474918109bf67af5dc3ba35ea4c 100644
 --- a/chrome/utility/importer/external_process_importer_bridge.h
 +++ b/chrome/utility/importer/external_process_importer_bridge.h
 @@ -68,6 +68,7 @@ class ExternalProcessImporterBridge : public ImporterBridge {

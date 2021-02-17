@@ -1,0 +1,17 @@
+include_rules = [
+  "+../../../../../../components/translate/core/browser",
+  "+components/translate/core/browser",
+  "+components/translate/core/common",
+  "+components/language/core/browser",
+  "+components/pref_registry",
+  "+components/sync_preferences",
+  "+components/variations",
+  "+google_apis/google_api_keys.h",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "translate_url_fetcher(\.cc|\.h)": [
+    "+brave/browser/translate/buildflags/buildflags.h",
+  ],
+}

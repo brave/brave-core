@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../../../components/crash/core/app",
+  "+components/crash/core/app",
+]

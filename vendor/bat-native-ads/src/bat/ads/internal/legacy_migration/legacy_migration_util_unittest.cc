@@ -11,8 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsLegacyMigrationUtilTest,
-    MigrateTimestamp) {
+TEST(BatAdsLegacyMigrationUtilTest, MigrateTimestamp) {
   // Arrange
   const uint64_t timestamp = 13250441166;
 
@@ -23,8 +22,7 @@ TEST(BatAdsLegacyMigrationUtilTest,
   EXPECT_EQ(1605967566UL, migrated_timestamp);
 }
 
-TEST(BatAdsLegacyMigrationUtilTest,
-    DoNotMigrateAlreadyMigratedTimestamp) {
+TEST(BatAdsLegacyMigrationUtilTest, DoNotMigrateAlreadyMigratedTimestamp) {
   // Arrange
   const uint64_t timestamp = 1605967566;
 

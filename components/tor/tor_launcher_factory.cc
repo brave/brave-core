@@ -8,10 +8,11 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/files/file_util.h"
 #include "base/process/kill.h"
 #include "base/task/post_task.h"
 #include "brave/components/tor/service_sandbox_type.h"
-#include "brave/components/tor/tor_profile_service_impl.h"
+#include "brave/components/tor/tor_launcher_observer.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -27,6 +28,18 @@ constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
+
+std::pair<bool, std::string> LoadTorLogOnFileTaskRunner(
+    const base::FilePath& path) {
+  std::string data;
+  bool success = base::ReadFileToString(path, &data);
+  std::pair<bool, std::string> result;
+  result.first = success;
+  if (success) {
+    result.second = data;
+  }
+  return result;
+}
 }  // namespace
 
 // static
@@ -38,6 +51,10 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       is_connected_(false),
       tor_pid_(-1),
+      file_task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       control_(tor::TorControl::Create(this)),
       weak_ptr_factory_(this) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
@@ -94,6 +111,12 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
+void TorLauncherFactory::OnTorLogLoaded(
+    GetLogCallback callback,
+    const std::pair<bool, std::string>& result) {
+  std::move(callback).Run(result.first, result.second);
+}
+
 void TorLauncherFactory::OnTorControlCheckComplete() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (tor_launcher_.is_bound()) {
@@ -128,20 +151,32 @@ std::string TorLauncherFactory::GetTorProxyURI() const {
   return tor_proxy_uri_;
 }
 
-
-void TorLauncherFactory::AddObserver(tor::TorProfileServiceImpl* service) {
-  observers_.AddObserver(service);
+std::string TorLauncherFactory::GetTorVersion() const {
+  return tor_version_;
 }
 
-void TorLauncherFactory::RemoveObserver(tor::TorProfileServiceImpl* service) {
-  observers_.RemoveObserver(service);
+void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
+  base::FilePath tor_log_path = config_.tor_data_path.AppendASCII("tor.log");
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadTorLogOnFileTaskRunner, tor_log_path),
+      base::BindOnce(&TorLauncherFactory::OnTorLogLoaded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
   LOG(INFO) << "Tor Launcher Crashed";
   is_starting_ = false;
   for (auto& observer : observers_)
-    observer.NotifyTorLauncherCrashed();
+    observer.OnTorLauncherCrashed();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
@@ -150,7 +185,7 @@ void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   is_starting_ = false;
   is_connected_ = false;
   for (auto& observer : observers_)
-    observer.NotifyTorCrashed(pid);
+    observer.OnTorCrashed(pid);
   KillTorProcess();
   // Post delayed relaucn for control to stop
   content::GetUIThreadTaskRunner({})->PostDelayedTask(
@@ -170,7 +205,7 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     LOG(ERROR) << "Tor Launching Failed(" << pid << ")";
   }
   for (auto& observer : observers_)
-    observer.NotifyTorLaunched(result, pid);
+    observer.OnTorLaunched(result, pid);
   control_->Start();
 }
 
@@ -198,6 +233,7 @@ void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
     return;
   }
   VLOG(2) << "Tor version: " << version;
+  tor_version_ = version;
 }
 
 void TorLauncherFactory::GotSOCKSListeners(
@@ -221,7 +257,7 @@ void TorLauncherFactory::GotSOCKSListeners(
       tor_proxy_uri.end());
   tor_proxy_uri_ = tor_proxy_uri;
   for (auto& observer : observers_)
-    observer.NotifyTorNewProxyURI(tor_proxy_uri);
+    observer.OnTorNewProxyURI(tor_proxy_uri);
 }
 
 void TorLauncherFactory::OnTorClosed() {
@@ -258,9 +294,11 @@ void TorLauncherFactory::OnTorEvent(
     const std::string& initial,
     const std::map<std::string, std::string>& extra) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  VLOG(3) << "TOR CONTROL: event "
-          << (*tor::kTorControlEventByEnum.find(event)).second << ": "
-          << initial;
+  const std::string raw_event =
+      (*tor::kTorControlEventByEnum.find(event)).second + ": " + initial;
+  VLOG(3) << "TOR CONTROL: event " << raw_event;
+  for (auto& observer : observers_)
+    observer.OnTorControlEvent(raw_event);
   if (event == tor::TorControlEvent::STATUS_CLIENT) {
     if (initial.find(kStatusClientBootstrap) != std::string::npos) {
       size_t progress_start = initial.find(kStatusClientBootstrapProgress);
@@ -270,16 +308,16 @@ void TorLauncherFactory::OnTorEvent(
           progress_start + strlen(kStatusClientBootstrapProgress),
           progress_length - strlen(kStatusClientBootstrapProgress));
       for (auto& observer : observers_)
-        observer.NotifyTorInitializing(percentage);
+        observer.OnTorInitializing(percentage);
     } else if (initial.find(kStatusClientCircuitEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)
-        observer.NotifyTorCircuitEstablished(true);
+        observer.OnTorCircuitEstablished(true);
       is_connected_ = true;
     } else if (initial.find(kStatusClientCircuitNotEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)
-        observer.NotifyTorCircuitEstablished(false);
+        observer.OnTorCircuitEstablished(false);
     }
   }
 }

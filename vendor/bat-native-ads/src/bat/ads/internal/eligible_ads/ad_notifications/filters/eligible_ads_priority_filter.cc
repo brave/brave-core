@@ -44,10 +44,9 @@ CreativeAdNotificationBucketMap BucketSortCreativeAdNotifications(
 
 CreativeAdNotificationBucketPair GetHighestPriorityBucket(
     const CreativeAdNotificationBucketMap& buckets) {
-  const auto iter = std::min_element(buckets.begin(), buckets.end(),
-      [](const auto& lhs, const auto& rhs) {
-    return lhs.first < rhs.first;
-  });
+  const auto iter = std::min_element(
+      buckets.begin(), buckets.end(),
+      [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
 
   return *iter;
 }
@@ -78,15 +77,16 @@ CreativeAdNotificationList EligibleAdsPriorityFilter::Apply(
   const CreativeAdNotificationList creative_ad_notifications = bucket.second;
 
   BLOG(2, creative_ad_notifications.size() << " eligible ads with a priority"
-      " of " << priority);
+                                              " of "
+                                           << priority);
 
   for (const auto& bucket : buckets) {
     if (bucket.first == priority) {
       continue;
     }
 
-    BLOG(3, bucket.second.size() << " ads with a lower priority of "
-        << bucket.first);
+    BLOG(3, bucket.second.size()
+                << " ads with a lower priority of " << bucket.first);
   }
 
   return creative_ad_notifications;

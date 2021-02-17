@@ -61,8 +61,7 @@ void TabManager::OnBackgrounded() {
       UserActivityEventType::kBrowserWindowDidEnterBackground);
 }
 
-bool TabManager::IsVisible(
-    const int32_t id) const {
+bool TabManager::IsVisible(const int32_t id) const {
   if (id == 0) {
     return false;
   }
@@ -70,11 +69,10 @@ bool TabManager::IsVisible(
   return visible_tab_id_ == id;
 }
 
-void TabManager::OnUpdated(
-    const int32_t id,
-    const std::string& url,
-    const bool is_visible,
-    const bool is_incognito) {
+void TabManager::OnUpdated(const int32_t id,
+                           const std::string& url,
+                           const bool is_visible,
+                           const bool is_incognito) {
   if (is_incognito) {
     BLOG(7, "Tab id " << id << " is incognito");
     return;
@@ -113,8 +111,7 @@ void TabManager::OnUpdated(
   tabs_.insert({id, tab});
 }
 
-void TabManager::OnClosed(
-    const int32_t id) {
+void TabManager::OnClosed(const int32_t id) {
   BLOG(2, "Tab id " << id << " was closed");
 
   tabs_.erase(id);
@@ -122,8 +119,7 @@ void TabManager::OnClosed(
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 }
 
-void TabManager::OnMediaPlaying(
-    const int32_t id) {
+void TabManager::OnMediaPlaying(const int32_t id) {
   if (tabs_[id].is_playing_media) {
     return;
   }
@@ -135,8 +131,7 @@ void TabManager::OnMediaPlaying(
   tabs_[id].is_playing_media = true;
 }
 
-void TabManager::OnMediaStopped(
-    const int32_t id) {
+void TabManager::OnMediaStopped(const int32_t id) {
   if (!tabs_[id].is_playing_media) {
     return;
   }
@@ -146,8 +141,7 @@ void TabManager::OnMediaStopped(
   tabs_[id].is_playing_media = false;
 }
 
-bool TabManager::IsPlayingMedia(
-    const int32_t id) const {
+bool TabManager::IsPlayingMedia(const int32_t id) const {
   TabInfo tab;
 
   if (tabs_.find(id) != tabs_.end()) {
@@ -165,8 +159,7 @@ base::Optional<TabInfo> TabManager::GetLastVisible() const {
   return GetForId(last_visible_tab_id_);
 }
 
-base::Optional<TabInfo> TabManager::GetForId(
-    const int32_t id) const {
+base::Optional<TabInfo> TabManager::GetForId(const int32_t id) const {
   if (tabs_.find(id) == tabs_.end()) {
     return base::nullopt;
   }

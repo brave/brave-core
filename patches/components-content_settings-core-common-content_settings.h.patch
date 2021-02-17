@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
-index 66254566b4860caeeb0f6bb209ca3b03ee8e30ff..bcef4b570894d9089b9b64a1534b0c7b27679149 100644
+index 5d2109d96d9ec6daf2a1dcd30c94d9431ee02254..febcb4fd9af7764254e94082e91a8448d906893f 100644
 --- a/components/content_settings/core/common/content_settings.h
 +++ b/components/content_settings/core/common/content_settings.h
-@@ -78,6 +78,7 @@ struct RendererContentSettingRules {
+@@ -79,6 +79,7 @@ struct RendererContentSettingRules {
    ContentSettingsForOneType script_rules;
    ContentSettingsForOneType popup_redirect_rules;
    ContentSettingsForOneType mixed_content_rules;

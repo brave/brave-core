@@ -18,21 +18,21 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/url_util.h"
 #include "bat/ads/new_tab_page_ad_info.h"
+#include "bat/ads/promoted_content_ad_info.h"
 
 namespace ads {
 namespace history {
 
-AdsHistoryInfo Get(
-    const AdsHistoryInfo::FilterType filter_type,
-    const AdsHistoryInfo::SortType sort_type,
-    const uint64_t from_timestamp,
-    const uint64_t to_timestamp) {
+AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
+                   const AdsHistoryInfo::SortType sort_type,
+                   const uint64_t from_timestamp,
+                   const uint64_t to_timestamp) {
   std::deque<AdHistoryInfo> ads_history = Client::Get()->GetAdsHistory();
 
   const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();
   if (date_range_filter) {
-    ads_history = date_range_filter->Apply(ads_history,
-        from_timestamp, to_timestamp);
+    ads_history =
+        date_range_filter->Apply(ads_history, from_timestamp, to_timestamp);
   }
 
   const auto filter = AdsHistoryFilterFactory::Build(filter_type);
@@ -53,9 +53,8 @@ AdsHistoryInfo Get(
   return normalized_ads_history;
 }
 
-void AddAdNotification(
-    const AdNotificationInfo& ad,
-    const ConfirmationType& confirmation_type) {
+void AddAdNotification(const AdNotificationInfo& ad,
+                       const ConfirmationType& confirmation_type) {
   AdHistoryInfo ad_history;
 
   ad_history.timestamp_in_seconds =
@@ -70,14 +69,13 @@ void AddAdNotification(
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
   ad_history.ad_content.brand_url = ad.target_url;
   ad_history.ad_content.ad_action = confirmation_type;
-  ad_history.category_content.category = ad.category;
+  ad_history.category_content.category = ad.segment;
 
   Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
 }
 
-void AddNewTabPageAd(
-    const NewTabPageAdInfo& ad,
-    const ConfirmationType& confirmation_type) {
+void AddNewTabPageAd(const NewTabPageAdInfo& ad,
+                     const ConfirmationType& confirmation_type) {
   AdHistoryInfo ad_history;
 
   ad_history.timestamp_in_seconds =
@@ -92,7 +90,28 @@ void AddNewTabPageAd(
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
   ad_history.ad_content.brand_url = ad.target_url;
   ad_history.ad_content.ad_action = confirmation_type;
-  ad_history.category_content.category = ad.category;
+  ad_history.category_content.category = ad.segment;
+
+  Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
+}
+
+void AddPromotedContentAd(const PromotedContentAdInfo& ad,
+                          const ConfirmationType& confirmation_type) {
+  AdHistoryInfo ad_history;
+
+  ad_history.timestamp_in_seconds =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  ad_history.ad_content.type = ad.type;
+  ad_history.ad_content.uuid = ad.uuid;
+  ad_history.ad_content.creative_instance_id = ad.creative_instance_id;
+  ad_history.ad_content.creative_set_id = ad.creative_set_id;
+  ad_history.ad_content.campaign_id = ad.campaign_id;
+  ad_history.ad_content.brand = ad.title;
+  ad_history.ad_content.brand_info = ad.description;
+  ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
+  ad_history.ad_content.brand_url = ad.target_url;
+  ad_history.ad_content.ad_action = confirmation_type;
+  ad_history.category_content.category = ad.segment;
 
   Client::Get()->AppendAdHistoryToAdsHistory(ad_history);
 }

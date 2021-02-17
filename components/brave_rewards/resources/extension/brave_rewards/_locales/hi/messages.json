@@ -1,10 +1,10 @@
 {
   "braveRewards": {
-    "message": "ब्रेव रिवार्ड्स ",
+    "message": "Brave रिवार्ड्स ",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "अभी कमाना शुरू करें!",
+    "message": "अब कमाना शुरू करो!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,7 +12,7 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "विज्ञापनो को देखने के लिए भुगतान पाएँ और अपने पसंदीदा कंटेंट बनाने वालों को सहयोग देने के लिए इससे आगे भुगतान करें. ",
+    "message": "विज्ञापनो को देखने के लिए भुगतान पाएँ और अपने पसंदीदा कंटेंट बनाने वालों को सहयोग देने के लिए इसे आगे भुगतान करें.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "और जानें ",
+    "message": "अधिक जानकारी प्राप्त करें",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -52,11 +52,11 @@
     "description": "Title for grant section in wallet panel summary"
   },
   "yourBalance": {
-    "message": "आपकी शेष राशि",
+    "message": "आपकी राशि",
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT पॉइंट्स",
+    "message": "BAT पॉइंट",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -64,7 +64,7 @@
     "description": "Text for BAT Point helper message"
   },
   "on": {
-    "message": "पर",
+    "message": "पर\n",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -72,7 +72,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "ध्यान ",
+    "message": "ध्यान दें",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "सुझावों को सक्षम करें ",
+    "message": "टिप्स सक्षम करें",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -112,7 +112,7 @@
     "description": "Month"
   },
   "monthFeb": {
-    "message": "फरवरी",
+    "message": "फ़रवरी ",
     "description": "Month"
   },
   "monthJan": {
@@ -124,7 +124,7 @@
     "description": "Month"
   },
   "monthJun": {
-    "message": "जून",
+    "message": "जून ",
     "description": "Month"
   },
   "monthMar": {
@@ -140,11 +140,11 @@
     "description": "Month"
   },
   "monthOct": {
-    "message": "अक्टूबर",
+    "message": "अक्टूबर ",
     "description": "Month"
   },
   "monthSep": {
-    "message": "सितम्बर",
+    "message": "सितम्बर ",
     "description": "Month"
   },
   "tokenGrant": {
@@ -162,15 +162,15 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "अंक अनुदान क्लेम किए गए",
+    "message": "पॉइंट अनुदान क्लेम किया गया",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "विज्ञापनों द्वारा कमाई",
+    "message": "विज्ञापन से कमाई",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "स्वतः योगदान ",
+    "message": "स्वतः-योगदान",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "को समाप्त ",
+    "message": "पर समय सीमा समाप्त\n",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "अब आप विज्ञापनों को देखकर कमा सकते हैं।",
+    "message": "अब आप विज्ञापन देखकर भी धन अर्जित कर सकते है।",
     "description": "Message for ads launch notification"
   },
   "braveAdsTitle": {
@@ -268,7 +268,7 @@
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "साबित करें कि आप इंसान हैं!",
+    "message": "साबित करें की आप इंसान हैं!",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -292,7 +292,7 @@
     "description": "Grant expiry label"
   },
   "grantGeneralErrorButton": {
-    "message": "ठीक ",
+    "message": "ठीक है",
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
@@ -332,7 +332,7 @@
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "सेटिंग।",
+    "message": "सेटिंग्स।",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "दोबारा कोशिश करें",
+    "message": "फिर से कोशिश करें",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "विज्ञापन चालू करें",
+    "message": "विज्ञापन शुरू करें",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -462,7 +462,7 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "बकाया योगदान",
+    "message": "लंबित योगदान",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "मुफ़्त अंक अनुदान",
+    "message": "पॉइंट का मुफ़्त अनुदान",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -504,7 +504,7 @@
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
-    "message": "डिसकनेक्ट हो गया है",
+    "message": "डिसकनेक्ट करें",
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
@@ -626,5 +626,119 @@
   "walletVerificationNote3":  {
     "message": "ध्यान दें: आपके द्वारा एकबार अधिकृत किए जाने पर अपहोल्ड के लिए आपका लेनदेन दिखाई देगा; उदाहरण के लिए, वे आपकी टिप्स की रसीद और राशि को देखने में सक्षम होंगे।",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "टोकन कमाएँ और वापस दें",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "गोपनीयता का सम्मान करने वाले विज्ञापन देखकर टोकन कमाएँ और अपने पसंदीदा साइटों और कंटेंट रचनाकारों का स्वचालित रूप से सपोर्ट करें।",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें\n",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "क्विक टूर लें",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "आगे बढ़कर आप $tos_link_begin$सेवा की शर्तों$tos_link_end$ और $pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं।",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "वापस जाएँ",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "चलिए एक त्वरित टूर करते हैं",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "जारी रखें",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "हो गया",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "अभी नहीं",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "अभी के लिए रहने दो",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "ब्रेव रिवार्ड्स में आपका स्वागत है!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave निजी विज्ञापन आपकी व्यक्तिगत जानकारी को गोपनीय रखते हुए, सामग्री रचनाकारों का समर्थन करने के लिए आपको पारंपरिक विज्ञापनों के विपरीत पुरस्कार के रूप में टोकन प्रदान करते हैं।",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "विज्ञापन कहाँँ दिखाए जाते हैं?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave निजी विज्ञापन एक सामान्य सूचना के रूप में दिखाई देंगे। आप विज्ञापनों को कितनी बार देखें, इसे आप सेटिंग्स से नियंत्रित कर सकते हैं।",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "आप रिवार्ड्स कब प्राप्त करते हैं",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "वर्तमान पूरे महीने में Brave प्राइवेट विज्ञापनों से अर्जित आपके टोकन अगले महीने की 5 तारीख को आ जाएँगे।",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "वापस देना सरल बना दिया गया है\n",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "निर्माता आपकी व्यस्तता के स्तरों के आधार पर आपके टोकन योगदान को स्वचालित रूप से प्राप्त करते हैं जिसकी हम 'अटेंशन' के रूप में गणना करते हैं।",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "सुझावों के साथ धन्यवाद कहें",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "टिपिंग व्यक्तिगत रूप से आपके द्वारा पसंद किए जाने वाले कंटेंट या रचनाकारों को व्यक्तिगत रूप से प्रोत्साहित करने और सपोर्ट करने का एक तरीका है। टीपिंंग करना शुरू करें!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "आप टोकन के साथ क्या कर सकते हैं?\n",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "टोकन का उपयोग निर्मातों की सहायता से परे भी किया जा सकता है। आप डिजिटल सामग्री और अन्य वस्तुएँ खरीद सकते हैं क्योंकि व्यापारी ऑनबोर्ड आते हैं।",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "वूहू, आप पूरी तरह से तैयार हैं!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Brave पुरस्कारों का उपयोग करके आप वेब को सभी के लिए बेहतर जगह बनाने में मदद कर रहे हैं। और वह बहुत बढ़िया है!",
+    "description": ""
   }
 }

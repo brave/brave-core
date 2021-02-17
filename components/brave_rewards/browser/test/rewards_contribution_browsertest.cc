@@ -7,7 +7,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -299,9 +299,10 @@ IN_PROC_BROWSER_TEST_F(
       1);
 }
 
+// https://github.com/brave/brave-browser/issues/12607
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
-    TipUnverifiedPublisher) {
+    DISABLED_TipUnverifiedPublisher) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::CreateWallet(rewards_service_);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
@@ -581,9 +582,10 @@ IN_PROC_BROWSER_TEST_F(
       "Have you tipped your favorite content creator today?");
 }
 
+// https://github.com/brave/brave-browser/issues/12985
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
-    TipConnectedPublisherVerified) {
+    DISABLED_TipConnectedPublisherVerified) {
   response_->SetVerifiedWallet(true);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   rewards_browsertest_util::CreateWallet(rewards_service_);

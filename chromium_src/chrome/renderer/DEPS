@@ -1,0 +1,8 @@
+include_rules = [
+  "+../../../../chrome/renderer",
+  "+../../../../../chrome/renderer/media",
+  "+chrome/renderer",
+  "+components/content_settings/renderer",
+  "+media/base/key_system_properties.h",
+  "+third_party/widevine/cdm/buildflags.h",
+]

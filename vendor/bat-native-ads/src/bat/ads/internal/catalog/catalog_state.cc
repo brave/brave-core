@@ -6,9 +6,9 @@
 #include "bat/ads/internal/catalog/catalog_state.h"
 
 #include "base/time/time.h"
-#include "url/gurl.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
+#include "url/gurl.h"
 
 namespace ads {
 
@@ -18,14 +18,12 @@ const int64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 
 CatalogState::CatalogState() = default;
 
-CatalogState::CatalogState(
-    const CatalogState& state) = default;
+CatalogState::CatalogState(const CatalogState& state) = default;
 
 CatalogState::~CatalogState() = default;
 
-Result CatalogState::FromJson(
-    const std::string& json,
-    const std::string& json_schema) {
+Result CatalogState::FromJson(const std::string& json,
+                              const std::string& json_schema) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -44,7 +42,7 @@ Result CatalogState::FromJson(
   new_catalog_id = document["catalogId"].GetString();
 
   new_version = document["version"].GetInt();
-  if (new_version != 5) {
+  if (new_version != 6) {
     return FAILED;
   }
 
@@ -76,9 +74,9 @@ Result CatalogState::FromJson(
     for (const auto& daypart : campaign["dayParts"].GetArray()) {
       CatalogDaypartInfo daypart_info;
 
-      daypart_info.dow          = daypart["dow"].GetString();
+      daypart_info.dow = daypart["dow"].GetString();
       daypart_info.start_minute = daypart["startMinute"].GetInt();
-      daypart_info.end_minute   = daypart["endMinute"].GetInt();
+      daypart_info.end_minute = daypart["endMinute"].GetInt();
 
       campaign_info.dayparts.push_back(daypart_info);
     }
@@ -140,11 +138,12 @@ Result CatalogState::FromJson(
 
         base::Time end_at_timestamp;
         if (!base::Time::FromUTCString(campaign_info.end_at.c_str(),
-            &end_at_timestamp)) {
+                                       &end_at_timestamp)) {
           continue;
         }
 
-        base::Time expiry_timestamp = end_at_timestamp +
+        base::Time expiry_timestamp =
+            end_at_timestamp +
             base::TimeDelta::FromDays(conversion.observation_window);
         conversion.expiry_timestamp =
             static_cast<int64_t>(expiry_timestamp.ToDoubleT());
@@ -179,7 +178,7 @@ Result CatalogState::FromJson(
           creative_info.payload.target_url = payload["targetUrl"].GetString();
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
-                << creative_instance_id);
+                        << creative_instance_id);
             continue;
           }
 
@@ -204,11 +203,36 @@ Result CatalogState::FromJson(
           creative_info.payload.target_url = logo["destinationUrl"].GetString();
           if (!GURL(creative_info.payload.target_url).is_valid()) {
             BLOG(1, "Invalid target URL for creative instance id "
-                << creative_instance_id);
+                        << creative_instance_id);
             continue;
           }
 
           creative_set_info.creative_new_tab_page_ads.push_back(creative_info);
+        } else if (code == "promoted_content_all_v1") {
+          CatalogCreativePromotedContentAdInfo creative_info;
+
+          creative_info.creative_instance_id = creative_instance_id;
+
+          // Type
+          creative_info.type.code = code;
+          creative_info.type.name = type["name"].GetString();
+          creative_info.type.platform = type["platform"].GetString();
+          creative_info.type.version = type["version"].GetUint64();
+
+          // Payload
+          auto payload = creative["payload"].GetObject();
+          creative_info.payload.title = payload["title"].GetString();
+          creative_info.payload.description =
+              payload["description"].GetString();
+          creative_info.payload.target_url = payload["feed"].GetString();
+          if (!GURL(creative_info.payload.target_url).is_valid()) {
+            BLOG(1, "Invalid target URL for creative instance id "
+                        << creative_instance_id);
+            continue;
+          }
+
+          creative_set_info.creative_promoted_content_ads.push_back(
+              creative_info);
         } else if (code == "in_page_all_v1") {
           // TODO(tmancey): https://github.com/brave/brave-browser/issues/7298
           continue;

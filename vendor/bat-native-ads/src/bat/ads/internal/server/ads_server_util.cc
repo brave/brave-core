@@ -12,14 +12,14 @@ namespace server {
 
 namespace {
 
-const char kProductionHost[] = "https://ads-serve.brave.com";
+const char kProductionHost[] = "https://ads-static.brave.com";
 const char kStagingHost[] = "https://ads-serve.bravesoftware.com";
 const char kDevelopmentHost[] = "https://ads-serve.brave.software";
 
 }  // namespace
 
 std::string GetHost() {
-  switch (_environment) {
+  switch (g_environment) {
     case Environment::PRODUCTION: {
       return kProductionHost;
     }

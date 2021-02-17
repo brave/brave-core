@@ -13,7 +13,6 @@
 #include "base/task/post_task.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
-#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -26,11 +25,11 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/base/network_isolation_key.h"
+#include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/proxy_lookup_client.mojom.h"
-#include "url/origin.h"
 
 using content::BrowserContext;
 using content::BrowserThread;
@@ -206,8 +205,8 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   }
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
-  url::Origin origin = url::Origin::Create(url);
-  net::NetworkIsolationKey network_isolation_key(origin, origin);
+  const net::SchemefulSite url_site(url);
+  const net::NetworkIsolationKey network_isolation_key(url_site, url_site);
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
       url, network_isolation_key, std::move(proxy_lookup_client));
 }
@@ -218,38 +217,10 @@ void TorProfileServiceImpl::KillTor() {
   UnregisterTorClientUpdater();
 }
 
-void TorProfileServiceImpl::NotifyTorLauncherCrashed() {
-  for (auto& observer : observers_)
-    observer.OnTorLauncherCrashed();
-}
-
-void TorProfileServiceImpl::NotifyTorCrashed(int64_t pid) {
-  for (auto& observer : observers_)
-    observer.OnTorCrashed(pid);
-}
-
-void TorProfileServiceImpl::NotifyTorLaunched(bool result, int64_t pid) {
-  for (auto& observer : observers_)
-    observer.OnTorLaunched(result, pid);
-}
-
-void TorProfileServiceImpl::NotifyTorNewProxyURI(const std::string& uri) {
+void TorProfileServiceImpl::OnTorNewProxyURI(const std::string& uri) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(proxy_config_service_);
   proxy_config_service_->UpdateProxyURI(uri);
-}
-
-void TorProfileServiceImpl::NotifyTorCircuitEstablished(bool result) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  for (auto& observer : observers_)
-    observer.OnTorCircuitEstablished(result);
-}
-
-void TorProfileServiceImpl::NotifyTorInitializing(
-    const std::string& percentage) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  for (auto& observer : observers_)
-    observer.OnTorInitializing(percentage);
 }
 
 std::unique_ptr<net::ProxyConfigService>

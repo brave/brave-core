@@ -156,6 +156,16 @@ declare namespace chrome.braveRewards {
   const isInitialized: (callback: (initialized: boolean) => void) => {}
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
   const saveOnboardingResult: (result: 'opted-in' | 'dismissed') => {}
+
+  interface RewardsPrefs {
+    adsEnabled: boolean
+    adsPerHour: number
+    autoContributeEnabled: boolean
+    autoContributeAmount: number
+  }
+
+  const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
+  const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
 }
 
 declare namespace chrome.binance {
@@ -170,6 +180,7 @@ declare namespace chrome.binance {
   const getConvertAssets: (callback: (supportedAssets: any) => void) => {}
   const confirmConvert: (quoteId: string, callback: (success: boolean, message: string) => void) => {}
   const revokeToken: (callback: (success: boolean) => void) => {}
+  const getLocaleForURL: (callback: (locale: string) => void) => {}
 }
 
 declare namespace chrome.gemini {
@@ -197,13 +208,6 @@ declare namespace chrome.cryptoDotCom {
 
 declare namespace chrome.braveTogether {
   const isSupported: (callback: (supported: boolean) => void) => {}
-}
-
-declare namespace chrome.moonpay {
-  const isBitcoinDotComSupported: (callback: (supported: boolean) => void) => {}
-  const onBuyBitcoinDotComCrypto: () => void
-  const onInteractionBitcoinDotCom: () => void
-  const getBitcoinDotComInteractions: (callback: (interactions: Record<string, string>) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {
@@ -234,9 +238,10 @@ declare namespace chrome.braveToday {
   const onClearHistory: {
     addListener: (callback: () => any) => void
   }
+  const getHostname: (callback: (hostname: string) => any) => void
 }
 
-type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
+type BlockTypes = 'shieldsAds' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
 
 interface BlockDetails {
   blockType: BlockTypes
@@ -306,6 +311,10 @@ declare namespace chrome.braveWallet {
   const shouldCheckForDapps: (callback: (dappDetection: boolean) => void) => void
   const shouldPromptForSetup: (callback: (dappDetection: boolean) => void) => void
   const loadUI: (callback: () => void) => void
+}
+
+declare namespace chrome.ipfs {
+  const resolveIPFSURI: (uri: string, callback: (gatewayUrl: string) => void) => void
 }
 
 declare namespace chrome.test {

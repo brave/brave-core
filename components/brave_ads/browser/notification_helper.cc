@@ -26,6 +26,10 @@ bool NotificationHelper::ShowMyFirstAdNotification() {
   return false;
 }
 
+bool NotificationHelper::CanShowBackgroundNotifications() const {
+  return true;
+}
+
 NotificationHelper* NotificationHelper::GetInstance() {
   if (g_notification_helper_for_testing) {
     return g_notification_helper_for_testing;
@@ -34,7 +38,8 @@ NotificationHelper* NotificationHelper::GetInstance() {
   return GetInstanceImpl();
 }
 
-#if !defined(OS_MAC) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
+#if !defined(OS_MAC) && !defined(OS_WIN) && !defined(OS_LINUX) && \
+    !defined(OS_ANDROID)
 NotificationHelper* NotificationHelper::GetInstanceImpl() {
   // Return a default notification helper for unsupported platforms
   return base::Singleton<NotificationHelper>::get();

@@ -19,8 +19,10 @@ namespace brave_stats {
 
 class BraveStatsUpdaterParams {
  public:
-  explicit BraveStatsUpdaterParams(PrefService* pref_service);
-  BraveStatsUpdaterParams(PrefService* pref_service,
+  explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
+                                   PrefService* profile_pref_service);
+  BraveStatsUpdaterParams(PrefService* stats_pref_service,
+                          PrefService* profile_pref_service,
                           const std::string& ymd,
                           int woy,
                           int month);
@@ -33,13 +35,15 @@ class BraveStatsUpdaterParams {
   std::string GetWeekOfInstallationParam() const;
   std::string GetDateOfInstallationParam() const;
   std::string GetReferralCodeParam() const;
+  std::string GetAdsEnabledParam() const;
 
   void SavePrefs();
 
  private:
   friend class ::BraveStatsUpdaterBrowserTest;
   friend class ::BraveStatsUpdaterTest;
-  PrefService* pref_service_;
+  PrefService* stats_pref_service_;
+  PrefService* profile_pref_service_;
   std::string ymd_;
   int woy_;
   int month_;

@@ -7,12 +7,35 @@
   {
     "namespace": "braveToday",
     "description": "Brave Today related data API.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_today_api.h"
+    },
     "events": [
       {
         "name": "onClearHistory",
         "type": "function",
         "description": "Fired when feed cache which prioritises history items should be cleared.",
         "parameters": []
+      }
+    ],
+    "functions": [
+      {
+        "name": "getHostname",
+        "type": "function",
+        "description": "Gets hostname for currently configured Brave Today endpoint",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Callback providing the hostname string",
+            "parameters": [
+              {
+                "name": "hostname",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

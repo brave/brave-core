@@ -1,0 +1,10 @@
+include_rules = [
+  "+services/network/public",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "brave_sync_auth_manager.cc": [
+    "+brave/common/network_constants.h",
+  ],
+}

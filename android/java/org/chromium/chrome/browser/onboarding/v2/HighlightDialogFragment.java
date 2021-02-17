@@ -8,28 +8,31 @@
 package org.chromium.chrome.browser.onboarding.v2;
 
 import android.app.Dialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.view.WindowManager;
-import android.content.pm.ActivityInfo;
+import android.widget.ImageView;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.viewpager.widget.ViewPager;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 
-import org.chromium.chrome.R;
 import org.chromium.base.Log;
-
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,12 +45,8 @@ public class HighlightDialogFragment extends DialogFragment {
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews = Arrays.asList(
-                R.id.brave_stats_ads,
-                R.id.brave_stats_data_saved,
-                R.id.brave_stats_time,
-                R.id.brave_stats_time
-            );
+    private static final List<Integer> highlightViews = Arrays.asList(R.id.brave_stats_ads,
+            R.id.brave_stats_data_saved, R.id.brave_stats_time, R.id.ntp_widget_cardview_layout);
 
     private HighlightItem item;
     private HighlightView highlightView;
@@ -134,9 +133,6 @@ public class HighlightDialogFragment extends DialogFragment {
         if (bundle != null) {
             isFromStats = bundle.getBoolean(OnboardingPrefManager.FROM_STATS, false);
         }
-
-        // setCancelable(false);
-        // setHasOptionsMenu(false);
     }
 
     @Override
@@ -152,7 +148,15 @@ public class HighlightDialogFragment extends DialogFragment {
     }
 
     private void highlightView(int position) {
-        View view = getActivity().findViewById(highlightViews.get(position));
+        int viewId;
+        if (position == 3 && NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0
+                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+            viewId = R.id.ntp_stats_layout;
+        } else {
+            viewId = highlightViews.get(position);
+        }
+        View view = getActivity().findViewById(viewId);
         if (view != null) {
             HighlightItem item = new HighlightItem(view);
             highlightView.setHighlightItem(item);

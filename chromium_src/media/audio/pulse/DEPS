@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../../media/audio/pulse",
+  "+media/audio/pulse",
+]

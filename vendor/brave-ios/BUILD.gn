@@ -20,7 +20,7 @@ config("internal_config") {
     "-Wno-objc-property-synthesis",
     "-Wno-sign-compare",
   ]
-  ldflags = [ "-Wl,-no_compact_unwind" ]
+  ldflags = [ "-Wl,-no_compact_unwind,-rpath,/usr/lib/swift,-rpath,@executable_path/../Frameworks" ]
   include_dirs = [
     ".",
     "Ads",
@@ -98,6 +98,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ads/BATAdNotification.h",
     "Ads/BATAdNotification.mm",
     "Ads/BATBraveAds.h",
+    "Ads/BATBraveAds+Private.h",
     "Ads/BATBraveAds.mm",
     "Ads/Generated/NativeAdsClientBridge.h",
     "Ads/Generated/NativeAdsClient.h",

@@ -14,6 +14,7 @@ export const root = styled.div`
     font-weight: 600;
     font-size: 14px;
     line-height: 21px;
+    cursor: pointer;
 
     &:active {
       background: var(--brave-color-brandBatActive);

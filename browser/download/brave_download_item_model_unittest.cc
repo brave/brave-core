@@ -90,18 +90,22 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     // Expected is_secure.
     bool expected_is_secure;
   } kTestCases[] = {
-    // Not secure.
-    {"http://example.com/foo.bar", "http://example.com", false},
-    // Secure.
-    {"https://example.com:5678/foo.bar", "https://example.com:5678", true},
-    // File, secure.
-    {"file:///c:/foo/bar/foo.bar", "file:///", true},
-    // about:, secure.
-    {"about:about", "about:about", true},
-    // invalid, not secure.
-    {"foo.bar.baz", "", false},
-    // empty, not secure.
-    {"", "", false},
+      // Not secure.
+      {"http://example.com/foo.bar", "http://example.com", false},
+      // Secure.
+      {"https://example.com:5678/foo.bar", "https://example.com:5678", true},
+      // File, secure.
+      {"file:///c:/foo/bar/foo.bar", "file:///", true},
+      // about:blank, secure.
+      {"about:blank", "about:blank", true},
+      // about:srcdoc, secure.
+      {"about:srcdoc", "about:srcdoc", true},
+      // Other about: URLs, not secure.
+      {"about:about", "about:about", true},
+      // invalid, not secure.
+      {"foo.bar.baz", "", false},
+      // empty, not secure.
+      {"", "", false},
   };
 
   SetupDownloadItemDefaults();
@@ -113,7 +117,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     EXPECT_STREQ(
         test_case.expected_text,
         base::UTF16ToUTF8(model().GetOriginURLText(&is_secure)).c_str());
-    EXPECT_EQ(is_secure, test_case.expected_is_secure);
+    EXPECT_EQ(is_secure, test_case.expected_is_secure) << test_case.url;
     Mock::VerifyAndClearExpectations(&item());
   }
 }

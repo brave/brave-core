@@ -65,6 +65,27 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
 }
 
 /**
+ * Filters ipfs and ipns locations to their equivalent gateway
+ * @return a promise with the possibly modified tab data
+ */
+const filterTabData = (tabData?: chrome.tabs.Tab) => {
+  if (tabData === undefined || !tabData.url) {
+    return Promise.reject(new Error('No tab url specified'))
+  }
+  const url = new window.URL(tabData.url)
+  return new Promise(resolve => {
+    if ((url.protocol === 'ipfs:' || url.protocol === 'ipns:') && tabData.url) {
+      chrome.ipfs.resolveIPFSURI(tabData.url, (gatewayUrl: string) => {
+        tabData.url = gatewayUrl
+        resolve(tabData)
+      })
+      return
+    }
+    resolve(tabData)
+  })
+}
+
+/**
  * Obtains specified tab data
  * @return a promise with the active tab data
  */
@@ -78,6 +99,7 @@ export const getTabData = (tabId: number) =>
  */
 export const requestShieldPanelData = (tabId: number) =>
   getTabData(tabId)
+    .then(filterTabData)
     .then(getShieldSettingsForTabData)
     .then((details: ShieldDetails) => {
       actions.shieldsPanelDataUpdated(details)

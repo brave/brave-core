@@ -11,6 +11,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/features.h"
+#include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -38,104 +39,58 @@ constexpr char kBitbucket[] = "https://[*.]bitbucket.org/*";
 constexpr char kAtlassiannet[] = "https://[*.]atlassian.net/*";
 constexpr char kAtlassiancom[] = "https://[*.]atlassian.com/*";
 
-bool BraveIsAllowedThirdParty(
-    const GURL& url,
-    const GURL& site_for_cookies,
-    const base::Optional<url::Origin>& top_frame_origin) {
+bool BraveIsAllowedThirdParty(const GURL& url,
+                              const GURL& first_party_url,
+                              const CookieSettingsBase* const cookie_settings) {
   static const base::NoDestructor<
       // url -> first_party_url allow map
-      std::vector<std::pair<ContentSettingsPattern,
-                            ContentSettingsPattern>>> entity_list({
-          {
-            ContentSettingsPattern::FromString(kWp),
-            ContentSettingsPattern::FromString(kWordpress)
-          },
-          {
-            ContentSettingsPattern::FromString(kWordpress),
-            ContentSettingsPattern::FromString(kWp)
-          },
-          {
-            ContentSettingsPattern::FromString(kGoogle),
-            ContentSettingsPattern::FromString(kGoogleusercontent)
-          },
-          {
-            ContentSettingsPattern::FromString(kGoogleusercontent),
-            ContentSettingsPattern::FromString(kGoogle)
-          },
-          {
-            ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)
-          },
-          {
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
-            ContentSettingsPattern::FromString(kPlaystation)
-          },
-          {
-            ContentSettingsPattern::FromString(kSony),
-            ContentSettingsPattern::FromString(kPlaystation)
-          },
-          {
-            ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSony)
-          },
-          {
-            ContentSettingsPattern::FromString(kUbisoft),
-            ContentSettingsPattern::FromString(kUbi)
-          },
-          {
-            ContentSettingsPattern::FromString(kUbi),
-            ContentSettingsPattern::FromString(kUbisoft)
-          },
-          {
-            ContentSettingsPattern::FromString(kAmericanexpress),
-            ContentSettingsPattern::FromString(kAexp)
-          },
-          {
-            ContentSettingsPattern::FromString(kAexp),
-            ContentSettingsPattern::FromString(kAmericanexpress)
-          },
-          {
-            ContentSettingsPattern::FromString(kTwitch),
-            ContentSettingsPattern::FromString(kReddit)
-          },
-          {
-            ContentSettingsPattern::FromString(kTwitch),
-            ContentSettingsPattern::FromString(kDiscord)
-          },
-          {
-            ContentSettingsPattern::FromString(kBitbucket),
-            ContentSettingsPattern::FromString(kAtlassiancom)
-          },
-          {
-            ContentSettingsPattern::FromString(kAtlassiancom),
-            ContentSettingsPattern::FromString(kBitbucket)
-          },
-          {
-            ContentSettingsPattern::FromString(kAtlassiancom),
-            ContentSettingsPattern::FromString(kAtlassiannet)
-          },
-          {
-            ContentSettingsPattern::FromString(kAtlassiannet),
-            ContentSettingsPattern::FromString(kAtlassiancom)
-          }
-      });
-
-  GURL first_party_url = site_for_cookies;
-
-  if (!first_party_url.is_valid() && top_frame_origin)
-      first_party_url = top_frame_origin->GetURL();
+      std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
+      entity_list(
+          {{ContentSettingsPattern::FromString(kWp),
+            ContentSettingsPattern::FromString(kWordpress)},
+           {ContentSettingsPattern::FromString(kWordpress),
+            ContentSettingsPattern::FromString(kWp)},
+           {ContentSettingsPattern::FromString(kGoogle),
+            ContentSettingsPattern::FromString(kGoogleusercontent)},
+           {ContentSettingsPattern::FromString(kGoogleusercontent),
+            ContentSettingsPattern::FromString(kGoogle)},
+           {ContentSettingsPattern::FromString(kPlaystation),
+            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)},
+           {ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
+            ContentSettingsPattern::FromString(kPlaystation)},
+           {ContentSettingsPattern::FromString(kSony),
+            ContentSettingsPattern::FromString(kPlaystation)},
+           {ContentSettingsPattern::FromString(kPlaystation),
+            ContentSettingsPattern::FromString(kSony)},
+           {ContentSettingsPattern::FromString(kUbisoft),
+            ContentSettingsPattern::FromString(kUbi)},
+           {ContentSettingsPattern::FromString(kUbi),
+            ContentSettingsPattern::FromString(kUbisoft)},
+           {ContentSettingsPattern::FromString(kAmericanexpress),
+            ContentSettingsPattern::FromString(kAexp)},
+           {ContentSettingsPattern::FromString(kAexp),
+            ContentSettingsPattern::FromString(kAmericanexpress)},
+           {ContentSettingsPattern::FromString(kTwitch),
+            ContentSettingsPattern::FromString(kReddit)},
+           {ContentSettingsPattern::FromString(kTwitch),
+            ContentSettingsPattern::FromString(kDiscord)},
+           {ContentSettingsPattern::FromString(kBitbucket),
+            ContentSettingsPattern::FromString(kAtlassiancom)},
+           {ContentSettingsPattern::FromString(kAtlassiancom),
+            ContentSettingsPattern::FromString(kBitbucket)},
+           {ContentSettingsPattern::FromString(kAtlassiancom),
+            ContentSettingsPattern::FromString(kAtlassiannet)},
+           {ContentSettingsPattern::FromString(kAtlassiannet),
+            ContentSettingsPattern::FromString(kAtlassiancom)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
-          url,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
       net::registry_controlled_domains::GetDomainAndRegistry(
           first_party_url,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return true;
 
-  for (auto i = entity_list->begin();
-       i != entity_list->end();
-       ++i) {
+  for (auto i = entity_list->begin(); i != entity_list->end(); ++i) {
     if (i->first.Matches(url) && i->second.Matches(first_party_url))
       return true;
   }
@@ -143,10 +98,66 @@ bool BraveIsAllowedThirdParty(
   return false;
 }
 
+GURL GetFirstPartyURL(const GURL& site_for_cookies,
+                      const base::Optional<url::Origin>& top_frame_origin) {
+  return top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies;
+}
+bool IsFirstPartyAccessAllowed(
+    const GURL& first_party_url,
+    const CookieSettingsBase* const cookie_settings) {
+  ContentSetting setting;
+  cookie_settings->GetCookieSetting(first_party_url, first_party_url, nullptr,
+                                    &setting);
+  return cookie_settings->IsAllowed(setting);
+}
+
 }  // namespace
 
+bool CookieSettingsBase::ShouldUseEphemeralStorage(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin) const {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
+    return false;
+
+  const GURL first_party_url =
+      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+
+  if (!first_party_url.is_valid())
+    return false;
+
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          first_party_url, url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
+    return false;
+
+  bool allow_3p =
+      IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  bool allow_1p = IsFirstPartyAccessAllowed(first_party_url, this);
+
+  // only use ephemeral storage for block 3p
+  return allow_1p && !allow_3p;
+}
+
+bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
+    const GURL& url,
+    const GURL& first_party_url) const {
+  return IsEphemeralCookieAccessAllowed(url, first_party_url, base::nullopt);
+}
+
+bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<url::Origin>& top_frame_origin) const {
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin))
+    return true;
+
+  return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+}
+
 bool CookieSettingsBase::IsCookieAccessAllowed(
-    const GURL& url, const GURL& first_party_url) const {
+    const GURL& url,
+    const GURL& first_party_url) const {
   return IsCookieAccessAllowed(url, first_party_url, base::nullopt);
 }
 
@@ -154,21 +165,22 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<url::Origin>& top_frame_origin) const {
+  bool allow =
+      IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 
-  // Get content settings only - do not consider default 3rd-party blocking.
-  ContentSetting setting;
-  GetCookieSettingInternal(
-      url, top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies,
-      false, nullptr, &setting);
-
-  // Content settings should always override any defaults.
-  if (!IsAllowed(setting))
-    return false;
-
-  if (BraveIsAllowedThirdParty(url, site_for_cookies, top_frame_origin))
+  if (allow)
     return true;
 
-  return IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  const GURL first_party_url =
+      GetFirstPartyURL(site_for_cookies, top_frame_origin);
+
+  if (!IsFirstPartyAccessAllowed(first_party_url, this))
+    return false;
+
+  if (BraveIsAllowedThirdParty(url, first_party_url, this))
+    return true;
+
+  return false;
 }
 
 }  // namespace content_settings

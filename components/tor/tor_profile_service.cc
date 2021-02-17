@@ -8,7 +8,6 @@
 #include <string>
 
 #include "brave/components/tor/pref_names.h"
-#include "brave/components/tor/tor_launcher_service_observer.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -26,15 +25,7 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 // static
 void TorProfileService::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kAutoOnionLocation, false);
-}
-
-void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {
-  observers_.AddObserver(observer);
-}
-
-void TorProfileService::RemoveObserver(TorLauncherServiceObserver* observer) {
-  observers_.RemoveObserver(observer);
+  registry->RegisterBooleanPref(prefs::kAutoOnionRedirect, false);
 }
 
 }  // namespace tor

@@ -12,9 +12,8 @@
 namespace ads {
 namespace p2a {
 
-void RecordEvent(
-    const std::string& name,
-    const std::vector<std::string>& items) {
+void RecordEvent(const std::string& name,
+                 const std::vector<std::string>& items) {
   base::Value list(base::Value::Type::LIST);
   for (const auto& item : items) {
     list.Append(item);

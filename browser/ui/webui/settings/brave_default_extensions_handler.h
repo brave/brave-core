@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 class Profile;
 
@@ -40,18 +41,25 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void IsTorEnabled(const base::ListValue* args);
   void OnTorEnabledChanged();
   void IsTorManaged(const base::ListValue* args);
+  void SetWidevineEnabled(const base::ListValue* args);
+  void IsWidevineEnabled(const base::ListValue* args);
+  void OnWidevineEnabledChanged();
 
   void InitializePrefCallbacks();
 
   bool IsExtensionInstalled(const std::string& extension_id) const;
   void OnInstallResult(const std::string& pref_name,
-      bool success, const std::string& error,
-      extensions::webstore_install::Result result);
+                       bool success,
+                       const std::string& error,
+                       extensions::webstore_install::Result result);
 
   void OnRestartNeededChanged();
   void OnMediaRouterEnabledChanged();
   bool IsRestartNeeded();
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  bool was_widevine_enabled_ = false;
+#endif
   Profile* profile_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 #if BUILDFLAG(ENABLE_TOR)

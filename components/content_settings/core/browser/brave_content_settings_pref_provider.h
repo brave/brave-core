@@ -19,12 +19,6 @@
 namespace content_settings {
 
 // With this subclass, shields configuration is persisted across sessions.
-// Its content type is |ContentSettingsType::PLUGIN| and its storage option is
-// ephemeral because chromium want that flash configuration shouldn't be
-// persisted. (Maybe chromium assumes flash is the only one of this type).
-// Because of this reasion, shields configuration was also ephemeral.
-// However, we want shilelds configuration persisted. To do this, we make
-// EphemeralProvider ignore shields type and this class handles.
 class BravePrefProvider : public PrefProvider,
                           public Observer {
  public:
@@ -34,6 +28,7 @@ class BravePrefProvider : public PrefProvider,
                     bool restore_session);
   ~BravePrefProvider() override;
 
+  static void CopyPluginSettingsForMigration(PrefService* prefs);
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // content_settings::PrefProvider overrides:
@@ -41,12 +36,10 @@ class BravePrefProvider : public PrefProvider,
   bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
-                         const ResourceIdentifier& resource_identifier,
                          std::unique_ptr<base::Value>&& value,
                          const ContentSettingConstraints& constraints) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
       bool incognito) const override;
 
  private:
@@ -54,29 +47,42 @@ class BravePrefProvider : public PrefProvider,
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
                            TestShieldsSettingsMigrationVersion);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsSettingsMigrationFromResourceIDs);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsSettingsMigrationFromUnknownSettings);
   void MigrateShieldsSettings(bool incognito);
+  void MigrateShieldsSettingsFromResourceIds();
+  void MigrateShieldsSettingsFromResourceIdsForOneType(
+      const std::string& preference_path,
+      const std::string& patterns_string,
+      const base::Time& expiration,
+      const base::Time& last_modified,
+      SessionModel session_model,
+      int setting);
   void MigrateShieldsSettingsV1ToV2();
-  void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type,
-                                              const std::string& resource_id);
+  void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);
+  bool SetWebsiteSettingInternal(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsType content_type,
+      std::unique_ptr<base::Value>&& in_value,
+      const ContentSettingConstraints& constraints);
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
                                const ContentSettingsPattern& secondary_pattern,
-                               ContentSettingsType content_type,
-                               const std::string& resource_identifier) override;
+                               ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
-
-  // PrefProvider::pref_change_registrar_ alreay has plugin type.
-  PrefChangeRegistrar brave_pref_change_registrar_;
 
   std::map<bool /* is_incognito */, std::vector<Rule>> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;
 
   bool initialized_;
-
+  bool store_last_modified_;
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrefProvider);

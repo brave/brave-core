@@ -1,0 +1,35 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//tools/polymer/html_to_js.gni")
+import("//tools/polymer/polymer.gni")
+import("//ui/webui/resources/tools/js_modulizer.gni")
+import("../settings.gni")
+
+# ES Module conversion from HTML Imports code
+
+group("web_modules") {
+  public_deps = [
+    ":brave_ipfs_page_module",
+    ":modules",
+    ":templatize",
+  ]
+}
+
+polymer_modulizer("brave_ipfs_page") {
+  js_file = "brave_ipfs_page.js"
+  html_file = "brave_ipfs_page.html"
+  html_type = "dom-module"
+  auto_imports = settings_auto_imports + [ "brave/browser/resources/settings/brave_ipfs_page/brave_ipfs_browser_proxy.html|BraveIPFSBrowserProxy, BraveIPFSBrowserProxyImpl" ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+js_modulizer("modules") {
+  input_files = [ "brave_ipfs_browser_proxy.js" ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+html_to_js("templatize") {
+  js_files = [ "change_ipfs_gateway_dialog.js" ]
+}

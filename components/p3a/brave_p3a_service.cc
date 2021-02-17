@@ -80,7 +80,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.TipsState.2",
     "Brave.Rewards.WalletBalance.2",
     "Brave.Savings.BandwidthSavingsMB",
-    "Brave.Search.DefaultEngine.3",
+    "Brave.Search.DefaultEngine.4",
     "Brave.Shields.UsageStatus",
     "Brave.SpeedReader.Enabled",
     "Brave.SpeedReader.ToggleCount",
@@ -368,7 +368,7 @@ void BraveP3AService::InitPyxisMeta() {
 }
 
 void BraveP3AService::UpdatePyxisMeta() {
-  pyxis_meta_.date_of_survey = base::Time::Now() + base::TimeDelta::FromDays(10);
+  pyxis_meta_.date_of_survey = base::Time::Now();
   pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
 }
 

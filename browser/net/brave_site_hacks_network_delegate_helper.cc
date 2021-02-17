@@ -14,7 +14,6 @@
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
-#include "brave/common/shield_exceptions.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/common/referrer.h"
@@ -29,6 +28,16 @@ namespace brave {
 
 namespace {
 
+bool IsUAWhitelisted(const GURL& gurl) {
+  static std::vector<URLPattern> whitelist_patterns(
+      {URLPattern(URLPattern::SCHEME_ALL, "https://*.duckduckgo.com/*"),
+       // For Widevine
+       URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")});
+  return std::any_of(
+      whitelist_patterns.begin(), whitelist_patterns.end(),
+      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
+}
+
 const std::string& GetQueryStringTrackers() {
   static const base::NoDestructor<std::string> trackers(base::JoinString(
       std::vector<std::string>(
@@ -36,10 +45,14 @@ const std::string& GetQueryStringTrackers() {
            "fbclid", "gclid", "msclkid", "mc_eid",
            // https://github.com/brave/brave-browser/issues/9879
            "dclid",
+           // https://github.com/brave/brave-browser/issues/13644
+           "oly_anon_id", "oly_enc_id",
            // https://github.com/brave/brave-browser/issues/11579
            "_openstat",
            // https://github.com/brave/brave-browser/issues/11817
            "vero_conv", "vero_id",
+           // https://github.com/brave/brave-browser/issues/13647
+           "wickedid",
            // https://github.com/brave/brave-browser/issues/11578
            "yclid",
            // https://github.com/brave/brave-browser/issues/9019
@@ -134,10 +147,8 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-          ctx->allow_referrers, ctx->allow_brave_shields,
-          GURL(ctx->referrer), ctx->request_url,
-          blink::ReferrerUtils::NetToMojoReferrerPolicy(ctx->referrer_policy),
-          &new_referrer)) {
+          ctx->allow_referrers, ctx->allow_brave_shields, GURL(ctx->referrer),
+          ctx->request_url, &new_referrer)) {
     ctx->new_referrer = new_referrer.url;
     return true;
   }
@@ -179,14 +190,14 @@ int OnBeforeStartTransaction_SiteHacksWork(
   // will affect performance).
   // Note that this code only affects "Referer" header sent via network - we
   // handle document.referer in content::NavigationRequest (see also
-  // BraveContentBrowserClient::MaybeHideReferrer).
+  // |BraveContentBrowserClient::MaybeHideReferrer|).
   if (!ctx->allow_referrers && ctx->allow_brave_shields &&
       ctx->redirect_source.is_valid() &&
       ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
-      brave_shields::ShouldCleanReferrerForTopLevelNavigation(
-          ctx->method, ctx->redirect_source, ctx->request_url)) {
-    // This is hack that notifies the patched code in net::URLRequest.
-    ctx->removed_headers.insert("X-Brave-Clear-Referer");
+      !brave_shields::IsSameOriginNavigation(ctx->redirect_source,
+                                             ctx->request_url)) {
+    // This is a hack that notifies the network layer.
+    ctx->removed_headers.insert("X-Brave-Cap-Referrer");
   }
   return net::OK;
 }

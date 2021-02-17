@@ -11,11 +11,13 @@ import { Provider } from '../../../ui/components/profile'
 import { NotificationType, WalletState } from '../../../ui/components/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from '../../../ui/components/alert'
-import { RewardsOptInModal } from '../../../shared/components/onboarding'
+import { RewardsOptInModal, RewardsTourModal } from '../../../shared/components/onboarding'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 import * as utils from '../utils'
+
+import * as style from './panel.style'
 
 import { getMessage } from '../background/api/locale_api'
 
@@ -26,6 +28,8 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   showSummary: boolean
+  showRewardsTour: boolean
+  firstTimeSetup: boolean
   publisherKey: string | null
   refreshingPublisher: boolean
   publisherRefreshed: boolean
@@ -39,6 +43,8 @@ export class Panel extends React.Component<Props, State> {
     super(props)
     this.state = {
       showSummary: true,
+      showRewardsTour: false,
+      firstTimeSetup: false,
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
@@ -97,6 +103,10 @@ export class Panel extends React.Component<Props, State> {
 
     chrome.braveRewards.shouldShowOnboarding((showOnboarding: boolean) => {
       this.props.actions.onShouldShowOnboarding(showOnboarding)
+    })
+
+    chrome.braveRewards.getPrefs((prefs) => {
+      this.props.actions.onGetPrefs(prefs)
     })
 
     this.actions.fetchPromotions()
@@ -653,16 +663,77 @@ export class Panel extends React.Component<Props, State> {
   }
 
   showOnboarding () {
-    if (!this.props.rewardsPanelData.showOnboarding) {
+    const {
+      showOnboarding,
+      parameters,
+      adsPerHour,
+      autoContributeAmount
+    } = this.props.rewardsPanelData
+
+    if (this.state.showRewardsTour) {
+      const onDone = () => {
+        this.setState({ showRewardsTour: false, firstTimeSetup: false })
+      }
+
+      const onClose = () => {
+        onDone()
+        if (showOnboarding) {
+          this.actions.saveOnboardingResult('dismissed')
+        }
+      }
+
+      const onAdsPerHourChanged = (adsPerHour: number) => {
+        this.actions.updatePrefs({ adsPerHour })
+      }
+
+      const onAcAmountChanged = (autoContributeAmount: number) => {
+        this.actions.updatePrefs({ autoContributeAmount })
+      }
+
+      return (
+        <style.rewardsTourSpacer>
+          <RewardsTourModal
+            firstTimeSetup={this.state.firstTimeSetup}
+            onlyAnonWallet={this.props.onlyAnonWallet}
+            adsPerHour={adsPerHour}
+            autoContributeAmount={autoContributeAmount}
+            autoContributeAmountOptions={parameters.autoContributeChoices}
+            onAdsPerHourChanged={onAdsPerHourChanged}
+            onAutoContributeAmountChanged={onAcAmountChanged}
+            onDone={onDone}
+            onClose={onClose}
+          />
+        </style.rewardsTourSpacer>
+      )
+    }
+
+    if (!showOnboarding) {
       return null
     }
 
-    const onEnable = () => this.actions.saveOnboardingResult('opted-in')
-    const onClose = () => this.actions.saveOnboardingResult('dismissed')
+    const onTakeTour = () => {
+      this.setState({ showRewardsTour: true })
+    }
+
+    const onEnable = () => {
+      this.actions.saveOnboardingResult('opted-in')
+
+      // Ensure that we have the latest version of prefs when displaying
+      // the rewards tour
+      chrome.braveRewards.getPrefs((prefs) => {
+        this.actions.onGetPrefs(prefs)
+      })
+
+      this.setState({ showRewardsTour: true, firstTimeSetup: true })
+    }
+
+    const onClose = () => {
+      this.actions.saveOnboardingResult('dismissed')
+    }
 
     return (
       <RewardsOptInModal
-        onAddFunds={this.onAddFunds}
+        onTakeTour={onTakeTour}
         onEnable={onEnable}
         onClose={onClose}
       />

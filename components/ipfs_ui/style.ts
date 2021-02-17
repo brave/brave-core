@@ -24,3 +24,18 @@ export const SideBySideButtons = styled<{}, 'div'>('div')`
 export const PaddedButton = styled(Button as React.ComponentType<ButtonProps>)`
   margin: 5px;
 `
+
+export const GrayStyle = {
+  color: 'grey'
+}
+
+export const BlueLink = {
+  color: 'blue',
+  cursor: 'pointer'
+}
+
+export const LearnMoreLink = {
+  margin: '20px',
+  color: 'blue',
+  cursor: 'pointer'
+}

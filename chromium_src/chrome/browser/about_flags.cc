@@ -13,17 +13,34 @@
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/blink/public/common/features.h"
+#include "net/base/features.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 
+// clang-format seems to have a lot of issues with the macros in this
+// file so we turn it off for the macro sections.
+// clang-format off
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/components/sidebar/features.h"
+
+#define SIDEBAR_FEATURE_ENTRIES \
+    {"sidebar",                                                            \
+     flag_descriptions::kBraveSidebarName,                                 \
+     flag_descriptions::kBraveSidebarDescription,                          \
+     kOsMac | kOsWin | kOsLinux,                                           \
+     FEATURE_VALUE_TYPE(sidebar::kSidebarFeature)},
+#else
+#define SIDEBAR_FEATURE_ENTRIES
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/features.h"
@@ -81,6 +98,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     SPEEDREADER_FEATURE_ENTRIES                                            \
     BRAVE_SYNC_FEATURE_ENTRIES                                             \
     BRAVE_IPFS_FEATURE_ENTRIES                                             \
+    SIDEBAR_FEATURE_ENTRIES                                                \
     {"brave-super-referral",                                               \
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \
@@ -89,12 +107,14 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     {"brave-ephemeral-storage",                                            \
      flag_descriptions::kBraveEphemeralStorageName,                        \
      flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,         \
-     FEATURE_VALUE_TYPE(blink::features::kBraveEphemeralStorage)},
+     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT
 #undef SetFeatureEntryEnabled
 #undef BRAVE_FEATURE_ENTRIES
+
+// clang-format on
 
 namespace about_flags {
 

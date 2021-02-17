@@ -4,6 +4,9 @@
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+
+#include <algorithm>
+
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -11,27 +14,20 @@
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/skia_util.h"
 
-namespace {
-  // Returns the size of the button without any margin
-  gfx::Size GetButtonSize() {
-    return gfx::Size(20, 20);
-  }
-}
-
 // static
 const gfx::Size BraveNewTabButton::kButtonSize{20, 20};
 
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   // Overriden so that we use Brave's custom button size
-  gfx::Size size = GetButtonSize();
+  gfx::Size size = kButtonSize;
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
   return size;
 }
 
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                      float scale,
-                                      bool extend_to_top) const {
+                                        float scale,
+                                        bool extend_to_top) const {
   // Overriden to use Brave's non-circular shape
   gfx::PointF scaled_origin(origin);
   scaled_origin.Scale(scale);
@@ -39,10 +35,11 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 
   SkPath path;
   const gfx::Rect contents_bounds = GetContentsBounds();
-  const gfx::Rect path_rect(scaled_origin.x(),
-              extend_to_top ? 0 : scaled_origin.y(),
-              contents_bounds.width() * scale,
-              scaled_origin.y() + contents_bounds.height() * scale);
+  const gfx::Rect path_rect(
+      scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
+      contents_bounds.width() * scale,
+      (extend_to_top ? scaled_origin.y() : 0) +
+          std::min(contents_bounds.width(), contents_bounds.height()) * scale);
   path.addRoundRect(RectToSkRect(path_rect), radius, radius);
   path.close();
   return path;
@@ -61,4 +58,11 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // Shim base implementation's painting
   canvas->Translate(gfx::Vector2d(offset, offset));
   NewTabButton::PaintIcon(canvas);
+}
+
+gfx::Insets BraveNewTabButton::GetInsets() const {
+  // Give an additional left margin to make more space from tab.
+  // TabStripRegionView::UpdateNewTabButtonBorder() gives this button's inset.
+  // So, adding more insets here is easy solution.
+  return NewTabButton::GetInsets() + gfx::Insets(0, 6, 0, 0);
 }

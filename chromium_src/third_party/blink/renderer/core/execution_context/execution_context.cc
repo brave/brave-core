@@ -154,47 +154,37 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
   return base::BindRepeating(&Identity);
 }
 
-scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
-    blink::WebContentSettingsClient* settings,
-    scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
+void BraveSessionCache::PerturbPixels(blink::WebContentSettingsClient* settings,
+                                      const unsigned char* data,
+                                      size_t size) {
   if (!farbling_enabled_ || !settings)
-    return image_bitmap;
+    return;
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      image_bitmap = PerturbPixelsInternal(image_bitmap);
+      PerturbPixelsInternal(data, size);
       break;
     }
     default:
       NOTREACHED();
   }
-  return image_bitmap;
+  return;
 }
 
-scoped_refptr<blink::StaticBitmapImage>
-BraveSessionCache::PerturbPixelsInternal(
-    scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
-  DCHECK(image_bitmap);
-  if (image_bitmap->IsNull())
-    return image_bitmap;
-  // convert to an ImageDataBuffer to normalize the pixel data to RGBA, 4 bytes
-  // per pixel
-  std::unique_ptr<blink::ImageDataBuffer> data_buffer =
-      blink::ImageDataBuffer::Create(image_bitmap);
-  if (!data_buffer) {
-    return image_bitmap;
-  }
-  uint8_t* pixels = const_cast<uint8_t*>(data_buffer->Pixels());
+void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
+                                              size_t size) {
+  if (!data || size == 0)
+    return;
+
+  uint8_t* pixels = const_cast<uint8_t*>(data);
   // This needs to be type size_t because we pass it to base::StringPiece
   // later for content hashing. This is safe because the maximum canvas
   // dimensions are less than SIZE_T_MAX. (Width and height are each
   // limited to 32,767 pixels.)
-  const size_t pixel_count = data_buffer->Width() * data_buffer->Height();
-  // choose which channel (R, G, or B) to perturb
-  const uint8_t* first_byte = reinterpret_cast<const uint8_t*>(domain_key_);
-  uint8_t channel = *first_byte % 3;
+  // Four bits per pixel
+  const size_t pixel_count = size / 4;
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
   crypto::HMAC h(crypto::HMAC::SHA256);
@@ -203,16 +193,20 @@ BraveSessionCache::PerturbPixelsInternal(
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_plus_domain_key),
                sizeof session_plus_domain_key));
   uint8_t canvas_key[32];
-  CHECK(h.Sign(
-      base::StringPiece(reinterpret_cast<const char*>(pixels), pixel_count),
-      canvas_key, sizeof canvas_key));
+  CHECK(h.Sign(base::StringPiece(reinterpret_cast<const char*>(pixels), size),
+               canvas_key, sizeof canvas_key));
   uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
   uint64_t pixel_index;
+  // choose which channel (R, G, or B) to perturb
+  uint8_t channel;
   // iterate through 32-byte canvas key and use each bit to determine how to
   // perturb the current pixel
   for (int i = 0; i < 32; i++) {
     uint8_t bit = canvas_key[i];
-    for (int j = 8; j >= 0; j--) {
+    for (int j = 0; j < 16; j++) {
+      if (j % 8 == 0)
+        bit = canvas_key[i];
+      channel = v % 3;
       pixel_index = 4 * (v % pixel_count) + channel;
       pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
@@ -220,11 +214,6 @@ BraveSessionCache::PerturbPixelsInternal(
       v = lfsr_next(v);
     }
   }
-  // convert back to a StaticBitmapImage to return to the caller
-  scoped_refptr<blink::StaticBitmapImage> perturbed_bitmap =
-      blink::UnacceleratedStaticBitmapImage::Create(
-          data_buffer->RetainedImage());
-  return perturbed_bitmap;
 }
 
 WTF::String BraveSessionCache::GenerateRandomString(std::string seed,

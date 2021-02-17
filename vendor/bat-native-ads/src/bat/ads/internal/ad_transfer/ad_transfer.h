@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
-#define BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
 
 #include <stdint.h>
 
@@ -22,20 +22,14 @@ class AdTransfer {
 
   ~AdTransfer();
 
-  void AddObserver(
-      AdTransferObserver* observer);
-  void RemoveObserver(
-      AdTransferObserver* observer);
+  void AddObserver(AdTransferObserver* observer);
+  void RemoveObserver(AdTransferObserver* observer);
 
-  void MaybeTransferAd(
-      const int32_t tab_id,
-      const std::string& url);
+  void MaybeTransferAd(const int32_t tab_id, const std::string& url);
 
-  void Cancel(
-      const int32_t tab_id);
+  void Cancel(const int32_t tab_id);
 
-  void set_last_clicked_ad(
-      const AdInfo& ad);
+  void set_last_clicked_ad(const AdInfo& ad);
 
  private:
   base::ObserverList<AdTransferObserver> observers_;
@@ -48,21 +42,15 @@ class AdTransfer {
 
   void clear_last_clicked_ad();
 
-  void TransferAd(
-      const int32_t tab_id,
-      const std::string& url);
+  void TransferAd(const int32_t tab_id, const std::string& url);
 
-  void OnTransferAd(
-      const int32_t tab_id,
-      const std::string& url);
+  void OnTransferAd(const int32_t tab_id, const std::string& url);
 
-  void NotifyAdTransfer(
-      const AdInfo& ad);
+  void NotifyAdTransfer(const AdInfo& ad);
 
-  void NotifyAdTransferFailed(
-      const AdInfo& ad);
+  void NotifyAdTransferFailed(const AdInfo& ad);
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TRANSFER_AD_TRANSFER_H_

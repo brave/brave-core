@@ -10,6 +10,7 @@ import * as Background from '../../../../../common/Background'
 type Props = {
   imageUrl: string
   list?: boolean
+  isPromoted?: boolean
   onLoaded?: () => any
 }
 
@@ -61,7 +62,7 @@ export default function CardImage (props: Props) {
   const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
   return (
     <Frame isImageLoaded={isImageLoaded}>
-      <Card.Image src={unpaddedUrl} />
+      <Card.Image isPromoted={props.isPromoted} src={unpaddedUrl} />
     </Frame>
   )
 }

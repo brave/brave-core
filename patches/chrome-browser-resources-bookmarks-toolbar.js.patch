@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/toolbar.js b/chrome/browser/resources/bookmarks/toolbar.js
-index 94ecd659a887788c75817d01995130747878a2c7..aa5f754ae26e87beb78e6483f35b7a14e6c34608 100644
+index ea0ec8712710d19509f39fc218817dc2e68657e0..2b85ecc56921af457abe4e7047a3b349e22936b6 100644
 --- a/chrome/browser/resources/bookmarks/toolbar.js
 +++ b/chrome/browser/resources/bookmarks/toolbar.js
 @@ -3,7 +3,7 @@

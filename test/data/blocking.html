@@ -67,6 +67,32 @@ function addImage(src) {
   });
 }
 
+function installBlockingServiceWorker() {
+  return new Promise(resolve => {
+    navigator.serviceWorker.addEventListener('message', msg => {
+      if (msg.data.includes('LOADED')) {
+        numXHRLoaded++
+        resolve(onLoad())
+      } else if (msg.data.includes('FAILED')) {
+        numXHRBlocked++
+        resolve(onLoad())
+      }
+    });
+    navigator.serviceWorker.register('./serviceworker.js')
+      .then(registration => {
+        if (registration.active) {
+          registration.active.postMessage('fetch');
+        } else if (registration.installing) {
+          registration.installing.addEventListener('statechange', () => {
+            if (registration.active) {
+              registration.active.postMessage('fetch');
+            }
+          });
+        }
+      })
+  });
+}
+
 // Sets the expectation for the number of images and XHR loaded and blocked
 function setExpectations(numImgLoaded, numImgBlocked, numXHRLoaded, numXHRBlocked) {
   expectedImgLoaded = numImgLoaded

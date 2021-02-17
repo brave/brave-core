@@ -6,6 +6,7 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -32,13 +33,10 @@ template("brave_repack_percent") {
                            ])
 
     # All sources should also have deps for completeness.
-    sources = [
-      "$root_gen_dir/brave/brave_theme_resources_${percent}_percent.pak",
-    ]
+    sources =
+        [ "$root_gen_dir/brave/brave_theme_resources_${percent}_percent.pak" ]
 
-    deps = [
-      "//brave/app/theme:brave_theme_resources",
-    ]
+    deps = [ "//brave/app/theme:brave_theme_resources" ]
 
     if (defined(invoker.deps)) {
       deps += invoker.deps
@@ -58,8 +56,8 @@ template("brave_extra_paks") {
                            ])
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
-      "$root_gen_dir/components/brave_components_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
+      "$root_gen_dir/components/brave_components_resources.pak",
     ]
 
     if (!is_android) {
@@ -79,39 +77,34 @@ template("brave_extra_paks") {
       deps += [
         "//brave/app:brave_generated_resources_grit",
         "//brave/app/theme:brave_unscaled_resources",
-        "//brave/components/resources:strings",
         "//brave/browser/resources/settings:resources",
+        "//brave/components/resources:strings",
       ]
     }
 
     if (brave_ads_enabled) {
-      sources += [
-        "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
-      ]
+      sources += [ "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak" ]
 
-      deps += [
-        "//brave/components/brave_ads/resources",
-      ]
+      deps += [ "//brave/components/brave_ads/resources" ]
     }
 
     if (brave_rewards_enabled) {
-      sources += [
-        "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
-      ]
+      sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak" ]
 
-      deps += [
-        "//brave/components/brave_rewards/resources",
-      ]
+      deps += [ "//brave/components/brave_rewards/resources" ]
+    }
+
+    if (enable_tor) {
+      sources +=
+          [ "$root_gen_dir/brave/components/tor/resources/tor_resources.pak" ]
+
+      deps += [ "//brave/components/tor/resources" ]
     }
 
     if (enable_brave_webtorrent) {
-      sources += [
-        "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak",
-      ]
+      sources += [ "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak" ]
 
-      deps += [
-        "//brave/components/brave_webtorrent:resources",
-      ]
+      deps += [ "//brave/components/brave_webtorrent:resources" ]
     }
 
     if (enable_extensions) {
@@ -129,13 +122,10 @@ template("brave_extra_paks") {
 
     if (brave_rewards_enabled) {
       if (enable_extensions) {
-        sources += [
-          "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak",
-        ]
+        sources += [ "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak" ]
 
-        deps += [
-          "//brave/components/brave_rewards/resources/extension:resources",
-        ]
+        deps +=
+            [ "//brave/components/brave_rewards/resources/extension:resources" ]
       }
     }
 

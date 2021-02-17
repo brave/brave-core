@@ -97,6 +97,9 @@ void BraveRequestHandler::SetupCallbacks() {
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
     before_url_request_callbacks_.push_back(callback);
+    brave::OnHeadersReceivedCallback ipfs_headers_received_callback =
+        base::Bind(ipfs::OnHeadersReceived_IPFSRedirectWork);
+    headers_received_callbacks_.push_back(ipfs_headers_received_callback);
   }
 #endif
 

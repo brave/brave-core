@@ -8,15 +8,18 @@
 #include <memory>
 #include <string>
 
-#include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/features.h"
+#include "brave/common/extensions/api/ipfs.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/common/channel_info.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using ipfs::IPFSResolveMethodTypes;
 
 namespace {
 
@@ -25,11 +28,11 @@ ipfs::IpfsService* GetIpfsService(content::BrowserContext* context) {
 }
 
 bool IsIpfsEnabled(content::BrowserContext* context) {
-  return ipfs::IpfsServiceFactory::IsIpfsEnabled(context);
+  return ipfs::IsIpfsEnabled(context);
 }
 
 base::Value MakeSelectValue(const base::string16& name,
-                            ipfs::IPFSResolveMethodTypes value) {
+                            IPFSResolveMethodTypes value) {
   base::Value item(base::Value::Type::DICTIONARY);
   item.SetKey("value", base::Value(static_cast<int>(value)));
   item.SetKey("name", base::Value(name));
@@ -45,62 +48,71 @@ ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
   base::Value list(base::Value::Type::LIST);
   list.Append(
       MakeSelectValue(l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_ASK),
-                      ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+                      IPFSResolveMethodTypes::IPFS_ASK));
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_GATEWAY),
-      ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+      IPFSResolveMethodTypes::IPFS_GATEWAY));
 
   if (GetIpfsService(browser_context()) &&
       GetIpfsService(browser_context())->IsIPFSExecutableAvailable()) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_LOCAL),
-        ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+        IPFSResolveMethodTypes::IPFS_LOCAL));
   }
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_DISABLED),
-      ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
+      IPFSResolveMethodTypes::IPFS_DISABLED));
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(json_string)));
+  return RespondNow(OneArgument(base::Value(json_string)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetIPFSEnabledFunction::Run() {
   bool enabled = IsIpfsEnabled(browser_context());
-  return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
+  return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetResolveMethodTypeFunction::Run() {
   std::string value = "invalid";
   if (IsIpfsEnabled(browser_context())) {
     switch (GetIpfsService(browser_context())->GetIPFSResolveMethodType()) {
-      case ipfs::IPFSResolveMethodTypes::IPFS_ASK:
+      case IPFSResolveMethodTypes::IPFS_ASK:
         value = "ask";
         break;
-      case ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY:
+      case IPFSResolveMethodTypes::IPFS_GATEWAY:
         value = "gateway";
         break;
-      case ipfs::IPFSResolveMethodTypes::IPFS_LOCAL:
+      case IPFSResolveMethodTypes::IPFS_LOCAL:
         value = "local";
         break;
-      case ipfs::IPFSResolveMethodTypes::IPFS_DISABLED:
+      case IPFSResolveMethodTypes::IPFS_DISABLED:
         value = "disabled";
         break;
     }
   }
-  return RespondNow(OneArgument(std::make_unique<base::Value>(value)));
+  return RespondNow(OneArgument(base::Value(value)));
 }
 
 ExtensionFunction::ResponseAction IpfsLaunchFunction::Run() {
   if (!IsIpfsEnabled(browser_context())) {
     return RespondNow(Error("IPFS not enabled"));
   }
+
+  if (!GetIpfsService(browser_context())) {
+    return RespondNow(Error("Could not obtain IPFS service"));
+  }
+
+  if (!GetIpfsService(browser_context())->IsIPFSExecutableAvailable()) {
+    return RespondNow(OneArgument(base::Value(false)));
+  }
+
   GetIpfsService(browser_context())
       ->LaunchDaemon(base::BindOnce(&IpfsLaunchFunction::OnLaunch, this));
   return RespondLater();
 }
 
 void IpfsLaunchFunction::OnLaunch(bool launched) {
-  Respond(OneArgument(std::make_unique<base::Value>(launched)));
+  Respond(OneArgument(base::Value(launched)));
 }
 
 ExtensionFunction::ResponseAction IpfsShutdownFunction::Run() {
@@ -113,7 +125,7 @@ ExtensionFunction::ResponseAction IpfsShutdownFunction::Run() {
 }
 
 void IpfsShutdownFunction::OnShutdown(bool shutdown) {
-  Respond(OneArgument(std::make_unique<base::Value>(shutdown)));
+  Respond(OneArgument(base::Value(shutdown)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetConfigFunction::Run() {
@@ -127,8 +139,7 @@ ExtensionFunction::ResponseAction IpfsGetConfigFunction::Run() {
 
 void IpfsGetConfigFunction::OnGetConfig(bool success,
                                         const std::string& value) {
-  Respond(TwoArguments(std::make_unique<base::Value>(success),
-                       std::make_unique<base::Value>(value)));
+  Respond(TwoArguments(base::Value(success), base::Value(value)));
 }
 
 ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {
@@ -136,7 +147,25 @@ ExtensionFunction::ResponseAction IpfsGetExecutableAvailableFunction::Run() {
     return RespondNow(Error("IPFS not enabled"));
   }
   bool avail = GetIpfsService(browser_context())->IsIPFSExecutableAvailable();
-  return RespondNow(OneArgument(std::make_unique<base::Value>(avail)));
+  return RespondNow(OneArgument(base::Value(avail)));
+}
+
+ExtensionFunction::ResponseAction IpfsResolveIPFSURIFunction::Run() {
+  if (!IsIpfsEnabled(browser_context())) {
+    return RespondNow(Error("IPFS not enabled"));
+  }
+
+  std::unique_ptr<ipfs::ResolveIPFSURI::Params> params(
+      ipfs::ResolveIPFSURI::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  GURL uri(params->uri);
+  GURL ipfs_gateway_url;
+  if (!::ipfs::ResolveIPFSURI(browser_context(), chrome::GetChannel(), uri,
+                              &ipfs_gateway_url)) {
+    return RespondNow(Error("Could not translate IPFS URI"));
+  }
+
+  return RespondNow(OneArgument(base::Value(ipfs_gateway_url.spec())));
 }
 
 }  // namespace api

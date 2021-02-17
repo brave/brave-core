@@ -78,8 +78,8 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
     string_tag = lxml.etree.Element('translation')
     string_tag.set('id', str(fingerprint))
     if string_value.count('<') != string_value.count('>'):
-        assert False, 'Warning: Unmatched < character, consider fixing on '
-        ' Trasifex, force encoding the following string:' + string_value
+        assert False, 'Warning: Unmatched < character, consider fixing on ' \
+                      ' Trasifex, force encoding the following string:' + string_value
     string_tag.text = string_value
     string_tag.tail = '\n'
     return string_tag
@@ -214,7 +214,7 @@ def validate_tags_in_one_string(string_tag):
         string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
     except lxml.etree.XMLSyntaxError as e:
         errors = ("\n--------------------\n"
-                  "{0}\nERROR: {1}\n").format(string_text, str(e))
+                  "{0}\nERROR: {1}\n").format(string_text.encode('utf-8'), str(e))
         print errors
         cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
@@ -258,7 +258,7 @@ def fix_links_with_target_blank_in_ph_text(text):
         return text[:target] + ' rel="noopener noreferrer"' + text[target:]
 
     rel += 5
-    rel_end = text[rel:].find('"')
+    rel_end = rel + text[rel:].find('"')
     rel_value = text[rel:rel_end]
     rel_add = ''
     if rel_value.find('noopener') == -1:
@@ -276,8 +276,7 @@ def fix_links_with_target_blank_in_text(text):
     try:
         xml_elem = lxml.etree.fromstring('<text>' + xml_text + '</text>')
     except lxml.etree.XMLSyntaxError as e:
-        print ("\n--------------------\n"
-               "{0}\nERROR: {1}\n").format(xml_text.encode('utf-8'), str(e))
+        print "\n--------------------\n{0}\nERROR: {1}\n".format(xml_text.encode('utf-8'), str(e))
         cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
             return text
@@ -757,7 +756,7 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
     filename = os.path.basename(grd_file_path).split('.')[0]
     x_grd_extra_strings = grd_string_names - transifex_string_ids
     assert len(x_grd_extra_strings) == 0, (
-        'GRD has extra strings over Transifex %' %
+        'GRD has extra strings over Transifex %s' %
         list(x_grd_extra_strings))
     x_transifex_extra_strings = transifex_string_ids - grd_string_names
     assert len(x_transifex_extra_strings) == 0, (
@@ -937,26 +936,17 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
         xml_tree = lxml.etree.parse(chromium_xtb_file)
 
         for node in xml_tree.xpath('//translation'):
-            pre_text_node = textify(node)
-            pre_meaning = node.get('meaning') if 'meaning' in node.attrib else ''
-            pre_desc = node.get('desc') if 'desc' in node.attrib else ''
-
             generate_braveified_node(node, False, True)
-
-            meaning = node.get('meaning') if 'meaning' in node.attrib else ''
-            desc = node.get('desc') if 'desc' in node.attrib else ''
-
-            # A node's fingerprint changes if the desc or the meaning change
-            if (pre_text_node != textify(node) or
-                    pre_meaning != meaning or
-                    pre_desc != desc):
-                old_fp = node.attrib['id']
-                # It's possible for an xtb string to not be in our GRD
-                # This happens for exmaple with Chrome OS strings which
-                #  we don't process files for
-                # print 'old fp: ', old_fp
-                if old_fp in fp_map:
-                    node.attrib['id'] = fp_map.get(old_fp)
+            # Use our fp, when exists.
+            old_fp = node.attrib['id']
+            # It's possible for an xtb string to not be in our GRD.
+            # This happens, for exmaple, with Chrome OS strings which
+            # we don't process files for.
+            if old_fp in fp_map:
+                new_fp = fp_map.get(old_fp)
+                if new_fp != old_fp:
+                    node.attrib['id'] = new_fp
+                    # print('fp: {0} -> {1}').format(old_fp, new_fp)
 
         fix_links_with_target_blank_in_xtb_tree(xml_tree)
         transformed_content = ('<?xml version="1.0" ?>\n' +

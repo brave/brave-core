@@ -6,15 +6,14 @@
 #include "bat/ads/ads_history_info.h"
 
 #include "bat/ads/ad_history_info.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 AdsHistoryInfo::AdsHistoryInfo() = default;
 
-AdsHistoryInfo::AdsHistoryInfo(
-    const AdsHistoryInfo& info) = default;
+AdsHistoryInfo::AdsHistoryInfo(const AdsHistoryInfo& info) = default;
 
 AdsHistoryInfo::~AdsHistoryInfo() = default;
 
@@ -24,8 +23,7 @@ std::string AdsHistoryInfo::ToJson() const {
   return json;
 }
 
-Result AdsHistoryInfo::FromJson(
-    const std::string& json) {
+Result AdsHistoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -49,9 +47,7 @@ Result AdsHistoryInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const AdsHistoryInfo& ads_history) {
+void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& ads_history) {
   writer->StartObject();
 
   writer->String("ads_history");

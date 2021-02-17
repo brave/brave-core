@@ -37,25 +37,19 @@ class AdsNotificationHandler : public NotificationHandler {
   AdsNotificationHandler& operator=(const AdsNotificationHandler&) = delete;
 
   // NotificationHandler implementation
-  void OnShow(
-      Profile* profile,
-      const std::string& id) override;
-  void OnClose(
-      Profile* profile,
-      const GURL& origin,
-      const std::string& id,
-      bool by_user,
-      base::OnceClosure completed_closure) override;
-  void OnClick(
-      Profile* profile,
-      const GURL& origin,
-      const std::string& id,
-      const base::Optional<int>& action_index,
-      const base::Optional<base::string16>& reply,
-      base::OnceClosure completed_closure) override;
-  void OpenSettings(
-      Profile* profile,
-      const GURL& origin) override;
+  void OnShow(Profile* profile, const std::string& id) override;
+  void OnClose(Profile* profile,
+               const GURL& origin,
+               const std::string& id,
+               bool by_user,
+               base::OnceClosure completed_closure) override;
+  void OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply,
+               base::OnceClosure completed_closure) override;
+  void OpenSettings(Profile* profile, const GURL& origin) override;
 
   void SetAdsService(brave_ads::AdsServiceImpl* ads_service);
 

@@ -15,8 +15,7 @@ SearchProviders::SearchProviders() = default;
 
 SearchProviders::~SearchProviders() = default;
 
-bool SearchProviders::IsSearchEngine(
-    const std::string& url) {
+bool SearchProviders::IsSearchEngine(const std::string& url) {
   const GURL visited_url = GURL(url);
   if (!visited_url.is_valid()) {
     return false;
@@ -76,8 +75,8 @@ std::string SearchProviders::ExtractSearchQueryKeywords(
     // is defined, e.g. |https://searx.me/?q={searchTerms}&categories=general|
     // matches |?q={|
     std::string key;
-    if (!RE2::PartialMatch(
-        search_provider.search_template, "\\?(.*?)\\={", &key)) {
+    if (!RE2::PartialMatch(search_provider.search_template, "\\?(.*?)\\={",
+                           &key)) {
       return search_query_keywords;
     }
 

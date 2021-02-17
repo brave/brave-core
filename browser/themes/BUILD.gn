@@ -26,12 +26,11 @@ source_set("themes") {
     }
 
     if (is_win) {
-      sources += [
-        "brave_dark_mode_utils_win.cc",
-      ]
+      sources += [ "brave_dark_mode_utils_win.cc" ]
     }
 
     deps += [
+      "//brave/components/sidebar/buildflags",
       "//chrome/browser:theme_properties",
       "//skia:skia",
       "//ui/gfx:color_utils",

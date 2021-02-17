@@ -43,6 +43,7 @@ class BraveComponentLoader : public ComponentLoader {
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void AddEthereumRemoteClientExtension();
+  void AddEthereumRemoteClientExtensionOnStartup();
 #endif
   void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
@@ -63,6 +64,8 @@ class BraveComponentLoader : public ComponentLoader {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   void CheckRewardsStatus();
 #endif
+
+  void ReinstallAsNonComponent(std::string extension_id);
 
   Profile* profile_;
   PrefService* profile_prefs_;

@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_AD_INFO_H_
-#define BAT_ADS_AD_INFO_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_INFO_H_
 
 #include <string>
 
@@ -15,8 +15,7 @@ namespace ads {
 
 struct ADS_EXPORT AdInfo {
   AdInfo();
-  AdInfo(
-      const AdInfo& info);
+  AdInfo(const AdInfo& info);
   ~AdInfo();
 
   bool IsValid() const;
@@ -26,10 +25,10 @@ struct ADS_EXPORT AdInfo {
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
-  std::string category;
+  std::string segment;
   std::string target_url;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_AD_INFO_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_INFO_H_

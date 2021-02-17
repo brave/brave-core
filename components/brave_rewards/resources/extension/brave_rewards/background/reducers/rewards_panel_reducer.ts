@@ -491,6 +491,29 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       }
       break
     }
+    case types.ON_GET_PREFS: {
+      const { prefs } = action.payload
+      state = { ...state }
+      state.adsPerHour = Number(prefs.adsPerHour)
+      state.autoContributeAmount = Number(prefs.autoContributeAmount)
+      break
+    }
+    case types.UPDATE_PREFS: {
+      const { prefs } = action.payload
+      chrome.braveRewards.updatePrefs(prefs)
+      state = { ...state }
+      for (let [key, value] of Object.entries(prefs)) {
+        switch (key) {
+          case 'adsPerHour':
+            state.adsPerHour = Number(value)
+            break
+          case 'autoContributeAmount':
+            state.autoContributeAmount = Number(value)
+            break
+        }
+      }
+      break
+    }
   }
   return state
 }

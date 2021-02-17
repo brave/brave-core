@@ -14,9 +14,14 @@ typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
 } NS_SWIFT_NAME(AdNotificationEventType);
 
 typedef NS_ENUM(NSInteger, BATNewTabPageAdEventType) {
-  BATNewTabPageAdEventTypeViewed,       // = ads::AdNotificationEventType::kViewed
-  BATNewTabPageAdEventTypeClicked       // = ads::AdNotificationEventType::kClicked
+  BATNewTabPageAdEventTypeViewed,         // = ads::NewTabPageAdEventType::kViewed
+  BATNewTabPageAdEventTypeClicked         // = ads::NewTabPageAdEventType::kClicked
 } NS_SWIFT_NAME(NewTabPageAdEventType);
+
+typedef NS_ENUM(NSInteger, BATPromotedContentAdEventType) {
+  BATPromotedContentAdEventTypeViewed,    // = ads::PromotedContentAdEventType::kViewed
+  BATPromotedContentAdEventTypeClicked    // = ads::PromotedContentAdEventType::kClicked
+} NS_SWIFT_NAME(PromotedContentAdEventType);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -65,6 +70,8 @@ NS_SWIFT_NAME(BraveAds)
 /// The environment that ads is communicating with. See ledger's BATEnvironment
 /// for appropriate values.
 @property (nonatomic, class) int environment;
+/// System info
+@property (nonatomic, class) BATBraveAdsSysInfo *sysInfo;
 /// The build channel that ads is configured for
 @property (nonatomic, class) BATBraveAdsBuildChannel *buildChannel;
 
@@ -74,21 +81,15 @@ NS_SWIFT_NAME(BraveAds)
 - (void)initializeIfAdsEnabled;
 
 /// Shuts down the ads service if its running
-- (void)shutdown;
+- (void)shutdown:(nullable void (^)())completion;
 
 /// Whether or not the ads service is running
 - (BOOL)isAdsServiceRunning;
 
 #pragma mark - Configuration
 
-/// Whether or not Brave Ads is enabled
-@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
-
 /// The max number of ads the user can see in an hour
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerHour NS_SWIFT_NAME(adsPerHour);
-
-/// The max number of ads the user can see in a day
-@property (nonatomic, assign) NSInteger numberOfAllowableAdsPerDay NS_SWIFT_NAME(adsPerDay);
 
 /// Whether or not the user has opted out of subdivision ad targeting
 @property (nonatomic, assign, getter=shouldAllowSubdivisionTargeting) BOOL allowSubdivisionTargeting;
@@ -120,7 +121,9 @@ NS_SWIFT_NAME(BraveAds)
 
 /// Report that a page has loaded in the current browser tab, and the inner text
 /// within the page loaded for classification
-- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text tabId:(NSInteger)tabId;
+- (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
+                      innerText:(NSString *)text tabId:(NSInteger)tabId;
 
 /// Report that media has started on a tab with a given id
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportMediaStarted(tabId:));
@@ -142,6 +145,11 @@ NS_SWIFT_NAME(BraveAds)
 - (void)reportNewTabPageAdEvent:(NSString *)wallpaperId
              creativeInstanceId:(NSString *)creativeInstanceId
                       eventType:(BATNewTabPageAdEventType)eventType;
+
+/// Report that a promoted content ad event type was triggered for a given id
+- (void)reportPromotedContentAdEvent:(NSString *)uuid
+                  creativeInstanceId:(NSString *)creativeInstanceId
+                           eventType:(BATPromotedContentAdEventType)eventType;
 
 /// Reconcile ad rewards with server
 - (void)reconcileAdRewards;

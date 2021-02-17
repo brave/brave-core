@@ -8,19 +8,17 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
 #include "components/grit/brave_components_strings.h"
@@ -111,17 +109,15 @@ IpfsService::~IpfsService() = default;
 
 // static
 void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kIPFSEnabled, true);
   registry->RegisterIntegerPref(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
+  registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
-}
-
-// static
-void IpfsService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kIPFSEnabled, true);
+  registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() {
@@ -187,6 +183,14 @@ base::FilePath IpfsService::GetConfigFilePath() const {
   return config_path;
 }
 
+void IpfsService::NotifyDaemonLaunchCallbacks(bool result) {
+  while (!pending_launch_callbacks_.empty()) {
+    if (pending_launch_callbacks_.front())
+      std::move(pending_launch_callbacks_.front()).Run(result);
+    pending_launch_callbacks_.pop();
+  }
+}
+
 void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (result) {
     ipfs_pid_ = pid;
@@ -195,9 +199,7 @@ void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
     Shutdown();
   }
 
-  if (!launch_daemon_callback_.is_null()) {
-    std::move(launch_daemon_callback_).Run(result && pid > 0);
-  }
+  NotifyDaemonLaunchCallbacks(result && pid > 0);
 
   for (auto& observer : observers_) {
     observer.OnIpfsLaunched(result, pid);
@@ -240,6 +242,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
   if (skip_get_connected_peers_callback_for_test_) {
     // Early return for tests that wish to  manually run the callback with
     // desired values directly, could be useful in unit tests.
+    connected_peers_function_called_ = true;
     return;
   }
 
@@ -317,23 +320,27 @@ void IpfsService::OnGetAddressesConfig(
 }
 
 bool IpfsService::IsDaemonLaunched() const {
-  if (is_ipfs_launched_for_test_)
+  if (allow_ipfs_launch_for_test_) {
     return true;
-
+  }
   return ipfs_pid_ > 0;
 }
 
 void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
-  // Reject if previous launch request in progress.
-  if (launch_daemon_callback_) {
-    std::move(callback).Run(false);
-  }
-
   if (IsDaemonLaunched()) {
-    std::move(callback).Run(true);
+    if (callback)
+      std::move(callback).Run(true);
+    return;
   }
 
-  launch_daemon_callback_ = std::move(callback);
+  // Wait if previous launch request in progress.
+  if (!pending_launch_callbacks_.empty()) {
+    if (callback)
+      pending_launch_callbacks_.push(std::move(callback));
+    return;
+  }
+  if (callback)
+    pending_launch_callbacks_.push(std::move(callback));
   base::FilePath path(GetIpfsExecutablePath());
   if (path.empty()) {
     // Daemon will be launched later in OnExecutableReady.
@@ -352,7 +359,8 @@ void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
     observer.OnIpfsShutdown();
   }
 
-  std::move(callback).Run(true);
+  if (callback)
+    std::move(callback).Run(true);
 }
 
 void IpfsService::GetConfig(GetConfigCallback callback) {
@@ -387,8 +395,8 @@ void IpfsService::RegisterIpfsClientUpdater() {
   }
 }
 
-void IpfsService::SetIpfsLaunchedForTest(bool launched) {
-  is_ipfs_launched_for_test_ = launched;
+void IpfsService::SetAllowIpfsLaunchForTest(bool launched) {
+  allow_ipfs_launch_for_test_ = launched;
 }
 
 void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
@@ -396,19 +404,106 @@ void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
 }
 
 void IpfsService::RunLaunchDaemonCallbackForTest(bool result) {
-  if (launch_daemon_callback_) {
-    std::move(launch_daemon_callback_).Run(result);
-  }
+  NotifyDaemonLaunchCallbacks(result);
 }
 
 void IpfsService::SetSkipGetConnectedPeersCallbackForTest(bool skip) {
   skip_get_connected_peers_callback_for_test_ = skip;
 }
 
+void IpfsService::SetGetConnectedPeersCalledForTest(bool value) {
+  connected_peers_function_called_ = value;
+}
+
+bool IpfsService::WasConnectedPeersCalledForTest() const {
+  return connected_peers_function_called_;
+}
+
 IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return static_cast<IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
+}
+
+void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, RepoStats());
+    return;
+  }
+
+  GURL gurl =
+      net::AppendQueryParameter(server_endpoint_.Resolve(ipfs::kRepoStatsPath),
+                                ipfs::kRepoStatsHumanReadableParamName,
+                                ipfs::kRepoStatsHumanReadableParamValue);
+  auto url_loader = CreateURLLoader(gurl);
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnRepoStats, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
+}
+
+void IpfsService::OnRepoStats(SimpleURLLoaderList::iterator iter,
+                              GetRepoStatsCallback callback,
+                              std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  ipfs::RepoStats repo_stats;
+  if (error_code != net::OK || response_code != net::HTTP_OK) {
+    VLOG(1) << "Fail to get repro stats, error_code = " << error_code
+            << " response_code = " << response_code;
+    std::move(callback).Run(false, repo_stats);
+    return;
+  }
+
+  bool success =
+      IPFSJSONParser::GetRepoStatsFromJSON(*response_body, &repo_stats);
+  std::move(callback).Run(success, repo_stats);
+}
+
+void IpfsService::GetNodeInfo(GetNodeInfoCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, NodeInfo());
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(ipfs::kNodeInfoPath);
+  auto url_loader = CreateURLLoader(gurl);
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnNodeInfo, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
+}
+
+void IpfsService::OnNodeInfo(SimpleURLLoaderList::iterator iter,
+                             GetNodeInfoCallback callback,
+                             std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  ipfs::NodeInfo node_info;
+  if (error_code != net::OK || response_code != net::HTTP_OK) {
+    VLOG(1) << "Fail to get node info, error_code = " << error_code
+            << " response_code = " << response_code;
+    std::move(callback).Run(false, node_info);
+    return;
+  }
+
+  bool success =
+      IPFSJSONParser::GetNodeInfoFromJSON(*response_body, &node_info);
+  std::move(callback).Run(success, node_info);
 }
 
 }  // namespace ipfs

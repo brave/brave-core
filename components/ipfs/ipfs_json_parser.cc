@@ -120,3 +120,90 @@ bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
 
   return true;
 }
+
+// static
+// Response Format for /api/v0/repo/stat
+//{
+//  "NumObjects": "<uint64>",
+//  "RepoPath": "<string>",
+//  "RepoSize": "<uint64>",
+//  "StorageMax": "<uint64>",
+//  "Version": "<string>"
+//}
+bool IPFSJSONParser::GetRepoStatsFromJSON(const std::string& json,
+                                          ipfs::RepoStats* stats) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const auto num_objects_value = response_dict->FindDoubleKey("NumObjects");
+  const auto size_value = response_dict->FindDoubleKey("RepoSize");
+  const auto storage_max_value = response_dict->FindDoubleKey("StorageMax");
+  const std::string* path = response_dict->FindStringKey("RepoPath");
+  const std::string* version = response_dict->FindStringKey("Version");
+
+  if (!num_objects_value || !size_value || !storage_max_value || !path ||
+      !version) {
+    VLOG(1) << "Invalid response, missing required keys in value dictionary.";
+    return false;
+  }
+
+  stats->objects = static_cast<uint64_t>(*num_objects_value);
+  stats->size = static_cast<uint64_t>(*size_value);
+  stats->storage_max = static_cast<uint64_t>(*storage_max_value);
+  stats->path = *path;
+  stats->version = *version;
+  return true;
+}
+
+// static
+// Response Format for /api/v0/id
+//{
+//  "Addresses": ["<string>"],
+//  "AgentVersion": "<string>",
+//  "ID": "<string>",
+//  "ProtocolVersion": "<string>",
+//  "Protocols": ["<string>"],
+//  "PublicKey": "<string>"
+//}
+bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
+                                         ipfs::NodeInfo* info) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  const std::string* version = response_dict->FindStringKey("AgentVersion");
+  const std::string* peerid = response_dict->FindStringKey("ID");
+
+  if (!peerid || !version) {
+    VLOG(1) << "Invalid response, missing required keys in value dictionary.";
+    return false;
+  }
+
+  info->id = *peerid;
+  info->version = *version;
+  return true;
+}

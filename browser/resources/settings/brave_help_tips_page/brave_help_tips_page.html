@@ -8,9 +8,10 @@
 <dom-module id="settings-brave-help-tips-page">
   <template>
   <if expr="enable_brave_wayback_machine">
-  <settings-toggle-button
-      pref="{{prefs.brave.wayback_machine_enabled}}"
-      label="$i18n{braveHelpTipsWaybackMachineLabel}">
+    <settings-toggle-button class="cr-row"
+                            pref="{{prefs.brave.wayback_machine_enabled}}"
+                            label="$i18n{braveHelpTipsWaybackMachineLabel}">
+    </settings-toggle-button>
   </if>
   </template>
   <script src="brave_help_tips_page.js"></script>

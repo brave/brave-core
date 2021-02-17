@@ -45,6 +45,7 @@ declare namespace NewTab {
 
   export interface Stats {
     adsBlockedStat: number
+    httpsUpgradesStat: number
     javascriptBlockedStat: number
     bandwidthSavedStat: number
     fingerprintingBlockedStat: number
@@ -76,6 +77,7 @@ declare namespace NewTab {
   }
 
   export interface PersistentState {
+    togetherPromptDismissed: boolean
     togetherSupported: boolean
     geminiSupported: boolean
     binanceSupported: boolean
@@ -86,6 +88,7 @@ declare namespace NewTab {
     currentStackWidget: StackWidget
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
+    savedWidgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
     geminiState: GeminiWidgetState
     cryptoDotComState: CryptoDotComWidgetState
@@ -141,7 +144,9 @@ declare namespace NewTab {
   }
 
   export interface BinanceWidgetState {
+    binanceSupported?: boolean
     userTLD: BinanceTLD
+    userLocale: string
     initialFiat: string
     initialAmount: string
     initialAsset: string

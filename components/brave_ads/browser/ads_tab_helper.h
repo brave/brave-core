@@ -57,11 +57,9 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void TabUpdated();
 
-  void RunIsolatedJavaScript(
-      content::RenderFrameHost* render_frame_host);
+  void RunIsolatedJavaScript(content::RenderFrameHost* render_frame_host);
 
-  void OnJavaScriptResult(
-      base::Value value);
+  void OnJavaScriptResult(base::Value value);
 
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
@@ -88,7 +86,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   AdsService* ads_service_;  // NOT OWNED
   bool is_active_;
   bool is_browser_active_;
-  std::vector<GURL> urls_;
+  std::vector<GURL> redirect_chain_;
 
   bool run_distiller_;
 

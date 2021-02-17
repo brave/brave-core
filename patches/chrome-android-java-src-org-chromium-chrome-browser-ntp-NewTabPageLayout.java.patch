@@ -1,13 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index 91e4df543160aaec5cd89943cd51a403c13d3e9a..982fb668ea30d7259ca70870779a6158ba6179c2 100644
+index e5ccd345b6095fab84af5d2f3554627955a79b85..beb45fb77e9f68e41930c46088690dcc7d0e404d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -59,7 +59,7 @@ import org.chromium.ui.vr.VrModeObserver;
-  * Layout for the new tab page. This positions the page elements in the correct vertical positions.
-  * There are no separate phone and tablet UIs; this layout adapts based on the available space.
-  */
--public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer, VrModeObserver {
-+public class NewTabPageLayout extends android.widget.FrameLayout implements TileGroup.Observer, VrModeObserver {
-     private static final String TAG = "NewTabPageLayout";
-     // Used to signify the cached resource value is unset.
-     private static final int UNSET_RESOURCE_FLAG = -1;
+@@ -244,6 +244,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+                 /* observer = */ this, offlinePageBridge);
+ 
+         int maxRows = 2;
++        maxRows = QueryTileSection.getMaxRowsForMostVisitedTiles(getContext());
+         if (searchProviderIsGoogle && QueryTileUtils.isQueryTilesEnabledOnNTP()) {
+             maxRows = QueryTileSection.getMaxRowsForMostVisitedTiles(getContext());
+         }

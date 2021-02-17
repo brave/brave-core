@@ -1,6 +1,6 @@
 import("//tools/grit/grit_rule.gni")
-import("//ui/webui/webui_features.gni")
 import("//tools/polymer/polymer.gni")
+import("//ui/webui/webui_features.gni")
 
 grit("resources") {
   defines = [ "optimize_webui=$optimize_webui" ]
@@ -29,13 +29,9 @@ grit("resources") {
 copy("rollup_resources") {
   visibility = [ ":*" ]
 
-  sources = [
-    "polymer_overriding.js",
-  ]
+  sources = [ "polymer_overriding.js" ]
 
-  outputs = [
-    "$root_gen_dir/brave/ui/webui/resources/{{source_file_part}}",
-  ]
+  outputs = [ "$root_gen_dir/brave/ui/webui/resources/{{source_file_part}}" ]
 }
 
 copy("override_resources") {
@@ -51,23 +47,10 @@ copy("override_resources") {
   ]
 }
 
-copy("rollup_overrides") {
-  visibility = [ ":*" ]
-
-  sources = [
-    "tools/brave_rollup_overrides.js",
-  ]
-
-  outputs = [
-    "$root_gen_dir/chrome/browser/resources/{{source_file_part}}",
-  ]
-}
-
 group("modulize") {
   deps = [
-    ":rollup_resources",
     ":override_resources",
-    ":rollup_overrides",
+    ":rollup_resources",
     "br_elements:polymer3_elements",
     "page_specific:polymer3_elements",
   ]

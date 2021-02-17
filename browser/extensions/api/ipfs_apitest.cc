@@ -129,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, GetConfig) {
 }
 
 // No great way to test launch and shutdown succeeding easily, so at least
-// just make sure the API call works. IpfsService::SetIpfsLaunchedForTest
+// just make sure the API call works. IpfsService::SetAllowIpfsLaunchForTest
 // is used to short-circuit the launch and shutdown process.
 IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchShutdownSuccess) {
   ResultCatcher catcher;
@@ -141,14 +141,32 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchShutdownSuccess) {
           browser()->profile());
   ASSERT_TRUE(service);
 
-  service->SetIpfsLaunchedForTest(true);
+  GetPrefs()->SetBoolean(kIPFSBinaryAvailable, true);
+  service->SetAllowIpfsLaunchForTest(true);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ipfs_companion_extension_id, "launchSuccess()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 
-  service->SetIpfsLaunchedForTest(false);
+  service->SetAllowIpfsLaunchForTest(false);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ipfs_companion_extension_id, "shutdownSuccess()"));
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchFailWhenNotInstalled) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
+  ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
+
+  service->SetAllowIpfsLaunchForTest(true);
+  GetPrefs()->SetBoolean(kIPFSBinaryAvailable, false);
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ipfs_companion_extension_id, "launchFail()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
@@ -157,6 +175,25 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, IpfsAPINotAvailable) {
   const Extension* extension =
       LoadExtension(extension_dir_.AppendASCII("notIpfsCompanion"));
   ASSERT_TRUE(extension);
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, ResolveIPFSURIMatches) {
+  ResultCatcher catcher;
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("ipfsCompanion"));
+  ASSERT_TRUE(extension);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+          browser()->profile());
+  ASSERT_TRUE(service);
+
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ipfs_companion_extension_id,
+      "resolveIPFSURIMatches("
+      "'ipfs://bafybeifk6th5qhox7pffjqjerbjxkpmsmufdcswdgacnmyv3fn53z2wgwe',"
+      "'https://bafybeifk6th5qhox7pffjqjerbjxkpmsmufdcswdgacnmyv3fn53z2wgwe"
+      ".ipfs.dweb.link/')"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 

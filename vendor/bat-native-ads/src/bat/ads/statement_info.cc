@@ -15,25 +15,22 @@ namespace ads {
 
 StatementInfo::StatementInfo() = default;
 
-StatementInfo::StatementInfo(
-    const StatementInfo& info) = default;
+StatementInfo::StatementInfo(const StatementInfo& info) = default;
 
 StatementInfo::~StatementInfo() = default;
 
-bool StatementInfo::operator==(
-    const StatementInfo& rhs) const {
+bool StatementInfo::operator==(const StatementInfo& rhs) const {
   return DoubleEquals(estimated_pending_rewards,
-          rhs.estimated_pending_rewards) &&
-      next_payment_date == rhs.next_payment_date &&
-      ads_received_this_month == rhs.ads_received_this_month &&
-      DoubleEquals(earnings_this_month, rhs.earnings_this_month) &&
-      DoubleEquals(earnings_last_month, rhs.earnings_last_month) &&
-      transactions == rhs.transactions &&
-      uncleared_transactions == rhs.uncleared_transactions;
+                      rhs.estimated_pending_rewards) &&
+         next_payment_date == rhs.next_payment_date &&
+         ads_received_this_month == rhs.ads_received_this_month &&
+         DoubleEquals(earnings_this_month, rhs.earnings_this_month) &&
+         DoubleEquals(earnings_last_month, rhs.earnings_last_month) &&
+         transactions == rhs.transactions &&
+         uncleared_transactions == rhs.uncleared_transactions;
 }
 
-bool StatementInfo::operator!=(
-    const StatementInfo& rhs) const {
+bool StatementInfo::operator!=(const StatementInfo& rhs) const {
   return !(*this == rhs);
 }
 
@@ -42,15 +39,15 @@ std::string StatementInfo::ToJson() const {
 
   // Estimated pending rewards
   dictionary.SetKey("estimated_pending_rewards",
-      base::Value(estimated_pending_rewards));
+                    base::Value(estimated_pending_rewards));
 
   // Next payment date
   dictionary.SetKey("next_payment_date",
-      base::Value(std::to_string(next_payment_date)));
+                    base::Value(std::to_string(next_payment_date)));
 
   // Ads received this month
   dictionary.SetKey("ads_received_this_month",
-      base::Value(std::to_string(ads_received_this_month)));
+                    base::Value(std::to_string(ads_received_this_month)));
 
   // Earnings this month
   dictionary.SetKey("earnings_this_month", base::Value(earnings_this_month));
@@ -65,7 +62,7 @@ std::string StatementInfo::ToJson() const {
   // Uncleared transactions
   base::Value uncleared_transactions_list = GetUnclearedTransactionsAsList();
   dictionary.SetKey("uncleared_transactions",
-      base::Value(std::move(uncleared_transactions_list)));
+                    base::Value(std::move(uncleared_transactions_list)));
 
   // Write to JSON
   std::string json;
@@ -74,8 +71,7 @@ std::string StatementInfo::ToJson() const {
   return json;
 }
 
-bool StatementInfo::FromJson(
-    const std::string& json) {
+bool StatementInfo::FromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;

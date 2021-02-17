@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/ios/browser",
+  "+components",
+  "+ios/chrome/browser",
+  "+ios/web/public",
+]

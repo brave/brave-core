@@ -4,12 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/stl_util.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_request_headers.h"
@@ -19,7 +22,8 @@
 
 const char kClientHints[] = "/ch.html";
 
-class ClientHintsBrowserTest : public InProcessBrowserTest {
+class ClientHintsBrowserTest : public InProcessBrowserTest,
+                               public ::testing::WithParamInterface<bool> {
  public:
   ClientHintsBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS),
@@ -40,7 +44,19 @@ class ClientHintsBrowserTest : public InProcessBrowserTest {
 
   ~ClientHintsBrowserTest() override {}
 
-  void SetUp() override { InProcessBrowserTest::SetUp(); }
+  bool IsLangClientHintHeaderEnabled() { return GetParam(); }
+
+  void SetUp() override {
+    if (IsLangClientHintHeaderEnabled()) {
+      // Test that even with Lang CH feature enabled, there is no header.
+      scoped_feature_list_.InitAndEnableFeature(
+          features::kLangClientHintHeader);
+    } else {
+      scoped_feature_list_.InitAndDisableFeature(
+          features::kLangClientHintHeader);
+    }
+    InProcessBrowserTest::SetUp();
+  }
 
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -68,11 +84,18 @@ class ClientHintsBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
   GURL client_hints_url_;
   size_t count_client_hints_headers_seen_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 
   DISALLOW_COPY_AND_ASSIGN(ClientHintsBrowserTest);
 };
 
-IN_PROC_BROWSER_TEST_F(ClientHintsBrowserTest, ClientHintsDisabled) {
+IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
+  EXPECT_EQ(IsLangClientHintHeaderEnabled(),
+            base::FeatureList::IsEnabled(features::kLangClientHintHeader));
   ui_test_utils::NavigateToURL(browser(), client_hints_url());
   EXPECT_EQ(0u, count_client_hints_headers_seen());
 }
+
+INSTANTIATE_TEST_SUITE_P(ClientHintsBrowserTest,
+                         ClientHintsBrowserTest,
+                         ::testing::Bool());

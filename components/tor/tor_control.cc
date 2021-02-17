@@ -5,7 +5,7 @@
 
 #include "brave/components/tor/tor_control.h"
 
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/files/file.h"
 #include "base/files/file_path_watcher.h"
 #include "base/sequenced_task_runner.h"
@@ -154,8 +154,8 @@ void TorControl::StartWatching() {
   // Create a watcher and start watching.
   watcher_ = std::make_unique<base::FilePathWatcher>();
 
-  bool recursive = false;
-  if (!watcher_->Watch(watch_dir_path_, recursive,
+  if (!watcher_->Watch(watch_dir_path_,
+                       base::FilePathWatcher::Type::kNonRecursive,
                        base::BindRepeating(&TorControl::WatchDirChanged,
                                            base::Unretained(this)))) {
     // Never mind -- destroy the watcher and stop everything else.

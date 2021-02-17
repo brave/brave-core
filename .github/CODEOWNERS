@@ -5,6 +5,7 @@ script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
 Jenkinsfile @mihaiplesa
+DEPS @bridiver
 
 # Rewards
 browser/brave_rewards/ @brave/rewards
@@ -57,7 +58,7 @@ chromium_src/components/sync_device_info/device_info_sync_bridge.cc @brave/sync-
 
 # Speedreader
 browser/speedreader/ @iefremov
-components/speedreader/ @iefremov
+components/speedreader/* @iefremov
 
 # P3A
 browser/p3a/ @iefremov
@@ -67,3 +68,7 @@ components/weekly_storage/ @iefremov
 
 # Perf predictor
 components/brave_perf_predictor/ @iefremov
+
+# Java patching
+build/android/bytecode/ @samartnik
+patches/*.java.patch @samartnik

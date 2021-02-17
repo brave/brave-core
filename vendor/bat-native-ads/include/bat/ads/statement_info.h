@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_STATEMENT_INFO_
-#define BAT_ADS_STATEMENT_INFO_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_STATEMENT_INFO_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_STATEMENT_INFO_H_
 
 #include <stdint.h>
 
@@ -18,18 +18,14 @@ namespace ads {
 
 struct ADS_EXPORT StatementInfo {
   StatementInfo();
-  StatementInfo(
-      const StatementInfo& info);
+  StatementInfo(const StatementInfo& info);
   ~StatementInfo();
 
-  bool operator==(
-      const StatementInfo& rhs) const;
-  bool operator!=(
-      const StatementInfo& rhs) const;
+  bool operator==(const StatementInfo& rhs) const;
+  bool operator!=(const StatementInfo& rhs) const;
 
   std::string ToJson() const;
-  bool FromJson(
-      const std::string& json);
+  bool FromJson(const std::string& json);
 
   double estimated_pending_rewards = 0.0;
   uint64_t next_payment_date = 0;
@@ -66,4 +62,4 @@ struct ADS_EXPORT StatementInfo {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_TRANSACTIONS_INFO_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_STATEMENT_INFO_H_

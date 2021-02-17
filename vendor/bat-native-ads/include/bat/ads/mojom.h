@@ -3,21 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_MOJOM_H_
-#define BAT_ADS_MOJOM_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_MOJOM_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_MOJOM_H_
 
-#include "bat/ads/public/interfaces/ads_database.mojom.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/public/interfaces/ads_database.mojom.h"
 
 namespace ads {
 
 using Environment = mojom::BraveAdsEnvironment;
+
+using SysInfo = mojom::BraveAdsSysInfo;
+using SysInfoPtr = mojom::BraveAdsSysInfoPtr;
 
 using BuildChannel = mojom::BraveAdsBuildChannel;
 using BuildChannelPtr = mojom::BraveAdsBuildChannelPtr;
 
 using AdNotificationEventType = mojom::BraveAdsAdNotificationEventType;
 using NewTabPageAdEventType = mojom::BraveAdsNewTabPageAdEventType;
+using PromotedContentAdEventType = mojom::BraveAdsPromotedContentAdEventType;
 
 using UrlRequest = mojom::BraveAdsUrlRequest;
 using UrlRequestPtr = mojom::BraveAdsUrlRequestPtr;
@@ -45,4 +49,4 @@ using DBValuePtr = ads_database::mojom::DBValuePtr;
 
 }  // namespace ads
 
-#endif  // BAT_ADS_MOJOM_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_MOJOM_H_

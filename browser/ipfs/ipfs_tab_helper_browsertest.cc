@@ -9,6 +9,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -70,6 +71,8 @@ class IPFSTabHelperTest : public InProcessBrowserTest,
     embedded_test_server()->RegisterRequestHandler(
         base::BindRepeating(&HandleRequest));
     ASSERT_TRUE(embedded_test_server()->Start());
+    ipfs::SetIPFSDefaultGatewayForTest(
+        embedded_test_server()->GetURL("cloudflare-ipfs.com", "/"));
   }
 
   ~IPFSTabHelperTest() override {}

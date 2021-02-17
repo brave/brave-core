@@ -6,7 +6,7 @@
 #include "third_party/libaddressinput/chromium/chrome_metadata_source.h"
 
 #include "base/run_loop.h"
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "mojo/core/embedder/embedder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

@@ -388,7 +388,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Set as default browser
       </message>
       <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
-        Select Brave Browser from the list and tap 'Always'
+        Select Brave Browser and tap 'Always'
       </message>
       <message name="IDS_BRAVE_ALREADY_SET_AS_DEFAULT_BROWSER" desc="Toast message for those whom have already set Brave as default browser">
         Brave is already set as your default browser.
@@ -841,6 +841,18 @@ until they verify, or until 90 days have passed.
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup
       </message>
+      <message name="IDS_BRAVE_SYNC_ANDROID_SYNC_DISABLED" desc="The message for hint that Brave sync does not work because Android system sync is disabled and required need to open and enable">
+        We detected that you have Brave Sync enabled, however your system sync is turned off and will not allow Brave to sync. Press to open settings
+      </message>
+      <message name="IDS_BRAVE_OPEN_SYSTEM_SYNC_SETTINGS" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to open system settings">
+        Open Settings
+      </message>
+      <message name="IDS_BRAVE_ANDROID_SYNC_DISABLED_OK" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to ignore informer">
+        OK
+      </message>
+      <message name="IDS_BRAVE_ANDROID_SYNC_DISABLED_DONT_SHOW" desc="The text on button on informer which is fired when Android system sync settings switch is toggled off, to disable informer">
+        Don't show again
+      </message>
       <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
         https://brave.com/privacy_android
       </message>
@@ -1124,7 +1136,7 @@ until they verify, or until 90 days have passed.
         Allow all fingerprinting
       </message>
       <message name="IDS_ADS_AND_OTHER_THINGS_BLOCKED" desc="Text for shields option.">
-        Ads and other creepy\nthings blocked
+        Trackers, ads, and\nmore blocked
       </message>
       <message name="IDS_SHIELDS_ABOUT_TEXT" desc="About Text for shields option.">
         Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web-tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.
@@ -1177,14 +1189,32 @@ until they verify, or until 90 days have passed.
       <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
         Browse faster and block ads with Brave
       </message>
-      <message name="IDS_YOU_JUST_BLOCKED" desc="Shields tootltip text">
-        You just blocked some trackers &amp; ads.
+      <message name="IDS_TOOLTIP_TITLE_1" desc="Shields tootltip title">
+        Trackers &amp; ads blocked on this page.
       </message>
-      <message name="IDS_TAKE_A_LOOK" desc="Shields tootltip text">
+      <message name="IDS_TOOLTIP_TEXT_1" desc="Shields tootltip text">
+        Brave Shields just protected your privacy.
+      </message>
+      <message name="IDS_TAKE_A_LOOK" desc="Shields tootltip button text">
         Take a look
       </message>
-      <message name="IDS_NICE" desc="Shields tootltip title">
-        Nice!
+      <message name="IDS_TOOLTIP_TITLE_2" desc="Shields tootltip title">
+        Ads are blocked while watching videos on this website.
+      </message>
+      <message name="IDS_TOOLTIP_TEXT_2" desc="Shields tootltip text">
+        Videos without ads use less data.
+      </message>
+      <message name="IDS_TOOLTIP_TITLE_3" desc="Shields tootltip title">
+        10+ trackers &amp; ads blocked on this page.
+      </message>
+      <message name="IDS_TOOLTIP_TEXT_3" desc="Shields tootltip text">
+        Brave Shields protects your online privacy on every site.
+      </message>
+      <message name="IDS_TOOLTIP_TITLE_4" desc="Shields tootltip title">
+        Your connection is now encrypted.
+      </message>
+      <message name="IDS_TOOLTIP_TEXT_4" desc="Shields tootltip text">
+        If available, Brave upgrades you to a secure connection automatically.
       </message>
       <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
         Brave works everywhere
@@ -1472,19 +1502,19 @@ until they verify, or until 90 days have passed.
         Welcome to Brave Rewards!
       </message>
       <message name="IDS_WELCOME_TO_BRAVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Brave private ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
+        Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP" desc="Brave rewards onboarding title">
         Where do ads show up?
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP_TEXT" desc="Brave rewards onboarding title">
-        Brave private ads will appear as a normal notification. You control how often you see these ads in settings.
+        Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS" desc="Brave rewards onboarding title">
         When do you receive rewards
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Your earned tokens from Brave ads throughout the current month will arrive on the 5th of the next month.
+        Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
       </message>
       <message name="IDS_GIVING_BACK_MADE_EFFORTLESS" desc="Brave rewards onboarding title">
         Giving back made effortless
@@ -1496,13 +1526,13 @@ until they verify, or until 90 days have passed.
         Say thank you with tips
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
-        Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
+        Tipping is a way to personally encourage and support content or creators that you absolutely love. Get tippin!
       </message>
       <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS" desc="Brave rewards onboarding title">
         What can you do with tokens?
       </message>
       <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS_TEXT" desc="Brave rewards onboarding title">
-        Tokens can be used beyond supporting creators. You can buy digital goods and giftcards with a cashback bonus.
+        Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.
       </message>
       <message name="IDS_BASIC_SETTINGS" desc="Brave rewards onboarding title">
         Lastly, let’s get you set up on the basic settings
@@ -1517,7 +1547,7 @@ until they verify, or until 90 days have passed.
         How much support do you want to give to your favorite creators?\n(from your ads earnings)
       </message>
       <message name="IDS_YOU_ARE_DONE" desc="Brave rewards onboarding title">
-        WOOOOHOOOOO!\nYou’re done.
+        Woohoo, you’re all set!
       </message>
       <message name="IDS_YOU_ARE_DONE_TEXT" desc="Brave rewards onboarding title">
         By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
@@ -1529,7 +1559,7 @@ until they verify, or until 90 days have passed.
         Lets Take A Quick Tour
       </message>
       <message name="IDS_BRAVE_REWARDS_WELCOME_LAYOUT_TEXT" desc="Brave rewards welcome layout text">
-        After you recieve your first ads payout you can come back and tip this creator!
+        After you receive your first ads payout you can come back and tip this creator!
       </message>
       <message name="IDS_QUICK_REFRESHER_TOUR" desc="Brave rewards welcome layout button text">
         Quick refresher tour
@@ -1554,6 +1584,78 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
+      </message>
+      <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
+        View full Privacy Report
+      </message>
+      <message name="IDS_GOOGLE_DESC" desc="Onboarding SE text">
+        Most popular
+      </message>
+      <message name="IDS_YAHOO_DESC" desc="Onboarding SE text">
+        Supports Brave
+      </message>
+      <message name="IDS_DDG_DESC" desc="Onboarding SE text">
+        Private and no tracking
+      </message>
+      <message name="IDS_QWANT_DESC" desc="Onboarding SE text">
+        Private and no tracking, EU-based
+      </message>
+      <message name="IDS_STARTPAGE_DESC" desc="Onboarding SE text">
+        Google results without trackers
+      </message>
+      <message name="IDS_BING_DESC" desc="Onboarding SE text">
+        Second most popular
+      </message>
+      <message name="IDS_YANDEX_DESC" desc="Onboarding SE text">
+        A leading search engine in Russia
+      </message>
+      <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
+        Plants trees, based in Berlin
+      </message>
+      <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
+        Some search engines protect your privacy better than others when you search the web.
+      </message>
+      <message name="IDS_P3A_ONBOARDING_TITLE_TEXT_1" desc="P3a Onboarding title text">
+        Welcome to Brave Browser
+      </message>
+      <message name="IDS_P3A_ONBOARDING_TITLE_TEXT_2" desc="P3a Onboarding title text">
+        Help us learn anonymously
+      </message>
+      <message name="IDS_P3A_ONBOARDING_TEXT" desc="P3a Onboarding text">
+        Brave protects your privacy and\nappreciates your consent to the following:
+      </message>
+      <message name="IDS_P3A_ONBOARDING_CHECKBOX_TEXT" desc="P3a onboarding checkbox text">
+        Help improve Brave by sending crash reports and completely anonymized, <ph name="PRIVATE_PRODUCT_ANALYSIS">%1$s</ph>
+      </message>
+      <message name="IDS_PRIVATE_PRODUCT_ANALYSIS_TEXT" desc="private product analysis text">
+        private product analytics.
+      </message>
+      <message name="IDS_BRE_BANNER_TITLE_TEXT" desc="BRE banner title text">
+        Need a refresher on Rewards?
+      </message>
+      <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
+        Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
+      </message>
+      <message name="IDS_SET_DEFAULT_BROWSER_TITLE" desc="Set default browser modal title">
+        Open all links with Brave to protect your privacy
+      </message>
+      <message name="IDS_SET_DEFAULT_BROWSER_TEXT" desc="Set default browser modal text">
+        Brave Shields blocks trackers &amp; ads, saves data, and saves you time on every site you visit.
+      </message>
+      <message name="IDS_SET_BRAVE_DEFAULT_BROWSER" desc="Set default browser modal button text">
+        Set Brave as default
+      </message>
+      <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
+        Not now
+      </message>
+      <message name="IDS_REWARDS_TOOLTIP_TITLE" desc="Rewards tooltip title">
+        Brave Rewards in Japan is switching to a new system!
+      </message>
+      <message name="IDS_REWARDS_TOOLTIP_TEXT" desc="Rewards tooltip text">
+        Please use your BAP by March 13th. After that, BAP will be discontinued.
+      </message>
+      <message name="IDS_REWARDS_MODAL_TEXT" desc="Rewards modal text">
+        The tipping feature will be unavailable from March 13th until April 13th. All BAPs will be discontinued by April 13th. Please use your BAP by March 13th. Any BAP remaining in your Brave browser after March 13th cannot be held or transferred by you or Brave, and will be lost. A new and improved system awaits!
       </message>
     </messages>
   </release>

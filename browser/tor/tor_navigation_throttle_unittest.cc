@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
@@ -46,8 +46,9 @@ class TorNavigationThrottleUnitTest : public testing::Test {
         content::WebContentsTester::CreateTestWebContents(profile, nullptr);
     tor_web_contents_ =
         content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
-    tor_profile_service_ = TorProfileServiceFactory::GetForContext(tor_profile);
-    tor_profile_service_->SetTorLauncherFactoryForTest(GetTorLauncherFactory());
+    TorProfileService* tor_profile_service =
+        TorProfileServiceFactory::GetForContext(tor_profile);
+    tor_profile_service->SetTorLauncherFactoryForTest(GetTorLauncherFactory());
     ASSERT_EQ(TorProfileServiceFactory::GetForContext(profile), nullptr);
   }
 
@@ -61,8 +62,6 @@ class TorNavigationThrottleUnitTest : public testing::Test {
 
   content::WebContents* tor_web_contents() { return tor_web_contents_.get(); }
 
-  TorProfileService* tor_profile_service() { return tor_profile_service_; }
-
   MockTorLauncherFactory* GetTorLauncherFactory() {
     return &MockTorLauncherFactory::GetInstance();
   }
@@ -72,7 +71,6 @@ class TorNavigationThrottleUnitTest : public testing::Test {
   content::RenderViewHostTestEnabler test_render_host_factories_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::unique_ptr<content::WebContents> tor_web_contents_;
-  TorProfileService* tor_profile_service_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottleUnitTest);
 };
@@ -82,14 +80,13 @@ TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, tor_profile_service(),
-          tor_web_contents()->GetBrowserContext()->IsTor());
+          &test_handle, tor_web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle != nullptr);
 
   content::MockNavigationHandle test_handle2(web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle2 =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle2, nullptr, web_contents()->GetBrowserContext()->IsTor());
+          &test_handle2, web_contents()->GetBrowserContext()->IsTor());
   EXPECT_TRUE(throttle2 == nullptr);
 }
 
@@ -100,7 +97,7 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, tor_profile_service(),
+          &test_handle, GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("http://www.example.com");
   test_handle.set_url(url);
@@ -138,7 +135,7 @@ TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, tor_profile_service(),
+          &test_handle, GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   GURL url("ftp://ftp.example.com");
   test_handle.set_url(url);
@@ -166,7 +163,7 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
       TorNavigationThrottle::MaybeCreateThrottleFor(
-          &test_handle, tor_profile_service(),
+          &test_handle, GetTorLauncherFactory(),
           tor_web_contents()->GetBrowserContext()->IsTor());
   bool was_navigation_resumed = false;
   throttle->set_resume_callback_for_testing(

@@ -1,0 +1,14 @@
+include_rules = [
+  "+../../../../components/metrics",
+  "+components/metrics",
+  "+components/prefs",
+  "+components/variations",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "machine_id_provider_win.cc": [
+    "+brave/common/brave_switches.h",
+  ],
+}
+

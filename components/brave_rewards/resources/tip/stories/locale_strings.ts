@@ -1,8 +1,8 @@
+import { localeStrings as onboardingStrings } from '../../shared/components/onboarding/stories/locale_strings'
+
 export const localeStrings = {
   addFunds: 'add funds',
-  bap: 'BAP',
   bapFunds: 'BAP Funds',
-  bat: 'BAT',
   batFunds: 'BAT Funds',
   cancel: 'Cancel',
   cancelConfirmationText: 'Are you sure you want to stop supporting this creator?',
@@ -23,11 +23,6 @@ export const localeStrings = {
   notEnoughTokens: 'Not enough {{currency}}.',
   notEnoughTokensLink: 'Not enough {{currency}}. Please',
   on: 'on',
-  onboardingMaybeLater: 'Maybe later',
-  onboardingStartUsingRewards: 'Start using Brave Rewards',
-  onboardingTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
-  onboardingTipHeader: 'Tip with Brave rewards',
-  onboardingTipText: 'By using Brave rewards, you will start to gain BAT that you can use to tip creators.',
   oneTimeTip: 'One Time Tip',
   oneTimeTipAmount: 'One time tip amount:',
   optInRequired: 'Hold on, you can’t tip yet',
@@ -48,5 +43,6 @@ export const localeStrings = {
   tokens: 'tokens',
   tweetAboutSupport: 'Tweet about your support',
   unverifiedTextMore: 'Learn more.',
-  welcome: 'Welcome!'
+  welcome: 'Welcome!',
+  ...onboardingStrings
 }

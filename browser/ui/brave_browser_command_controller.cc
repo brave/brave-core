@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -15,15 +16,21 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "components/sync/driver/sync_driver_switches.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
 namespace {
@@ -122,8 +129,19 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
 #endif
-  UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, !is_guest_session);
-  UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, !is_guest_session);
+  UpdateCommandForSidebar();
+  bool add_new_profile_enabled = !is_guest_session;
+  bool open_guest_profile_enabled = !is_guest_session;
+  if (!is_guest_session) {
+    if (PrefService* local_state = g_browser_process->local_state()) {
+      add_new_profile_enabled =
+          local_state->GetBoolean(prefs::kBrowserAddPersonEnabled);
+      open_guest_profile_enabled =
+          local_state->GetBoolean(prefs::kBrowserGuestModeEnabled);
+    }
+  }
+  UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
+  UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
 }
 
@@ -148,6 +166,13 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
                        !brave::IsTorDisabledForProfile(browser_->profile()));
 }
 #endif
+
+void BraveBrowserCommandController::UpdateCommandForSidebar() {
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  if (sidebar::CanUseSidebar(browser_->profile()))
+    UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
+#endif
+}
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);

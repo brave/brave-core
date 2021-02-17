@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -12,6 +13,7 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   BraveContentRendererClient();
   ~BraveContentRendererClient() override;
   void SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() override;
+  void RenderFrameCreated(content::RenderFrame* render_frame) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentRendererClient);

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_DATABASE_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
-#define BAT_ADS_INTERNAL_DATABASE_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
 
 #include <memory>
 #include <string>
@@ -15,17 +15,19 @@
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
-#include "bat/ads/internal/database/tables/categories_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
+#include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
-using GetCreativeAdNotificationsCallback = std::function<void(const Result,
-    const std::vector<std::string>&, const CreativeAdNotificationList&)>;
+using GetCreativeAdNotificationsCallback =
+    std::function<void(const Result,
+                       const std::vector<std::string>&,
+                       const CreativeAdNotificationList&)>;
 
 namespace database {
 namespace table {
@@ -36,28 +38,21 @@ class CreativeAdNotifications : public Table {
 
   ~CreativeAdNotifications() override;
 
-  void Save(
-      const CreativeAdNotificationList& creative_ad_notifications,
-      ResultCallback callback);
+  void Save(const CreativeAdNotificationList& creative_ad_notifications,
+            ResultCallback callback);
 
-  void Delete(
-      ResultCallback callback);
+  void Delete(ResultCallback callback);
 
-  void GetForCategories(
-      const CategoryList& categories,
-      GetCreativeAdNotificationsCallback callback);
+  void GetForSegments(const SegmentList& segments,
+                      GetCreativeAdNotificationsCallback callback);
 
-  void GetAll(
-      GetCreativeAdNotificationsCallback callback);
+  void GetAll(GetCreativeAdNotificationsCallback callback);
 
-  void set_batch_size(
-      const int batch_size);
+  void set_batch_size(const int batch_size);
 
   std::string get_table_name() const override;
 
-  void Migrate(
-      DBTransaction* transaction,
-      const int to_version) override;
+  void Migrate(DBTransaction* transaction, const int to_version) override;
 
  private:
   void InsertOrUpdate(
@@ -72,42 +67,29 @@ class CreativeAdNotifications : public Table {
       DBCommand* command,
       const CreativeAdNotificationList& creative_ad_notifications);
 
-  void OnGetForCategories(
-      DBCommandResponsePtr response,
-      const CategoryList& categories,
-      GetCreativeAdNotificationsCallback callback);
+  void OnGetForSegments(DBCommandResponsePtr response,
+                        const SegmentList& segments,
+                        GetCreativeAdNotificationsCallback callback);
 
-  void OnGetAll(
-      DBCommandResponsePtr response,
-      GetCreativeAdNotificationsCallback callback);
+  void OnGetAll(DBCommandResponsePtr response,
+                GetCreativeAdNotificationsCallback callback);
 
-  CreativeAdNotificationInfo GetFromRecord(
-      DBRecord* record) const;
+  CreativeAdNotificationInfo GetFromRecord(DBRecord* record) const;
 
-  void CreateTableV1(
-      DBTransaction* transaction);
-  void MigrateToV1(
-      DBTransaction* transaction);
-
-  void MigrateToV2(
-      DBTransaction* transaction);
-
-  void CreateTableV3(
-      DBTransaction* transaction);
-  void MigrateToV3(
-      DBTransaction* transaction);
+  void CreateTableV9(DBTransaction* transaction);
+  void MigrateToV9(DBTransaction* transaction);
 
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
-  std::unique_ptr<Categories> categories_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
+  std::unique_ptr<Segments> segments_database_table_;
 };
 
 }  // namespace table
 }  // namespace database
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_DATABASE_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CREATIVE_AD_NOTIFICATIONS_DATABASE_TABLE_H_

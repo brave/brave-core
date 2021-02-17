@@ -21,8 +21,8 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/background.h"
-#include "ui/views/controls/image_view.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/image_view.h"
 #include "ui/views/layout/box_layout.h"
 
 namespace brave_ads {
@@ -64,14 +64,14 @@ void NotificationControlButtonsView::ShowInfoButton(bool show) {
 
 void NotificationControlButtonsView::ShowCloseButton(bool show) {
   if (show && !close_button_) {
-    close_button_ = std::make_unique<PaddedButton>(this);
+    close_button_ = std::make_unique<PaddedButton>(
+        base::BindRepeating(&NotificationView::OnCloseButtonPressed,
+                            base::Unretained(message_view_)));
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(
-            kBraveAdsCloseButtonIcon,
-            18,
-            kBraveAdsCloseButtonIconColor));
+        gfx::CreateVectorIcon(kBraveAdsCloseButtonIcon, 18,
+                              kBraveAdsCloseButtonIconColor));
 
     // Add the button at the last.
     AddChildView(close_button_.get());
@@ -104,13 +104,6 @@ views::ImageView* NotificationControlButtonsView::info_button() const {
 
 const char* NotificationControlButtonsView::GetClassName() const {
   return kViewClassName;
-}
-
-void NotificationControlButtonsView::ButtonPressed(views::Button* sender,
-                                                   const ui::Event& event) {
-  if (close_button_ && sender == close_button_.get()) {
-    message_view_->OnCloseButtonPressed();
-  }
 }
 
 }  // namespace brave_ads

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6055de769 100644
+index 5e699b5e3dca15782ba1eaa1b5134b2dec2470d3..694cb929e89d0ca1a8211f8f993935c8f2f88c7e 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -38,7 +38,9 @@ by a child template that "extends" this file.
+@@ -39,7 +39,9 @@ by a child template that "extends" this file.
      {% endif %}
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH"/>
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -12,10 +12,10 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -48,17 +50,24 @@ by a child template that "extends" this file.
-     {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
-         <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-     {% endif %}
+@@ -47,9 +49,13 @@ by a child template that "extends" this file.
+     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 +<!--
      <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 +-->
@@ -25,9 +25,8 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
 +-->
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
      <uses-permission android:name="android.permission.NFC"/>
-+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+@@ -58,7 +64,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -37,7 +36,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -105,7 +114,9 @@ by a child template that "extends" this file.
+@@ -106,7 +114,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -47,7 +46,7 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -158,6 +169,7 @@ by a child template that "extends" this file.
+@@ -159,6 +169,7 @@ by a child template that "extends" this file.
            org.chromium.chrome.browser.ChromeApplication
            {%- endif -%}
            {% endblock %}"
@@ -55,19 +54,19 @@ index 4b942ff06700f6d8c6ccc1cb94878de7c7412d0d..23e10e5555a9990e5495c60a21a4a8b6
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -209,6 +221,7 @@ by a child template that "extends" this file.
-         <!-- ARCore APK integration -->
-         <!-- This tag indicates that this application optionally uses ARCore. -->
-         <meta-data android:name="com.google.ar.core" android:value="optional" />
-+        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
-         {% endif %}
- 
-         <!-- Cast support -->
-@@ -1171,6 +1184,7 @@ by a child template that "extends" this file.
+@@ -1122,6 +1133,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
-         <!-- Media route controllers to use for remote playback (cast).
-              This is here, rather than in code, since it varies between upstream and downstream,
+         {% endblock %}
+       {% endmacro %}
+@@ -1204,6 +1216,7 @@ by a child template that "extends" this file.
+       <!-- ARCore APK integration -->
+       <!-- This tag indicates that this application optionally uses ARCore. -->
+       <meta-data android:name="com.google.ar.core" android:value="optional" />
++        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
+       {% endif %}
+ 
+       <!-- Cast support -->

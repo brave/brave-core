@@ -27,8 +27,9 @@ public class BinanceWidgetManager {
 
     public static final String BINANCE_US =
             "https://www.binance.us/en/buy-sell-crypto?crypto=%1$s&amount=%2$s&ref=35089877&utm_source=brave";
-    public static final String BINANCE_COM =
-            "https://www.binance.com/en/buy-sell-crypto?fiat=%1$s&crypto=%2$s&amount=%3$s&ref=W4GYNUAJ&utm_source=brave";
+    public static final String BINANCE_COM_ONE = "https://www.binance.com/";
+    public static final String BINANCE_COM_TWO =
+            "/buy-sell-crypto?fiat=%1$s&crypto=%2$s&amount=%3$s&ref=W4GYNUAJ&utm_source=brave";
 
     private static BinanceWidgetManager sInstance;
 

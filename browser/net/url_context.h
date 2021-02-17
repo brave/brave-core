@@ -84,6 +84,7 @@ struct BraveRequestInfo {
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
 
+  content::BrowserContext* browser_context = nullptr;
   net::HttpRequestHeaders* headers = nullptr;
   // The following two sets are populated by |OnBeforeStartTransactionCallback|.
   // |set_headers| contains headers which values were added or modified.
@@ -98,10 +99,9 @@ struct BraveRequestInfo {
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
   GURL ipfs_gateway_url;
+  bool ipfs_auto_fallback = false;
 
-  bool ShouldMockRequest() const {
-    return !mock_data_url.empty();
-  }
+  bool ShouldMockRequest() const { return !mock_data_url.empty(); }
 
   net::NetworkIsolationKey network_isolation_key = net::NetworkIsolationKey();
 
@@ -115,13 +115,13 @@ struct BraveRequestInfo {
 
   std::string upload_data;
 
-  static std::shared_ptr<brave::BraveRequestInfo>
-      MakeCTX(const network::ResourceRequest& request,
-              int render_process_id,
-              int frame_tree_node_id,
-              uint64_t request_identifier,
-              content::BrowserContext* browser_context,
-              std::shared_ptr<brave::BraveRequestInfo> old_ctx);
+  static std::shared_ptr<brave::BraveRequestInfo> MakeCTX(
+      const network::ResourceRequest& request,
+      int render_process_id,
+      int frame_tree_node_id,
+      uint64_t request_identifier,
+      content::BrowserContext* browser_context,
+      std::shared_ptr<brave::BraveRequestInfo> old_ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.

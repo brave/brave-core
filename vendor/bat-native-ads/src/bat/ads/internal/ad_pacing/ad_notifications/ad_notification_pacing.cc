@@ -20,10 +20,9 @@ CreativeAdNotificationList AdPacing::PaceAds(
     const CreativeAdNotificationList& ads) {
   CreativeAdNotificationList paced_ads = ads;
 
-  const auto iter = std::remove_if(paced_ads.begin(),
-      paced_ads.end(), [&](const CreativeAdNotificationInfo& ad) {
-    return ShouldPace(ad);
-  });
+  const auto iter = std::remove_if(
+      paced_ads.begin(), paced_ads.end(),
+      [&](const CreativeAdNotificationInfo& ad) { return ShouldPace(ad); });
 
   paced_ads.erase(iter, paced_ads.end());
 
@@ -35,15 +34,15 @@ CreativeAdNotificationList AdPacing::PaceAds(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool AdPacing::ShouldPace(
-    const CreativeAdNotificationInfo& ad) {
+bool AdPacing::ShouldPace(const CreativeAdNotificationInfo& ad) {
   const double rand = base::RandDouble();
   if (rand <= ad.ptr) {
     return false;
   }
 
   BLOG(2, "Pacing ad delivery for creative instance id "
-      << ad.creative_instance_id << " [Roll(" << ad.ptr << "):" << rand << "]");
+              << ad.creative_instance_id << " [Roll(" << ad.ptr << "):" << rand
+              << "]");
 
   return true;
 }

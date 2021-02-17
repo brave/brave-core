@@ -29,9 +29,8 @@ Dayparts::Dayparts() = default;
 
 Dayparts::~Dayparts() = default;
 
-void Dayparts::InsertOrUpdate(
-    DBTransaction* transaction,
-    const CreativeAdList& creative_ads) {
+void Dayparts::InsertOrUpdate(DBTransaction* transaction,
+                              const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
   if (creative_ads.empty()) {
@@ -40,19 +39,18 @@ void Dayparts::InsertOrUpdate(
 
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::RUN;
-  command->command = BuildInsertOrUpdateQuery(command.get(),
-      creative_ads);
+  command->command = BuildInsertOrUpdateQuery(command.get(), creative_ads);
 
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::Delete(
-    ResultCallback callback) {
+void Dayparts::Delete(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
@@ -60,14 +58,12 @@ std::string Dayparts::get_table_name() const {
   return kTableName;
 }
 
-void Dayparts::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void Dayparts::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
-    case 6: {
-      MigrateToV6(transaction);
+    case 9: {
+      MigrateToV9(transaction);
       break;
     }
 
@@ -79,9 +75,8 @@ void Dayparts::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int Dayparts::BindParameters(
-    DBCommand* command,
-    const CreativeAdList& creative_ads) {
+int Dayparts::BindParameters(DBCommand* command,
+                             const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
@@ -89,8 +84,7 @@ int Dayparts::BindParameters(
 
   for (const auto& creative_ad : creative_ads) {
     for (const auto& daypart : creative_ad.dayparts) {
-      BindString(command, index++,
-          creative_ad.campaign_id);
+      BindString(command, index++, creative_ad.campaign_id);
       BindString(command, index++, daypart.dow);
       BindInt(command, index++, daypart.start_minute);
       BindInt(command, index++, daypart.end_minute);
@@ -109,27 +103,26 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(campaign_id, "
-          "dow, "
-          "start_minute, "
-          "end_minute) VALUES %s",
+      "(campaign_id, "
+      "dow, "
+      "start_minute, "
+      "end_minute) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void Dayparts::CreateTableV6(
-    DBTransaction* transaction) {
+void Dayparts::CreateTableV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(campaign_id TEXT NOT NULL, "
-          "dow TEXT NOT NULL, "
-          "start_minute INT NOT NULL, "
-          "end_minute INT NOT NULL, "
-          "PRIMARY KEY (campaign_id, dow, start_minute, end_minute), "
-          "UNIQUE(campaign_id, dow, start_minute, end_minute) "
-              "ON CONFLICT REPLACE)",
+      "(campaign_id TEXT NOT NULL, "
+      "dow TEXT NOT NULL, "
+      "start_minute INT NOT NULL, "
+      "end_minute INT NOT NULL, "
+      "PRIMARY KEY (campaign_id, dow, start_minute, end_minute), "
+      "UNIQUE(campaign_id, dow, start_minute, end_minute) "
+      "ON CONFLICT REPLACE)",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -139,21 +132,12 @@ void Dayparts::CreateTableV6(
   transaction->commands.push_back(std::move(command));
 }
 
-void Dayparts::CreateIndexV6(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "campaign_id");
-}
-
-void Dayparts::MigrateToV6(
-    DBTransaction* transaction) {
+void Dayparts::MigrateToV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV6(transaction);
-  CreateIndexV6(transaction);
+  CreateTableV9(transaction);
 }
 
 }  // namespace table

@@ -207,8 +207,8 @@ public class BinanceDepositFragment extends Fragment {
                         QRCodeShareDialogFragment mQRCodeShareDialogFragment =
                                 new QRCodeShareDialogFragment();
                         mQRCodeShareDialogFragment.setQRCodeText(depositAddress);
-                        mQRCodeShareDialogFragment.show(getActivity().getSupportFragmentManager(),
-                                "QRCodeShareDialogFragment");
+                        mQRCodeShareDialogFragment.show(
+                                getParentFragmentManager(), "QRCodeShareDialogFragment");
                     }
                 });
 

@@ -1,0 +1,12 @@
+include_rules = [
+  "+content/public/browser",
+  "+services/preferences",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "brave_content_settings_pref_provider.cc": [
+    "+brave/common/network_constants.h",
+    "+brave/common/pref_names.h",
+  ],
+}

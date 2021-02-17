@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -56,6 +57,7 @@ import org.chromium.base.TraceEvent;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.InternetConnection;
@@ -170,10 +172,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
-        // mBraveStatsViewFallBackLayout = (ViewGroup)
-        // findViewById(R.id.brave_stats_fallback_layout);
-
         ntpWidgetLayout = findViewById(R.id.ntp_widget_layout);
         indicatorLayout = findViewById(R.id.indicator_layout);
         ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
@@ -200,6 +198,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             public void onPageScrollStateChanged(int state) {}
         });
         showWidgetBasedOnOrder();
+        NTPUtil.showBREBottomBanner(this);
     }
 
     private void showFallBackNTPLayout() {
@@ -237,6 +236,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 checkForBraveStats();
             }
         });
@@ -266,6 +266,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 mBraveStatsView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                         checkForBraveStats();
                     }
                 });
@@ -418,16 +419,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mSiteSectionView.setLayoutParams(layoutParams);
     }
 
-    protected int getMaxRowsForMostVisitedTiles() {
-        if (NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0
-                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-            return 2;
-        } else {
-            return 1;
-        }
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -441,7 +432,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
         if (PackageUtils.isFirstInstall(mActivity)
-                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()
+                && OnboardingPrefManager.getInstance().isP3aOnboardingShown()) {
             ((BraveActivity)mActivity).showOnboardingV2(false);
         }
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
@@ -498,7 +490,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
                 }
             }
-            checkForNonDistruptiveBanner(ntpImage);
+            checkForNonDisruptiveBanner(ntpImage);
             super.onConfigurationChanged(newConfig);
             showNTPImage(ntpImage);
         } else {
@@ -603,10 +595,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         });
     }
 
-    private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
-        int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
-        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()) {
-            NTPUtil.showNonDistruptiveBanner((BraveActivity) mActivity, this, brOption,
+    private void checkForNonDisruptiveBanner(NTPImage ntpImage) {
+        int brOption = NTPUtil.checkForNonDisruptiveBanner(ntpImage, sponsoredTab);
+        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()
+                && ((!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                             Profile.getLastUsedRegularProfile())
+                            && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal())
+                        || BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                Profile.getLastUsedRegularProfile()))) {
+            NTPUtil.showNonDisruptiveBanner((BraveActivity) mActivity, this, brOption,
                                              sponsoredTab, newTabPageListener);
         }
     }
@@ -621,7 +618,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             }
         }
-        checkForNonDistruptiveBanner(ntpImage);
+        checkForNonDisruptiveBanner(ntpImage);
         showNTPImage(ntpImage);
     }
 

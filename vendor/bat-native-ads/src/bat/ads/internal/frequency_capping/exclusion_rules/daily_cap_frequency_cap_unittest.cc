@@ -18,9 +18,8 @@ namespace ads {
 namespace {
 
 const std::vector<std::string> kCampaignIds = {
-  "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-  "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
-};
+    "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
+    "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
 
 }  // namespace
 
@@ -31,8 +30,7 @@ class BatAdsDailyCapFrequencyCapTest : public UnitTestBase {
   ~BatAdsDailyCapFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsDailyCapFrequencyCapTest,
-    AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
   ad.campaign_id = kCampaignIds.at(0);
@@ -48,8 +46,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDailyCapFrequencyCapTest,
-    AllowAdIfDoesNotExceedCap) {
+TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.campaign_id = kCampaignIds.at(0);
@@ -57,8 +54,8 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -71,7 +68,36 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 }
 
 TEST_F(BatAdsDailyCapFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
+       AllowAdIfDoesNotExceedCapForMultipleTypes) {
+  // Arrange
+  CreativeAdInfo ad;
+  ad.campaign_id = kCampaignIds.at(0);
+  ad.daily_cap = 2;
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event_1 =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_1);
+
+  const AdEventInfo ad_event_2 =
+      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_2);
+
+  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
+                                                 ConfirmationType::kViewed);
+  ad_events.push_back(ad_event_3);
+
+  // Act
+  DailyCapFrequencyCap frequency_cap(ad_events);
+  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDailyCapFrequencyCapTest,
+       AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo ad_1;
   ad_1.campaign_id = kCampaignIds.at(0);
@@ -82,8 +108,8 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad_2, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -95,8 +121,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDailyCapFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapWithin1Day) {
+TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   // Arrange
   CreativeAdInfo ad;
   ad.campaign_id = kCampaignIds.at(0);
@@ -104,8 +129,8 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -119,8 +144,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDailyCapFrequencyCapTest,
-    AllowAdIfDoesNotExceedCapAfter1Day) {
+TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo ad;
   ad.campaign_id = kCampaignIds.at(0);
@@ -128,8 +152,8 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
 
@@ -143,8 +167,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsDailyCapFrequencyCapTest,
-    DoNotAllowAdIfExceedsCap) {
+TEST_F(BatAdsDailyCapFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo ad;
   ad.campaign_id = kCampaignIds.at(0);
@@ -152,8 +175,8 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

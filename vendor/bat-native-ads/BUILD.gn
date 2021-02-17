@@ -9,9 +9,7 @@ if (is_android) {
 dep_base = rebase_path("../..", "//")
 
 config("external_config") {
-  visibility = [
-    ":*",
-  ]
+  visibility = [ ":*" ]
   include_dirs = [
     "include",
     "$target_gen_dir/include",
@@ -29,13 +27,9 @@ config("internal_config") {
 }
 
 group("bat-native-ads") {
-  public_deps = [
-    ":ads",
-  ]
+  public_deps = [ ":ads" ]
 
-  data_deps = [
-    ":bat-native-ads-standalone",
-  ]
+  data_deps = [ ":bat-native-ads-standalone" ]
 }
 
 static_library("bat-native-ads-standalone") {
@@ -46,20 +40,16 @@ static_library("bat-native-ads-standalone") {
 
   configs -= [ "//build/config/compiler:thin_archive" ]
 
-  defines = [
-    "STANDALONE_BUILD",
-  ]
+  defines = [ "STANDALONE_BUILD" ]
 
-  deps = [
-    ":ads"
-  ]
+  deps = [ ":ads" ]
 }
 
 source_set("headers") {
   visibility = [
     ":*",
-    "//brave/components/brave_ads/test:*",
     "//brave/browser/extensions:extensions",
+    "//brave/components/brave_ads/test:*",
     "//brave/test:*",
   ]
 
@@ -71,15 +61,16 @@ source_set("headers") {
     "include/bat/ads/ad_info.h",
     "include/bat/ads/ad_notification_info.h",
     "include/bat/ads/ad_type.h",
+    "include/bat/ads/ads.h",
     "include/bat/ads/ads_client.h",
     "include/bat/ads/ads_history_info.h",
-    "include/bat/ads/ads.h",
     "include/bat/ads/category_content_info.h",
     "include/bat/ads/confirmation_type.h",
     "include/bat/ads/database.h",
     "include/bat/ads/export.h",
     "include/bat/ads/new_tab_page_ad_info.h",
     "include/bat/ads/pref_names.h",
+    "include/bat/ads/promoted_content_ad_info.h",
     "include/bat/ads/result.h",
     "include/bat/ads/statement_info.h",
     "include/bat/ads/transaction_info.h",
@@ -122,6 +113,13 @@ source_set("ads") {
     "src/bat/ads/internal/account/ad_rewards/payments/payments.h",
     "src/bat/ads/internal/account/ad_rewards/payments/payments_url_request_builder.cc",
     "src/bat/ads/internal/account/ad_rewards/payments/payments_url_request_builder.h",
+    "src/bat/ads/internal/account/confirmations/confirmation_info.cc",
+    "src/bat/ads/internal/account/confirmations/confirmation_info.h",
+    "src/bat/ads/internal/account/confirmations/confirmations.cc",
+    "src/bat/ads/internal/account/confirmations/confirmations.h",
+    "src/bat/ads/internal/account/confirmations/confirmations_observer.h",
+    "src/bat/ads/internal/account/confirmations/confirmations_state.cc",
+    "src/bat/ads/internal/account/confirmations/confirmations_state.h",
     "src/bat/ads/internal/account/statement/statement.cc",
     "src/bat/ads/internal/account/statement/statement.h",
     "src/bat/ads/internal/account/transactions/transactions.cc",
@@ -153,6 +151,12 @@ source_set("ads") {
     "src/bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h",
     "src/bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.cc",
     "src/bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h",
+    "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_clicked.cc",
+    "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_clicked.h",
+    "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_factory.cc",
+    "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h",
+    "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.cc",
+    "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h",
     "src/bat/ads/internal/ad_pacing/ad_notifications/ad_notification_pacing.cc",
     "src/bat/ads/internal/ad_pacing/ad_notifications/ad_notification_pacing.h",
     "src/bat/ads/internal/ad_server/ad_server.cc",
@@ -162,34 +166,65 @@ source_set("ads") {
     "src/bat/ads/internal/ad_server/get_catalog_url_request_builder.h",
     "src/bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.cc",
     "src/bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.cc",
+    "src/bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.cc",
+    "src/bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.cc",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_values.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model.cc",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_values.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.cc",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h",
+    "src/bat/ads/internal/ad_serving/ad_targeting/models/model.h",
     "src/bat/ads/internal/ad_targeting/ad_targeting.cc",
     "src/bat/ads/internal/ad_targeting/ad_targeting.h",
-    "src/bat/ads/internal/ad_targeting/ad_targeting_util.cc",
-    "src/bat/ads/internal/ad_targeting/ad_targeting_util.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/funnel_keyword_info.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/funnel_keyword_info.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_user_models.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_util.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_classifier_util.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_signal_history_info.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_signal_history_info.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_signal_info.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_signal_info.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/segment_keyword_info.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/segment_keyword_info.h",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/site_info.cc",
-    "src/bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/site_info.h",
-    "src/bat/ads/internal/ad_targeting/contextual/contextual_util.cc",
-    "src/bat/ads/internal/ad_targeting/contextual/contextual_util.h",
-    "src/bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.cc",
-    "src/bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h",
-    "src/bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier_user_models.h",
-    "src/bat/ads/internal/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.cc",
-    "src/bat/ads/internal/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.h",
-    "src/bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.cc",
-    "src/bat/ads/internal/ad_targeting/geographic/subdivision/subdivision_targeting.h",
+    "src/bat/ads/internal/ad_targeting/ad_targeting_segment.cc",
+    "src/bat/ads/internal/ad_targeting/ad_targeting_segment.h",
+    "src/bat/ads/internal/ad_targeting/ad_targeting_segment_util.cc",
+    "src/bat/ads/internal/ad_targeting/ad_targeting_segment_util.h",
+    "src/bat/ads/internal/ad_targeting/ad_targeting_values.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arm_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arm_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_components.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_country_codes.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_segment_keyword_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_segment_keyword_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_site_info.cc",
+    "src/bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_site_info.h",
+    "src/bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h",
+    "src/bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_components.h",
+    "src/bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_language_codes.h",
+    "src/bat/ads/internal/ad_targeting/processors/behavioral/bandits/bandit_feedback_info.h",
+    "src/bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.cc",
+    "src/bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h",
+    "src/bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.cc",
+    "src/bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor.h",
+    "src/bat/ads/internal/ad_targeting/processors/behavioral/purchase_intent/purchase_intent_processor_values.h",
+    "src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.cc",
+    "src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h",
+    "src/bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor_values.h",
+    "src/bat/ads/internal/ad_targeting/processors/processor.h",
+    "src/bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.cc",
+    "src/bat/ads/internal/ad_targeting/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h",
+    "src/bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.cc",
+    "src/bat/ads/internal/ad_targeting/resources/behavioral/purchase_intent/purchase_intent_resource.h",
+    "src/bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.cc",
+    "src/bat/ads/internal/ad_targeting/resources/contextual/text_classification/text_classification_resource.h",
+    "src/bat/ads/internal/ad_targeting/resources/resource.h",
     "src/bat/ads/internal/ad_transfer/ad_transfer.cc",
     "src/bat/ads/internal/ad_transfer/ad_transfer.h",
     "src/bat/ads/internal/ads/ad_notifications/ad_notification.cc",
@@ -200,6 +235,9 @@ source_set("ads") {
     "src/bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.cc",
     "src/bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h",
     "src/bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h",
+    "src/bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.cc",
+    "src/bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h",
+    "src/bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h",
     "src/bat/ads/internal/ads_client_helper.cc",
     "src/bat/ads/internal/ads_client_helper.h",
     "src/bat/ads/internal/ads_history/ads_history.cc",
@@ -232,25 +270,39 @@ source_set("ads") {
     "src/bat/ads/internal/bundle/creative_ad_notification_info.h",
     "src/bat/ads/internal/bundle/creative_new_tab_page_ad_info.cc",
     "src/bat/ads/internal/bundle/creative_new_tab_page_ad_info.h",
+    "src/bat/ads/internal/bundle/creative_promoted_content_ad_info.cc",
+    "src/bat/ads/internal/bundle/creative_promoted_content_ad_info.h",
     "src/bat/ads/internal/catalog/catalog.cc",
     "src/bat/ads/internal/catalog/catalog.h",
+    "src/bat/ads/internal/catalog/catalog_ad_notification_payload_info.cc",
     "src/bat/ads/internal/catalog/catalog_ad_notification_payload_info.h",
     "src/bat/ads/internal/catalog/catalog_campaign_info.cc",
     "src/bat/ads/internal/catalog/catalog_campaign_info.h",
+    "src/bat/ads/internal/catalog/catalog_creative_ad_notification_info.cc",
     "src/bat/ads/internal/catalog/catalog_creative_ad_notification_info.h",
     "src/bat/ads/internal/catalog/catalog_creative_info.cc",
     "src/bat/ads/internal/catalog/catalog_creative_info.h",
+    "src/bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info.cc",
     "src/bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info.h",
+    "src/bat/ads/internal/catalog/catalog_creative_promoted_content_ad_info.cc",
+    "src/bat/ads/internal/catalog/catalog_creative_promoted_content_ad_info.h",
     "src/bat/ads/internal/catalog/catalog_creative_set_info.cc",
     "src/bat/ads/internal/catalog/catalog_creative_set_info.h",
+    "src/bat/ads/internal/catalog/catalog_daypart_info.cc",
     "src/bat/ads/internal/catalog/catalog_daypart_info.h",
+    "src/bat/ads/internal/catalog/catalog_geo_target_info.cc",
     "src/bat/ads/internal/catalog/catalog_geo_target_info.h",
     "src/bat/ads/internal/catalog/catalog_issuer_info.cc",
     "src/bat/ads/internal/catalog/catalog_issuer_info.h",
     "src/bat/ads/internal/catalog/catalog_issuers_info.cc",
     "src/bat/ads/internal/catalog/catalog_issuers_info.h",
+    "src/bat/ads/internal/catalog/catalog_new_tab_page_ad_payload_info.cc",
     "src/bat/ads/internal/catalog/catalog_new_tab_page_ad_payload_info.h",
+    "src/bat/ads/internal/catalog/catalog_os_info.cc",
     "src/bat/ads/internal/catalog/catalog_os_info.h",
+    "src/bat/ads/internal/catalog/catalog_promoted_content_ad_payload_info.cc",
+    "src/bat/ads/internal/catalog/catalog_promoted_content_ad_payload_info.h",
+    "src/bat/ads/internal/catalog/catalog_segment_info.cc",
     "src/bat/ads/internal/catalog/catalog_segment_info.h",
     "src/bat/ads/internal/catalog/catalog_state.cc",
     "src/bat/ads/internal/catalog/catalog_state.h",
@@ -272,13 +324,6 @@ source_set("ads") {
     "src/bat/ads/internal/client/preferences/flagged_ad_info.h",
     "src/bat/ads/internal/client/preferences/saved_ad_info.cc",
     "src/bat/ads/internal/client/preferences/saved_ad_info.h",
-    "src/bat/ads/internal/confirmations/confirmation_info.cc",
-    "src/bat/ads/internal/confirmations/confirmation_info.h",
-    "src/bat/ads/internal/confirmations/confirmations_observer.h",
-    "src/bat/ads/internal/confirmations/confirmations.cc",
-    "src/bat/ads/internal/confirmations/confirmations.h",
-    "src/bat/ads/internal/confirmations/confirmations_state.cc",
-    "src/bat/ads/internal/confirmations/confirmations_state.h",
     "src/bat/ads/internal/container_util.h",
     "src/bat/ads/internal/conversions/conversion_info.cc",
     "src/bat/ads/internal/conversions/conversion_info.h",
@@ -311,8 +356,6 @@ source_set("ads") {
     "src/bat/ads/internal/database/tables/ad_events_database_table.h",
     "src/bat/ads/internal/database/tables/campaigns_database_table.cc",
     "src/bat/ads/internal/database/tables/campaigns_database_table.h",
-    "src/bat/ads/internal/database/tables/categories_database_table.cc",
-    "src/bat/ads/internal/database/tables/categories_database_table.h",
     "src/bat/ads/internal/database/tables/conversions_database_table.cc",
     "src/bat/ads/internal/database/tables/conversions_database_table.h",
     "src/bat/ads/internal/database/tables/creative_ad_notifications_database_table.cc",
@@ -321,10 +364,14 @@ source_set("ads") {
     "src/bat/ads/internal/database/tables/creative_ads_database_table.h",
     "src/bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.cc",
     "src/bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h",
+    "src/bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.cc",
+    "src/bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h",
     "src/bat/ads/internal/database/tables/dayparts_database_table.cc",
     "src/bat/ads/internal/database/tables/dayparts_database_table.h",
     "src/bat/ads/internal/database/tables/geo_targets_database_table.cc",
     "src/bat/ads/internal/database/tables/geo_targets_database_table.h",
+    "src/bat/ads/internal/database/tables/segments_database_table.cc",
+    "src/bat/ads/internal/database/tables/segments_database_table.h",
     "src/bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.cc",
     "src/bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h",
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_filter.h",
@@ -333,8 +380,16 @@ source_set("ads") {
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_priority_filter.cc",
     "src/bat/ads/internal/eligible_ads/ad_notifications/filters/eligible_ads_priority_filter.h",
     "src/bat/ads/internal/eligible_ads/eligible_ads_util.h",
+    "src/bat/ads/internal/features/ad_rewards/ad_rewards_features.cc",
+    "src/bat/ads/internal/features/ad_rewards/ad_rewards_features.h",
+    "src/bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.cc",
+    "src/bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h",
     "src/bat/ads/internal/features/features.cc",
     "src/bat/ads/internal/features/features.h",
+    "src/bat/ads/internal/features/purchase_intent/purchase_intent_features.cc",
+    "src/bat/ads/internal/features/purchase_intent/purchase_intent_features.h",
+    "src/bat/ads/internal/features/text_classification/text_classification_features.cc",
+    "src/bat/ads/internal/features/text_classification/text_classification_features.h",
     "src/bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.cc",
     "src/bat/ads/internal/frequency_capping/ad_notifications/ad_notifications_frequency_capping.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.cc",
@@ -357,6 +412,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/promoted_content_ad_uuid_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/exclusion_rules/promoted_content_ad_uuid_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.cc",
@@ -392,10 +449,16 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/permission_rules/permission_rule.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h",
+    "src/bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.h",
+    "src/bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_hour_frequency_cap.cc",
+    "src/bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_hour_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h",
+    "src/bat/ads/internal/frequency_capping/promoted_content_ads/promoted_content_ads_frequency_capping.cc",
+    "src/bat/ads/internal/frequency_capping/promoted_content_ads/promoted_content_ads_frequency_capping.h",
     "src/bat/ads/internal/json_helper.cc",
     "src/bat/ads/internal/json_helper.h",
     "src/bat/ads/internal/legacy_migration/legacy_migration_util.cc",
@@ -437,8 +500,12 @@ source_set("ads") {
     "src/bat/ads/internal/search_engine/search_providers.h",
     "src/bat/ads/internal/security/security_util.cc",
     "src/bat/ads/internal/security/security_util.h",
+    "src/bat/ads/internal/server/ads_serve_server_util.cc",
+    "src/bat/ads/internal/server/ads_serve_server_util.h",
     "src/bat/ads/internal/server/ads_server_util.cc",
     "src/bat/ads/internal/server/ads_server_util.h",
+    "src/bat/ads/internal/server/confirmations_server_util.cc",
+    "src/bat/ads/internal/server/confirmations_server_util.h",
     "src/bat/ads/internal/server/rewards_server_util.cc",
     "src/bat/ads/internal/server/rewards_server_util.h",
     "src/bat/ads/internal/server/url_request_builder.h",
@@ -481,6 +548,7 @@ source_set("ads") {
     "src/bat/ads/internal/user_activity/user_activity.h",
     "src/bat/ads/new_tab_page_ad_info.cc",
     "src/bat/ads/pref_names.cc",
+    "src/bat/ads/promoted_content_ad_info.cc",
     "src/bat/ads/statement_info.cc",
     "src/bat/ads/transaction_info.cc",
   ]
@@ -501,15 +569,15 @@ source_set("ads") {
 
   if (is_mac) {
     sources += [
-      "src/bat/ads/internal/platform/platform_helper_mac.mm",
       "src/bat/ads/internal/platform/platform_helper_mac.h",
+      "src/bat/ads/internal/platform/platform_helper_mac.mm",
     ]
   }
 
   if (is_ios) {
     sources += [
-      "src/bat/ads/internal/platform/platform_helper_ios.mm",
       "src/bat/ads/internal/platform/platform_helper_ios.h",
+      "src/bat/ads/internal/platform/platform_helper_ios.mm",
     ]
   }
 
@@ -522,6 +590,7 @@ source_set("ads") {
 
   deps = [
     "//base",
+    "//brave/common",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
@@ -530,6 +599,7 @@ source_set("ads") {
     "//sql",
     "//third_party/boringssl",
     "//third_party/re2",
+    "//third_party/sqlite",
     "//url",
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
@@ -537,7 +607,5 @@ source_set("ads") {
     rebase_path("brave_base", dep_base),
   ]
 
-  public_deps = [
-    ":headers",
-  ]
+  public_deps = [ ":headers" ]
 }

@@ -1,0 +1,8 @@
+include_rules = [
+  "+../../../../chrome/common",
+  "+../../../../../chrome/common/importer",
+  "+../../../../../chrome/common/media",
+  "+brave/common",
+  "+chrome/common",
+  "+components/version_info",
+]

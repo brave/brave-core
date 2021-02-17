@@ -4,12 +4,12 @@ declare_args() {
   brave_stats_updater_url = ""
 }
 
+if (is_official_build) { assert(brave_stats_updater_url != "") }
+
 source_set("stats_updater") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
-  defines = [
-      "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"",
-  ]
+  defines = [ "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"" ]
 
   sources = [
     "brave_stats_tab_helper.cc",
@@ -28,6 +28,7 @@ source_set("stats_updater") {
     "//brave/common:pref_names",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_stats/browser",
+    "//brave/vendor/bat-native-ads",
     "//chrome/common",
     "//components/prefs",
     "//content/public/browser",
@@ -37,8 +38,6 @@ source_set("stats_updater") {
   ]
 
   if (enable_brave_referrals) {
-    deps += [
-      "//brave/components/brave_referrals/common",
-    ]
+    deps += [ "//brave/components/brave_referrals/common" ]
   }
 }

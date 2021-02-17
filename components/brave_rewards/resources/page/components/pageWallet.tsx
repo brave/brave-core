@@ -5,7 +5,6 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { RewardsOptInModal } from '../../shared/components/onboarding'
 // Components
 import {
   ModalActivity,
@@ -26,8 +25,6 @@ import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
-
-const clipboardCopy = require('clipboard-copy')
 
 interface State {
   activeTabId: number
@@ -92,7 +89,7 @@ class PageWallet extends React.Component<Props, State> {
   onModalBackupOnCopy = async (backupKey: string) => {
     // TODO(jsadler) possibly flash a message that copy was completed
     try {
-      await clipboardCopy(backupKey)
+      await navigator.clipboard.writeText(backupKey)
       console.log('Copy successful')
       chrome.send('brave_rewards.setBackupCompleted')
     } catch (e) {
@@ -674,11 +671,10 @@ class PageWallet extends React.Component<Props, State> {
   getMonthlyReportDropDown = (): Record<string, string> => {
     const { monthlyReportIds } = this.props.rewardsData
 
-    let ids = monthlyReportIds
-    if (!monthlyReportIds) {
-      ids = []
-      ids.push(`${new Date().getFullYear()}_${new Date().getMonth() + 1}`)
-    }
+    const ids = [
+      ...monthlyReportIds || [],
+      `${new Date().getFullYear()}_${new Date().getMonth() + 1}`
+    ]
 
     let result: Record<string, string> = {}
     ids.forEach((id: string) => {
@@ -765,22 +761,6 @@ class PageWallet extends React.Component<Props, State> {
     const walletStatus = this.getWalletStatus()
 
     return (!walletStatus || walletStatus === 'unverified') && balance && balance.total < 25
-  }
-
-  getOnboardingModal () {
-    if (!this.props.rewardsData.showOnboarding) {
-      return null
-    }
-    const onAddFunds = () => this.onFundsAction('add')
-    const onEnable = () => this.actions.saveOnboardingResult('opted-in')
-    const onClose = () => this.actions.saveOnboardingResult('dismissed')
-    return (
-      <RewardsOptInModal
-        onAddFunds={onAddFunds}
-        onEnable={onEnable}
-        onClose={onClose}
-      />
-    )
   }
 
   render () {
@@ -874,7 +854,6 @@ class PageWallet extends React.Component<Props, State> {
             ? this.generateMonthlyReport()
             : null
         }
-        {this.getOnboardingModal()}
       </>
     )
   }

@@ -36,7 +36,7 @@ std::deque<AdHistoryInfo> GetAdsHistory() {
 }  // namespace
 
 TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterHistoryFromTimestamp44444444444ToDistantFuture) {
+     FilterHistoryFromTimestamp44444444444ToDistantFuture) {
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
@@ -62,7 +62,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterHistoryFromTimestamp77777777777ToDistantFuture) {
+     FilterHistoryFromTimestamp77777777777ToDistantFuture) {
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
@@ -80,7 +80,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterHistoryFromDistantPastToTimestamp44444444444) {
+     FilterHistoryFromDistantPastToTimestamp44444444444) {
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
@@ -105,7 +105,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterHistoryFromDistancePastToTimestamp11111111111) {
+     FilterHistoryFromDistancePastToTimestamp11111111111) {
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
@@ -123,7 +123,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterHistoryFromDistantPastToDistantFuture) {
+     FilterHistoryFromDistantPastToDistantFuture) {
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
@@ -152,7 +152,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
 }
 
 TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterHistoryFromDistantFutureToDistantPast) {
+     FilterHistoryFromDistantFutureToDistantPast) {
   // Arrange
   std::deque<AdHistoryInfo> history = GetAdsHistory();
 
@@ -169,8 +169,7 @@ TEST(BatAdsHistoryDateRangeFilterTest,
   EXPECT_EQ(expected_history, history);
 }
 
-TEST(BatAdsHistoryDateRangeFilterTest,
-    FilterEmptyHistory) {
+TEST(BatAdsHistoryDateRangeFilterTest, FilterEmptyHistory) {
   // Arrange
   std::deque<AdHistoryInfo> history;
 

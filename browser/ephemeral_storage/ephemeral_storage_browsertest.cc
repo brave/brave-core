@@ -18,12 +18,13 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
-#include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
 
 using content::RenderFrameHost;
@@ -59,6 +60,16 @@ content::EvalJsResult GetStorageValueInFrame(RenderFrameHost* host,
   return content::EvalJs(host, script);
 }
 
+void SetCookieInFrame(RenderFrameHost* host, std::string cookie) {
+  std::string script = base::StringPrintf(
+      "document.cookie='%s; path=/; SameSite=None; Secure'", cookie.c_str());
+  ASSERT_TRUE(content::ExecuteScript(host, script));
+}
+
+content::EvalJsResult GetCookiesInFrame(RenderFrameHost* host) {
+  return content::EvalJs(host, "document.cookie");
+}
+
 }  // namespace
 
 class EphemeralStorageBrowserTest : public InProcessBrowserTest {
@@ -66,7 +77,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   EphemeralStorageBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitAndEnableFeature(
-        blink::features::kBraveEphemeralStorage);
+        net::features::kBraveEphemeralStorage);
   }
 
   void SetUpOnMainThread() override {
@@ -98,36 +109,36 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
-  void AllowAllCookies() {
-    auto* content_settings =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    brave_shields::SetCookieControlType(
-        content_settings, brave_shields::ControlType::ALLOW, GURL());
+  void SetValuesInFrame(RenderFrameHost* frame,
+                        std::string storage_value,
+                        std::string cookie_value) {
+    SetStorageValueInFrame(frame, storage_value, StorageType::Local);
+    SetStorageValueInFrame(frame, storage_value, StorageType::Session);
+    SetCookieInFrame(frame, cookie_value);
   }
 
   void SetValuesInFrames(WebContents* web_contents,
                          std::string storage_value,
                          std::string cookie_value) {
-    auto set_values_in_frame = [&](RenderFrameHost* frame) {
-      SetStorageValueInFrame(frame, storage_value, StorageType::Local);
-      SetStorageValueInFrame(frame, storage_value, StorageType::Session);
-    };
-
-    RenderFrameHost* main_frame = web_contents->GetMainFrame();
-    set_values_in_frame(main_frame);
-    set_values_in_frame(content::ChildFrameAt(main_frame, 0));
-    set_values_in_frame(content::ChildFrameAt(main_frame, 1));
+    RenderFrameHost* main = web_contents->GetMainFrame();
+    SetValuesInFrame(main, storage_value, cookie_value);
+    SetValuesInFrame(content::ChildFrameAt(main, 0), storage_value,
+                     cookie_value);
+    SetValuesInFrame(content::ChildFrameAt(main, 1), storage_value,
+                     cookie_value);
   }
 
   struct ValuesFromFrame {
     content::EvalJsResult local_storage;
     content::EvalJsResult session_storage;
+    content::EvalJsResult cookies;
   };
 
   ValuesFromFrame GetValuesFromFrame(RenderFrameHost* frame) {
     return {
         GetStorageValueInFrame(frame, StorageType::Local),
         GetStorageValueInFrame(frame, StorageType::Session),
+        GetCookiesInFrame(frame),
     };
   }
 
@@ -166,8 +177,6 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
-  AllowAllCookies();
-
   WebContents* first_party_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
   WebContents* site_a_tab1 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   WebContents* site_a_tab2 = LoadURLInNewTab(a_site_ephemeral_storage_url_);
@@ -192,6 +201,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
   EXPECT_EQ("a.com", site_a_tab1_values.iframe_1.session_storage);
   EXPECT_EQ("a.com", site_a_tab1_values.iframe_2.session_storage);
 
+  EXPECT_EQ("from=a.com", site_a_tab1_values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", site_a_tab1_values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", site_a_tab1_values.iframe_2.cookies);
+
   // The second tab is loaded on the same domain, so should see the same
   // storage for the third-party iframes.
   ValuesFromFrames site_a_tab2_values = GetValuesFromFrames(site_a_tab2);
@@ -202,6 +215,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
   EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
   EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
   EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", site_a_tab2_values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", site_a_tab2_values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", site_a_tab2_values.iframe_2.cookies);
 
   // The storage in the first-party iframes should still reflect the
   // original value that was written in the non-ephemeral storage area.
@@ -215,6 +232,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
   EXPECT_EQ("b.com - first party", first_party_values.iframe_1.session_storage);
   EXPECT_EQ("b.com - first party", first_party_values.iframe_2.session_storage);
 
+  EXPECT_EQ("from=b.com", first_party_values.main_frame.cookies);
+  EXPECT_EQ("from=b.com", first_party_values.iframe_1.cookies);
+  EXPECT_EQ("from=b.com", first_party_values.iframe_2.cookies);
+
   // Even though this page loads b.com iframes as third-party iframes, the TLD
   // differs, so it should get an entirely different ephemeral storage area.
   ValuesFromFrames site_c_tab_values = GetValuesFromFrames(site_c_tab);
@@ -225,12 +246,14 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
   EXPECT_EQ(nullptr, site_c_tab_values.main_frame.session_storage);
   EXPECT_EQ(nullptr, site_c_tab_values.iframe_1.session_storage);
   EXPECT_EQ(nullptr, site_c_tab_values.iframe_2.session_storage);
+
+  EXPECT_EQ("", site_c_tab_values.main_frame.cookies);
+  EXPECT_EQ("", site_c_tab_values.iframe_1.cookies);
+  EXPECT_EQ("", site_c_tab_values.iframe_2.cookies);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        NavigatingClearsEphemeralStorage) {
-  AllowAllCookies();
-
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -245,6 +268,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
 
+  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
+
   // Navigate away and then navigate back to the original site.
   ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
@@ -257,12 +284,14 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ClosingTabClearsEphemeralStorage) {
-  AllowAllCookies();
-
   WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
 
@@ -276,6 +305,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
 
   // Close the new tab which we set ephemeral storage value in. This should
   // clear the ephemeral storage since this is the last tab which has a.com as
@@ -299,12 +332,14 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ(nullptr, values_after.main_frame.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_1.session_storage);
   EXPECT_EQ(nullptr, values_after.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ReloadDoesNotClearEphemeralStorage) {
-  AllowAllCookies();
-
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -318,6 +353,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
 
   // Reload the page.
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
@@ -330,12 +369,14 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", values_after.main_frame.session_storage);
   EXPECT_EQ("a.com value", values_after.iframe_1.session_storage);
   EXPECT_EQ("a.com value", values_after.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_after.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_after.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_after.iframe_2.cookies);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        EphemeralStorageDoesNotLeakBetweenProfiles) {
-  AllowAllCookies();
-
   ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -349,6 +390,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", values_before.main_frame.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_1.session_storage);
   EXPECT_EQ("a.com value", values_before.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", values_before.main_frame.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", values_before.iframe_2.cookies);
 
   // A browser with the same profile should share all values with the
   // first browser, including ephemeral storage values.
@@ -368,6 +413,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("a.com value", same_profile_values.iframe_1.session_storage);
   EXPECT_EQ("a.com value", same_profile_values.iframe_2.session_storage);
 
+  EXPECT_EQ("from=a.com", same_profile_values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", same_profile_values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", same_profile_values.iframe_2.cookies);
+
   // A browser with a different profile shouldn't share any values with
   // the first set of browsers.
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
@@ -383,4 +432,104 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ(nullptr, private_values.main_frame.session_storage);
   EXPECT_EQ(nullptr, private_values.iframe_1.session_storage);
   EXPECT_EQ(nullptr, private_values.iframe_2.session_storage);
+
+  EXPECT_EQ("", private_values.main_frame.cookies);
+  EXPECT_EQ("", private_values.iframe_1.cookies);
+  EXPECT_EQ("", private_values.iframe_2.cookies);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       DISABLED_NavigationCookiesArePartitioned) {
+  GURL a_site_set_cookie_url = https_server_.GetURL(
+      "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
+  GURL b_site_set_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
+
+  ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  std::string a_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://a.com/"));
+  std::string b_cookie =
+      content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  EXPECT_EQ("name=acom", a_cookie);
+  EXPECT_EQ("name=bcom", b_cookie);
+
+  // The third-party iframe should not have the b.com cookie that was set on the
+  // main frame.
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  RenderFrameHost* main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* iframe_a = content::ChildFrameAt(main_frame, 0);
+  RenderFrameHost* iframe_b = content::ChildFrameAt(main_frame, 1);
+  ASSERT_EQ("", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("", GetCookiesInFrame(iframe_b));
+
+  // Setting the cookie directly on the third-party iframe should only set the
+  // cookie in the ephemeral storage area for that frame.
+  GURL b_site_set_ephemeral_cookie_url = https_server_.GetURL(
+      "b.com", "/set-cookie?name=bcom_ephemeral;path=/;SameSite=None;Secure");
+  NavigateIframeToURL(web_contents, "third_party_iframe_a",
+                      b_site_set_ephemeral_cookie_url);
+  ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_a));
+  ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
+
+  // The cookie set in the ephemeral area should not visible in the main
+  // cookie storage.
+  b_cookie = content::GetCookies(browser()->profile(), GURL("https://b.com/"));
+  EXPECT_EQ("name=bcom", b_cookie);
+
+  // Navigating to a new TLD should clear all ephemeral cookies.
+  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("name=acom", values_after.main_frame.cookies);
+  EXPECT_EQ("", values_after.iframe_1.cookies);
+  EXPECT_EQ("", values_after.iframe_2.cookies);
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
+                       FirstPartyNestedInThirdParty) {
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+  GURL a_site_set_cookie_url = https_server_.GetURL(
+      "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
+  ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url);
+  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+
+  RenderFrameHost* site_a_main_frame = web_contents->GetMainFrame();
+  RenderFrameHost* nested_frames_tab =
+      content::ChildFrameAt(site_a_main_frame, 3);
+  ASSERT_NE(nested_frames_tab, nullptr);
+  RenderFrameHost* first_party_nested_acom =
+      content::ChildFrameAt(nested_frames_tab, 2);
+  ASSERT_NE(first_party_nested_acom, nullptr);
+
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+  RenderFrameHost* site_b_main_frame = site_b_tab->GetMainFrame();
+  RenderFrameHost* third_party_nested_acom =
+      content::ChildFrameAt(site_b_main_frame, 2);
+  ASSERT_NE(first_party_nested_acom, nullptr);
+
+  ASSERT_EQ("name=acom", GetCookiesInFrame(site_a_main_frame));
+  ASSERT_EQ("name=acom", GetCookiesInFrame(first_party_nested_acom));
+  ASSERT_EQ("", GetCookiesInFrame(third_party_nested_acom));
+
+  SetValuesInFrame(site_a_main_frame, "first-party-a.com",
+                   "name=first-party-a.com");
+  SetValuesInFrame(third_party_nested_acom, "third-party-a.com",
+                   "name=third-party-a.com");
+
+  ValuesFromFrame first_party_values =
+      GetValuesFromFrame(first_party_nested_acom);
+  EXPECT_EQ("first-party-a.com", first_party_values.local_storage);
+  EXPECT_EQ("first-party-a.com", first_party_values.session_storage);
+  EXPECT_EQ("name=first-party-a.com", first_party_values.cookies);
+
+  ValuesFromFrame third_party_values =
+      GetValuesFromFrame(third_party_nested_acom);
+  EXPECT_EQ("third-party-a.com", third_party_values.local_storage);
+  EXPECT_EQ("third-party-a.com", third_party_values.session_storage);
+  EXPECT_EQ("name=third-party-a.com", third_party_values.cookies);
 }

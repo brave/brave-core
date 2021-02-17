@@ -10,21 +10,18 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_state.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
-Catalog::Catalog()
-  : catalog_state_(std::make_unique<CatalogState>()) {
-}
+Catalog::Catalog() : catalog_state_(std::make_unique<CatalogState>()) {}
 
 Catalog::~Catalog() = default;
 
-bool Catalog::FromJson(
-    const std::string& json) {
+bool Catalog::FromJson(const std::string& json) {
   auto json_schema =
-      AdsClientHelper::Get()->LoadResourceForId(_catalog_schema_resource_id);
+      AdsClientHelper::Get()->LoadResourceForId(g_catalog_schema_resource_id);
   auto result = LoadFromJson(catalog_state_.get(), json, json_schema);
   if (result != SUCCESS) {
     return false;
@@ -33,8 +30,7 @@ bool Catalog::FromJson(
   return true;
 }
 
-bool Catalog::HasChanged(
-    const std::string& catalog_id) const {
+bool Catalog::HasChanged(const std::string& catalog_id) const {
   if (catalog_id.empty()) {
     // First time the catalog has been downloaded, so does not match
     return true;
@@ -59,12 +55,12 @@ int64_t Catalog::GetPing() const {
   return catalog_state_->ping / base::Time::kMillisecondsPerSecond;
 }
 
-CatalogCampaignList Catalog::GetCampaigns() const {
-  return catalog_state_->campaigns;
-}
-
 CatalogIssuersInfo Catalog::GetIssuers() const {
   return catalog_state_->catalog_issuers;
+}
+
+CatalogCampaignList Catalog::GetCampaigns() const {
+  return catalog_state_->campaigns;
 }
 
 }  // namespace ads

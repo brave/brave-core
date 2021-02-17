@@ -6,15 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_BROWSER_CONTEXT_H_
 
-#define IsOffTheRecord IsTor() const; \
-    virtual bool IsOffTheRecord
+#define IsOffTheRecord \
+  IsTor() const;       \
+  virtual bool IsOffTheRecord
 #include "../../../../../content/public/browser/browser_context.h"
 #undef IsOffTheRecord
 
 #include <string>
 
 #include "base/memory/ref_counted.h"
+#include "base/optional.h"
 #include "content/common/content_export.h"
+#include "content/public/browser/tld_ephemeral_lifetime.h"
 
 namespace content {
 
@@ -23,8 +26,10 @@ class SessionStorageNamespace;
 class StoragePartition;
 
 CONTENT_EXPORT scoped_refptr<content::SessionStorageNamespace>
-CreateSessionStorageNamespace(content::StoragePartition* partition,
-                              const std::string& namespace_id);
+CreateSessionStorageNamespace(
+    content::StoragePartition* partition,
+    const std::string& namespace_id,
+    base::Optional<std::string> clone_from_namespace_id);
 
 CONTENT_EXPORT std::string GetSessionStorageNamespaceId(WebContents*);
 

@@ -64,16 +64,20 @@ export function saveShowGemini (value: boolean): void {
   sendSavePref('showGemini', value)
 }
 
-export function saveShowBitcoinDotCom (value: boolean): void {
-  sendSavePref('showBitcoinDotCom', value)
-}
-
 export function saveShowCryptoDotCom (value: boolean): void {
   sendSavePref('showCryptoDotCom', value)
 }
 
 export function saveIsBraveTodayIntroDismissed (value: boolean): void {
   sendSavePref('isBraveTodayIntroDismissed', value)
+}
+
+export function saveSetAllStackWidgets (value: boolean): void {
+  sendSavePref('showRewards', value)
+  sendSavePref('showTogether', value)
+  sendSavePref('showBinance', value)
+  sendSavePref('showGemini', value)
+  sendSavePref('showCryptoDotCom', value)
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {

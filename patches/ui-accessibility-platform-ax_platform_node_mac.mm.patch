@@ -1,0 +1,12 @@
+diff --git a/ui/accessibility/platform/ax_platform_node_mac.mm b/ui/accessibility/platform/ax_platform_node_mac.mm
+index ce50a0a509ca151c7e406729b78655f60eaa4c98..fda4ab3480b2c4eb9fc2515879acef73fceb1050 100644
+--- a/ui/accessibility/platform/ax_platform_node_mac.mm
++++ b/ui/accessibility/platform/ax_platform_node_mac.mm
+@@ -1165,6 +1165,7 @@ bool IsAXSetter(SEL selector) {
+   if (!_node)
+     return nil;
+ 
++  BRAVE_ACCESSIBILITY_ATTRIBUTED_STRING_FOR_RANGE
+   // TODO(https://crbug.com/958811): Implement this for real.
+   base::scoped_nsobject<NSAttributedString> attributedString(
+       [[NSAttributedString alloc]

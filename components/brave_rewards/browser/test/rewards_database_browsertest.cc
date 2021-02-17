@@ -4,10 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "base/test/bind_test_util.h"
+#include "base/test/bind.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"

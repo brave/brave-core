@@ -9,7 +9,6 @@
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
 -keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
-    *** notifyObservers(...);
     *** updateCachedSettings(...);
     *** setChromeSyncEnabled(...);
     *** mIsSyncable;
@@ -37,7 +36,6 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** insertSiteSectionView(...);
-    *** getMaxRowsForMostVisitedTiles(...);
     *** mSiteSectionView;
 }
 
@@ -83,16 +81,16 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
-    *** mBottomControlsCoordinator;
+    public <init>(...);
+    *** mBottomControlsCoordinatorSupplier;
+    *** mCallbackController;
     *** mBrowserControlsSizer;
     *** mFullscreenManager;
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
     *** mShareDelegateSupplier;
     *** mScrimCoordinator;
-    *** mActivity;
     *** mShowStartSurfaceSupplier;
-    *** mOverviewModeBehaviorSupplier;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
     *** mLocationBar;
@@ -100,6 +98,11 @@
     *** mLocationBarModel;
     *** mToolbar;
     *** mBookmarkBridgeSupplier;
+    *** mLayoutManager;
+    *** mOverlayPanelVisibilitySupplier;
+    *** mTabModelSelector;
+    *** mIncognitoStateProvider;
+    *** mTabCountProvider;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
@@ -127,4 +130,81 @@
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
     *** canAutoOpenMimeType(...);
+}
+
+-keep class org.chromium.chrome.browser.app.ChromeActivity {
+    *** mTabModelProfileSupplier;
+}
+
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity {
+    *** hideOverview(...);
+}
+
+-keep class org.chromium.chrome.browser.app.BraveActivity {
+    *** openNewOrSelectExistingTab(...);
+    *** selectExistingTab(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.ChromeTabCreator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tabmodel.BraveTabCreator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils {
+    *** addOrEditBookmark(...);
+}
+
+-keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
+    *** showBookmarkBottomSheet(...);
+    *** addBookmarkAndShowSnackbar(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
+    *** getMaxRowsForMostVisitedTiles(...);
+}
+
+-keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
+    *** getMaxRowsForMostVisitedTiles(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout {
+    *** updateModernLocationBarColorImpl(...);
+    *** onClickImpl(...);
+    *** populateUrlAnimatorSet(...);
+    *** getBoundsAfterAccountingForRightButtons(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
+    public <init>(...);
 }

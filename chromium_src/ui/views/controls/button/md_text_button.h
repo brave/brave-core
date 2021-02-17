@@ -28,10 +28,7 @@ namespace views {
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
-  explicit MdTextButton(ButtonListener* listener = nullptr,
-                        const base::string16& text = base::string16(),
-                        int button_context = style::CONTEXT_BUTTON_MD);
-  explicit MdTextButton(PressedCallback callback,
+  explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const base::string16& text = base::string16(),
                         int button_context = style::CONTEXT_BUTTON_MD);
   ~MdTextButton() override;
@@ -52,5 +49,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 };
 
 }  // namespace views
+
+DEFINE_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton)
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_

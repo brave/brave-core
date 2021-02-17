@@ -5,6 +5,7 @@
 
 export const enum types {
   ON_BINANCE_USER_TLD = '@@binance/ON_BINANCE_USER_TLD',
+  ON_BINANCE_USER_LOCALE = '@@binance/ON_BINANCE_USER_LOCALE',
   SET_INITIAL_ASSET = '@@binance/SET_INITIAL_ASSET',
   SET_INITIAL_FIAT = '@@binance/SET_INITIAL_FIAT',
   SET_INITIAL_AMOUNT = '@@binance/SET_INITIAL_AMOUNT',

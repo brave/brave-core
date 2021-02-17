@@ -5,24 +5,26 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
+#include "base/notreached.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
-#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/local_dom_window.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+#include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
 #define BRAVE_GET_IMAGE_DATA                                              \
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
     if (WebContentSettingsClient* settings =                              \
             brave::GetContentSettingsClientFor(context)) {                \
-      snapshot = brave::BraveSessionCache::From(*context).PerturbPixels(  \
-          settings, snapshot);                                            \
+      brave::BraveSessionCache::From(*context).PerturbPixels(             \
+          settings,                                                       \
+          static_cast<const unsigned char*>(data_array->BaseAddress()),   \
+          data_array->byteLength());                                      \
     }                                                                     \
   }
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
+#define getImageData getImageData_Unused
 #include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
+#undef getImageData
 #undef BRAVE_GET_IMAGE_DATA_PARAMS
 #undef BRAVE_GET_IMAGE_DATA
 
@@ -40,13 +42,70 @@ bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
 
 namespace blink {
 
-ImageData* BaseRenderingContext2D::getImageDataUnused(
+ImageData* BaseRenderingContext2D::getImageData(
     int sx,
     int sy,
     int sw,
     int sh,
     ExceptionState& exception_state) {
+  NOTREACHED();
   return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageData(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataSettings* image_data_settings,
+    ExceptionState& exception_state) {
+  NOTREACHED();
+  return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageDataInternal(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataSettings* image_data_settings,
+    ExceptionState& exception_state) {
+  NOTREACHED();
+  return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataSettings* image_data_settings,
+    ExceptionState& exception_state) {
+  NOTREACHED();
+  return nullptr;
+}
+
+ImageData* BaseRenderingContext2D::getImageData(
+    ScriptState* script_state,
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ExceptionState& exception_state) {
+  return getImageDataInternal(script_state, sx, sy, sw, sh, nullptr,
+                              exception_state);
+}
+
+ImageData* BaseRenderingContext2D::getImageData(
+    ScriptState* script_state,
+    int sx,
+    int sy,
+    int sw,
+    int sh,
+    ImageDataSettings* image_data_settings,
+    ExceptionState& exception_state) {
+  return getImageDataInternal(script_state, sx, sy, sw, sh, image_data_settings,
+                              exception_state);
 }
 
 bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,

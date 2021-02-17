@@ -19,8 +19,7 @@ class BatAdsNetworkConnectionFrequencyCapTest : public UnitTestBase {
   ~BatAdsNetworkConnectionFrequencyCapTest() override = default;
 };
 
-TEST_F(BatAdsNetworkConnectionFrequencyCapTest,
-    AllowAd) {
+TEST_F(BatAdsNetworkConnectionFrequencyCapTest, AllowAd) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
@@ -32,8 +31,7 @@ TEST_F(BatAdsNetworkConnectionFrequencyCapTest,
   EXPECT_TRUE(is_allowed);
 }
 
-TEST_F(BatAdsNetworkConnectionFrequencyCapTest,
-    DoNotAllowAd) {
+TEST_F(BatAdsNetworkConnectionFrequencyCapTest, DoNotAllowAd) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 

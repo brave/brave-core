@@ -33,6 +33,11 @@ const std::vector<std::string> unsupported_regions = {
   "ZW"
 };
 
+const std::vector<std::string> supported_locales = {
+    "en", "au", "cn", "tw", "ar", "nl", "ph", "fr", "de", "id",
+    "it", "ja", "kr", "pl", "br", "pt", "ru", "es", "th", "tr",
+    "ua", "vn", "ro", "cs", "he", "bg", "lv", "bn", "sv"};
+
 }  // namespace binance
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_REGIONS_H_

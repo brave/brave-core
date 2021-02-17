@@ -33,7 +33,6 @@ export const StyledCloseIcon = styled<{}, 'div'>('div')`
 
 export const StyledBackground = styled<StyleProps, 'div'>('div')`
   width: 117px;
-  height: 100%;
   background: url(${p => p.src}) no-repeat;
 `
 

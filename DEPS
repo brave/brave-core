@@ -1,7 +1,7 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@a6342c37be1618627395ce6241d36a291e2da72f",
+  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@3d6aa901b4442ad6bbeb108b5ae5b980e9756a71",
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@b4d059c73042cacf3a5e9156d4b1698e7bc18678",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
@@ -51,3 +51,35 @@ hooks = [
     'action': ['python', 'script/generate_licenses.py'],
   },
 ]
+
+include_rules = [
+  # Everybody can use some things.
+  "+brave_base",
+  "+crypto",
+  "+net",
+  "+sql",
+  "+ui/base",
+
+  "-chrome",
+  "-brave/app",
+  "-brave/browser",
+  "-brave/common",
+  "-brave/renderer",
+  "-brave/services",
+  "-ios",
+]
+
+# Temporary workaround for massive nummber of incorrect test includes
+specific_include_rules = {
+  ".*test.*(\.cc|\.mm|\.h)": [
+    "+bat",
+    "+brave",
+    "+chrome",
+    "+components",
+    "+content",
+    "+extensions",
+    "+mojo",
+    "+services",
+    "+third_party",
+  ],
+}

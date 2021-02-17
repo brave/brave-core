@@ -1,0 +1,12 @@
+include_rules = [
+  "+../../../../ui/gfx",
+  "+../../../../ui/native_theme",
+  "+../../../../../ui/accessibility/platform",
+  "+../../../../../ui/base/resource",
+  "+../../../../../ui/base/resource",
+  "+../../../../../ui/base/webui",
+  "+../../../../../ui/views/bubble",
+  "+../../../../../ui/views/controls",
+  "+../../../../../../ui/views/controls/button",
+  "+ui",
+]

@@ -145,20 +145,18 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           {
             showMonthlyActions &&
               <StyledMonthlyActions>
-                <a
-                  href='javascript:void 0'
+                <button
                   onClick={this.props.setMonthlyAction}
                   data-test-id='change-monthly-amount'
                 >
                   {getLocale('changeAmount')}
-                </a>
-                <a
-                  href='javascript:void 0'
+                </button>
+                <button
                   onClick={this.props.cancelMonthlyAction}
                   data-test-id='clear-monthly-amount'
                 >
                   {getLocale('cancel')}
-                </a>
+                </button>
               </StyledMonthlyActions>
           }
         </StyledMonthlyBorder>
@@ -177,7 +175,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
         {
           acEnabled
           ? <StyledGrid>
-            <StyledColumn size={'5'}>
+            <StyledColumn size={'5'} shrink={'1'}>
               <StyledDonateText>{getLocale('includeInAuto')}</StyledDonateText>
             </StyledColumn>
             <StyledColumn size={'0'}>
@@ -193,7 +191,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           : null
         }
         <StyledGrid id={'panel-donate-monthly'}>
-          <StyledColumn size={firstColSpan}>
+          <StyledColumn size={firstColSpan} shrink={'1'}>
             <StyledDonateText>
               {getLocale('donateMonthly')}
             </StyledDonateText>
@@ -203,7 +201,10 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
               monthlyAmount
               ? this.donationDropDown()
               : <StyledSetButtonContainer>
-                  <StyledSetButton type={'tip-monthly'} onClick={setMonthlyAction}>
+                  <StyledSetButton
+                    data-test-id={'tip-monthly'}
+                    onClick={setMonthlyAction}
+                  >
                     {getLocale('set')}
                   </StyledSetButton>
                 </StyledSetButtonContainer>
@@ -274,6 +275,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           }
           <StyledDonateWrapper>
             <RewardsButton
+              testId='tip-once'
               type={'tip'}
               onClick={donationAction}
               text={getLocale('donateNow')}

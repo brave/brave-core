@@ -9,6 +9,7 @@ import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 
 interface StyleProps {
   size?: string
+  shrink?: string
   toggleTips?: boolean
 }
 
@@ -67,7 +68,7 @@ export const StyledDonateWrapper = styled<{}, 'div'>('div')`
 ` as any
 
 export const StyledToggleWrapper = styled<{}, 'div'>('div')`
-  margin-top: 6px;
+  margin-top: 4px;
 ` as any
 
 export const StyledSelectWrapper = styled<{}, 'div'>('div')`
@@ -81,7 +82,7 @@ export const StyledGrid = styled<{}, 'div'>('div')`
 `
 
 export const StyledColumn = styled<StyleProps, 'div'>('div')`
-  flex: ${p => p.size} 0 auto;
+  flex: ${p => p.size} ${p => p.shrink || '0'} auto;
 `
 
 export const StyleToggleTips = styled<StyleProps, 'div'>('div')`
@@ -174,29 +175,32 @@ export const StyledMonthlyActions = styled<StyleProps, 'div'>('div')`
     border-top: solid 1px #DBDFE3;
   }
 
-  a {
+  button {
     display: block;
     padding: 3px 12px;
     color: inherit;
     text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
   }
 
-  a:hover {
+  button:hover {
     color: ${palette.blurple500};
   }
 `
 
 export const StyledSetButtonContainer = styled<{}, 'div'>('div')`
-  text-align: center;
+  text-align: right;
 `
 
 export const StyledSetButton = styled<{}, 'button'>('button')`
   color: ${palette.blurple500};
   font-size: 13px;
   border: 1px solid ${palette.blurple500};
-  width: 85%;
   border-radius: 20px;
-  padding: 4px 5px;
-  margin-right: -16px;
+  padding: 4px 15px;
   cursor: pointer;
 `

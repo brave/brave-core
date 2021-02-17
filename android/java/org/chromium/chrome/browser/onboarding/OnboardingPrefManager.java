@@ -33,14 +33,20 @@ import java.util.Map;
  */
 public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING = "onboarding";
+    private static final String PREF_P3A_ONBOARDING = "p3a_onboarding";
+    private static final String PREF_P3A_ENABLED_FOR_EXISTING_USERS =
+            "p3a_enabled_for_existing_users";
     private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
     private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
     private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
+    private static final String PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE =
+            "next_set_default_browser_modal_date";
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
-    private static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
+    private static final String PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A =
+            "show_default_browser_modal_after_p3a";
     public static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
     public static final String ONBOARDING_TYPE = "onboarding_type";
@@ -66,12 +72,11 @@ public class OnboardingPrefManager {
 
     private static final String GOOGLE = "Google";
     public static final String DUCKDUCKGO = "DuckDuckGo";
-    private static final String DUCKDUCKGOLITE = "DuckDuckGo Lite";
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
     private static final String STARTPAGE = "Startpage";
-    private static final String YAHOO = "Yahoo";
-    private static final String YANDEX = "Yandex";
+    public static final String YANDEX = "Yandex";
+    public static final String ECOSIA = "Ecosia";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -100,6 +105,32 @@ public class OnboardingPrefManager {
     public void setOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean isP3AEnabledForExistingUsers() {
+        return mSharedPreferences.getBoolean(PREF_P3A_ENABLED_FOR_EXISTING_USERS, false);
+    }
+
+    public void setP3AEnabledForExistingUsers(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_P3A_ENABLED_FOR_EXISTING_USERS, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    /**
+     * Returns the user preference for whether the onboarding is shown.
+     */
+    public boolean isP3aOnboardingShown() {
+        return mSharedPreferences.getBoolean(PREF_P3A_ONBOARDING, false);
+    }
+
+    /**
+     * Sets the user preference for whether the onboarding is shown.
+     */
+    public void setP3aOnboardingShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_P3A_ONBOARDING, isShown);
         sharedPreferencesEditor.apply();
     }
 
@@ -161,16 +192,6 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public boolean hasShieldsTooltipShown() {
-        return mSharedPreferences.getBoolean(PREF_SHIELDS_TOOLTIP, false);
-    }
-
-    public void setShieldsTooltipShown(boolean isShown) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHIELDS_TOOLTIP, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
     public long getNextOnboardingDate() {
         return mSharedPreferences.getLong(PREF_NEXT_ONBOARDING_DATE, 0);
     }
@@ -194,8 +215,8 @@ public class OnboardingPrefManager {
     public boolean showOnboardingForSkip(Context context) {
         boolean shouldShow = PackageUtils.isFirstInstall(context)
                              && !hasOnboardingShownForSkip()
-                             && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED))
                              && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+                             && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                              && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
         return shouldShow;
     }
@@ -226,6 +247,26 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
+    public long getNextSetDefaultBrowserModalDate() {
+        return mSharedPreferences.getLong(PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE, 0);
+    }
+
+    public void setNextSetDefaultBrowserModalDate(long nextDate) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_NEXT_SET_DEFAULT_BROWSER_MODAL_DATE, nextDate);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean shouldShowDefaultBrowserModalAfterP3A() {
+        return mSharedPreferences.getBoolean(PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A, false);
+    }
+
+    public void setShowDefaultBrowserModalAfterP3A(boolean shouldShow) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A, shouldShow);
+        sharedPreferencesEditor.apply();
+    };
+
     public void setCrossPromoModalShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_CROSS_PROMO_MODAL, isShown);
@@ -247,13 +288,12 @@ public class OnboardingPrefManager {
     new HashMap<String, SearchEngineEnum>() {
         {
             put(GOOGLE, SearchEngineEnum.GOOGLE);
-            put(YAHOO, SearchEngineEnum.YAHOO);
             put(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO);
-            put(DUCKDUCKGOLITE, SearchEngineEnum.DUCKDUCKGOLITE);
             put(QWANT, SearchEngineEnum.QWANT);
             put(BING, SearchEngineEnum.BING);
             put(STARTPAGE, SearchEngineEnum.STARTPAGE);
             put(YANDEX, SearchEngineEnum.YANDEX);
+            put(ECOSIA, SearchEngineEnum.ECOSIA);
         }
     };
 

@@ -4,8 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "../../../../../../../third_party/blink/renderer/modules/storage/dom_window_storage.cc"
+
+#include "net/base/features.h"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"
-#include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/exported/web_view_impl.h"
@@ -17,6 +19,9 @@ namespace blink {
 
 namespace {
 
+constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
+constexpr char kLocalStorageSuffix[] = "/ephemeral-local-storage";
+
 // This replicates the conversion of a string into a session storage namespace
 // id that is found in the implementation of EphemeralStorageTabHelper.
 String StringToSessionStorageId(const String& string,
@@ -27,19 +32,17 @@ String StringToSessionStorageId(const String& string,
   return String(hash.c_str());
 }
 
-// If storage is null and there was an exception then clear the exception unless
-// it was caused by CanAccessSessionStorage for the document security origin
-// (sandbox, data urls, etc...)
-void MaybeClearAccessDeniedException(StorageArea* storage,
-                                     const LocalDOMWindow& window,
-                                     ExceptionState* exception_state) {
-  if (!storage && exception_state->HadException()) {
-    if (!window.GetSecurityOrigin()->CanAccessSessionStorage())
-      return;
+bool ShouldUseEphemeralStorage(
+    LocalDOMWindow* window,
+    WebContentSettingsClient::StorageType storage_type) {
+  auto* frame = window->GetFrame();
+  if (!frame)
+    return false;
 
-    // clear the access denied exception for better webcompat
-    exception_state->ClearException();
-  }
+  if (auto* settings_client = frame->GetContentSettingsClient())
+    return settings_client->UseEphemeralStorageSync(storage_type);
+
+  return false;
 }
 
 }  // namespace
@@ -111,7 +114,7 @@ EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(
     return nullptr;
   String session_storage_id = StringToSessionStorageId(
       String::FromUTF8(webview->Client()->GetSessionStorageNamespaceId()),
-      "/ephemeral-session-storage");
+      kSessionStorageSuffix);
 
   auto* security_origin =
       page->MainFrame()->GetSecurityContext()->GetSecurityOrigin();
@@ -124,7 +127,7 @@ EphemeralStorageNamespaces* EphemeralStorageNamespaces::From(
   }
 
   String local_storage_id =
-      StringToSessionStorageId(domain, "/ephemeral-local-storage");
+      StringToSessionStorageId(domain, kLocalStorageSuffix);
   supplement = MakeGarbageCollected<EphemeralStorageNamespaces>(
       StorageController::GetInstance(), session_storage_id, local_storage_id);
 
@@ -169,17 +172,9 @@ StorageArea* BraveDOMWindowStorage::sessionStorage(
   auto* storage =
       DOMWindowStorage::From(*window).sessionStorage(exception_state);
 
-  MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (!base::FeatureList::IsEnabled(features::kBraveEphemeralStorage))
+  if (!ShouldUseEphemeralStorage(
+          window, WebContentSettingsClient::StorageType::kSessionStorage))
     return storage;
-
-  if (!window->IsCrossSiteSubframe())
-    return storage;
-
-  // If we were not able to create non-ephemeral session storage for this
-  // window, then don't attempt to create an ephemeral version.
-  if (!storage)
-    return nullptr;
 
   return ephemeralSessionStorage();
 }
@@ -199,7 +194,7 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
       namespaces->session_storage()->GetCachedArea(window->GetSecurityOrigin());
 
   ephemeral_session_storage_ =
-      StorageArea::Create(window->GetFrame(), std::move(storage_area),
+      StorageArea::Create(window, std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);
   return ephemeral_session_storage_;
 }
@@ -209,17 +204,9 @@ StorageArea* BraveDOMWindowStorage::localStorage(
   LocalDOMWindow* window = GetSupplementable();
   auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
 
-  MaybeClearAccessDeniedException(storage, *window, &exception_state);
-  if (!base::FeatureList::IsEnabled(features::kBraveEphemeralStorage))
+  if (!ShouldUseEphemeralStorage(
+          window, WebContentSettingsClient::StorageType::kLocalStorage))
     return storage;
-
-  if (!window->IsCrossSiteSubframe())
-    return storage;
-
-  // If we were not able to create non-ephemeral localStorage for this Window,
-  // then don't attempt to create an ephemeral version.
-  if (!storage)
-    return nullptr;
 
   return ephemeralLocalStorage();
 }
@@ -242,8 +229,9 @@ StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage() {
   // sessionStorage works. Due to this, when opening up a new ephemeral
   // localStorage area, we use the sessionStorage infrastructure.
   ephemeral_local_storage_ =
-      StorageArea::Create(window->GetFrame(), std::move(storage_area),
+      StorageArea::Create(window, std::move(storage_area),
                           StorageArea::StorageType::kSessionStorage);
+
   return ephemeral_local_storage_;
 }
 

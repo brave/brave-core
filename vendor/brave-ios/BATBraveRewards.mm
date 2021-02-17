@@ -5,6 +5,7 @@
 #import "BATBraveRewards.h"
 #import "DataController.h"
 #import "RewardsLogging.h"
+#import "BATBraveAds+Private.h"
 
 #include "base/task/current_thread.h"
 #include "base/task/single_thread_task_executor.h"
@@ -138,6 +139,29 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 
 #pragma clang diagnostic push
 
+- (BOOL)isAdsEnabled
+{
+  return self.ads.enabled;
+}
+
+- (void)setAdsEnabled:(BOOL)adsEnabled
+{
+  if (self.ads.enabled && !adsEnabled) {
+    const auto __weak weakSelf = self;
+    self.ads.enabled = adsEnabled;
+    [self.ads shutdown:^{
+      const auto strongSelf = weakSelf;
+      if (!strongSelf) { return; }
+      NSString *adsStorage = [strongSelf.configuration.stateStoragePath stringByAppendingPathComponent:@"ads"];
+      strongSelf.ads = [[strongSelf.adsClass alloc] initWithStateStoragePath:adsStorage];
+      strongSelf.ads.ledger = strongSelf.ledger;
+      strongSelf.ledger.ads = strongSelf.ads;
+    }];
+  } else {
+    self.ads.enabled = adsEnabled;
+  }
+}
+
 @end
 
 @implementation BATBraveRewards (Reporting)
@@ -156,6 +180,7 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 }
 
 - (void)reportLoadedPageWithURL:(NSURL *)url
+             redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
@@ -163,7 +188,7 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 {
   [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:html];
   if (adsInnerText != nil) {
-    [self.ads reportLoadedPageWithURL:url innerText:adsInnerText tabId:tabId];
+    [self.ads reportLoadedPageWithURL:url redirectedFromURLs:redirectionURLs innerText:adsInnerText tabId:tabId];
   }
   [self.ledger reportLoadedPageWithURL:url tabId:tabId];
 }

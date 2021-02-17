@@ -14,9 +14,8 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "brave/components/ipfs/translate_ipfs_uri.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
@@ -54,13 +53,13 @@ bool HandleIPFSURLRewrite(
     return true;
   }
 
-  if (!IpfsServiceFactory::IsIpfsResolveMethodDisabled(browser_context) &&
+  if (!IsIpfsResolveMethodDisabled(browser_context) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
       // We instead will translate the URL later.
       IsIPFSLocalGateway(browser_context) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
-    return TranslateIPFSURI(*url, url,
-                            GetDefaultIPFSLocalGateway(chrome::GetChannel()));
+    return TranslateIPFSURI(
+        *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
   }
 
   return false;
@@ -76,6 +75,10 @@ bool HandleIPFSURLReverseRewrite(
   if (ipfs_pos == std::string::npos && ipns_pos == std::string::npos)
     return false;
 
+  GURL configured_gateway =
+      GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
+  if (configured_gateway.port() != url->port())
+    return false;
   GURL::Replacements scheme_replacements;
   GURL::Replacements host_replacements;
   if (ipfs_pos != std::string::npos) {

@@ -35,25 +35,23 @@ ConversionList GetUnsortedConversions() {
 
 }  // namespace
 
-TEST(BatConversionsSortTest,
-    NoSortOrder) {
+TEST(BatConversionsSortTest, NoSortOrder) {
   // Arrange
 
   // Act
-  const auto sort = ConversionsSortFactory::Build(
-      ConversionInfo::SortType::kNone);
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionInfo::SortType::kNone);
 
   // Assert
   EXPECT_EQ(nullptr, sort);
 }
 
-TEST(BatConversionsSortTest,
-    DescendingSortOrder) {
+TEST(BatConversionsSortTest, DescendingSortOrder) {
   // Arrange
   ConversionList list = GetUnsortedConversions();
 
-  const auto sort = ConversionsSortFactory::Build(
-      ConversionInfo::SortType::kDescendingOrder);
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionInfo::SortType::kDescendingOrder);
 
   // Act
   list = sort->Apply(list);
@@ -75,13 +73,12 @@ TEST(BatConversionsSortTest,
   EXPECT_EQ(expected_list, list);
 }
 
-TEST(BatConversionsSortTest,
-    DescendingSortOrderForEmptyList) {
+TEST(BatConversionsSortTest, DescendingSortOrderForEmptyList) {
   // Arrange
   ConversionList list = {};
 
-  const auto sort = ConversionsSortFactory::Build(
-      ConversionInfo::SortType::kDescendingOrder);
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionInfo::SortType::kDescendingOrder);
 
   // Act
   list = sort->Apply(list);
@@ -92,13 +89,12 @@ TEST(BatConversionsSortTest,
   EXPECT_EQ(expected_list, list);
 }
 
-TEST(BatConversionsSortTest,
-    AscendingSortOrder) {
+TEST(BatConversionsSortTest, AscendingSortOrder) {
   // Arrange
   ConversionList list = GetUnsortedConversions();
 
-  const auto sort = ConversionsSortFactory::Build(
-      ConversionInfo::SortType::kAscendingOrder);
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionInfo::SortType::kAscendingOrder);
 
   // Act
   list = sort->Apply(list);
@@ -120,13 +116,12 @@ TEST(BatConversionsSortTest,
   EXPECT_EQ(expected_list, list);
 }
 
-TEST(BatConversionsSortTest,
-    AscendingSortOrderForEmptyList) {
+TEST(BatConversionsSortTest, AscendingSortOrderForEmptyList) {
   // Arrange
   ConversionList list = {};
 
-  const auto sort = ConversionsSortFactory::Build(
-      ConversionInfo::SortType::kAscendingOrder);
+  const auto sort =
+      ConversionsSortFactory::Build(ConversionInfo::SortType::kAscendingOrder);
 
   // Act
   list = sort->Apply(list);

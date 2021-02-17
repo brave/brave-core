@@ -33,7 +33,7 @@
         android:layout_marginBottom="16dp"
         android:textSize="14sp"
         android:text="@string/you_can_change_this_later"
-        android:textColor="@color/brave_rewards_modal_theme_color"/>
+        android:textColor="@color/brave_rewards_modal_text_color"/>
 
       <TextView
         android:layout_width="wrap_content"

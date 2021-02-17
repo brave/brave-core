@@ -18,6 +18,12 @@ extern const char kIPNSScheme[];
 extern const char kDefaultIPFSGateway[];
 extern const char kDefaultIPFSLocalGateway[];
 extern const char kIPFSLearnMoreURL[];
+extern const char kRepoStatsPath[];
+extern const char kRepoStatsHumanReadableParamName[];
+extern const char kRepoStatsHumanReadableParamValue[];
+extern const char kNodeInfoPath[];
+extern const char kLocalhostIP[];
+extern const char kLocalhostDomain[];
 
 enum class IPFSResolveMethodTypes {
   IPFS_ASK,

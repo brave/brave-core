@@ -28,3 +28,7 @@ export const QRText = styled<{}, 'div'>('div')`
   padding: 0 10px 0 0;
   line-height: 1.5;
 `
+
+export const TourPromoWrapper = styled<{}, 'div'>('div')`
+  margin-top: 30px;
+`

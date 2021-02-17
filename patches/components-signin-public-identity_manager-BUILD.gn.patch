@@ -1,0 +1,20 @@
+diff --git a/components/signin/public/identity_manager/BUILD.gn b/components/signin/public/identity_manager/BUILD.gn
+index 5ba621b1bfebd22fe8811307a6f480c0bbf6f7da..1573f93c47e4d4669738c239737b025a2702dee7 100644
+--- a/components/signin/public/identity_manager/BUILD.gn
++++ b/components/signin/public/identity_manager/BUILD.gn
+@@ -7,6 +7,7 @@ import("//build/config/chromeos/ui_mode.gni")
+ if (is_android) {
+   import("//build/config/android/rules.gni")
+ }
++import("//brave/components/signin/public/identity_manager/sources.gni")
+ 
+ source_set("identity_manager") {
+   sources = [
+@@ -80,6 +81,7 @@ source_set("identity_manager") {
+     # together and include headers from each other.
+     "//components/signin/internal/identity_manager",
+   ]
++  sources += brave_components_signin_public_identity_manager_sources
+ }
+ 
+ if (is_android) {

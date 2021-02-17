@@ -1,0 +1,9 @@
+include_rules = [
+  "+../../../../net/base",
+  "+../../../../net/cookies",
+  "+../../../../net/log",
+  "+../../../../net/proxy_resolution",
+  "+../../../../net/socket",
+  "+../../../../net/url_request",
+  "+../../../../../net/tools/transport_security_state_generator",
+]

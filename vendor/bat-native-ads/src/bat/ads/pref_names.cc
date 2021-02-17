@@ -19,9 +19,6 @@ const char kShouldAllowConversionTracking[] =
 // Stores the maximum amount of ads per hour
 const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 
-// Stores the maximum amount of ads per day
-const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
-
 // Stores the idle threshold before checking if an ad can be served
 const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
 
@@ -38,20 +35,24 @@ const char kAutoDetectedAdsSubdivisionTargetingCode[] =
     "brave.brave_ads.automatically_detected_ads_subdivision_targeting_code";
 
 // Stores catalog id
-const char kCatalogId[] =
-    "brave.brave_ads.catalog_id";
+const char kCatalogId[] = "brave.brave_ads.catalog_id";
 
 // Stores catalog version
-const char kCatalogVersion[] =
-    "brave.brave_ads.catalog_version";
+const char kCatalogVersion[] = "brave.brave_ads.catalog_version";
 
 // Stores catalog ping
-const char kCatalogPing[] =
-    "brave.brave_ads.catalog_ping";
+const char kCatalogPing[] = "brave.brave_ads.catalog_ping";
 
 // Stores catalog last updated
-const char kCatalogLastUpdated[] =
-    "brave.brave_ads.catalog_last_updated";
+const char kCatalogLastUpdated[] = "brave.brave_ads.catalog_last_updated";
+
+// Stores epsilon greedy bandit arms
+const char kEpsilonGreedyBanditArms[] =
+    "brave.brave_ads.epsilon_greedy_bandit_arms";
+
+// Stores epsilon greedy bandit eligible segments
+const char kEpsilonGreedyBanditEligibleSegments[] =
+    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments";
 
 }  // namespace prefs
 

@@ -5,6 +5,14 @@
 import { Reducer } from 'redux'
 import { types } from '../constants/stack_widget_types'
 
+const widgets = {
+  'rewards': 'showRewards',
+  'binance': 'showBinance',
+  'together': 'showTogether',
+  'gemini': 'showGemini',
+  'cryptoDotCom': 'showCryptoDotCom'
+}
+
 const removeStackWidget = (widget: NewTab.StackWidget, state: NewTab.State): NewTab.State => {
   let { removedStackWidgets, widgetStackOrder } = state
 
@@ -42,15 +50,6 @@ const setForegroundStackWidget = (widget: NewTab.StackWidget, state: NewTab.Stat
 }
 
 const handleWidgetPrefsChange = (state: NewTab.State, oldState: NewTab.State): NewTab.State => {
-  const widgets = {
-    'rewards': 'showRewards',
-    'binance': 'showBinance',
-    'together': 'showTogether',
-    'gemini': 'showGemini',
-    'bitcoinDotCom': 'showBitcoinDotCom',
-    'cryptoDotCom': 'showCryptoDotCom'
-  }
-
   for (const val in widgets) {
     const widget = val as NewTab.StackWidget
     const showKey = widgets[widget]
@@ -73,6 +72,15 @@ const stackWidgetReducer: Reducer<NewTab.State | undefined> = (state: NewTab.Sta
   switch (action.type) {
     case types.SET_FOREGROUND_STACK_WIDGET:
       state = setForegroundStackWidget(payload.widget as NewTab.StackWidget, state)
+      break
+    case types.SAVE_WIDGET_STACK_ORDER:
+      const savedWidgets = state.widgetStackOrder.filter((widget: NewTab.StackWidget) => {
+        return state[widgets[widget]]
+      })
+      state = {
+        ...state,
+        savedWidgetStackOrder: savedWidgets
+      }
       break
 
     default:

@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/browser/farbling/farbling_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
@@ -23,7 +22,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
-#include "third_party/blink/public/common/features.h"
+#include "net/base/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -31,7 +30,6 @@
 #endif
 
 #if defined(OS_ANDROID)
-#include "brave/browser/android/brave_cosmetic_resources_tab_helper.h"
 #include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
 #include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
 #endif
@@ -84,7 +82,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if defined(OS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
-  BraveCosmeticResourcesTabHelper::CreateForWebContents(web_contents);
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
@@ -130,11 +127,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
-  FarblingTabHelper::CreateForWebContents(web_contents);
-
   brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
 
-  if (base::FeatureList::IsEnabled(blink::features::kBraveEphemeralStorage)) {
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
     ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
         web_contents);
   }

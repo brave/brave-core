@@ -151,6 +151,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
       return
     }
 
+    this.setState({ currentMonth: value })
     this.props.onMonthChange(value, child)
   }
 

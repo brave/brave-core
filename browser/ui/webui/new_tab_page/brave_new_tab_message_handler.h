@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/tor/tor_launcher_service_observer.h"
+#include "brave/components/tor/tor_launcher_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -19,9 +19,7 @@ class WebUIDataSource;
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-namespace tor {
-class TorProfileService;
-}  // namespace tor
+class TorLauncherFactory;
 #endif
 
 class PrefRegistrySimple;
@@ -29,7 +27,7 @@ class PrefService;
 
 // Handles messages to and from the New Tab Page javascript
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
-                                  public tor::TorLauncherServiceObserver {
+                                  public TorLauncherObserver {
  public:
   explicit BraveNewTabMessageHandler(Profile* profile);
   ~BraveNewTabMessageHandler() override;
@@ -60,14 +58,15 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   // TODO(petemill): Today should get it's own message handler
   // or service.
   void HandleTodayInteractionBegin(const base::ListValue* args);
-  void HandleTodayOnCardVisits(const base::ListValue* args);
+  void HandleTodayOnCardVisit(const base::ListValue* args);
   void HandleTodayOnCardViews(const base::ListValue* args);
+  void HandleTodayOnPromotedCardView(const base::ListValue* args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();
   void OnPrivatePropertiesChanged();
 
-  // tor::TorLauncherServiceObserver:
+  // TorLauncherObserver:
   void OnTorCircuitEstablished(bool result) override;
   void OnTorInitializing(const std::string& percentage) override;
 
@@ -75,7 +74,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   // Weak pointer.
   Profile* profile_;
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorProfileService* tor_profile_service_ = nullptr;
+  TorLauncherFactory* tor_launcher_factory_ = nullptr;
 #endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);

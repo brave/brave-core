@@ -1,0 +1,16 @@
+include_rules = [
+  "+components/external_intents/android",
+  "+components/navigation_interception",
+  "+content/public/browser",
+  # from brave/components/external_intents/android/BUILD.gn
+  "+components/prefs",
+  "+components/user_prefs",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "intercept_navigation_delegate_impl.cc": [
+    "+brave/common/pref_names.h",
+  ],
+}
+

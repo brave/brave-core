@@ -7,8 +7,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
 
@@ -16,8 +16,7 @@ AdGrants::AdGrants() = default;
 
 AdGrants::~AdGrants() = default;
 
-bool AdGrants::SetFromJson(
-    const std::string& json) {
+bool AdGrants::SetFromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
@@ -35,8 +34,7 @@ bool AdGrants::SetFromJson(
   return true;
 }
 
-bool AdGrants::SetFromDictionary(
-    base::Value* dictionary) {
+bool AdGrants::SetFromDictionary(base::Value* dictionary) {
   DCHECK(dictionary);
 
   const base::Optional<double> balance =
@@ -55,9 +53,8 @@ double AdGrants::GetBalance() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool AdGrants::GetAmountFromDictionary(
-    base::DictionaryValue* dictionary,
-    double* amount) const {
+bool AdGrants::GetAmountFromDictionary(base::DictionaryValue* dictionary,
+                                       double* amount) const {
   DCHECK(dictionary);
   DCHECK(amount);
 

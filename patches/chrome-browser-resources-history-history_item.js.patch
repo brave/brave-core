@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/history/history_item.js b/chrome/browser/resources/history/history_item.js
-index e47037acb37aa5de81361fcd1ef2117607090398..369e34810d142808ad32ab3eacc6b861d1dd0317 100644
+index 9a651df9a0bf6afe8d632f561c9440ebcefe3b4a..56cc8b24ed835e3c49bdfbeb70dc11cdf6540e82 100644
 --- a/chrome/browser/resources/history/history_item.js
 +++ b/chrome/browser/resources/history/history_item.js
-@@ -16,6 +16,7 @@ import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.j
+@@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_icons_css.m.js';
+ import 'chrome://resources/cr_elements/shared_vars_css.m.js';
  import 'chrome://resources/js/icon.m.js';
- import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
  import 'chrome://resources/polymer/v3_0/iron-icon/iron-icon.js';
 +import 'chrome://brave-resources/page_specific/history/brave_history_item.m.js'
  
- Polymer({
-   is: 'history-item',
+ import {FocusRowBehavior} from 'chrome://resources/js/cr/ui/focus_row_behavior.m.js';
+ import {focusWithoutInk} from 'chrome://resources/js/cr/ui/focus_without_ink.m.js';

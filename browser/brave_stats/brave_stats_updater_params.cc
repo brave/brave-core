@@ -10,6 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "bat/ads/pref_names.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -23,17 +24,26 @@ bool BraveStatsUpdaterParams::g_force_first_run = false;
 static constexpr base::TimeDelta g_dtoi_delete_delta =
     base::TimeDelta::FromSeconds(14 * 24 * 60 * 60);
 
-BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
-    : BraveStatsUpdaterParams(pref_service,
+BraveStatsUpdaterParams::BraveStatsUpdaterParams(
+    PrefService* stats_pref_service,
+    PrefService* profile_pref_service)
+    : BraveStatsUpdaterParams(stats_pref_service,
+                              profile_pref_service,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
                               GetCurrentMonth()) {}
 
-BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
-                                                 const std::string& ymd,
-                                                 int woy,
-                                                 int month)
-    : pref_service_(pref_service), ymd_(ymd), woy_(woy), month_(month) {
+BraveStatsUpdaterParams::BraveStatsUpdaterParams(
+    PrefService* stats_pref_service,
+    PrefService* profile_pref_service,
+    const std::string& ymd,
+    int woy,
+    int month)
+    : stats_pref_service_(stats_pref_service),
+      profile_pref_service_(profile_pref_service),
+      ymd_(ymd),
+      woy_(woy),
+      month_(month) {
   LoadPrefs();
 }
 
@@ -70,31 +80,36 @@ std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
   return referral_promo_code_.empty() ? "none" : referral_promo_code_;
 }
 
+std::string BraveStatsUpdaterParams::GetAdsEnabledParam() const {
+  return BooleanToString(
+      profile_pref_service_->GetBoolean(ads::prefs::kEnabled));
+}
+
 void BraveStatsUpdaterParams::LoadPrefs() {
-  last_check_ymd_ = pref_service_->GetString(kLastCheckYMD);
-  last_check_woy_ = pref_service_->GetInteger(kLastCheckWOY);
-  last_check_month_ = pref_service_->GetInteger(kLastCheckMonth);
-  first_check_made_ = pref_service_->GetBoolean(kFirstCheckMade);
-  week_of_installation_ = pref_service_->GetString(kWeekOfInstallation);
+  last_check_ymd_ = stats_pref_service_->GetString(kLastCheckYMD);
+  last_check_woy_ = stats_pref_service_->GetInteger(kLastCheckWOY);
+  last_check_month_ = stats_pref_service_->GetInteger(kLastCheckMonth);
+  first_check_made_ = stats_pref_service_->GetBoolean(kFirstCheckMade);
+  week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
   if (ShouldForceFirstRun()) {
     date_of_installation_ = GetCurrentTimeNow();
   } else {
-    date_of_installation_ = GetFirstRunTime(pref_service_);
+    date_of_installation_ = GetFirstRunTime(stats_pref_service_);
     DCHECK(!date_of_installation_.is_null());
   }
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  referral_promo_code_ = pref_service_->GetString(kReferralPromoCode);
+  referral_promo_code_ = stats_pref_service_->GetString(kReferralPromoCode);
 #endif
 }
 
 void BraveStatsUpdaterParams::SavePrefs() {
-  pref_service_->SetString(kLastCheckYMD, ymd_);
-  pref_service_->SetInteger(kLastCheckWOY, woy_);
-  pref_service_->SetInteger(kLastCheckMonth, month_);
-  pref_service_->SetBoolean(kFirstCheckMade, true);
-  pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
+  stats_pref_service_->SetString(kLastCheckYMD, ymd_);
+  stats_pref_service_->SetInteger(kLastCheckWOY, woy_);
+  stats_pref_service_->SetInteger(kLastCheckMonth, month_);
+  stats_pref_service_->SetBoolean(kFirstCheckMade, true);
+  stats_pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {

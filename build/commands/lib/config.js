@@ -68,6 +68,7 @@ const Config = function () {
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
   this.rootDir = rootDir
+  this.isUniversalBinary = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
@@ -106,7 +107,6 @@ const Config = function () {
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
   this.mac_installer_signing_identifier = getNPMConfig(['mac_installer_signing_identifier']) || ''
   this.mac_signing_keychain = getNPMConfig(['mac_signing_keychain']) || 'login'
-  this.mac_signing_output_prefix = 'signing'
   this.sparkleDSAPrivateKeyFile = getNPMConfig(['sparkle_dsa_private_key_file']) || ''
   this.sparkleEdDSAPrivateKey = getNPMConfig(['sparkle_eddsa_private_key']) || ''
   this.sparkleEdDSAPublicKey = getNPMConfig(['sparkle_eddsa_public_key']) || ''
@@ -119,7 +119,6 @@ const Config = function () {
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
-  this.widevineVersion = getNPMConfig(['widevine', 'version'])
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
@@ -192,6 +191,7 @@ Config.prototype.buildArgs = function () {
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
+    is_universal_binary: this.isUniversalBinary,
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
@@ -240,7 +240,6 @@ Config.prototype.buildArgs = function () {
       args.mac_signing_identifier = this.mac_signing_identifier
       args.mac_installer_signing_identifier = this.mac_installer_signing_identifier
       args.mac_signing_keychain = this.mac_signing_keychain
-      args.mac_signing_output_prefix = this.mac_signing_output_prefix
       if (this.notarize) {
         args.notarize = true
         args.notary_user = this.notary_user
@@ -322,6 +321,10 @@ Config.prototype.buildArgs = function () {
     if (this.buildConfig !== 'Release') {
       // treat non-release builds like Debug builds
       args.treat_warnings_as_errors = false
+      // TODO(samartnik): component builds crash at the moment on Android.
+      // We will need to revert this change once this fix is landed in upstream
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=1166748#c14
+      args.is_component_build = false
     } else {
       // otherwise there is build error
       // ld.lld: error: output file too large: 5861255936 bytes
@@ -369,6 +372,7 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_search_widget_extension = false
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = false
+    args.ios_enable_widget_kit_extension = false
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint
@@ -472,6 +476,11 @@ Config.prototype.getProjectRef = function (projectName) {
 }
 
 Config.prototype.update = function (options) {
+  if (options.universal) {
+    this.targetArch = 'arm64'
+    this.isUniversalBinary = true
+  }
+
   if (options.target_arch === 'x86') {
     this.targetArch = options.target_arch
     this.gypTargetArch = 'ia32'

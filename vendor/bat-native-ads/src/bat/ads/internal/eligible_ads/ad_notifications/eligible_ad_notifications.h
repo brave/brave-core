@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_ELIGIBLE_ADS_ELIGIBLE_AD_NOTIFICATIONS_H_
-#define BAT_ADS_INTERNAL_ELIGIBLE_ADS_ELIGIBLE_AD_NOTIFICATIONS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
 
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
@@ -26,10 +26,9 @@ class EligibleAds {
 
   ~EligibleAds();
 
-  CreativeAdNotificationList Get(
-      const CreativeAdNotificationList& ads,
-      const CreativeAdInfo& last_delivered_ad,
-      const AdEventList& ad_events);
+  CreativeAdNotificationList Get(const CreativeAdNotificationList& ads,
+                                 const CreativeAdInfo& last_delivered_ad,
+                                 const AdEventList& ad_events);
 
  private:
   ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting_;
@@ -49,4 +48,4 @@ class EligibleAds {
 }  // namespace ad_notifications
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_ELIGIBLE_ADS_ELIGIBLE_AD_NOTIFICATIONS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_

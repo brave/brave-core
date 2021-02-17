@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../../components/network_session_configurator/browser",
+  "+components/network_session_configurator",
+]

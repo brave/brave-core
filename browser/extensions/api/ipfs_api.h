@@ -81,6 +81,15 @@ class IpfsGetExecutableAvailableFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsResolveIPFSURIFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.resolveIPFSURI", UNKNOWN)
+
+ protected:
+  ~IpfsResolveIPFSURIFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

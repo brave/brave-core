@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 7c517f3d014890bb120b3bf4509891363990d56b..e8dbf4fa34ab66318804e4e85aaf42cf8ec99205 100644
+index 7c517f3d014890bb120b3bf4509891363990d56b..04f96212719290b3e790490273f0335ccf6ed985 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -35,12 +35,3 @@ index 7c517f3d014890bb120b3bf4509891363990d56b..e8dbf4fa34ab66318804e4e85aaf42cf
      fi
    fi
    LOGO_RESOURCES_PNG=$(find "${OUTPUTDIR}/installer/theme/" \
-@@ -406,6 +411,8 @@ stage_install_common() {
-       local expected_perms=644
-     elif [[ "${file_type}" = *"shell script"* ]]; then
-       local expected_perms=755
-+    elif [[ "${base_name}" = "libwidevinecdm.so" ]]; then
-+      local expected_perms=${actual_perms}
-     elif [[ "${file_type}" = ELF* ]]; then
-       if [[ "${base_name}" = *".so" ]]; then
-         local expected_perms=${SHLIB_PERMS}

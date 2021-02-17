@@ -179,6 +179,7 @@ export default function BraveTodayContent (props: Props) {
               onReadFeedItem={props.onReadFeedItem}
               onPeriodicCardViews={registerCardCountTriggerElement}
               onSetPublisherPref={props.onSetPublisherPref}
+              onPromotedItemViewed={props.onPromotedItemViewed}
             />
           )
         })

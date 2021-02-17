@@ -70,7 +70,26 @@ declare global {
     sync_ui_exports: {
       initialize: () => void
     }
+    tor_internals: {
+      initialize: () => void
+    }
     alreadyInserted: boolean
     web3: any
+    content_cosmetic: {
+      cosmeticStyleSheet: CSSStyleSheet
+      allSelectorsToRules: Map<string, number>
+      observingHasStarted: boolean
+      hide1pContent: boolean
+      generichide: boolean
+      firstRunQueue: Set<string>
+      secondRunQueue: Set<string>
+      finalRunQueue: Set<string>
+      allQueues: Set<string>[]
+      numQueues: any
+      alreadyUnhiddenSelectors: Set<string>
+      alreadyKnownFirstPartySubtrees: WeakSet
+      _hasDelayOcurred: boolean
+      _startCheckingId: number | undefined
+    }
   }
 }

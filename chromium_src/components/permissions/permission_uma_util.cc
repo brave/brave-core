@@ -3,53 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/permission_util.h"
+#include "components/permissions/permission_uma_util.h"
 
-#include "components/content_settings/core/common/content_settings_types.h"
-#include "components/permissions/permission_request.h"
+#include "build/build_config.h"
 
-namespace permissions {
-namespace {
-
-std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type);
-void BraveRecordPermissionAction(ContentSettingsType permission,
-                                 PermissionAction action);
-
-std::string GetPermissionRequestString(PermissionRequestType type) {
-  if (type == PermissionRequestType::PERMISSION_AUTOPLAY)
-    return "Autoplay";
-  if (type == PermissionRequestType::PERMISSION_WIDEVINE)
-    return "Widevine";
-  if (type == PermissionRequestType::PERMISSION_WALLET)
-    return "Wallet";
-  return GetPermissionRequestString_ChromiumImpl(type);
-}
-
-}  // namespace
-}  // namespace permissions
-
-#define BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION \
-  case ContentSettingsType::AUTOPLAY:                  \
-    BraveRecordPermissionAction(permission, action);   \
-    break;
+// Since we don't do UMA just reuse an existing UMA type instead of adding one.
+#if !defined(OS_ANDROID) && !defined(OS_IOS)
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE \
+  case RequestType::kWidevine:               \
+    return RequestTypeForUma::PERMISSION_WINDOW_PLACEMENT;
+#else
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
+#endif
 
 #include "../../../../components/permissions/permission_uma_util.cc"
-#undef BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION
-
-namespace permissions {
-namespace {
-
-void BraveRecordPermissionAction(ContentSettingsType permission,
-                                 PermissionAction action) {
-  switch (permission) {
-    case ContentSettingsType::AUTOPLAY:
-      base::UmaHistogramEnumeration("Permissions.Action.Autoplay", action,
-                                    PermissionAction::NUM);
-      break;
-    default:
-      break;
-  }
-}
-
-}  // namespace
-}  // namespace permissions
+#undef BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE

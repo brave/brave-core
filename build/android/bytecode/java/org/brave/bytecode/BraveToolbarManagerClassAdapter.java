@@ -15,8 +15,13 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
     public BraveToolbarManagerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinator");
-        makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinator");
+        redirectConstructor(sToolbarManagerClassName, sBraveToolbarManagerClassName);
+
+        deleteField(sBraveToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
+        makeProtectedField(sToolbarManagerClassName, "mBottomControlsCoordinatorSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mCallbackController");
+        makeProtectedField(sToolbarManagerClassName, "mCallbackController");
 
         deleteField(sBraveToolbarManagerClassName, "mBrowserControlsSizer");
         makeProtectedField(sToolbarManagerClassName, "mBrowserControlsSizer");
@@ -36,14 +41,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mScrimCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mScrimCoordinator");
 
-        deleteField(sBraveToolbarManagerClassName, "mActivity");
-        makeProtectedField(sToolbarManagerClassName, "mActivity");
-
         deleteField(sBraveToolbarManagerClassName, "mShowStartSurfaceSupplier");
         makeProtectedField(sToolbarManagerClassName, "mShowStartSurfaceSupplier");
-
-        deleteField(sBraveToolbarManagerClassName, "mOverviewModeBehaviorSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mOverviewModeBehaviorSupplier");
 
         deleteField(sBraveToolbarManagerClassName, "mMenuButtonCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mMenuButtonCoordinator");
@@ -65,6 +64,21 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveToolbarManagerClassName, "mBookmarkBridgeSupplier");
         makeProtectedField(sToolbarManagerClassName, "mBookmarkBridgeSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mLayoutManager");
+        makeProtectedField(sToolbarManagerClassName, "mLayoutManager");
+
+        deleteField(sBraveToolbarManagerClassName, "mOverlayPanelVisibilitySupplier");
+        makeProtectedField(sToolbarManagerClassName, "mOverlayPanelVisibilitySupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mTabModelSelector");
+        makeProtectedField(sToolbarManagerClassName, "mTabModelSelector");
+
+        deleteField(sBraveToolbarManagerClassName, "mIncognitoStateProvider");
+        makeProtectedField(sToolbarManagerClassName, "mIncognitoStateProvider");
+
+        deleteField(sBraveToolbarManagerClassName, "mTabCountProvider");
+        makeProtectedField(sToolbarManagerClassName, "mTabCountProvider");
 
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(

@@ -5,6 +5,9 @@
 
 #include "net/url_request/redirect_util.h"
 
+#include "base/stl_util.h"
+#include "net/url_request/url_request_job.h"
+
 #define UpdateHttpRequest UpdateHttpRequest_ChromiumImpl
 #include "../../../../net/url_request/redirect_util.cc"
 #undef UpdateHttpRequest
@@ -26,12 +29,14 @@ void RedirectUtil::UpdateHttpRequest(
                                  modified_headers,
                                  request_headers,
                                  should_clear_upload);
-  // Hack for dropping referrer at the network layer.
+  // Hack for capping referrers at the network layer.
   if (removed_headers) {
-    if (removed_headers->end() != std::find(removed_headers->begin(),
-                                            removed_headers->end(),
-                                            "X-Brave-Clear-Referer")) {
-      const_cast<RedirectInfo&>(redirect_info).new_referrer.clear();
+    if (base::Contains(*removed_headers, "X-Brave-Cap-Referrer")) {
+      GURL capped_referrer = URLRequestJob::ComputeReferrerForPolicy(
+          ReferrerPolicy::REDUCE_GRANULARITY_ON_TRANSITION_CROSS_ORIGIN,
+          GURL(redirect_info.new_referrer), redirect_info.new_url);
+      const_cast<RedirectInfo&>(redirect_info).new_referrer =
+          capped_referrer.spec();
     }
   }
 }

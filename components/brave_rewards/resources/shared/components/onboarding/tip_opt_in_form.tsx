@@ -4,9 +4,8 @@
 
 import * as React from 'react'
 
-import { BatColorIcon } from 'brave-ui/components/icons'
-
 import { LocaleContext } from '../../lib/locale_context'
+import { BatIcon } from '../icons/bat_icon'
 import { TermsOfService } from './terms_of_service'
 import { MainButton } from './main_button'
 
@@ -15,6 +14,7 @@ import * as style from './tip_opt_in_form.style'
 interface Props {
   onEnable: () => void
   onDismiss: () => void
+  onTakeTour: () => void
 }
 
 export function TipOptInForm (props: Props) {
@@ -22,11 +22,16 @@ export function TipOptInForm (props: Props) {
   return (
     <style.root>
       <style.content>
-        <style.batIcon><BatColorIcon /></style.batIcon>
+        <style.batIcon><BatIcon /></style.batIcon>
         <style.heading>{getString('onboardingTipHeader')}</style.heading>
         <style.text>
           {getString('onboardingTipText')}
         </style.text>
+        <style.takeTour>
+          <button onClick={props.onTakeTour}>
+            {getString('onboardingTakeTour')}
+          </button>
+        </style.takeTour>
         <style.enable>
           <MainButton onClick={props.onEnable}>
             {getString('onboardingStartUsingRewards')}

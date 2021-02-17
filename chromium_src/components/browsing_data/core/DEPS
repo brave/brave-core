@@ -1,0 +1,5 @@
+include_rules = [
+  "+../../../../../components/browsing_data/core",
+  "+../../../../../../components/browsing_data/core/counters",
+  "+components/browsing_data/core",
+]

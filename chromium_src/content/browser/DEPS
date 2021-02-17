@@ -1,0 +1,19 @@
+include_rules = [
+  "+../../../../content/browser",
+  "+../../../../../content/browser/renderer_host",
+  "+../../../../../content/browser/webui",
+  "+../../../../../content/browser/worker_host",
+  "+../../../../../content/browser/zygote_host",
+  "+content/browser",
+  "+content/public/browser",
+  "+content/public/common",
+  "+services/network/public/mojom/cookie_manager.mojom.h",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "browser_main_loop.cc": [
+    "+brave/browser/brave_browser_main_loop.cc",
+    "+brave/browser/brave_browser_main_loop.h",
+  ],
+}

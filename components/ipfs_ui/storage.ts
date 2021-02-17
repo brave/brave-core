@@ -18,7 +18,20 @@ export const defaultState: IPFS.State = {
   },
   daemonStatus: {
     installed: false,
-    launched: false
+    launched: false,
+    restarting: false,
+    installing: false
+  },
+  repoStats: {
+    objects: 0,
+    size: 0,
+    storage: 0,
+    path: '',
+    version: ''
+  },
+  nodeInfo: {
+    id: '',
+    version: ''
   }
 }
 

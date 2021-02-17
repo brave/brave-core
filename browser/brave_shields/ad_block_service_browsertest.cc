@@ -315,6 +315,44 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// Load a page with an ad image, with a corresponding exception installed in
+// the custom filters, and make sure it is not blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("*ad_banner.png");
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("@@ad_banner.png"));
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Load a page with an image blocked by custom filters, with a corresponding
+// exception installed in the default filters, and make sure it is not blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  UpdateAdBlockInstanceWithRules("@@ad_banner.png");
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("*ad_banner.png"));
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
 // Load a page with an image which is not an ad, and make sure it is NOT
 // blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
@@ -528,6 +566,23 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
                          )"));
   content::RunAllTasksUntilIdle();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+}
+
+// Requests made by a service worker should be blocked as well.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(0, 0, 0, 1);"
+                         "installBlockingServiceWorker()"));
+  // https://github.com/brave/brave-browser/issues/14087
+  // EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an ad image which is matched on the regional blocker,
@@ -784,7 +839,6 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
-
   WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
@@ -844,17 +898,51 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true,
-            EvalJs(contents, "checkSelector('#ad-banner', 'display', 'none')"));
+  auto result_first = EvalJsWithManualReply(contents,
+                                            R"(function waitCSSSelector() {
+          if (checkSelector('#ad-banner', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_first.error.empty());
+  EXPECT_EQ(base::Value(true), result_first.value);
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.ad-banner', 'display', 'block')"));
+  auto result_second = EvalJsWithManualReply(contents,
+                                             R"(function waitCSSSelector() {
+          if (checkSelector('.ad-banner', 'display', 'block')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_second.error.empty());
+  EXPECT_EQ(base::Value(true), result_second.value);
 
-  ASSERT_EQ(true, EvalJs(contents, "checkSelector('.ad', 'display', 'none')"));
+  auto result_third = EvalJsWithManualReply(contents,
+                                            R"(function waitCSSSelector() {
+          if (checkSelector('.ad', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_third.error.empty());
+  EXPECT_EQ(base::Value(true), result_third.value);
 }
 
 // Test cosmetic filtering ignores content determined to be 1st party
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
+// This is disabled due to https://github.com/brave/brave-browser/issues/13882
+#if defined(OS_WIN)
+#define MAYBE_CosmeticFilteringProtect1p DISABLED_CosmeticFilteringProtect1p
+#else
+#define MAYBE_CosmeticFilteringProtect1p CosmeticFilteringProtect1p
+#endif
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_CosmeticFilteringProtect1p) {
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
   WaitForBraveExtensionShieldsDataReady();
@@ -885,8 +973,17 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.fpsponsored', 'display', 'none')"));
+  auto result = EvalJsWithManualReply(contents,
+                                      R"(function waitCSSSelector() {
+          if (checkSelector('.fpsponsored', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
 }
 
 // Test cosmetic filtering on elements added dynamically
@@ -902,12 +999,29 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "addElementsDynamically();\n"
-                         "checkSelector('.blockme', 'display', 'none')"));
+  auto result_first = EvalJsWithManualReply(contents,
+                                            R"(function waitCSSSelector() {
+          if (checkSelector('.blockme', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_first.error.empty());
+  EXPECT_EQ(base::Value(true), result_first.value);
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.dontblockme', 'display', 'block')"));
+  auto result_second = EvalJsWithManualReply(contents,
+                                             R"(function waitCSSSelector() {
+          if (checkSelector('.dontblockme', 'display', 'block')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_second.error.empty());
+  EXPECT_EQ(base::Value(true), result_second.value);
 }
 
 // Test cosmetic filtering ignores generic cosmetic rules in the presence of a
@@ -952,8 +1066,17 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true,
-            EvalJs(contents, "checkSelector('.ad', 'padding-bottom', '10px')"));
+  auto result = EvalJsWithManualReply(contents,
+                                      R"(function waitCSSSelector() {
+          if (checkSelector('.ad', 'padding-bottom', '10px')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
 }
 
 // Test rules overridden by hostname-specific exception rules
@@ -973,10 +1096,29 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents, "checkSelector('.ad', 'display', 'block')"));
+  auto result_first = EvalJsWithManualReply(contents,
+                                            R"(function waitCSSSelector() {
+          if (checkSelector('.ad', 'display', 'block')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_first.error.empty());
+  EXPECT_EQ(base::Value(true), result_first.value);
 
-  ASSERT_EQ(true,
-            EvalJs(contents, "checkSelector('#ad-banner', 'display', 'none')"));
+  auto result_second = EvalJsWithManualReply(contents,
+                                             R"(function waitCSSSelector() {
+          if (checkSelector('#ad-banner', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result_second.error.empty());
+  EXPECT_EQ(base::Value(true), result_second.value);
 }
 
 // Test scriptlet injection that modifies window attributes
@@ -1010,8 +1152,17 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents,
-                         "checkSelector('.ad', 'color', 'Impossible value')"));
+  auto result = EvalJsWithManualReply(contents,
+                                      R"(function waitCSSSelector() {
+          if (checkSelector('.ad', 'color', 'Impossible value')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
 }
 
 // Test scriptlet injection that modifies window attributes

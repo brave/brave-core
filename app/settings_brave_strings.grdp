@@ -141,33 +141,6 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_ERROR" desc="This text describes that safety check could not check extensions for an unkown reason.">
     Brave can't check your extensions. Try again later.
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER" desc="This text describes that Brave automatically checks device software.">
-    Brave checks for unwanted software once a week
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_SECONDS" desc="This text describes that Brave automatically checks device software and that it last checked a moment ago.">
-    Brave checks for unwanted software once a week. Last checked: a moment ago.
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_MINUTES" desc="This text describes that Brave automatically checks device software and that it last checked minutes ago.">
-    {NUM_MINS, plural,
-     =1 {Brave checks for unwanted software once a week. Last checked: 1 minute ago.}
-     other {Brave checks for unwanted software once a week. Last checked: {NUM_MINS} minutes ago.}}
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_HOURS" desc="This text describes that Brave automatically checks device software and that it last checked hours ago.">
-    {NUM_HOURS, plural,
-     =1 {Brave checks for unwanted software once a week. Last checked: 1 hour ago.}
-     other {Brave checks for unwanted software once a week. Last checked: {NUM_HOURS} hours ago.}}
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_YESTERDAY" desc="This text describes that Brave automatically checks device software and that it last checked yesterday.">
-    Brave checks for unwanted software once a week. Last checked: yesterday.
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_DAYS" desc="This text describes that Brave automatically checks device software and that it last checked days ago.">
-    {NUM_DAYS, plural,
-     =1 {Brave checks for unwanted software once a week. Last checked: 1 day ago.}
-     other {Brave checks for unwanted software once a week. Last checked: {NUM_DAYS} days ago.}}
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_INFECTED" desc="This text describes that Brave found harmful software on the computer.">
-    Brave found harmful software on your computer
-  </message>
 
   <!-- Profiles Page -->
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Brave dialog that indicates profile browsing data will be removed from the device.">
@@ -183,10 +156,18 @@
   <message name="IDS_SETTINGS_PROFILE_NAME_AND_PICTURE" desc="Label of the link that takes you to the page to edit your name and picture for your chrome profile.">
     Brave name and picture
   </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE" desc="Label of the link that takes you to the page to customize your chrome profile.">
+    Customize your Brave profile
+  </message>
 </if>
   <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
     Sync and personalize Brave across your devices
   </message>
+<if expr="chromeos">
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
+    If you have multiple Brave sync chains, you can add them to your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Your accounts will be available in Brave browser and Play Store, as well as services like Gmail, Drive, and YouTube. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+</if>
 
   <!-- Sync Page -->
   <message name="IDS_SETTINGS_SYNC_DATA_ENCRYPTED_TEXT" desc="Text alerting the user that synced data is encrypted.">

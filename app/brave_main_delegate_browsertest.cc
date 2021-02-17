@@ -18,15 +18,16 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/safe_browsing/core/features.h"
+#include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 using BraveMainDelegateBrowserTest = InProcessBrowserTest;
 
@@ -65,16 +66,17 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableAccountWalletStorage,
       &autofill::features::kAutofillServerCommunication,
       &blink::features::kTextFragmentAnchor,
-      &features::kAllowPopupsDuringPageUnload,
+      &features::kDirectSockets,
       &features::kIdleDetection,
+      &features::kLangClientHintHeader,
       &features::kNotificationTriggers,
       &features::kPrivacySettingsRedesign,
+      &features::kSignedExchangePrefetchCacheForNavigations,
       &features::kSignedExchangeSubresourcePrefetch,
-      &features::kSmsReceiver,
-      &features::kVideoPlaybackQuality,
+      &features::kSubresourceWebBundles,
       &features::kTabHoverCards,
+      &features::kWebOTP,
       &network_time::kNetworkTimeServiceQuerying,
-      &password_manager::features::kPasswordCheck,
       &safe_browsing::kEnhancedProtection,
   };
 
@@ -91,8 +93,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
     &net::features::kLegacyTLSEnforced,
+    &security_state::features::kSafetyTipUI,
   };
 
   for (const auto* feature : enabled_features)
     EXPECT_TRUE(base::FeatureList::IsEnabled(*feature));
+
+  EXPECT_TRUE(features::kDnsOverHttpsShowUiParam.default_value);
 }

@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Dispatch } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, select } from '@storybook/addon-knobs/react'
+import { withKnobs, select, boolean } from '@storybook/addon-knobs'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
@@ -24,22 +24,17 @@ function getActions () {
   return getActionsForDispatch(doNothingDispatch)
 }
 
-// Uncomment to use actual images proxied from a CORS-breaker proxy
 // TODO(petemill): privateCDN should be in /common/
-// import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
-
-// TODO(petemill): Have the private CDN contain a CORS response so we can directly fetch
-// from JS.
-// const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
 
 // @ts-ignore
 window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mimeType = 'image/jpg'): Promise<string> {
-  // const response = await fetch(proxyUrl + paddedUrl)
-  // const blob = await response.blob();
-  // // @ts-ignore (Blob.arrayBuffer does exist)
-  // const buffer = await blob.arrayBuffer()
-  // const dataUrl = await getUnpaddedAsDataUrl(buffer, mimeType)
-  // return dataUrl
+  const response = await fetch(paddedUrl)
+  const blob = await response.blob()
+  // @ts-ignore (Blob.arrayBuffer does exist)
+  const buffer = await blob.arrayBuffer()
+  const dataUrl = await getUnpaddedAsDataUrl(buffer, mimeType)
+  return dataUrl
 }
 
 function ThemeProvider ({ story }: any) {
@@ -72,6 +67,7 @@ function dismissBraveTodayIntroCard () {
 
 storiesOf('New Tab/Containers', module)
   .addDecorator(withKnobs)
+  .addDecorator(story => <div dir={boolean('rtl?', false) ? 'rtl' : ''}>{story()}</div>)
   .addDecorator(story => <StoreProvider story={story()} />)
   .addDecorator(story => <ThemeProvider story={story()} />)
   .add('Default', () => {
@@ -93,10 +89,10 @@ storiesOf('New Tab/Containers', module)
         saveShowBinance={doNothing}
         saveShowTogether={doNothing}
         saveShowGemini={doNothing}
-        saveShowBitcoinDotCom={doNothing}
         saveShowCryptoDotCom={doNothing}
         saveBrandedWallpaperOptIn={doNothing}
         onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
+        saveSetAllStackWidgets={doNothing}
       />
     )
   })

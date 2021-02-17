@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 
 #include "components/prefs/pref_service.h"
@@ -30,6 +32,18 @@ bool IsRegionSupported(PrefService* pref_service,
   }
 
   return is_supported;
+}
+
+std::string FindLocale(const std::vector<std::string>& list,
+                       const std::string& default_locale) {
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+  const std::string user_locale = brave_l10n::GetLanguageCode(locale);
+  if (std::find(list.begin(), list.end(), user_locale) != list.end()) {
+    return user_locale;
+  } else {
+    return default_locale;
+  }
 }
 
 }  // namespace ntp_widget_utils

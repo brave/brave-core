@@ -27,10 +27,7 @@ AdsNotificationHandler::~AdsNotificationHandler() {
   browser_context_->RemoveUserData(UserDataKey());
 }
 
-void AdsNotificationHandler::OnShow(
-    Profile* profile,
-    const std::string& id) {
-
+void AdsNotificationHandler::OnShow(Profile* profile, const std::string& id) {
   if (!ads_service_) {
     auto notification = base::BindOnce(&AdsNotificationHandler::OnShow,
                                        base::Unretained(this), profile, id);
@@ -41,16 +38,14 @@ void AdsNotificationHandler::OnShow(
   ads_service_->OnShow(profile, id);
 }
 
-void AdsNotificationHandler::OnClose(
-    Profile* profile,
-    const GURL& origin,
-    const std::string& id,
-    bool by_user,
-    base::OnceClosure completed_closure) {
-
+void AdsNotificationHandler::OnClose(Profile* profile,
+                                     const GURL& origin,
+                                     const std::string& id,
+                                     bool by_user,
+                                     base::OnceClosure completed_closure) {
   base::OnceClosure completed_closure_local =
       base::BindOnce(&AdsNotificationHandler::CloseOperationCompleted,
-      base::Unretained(this), id);
+                     base::Unretained(this), id);
 
   if (!ads_service_) {
     auto notification = base::BindOnce(
@@ -71,7 +66,6 @@ void AdsNotificationHandler::OnClick(
     const base::Optional<int>& action_index,
     const base::Optional<base::string16>& reply,
     base::OnceClosure completed_closure) {
-
   if (!ads_service_) {
     auto notification = base::BindOnce(
         &AdsNotificationHandler::OnClick, base::Unretained(this), profile,
@@ -83,9 +77,8 @@ void AdsNotificationHandler::OnClick(
   ads_service_->ViewAdNotification(id);
 }
 
-void AdsNotificationHandler::OpenSettings(
-      Profile* profile,
-      const GURL& origin) {
+void AdsNotificationHandler::OpenSettings(Profile* profile,
+                                          const GURL& origin) {
   DCHECK(origin.has_query());
   auto id = origin.query();
 
@@ -123,7 +116,6 @@ const void* AdsNotificationHandler::UserDataKey() {
 }
 
 void AdsNotificationHandler::CloseOperationCompleted(
-    const std::string& notification_id) {
-}
+    const std::string& notification_id) {}
 
 }  // namespace brave_ads

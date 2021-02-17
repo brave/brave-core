@@ -27,7 +27,9 @@ type ListItemProps = {
 
 function ListItem (props: ListItemProps) {
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView)
-  const onClick = useReadArticleClickHandler(props.onReadFeedItem, props.item)
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, {
+    item: props.item
+  })
   return (
     <Card.ListItem>
       <a onClick={onClick} href={props.item.url} ref={cardRef}>

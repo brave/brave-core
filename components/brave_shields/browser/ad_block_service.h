@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+#include "base/optional.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -46,11 +48,19 @@ class AdBlockService : public AdBlockBaseService {
   explicit AdBlockService(BraveComponent::Delegate* delegate);
   ~AdBlockService() override;
 
-  bool ShouldStartRequest(const GURL& url,
+  void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
                           const std::string& tab_host,
+                          bool* did_match_rule,
                           bool* did_match_exception,
+                          bool* did_match_important,
                           std::string* mock_data_url) override;
+  base::Optional<base::Value> UrlCosmeticResources(
+      const std::string& url) override;
+  base::Optional<base::Value> HiddenClassIdSelectors(
+      const std::vector<std::string>& classes,
+      const std::vector<std::string>& ids,
+      const std::vector<std::string>& exceptions) override;
 
   AdBlockRegionalServiceManager* regional_service_manager();
   AdBlockCustomFiltersService* custom_filters_service();

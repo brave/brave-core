@@ -109,12 +109,12 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
     if (isMedia) {
       document.body.style.backgroundColor = 'rgb(0, 0, 0)'
     } else {
-      document.body.style.backgroundColor = null
+      document.body.style.backgroundColor = ''
     }
   }
 
   componentWillUnmount () {
-    document.body.style.backgroundColor = null
+    document.body.style.backgroundColor = ''
   }
 
   render () {

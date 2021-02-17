@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "brave/components/ipfs/addresses_config.h"
+#include "brave/components/ipfs/node_info.h"
+#include "brave/components/ipfs/repo_stats.h"
 
 class IPFSJSONParser {
  public:
@@ -17,6 +19,10 @@ class IPFSJSONParser {
                                std::vector<std::string>* peers);
   static bool GetAddressesConfigFromJSON(const std::string& json,
                                          ipfs::AddressesConfig* config);
+  static bool GetRepoStatsFromJSON(const std::string& json,
+                                   ipfs::RepoStats* config);
+  static bool GetNodeInfoFromJSON(const std::string& json,
+                                  ipfs::NodeInfo* info);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_

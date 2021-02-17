@@ -9,8 +9,7 @@ namespace ads {
 
 BundleState::BundleState() = default;
 
-BundleState::BundleState(
-    const BundleState& state) = default;
+BundleState::BundleState(const BundleState& state) = default;
 
 BundleState::~BundleState() = default;
 

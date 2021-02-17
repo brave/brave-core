@@ -6,18 +6,21 @@
 package org.chromium.chrome.browser;
 
 import android.content.Context;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -74,23 +77,23 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
             RadioButton defaultRadioButton;
             switch(adsPerHour) {
                 case 1:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_1_radio));
+                    break;
                 case 2:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_2_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_2_radio));
+                    break;
                 case 3:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_3_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_3_radio));
+                    break;
                 case 4:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_4_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_4_radio));
+                    break;
                 case 5:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_5_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_5_radio));
+                    break;
                 default:
-                defaultRadioButton = ((RadioButton)view.findViewById(R.id.hour_1_radio));
-                break;
+                    defaultRadioButton = ((RadioButton) view.findViewById(R.id.hour_1_radio));
+                    break;
             }
             defaultRadioButton.setChecked(true);
             hourRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -108,13 +111,16 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
                     } else if (checkedId == R.id.hour_5_radio) {
                         hour = 5;
                     }
-                    BraveRewardsNativeWorker.getInstance().SetAdsPerHour(hour);
+                    if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                Profile.getLastUsedRegularProfile())) {
+                        BraveRewardsNativeWorker.getInstance().SetAdsPerHour(hour);
+                    }
                 }
             });
 
             RadioGroup contributeRadioGroup = view.findViewById(R.id.contribute_radio_group);
-            BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(15);
-            ((RadioButton)view.findViewById(R.id.contribute_15_radio)).setChecked(true);
+            BraveRewardsNativeWorker.getInstance().SetAutoContributionAmount(5);
+            ((RadioButton) view.findViewById(R.id.contribute_5_radio)).setChecked(true);
             contributeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {

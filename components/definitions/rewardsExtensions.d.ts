@@ -14,6 +14,8 @@ declare namespace RewardsExtension {
     externalWallet?: ExternalWallet
     initializing: boolean
     showOnboarding: boolean
+    adsPerHour: number
+    autoContributeAmount: number
   }
 
   interface ApplicationState {
@@ -110,6 +112,7 @@ declare namespace RewardsExtension {
   export interface RewardsParameters {
     rate: number
     monthlyTipChoices: number[]
+    autoContributeChoices: number[]
   }
 
   export interface BalanceReport {

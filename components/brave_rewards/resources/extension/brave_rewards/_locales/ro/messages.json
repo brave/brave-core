@@ -44,7 +44,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Granturi",
+    "message": "Subvenții",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Granturi de puncte revendicate",
+    "message": "Acordarea de puncte a fost revendicată",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -178,7 +178,7 @@
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "expiră în data de",
+    "message": "expiră pe",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
@@ -186,7 +186,7 @@
     "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
-    "message": "Oprit",
+    "message": "Dezactivat",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -328,11 +328,11 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Oprit",
+    "message": "Dezactivat",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "Setări.",
+    "message": "Setări",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "Activează Ads",
+    "message": "Activare Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -484,7 +484,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Grant de puncte gratuite",
+    "message": "Acordare punct gratuit",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -496,7 +496,7 @@
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Suma Recompensei",
+    "message": "Suma de Recompense",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -608,7 +608,7 @@
     "description": "Text for login button"
   },
   "loginMessageTitle":  {
-    "message": "Dacă verificați portofelul, puteți să vă gestionați fondurile mai eficient.",
+    "message": "Dacă vă confirmați portofelul, puteți să vă gestionați fondurile mai eficient.",
     "description": "Text for login button"
   },
   "loginMessageText":  {
@@ -626,5 +626,119 @@
   "walletVerificationNote3":  {
     "message": "Notă: Tranzacțiile dumneavoastră vor fi vizibile Uphold după autorizare; de exemplu, aceștia vor putea să vadă destinatarul și sumele plătite.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Câștigați tokenuri și dăruiți",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Câștigați tokenuri vizualizând reclame care respectă confidențialitatea și susțineți automat site-urile și creatorii de conținut favoriți.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Începeți să folosiți Recompensele Brave",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "Faceți un tur rapid",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Continuând, îți dai acordul pentru $tos_link_begin$Termenii de utilizare$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "Înapoi",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Să facem un tur rapid",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continuă",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Gata",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Omite",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Ignoră pentru moment",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Bun venit la Recompensele Brave!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Reclamele private Brave te recompensează cu tokeni, pentru a sprijini creatorii de conținut altfel decât reclamele tradiționale, menținându-ți în același timp informațiile personale private.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Unde se afișează reclamele/",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Reclamele private Brave vor apărea sub forma unei notificări obișnuite. Tu controlezi cât de des vezi aceste reclame, din setări.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Când primiți recompensele",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Tokenii obținuți pentru reclamele private Brave urmărite pe parcursul acestei luni vor fi disponibili în data de 5 a lunii următoare.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Dăruiți fără efort",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Creatorii primesc contribuțiile simbolice în mod automat, pe baza nivelurilor tale de implicare, pe care le măsurăm sub formă de „Atenție”.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Spuneți „mulțumesc” cu tokenuri",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Trimiterea de tokenuri este o modalitate de a încuraja și de a susține personal conținutul sau creatorii care vă plac. Începeți să trimiteți!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Ce puteți face cu tokenurile?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokenii pot fi folosiți la mai mult decât susținerea creatorilor. Poți cumpăra conținut digital și alte bunuri pe măsură ce ni se alătură mai mulți vânzători.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Iuhuu, totul e gata!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Folosind Recompensele Brave, dai o mână de ajutor la efortul de a face internetul un loc mai bun pentru toată lumea. Și asta este minunat!",
+    "description": ""
   }
 }

@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/macros.h"
-#include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace base {
@@ -34,8 +33,6 @@ class PrefRegistrySimple;
 
 namespace tor {
 
-class TorLauncherServiceObserver;
-
 class TorProfileService : public KeyedService {
  public:
   TorProfileService();
@@ -52,11 +49,6 @@ class TorProfileService : public KeyedService {
   virtual bool IsTorConnected() = 0;
   virtual void KillTor() = 0;
   virtual void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) {}
-  void AddObserver(TorLauncherServiceObserver* observer);
-  void RemoveObserver(TorLauncherServiceObserver* observer);
-
- protected:
-  base::ObserverList<TorLauncherServiceObserver> observers_;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(TorProfileService);

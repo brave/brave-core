@@ -42,7 +42,7 @@ def run_command(args, **kwargs):
 
 
 def GenerateBraveWidevineSigFile(paths, config, part):
-    if sign_widevine_key and sign_widevine_key and sign_widevine_passwd and file_exists(sig_generator_path):
+    if sign_widevine_key and sign_widevine_passwd and file_exists(sig_generator_path):
         # Framework needs to be signed before generating Widevine signature
         # file. The calling script will re-sign it after Widevine signature
         # file has been added (see signing.py from where this function is

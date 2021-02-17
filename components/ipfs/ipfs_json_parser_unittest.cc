@@ -70,3 +70,43 @@ TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
                 "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001",
                 "/ip4/0.0.0.0/udp/4001/quic", "/ip6/::/udp/4001/quic"}));
 }
+
+TEST_F(IPFSJSONParserTest, GetRepoStatsFromJSON) {
+  ipfs::RepoStats stat;
+
+  ASSERT_EQ(stat.objects, uint64_t(0));
+  ASSERT_EQ(stat.size, uint64_t(0));
+  ASSERT_EQ(stat.storage_max, uint64_t(0));
+
+  ASSERT_TRUE(IPFSJSONParser::GetRepoStatsFromJSON(R"({
+        "NumObjects": 113,
+        "RepoPath": "/some/path/to/repo",
+        "RepoSize": 123456789,
+        "StorageMax": 90000000,
+        "Version": "fs-repo@10"
+      })",
+                                                   &stat));
+
+  ASSERT_EQ(stat.objects, uint64_t(113));
+  ASSERT_EQ(stat.size, uint64_t(123456789));
+  ASSERT_EQ(stat.storage_max, uint64_t(90000000));
+  ASSERT_EQ(stat.path, "/some/path/to/repo");
+  ASSERT_EQ(stat.version, "fs-repo@10");
+}
+
+TEST_F(IPFSJSONParserTest, GetNodeInfoFromJSON) {
+  ipfs::NodeInfo info;
+
+  ASSERT_TRUE(IPFSJSONParser::GetNodeInfoFromJSON(R"({
+      "Addresses": ["111.111.111.111"],
+      "AgentVersion": "1.2.3.4",
+      "ID": "idididid",
+      "ProtocolVersion": "5.6.7.8",
+      "Protocols": ["one", "two"],
+      "PublicKey": "public_key"
+    })",
+                                                  &info));
+
+  ASSERT_EQ(info.id, "idididid");
+  ASSERT_EQ(info.version, "1.2.3.4");
+}

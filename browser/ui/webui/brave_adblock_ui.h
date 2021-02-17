@@ -6,28 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ADBLOCK_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_ADBLOCK_UI_H_
 
-#include <memory>
 #include <string>
 
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 
-class PrefChangeRegistrar;
-
-class BraveAdblockUI : public BasicUI {
+class BraveAdblockUI : public content::WebUIController {
  public:
   BraveAdblockUI(content::WebUI* web_ui, const std::string& host);
   ~BraveAdblockUI() override;
-
- private:
-  // BasicUI overrides:
-  void UpdateWebUIProperties() override;
-
-  void CustomizeWebUIProperties(content::RenderFrameHost* render_frame_host);
-  void OnPreferenceChanged();
-
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveAdblockUI);
+  BraveAdblockUI(const BraveAdblockUI&) = delete;
+  BraveAdblockUI& operator=(const BraveAdblockUI&) = delete;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ADBLOCK_UI_H_

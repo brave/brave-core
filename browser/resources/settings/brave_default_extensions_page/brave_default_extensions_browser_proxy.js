@@ -13,17 +13,14 @@ cr.define('settings', function () {
      * @param {boolean} value name.
      */
     setWebTorrentEnabled (value) {}
-    setBraveWalletEnabled (value) {}
     setHangoutsEnabled (value) {}
-    setIPFSCompanionEnabled (value) {}
     setTorEnabled (value) {}
     isTorEnabled () {}
     isTorManaged () {}
+    setWidevineEnabled() {}
+    isWidevineEnabled() {}
     getRestartNeeded () {}
-    getWeb3ProviderList () {}
     wasSignInEnabledAtStartup () {}
-    getIPFSResolveMethodList () {}
-    getIPFSEnabled () {}
   }
 
   /**
@@ -35,16 +32,8 @@ cr.define('settings', function () {
       chrome.send('setWebTorrentEnabled', [value])
     }
 
-    setBraveWalletEnabled (value) {
-      chrome.send('setBraveWalletEnabled', [value])
-    }
-
     setHangoutsEnabled (value) {
       chrome.send('setHangoutsEnabled', [value])
-    }
-
-    setIPFSCompanionEnabled (value) {
-      chrome.send('setIPFSCompanionEnabled', [value])
     }
 
     setMediaRouterEnabled (value) {
@@ -63,39 +52,20 @@ cr.define('settings', function () {
       return cr.sendWithPromise('isTorManaged')
     }
 
+    setWidevineEnabled (value) {
+      chrome.send('setWidevineEnabled', [value])
+    }
+
+    isWidevineEnabled () {
+      return cr.sendWithPromise('isWidevineEnabled')
+    }
+
     getRestartNeeded () {
       return cr.sendWithPromise('getRestartNeeded')
     }
 
-    /** @override */
-    getWeb3ProviderList () {
-      return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
-    }
-
     wasSignInEnabledAtStartup () {
       return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
-    }
-
-    /** @override */
-    getIPFSResolveMethodList () {
-      return new Promise(resolve => {
-        if (!chrome.ipfs) {
-          resolve(false)
-          return
-        }
-        chrome.ipfs.getResolveMethodList(resolve)
-      })
-    }
-
-    /** @override */
-    getIPFSEnabled () {
-      return new Promise(resolve => {
-        if (!chrome.ipfs) {
-          resolve(false)
-          return
-        }
-        chrome.ipfs.getIPFSEnabled(resolve)
-      })
     }
   }
 

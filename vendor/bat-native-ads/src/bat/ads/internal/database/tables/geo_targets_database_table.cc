@@ -26,9 +26,8 @@ GeoTargets::GeoTargets() = default;
 
 GeoTargets::~GeoTargets() = default;
 
-void GeoTargets::InsertOrUpdate(
-    DBTransaction* transaction,
-    const CreativeAdList& creative_ads) {
+void GeoTargets::InsertOrUpdate(DBTransaction* transaction,
+                                const CreativeAdList& creative_ads) {
   DCHECK(transaction);
 
   if (creative_ads.empty()) {
@@ -42,13 +41,13 @@ void GeoTargets::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-void GeoTargets::Delete(
-    ResultCallback callback) {
+void GeoTargets::Delete(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   util::Delete(transaction.get(), get_table_name());
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
@@ -56,19 +55,12 @@ std::string GeoTargets::get_table_name() const {
   return kTableName;
 }
 
-void GeoTargets::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void GeoTargets::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
-    case 1: {
-      MigrateToV1(transaction);
-      break;
-    }
-
-    case 3: {
-      MigrateToV3(transaction);
+    case 9: {
+      MigrateToV9(transaction);
       break;
     }
 
@@ -80,9 +72,8 @@ void GeoTargets::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int GeoTargets::BindParameters(
-    DBCommand* command,
-    const CreativeAdList& creative_ads) {
+int GeoTargets::BindParameters(DBCommand* command,
+                               const CreativeAdList& creative_ads) {
   DCHECK(command);
 
   int count = 0;
@@ -107,25 +98,21 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(campaign_id, "
-          "geo_target) VALUES %s",
+      "(campaign_id, "
+      "geo_target) VALUES %s",
       get_table_name().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void GeoTargets::CreateTableV1(
-    DBTransaction* transaction) {
+void GeoTargets::CreateTableV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(creative_instance_id TEXT NOT NULL, "
-          "geo_target TEXT NOT NULL, "
-          "UNIQUE(creative_instance_id, geo_target) ON CONFLICT REPLACE, "
-          "CONSTRAINT fk_creative_instance_id "
-              "FOREIGN KEY (creative_instance_id) "
-              "REFERENCES creative_ad_notifications (creative_instance_id) "
-              "ON DELETE CASCADE)",
+      "(campaign_id TEXT NOT NULL, "
+      "geo_target TEXT NOT NULL, "
+      "PRIMARY KEY (campaign_id, geo_target), "
+      "UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE)",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -135,56 +122,12 @@ void GeoTargets::CreateTableV1(
   transaction->commands.push_back(std::move(command));
 }
 
-void GeoTargets::CreateIndexV1(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "geo_target");
-}
-
-void GeoTargets::MigrateToV1(
-    DBTransaction* transaction) {
+void GeoTargets::MigrateToV9(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV1(transaction);
-  CreateIndexV1(transaction);
-}
-
-void GeoTargets::CreateTableV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
-          "(campaign_id TEXT NOT NULL, "
-          "geo_target TEXT NOT NULL, "
-          "PRIMARY KEY (campaign_id, geo_target), "
-          "UNIQUE(campaign_id, geo_target) ON CONFLICT REPLACE)",
-      get_table_name().c_str());
-
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void GeoTargets::CreateIndexV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::CreateIndex(transaction, get_table_name(), "campaign_id");
-}
-
-void GeoTargets::MigrateToV3(
-    DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Drop(transaction, get_table_name());
-
-  CreateTableV3(transaction);
+  CreateTableV9(transaction);
 }
 
 }  // namespace table

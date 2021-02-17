@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_hour_frequency_cap.h"
 
-#include <stdint.h>
-
 #include <deque>
 
 #include "base/time/time.h"
@@ -14,14 +12,9 @@
 
 namespace ads {
 
-namespace {
-const uint64_t kNewTabPageAdsPerHourFrequencyCap = 4;
-}  // namespace
-
 NewTabPageAdsPerHourFrequencyCap::NewTabPageAdsPerHourFrequencyCap(
     const AdEventList& ad_events)
-    : ad_events_(ad_events) {
-}
+    : ad_events_(ad_events) {}
 
 NewTabPageAdsPerHourFrequencyCap::~NewTabPageAdsPerHourFrequencyCap() = default;
 
@@ -54,11 +47,12 @@ AdEventList NewTabPageAdsPerHourFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events) const {
   AdEventList filtered_ad_events = ad_events;
 
-  const auto iter = std::remove_if(filtered_ad_events.begin(),
-      filtered_ad_events.end(), [](const AdEventInfo& ad_event) {
-    return ad_event.type != AdType::kNewTabPageAd ||
-        ad_event.confirmation_type != ConfirmationType::kViewed;
-  });
+  const auto iter = std::remove_if(
+      filtered_ad_events.begin(), filtered_ad_events.end(),
+      [](const AdEventInfo& ad_event) {
+        return ad_event.type != AdType::kNewTabPageAd ||
+               ad_event.confirmation_type != ConfirmationType::kViewed;
+      });
 
   filtered_ad_events.erase(iter, filtered_ad_events.end());
 

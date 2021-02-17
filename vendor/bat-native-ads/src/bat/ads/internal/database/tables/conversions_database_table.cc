@@ -29,9 +29,8 @@ Conversions::Conversions() = default;
 
 Conversions::~Conversions() = default;
 
-void Conversions::Save(
-    const ConversionList& conversions,
-    ResultCallback callback) {
+void Conversions::Save(const ConversionList& conversions,
+                       ResultCallback callback) {
   if (conversions.empty()) {
     callback(Result::SUCCESS);
     return;
@@ -41,19 +40,19 @@ void Conversions::Save(
 
   InsertOrUpdate(transaction.get(), conversions);
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void Conversions::GetAll(
-    GetConversionsCallback callback) {
+void Conversions::GetAll(GetConversionsCallback callback) {
   const std::string query = base::StringPrintf(
       "SELECT "
-          "ac.creative_set_id, "
-          "ac.type, "
-          "ac.url_pattern, "
-          "ac.observation_window, "
-          "ac.expiry_timestamp "
+      "ac.creative_set_id, "
+      "ac.type, "
+      "ac.url_pattern, "
+      "ac.observation_window, "
+      "ac.expiry_timestamp "
       "FROM %s AS ac "
       "WHERE %s < expiry_timestamp",
       get_table_name().c_str(),
@@ -64,23 +63,22 @@ void Conversions::GetAll(
   command->command = query;
 
   command->record_bindings = {
-    DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
-    DBCommand::RecordBindingType::STRING_TYPE,  // type
-    DBCommand::RecordBindingType::STRING_TYPE,  // url_pattern
-    DBCommand::RecordBindingType::INT_TYPE,     // observation_window
-    DBCommand::RecordBindingType::INT64_TYPE    // expiry_timestamp
+      DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
+      DBCommand::RecordBindingType::STRING_TYPE,  // type
+      DBCommand::RecordBindingType::STRING_TYPE,  // url_pattern
+      DBCommand::RecordBindingType::INT_TYPE,     // observation_window
+      DBCommand::RecordBindingType::INT64_TYPE    // expiry_timestamp
   };
 
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
-      std::bind(&Conversions::OnGetConversions, this, std::placeholders::_1,
-          callback));
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction), std::bind(&Conversions::OnGetConversions, this,
+                                        std::placeholders::_1, callback));
 }
 
-void Conversions::PurgeExpired(
-    ResultCallback callback) {
+void Conversions::PurgeExpired(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -95,7 +93,8 @@ void Conversions::PurgeExpired(
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
@@ -103,9 +102,7 @@ std::string Conversions::get_table_name() const {
   return kTableName;
 }
 
-void Conversions::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void Conversions::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -122,9 +119,8 @@ void Conversions::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Conversions::InsertOrUpdate(
-    DBTransaction* transaction,
-    const ConversionList& conversions) {
+void Conversions::InsertOrUpdate(DBTransaction* transaction,
+                                 const ConversionList& conversions) {
   DCHECK(transaction);
 
   if (conversions.empty()) {
@@ -138,9 +134,8 @@ void Conversions::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-int Conversions::BindParameters(
-    DBCommand* command,
-    const ConversionList& conversions) {
+int Conversions::BindParameters(DBCommand* command,
+                                const ConversionList& conversions) {
   DCHECK(command);
 
   int count = 0;
@@ -168,18 +163,17 @@ std::string Conversions::BuildInsertOrUpdateQuery(
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(creative_set_id, "
-          "type, "
-          "url_pattern, "
-          "observation_window, "
-          "expiry_timestamp) VALUES %s",
-    get_table_name().c_str(),
-    BuildBindingParameterPlaceholders(5, count).c_str());
+      "(creative_set_id, "
+      "type, "
+      "url_pattern, "
+      "observation_window, "
+      "expiry_timestamp) VALUES %s",
+      get_table_name().c_str(),
+      BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
-void Conversions::OnGetConversions(
-    DBCommandResponsePtr response,
-    GetConversionsCallback callback) {
+void Conversions::OnGetConversions(DBCommandResponsePtr response,
+                                   GetConversionsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
     callback(Result::FAILED, {});
@@ -196,8 +190,7 @@ void Conversions::OnGetConversions(
   callback(Result::SUCCESS, conversions);
 }
 
-ConversionInfo Conversions::GetConversionFromRecord(
-    DBRecord* record) const {
+ConversionInfo Conversions::GetConversionFromRecord(DBRecord* record) const {
   ConversionInfo info;
 
   info.creative_set_id = ColumnString(record, 0);
@@ -209,19 +202,18 @@ ConversionInfo Conversions::GetConversionFromRecord(
   return info;
 }
 
-void Conversions::CreateTableV1(
-    DBTransaction* transaction) {
+void Conversions::CreateTableV1(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(creative_set_id TEXT NOT NULL, "
-          "type TEXT NOT NULL, "
-          "url_pattern TEXT NOT NULL, "
-          "observation_window INTEGER NOT NULL, "
-          "expiry_timestamp TIMESTAMP NOT NULL, "
-          "UNIQUE(creative_set_id, type, url_pattern) ON CONFLICT REPLACE, "
-          "PRIMARY KEY(creative_set_id, type, url_pattern))",
+      "(creative_set_id TEXT NOT NULL, "
+      "type TEXT NOT NULL, "
+      "url_pattern TEXT NOT NULL, "
+      "observation_window INTEGER NOT NULL, "
+      "expiry_timestamp TIMESTAMP NOT NULL, "
+      "UNIQUE(creative_set_id, type, url_pattern) ON CONFLICT REPLACE, "
+      "PRIMARY KEY(creative_set_id, type, url_pattern))",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -231,15 +223,13 @@ void Conversions::CreateTableV1(
   transaction->commands.push_back(std::move(command));
 }
 
-void Conversions::CreateIndexV1(
-    DBTransaction* transaction) {
+void Conversions::CreateIndexV1(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::CreateIndex(transaction, get_table_name(), "creative_set_id");
 }
 
-void Conversions::MigrateToV1(
-    DBTransaction* transaction) {
+void Conversions::MigrateToV1(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

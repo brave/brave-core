@@ -11,8 +11,7 @@
 
 namespace ads {
 
-TEST(BatAdsFetchPaymentTokenUrlRequestBuilderTest,
-    BuildUrl) {
+TEST(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   ConfirmationInfo confirmation;
   confirmation.id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
@@ -26,7 +25,8 @@ TEST(BatAdsFetchPaymentTokenUrlRequestBuilderTest,
 
   // Assert
   UrlRequestPtr expected_url_request = UrlRequest::New();
-  expected_url_request->url = R"(https://ads-serve.brave.software/v1/confirmation/546fe7b0-5047-4f28-a11c-81f14edcf0f6/paymentToken)";
+  expected_url_request->url =
+      R"(https://ads-serve.brave.software/v1/confirmation/546fe7b0-5047-4f28-a11c-81f14edcf0f6/paymentToken)";
   expected_url_request->method = UrlRequestMethod::GET;
 
   EXPECT_EQ(expected_url_request, url_request);

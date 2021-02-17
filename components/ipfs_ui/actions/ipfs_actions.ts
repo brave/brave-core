@@ -29,5 +29,23 @@ export const onGetDaemonStatus = (daemonStatus: IPFS.DaemonStatus) =>
     daemonStatus
   })
 
+export const getRepoStats = () => action(types.IPFS_GET_REPO_STATS)
+
+export const onGetRepoStats = (repoStats: IPFS.RepoStats) =>
+  action(types.IPFS_ON_GET_REPO_STATS, {
+    repoStats
+  })
+
+export const getNodeInfo = () => action(types.IPFS_GET_NODE_INFO)
+
+export const onGetNodeInfo = (nodeInfo: IPFS.NodeInfo) =>
+  action(types.IPFS_ON_GET_NODE_INFO, {
+    nodeInfo
+  })
+
 export const launchDaemon = () => action(types.IPFS_LAUNCH_DAEMON)
 export const shutdownDaemon = () => action(types.IPFS_SHUTDOWN_DAEMON)
+export const restartDaemon = () => action(types.IPFS_RESTART_DAEMON)
+export const installDaemon = () => action(types.IPFS_INSTALL_DAEMON)
+export const openNodeWebUI = () => action(types.IPFS_OPEN_NODE_WEBUI)
+export const openPeersWebUI = () => action(types.IPFS_OPEN_PEERS_WEBUI)

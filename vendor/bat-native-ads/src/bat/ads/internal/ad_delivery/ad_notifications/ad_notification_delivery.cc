@@ -22,15 +22,14 @@ AdDelivery::AdDelivery() = default;
 
 AdDelivery::~AdDelivery() = default;
 
-bool AdDelivery::MaybeDeliverAd(
-    const AdNotificationInfo& ad) {
+bool AdDelivery::MaybeDeliverAd(const AdNotificationInfo& ad) {
   if (!ad.IsValid()) {
     return false;
   }
 
   Client::Get()->UpdateSeenAdNotification(ad.creative_instance_id);
 
-  RecordAdImpressionForCategory(ad.category);
+  RecordAdImpressionForSegment(ad.segment);
 
   ShowNotification(ad);
 
@@ -39,17 +38,15 @@ bool AdDelivery::MaybeDeliverAd(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdDelivery::ShowNotification(
-    const AdNotificationInfo& ad) {
+void AdDelivery::ShowNotification(const AdNotificationInfo& ad) {
   AdNotifications::Get()->PushBack(ad);
 
   AdsClientHelper::Get()->ShowNotification(ad);
 }
 
-void AdDelivery::RecordAdImpressionForCategory(
-    const std::string& category) {
+void AdDelivery::RecordAdImpressionForSegment(const std::string& segment) {
   const std::vector<std::string> question_list =
-      p2a::CreateAdImpressionQuestionList(category);
+      p2a::CreateAdImpressionQuestionList(segment);
 
   p2a::RecordEvent("ad_impression", question_list);
 }

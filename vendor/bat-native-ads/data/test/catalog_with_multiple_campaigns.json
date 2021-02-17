@@ -1,0 +1,267 @@
+{
+  "version": 6,
+  "issuers": [
+    {
+      "name": "confirmation",
+      "publicKey": "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34="
+    },
+    {
+      "name": "0.01BAT",
+      "publicKey": "VihGXGoiQ5Fjxe4SrskIVMcmERa1LoAgvhFxxfLmNEI="
+    },
+    {
+      "name": "0.05BAT",
+      "publicKey": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk="
+    }
+  ],
+  "ping": 7200000,
+  "campaigns": [
+    {
+      "creativeSets": [
+        {
+          "creatives": [
+            {
+              "creativeInstanceId": "87c775ca-919b-4a87-8547-94cf0c3161a2",
+              "type": {
+                "code": "notification_all_v1",
+                "name": "notification",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Test Ad Notification Campaign 1 Body",
+                "title": "Test Ad Notification Campaign 1 Title",
+                "targetUrl": "https://brave.com/1/ad_notification"
+              }
+            },
+            {
+              "creativeInstanceId": "7ff400b9-7f8a-46a8-89f1-cb386612edcf",
+              "type": {
+                "code": "new_tab_page_all_v1",
+                "platform": "all",
+                "name": "new_tab_page",
+                "version": 1
+              },
+              "payload": {
+                "logo": {
+                  "alt": "Test New Tab Page Ad Campaign 1",
+                  "imageUrl": "https://brave.com/1/test.jpg",
+                  "companyName": "New Tab Page 1",
+                  "destinationUrl": "https://brave.com/1/new_tab_page_ad"
+                },
+                "wallpapers": [
+                  {
+                    "focalPoint": {
+                      "x": 1200,
+                      "y": 1400
+                    },
+                    "imageUrl": "https://brave.com/1/test2.jpg"
+                  },
+                  {
+                    "focalPoint": {
+                      "x": 1200,
+                      "y": 1400
+                    },
+                    "imageUrl": "https://brave.com/1/test3.jpg"
+                  }
+                ]
+              }
+            },
+            {
+              "creativeInstanceId": "60001aa5-9368-45d2-81fc-e69887d278c5",
+              "type": {
+                "code": "promoted_content_all_v1",
+                "name": "promoted_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "feed": "https://brave.com/1/promoted_content_ad",
+                "title": "Promoted Content 1",
+                "domain": "Domain 1",
+                "category": "Category 1",
+                "ogImages": false,
+                "contentType": "Content Type 1",
+                "description": "Test Promoted Content Ad Campaign 1"
+              }
+            }
+          ],
+          "segments": [
+            {
+              "code": "yNl0N-ers2",
+              "name": "Technology & Computing"
+            }
+          ],
+          "oses": [
+            {
+              "code": "-Ug5OXisJ",
+              "name": "linux"
+            },
+            {
+              "code": "_Bt5nxrNo",
+              "name": "macos"
+            },
+            {
+              "code": "i1g4cO6Pl",
+              "name": "windows"
+            }
+          ],
+          "conversions": [
+            {
+              "observationWindow": 30,
+              "urlPattern": "https://www.brave.com/1/*",
+              "type": "postview"
+            }
+          ],
+          "channels": [
+          ],
+          "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
+          "perDay": 5,
+          "totalMax": 100
+        }
+      ],
+      "dayParts": [
+        {
+          "dow": "012",
+          "startMinute": 0,
+          "endMinute": 1439
+        },
+        {
+          "dow": "345",
+          "startMinute": 1000,
+          "endMinute": 1200
+        }
+      ],
+      "geoTargets": [
+        {
+          "code": "US",
+          "name": "United States"
+        }
+      ],
+      "campaignId": "27a624a1-9c80-494a-bf1b-af327b563f85",
+      "startAt": "<time:distant_past>",
+      "endAt": "<time:distant_future>",
+      "dailyCap": 10,
+      "advertiserId": "a437c7f3-9a48-4fe8-b37b-99321bea93fe",
+      "priority": 1,
+      "ptr": 1.0
+    },
+    {
+      "creativeSets": [
+        {
+          "creatives": [
+            {
+              "creativeInstanceId": "17206fbd-0282-4759-ad28-d5e040ee1ff7",
+              "type": {
+                "code": "notification_all_v1",
+                "name": "notification",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Test Ad Notification Campaign 2 Body",
+                "title": "Test Ad Notification Campaign 2 Title",
+                "targetUrl": "https://brave.com/2/ad_notification"
+              }
+            },
+            {
+              "creativeInstanceId": "3dfe54d0-80b7-48d7-9bcc-3c77a912f583",
+              "type": {
+                "code": "new_tab_page_all_v1",
+                "platform": "all",
+                "name": "new_tab_page",
+                "version": 1
+              },
+              "payload": {
+                "logo": {
+                  "alt": "Test New Tab Page Ad Campaign 2",
+                  "imageUrl": "https://brave.com/2/test.jpg",
+                  "companyName": "New Tab Page 2",
+                  "destinationUrl": "https://brave.com/2/new_tab_page_ad"
+                },
+                "wallpapers": [
+                  {
+                    "focalPoint": {
+                      "x": 1000,
+                      "y": 1200
+                    },
+                    "imageUrl": "https://brave.com/2/test2.jpg"
+                  },
+                  {
+                    "focalPoint": {
+                      "x": 500,
+                      "y": 600
+                    },
+                    "imageUrl": "https://brave.com/2/test3.jpg"
+                  }
+                ]
+              }
+            },
+            {
+              "creativeInstanceId": "9f2f49ab-77d7-4e99-9428-472dc8e04f90",
+              "type": {
+                "code": "promoted_content_all_v1",
+                "name": "promoted_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "feed": "https://brave.com/2/promoted_content_ad",
+                "title": "Promoted Content 2",
+                "domain": "Domain 2",
+                "category": "Category 2",
+                "ogImages": true,
+                "contentType": "Content Type 2",
+                "description": "Test Promoted Content Ad Campaign 2"
+              }
+            }
+          ],
+          "segments": [
+            {
+              "code": "Svp7l-zGN",
+              "name": "untargeted"
+            }
+          ],
+          "oses": [
+            {
+              "code": "mbwfZU-4W",
+              "name": "android"
+            },
+            {
+              "code": "k80syyzDa",
+              "name": "ios"
+            }
+          ],
+          "conversions": [
+            {
+              "observationWindow": 7,
+              "urlPattern": "https://www.brave.com/2/*",
+              "type": "postclick"
+            }
+          ],
+          "channels": [
+          ],
+          "creativeSetId": "741cd2ba-3100-45f2-be1e-acedd24e0067",
+          "perDay": 10,
+          "totalMax": 1000
+        }
+      ],
+      "dayParts": [
+      ],
+      "geoTargets": [
+        {
+          "code": "US",
+          "name": "United States"
+        }
+      ],
+      "campaignId": "856fc4bc-a21b-4582-bab7-a20d412359aa",
+      "startAt": "<time:distant_past>",
+      "endAt": "<time:distant_future>",
+      "dailyCap": 25,
+      "advertiserId": "7523854c-5f28-4153-9da8-d9da6804ed58",
+      "priority": 2,
+      "ptr": 0.5
+    }
+  ],
+  "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+}

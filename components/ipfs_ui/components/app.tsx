@@ -11,7 +11,11 @@ import { connect } from 'react-redux'
 import { AddressesConfig } from './addressesConfig'
 import { ConnectedPeers } from './connectedPeers'
 import { DaemonStatus } from './daemonStatus'
+import { NodeInfo } from './nodeInfo'
+import { RepoStats } from './repoStats'
 import { UninstalledView } from './uninstalledView'
+import { LearnMoreLink, GrayStyle } from '../style'
+import { getLocale } from '../../common/locale'
 
 // Utils
 import * as ipfsActions from '../actions/ipfs_actions'
@@ -38,9 +42,30 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.shutdownDaemon()
   }
 
+  restartDaemon = () => {
+    this.actions.restartDaemon()
+  }
+
+  installDaemon = () => {
+    this.actions.installDaemon()
+  }
+
+  openNodeWebUI = () => {
+    this.actions.openNodeWebUI()
+  }
+
+  openPeersWebUI = () => {
+    this.actions.openPeersWebUI()
+  }
+
   refreshActions = () => {
     this.actions.getConnectedPeers()
     this.actions.getAddressesConfig()
+    this.actions.getRepoStats()
+    this.actions.getNodeInfo()
+    if (this.props.ipfsData.daemonStatus.launched) {
+      setTimeout(this.refreshActions, 2000)
+    }
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -50,19 +75,28 @@ export class IPFSPage extends React.Component<Props, {}> {
   }
 
   render () {
-    if (!this.props.ipfsData.daemonStatus.installed) {
-      return (
-        <div id='ipfsPage'>
-          <UninstalledView />
-        </div>
-      )
-    }
-
     return (
       <div id='ipfsPage'>
-        <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon}/>
-        <ConnectedPeers peerCount={this.props.ipfsData.connectedPeers.peerCount} />
-        <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
+        {!this.props.ipfsData.daemonStatus.installed && (
+        <UninstalledView daemonStatus={this.props.ipfsData.daemonStatus} onInstall={this.installDaemon}/>
+        )}
+        {this.props.ipfsData.daemonStatus.installed && (
+        <DaemonStatus daemonStatus={this.props.ipfsData.daemonStatus} addressesConfig={this.props.ipfsData.addressesConfig} onLaunch={this.launchDaemon} onShutdown={this.shutdownDaemon} onRestart={this.restartDaemon} onOpenNodeWebUI={this.openNodeWebUI} />
+        )}
+
+        <div
+          style={(!this.props.ipfsData.daemonStatus.installed ||
+          this.props.ipfsData.daemonStatus.restarting ||
+          !this.props.ipfsData.daemonStatus.launched) ? GrayStyle : {}}
+        >
+          <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
+          <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
+          <RepoStats repoStats={this.props.ipfsData.repoStats} />
+          <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
+        </div>
+        <a style={LearnMoreLink} href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>
+          {getLocale('learnMore')}
+        </a>
       </div>
     )
   }

@@ -90,7 +90,7 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
 
     // We give more margins to horizontally.
     gfx::Insets target_insets =
-        GetLayoutInsets(TOOLBAR_BUTTON) +
+        ::GetLayoutInsets(TOOLBAR_BUTTON) +
         *GetProperty(views::kInternalPaddingKey) +
         gfx::Insets(0, kBraveAvatarButtonHorizontalSpacing);
     SetBorder(views::CreateEmptyBorder(target_insets));

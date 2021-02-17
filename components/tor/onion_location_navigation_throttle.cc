@@ -69,14 +69,21 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   // The webpage defining the Onion-Location header must not be an onionsite.
   // https://gitweb.torproject.org/tor-browser-spec.git/plain/proposals/100-onion-location-header.txt
   if (headers && GetOnionLocation(headers, &onion_location) &&
-      !navigation_handle()->GetURL().DomainIs("onion")) {
+      !navigation_handle()->GetURL().DomainIs("onion") &&
+      // The webpage defining the Onion-Location header must be served over
+      // HTTPS.
+      navigation_handle()->GetURL().SchemeIs(url::kHttpsScheme)) {
+    GURL url(onion_location);
+    // The Onion-Location value must be a valid URL with http: or https:
+    // protocol and a .onion hostname.
+    if (!url.SchemeIsHTTPOrHTTPS() || !url.DomainIs("onion"))
+      return content::NavigationThrottle::PROCEED;
     // If user prefers opening it automatically
-    if (pref_service_->GetBoolean(prefs::kAutoOnionLocation)) {
-      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
-                                 GURL(onion_location));
+    if (pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
+      delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(), url);
     } else {
       OnionLocationTabHelper::SetOnionLocation(
-          navigation_handle()->GetWebContents(), GURL(onion_location));
+          navigation_handle()->GetWebContents(), url);
     }
   } else {
     OnionLocationTabHelper::SetOnionLocation(
@@ -90,10 +97,10 @@ OnionLocationNavigationThrottle::WillStartRequest() {
   // Open .onion site in Tor window
   if (!is_tor_profile_) {
     GURL url = navigation_handle()->GetURL();
-    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion")) {
+    if (url.SchemeIsHTTPOrHTTPS() && url.DomainIs("onion") &&
+        pref_service_->GetBoolean(prefs::kAutoOnionRedirect)) {
       delegate_->OpenInTorWindow(navigation_handle()->GetWebContents(),
                                  std::move(url));
-      return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }
   return content::NavigationThrottle::PROCEED;

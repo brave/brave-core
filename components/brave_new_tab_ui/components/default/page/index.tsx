@@ -54,6 +54,7 @@ const StyledPage = styled<PageProps, 'div'>('div')`
   --ntp-extra-footer-rows: ${p => p.showBrandedWallpaper ? 1 : 0};
   --ntp-space-rows: 0;
   --ntp-page-rows: calc(var(--ntp-item-row-count) + var(--ntp-space-rows));
+  --ntp-page-padding: 12px;
   --ntp-item-justify: start;
   --blur-amount: calc(var(--ntp-extra-content-effect-multiplier, 0) * 38px);
   @media screen and (max-width: ${breakpointLargeBlocks}) {
@@ -72,7 +73,7 @@ const StyledPage = styled<PageProps, 'div'>('div')`
   grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
   grid-template-columns: min-content auto min-content;
   grid-auto-flow: row dense;
-  padding: 12px;
+  padding: var(--ntp-page-padding);
   overflow: hidden;
   flex: 1;
   flex-direction: column;
@@ -80,24 +81,23 @@ const StyledPage = styled<PageProps, 'div'>('div')`
   min-height: 100vh;
   align-items: flex-start;
 
-  /* Blur out the content when Brave Today is interacted
-      with. We need the opacity to fade out our background image.
-      We need the background image to overcome the bug
-      where a backdrop-filter element's ancestor which has
-      a filter must also have a background. When this bug is
-      fixed then this element won't need the background.
-  */
-  filter: blur(var(--blur-amount));
-  opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
-  background: var(--default-bg-color);
-  ${getPageBackground}
-
   /* Fix the main NTP content so, when Brave Today is in-view,
   NTP items remain in the same place, and still allows NTP
   Page to scroll to the bottom before that starts happening. */
   .${CLASSNAME_PAGE_STUCK} & {
     position: fixed;
     bottom: 0;
+    /* Blur out the content when Brave Today is interacted
+      with. We need the opacity to fade out our background image.
+      We need the background image to overcome the bug
+      where a backdrop-filter element's ancestor which has
+      a filter must also have a background. When this bug is
+      fixed then this element won't need the background.
+    */
+    opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
+    filter: blur(var(--blur-amount));
+    background: var(--default-bg-color);
+    ${getPageBackground}
   }
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
@@ -125,7 +125,7 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
       const viewportHeight = window.innerHeight
       const scrollBottom = window.scrollY + viewportHeight
       const scrollPast = scrollBottom - element.clientHeight
-      if (scrollPast >= 0) {
+      if (scrollPast >= 1) {
         // Have blur effect amount follow scroll amount. Should
         // be fully blurred at 50% of viewport height
         const blurUpperLimit = viewportHeight * .65
@@ -216,10 +216,21 @@ export const GridItemBrandedLogo = styled(GridItemCredits)`
   --ntp-grid-item-credits-left-margin-narrow: 0;
   --ntp-grid-item-credits-bottom-margin-wide: -8px;
   --ntp-grid-item-credits-left-margin-wide: 22px;
+
+  @media screen and (min-width: ${breakpointEveryBlock}) {
+    position: fixed;
+    bottom: var(--ntp-page-padding);
+    left: var(--ntp-page-padding);
+    .${CLASSNAME_PAGE_STUCK} & {
+      // When page is also position: fixed, then we are relative to that
+      bottom: 0;
+      left: 0;
+    }
+  }
 `
 
 export const GridItemNavigation = styled('section')`
-  grid-column: 3 / span 1;
+  grid-column: 2 / span 2;
   grid-row: -2 / span 1;
   align-self: end;
   margin: 0 24px 24px 0;

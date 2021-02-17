@@ -125,8 +125,8 @@ gfx::Insets CalculateTopPadding(int font_list_height) {
 
 }  // namespace
 
-NotificationHeaderView::NotificationHeaderView(views::ButtonListener* listener)
-    : views::Button(listener) {
+NotificationHeaderView::NotificationHeaderView(PressedCallback callback)
+    : views::Button(callback) {
   const views::FlexSpecification kAppNameFlex =
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred)

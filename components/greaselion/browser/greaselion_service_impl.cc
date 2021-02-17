@@ -13,7 +13,7 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/bind_helpers.h"
+#include "base/callback_helpers.h"
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
@@ -36,6 +36,7 @@
 #include "crypto/sha2.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/api/content_scripts.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/file_util.h"
@@ -47,6 +48,8 @@ using extensions::Manifest;
 
 namespace {
 
+constexpr char kRunAtDocumentStart[] = "document_start";
+
 // Wraps a Greaselion rule in a component. The component is stored as
 // an unpacked extension in the user data dir. Returns a valid
 // extension that the caller should take ownership of, or nullptr.
@@ -54,21 +57,21 @@ namespace {
 // NOTE: This function does file IO and should not be called on the UI thread.
 // NOTE: The caller takes ownership of the directory at extension->path() on the
 // returned object.
-scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
-    greaselion::GreaselionRule* rule,
-    const base::FilePath& install_dir,
-    std::vector<base::ScopedTempDir>* extension_dirs) {
+base::Optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
+ConvertGreaselionRuleToExtensionOnTaskRunner(
+    const greaselion::GreaselionRule& rule,
+    const base::FilePath& install_dir) {
   base::FilePath install_temp_dir =
       extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
-    return nullptr;
+    return base::nullopt;
   }
 
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDirUnderPath(install_temp_dir)) {
     LOG(ERROR) << "Could not create Greaselion temp directory";
-    return nullptr;
+    return base::nullopt;
   }
 
   // Create the manifest
@@ -85,7 +88,7 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   // public key.
   char raw[crypto::kSHA256Length] = {0};
   std::string key;
-  std::string script_name = rule->name();
+  std::string script_name = rule.name();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
@@ -105,32 +108,35 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   root->SetStringPath(extensions::manifest_keys::kVersion, "1.0");
   root->SetStringPath(extensions::manifest_keys::kDescription, "");
   root->SetStringPath(extensions::manifest_keys::kPublicKey, key);
+  root->SetStringPath("incognito",
+                      extensions::manifest_values::kIncognitoNotAllowed);
 
-  auto js_files = std::make_unique<base::ListValue>();
-  for (auto script : rule->scripts())
-    js_files->AppendString(script.BaseName().value());
+  std::vector<std::string> matches;
+  matches.reserve(rule.url_patterns().size());
+  for (auto url_pattern : rule.url_patterns())
+    matches.push_back(url_pattern);
 
-  auto matches = std::make_unique<base::ListValue>();
-  for (auto url_pattern : rule->url_patterns())
-    matches->AppendString(url_pattern);
+  extensions::api::content_scripts::ContentScript content_script;
+  content_script.matches = std::move(matches);
 
-  auto content_script = std::make_unique<base::DictionaryValue>();
-  content_script->Set(extensions::manifest_keys::kMatches, std::move(matches));
-  content_script->Set(extensions::manifest_keys::kJs, std::move(js_files));
+  content_script.js = std::make_unique<std::vector<std::string>>();
+  for (auto script : rule.scripts())
+    content_script.js->push_back(script.BaseName().AsUTF8Unsafe());
+
   // All Greaselion scripts default to document end.
-  content_script->SetStringPath(extensions::manifest_keys::kRunAt,
-      rule->run_at() == extensions::manifest_values::kRunAtDocumentStart
-        ? extensions::manifest_values::kRunAtDocumentStart
-        : extensions::manifest_values::kRunAtDocumentEnd);
+  content_script.run_at =
+      rule.run_at() == kRunAtDocumentStart
+          ? extensions::api::content_scripts::RUN_AT_DOCUMENT_START
+          : extensions::api::content_scripts::RUN_AT_DOCUMENT_END;
 
-  if (!rule->messages().empty()) {
+  if (!rule.messages().empty()) {
     root->SetStringPath(extensions::manifest_keys::kDefaultLocale, "en_US");
   }
 
   auto content_scripts = std::make_unique<base::ListValue>();
-  content_scripts->Append(std::move(content_script));
+  content_scripts->Append(content_script.ToValue());
 
-  root->Set(extensions::manifest_keys::kContentScripts,
+  root->Set(extensions::api::content_scripts::ManifestKeys::kContentScripts,
             std::move(content_scripts));
 
   base::FilePath manifest_path =
@@ -143,26 +149,27 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   // files to disk.
   if (!serializer.Serialize(*root)) {
     LOG(ERROR) << "Could not write Greaselion manifest";
-    return nullptr;
+    return base::nullopt;
   }
 
   // Copy the messages directory to our extension directory.
-  if (!rule->messages().empty()) {
+  if (!rule.messages().empty()) {
     if (!base::CopyDirectory(
-            rule->messages(),
+            rule.messages(),
             temp_dir.GetPath().AppendASCII("_locales"), true)) {
       LOG(ERROR) << "Could not copy Greaselion messages directory at path: "
-                 << rule->messages().LossyDisplayName();
-      return nullptr;
+                 << rule.messages().LossyDisplayName();
+      return base::nullopt;
     }
   }
 
   // Copy the script files to our extension directory.
-  for (auto script : rule->scripts()) {
-    if (!base::CopyFile(script, temp_dir.GetPath().Append(script.BaseName()))) {
+  for (auto script : rule.scripts()) {
+    if (!base::CopyFile(script,
+                        temp_dir.GetPath().Append(script.BaseName()))) {
       LOG(ERROR) << "Could not copy Greaselion script at path: "
           << script.LossyDisplayName();
-      return nullptr;
+      return base::nullopt;
     }
   }
 
@@ -172,16 +179,12 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
-    return nullptr;
+    return base::nullopt;
   }
 
   // Take ownership of this temporary directory so it's deleted when
   // the service exits
-  if (extension_dirs) {
-    extension_dirs->push_back(std::move(temp_dir));
-  }
-
-  return extension;
+  return std::make_pair(extension, std::move(temp_dir));
 }
 }  // namespace
 
@@ -276,10 +279,11 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
         rule->has_unknown_preconditions() == false) {
       // Convert script file to component extension. This must run on extension
       // file task runner, which was passed in in the constructor.
+      GreaselionRule rule_copy(*rule);
       base::PostTaskAndReplyWithResult(
           task_runner_.get(), FROM_HERE,
           base::BindOnce(&ConvertGreaselionRuleToExtensionOnTaskRunner,
-                         rule.get(), install_directory_, &extension_dirs_),
+                         rule_copy, install_directory_),
           base::BindOnce(&GreaselionServiceImpl::PostConvert,
                          weak_factory_.GetWeakPtr()));
     }
@@ -287,18 +291,20 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
 }
 
 void GreaselionServiceImpl::PostConvert(
-    scoped_refptr<extensions::Extension> extension) {
-  if (!extension.get()) {
+    base::Optional<GreaselionConvertedExtension> converted_extension) {
+  if (!converted_extension) {
     all_rules_installed_successfully_ = false;
     pending_installs_ -= 1;
     MaybeNotifyObservers();
     LOG(ERROR) << "Could not load Greaselion script";
   } else {
-    greaselion_extensions_.push_back(extension->id());
+    greaselion_extensions_.push_back(converted_extension->first->id());
+    extension_dirs_.push_back(std::move(converted_extension->second));
     extension_system_->ready().Post(
         FROM_HERE,
         base::BindOnce(&GreaselionServiceImpl::Install,
-                       weak_factory_.GetWeakPtr(), base::Passed(&extension)));
+                       weak_factory_.GetWeakPtr(),
+                       base::Passed(&converted_extension->first)));
   }
 }
 

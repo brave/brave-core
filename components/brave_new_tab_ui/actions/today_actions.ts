@@ -32,11 +32,14 @@ export const errorGettingDataFromBackground = createAction<BackgroundErrorPayloa
  */
 export type ReadFeedItemPayload = {
   item: BraveToday.FeedItem,
+  isPromoted?: boolean,
   openInNewTab?: boolean
 }
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 
 export const feedItemViewedCountChanged = createAction<number>('feedItemViewedCountChanged')
+
+export const promotedItemViewed = createAction<BraveToday.PromotedArticle>('promotedItemViewed')
 
 export type SetPublisherPrefPayload = {
   publisherId: string

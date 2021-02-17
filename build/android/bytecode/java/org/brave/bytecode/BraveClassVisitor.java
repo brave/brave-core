@@ -5,17 +5,13 @@
 
 package org.brave.bytecode;
 
-import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.NEW;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -23,6 +19,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class BraveClassVisitor extends ClassVisitor {
 
@@ -76,6 +77,16 @@ class BraveClassVisitor extends ClassVisitor {
             owner = maybeChangeOwner(owner, name);
             super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
         }
+
+        @Override
+        public void visitTypeInsn(int opcode, String type) {
+            if (opcode == NEW && mRedirectConstructors.containsKey(type)) {
+                String newType = mRedirectConstructors.get(type);
+                System.out.println("redirecting constructor from " + type + " to " + newType);
+                type = newType;
+            }
+            super.visitTypeInsn(opcode, type);
+        }
     }
 
     protected String mName = "";
@@ -94,6 +105,7 @@ class BraveClassVisitor extends ClassVisitor {
             new HashMap<String, ArrayList<String>>();
     private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
             new HashMap<String, Map<String, ArrayList<String>>>();
+    private Map<String, String> mRedirectConstructors = new HashMap<String, String>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
         super(ASM5, null);
@@ -156,10 +168,19 @@ class BraveClassVisitor extends ClassVisitor {
             if (methods.containsKey(methodName)) {
                 String newOwner = methods.get(methodName);
                 if (!newOwner.equals(mName)) {
-                    System.out.println("changing owner for " + mName + "." + methodName +
-                            " - new owner " + newOwner);
+                    System.out.println("changing owner for " + owner + "." + methodName + " in "
+                            + mName + " - new owner " + newOwner);
                     return newOwner;
                 }
+            }
+        }
+        // Explicitly redirect ownership to a new super class
+        if (mSuperName.equals(owner) && mSuperNames.containsKey(mName)) {
+            String newSuperOwner = mSuperNames.get(mName);
+            if (!newSuperOwner.equals(mSuperName)) {
+                System.out.println("redirecting ownership for " + mSuperName + "." + methodName
+                        + " in " + mName + " - new owner " + newSuperOwner);
+                return newSuperOwner;
             }
         }
         return owner;
@@ -236,6 +257,11 @@ class BraveClassVisitor extends ClassVisitor {
         annotationList.add(annotationType);
     }
 
+    protected void redirectConstructor(String originalClassName, String newClassName) {
+        changeMethodOwner(originalClassName, "<init>", newClassName);
+        mRedirectConstructors.put(originalClassName, newClassName);
+    }
+
     @Override
     public void visit(int version,
                       int access,
@@ -245,6 +271,7 @@ class BraveClassVisitor extends ClassVisitor {
                       String[] interfaces) {
         super.cv = new ClassNode();
         mName = name;
+        mSuperName = superName;
         if (mSuperNames.containsKey(name)) {
             superName = mSuperNames.get(name);
             System.out.println("change superclass of " + name + " to " + superName);

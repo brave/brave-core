@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/client/preferences/filtered_category_info.h"
 
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 FilteredCategory::FilteredCategory() = default;
 
-FilteredCategory::FilteredCategory(
-    const FilteredCategory& category) = default;
+FilteredCategory::FilteredCategory(const FilteredCategory& category) = default;
 
 FilteredCategory::~FilteredCategory() = default;
 
@@ -23,8 +22,7 @@ std::string FilteredCategory::ToJson() const {
   return json;
 }
 
-Result FilteredCategory::FromJson(
-    const std::string& json) {
+Result FilteredCategory::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -40,9 +38,7 @@ Result FilteredCategory::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(
-    JsonWriter* writer,
-    const FilteredCategory& category) {
+void SaveToJson(JsonWriter* writer, const FilteredCategory& category) {
   writer->StartObject();
 
   writer->String("name");

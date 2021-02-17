@@ -1,20 +1,20 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 4c512aea8daf7bbd44013157e67d90d80c962f74..a66717a0e21be9abf054bbf647cf185daa08546b 100644
+index 0d526abe45fa3dc58874e1cbbb27ac3cbc8e1109..9327c64ec3dc335fb1919e44617fdd01bc5a1152 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -1577,6 +1577,7 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1617,6 +1617,7 @@ ImageData* BaseRenderingContext2D::getImageData(
  }
  
- ImageData* BaseRenderingContext2D::getImageData(
+ ImageData* BaseRenderingContext2D::getImageDataInternal(
 +    BRAVE_GET_IMAGE_DATA_PARAMS
      int sx,
      int sy,
      int sw,
-@@ -1664,6 +1665,7 @@ ImageData* BaseRenderingContext2D::getImageData(
-     return nullptr;
+@@ -1799,6 +1800,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
+     default:
+       NOTREACHED();
    }
- 
 +  BRAVE_GET_IMAGE_DATA
-   bool may_have_stray_area =
-       IsAccelerated()  // GPU readback may fail silently.
-       || StaticBitmapImage::MayHaveStrayArea(snapshot, image_data_rect);
+   ImageData* image_data = ImageData::ValidateAndCreate(
+       sw, sh, data_array, image_data_settings, exception_state,
+       ImageData::Context2DErrorMode);

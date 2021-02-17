@@ -227,7 +227,7 @@ interface BatLedgerClient {
 
   ReconcileStampReset();
 
-  RunDBTransaction(ledger_database.mojom.DBTransaction transaction) => (ledger_database.mojom.DBCommandResponse response);
+  RunDBTransaction(ledger.mojom.DBTransaction transaction) => (ledger.mojom.DBCommandResponse response);
 
   GetCreateScript() => (string script, int32 table_version);
 

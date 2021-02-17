@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap.h"
 
-#include "bat/ads/internal/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
 namespace ads {

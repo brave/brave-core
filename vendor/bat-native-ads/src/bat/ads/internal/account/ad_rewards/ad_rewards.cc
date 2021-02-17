@@ -9,17 +9,17 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "net/http/http_status_code.h"
 #include "bat/ads/internal/account/ad_rewards/ad_grants/ad_grants.h"
 #include "bat/ads/internal/account/ad_rewards/ad_grants/ad_grants_url_request_builder.h"
 #include "bat/ads/internal/account/ad_rewards/payments/payments.h"
 #include "bat/ads/internal/account/ad_rewards/payments/payments_url_request_builder.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/confirmations/confirmations_state.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/transaction_info.h"
+#include "net/http/http_status_code.h"
 
 namespace ads {
 
@@ -27,10 +27,9 @@ namespace {
 
 const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-double CalculateEarningsForTransactions(
-    const TransactionList& transactions,
-    const int64_t from_timestamp,
-    const int64_t to_timestamp) {
+double CalculateEarningsForTransactions(const TransactionList& transactions,
+                                        const int64_t from_timestamp,
+                                        const int64_t to_timestamp) {
   double estimated_pending_rewards = 0.0;
 
   for (const auto& transaction : transactions) {
@@ -49,18 +48,15 @@ double CalculateEarningsForTransactions(
 
 AdRewards::AdRewards()
     : ad_grants_(std::make_unique<AdGrants>()),
-      payments_(std::make_unique<Payments>()) {
-}
+      payments_(std::make_unique<Payments>()) {}
 
 AdRewards::~AdRewards() = default;
 
-void AdRewards::set_delegate(
-    AdRewardsDelegate* delegate) {
+void AdRewards::set_delegate(AdRewardsDelegate* delegate) {
   delegate_ = delegate;
 }
 
-void AdRewards::MaybeReconcile(
-    const WalletInfo& wallet) {
+void AdRewards::MaybeReconcile(const WalletInfo& wallet) {
   if (is_processing_ || retry_timer_.IsRunning()) {
     return;
   }
@@ -113,8 +109,7 @@ uint64_t AdRewards::GetAdsReceivedThisMonth() const {
   return GetAdsReceivedForMonth(now);
 }
 
-uint64_t AdRewards::GetAdsReceivedForMonth(
-    const base::Time& time) const {
+uint64_t AdRewards::GetAdsReceivedForMonth(const base::Time& time) const {
   const TransactionList transactions =
       ConfirmationsState::Get()->get_transactions();
 
@@ -154,8 +149,7 @@ double AdRewards::GetEarningsForThisMonth() const {
   return earnings_for_this_month;
 }
 
-double AdRewards::GetEarningsForMonth(
-    const base::Time& time) const {
+double AdRewards::GetEarningsForMonth(const base::Time& time) const {
   const PaymentInfo payment = payments_->GetForThisMonth(time);
   return payment.balance;
 }
@@ -182,7 +176,7 @@ double AdRewards::GetUnclearedEarningsForThisMonth() const {
   const TransactionList uncleared_transactions = transactions::GetUncleared();
 
   return CalculateEarningsForTransactions(uncleared_transactions,
-      from_timestamp, to_timestamp);
+                                          from_timestamp, to_timestamp);
 }
 
 void AdRewards::SetUnreconciledTransactions(
@@ -190,7 +184,7 @@ void AdRewards::SetUnreconciledTransactions(
   const int64_t to_timestamp =
       static_cast<int64_t>(base::Time::Now().ToDoubleT());
 
-  unreconciled_estimated_pending_rewards_ = CalculateEarningsForTransactions(
+  unreconciled_estimated_pending_rewards_ += CalculateEarningsForTransactions(
       unreconciled_transactions, 0, to_timestamp);
 
   ConfirmationsState::Get()->Save();
@@ -206,13 +200,12 @@ base::Value AdRewards::GetAsDictionary() {
   dictionary.SetKey("payments", base::Value(std::move(payments)));
 
   dictionary.SetKey("unreconciled_estimated_pending_rewards",
-      base::Value(unreconciled_estimated_pending_rewards_));
+                    base::Value(unreconciled_estimated_pending_rewards_));
 
   return dictionary;
 }
 
-bool AdRewards::SetFromDictionary(
-    base::Value* dictionary) {
+bool AdRewards::SetFromDictionary(base::Value* dictionary) {
   DCHECK(dictionary);
 
   base::Value* ad_rewards = dictionary->FindDictKey("ads_rewards");
@@ -241,6 +234,23 @@ bool AdRewards::SetFromDictionary(
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool AdRewards::DidReconcile(
+    const std::string& json) const {
+  const double last_balance = payments_->GetBalance();
+
+  Payments payments;
+  if (!payments.SetFromJson(json)) {
+    return false;
+  }
+
+  if (!payments.DidReconcileBalance(last_balance,
+      unreconciled_estimated_pending_rewards_)) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdRewards::Reconcile() {
   DCHECK(!is_processing_);
 
@@ -260,13 +270,12 @@ void AdRewards::GetPayments() {
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&AdRewards::OnGetPayments, this,
-      std::placeholders::_1);
+  auto callback =
+      std::bind(&AdRewards::OnGetPayments, this, std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void AdRewards::OnGetPayments(
-    const UrlResponse& url_response) {
+void AdRewards::OnGetPayments(const UrlResponse& url_response) {
   BLOG(1, "OnGetPayments");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -274,6 +283,12 @@ void AdRewards::OnGetPayments(
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to get payment balance");
+    OnFailedToReconcileAdRewards();
+    return;
+  }
+
+  if (!DidReconcile(url_response.body)) {
+    BLOG(0, "Payment balance is not ready");
     OnFailedToReconcileAdRewards();
     return;
   }
@@ -296,13 +311,12 @@ void AdRewards::GetAdGrants() {
   BLOG(5, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  auto callback = std::bind(&AdRewards::OnGetAdGrants, this,
-      std::placeholders::_1);
+  auto callback =
+      std::bind(&AdRewards::OnGetAdGrants, this, std::placeholders::_1);
   AdsClientHelper::Get()->UrlRequest(std::move(url_request), callback);
 }
 
-void AdRewards::OnGetAdGrants(
-    const UrlResponse& url_response) {
+void AdRewards::OnGetAdGrants(const UrlResponse& url_response) {
   BLOG(1, "OnGetAdGrants");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -365,7 +379,7 @@ void AdRewards::Retry() {
 
   const base::Time time = retry_timer_.StartWithPrivacy(
       base::TimeDelta::FromSeconds(kRetryAfterSeconds),
-          base::BindOnce(&AdRewards::OnRetry, base::Unretained(this)));
+      base::BindOnce(&AdRewards::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry reconciling ad rewards " << FriendlyDateAndTime(time));
 }

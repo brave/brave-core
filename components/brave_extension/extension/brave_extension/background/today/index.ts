@@ -66,6 +66,11 @@ function stopUpdateFrequency () {
   chrome.alarms.clear(ALARM_KEY_PUBLISHERS_UPDATE)
 }
 
+async function getHasBraveTodayBeenUsed () {
+  // We'll only have local data if data has been fetched or cached.
+  return !!(await Feed.getLocalData())
+}
+
 // Setup listeners for messages from WebUI
 import MessageTypes = Background.MessageTypes.Today
 import Messages = BraveToday.Messages
@@ -92,10 +97,13 @@ Background.setListener<void>(
     // but don't use resources returning it when
     // most NTP opens won't result in reading Brave Today
     // content (or changing publisher settings).
-    await Promise.all([
-      Feed.getOrFetchData(),
-      Publishers.getOrFetchData()
-    ])
+    // Only do this if we've previously interacted with brave today
+    if (await getHasBraveTodayBeenUsed()) {
+      await Promise.all([
+        Feed.getOrFetchData(),
+        Publishers.getOrFetchData()
+      ])
+    }
   }
 )
 
@@ -138,14 +146,12 @@ Background.setListener<Messages.GetImageDataResponse, Messages.GetImageDataPaylo
   }
 )
 
-Background.setListener<Messages.SetPublisherPrefResponse, Messages.SetPublisherPrefPayload>(
+Background.setListener<{}, Messages.SetPublisherPrefPayload>(
   MessageTypes.setPublisherPref,
-  async function (req, sender, sendResponse) {
+  async function (req, sender) {
     const publisherId = req.publisherId
     const enabled: boolean | null = req.enabled
     await PublisherUserPrefs.setPublisherPref(publisherId, enabled)
-    const publishers = await Publishers.update(true)
-    sendResponse({ publishers })
   }
 )
 
@@ -176,12 +182,13 @@ Background.setListener<Messages.ClearPrefsResponse, Messages.ClearPrefsPayload>(
 // Only do certain things when Brave Today is enabled
 let isStartedUp = false
 
-function conditionallyStartupOrShutdown (pref: chrome.settingsPrivate.PrefObject) {
+async function conditionallyStartupOrShutdown (pref: chrome.settingsPrivate.PrefObject) {
   if (pref.type !== chrome.settingsPrivate.PrefType.BOOLEAN) {
     throw new Error(`Unknown pref type for '${SETTINGS_KEY_SHOW_TODAY}'. Expected BOOLEAN but saw ${pref.type}.`)
   }
   const isBraveTodayEnabled = pref.value
-  if (isBraveTodayEnabled && !isStartedUp) {
+  const hasBraveTodayBeenUsed = await getHasBraveTodayBeenUsed()
+  if (isBraveTodayEnabled && hasBraveTodayBeenUsed && !isStartedUp) {
     isStartedUp = true
     ensureUpdateFrequency()
   } else if (!isBraveTodayEnabled && isStartedUp) {
@@ -192,9 +199,9 @@ function conditionallyStartupOrShutdown (pref: chrome.settingsPrivate.PrefObject
 
 chrome.settingsPrivate.getPref(SETTINGS_KEY_SHOW_TODAY, conditionallyStartupOrShutdown)
 
-chrome.settingsPrivate.onPrefsChanged.addListener(prefs => {
+chrome.settingsPrivate.onPrefsChanged.addListener(async prefs => {
   const pref = prefs.find(pref => pref.key === SETTINGS_KEY_SHOW_TODAY)
   if (pref) {
-    conditionallyStartupOrShutdown(pref)
+    await conditionallyStartupOrShutdown(pref)
   }
 })

@@ -96,7 +96,7 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     ...tabs[tabId]
   }
 
-  if (blockType === 'ads') {
+  if (blockType === 'shieldsAds') {
     tabs[tabId].adsBlockedResources = unique([ ...tabs[tabId].adsBlockedResources, subresource ])
     tabs[tabId].adsBlocked = tabs[tabId].adsBlockedResources.length
   } else if (blockType === 'trackers') {

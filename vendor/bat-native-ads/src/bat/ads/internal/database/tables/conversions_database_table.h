@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_DATABASE_CONVERSIONS_DATABASE_TABLE_H_
-#define BAT_ADS_INTERNAL_DATABASE_CONVERSIONS_DATABASE_TABLE_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CONVERSIONS_DATABASE_TABLE_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CONVERSIONS_DATABASE_TABLE_H_
 
 #include <string>
 
@@ -16,8 +16,8 @@
 
 namespace ads {
 
-using GetConversionsCallback = std::function<void(const Result,
-    const ConversionList&)>;
+using GetConversionsCallback =
+    std::function<void(const Result, const ConversionList&)>;
 
 namespace database {
 namespace table {
@@ -28,52 +28,37 @@ class Conversions : public Table {
 
   ~Conversions() override;
 
-  void Save(
-      const ConversionList& conversions,
-      ResultCallback callback);
+  void Save(const ConversionList& conversions, ResultCallback callback);
 
-  void GetAll(
-      GetConversionsCallback callback);
+  void GetAll(GetConversionsCallback callback);
 
-  void PurgeExpired(
-      ResultCallback callback);
+  void PurgeExpired(ResultCallback callback);
 
   std::string get_table_name() const override;
 
-  void Migrate(
-      DBTransaction* transaction,
-      const int to_version) override;
+  void Migrate(DBTransaction* transaction, const int to_version) override;
 
  private:
-  void InsertOrUpdate(
-      DBTransaction* transaction,
-      const ConversionList& conversion);
+  void InsertOrUpdate(DBTransaction* transaction,
+                      const ConversionList& conversion);
 
-  int BindParameters(
-      DBCommand* command,
-      const ConversionList& conversion);
+  int BindParameters(DBCommand* command, const ConversionList& conversion);
 
-  std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
-      const ConversionList& conversions);
+  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+                                       const ConversionList& conversions);
 
-  void OnGetConversions(
-      DBCommandResponsePtr response,
-      GetConversionsCallback callback);
+  void OnGetConversions(DBCommandResponsePtr response,
+                        GetConversionsCallback callback);
 
-  ConversionInfo GetConversionFromRecord(
-      DBRecord* record) const;
+  ConversionInfo GetConversionFromRecord(DBRecord* record) const;
 
-  void CreateTableV1(
-      DBTransaction* transaction);
-  void CreateIndexV1(
-      DBTransaction* transaction);
-  void MigrateToV1(
-      DBTransaction* transaction);
+  void CreateTableV1(DBTransaction* transaction);
+  void CreateIndexV1(DBTransaction* transaction);
+  void MigrateToV1(DBTransaction* transaction);
 };
 
 }  // namespace table
 }  // namespace database
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_DATABASE_CONVERSIONS_DATABASE_TABLE_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_TABLES_CONVERSIONS_DATABASE_TABLE_H_

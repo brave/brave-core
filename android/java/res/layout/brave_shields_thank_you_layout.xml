@@ -23,7 +23,7 @@
             android:contentDescription="@null"
             android:layout_gravity="center"
             android:layout_marginEnd="16dp"
-            android:tint="@color/shield_thank_you_icon_color"
+            app:tint="@color/shield_thank_you_icon_color"
             app:srcCompat="@drawable/ic_thank_you"/>
 
         <TextView

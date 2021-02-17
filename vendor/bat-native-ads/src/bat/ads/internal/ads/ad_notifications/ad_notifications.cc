@@ -19,7 +19,9 @@
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ads/result.h"
+#include "brave/common/brave_channel_info.h"
 
 #if defined(OS_ANDROID)
 #include "base/android/build_info.h"
@@ -46,7 +48,7 @@ const char kNotificationUuidKey[] = "id";
 const char kNotificationCreativeInstanceIdKey[] = "uuid";
 const char kNotificationCreativeSetIdKey[] = "creative_set_id";
 const char kNotificationCampaignIdKey[] = "campaign_id";
-const char kNotificationCategoryKey[] = "category";
+const char kNotificationSegmentKey[] = "segment";
 const char kNotificationTitleKey[] = "advertiser";
 const char kNotificationBodyKey[] = "text";
 const char kNotificationTargetUrlKey[] = "url";
@@ -74,23 +76,21 @@ bool AdNotifications::HasInstance() {
   return g_ad_notifications;
 }
 
-void AdNotifications::Initialize(
-    InitializeCallback callback) {
+void AdNotifications::Initialize(InitializeCallback callback) {
   callback_ = callback;
 
   Load();
 }
 
-bool AdNotifications::Get(
-    const std::string& uuid,
-    AdNotificationInfo* ad_notification) const {
+bool AdNotifications::Get(const std::string& uuid,
+                          AdNotificationInfo* ad_notification) const {
   DCHECK(is_initialized_);
   DCHECK(ad_notification);
 
   auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
-      [&uuid](const AdNotificationInfo& notification) {
-          return notification.uuid == uuid;
-      });
+                           [&uuid](const AdNotificationInfo& notification) {
+                             return notification.uuid == uuid;
+                           });
 
   if (iter == ad_notifications_.end()) {
     return false;
@@ -103,8 +103,7 @@ bool AdNotifications::Get(
   return true;
 }
 
-void AdNotifications::PushBack(
-    const AdNotificationInfo& info) {
+void AdNotifications::PushBack(const AdNotificationInfo& info) {
   DCHECK(is_initialized_);
 
   ad_notifications_.push_back(info);
@@ -116,8 +115,7 @@ void AdNotifications::PushBack(
   Save();
 }
 
-void AdNotifications::PopFront(
-    const bool should_dismiss) {
+void AdNotifications::PopFront(const bool should_dismiss) {
   if (!ad_notifications_.empty()) {
     if (should_dismiss) {
       AdsClientHelper::Get()->CloseNotification(ad_notifications_.front().uuid);
@@ -127,15 +125,14 @@ void AdNotifications::PopFront(
   }
 }
 
-bool AdNotifications::Remove(
-    const std::string& uuid,
-    const bool should_dismiss) {
+bool AdNotifications::Remove(const std::string& uuid,
+                             const bool should_dismiss) {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
-      [&uuid](const AdNotificationInfo& notification) {
-          return notification.uuid == uuid;
-      });
+                           [&uuid](const AdNotificationInfo& notification) {
+                             return notification.uuid == uuid;
+                           });
 
   if (iter == ad_notifications_.end()) {
     return false;
@@ -151,8 +148,7 @@ bool AdNotifications::Remove(
   return true;
 }
 
-void AdNotifications::RemoveAll(
-    const bool should_dismiss) {
+void AdNotifications::RemoveAll(const bool should_dismiss) {
   DCHECK(is_initialized_);
 
   if (should_dismiss) {
@@ -165,14 +161,13 @@ void AdNotifications::RemoveAll(
   Save();
 }
 
-bool AdNotifications::Exists(
-    const std::string& uuid) const {
+bool AdNotifications::Exists(const std::string& uuid) const {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
-      [&uuid](const AdNotificationInfo& notification) {
-          return notification.uuid == uuid;
-      });
+                           [&uuid](const AdNotificationInfo& notification) {
+                             return notification.uuid == uuid;
+                           });
 
   if (iter == ad_notifications_.end()) {
     return false;
@@ -184,6 +179,54 @@ bool AdNotifications::Exists(
 uint64_t AdNotifications::Count() const {
   return ad_notifications_.size();
 }
+
+#if defined(OS_ANDROID)
+void AdNotifications::RemoveAllAfterReboot() {
+  if (brave::IsNightlyOrDeveloperBuild()) {
+    return;
+  }
+
+  database::table::AdEvents database_table;
+  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
+    if (result != Result::SUCCESS) {
+      BLOG(1, "New tab page ad: Failed to get ad events");
+      return;
+    }
+
+    if (ad_events.empty()) {
+      return;
+    }
+
+    const AdEventInfo ad_event = ad_events.front();
+
+    const base::Time boot_time = base::Time::Now() - base::SysInfo::Uptime();
+    const int64_t boot_timestamp = boot_time.ToDoubleT();
+
+    if (ad_event.timestamp <= boot_timestamp) {
+      RemoveAll(false);
+    }
+  });
+}
+
+void AdNotifications::RemoveAllAfterUpdate() {
+  if (brave::IsNightlyOrDeveloperBuild()) {
+    return;
+  }
+
+  const std::string current_version_code =
+      base::android::BuildInfo::GetInstance()->package_version_code();
+
+  const std::string last_version_code = Client::Get()->GetVersionCode();
+
+  if (last_version_code == current_version_code) {
+    return;
+  }
+
+  Client::Get()->SetVersionCode(current_version_code);
+
+  RemoveAll(false);
+}
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -219,24 +262,28 @@ bool AdNotifications::GetNotificationFromDictionary(
     return false;
   }
 
-  if (!GetCreativeInstanceIdFromDictionary(dictionary,
-      &new_ad_notification.creative_instance_id)) {
+  if (!GetCreativeInstanceIdFromDictionary(
+          dictionary, &new_ad_notification.creative_instance_id)) {
     return false;
   }
 
   if (!GetCreativeSetIdFromDictionary(dictionary,
-      &new_ad_notification.creative_set_id)) {
+                                      &new_ad_notification.creative_set_id)) {
     return false;
   }
 
   if (!GetCampaignIdFromDictionary(dictionary,
-      &new_ad_notification.campaign_id)) {
+                                   &new_ad_notification.campaign_id)) {
     // Migrate for legacy notifications
     new_ad_notification.campaign_id = "";
   }
 
-  if (!GetCategoryFromDictionary(dictionary, &new_ad_notification.category)) {
-    return false;
+  if (!GetSegmentFromDictionary(dictionary, &new_ad_notification.segment)) {
+    // Migrate for legacy notifications
+    if (!GetStringFromDictionary("category", dictionary,
+                                 &new_ad_notification.segment)) {
+      return false;
+    }
   }
 
   if (!GetTitleFromDictionary(dictionary, &new_ad_notification.title)) {
@@ -248,7 +295,7 @@ bool AdNotifications::GetNotificationFromDictionary(
   }
 
   if (!GetTargetUrlFromDictionary(dictionary,
-      &new_ad_notification.target_url)) {
+                                  &new_ad_notification.target_url)) {
     return false;
   }
 
@@ -257,9 +304,8 @@ bool AdNotifications::GetNotificationFromDictionary(
   return true;
 }
 
-bool AdNotifications::GetUuidFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* value) const {
+bool AdNotifications::GetUuidFromDictionary(base::DictionaryValue* dictionary,
+                                            std::string* value) const {
   return GetStringFromDictionary(kNotificationUuidKey, dictionary, value);
 }
 
@@ -267,14 +313,14 @@ bool AdNotifications::GetCreativeInstanceIdFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
   return GetStringFromDictionary(kNotificationCreativeInstanceIdKey, dictionary,
-      value);
+                                 value);
 }
 
 bool AdNotifications::GetCreativeSetIdFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationCreativeSetIdKey,
-      dictionary, value);
+  return GetStringFromDictionary(kNotificationCreativeSetIdKey, dictionary,
+                                 value);
 }
 
 bool AdNotifications::GetCampaignIdFromDictionary(
@@ -283,21 +329,19 @@ bool AdNotifications::GetCampaignIdFromDictionary(
   return GetStringFromDictionary(kNotificationCampaignIdKey, dictionary, value);
 }
 
-bool AdNotifications::GetCategoryFromDictionary(
+bool AdNotifications::GetSegmentFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationCategoryKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationSegmentKey, dictionary, value);
 }
 
-bool AdNotifications::GetTitleFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* value) const {
+bool AdNotifications::GetTitleFromDictionary(base::DictionaryValue* dictionary,
+                                             std::string* value) const {
   return GetStringFromDictionary(kNotificationTitleKey, dictionary, value);
 }
 
-bool AdNotifications::GetBodyFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* value) const {
+bool AdNotifications::GetBodyFromDictionary(base::DictionaryValue* dictionary,
+                                            std::string* value) const {
   return GetStringFromDictionary(kNotificationBodyKey, dictionary, value);
 }
 
@@ -307,10 +351,9 @@ bool AdNotifications::GetTargetUrlFromDictionary(
   return GetStringFromDictionary(kNotificationTargetUrlKey, dictionary, value);
 }
 
-bool AdNotifications::GetStringFromDictionary(
-    const std::string& key,
-    base::DictionaryValue* dictionary,
-    std::string* string) const {
+bool AdNotifications::GetStringFromDictionary(const std::string& key,
+                                              base::DictionaryValue* dictionary,
+                                              std::string* string) const {
   DCHECK(dictionary);
   DCHECK(string);
 
@@ -334,13 +377,12 @@ void AdNotifications::Save() {
   BLOG(9, "Saving ad notifications state");
 
   std::string json = ToJson();
-  auto callback = std::bind(&AdNotifications::OnSaved, this,
-      std::placeholders::_1);
+  auto callback =
+      std::bind(&AdNotifications::OnSaved, this, std::placeholders::_1);
   AdsClientHelper::Get()->Save(kNotificationsFilename, json, callback);
 }
 
-void AdNotifications::OnSaved(
-    const Result result) {
+void AdNotifications::OnSaved(const Result result) {
   if (result != SUCCESS) {
     BLOG(0, "Failed to save ad notifications state");
     return;
@@ -353,13 +395,11 @@ void AdNotifications::Load() {
   BLOG(3, "Loading ad notifications state");
 
   auto callback = std::bind(&AdNotifications::OnLoaded, this,
-      std::placeholders::_1, std::placeholders::_2);
+                            std::placeholders::_1, std::placeholders::_2);
   AdsClientHelper::Get()->Load(kNotificationsFilename, callback);
 }
 
-void AdNotifications::OnLoaded(
-    const Result result,
-    const std::string& json) {
+void AdNotifications::OnLoaded(const Result result, const std::string& json) {
   if (result != SUCCESS) {
     BLOG(3, "Ad notifications state does not exist, creating default state");
 
@@ -385,8 +425,7 @@ void AdNotifications::OnLoaded(
   callback_(SUCCESS);
 }
 
-bool AdNotifications::FromJson(
-    const std::string& json) {
+bool AdNotifications::FromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
@@ -430,7 +469,7 @@ std::string AdNotifications::ToJson() {
 
   auto notifications = GetAsList();
   dictionary.SetKey(kNotificationsListKey,
-      base::Value(std::move(notifications)));
+                    base::Value(std::move(notifications)));
 
   // Write to JSON
   std::string json;
@@ -445,22 +484,20 @@ base::Value AdNotifications::GetAsList() {
   for (const auto& ad_notification : ad_notifications_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetKey(kNotificationUuidKey,
-        base::Value(ad_notification.uuid));
+    dictionary.SetKey(kNotificationUuidKey, base::Value(ad_notification.uuid));
     dictionary.SetKey(kNotificationCreativeInstanceIdKey,
-        base::Value(ad_notification.creative_instance_id));
+                      base::Value(ad_notification.creative_instance_id));
     dictionary.SetKey(kNotificationCreativeSetIdKey,
-        base::Value(ad_notification.creative_set_id));
+                      base::Value(ad_notification.creative_set_id));
     dictionary.SetKey(kNotificationCampaignIdKey,
-        base::Value(ad_notification.campaign_id));
-    dictionary.SetKey(kNotificationCategoryKey,
-        base::Value(ad_notification.category));
+                      base::Value(ad_notification.campaign_id));
+    dictionary.SetKey(kNotificationSegmentKey,
+                      base::Value(ad_notification.segment));
     dictionary.SetKey(kNotificationTitleKey,
-        base::Value(ad_notification.title));
-    dictionary.SetKey(kNotificationBodyKey,
-        base::Value(ad_notification.body));
+                      base::Value(ad_notification.title));
+    dictionary.SetKey(kNotificationBodyKey, base::Value(ad_notification.body));
     dictionary.SetKey(kNotificationTargetUrlKey,
-        base::Value(ad_notification.target_url));
+                      base::Value(ad_notification.target_url));
 
     list.Append(std::move(dictionary));
   }

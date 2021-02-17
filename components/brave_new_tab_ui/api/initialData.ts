@@ -18,13 +18,13 @@ export type InitialData = {
   togetherSupported: boolean
   geminiSupported: boolean
   binanceSupported: boolean
-  bitcoinDotComSupported: boolean
   cryptoDotComSupported: boolean
 }
 
 export type PreInitialRewardsData = {
   enabledAds: boolean
   adsSupported: boolean
+  onlyAnonWallet: boolean
 }
 
 export type InitialRewardsData = {
@@ -48,7 +48,6 @@ export async function getInitialData (): Promise<InitialData> {
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported,
       cryptoDotComSupported,
       binanceSupported
     ] = await Promise.all([
@@ -73,9 +72,6 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        resolve(false)
-      }),
-      new Promise((resolve) => {
         chrome.cryptoDotCom.isSupported((supported: boolean) => {
           resolve(supported)
         })
@@ -95,7 +91,6 @@ export async function getInitialData (): Promise<InitialData> {
       brandedWallpaperData,
       togetherSupported,
       geminiSupported,
-      bitcoinDotComSupported,
       cryptoDotComSupported,
       binanceSupported
     } as InitialData
@@ -109,18 +104,23 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   try {
     const [
       enabledAds,
-      adsSupported
+      adsSupported,
+      onlyAnonWallet
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
         resolve(enabledAds)
       })),
       new Promise(resolve => chrome.braveRewards.getAdsSupported((adsSupported: boolean) => {
         resolve(adsSupported)
+      })),
+      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
+        resolve(onlyAnonWallet)
       }))
     ])
     return {
       enabledAds,
-      adsSupported
+      adsSupported,
+      onlyAnonWallet
     } as PreInitialRewardsData
   } catch (err) {
     throw Error(err)

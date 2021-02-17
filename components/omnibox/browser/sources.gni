@@ -2,6 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_omnibox_client.cc",
@@ -21,5 +22,13 @@ brave_components_omnibox_browser_sources = [
 brave_components_omnibox_browser_deps = [
   "//base",
   "//brave/common:pref_names",
+  "//brave/components/binance/browser/buildflags",
   "//url",
 ]
+
+if (binance_enabled) {
+  brave_components_omnibox_browser_deps += [
+    "//brave/components/binance/browser",
+    "//brave/components/ntp_widget_utils/browser",
+  ]
+}

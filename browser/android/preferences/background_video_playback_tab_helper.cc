@@ -17,7 +17,6 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/renderer/render_frame.h"
 #include "content/public/browser/navigation_handle.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"

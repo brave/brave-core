@@ -111,6 +111,9 @@
   <message name="IDS_MEDIA_ROUTER_SOURCE_NOT_SUPPORTED" desc="Text shown as the status of a Cast device that is not compatible with the selected Cast source (contents).">
     Source not supported
   </message>
+  <message name="IDS_MEDIA_ROUTER_AVAILABLE_SPECIFIC_SITES" desc="Text shown as the status of a Cast device that is not compatible with the selected website but is compatible with other video websites.">
+    Available for specific video sites
+  </message>
 
   <!-- File Dialog -->
   <message name="IDS_MEDIA_ROUTER_FILE_DIALOG_AUDIO_VIDEO_FILTER" desc="Label for the drop down menu in the file selection dialog to show only audio and video files, instead of all files.">
@@ -135,6 +138,14 @@
   </message>
   <message name="IDS_MEDIA_ROUTER_REMOTING_DIALOG_CANCEL_BUTTON_MACOS" desc="Label for a button in the Media Remoting dialog that the user can click on to cancel enabling the feature, shown on macOS. Shown next to the 'Optimize' button. Media Remoting is a feature that can be enabled during a Cast session for improved playback.">
     No Thanks
+  </message>
+
+  <!-- Cast-to-meeting deprecation/removal -->
+  <message name="IDS_MEDIA_ROUTER_CAST_TO_MEETING_DEPRECATED" desc="Used in the Cast dialog to inform the user that starting a presentation from the Cast dialog will no longer work, and using meet.google.com will be the only option.">
+    Soon this option will no longer be supported. To present a tab, use <ph name="GOOGLE_MEET">$1<ex>Brave Meet</ex></ph>.
+  </message>
+  <message name="IDS_MEDIA_ROUTER_CAST_TO_MEETING_REMOVED" desc="Used in the Cast dialog to inform the user that starting a presentation from the Cast dialog is not longer supported, and using meet.google.com is the only option.">
+    This option is no longer to supported. To present a tab, use <ph name="GOOGLE_MEET">$1<ex>Brave Meet</ex></ph>.
   </message>
 
   <!-- Cloud Services Dialog -->

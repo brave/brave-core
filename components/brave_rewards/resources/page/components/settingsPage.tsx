@@ -20,6 +20,8 @@ import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import MonthlyContributionBox from './monthlyContributionBox'
 import QRBox from './qrBox'
+import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
+import { TourPromoWrapper } from './style'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -32,6 +34,8 @@ interface Props extends Rewards.ComponentProps {
 
 interface State {
   redirectModalDisplayed: 'hide' | 'show'
+  showRewardsTour: boolean
+  firstTimeSetup: boolean
 }
 
 class SettingsPage extends React.Component<Props, State> {
@@ -40,7 +44,9 @@ class SettingsPage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      redirectModalDisplayed: 'hide'
+      redirectModalDisplayed: 'hide',
+      showRewardsTour: false,
+      firstTimeSetup: false
     }
   }
 
@@ -143,8 +149,21 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getExternalWallet('uphold')
     this.actions.getOnboardingStatus()
 
-    if (window.location.pathname.length > 1) {
-      const pathElements = window.location.pathname.split('/')
+    this.handleURL()
+  }
+
+  handleURL () {
+    const { pathname } = window.location
+
+    if (pathname === '/enable') {
+      this.actions.saveOnboardingResult('opted-in')
+      this.setState({ showRewardsTour: true, firstTimeSetup: true })
+      window.history.replaceState({}, '', '/')
+      return
+    }
+
+    if (pathname.length > 1) {
+      const pathElements = pathname.split('/')
       if (pathElements.length > 2) {
         this.actions.processRewardsPageUrl(window.location.pathname, window.location.search)
       }
@@ -253,12 +272,40 @@ class SettingsPage extends React.Component<Props, State> {
     return null
   }
 
+  renderOnboardingPromo () {
+    const { adsData, showOnboarding, ui } = this.props.rewardsData
+    const { promosDismissed } = ui
+    const promoKey = 'rewards-tour'
+
+    if (showOnboarding ||
+        adsData && adsData.adsEnabled ||
+        promosDismissed && promosDismissed[promoKey]) {
+      return null
+    }
+
+    const onTakeTour = () => {
+      this.setState({ showRewardsTour: true })
+    }
+
+    const onClose = () => {
+      this.actions.dismissPromoPrompt(promoKey)
+      this.actions.saveOnboardingResult('dismissed')
+    }
+
+    return (
+      <TourPromoWrapper>
+        <RewardsTourPromo onTakeTour={onTakeTour} onClose={onClose} />
+      </TourPromoWrapper>
+    )
+  }
+
   renderPromos = () => {
     const { currentCountryCode, ui } = this.props.rewardsData
     const { promosDismissed } = ui
 
     return (
       <>
+        {this.renderOnboardingPromo()}
         {getActivePromos(this.props.rewardsData).map((key: PromoType) => {
           if (promosDismissed && promosDismissed[key]) {
             return null
@@ -284,29 +331,95 @@ class SettingsPage extends React.Component<Props, State> {
     )
   }
 
+  renderRewardsTour () {
+    if (!this.state.showRewardsTour) {
+      return null
+    }
+
+    const {
+      adsData,
+      contributionMonthly,
+      parameters,
+      ui
+    } = this.props.rewardsData
+
+    const onDone = () => {
+      this.setState({ showRewardsTour: false, firstTimeSetup: false })
+    }
+
+    const onAdsPerHourChanged = (adsPerHour: number) => {
+      this.actions.onAdsSettingSave('adsPerHour', adsPerHour)
+    }
+
+    const onAcAmountChanged = (amount: number) => {
+      this.actions.onSettingSave('contributionMonthly', amount)
+    }
+
+    return (
+      <RewardsTourModal
+        layout='wide'
+        firstTimeSetup={this.state.firstTimeSetup}
+        onlyAnonWallet={ui.onlyAnonWallet}
+        adsPerHour={adsData.adsPerHour}
+        autoContributeAmount={contributionMonthly}
+        autoContributeAmountOptions={parameters.autoContributeChoices}
+        onAdsPerHourChanged={onAdsPerHourChanged}
+        onAutoContributeAmountChanged={onAcAmountChanged}
+        onDone={onDone}
+        onClose={onDone}
+      />
+    )
+  }
+
+  renderSettings () {
+    const { showOnboarding } = this.props.rewardsData
+
+    if (showOnboarding) {
+      const onTakeTour = () => {
+        this.setState({ showRewardsTour: true })
+      }
+
+      const onEnable = () => {
+        this.actions.saveOnboardingResult('opted-in')
+        this.setState({ showRewardsTour: true, firstTimeSetup: true })
+      }
+
+      return (
+        <SettingsOptInForm onTakeTour={onTakeTour} onEnable={onEnable} />
+      )
+    }
+
+    return (
+      <>
+        <MainToggle
+          testId={'mainToggle'}
+          onTOSClick={this.openTOS}
+          onPrivacyClick={this.openPrivacyPolicy}
+        />
+        <QRBox />
+        <AdsBox />
+        <ContributeBox />
+        <MonthlyContributionBox />
+        <TipBox />
+      </>
+    )
+  }
+
   render () {
     return (
       <Page>
-        <Grid columns={3} customStyle={{ gridGap: '32px' }}>
-          <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Grid columns={3} customStyle={{ gridGap: '32px', alignItems: 'stretch' }}>
+          <Column size={2} customStyle={{ flexDirection: 'column' }}>
             {this.getRedirectModal()}
-            <MainToggle
-              testId={'mainToggle'}
-              onTOSClick={this.openTOS}
-              onPrivacyClick={this.openPrivacyPolicy}
-            />
-            <QRBox />
-            <AdsBox />
-            <ContributeBox />
-            <MonthlyContributionBox />
-            <TipBox />
+            {this.renderSettings()}
           </Column>
-          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Column size={1} customStyle={{ flexDirection: 'column' }}>
             {this.getPromotionsClaims()}
             <PageWallet />
             {this.renderPromos()}
           </Column>
         </Grid>
+        {this.renderRewardsTour()}
       </Page>
     )
   }

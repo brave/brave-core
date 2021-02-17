@@ -12,6 +12,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ipfs/ipfs_service_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
@@ -47,6 +48,10 @@ class IpfsNavigationThrottle : public content::NavigationThrottle {
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsNavigationThrottleUnitTest,
                            DeferUntilIpfsProcessLaunched);
+  FRIEND_TEST_ALL_PREFIXES(IpfsNavigationThrottleUnitTest,
+                           DeferUntilPeersFetched);
+
+  void GetConnectedPeers();
   void ShowInterstitial();
   void LoadPublicGatewayURL();
   void OnGetConnectedPeers(bool success, const std::vector<std::string>& peers);

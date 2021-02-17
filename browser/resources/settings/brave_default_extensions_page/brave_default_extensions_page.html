@@ -66,20 +66,8 @@
       }
     </style>
 
-    <div class="settings-box first">
-      <div class="start">$i18n{braveWeb3ProviderDesc}</div>
-      <settings-dropdown-menu id="braveWeb3ProvidersType"
-                              pref="{{prefs.brave.wallet.web3_provider}}"
-                              menu-options="[[braveWeb3Providers_]]">
-      </settings-dropdown-menu>
-    </div>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.load_on_startup}}"
-        label="$i18n{loadCryptoWalletsOnStartupDesc}">
-    </settings-toggle-button>
     <settings-toggle-button id="googleLoginForExtensions"
-        class="cr-row"
+        class="cr-row first"
         pref="{{prefs.signin.allowed_on_next_startup}}"
         learn-more-url="$i18n{googleLoginLearnMoreURL}"
         label="$i18n{googleLoginForExtensionsDesc}">
@@ -96,28 +84,6 @@
         label="Hangouts"
         sub-label="$i18n{hangoutsEnabledDesc}"
         on-settings-boolean-control-change="onHangoutsEnabledChange_">
-    </settings-toggle-button>
-    <template is="dom-if" if="{{ ipfsEnabled_ }}">
-      <div class="settings-box">
-        <div class="start">$i18n{resolveIPFSURLDesc}</div>
-        <settings-dropdown-menu id="ipfsResolveMethodType"
-                                pref="{{prefs.brave.ipfs.resolve_method}}"
-                                menu-options="[[ipfsResolveMethod_]]">
-        </settings-dropdown-menu>
-      </div>
-      <settings-toggle-button id="ipfsAutoGatewayFallbackEnabled"
-          class="cr-row"
-          pref="{{prefs.brave.ipfs.auto_fallback_to_gateway}}"
-          label=$i18n{ipfsAutoFallbackToGatewayLabel}
-          sub-label=$i18n{ipfsAutoFallbackToGatewayDesc}>
-      </settings-toggle-button>
-    </template>
-    <settings-toggle-button id="ipfsCompanionEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.ipfs_companion_enabled}}"
-        label="IPFS Companion"
-        sub-label="$i18n{ipfsCompanionEnabledDesc}"
-        on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
     <settings-toggle-button id="mediaRouterEnabled"
         class="cr-row"
@@ -156,6 +122,15 @@
         pref="{{prefs.brave.ask_widevine_install}}"
         label="Widevine"
         sub-label="$i18n{appearanceSettingsAskWidevineInstallDesc}">
+    </settings-toggle-button>
+    <settings-toggle-button
+        id="widevineEnabled"
+        class="cr-row"
+        pref=""
+        label="$i18n{widevineEnabledLabel}"
+        sub-label="$i18n{widevineEnabledDesc}"
+        on-settings-boolean-control-change="onWidevineEnabledChange_"
+        checked="[[widevineEnabled_]]">
     </settings-toggle-button>
     <div class="settings-row" id="manageExtensionsRow">
       <cr-link-row icon-class="icon-external"

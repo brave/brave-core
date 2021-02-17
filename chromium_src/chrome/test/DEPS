@@ -1,0 +1,6 @@
+include_rules = [
+  "+../../../../../chrome/test/base",
+  "+../../../../../chrome/test/views",
+  "+brave",
+  "+chrome",
+]

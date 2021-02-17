@@ -1,0 +1,11 @@
+include_rules = [
+  "+services/network/public",
+  "+ui/base",
+]
+
+# Existing exceptions
+specific_include_rules = {
+  "speedreader_throttle.h": [
+    "+third_party/blink/public",
+  ],
+}

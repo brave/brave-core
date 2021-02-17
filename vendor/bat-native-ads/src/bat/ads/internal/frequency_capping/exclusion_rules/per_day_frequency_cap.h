@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_DAY_FREQUENCY_CAP_H_  // NOLINT
-#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_DAY_FREQUENCY_CAP_H_  // NOLINT
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_DAY_FREQUENCY_CAP_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_DAY_FREQUENCY_CAP_H_
 
 #include <string>
 
@@ -18,16 +18,14 @@ struct CreativeAdInfo;
 
 class PerDayFrequencyCap : public ExclusionRule<CreativeAdInfo> {
  public:
-  PerDayFrequencyCap(
-      const AdEventList& ad_events);
+  explicit PerDayFrequencyCap(const AdEventList& ad_events);
 
   ~PerDayFrequencyCap() override;
 
   PerDayFrequencyCap(const PerDayFrequencyCap&) = delete;
   PerDayFrequencyCap& operator=(const PerDayFrequencyCap&) = delete;
 
-  bool ShouldExclude(
-      const CreativeAdInfo& ad) override;
+  bool ShouldExclude(const CreativeAdInfo& ad) override;
 
   std::string get_last_message() const override;
 
@@ -36,15 +34,12 @@ class PerDayFrequencyCap : public ExclusionRule<CreativeAdInfo> {
 
   std::string last_message_;
 
-  bool DoesRespectCap(
-      const AdEventList& ad_events,
-      const CreativeAdInfo& ad);
+  bool DoesRespectCap(const AdEventList& ad_events, const CreativeAdInfo& ad);
 
-  AdEventList FilterAdEvents(
-      const AdEventList& ad_events,
-      const CreativeAdInfo& ad) const;
+  AdEventList FilterAdEvents(const AdEventList& ad_events,
+                             const CreativeAdInfo& ad) const;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_DAY_FREQUENCY_CAP_H_  // NOLINT
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_DAY_FREQUENCY_CAP_H_

@@ -1,0 +1,23 @@
+declare_args() {
+  mac_unsigned_output_prefix = "unsigned"
+  mac_signed_output_prefix = "signed"
+  mac_signing_output_prefix = "signing"
+  mac_notarized_output_prefix = "notarized"
+
+  # find with `security find-identity -v -p codesigning`
+  mac_signing_identifier = ""
+  mac_installer_signing_identifier = ""
+  mac_signing_keychain = "login"
+  notary_user = ""
+  notary_password = ""
+  notarize = false
+  is_universal_binary = false
+}
+
+keychain_db =
+    getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+
+brave_packaging_base_dir = root_out_dir
+if (is_universal_binary) {
+  brave_packaging_base_dir = "$root_out_dir/universal"
+}

@@ -5,15 +5,14 @@
 
 #include "bat/ads/internal/server/ads_server_util.h"
 
-#include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-TEST(BatAdsRewardsServerUtilTest,
-    Production) {
+TEST(BatAdsServerUtilTest, Production) {
   // Arrange
   SetEnvironment(Environment::PRODUCTION);
 
@@ -21,12 +20,11 @@ TEST(BatAdsRewardsServerUtilTest,
   const std::string host = server::GetHost();
 
   // Assert
-  const std::string expected_host = "https://ads-serve.brave.com";
+  const std::string expected_host = "https://ads-static.brave.com";
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsRewardsServerUtilTest,
-    Staging) {
+TEST(BatAdsServerUtilTest, Staging) {
   // Arrange
   SetEnvironment(Environment::STAGING);
 
@@ -38,8 +36,7 @@ TEST(BatAdsRewardsServerUtilTest,
   EXPECT_EQ(expected_host, host);
 }
 
-TEST(BatAdsRewardsServerUtilTest,
-    Development) {
+TEST(BatAdsServerUtilTest, Development) {
   // Arrange
   SetEnvironment(Environment::DEVELOPMENT);
 

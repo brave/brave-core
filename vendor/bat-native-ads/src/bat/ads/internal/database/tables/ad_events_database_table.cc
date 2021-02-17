@@ -28,69 +28,62 @@ AdEvents::AdEvents() = default;
 
 AdEvents::~AdEvents() = default;
 
-void AdEvents::LogEvent(
-    const AdEventInfo& ad_event,
-    ResultCallback callback) {
+void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
-  InsertOrUpdate(transaction.get(), {
-    ad_event
-  });
+  InsertOrUpdate(transaction.get(), {ad_event});
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void AdEvents::GetIf(
-    const std::string& condition,
-    GetAdEventsCallback callback) {
+void AdEvents::GetIf(const std::string& condition,
+                     GetAdEventsCallback callback) {
   const std::string query = base::StringPrintf(
       "SELECT "
-          "ae.type, "
-          "ae.uuid, "
-          "ae.creative_instance_id, "
-          "ae.creative_set_id, "
-          "ae.campaign_id, "
-          "ae.timestamp, "
-          "ae.confirmation_type "
+      "ae.type, "
+      "ae.uuid, "
+      "ae.creative_instance_id, "
+      "ae.creative_set_id, "
+      "ae.campaign_id, "
+      "ae.timestamp, "
+      "ae.confirmation_type "
       "FROM %s AS ae "
       "WHERE %s "
-          "ORDER BY timestamp DESC ",
-      get_table_name().c_str(),
-      condition.c_str());
+      "ORDER BY timestamp DESC ",
+      get_table_name().c_str(), condition.c_str());
 
   RunTransaction(query, callback);
 }
 
-void AdEvents::GetAll(
-    GetAdEventsCallback callback) {
+void AdEvents::GetAll(GetAdEventsCallback callback) {
   const std::string query = base::StringPrintf(
       "SELECT "
-          "ae.type, "
-          "ae.uuid, "
-          "ae.creative_instance_id, "
-          "ae.creative_set_id, "
-          "ae.campaign_id, "
-          "ae.timestamp, "
-          "ae.confirmation_type "
+      "ae.type, "
+      "ae.uuid, "
+      "ae.creative_instance_id, "
+      "ae.creative_set_id, "
+      "ae.campaign_id, "
+      "ae.timestamp, "
+      "ae.confirmation_type "
       "FROM %s AS ae "
-          "ORDER BY timestamp DESC",
+      "ORDER BY timestamp DESC",
       get_table_name().c_str());
 
   RunTransaction(query, callback);
 }
 
-void AdEvents::PurgeExpired(
-    ResultCallback callback) {
+void AdEvents::PurgeExpired(ResultCallback callback) {
   DBTransactionPtr transaction = DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s "
-          "WHERE creative_set_id NOT IN "
-              "(SELECT creative_set_id from creative_ads) "
-          "AND creative_set_id NOT IN "
-              "(SELECT creative_set_id from ad_conversions) "
-          "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
+      "WHERE creative_set_id NOT IN "
+      "(SELECT creative_set_id from creative_ads) "
+      "AND creative_set_id NOT IN "
+      "(SELECT creative_set_id from ad_conversions) "
+      "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -99,7 +92,8 @@ void AdEvents::PurgeExpired(
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction),
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
@@ -107,9 +101,7 @@ std::string AdEvents::get_table_name() const {
   return kTableName;
 }
 
-void AdEvents::Migrate(
-    DBTransaction* transaction,
-    const int to_version) {
+void AdEvents::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
@@ -126,34 +118,32 @@ void AdEvents::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdEvents::RunTransaction(
-    const std::string& query,
-    GetAdEventsCallback callback) {
+void AdEvents::RunTransaction(const std::string& query,
+                              GetAdEventsCallback callback) {
   DBCommandPtr command = DBCommand::New();
   command->type = DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-    DBCommand::RecordBindingType::STRING_TYPE,  // type
-    DBCommand::RecordBindingType::STRING_TYPE,  // uuid
-    DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-    DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
-    DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
-    DBCommand::RecordBindingType::INT64_TYPE,   // timestamp
-    DBCommand::RecordBindingType::STRING_TYPE   // confirmation type
+      DBCommand::RecordBindingType::STRING_TYPE,  // type
+      DBCommand::RecordBindingType::STRING_TYPE,  // uuid
+      DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
+      DBCommand::RecordBindingType::STRING_TYPE,  // creative_set_id
+      DBCommand::RecordBindingType::STRING_TYPE,  // campaign_id
+      DBCommand::RecordBindingType::INT64_TYPE,   // timestamp
+      DBCommand::RecordBindingType::STRING_TYPE   // confirmation type
   };
 
   DBTransactionPtr transaction = DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::Get()->RunDBTransaction(std::move(transaction),
-      std::bind(&AdEvents::OnGetAdEvents, this, std::placeholders::_1,
-          callback));
+  AdsClientHelper::Get()->RunDBTransaction(
+      std::move(transaction), std::bind(&AdEvents::OnGetAdEvents, this,
+                                        std::placeholders::_1, callback));
 }
 
-void AdEvents::InsertOrUpdate(
-    DBTransaction* transaction,
-    const AdEventList& ad_events) {
+void AdEvents::InsertOrUpdate(DBTransaction* transaction,
+                              const AdEventList& ad_events) {
   DCHECK(transaction);
 
   if (ad_events.empty()) {
@@ -167,9 +157,7 @@ void AdEvents::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 }
 
-int AdEvents::BindParameters(
-    DBCommand* command,
-    const AdEventList& ad_events) {
+int AdEvents::BindParameters(DBCommand* command, const AdEventList& ad_events) {
   DCHECK(command);
 
   int count = 0;
@@ -190,29 +178,27 @@ int AdEvents::BindParameters(
   return count;
 }
 
-std::string AdEvents::BuildInsertOrUpdateQuery(
-    DBCommand* command,
-    const AdEventList& ad_events) {
+std::string AdEvents::BuildInsertOrUpdateQuery(DBCommand* command,
+                                               const AdEventList& ad_events) {
   DCHECK(command);
 
   const int count = BindParameters(command, ad_events);
 
   return base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-          "(type, "
-          "uuid, "
-          "creative_instance_id, "
-          "creative_set_id, "
-          "campaign_id, "
-          "timestamp, "
-          "confirmation_type) VALUES %s",
-    get_table_name().c_str(),
-    BuildBindingParameterPlaceholders(7, count).c_str());
+      "(type, "
+      "uuid, "
+      "creative_instance_id, "
+      "creative_set_id, "
+      "campaign_id, "
+      "timestamp, "
+      "confirmation_type) VALUES %s",
+      get_table_name().c_str(),
+      BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
-void AdEvents::OnGetAdEvents(
-    DBCommandResponsePtr response,
-    GetAdEventsCallback callback) {
+void AdEvents::OnGetAdEvents(DBCommandResponsePtr response,
+                             GetAdEventsCallback callback) {
   if (!response || response->status != DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
     callback(Result::FAILED, {});
@@ -229,8 +215,7 @@ void AdEvents::OnGetAdEvents(
   callback(Result::SUCCESS, ad_events);
 }
 
-AdEventInfo AdEvents::GetFromRecord(
-    DBRecord* record) const {
+AdEventInfo AdEvents::GetFromRecord(DBRecord* record) const {
   AdEventInfo info;
 
   info.type = AdType(ColumnString(record, 0));
@@ -244,20 +229,19 @@ AdEventInfo AdEvents::GetFromRecord(
   return info;
 }
 
-void AdEvents::CreateTableV5(
-    DBTransaction* transaction) {
+void AdEvents::CreateTableV5(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
-          "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-          "type TEXT, "
-          "uuid TEXT NOT NULL, "
-          "creative_instance_id TEXT NOT NULL, "
-          "creative_set_id TEXT NOT NULL, "
-          "campaign_id TEXT NOT NULL, "
-          "timestamp TIMESTAMP NOT NULL, "
-          "confirmation_type TEXT)",
+      "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+      "type TEXT, "
+      "uuid TEXT NOT NULL, "
+      "creative_instance_id TEXT NOT NULL, "
+      "creative_set_id TEXT NOT NULL, "
+      "campaign_id TEXT NOT NULL, "
+      "timestamp TIMESTAMP NOT NULL, "
+      "confirmation_type TEXT)",
       get_table_name().c_str());
 
   DBCommandPtr command = DBCommand::New();
@@ -267,8 +251,7 @@ void AdEvents::CreateTableV5(
   transaction->commands.push_back(std::move(command));
 }
 
-void AdEvents::MigrateToV5(
-    DBTransaction* transaction) {
+void AdEvents::MigrateToV5(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());

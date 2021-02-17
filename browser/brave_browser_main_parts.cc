@@ -11,6 +11,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
@@ -47,6 +48,12 @@
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/extensions/brave_component_loader.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_system.h"
 #endif
 
 void BraveBrowserMainParts::PostBrowserStart() {
@@ -147,6 +154,16 @@ void BraveBrowserMainParts::PostProfileInit() {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
+  }
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(profile())->extension_service();
+  if (service) {
+    extensions::ComponentLoader* loader = service->component_loader();
+    static_cast<extensions::BraveComponentLoader*>(loader)
+        ->AddEthereumRemoteClientExtensionOnStartup();
   }
 #endif
 }

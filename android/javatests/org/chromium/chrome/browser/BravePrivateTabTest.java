@@ -39,6 +39,7 @@ public class BravePrivateTabTest {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
         OnboardingPrefManager.getInstance().setOnboardingShown(false);
+        OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
         mActivityTestRule.startMainActivityOnBlankPage();
     }
 

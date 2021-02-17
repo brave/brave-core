@@ -127,6 +127,7 @@ struct Balance {
 
 struct AutoContributeProperties {
   bool enabled_contribute;
+  double amount;
   uint64 contribution_min_time;
   int32 contribution_min_visits;
   bool contribution_non_verified;

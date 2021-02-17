@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/confirmations_server_util.h"
 #include "bat/ads/mojom.h"
 
 namespace ads {
@@ -18,8 +18,8 @@ FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
   DCHECK(confirmation_.IsValid());
 }
 
-FetchPaymentTokenUrlRequestBuilder::
-~FetchPaymentTokenUrlRequestBuilder() = default;
+FetchPaymentTokenUrlRequestBuilder::~FetchPaymentTokenUrlRequestBuilder() =
+    default;
 
 // GET /v1/confirmation/{confirmation_id}/paymentToken
 
@@ -35,7 +35,8 @@ UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 
 std::string FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v1/confirmation/%s/paymentToken",
-      server::GetHost().c_str(), confirmation_.id.c_str());
+                            confirmations::server::GetHost().c_str(),
+                            confirmation_.id.c_str());
 }
 
 }  // namespace ads

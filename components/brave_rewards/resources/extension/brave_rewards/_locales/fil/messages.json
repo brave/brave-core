@@ -56,7 +56,7 @@
     "description": "Wallet panel title for anon wallets"
   },
   "batPoints": {
-    "message": "BAT Points",
+    "message": "Mga Puntos sa BAT",
     "description": "BAT Points text"
   },
   "batPointsMessage": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Na-claim na ang Grant para sa Puntos",
+    "message": "Na-claim na ang Mga Grant para sa Puntos",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -170,7 +170,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Awtomatikong Pag-ambag",
+    "message": "Awtomatikong Mag-ambag",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -348,7 +348,7 @@
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
-    "message": "Subukang muli",
+    "message": "Muling subukan",
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
@@ -416,7 +416,7 @@
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
-    "message": "I-on ang Ads",
+    "message": "I-on ang Mga Ad",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -504,7 +504,7 @@
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
-    "message": "Nakadiskonekta",
+    "message": "Nadiskonekta",
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
@@ -574,7 +574,7 @@
     "description": "BAT Token text"
   },
   "points":  {
-    "message": "puntos",
+    "message": "mga puntos",
     "description": "BAT Points text"
   },
   "tokenGrants":  {
@@ -626,5 +626,119 @@
   "walletVerificationNote3":  {
     "message": "Tandaan: Makikita ang iyong mga transaksyon sa Uphold kapag nagbigay ka ng pahintulot; halimbawa, makikita nila ang recipient at halaga ng mga tip mo.",
     "description": "Displayed in login modal for uphold"
+  },
+  "onboardingEarnHeader": {
+    "message": "Makakuha ng Mga Token at Gumanti ng Tulong",
+    "description": ""
+  },
+  "onboardingEarnText": {
+    "message": "Makakuha ng mga token sa pamamagitan ng pagtingin sa mga ad na gumagalang sa privacy at awtomatikong suportahan ang iyong mga paboritong site at creator ng content.",
+    "description": ""
+  },
+  "onboardingStartUsingRewards": {
+    "message": "Simulang gamitin ang Brave Rewards",
+    "description": ""
+  },
+  "onboardingTakeTour": {
+    "message": "Mabilis na maglibot",
+    "description": ""
+  },
+  "onboardingTerms": {
+    "message": "Sa pamamagitan ng pagpapatuloy, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "Bumalik",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Mabilisan tayong maglibot",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Magpatuloy",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Tapos na",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Laktawan",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Laktawan sa ngayon",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Welcome sa Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Hindi tulad ng mga tradisyonal na ad, binibigyan ka ng Brave Private Ads ng mga token para suportahan ang mga creator ng content, ang lahat ng ito habang pinapanatiling pribado ang iyong personal na impormasyon. ",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Saan lumalabas ang mga ad?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Lalabas ang Brave Private Ads bilang normal na notification. Makokontrol mo kung gaano mo kadalas makikita ang mga ad na ito sa mga setting.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "Kailan ka makakatanggap ng mga reward",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Darating sa ika-5 ng susunod na buwan ang iyong mga naipong token mula sa Brave Private Ads sa kabuuan ng kasalukuyang buwan.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Ginawang walang kahirap-hirap ang pagganti ng tulong",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Awtomatikong natatanggap ng mga creator ang iyong mga iniambag na token batay sa mga antas ng pakikilahok mo na sinusukat namin bilang 'Paalala.'",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Magpasalamat sa pamamagitan ng mga tip",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Ang pagbibigay ng tip ay isang paraan para personal na himukin at suportahan ang content o mga creator na gusto mo. Magbigay ng tip!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "Ano ang magagawa mo sa mga token?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng digital na content at iba pang produkto sa pagdating ng mga merchant.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Ayos, handa ka na!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "Sa pamamagitan ng paggamit sa Brave Rewards, nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At mabuti iyon!",
+    "description": ""
   }
 }

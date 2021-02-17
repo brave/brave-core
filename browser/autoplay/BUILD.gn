@@ -1,18 +1,28 @@
-import("//build/config/features.gni")
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("autoplay") {
-  sources = [
-    "autoplay_permission_context.cc",
-    "autoplay_permission_context.h",
-  ]
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "autoplay_browsertest.cc" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
-    "//brave/components/brave_shields/browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser:browser_process",
+    "//brave/common",
+    "//brave/common:pref_names",
     "//chrome/common",
-    "//components/content_settings/browser",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
-    "//components/permissions",
+    "//components/prefs",
     "//content/public/browser",
-    "//third_party/blink/public/mojom:web_feature_mojo_bindings",
+    "//content/test:test_support",
   ]
 }

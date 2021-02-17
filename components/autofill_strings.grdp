@@ -140,19 +140,19 @@
     Hide suggestions
   </message>
 
-  <message name="IDS_AUTOFILL_MANAGE" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses, credit cards, and passwords. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses, credit cards and passwords in the user profile that can be used by Brave Autofill.">
+  <message name="IDS_AUTOFILL_MANAGE" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses, credit cards, and passwords. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses, credit cards and passwords in the user profile that can be used by Chrome Autofill.">
     Manage...
   </message>
 
-  <message name="IDS_AUTOFILL_MANAGE_ADDRESSES" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses in the user profile that can be used by Brave Autofill.">
+  <message name="IDS_AUTOFILL_MANAGE_ADDRESSES" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses in the user profile that can be used by Chrome Autofill.">
     Manage addresses...
   </message>
 
-  <message name="IDS_AUTOFILL_MANAGE_PAYMENT_METHODS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for payment methods like credit cards/debit cards. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage the payment methods in the user profile that can be used by Brave Autofill.">
+  <message name="IDS_AUTOFILL_MANAGE_PAYMENT_METHODS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for payment methods like credit cards/debit cards. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage the payment methods in the user profile that can be used by Chrome Autofill.">
     Manage payment methods...
   </message>
 
-  <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Brave Autofill.">
+  <message name="IDS_AUTOFILL_MANAGE_PASSWORDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage passwords that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Passwords section of the Settings page." meaning="Manage passwords in the user profile that can be used by Chrome Autofill.">
     Manage passwords...
   </message>
 

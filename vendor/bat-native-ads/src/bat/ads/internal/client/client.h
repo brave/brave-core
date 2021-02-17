@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
-#define BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 
 #include <stdint.h>
 
@@ -15,8 +15,9 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/internal/ad_targeting/behavioral/purchase_intent_classifier/purchase_intent_signal_history_info.h"
-#include "bat/ads/internal/ad_targeting/contextual/page_classifier/page_classifier.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
+#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
+#include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/client/client_info.h"
 #include "bat/ads/internal/client/preferences/filtered_ad_info.h"
@@ -41,21 +42,18 @@ class Client {
 
   static bool HasInstance();
 
-  void Initialize(
-      InitializeCallback callback);
+  void Initialize(InitializeCallback callback);
 
   FilteredAdList get_filtered_ads() const;
   FilteredCategoryList get_filtered_categories() const;
   FlaggedAdList get_flagged_ads() const;
 
-  void AppendAdHistoryToAdsHistory(
-      const AdHistoryInfo& ad_history);
+  void AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history);
   const std::deque<AdHistoryInfo>& GetAdsHistory() const;
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
       const PurchaseIntentSignalHistoryInfo& history);
-  const PurchaseIntentSignalSegmentHistoryMap&
-      GetPurchaseIntentSignalHistory() const;
+  const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
 
   AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -71,35 +69,31 @@ class Client {
   CategoryContentInfo::OptAction ToggleAdOptOutAction(
       const std::string& category,
       const CategoryContentInfo::OptAction action);
-  bool ToggleSaveAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool saved);
-  bool ToggleFlagAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool flagged);
+  bool ToggleSaveAd(const std::string& creative_instance_id,
+                    const std::string& creative_set_id,
+                    const bool saved);
+  bool ToggleFlagAd(const std::string& creative_instance_id,
+                    const std::string& creative_set_id,
+                    const bool flagged);
 
-  void UpdateSeenAdNotification(
-      const std::string& creative_instance_id);
+  void UpdateSeenAdNotification(const std::string& creative_instance_id);
   const std::map<std::string, uint64_t>& GetSeenAdNotifications();
-  void ResetSeenAdNotifications(
-      const CreativeAdNotificationList& ads);
+  void ResetSeenAdNotifications(const CreativeAdNotificationList& ads);
 
-  void UpdateSeenAdvertiser(
-      const std::string& advertiser_id);
+  void UpdateSeenAdvertiser(const std::string& advertiser_id);
   const std::map<std::string, uint64_t>& GetSeenAdvertisers();
-  void ResetSeenAdvertisers(
-      const CreativeAdNotificationList& ads);
+  void ResetSeenAdvertisers(const CreativeAdNotificationList& ads);
 
-  void SetNextAdServingInterval(
-      const base::Time& next_check_serve_ad_date);
+  void SetNextAdServingInterval(const base::Time& next_check_serve_ad_date);
   base::Time GetNextAdServingInterval();
 
-  void AppendPageProbabilitiesToHistory(
-      const ad_targeting::contextual::PageProbabilitiesMap& page_probabilities);
-  const ad_targeting::contextual::PageProbabilitiesList&
-      GetPageProbabilitiesHistory();
+  void AppendTextClassificationProbabilitiesToHistory(
+      const TextClassificationProbabilitiesMap& probabilities);
+  const TextClassificationProbabilitiesList&
+  GetTextClassificationProbabilitiesHistory();
+
+  std::string GetVersionCode() const;
+  void SetVersionCode(const std::string& value);
 
   void RemoveAllHistory();
 
@@ -121,4 +115,4 @@ class Client {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_

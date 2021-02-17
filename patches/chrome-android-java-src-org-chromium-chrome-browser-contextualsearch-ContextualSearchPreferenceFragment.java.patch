@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java
-index 31cfa8aa6f5c65a31edafdde3bb3be4d28504807..34073507597b629bca655e523fd10b2c5e5d0a22 100644
+index cbf437162aa4ed102924e1f7ee6b15f5526b3426..71771cd48c7311aa3495616426e657f7bb35be72 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java
-@@ -18,7 +18,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
- /**
-  * Fragment to manage the Contextual Search preference and to explain to the user what it does.
+@@ -19,7 +19,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
+  * Fragment to manage the Contextual Search preference in Chrome Settings, and to explain to the
+  * user what Contextual Search (aka Touch to Search) actually does.
   */
 -public class ContextualSearchPreferenceFragment extends PreferenceFragmentCompat {
 +public class ContextualSearchPreferenceFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment {

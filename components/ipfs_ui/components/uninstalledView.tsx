@@ -7,9 +7,18 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { Section, Title } from '../style'
+import { PaddedButton, Section, Title } from '../style'
 
-export class UninstalledView extends React.Component {
+interface Props {
+  daemonStatus: IPFS.DaemonStatus
+  onInstall: () => void
+}
+
+export class UninstalledView extends React.Component<Props, {}> {
+  constructor (props: Props) {
+    super(props)
+  }
+
   render () {
     return (
       <Section>
@@ -17,8 +26,15 @@ export class UninstalledView extends React.Component {
           {getLocale('daemonStatusTitle')}
         </Title>
         <div>
-          {getLocale('not_installed')}
+          {this.props.daemonStatus.installing ? getLocale('installing') : getLocale('notInstalled')}
         </div>
+        {!this.props.daemonStatus.installed && (
+          <PaddedButton
+            text={getLocale('installAndLaunch')}
+            size={'small'}
+            onClick={this.props.onInstall}
+          />
+        )}
       </Section>
     )
   }

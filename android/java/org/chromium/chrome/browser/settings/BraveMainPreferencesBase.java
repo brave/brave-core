@@ -28,10 +28,11 @@ import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.BraveStatsPreferences;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 
 import java.util.HashMap;
 
@@ -86,6 +87,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
     private void updateBravePreferences() {
         // Below prefs are removed from main settings.
+        removePreferenceIfPresent(MainSettings.PREF_SYNC_PROMO);
         removePreferenceIfPresent(MainSettings.PREF_SIGN_IN);
         removePreferenceIfPresent(MainSettings.PREF_ACCOUNT_SECTION);
         removePreferenceIfPresent(MainSettings.PREF_DATA_REDUCTION);
@@ -118,7 +120,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     public <T extends Preference> T findPreference(CharSequence key) {
         T result = super.findPreference(key);
         if (result == null) {
-            result = (T)mRemovedPreferences.get(key);
+            result = (T) mRemovedPreferences.get((String) key);
         }
         return result;
     }
@@ -154,7 +156,12 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
         // If gn flag enable_brave_sync is false, hide Sync pref
         if (BraveConfig.SYNC_ENABLED == false) {
-          removePreferenceIfPresent(PREF_SYNC);
+            removePreferenceIfPresent(PREF_SYNC);
+        }
+
+        // We don't have home button on top toolbar at the moment
+        if (!DeviceFormFactor.isTablet() && !BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+            removePreferenceIfPresent(PREF_HOMEPAGE);
         }
     }
 
@@ -210,7 +217,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
                 RateDialogFragment mRateDialogFragment = new RateDialogFragment();
                 mRateDialogFragment.setCancelable(false);
                 mRateDialogFragment.setArguments(bundle);
-                mRateDialogFragment.show(getActivity().getSupportFragmentManager(), "RateDialogFragment");
+                mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
                 return true;
             }
         });

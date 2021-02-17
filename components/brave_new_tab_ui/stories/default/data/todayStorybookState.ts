@@ -1,4 +1,4 @@
-import { boolean } from '@storybook/addon-knobs/react'
+import { boolean } from '@storybook/addon-knobs'
 import { BraveTodayState } from '../../../reducers/today'
 
 export default function getTodayState (): BraveTodayState {
@@ -146,6 +146,23 @@ export default function getTodayState (): BraveTodayState {
       ],
       pages: [
         {
+          promotedArticle: {
+            creative_instance_id: '31ad7084-4168-4ea3-a0ec-fc4768e0aab0',
+            category: `Brave Partners`,
+            publish_time: `2020-10-21 21:46:00 UTC`,
+            url: `https://www.autoblog.com/2020/10/21/tesla-quarterly-earnings-net-profit/`,
+            img: `https://pcdn.brave.software/brave-today/cache/bc35efae36f1a6e590f68a30858c27c7e0adfb5f508bc1267798a2fe000eaea6.jpg.pad`,
+            title: `Tesla posts net profit for fifth straight quarter`,
+            description: `Filed under:\n\t\t\t\t\t    Earnings/Financials,Green,Tesla,Electric\n\t\t\t\t\t    Tesla charged through a summertime auto industry sales slump in the U.S. to post stronger-than-expected net earnings for the third quarter.  The electric car and solar panel maker says Wednesday that it made $331 million, or 27 cents per share, for its fifth-straight profitable quarter.  Excluding special items such as stock-based compensation, Tesla made 76 cents per share, beating Wall Street estimates of 57 cents.Continue`,
+            content_type: `brave_partner`,
+            publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+            publisher_name: `Autoblog`,
+            url_hash: `963e1dbf6eccd9cdf0d273a89f3bc25c727f871104bf9e91d98db796fd09b696`,
+            padded_img: `https://pcdn.brave.software/brave-today/cache/bc35efae36f1a6e590f68a30858c27c7e0adfb5f508bc1267798a2fe000eaea6.jpg.pad`,
+            score: 19.716764507900656,
+            points: 14.716764507900656,
+            relative_time: `about 6 hours ago`
+          },
           articles: [
             {
               category: `Cars`,

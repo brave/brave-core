@@ -635,12 +635,146 @@
     "message": "Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "How often do you want to see ads?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(ads per hour)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "How much monthly support do you want to give to your favorite creators?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(from your ads earnings)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Start using Brave Rewards",
     "description": ""
   },
-  "onboardingTerms": {
-    "message": "By proceeding, you agree to the $$1Terms of Service$$2 and $$3Privacy Policy$$4.",
+  "onboardingTakeTour": {
+    "message": "Take a quick tour",
     "description": ""
+  },
+  "onboardingTerms": {
+    "message": "By proceeding, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "onboardingTourBack": {
+    "message": "Go Back",
+    "description": ""
+  },
+  "onboardingTourBegin": {
+    "message": "Let’s take a quick tour",
+    "description": ""
+  },
+  "onboardingTourContinue": {
+    "message": "Continue",
+    "description": ""
+  },
+  "onboardingTourDone": {
+    "message": "Done",
+    "description": ""
+  },
+  "onboardingTourSkip": {
+    "message": "Skip",
+    "description": ""
+  },
+  "onboardingTourSkipForNow": {
+    "message": "Skip for now",
+    "description": ""
+  },
+  "onboardingPanelWelcomeHeader": {
+    "message": "Welcome to Brave Rewards!",
+    "description": ""
+  },
+  "onboardingPanelWelcomeText": {
+    "message": "Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.",
+    "description": ""
+  },
+  "onboardingPanelAdsHeader": {
+    "message": "Where do ads show up?",
+    "description": ""
+  },
+  "onboardingPanelAdsText": {
+    "message": "Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.",
+    "description": ""
+  },
+  "onboardingPanelScheduleHeader": {
+    "message": "When do you receive rewards",
+    "description": ""
+  },
+  "onboardingPanelScheduleText": {
+    "message": "Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.",
+    "description": ""
+  },
+  "onboardingPanelAcHeader": {
+    "message": "Giving back made effortless",
+    "description": ""
+  },
+  "onboardingPanelAcText": {
+    "message": "Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.",
+    "description": ""
+  },
+  "onboardingPanelTippingHeader": {
+    "message": "Say thank you with tips",
+    "description": ""
+  },
+  "onboardingPanelTippingText": {
+    "message": "Tipping is a way to personally encourage and support content or creators that you love. Get tippin!",
+    "description": ""
+  },
+  "onboardingPanelRedeemHeader": {
+    "message": "What can you do with tokens?",
+    "description": ""
+  },
+  "onboardingPanelRedeemText": {
+    "message": "Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.",
+    "description": ""
+  },
+  "onboardingPanelSetupHeader": {
+    "message": "Lastly, let’s get you set up on the basic settings",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "You can change this later.",
+    "description": ""
+  },
+  "onboardingPanelCompleteHeader": {
+    "message": "Woohoo, you’re all set!",
+    "description": ""
+  },
+  "onboardingPanelCompleteText": {
+    "message": "By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!",
+    "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards in Japan is switching to a new system!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Learn more",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Please use your BAP by March 13th. After that, BAP will be discontinued.",
+    "description": "Text for BAP deprecation popup"
   }
 }

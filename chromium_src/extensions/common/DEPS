@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../extensions/common",
+  "+extensions/common",
+]

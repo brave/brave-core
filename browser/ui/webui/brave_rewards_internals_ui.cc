@@ -10,20 +10,16 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "base/memory/weak_ptr.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "bat/ledger/mojom_structs.h"
-
-#if defined(BRAVE_CHROMIUM_BUILD)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#else
-#include "components/grit/components_resources.h"
-#include "components/grit/components_scaled_resources.h"
-#endif
 
 namespace {
 
@@ -409,16 +405,15 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
 
 BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
                                                  const std::string& name)
-    : BasicUI(web_ui,
-              name,
-              kBraveRewardsInternalsGenerated,
-              kBraveRewardsInternalsGeneratedSize,
-              IDR_BRAVE_REWARDS_INTERNALS_HTML) {
+    : WebUIController(web_ui) {
+  CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsInternalsGenerated,
+                              kBraveRewardsInternalsGeneratedSize,
+                              IDR_BRAVE_REWARDS_INTERNALS_HTML);
+
   auto handler_owner = std::make_unique<RewardsInternalsDOMHandler>();
   RewardsInternalsDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
 }
 
-BraveRewardsInternalsUI::~BraveRewardsInternalsUI() {
-}
+BraveRewardsInternalsUI::~BraveRewardsInternalsUI() = default;

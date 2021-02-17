@@ -12,14 +12,15 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_gateway.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -39,7 +40,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ipfs_service_ =
         IpfsServiceFactory::GetInstance()->GetForContext(browser()->profile());
     ASSERT_TRUE(ipfs_service_);
-    ipfs_service_->SetIpfsLaunchedForTest(true);
+    ipfs_service_->SetAllowIpfsLaunchForTest(true);
     host_resolver()->AddRule("*", "127.0.0.1");
     InProcessBrowserTest::SetUpOnMainThread();
   }
@@ -125,6 +126,54 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     return http_response;
   }
 
+  std::unique_ptr<net::test_server::HttpResponse> HandleGetRepoStats(
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    std::string queryStr;
+    base::StrAppend(&queryStr, {kRepoStatsHumanReadableParamName, "=",
+                                kRepoStatsHumanReadableParamValue});
+    if (gurl.path_piece() != kRepoStatsPath && gurl.query_piece() != queryStr) {
+      return nullptr;
+    }
+
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("application/json");
+    http_response->set_content(R"({
+          "NumObjects": 113,
+          "RepoPath": "/some/path/to/repo",
+          "RepoSize": 123456789,
+          "StorageMax": 9000000000,
+          "Version": "fs-repo@10"
+    })");
+
+    return http_response;
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleGetNodeInfo(
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    if (gurl.path_piece() != kNodeInfoPath) {
+      return nullptr;
+    }
+
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("application/json");
+    http_response->set_content(R"({
+      "Addresses": ["111.111.111.111"],
+      "AgentVersion": "1.2.3.4",
+      "ID": "idididid",
+      "ProtocolVersion": "5.6.7.8",
+      "Protocols": ["one", "two"],
+      "PublicKey": "public_key"
+    })");
+
+    return http_response;
+  }
+
   std::unique_ptr<net::test_server::HttpResponse> HandleRequestServerError(
       const net::test_server::HttpRequest& request) {
     auto http_response =
@@ -153,6 +202,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_OK);
     } else if (request_path == "/simple.html") {
       http_response->set_content("simple.html");
+      http_response->AddCustomHeader("x-ipfs-path", "/simple.html");
       http_response->set_code(net::HTTP_OK);
     } else if (request_path == "/iframe.html") {
       http_response->set_content(
@@ -166,7 +216,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content",
-          GetDefaultIPFSGateway()));
+          GetDefaultIPFSGateway(browser()->profile())));
       http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
@@ -174,7 +224,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
       http_response->set_code(net::HTTP_TEMPORARY_REDIRECT);
       GURL new_location(ipfs::GetIPFSGatewayURL(
           "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC", "simple_content_2",
-          GetDefaultIPFSGateway()));
+          GetDefaultIPFSGateway(browser()->profile())));
       http_response->AddCustomHeader("Location", new_location.spec());
     } else if (request_path ==
                "/ipfs/"
@@ -255,6 +305,47 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(config.swarm, std::vector<std::string>{});
   }
 
+  void OnGetRepoStatsSuccess(bool success, const RepoStats& stats) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_TRUE(success);
+    EXPECT_EQ(stats.objects, uint64_t(113));
+    EXPECT_EQ(stats.size, uint64_t(123456789));
+    EXPECT_EQ(stats.storage_max, uint64_t(9000000000));
+    EXPECT_EQ(stats.path, "/some/path/to/repo");
+    ASSERT_EQ(stats.version, "fs-repo@10");
+  }
+
+  void OnGetRepoStatsFail(bool success, const RepoStats& stats) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_FALSE(success);
+    EXPECT_EQ(stats.objects, uint64_t(0));
+    EXPECT_EQ(stats.size, uint64_t(0));
+    EXPECT_EQ(stats.storage_max, uint64_t(0));
+    EXPECT_EQ(stats.path, "");
+    ASSERT_EQ(stats.version, "");
+  }
+
+  void OnGetNodeInfoSuccess(bool success, const NodeInfo& info) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+
+    EXPECT_EQ(info.id, "idididid");
+    ASSERT_EQ(info.version, "1.2.3.4");
+  }
+
+  void OnGetNodeInfoFail(bool success, const NodeInfo& info) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    EXPECT_EQ(info.id, "");
+    ASSERT_EQ(info.version, "");
+  }
+
   void WaitForRequest() {
     if (wait_for_request_) {
       return;
@@ -309,6 +400,42 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetAddressesConfigServerError) {
   ipfs_service()->GetAddressesConfig(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetAddressesConfigFail,
                      base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetRepoStatsServerSuccess) {
+  ResetTestServer(base::BindRepeating(
+      &IpfsServiceBrowserTest::HandleGetRepoStats, base::Unretained(this)));
+  ipfs_service()->GetRepoStats(base::BindOnce(
+      &IpfsServiceBrowserTest::OnGetRepoStatsSuccess, base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetRepoStatsServerError) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
+                          base::Unretained(this)));
+
+  ipfs_service()->GetRepoStats(base::BindOnce(
+      &IpfsServiceBrowserTest::OnGetRepoStatsFail, base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerSuccess) {
+  ResetTestServer(base::BindRepeating(
+      &IpfsServiceBrowserTest::HandleGetNodeInfo, base::Unretained(this)));
+  ipfs_service()->GetNodeInfo(base::BindOnce(
+      &IpfsServiceBrowserTest::OnGetNodeInfoSuccess, base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerError) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
+                          base::Unretained(this)));
+
+  ipfs_service()->GetNodeInfo(base::BindOnce(
+      &IpfsServiceBrowserTest::OnGetNodeInfoFail, base::Unretained(this)));
   WaitForRequest();
 }
 
@@ -400,21 +527,23 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       "const timer = setInterval(function () {"
       "  const iframeDoc = iframe.contentDocument || "
       "      iframe.contentWindow.document;"
-      "  if (iframeDoc.readyState == 'complete') {"
+      "  if (iframeDoc.readyState === 'complete' && "
+      "      iframeDoc.location.href !== 'about:blank') {"
       "    clearInterval(timer);"
       "    window.domAutomationController.send(window.location.href);"
       "  }"
       "}, 100);");
   ASSERT_TRUE(result.error.empty());
   // Make sure main frame URL didn't change
-  EXPECT_EQ(
-      contents->GetURL(),
-      ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                              "simple_content", GetDefaultIPFSGateway()));
+  EXPECT_EQ(contents->GetURL(),
+            ipfs::GetIPFSGatewayURL(
+                "Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
+                "simple_content", GetDefaultIPFSGateway(browser()->profile())));
   EXPECT_EQ(
       ChildFrameAt(contents->GetMainFrame(), 0)->GetLastCommittedURL(),
       ipfs::GetIPFSGatewayURL("Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC",
-                              "simple_content_2", GetDefaultIPFSGateway()));
+                              "simple_content_2",
+                              GetDefaultIPFSGateway(browser()->profile())));
 }
 
 // Make sure an <img src="ipfs://..."> can load within another ipfs:// scheme
@@ -464,6 +593,31 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
       "};");
   ASSERT_TRUE(loaded.error.empty());
   EXPECT_EQ(base::Value(true), loaded.value);
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOn) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
+  GURL gateway = GetURL("b.com", "/");
+  SetIPFSDefaultGatewayForTest(gateway);
+  ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html"));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL().host(), gateway.host());
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
+                          base::Unretained(this)));
+  SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
+  GURL other_gateway = GetURL("a.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html"));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(contents->GetURL().host(), other_gateway.host());
 }
 
 }  // namespace ipfs

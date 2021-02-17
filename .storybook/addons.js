@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // for docs see https://github.com/echoulen/storybook-addon-styled-component-theme
-import 'storybook-addon-styled-component-theme/dist/src/register'
+import 'storybook-addon-styled-component-theme/dist/register'
 
 // for docs see https://www.npmjs.com/package/@storybook/addon-backgrounds
 import '@storybook/addon-backgrounds/register'
