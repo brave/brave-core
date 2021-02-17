@@ -1,5 +1,6 @@
-source_set("lib") {
-  visibility = [ "//brave/build/rust:*" ]
+import("//brave/build/cargo.gni")
+
+rust_crate("lib") {
   inputs = [
     # Underlying library code
     "build.rs",

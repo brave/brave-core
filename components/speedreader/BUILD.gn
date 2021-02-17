@@ -12,7 +12,7 @@ buildflag_header("buildflags") {
 source_set("speedreader") {
   public_deps = [
     ":buildflags",
-    "//brave/build/rust",
+    "rust/ffi",
   ]
 
   sources = [

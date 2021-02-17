@@ -25,7 +25,7 @@ cargo_build("rust_lib") {
 
 brave_ffi_deps = [
   "//brave/components/challenge_bypass_ristretto:rust_ffi",
-  "//brave/components/speedreader/rust/ffi",
+  "//brave/components/speedreader/rust/ffi:rust_ffi",
   "//brave/vendor/adblock_rust_ffi:rust_ffi",
 ]
 
