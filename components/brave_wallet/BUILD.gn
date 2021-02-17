@@ -12,6 +12,8 @@ source_set("brave_wallet") {
     "brave_wallet_delegate.h",
     "brave_wallet_service.cc",
     "brave_wallet_service.h",
+    "eth_json_rpc_controller.cc",
+    "eth_json_rpc_controller.h",
     "features.cc",
     "features.h",
     "pref_names.cc",
@@ -27,5 +29,7 @@ source_set("brave_wallet") {
     "//content/public/browser",
     "//extensions/browser",
     "//extensions/common:common_constants",
+    "//services/network/public/cpp",
+    "//url",
   ]
 }
