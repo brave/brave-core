@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/location.cc b/third_party/blink/renderer/core/frame/location.cc
+index 4b344295426052d07fe5a66dde3b0b50f5f6d9c7..ec319be39eb9f41399cfc3fb6656c74b3dc622e9 100644
+--- a/third_party/blink/renderer/core/frame/location.cc
++++ b/third_party/blink/renderer/core/frame/location.cc
+@@ -95,6 +95,7 @@ String Location::search() const {
+ }
+ 
+ String Location::origin() const {
++  BRAVE_IPFS_ORIGIN
+   return DOMURLUtilsReadOnly::origin(Url());
+ }
+ 
