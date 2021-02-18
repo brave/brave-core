@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
 public class BraveReflectionUtil {
     private static String TAG = "BraveReflectionUtil";
 
-    // For each method invocation add appropriate test to
-    // 'brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java' with checking
-    // parameter types.
+    // NOTE: For each method for invocation add appropriate test to `testMethodsForInvocationExist`
+    // method in 'brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java' file with
+    // checking parameter types.
     public static Object InvokeMethod(
             Class methodOwner, Object obj, String method, Object... typesAndArgs) {
         try {
