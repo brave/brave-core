@@ -9,14 +9,8 @@ import XCTest
 
 class FavoriteTests: CoreDataTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Initialize sync so it will not fire on wrong thread.
-        _ = Sync.shared
-    }
-    
-    private let fetchRequest: NSFetchRequest<Bookmark> = {
-        let fetchRequest = NSFetchRequest<Bookmark>(entityName: String(describing: Bookmark.self))
+    private let fetchRequest: NSFetchRequest<Favorite> = {
+        let fetchRequest = NSFetchRequest<Favorite>(entityName: String(describing: "Bookmark"))
         // We always want favorites folder to be on top, in the first section.
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "order", ascending: true),
@@ -26,10 +20,10 @@ class FavoriteTests: CoreDataTestCase {
         return fetchRequest
     }()
     
-    private lazy var fetchController = Bookmark.frc(forFavorites: true, parentFolder: nil)
+    private lazy var fetchController = Favorite.frc()
     
     private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
-        return NSEntityDescription.entity(forEntityName: String(describing: Bookmark.self), in: context)!
+        return NSEntityDescription.entity(forEntityName: String(describing: "Bookmark"), in: context)!
     }
     
     // MARK: - Adding
@@ -106,7 +100,7 @@ class FavoriteTests: CoreDataTestCase {
         let favsPredicate = NSPredicate(format: "isFavorite == true")
         
         backgroundSaveAndWaitForExpectation {
-            Bookmark.deleteAll(predicate: favsPredicate)
+            Favorite.deleteAll(predicate: favsPredicate)
         }
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
@@ -116,8 +110,7 @@ class FavoriteTests: CoreDataTestCase {
     
     private func reorder(_ index: Int, toIndex: Int) {
         backgroundSaveAndWaitForExpectation {
-            Bookmark.reorderBookmarks(
-                frc: fetchController,
+            Favorite.reorder(
                 sourceIndexPath: IndexPath(row: index, section: 0),
                 destinationIndexPath: IndexPath(row: toIndex, section: 0)
             )
@@ -152,13 +145,14 @@ class FavoriteTests: CoreDataTestCase {
         
         reorder(0, toIndex: 2)
         fetchController.managedObjectContext.refreshAllObjects()
+        try! fetchController.performFetch()
         // Check to see if an order (2) has been given to fetchedObjects index 0
         XCTAssertEqual(first.order, 2)
         // The second favorite should have been pushed backwards to 0 since we moved the original 0 to 2
         XCTAssertEqual(second.order, 0)
         
         // Order is now taken into account by refetching
-        try! fetchController.performFetch()
+        
         XCTAssertNotNil(fetchController.fetchedObjects)
         
         // Verify that the object is at index 2 in list of fetched objects
@@ -211,7 +205,7 @@ class FavoriteTests: CoreDataTestCase {
     // MARK: - Utility
     
     @discardableResult
-    private func makeFavorites(_ count: Int) -> [Bookmark] {
+    private func makeFavorites(_ count: Int) -> [Favorite] {
         let bookmarks = (0..<count).map { createAndWait(url: URL(string: "http://brave.com/\($0)"), title: "brave") }
         XCTAssertEqual(bookmarks.count, count)
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), bookmarks.count)
@@ -219,9 +213,9 @@ class FavoriteTests: CoreDataTestCase {
     }
     
     @discardableResult
-    private func createAndWait(url: URL?, title: String, customTitle: String? = nil) -> Bookmark {
+    private func createAndWait(url: URL?, title: String, customTitle: String? = nil) -> Favorite {
         backgroundSaveAndWaitForExpectation {
-            Bookmark.addInternal(url: url, title: title, customTitle: customTitle, isFavorite: true)
+            Favorite.addInternal(url: url, title: title, customTitle: customTitle, isFavorite: true)
         }
         let bookmark = try! DataController.viewContext.fetch(fetchRequest).first!
         XCTAssertTrue(bookmark.isFavorite)

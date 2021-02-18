@@ -16,11 +16,6 @@ class Migration {
     static func launchMigrations(keyPrefix: String) {
         Preferences.migratePreferences(keyPrefix: keyPrefix)
         
-        if !Preferences.Migration.syncOrderCompleted.value {
-            Bookmark.syncOrderMigration()
-            Preferences.Migration.syncOrderCompleted.value = true
-        }
-        
         if !Preferences.Migration.documentsDirectoryCleanupCompleted.value {
             documentsDirectoryCleanup()
             Preferences.Migration.documentsDirectoryCleanupCompleted.value = true
@@ -70,7 +65,6 @@ fileprivate extension Preferences {
     /// Migration preferences
     final class Migration {
         static let completed = Option<Bool>(key: "migration.completed", default: false)
-        static let syncOrderCompleted = Option<Bool>(key: "migration.sync-order.completed", default: false)
         /// Old app versions were using documents directory to store app files, database, adblock files.
         /// These files are now moved to 'Application Support' folder, and documents directory is left
         /// for user downloaded files.
@@ -169,7 +163,7 @@ fileprivate extension Preferences {
         TabMO.deleteAllPrivateTabs()
         
         Domain.migrateShieldOverrides()
-        Bookmark.migrateBookmarkOrders()
+        LegacyBookmarksHelper.migrateBookmarkOrders()
         
         Preferences.Migration.completed.value = true
     }

@@ -73,7 +73,7 @@ protocol NTPObservableSectionProvider: NTPSectionProvider {
 protocol NewTabPageDelegate: AnyObject {
     func focusURLBar()
     func navigateToInput(_ input: String, inNewTab: Bool, switchingToPrivateMode: Bool)
-    func handleBookmarkAction(bookmark: Bookmark, action: BookmarksAction)
+    func handleFavoriteAction(favorite: Favorite, action: BookmarksAction)
     func tappedDuckDuckGoCallout()
     func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
     func tappedQRCodeButton(url: URL)
@@ -117,7 +117,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         sections = [
             StatsSectionProvider(),
             FavoritesSectionProvider(action: { [weak self] bookmark, action in
-                self?.handleBookmarkAction(bookmark: bookmark, action: action)
+                self?.handleFavoriteAction(favorite: bookmark, action: action)
             }, legacyLongPressAction: { [weak self] alertController in
                 self?.present(alertController, animated: true)
             }),
@@ -693,8 +693,8 @@ class NewTabPageViewController: UIViewController, Themeable {
         delegate?.tappedQRCodeButton(url: url)
     }
     
-    private func handleBookmarkAction(bookmark: Bookmark, action: BookmarksAction) {
-        delegate?.handleBookmarkAction(bookmark: bookmark, action: action)
+    private func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {
+        delegate?.handleFavoriteAction(favorite: favorite, action: action)
     }
     
     private func presentImageCredit(_ button: UIControl) {

@@ -357,7 +357,7 @@ class BrowserViewController: UIViewController {
                 defer { Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true }
                 
                 if Preferences.NewTabPage.preloadedFavoritiesInitialized.value
-                    || Bookmark.hasFavorites { return }
+                    || Favorite.hasFavorites { return }
                 
                 guard let sites = sites, sites.count > 0 else {
                     FavoritesHelper.addDefaultFavorites()
@@ -365,7 +365,7 @@ class BrowserViewController: UIViewController {
                 }
                 
                 let customFavorites = sites.compactMap { $0.asFavoriteSite }
-                Bookmark.addFavorites(from: customFavorites)
+                Favorite.add(from: customFavorites)
             }
         }
         
@@ -377,13 +377,13 @@ class BrowserViewController: UIViewController {
             
             DispatchQueue.main.async {
                 let defaultFavorites = PreloadedFavorites.getList()
-                let currentFavorites = Bookmark.allFavorites
+                let currentFavorites = Favorite.allFavorites
                 
                 if defaultFavorites.count != currentFavorites.count {
                     return
                 }
                 
-                let exactSameFavorites = Bookmark.allFavorites
+                let exactSameFavorites = Favorite.allFavorites
                     .filter {
                         guard let urlString = $0.url,
                             let url = URL(string: urlString),
@@ -399,7 +399,7 @@ class BrowserViewController: UIViewController {
                 if currentFavorites.count == exactSameFavorites.count {
                     let customFavorites = sites.compactMap { $0.asFavoriteSite }
                     Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value = true
-                    Bookmark.forceOverwriteFavorites(with: customFavorites)
+                    Favorite.forceOverwriteFavorites(with: customFavorites)
                 }
             }
         }
@@ -720,7 +720,7 @@ class BrowserViewController: UIViewController {
             }
         }
         
-        Bookmark.restore_1_12_Bookmarks() {
+        LegacyBookmarksHelper.restore_1_12_Bookmarks() {
             log.info("Bookmarks from old database were successfully restored")
         }
         
@@ -1239,7 +1239,7 @@ class BrowserViewController: UIViewController {
     private func displayFavoritesController() {
         if favoritesController == nil {
             let favoritesController = FavoritesViewController { [weak self] bookmark, action in
-                self?.handleBookmarkAction(bookmark: bookmark, action: action)
+                self?.handleFavoriteAction(favorite: bookmark, action: action)
             }
             favoritesController.applyTheme(Theme.of(tabManager.selectedTab))
             self.favoritesController = favoritesController
@@ -3472,8 +3472,8 @@ extension BrowserViewController: NewTabPageDelegate {
         processAddressBar(text: input, visitType: .bookmark)
     }
     
-    func handleBookmarkAction(bookmark: Bookmark, action: BookmarksAction) {
-        guard let url = bookmark.url else { return }
+    func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {
+        guard let url = favorite.url else { return }
         switch action {
         case .opened(let inNewTab, let switchingToPrivateMode):
             navigateToInput(
@@ -3482,17 +3482,19 @@ extension BrowserViewController: NewTabPageDelegate {
                 switchingToPrivateMode: switchingToPrivateMode
             )
         case .edited:
-            guard let title = bookmark.displayTitle, let urlString = bookmark.url else { return }
-            let editPopup = UIAlertController.userTextInputAlert(title: Strings.editBookmark, message: urlString,
-                                                                 startingText: title, startingText2: bookmark.url,
-                                                                 placeholder2: urlString,
-                                                                 keyboardType2: .URL) { callbackTitle, callbackUrl in
-                                                                    if let cTitle = callbackTitle, !cTitle.isEmpty, let cUrl = callbackUrl, !cUrl.isEmpty {
-                                                                        if URL(string: cUrl) != nil {
-                                                                            bookmark.update(customTitle: cTitle, url: cUrl)
-                                                                        }
-                                                                    }
-            }
+            guard let title = favorite.displayTitle, let urlString = favorite.url else { return }
+            let editPopup = UIAlertController
+                .userTextInputAlert(title: Strings.editBookmark,
+                                    message: urlString,
+                                    startingText: title, startingText2: favorite.url,
+                                    placeholder2: urlString,
+                                    keyboardType2: .URL) { callbackTitle, callbackUrl in
+                    if let cTitle = callbackTitle, !cTitle.isEmpty, let cUrl = callbackUrl, !cUrl.isEmpty {
+                        if URL(string: cUrl) != nil {
+                            favorite.update(customTitle: cTitle, url: cUrl)
+                        }
+                    }
+                }
             self.present(editPopup, animated: true)
         }
     }

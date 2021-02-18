@@ -7,10 +7,10 @@ import CoreData
 @testable import Data
 
 class DataControllerTests: CoreDataTestCase {
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Device.self))
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "Bookmark"))
     
     private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
-        return NSEntityDescription.entity(forEntityName: String(describing: Device.self), in: context)!
+        return NSEntityDescription.entity(forEntityName: String(describing: "Bookmark"), in: context)!
     }
     
     func testStoreIsEmpty() {
@@ -19,8 +19,8 @@ class DataControllerTests: CoreDataTestCase {
         XCTAssertEqual(try! viewContext.count(for: fetchRequest), 0)
         
         // Checking rest of entities
-        let bookmarkFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Bookmark.self))
-        XCTAssertEqual(try! viewContext.count(for: bookmarkFR), 0)
+        let favoriteFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "Bookmark"))
+        XCTAssertEqual(try! viewContext.count(for: favoriteFR), 0)
         
         let tabFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: TabMO.self))
         XCTAssertEqual(try! viewContext.count(for: tabFR), 0)
@@ -33,9 +33,6 @@ class DataControllerTests: CoreDataTestCase {
         let domainFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Domain.self))
         XCTAssertEqual(try! viewContext.count(for: domainFR), 0)
         
-        let deviceFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Device.self))
-        XCTAssertEqual(try! viewContext.count(for: deviceFR), 0)
-        
         let historyFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: History.self))
         XCTAssertEqual(try! viewContext.count(for: historyFR), 0)
     }
@@ -43,7 +40,7 @@ class DataControllerTests: CoreDataTestCase {
     func testSavingMainContext() {
         let context = DataController.viewContext
         
-        _ = Device(entity: entity(for: context), insertInto: context)
+        _ = Favorite(entity: entity(for: context), insertInto: context)
         
         try! context.save()
         
@@ -54,7 +51,7 @@ class DataControllerTests: CoreDataTestCase {
     func testSavingBackgroundContext() {
         backgroundSaveAndWaitForExpectation {
             DataController.perform { context in
-                _ = Device(entity: self.entity(for: context), insertInto: context)
+                _ = Favorite(entity: self.entity(for: context), insertInto: context)
             }
         }
         
@@ -65,7 +62,7 @@ class DataControllerTests: CoreDataTestCase {
     func testSaveAndRemove() {
         backgroundSaveAndWaitForExpectation {
             DataController.perform { context in
-                _ = Device(entity: self.entity(for: context), insertInto: context)
+                _ = Favorite(entity: self.entity(for: context), insertInto: context)
             }
         }
         
@@ -73,7 +70,7 @@ class DataControllerTests: CoreDataTestCase {
         XCTAssertEqual(result.count, 1)
         
         backgroundSaveAndWaitForExpectation {
-            (result.first as! Device).delete()
+            (result.first as! Favorite).delete()
         }
         
         let newResult = try! DataController.viewContext.fetch(fetchRequest)
