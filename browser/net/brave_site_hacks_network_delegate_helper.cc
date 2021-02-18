@@ -55,6 +55,8 @@ const std::string& GetQueryStringTrackers() {
            "wickedid",
            // https://github.com/brave/brave-browser/issues/11578
            "yclid",
+           // https://github.com/brave/brave-browser/issues/8975
+           "__s",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
       "|"));
@@ -93,6 +95,11 @@ DECLARE_LAZY_MATCHER(tracker_appended_matcher,
 
 void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.SiteHacks.QueryFilter");
+
+  if (!ctx->allow_brave_shields) {
+    // Don't apply the filter if the destination URL has shields down.
+    return;
+  }
 
   if (ctx->redirect_source.is_valid()) {
     if (ctx->internal_redirect) {
