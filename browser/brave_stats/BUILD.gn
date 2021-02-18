@@ -4,7 +4,9 @@ declare_args() {
   brave_stats_updater_url = ""
 }
 
-if (is_official_build) { assert(brave_stats_updater_url != "") }
+if (is_official_build) {
+  assert(brave_stats_updater_url != "")
+}
 
 source_set("stats_updater") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
@@ -28,6 +30,7 @@ source_set("stats_updater") {
     "//brave/common:pref_names",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_stats/browser",
+    "//brave/components/rpill/common",
     "//brave/vendor/bat-native-ads",
     "//chrome/common",
     "//components/prefs",

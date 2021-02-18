@@ -9,11 +9,11 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 
 #include "base/strings/string_util.h"
+#include "base/system/sys_info.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 
@@ -26,9 +26,11 @@ static constexpr base::TimeDelta g_dtoi_delete_delta =
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
-    PrefService* profile_pref_service)
+    PrefService* profile_pref_service,
+    const ProcessArch arch)
     : BraveStatsUpdaterParams(stats_pref_service,
                               profile_pref_service,
+                              arch,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
                               GetCurrentMonth()) {}
@@ -36,11 +38,13 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
     PrefService* profile_pref_service,
+    const ProcessArch arch,
     const std::string& ymd,
     int woy,
     int month)
     : stats_pref_service_(stats_pref_service),
       profile_pref_service_(profile_pref_service),
+      arch_(arch),
       ymd_(ymd),
       woy_(woy),
       month_(month) {
@@ -83,6 +87,16 @@ std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
 std::string BraveStatsUpdaterParams::GetAdsEnabledParam() const {
   return BooleanToString(
       profile_pref_service_->GetBoolean(ads::prefs::kEnabled));
+}
+
+std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
+  if (arch_ == ProcessArch::kArchSkip) {
+    return "";
+  } else if (arch_ == ProcessArch::kArchMetal) {
+    return base::SysInfo::OperatingSystemArchitecture();
+  } else {
+    return "virt";
+  }
 }
 
 void BraveStatsUpdaterParams::LoadPrefs() {

@@ -14,6 +14,12 @@
 
 namespace brave_stats {
 
+enum class ProcessArch {
+  kArchSkip,
+  kArchMetal,
+  kArchVirt,
+};
+
 std::string GetDateAsYMD(const base::Time& time);
 
 std::string GetPlatformIdentifier();
