@@ -29,15 +29,19 @@ class NTPBackground: Codable {
     /// Required instead of `CGPoint` due to x/y being optionals
     let focalPoint: FocalPoint?
     
+    // Only available for sponsored images, not normal wallpapers
+    let creativeInstanceId: String?
+
     /// Only available for normal wallpapers, not for sponsored images
     let credit: Credit?
     
     /// Whether the background is a packaged resource or a remote one, impacts how it should be loaded
     let packaged: Bool?
     
-    init(imageUrl: String, focalPoint: FocalPoint?) {
+    init(imageUrl: String, focalPoint: FocalPoint?, creativeInstanceId: String?) {
         self.imageUrl = imageUrl
         self.focalPoint = focalPoint
+        self.creativeInstanceId = creativeInstanceId
         self.credit = nil
         self.packaged = nil
     }

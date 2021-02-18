@@ -254,6 +254,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        reportSponsoredImageBackgroundEvent(.viewed)
         presentNotification()
     }
     
@@ -390,6 +391,19 @@ class NewTabPageViewController: UIViewController, Themeable {
         // If potrait, top / bottom are just pegged to superview
         let inset = portrait ? 0 : sizeRatio * -y
         backgroundView.imageConstraints?.landscapeCenter.update(offset: inset)
+    }
+    
+    private func reportSponsoredImageBackgroundEvent(_ event: NewTabPageAdEventType) {
+        guard let backgroundType = background.currentBackground?.type,
+              case .withBrandLogo = backgroundType,
+              let creativeInstanceId = background.currentBackground?.wallpaper.creativeInstanceId else {
+            return
+        }
+        rewards.ads.reportNewTabPageAdEvent(
+            background.wallpaperId.uuidString,
+            creativeInstanceId: creativeInstanceId,
+            eventType: event
+        )
     }
     
     // MARK: - Notifications
@@ -665,6 +679,8 @@ class NewTabPageViewController: UIViewController, Themeable {
     private func tappedSponsorButton(_ logo: NTPLogo) {
         UIImpactFeedbackGenerator(style: .medium).bzzt()
         delegate?.navigateToInput(logo.destinationUrl, inNewTab: false, switchingToPrivateMode: false)
+        
+        reportSponsoredImageBackgroundEvent(.clicked)
     }
     
     private func tappedQRCode(_ code: String) {

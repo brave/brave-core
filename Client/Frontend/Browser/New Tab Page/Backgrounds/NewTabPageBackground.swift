@@ -19,9 +19,12 @@ class NewTabPageBackground: PreferencesObserver {
     /// The current background image & possibly sponsor
     private(set) var currentBackground: (wallpaper: NTPBackground, type: NTPDataSource.BackgroundType)? {
         didSet {
+            wallpaperId = UUID()
             changed?()
         }
     }
+    /// A unique wallpaper identifier
+    private(set) var wallpaperId = UUID()
     /// The background/wallpaper image if available
     var backgroundImage: UIImage? {
         currentBackground?.wallpaper.image
