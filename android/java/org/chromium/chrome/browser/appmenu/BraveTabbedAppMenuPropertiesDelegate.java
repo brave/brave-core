@@ -77,12 +77,26 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // Always hide share row menu item in app menu if it's not on tablet.
         if (!mIsTablet) menu.findItem(R.id.share_row_menu_id).setVisible(false);
 
-        menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
+        MenuItem setAsDefault =
+                menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
+        if (shouldShowIconBeforeItem()) {
+            setAsDefault.setIcon(
+                    AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_set_as_default));
+        }
+
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
-            menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
+            MenuItem rewards =
+                    menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
+            if (shouldShowIconBeforeItem()) {
+                rewards.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_rewards));
+            }
         }
-        menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
+        MenuItem exit = menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
+        if (shouldShowIconBeforeItem()) {
+            exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));
+        }
 
         if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(mContext)) {
             menu.findItem(R.id.set_default_browser).setVisible(false);
@@ -100,6 +114,44 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         Tab currentTab = mActivityTabProvider.get();
         if (bookmarkItem != null && currentTab != null) {
             updateBookmarkMenuItem(bookmarkItem, currentTab);
+        }
+
+        if (shouldShowIconBeforeItem()) {
+            MenuItem newPrivateTab = menu.findItem(R.id.new_incognito_tab_menu_id);
+            if (newPrivateTab != null) {
+                newPrivateTab.setIcon(AppCompatResources.getDrawable(
+                        mContext, R.drawable.brave_menu_new_private_tab));
+            }
+
+            MenuItem bookmarks = menu.findItem(R.id.all_bookmarks_menu_id);
+            if (bookmarks != null) {
+                bookmarks.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_bookmarks));
+            }
+
+            MenuItem recentTabs = menu.findItem(R.id.recent_tabs_menu_id);
+            if (recentTabs != null) {
+                recentTabs.setIcon(AppCompatResources.getDrawable(
+                        mContext, R.drawable.brave_menu_recent_tabs));
+            }
+
+            MenuItem history = menu.findItem(R.id.open_history_menu_id);
+            if (history != null) {
+                history.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_history));
+            }
+
+            MenuItem downloads = menu.findItem(R.id.downloads_menu_id);
+            if (downloads != null) {
+                downloads.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_downloads));
+            }
+
+            MenuItem settings = menu.findItem(R.id.preferences_id);
+            if (settings != null) {
+                settings.setIcon(
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_settings));
+            }
         }
     }
 
