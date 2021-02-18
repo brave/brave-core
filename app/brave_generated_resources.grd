@@ -196,14 +196,8 @@
       <message name="IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox for prevent showing widevine install prompt">
         Don't ask again
       </message>
-      <message name="IDS_SETTINGS_ENABLE_WIDEVINE_TITLE" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
-        Enable Widevine
-      </message>
       <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
         Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.
-      </message>
-      <message name="IDS_SETTINGS_ASK_WIDEVINE_INSTALL_DESC" desc="Text fragment for asking widevine install or not">
-        Ask when a site wants to install Widevine on your computer.
       </message>
       <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
         Private window with Tor
@@ -1084,16 +1078,15 @@ up to 6x faster on major news sites.
         Reset Brave Rewards data...
       </message>
       <!--First-run dialog messages -->
-      <message name="IDS_FR_ENABLE_LOGGING_BRAVE" desc="Label for checkbox to ask whether to send usage stats to brave">
-          Help improve Brave by sending crash reports and
-completely anonymised, private product analytics.
+      <message name="IDS_FR_ENABLE_LOGGING_BRAVE" desc="Label for checkbox to ask whether to send crash reports to brave">
+          Help improve Brave by automatically sending crash reports
       </message>
       <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE" desc="Default browser checkbox label">
         Set Brave as your default browser
       </message>
       <if expr="is_macosx">
-        <message name="IDS_FIRSTRUN_DLG_MAC_OPTIONS_SEND_USAGE_STATS_LABEL_BRAVE" desc="Label for checkbox to ask whether to send usage stats to Google">
-          Help improve <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> by sending crash reports and completely anonymised, private product analytics.
+        <message name="IDS_FIRSTRUN_DLG_MAC_OPTIONS_SEND_USAGE_STATS_LABEL_BRAVE" desc="Label for checkbox to ask whether to send crash reports to brave">
+          Help improve <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> by automatically sending crash reports
         </message>
       </if>
     </messages>

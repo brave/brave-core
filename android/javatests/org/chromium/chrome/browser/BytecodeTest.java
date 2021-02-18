@@ -111,6 +111,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase"));
     }
 
     @Test
