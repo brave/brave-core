@@ -319,7 +319,8 @@ class NTPDownloader {
                                              basePath: URL) -> [NTPBackground] {
         backgrounds.map {
             NTPBackground(imageUrl: basePath.appendingPathComponent($0.imageUrl).path,
-                          focalPoint: $0.focalPoint)
+                          focalPoint: $0.focalPoint,
+                          creativeInstanceId: $0.creativeInstanceId)
         }
     }
     
