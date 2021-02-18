@@ -24,7 +24,7 @@ class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
 
   ~BatAdsEpsilonGreedyBanditResourceTest() override = default;
 
-  void Save(const CreativeAdNotificationList creative_ad_notifications) {
+  void Save(const CreativeAdNotificationList& creative_ad_notifications) {
     database_table_->Save(creative_ad_notifications, [](const Result result) {
       ASSERT_EQ(Result::SUCCESS, result);
     });
@@ -42,8 +42,8 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest, LoadFromDatabase) {
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
   info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at_timestamp = DistantPast();
-  info.end_at_timestamp = DistantFuture();
+  info.start_at_timestamp = DistantPastAsTimestamp();
+  info.end_at_timestamp = DistantFutureAsTimestamp();
   info.daily_cap = 1;
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.priority = 2;

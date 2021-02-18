@@ -213,11 +213,13 @@ class AdsImpl : public Ads,
 
   void set(privacy::TokenGeneratorInterface* token_generator);
 
-  void InitializeStep2(const Result result, InitializeCallback callback);
-  void InitializeStep3(const Result result, InitializeCallback callback);
-  void InitializeStep4(const Result result, InitializeCallback callback);
-  void InitializeStep5(const Result result, InitializeCallback callback);
-  void InitializeStep6(const Result result, InitializeCallback callback);
+  void InitializeDatabase(InitializeCallback callback);
+  void MigrateConversions(InitializeCallback callback);
+  void LoadClientState(InitializeCallback callback);
+  void LoadConfirmationsState(InitializeCallback callback);
+  void LoadAdNotificationsState(InitializeCallback callback);
+  void Initialized(InitializeCallback callback);
+  void Start();
 
   void CleanupAdEvents();
 
@@ -251,7 +253,8 @@ class AdsImpl : public Ads,
   void OnAdTransfer(const AdInfo& ad) override;
 
   // ConversionsObserver implementation
-  void OnConversion(const std::string& creative_instance_id) override;
+  void OnConversion(
+      const ConversionQueueItemInfo& conversion_queue_item) override;
 };
 
 }  // namespace ads

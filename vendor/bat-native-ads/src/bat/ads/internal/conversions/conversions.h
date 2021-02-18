@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_H_
 
-#include <deque>
 #include <string>
 #include <vector>
 
@@ -30,8 +29,6 @@ class Conversions {
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);
 
-  void Initialize(InitializeCallback callback);
-
   bool ShouldAllow() const;
 
   void MaybeConvert(const std::vector<std::string>& redirect_chain);
@@ -39,12 +36,7 @@ class Conversions {
   void StartTimerIfReady();
 
  private:
-  bool is_initialized_ = false;
-  InitializeCallback callback_;
-
   base::ObserverList<ConversionsObserver> observers_;
-
-  ConversionQueueItemList queue_;
 
   Timer timer_;
 
@@ -58,29 +50,16 @@ class Conversions {
   ConversionList SortConversions(const ConversionList& conversions);
 
   void AddItemToQueue(const AdEventInfo& ad_event);
-  bool RemoveItemFromQueue(const std::string& creative_instance_id);
+  bool RemoveItemFromQueue(
+      const ConversionQueueItemInfo& conversion_queue_item);
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
   void ProcessQueue();
 
   void StartTimer(const ConversionQueueItemInfo& queue_item);
+  void NotifyConversion(const ConversionQueueItemInfo& conversion_queue_item);
 
-  void Save();
-  void OnSaved(const Result result);
-
-  std::string ToJson();
-  base::Value GetAsList();
-
-  void Load();
-  void OnLoaded(const Result result, const std::string& json);
-
-  bool FromJson(const std::string& json);
-  ConversionQueueItemList GetFromList(const base::ListValue* list) const;
-  bool GetFromDictionary(const base::DictionaryValue* dictionary,
-                         ConversionQueueItemInfo* info) const;
-
-  void NotifyConversion(const std::string& creative_instance_id);
-
-  void NotifyConversionFailed(const std::string& creative_instance_id);
+  void NotifyConversionFailed(
+      const ConversionQueueItemInfo& conversion_queue_item);
 };
 
 }  // namespace ads

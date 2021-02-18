@@ -17,15 +17,14 @@ namespace ads {
 std::string LongFriendlyDateAndTime(const base::Time& time,
                                     const bool use_sentence_style = true);
 
+std::string LongFriendlyDateAndTime(const int64_t timestamp,
+                                    const bool use_sentence_style = true);
+
 std::string FriendlyDateAndTime(const base::Time& time,
                                 const bool use_sentence_style = true);
 
 std::string FriendlyDateAndTime(const int64_t timestamp,
                                 const bool use_sentence_style = true);
-
-std::string TimeToISO8601(const base::Time& time);
-
-std::string TimestampToISO8601(const int64_t timestamp);
 
 std::string TimeAsTimestampString(const base::Time& time);
 

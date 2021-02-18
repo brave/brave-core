@@ -20,7 +20,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/time/time.h"
+#include "base/time/time_to_iso8601.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_formatting_util.h"
@@ -86,11 +86,11 @@ bool ParseTimeTag(std::string* value) {
   base::Time time;
 
   if (*value == kNowTagValue) {
-    time = base::Time::Now();
+    time = Now();
   } else if (*value == kDistantPastTagValue) {
-    time = base::Time::FromDoubleT(DistantPast());
+    time = DistantPast();
   } else if (*value == kDistantFutureTagValue) {
-    time = base::Time::FromDoubleT(DistantFuture());
+    time = DistantFuture();
   } else if (re2::RE2::FullMatch(*value,
                                  "[-+]?[0-9]*.*(seconds|minutes|hours|days)")) {
     base::TimeDelta time_delta;
@@ -99,12 +99,12 @@ bool ParseTimeTag(std::string* value) {
       return false;
     }
 
-    time = base::Time::Now() + time_delta;
+    time = Now() + time_delta;
   } else {
     return false;
   }
 
-  *value = TimeToISO8601(time);
+  *value = base::TimeToISO8601(time);
 
   return true;
 }
@@ -258,7 +258,6 @@ void MockGetBooleanPref(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& path) -> bool {
         const std::string pref_path = GetUuid(path);
         const std::string value = g_prefs[pref_path];
-
         DCHECK(!value.empty());
 
         int value_as_int;
@@ -399,7 +398,9 @@ void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   mock->SetStringPref(prefs::kCatalogId, "");
   mock->SetIntegerPref(prefs::kCatalogVersion, 1);
   mock->SetInt64Pref(prefs::kCatalogPing, 7200000);
-  mock->SetInt64Pref(prefs::kCatalogLastUpdated, DistantPast());
+  mock->SetInt64Pref(prefs::kCatalogLastUpdated, DistantPastAsTimestamp());
+
+  mock->SetBooleanPref(prefs::kHasMigratedConversionState, true);
 }
 
 }  // namespace
@@ -684,42 +685,54 @@ void MockPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   MockDefaultPrefs(mock);
 }
 
-base::Time TimeFromDateString(const std::string& date) {
-  const std::string utc_date = date + " 23:59:59.999 +00:00";
-
-  base::Time time;
-  if (!base::Time::FromString(utc_date.c_str(), &time)) {
-    return base::Time();
-  }
-
-  return time;
+int64_t TimestampFromDateString(const std::string& date) {
+  return TimeFromDateString(date).ToDoubleT();
 }
 
-int64_t DistantPast() {
-  return 0;
+base::Time TimeFromDateString(const std::string& date) {
+  base::Time time;
+  if (!base::Time::FromUTCString(date.c_str(), &time)) {
+    return time;
+  }
+
+  return time.UTCMidnight() + base::TimeDelta::FromDays(1) -
+         base::TimeDelta::FromMilliseconds(1);
+}
+
+int64_t DistantPastAsTimestamp() {
+  return 0;  // Thursday, 1 January 1970 00:00:00
+}
+
+base::Time DistantPast() {
+  return base::Time::FromDoubleT(DistantPastAsTimestamp());
 }
 
 std::string DistantPastAsISO8601() {
-  const int64_t distant_past = DistantPast();
-  return TimestampToISO8601(distant_past);
+  return base::TimeToISO8601(DistantPast());
 }
 
-int64_t Now() {
-  return static_cast<int64_t>(base::Time::Now().ToDoubleT());
+int64_t NowAsTimestamp() {
+  return static_cast<int64_t>(Now().ToDoubleT());
+}
+
+base::Time Now() {
+  return base::Time::Now();
 }
 
 std::string NowAsISO8601() {
-  const base::Time time = base::Time::Now();
-  return TimeToISO8601(time);
+  return base::TimeToISO8601(Now());
 }
 
-int64_t DistantFuture() {
-  return 4102444799;
+int64_t DistantFutureAsTimestamp() {
+  return 4102444799;  // Thursday, 31 December 2099 23:59:59
+}
+
+base::Time DistantFuture() {
+  return base::Time::FromDoubleT(DistantFutureAsTimestamp());
 }
 
 std::string DistantFutureAsISO8601() {
-  const int64_t distant_future = DistantFuture();
-  return TimestampToISO8601(distant_future);
+  return base::TimeToISO8601(DistantFuture());
 }
 
 }  // namespace ads

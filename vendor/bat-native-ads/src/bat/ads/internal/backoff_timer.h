@@ -28,9 +28,10 @@ class BackoffTimer {
   // FastForward*() to this when possible
   void set_timer_for_testing(std::unique_ptr<base::OneShotTimer> timer);
 
-  // Start a timer to run at the given |delay| from now. If the timer is already
-  // running, it will be replaced to call the given |user_task|. Returns the
-  // time the delayed task will be fired
+  // Start a timer to run at the given |delay| from now backing off
+  // exponentially for each call. If the timer is already running, it will be
+  // replaced to call the given |user_task|. Returns the time the delayed task
+  // will be fired
   base::Time Start(const base::TimeDelta& delay, base::OnceClosure user_task);
 
   // Start a timer to run at a geometrically distributed number of seconds

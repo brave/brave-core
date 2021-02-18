@@ -94,18 +94,19 @@ TEST_F(BatAdsStatementTest, GetForThisMonth) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 0.35;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -133,18 +134,19 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInternalServerErrorForPayments) {
   AdvanceClock(TimeFromDateString("18 November 2020"));
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 0.0;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 January 2021 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 January 2021");
   expected_statement.ads_received_this_month = 0;
   expected_statement.earnings_this_month = 0.0;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -172,18 +174,19 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInvalidJsonForPayments) {
   AdvanceClock(TimeFromDateString("18 November 2020"));
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 0.0;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 January 2021 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 January 2021");
   expected_statement.ads_received_this_month = 0;
   expected_statement.earnings_this_month = 0.0;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -224,18 +227,19 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInternalServerErrorForAdGrants) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 0.35;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -276,18 +280,19 @@ TEST_F(BatAdsStatementTest, GetForThisMonthWithInvalidJsonForAdGrants) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 0.35;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.0;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -335,18 +340,19 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonths) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 1.05;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -394,18 +400,19 @@ TEST_F(BatAdsStatementTest, GetForPastTwoMonthsOverTwoYears) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 1.05;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 January 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 January 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -460,18 +467,19 @@ TEST_F(BatAdsStatementTest, GetForPastThreeMonths) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 1.5;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -532,18 +540,19 @@ TEST_F(BatAdsStatementTest, GetForPastThreeMonthsWithAdGrants) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 0.75;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 0.7;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -593,18 +602,19 @@ TEST_F(BatAdsStatementTest, KeepOldValuesAfterServerErrorForPayments) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 2.1;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 1.75;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);
@@ -674,18 +684,19 @@ TEST_F(BatAdsStatementTest, KeepOldValuesAfterServerErrorForAdGrants) {
   AddTransactions(7);
 
   // Act
-  const StatementInfo statement = statement_->Get(DistantPast(), Now());
+  const StatementInfo statement =
+      statement_->Get(DistantPastAsTimestamp(), NowAsTimestamp());
 
   // Assert
   StatementInfo expected_statement;
   expected_statement.estimated_pending_rewards = 1.35;
   expected_statement.next_payment_date =
-      TimeFromDateString("5 December 2020 23:59:59").ToDoubleT();
+      TimestampFromDateString("5 December 2020");
   expected_statement.ads_received_this_month = 7;
   expected_statement.earnings_this_month = 0.35;
   expected_statement.earnings_last_month = 1.75;
   expected_statement.transactions =
-      transactions::GetCleared(DistantPast(), Now());
+      transactions::GetCleared(DistantPastAsTimestamp(), NowAsTimestamp());
   expected_statement.uncleared_transactions = transactions::GetUncleared();
 
   EXPECT_EQ(expected_statement, statement);

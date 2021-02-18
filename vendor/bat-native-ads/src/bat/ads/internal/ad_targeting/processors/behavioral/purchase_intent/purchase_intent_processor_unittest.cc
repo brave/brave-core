@@ -90,7 +90,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
   const PurchaseIntentSignalHistoryMap history =
       Client::Get()->GetPurchaseIntentSignalHistory();
 
-  const int64_t now = Now();
+  const int64_t now = NowAsTimestamp();
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
@@ -116,7 +116,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   const PurchaseIntentSignalHistoryMap history =
       Client::Get()->GetPurchaseIntentSignalHistory();
 
-  const int64_t now = Now();
+  const int64_t now = NowAsTimestamp();
   const uint16_t weight = 1;
 
   const PurchaseIntentSignalHistoryMap expected_history = {
@@ -138,13 +138,13 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   // Act
   processor::PurchaseIntent processor(&resource);
 
-  const int64_t now_1 = Now();
+  const int64_t now_1 = NowAsTimestamp();
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(5));
 
-  const int64_t now_2 = Now();
+  const int64_t now_2 = NowAsTimestamp();
   const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?foo=bar");
   processor.Process(url_2);
 
@@ -173,14 +173,14 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   // Act
   processor::PurchaseIntent processor(&resource);
 
-  const int64_t now_1 = Now();
+  const int64_t now_1 = NowAsTimestamp();
   const GURL url_1 =
       GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
   processor.Process(url_1);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(5));
 
-  const int64_t now_2 = Now();
+  const int64_t now_2 = NowAsTimestamp();
   const GURL url_2 =
       GURL("https://duckduckgo.com/?q=segment+keyword+2&bar=foo");
   processor.Process(url_2);
@@ -208,14 +208,14 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Act
   processor::PurchaseIntent processor(&resource);
 
-  const int64_t now_1 = Now();
+  const int64_t now_1 = NowAsTimestamp();
   const GURL url_1 =
       GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
   processor.Process(url_1);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(5));
 
-  const int64_t now_2 = Now();
+  const int64_t now_2 = NowAsTimestamp();
   const GURL url_2 = GURL("https://google.com/?q=segment+keyword+1&bar=foo");
   processor.Process(url_2);
 
@@ -249,7 +249,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   const PurchaseIntentSignalHistoryMap history =
       Client::Get()->GetPurchaseIntentSignalHistory();
 
-  const int64_t now = Now();
+  const int64_t now = NowAsTimestamp();
   const uint16_t weight = 3;
 
   const PurchaseIntentSignalHistoryMap expected_history = {

@@ -6,19 +6,20 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_
 
-#include <string>
-
 #include "base/observer_list.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
 namespace ads {
 
 class ConversionsObserver : public base::CheckedObserver {
  public:
-  // Invoked when an ad is transferred
-  virtual void OnConversion(const std::string& creative_instance_id) {}
+  // Invoked when an ad is converted
+  virtual void OnConversion(
+      const ConversionQueueItemInfo& conversion_queue_item) {}
 
-  // Invoked when an ad fails to transfer
-  virtual void OnConversionFailed(const std::string& creative_instance_id) {}
+  // Invoked when an ad fails to convert
+  virtual void OnConversionFailed(
+      const ConversionQueueItemInfo& conversion_queue_item) {}
 
  protected:
   ~ConversionsObserver() override = default;
