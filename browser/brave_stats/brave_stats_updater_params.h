@@ -10,6 +10,7 @@
 
 #include "base/macros.h"
 #include "base/time/time.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 class BraveStatsUpdaterBrowserTest;
 class BraveStatsUpdaterTest;
@@ -20,9 +21,11 @@ namespace brave_stats {
 class BraveStatsUpdaterParams {
  public:
   explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                                   PrefService* profile_pref_service);
+                                   PrefService* profile_pref_service,
+                                   const ProcessArch arch);
   BraveStatsUpdaterParams(PrefService* stats_pref_service,
                           PrefService* profile_pref_service,
+                          const ProcessArch arch,
                           const std::string& ymd,
                           int woy,
                           int month);
@@ -36,6 +39,7 @@ class BraveStatsUpdaterParams {
   std::string GetDateOfInstallationParam() const;
   std::string GetReferralCodeParam() const;
   std::string GetAdsEnabledParam() const;
+  std::string GetProcessArchParam() const;
 
   void SavePrefs();
 
@@ -44,6 +48,7 @@ class BraveStatsUpdaterParams {
   friend class ::BraveStatsUpdaterTest;
   PrefService* stats_pref_service_;
   PrefService* profile_pref_service_;
+  ProcessArch arch_;
   std::string ymd_;
   int woy_;
   int month_;
