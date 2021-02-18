@@ -34,8 +34,6 @@
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/common/constants.h"
 
-
-
 namespace {
 
 std::string GetInfuraProjectID() {
@@ -73,9 +71,8 @@ BraveWalletService::BraveWalletService(
   RemoveUnusedWeb3ProviderContentScripts();
   extension_registry_observer_.Add(extensions::ExtensionRegistry::Get(context));
 
-  const std::string spec =
-      base::StringPrintf("https://mainnet-infura.brave.com/%s",
-                         GetInfuraProjectID().c_str());
+  const std::string spec = base::StringPrintf(
+      "https://mainnet-infura.brave.com/%s", GetInfuraProjectID().c_str());
   controller_ =
       std::make_unique<brave_wallet::EthJsonRpcController>(context, GURL(spec));
 }
@@ -193,6 +190,10 @@ void BraveWalletService::SaveToPrefs(PrefService* prefs,
 void BraveWalletService::ResetCryptoWallets() {
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
       ethereum_remote_client_extension_id);
+}
+
+brave_wallet::EthJsonRpcController* BraveWalletService::controller() const {
+  return controller_.get();
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
