@@ -472,6 +472,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         SetupNotificationsControls();
 
         ShowWebSiteView();
+        mBraveRewardsNativeWorker.GetRewardsParameters();
+
+        mBraveRewardsNativeWorker.GetExternalWallet();
     }
 
     private void showBraveRewardsOptInLayout(View root) {
@@ -853,8 +856,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     @Override
     public void OnStartProcess() {
-        mBraveRewardsNativeWorker.GetRewardsParameters();
-        mBraveRewardsNativeWorker.GetExternalWallet();
         if (root != null && PackageUtils.isFirstInstall(mActivity)
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
             if (BraveRewardsHelper.getBraveRewardsAppOpenCount() == 0
@@ -892,10 +893,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public void dismiss() {
         this.window.dismiss();
-    }
-
-    public boolean isShowing() {
-        return this.window.isShowing();
     }
 
     private Tab launchTabInRunningTabbedActivity(LoadUrlParams loadUrlParams) {

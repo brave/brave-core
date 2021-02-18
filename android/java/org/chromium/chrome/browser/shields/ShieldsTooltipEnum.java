@@ -22,10 +22,7 @@ public enum ShieldsTooltipEnum {
             R.color.shields_tooltip_arrow_color_2, R.drawable.shields_tooltip_background_2),
     HTTPS_UPGRADE_TOOLTIP(ShieldsTooltipEnumConstants.HTTPS_UPGRADE_TOOLTIP,
             R.string.tooltip_title_4, R.string.tooltip_text_4,
-            R.color.shields_tooltip_arrow_color_2, R.drawable.shields_tooltip_background_2),
-    BAP_DEPRECATION_TOOLTIP(ShieldsTooltipEnumConstants.BAP_DEPRECATION_TOOLTIP,
-            R.string.rewards_tooltip_title, R.string.rewards_tooltip_text,
-            R.color.rewards_tooltip_arrow_color, R.drawable.rewards_tooltip_background);
+            R.color.shields_tooltip_arrow_color_2, R.drawable.shields_tooltip_background_2);
 
     private int id;
     private int title;
@@ -66,6 +63,5 @@ public enum ShieldsTooltipEnum {
         static final int VIDEO_ADS_BLOCKED_TOOLTIP = 1;
         static final int ADS_TRACKER_BLOCKED_TOOLTIP = 2;
         static final int HTTPS_UPGRADE_TOOLTIP = 3;
-        static final int BAP_DEPRECATION_TOOLTIP = 4;
     }
 }
