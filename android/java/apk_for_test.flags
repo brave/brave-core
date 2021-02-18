@@ -136,15 +136,6 @@
     *** mTabModelProfileSupplier;
 }
 
--keep class org.chromium.chrome.browser.ChromeTabbedActivity {
-    *** hideOverview(...);
-}
-
--keep class org.chromium.chrome.browser.app.BraveActivity {
-    *** openNewOrSelectExistingTab(...);
-    *** selectExistingTab(...);
-}
-
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
     public <init>(...);
 }
@@ -192,13 +183,6 @@
 
 -keep class org.chromium.chrome.browser.query_tiles.BraveQueryTileSection {
     *** getMaxRowsForMostVisitedTiles(...);
-}
-
--keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout {
-    *** updateModernLocationBarColorImpl(...);
-    *** onClickImpl(...);
-    *** populateUrlAnimatorSet(...);
-    *** getBoundsAfterAccountingForRightButtons(...);
 }
 
 -keep class org.chromium.chrome.browser.password_manager.settings.PasswordSettings {
