@@ -178,7 +178,7 @@ class BraveCoreMigrator {
     }
     
     public func exportBookmarks(to url: URL, _ completion: @escaping (_ success: Bool) -> Void) {
-        self.dataImportExporter.exportBookmarks(to: url, bookmarks: Bookmark.getAllTopLevelBookmarks().sorted(by: { $0.order < $1.order })) { success in
+        self.dataImportExporter.exportBookmarks(to: url, bookmarks: LegacyBookmarksHelper.getTopLevelLegacyBookmarks().sorted(by: { $0.order < $1.order })) { success in
             completion(success)
         }
     }
@@ -188,7 +188,7 @@ class BraveCoreMigrator {
             return completion(false)
         }
         
-        self.dataImportExporter.exportBookmarks(to: url, bookmarks: Bookmark.getAllTopLevelBookmarks().sorted(by: { $0.order < $1.order })) { success in
+        self.dataImportExporter.exportBookmarks(to: url, bookmarks: LegacyBookmarksHelper.getTopLevelLegacyBookmarks().sorted(by: { $0.order < $1.order })) { success in
             completion(success)
         }
     }
@@ -205,7 +205,7 @@ class BraveCoreMigrator {
         
         DataController.performOnMainContext { context in
             var didSucceed = true
-            for bookmark in Bookmark.getAllTopLevelBookmarks(context).sorted(by: { $0.order < $1.order }) {
+            for bookmark in LegacyBookmarksHelper.getTopLevelLegacyBookmarks(context).sorted(by: { $0.order < $1.order }) {
                 if self.migrateChromiumBookmarks(context: context, bookmark: bookmark, chromiumBookmark: rootFolder) {
                     bookmark.delete(context: .existing(context))
                 } else {
@@ -219,7 +219,7 @@ class BraveCoreMigrator {
         }
     }
     
-    private func migrateChromiumBookmarks(context: NSManagedObjectContext, bookmark: Bookmark, chromiumBookmark: BookmarkNode) -> Bool {
+    private func migrateChromiumBookmarks(context: NSManagedObjectContext, bookmark: LegacyBookmark, chromiumBookmark: BookmarkNode) -> Bool {
         guard let title = bookmark.isFolder ? bookmark.customTitle : bookmark.title else {
             log.error("Invalid Bookmark Title")
             return false
@@ -271,83 +271,6 @@ extension BraveCoreMigrator {
         
         func bookmarkModelLoaded() {
             self.onModelLoaded()
-        }
-    }
-}
-
-extension BraveCoreMigrator {
-    private func testMigration(_ completion: @escaping () -> Void) {
-        //CODE FOR TESTING MIGRATION!
-        //DELETES ALL EXISTING CORE-DATA BOOKMARKS, CREATES A BUNCH OF FAKE BOOKMARKS..
-        Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = false
-
-        DataController.perform { context in
-            //Delete all existing bookmarks
-            Bookmark.getAllTopLevelBookmarks(context).forEach({
-                $0.delete(context: .existing(context))
-            })
-
-            //TOP LEVEL
-            Bookmark.add(url: URL(string: "https://amazon.ca/")!, title: "Amazon", context: .existing(context))
-            Bookmark.add(url: URL(string: "https://google.ca/")!, title: "Google", context: .existing(context))
-
-            //TEST FOLDER
-            Bookmark.addFolder(title: "TEST", context: .existing(context))
-
-            //TEST -> Brave
-            let test = Bookmark.getTopLevelFolders(context).first(where: { $0.customTitle == "TEST" })
-            Bookmark.add(url: URL(string: "https://brave.com/")!, title: "Brave", parentFolder: test, context: .existing(context))
-
-            //TEST -> DEPTH Folder
-            Bookmark.addFolder(title: "DEPTH", parentFolder: test, context: .existing(context))
-
-            //TEST -> DEPTH -> REDDIT
-            let depth = Bookmark.getAllBookmarks(context: context).first(where: { $0.isFolder && $0.parentFolder?.customTitle == "TEST" && $0.customTitle == "DEPTH" })
-            Bookmark.add(url: URL(string: "https://reddit.com/")!, title: "Reddit", parentFolder: depth, context: .existing(context))
-            
-            DispatchQueue.main.async {
-                completion()
-            }
-        }
-    }
-    
-    private func testMassiveMigration(_ completion: @escaping () -> Void) {
-        //CODE FOR TESTING MIGRATION!
-        //DELETES ALL EXISTING CORE-DATA BOOKMARKS, CREATES A BUNCH OF FAKE BOOKMARKS..
-        Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = false
-
-        DataController.perform { context in
-            //Delete all existing bookmarks
-            Bookmark.getAllTopLevelBookmarks(context).forEach({
-                $0.delete(context: .existing(context))
-            })
-            
-            //TEST FOLDER
-            Bookmark.addFolder(title: "TEST", context: .existing(context))
-
-            //TEST -> Brave
-            let test = Bookmark.getTopLevelFolders(context).first(where: { $0.customTitle == "TEST" })
-            
-            //TEST -> DEPTH Folder
-            Bookmark.addFolder(title: "DEPTH", parentFolder: test, context: .existing(context))
-            
-            let depth = Bookmark.getAllBookmarks(context: context).first(where: { $0.isFolder && $0.parentFolder?.customTitle == "TEST" && $0.customTitle == "DEPTH" })
-
-            for _ in 0..<400 {
-                //TOP LEVEL
-                Bookmark.add(url: URL(string: "https://amazon.ca/")!, title: "Amazon", context: .existing(context))
-                Bookmark.add(url: URL(string: "https://google.ca/")!, title: "Google", context: .existing(context))
-
-                //TEST ->
-                Bookmark.add(url: URL(string: "https://brave.com/")!, title: "Brave", parentFolder: test, context: .existing(context))
-
-                //TEST -> DEPTH ->
-                Bookmark.add(url: URL(string: "https://reddit.com/")!, title: "Reddit", parentFolder: depth, context: .existing(context))
-            }
-            
-            DispatchQueue.main.async {
-                completion()
-            }
         }
     }
 }

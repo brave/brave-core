@@ -132,6 +132,11 @@ extension Fetchable {
             selfName = "Favicon"
         }
         
+        // Legacy reasons, pre sync-v2 we used CoreData for both bookmarks and favorites.
+        if selfName.contains("Favorite") {
+            selfName = "Bookmark"
+        }
+        
         return NSFetchRequest<Self>(entityName: selfName)
     }
 }

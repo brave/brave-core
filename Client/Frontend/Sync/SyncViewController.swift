@@ -25,15 +25,6 @@ class SyncViewController: UIViewController {
         view = SyncView()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(didLeaveSyncGroup), name: Sync.Notifications.didLeaveSyncGroup, object: nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     /// Perform a block of code only if user has a network connection, shows an error alert otherwise.
     /// Most of sync initialization methods require an internet connection.
     func doIfConnected(code: () -> Void) {

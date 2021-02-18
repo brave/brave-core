@@ -55,8 +55,6 @@ else
 fi
 
 npm run build
-echo "${COLOR_ORANGE}Building sync${COLOR_NONE}"
-npm run build:sync
 
 # Sets up local configurations from the tracked .template files
 

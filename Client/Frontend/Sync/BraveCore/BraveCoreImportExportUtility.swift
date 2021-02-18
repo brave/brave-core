@@ -136,7 +136,7 @@ class BraveCoreImportExportUtility {
     }
     
     // Export bookmarks from CoreData to a file
-    func exportBookmarks(to path: URL, bookmarks: [Bookmark], _ completion: @escaping (_ success: Bool) -> Void) {
+    func exportBookmarks(to path: URL, bookmarks: [LegacyBookmark], _ completion: @escaping (_ success: Bool) -> Void) {
         precondition(state == .none, "Bookmarks Import - Error Exporting while an Import/Export operation is in progress")
         
         guard let path = nativeURLPathFromURL(path) else {
@@ -207,7 +207,7 @@ private enum ParsingError: String, Error {
 
 // MARK: - Private
 
-extension Bookmark {
+extension LegacyBookmark {
     fileprivate func toChromiumExportedBookmark() -> BookmarkNode {
         // Tail recursion to map children..
         return BookmarkNode(

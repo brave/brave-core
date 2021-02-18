@@ -18,17 +18,17 @@ enum BookmarksAction {
 
 class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     var sectionDidChange: (() -> Void)?
-    var action: (Bookmark, BookmarksAction) -> Void
+    var action: (Favorite, BookmarksAction) -> Void
     var legacyLongPressAction: (UIAlertController) -> Void
     
-    private var frc: NSFetchedResultsController<Bookmark>
+    private var frc: NSFetchedResultsController<Favorite>
     
-    init(action: @escaping (Bookmark, BookmarksAction) -> Void,
+    init(action: @escaping (Favorite, BookmarksAction) -> Void,
          legacyLongPressAction: @escaping (UIAlertController) -> Void) {
         self.action = action
         self.legacyLongPressAction = legacyLongPressAction
         
-        frc = Bookmark.frc(forFavorites: true, parentFolder: nil)
+        frc = Favorite.frc()
         super.init()
         frc.fetchRequest.fetchLimit = 10
         frc.delegate = self

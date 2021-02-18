@@ -49,11 +49,11 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     
     private typealias FavoritesOverflowCell = NewTabCenteredCollectionViewCell<FavoritesOverflowButton>
     
-    private var frc: NSFetchedResultsController<Bookmark>
+    private var frc: NSFetchedResultsController<Favorite>
     
     init(action: @escaping () -> Void) {
         self.action = action
-        frc = Bookmark.frc(forFavorites: true, parentFolder: nil)
+        frc = Favorite.frc()
         frc.fetchRequest.fetchLimit = 10
         super.init()
         try? frc.performFetch()
