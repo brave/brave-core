@@ -1,10 +1,13 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/config.gni")
 
 assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
   public_deps = [ "buildflags" ]
+
+  configs += [ ":infura_config" ]
 
   sources = [
     "brave_wallet_constants.cc",
@@ -32,4 +35,8 @@ source_set("brave_wallet") {
     "//services/network/public/cpp",
     "//url",
   ]
+}
+
+config("infura_config") {
+  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
 }

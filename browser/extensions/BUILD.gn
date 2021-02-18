@@ -2,6 +2,7 @@ import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -11,10 +12,6 @@ import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
-
-declare_args() {
-  brave_infura_project_id = ""
-}
 
 source_set("extensions") {
   # Remove when https://github.com/brave/brave-browser/issues/10661 is resolved
@@ -99,7 +96,10 @@ source_set("extensions") {
       "brave_wallet_util.cc",
       "brave_wallet_util.h",
     ]
-    configs += [ ":infura_config" ]
+    configs += [
+      ":infura_config",
+      ":brave_services_config",
+    ]
     deps += [ "//brave/components/brave_wallet" ]
   }
 
@@ -207,9 +207,10 @@ group("resources") {
   }
 }
 
+config("brave_services_config") {
+  defines = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
+}
+
 config("infura_config") {
-  defines = [
-    "BRAVE_SERVICES_KEY=\"$brave_services_key\"",
-    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
-  ]
+  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
 }
