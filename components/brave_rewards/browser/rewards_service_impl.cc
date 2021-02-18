@@ -1494,9 +1494,8 @@ bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
       base::Time::Exploded cutoff_exploded{
           .year = 2021, .month = 3, .day_of_month = 13};
       base::Time cutoff;
-      bool ok = base::Time::FromUTCExploded(cutoff_exploded, &cutoff);
-      DCHECK(ok);
-      if (ok && base::Time::Now() >= cutoff) {
+      DCHECK(base::Time::FromUTCExploded(cutoff_exploded, &cutoff));
+      if (base::Time::Now() >= cutoff) {
         return true;
       }
     }
