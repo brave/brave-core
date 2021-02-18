@@ -265,8 +265,6 @@ void IpfsService::OnGetConnectedPeers(
   if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
     response_code = url_loader->ResponseInfo()->headers->response_code();
   url_loaders_.erase(iter);
-  LOG(ERROR) << "On get connected peers, error_code = " << error_code
-             << " response_code = " << response_code;
 
   std::vector<std::string> peers;
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);

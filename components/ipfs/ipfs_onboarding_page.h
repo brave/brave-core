@@ -52,7 +52,7 @@ class IPFSOnboardingPage
     OPEN_SETTINGS = 3,
   };
 
-  // In case of an error when starting a local node, we notify a page.
+  // Commands to send to the page to provide feedback to the user.
   enum IPFSOnboardingResponse {
     LOCAL_NODE_ERROR = 0,
     THEME_CHANGED = 1,

@@ -30,6 +30,7 @@ function setupEvents() {
   $('local-node-button').addEventListener('click', function() {
     $('local-node-button').textContent = '$i18nRaw{installationText}'
     $('error-container').className = 'error-container-hidden'
+    $('local-node-button').className = 'button'
     sendCommand(IPFSOnboardingCommandId.USE_LOCAL_NODE);
   });
 
@@ -65,6 +66,8 @@ function handleCommand(code, text) {
     showErrorMessage(text)
   } else if (code == IPFSOnboardingResponse.NO_PEERS_LIMIT) {
     showErrorMessage('$i18nRaw{retryLimitPeersText}')
+    $('local-node-button').textContent = '$i18nRaw{tryAgainText}'
+    $('local-node-button').className = 'button button-retry'
   }
 }
 

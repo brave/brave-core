@@ -42,6 +42,8 @@ constexpr int kConnectedPeersRetryLimitSec = 120;
 // The period in seconds between requests to get connected peers information.
 constexpr int kConnectedPeersRetryStepSec = 1;
 
+// The period in seconds when we alert user about error.
+constexpr int kConnectedPeersAlertTimeoutSec = 10;
 }  // namespace
 namespace ipfs {
 
@@ -71,7 +73,7 @@ void IPFSOnboardingPage::UseLocalNode() {
   auto* prefs = user_prefs::UserPrefs::Get(context);
   prefs->SetInteger(kIPFSResolveMethod,
                     static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-
+  start_time_ticks_ = base::TimeTicks::Now();
   if (!ipfs_service_->IsDaemonLaunched()) {
     ipfs_service_->LaunchDaemon(base::NullCallback());
   } else {
@@ -98,12 +100,13 @@ void IPFSOnboardingPage::OnGetConnectedPeers(
   if (!success || peers.empty()) {
     base::TimeDelta delta = base::TimeTicks::Now() - start_time_ticks_;
     if (delta.InSeconds() < kConnectedPeersRetryLimitSec) {
-      int retries = (kConnectedPeersRetryLimitSec - delta.InSeconds()) /
-                    kConnectedPeersRetryStepSec;
-      RespondToPage(NO_PEERS_AVAILABLE, l10n_util::GetStringFUTF16(
-                                            IDS_IPFS_ONBOARDING_PEERS_ERROR,
-                                            base::NumberToString16(retries)));
-
+      if (delta.InSeconds() > kConnectedPeersAlertTimeoutSec) {
+        int retries = (kConnectedPeersRetryLimitSec - delta.InSeconds()) /
+                      kConnectedPeersRetryStepSec;
+        RespondToPage(NO_PEERS_AVAILABLE, l10n_util::GetStringFUTF16(
+                                              IDS_IPFS_ONBOARDING_PEERS_ERROR,
+                                              base::NumberToString16(retries)));
+      }
       base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&IPFSOnboardingPage::GetConnectedPeers,
@@ -137,7 +140,6 @@ bool IPFSOnboardingPage::IsLocalNodeMode() {
 }
 
 void IPFSOnboardingPage::OnIpfsLaunched(bool result, int64_t pid) {
-  start_time_ticks_ = base::TimeTicks::Now();
   if (!result) {
     ReportDaemonStopped();
     return;
@@ -235,6 +237,9 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
   load_time_data->SetString(
       "retryLimitPeersText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
+  load_time_data->SetString(
+      "tryAgainText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_TRY_AGAIN));
+
   load_time_data->SetString(
       "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
 }

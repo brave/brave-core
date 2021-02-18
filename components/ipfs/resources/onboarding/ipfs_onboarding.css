@@ -47,6 +47,7 @@ body {
   margin-top: 20px;
   display: flex;
   align-items: center;
+  height: 100px;
 }
 
 .button-wrapper {
@@ -56,15 +57,26 @@ body {
 
 .button {
   border-radius: 100px;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 13px;
+  width: 200px;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+
+.button-retry {
+  background-image: url('./assets/retry.svg');
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: left 20% top 50%;
+  cursor: pointer;
 }
 
 #local-node-button {
   color: #fff;
   border: none;
-  background: #4C54D2;
-  padding: 10px 40px;
+  background-color: #FB542B;
+  padding: 10px 30px;
 }
 
 #public-gateway-button {
@@ -130,7 +142,15 @@ body.dark {
 }
 
 .error-container-visible {
+  background-image: url('./assets/error.svg');
+  background-repeat: no-repeat;
+  background-position: left 25px top 2px;
+
   display: block;
   color: red;
   margin-top: 10px;
+  padding: 0px 40px;
+  padding-left: 45px;
+  text-align: left;
 }
+
