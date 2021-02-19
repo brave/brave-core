@@ -41,6 +41,7 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
+#include "bat/ads/internal/legacy_migration/legacy_conversion_migration.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
@@ -103,10 +104,7 @@ void AdsImpl::Initialize(InitializeCallback callback) {
     return;
   }
 
-  const auto initialize_step_2_callback =
-      std::bind(&AdsImpl::InitializeStep2, this, std::placeholders::_1,
-                std::move(callback));
-  database_->CreateOrOpen(initialize_step_2_callback);
+  InitializeDatabase(callback);
 }
 
 void AdsImpl::Shutdown(ShutdownCallback callback) {
@@ -424,75 +422,77 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   user_activity_ = std::make_unique<UserActivity>();
 }
 
-void AdsImpl::InitializeStep2(const Result result,
-                              InitializeCallback callback) {
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to initialize database: " << database_->get_last_message());
-    callback(FAILED);
-    return;
-  }
+void AdsImpl::InitializeDatabase(InitializeCallback callback) {
+  database_->CreateOrOpen([=](const Result result) {
+    if (result != SUCCESS) {
+      BLOG(0,
+           "Failed to initialize database: " << database_->get_last_message());
+      callback(FAILED);
+      return;
+    }
 
-  const auto initialize_step_3_callback =
-      std::bind(&AdsImpl::InitializeStep3, this, std::placeholders::_1,
-                std::move(callback));
-  Client::Get()->Initialize(initialize_step_3_callback);
+    MigrateConversions(callback);
+  });
 }
 
-void AdsImpl::InitializeStep3(const Result result,
-                              InitializeCallback callback) {
-  if (result != SUCCESS) {
-    callback(FAILED);
-    return;
-  }
+void AdsImpl::MigrateConversions(InitializeCallback callback) {
+  conversions::Migrate([=](const Result result) {
+    if (result != SUCCESS) {
+      callback(FAILED);
+      return;
+    }
 
-  const auto initialize_step_4_callback =
-      std::bind(&AdsImpl::InitializeStep4, this, std::placeholders::_1,
-                std::move(callback));
-  ConfirmationsState::Get()->Initialize(initialize_step_4_callback);
+    LoadClientState(callback);
+  });
 }
 
-void AdsImpl::InitializeStep4(const Result result,
-                              InitializeCallback callback) {
-  if (result != SUCCESS) {
-    callback(FAILED);
-    return;
-  }
+void AdsImpl::LoadClientState(InitializeCallback callback) {
+  Client::Get()->Initialize([=](const Result result) {
+    if (result != SUCCESS) {
+      callback(FAILED);
+      return;
+    }
 
-  const auto initialize_step_5_callback =
-      std::bind(&AdsImpl::InitializeStep5, this, std::placeholders::_1,
-                std::move(callback));
-  ad_notifications_->Initialize(initialize_step_5_callback);
+    LoadConfirmationsState(callback);
+  });
 }
 
-void AdsImpl::InitializeStep5(const Result result,
-                              InitializeCallback callback) {
-  if (result != SUCCESS) {
-    callback(FAILED);
-    return;
-  }
+void AdsImpl::LoadConfirmationsState(InitializeCallback callback) {
+  ConfirmationsState::Get()->Initialize([=](const Result result) {
+    if (result != SUCCESS) {
+      callback(FAILED);
+      return;
+    }
 
-  const auto initialize_step_6_callback =
-      std::bind(&AdsImpl::InitializeStep6, this, std::placeholders::_1,
-                std::move(callback));
-  conversions_->Initialize(initialize_step_6_callback);
+    LoadAdNotificationsState(callback);
+  });
 }
 
-void AdsImpl::InitializeStep6(const Result result,
-                              InitializeCallback callback) {
-  if (result != SUCCESS) {
-    callback(FAILED);
-    return;
-  }
+void AdsImpl::LoadAdNotificationsState(InitializeCallback callback) {
+  ad_notifications_->Initialize([=](const Result result) {
+    if (result != SUCCESS) {
+      callback(FAILED);
+      return;
+    }
+
+    Initialized(callback);
+  });
+}
+
+void AdsImpl::Initialized(InitializeCallback callback) {
+  BLOG(1, "Successfully initialized ads");
 
   is_initialized_ = true;
-
-  BLOG(1, "Successfully initialized ads");
 
   AdsClientHelper::Get()->SetIntegerPref(prefs::kIdleThreshold,
                                          kIdleThresholdInSeconds);
 
   callback(SUCCESS);
 
+  Start();
+}
+
+void AdsImpl::Start() {
 #if defined(OS_ANDROID)
   // Ad notifications do not sustain a reboot or update, so we should remove
   // orphaned ad notifications
@@ -620,8 +620,10 @@ void AdsImpl::OnAdTransfer(const AdInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ConfirmationType::kTransferred);
 }
 
-void AdsImpl::OnConversion(const std::string& creative_instance_id) {
-  account_->Deposit(creative_instance_id, ConfirmationType::kConversion);
+void AdsImpl::OnConversion(
+    const ConversionQueueItemInfo& conversion_queue_item) {
+  account_->Deposit(conversion_queue_item.creative_instance_id,
+                    ConfirmationType::kConversion);
 }
 
 }  // namespace ads

@@ -22,12 +22,13 @@ struct AdEventInfo {
   ~AdEventInfo();
 
   AdType type = AdType::kUndefined;
-  std::string uuid;
-  std::string creative_instance_id;
-  std::string creative_set_id;
-  std::string campaign_id;
-  int64_t timestamp = 0;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;
+  std::string uuid;
+  std::string campaign_id;
+  std::string creative_set_id;
+  std::string creative_instance_id;
+  std::string advertiser_id;
+  int64_t timestamp = 0;
 };
 
 using AdEventList = std::vector<AdEventInfo>;

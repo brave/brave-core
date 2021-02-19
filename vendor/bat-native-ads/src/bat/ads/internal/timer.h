@@ -33,9 +33,8 @@ class Timer {
   base::Time Start(const base::TimeDelta& delay, base::OnceClosure user_task);
 
   // Start a timer to run at a geometrically distributed number of seconds
-  // |~delay| from now backing off exponentially for each call. If the timer is
-  // already running, it will be replaced to call the given |user_task|. Returns
-  // the time the delayed task will be fired
+  // |~delay| from now. If the timer is already running, it will be replaced to
+  // call the given |user_task|. Returns the time the delayed task will be fired
   base::Time StartWithPrivacy(const base::TimeDelta& delay,
                               base::OnceClosure user_task);
 

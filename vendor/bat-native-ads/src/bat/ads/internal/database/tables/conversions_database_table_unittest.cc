@@ -22,7 +22,7 @@ class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
 
   ~BatAdsConversionsDatabaseTableTest() override = default;
 
-  void Save(const ConversionList conversions) {
+  void Save(const ConversionList& conversions) {
     database_table_->Save(conversions, [](const Result result) {
       ASSERT_EQ(Result::SUCCESS, result);
     });

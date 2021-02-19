@@ -30,13 +30,6 @@ class BatAdsConversionsTest : public UnitTestBase {
 
   ~BatAdsConversionsTest() override = default;
 
-  void SetUp() override {
-    UnitTestBase::SetUp();
-
-    conversions_->Initialize(
-        [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
-  }
-
   void SaveConversions(const ConversionList& conversions) {
     conversions_database_table_->Save(conversions, [](const Result result) {
       ASSERT_EQ(Result::SUCCESS, result);
@@ -55,7 +48,7 @@ class BatAdsConversionsTest : public UnitTestBase {
     AdEventInfo ad_event;
     ad_event.creative_instance_id = "7a3b6d9f-d0b7-4da6-8988-8d5b8938c94f";
     ad_event.creative_set_id = creative_set_id;
-    ad_event.timestamp = Now();
+    ad_event.timestamp = NowAsTimestamp();
     ad_event.confirmation_type = confirmation_type;
 
     LogAdEvent(ad_event,

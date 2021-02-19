@@ -64,6 +64,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditArms, "");
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
                                "");
+
+  registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
 }
 
 }  // namespace brave_ads

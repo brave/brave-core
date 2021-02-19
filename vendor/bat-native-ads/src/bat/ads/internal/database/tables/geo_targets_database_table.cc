@@ -59,8 +59,8 @@ void GeoTargets::Migrate(DBTransaction* transaction, const int to_version) {
   DCHECK(transaction);
 
   switch (to_version) {
-    case 9: {
-      MigrateToV9(transaction);
+    case 10: {
+      MigrateToV10(transaction);
       break;
     }
 
@@ -104,7 +104,7 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void GeoTargets::CreateTableV9(DBTransaction* transaction) {
+void GeoTargets::CreateTableV10(DBTransaction* transaction) {
   DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
@@ -122,12 +122,12 @@ void GeoTargets::CreateTableV9(DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void GeoTargets::MigrateToV9(DBTransaction* transaction) {
+void GeoTargets::MigrateToV10(DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, get_table_name());
 
-  CreateTableV9(transaction);
+  CreateTableV10(transaction);
 }
 
 }  // namespace table

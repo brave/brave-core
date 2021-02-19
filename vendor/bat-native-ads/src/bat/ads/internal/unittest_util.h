@@ -129,15 +129,19 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
 
 void MockPrefs(const std::unique_ptr<AdsClientMock>& mock);
 
+int64_t TimestampFromDateString(const std::string& date);
 base::Time TimeFromDateString(const std::string& date);
 
-int64_t DistantPast();
+int64_t DistantPastAsTimestamp();
+base::Time DistantPast();
 std::string DistantPastAsISO8601();
 
-int64_t Now();
+int64_t NowAsTimestamp();
+base::Time Now();
 std::string NowAsISO8601();
 
-int64_t DistantFuture();
+int64_t DistantFutureAsTimestamp();
+base::Time DistantFuture();
 std::string DistantFutureAsISO8601();
 
 }  // namespace ads
