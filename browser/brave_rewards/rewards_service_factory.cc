@@ -11,20 +11,22 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "extensions/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/event_router_factory.h"
@@ -90,12 +92,16 @@ RewardsServiceFactory::RewardsServiceFactory()
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
-  registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
-                 content::NotificationService::AllSources());
+  if (g_browser_process && g_browser_process->profile_manager())
+    g_browser_process->profile_manager()->AddObserver(this);
 #endif
 }
 
 RewardsServiceFactory::~RewardsServiceFactory() {
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
+  if (g_browser_process && g_browser_process->profile_manager())
+    g_browser_process->profile_manager()->RemoveObserver(this);
+#endif
 }
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
@@ -141,20 +147,9 @@ bool RewardsServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
 }
 
-void RewardsServiceFactory::Observe(
-    int type,
-    const content::NotificationSource& source,
-    const content::NotificationDetails& details) {
+void RewardsServiceFactory::OnProfileAdded(Profile* profile) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  switch (type) {
-    case chrome::NOTIFICATION_PROFILE_CREATED: {
-      auto* profile = content::Source<Profile>(source).ptr();
-      OverridePrefsForPrivateProfileUserPrefs(profile);
-      break;
-    }
-    default:
-      NOTREACHED();
-  }
+  OverridePrefsForPrivateProfileUserPrefs(profile);
 #endif
 }
 

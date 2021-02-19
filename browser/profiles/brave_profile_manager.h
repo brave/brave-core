@@ -9,8 +9,10 @@
 #include <string>
 
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 
-class BraveProfileManager : public ProfileManager {
+class BraveProfileManager : public ProfileManager,
+                            public ProfileManagerObserver {
  public:
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
   ~BraveProfileManager() override;
@@ -23,16 +25,16 @@ class BraveProfileManager : public ProfileManager {
                          bool incognito,
                          ProfileLoadedCallback callback) override;
 
-  void Observe(int type,
-               const content::NotificationSource& source,
-               const content::NotificationDetails& details) override;
+  // ProfileManagerObserver:
+  void OnProfileAdded(Profile* profile) override;
 
  protected:
   void DoFinalInitForServices(Profile* profile,
-                               bool go_off_the_record) override;
+                              bool go_off_the_record) override;
 
  private:
   void MigrateProfileNames();
+
   DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
 };
 

@@ -17,6 +17,8 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -37,11 +39,13 @@ const int kNextMonth = 7;
 
 class BraveStatsUpdaterTest : public testing::Test {
  public:
-  BraveStatsUpdaterTest() {}
+  BraveStatsUpdaterTest()
+      : profile_manager_(TestingBrowserProcess::GetGlobal()) {}
   ~BraveStatsUpdaterTest() override {}
 
   void SetUp() override {
     EXPECT_TRUE(temp_dir_.CreateUniqueTempDir());
+    EXPECT_TRUE(profile_manager_.SetUp());
     profile_ = brave_ads::CreateBraveAdsProfile(temp_dir_.GetPath());
     EXPECT_TRUE(profile_.get() != NULL);
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
@@ -64,6 +68,7 @@ class BraveStatsUpdaterTest : public testing::Test {
 
  private:
   TestingPrefServiceSimple testing_local_state_;
+  TestingProfileManager profile_manager_;
   std::unique_ptr<Profile> profile_;
   base::ScopedTempDir temp_dir_;
   content::BrowserTaskEnvironment task_environment_;
