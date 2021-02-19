@@ -78,14 +78,14 @@ void Check(bool expected_result,
     Engine& engine, const std::string& url, const std::string& host,
     const std::string& tab_host, bool third_party,
     const std::string& resource_type) {
-  bool did_match_exception;
-  bool did_match_important;
+  bool did_match_exception = false;
+  bool did_match_important = false;
+  bool did_match_rule = false;
   std::string redirect;
-  bool match = engine.matches(url, host, tab_host, third_party,
-      resource_type, &did_match_exception, &did_match_important, &redirect,
-      false, true);
+  engine.matches(url, host, tab_host, third_party, resource_type,
+      &did_match_rule, &did_match_exception, &did_match_important, &redirect);
   cout << test_description << "... ";
-  if (expected_result != match) {
+  if (expected_result != did_match_rule) {
     cout << "Failed!" << endl;
     cout << "Unexpected result: " << url << " in " << tab_host << endl;
     num_failed++;
@@ -101,7 +101,7 @@ void Check(bool expected_result,
     cout << "Passed!" << endl;
     num_passed++;
   }
-  assert(expected_result == match);
+  assert(expected_result == did_match_rule);
   assert(did_match_exception == expected_did_match_exception);
   assert(did_match_important == expected_did_match_important);
   assert(redirect == expected_redirect);
