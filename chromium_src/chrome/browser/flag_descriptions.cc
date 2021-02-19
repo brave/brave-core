@@ -53,4 +53,8 @@ const char kBraveSuperReferralDescription[] =
 const char kBraveEphemeralStorageName[] = "Enable Ephemeral Storage";
 const char kBraveEphemeralStorageDescription[] =
     "Use ephemeral storage for third-party frames";
+const char kBravePermissionLifetimeName[] = "Permission Lifetime";
+const char kBravePermissionLifetimeDescription[] =
+    "Enables the option to choose a time period after which a permission will "
+    "be automatically revoked";
 }  // namespace flag_descriptions

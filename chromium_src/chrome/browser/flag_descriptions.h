@@ -35,6 +35,8 @@ extern const char kBraveSuperReferralName[];
 extern const char kBraveSuperReferralDescription[];
 extern const char kBraveEphemeralStorageName[];
 extern const char kBraveEphemeralStorageDescription[];
+extern const char kBravePermissionLifetimeName[];
+extern const char kBravePermissionLifetimeDescription[];
 }  // namespace flag_descriptions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
