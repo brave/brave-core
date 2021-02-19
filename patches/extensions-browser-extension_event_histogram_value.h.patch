@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 101a2ea42eac260ca19342fa6a5172cddab11822..74e47e51bb31aa3ccd99c0bb69cd182c0decde1e 100644
+index de676cf68ee633b8e5b168bbe3dda5d833b67c31..b7353e0c7f67e2ee5964328c628d998a7d1534b1 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -494,6 +494,20 @@ enum HistogramValue {
-   TAB_GROUPS_ON_MOVED = 472,
+@@ -495,6 +495,20 @@ enum HistogramValue {
    TAB_GROUPS_ON_REMOVED = 473,
    TAB_GROUPS_ON_UPDATED = 474,
+   FILE_MANAGER_PRIVATE_ON_DRIVE_CONFIRM_DIALOG = 475,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,
