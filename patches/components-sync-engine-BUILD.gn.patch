@@ -1,0 +1,20 @@
+diff --git a/components/sync/engine/BUILD.gn b/components/sync/engine/BUILD.gn
+index 9fd0e5fab5f580fd28c12cf8ff4dc2025fcc8a9c..97430676334427df4e44b426fa59e1c931962fac 100644
+--- a/components/sync/engine/BUILD.gn
++++ b/components/sync/engine/BUILD.gn
+@@ -1,6 +1,7 @@
+ # Copyright 2021 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/components/sync/sources.gni")
+ 
+ static_library("engine") {
+   sources = [
+@@ -162,6 +163,7 @@ static_library("engine") {
+     "traffic_logger.h",
+     "update_handler.h",
+   ]
++  sources += brave_components_sync_sources
+ 
+   configs += [
+     # The target has >50 .cc files, so speed up the build with
