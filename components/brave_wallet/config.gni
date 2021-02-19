@@ -1,0 +1,3 @@
+declare_args() {
+  brave_infura_project_id = ""
+}
