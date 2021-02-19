@@ -135,15 +135,6 @@ std::string URLMethodToRequestType(ads::UrlRequestMethod method) {
   }
 }
 
-void PostWriteCallback(
-    const base::Callback<void(bool success)>& callback,
-    scoped_refptr<base::SequencedTaskRunner> reply_task_runner,
-    const bool success) {
-  // We can't run |callback| on the current thread. Bounce back to
-  // the |reply_task_runner| which is the correct sequenced thread.
-  reply_task_runner->PostTask(FROM_HERE, base::Bind(callback, success));
-}
-
 std::string LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string data;
   bool success = base::ReadFileToString(path, &data);
@@ -1813,16 +1804,12 @@ void AdsServiceImpl::UrlRequest(ads::UrlRequestPtr url_request,
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
                           ads::ResultCallback callback) {
-  base::ImportantFileWriter writer(base_path_.AppendASCII(name),
-                                   file_task_runner_);
-
-  writer.RegisterOnNextWriteCallbacks(
-      base::Closure(), base::Bind(&PostWriteCallback,
-                                  base::Bind(&AdsServiceImpl::OnSaved,
-                                             AsWeakPtr(), std::move(callback)),
-                                  base::SequencedTaskRunnerHandle::Get()));
-
-  writer.WriteNow(std::make_unique<std::string>(value));
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
+                     base_path_.AppendASCII(name), value, base::StringPiece()),
+      base::BindOnce(&AdsServiceImpl::OnSaved, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void AdsServiceImpl::LoadUserModelForId(const std::string& id,
