@@ -14,6 +14,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -106,18 +107,19 @@ std::string LoadDataResource(const int id) {
   return resource_bundle.GetRawDataResource(id).as_string();
 }
 
-bool IsVettedSearchEngine(const std::string& host) {
-  for (size_t i = 0; i < g_vetted_search_engines->size(); i++) {
-    size_t found_pos = host.find((*g_vetted_search_engines)[i]);
-    if (found_pos != std::string::npos) {
-      size_t last_dot_pos = host.find(".", found_pos + 1);
-      if (last_dot_pos == std::string::npos)
-        return false;
-      if (host.find(".", last_dot_pos + 1) == std::string::npos &&
-          (found_pos == 0 || host[found_pos - 1] == '/' ||
-           host[found_pos - 1] == '\\' || host[found_pos - 1] == ':')) {
+bool IsVettedSearchEngine(const GURL& url) {
+  std::string domain_and_registry =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  size_t registry_len = net::registry_controlled_domains::GetRegistryLength(
+      url, net::registry_controlled_domains::EXCLUDE_UNKNOWN_REGISTRIES,
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (domain_and_registry.length() > registry_len + 1) {
+    std::string host = domain_and_registry.substr(
+        0, domain_and_registry.length() - registry_len - 1);
+    for (size_t i = 0; i < g_vetted_search_engines->size(); i++) {
+      if ((*g_vetted_search_engines)[i] == host)
         return true;
-      }
     }
   }
 
@@ -281,7 +283,7 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 
   // Otherwise, if its a vetted engine AND we're not in aggressive
   // mode, also don't do cosmetic filtering.
-  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_.host()))
+  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
     return;
 
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
@@ -333,7 +335,7 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
   // If its a vetted engine AND we're not in aggressive
   // mode, don't do cosmetic filtering.
-  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_.host()))
+  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
     return;
 
   // We expect a List value from adblock service. That is
