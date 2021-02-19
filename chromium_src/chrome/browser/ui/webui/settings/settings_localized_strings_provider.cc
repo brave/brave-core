@@ -268,7 +268,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
     {"showFullUrls", IDS_CONTEXT_MENU_SHOW_FULL_URLS},
   };
-  AddLocalizedStringsBulk(html_source, localized_strings);
+  html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("webRTCLearnMoreURL",
                          base::ASCIIToUTF16(kWebRTCLearnMoreURL));
   html_source->AddString("googleLoginLearnMoreURL",
