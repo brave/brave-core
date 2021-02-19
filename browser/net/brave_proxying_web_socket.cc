@@ -127,7 +127,8 @@ void BraveProxyingWebSocket::WebSocketFactoryRun(
     std::vector<network::mojom::HttpHeaderPtr> additional_headers,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
-    mojo::PendingRemote<network::mojom::AuthenticationHandler> auth_handler,
+    mojo::PendingRemote<network::mojom::WebSocketAuthenticationHandler>
+        auth_handler,
     mojo::PendingRemote<network::mojom::TrustedHeaderClient>
         trusted_header_client) {
   DCHECK(!forwarding_handshake_client_);
