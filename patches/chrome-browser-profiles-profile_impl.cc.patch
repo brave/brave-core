@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index 4db0fc51825935913e87ce46c27c58f71d30fb0e..e3b35d654660af517d4d5f816f78628ca2a33992 100644
+index ad50d16f5e70dd59b17f42b76e33a9fe8b8dbef6..346abfeabb02dd9f0ec144af0f9bd50108753fda 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
-@@ -402,7 +402,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
+@@ -404,7 +404,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
      NOTREACHED();
    }
- 
+
 -  std::unique_ptr<Profile> profile = base::WrapUnique(new ProfileImpl(
 +  std::unique_ptr<Profile> profile = base::WrapUnique(new BraveProfileImpl(
        path, delegate, create_mode, creation_time, io_task_runner));
- #if BUILDFLAG(ENABLE_SUPERVISED_USERS) && !defined(OS_ANDROID) && \
-     !BUILDFLAG(IS_CHROMEOS_ASH)
+   return profile;
+ }

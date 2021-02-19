@@ -1,12 +1,12 @@
 diff --git a/components/component_updater/component_updater_service.h b/components/component_updater/component_updater_service.h
-index 9de20a64577ba39d467207ef28058a03bc7fb218..6131fd7f0810c4082b735b04d8add24baf4f4619 100644
+index d87906676548af1ef77303ef03cf7fc709ed2f6e..fc5773a6c93f91c7e9b251462c0ea7b2b15281e4 100644
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
-@@ -163,6 +163,7 @@ class OnDemandUpdater {
+@@ -156,6 +156,7 @@ class OnDemandUpdater {
    enum class Priority { BACKGROUND = 0, FOREGROUND = 1 };
- 
+
    virtual ~OnDemandUpdater() = default;
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_
- 
+
   private:
    friend class OnDemandTester;

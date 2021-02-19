@@ -1,5 +1,5 @@
 diff --git a/components/external_intents/android/BUILD.gn b/components/external_intents/android/BUILD.gn
-index 2eccc0ef9a0add5185cb474d8803b0588519c817..82a87d900968a1b8764fe192e67ca62f85c84d42 100644
+index 5dc05eb5081dfec108ad0bee74da25f774a8abde..4907f012c0ed01b6c8bbf0a69009344419dc5753 100644
 --- a/components/external_intents/android/BUILD.gn
 +++ b/components/external_intents/android/BUILD.gn
 @@ -64,6 +64,7 @@ static_library("android") {

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 508e6780855e31b4e9e520b793527c0e295ed01a..3a3394682ad8f993dd418745b4914c937683f9bc 100644
+index ced78468e1213a9542e791c17626b6a485dcecf4..99c1e15eed627d43d3dbc74b615186807dcc47d8 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2491,6 +2491,7 @@ static_library("browser") {
+@@ -2492,6 +2492,7 @@ static_library("browser") {
        "performance_monitor/metric_evaluator_helper_posix.h",
      ]
    }
 +  sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps
- 
+
    if (is_android) {
      sources += [

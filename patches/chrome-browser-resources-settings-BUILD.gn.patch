@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 130164102f62d897802dfec76eab9bafdb363b80..c3a233865fb55453983ad48fbd747b51f02bc040 100644
+index fd99b6c73f84e69b77bfd03e3fdfdb0320d98515..2233a37d8c2868b04b01eff0ea90d4558fc37605 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -46,6 +46,7 @@ if (optimize_webui) {
@@ -9,12 +9,12 @@ index 130164102f62d897802dfec76eab9bafdb363b80..c3a233865fb55453983ad48fbd747b51
 +    deps += brave_deps_chrome_browser_resources_settings_build
    }
  }
- 
+
 @@ -93,6 +94,7 @@ generate_grd("build_grd") {
        "$target_gen_dir/$preprocess_gen_manifest",
      ]
    }
 +  deps += [ "//brave/browser/resources/settings:resources" ]
  }
- 
+
  preprocess_if_expr("preprocess") {

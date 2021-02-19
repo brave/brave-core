@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index 2c1ace66fecfe086c3f500995c11ca5424f9560f..6882266bd99dcc78e446b33b93b956e8f664d957 100644
+index f75e4c4e1bc205b19fff6ae99bd14d53e9781809..efd074a261e42742d666ea8068110e61f7dd7a73 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
 @@ -3089,16 +3089,17 @@ void NavigationControllerImpl::NavigateWithoutEntry(
@@ -17,9 +17,8 @@ index 2c1ace66fecfe086c3f500995c11ca5424f9560f..6882266bd99dcc78e446b33b93b956e8
        DiscardPendingEntry(false);
        return;
      }
- 
+
 -    HandleRendererDebugURL(node, params.url);
 +    HandleRendererDebugURL(node, url);
      return;
    }
- 
