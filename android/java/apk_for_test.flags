@@ -192,3 +192,15 @@
 -keep class org.chromium.chrome.browser.password_manager.settings.BravePasswordSettingsBase {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.app.appmenu.BraveAppMenuPropertiesDelegateImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.customtabs.CustomTabAppMenuPropertiesDelegate {
+    public <init>(...);
+}

@@ -115,6 +115,12 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/password_manager/settings/PasswordSettings"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate"));
     }
 
     @Test
@@ -233,6 +239,12 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
                 WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
                 FullscreenManager.class, int.class, ObservableSupplier.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
+                "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
+                Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
+                TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
+                ObservableSupplier.class, ModalDialogManager.class));
     }
 
     @Test

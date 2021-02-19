@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:width="24dp"
+    android:height="24dp">
+    <path
+        android:pathData="M24 21C24 22.1023 23.1023 23 22 23H2C0.897715 23 0 22.1023 0 21V5.99999V3C0 1.89772 0.897715 1 2 1H22C23.1023 1 24 1.89772 24 3V5.99999V21ZM21.9999 4.99999V3.00001H1.99994V4.99999H21.9999ZM1.99994 6.99999H21.9999V21H1.99994V6.99999ZM10.9999 10C10.9999 9.44772 11.4477 9.00001 11.9999 9.00001C12.5522 9.00001 12.9999 9.44772 12.9999 10V13H16.0001C16.5523 13 17.0001 13.4477 17.0001 14C17.0001 14.5523 16.5523 15 16.0001 15H12.9999V18C12.9999 18.5523 12.5522 19 11.9999 19C11.4477 19 10.9999 18.5523 10.9999 18V15H8.00006C7.44778 15 7.00006 14.5523 7.00006 14C7.00006 13.4477 7.44778 13 8.00006 13H10.9999V10Z"
+        android:fillType="evenOdd"
+        android:fillColor="#495057" />
+</vector>
