@@ -162,14 +162,12 @@ std::unique_ptr<base::ListValue> GetCustomProfileAvatarIconsAndLabels(
 #if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
   //  Insert the 'placeholder' item, so it is still selectable
   //  in the Settings and Profile Manager WebUI.
-  std::unique_ptr<base::DictionaryValue> avatar_info(
-      new base::DictionaryValue());
-  avatar_info->SetString("url", profiles::GetPlaceholderAvatarIconUrl());
-  avatar_info->SetString(
-      "label", l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER));
-  if (selected_avatar_idx == GetPlaceholderAvatarIndex())
-    avatar_info->SetBoolean("selected", true);
-  avatars->Insert(0, std::move(avatar_info));
+  avatars->Insert(
+      0, GetAvatarIconAndLabelDict(
+             profiles::GetPlaceholderAvatarIconUrl(),
+             l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
+             GetPlaceholderAvatarIndex(),
+             selected_avatar_idx == GetPlaceholderAvatarIndex(), false));
 #endif
   return avatars;
 }
