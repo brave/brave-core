@@ -2,8 +2,8 @@
 # It is not intended for manual editing.
 [[package]]
 name = "adblock"
-version = "0.3.4"
-source = "git+https://github.com/brave/adblock-rust?rev=c647890b6d065daf98cba540d2232c100698c498#c647890b6d065daf98cba540d2232c100698c498"
+version = "0.3.5"
+source = "git+https://github.com/brave/adblock-rust?rev=732994bf57f4a5c7f3a2a7b873a97571737def42#732994bf57f4a5c7f3a2a7b873a97571737def42"
 dependencies = [
  "base64",
  "bitflags",
@@ -100,6 +100,16 @@ dependencies = [
  "crc32fast",
  "libc",
  "miniz_oxide",
+]
+
+[[package]]
+name = "form_urlencoded"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5fc25a87fa4fd2094bffb06925852034d90a17f0d1e05197d4956d3555752191"
+dependencies = [
+ "matches",
+ "percent-encoding",
 ]
 
 [[package]]
@@ -356,10 +366,11 @@ checksum = "826e7639553986605ec5979c7dd957c7895e93eabed50ab2ffa7f6128a75097c"
 
 [[package]]
 name = "url"
-version = "2.1.1"
+version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "829d4a8476c35c9bf0bbce5a3b23f4106f79728039b726d292bb93bc106787cb"
+checksum = "9ccd964113622c8e9322cfac19eb1004a07e636c545f325da085d5cdde6f1f8b"
 dependencies = [
+ "form_urlencoded",
  "idna",
  "matches",
  "percent-encoding",
