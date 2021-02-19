@@ -1,0 +1,21 @@
+diff --git a/extensions/browser/user_script_manager.h b/extensions/browser/user_script_manager.h
+index aa6510c99e26c0700629c9f3e6c368cc742825fe..420e21f580750dff79a017146784c6eb9d21ed71 100644
+--- a/extensions/browser/user_script_manager.h
++++ b/extensions/browser/user_script_manager.h
+@@ -22,7 +22,7 @@
+ namespace content {
+ class BrowserContext;
+ }
+-
++class BraveWalletService;
+ namespace extensions {
+ class UserScriptLoader;
+ 
+@@ -50,6 +50,7 @@ class UserScriptManager : public ExtensionRegistryObserver {
+   WebUIUserScriptLoader* GetUserScriptLoaderForWebUI(const GURL& url);
+ 
+  private:
++  friend class ::BraveWalletService;
+   // ExtensionRegistryObserver implementation.
+   void OnExtensionLoaded(content::BrowserContext* browser_context,
+                          const Extension* extension) override;
