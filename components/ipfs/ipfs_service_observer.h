@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_SERVICE_OBSERVER_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_SERVICE_OBSERVER_H_
 
+#include <string>
+#include <vector>
+
 #include "base/observer_list_types.h"
 
 namespace ipfs {
@@ -15,6 +18,8 @@ class IpfsServiceObserver : public base::CheckedObserver {
   ~IpfsServiceObserver() override {}
   virtual void OnIpfsLaunched(bool result, int64_t pid) {}
   virtual void OnIpfsShutdown() {}
+  virtual void OnGetConnectedPeers(bool succes,
+                                   const std::vector<std::string>& peers) {}
 };
 
 }  // namespace ipfs

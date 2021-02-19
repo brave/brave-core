@@ -1,0 +1,70 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#fff">
+  <title>$i18n{tabTitle}</title>
+  <link rel="stylesheet" href="ipfs_onboarding.css">
+  <script src="../../../../../ui/webui/resources/js/assert.js"></script>
+  <script src="../../../../../ui/webui/resources/js/util.js"></script>
+  <script src="../../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
+  <script src="ipfs_onboarding.js"></script>
+</head>
+<body id="body" class="$i18nRaw{braveTheme}" >
+  <div class="interstitial-wrapper">
+    <div id="main-content">
+      <div class="header-logo">
+        <img alt="header brave logo" src="./assets/brave-ipfs.svg" />
+      </div>
+      <div id="main-message">
+        <span class="heading">
+          $i18nRaw{heading}
+        </span>
+        <p class="copy">
+          $i18nRaw{primaryParagraph}
+          <a id="learn-more"
+          class="info-link"
+          href>
+            $i18nRaw{learnMore}
+          </a>
+        </p>
+      </div>
+    </div>
+    <div class="nav-wrapper">
+      <div class="control-box">
+        <div class="button-wrapper">
+          <button class="button" id="local-node-button">
+            $i18n{localNodeButton}
+          </button>
+        <div id="error-container" class="error-container-hidden">
+        </div>
+        </div>
+        <div class="copy-wrapper">
+          <p>$i18n{localNodeText}</p>
+        </div>
+      </div>
+      <div class="control-box">
+        <div class="button-wrapper">
+          <button class="button" id="public-gateway-button">
+            $i18n{publicGatewayButton}
+          </button>
+        </div>
+        <div class="copy-wrapper">
+          <p>$i18n{publicGatewayText}</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <p class="copy">
+        $i18nRaw{footerText}
+        <a id="open-settings"
+        class="info-link"
+        href>
+          $i18nRaw{settings}.
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="background-container">
+    <div class="background"></div>
+  </div>
+</body>

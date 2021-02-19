@@ -1,8 +1,8 @@
-import("//build/config/features.gni")
-import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//build/config/features.gni")
 
 source_set("infobars") {
   # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
@@ -14,9 +14,9 @@ source_set("infobars") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/browser/ui",
     "//brave/components/p3a",
-    "//brave/app:brave_generated_resources_grit",
     "//chrome/app:chromium_strings",
     "//chrome/browser/ui",
     "//components/infobars/core",
@@ -43,13 +43,9 @@ source_set("infobars") {
   }
 
   if (ipfs_enabled) {
-    sources += [
-      "ipfs_infobar_delegate.cc",
-      "ipfs_infobar_delegate.h",
-    ]
     deps += [
       "//brave/components/ipfs",
-      "//components/user_prefs"
+      "//components/user_prefs",
     ]
   }
 
@@ -60,8 +56,8 @@ source_set("infobars") {
     ]
 
     deps += [
-      "//brave/components/brave_wayback_machine",
       "//brave/common:switches",
+      "//brave/components/brave_wayback_machine",
     ]
   }
 

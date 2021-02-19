@@ -5,19 +5,41 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include <string>
 #include <vector>
 
-#include "brave/browser/infobars/ipfs_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
-#include "chrome/browser/infobars/infobar_service.h"
+#include "chrome/browser/shell_integration.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+
+namespace {
+// Sets current executable as default protocol handler in a system.
+void SetupIPFSProtocolHandler(const std::string& protocol) {
+  auto isDefaultCallback = [](const std::string& protocol,
+                              shell_integration::DefaultWebClientState state) {
+    if (state == shell_integration::IS_DEFAULT) {
+      VLOG(1) << protocol << " already has a handler";
+      return;
+    }
+    VLOG(1) << "Set as default handler for " << protocol;
+    // The worker pointer is reference counted. While it is running, the
+    // sequence it runs on will hold references it will be automatically
+    // freed once all its tasks have finished.
+    base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(
+        protocol)
+        ->StartSetAsDefault(base::NullCallback());
+  };
+
+  base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(protocol)
+      ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
+}
+}  // namespace
 
 namespace ipfs {
 
@@ -48,16 +70,16 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
 
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       pref_service_->GetInteger(kIPFSResolveMethod));
+  auto* browser_context = web_contents()->GetBrowserContext();
   if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
       handle->GetResponseHeaders() &&
       handle->GetResponseHeaders()->HasHeader("x-ipfs-path") &&
-      IsDefaultGatewayURL(handle->GetURL(),
-                          web_contents()->GetBrowserContext())) {
-    InfoBarService* infobar_service =
-        InfoBarService::FromWebContents(web_contents());
-    if (infobar_service) {
-      auto* browser_context = web_contents()->GetBrowserContext();
-      IPFSInfoBarDelegate::Create(infobar_service, browser_context);
+      IsDefaultGatewayURL(handle->GetURL(), browser_context)) {
+    auto infobar_count = pref_service_->GetInteger(kIPFSInfobarCount);
+    if (!infobar_count) {
+      pref_service_->SetInteger(kIPFSInfobarCount, infobar_count + 1);
+      SetupIPFSProtocolHandler(ipfs::kIPFSScheme);
+      SetupIPFSProtocolHandler(ipfs::kIPNSScheme);
     }
   }
 }

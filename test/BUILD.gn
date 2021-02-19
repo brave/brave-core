@@ -734,7 +734,6 @@ if (!is_android) {
       sources += [
         "//brave/browser/extensions/api/ipfs_apitest.cc",
         "//brave/browser/ipfs/ipfs_policy_browsertest.cc",
-        "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
         "//brave/browser/net/ipfs_redirect_network_delegate_helper_browsertest.cc",
       ]
       deps += [ "//brave/components/ipfs" ]

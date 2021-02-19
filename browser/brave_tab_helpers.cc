@@ -65,7 +65,6 @@
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/browser/infobars/ipfs_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #endif

@@ -34,6 +34,12 @@
     <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
       Learn more about IPFS and privacy
     </message>
+    <message name="IDS_IPFS_SERVICE_LAUNCH_RETRY" desc="Retry button text for IPFS interstitial page.">
+      Try again
+    </message>
+    <message name="IDS_IPFS_SERVICE_LAUNCH_ERROR" desc="IPFS service launch error message.">
+      IPFS Service launch error
+    </message>
     <message name="IDS_IPFS_NOT_CONNECTED_TITLE" desc="Title of IPFS not connected interstitial page.">
       IPFS Not Connected
     </message>
@@ -54,6 +60,51 @@
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_EXPLANATION" desc="The text of the IPFS not connected interstitial that will be displayed when the user presses the 'Advanced' button for additional information.">
       Brave cannot load the requested IPFS resources either because the local node did not start, or because there are no connected peers available at the moment. If you choose "Proceed", Brave will automatically fall back to the default public gateway whenever using the local node fails. You can change this behavior at any point in Brave settings.
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_TITLE" desc="Title of IPFS onboarding interstitial page.">
+      IPFS Preference
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_HEADING" desc="Heading of IPFS onboarding interstitial page.">
+      Set your IPFS preference
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON" desc="The text for the button that enables a local node to work with IPFS.">
+      Use a local node
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON" desc="The text for the button that enables a public gateway to work with IPFS.">
+      Use a public gateway
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_PRIMARY_PARAGRAPH" desc="Main paragraph of IPFS onboarding interstitial page.">
+      IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S).
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_LEARN_MORE" desc="Learn more link following the opening paragraph.">
+      Learn more
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_TEXT" desc="Text describing the option to use a local IPFS node.">
+      Your computer contributes to the public network, but your IP address and any content you’re requesting or providing could be exposed. Content you request over IPFS is verified before being served to you.
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_TEXT" desc="Text describing the option to use a public IPFS gateway.">
+      Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your computer does not contribute to the public IPFS network.
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_FOOTER_TEXT" desc="Footer text for the IPFS interstitial page.">
+      You can change your preferences again in
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_SETTINGS" desc="Settings link at the end of footer text">
+      settings
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_INSTALLATION_STATUS" desc="Title of button for IPFS interstitial page.">
+      Installing...
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS" desc="Title of button for IPFS interstitial page.">
+      Waiting for peers...
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_TRY_AGAIN" desc="Retry button text for IPFS interstitial page.">
+      Try again
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_PEERS_ERROR" desc="Error message about no peers for IPFS interstitial page.">
+      No peers available, retrying... (<ph name="ATTEMPTS_NUMBER">$1<ex>5</ex></ph> attemps left)
+    </message>
+    <message name="IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR" desc="Error message about no peers for IPFS interstitial page.">
+      We have exceeded the limit of attemps, try again later.
     </message>
   </if>
 </grit-part>
