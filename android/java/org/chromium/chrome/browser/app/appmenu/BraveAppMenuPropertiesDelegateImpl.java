@@ -42,10 +42,16 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
     public void prepareMenu(Menu menu, AppMenuHandler handler) {
         super.prepareMenu(menu, handler);
 
+        maybeReplaceIcons(menu);
+    }
+
+    private void maybeReplaceIcons(Menu menu) {
         if (shouldShowIconBeforeItem()) {
             for (int i = 0; i < menu.size(); ++i) {
                 MenuItem item = menu.getItem(i);
-                if (item.getItemId() == R.id.new_incognito_tab_menu_id) {
+                if (item.hasSubMenu()) {
+                    maybeReplaceIcons(item.getSubMenu());
+                } else if (item.getItemId() == R.id.new_incognito_tab_menu_id) {
                     item.setIcon(AppCompatResources.getDrawable(
                             mContext, R.drawable.brave_menu_new_private_tab));
                 } else if (item.getItemId() == R.id.all_bookmarks_menu_id) {
