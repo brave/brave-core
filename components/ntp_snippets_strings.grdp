@@ -2,7 +2,7 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
 
-  <if expr="enable_feed_v1 or is_ios">
+  <if expr="is_ios">
     <message name="IDS_NTP_TITLE_NO_SUGGESTIONS" desc="On the New Tab Page, title text explaining there is no content." formatter_data="android_java">
       That’s all for now
     </message>

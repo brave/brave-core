@@ -195,7 +195,7 @@ CHAR-LIMIT guidelines:
     <file lang="zh-TW" path="translations/android_chrome_strings_zh-TW.xtb" />
     <file lang="zu" path="translations/android_chrome_strings_zu.xtb" />
   </translations>
-  <release allow_pseudo="false" seq="1">
+  <release seq="1">
     <messages fallback_to_english="true">
       <!-- NOTE: Generic strings used across multiple features belong in //components/browser_ui/strings/android. -->
 
@@ -276,6 +276,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_PREFS_SYNC_AND_SERVICES_CONTENT_DESCRIPTION" desc="The accessibility text to read when the 'Sync and Brave services' Settings page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
         You are currently customizing your Sync and Brave service settings. To finish turning on sync, tap the Confirm button near the bottom of the screen. Navigate up
+      </message>
+      <message name="IDS_PREFS_MANAGE_SYNC_SETTINGS_CONTENT_DESCRIPTION" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the 'Manage Sync Settings' page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
+        You are currently customizing your Sync settings. To finish turning on sync, tap the Confirm button near the bottom of the screen. Navigate up
       </message>
       <message name="IDS_SIGNIN_PREF_DISALLOWED_TITLE" desc="Title for the signin entry in Settings when signin is disallowed.">
         Not signed in
@@ -453,9 +456,6 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_AUTOFILL_CREATE_PROFILE" desc="Button that allows the user to create a new profile (which contains the user's name, address, etc) that will be automatically filled into web page forms. [CHAR-LIMIT=32]">
         Add address
-      </message>
-      <message name="IDS_AUTOFILL_EDIT_PROFILE" desc="Button that allows the user to edit a profile (which contains the user's name, address, etc) that can be automatically filled into web page forms. [CHAR-LIMIT=32]">
-        Edit address
       </message>
       <message name="IDS_AUTOFILL_CREATE_CREDIT_CARD" desc="Button that allows the user to add a new card that will be automatically filled into web page forms. This can be either credit, debit, or prepaid card. [CHAR-LIMIT=32]">
         Add card
@@ -777,29 +777,36 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
 
       <!-- Privacy Sandbox Settings. Used by //chrome/browser/privacy_sandbox. -->
-      <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy sandbox' page.">
-        Privacy sandbox
+      <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy Sandbox' page.">
+        Privacy Sandbox
       </message>
       <message name="IDS_PRIVACY_SANDBOX_STATUS_ENABLED" desc="Status text, displayed when the Privacy sandbox APIs are enabled.">
-        Trial is enabled
+        Trial features are on
       </message>
       <message name="IDS_PRIVACY_SANDBOX_STATUS_DISABLED" desc="Status text, displayed when the Privacy sandbox APIs are disabled.">
-        Trial is disabled
+        Trial features are off
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION" desc="">
-        Privacy Sandbox is a set of new technologies that will eventually protect profiles from cross-site tracking mechanisms, like third-party cookies, while preserving web content and services that depend on those mechanisms today. Brave is working with website developers, publishers, advertisers, and other browsers to develop this new technology.
+      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION_TITLE" desc="Title for the description text of 'Privacy Sandbox'.">
+        About Privacy Sandbox
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_TRIAL_TITLE" desc="">
-        Privacy Sandbox trial
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_TRIAL_DESCRIPTION" desc="">
-        Privacy Sandbox is not widely released yet. During this trial period:\n<ph name="BEGIN_LIST_ITEM1">&lt;li1&gt;</ph>Website and app developers can try out the ability to create relevant experiences without accessing uniquely identifiable information about you<ph name="END_LIST_ITEM1">&lt;/li1&gt;</ph>\n<ph name="BEGIN_LIST_ITEM2">&lt;li2&gt;</ph>Users can opt out of the trial using the controls on this page.<ph name="END_LIST_ITEM2">&lt;/li2&gt;</ph>
+      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION" desc="Description of the 'Privacy Sandbox'.">
+        Privacy Sandbox is an ongoing initiative to preserve the open web that will help safeguard you from tracking mechanisms.
+
+Today, websites rely on many technologies, like third-party cookies, for important services like showing relevant ads and measuring a site’s performance.
+
+Privacy Sandbox preserves the vitality of the open web by creating better ways to perform these services – without breaking sites, and while preventing you from being surreptitiously tracked across the web.
+
+Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_TOGGLE" desc="Title for the Privacy Sandbox toggle.">
-        Crowdmasking
+        Enable Privacy Sandbox
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_TOGGLE_DESCRIPTION" desc="">
-        When on, websites won’t be able to use information that personally identifies you to make their sites more relevant. Similar to a crowd in a concert, sites can only know that thousands of users share a similar interest.\n\nYour “crowd” is based on sites you’ve visited. Advertisers can only see what sites the whole crowd visits, not what sites you personally visit.
+      <message name="IDS_PRIVACY_SANDBOX_TOGGLE_DESCRIPTION" desc="Description for the Privacy Sandbox toggle.">
+        When enabled, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
+
+<ph name="BEGIN_LIST_ITEM1">&lt;li1&gt;</ph>Advertisers can learn when thousands of users share a similar interest – like a crowd at a concert — and select ads for the crowd, rather than an individual profile.<ph name="END_LIST_ITEM1">&lt;/li1&gt;</ph>
+
+<ph name="BEGIN_LIST_ITEM2">&lt;li2&gt;</ph>Advertisers can study the effectiveness of ads in a way that does not track you across sites.<ph name="END_LIST_ITEM2">&lt;/li2&gt;</ph>
       </message>
       <message name="IDS_PRIVACY_SANDBOX_SNACKBAR_MESSAGE" desc="The text displayed in the snackbar, which gives the user an option to navigate to the Privacy Sandbox settings page. 'Privacy sandbox' has TC ID 5753235213964358658.">
         Explore the Privacy Sandbox
@@ -1791,7 +1798,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SYNC_ERROR_CARD_TITLE" desc="Title of the Sync Error Card. [CHAR-LIMIT=32]">
         Sync isn't working
       </message>
-      <message name="IDS_SYNC_PASSWORDS_ERROR_CARD_TITLE" desc="Title of the Sync Error Card when it affects passwords only. [CHAR-LIMIT=32]">
+      <message name="IDS_PASSWORD_SYNC_ERROR_SUMMARY" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords can't be synced (due to missing trusted vault keys). [CHAR-LIMIT=32]">
         Error syncing passwords
       </message>
       <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR-LIMIT=60]">
@@ -1803,11 +1810,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_HINT_SYNC_AUTH_ERROR" desc="Hint message to resolve sync auth error.">
         Sign in again to start sync
       </message>
-      <message name="IDS_HINT_SYNC_RETRIEVE_KEYS_LEGACY" desc="Hint message to resolve sync encryption error.">
-        Fix now
-      </message>
       <message name="IDS_HINT_SYNC_RETRIEVE_KEYS" desc="Hint message to resolve sync encryption error.">
-        Error syncing passwords
+        Fix now
       </message>
       <message name="IDS_HINT_PASSPHRASE_REQUIRED" desc="Hint message to resolve passphrase required error.">
         Enter your passphrase to start sync
@@ -1837,9 +1841,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_AUTH_ERROR_CARD_BUTTON" desc="Button text for auth error in sync error cards.">
         Sign in again
-      </message>
-      <message name="IDS_TRUSTED_VAULT_ERROR_CARD_BUTTON" desc="Button text for trusted vault error in sync error cards.">
-        Unlock with Screen Lock
       </message>
 
       <!-- Sync error strings -->
@@ -2183,9 +2184,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_APP_BANNER_ADD" desc="A button in an app banner to confirm adding a site to homescreen">
         Add
-      </message>
-      <message name="IDS_ADDED_TO_HOMESCREEN" desc="Indicates that the website with the specified name was added to the user's Home screen.">
-        <ph name="NAME">%1$s<ex>Brave</ex></ph> was added to your Home screen
       </message>
       <message name="IDS_WEBAPK_INSTALL_IN_PROGRESS" desc="Indicates that an installation for the WebAPK for the specific website is already in progress.">
         Still adding previous site
@@ -2714,16 +2712,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_NTP_LEARN_MORE_ABOUT_SUGGESTED_CONTENT" desc="Text in the footer of the New Tab Page. Part of the text is a link to a help center page where the user can learn more about suggested content.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph> about suggested content
       </message>
-      <if expr="enable_feed_v1">
-        <message name="IDS_NTP_SUGGESTIONS_FETCH_FAILED" desc="Snackbar text shown when the user presses the More button to get more suggestions, but this fails (eg, no internet connectivity).">
-          Can’t get suggestions
-        </message>
-      </if>
-      <if expr="enable_feed_v1">
-        <message name="IDS_NTP_SUGGESTIONS_FETCH_NO_NEW_SUGGESTIONS" desc="Snackbar text shown when the user presses the More button to get more suggestions, the fetch succeeds but provides no new suggestions.">
-          No new suggestions
-        </message>
-      </if>
       <message name="IDS_NTP_MANAGE_MY_ACTIVITY" desc="Content description to manage my activity from the feed header overflow menu.">
         Manage activity
       </message>
@@ -2943,6 +2931,9 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_MENU_FOLLOW" desc="Menu item allowing users to follow the current website. [CHAR-LIMIT=27]">
         Follow
       </message>
+      <message name="IDS_MENU_FOLLOWING" desc="Menu item indicating the current website is followed, allowing users to unfollow the current website. [CHAR-LIMIT=27]">
+        Following
+      </message>
       <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR-LIMIT=27]" translateable="false">
         Show Paint Preview
       </message>
@@ -3109,7 +3100,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
         Read
       </message>
       <message name="IDS_READING_LIST_UNREAD" desc="The header for the unread section in the reading list UI.">
-        Unread
+        Unread - Available offline
       </message>
       <message name="IDS_READING_LIST_SAVED" desc="App-based message shown after user adds a new link to the reading list. [CHAR-LIMIT=32]">
         Added to reading list
@@ -3117,16 +3108,13 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_READING_LIST_MARK_AS_READ" desc="The text for the action to mark the reading list as read.">
         Mark as read
       </message>
-      <message name="IDS_READING_LIST_SHARE" desc="The text for the action to share the reading list item.">
-        Share
-      </message>
       <message name="IDS_READING_LIST_REMINDER_NOTIFICATION_TITLE" desc="The title of the reminder notification for reading list.">
         Catch up on your reading list
       </message>
       <message name="IDS_READING_LIST_REMINDER_NOTIFICATION_SUBTITLE" desc="The subtitle of the reminder notification for reading list.">
           {READING_LIST_REMINDER_NOTIFICATION_SUBTITLE, plural,
-          =1 {You have <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE">%1$d<ex>1</ex></ph> page}
-          other {You have <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY">%1$d<ex>8</ex></ph> pages}}
+          =1 {You have <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE">%1$d<ex>1</ex></ph> unread page}
+          other {You have <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY">%1$d<ex>8</ex></ph> unread pages}}
       </message>
       <message name="IDS_READING_LIST_UNREAD_PAGE_COUNT" desc="Inform the user about the number of unread reading list items.">
           {READING_LIST_UNREAD_PAGE_COUNT, plural,
@@ -3147,12 +3135,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_READING_LIST_EMPTY_LIST_TITLE" desc="The text on reading list page when there are no reading list items informing user that reading list is supposed to appear on this surface.">
         You’ll find your reading list here
-      </message>
-      <message name="IDS_READING_LIST_EMPTY_LIST_DESCRIPTION" desc="The description text on reading list page when there are no reading list items informing user that they can save articles to read later which will appear on this surface.">
-        You can save pages to your reading list to find them again
-      </message>
-      <message name="IDS_READING_LIST_EMPTY_LIST_DESCRIPTION_OFFLINE" desc="The description text on reading list page when there are no reading list items informing user that they can save articles to read later offline which will appear on this surface.">
-        You can save pages to your reading list to find them again or read offline
       </message>
 
       <!-- Offline pages -->
@@ -4083,6 +4065,54 @@ Data from your Private session will only be cleared from Brave when you <ph name
          Brave as a Security Key
       </message>
 
+      <message name="IDS_CABLEV2_REGISTRATION_SUCCEEDED" desc="The text of a small pop-up, that appears at the bottom of the screen on Android, informing the user that their attempt to register their phone as an authentication device was successful. The translation of the verb should hopefully match that in TC ID 1295743531323106866. (The attached image doesn't show the pop-up at the bottom because it's too fleeting to screenshot, so I've drawn in roughly what it looks like.)">
+         Registration succeeded
+      </message>
+
+      <message name="IDS_CABLEV2_REGISTRATION_FAILED" desc="The text of a small pop-up, that appears at the bottom of the screen on Android, informing the user that their attempt to register their phone as an authentication device was unsuccessful. The translation of the verb should hopefully match that in TC ID 1295743531323106866. (The attached image doesn't show the pop-up at the bottom because it's too fleeting to screenshot, so I've drawn in roughly what it looks like.)">
+         Registration failed
+      </message>
+
+      <message name="IDS_CABLEV2_SIGN_IN_SUCCEEDED" desc="The text of a small pop-up, that appears at the bottom of the screen on Android, informing the user that their attempt to sign-in using their phone as an authentication device was successful. The translation of 'sign-in' should hopefully match that in TC ID 6840924527405570820. (The attached image doesn't show the pop-up at the bottom because it's too fleeting to screenshot, so I've drawn in roughly what it looks like.)">
+         Sign-in succeeded
+      </message>
+
+      <message name="IDS_CABLEV2_SIGN_IN_FAILED" desc="The text of a small pop-up, that appears at the bottom of the screen on Android, informing the user that their attempt to sign-in using their phone as an authentication device was unsuccessful. The translation of 'sign-in' should hopefully match that in TC ID 6840924527405570820. (The attached image doesn't show the pop-up at the bottom because it's too fleeting to screenshot, so I've drawn in roughly what it looks like.)">
+         Sign-in failed
+      </message>
+
+      <message name="IDS_CABLEV2_USB_PROMPT_TITLE" desc="The title of a screen that advises the user to try connecting their phone with a USB cable. This appears when the user is trying to sign in to a desktop/laptop by using their phone. If the connection isn't working (for example because they have no internet service on their phone) then we suggest that they can use a physical cable to connect the phone with the desktop/laptop. This title is rather generic and a different message is shown below to give precise instructions.">
+         Connection seems to be taking quite long…
+      </message>
+
+      <message name="IDS_CABLEV2_USB_PROMPT_BODY" desc="The body of a screen that advises the user to try connecting their phone with a USB cable. This appears when the user is trying to sign in to a desktop/laptop by using their phone. If the connection isn't working (for example because they have no internet service on their phone) then we suggest that they can use a physical cable to connect the phone with the desktop/laptop.">
+         Try connecting your phone with a USB cable
+      </message>
+
+      <message name="IDS_CABLEV2_USB_DISCON_TITLE" desc="The title of a screen that advises the user to disconnect their phone. This shows when the user has connected their phone to their computer using a USB cable and needs to disconnect it once they have finished their current actions.">
+         Connected with USB cable
+      </message>
+
+      <message name="IDS_CABLEV2_USB_DISCON_BODY" desc="The body of a screen that advises the user to disconnect their phone. This shows when the user has connected their phone to their computer using a USB cable and needs to disconnect it once they have finished their current actions.">
+         Disconnect when you’re done
+      </message>
+
+      <message name="IDS_CABLEV2_SERVERLINK_CONNECTING_TO_YOUR_DEVICE" desc="The title of a screen that is shown when a user is connecting their phone to a desktop or laptop computer in order to sign in with it.">
+         Connecting to your device…
+      </message>
+
+      <message name="IDS_CABLEV2_SERVERLINK_STATUS_CONNECTING" desc="A small subheader on a screen that is shown when a user is connecting their phone to a desktop or laptop computer in order to sign in with it.">
+        This may take a minute
+      </message>
+
+      <message name="IDS_CABLEV2_SERVERLINK_STATUS_CONNECTED" desc="A small subheader on a screen that is shown when a user is connecting their phone to a desktop or laptop computer in order to sign in with it. (In the attached image, this text will appear in place of the text 'This may take a minute'.) This text is shown once the connection to the desktop/laptop has completed and the phone is awaiting instructions.">
+        Connected to device
+      </message>
+
+      <message name="IDS_CABLEV2_SERVERLINK_STATUS_PROCESSING" desc="A small subheader on a screen that is shown when a user is connecting their phone to a desktop or laptop computer in order to sign in with it. (In the attached image, this text will appear in place of the text 'This may take a minute'.) This text is shown once a challenge from the desktop/laptop has been received.">
+        Processing request
+      </message>
+
       <!-- QR Code -->
       <message name="IDS_QR_CODE_SHARE_ICON_LABEL" desc="Icon label for sharing with QR Code activity.">
         QR Code
@@ -4202,7 +4232,19 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <message name="IDS_LINK_TO_TEXT_FAILURE_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
-        Can't create link to text. Share link to page.
+        Can’t create link to text. Share link to page.
+      </message>
+
+      <message name="IDS_LINK_TO_TEXT_FAILURE_TOAST_MESSAGE_V2" desc="Toast displayed when link to highlighted text was not possible to create.">
+        Can’t create link to text
+      </message>
+
+      <message name="IDS_LINK_TO_TEXT_SUCCESS_LINK_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
+        Include link to text
+      </message>
+
+      <message name="IDS_LINK_TO_TEXT_SUCCESS_TEXT_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
+        Share text only
       </message>
 
       <message name="IDS_NEW_BADGE" desc="Notification displayed to indicate that there is a new sharing feature.">

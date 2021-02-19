@@ -82,7 +82,7 @@
     <file path="strings/components_strings_override_zh-TW.xtb" lang="zh-TW" />
     <file path="strings/components_strings_override_zu.xtb" lang="zu" />
   </translations>
-  <release seq="1" allow_pseudo="false">
+  <release seq="1">
     <messages fallback_to_english="true">
       <part file="bookmark_bar_strings_override.grdp" />
       <part file="error_page_strings_override.grdp" />
