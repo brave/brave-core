@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.h b/components/permissions/request_type.h
-index c560723b184f2cc114f3c26787867c5ed6d73104..247511538d2a043d713541900e039de1afa7684e 100644
+index 8e66508390c9ae8f63c38ad408bc7d00f2e975b2..2e3375b70e768f09405cb4a27f0434fe262a8eda 100644
 --- a/components/permissions/request_type.h
 +++ b/components/permissions/request_type.h
 @@ -52,6 +52,7 @@ enum class RequestType {

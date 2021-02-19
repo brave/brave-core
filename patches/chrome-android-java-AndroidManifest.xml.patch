@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 237022266b25eeff1110d99cb8e88f8c4affce74..e72346ba2208b9c164b5ae870001b95ee71bc9e7 100644
+index 764c0c6745cedf288e98fd8432969d876bac5a47..a6976f2ba390e1fda504ca038c68694a2a816380 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -39,7 +39,9 @@ by a child template that "extends" this file.
@@ -54,7 +54,7 @@ index 237022266b25eeff1110d99cb8e88f8c4affce74..e72346ba2208b9c164b5ae870001b95e
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -1113,6 +1124,7 @@ by a child template that "extends" this file.
+@@ -1130,6 +1141,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  
@@ -62,7 +62,7 @@ index 237022266b25eeff1110d99cb8e88f8c4affce74..e72346ba2208b9c164b5ae870001b95e
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1195,6 +1207,7 @@ by a child template that "extends" this file.
+@@ -1212,6 +1224,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

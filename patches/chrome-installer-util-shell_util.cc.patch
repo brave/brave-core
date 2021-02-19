@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index bba833d2f3abeb8f0a6fefa59ace416db3dc2b63..956f251527c4728ae51d934b46e64cb6d20ff3f2 100644
+index d33b1bcb081c2fc2952455012a07d593687308b8..f31de7a11686a4eec809f9760baff92a22192425 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -748,6 +748,7 @@ base::string16 GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
+@@ -746,6 +746,7 @@ std::wstring GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
      return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Browser");
    if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
      return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Email");
@@ -10,7 +10,7 @@ index bba833d2f3abeb8f0a6fefa59ace416db3dc2b63..956f251527c4728ae51d934b46e64cb6
    return L"SettingsPageAppsDefaultsProtocolView";
  }
  
-@@ -1619,8 +1620,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1615,8 +1616,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",

@@ -1,16 +1,16 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 4102f30bb453ec5f6a79df40caed7ff48ed1390d..54f65044d352ad319b37597e6acf6eb57a4f5a0a 100644
+index 780a8c8efc1c1c326d6bf2470514f276795595cf..054d4f3c3f671c0c41e99a8676c1c78b5adb5c49 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -235,6 +235,7 @@ android_resources("chrome_app_java_resources") {
-     "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
-     "//third_party/android_deps:material_design_java",
+     "//third_party/androidx:androidx_preference_preference_java",
+     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
  
  if (enable_vr) {
-@@ -545,6 +546,7 @@ android_library("chrome_java") {
+@@ -548,6 +549,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index 4102f30bb453ec5f6a79df40caed7ff48ed1390d..54f65044d352ad319b37597e6acf6eb5
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -575,6 +577,7 @@ android_library("chrome_java") {
+@@ -579,6 +581,7 @@ android_library("chrome_java") {
      "//components/ui_metrics:ui_metrics_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,7 +26,7 @@ index 4102f30bb453ec5f6a79df40caed7ff48ed1390d..54f65044d352ad319b37597e6acf6eb5
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -698,6 +701,7 @@ group("jni_headers") {
+@@ -702,6 +705,7 @@ group("jni_headers") {
      "//chrome/browser/webauthn/android:jni_headers",
      "//components/media_router/browser/android:jni_headers",
    ]
@@ -34,7 +34,7 @@ index 4102f30bb453ec5f6a79df40caed7ff48ed1390d..54f65044d352ad319b37597e6acf6eb5
  }
  
  # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-@@ -1871,6 +1875,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1881,6 +1885,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

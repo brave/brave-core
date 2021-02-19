@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index 4d7d8fa63e8313a8c97a3b8a5b4371c7415e5e56..9df52f0bd7284f962972e359817bd3a193b68fb8 100644
+index 21bce2a736087d913c693d7a73b04dd95d3e535f..b6b03ea46a8e8353c64fd92f768d34f8e09dfd88 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -103,6 +103,7 @@ const gfx::VectorIcon& GetIconIdDesktop(RequestType type) {

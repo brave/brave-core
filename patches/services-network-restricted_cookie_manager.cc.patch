@@ -1,5 +1,5 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index 360b21334f15ee8afd71c8d826ec719e744d189e..064631fc4c545cedc4ed3ba191820d127c3c4d6e 100644
+index 1515a8afc5a484eba739f500822367dc9bff4381..1b25a1295eff95118aba0d3704220cee0c79b933 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
 @@ -281,6 +281,7 @@ void RestrictedCookieManager::GetAllForUrl(
@@ -10,11 +10,11 @@ index 360b21334f15ee8afd71c8d826ec719e744d189e..064631fc4c545cedc4ed3ba191820d12
    cookie_store_->GetCookieListWithOptionsAsync(
        url, net_options,
        base::BindOnce(&RestrictedCookieManager::CookieListToGetAllForUrlCallback,
-@@ -431,6 +432,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
-   net::CookieOptions options = MakeOptionsForSet(
+@@ -432,6 +433,7 @@ void RestrictedCookieManager::SetCanonicalCookie(
        role_, url, site_for_cookies, isolation_info_, cookie_settings(),
        cookie_store_->cookie_access_delegate());
+ 
 +  BRAVE_SETCANONICALCOOKIE
-   // TODO(chlily): |url| is validated to be the same origin as |origin_|, but
-   // the path is not checked. If we ever decide to enforce the path constraint
-   // for setting a cookie, we would need to validate the path of |url| somehow
+   cookie_store_->SetCanonicalCookieAsync(
+       std::move(sanitized_cookie), origin_url, options,
+       base::BindOnce(&RestrictedCookieManager::SetCanonicalCookieResult,

@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index a41f3f05f2855fdf8a1037efc7f92c5bd5bfe8c8..eac3788b42d17db78c55bcda81ce73136388e34f 100644
+index e08c53ef58b113401d4ae003c71c884d63021ce5..9d74ab56792a1e9ddd04ec7e91dec9490b61bc63 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
 @@ -247,6 +247,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
