@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-index 21b69d38adc7fd8415750af07681fa9c3e940f69..1d4120cc611d35b1343c0107e9ade7831a9a0a5c 100644
+index 9ce9f90c037dffb7cd4052c4cbe19267f54c93c1..3923aee69004dafcc647820190a187df31d75410 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder.java
-@@ -98,7 +98,7 @@ class DropdownItemViewInfoListBuilder {
+@@ -97,7 +97,7 @@ class DropdownItemViewInfoListBuilder {
          final Supplier<BookmarkBridge> bookmarkSupplier = () -> mBookmarkBridge;
  
          mHeaderProcessor = new HeaderProcessor(context, host, delegate);
 -        registerSuggestionProcessor(new EditUrlSuggestionProcessor(
 +        registerSuggestionProcessor(new org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor(
-                 context, host, delegate, iconBridgeSupplier, tabSupplier, shareSupplier));
+                 context, host, delegate, iconBridgeSupplier, mActivityTabSupplier, shareSupplier));
          registerSuggestionProcessor(
                  new AnswerSuggestionProcessor(context, host, textProvider, imageFetcherSupplier));
