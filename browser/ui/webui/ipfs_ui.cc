@@ -65,7 +65,6 @@ void IPFSDOMHandler::RegisterMessages() {
       "ipfs.restartDaemon",
       base::BindRepeating(&IPFSDOMHandler::HandleRestartDaemon,
                           base::Unretained(this)));
-
   web_ui()->RegisterMessageCallback(
       "ipfs.getRepoStats",
       base::BindRepeating(&IPFSDOMHandler::HandleGetRepoStats,
@@ -73,6 +72,10 @@ void IPFSDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "ipfs.getNodeInfo",
       base::BindRepeating(&IPFSDOMHandler::HandleGetNodeInfo,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "ipfs.garbageCollection",
+      base::BindRepeating(&IPFSDOMHandler::HandleGarbageCollection,
                           base::Unretained(this)));
   ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext());
@@ -266,6 +269,34 @@ void IPFSDOMHandler::HandleGetNodeInfo(const base::ListValue* args) {
 
   service->GetNodeInfo(base::BindOnce(&IPFSDOMHandler::OnGetNodeInfo,
                                       weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::HandleGarbageCollection(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  ipfs::IpfsService* service = ipfs::IpfsServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  if (!service) {
+    return;
+  }
+
+  service->RunGarbageCollection(base::BindOnce(
+      &IPFSDOMHandler::OnGarbageCollection, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::OnGarbageCollection(bool success,
+                                         const std::string& error) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetStringKey("error", error);
+  result.SetBoolKey("success", success);
+  result.SetBoolKey("started", false);
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGarbageCollection",
+                                         std::move(result));
 }
 
 void IPFSDOMHandler::OnGetNodeInfo(bool success, const ipfs::NodeInfo& info) {

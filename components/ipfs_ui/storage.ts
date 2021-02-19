@@ -22,6 +22,11 @@ export const defaultState: IPFS.State = {
     restarting: false,
     installing: false
   },
+  garbageCollectionStatus: {
+    success: true,
+    error: '',
+    started: false
+  },
   repoStats: {
     objects: 0,
     size: 0,

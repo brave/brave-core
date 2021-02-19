@@ -23,6 +23,8 @@ class IPFSJSONParser {
                                    ipfs::RepoStats* config);
   static bool GetNodeInfoFromJSON(const std::string& json,
                                   ipfs::NodeInfo* info);
+  static bool GetGarbageCollectionFromJSON(const std::string& json,
+                                           std::string* error);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_

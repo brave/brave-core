@@ -110,3 +110,27 @@ TEST_F(IPFSJSONParserTest, GetNodeInfoFromJSON) {
   ASSERT_EQ(info.id, "idididid");
   ASSERT_EQ(info.version, "1.2.3.4");
 }
+
+TEST_F(IPFSJSONParserTest, GetGarbageCollectionFromJSON) {
+  std::string error;
+  ASSERT_TRUE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"({
+      "Error": "{error}",
+      "Key": {
+        "/": "{cid}"
+      }
+    })",
+                                                           &error));
+
+  ASSERT_EQ(error, "{error}");
+  error.erase();
+  ASSERT_TRUE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"({
+      "Key": {
+        "/": "{cid}"
+      }
+    })",
+                                                           &error));
+  ASSERT_EQ(error, "");
+  error.erase();
+  ASSERT_FALSE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"()", &error));
+  ASSERT_FALSE(error.empty());
+}

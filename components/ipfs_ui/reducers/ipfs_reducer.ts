@@ -78,6 +78,11 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
         ...state,
         daemonStatus: action.payload.daemonStatus
       }
+      if (action.payload.daemonStatus.launched) {
+        state.garbageCollectionStatus.error = ''
+        state.garbageCollectionStatus.success = true
+        state.garbageCollectionStatus.started = false
+      }
       break
     case types.IPFS_INSTALL_DAEMON:
       chrome.send('ipfs.launchDaemon')
@@ -102,6 +107,23 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
       break
     case types.IPFS_OPEN_PEERS_WEBUI:
       openURlInNewTab(kPeersWebUIUrl, state.addressesConfig.api)
+      break
+    case types.IPFS_GARBAGE_COLLECTION:
+      chrome.send('ipfs.garbageCollection')
+      state = {
+        ...state,
+        garbageCollectionStatus: {
+          error: '',
+          success: true,
+          started: true
+        }
+      }
+      break
+    case types.IPFS_ON_GARBAGE_COLLECTION:
+      state = {
+        ...state,
+        garbageCollectionStatus: action.payload.garbageCollectionStatus
+      }
       break
     case types.IPFS_RESTART_DAEMON:
       chrome.send('ipfs.restartDaemon')

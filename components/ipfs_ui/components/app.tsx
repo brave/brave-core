@@ -54,6 +54,10 @@ export class IPFSPage extends React.Component<Props, {}> {
     this.actions.openNodeWebUI()
   }
 
+  garbageCollection = () => {
+    this.actions.garbageCollection()
+  }
+
   openPeersWebUI = () => {
     this.actions.openPeersWebUI()
   }
@@ -91,7 +95,7 @@ export class IPFSPage extends React.Component<Props, {}> {
         >
           <ConnectedPeers addressesConfig={this.props.ipfsData.addressesConfig} peerCount={this.props.ipfsData.connectedPeers.peerCount} onOpenPeersWebUI={this.openPeersWebUI} />
           <AddressesConfig addressesConfig={this.props.ipfsData.addressesConfig} />
-          <RepoStats repoStats={this.props.ipfsData.repoStats} />
+          <RepoStats repoStats={this.props.ipfsData.repoStats} daemonStatus={this.props.ipfsData.daemonStatus} garbageCollectionStatus={this.props.ipfsData.garbageCollectionStatus} onGarbageCollection={this.garbageCollection} />
           <NodeInfo nodeInfo={this.props.ipfsData.nodeInfo} />
         </div>
         <a style={LearnMoreLink} href='https://support.brave.com/hc/en-us/sections/360010974932-InterPlanetary-File-System-IPFS-' target='_blank'>

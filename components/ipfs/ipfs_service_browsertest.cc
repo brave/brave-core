@@ -174,6 +174,27 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     return http_response;
   }
 
+  std::unique_ptr<net::test_server::HttpResponse> HandleGarbageCollection(
+      const net::test_server::HttpRequest& request) {
+    const GURL gurl = request.GetURL();
+    if (gurl.path_piece() != kGarbageCollectionPath) {
+      return nullptr;
+    }
+
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("application/json");
+    http_response->set_content(R"({
+        "Error": "",
+        "/": {
+          "Key": "{cid}"
+        }
+    })");
+
+    return http_response;
+  }
+
   std::unique_ptr<net::test_server::HttpResponse> HandleRequestServerError(
       const net::test_server::HttpRequest& request) {
     auto http_response =
@@ -346,6 +367,21 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     ASSERT_EQ(info.version, "");
   }
 
+  void OnGarbageCollectionSuccess(bool success, const std::string& error) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_TRUE(success);
+    EXPECT_EQ(error, "");
+  }
+
+  void OnGarbageCollectionFail(bool success, const std::string& error) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_FALSE(success);
+  }
+
   void WaitForRequest() {
     if (wait_for_request_) {
       return;
@@ -436,6 +472,27 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetNodeInfoServerError) {
 
   ipfs_service()->GetNodeInfo(base::BindOnce(
       &IpfsServiceBrowserTest::OnGetNodeInfoFail, base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, RunGarbageCollection) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleGarbageCollection,
+                          base::Unretained(this)));
+  ipfs_service()->RunGarbageCollection(
+      base::BindOnce(&IpfsServiceBrowserTest::OnGarbageCollectionSuccess,
+                     base::Unretained(this)));
+  WaitForRequest();
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, RunGarbageCollectionError) {
+  ResetTestServer(
+      base::BindRepeating(&IpfsServiceBrowserTest::HandleRequestServerError,
+                          base::Unretained(this)));
+
+  ipfs_service()->RunGarbageCollection(
+      base::BindOnce(&IpfsServiceBrowserTest::OnGarbageCollectionFail,
+                     base::Unretained(this)));
   WaitForRequest();
 }
 
