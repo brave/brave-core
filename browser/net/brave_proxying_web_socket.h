@@ -36,9 +36,10 @@ class RenderFrameHost;
 
 // Ensures that all web socket requests go through Brave network request
 // handling framework. Cargoculted from |WebRequestProxyingWebSocket|.
-class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
-                               public network::mojom::AuthenticationHandler,
-                               public network::mojom::TrustedHeaderClient {
+class BraveProxyingWebSocket
+    : public network::mojom::WebSocketHandshakeClient,
+      public network::mojom::WebSocketAuthenticationHandler,
+      public network::mojom::TrustedHeaderClient {
  public:
   using WebSocketFactory = content::ContentBrowserClient::WebSocketFactory;
   using DisconnectCallback =
@@ -85,7 +86,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       mojo::ScopedDataPipeConsumerHandle readable,
       mojo::ScopedDataPipeProducerHandle writable) override;
 
-  // network::mojom::AuthenticationHandler method:
+  // network::mojom::WebSocketAuthenticationHandler method:
   void OnAuthRequired(const net::AuthChallengeInfo& auth_info,
                       const scoped_refptr<net::HttpResponseHeaders>& headers,
                       const net::IPEndPoint& remote_endpoint,
@@ -104,7 +105,8 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       std::vector<network::mojom::HttpHeaderPtr> additional_headers,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
-      mojo::PendingRemote<network::mojom::AuthenticationHandler> auth_handler,
+      mojo::PendingRemote<network::mojom::WebSocketAuthenticationHandler>
+          auth_handler,
       mojo::PendingRemote<network::mojom::TrustedHeaderClient>
           trusted_header_client);
 
@@ -141,7 +143,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       forwarding_handshake_client_;
   mojo::Receiver<network::mojom::WebSocketHandshakeClient>
       receiver_as_handshake_client_;
-  mojo::Receiver<network::mojom::AuthenticationHandler>
+  mojo::Receiver<network::mojom::WebSocketAuthenticationHandler>
       receiver_as_auth_handler_;
   mojo::Receiver<network::mojom::TrustedHeaderClient>
       receiver_as_header_client_;
@@ -157,7 +159,8 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
 
   // chrome websocket proxy
   GURL proxy_url_;
-  mojo::Remote<network::mojom::AuthenticationHandler> proxy_auth_handler_;
+  mojo::Remote<network::mojom::WebSocketAuthenticationHandler>
+      proxy_auth_handler_;
   mojo::Remote<network::mojom::TrustedHeaderClient>
       proxy_trusted_header_client_;
 
