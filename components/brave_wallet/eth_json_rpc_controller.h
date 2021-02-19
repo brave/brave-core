@@ -38,6 +38,8 @@ class EthJsonRpcController {
                URLRequestCallback callback,
                bool auto_retry_on_network_change);
 
+  void SetProviderURLForTest(const GURL& provider_url);
+
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;

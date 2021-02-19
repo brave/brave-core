@@ -109,4 +109,8 @@ void EthJsonRpcController::OnURLLoaderComplete(
                           headers);
 }
 
+void EthJsonRpcController::SetProviderURLForTest(const GURL& provider_url) {
+  provider_url_ = provider_url;
+}
+
 }  // namespace brave_wallet
