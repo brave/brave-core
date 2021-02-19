@@ -176,7 +176,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_zh-TW.xtb" lang="zh-TW" />
     <file path="resources/chromium_strings_zu.xtb" lang="zu" />
   </translations>
-  <release seq="1" allow_pseudo="false">
+  <release seq="1">
     <messages fallback_to_english="true">
       <!-- Settings specific strings -->
       <if expr="not is_android">
@@ -1190,9 +1190,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_V2" desc="Profile picker profile type choice subtitle">
           To access your Brave stuff across all your devices, sign in so that you can turn on sync.
-        </message>
-        <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_NOT_NOW_BUTTON_LABEL" desc="Label for a button to decline a prompt to sign in">
-          Use Brave without an account
         </message>
         <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_TITLE" desc="Title for the local profile customiztion screen on the picker.">
           Customize your Brave profile

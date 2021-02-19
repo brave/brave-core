@@ -59,6 +59,9 @@
   <if expr="not is_macosx">
     </if>
 
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION2" desc="Part 2 of the explanation of the setting to enable or disable the Privacy Sandbox.">
+    Advertisers can learn when thousands of users share a similar interest—like a crowd at a concert—and select ads for the crowd, rather than an individual profile.
+  </message>
   <if expr="is_win and _google_chrome">
     </if>
 

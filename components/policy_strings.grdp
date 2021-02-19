@@ -266,7 +266,7 @@ Additional details:
   <message name="IDS_POLICY_LEVEL_ERROR" desc="Text displayed in the status column when a policy is set at an unsupported level.">
     Policy level is not supported.
   </message>
-  <message name="IDS_POLICY_OK" desc="Text displayed in the status column when a valid value is set for a policy.">
+  <message name="IDS_POLICY_OK" desc="Text displayed in the status column when a valid value is set for a policy." meaning="Policy is working as expected.">
     OK
   </message>
   <message name="IDS_POLICY_UNSET" desc="Text displayed in the status column when no value is set for a policy.">
@@ -341,6 +341,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_LABEL_DIRECTORY_API_ID" desc="Label for the directory API ID in the device policy status box.">
     Directory API ID:
+  </message>
+  <message name="IDS_POLICY_LABEL_MANAGED_BY" desc="Label for the manager in the policy status boxes. Manager can be a domain or an email address.">
+    Managed by:
   </message>
   <message name="IDS_POLICY_LABEL_TIME_SINCE_LAST_REFRESH" desc="Label for the time since the last refresh in the policy status boxes.">
     Last fetched:
@@ -609,6 +612,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_CLIPBOARD_WARN_DISMISS_BUTTON" desc="Dismiss dialog button label for warning before paste.">
     Cancel
+  </message>
+  <message name="IDS_POLICY_DLP_CLIPBOARD_WARN_ON_COPY_VM" desc="A toast informing the user that pasting the clipboard data to VMs is not recommended.">
+    Copying and pasting this content to <ph name="VM_NAME">$1<ex>Linux</ex></ph> is not recommended by administrator policy
   </message>
   <message name="IDS_POLICY_DLP_PRINTING_BLOCKED_TITLE" desc="The title for notification informing the user that printing is blocked.">
     Printing is blocked
