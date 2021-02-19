@@ -155,16 +155,16 @@ void AddPermissionLifetimeComboboxIfNeeded(
           views::DISTANCE_RELATED_BUTTON_HORIZONTAL)));
 
   // Add the label.
-  auto* label = new views::Label(
+  auto label = std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL),
       views::style::CONTEXT_LABEL, views::style::STYLE_SECONDARY);
   label->SetMultiLine(true);
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  container->AddChildView(label);
+  container->AddChildView(std::move(label));
 
   // Add the combobox.
-  auto* combobox = new PermissionLifetimeCombobox(delegate);
-  container->AddChildView(combobox);
+  auto* combobox = container->AddChildView(
+      std::make_unique<PermissionLifetimeCombobox>(delegate));
   static_cast<views::BoxLayout*>(container->GetLayoutManager())
       ->SetFlexForView(combobox, 1);
 
