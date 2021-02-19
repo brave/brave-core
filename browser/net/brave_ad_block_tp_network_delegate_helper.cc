@@ -133,6 +133,10 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
+    // Explicitly specify source to avoid using `HostResolverProc`
+    // which will be handled by system resolver
+    // See https://crbug.com/872665
+    optional_parameters->source = net::HostResolverSource::DNS;
 
     network::mojom::NetworkContext* network_context =
         content::BrowserContext::GetDefaultStoragePartition(context)
@@ -192,7 +196,16 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
-  new AdblockCnameResolveHostClient(std::move(next_callback), task_runner, ctx);
+  DCHECK(ctx->browser_context);
+  // DoH or standard DNS quries won't be routed through Tor, so we need to skip
+  // it.
+  if (ctx->browser_context->IsTor()) {
+    ShouldBlockAdWithOptionalCname(task_runner, std::move(next_callback), ctx,
+                                   base::nullopt);
+  } else {
+    new AdblockCnameResolveHostClient(std::move(next_callback), task_runner,
+                                      ctx);
+  }
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
