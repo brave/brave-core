@@ -1,12 +1,12 @@
 diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
-index 5bbd40420cffe8f7cce6e7dc3e19269197908a57..a9f33809cc628dc6db2d877df8b8d2c4aab463ed 100644
+index 998b1a688a2dd6117a4a50c2237913380fb26559..15faae10a113bb3a4d2d6ff6d6d9587de3c86ef6 100644
 --- a/sandbox/policy/win/sandbox_win.cc
 +++ b/sandbox/policy/win/sandbox_win.cc
-@@ -926,6 +926,7 @@ ResultCode SandboxWin::StartSandboxedProcess(
-       launcher_process_command_line.HasSwitch(switches::kNoSandbox)) {
-     base::LaunchOptions options;
-     options.handles_to_inherit = handles_to_inherit;
-+    BRAVE_START_SANDBOXED_PROCESS
-     // Network process runs in a job even when unsandboxed. This is to ensure it
-     // does not outlive the browser, which could happen if there is a lot of I/O
-     // on process shutdown, in which case TerminateProcess can fail. See
+@@ -755,6 +755,7 @@ ResultCode LaunchWithoutSandbox(
+     base::Process* process) {
+   base::LaunchOptions options;
+   options.handles_to_inherit = handles_to_inherit;
++  BRAVE_START_SANDBOXED_PROCESS
+   // Network process runs in a job even when unsandboxed. This is to ensure it
+   // does not outlive the browser, which could happen if there is a lot of I/O
+   // on process shutdown, in which case TerminateProcess can fail. See
