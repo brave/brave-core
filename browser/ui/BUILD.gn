@@ -464,7 +464,10 @@ source_set("ui") {
       "webui/brave_wallet_ui.cc",
       "webui/brave_wallet_ui.h",
     ]
-    deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
+    deps += [
+      "//brave/components/brave_wallet_ui:generated_resources",
+      "//brave/components/brave_wallet/resources:generated_resources",
+    ]
   }
 
   if (toolkit_views) {

@@ -110,4 +110,7 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-tor_internals/tor_internals.grd": {
     "includes": [46500],
   },
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet_script/brave_wallet_script.grd": {
+    "includes": [46750]
+  },
 }

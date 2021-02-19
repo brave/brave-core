@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
   "//brave/renderer/brave_content_renderer_client.h",
@@ -12,3 +14,7 @@ brave_chrome_renderer_public_deps = [
   "//brave/components/content_settings/renderer",
   "//brave/components/cosmetic_filters/renderer",
 ]
+
+if (brave_wallet_enabled) {
+  brave_chrome_renderer_public_deps += [ "//brave/components/brave_wallet/renderer" ]
+}
