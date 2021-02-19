@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 2d6292ed218d37d428b0cf1126064efc74032207..5d992e84b3e47749bf49610bd583b5aaba91c756 100644
+index ffb03d9f66d18c02259796460908de2eb5be158a..640698f2e443944f98808cec3a8a82a54afd8f53 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -406,6 +406,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC

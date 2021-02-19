@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/notification_platform_bridge_mac.mm b/chrome/browser/notifications/notification_platform_bridge_mac.mm
-index 89873511f1d03a504eee509e32f86773f28b8275..6b730a012df443fc21f4fbf16c6b1fb5823186ff 100644
+index e8fc2c2d1e47462464a455561aabcf83889526c5..ce1a4a64e70df1e000f9d1558d0540ccb19d9d25 100644
 --- a/chrome/browser/notifications/notification_platform_bridge_mac.mm
 +++ b/chrome/browser/notifications/notification_platform_bridge_mac.mm
-@@ -185,6 +185,7 @@ void NotificationPlatformBridgeMac::Display(
+@@ -188,6 +188,7 @@ void NotificationPlatformBridgeMac::Display(
    } else {
      NSUserNotification* toast = [builder buildUserNotification];
      [notification_center_ deliverNotification:toast];
