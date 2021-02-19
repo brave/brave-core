@@ -22,16 +22,17 @@ source_set("browser") {
     "dat_file_util.h",
     "features.cc",
     "features.h",
-    "local_data_files_service.cc",
-    "local_data_files_service.h",
     "local_data_files_observer.cc",
     "local_data_files_observer.h",
+    "local_data_files_service.cc",
+    "local_data_files_service.h",
     "switches.h",
   ]
 
   public_configs = [ ":updater_config" ]
   deps = [
     "//base",
+    "//components/component_updater:component_updater",
   ]
 
   if (enable_extensions) {

@@ -12,6 +12,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
+#include "components/component_updater/component_updater_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ipfs {
@@ -40,6 +41,8 @@ void BraveIpfsClientUpdater::Register() {
   BraveComponent::Register(kIpfsClientComponentName,
                            g_ipfs_client_component_id_,
                            g_ipfs_client_component_base64_public_key_);
+  if (!updater_observer_.IsObservingSource(this))
+    updater_observer_.Observe(this);
   registered_ = true;
 }
 
@@ -94,6 +97,14 @@ void BraveIpfsClientUpdater::SetExecutablePath(const base::FilePath& path) {
 
 base::FilePath BraveIpfsClientUpdater::GetExecutablePath() const {
   return executable_path_;
+}
+
+void BraveIpfsClientUpdater::OnEvent(Events event, const std::string& id) {
+  if (id != kIpfsClientComponentId)
+    return;
+
+  for (Observer& observer : observers_)
+    observer.OnInstallationEvent(event);
 }
 
 void BraveIpfsClientUpdater::OnComponentReady(const std::string& component_id,

@@ -109,6 +109,7 @@ class IpfsService : public KeyedService,
 
   // BraveIpfsClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
+  void OnInstallationEvent(ComponentUpdaterEvents event) override;
 
   void OnIpfsCrashed();
   void OnIpfsLaunched(bool result, int64_t pid);

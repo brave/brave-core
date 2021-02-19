@@ -12,8 +12,10 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "components/component_updater/component_updater_service.h"
 
 class BraveIpfsClientUpdaterTest;
 
@@ -59,11 +61,14 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "ewIDAQAB";
 #endif
 
-class BraveIpfsClientUpdater : public BraveComponent {
+class BraveIpfsClientUpdater : public BraveComponent,
+                               public BraveComponent::ComponentObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnExecutableReady(const base::FilePath& path) = 0;
+    virtual void OnInstallationEvent(
+        BraveComponent::ComponentObserver::Events event) = 0;
 
    protected:
     ~Observer() override = default;
@@ -88,6 +93,9 @@ class BraveIpfsClientUpdater : public BraveComponent {
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
+  // BraveComponent::ComponentObserver
+  void OnEvent(Events event, const std::string& id) override;
+
  private:
   friend class ::BraveIpfsClientUpdaterTest;
   static std::string g_ipfs_client_component_name_;
@@ -103,6 +111,9 @@ class BraveIpfsClientUpdater : public BraveComponent {
   base::FilePath user_data_dir_;
   base::FilePath executable_path_;
   base::ObserverList<Observer> observers_;
+  base::ScopedObservation<BraveComponent, BraveComponent::ComponentObserver>
+      updater_observer_{this};
+
   base::WeakPtrFactory<BraveIpfsClientUpdater> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveIpfsClientUpdater);

@@ -17,6 +17,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -92,6 +93,15 @@ void IPFSOnboardingPage::UsePublicGateway() {
 
 void IPFSOnboardingPage::OnIpfsShutdown() {
   ReportDaemonStopped();
+}
+
+void IPFSOnboardingPage::OnInstallationEvent(
+    ipfs::ComponentUpdaterEvents event) {
+  if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
+    RespondToPage(
+        INSTALLATION_ERROR,
+        l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_INSTALLATION_ERROR));
+  }
 }
 
 void IPFSOnboardingPage::OnGetConnectedPeers(

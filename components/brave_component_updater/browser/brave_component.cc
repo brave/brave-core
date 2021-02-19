@@ -52,6 +52,16 @@ scoped_refptr<base::SequencedTaskRunner> BraveComponent::GetTaskRunner() {
   return delegate_->GetTaskRunner();
 }
 
+void BraveComponent::AddObserver(ComponentObserver* observer) {
+  DCHECK(delegate_);
+  delegate_->AddObserver(observer);
+}
+
+void BraveComponent::RemoveObserver(ComponentObserver* observer) {
+  DCHECK(delegate_);
+  delegate_->RemoveObserver(observer);
+}
+
 void BraveComponent::OnComponentReadyInternal(
     const std::string& component_id,
     const base::FilePath& install_dir,
