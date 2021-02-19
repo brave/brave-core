@@ -9,5 +9,11 @@
   case RequestType::kWidevine:    \
     return vector_icons::kExtensionIcon;
 
+#define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE \
+  case permissions::RequestType::kWidevine:   \
+    return "widevine";
+
 #include "../../../../components/permissions/request_type.cc"
+
+#undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
 #undef BRAVE_GET_ICON_ID_DESKTOP
