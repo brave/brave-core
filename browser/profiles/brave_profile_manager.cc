@@ -33,8 +33,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_source.h"
 #include "content/public/browser/url_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -56,12 +54,12 @@ BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
   MigrateProfileNames();
 
-  registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
-                 content::NotificationService::AllSources());
+  AddObserver(this);
 }
 
 BraveProfileManager::~BraveProfileManager() {
   std::vector<Profile*> profiles = GetLoadedProfiles();
+  RemoveObserver(this);
   for (Profile* profile : profiles) {
     if (brave::IsSessionProfile(profile)) {
       // passing false for `success` removes the profile from the info cache
@@ -175,22 +173,10 @@ void BraveProfileManager::MigrateProfileNames() {
 #endif
 }
 
-void BraveProfileManager::Observe(int type,
-                                  const content::NotificationSource& source,
-                                  const content::NotificationDetails& details) {
-  switch (type) {
-    case chrome::NOTIFICATION_PROFILE_CREATED: {
-      Profile* profile = content::Source<Profile>(source).ptr();
-      content::URLDataSource::Add(
-          profile,
-          std::make_unique<brave_content::BraveSharedResourcesDataSource>());
-      break;
-    }
-    default: {
-      ProfileManager::Observe(type, source, details);
-      break;
-    }
-  }
+void BraveProfileManager::OnProfileAdded(Profile* profile) {
+  content::URLDataSource::Add(
+      profile,
+      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }
 
 BraveProfileManagerWithoutInit::BraveProfileManagerWithoutInit(
