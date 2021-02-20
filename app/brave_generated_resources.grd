@@ -314,7 +314,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         New Tor Identity
       </message>
       <message name="IDS_NEW_TOR_CONNECTION_FOR_SITE" desc="The text label of a menu item for requesting new Tor connection for the current site">
-        New Tor Connection For This Site
+        New Tor connection for this site
       </message>
       <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active Tor session.">
         Exit Private Window with Tor
