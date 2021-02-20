@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -26,8 +27,7 @@ namespace brave_wallet {
 
 class EthJsonRpcController {
  public:
-  EthJsonRpcController(content::BrowserContext* context,
-                       const GURL& provider_url);
+  EthJsonRpcController(content::BrowserContext* context, Network network);
   ~EthJsonRpcController();
 
   using URLRequestCallback =
@@ -38,7 +38,10 @@ class EthJsonRpcController {
                URLRequestCallback callback,
                bool auto_retry_on_network_change);
 
-  void SetProviderURLForTest(const GURL& provider_url);
+  Network GetNetwork() const;
+  GURL GetNetworkURL() const;
+  void SetNetwork(Network network);
+  void SetCustomNetwork(const GURL& provider_url);
 
  private:
   using SimpleURLLoaderList =
@@ -48,8 +51,9 @@ class EthJsonRpcController {
                            const std::unique_ptr<std::string> response_body);
 
   content::BrowserContext* context_;
-  GURL provider_url_;
+  GURL network_url_;
   SimpleURLLoaderList url_loaders_;
+  Network network_;
 };
 
 }  // namespace brave_wallet
