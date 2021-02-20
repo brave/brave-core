@@ -16,6 +16,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -162,6 +163,21 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
   return false;
 }
 
+bool ShouldBlockOnionAddress(std::shared_ptr<BraveRequestInfo> ctx) {
+  if (ctx->browser_context && ctx->browser_context->IsTor()) {
+    // Allow .onion addresses in Tor windows.
+    return false;
+  }
+  if (!ctx->request_url.has_host()) {
+    return false;
+  }
+  // TODO: don't block "Open in Tor" button (unless #if BUILDFLAG(ENABLE_TOR) is false)
+  // TODO: honor kAutoOnionRedirect / tor.auto_onion_location
+  const std::string hostname = ctx->request_url.host();
+  return base::EndsWith(hostname, ".onion",
+                        base::CompareCase::INSENSITIVE_ASCII);
+}
+
 }  // namespace
 
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
@@ -169,6 +185,9 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
   ApplyPotentialReferrerBlock(ctx);
   if (ctx->request_url.has_query()) {
     ApplyPotentialQueryStringFilter(ctx);
+  }
+  if (ShouldBlockOnionAddress(ctx)) {
+    return net::ERR_ADDRESS_INVALID;
   }
   return net::OK;
 }
@@ -208,6 +227,5 @@ int OnBeforeStartTransaction_SiteHacksWork(
   }
   return net::OK;
 }
-
 
 }  // namespace brave
