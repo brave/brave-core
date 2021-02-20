@@ -168,10 +168,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
                     if (layoutType != LayoutType.TAB_SWITCHER) return;
 
-                    if (mBottomControlsMediator instanceof BraveBottomControlsMediator) {
-                        ((BraveBottomControlsMediator) mBottomControlsMediator)
-                                .setCompositedViewVisibile(false);
-                    }
                     BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                             (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                     browsingModeCoordinator.getSearchAccelerator().setVisibility(View.GONE);
@@ -218,16 +214,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     }
                     if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
                         browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.GONE);
-                    }
-                }
-
-                @Override
-                public void onFinishedHiding(@LayoutType int layoutType) {
-                    if (layoutType != LayoutType.TAB_SWITCHER) return;
-
-                    if (mBottomControlsMediator instanceof BraveBottomControlsMediator) {
-                        ((BraveBottomControlsMediator) mBottomControlsMediator)
-                                .setCompositedViewVisibile(true);
                     }
                 }
             };
