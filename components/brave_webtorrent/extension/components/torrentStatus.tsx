@@ -139,13 +139,13 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
         : 100
 
       const divStyle = {
-        height: "24px",
-        width: percentage+"%"
+        height: '24px',
+        width: percentage+'%'
       };
       
       return (
-        <div className="w3Border">
-          <div className="w3Green" style={divStyle}></div>
+        <div className='w3Border'>
+          <div className='w3Green' style={divStyle}></div>
         </div>
       )
     }
