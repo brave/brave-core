@@ -145,35 +145,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
       </message>
-      <message name="IDS_BRAVE_SHIELDS" desc="Brave Shields title.">
-        Shields
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_BLOCK_3RD_PARTY_COOKIES_SWITCH" desc="Switch for Block Scripts.">
-        Block 3rd party cookies
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_ADS_TRACKING_SWITCH" desc="Switch for Block Ads and Tracking.">
-        Block Ads and Tracking
-      </message>
       <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
         Upgrade connections to HTTPS
       </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
       </message>
-      <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTS_SWITCH" desc="Switch for Block Fingerprints.">
-        Fingerprinting Protection
-      </message>
       <message name="IDS_BRAVE_SHIELDS_ADS_AND_TRACKERS" desc="Ads and Trackers blocked.">
         Block cross-site trackers
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_FINGERPRINT_METHODS" desc="Fingerprint methods blocked.">
-        Fingerprint Methods
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADES" desc="HTTPS Upgrades.">
-        HTTPS Upgrades
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="Scripts Blocked.">
-        Scripts Blocked
       </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
@@ -189,12 +168,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_LINKEDIN" desc="Label for a switch control which allows LinkedIn embedded posts">
         Allow LinkedIn embedded posts
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_FIRST_GROUP_TITLE" desc="Title for the first group of Brave's shields panel.">
-        Blocking Monitor
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_SECOND_GROUP_TITLE" desc="Title for the second group of Brave's shields panel.">
-        Individual Controls
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
@@ -240,9 +213,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
         This anonymous info only lets Brave estimate the overall usage of certain features.
-      </message>
-      <message name="IDS_BRAVE_STATS_TEXT_ADS" desc="Title for the number of blocked ads and trackers">
-        Trackers &amp; Ads Blocked
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
         Data\nSaved
@@ -318,9 +288,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SKIP" desc="Text for skip button in onboarding">
         Skip
       </message>
-      <message name="IDS_SEARCH_ENGINE_ONBOARDING" desc="Text for search engine page for onboarding">
-        Search engine onboarding
-      </message>
       <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
         Troubleshooting onboarding
       </message>
@@ -330,14 +297,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SEARCH_ENGINE_TEXT" desc="Text for search engine page for onboarding">
         You can always change your preference later in app settings.
       </message>
-      <message name="IDS_BLOCK" desc="Partial Text for brave shield page">
-        Block
-      </message>
       <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TITLE" desc="Title for brave shield page">
         Brave Shields
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TEXT" desc="Text for brave shield page">
-        privacy-invading ads and trackers so you can browse without being followed around the web.
       </message>
       <message name="IDS_EARN_TOKENS" desc="Partial Text for brave rewards page">
         Earn <ph name="TOKEN">%1$s<ex>token</ex></ph>s
@@ -347,9 +308,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT" desc="Text for brave rewards page">
         by viewing privacy-respecting ads and support your favorite sites and creators by default.
-      </message>
-      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT2" desc="Alternate Text for brave rewards page">
-        for seeing privacy-respecting ads.
       </message>
       <message name="IDS_TERMS_TEXT" desc="Text for terms of service page">
         By tapping Start using Brave Rewards, you agree to the
@@ -371,12 +329,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_THIS_IS_YOUR_FIRST_AD" desc="Text brave rewards notification.">
         This is your first Brave ad. Tap to learn more.
-      </message>
-      <message name="IDS_TURN_ON" desc="Text for turn on button">
-        Turn On
-      </message>
-      <message name="IDS_FINISH" desc="Text for finish button">
-        Finish
       </message>
       <message name="IDS_EARN_AND_GIVE" desc="Button text for rewards onboarding.">
         Start using Brave Rewards
@@ -477,22 +429,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_MONTH_OCT" desc="Name of a month">OCTOBER</message>
       <message name="IDS_BRAVE_UI_MONTH_NOV" desc="Name of a month">NOVEMBER</message>
       <message name="IDS_BRAVE_UI_MONTH_DEC" desc="Name of a month">DECEMBER</message>
-      <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="Get ready to experience the next Internet.">
-        Get ready to experience
-the next Internet.
-      </message>
-      <message name="IDS_BRAVE_UI_WELCOME_DESC_TWO" desc="Get paid for viewing ads and pay it forward to support your favorite content creators.">
-        You can now earn <ph name="TOKEN">%1$s<ex>token</ex></ph>s for
-watching privacy-respecting ads.
-      </message>
-      <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_TWO" desc="Button to join Brave Rewards">
-        JOIN REWARDS
-      </message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="Menu item and title for Brave Rewards Settings. [CHAR-LIMIT=27]">
         Brave Rewards
-      </message>
-      <message name="IDS_BRAVE_UI_WELCOME_FOOTER_TEXT_TWO" desc="Learn more hyperlink">
-        LEARN MORE
       </message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
         Your wallet
@@ -506,28 +444,11 @@ watching privacy-respecting ads.
       <message name="IDS_BRAVE_UI_USD_TEXT" desc="Text for USD value">
         USD
       </message>
-      <message name="IDS_BRAVE_UI_GRANTS" desc="Grants button text">
-        Grants
-      </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="Add Funds button text">
         Add Funds
       </message>
       <message name="IDS_BRAVE_UI_SETTINGS" desc="Settings button text">
         Settings
-      </message>
-      <message name="IDS_BRAVE_UI_WELCOME_BACK_MESSAGE" desc="Welcome back title">
-        Welcome back!
-      </message>
-      <message name="IDS_BRAVE_UI_GET_REWARDED" desc="Welcome back first description">
-        Get rewarded for browsing.
-      </message>
-      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="Welcome back second description">
-        Earn by viewing privacy-respecting
-ads, and pay it forward to support
-content creators you love.
-      </message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Enable Rewards button">
-        ENABLE BRAVE REWARDS
       </message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="A message that a particular publisher is verified">
         Brave Verified Publisher
@@ -575,9 +496,6 @@ month...
       </message>
       <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">
         Tip this site monthly
-      </message>
-      <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="Creating a wallet button message">
-        Creating wallet
       </message>
       <message name="IDS_BRAVE_UI_MONTH_YEAR" desc="Current year">
         <ph name="MONTH">%1$s<ex>DECEMBER</ex></ph> <ph name="YEAR">%2$s<ex>2018</ex></ph>
@@ -627,15 +545,6 @@ month...
       <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING" desc="A message that appears when no connection to rewards server">
         The Brave Rewards server is not responding. We will fix this as soon as possible.
       </message>
-      <message name="IDS_BRAVE_UI_ERROR_INIT_WALLET" desc="An error which appear on wallet creation with no connection to the rewards service">
-        Please try again later
-      </message>
-      <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="A message about grants expiration date">
-        expires on <ph name="DATE">%1$s<ex>4/14/2019</ex></ph>
-      </message>
-      <message name="IDS_BRAVE_UI_ADS_EARNINGS" desc="Description text for ad grants in grant details">
-        earned from ads
-      </message>
       <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
         on YouTube
       </message>
@@ -659,14 +568,8 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="Set monthly tip button text">
         set monthly tip
       </message>
-      <message name="IDS_BRAVE_REWARDS_NOT_AVAILABLE" desc="The message for the dialog when Brave Rewards is not available on the device.">
-        We're sorry it appears Brave Rewards is not available on your device
-      </message>
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Brave Ads are here!
-      </message>
-      <message name="IDS_BRAVE_SYNC_DEVICE_FAILURE" desc="Text for Brave Sync device failure.">
-	Sync could not be setup
       </message>
       <message name="IDS_BRAVE_SYNC_THIS_DEVICE_TEXT" desc="Text for Brave Sync this device.">
 	(this device)
@@ -826,18 +729,6 @@ until they verify, or until 90 days have passed.
         Begin Setup
       </message>
       <!-- P3A Android Infobar -->
-      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
-        Brave uses completely private product analytics to estimate the overall usage of certain features
-      </message>
-      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR_ACKNOWLEDGE" desc="OK button that shows on the info bar where user acknowledges the P3A message">
-        Got it
-      </message>
-      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR_DISABLE" desc="Disable button that shows on the info bar where user acknowledges the P3A message">
-        Disable
-      </message>
-      <message name="IDS_BRAVE_CONFIRM_P3A_INFOBAR_LEARN_MORE" desc="Learn more link on coinfirm P3A Android infobar">
-        Learn More
-      </message>
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup
       </message>
@@ -909,9 +800,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_UI_NEW_POINT_GRANT" desc="A notification about free point grant">
         Free Point Grant
-      </message>
-      <message name="IDS_BRAVE_UI_DETAILS" desc="Details button text">
-        Details
       </message>
       <message name="IDS_TOKEN" desc="Text for token">
         token
@@ -1116,9 +1004,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_3" desc="Title for shields option.">
         Allow all cookies
-      </message>
-      <message name="IDS_BLOCK_CROSS_SITE_FINGERPRINTING" desc="Title for shields option.">
-        Block cross-site fingerprinting
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING" desc="Title for shields option.">
         Block Fingerprinting
@@ -1590,9 +1475,6 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_GOOGLE_DESC" desc="Onboarding SE text">
         Most popular
-      </message>
-      <message name="IDS_YAHOO_DESC" desc="Onboarding SE text">
-        Supports Brave
       </message>
       <message name="IDS_DDG_DESC" desc="Onboarding SE text">
         Private and no tracking
