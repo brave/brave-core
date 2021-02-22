@@ -51,6 +51,9 @@ class EthJsonRpcController {
   GURL GetNetworkURL() const;
   void SetNetwork(Network network);
   void SetCustomNetwork(const GURL& provider_url);
+  // Returns the chain ID for a network or an empty string if no standard
+  // chain ID is defined for the specified network.
+  static std::string GetChainIDFromNetwork(Network network);
 
  private:
   using SimpleURLLoaderList =

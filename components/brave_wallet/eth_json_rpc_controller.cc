@@ -240,4 +240,31 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
   std::move(callback).Run(true, result);
 }
 
+// [static]
+std::string EthJsonRpcController::GetChainIDFromNetwork(Network network) {
+  std::string chain_id;
+  switch (network) {
+    case Network::kMainnet:
+      chain_id = "0x1";
+      break;
+    case Network::kRinkeby:
+      chain_id = "0x4";
+      break;
+    case Network::kRopsten:
+      chain_id = "0x3";
+      break;
+    case Network::kGoerli:
+      chain_id = "0x5";
+      break;
+    case Network::kKovan:
+      chain_id = "0x2a";
+      break;
+    case Network::kLocalhost:
+      break;
+    case Network::kCustom:
+      break;
+  }
+  return chain_id;
+}
+
 }  // namespace brave_wallet
