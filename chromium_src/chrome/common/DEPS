@@ -5,4 +5,7 @@ include_rules = [
   "+brave/common",
   "+chrome/common",
   "+components/version_info",
+
+  # See chrome/common/DEPS
+  "+chrome/installer/util",
 ]
