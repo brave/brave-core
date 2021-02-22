@@ -17,15 +17,7 @@ module.exports = [
   'https://componentupdater.brave.com/service/update2',
   'https://crlsets.brave.com/',
   'https://crxdownload.brave.com/crx/blobs/',
-  'https://ledger.mercury.basicattentiontoken.org/',
-  'https://ledger-staging.mercury.basicattentiontoken.org/',
-  'https://balance.mercury.basicattentiontoken.org/',
-  'https://balance-staging.mercury.basicattentiontoken.org/',
-  'https://publishers.basicattentiontoken.org/',
-  'https://publishers-staging.basicattentiontoken.org/',
   'https://updates.bravesoftware.com/',
-  'https://publishers-distro.basicattentiontoken.org/',
-  'https://publishers-staging-distro.basicattentiontoken.org/',
   'https://p3a.brave.com/',
   'https://dns.google/dns-query', // needed for DoH on Mac build machines
   'https://chrome.cloudflare-dns.com/dns-query', // needed for DoH on Mac build machines
@@ -34,7 +26,7 @@ module.exports = [
   'https://sync-v2.brave.com/v2', // brave sync v2 production
   'https://sync-v2.bravesoftware.com/v2', // brave sync v2 staging
   'https://sync-v2.brave.software/v2', // brave sync v2 dev
-  'https://variations.brave.com/seed',
+  'https://variations.brave.com/seed', // brave A/B testing
   'https://brave-today-cdn.brave.com/', // Brave Today (production)
   'https://pcdn.brave.com/', // Brave's Privacy-focused CDN
 ]
