@@ -333,33 +333,27 @@ Object.defineProperty($<webauthn-internal>, 'undefineU2F', {
   }
 })
 
-Object.defineProperty(window, 'PublicKeyCredential', {
-  value: $<pkc>
-})
+var sameOrigin = (window.top.location.origin == window.location.origin)
+if (sameOrigin) {
+    Object.defineProperty(window, 'PublicKeyCredential', {
+      value: $<pkc>
+    })
 
-Object.defineProperty(window, 'AuthenticatorAttestationResponse', {
-  value: $<attest>
-})
+    Object.defineProperty(window, 'AuthenticatorAttestationResponse', {
+      value: $<attest>
+    })
 
-Object.defineProperty(window, 'AuthenticatorAssertionResponse', {
-  value: $<assert>
-})
+    Object.defineProperty(window, 'AuthenticatorAssertionResponse', {
+      value: $<assert>
+    })
 
-try {
-    var sameOrigin = (window.top.location.origin == window.location.origin)
-    if (!sameOrigin) {
-        $<webauthn-internal>.undefineU2F();
-    }
-} catch (e) {
-    $<webauthn-internal>.undefineU2F();
+    // Hook $<webauthn> to navigator.credentials
+    Object.defineProperty(navigator, 'credentials', {
+      value: $<webauthn>
+    })
+
+    // Hook $<u2f> to window.u2f
+    Object.defineProperty(window, 'u2f', {
+       value: $<u2f>
+    })
 }
-
-// Hook $<webauthn> to navigator.credentials
-Object.defineProperty(navigator, 'credentials', {
-  value: $<webauthn>
-})
-
-// Hook $<u2f> to window.u2f
-Object.defineProperty(window, 'u2f', {
-   value: $<u2f>
-})
