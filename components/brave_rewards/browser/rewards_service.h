@@ -371,6 +371,8 @@ class RewardsService : public KeyedService {
 
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
+  virtual bool IsRewardsEnabled() const = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

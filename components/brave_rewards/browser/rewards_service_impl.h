@@ -342,6 +342,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAdsEnabled(const bool is_enabled) override;
 
+  bool IsRewardsEnabled() const override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
