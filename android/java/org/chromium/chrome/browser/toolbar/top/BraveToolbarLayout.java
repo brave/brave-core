@@ -320,7 +320,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             @Override
             public void onPageLoadFinished(final Tab tab, GURL url) {
                 if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsHandler.updateHost(url.getHost());
+                    mBraveShieldsHandler.updateHost(url.getSpec());
                     updateBraveShieldsButtonState(tab);
 
                     Profile mProfile = Profile.getLastUsedRegularProfile();
