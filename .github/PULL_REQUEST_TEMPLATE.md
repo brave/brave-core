@@ -13,6 +13,7 @@ Resolves
 
 ## Reviewer Checklist:
 
+- [ ] A security review [is not needed](https://github.com/brave/handbook/blob/master/development/security.md#when-is-a-security-review-needed), or a link to one is included in the PR description
 - [ ] New files have MPL-2.0 license header
 - [ ] Adequate test coverage exists to prevent regressions
 - [ ] Major classes, functions and non-trivial code blocks are well-commented
