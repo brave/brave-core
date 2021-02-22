@@ -126,6 +126,12 @@ base::FilePath IpfsService::GetIpfsExecutablePath() {
                               : base::FilePath();
 }
 
+void IpfsService::OnInstallationEvent(ComponentUpdaterEvents event) {
+  for (auto& observer : observers_) {
+    observer.OnInstallationEvent(event);
+  }
+}
+
 void IpfsService::OnExecutableReady(const base::FilePath& path) {
   if (path.empty())
     return;

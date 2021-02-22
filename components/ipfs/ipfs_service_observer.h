@@ -10,14 +10,18 @@
 #include <vector>
 
 #include "base/observer_list_types.h"
+#include "components/component_updater/component_updater_service.h"
 
 namespace ipfs {
+
+using ComponentUpdaterEvents = update_client::UpdateClient::Observer::Events;
 
 class IpfsServiceObserver : public base::CheckedObserver {
  public:
   ~IpfsServiceObserver() override {}
   virtual void OnIpfsLaunched(bool result, int64_t pid) {}
   virtual void OnIpfsShutdown() {}
+  virtual void OnInstallationEvent(ComponentUpdaterEvents event) {}
   virtual void OnGetConnectedPeers(bool succes,
                                    const std::vector<std::string>& peers) {}
 };

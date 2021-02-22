@@ -10,6 +10,7 @@
 
 #include "base/macros.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "components/component_updater/component_updater_service.h"
 
 using brave_component_updater::BraveComponent;
 
@@ -24,6 +25,7 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   BraveComponentUpdaterDelegate();
   ~BraveComponentUpdaterDelegate() override;
 
+  using ComponentObserver = update_client::UpdateClient::Observer;
   // brave_component_updater::BraveComponent::Delegate implementation
   void Register(const std::string& component_name,
                 const std::string& component_base64_public_key,
@@ -31,6 +33,10 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
                 BraveComponent::ReadyCallback ready_callback) override;
   bool Unregister(const std::string& component_id) override;
   void OnDemandUpdate(const std::string& component_id) override;
+
+  void AddObserver(ComponentObserver* observer) override;
+  void RemoveObserver(ComponentObserver* observer) override;
+
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  private:

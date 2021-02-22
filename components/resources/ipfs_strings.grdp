@@ -108,5 +108,8 @@
     <message name="IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR" desc="Error message about no peers for IPFS interstitial page.">
       We have exceeded the limit of attemps, try again later.
     </message>
+    <message name="IDS_IPFS_ONBOARDING_INSTALLATION_ERROR" desc="Error message about installation error for IPFS interstitial page.">
+      Error ocurred during an update.
+    </message>
   </if>
 </grit-part>

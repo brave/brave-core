@@ -50,6 +50,15 @@ void BraveComponentUpdaterDelegate::OnDemandUpdate(
   BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
 }
 
+void BraveComponentUpdaterDelegate::AddObserver(ComponentObserver* observer) {
+  g_browser_process->component_updater()->AddObserver(observer);
+}
+
+void BraveComponentUpdaterDelegate::RemoveObserver(
+    ComponentObserver* observer) {
+  g_browser_process->component_updater()->RemoveObserver(observer);
+}
+
 scoped_refptr<base::SequencedTaskRunner>
 BraveComponentUpdaterDelegate::GetTaskRunner() {
   return task_runner_;

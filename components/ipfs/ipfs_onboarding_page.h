@@ -58,7 +58,8 @@ class IPFSOnboardingPage
     THEME_CHANGED = 1,
     LOCAL_NODE_LAUNCHED = 2,
     NO_PEERS_AVAILABLE = 3,
-    NO_PEERS_LIMIT = 4
+    NO_PEERS_LIMIT = 4,
+    INSTALLATION_ERROR = 5
   };
 
   explicit IPFSOnboardingPage(
@@ -82,6 +83,7 @@ class IPFSOnboardingPage
 
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnInstallationEvent(ipfs::ComponentUpdaterEvents event) override;
   void OnIpfsShutdown() override;
   void OnGetConnectedPeers(bool succes,
                            const std::vector<std::string>& peers) override;
