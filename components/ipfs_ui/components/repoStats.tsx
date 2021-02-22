@@ -7,10 +7,13 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { Section, Title } from '../style'
+import { Section, Title, PaddedButton, GarbageError } from '../style'
 
 interface Props {
   repoStats: IPFS.RepoStats
+  daemonStatus: IPFS.DaemonStatus
+  garbageCollectionStatus: IPFS.GarbageCollectionStatus
+  onGarbageCollection: () => void
 }
 
 export class RepoStats extends React.Component<Props, {}> {
@@ -39,6 +42,18 @@ export class RepoStats extends React.Component<Props, {}> {
         <div>
           {getLocale('version')}: {this.props.repoStats.version.toString()}
         </div>
+        <PaddedButton
+          disabled={!this.props.daemonStatus.launched || this.props.garbageCollectionStatus.started}
+          text={getLocale('runGarbageCollectionTitle')}
+          size={'small'}
+          onClick={this.props.onGarbageCollection}
+        />
+        {!this.props.garbageCollectionStatus.success && this.props.daemonStatus.launched && (
+        <div
+          style={GarbageError}
+        >
+          {getLocale('gcError')}: {this.props.garbageCollectionStatus.error}
+        </div>)}
       </Section>
     )
   }

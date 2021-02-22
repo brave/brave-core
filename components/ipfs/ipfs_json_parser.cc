@@ -207,3 +207,35 @@ bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
   info->version = *version;
   return true;
 }
+
+// static
+// Response Format for /api/v0/repo/gc
+// {
+//   "Error": "<string>",
+//   "Key": {
+//     "/": "<cid-string>"
+//   }
+// }
+bool IPFSJSONParser::GetGarbageCollectionFromJSON(const std::string& json,
+                                                  std::string* error) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
+            << " error is:" << value_with_error.error_message;
+    *error = value_with_error.error_message;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+  const std::string* error_message = response_dict->FindStringKey("Error");
+  if (error_message)
+    *error = *error_message;
+  return true;
+}

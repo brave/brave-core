@@ -39,3 +39,7 @@ export const LearnMoreLink = {
   color: 'blue',
   cursor: 'pointer'
 }
+
+export const GarbageError = {
+  color: 'red'
+}

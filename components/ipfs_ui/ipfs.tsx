@@ -88,13 +88,19 @@ window.cr.define('ipfs', function () {
     actions.onGetNodeInfo(nodeInfo)
   }
 
+  function onGarbageCollection (garbageCollectionStatus: IPFS.GarbageCollectionStatus) {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.onGarbageCollection(garbageCollectionStatus)
+  }
+
   return {
     initialize,
     onGetConnectedPeers,
     onGetAddressesConfig,
     onGetDaemonStatus,
     onGetRepoStats,
-    onGetNodeInfo
+    onGetNodeInfo,
+    onGarbageCollection
   }
 })
 

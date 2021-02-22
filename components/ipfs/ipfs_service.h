@@ -65,6 +65,8 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::RepoStats&)>;
   using GetNodeInfoCallback =
       base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
+  using GarbageCollectionCallback =
+      base::OnceCallback<void(bool, const std::string&)>;
 
   using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
   using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
@@ -92,6 +94,7 @@ class IpfsService : public KeyedService,
   void GetConfig(GetConfigCallback);
   void GetRepoStats(GetRepoStatsCallback callback);
   void GetNodeInfo(GetNodeInfoCallback callback);
+  void RunGarbageCollection(GarbageCollectionCallback callback);
 
   void SetAllowIpfsLaunchForTest(bool launched);
   void SetServerEndpointForTest(const GURL& gurl);
@@ -132,6 +135,10 @@ class IpfsService : public KeyedService,
   void OnNodeInfo(SimpleURLLoaderList::iterator iter,
                   GetNodeInfoCallback callback,
                   std::unique_ptr<std::string> response_body);
+  void OnGarbageCollection(SimpleURLLoaderList::iterator iter,
+                           GarbageCollectionCallback callback,
+                           std::unique_ptr<std::string> response_body);
+
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
   // bound.

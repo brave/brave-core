@@ -235,7 +235,8 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
 
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
   if (!IsDaemonLaunched()) {
-    std::move(callback).Run(false, std::vector<std::string>{});
+    if (callback)
+      std::move(callback).Run(false, std::vector<std::string>{});
     return;
   }
 
@@ -510,6 +511,49 @@ void IpfsService::OnNodeInfo(SimpleURLLoaderList::iterator iter,
   bool success =
       IPFSJSONParser::GetNodeInfoFromJSON(*response_body, &node_info);
   std::move(callback).Run(success, node_info);
+}
+
+void IpfsService::RunGarbageCollection(GarbageCollectionCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, std::string());
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(ipfs::kGarbageCollectionPath);
+
+  auto url_loader = CreateURLLoader(gurl);
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnGarbageCollection, base::Unretained(this),
+                     std::move(iter), std::move(callback)));
+}
+
+void IpfsService::OnGarbageCollection(
+    SimpleURLLoaderList::iterator iter,
+    GarbageCollectionCallback callback,
+    std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  if (!success) {
+    VLOG(1) << "Fail to run garbage collection, error_code = " << error_code
+            << " response_code = " << response_code;
+  }
+
+  std::string error;
+  if (success) {
+    const std::string& body = *response_body;
+    if (!body.empty())
+      success = IPFSJSONParser::GetGarbageCollectionFromJSON(body, &error);
+  }
+  std::move(callback).Run(success && error.empty(), error);
 }
 
 }  // namespace ipfs

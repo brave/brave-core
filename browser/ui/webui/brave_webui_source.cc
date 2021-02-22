@@ -882,6 +882,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "openWebUI", IDS_IPFS_OPEN_WEBUI },
         { "peerDetailsLink", IDS_IPFS_PEERS_DETAILS_LINK },
         { "installing", IDS_IPFS_INSTALLING },
+        { "runGarbageCollectionTitle", IDS_IPFS_RUN_GC_BUTTON },
+        { "gcError", IDS_IPFS_GC_ERROR }
       }
     }, {
 #endif
