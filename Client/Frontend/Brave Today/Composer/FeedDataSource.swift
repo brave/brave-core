@@ -112,6 +112,12 @@ class FeedDataSource {
         }
     }
     
+    /// A list of the supported languages
+    static let supportedLanguages = [
+        "en",
+        "ja",
+    ]
+    
     private struct TodayBucket {
         var name: String
         var path: String = ""
@@ -127,19 +133,37 @@ class FeedDataSource {
     
     private struct TodayResource {
         var bucket: TodayBucket
-        var filename: String
+        var name: String
+        var type: String
+        var isLocalized: Bool
         var cacheLifetime: TimeInterval
         
         static let sources = TodayResource(
             bucket: TodayBucket(name: "brave-today-cdn"),
-            filename: "sources.json",
+            name: "sources",
+            type: "json",
+            isLocalized: true,
             cacheLifetime: 1.days
         )
         static let feed = TodayResource(
             bucket: TodayBucket(name: "brave-today-cdn", path: "brave-today"),
-            filename: "feed.json",
+            name: "feed",
+            type: "json",
+            isLocalized: true,
             cacheLifetime: 1.hours
         )
+    }
+    
+    /// Get the full name of a file for a given Brave Today resource, taking into account whether
+    /// or not the resource can be localized for supported languages
+    private func resourceFilename(for resource: TodayResource) -> String {
+        // "en" is the default language and thus does not get the language code inserted into the
+        // file name.
+        if resource.isLocalized, let languageCode = Locale.preferredLanguages.first?.prefix(2),
+           languageCode != "en", Self.supportedLanguages.contains(String(languageCode)) {
+            return "\(resource.name).\(languageCode).\(resource.type)"
+        }
+        return "\(resource.name).\(resource.type)"
     }
     
     private static let cacheFolderName = "brave-today"
@@ -149,7 +173,8 @@ class FeedDataSource {
     /// - Note: If no file can be found, this returns `true`
     private func isResourceExpired(_ resource: TodayResource) -> Bool {
         let fileManager = FileManager.default
-        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(resource.filename).path
+        let filename = resourceFilename(for: resource)
+        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
         if let cachedPath = cachedPath,
             let attributes = try? fileManager.attributesOfItem(atPath: cachedPath),
             let date = attributes[.modificationDate] as? Date {
@@ -166,10 +191,10 @@ class FeedDataSource {
     
     /// Get a cached Brave Today resource file, optionally allowing expired data to be returned
     private func cachedResource(_ resource: TodayResource, loadExpiredData: Bool = false) -> Deferred<Data?> {
-        let filename = resource.filename
+        let name = resourceFilename(for: resource)
         let fileManager = FileManager.default
         let deferred = Deferred<Data?>(value: nil, defaultQueue: .main)
-        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
+        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(name).path
         if (loadExpiredData || !isResourceExpired(resource)),
             let cachedPath = cachedPath,
             fileManager.fileExists(atPath: cachedPath) {
@@ -198,7 +223,7 @@ class FeedDataSource {
         _ resource: TodayResource,
         decodedTo: DataType.Type
     ) -> Deferred<Result<DataType, Error>> where DataType: Decodable {
-        let filename = resource.filename
+        let filename = resourceFilename(for: resource)
         return cachedResource(resource)
             .bind({ [weak self] data -> Deferred<Result<Data, Error>> in
                 guard let self = self else { return .init() }
