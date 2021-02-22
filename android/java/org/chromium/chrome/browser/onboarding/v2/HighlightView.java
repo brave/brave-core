@@ -63,6 +63,11 @@ public class HighlightView extends FrameLayout {
                 Bitmap.Config.ARGB_8888);
         Canvas overlayCanvas = new Canvas(overlay);
         overlayCanvas.drawColor(0xcc1E2029);
+
+        if (item == null) {
+            return;
+        }
+
         int width = item.getScreenRight() - item.getScreenLeft();
         int height = item.getScreenBottom() - item.getScreenTop();
         float radius = width > height ? ((float) width / 2) : ((float) height / 2);
