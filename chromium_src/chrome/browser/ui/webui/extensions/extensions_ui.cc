@@ -25,11 +25,11 @@ constexpr char kBraveGeneratedPath[] =
 void BraveAddExtensionsResources(content::WebUIDataSource* source) {
 #if !BUILDFLAG(OPTIMIZE_WEBUI)
   for (size_t i = 0; i < kBraveExtensionsResourcesSize; ++i) {
-    std::string path = kBraveExtensionsResources[i].name;
+    std::string path = kBraveExtensionsResources[i].path;
     if (path.rfind(kBraveGeneratedPath, 0) == 0) {
       path = path.substr(strlen(kBraveGeneratedPath));
     }
-    source->AddResourcePath(path, kBraveExtensionsResources[i].value);
+    source->AddResourcePath(path, kBraveExtensionsResources[i].id);
   }
 #endif
   NavigationBarDataProvider::Initialize(source);

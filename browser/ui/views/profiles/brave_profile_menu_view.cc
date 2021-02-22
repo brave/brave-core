@@ -11,10 +11,10 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/signin/profile_colors_util.h"
@@ -27,13 +27,13 @@ namespace {
 
 void CloseGuestProfileWindows() {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
-  Profile* profile = profile_manager->GetProfileByPath(
-      ProfileManager::GetGuestProfilePath());
+  Profile* profile =
+      profile_manager->GetProfileByPath(ProfileManager::GetGuestProfilePath());
 
   if (profile) {
     BrowserList::CloseAllBrowsersWithProfile(
-        profile, BrowserList::CloseCallback(),
-        BrowserList::CloseCallback(), false);
+        profile, BrowserList::CloseCallback(), BrowserList::CloseCallback(),
+        false);
   }
 }
 
