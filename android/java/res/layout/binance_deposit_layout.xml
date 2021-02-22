@@ -53,7 +53,6 @@
 			        android:layout_height="wrap_content"
 			        android:layout_weight="1"
 			        android:textSize="16sp"
-			        android:text="ETH (Ethereum)"
 			        android:layout_gravity="center_vertical"
 			        android:textColor="@android:color/white" />
 
@@ -82,7 +81,7 @@
 	        		android:layout_width="0dp"
 		        	android:layout_height="wrap_content"
 		        	android:layout_weight="1"
-		        	android:layout_marginRight="8dp"
+		        	android:layout_marginEnd="8dp"
 		        	android:orientation="vertical">
 
 		        	<TextView
@@ -130,7 +129,7 @@
 	        		android:layout_width="0dp"
 		        	android:layout_height="wrap_content"
 		        	android:layout_weight="1"
-		        	android:layout_marginRight="8dp"
+		        	android:layout_marginEnd="8dp"
 		        	android:orientation="vertical">
 
 		        	<TextView
