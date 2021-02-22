@@ -5,6 +5,8 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
@@ -294,7 +296,23 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     }
   }
   base::ListValue* hide_selectors_list;
-  if (resources_dict->GetList("hide_selectors", &hide_selectors_list)) {
+  if (!resources_dict->GetList("hide_selectors", &hide_selectors_list)) {
+    hide_selectors_list = nullptr;
+  }
+  base::ListValue* force_hide_selectors_list;
+  if (!resources_dict->GetList("force_hide_selectors",
+                               &force_hide_selectors_list)) {
+    force_hide_selectors_list = nullptr;
+  }
+  if (!hide_selectors_list) {
+    hide_selectors_list = force_hide_selectors_list;
+  } else if (force_hide_selectors_list) {
+    for (auto i = force_hide_selectors_list->begin();
+         i < force_hide_selectors_list->end(); i++) {
+      hide_selectors_list->Append(std::move(*i));
+    }
+  }
+  if (hide_selectors_list && hide_selectors_list->GetSize() != 0) {
     std::string json_selectors;
     if (!base::JSONWriter::Write(*hide_selectors_list, &json_selectors) ||
         json_selectors.empty()) {
@@ -303,10 +321,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     // Building a script for stylesheet modifications
     std::string new_selectors_script =
         base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
-    if (hide_selectors_list->GetSize() != 0) {
-      web_frame->ExecuteScriptInIsolatedWorld(
-          isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
-    }
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
   }
 
   base::DictionaryValue* style_selectors_dictionary = nullptr;
