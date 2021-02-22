@@ -48,7 +48,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
     public static final String TIP_AMOUNT_EXTRA="tipAmount";
     public static final String TIP_MONTHLY_EXTRA="tipMonthly";
 
-
     private int currentTabId_ = -1;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private final int PUBLISHER_ICON_SIDE_LEN= 70; //dp
@@ -59,6 +58,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
     private boolean mTippingInProgress; //flag preventing multiple tipping processes
 
     private boolean isAnonWallet;
+    private LinearLayout sendDonationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,10 +204,9 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 }
                 //not enough funds
                 else {
-                    View send_tip = findViewById(R.id.send_donation_button);
-                    send_tip.setVisibility(View.INVISIBLE);
+                    sendDonationLayout.setVisibility(View.INVISIBLE);
                     View animatedView = findViewById(R.id.not_enough_funds_button);
-                    int fromY = findViewById(R.id.send_donation_button).getHeight();
+                    int fromY = sendDonationLayout.getHeight();
 
                     TranslateAnimation animate = new TranslateAnimation(0,0,fromY,0);
                     animate.setDuration(FADE_OUT_DURATION);
@@ -217,7 +216,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             }
         };
 
-        findViewById(R.id.send_donation_button).setOnClickListener (send_tip_clicker);
+        sendDonationLayout.setOnClickListener (send_tip_clicker);
 
 
         //set 'add funds' button onClick
@@ -234,12 +233,11 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                  View add_funds_btn = findViewById(R.id.not_enough_funds_button);
                  add_funds_btn.setVisibility(View.INVISIBLE);
 
-                 View animatedView = findViewById(R.id.send_donation_button);
-                 int fromY = findViewById(R.id.send_donation_button).getHeight();
+                 int fromY = sendDonationLayout.getHeight();
                  TranslateAnimation animate = new TranslateAnimation(0,0,fromY,0);
                  animate.setDuration(FADE_OUT_DURATION);
-                 animatedView.startAnimation(animate);
-                 animatedView.setVisibility(View.VISIBLE);
+                 sendDonationLayout.startAnimation(animate);
+                 sendDonationLayout.setVisibility(View.VISIBLE);
              }
          };
 
@@ -314,6 +312,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 icon_layout.requestLayout();
             }
         });
+
+        sendDonationLayout = findViewById(R.id.send_donation_button);
     }
 
     private void setPublisherNoteText(@PublisherStatus int pubStatus) {

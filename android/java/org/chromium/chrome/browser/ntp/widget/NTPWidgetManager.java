@@ -30,22 +30,21 @@ public class NTPWidgetManager {
     private static NTPWidgetManager sInstance;
 
     private final SharedPreferences mSharedPreferences;
-    private static Context mContext = ContextUtils.getApplicationContext();
 
     public static Map<String, NTPWidgetItem> mWidgetsMap = new HashMap<String, NTPWidgetItem>() {
         {
             put(PREF_PRIVATE_STATS,
                     new NTPWidgetItem(PREF_PRIVATE_STATS,
-                            mContext.getResources().getString(R.string.privacy_stats),
-                            mContext.getResources().getString(R.string.privacy_stats_text)));
+                            ContextUtils.getApplicationContext().getResources().getString(R.string.privacy_stats),
+                            ContextUtils.getApplicationContext().getResources().getString(R.string.privacy_stats_text)));
             put(PREF_FAVORITES,
                     new NTPWidgetItem(PREF_FAVORITES,
-                            mContext.getResources().getString(R.string.favorites),
-                            mContext.getResources().getString(R.string.favorites_text)));
+                            ContextUtils.getApplicationContext().getResources().getString(R.string.favorites),
+                            ContextUtils.getApplicationContext().getResources().getString(R.string.favorites_text)));
             put(PREF_BINANCE,
                     new NTPWidgetItem(PREF_BINANCE,
-                            mContext.getResources().getString(R.string.binance),
-                            mContext.getResources().getString(R.string.binance_disconnect_text)));
+                            ContextUtils.getApplicationContext().getResources().getString(R.string.binance),
+                            ContextUtils.getApplicationContext().getResources().getString(R.string.binance_disconnect_text)));
         }
     };
 
