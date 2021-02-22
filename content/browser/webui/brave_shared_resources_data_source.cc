@@ -64,14 +64,14 @@ void AddResourcesToMap(ResourcesMap* resources_map) {
   for (size_t i = 0; i < kBraveWebuiResourcesSize; ++i) {
     const auto& resource = kBraveWebuiResources[i];
 
-    AddResource(resource.name, resource.value, resources_map);
+    AddResource(resource.path, resource.id, resources_map);
 
     for (auto it = aliases.begin(); it != aliases.end(); ++it) {
-      if (base::StartsWith(resource.name, it->first,
+      if (base::StartsWith(resource.path, it->first,
                            base::CompareCase::SENSITIVE)) {
-        std::string resource_name(resource.name);
+        std::string resource_name(resource.path);
         AddResource(it->second + resource_name.substr(it->first.length()),
-                    resource.value, resources_map);
+                    resource.id, resources_map);
       }
     }
   }
