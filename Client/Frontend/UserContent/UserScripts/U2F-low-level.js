@@ -5,10 +5,12 @@
 try {
     var sameOrigin = (window.top.location.origin == window.location.origin)
     if (!sameOrigin) {
-        window.u2f = {}
+        window.u2f = undefined
+        return
     }
 } catch (e) {
-    window.u2f = {}
+    window.u2f = undefined
+    return
 }
 
 Object.defineProperty(window.u2f, 'receiveChannel', {
@@ -126,13 +128,3 @@ Object.defineProperty(window.u2f.receiveChannel.port2.onmessage, 'toString', {
         return defaultU2FString
     }
 })
-
-try {
-    var sameOrigin = (window.top.location.origin == window.location.origin)
-    if (!sameOrigin) {
-        window.u2f = undefined
-    }
-} catch (e) {
-    window.u2f = undefined
-}
-
