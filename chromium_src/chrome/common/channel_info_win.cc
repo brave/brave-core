@@ -1,6 +1,7 @@
-// Copyright (c) 2021 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/common/channel_info.h"
 
@@ -8,25 +9,17 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "build/branding_buildflags.h"
+#include "chrome/install_static/install_util.h"
 
-#define GetChannelName GetChannelName_unused
-#include "../../../../chrome/common/channel_info_win.cc"
-#undef GetChannelName
+// All above headers copied from original channel_info_win.cc are included to
+// prevent below GOOGLE_CHROME_BUILD affect them.
 
-namespace chrome {
-
-std::string GetChannelName() {
 #if defined(OFFICIAL_BUILD)
-  base::string16 channel(install_static::GetChromeChannelName());
-#if defined(DCHECK_IS_CONFIGURABLE)
-  // Adorn the channel when DCHECKs are baked into the build, as there will be
-  // a performance hit. See https://crbug.com/812058 for details.
-  channel += L"-dcheck";
-#endif  // defined(DCHECK_IS_CONFIGURABLE)
-  return base::UTF16ToASCII(channel);
-#else
-  return std::string();
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
-}
+#include "../../../../chrome/common/channel_info_win.cc"
 
-}  // namespace chrome
+#if defined(OFFICIAL_BUILD)
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#endif
