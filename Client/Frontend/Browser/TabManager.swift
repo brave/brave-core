@@ -1018,9 +1018,21 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
             delegate.webView?(webView, didStartProvisionalNavigation: navigation)
         }
     }
+    
+    private func defaultAllowPolicy() -> WKNavigationActionPolicy {
+        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value {
+            // Stop Brave from opening universal links by using the private enum value
+            // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
+            // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
+            let allowDecision = WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2) ?? .allow
+            return allowDecision
+        }
+        return .allow
+    }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        var res = WKNavigationActionPolicy.allow
+        var res = defaultAllowPolicy()
         for delegate in delegates {
             delegate.webView?(webView, decidePolicyFor: navigationAction, decisionHandler: { policy in
                 if policy == .cancel {
@@ -1035,7 +1047,7 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     @available(iOS 13.0, *)
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         
-        var res = WKNavigationActionPolicy.allow
+        var res = defaultAllowPolicy()
         var pref = preferences
         for delegate in delegates {
             delegate.webView?(webView, decidePolicyFor: navigationAction, preferences: preferences, decisionHandler: { policy, preference  in

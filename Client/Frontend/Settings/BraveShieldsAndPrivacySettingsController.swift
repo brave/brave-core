@@ -164,7 +164,8 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                         self.pboModeToggled(value: value)
                     }
                 ),
-                .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups)
+                .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups),
+                .boolRow(title: Strings.followUniversalLinks, option: Preferences.General.followUniversalLinks)
             ]
         )
         if #available(iOS 14.0, *) {
