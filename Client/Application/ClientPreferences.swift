@@ -74,6 +74,9 @@ extension Preferences {
         /// Whether the default browser callout on new tab page was dismissed.
         static let defaultBrowserCalloutDismissed =
             Option<Bool>(key: "general.default-browser-callout-dismissed", default: false)
+        
+        /// Whether or not the app (in regular browsing mode) will follow universal links
+        static let followUniversalLinks = Option<Bool>(key: "general.follow-universal-links", default: true)
     }
     
     final class DefaultBrowserIntro {

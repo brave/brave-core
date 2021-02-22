@@ -259,6 +259,7 @@ extension BrowserViewController: WKNavigationDelegate {
                 self.tabManager.selectedTab?.alertShownCount = 0
                 self.tabManager.selectedTab?.blockAllAlerts = false
             }
+            
             decisionHandler(.allow)
             return
         }
