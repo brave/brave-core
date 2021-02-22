@@ -17,6 +17,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
+import org.chromium.chrome.browser.ntp.ScrollableContainerDelegate;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -26,6 +27,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
+import org.chromium.ui.base.WindowAndroid;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private Activity mActivity;
@@ -34,17 +36,18 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private FrameLayout mRootView;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
-            TabModelSelector tabModelSelector, Supplier<Tab> tabProvider,
+            TabModelSelector tabModelSelector, WindowAndroid windowAndroid,
             @Nullable SnapScrollHelper snapScrollHelper, @Nullable View ntpHeader,
             @Nullable SectionHeaderView sectionHeaderView, FeedV1ActionOptions actionOptions,
             boolean showDarkBackground, FeedSurfaceDelegate delegate,
             @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
-            boolean isPlaceholderRequested, BottomSheetController bottomSheetController,
-            Supplier<ShareDelegate> shareDelegateSupplier) {
-        super(activity, snackbarManager, tabModelSelector, tabProvider, snapScrollHelper, ntpHeader,
-                sectionHeaderView, actionOptions, showDarkBackground, delegate,
-                pageNavigationDelegate, profile, isPlaceholderRequested, bottomSheetController,
-                shareDelegateSupplier);
+            boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
+            Supplier<ShareDelegate> shareDelegateSupplier,
+            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate) {
+        super(activity, snackbarManager, tabModelSelector, windowAndroid, snapScrollHelper,
+                ntpHeader, sectionHeaderView, actionOptions, showDarkBackground, delegate,
+                pageNavigationDelegate, profile, isPlaceholderShownInitially, bottomSheetController,
+                shareDelegateSupplier, externalScrollableContainerDelegate);
     }
 
     @Override

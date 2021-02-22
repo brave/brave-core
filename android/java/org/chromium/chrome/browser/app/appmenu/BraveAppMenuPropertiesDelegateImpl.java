@@ -19,6 +19,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
@@ -32,10 +33,10 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
             @Nullable OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier,
-            ModalDialogManager modalDialogManager) {
+            ModalDialogManager modalDialogManager, WebFeedBridge webFeedBridge) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
                 toolbarManager, decorView, overviewModeBehaviorSupplier, bookmarkBridgeSupplier,
-                modalDialogManager);
+                modalDialogManager, webFeedBridge);
     }
 
     @Override
