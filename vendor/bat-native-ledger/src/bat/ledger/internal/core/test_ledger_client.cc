@@ -12,8 +12,6 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/task_traits.h"
-#include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "net/base/escape.h"
 #include "net/http/http_status_code.h"
@@ -55,8 +53,7 @@ TestNetworkResult::TestNetworkResult(const std::string& url,
 TestNetworkResult::~TestNetworkResult() = default;
 
 TestLedgerClient::TestLedgerClient()
-    : task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+    : task_runner_(base::SequencedTaskRunnerHandle::Get()),
       ledger_database_(new LedgerDatabaseImpl(base::FilePath())),
       state_store_(base::Value::Type::DICTIONARY),
       encrypted_state_store_(base::Value::Type::DICTIONARY),

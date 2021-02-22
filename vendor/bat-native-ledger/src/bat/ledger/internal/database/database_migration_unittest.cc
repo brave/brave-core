@@ -659,10 +659,6 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
 
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 
-  const std::string query =
-      "SELECT token_id, token_value, public_key, value, creds_id, "
-      "expires_at, reserved_at "
-      "FROM unblinded_tokens LIMIT 1";
   sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
       SELECT token_id, token_value, public_key, value, creds_id, expires_at,
         reserved_at
