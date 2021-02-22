@@ -6,6 +6,7 @@
 (function() {
     window.ethereum = {
       request: function(obj) {
+        brave_provider_handler.request(obj)
         return Promise.resolve()
       }
     }

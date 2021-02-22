@@ -21,6 +21,18 @@ class BraveWalletJSHandler {
   void InjectScript();
 
  private:
+  void CreateWorkerObject(v8::Isolate* isolate, v8::Local<v8::Context> context);
+  void BindFunctionsToObject(v8::Isolate* isolate,
+                             v8::Local<v8::Object> javascript_object);
+  template <typename Sig>
+  void BindFunctionToObject(v8::Isolate* isolate,
+                            v8::Local<v8::Object> javascript_object,
+                            const std::string& name,
+                            const base::RepeatingCallback<Sig>& callback);
+
+  // Functions to be called from JS
+  void Request(const std::string& input);
+
   content::RenderFrame* render_frame_;
 };
 
