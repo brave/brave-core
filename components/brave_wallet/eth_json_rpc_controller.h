@@ -54,6 +54,7 @@ class EthJsonRpcController {
   // Returns the chain ID for a network or an empty string if no standard
   // chain ID is defined for the specified network.
   static std::string GetChainIDFromNetwork(Network network);
+  static GURL GetBlockTrackerURLFromNetwork(Network network);
 
  private:
   using SimpleURLLoaderList =

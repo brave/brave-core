@@ -267,4 +267,30 @@ std::string EthJsonRpcController::GetChainIDFromNetwork(Network network) {
   return chain_id;
 }
 
+GURL EthJsonRpcController::GetBlockTrackerURLFromNetwork(Network network) {
+  GURL url;
+  switch (network) {
+    case Network::kMainnet:
+      url = GURL("https://etherscan.io");
+      break;
+    case Network::kRinkeby:
+      url = GURL("https://rinkeby.etherscan.io");
+      break;
+    case Network::kRopsten:
+      url = GURL("https://ropsten.etherscan.io");
+      break;
+    case Network::kGoerli:
+      url = GURL("https://goerli.etherscan.io");
+      break;
+    case Network::kKovan:
+      url = GURL("https://kovan.etherscan.io");
+      break;
+    case Network::kLocalhost:
+      break;
+    case Network::kCustom:
+      break;
+  }
+  return url;
+}
+
 }  // namespace brave_wallet
