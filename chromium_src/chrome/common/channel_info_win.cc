@@ -9,7 +9,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "build/branding_buildflags.h"
-#include "chrome/install_static/install_util.h"
 
 // All above headers copied from original channel_info_win.cc are included to
 // prevent below GOOGLE_CHROME_BUILD affect them.
