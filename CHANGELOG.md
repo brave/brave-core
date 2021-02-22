@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.23](https://github.com/brave/brave-ios/releases/tag/v1.23)
+
+- [Security] Fixed "about:blank" spoofing issue as reported on HackerOne by rayyanh12. ([#2952](https://github.com/brave/brave-ios/issues/2952))
+- [Security] Fixed URL parsing issue with fully qualified domain name (FQDN) as reported on HackerOne by nishimunea. ([#3168](https://github.com/brave/brave-ios/issues/3168))
+- Added find previous text and add new bookmark keyboard shortcuts. ([#2973](https://github.com/brave/brave-ios/issues/2973))
+- Changed "HTTPS" to "Est. Data Saved" under New Tab Page. ([#2859](https://github.com/brave/brave-ios/issues/2859))
+- Improved bookmark scrolling performance. ([#3071](https://github.com/brave/brave-ios/issues/3071))
+- Updated User Agent to 14.3. ([#3020](https://github.com/brave/brave-ios/issues/3020))
+- Updated Adblock list fetch frequency from once during startup to once every 24 hours. ([#3113](https://github.com/brave/brave-ios/issues/3113))
+- Updated HTTPSE data files. ([#3122](https://github.com/brave/brave-ios/issues/3122))
+- Updated New Tab Page background images. ([#3112](https://github.com/brave/brave-ios/issues/3112))
+- Updated images and text under the Brave VPN intro card. ([#2933](https://github.com/brave/brave-ios/issues/2933))
+- Fixed "Clear Private Data" not removing tab history from "Back" and "Forward" buttons. ([#2907](https://github.com/brave/brave-ios/issues/2907))
+- Fixed Brave VPN switch not visible in the settings menu when using certain locales. ([#3012](https://github.com/brave/brave-ios/issues/3012))
+- Fixed search engine not being displayed under "Quick-Search" when only a single search engine is enabled. ([#2908](https://github.com/brave/brave-ios/issues/2908))
+- Fixed not being able to share PDF files with various apps such as "Books.app" and "Mail.app". ([#2961](https://github.com/brave/brave-ios/issues/2961))
+- Fixed bookmarks and folders being moved to bottom of list when being edited. ([#3137](https://github.com/brave/brave-ios/issues/3137))
+- Fixed search suggestion text color blinking when text is being entered into the URL bar. ([#3044](https://github.com/brave/brave-ios/issues/3044))
+- Fixed incorrect Twitter icons being displayed under New Tab Page when using sponsored referral builds. ([#2722](https://github.com/brave/brave-ios/issues/2722))
+- Fixed text visibility when editing favorites or bookmarks under iOS 12. ([#2644](https://github.com/brave/brave-ios/issues/2644))
+- Fixed reader mode toolbar visible when reader mode disabled. ([#2649](https://github.com/brave/brave-ios/issues/2649))
+
 ## [1.22.2](https://github.com/brave/brave-ios/releases/tag/v1.22.2)
 
 - Added the "navigator.globalPrivacyControl" property to express do-not-sell or share preference. ([#3133](https://github.com/brave/brave-ios/issues/3133))
