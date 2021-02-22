@@ -10,7 +10,6 @@
 
 #include "base/base64.h"
 #include "base/bind.h"
-#include "base/environment.h"
 #include "base/files/file_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
@@ -34,21 +33,6 @@
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/common/constants.h"
 
-namespace {
-
-std::string GetInfuraProjectID() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-
-  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
-    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
-  }
-
-  return project_id;
-}
-
-}  // namespace
-
 BraveWalletService::BraveWalletService(
     content::BrowserContext* context,
     std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate)
@@ -71,10 +55,8 @@ BraveWalletService::BraveWalletService(
   RemoveUnusedWeb3ProviderContentScripts();
   extension_registry_observer_.Add(extensions::ExtensionRegistry::Get(context));
 
-  const std::string spec = base::StringPrintf(
-      "https://mainnet-infura.brave.com/%s", GetInfuraProjectID().c_str());
-  controller_ =
-      std::make_unique<brave_wallet::EthJsonRpcController>(context, GURL(spec));
+  controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
+      context, brave_wallet::Network::kMainnet);
 }
 
 BraveWalletService::~BraveWalletService() {}

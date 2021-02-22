@@ -17,4 +17,18 @@ extern const char ethereum_remote_client_ens_redirect_url[];
 extern const char ethereum_remote_client_host[];
 extern const char metamask_extension_id[];
 
+namespace brave_wallet {
+
+enum class Network {
+  kMainnet,
+  kRinkeby,
+  kRopsten,
+  kGoerli,
+  kKovan,
+  kLocalhost,
+  kCustom,
+};
+
+}  // namespace brave_wallet
+
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BRAVE_WALLET_CONSTANTS_H_
