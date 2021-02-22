@@ -1,12 +1,11 @@
 diff --git a/chrome/installer/util/google_update_constants.cc b/chrome/installer/util/google_update_constants.cc
-index 1e5ee12e466ef613d0481e437bd2fd26cbd0ad16..f99d507146e0727feb778ae131f3b11ccf5801aa 100644
+index 1e5ee12e466ef613d0481e437bd2fd26cbd0ad16..eeae3bcce42193d6a24a207cbf346a95af32860f 100644
 --- a/chrome/installer/util/google_update_constants.cc
 +++ b/chrome/installer/util/google_update_constants.cc
-@@ -6,6 +6,17 @@
+@@ -6,6 +6,16 @@
  
  namespace google_update {
  
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +const wchar_t kChromeUpgradeCode[] = L"{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
 +const wchar_t kGoogleUpdateUpgradeCode[] =
 +    L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
@@ -16,11 +15,11 @@ index 1e5ee12e466ef613d0481e437bd2fd26cbd0ad16..f99d507146e0727feb778ae131f3b11c
 +const wchar_t kRegPathClientStateMedium[] =
 +    L"Software\\BraveSoftware\\Update\\ClientStateMedium";
 +const wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\Update";
-+#else
++#if 0
  const wchar_t kChromeUpgradeCode[] = L"{8A69D345-D564-463C-AFF1-A69D9E530F96}";
  
  const wchar_t kGoogleUpdateUpgradeCode[] =
-@@ -18,6 +29,7 @@ const wchar_t kRegPathClientState[] = L"Software\\Google\\Update\\ClientState";
+@@ -18,6 +28,7 @@ const wchar_t kRegPathClientState[] = L"Software\\Google\\Update\\ClientState";
  const wchar_t kRegPathClientStateMedium[] =
      L"Software\\Google\\Update\\ClientStateMedium";
  const wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";

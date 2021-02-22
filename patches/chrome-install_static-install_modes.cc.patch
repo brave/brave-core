@@ -1,18 +1,17 @@
 diff --git a/chrome/install_static/install_modes.cc b/chrome/install_static/install_modes.cc
-index b8195c5e6b5030dbcee06389284cc3e3a82f116e..08ed31808e33c7d644c3cd2668404c5277bdfc07 100644
+index b8195c5e6b5030dbcee06389284cc3e3a82f116e..0e49aa7f242f2ecbe87263bbeb2728b3e69c27e6 100644
 --- a/chrome/install_static/install_modes.cc
 +++ b/chrome/install_static/install_modes.cc
-@@ -11,6 +11,9 @@ namespace install_static {
+@@ -11,6 +11,8 @@ namespace install_static {
  namespace {
  
  #if BUILDFLAG(USE_GOOGLE_UPDATE_INTEGRATION)
-+#if defined(BRAVE_CHROMIUM_BUILD)
 +  BRAVE_INSTALL_MODES
-+#else
++#if 0
  std::wstring GetClientsKeyPathForApp(const wchar_t* app_guid) {
    return std::wstring(L"Software\\Google\\Update\\Clients\\").append(app_guid);
  }
-@@ -24,6 +27,7 @@ std::wstring GetClientStateMediumKeyPathForApp(const wchar_t* app_guid) {
+@@ -24,6 +26,7 @@ std::wstring GetClientStateMediumKeyPathForApp(const wchar_t* app_guid) {
    return std::wstring(L"Software\\Google\\Update\\ClientStateMedium\\")
        .append(app_guid);
  }

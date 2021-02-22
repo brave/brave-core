@@ -491,14 +491,13 @@ if (!is_android && !is_ios) {
 
 group("brave_browser_tests_deps") {
   testonly = true
-  if (brave_chromium_build) {
-    # force these to build for tests
-    deps = [
-      "//brave",
-      "//brave:browser_dependencies",
-      "//brave:child_dependencies",
-    ]
-  }
+
+  # force these to build for tests
+  deps = [
+    "//brave",
+    "//brave:browser_dependencies",
+    "//brave:child_dependencies",
+  ]
 }
 
 static_library("browser_test_support") {
