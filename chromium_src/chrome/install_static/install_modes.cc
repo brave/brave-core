@@ -7,6 +7,7 @@
 
 namespace {
 
+#if defined(OFFICIAL_BUILD)
 std::wstring GetClientsKeyPathForApp(const wchar_t* app_guid) {
   return std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
       .append(app_guid);
@@ -21,13 +22,14 @@ std::wstring GetClientStateMediumKeyPathForApp(const wchar_t* app_guid) {
   return std::wstring(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")
       .append(app_guid);
 }
+#endif
 
 }  // namespace
 
-#define GetClientsKeyPathForApp GetClientsKeyPathForApp_ChromiumImpl
-#define GetClientStateKeyPathForApp GetClientStateKeyPathForApp_ChromiumImpl
+#define GetClientsKeyPathForApp GetClientsKeyPathForApp_Unused
+#define GetClientStateKeyPathForApp GetClientStateKeyPathForApp_Unused
 #define GetClientStateMediumKeyPathForApp \
-  GetClientStateMediumKeyPathForApp_ChromiumImpl
+  GetClientStateMediumKeyPathForApp_Unused
 #define GetClientsKeyPath GetClientsKeyPath_ChromiumImpl
 #define GetClientStateKeyPath GetClientStateKeyPath_ChromiumImpl
 #define GetClientStateMediumKeyPath GetClientStateMediumKeyPath_ChromiumImpl
