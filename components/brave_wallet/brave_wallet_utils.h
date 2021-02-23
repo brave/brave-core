@@ -10,8 +10,13 @@
 
 namespace brave_wallet {
 
+// Equivalent to web3.utils.toHex(string);
 std::string ToHex(const std::string& data);
+// Equivalent to web3.utils.keccak256(string)
 std::string KeccakHash(const std::string& input);
+// Returns the hex encoding of the first 4 bytes of the hash.
+// For example: keccak('balanceOf(address)')
+std::string GetFunctionHash(const std::string& input);
 
 }  // namespace brave_wallet
 

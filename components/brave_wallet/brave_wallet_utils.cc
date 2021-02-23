@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/brave_wallet_utils.h"
 
+#include <algorithm>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -27,6 +29,11 @@ std::string KeccakHash(const std::string& input) {
       input.size());
   std::string result(hash.str, sizeof(hash.str) / sizeof(hash.str[0]));
   return ToHex(result);
+}
+
+std::string GetFunctionHash(const std::string& input) {
+  auto result = KeccakHash(input);
+  return result.substr(0, std::min(static_cast<size_t>(10), input.length()));
 }
 
 }  // namespace brave_wallet

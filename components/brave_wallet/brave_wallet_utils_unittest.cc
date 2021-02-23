@@ -22,4 +22,9 @@ TEST(BraveWalletUtilsUnitTest, KeccakHash) {
       "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad");
 }
 
+TEST(BraveWalletUtilsUnitTest, GetFunctionHash) {
+  ASSERT_EQ(GetFunctionHash("approve(address,uint256)"), "0x095ea7b3");
+  ASSERT_EQ(GetFunctionHash("balanceOf(address)"), "0x70a08231");
+}
+
 }  // namespace brave_wallet
