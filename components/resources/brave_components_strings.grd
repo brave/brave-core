@@ -973,11 +973,11 @@
       </message>
       <!-- Rewards BAP Deprecation Notice -->
       <message name="IDS_REWARDS_BAP_DEPRECATION_ALERT_TEXT" desc="">
-        The tipping feature will be unavailable from March 13th until April
-        13th. All BAPs will be discontinued by April 13th. Please use your BAP
-        by March 13th. Any BAP remaining in your Brave browser after March 13th
-        cannot be held or transferred by you or Brave, and will be lost. A new
-        and improved system awaits!
+        As part of this transition, the tipping and contribution features in
+        your browser will be temporarily unavailable starting March 13th, and
+        your BAP balance will show 0.0 until you have updated to the new system
+        in April. Once you’re on the new system, you’ll start off with new
+        tokens!
       </message>
       <message name="IDS_REWARDS_BAP_DEPRECATION_HEADER" desc="">
         Brave Rewards in Japan is switching to a new system!
