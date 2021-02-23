@@ -367,5 +367,14 @@ bool State::GetAnonTransferChecked() {
   return ledger_->ledger_client()->GetBooleanState(kAnonTransferChecked);
 }
 
+bool State::GetBAPReported() {
+  return ledger_->ledger_client()->GetBooleanState(kBAPReported);
+}
+
+void State::SetBAPReported(bool bap_reported) {
+  ledger_->database()->SaveEventLog(kBAPReported, std::to_string(bap_reported));
+  return ledger_->ledger_client()->SetBooleanState(kBAPReported, bap_reported);
+}
+
 }  // namespace state
 }  // namespace ledger

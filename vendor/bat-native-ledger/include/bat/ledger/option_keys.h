@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_OPTION_KEYS_H_
-#define BRAVELEDGER_OPTION_KEYS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_OPTION_KEYS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_OPTION_KEYS_H_
 
 #include <string>
 
@@ -15,8 +15,9 @@ const char kPublisherListRefreshInterval[] = "publisher_list_refresh_interval";
 const char kClaimUGP[] = "claim_ugp";
 const char kContributionsDisabledForBAPMigration[] =
     "contributions_disabled_for_bap_migration";
+const char kShouldReportBAPAmount[] = "should_report_bap";
 
 }  // namespace option
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_OPTION_KEYS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_OPTION_KEYS_H_
