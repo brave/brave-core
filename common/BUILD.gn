@@ -1,7 +1,23 @@
 import("//build/util/branding.gni")
 import("//extensions/buildflags/buildflags.gni")
 
+brave_common_visibility_targets = [
+  ":*",
+  "//brave:browser_dependencies",
+  "//brave:child_dependencies",
+  "//brave/browser/*",
+  "//brave/renderer/*",
+  "//brave/test/*",
+  "//brave/utility/*",
+  "//chrome/common/*",
+  "//chrome/browser/*",
+  "//chrome/renderer/*",
+  "//chrome/utility/*",
+]
+
 source_set("channel_info") {
+  visibility = brave_common_visibility_targets
+
   if (is_linux) {
     sources = [
       "brave_channel_info_posix.cc",
@@ -14,13 +30,19 @@ source_set("channel_info") {
       "//components/version_info:version_info",
     ]
 
-    configs += [
-      "//brave/build/linux:linux_channel_names",
-    ]
+    configs += [ "//brave/build/linux:linux_channel_names" ]
   }
 }
 
 source_set("network_constants") {
+  visibility = brave_common_visibility_targets +
+               # These are layering violation and need to be fixed
+               [
+                 "//brave/components/content_settings/core/browser",
+                 "//brave/components/sync/driver:unit_tests",
+                 "//components/sync/driver",
+               ]
+
   sources = [
     "network_constants.cc",
     "network_constants.h",
@@ -28,6 +50,16 @@ source_set("network_constants") {
 }
 
 source_set("pref_names") {
+  visibility = brave_common_visibility_targets +
+               # These are layering violation and need to be fixed
+               [
+                 "//brave/components/content_settings/core/browser",
+                 "//brave/components/p3a",
+                 "//brave/components/binance/browser",
+                 "//brave/ios/app",
+                 "//components/omnibox/browser",
+               ]
+
   sources = [
     "pref_names.cc",
     "pref_names.h",
@@ -37,17 +69,33 @@ source_set("pref_names") {
 }
 
 source_set("switches") {
+  visibility = brave_common_visibility_targets
+
   sources = [
     "brave_switches.cc",
     "brave_switches.h",
   ]
 
-  deps = [
-    "//base",
-  ]
+  deps = [ "//base" ]
 }
 
 source_set("common") {
+  visibility =
+      brave_common_visibility_targets +
+      # These are layering violation and need to be fixed
+      [
+        "//brave/vendor/bat-native-ads:ads",
+        "//brave/components/p3a",
+        "//brave/components/brave_webtorrent/browser",
+        "//brave/components/brave_referrals/browser",
+        "//brave/components/brave_ads/browser",
+        "//brave/components/content_settings/renderer",
+        "//brave/components/external_intents/android",
+        "//brave/components/webcompat_reporter/browser",
+        "//brave/chromium_src/third_party/blink/renderer/modules:browser_tests",
+        "//brave/components/ipfs/test:brave_ipfs_browser_tests",
+      ]
+
   # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
   check_includes = false
   deps = []
@@ -74,9 +122,7 @@ source_set("common") {
   ]
 
   if (!is_android && !is_ios) {
-    deps += [
-      "//brave/common/importer",
-    ]
+    deps += [ "//brave/common/importer" ]
   }
 
   if (enable_extensions) {
@@ -89,17 +135,14 @@ source_set("common") {
 
     deps += [ "//extensions/common:common_constants" ]
 
-    public_deps = [
-      "extensions/api",
-    ]
+    public_deps = [ "extensions/api" ]
   }
 
   deps += [
-    "//base",
     ":network_constants",
     ":pref_names",
-    ":shield_exceptions",
     ":switches",
+    "//base",
     "//brave/chromium_src:common",
     "//brave/components/resources",
     "//components/resources",
@@ -114,31 +157,16 @@ source_set("common") {
       "brave_content_client.h",
     ]
 
-    deps += [
-      "//content/public/common",
-    ]
+    deps += [ "//content/public/common" ]
   }
 }
 
-source_set("shield_exceptions") {
-  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
-  check_includes = false
-  sources = [
-    "shield_exceptions.cc",
-    "shield_exceptions.h",
-  ]
-
-  deps = [
-    "//brave/extensions:common",
-    "//url",
-  ]
-}
-
 config("constants_configs") {
+  visibility = brave_common_visibility_targets +
+               # These are layering violation and need to be fixed
+               [ "//chrome/tools/build/mac:infoplist_strings_util" ]
   defines = []
   if (is_mac) {
-    defines += [
-      "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"",
-    ]
+    defines += [ "BRAVE_PRODUCT_STRING=\"$chrome_product_full_name\"" ]
   }
 }

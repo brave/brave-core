@@ -29,12 +29,14 @@ source_set("browser_process") {
   visibility = [
     "//brave:browser_dependencies",
     "//brave/browser/*",
+    "//brave/test:*",
+    "//chrome/browser/*",
+
+    # these are layering violation and need to be fixed
     "//brave/components/brave_ads/test:*",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:*",
     "//brave/components/ipfs/test:*",
-    "//brave/test:*",
-    "//chrome/browser/*",
   ]
 
   sources = [
@@ -422,6 +424,15 @@ buildflag_header("sparkle_buildflags") {
 }
 
 source_set("version_info") {
+  visibility = [
+    ":*",
+    "//brave/browser/*",
+
+    # these are laying violations and need to be fixed
+    "//brave/components/greaselion/browser",
+    "//brave/components/p3a",
+  ]
+
   # these are only for version_info.cc and should not be exposed as public configs
   configs += [ "//brave/build:version" ]
   defines = [ "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]

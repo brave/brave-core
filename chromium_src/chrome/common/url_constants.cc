@@ -41,9 +41,6 @@ const char kChromeBetaForumURL[] =
 const char kChromeFixUpdateProblems[] =
     "https://support.brave.com/";
 
-const char kChromeReleaseNotesURL[] =
-    "https://brave.com/latest/";
-
 const char kChromeHelpViaKeyboardURL[] =
 #if defined(OS_CHROMEOS)
 #if defined(GOOGLE_CHROME_BUILD)
@@ -194,6 +191,7 @@ const char kPaymentMethodsLearnMoreURL[] =
 const char kPrivacyLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017989132-How-do-I-change-my-Privacy-Settings-";
+const char kPrivacySandboxURL[] = "https://support.brave.com";
 
 const char kRemoveNonCWSExtensionURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -236,8 +234,6 @@ const char kUpgradeHelpCenterBaseURL[] =
 const char kWhoIsMyAdministratorHelpURL[] =
     "https://support.brave.com/";
 
-const char kChromeFlashRoadmapURL[] = "https://support.brave.com/";
-
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";
 #endif
@@ -272,10 +268,6 @@ const char kChromeSyncLearnMoreURL[] =
 #endif  // BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)
 
 #if BUILDFLAG(ENABLE_PLUGINS)
-const char kBlockedPluginLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/"
-    "360018163151-How-do-I-manage-Flash-audio-video-";
-
 const char kOutdatedPluginLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018163151-How-do-I-manage-Flash-audio-video-";

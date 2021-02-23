@@ -10,7 +10,8 @@ source_set("browser_tests") {
 
   sources = [
     "digital_goods_api_browsertest.cc",
-    "native_file_system_api_browsertest.cc",
+    "file_system_access_browsertest.cc",
+    "serial_api_browsertest.cc",
     "subresource_web_bundles_browsertest.cc",
   ]
 

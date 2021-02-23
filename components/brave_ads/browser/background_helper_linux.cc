@@ -15,6 +15,7 @@
 #include "ui/base/x/x11_util.h"
 #include "ui/base/x/x11_window.h"
 #include "ui/gfx/x/x11_atom_cache.h"
+#include "ui/gfx/x/xproto_util.h"
 
 namespace brave_ads {
 
@@ -29,8 +30,8 @@ BackgroundHelperLinux::~BackgroundHelperLinux() {
 
 bool BackgroundHelperLinux::IsForeground() const {
   x11::Window x11_window = x11::Window::None;
-  ui::GetProperty(ui::GetX11RootWindow(), gfx::GetAtom("_NET_ACTIVE_WINDOW"),
-     &x11_window);
+  x11::GetProperty(ui::GetX11RootWindow(), x11::GetAtom("_NET_ACTIVE_WINDOW"),
+                   &x11_window);
 
   for (auto* browser : *BrowserList::GetInstance()) {
     auto window =

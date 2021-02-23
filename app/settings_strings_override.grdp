@@ -11,6 +11,10 @@
   <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Web Store.">
     Open Web Store
   </message>
+  <if expr="chromeos">
+    </if>
+  <if expr="not chromeos">
+    </if>
   <if expr="not chromeos">
     </if>
   <if expr="chromeos">
@@ -18,13 +22,13 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="chromeos">
+  <if expr="chromeos or lacros">
     </if>
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     </if>
-  <if expr="is_linux and not chromeos">
+  <if expr="is_linux and not chromeos and not lacros">
     </if>
-  <if expr="not is_linux or chromeos">
+  <if expr="not is_linux or chromeos or lacros">
     </if>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
@@ -57,7 +61,7 @@
 
   <if expr="is_win and _google_chrome">
     </if>
-  
+
   <message name="IDS_SETTINGS_RECENT_PERMISSIONS_ONE_ITEM_INCOGNITO" desc="A list containing a single permission which has recently changed in the users private session">
     Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>
   </message>

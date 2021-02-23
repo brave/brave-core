@@ -32,14 +32,13 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   static bool is_test_;
 
   // PermissionRequest overrides:
-  permissions::PermissionRequest::IconId GetIconId() const override;
   base::string16 GetMessageTextFragment() const override;
   GURL GetOrigin() const override;
   void PermissionGranted(bool is_one_time) override;
   void PermissionDenied() override;
   void Cancelled() override;
   void RequestFinished() override;
-  permissions::PermissionRequestType GetPermissionRequestType() const override;
+  permissions::RequestType GetRequestType() const override;
 
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.

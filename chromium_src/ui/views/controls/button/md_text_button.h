@@ -50,4 +50,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
 }  // namespace views
 
+DEFINE_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton)
+
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_

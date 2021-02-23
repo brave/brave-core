@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/BUILD.gn b/components/sync/driver/BUILD.gn
-index 584158fe8c69e383a8faa94a01f660e25d50fca5..d739d9e18eb9bdba5fa3265995f84868bc445fb8 100644
+index 0f91c41e563f026f473af4a57f5c6de23c5bde58..ba961c5a9f56a2aa99e1ca53084661e03edabc2b 100644
 --- a/components/sync/driver/BUILD.gn
 +++ b/components/sync/driver/BUILD.gn
-@@ -112,6 +112,7 @@ static_library("driver") {
+@@ -114,6 +114,7 @@ static_library("driver") {
    }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]

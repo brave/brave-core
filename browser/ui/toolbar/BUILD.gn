@@ -24,6 +24,7 @@ source_set("brave_app_menu_unit_test") {
   ]
 
   deps = [
+    "//build:chromeos_buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser/ui:ui",
     "//chrome/test:test_support",

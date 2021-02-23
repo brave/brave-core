@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/import_data_handler.h b/chrome/browser/ui/webui/settings/import_data_handler.h
-index 6ee9d1a99a87ebec3462cda5a9fb480c47784850..804e2236ad8514180eb3f505c6393c4b3d85b537 100644
+index 173e710d6e8c7ab463e32ed6c55c9131e29b2bbc..1b2a77ea5f22d63eebf7b95f2f1887c2819f6736 100644
 --- a/chrome/browser/ui/webui/settings/import_data_handler.h
 +++ b/chrome/browser/ui/webui/settings/import_data_handler.h
 @@ -34,6 +34,7 @@ class ImportDataHandler : public SettingsPageUIHandler,

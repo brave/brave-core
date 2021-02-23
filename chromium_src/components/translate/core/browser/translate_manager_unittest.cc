@@ -110,9 +110,7 @@ class TranslateManagerTest : public ::testing::Test {
  protected:
   TranslateManagerTest()
       : registration_(&prefs_),
-        translate_prefs_(&prefs_,
-                         translate::testing::accept_languages_prefs,
-                         translate::testing::preferred_languages_prefs),
+        translate_prefs_(&prefs_),
         manager_(TranslateDownloadManager::GetInstance()),
         mock_translate_client_(&driver_, &prefs_),
         mock_language_model_({MockLanguageModel::LanguageDetails("en", 1.0)}) {}
