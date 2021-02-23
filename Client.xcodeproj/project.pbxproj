@@ -804,6 +804,7 @@
 		C8611C8E1F71904C00C3DE7D /* DiskImageStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF8CBC1B7472FA0007AFE6 /* DiskImageStoreTests.swift */; };
 		C8F457A81F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */; };
 		C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F457A91F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift */; };
+		CA1659CC25E445FA00A860ED /* BaltimoreCyberTrustRoot.cer in Resources */ = {isa = PBXBuildFile; fileRef = CA1659C025E445EC00A860ED /* BaltimoreCyberTrustRoot.cer */; };
 		CE7F11941F3CEEC800ABFC0B /* RemoteDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F115E1F3CCEF900ABFC0B /* RemoteDevices.swift */; };
 		D018F93E1F44A71A0098F8CA /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D018F93D1F44A7190098F8CA /* Schema.swift */; };
 		D029A04920A62DB0001DB72F /* TemporaryDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029A04820A62DB0001DB72F /* TemporaryDocument.swift */; };
@@ -2452,6 +2453,7 @@
 		C817B34C1FC609500086018E /* UIScrollViewSwizzled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewSwizzled.swift; sourceTree = "<group>"; };
 		C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+WKNavigationDelegate.swift"; sourceTree = "<group>"; };
 		C8F457A91F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+KeyCommands.swift"; sourceTree = "<group>"; };
+		CA1659C025E445EC00A860ED /* BaltimoreCyberTrustRoot.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = BaltimoreCyberTrustRoot.cer; sourceTree = "<group>"; };
 		CE7F115E1F3CCEF900ABFC0B /* RemoteDevices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDevices.swift; sourceTree = "<group>"; };
 		D000661320472890009BA6F6 /* __firefox__.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = __firefox__.js; sourceTree = "<group>"; };
 		D018F93D1F44A7190098F8CA /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
@@ -3284,6 +3286,7 @@
 		2765826D217130B700754B2F /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				CA1659C025E445EC00A860ED /* BaltimoreCyberTrustRoot.cer */,
 				27658270217130D900754B2F /* DigiCertHighAssurance.cer */,
 				2765826E217130D900754B2F /* GlobalSign_r1.cer */,
 				2765826F217130D900754B2F /* GlobalSign_r3.cer */,
@@ -6300,6 +6303,7 @@
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
 				0AB22A88257EADA900126ADC /* dylan-malval_sea.jpg in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
+				CA1659CC25E445FA00A860ED /* BaltimoreCyberTrustRoot.cer in Resources */,
 				4422D4AD21BFFB7600BF1855 /* LICENSE in Resources */,
 				27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */,
 				E4B7B7641A793CF20022C5E0 /* CharisSILR.ttf in Resources */,
