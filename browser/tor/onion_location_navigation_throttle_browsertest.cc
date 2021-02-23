@@ -20,6 +20,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
@@ -114,6 +115,28 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       OnionDomain) {
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::TestNavigationObserver nav_observer(web_contents);
+  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  nav_observer.Wait();
+  // Original request was blocked
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_TRUE(helper->should_show_icon());
+  EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
+  CheckOnionLocationLabel(browser());
+
+  ui_test_utils::NavigateToURL(browser(), GURL(kTestNotOnionURL));
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        OnionDomain_AutoOnionRedirect) {
   browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
@@ -126,14 +149,20 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
       content::NotificationService::AllSources());
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::TestNavigationObserver nav_observer(web_contents);
   ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
   tor_browser_creation_observer.Wait();
+  nav_observer.Wait();
+  // Original request was blocked
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
   EXPECT_EQ(2U, browser_list->size());
   Browser* tor_browser = browser_list->get(1);
   ASSERT_TRUE(tor_browser->profile()->IsTor());
-  content::WebContents* web_contents =
+  content::WebContents* tor_web_contents =
       tor_browser->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(web_contents->GetURL(), GURL(kTestOnionURL));
+  EXPECT_EQ(tor_web_contents->GetURL(), GURL(kTestOnionURL));
   // We don't close the original tab
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
   // No new tab in Tor window
