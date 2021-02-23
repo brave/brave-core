@@ -1,0 +1,19 @@
+source_set("ethash") {
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  include_dirs = [ "src/include" ]
+  sources = [
+    "src/lib/ethash/bit_manipulation.h",
+    "src/lib/ethash/builtins.h",
+    "src/lib/ethash/endianness.hpp",
+    "src/lib/ethash/ethash-internal.hpp",
+    "src/lib/ethash/ethash.cpp",
+    "src/lib/ethash/kiss99.hpp",
+    "src/lib/ethash/managed.cpp",
+    "src/lib/ethash/primes.c",
+    "src/lib/ethash/primes.h",
+    "src/lib/ethash/progpow.cpp",
+    "src/lib/keccak/keccak.c",
+    "src/lib/support/attributes.h",
+  ]
+}
