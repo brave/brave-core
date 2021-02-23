@@ -6,8 +6,8 @@ assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
   public_deps = [ "buildflags" ]
-
   configs += [ ":infura_config" ]
+  include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
     "brave_wallet_constants.cc",
@@ -29,6 +29,7 @@ source_set("brave_wallet") {
 
   deps = [
     "//base",
+    "//brave/third_party/ethash",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",

@@ -8,6 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/third_party/ethash/src/include/ethash/keccak.h"
 
 namespace brave_wallet {
 
@@ -18,6 +19,14 @@ std::string ToHex(const std::string& data) {
   return base::StringPrintf(
       "0x%s",
       base::ToLowerASCII(base::HexEncode(data.data(), data.size())).c_str());
+}
+
+std::string KeccakHash(const std::string& input) {
+  auto hash = ethash_keccak256(
+      reinterpret_cast<uint8_t*>(const_cast<char*>(input.data())),
+      input.size());
+  std::string result(hash.str, sizeof(hash.str) / sizeof(hash.str[0]));
+  return ToHex(result);
 }
 
 }  // namespace brave_wallet

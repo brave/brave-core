@@ -11,6 +11,7 @@
 namespace brave_wallet {
 
 std::string ToHex(const std::string& data);
+std::string KeccakHash(const std::string& input);
 
 }  // namespace brave_wallet
 
