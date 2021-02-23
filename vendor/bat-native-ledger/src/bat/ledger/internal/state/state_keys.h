@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_STATE_STATE_KEYS_H_
-#define BRAVELEDGER_STATE_STATE_KEYS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_KEYS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_KEYS_H_
 
 #include <string>
 
@@ -41,10 +41,11 @@ const char kParametersMonthlyTipChoices[] =
     "parameters.tip.monthly_choices";
 const char kFetchOldBalance[] = "fetch_old_balance";
 const char kEmptyBalanceChecked[] = "empty_balance_checked";
+const char kBAPReported[] = "bap_reported";
 const char kWalletBrave[]  ="wallets.brave";
 const char kWalletUphold[] = "wallets.uphold";
 
 }  // namespace state
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_STATE_STATE_KEYS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_KEYS_H_

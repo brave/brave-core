@@ -22,6 +22,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
@@ -520,6 +521,38 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BAPPopup) {
       std::make_unique<std::string>("brave_rewards_panel.html#bap-deprecation"),
       &error);
   EXPECT_TRUE(popup_shown);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BAPReporting) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  rewards_service_->FetchPromotions();
+  promotion_->WaitForPromotionInitialization();
+  promotion_->ClaimPromotionViaCode();
+
+  rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
+
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  auto* prefs = browser()->profile()->GetPrefs();
+  rewards_browsertest_util::WaitForLedgerStop(rewards_service_);
+
+  EXPECT_FALSE(prefs->GetBoolean(brave_rewards::prefs::kBAPReported));
+
+  prefs->SetInteger(country_codes::kCountryIDAtInstall, 19024);
+
+  base::RunLoop run_loop;
+  PrefChangeRegistrar prefs_listener;
+  prefs_listener.Init(browser()->profile()->GetPrefs());
+  prefs_listener.Add(brave_rewards::prefs::kBAPReported,
+                     base::BindLambdaForTesting(
+                         [&run_loop](const std::string&) { run_loop.Quit(); }));
+
+  // Start the ledger process and wait for pref to be set, indicating that the
+  // reporting completed successfully.
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  run_loop.Run();
+
+  EXPECT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kBAPReported));
 }
 
 }  // namespace rewards_browsertest
