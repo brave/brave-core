@@ -202,6 +202,7 @@ class BraveVPN {
     
     /// Stores a in-memory list of vpn errors encountered during current browsing session.
     private(set) static var errorLog = [(Date, String)]()
+    private static let errorLogQueue = DispatchQueue(label: "com.brave.errorLogQueue")
     
     /// Prints out the error to the logger and stores it in a in memory array.
     /// This can be further used for a customer support form.
@@ -212,8 +213,10 @@ class BraveVPN {
         
         // Extra safety here in case the log is spammed by many messages.
         // Early logs are more valuable for debugging, we do not rotate them with new entries.
-        if errorLog.count < 1000 {
-            errorLog.append((Date(), message))
+        errorLogQueue.async {
+            if errorLog.count < 1000 {
+                errorLog.append((Date(), message))
+            }
         }
     }
     
