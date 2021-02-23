@@ -91,7 +91,7 @@ export default class WalletPanel extends React.PureComponent<Props, State> {
           showUnVerifiedHelpIcon={
             !this.props.isVerified && this.props.showUnVerified
           }
-          showUnVerified={this.props.showUnVerified}
+          showUnVerified={true}
           refreshingPublisher={this.props.refreshingPublisher}
           onRefreshPublisher={this.props.onRefreshPublisher}
           publisherRefreshed={this.props.publisherRefreshed}
