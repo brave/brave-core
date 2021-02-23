@@ -45,21 +45,48 @@ const char kCosmeticFilteringInitScript[] =
          window.content_cosmetic.generichide = %s;
        })";
 
-const char kSelectorsInjectScript[] =
+const char kHideSelectorsInjectScript[] =
     R"((function() {
           let nextIndex =
               window.content_cosmetic.cosmeticStyleSheet.rules.length;
           const selectors = %s;
           selectors.forEach(selector => {
             if ((typeof selector === 'string') &&
-                !window.content_cosmetic.allSelectorsToRules.has(selector)) {
+                (window.content_cosmetic.hide1pContent ||
+                !window.content_cosmetic.allSelectorsToRules.has(selector))) {
               let rule = selector + '{display:none !important;}';
               window.content_cosmetic.cosmeticStyleSheet.insertRule(
                 `${rule}`, nextIndex);
-              window.content_cosmetic.allSelectorsToRules.set(
-                selector, nextIndex);
+              if (!window.content_cosmetic.hide1pContent) {
+                window.content_cosmetic.allSelectorsToRules.set(
+                  selector, nextIndex);
+                window.content_cosmetic.firstRunQueue.add(selector);
+              }
               nextIndex++;
-              window.content_cosmetic.firstRunQueue.add(selector);
+            }
+          });
+          if (!document.adoptedStyleSheets.includes(
+              window.content_cosmetic.cosmeticStyleSheet)) {
+            document.adoptedStyleSheets =
+              [window.content_cosmetic.cosmeticStyleSheet];
+          };
+        })();)";
+
+const char kForceHideSelectorsInjectScript[] =
+    R"((function() {
+          let nextIndex =
+              window.content_cosmetic.cosmeticStyleSheet.rules.length;
+          const selectors = %s;
+          selectors.forEach(selector => {
+            if (typeof selector === 'string') {
+              let rule = selector + '{display:none !important;}';
+              window.content_cosmetic.cosmeticStyleSheet.insertRule(
+                `${rule}`, nextIndex);
+              if (!window.content_cosmetic.hide1pContent) {
+                window.content_cosmetic.allSelectorsToRules.set(
+                  selector, nextIndex);
+              }
+              nextIndex++;
             }
           });
           if (!document.adoptedStyleSheets.includes(
@@ -75,7 +102,8 @@ const char kStyleSelectorsInjectScript[] =
               window.content_cosmetic.cosmeticStyleSheet.rules.length;
           const selectors = %s;
           for (let selector in selectors) {
-            if (!window.content_cosmetic.allSelectorsToRules.has(selector)) {
+            if (window.content_cosmetic.hide1pContent ||
+                !window.content_cosmetic.allSelectorsToRules.has(selector)) {
               let rule = selector + '{';
               selectors[selector].forEach(prop => {
                 if (!rule.endsWith('{')) {
@@ -86,8 +114,10 @@ const char kStyleSelectorsInjectScript[] =
               rule += '}';
               window.content_cosmetic.cosmeticStyleSheet.insertRule(
                 `${rule}`, nextIndex);
-              window.content_cosmetic.allSelectorsToRules.set(
-                selector, nextIndex);
+              if (!window.content_cosmetic.hide1pContent) {
+                window.content_cosmetic.allSelectorsToRules.set(
+                  selector, nextIndex);
+              }
               nextIndex++;
             };
           };
@@ -294,7 +324,16 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     }
   }
   base::ListValue* hide_selectors_list;
-  if (resources_dict->GetList("hide_selectors", &hide_selectors_list)) {
+  if (!resources_dict->GetList("hide_selectors", &hide_selectors_list)) {
+    hide_selectors_list = nullptr;
+  }
+  base::ListValue* force_hide_selectors_list;
+  if (!resources_dict->GetList("force_hide_selectors",
+                               &force_hide_selectors_list)) {
+    force_hide_selectors_list = nullptr;
+  }
+
+  if (hide_selectors_list && hide_selectors_list->GetSize() != 0) {
     std::string json_selectors;
     if (!base::JSONWriter::Write(*hide_selectors_list, &json_selectors) ||
         json_selectors.empty()) {
@@ -302,11 +341,22 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     }
     // Building a script for stylesheet modifications
     std::string new_selectors_script =
-        base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
-    if (hide_selectors_list->GetSize() != 0) {
-      web_frame->ExecuteScriptInIsolatedWorld(
-          isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
+        base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
+  }
+
+  if (force_hide_selectors_list && force_hide_selectors_list->GetSize() != 0) {
+    std::string json_selectors;
+    if (!base::JSONWriter::Write(*force_hide_selectors_list, &json_selectors) ||
+        json_selectors.empty()) {
+      json_selectors = "[]";
     }
+    // Building a script for stylesheet modifications
+    std::string new_selectors_script = base::StringPrintf(
+        kForceHideSelectorsInjectScript, json_selectors.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
   }
 
   base::DictionaryValue* style_selectors_dictionary = nullptr;
@@ -353,7 +403,7 @@ void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
   }
   // Building a script for stylesheet modifications
   std::string new_selectors_script =
-      base::StringPrintf(kSelectorsInjectScript, json_selectors.c_str());
+      base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
   if (selectors_list->GetSize() != 0) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_, blink::WebString::FromUTF8(new_selectors_script));
