@@ -76,8 +76,9 @@ static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHo
 
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
 const std::map<std::string, bool> kBoolOptions = {
-    {ledger::option::kClaimUGP, true}
-};
+    {ledger::option::kClaimUGP, true},
+    {ledger::option::kContributionsDisabledForBAPMigration, false},
+    {ledger::option::kShouldReportBAPAmount, false}};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};
