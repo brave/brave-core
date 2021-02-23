@@ -33,7 +33,7 @@ public class BraveAdsNotificationDialog {
     static AlertDialog mAdsDialog;
     static String mNotificationId;
 
-    public static void displayAdsNotification(Activity activity, final String notificationId,
+    public static void displayAdsNotification(Context context, final String notificationId,
             final String origin, final String title, final String body) {
         try {
             if (mAdsDialog != null) {
@@ -42,9 +42,9 @@ public class BraveAdsNotificationDialog {
         } catch (IllegalArgumentException e) {
           mAdsDialog = null;
         }
-        AlertDialog.Builder b = new AlertDialog.Builder(activity);
+        AlertDialog.Builder b = new AlertDialog.Builder(context);
 
-        LayoutInflater inflater = (LayoutInflater) activity.getLayoutInflater();
+        LayoutInflater inflater = LayoutInflater.from(context);
         b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
         mAdsDialog = b.create();
 
@@ -101,7 +101,6 @@ public class BraveAdsNotificationDialog {
             }
         });
     }
-
 
     @CalledByNative
     public static void displayAdsNotification(final String notificationId,

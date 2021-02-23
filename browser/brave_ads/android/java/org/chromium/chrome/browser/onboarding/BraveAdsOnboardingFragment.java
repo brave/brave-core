@@ -137,7 +137,7 @@ public class BraveAdsOnboardingFragment extends Fragment {
                 setProgress(progress, endTime);
                 tvTimer.setText("0");
 
-                OnboardingPrefManager.getInstance().onboardingNotification(getActivity());
+                OnboardingPrefManager.getInstance().onboardingNotification();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
