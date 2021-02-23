@@ -5,67 +5,44 @@
 
 #include "chrome/install_static/install_modes.h"
 
+#include "chrome/install_static/buildflags.h"
+
+namespace install_static {
+
 namespace {
 
-#if defined(OFFICIAL_BUILD)
-std::wstring GetClientsKeyPathForApp(const wchar_t* app_guid) {
-  return std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
-      .append(app_guid);
-}
-
-std::wstring GetClientStateKeyPathForApp(const wchar_t* app_guid) {
-  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")
-      .append(app_guid);
-}
-
-std::wstring GetClientStateMediumKeyPathForApp(const wchar_t* app_guid) {
-  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")
-      .append(app_guid);
+#if !defined(OFFICIAL_BUILD)
+std::wstring GetUnregisteredKeyPathForProduct() {
+  return std::wstring(L"Software\\").append(kProductPathName);
 }
 #endif
 
 }  // namespace
 
-#define GetClientsKeyPathForApp GetClientsKeyPathForApp_Unused
-#define GetClientStateKeyPathForApp GetClientStateKeyPathForApp_Unused
-#define GetClientStateMediumKeyPathForApp \
-  GetClientStateMediumKeyPathForApp_Unused
-#define GetClientsKeyPath GetClientsKeyPath_ChromiumImpl
-#define GetClientStateKeyPath GetClientStateKeyPath_ChromiumImpl
-#define GetClientStateMediumKeyPath GetClientStateMediumKeyPath_ChromiumImpl
-
-#include "../../../../chrome/install_static/install_modes.cc"
-
-#undef GetClientsKeyPath
-#undef GetClientStateKeyPath
-#undef GetClientStateMediumKeyPath
-#undef GetClientsKeyPathForApp
-#undef GetClientStateKeyPathForApp
-#undef GetClientStateMediumKeyPathForApp
-
-namespace install_static {
-
 std::wstring GetClientsKeyPath(const wchar_t* app_guid) {
 #if defined(OFFICIAL_BUILD)
-  return GetClientsKeyPathForApp(app_guid);
+  return std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
+      .append(app_guid);
 #else
-  return GetClientsKeyPath_ChromiumImpl(app_guid);
+  return GetUnregisteredKeyPathForProduct();
 #endif
 }
 
 std::wstring GetClientStateKeyPath(const wchar_t* app_guid) {
 #if defined(OFFICIAL_BUILD)
-  return GetClientStateKeyPathForApp(app_guid);
+  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")
+      .append(app_guid);
 #else
-  return GetClientStateKeyPath_ChromiumImpl(app_guid);
+  return GetUnregisteredKeyPathForProduct();
 #endif
 }
 
 std::wstring GetClientStateMediumKeyPath(const wchar_t* app_guid) {
 #if defined(OFFICIAL_BUILD)
-  return GetClientStateMediumKeyPathForApp(app_guid);
+  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")
+      .append(app_guid);
 #else
-  return GetClientStateMediumKeyPath_ChromiumImpl(app_guid);
+  return GetUnregisteredKeyPathForProduct();
 #endif
 }
 
