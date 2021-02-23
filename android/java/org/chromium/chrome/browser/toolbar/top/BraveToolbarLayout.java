@@ -43,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveReflectionUtil;
@@ -457,7 +458,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         mShieldsPopupWindowTooltip =
                 new PopupWindowTooltip.Builder(getContext())
                         .anchorView(mBraveShieldsButton)
-                        .arrowColor(getResources().getColor(shieldsTooltipEnum.getArrowColor()))
+                        .arrowColor(getContext().getResources().getColor(shieldsTooltipEnum.getArrowColor()))
                         .gravity(Gravity.BOTTOM)
                         .dismissOnOutsideTouch(true)
                         .dismissOnInsideTouch(false)
@@ -505,7 +506,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         mRewardsPopupWindowTooltip =
                 new PopupWindowTooltip.Builder(getContext())
                         .anchorView(mBraveRewardsButton)
-                        .arrowColor(getResources().getColor(shieldsTooltipEnum.getArrowColor()))
+                        .arrowColor(getContext().getResources().getColor(shieldsTooltipEnum.getArrowColor()))
                         .gravity(Gravity.BOTTOM)
                         .dismissOnOutsideTouch(true)
                         .dismissOnInsideTouch(false)
@@ -897,7 +898,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     public void updateModernLocationBarColorImpl(int color) {
         if (mShieldsLayout != null && mShieldsLayoutIsColorBackground) {
             mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+                    ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
         }
         if (mCurrentToolbarColor == color) return;
         mCurrentToolbarColor = color;
@@ -1048,11 +1049,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 String value = Integer.toString(count);
                 if (count > 99) {
                     mBraveRewardsNotificationsCount.setBackground(
-                            getResources().getDrawable(R.drawable.brave_rewards_rectangle));
+                        ResourcesCompat.getDrawable(getContext().getResources(),
+                      R.drawable.brave_rewards_rectangle, /* theme= */ null));
                     value = "99+";
                 } else {
                     mBraveRewardsNotificationsCount.setBackground(
-                            getResources().getDrawable(R.drawable.brave_rewards_circle));
+                        ResourcesCompat.getDrawable(getContext().getResources(),
+                      R.drawable.brave_rewards_circle, /* theme= */ null));
                 }
                 mBraveRewardsNotificationsCount.setText(value);
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
@@ -1093,14 +1096,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
         mBraveRewardsNotificationsCount.setText("");
         mBraveRewardsNotificationsCount.setBackground(
-                getResources().getDrawable(R.drawable.brave_rewards_circle));
+            ResourcesCompat.getDrawable(getContext().getResources(),
+                      R.drawable.brave_rewards_circle, /* theme= */ null));
         mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
         final int textBoxColor = ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                getResources(), color, isIncognito());
+                getContext().getResources(), color, isIncognito());
         updateModernLocationBarColor(textBoxColor);
     }
 
@@ -1126,7 +1130,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             if (mIsPublisherVerified) {
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
                 mBraveRewardsNotificationsCount.setBackground(
-                        getResources().getDrawable(R.drawable.bat_verified));
+                    ResourcesCompat.getDrawable(getContext().getResources(),
+                      R.drawable.bat_verified, /* theme= */ null));
             } else {
                 mBraveRewardsNotificationsCount.setBackgroundResource(0);
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
@@ -1156,7 +1161,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             mShieldsLayoutIsColorBackground = false;
         } else {
             mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+                    ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
             mShieldsLayoutIsColorBackground = true;
         }
         updateModernLocationBarColor(mCurrentToolbarColor);

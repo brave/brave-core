@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import org.chromium.chrome.R;
 
 import java.util.List;
@@ -76,8 +78,8 @@ public class BinanceSpinnerAdapter extends ArrayAdapter<CoinNetworkModel> {
 
         Drawable coinDrawable;
         if (shouldShowIcon && items.get(position).getCoinRes() != 0) {
-            Drawable tempCoinDrawable =
-                    getContext().getResources().getDrawable(items.get(position).getCoinRes());
+            Drawable tempCoinDrawable = ResourcesCompat.getDrawable(getContext().getResources(),
+                      items.get(position).getCoinRes(), /* theme= */ null);
             Bitmap bitmap = Bitmap.createBitmap(tempCoinDrawable.getIntrinsicWidth(),
                     tempCoinDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
@@ -90,8 +92,8 @@ public class BinanceSpinnerAdapter extends ArrayAdapter<CoinNetworkModel> {
             coinDrawable = null;
         }
 
-        textView.setCompoundDrawablesWithIntrinsicBounds(coinDrawable, null,
-                getContext().getResources().getDrawable(R.drawable.ic_arrow_drop_down_white), null);
+        textView.setCompoundDrawablesWithIntrinsicBounds(coinDrawable, null,ResourcesCompat.getDrawable(getContext().getResources(),
+                      R.drawable.ic_arrow_drop_down_white, /* theme= */ null), null);
         return textView;
     }
 }

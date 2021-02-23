@@ -27,6 +27,8 @@ import android.view.Gravity;
 import android.animation.ValueAnimator;
 import com.airbnb.lottie.LottieAnimationView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment.HighlightDialogListener;
@@ -154,16 +156,16 @@ public class OnboardingV2Fragment extends Fragment {
 
 		switch (mPosition) {
 		case 0:
-			mIndicator1.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator1.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
 			break;
 		case 1:
-			mIndicator2.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator2.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
 			break;
 		case 2:
-			mIndicator3.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator3.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
 			break;
 		case 3:
-			mIndicator4.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator4.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 			    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 			params.gravity = Gravity.CENTER;

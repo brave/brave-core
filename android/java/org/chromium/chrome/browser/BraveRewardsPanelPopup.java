@@ -51,6 +51,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.viewpager.widget.ViewPager;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -799,8 +800,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         btRewardsSummary.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.slide_down, 0);
         if (braveRewardsWelcomeView != null && braveRewardsWelcomeView.isShown()) {
             braveRewardsWelcomeView.setBackground(
-                    ContextUtils.getApplicationContext().getResources().getDrawable(
-                            R.drawable.bat_rewards_summary_gradient));
+                ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
+                      R.drawable.bat_rewards_summary_gradient, /* theme= */ null));
         }
     }
 
@@ -1367,8 +1368,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
      * @param enable
      */
     private void EnableWalletDetails(boolean enable) {
-        View fadein  = enable ? tvBrBatWallet : root.findViewById(R.id.progress_wallet_update);
-        View fadeout  = enable ? root.findViewById(R.id.progress_wallet_update) : tvBrBatWallet;
+        View progressWalletUpdate = root.findViewById(R.id.progress_wallet_update);
+        View fadein  = enable ? tvBrBatWallet : progressWalletUpdate;
+        View fadeout  = enable ? progressWalletUpdate : tvBrBatWallet;
         BraveRewardsHelper.crossfade(fadeout, fadein, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
 
         View usd = root.findViewById(R.id.br_usd_wallet_layout);
@@ -1766,8 +1768,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 leftDrawable = R.drawable.uphold_white;
                 text = R.string.brave_ui_wallet_button_disconnected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
-                btnVerifyWallet.setBackgroundDrawable(root.getResources().getDrawable(
-                        R.drawable.wallet_disconnected_button));
+                btnVerifyWallet.setBackgroundDrawable(
+                    ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
+                      R.drawable.wallet_disconnected_button, /* theme= */ null));
                 break;
             default:
                 Log.e (TAG, "Unexpected external wallet status");

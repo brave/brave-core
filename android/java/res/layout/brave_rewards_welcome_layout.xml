@@ -27,7 +27,7 @@
 		    android:layout_marginBottom="8dp"
 		    android:layout_gravity="center"
 		    android:gravity="center"
-		    android:drawableTop="@drawable/ic_icon_bat_eta"
+		    app:drawableTopCompat="@drawable/ic_icon_bat_eta"
 		    android:drawablePadding="4dp"
 		    android:text="@string/welcome_to_brave_rewards"
 		    android:textSize="20sp"

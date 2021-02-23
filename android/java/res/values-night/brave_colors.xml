@@ -19,8 +19,6 @@
 
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
-    <color name="brave_shield_bg_color">@color/modern_grey_800</color>
-
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@color/modern_grey_800</color>
     <color name="brave_sync_border_color">@color/modern_grey_800</color>
@@ -31,7 +29,6 @@
     <color name="qr_button_color">@color/modern_grey_800</color>
     <color name="shield_title_color">#F0F2FF</color>
     <color name="shield_text_color">#F0F2FF</color>
-    <color name="shield_advanced_controls_color">#F0F2FF</color>
 
     <color name="shield_divider_color">#3B3E4F</color>
     <color name="shield_bg_color">#17171F</color>

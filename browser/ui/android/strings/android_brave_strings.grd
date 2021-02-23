@@ -1544,6 +1544,45 @@ until they verify, or until 90 days have passed.
         in April. Once you’re on the new system, you’ll start off with new
         tokens!
       </message>
+      <message name="IDS_VALUE_1" desc="value for 1">
+        1
+      </message>
+      <message name="IDS_VALUE_2" desc="value for 2">
+        2
+      </message>
+      <message name="IDS_VALUE_3" desc="value for 3">
+        3
+      </message>
+      <message name="IDS_VALUE_4" desc="value for 4">
+        4
+      </message>
+      <message name="IDS_VALUE_5" desc="value for 5">
+        5
+      </message>
+      <message name="IDS_VALUE_1_BAT" desc="value for 1 BAT">
+        1 BAT
+      </message>
+      <message name="IDS_VALUE_5_BAT" desc="value for 5 BAT">
+        5 BAT
+      </message>
+      <message name="IDS_VALUE_10_BAT" desc="value for 10 BAT">
+        10 BAT
+      </message>
+      <message name="IDS_VALUE_15_BAT" desc="value for 15 BAT">
+        15 BAT
+      </message>
+      <message name="IDS_VALUE_25_BAT" desc="value for 25 BAT">
+        25 BAT
+      </message>
+      <message name="IDS_VALUE_50_BAT" desc="value for 50 BAT">
+        50 BAT
+      </message>
+      <message name="IDS_VALUE_0_BAT" desc="value for 0 BAT">
+        0.00 BAT
+      </message>
+      <message name="IDS_VALUE_0_USD" desc="value for 0 USD">
+        0.00 USD
+      </message>
     </messages>
   </release>
 </grit>

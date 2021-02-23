@@ -35,6 +35,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        app:tint="@android:color/white"
 			        app:srcCompat="@drawable/ic_back" />
@@ -44,6 +45,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        android:src="@drawable/eth" />
 
@@ -61,6 +63,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@null"
 			        android:padding="8dp"
 			        android:src="@drawable/qrcode_dark"/>
 

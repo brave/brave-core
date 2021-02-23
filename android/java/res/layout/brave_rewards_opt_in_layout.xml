@@ -31,7 +31,7 @@
 	            android:layout_marginTop="16dp"
 	            android:layout_marginBottom="4dp"
 	            android:gravity="start|center_vertical"
-	            android:drawableStart="@drawable/btn_bat"
+	            app:drawableStartCompat="@drawable/btn_bat"
 	            android:drawablePadding="4dp"
 	            android:text="@string/earn_tokens_and_give_back"
 	            android:textSize="14sp"

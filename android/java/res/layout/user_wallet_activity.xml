@@ -55,7 +55,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:padding="12dp"
-                android:drawableStart="@drawable/uphold_green"
+                app:drawableStartCompat="@drawable/uphold_green"
                 android:textStyle="bold"
                 android:drawablePadding="12dp">
             </TextView>
@@ -74,7 +74,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/user_wallet_background"/>
+            android:background="@color/user_wallet_background"
+            android:contentDescription="@null"/>
 
         <Button
             android:id="@+id/user_wallet_btn1"
@@ -92,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/user_wallet_background"
+            android:contentDescription="@null"
             android:visibility="gone"/>
 
         <Button
@@ -109,7 +111,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/user_wallet_background"/>
+            android:background="@color/user_wallet_background"
+            android:contentDescription="@null"/>
 
         <Button
             android:id="@+id/user_wallet_go_to_uphold"

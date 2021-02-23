@@ -30,6 +30,7 @@ public class BraveHelper {
       // Disables data reduction promo dialog
       ContextUtils.getAppSharedPreferences()
               .edit()
-              .putBoolean(SHARED_PREF_DISPLAYED_INFOBAR_PROMO, true);
+              .putBoolean(SHARED_PREF_DISPLAYED_INFOBAR_PROMO, true)
+              .apply();
   }
 }

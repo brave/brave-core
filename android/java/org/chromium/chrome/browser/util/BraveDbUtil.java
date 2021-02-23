@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.lang.SecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileUtils;
@@ -58,7 +59,7 @@ public class BraveDbUtil {
         mRewardsDstDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .getAbsolutePath() + File.separator + REWARDS_DB_DST_DIR;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("-yyyy-MM-dd-HHmmss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("-yyyy-MM-dd-HHmmss", Locale.getDefault());
         mRewardsDst = mRewardsDstDir + File.separator + PUBLISHER_INFO_DB + dateFormat.format(new Date());
 
         copyRewardsDbThread(dlg, false);

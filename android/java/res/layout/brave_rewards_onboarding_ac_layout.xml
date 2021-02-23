@@ -69,7 +69,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="1" />
+                android:text="@string/value_1" />
 
             <RadioButton
                 android:id="@+id/hour_2_radio"
@@ -84,7 +84,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="2" />
+                android:text="@string/value_2" />
 
               <RadioButton
                 android:id="@+id/hour_3_radio"
@@ -99,7 +99,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="3" />
+                android:text="@string/value_3" />
 
               <RadioButton
                 android:id="@+id/hour_4_radio"
@@ -114,7 +114,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="4" />
+                android:text="@string/value_4" />
 
               <RadioButton
                 android:id="@+id/hour_5_radio"
@@ -129,7 +129,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="5" />
+                android:text="@string/value_5" />
 
             </RadioGroup>
 
@@ -165,7 +165,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="5 BAT" />
+                android:text="@string/value_5_bat" />
 
             <RadioButton
                 android:id="@+id/contribute_15_radio"
@@ -181,7 +181,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="15 BAT" />
+                android:text="@string/value_15_bat" />
 
               <RadioButton
                 android:id="@+id/contribute_25_radio"
@@ -196,7 +196,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="25 BAT" />
+                android:text="@string/value_25_bat" />
 
               <RadioButton
                 android:id="@+id/contribute_50_radio"
@@ -211,7 +211,7 @@
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="50 BAT" />
+                android:text="@string/value_50_bat" />
 
             </RadioGroup>
 
