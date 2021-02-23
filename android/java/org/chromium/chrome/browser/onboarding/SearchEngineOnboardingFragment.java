@@ -22,8 +22,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import androidx.fragment.app.Fragment;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
@@ -113,10 +113,14 @@ public class SearchEngineOnboardingFragment extends Fragment {
                 rdBtn.setPadding(dpToPx(getActivity(), 30), 0, 0, 0);
                 rdBtn.setTextColor(
                         getActivity().getResources().getColor(R.color.onboarding_text_color));
-                rdBtn.setBackgroundDrawable(ResourcesCompat.getDrawable(getActivity().getResources(), R.drawable.radiobutton_background, /* theme= */ null));
+                rdBtn.setBackgroundDrawable(
+                        ResourcesCompat.getDrawable(getActivity().getResources(),
+                                R.drawable.radiobutton_background, /* theme= */ null));
                 rdBtn.setText(searchTextSpan);
-                rdBtn.setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(getActivity().getResources(), searchEngineEnum.getIcon(), /* theme= */ null), null,
-                        null, null);
+                rdBtn.setCompoundDrawablesWithIntrinsicBounds(
+                        ResourcesCompat.getDrawable(getActivity().getResources(),
+                                searchEngineEnum.getIcon(), /* theme= */ null),
+                        null, null, null);
                 rdBtn.setCompoundDrawablePadding(dpToPx(getActivity(), 16));
                 radioGroup.addView(rdBtn);
             }

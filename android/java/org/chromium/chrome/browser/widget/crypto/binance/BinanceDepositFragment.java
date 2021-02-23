@@ -98,7 +98,8 @@ public class BinanceDepositFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if (networksJson != null && !TextUtils.isEmpty(networksJson)) {
-                        showCoinList(networksJson, charSequence.toString().toLowerCase(Locale.getDefault()));
+                        showCoinList(networksJson,
+                                charSequence.toString().toLowerCase(Locale.getDefault()));
                     }
                 }
 
@@ -124,9 +125,12 @@ public class BinanceDepositFragment extends Fragment {
             }
             for (CoinNetworkModel coinNetworkModel : binanceCoinNetworks.getCoinNetworksList()) {
                 if (filterQuery == null
-                        || (coinNetworkModel.getCoin().toLowerCase(Locale.getDefault()).contains(filterQuery)
-                                || coinNetworkModel.getCoinDesc().toLowerCase(Locale.getDefault()).contains(
-                                        filterQuery))) {
+                        || (coinNetworkModel.getCoin()
+                                        .toLowerCase(Locale.getDefault())
+                                        .contains(filterQuery)
+                                || coinNetworkModel.getCoinDesc()
+                                           .toLowerCase(Locale.getDefault())
+                                           .contains(filterQuery))) {
                     final View view = inflater.inflate(R.layout.binance_deposit_item, null);
 
                     ImageView currencyImageView = view.findViewById(R.id.currency_image);

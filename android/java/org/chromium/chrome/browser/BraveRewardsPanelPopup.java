@@ -50,8 +50,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.viewpager.widget.ViewPager;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -800,8 +800,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         btRewardsSummary.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.slide_down, 0);
         if (braveRewardsWelcomeView != null && braveRewardsWelcomeView.isShown()) {
             braveRewardsWelcomeView.setBackground(
-                ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
-                      R.drawable.bat_rewards_summary_gradient, /* theme= */ null));
+                    ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
+                            R.drawable.bat_rewards_summary_gradient, /* theme= */ null));
         }
     }
 
@@ -1152,8 +1152,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 // 18 digits is a probi min digits count
                 if (splittedValue.length != 0 && splittedValue[0].length() >= 18) {
                     value = BraveRewardsHelper.probiToDouble(args[3]);
-                    valueString = Double.isNaN(value) ?
-                                  ERROR_CONVERT_PROBI : String.format(Locale.getDefault(), "%.3f", value);
+                    valueString = Double.isNaN(value)
+                            ? ERROR_CONVERT_PROBI
+                            : String.format(Locale.getDefault(), "%.3f", value);
                 } else {
                     value = Double.parseDouble(args[3]);
                     valueString = String.format(Locale.getDefault(), "%.3f", value);
@@ -1369,8 +1370,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
      */
     private void EnableWalletDetails(boolean enable) {
         View progressWalletUpdate = root.findViewById(R.id.progress_wallet_update);
-        View fadein  = enable ? tvBrBatWallet : progressWalletUpdate;
-        View fadeout  = enable ? progressWalletUpdate : tvBrBatWallet;
+        View fadein = enable ? tvBrBatWallet : progressWalletUpdate;
+        View fadeout = enable ? progressWalletUpdate : tvBrBatWallet;
         BraveRewardsHelper.crossfade(fadeout, fadein, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
 
         View usd = root.findViewById(R.id.br_usd_wallet_layout);
@@ -1591,10 +1592,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     public void OnGetPendingContributionsTotal(double amount) {
         if (amount > 0.0) {
             String non_verified_summary =
-                String.format(root.getResources().getString(
-                                  R.string.brave_ui_reserved_amount_text), String.format(Locale.getDefault(), "%.3f", amount), batPointsText) +
-                " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more) +
-                ".</font>";
+                    String.format(
+                            root.getResources().getString(R.string.brave_ui_reserved_amount_text),
+                            String.format(Locale.getDefault(), "%.3f", amount), batPointsText)
+                    + " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more)
+                    + ".</font>";
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(non_verified_summary);
             tvPublisherNotVerifiedSummary.setText(toInsert);
             tvPublisherNotVerifiedSummary.setVisibility(View.VISIBLE);
@@ -1768,9 +1770,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 leftDrawable = R.drawable.uphold_white;
                 text = R.string.brave_ui_wallet_button_disconnected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
-                btnVerifyWallet.setBackgroundDrawable(
-                    ResourcesCompat.getDrawable(ContextUtils.getApplicationContext().getResources(),
-                      R.drawable.wallet_disconnected_button, /* theme= */ null));
+                btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.wallet_disconnected_button, /* theme= */ null));
                 break;
             default:
                 Log.e (TAG, "Unexpected external wallet status");

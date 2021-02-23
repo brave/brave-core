@@ -455,16 +455,16 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
     }
 
     private void showTooltip(ShieldsTooltipEnum shieldsTooltipEnum, String tooltipPref) {
-        mShieldsPopupWindowTooltip =
-                new PopupWindowTooltip.Builder(getContext())
-                        .anchorView(mBraveShieldsButton)
-                        .arrowColor(getContext().getResources().getColor(shieldsTooltipEnum.getArrowColor()))
-                        .gravity(Gravity.BOTTOM)
-                        .dismissOnOutsideTouch(true)
-                        .dismissOnInsideTouch(false)
-                        .modal(true)
-                        .contentView(R.layout.brave_shields_tooltip_layout)
-                        .build();
+        mShieldsPopupWindowTooltip = new PopupWindowTooltip.Builder(getContext())
+                                             .anchorView(mBraveShieldsButton)
+                                             .arrowColor(getContext().getResources().getColor(
+                                                     shieldsTooltipEnum.getArrowColor()))
+                                             .gravity(Gravity.BOTTOM)
+                                             .dismissOnOutsideTouch(true)
+                                             .dismissOnInsideTouch(false)
+                                             .modal(true)
+                                             .contentView(R.layout.brave_shields_tooltip_layout)
+                                             .build();
         mShieldsPopupWindowTooltip.findViewById(R.id.shields_tooltip_layout)
                 .setBackgroundDrawable(ContextCompat.getDrawable(
                         getContext(), shieldsTooltipEnum.getTooltipBackground()));
@@ -503,16 +503,16 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
 
     public void showRewardsTooltip() {
         ShieldsTooltipEnum shieldsTooltipEnum = ShieldsTooltipEnum.BAP_DEPRECATION_TOOLTIP;
-        mRewardsPopupWindowTooltip =
-                new PopupWindowTooltip.Builder(getContext())
-                        .anchorView(mBraveRewardsButton)
-                        .arrowColor(getContext().getResources().getColor(shieldsTooltipEnum.getArrowColor()))
-                        .gravity(Gravity.BOTTOM)
-                        .dismissOnOutsideTouch(true)
-                        .dismissOnInsideTouch(false)
-                        .modal(true)
-                        .contentView(R.layout.brave_shields_tooltip_layout)
-                        .build();
+        mRewardsPopupWindowTooltip = new PopupWindowTooltip.Builder(getContext())
+                                             .anchorView(mBraveRewardsButton)
+                                             .arrowColor(getContext().getResources().getColor(
+                                                     shieldsTooltipEnum.getArrowColor()))
+                                             .gravity(Gravity.BOTTOM)
+                                             .dismissOnOutsideTouch(true)
+                                             .dismissOnInsideTouch(false)
+                                             .modal(true)
+                                             .contentView(R.layout.brave_shields_tooltip_layout)
+                                             .build();
         mRewardsPopupWindowTooltip.findViewById(R.id.shields_tooltip_layout)
                 .setBackgroundDrawable(ContextCompat.getDrawable(
                         getContext(), shieldsTooltipEnum.getTooltipBackground()));
@@ -1049,13 +1049,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 String value = Integer.toString(count);
                 if (count > 99) {
                     mBraveRewardsNotificationsCount.setBackground(
-                        ResourcesCompat.getDrawable(getContext().getResources(),
-                      R.drawable.brave_rewards_rectangle, /* theme= */ null));
+                            ResourcesCompat.getDrawable(getContext().getResources(),
+                                    R.drawable.brave_rewards_rectangle, /* theme= */ null));
                     value = "99+";
                 } else {
                     mBraveRewardsNotificationsCount.setBackground(
-                        ResourcesCompat.getDrawable(getContext().getResources(),
-                      R.drawable.brave_rewards_circle, /* theme= */ null));
+                            ResourcesCompat.getDrawable(getContext().getResources(),
+                                    R.drawable.brave_rewards_circle, /* theme= */ null));
                 }
                 mBraveRewardsNotificationsCount.setText(value);
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
@@ -1095,9 +1095,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         if (!shouldShow) return;
 
         mBraveRewardsNotificationsCount.setText("");
-        mBraveRewardsNotificationsCount.setBackground(
-            ResourcesCompat.getDrawable(getContext().getResources(),
-                      R.drawable.brave_rewards_circle, /* theme= */ null));
+        mBraveRewardsNotificationsCount.setBackground(ResourcesCompat.getDrawable(
+                getContext().getResources(), R.drawable.brave_rewards_circle, /* theme= */ null));
         mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
     }
 
@@ -1129,9 +1128,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         } else if (!mIsNotificationPosted) {
             if (mIsPublisherVerified) {
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
-                mBraveRewardsNotificationsCount.setBackground(
-                    ResourcesCompat.getDrawable(getContext().getResources(),
-                      R.drawable.bat_verified, /* theme= */ null));
+                mBraveRewardsNotificationsCount.setBackground(ResourcesCompat.getDrawable(
+                        getContext().getResources(), R.drawable.bat_verified, /* theme= */ null));
             } else {
                 mBraveRewardsNotificationsCount.setBackgroundResource(0);
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);

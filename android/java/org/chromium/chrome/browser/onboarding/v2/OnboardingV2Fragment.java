@@ -7,36 +7,34 @@
 
 package org.chromium.chrome.browser.onboarding.v2;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.os.Handler;
-
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.view.Gravity;
-import android.animation.ValueAnimator;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+
 import com.airbnb.lottie.LottieAnimationView;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment.HighlightDialogListener;
 
-import org.chromium.chrome.R;
-
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -156,23 +154,27 @@ public class OnboardingV2Fragment extends Fragment {
 
 		switch (mPosition) {
 		case 0:
-			mIndicator1.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
-			break;
+                    mIndicator1.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
+                            R.drawable.selected_indicator, /* theme= */ null));
+                    break;
 		case 1:
-			mIndicator2.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
-			break;
+                    mIndicator2.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
+                            R.drawable.selected_indicator, /* theme= */ null));
+                    break;
 		case 2:
-			mIndicator3.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
-			break;
+                    mIndicator3.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
+                            R.drawable.selected_indicator, /* theme= */ null));
+                    break;
 		case 3:
-			mIndicator4.setBackground(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selected_indicator, /* theme= */ null));
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-			    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-			params.gravity = Gravity.CENTER;
-			mOnboardingLayout.setLayoutParams(params);
-			if (isFromStats)
-				mLearnMoreButton.setVisibility(View.VISIBLE);
-			break;
+                    mIndicator4.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
+                            R.drawable.selected_indicator, /* theme= */ null));
+                    FrameLayout.LayoutParams params =
+                            new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                                    FrameLayout.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER;
+                    mOnboardingLayout.setLayoutParams(params);
+                    if (isFromStats) mLearnMoreButton.setVisibility(View.VISIBLE);
+                    break;
 		}
 	}
 

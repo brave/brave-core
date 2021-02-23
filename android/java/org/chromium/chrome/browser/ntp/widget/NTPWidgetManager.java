@@ -35,16 +35,22 @@ public class NTPWidgetManager {
         {
             put(PREF_PRIVATE_STATS,
                     new NTPWidgetItem(PREF_PRIVATE_STATS,
-                            ContextUtils.getApplicationContext().getResources().getString(R.string.privacy_stats),
-                            ContextUtils.getApplicationContext().getResources().getString(R.string.privacy_stats_text)));
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.privacy_stats),
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.privacy_stats_text)));
             put(PREF_FAVORITES,
                     new NTPWidgetItem(PREF_FAVORITES,
-                            ContextUtils.getApplicationContext().getResources().getString(R.string.favorites),
-                            ContextUtils.getApplicationContext().getResources().getString(R.string.favorites_text)));
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.favorites),
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.favorites_text)));
             put(PREF_BINANCE,
                     new NTPWidgetItem(PREF_BINANCE,
-                            ContextUtils.getApplicationContext().getResources().getString(R.string.binance),
-                            ContextUtils.getApplicationContext().getResources().getString(R.string.binance_disconnect_text)));
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.binance),
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.binance_disconnect_text)));
         }
     };
 

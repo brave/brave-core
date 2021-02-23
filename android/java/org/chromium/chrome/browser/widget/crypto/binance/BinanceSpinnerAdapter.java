@@ -79,7 +79,7 @@ public class BinanceSpinnerAdapter extends ArrayAdapter<CoinNetworkModel> {
         Drawable coinDrawable;
         if (shouldShowIcon && items.get(position).getCoinRes() != 0) {
             Drawable tempCoinDrawable = ResourcesCompat.getDrawable(getContext().getResources(),
-                      items.get(position).getCoinRes(), /* theme= */ null);
+                    items.get(position).getCoinRes(), /* theme= */ null);
             Bitmap bitmap = Bitmap.createBitmap(tempCoinDrawable.getIntrinsicWidth(),
                     tempCoinDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
@@ -92,8 +92,10 @@ public class BinanceSpinnerAdapter extends ArrayAdapter<CoinNetworkModel> {
             coinDrawable = null;
         }
 
-        textView.setCompoundDrawablesWithIntrinsicBounds(coinDrawable, null,ResourcesCompat.getDrawable(getContext().getResources(),
-                      R.drawable.ic_arrow_drop_down_white, /* theme= */ null), null);
+        textView.setCompoundDrawablesWithIntrinsicBounds(coinDrawable, null,
+                ResourcesCompat.getDrawable(getContext().getResources(),
+                        R.drawable.ic_arrow_drop_down_white, /* theme= */ null),
+                null);
         return textView;
     }
 }

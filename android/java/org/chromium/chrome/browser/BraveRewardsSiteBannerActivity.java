@@ -216,8 +216,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             }
         };
 
-        sendDonationLayout.setOnClickListener (send_tip_clicker);
-
+        sendDonationLayout.setOnClickListener(send_tip_clicker);
 
         //set 'add funds' button onClick
          View.OnClickListener add_funds_clicker = new View.OnClickListener() {
