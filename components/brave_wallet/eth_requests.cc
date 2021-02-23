@@ -8,9 +8,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
+#include "brave/components/brave_wallet/brave_wallet_utils.h"
 
 namespace {
 
@@ -66,15 +64,6 @@ std::string GetJsonRpc3Params(const std::string& method,
   params.Append(base::Value(val3));
   base::Value dictionary = GetJsonRpcDictionary(method, &params);
   return GetJSON(dictionary);
-}
-
-std::string ToHex(const std::string& data) {
-  if (data.empty()) {
-    return "";
-  }
-  return base::StringPrintf(
-      "0x%s",
-      base::ToLowerASCII(base::HexEncode(data.data(), data.size())).c_str());
 }
 
 void AddKeyIfNotEmpty(base::Value* dict,
