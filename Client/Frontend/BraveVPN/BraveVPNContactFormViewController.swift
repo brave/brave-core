@@ -268,7 +268,7 @@ class BraveVPNContactFormViewController: TableViewController {
             body.append("\(Strings.VPN.contactFormLogs)\n")
             let formatter = DateFormatter()
             formatter.dateStyle = .short
-            formatter.timeStyle = .medium
+            formatter.timeStyle = .long
             
             logs.forEach {
                 body.append("\(formatter.string(from: $0.date)): \($0.message)\n")
