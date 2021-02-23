@@ -3,33 +3,47 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/install_static/install_modes.h"
+
 #include "chrome/install_static/buildflags.h"
 
-#if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
-#define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
+namespace install_static {
+
+namespace {
+
+#if !defined(OFFICIAL_BUILD)
+std::wstring GetUnregisteredKeyPathForProduct() {
+  return std::wstring(L"Software\\").append(kProductPathName);
+}
 #endif
 
-#define BRAVE_INSTALL_MODES                                                 \
-  std::wstring GetClientsKeyPathForApp(const wchar_t* app_guid) {           \
-    return std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")      \
-        .append(app_guid);                                                  \
-  }                                                                         \
-                                                                            \
-  std::wstring GetClientStateKeyPathForApp(const wchar_t* app_guid) {       \
-    return std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")  \
-        .append(app_guid);                                                  \
-  }                                                                         \
-                                                                            \
-  std::wstring GetClientStateMediumKeyPathForApp(const wchar_t* app_guid) { \
-    return std::wstring(                                                    \
-               L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")     \
-        .append(app_guid);                                                  \
-  }
+}  // namespace
 
-#include "../../../../chrome/install_static/install_modes.cc"
-#undef BRAVE_INSTALL_MODES
-
+std::wstring GetClientsKeyPath(const wchar_t* app_guid) {
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+  return std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
+      .append(app_guid);
+#else
+  return GetUnregisteredKeyPathForProduct();
 #endif
+}
+
+std::wstring GetClientStateKeyPath(const wchar_t* app_guid) {
+#if defined(OFFICIAL_BUILD)
+  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")
+      .append(app_guid);
+#else
+  return GetUnregisteredKeyPathForProduct();
+#endif
+}
+
+std::wstring GetClientStateMediumKeyPath(const wchar_t* app_guid) {
+#if defined(OFFICIAL_BUILD)
+  return std::wstring(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")
+      .append(app_guid);
+#else
+  return GetUnregisteredKeyPathForProduct();
+#endif
+}
+
+}  // namespace install_static
