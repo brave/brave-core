@@ -1931,6 +1931,11 @@ void RewardsServiceImpl::GetPublisherInfo(
     const std::string& publisher_key,
     GetPublisherInfoCallback callback) {
   if (!Connected()) {
+    if (!IsRewardsEnabled()) {
+      std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+      return;
+    }
+
     StartProcess(
         base::BindOnce(
             &RewardsServiceImpl::OnStartProcessForGetPublisherInfo,
@@ -1993,6 +1998,11 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::type::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
+    if (!IsRewardsEnabled()) {
+      std::move(callback).Run(ledger::type::Result::LEDGER_ERROR);
+      return;
+    }
+
     StartProcess(
         base::BindOnce(
             &RewardsServiceImpl::OnStartProcessForSavePublisherInfo,
@@ -3495,6 +3505,20 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
   CreateWallet(base::BindOnce(
       &RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled,
       AsWeakPtr()));
+}
+
+bool RewardsServiceImpl::IsRewardsEnabled() const {
+  if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled))
+    return true;
+
+  if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled))
+    return true;
+
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service && ads_service->IsEnabled())
+    return true;
+
+  return false;
 }
 
 void RewardsServiceImpl::OnStartProcessForSetAdsEnabled(
