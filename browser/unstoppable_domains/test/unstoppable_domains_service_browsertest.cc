@@ -38,9 +38,10 @@ class UnstoppableDomainsServiceBrowserTest : public InProcessBrowserTest {
 
   PrefService* local_state() { return g_browser_process->local_state(); }
 
-  SecureDnsConfig GetSecureDnsConfiguration() {
+  SecureDnsConfig GetSecureDnsConfiguration(
+      bool force_check_parental_controls_for_automatic_mode = false) {
     return stub_config_reader_->GetSecureDnsConfiguration(
-        false /*force_check_parental_controls_for_automatic_mode */);
+        force_check_parental_controls_for_automatic_mode);
   }
 
  private:
@@ -89,6 +90,37 @@ IN_PROC_BROWSER_TEST_F(UnstoppableDomainsServiceBrowserTest,
   local_state()->SetInteger(kResolveMethod,
                             static_cast<int>(ResolveMethodTypes::DISABLED));
   config = GetSecureDnsConfiguration();
+  expected_doh_servers = {{"https://test.com", true}};
+  EXPECT_EQ(config.servers(), expected_doh_servers);
+}
+
+IN_PROC_BROWSER_TEST_F(UnstoppableDomainsServiceBrowserTest,
+                       HideUnstoppableDomainsResolvers) {
+  // Initial state.
+  EXPECT_EQ(local_state()->GetInteger(kResolveMethod),
+            static_cast<int>(ResolveMethodTypes::ASK));
+  SecureDnsConfig config = GetSecureDnsConfiguration();
+  EXPECT_EQ(config.mode(), net::SecureDnsMode::kAutomatic);
+  EXPECT_EQ(config.servers().size(), 0u);
+
+  // Set resolve method to DoH should update the config.
+  local_state()->SetInteger(
+      kResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  config = GetSecureDnsConfiguration();
+  std::vector<net::DnsOverHttpsServerConfig> expected_doh_servers = {
+      {kDoHResolver, true}};
+  EXPECT_EQ(config.servers(), expected_doh_servers);
+
+  // Set custom DoH provider should still keep the resolver for UD.
+  local_state()->SetString(prefs::kDnsOverHttpsTemplates, "https://test.com");
+  config = GetSecureDnsConfiguration();
+  expected_doh_servers = {{kDoHResolver, true}, {"https://test.com", true}};
+  EXPECT_EQ(config.servers(), expected_doh_servers);
+
+  // Should hide unstoppable domains resolver if
+  // force_check_parental_controls_for_automatic_mode is true, used for hiding
+  // the special resolver in settings.
+  config = GetSecureDnsConfiguration(true);
   expected_doh_servers = {{"https://test.com", true}};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 }
