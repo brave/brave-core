@@ -64,7 +64,11 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
             return false;
         }
         return resolveInfo.activityInfo.packageName.equals(
-                ContextUtils.getApplicationContext().getPackageName());
+                       BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
+                || resolveInfo.activityInfo.packageName.equals(
+                        BraveActivity.BRAVE_BETA_PACKAGE_NAME)
+                || resolveInfo.activityInfo.packageName.equals(
+                        BraveActivity.BRAVE_NIGHTLY_PACKAGE_NAME);
     }
 
     private boolean shouldShowNotification() {
