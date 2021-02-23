@@ -9,6 +9,7 @@
 namespace brave_wallet {
 
 TEST(BraveWalletUtilsUnitTest, ToHex) {
+  ASSERT_EQ(ToHex(""), "0x0");
   ASSERT_EQ(ToHex("hello world"), "0x68656c6c6f20776f726c64");
 }
 

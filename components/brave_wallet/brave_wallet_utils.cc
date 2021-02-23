@@ -14,7 +14,7 @@ namespace brave_wallet {
 
 std::string ToHex(const std::string& data) {
   if (data.empty()) {
-    return "";
+    return "0x0";
   }
   return base::StringPrintf(
       "0x%s",
