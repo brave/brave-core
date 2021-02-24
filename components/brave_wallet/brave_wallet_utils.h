@@ -21,6 +21,8 @@ std::string GetFunctionHash(const std::string& input);
 // i.e. 64 hex characters.
 // Input must be prefixed with 0x
 bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
+// Determines if the passed in hex string is valid
+bool IsValidHexString(const std::string& hex_input);
 
 }  // namespace brave_wallet
 

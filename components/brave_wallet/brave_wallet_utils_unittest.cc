@@ -45,4 +45,13 @@ TEST(BraveWalletUtilsUnitTest, PadHexEncodedParameter) {
   ASSERT_FALSE(PadHexEncodedParameter("", &out));
 }
 
+TEST(BraveWalletUtilsUnitTest, IsValidHexString) {
+  ASSERT_TRUE(IsValidHexString("0x0"));
+  ASSERT_TRUE(IsValidHexString("0x4e02f254184E904300e0775E4b8eeCB14a1b29f0"));
+  ASSERT_FALSE(IsValidHexString("0x"));
+  ASSERT_FALSE(IsValidHexString("123"));
+  ASSERT_FALSE(IsValidHexString("0"));
+  ASSERT_FALSE(IsValidHexString(""));
+}
+
 }  // namespace brave_wallet

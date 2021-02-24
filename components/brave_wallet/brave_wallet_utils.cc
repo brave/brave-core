@@ -42,10 +42,7 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
   if (!out) {
     return false;
   }
-  if (hex_input.length() < 3) {
-    return false;
-  }
-  if (hex_input.substr(0, 2) != "0x") {
+  if (!IsValidHexString(hex_input)) {
     return false;
   }
   if (hex_input.length() >= 64) {
@@ -56,6 +53,17 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
   size_t padding_len = 64 - hex_substr.length();
   std::string padding(padding_len, '0');
   *out = base::StringPrintf("0x%s%s", padding.c_str(), hex_substr.c_str());
+  return true;
+}
+
+// Determines if the passed in hex string is valid
+bool IsValidHexString(const std::string& hex_input) {
+  if (hex_input.length() < 3) {
+    return false;
+  }
+  if (hex_input.substr(0, 2) != "0x") {
+    return false;
+  }
   return true;
 }
 
