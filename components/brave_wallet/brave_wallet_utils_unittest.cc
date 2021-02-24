@@ -54,4 +54,21 @@ TEST(BraveWalletUtilsUnitTest, IsValidHexString) {
   ASSERT_FALSE(IsValidHexString(""));
 }
 
+TEST(BraveWalletUtilsUnitTest, ConcatHexStrings) {
+  std::string out;
+  // Pad an address
+  ASSERT_TRUE(ConcatHexStrings(
+      "0x70a08231",
+      "0x0000000000000000000000004e02f254184E904300e0775E4b8eeCB14a1b29f0",
+      &out));
+  ASSERT_EQ(out,
+            "0x70a082310000000000000000000000004e02f254184E904300e0775E4b8eeCB1"
+            "4a1b29f0");  // NOLINT
+  ASSERT_TRUE(ConcatHexStrings("0x0", "0x0", &out));
+  ASSERT_EQ(out, "0x00");
+  // Invalid input
+  ASSERT_FALSE(ConcatHexStrings("0x", "0x0", &out));
+  ASSERT_FALSE(ConcatHexStrings("0x0", "0", &out));
+}
+
 }  // namespace brave_wallet

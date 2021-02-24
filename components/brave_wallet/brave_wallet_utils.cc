@@ -67,4 +67,21 @@ bool IsValidHexString(const std::string& hex_input) {
   return true;
 }
 
+// Takes 2 inputs prefixed by 0x and combines them into an output with a single
+// 0x. For example 0x1 and 0x2 would return 0x12
+bool ConcatHexStrings(const std::string& hex_input1,
+                      const std::string& hex_input2,
+                      std::string* out) {
+  if (!out) {
+    return false;
+  }
+  if (!IsValidHexString(hex_input1) || !IsValidHexString(hex_input2)) {
+    return false;
+  }
+  *out =
+      base::StringPrintf("%s%s", hex_input1.c_str(),
+                         hex_input2.substr(2, hex_input2.length() - 2).c_str());
+  return true;
+}
+
 }  // namespace brave_wallet
