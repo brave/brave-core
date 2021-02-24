@@ -1,0 +1,15 @@
+import("//brave/build/config.gni")
+
+source_set("browser") {
+  sources = [
+    "urls.cc",
+    "urls.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_today/common",
+    "//brave/components/l10n/browser",
+    "//brave/components/l10n/common",
+  ]
+}

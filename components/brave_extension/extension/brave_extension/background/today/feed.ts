@@ -13,6 +13,7 @@ type RemoteData = BraveToday.FeedItem[]
 
 type FeedInStorage = {
   storageSchemaVersion: number,
+  sourceUrl: string,
   feed: BraveToday.Feed
 }
 
@@ -36,10 +37,11 @@ function getFromStorage<T> (key: string) {
   })
 }
 
-function setStorageData (feed: BraveToday.Feed) {
+async function setStorageData (feed: BraveToday.Feed) {
   chrome.storage.local.set({
     [STORAGE_KEY]: {
       storageSchemaVersion: STORAGE_SCHEMA_VERSION,
+      sourceUrl: await getFeedUrl(),
       feed
     }
   })
@@ -75,6 +77,9 @@ async function getStorageData () {
     return
   }
   if (data.storageSchemaVersion !== STORAGE_SCHEMA_VERSION) {
+    return
+  }
+  if (data.sourceUrl !== await getFeedUrl()) {
     return
   }
   memoryTodayData = data.feed
@@ -126,7 +131,7 @@ function performUpdateFeed () {
         isKnownRemoteUpdateAvailable = false
         resolve()
         if (memoryTodayData) {
-          setStorageData(memoryTodayData)
+          await setStorageData(memoryTodayData)
         }
       } else {
         throw new Error(`Not ok when fetching feed. Status ${feedResponse.status} (${feedResponse.statusText})`)

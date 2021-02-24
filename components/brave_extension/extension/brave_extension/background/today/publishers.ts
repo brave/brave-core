@@ -16,18 +16,20 @@ const eventNameChanged = 'publishers-changed'
 const storageKey = 'todayPublishers'
 const STORAGE_SCHEMA_VERSION = 1
 
-function isValidStorageData (data: {[key: string]: any}) {
+async function isValidStorageData (data: {[key: string]: any}) {
   return (
     data && data.todayPublishers &&
     data.todayPublishers.storageSchemaVersion === STORAGE_SCHEMA_VERSION &&
+    data.todayPublishers.sourceUrl === (await getSourcesUrl()) &&
     data.todayPublishers.publishers
   )
 }
 
-function setPublishersCache (publishers: BraveToday.Publishers) {
+async function setPublishersCache (publishers: BraveToday.Publishers) {
   chrome.storage.local.set({
     [storageKey]: {
       storageSchemaVersion: STORAGE_SCHEMA_VERSION,
+      sourceUrl: (await getSourcesUrl()),
       publishers
     }
   })
@@ -35,8 +37,8 @@ function setPublishersCache (publishers: BraveToday.Publishers) {
 
 function getPublishersFromCache () {
   return new Promise<void>(resolve => {
-    chrome.storage.local.get(storageKey, (data) => {
-      if (isValidStorageData(data)) {
+    chrome.storage.local.get(storageKey, async (data) => {
+      if (await isValidStorageData(data)) {
         memoryData = data[storageKey].publishers
       }
       resolve()
@@ -76,8 +78,8 @@ function performUpdate (notify: boolean = true) {
         console.debug('fetched today publishers', feedContents)
         memoryData = await convertToObject(feedContents)
         resolve()
+        await setPublishersCache(memoryData)
         // Notify
-        setPublishersCache(memoryData)
         if (notify) {
           publishersEvents.dispatchEvent<BraveToday.Publishers>(eventNameChanged, memoryData)
         }

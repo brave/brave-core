@@ -6,6 +6,8 @@
 // This won't change unless browser restarted (provided via flag), so it's ok
 // to store as a global.
 let hostnameCache: string
+// This won't change unless OS region changes.
+let regionURLPartCache: string
 
 function getHostname (): Promise<string> {
   if (hostnameCache) {
@@ -19,14 +21,35 @@ function getHostname (): Promise<string> {
   })
 }
 
+function getRegionUrlPart (): Promise<string> {
+  if (regionURLPartCache) {
+    return Promise.resolve(regionURLPartCache)
+  }
+  return new Promise(resolve => {
+    chrome.braveToday.getRegionUrlPart((regionURLPart) => {
+      regionURLPartCache = regionURLPart
+      if (regionURLPart) {
+        regionURLPartCache += '.'
+      }
+      resolve(regionURLPartCache)
+    })
+  })
+}
+
 export async function getFeedUrl () {
-  const hostname = await getHostname()
-  return `https://${hostname}/brave-today/feed.json`
+  let [hostname, regionUrlPart] = await Promise.all([
+    getHostname(),
+    getRegionUrlPart()
+  ])
+  return `https://${hostname}/brave-today/feed.${regionUrlPart}json`
 }
 
 export async function getSourcesUrl () {
-  const hostname = await getHostname()
-  return `https://${hostname}/sources.json`
+  let [hostname, regionUrlPart] = await Promise.all([
+    getHostname(),
+    getRegionUrlPart()
+  ])
+  return `https://${hostname}/sources.${regionUrlPart}json`
 }
 
 // Always get the hostname at startup, it's cheap
