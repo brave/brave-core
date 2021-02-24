@@ -130,7 +130,8 @@ void ConversionQueue::GetForCreativeInstanceId(
       "cq.conversion_id, "
       "cq.timestamp "
       "FROM %s AS cq "
-      "WHERE cq.creative_instance_id = '%s'",
+      "WHERE cq.creative_instance_id = '%s' "
+      "ORDER BY timestamp ASC",
       get_table_name().c_str(), creative_instance_id.c_str());
 
   DBCommandPtr command = DBCommand::New();
