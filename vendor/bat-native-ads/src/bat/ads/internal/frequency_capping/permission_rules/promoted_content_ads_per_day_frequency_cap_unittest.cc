@@ -5,6 +5,11 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.h"
 
+#include <vector>
+
+#include "base/feature_list.h"
+#include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -23,6 +28,19 @@ class BatAdsPromotedContentAdsPerDayFrequencyCapTest : public UnitTestBase {
   BatAdsPromotedContentAdsPerDayFrequencyCapTest() = default;
 
   ~BatAdsPromotedContentAdsPerDayFrequencyCapTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+        enabled_features;
+
+    const std::vector<base::Feature> disabled_features;
+
+    base::test::ScopedFeatureList scoped_feature_list;
+    scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                      disabled_features);
+  }
 };
 
 TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
@@ -47,8 +65,8 @@ TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
                                                ConfirmationType::kViewed);
 
-  const AdEventList ad_events(kPromotedContentAdsPerDayFrequencyCap - 1,
-                              ad_event);
+  const size_t count = features::GetMaximumPromotedContentAdsPerDay() - 1;
+  const AdEventList ad_events(count, ad_event);
 
   // Act
   PromotedContentAdsPerDayFrequencyCap frequency_cap(ad_events);
@@ -67,7 +85,8 @@ TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
                                                ConfirmationType::kViewed);
 
-  const AdEventList ad_events(kPromotedContentAdsPerDayFrequencyCap, ad_event);
+  const size_t count = features::GetMaximumPromotedContentAdsPerDay();
+  const AdEventList ad_events(count, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromDays(1));
 
@@ -88,7 +107,8 @@ TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
   const AdEventInfo ad_event = GenerateAdEvent(AdType::kPromotedContentAd, ad,
                                                ConfirmationType::kViewed);
 
-  const AdEventList ad_events(kPromotedContentAdsPerDayFrequencyCap, ad_event);
+  const size_t count = features::GetMaximumPromotedContentAdsPerDay();
+  const AdEventList ad_events(count, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromHours(23));
 
@@ -98,15 +118,6 @@ TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
 
   // Assert
   EXPECT_FALSE(is_allowed);
-}
-
-TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest, AdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(20UL, kPromotedContentAdsPerDayFrequencyCap);
 }
 
 }  // namespace ads

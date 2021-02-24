@@ -5,9 +5,11 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.h"
 
+#include <stdint.h>
 #include <deque>
 
 #include "base/time/time.h"
+#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {
@@ -41,8 +43,10 @@ bool PromotedContentAdsPerDayFrequencyCap::DoesRespectCap(
   const uint64_t time_constraint =
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
-  return DoesHistoryRespectCapForRollingTimeConstraint(
-      history, time_constraint, kPromotedContentAdsPerDayFrequencyCap);
+  const uint64_t cap = features::GetMaximumPromotedContentAdsPerDay();
+
+  return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
+                                                       cap);
 }
 
 AdEventList PromotedContentAdsPerDayFrequencyCap::FilterAdEvents(

@@ -5,6 +5,11 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
 
+#include <vector>
+
+#include "base/feature_list.h"
+#include "base/test/scoped_feature_list.h"
+#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -23,6 +28,19 @@ class BatAdsNewTabPageAdsPerDayFrequencyCapTest : public UnitTestBase {
   BatAdsNewTabPageAdsPerDayFrequencyCapTest() = default;
 
   ~BatAdsNewTabPageAdsPerDayFrequencyCapTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+        enabled_features;
+
+    const std::vector<base::Feature> disabled_features;
+
+    base::test::ScopedFeatureList scoped_feature_list;
+    scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                      disabled_features);
+  }
 };
 
 TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
@@ -46,7 +64,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   const AdEventInfo ad_event =
       GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
 
-  const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap - 1, ad_event);
+  const size_t count = features::GetMaximumNewTabPageAdsPerDay() - 1;
+  const AdEventList ad_events(count, ad_event);
 
   // Act
   NewTabPageAdsPerDayFrequencyCap frequency_cap(ad_events);
@@ -65,7 +84,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   const AdEventInfo ad_event =
       GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
 
-  const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap, ad_event);
+  const size_t count = features::GetMaximumNewTabPageAdsPerDay();
+  const AdEventList ad_events(count, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromDays(1));
 
@@ -86,7 +106,8 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
   const AdEventInfo ad_event =
       GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kViewed);
 
-  const AdEventList ad_events(kNewTabPageAdsPerDayFrequencyCap, ad_event);
+  const size_t count = features::GetMaximumNewTabPageAdsPerDay();
+  const AdEventList ad_events(count, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromHours(23));
 
@@ -96,15 +117,6 @@ TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest,
 
   // Assert
   EXPECT_FALSE(is_allowed);
-}
-
-TEST_F(BatAdsNewTabPageAdsPerDayFrequencyCapTest, AdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(20UL, kNewTabPageAdsPerDayFrequencyCap);
 }
 
 }  // namespace ads
