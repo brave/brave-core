@@ -52,7 +52,7 @@ void OnTorProfileCreated(GURL onion_location,
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),
-                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                  WindowOpenDisposition::SWITCH_TO_TAB,
                                   ui::PAGE_TRANSITION_TYPED, false);
   browser->OpenURL(open_tor);
 }
