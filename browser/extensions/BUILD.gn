@@ -62,7 +62,7 @@ source_set("extensions") {
     "//brave/components/brave_rewards/browser/buildflags",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
-    "//brave/components/brave_today/common",
+    "//brave/components/brave_today/browser",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/sidebar/buildflags",

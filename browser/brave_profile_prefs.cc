@@ -265,8 +265,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
   const std::string language_code = brave_l10n::GetLanguageCode(locale);
   const bool is_english_language = language_code == "en";
-  registry->RegisterBooleanPref(kNewTabPageShowToday, is_english_language);
-
+  const bool is_japanese_language = language_code == "ja";
+  const bool brave_today_enabled_default = is_english_language ||
+      is_japanese_language;
+  registry->RegisterBooleanPref(kNewTabPageShowToday,
+      brave_today_enabled_default);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowTogether, false);

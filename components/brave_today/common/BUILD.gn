@@ -4,8 +4,6 @@ source_set("common") {
   sources = [
     "switches.cc",
     "switches.h",
-    "urls.cc",
-    "urls.h",
   ]
 
   deps = [ "//base" ]
