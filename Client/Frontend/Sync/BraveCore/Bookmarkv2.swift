@@ -233,12 +233,12 @@ extension Bookmarkv2 {
             .compactMap({ return !$0.isFolder ? Bookmarkv2($0) : nil })
     }
     
-    public func update(customTitle: String?, url: String?) {
+    public func update(customTitle: String?, url: URL?) {
         bookmarkNode.setTitle(customTitle ?? "")
-        bookmarkNode.url = URL(string: url ?? "")
+        bookmarkNode.url = url
     }
     
-    public func updateWithNewLocation(customTitle: String?, url: String?, location: Bookmarkv2?) {
+    public func updateWithNewLocation(customTitle: String?, url: URL?, location: Bookmarkv2?) {
         if let location = location?.bookmarkNode ?? Bookmarkv2.bookmarksAPI.mobileNode {
             if location.guid != bookmarkNode.parent?.guid {
                 bookmarkNode.move(toParent: location)
@@ -249,7 +249,7 @@ extension Bookmarkv2 {
             }
             
             if let url = url, !bookmarkNode.isFolder {
-                bookmarkNode.url = URL(string: url)
+                bookmarkNode.url = url
             } else if url != nil {
                 log.error("Error: Moving bookmark - Cannot convert a folder into a bookmark with url.")
             }
@@ -272,10 +272,10 @@ extension Bookmarkv2 {
                 node.move(toParent: parent, index: UInt(destinationIndexPath.row))
             }
             
-            //Notify the delegate that items did move..
-            //This is already done automatically in `Bookmarkv2Fetcher` listener.
-            //However, the Brave-Core delegate is being called before the move is actually complete OR too quickly
-            //So to fix it, we reload here AFTER the move is done so the UI can update accordingly.
+            // Notify the delegate that items did move..
+            // This is already done automatically in `Bookmarkv2Fetcher` listener.
+            // However, the Brave-Core delegate is being called before the move is actually complete OR too quickly
+            // So to fix it, we reload here AFTER the move is done so the UI can update accordingly.
             frc.delegate?.controllerDidReloadContents(frc)
         }
     }
