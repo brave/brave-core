@@ -48,7 +48,7 @@ void OnTorProfileCreated(GURL onion_location,
                          Profile::CreateStatus status) {
   if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
     return;
-  Browser* browser = chrome::FindTabbedBrowser(profile, true);
+  Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser)
     return;
   content::OpenURLParams open_tor(onion_location, content::Referrer(),
