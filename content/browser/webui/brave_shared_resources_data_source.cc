@@ -38,18 +38,6 @@ namespace {
 
 using ResourcesMap = std::unordered_map<std::string, int>;
 
-const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
-  // Map of GRD-relative path prefixes to incoming request path, e.g.
-  // brave://brave-resources/blah/X could be mapped to
-  // GRD:../../resources/web/blah/X.
-  // See chromium's SharedResourcesDataSource for an example
-  // Format is {"../../somewhere/in/src/tree/", "request/path" }
-  std::map<std::string, std::string> aliases = {
-      {"@out_folder@/gen/brave/ui/webui/resources/", ""},
-  };
-  return aliases;
-}
-
 void AddResource(const std::string& path,
                  int resource_id,
                  ResourcesMap* resources_map) {
@@ -58,22 +46,9 @@ void AddResource(const std::string& path,
 }
 
 void AddResourcesToMap(ResourcesMap* resources_map) {
-  const std::map<std::string, std::string> aliases =
-      CreatePathPrefixAliasesMap();
-
   for (size_t i = 0; i < kBraveWebuiResourcesSize; ++i) {
     const auto& resource = kBraveWebuiResources[i];
-
     AddResource(resource.path, resource.id, resources_map);
-
-    for (auto it = aliases.begin(); it != aliases.end(); ++it) {
-      if (base::StartsWith(resource.path, it->first,
-                           base::CompareCase::SENSITIVE)) {
-        std::string resource_name(resource.path);
-        AddResource(it->second + resource_name.substr(it->first.length()),
-                    resource.id, resources_map);
-      }
-    }
   }
 }
 

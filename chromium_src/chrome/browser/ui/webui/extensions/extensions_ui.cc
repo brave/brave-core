@@ -15,21 +15,13 @@ namespace extensions {
 
 namespace {
 
-#if !BUILDFLAG(OPTIMIZE_WEBUI)
-constexpr char kBraveGeneratedPath[] =
-    "@out_folder@/gen/brave/browser/resources/extensions/preprocessed";
-#endif
-
 // Called from the original extension_ui.cc's CreateMdExtensionsSource via a
 // patch.
 void BraveAddExtensionsResources(content::WebUIDataSource* source) {
 #if !BUILDFLAG(OPTIMIZE_WEBUI)
   for (size_t i = 0; i < kBraveExtensionsResourcesSize; ++i) {
-    std::string path = kBraveExtensionsResources[i].path;
-    if (path.rfind(kBraveGeneratedPath, 0) == 0) {
-      path = path.substr(strlen(kBraveGeneratedPath));
-    }
-    source->AddResourcePath(path, kBraveExtensionsResources[i].id);
+    source->AddResourcePath(kBraveExtensionsResources[i].path,
+                            kBraveExtensionsResources[i].id);
   }
 #endif
   NavigationBarDataProvider::Initialize(source);
