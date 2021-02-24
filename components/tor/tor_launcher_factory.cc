@@ -9,14 +9,12 @@
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
-#include "base/process/kill.h"
 #include "base/task/post_task.h"
 #include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/child_process_launcher_utils.h"
 #include "content/public/browser/service_process_host.h"
 
 using content::BrowserThread;
@@ -104,10 +102,7 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
     Init();
   }
 
-  // Launch tor after cleanup is done
-  tor_file_watcher_ = new tor::TorFileWatcher(config_.tor_watch_path);
-  tor_file_watcher_->CheckingOldTorProcess(base::BindOnce(
-      &TorLauncherFactory::OnTorCleanupNeeded, weak_ptr_factory_.GetWeakPtr()));
+  LaunchTorInternal();
 }
 
 void TorLauncherFactory::OnTorLogLoaded(
@@ -116,8 +111,11 @@ void TorLauncherFactory::OnTorLogLoaded(
   std::move(callback).Run(result.first, result.second);
 }
 
-void TorLauncherFactory::OnTorControlCheckComplete() {
+void TorLauncherFactory::LaunchTorInternal() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+
+  tor_file_watcher_ = new tor::TorFileWatcher(config_.tor_watch_path);
+
   if (tor_launcher_.is_bound()) {
     auto config = tor::mojom::TorConfig::New(config_);
     tor_launcher_->Launch(std::move(config),
@@ -173,25 +171,17 @@ void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
   LOG(INFO) << "Tor Launcher Crashed";
-  is_starting_ = false;
   for (auto& observer : observers_)
     observer.OnTorLauncherCrashed();
+  DelayedRelaunchTor();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(INFO) << "Tor Process(" << pid << ") Crashed";
-  is_starting_ = false;
-  is_connected_ = false;
   for (auto& observer : observers_)
     observer.OnTorCrashed(pid);
-  KillTorProcess();
-  // Post delayed relaucn for control to stop
-  content::GetUIThreadTaskRunner({})->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(&TorLauncherFactory::RelaunchTor,
-                     weak_ptr_factory_.GetWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+  DelayedRelaunchTor();
 }
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
@@ -267,26 +257,8 @@ void TorLauncherFactory::OnTorControlClosed(bool was_running) {
   // If we're still running, try watching again to start over.
   // XXX Rate limit in case of flapping?
   if (was_running) {
-    tor_file_watcher_ = new tor::TorFileWatcher(config_.tor_watch_path);
-    tor_file_watcher_->CheckingOldTorProcess(
-        base::BindOnce(&TorLauncherFactory::OnTorCleanupNeeded,
-                       weak_ptr_factory_.GetWeakPtr()));
+    LaunchTorInternal();
   }
-}
-
-void TorLauncherFactory::OnTorCleanupNeeded(bool cleanup_needed,
-                                            base::ProcessId id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (!cleanup_needed)
-    return OnTorControlCheckComplete();
-  VLOG(2) << "Killing old tor process pid=" << id;
-  // Dispatch to launcher thread
-  content::GetProcessLauncherTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::BindOnce(&TorLauncherFactory::KillOldTorProcess,
-                     base::Unretained(this), std::move(id)),
-      base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
-                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TorLauncherFactory::OnTorControlPrerequisitesReady(
@@ -304,18 +276,21 @@ void TorLauncherFactory::OnTorControlPrerequisitesReady(
   }
 }
 
-void TorLauncherFactory::KillOldTorProcess(base::ProcessId id) {
-  DCHECK(content::CurrentlyOnProcessLauncherTaskRunner());
-  base::Process tor_process = base::Process::Open(id);
-  if (tor_process.IsValid())
-    tor_process.Terminate(0, false);
-}
-
 void TorLauncherFactory::RelaunchTor() {
   Init();
-  tor_file_watcher_ = new tor::TorFileWatcher(config_.tor_watch_path);
-  tor_file_watcher_->CheckingOldTorProcess(base::BindOnce(
-      &TorLauncherFactory::OnTorCleanupNeeded, weak_ptr_factory_.GetWeakPtr()));
+  LaunchTorInternal();
+}
+
+void TorLauncherFactory::DelayedRelaunchTor() {
+  is_starting_ = false;
+  is_connected_ = false;
+  KillTorProcess();
+  // Post delayed relaunch for control to stop
+  content::GetUIThreadTaskRunner({})->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&TorLauncherFactory::RelaunchTor,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::TimeDelta::FromSeconds(1));
 }
 
 void TorLauncherFactory::OnTorEvent(

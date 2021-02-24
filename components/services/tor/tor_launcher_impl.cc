@@ -20,7 +20,9 @@
 #include "base/files/file_util.h"
 #include "base/process/kill.h"
 #include "base/process/launch.h"
+#include "base/process/process.h"
 #include "base/single_thread_task_runner.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_task_runner_handle.h"
@@ -138,6 +140,8 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
     args.AppendArgNative(log_file +
                          tor_data_path.AppendASCII("tor.log").value());
   }
+  args.AppendArg("--__OwningControllerProcess");
+  args.AppendArg(base::NumberToString(base::Process::Current().Pid()));
   base::FilePath tor_watch_path = config->tor_watch_path;
   if (!tor_watch_path.empty()) {
     if (!base::DirectoryExists(tor_watch_path))

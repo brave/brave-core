@@ -13,7 +13,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_path_watcher.h"
 #include "base/memory/ref_counted.h"
-#include "base/process/process.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -28,18 +27,11 @@ FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlPort);
 
 class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
  public:
-  using ReapTorCallback =
-      base::OnceCallback<void(bool cleanup_needed, base::ProcessId id)>;
   using WatchCallback = base::OnceCallback<
       void(bool success, std::vector<uint8_t> cookie, int port)>;
   explicit TorFileWatcher(const base::FilePath& watch_dir_path);
 
   void StartWatching(WatchCallback);
-  // This has to called before TorControl::Start(), it will check if orphaned
-  // tor process exists and reap it.
-  // TODO(darkdh): Remove this with
-  // https://github.com/brave/brave-browser/issues/14044
-  void CheckingOldTorProcess(ReapTorCallback);
 
  private:
   friend class base::RefCountedThreadSafe<TorFileWatcher>;
@@ -49,13 +41,11 @@ class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
   virtual ~TorFileWatcher();
 
   void StartWatchingOnTaskRunner();
-  void CheckingOldTorProcessOnTaskRunner(ReapTorCallback);
   void OnWatchDirChanged(const base::FilePath& path, bool error);
   void Poll();
   void PollDone();
   bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
   bool EatControlPort(int&, base::Time&);
-  bool EatOldPid(base::ProcessId* id);
 
   SEQUENCE_CHECKER(watch_sequence_checker_);
 

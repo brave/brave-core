@@ -67,8 +67,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
 
-  void OnTorControlCheckComplete();
-  void OnTorCleanupNeeded(bool cleanup_needed, base::ProcessId id);
   void OnTorControlPrerequisitesReady(bool ready,
                                       std::vector<uint8_t> cookie,
                                       int port);
@@ -80,9 +78,9 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   void GotVersion(bool error, const std::string& version);
   void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);
 
-  void KillOldTorProcess(base::ProcessId id);
-
+  void LaunchTorInternal();
   void RelaunchTor();
+  void DelayedRelaunchTor();
 
   bool is_starting_;
   bool is_connected_;

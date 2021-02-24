@@ -188,6 +188,11 @@ void TorControl::Authenticated(bool error,
     return;
   }
   VLOG(2) << "tor: control connection ready";
+
+  Cmd1("TAKEOWNERSHIP",
+       base::DoNothing::Once<bool, const std::string&, const std::string&>());
+  Cmd1("RESETCONF __OwningControllerProcess",
+       base::DoNothing::Once<bool, const std::string&, const std::string&>());
   NotifyTorControlReady();
 }
 

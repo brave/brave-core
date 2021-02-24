@@ -36,7 +36,6 @@ constexpr char kLineBreak[] = "\n";
 #endif
 constexpr char kControlAuthCookieName[] = "control_auth_cookie";
 constexpr char kControlPortName[] = "controlport";
-constexpr char kTorPidName[] = "tor.pid";
 }  // namespace
 
 TorFileWatcher::TorFileWatcher(const base::FilePath& watch_dir_path)
@@ -59,13 +58,6 @@ void TorFileWatcher::StartWatching(WatchCallback callback) {
       base::BindOnce(&TorFileWatcher::StartWatchingOnTaskRunner, this));
 }
 
-void TorFileWatcher::CheckingOldTorProcess(ReapTorCallback callback) {
-  watch_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorFileWatcher::CheckingOldTorProcessOnTaskRunner, this,
-                     std::move(callback)));
-}
-
 void TorFileWatcher::StartWatchingOnTaskRunner() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   if (!watcher_->Watch(
@@ -78,19 +70,6 @@ void TorFileWatcher::StartWatchingOnTaskRunner() {
   }
   polling_ = true;
   Poll();
-}
-
-void TorFileWatcher::CheckingOldTorProcessOnTaskRunner(
-    ReapTorCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  base::ProcessId id;
-  if (EatOldPid(&id))
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), true, id));
-  else
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE,
-        base::BindOnce(std::move(callback), false, base::ProcessId()));
 }
 
 // Watching for startup
@@ -298,38 +277,6 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
   }
   mtime = info.last_modified;
   VLOG(3) << "Control port " << port << ", mtime " << mtime;
-  return true;
-}
-
-bool TorFileWatcher::EatOldPid(base::ProcessId* id) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(id);
-
-  // Open the tor pid file.
-  base::FilePath pidpath = watch_dir_path_.AppendASCII(kTorPidName);
-  base::File pidfile(pidpath, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!pidfile.IsValid()) {
-    VLOG(0) << "tor: failed to open tor.pid";
-    return false;
-  }
-
-  const size_t kBufSiz = pidfile.GetLength();
-  char buf[kBufSiz];
-  int nread = pidfile.ReadAtCurrentPos(buf, sizeof buf);
-  if (nread < 0) {
-    VLOG(0) << "tor: failed to read tor pid file";
-    return false;
-  }
-
-  std::string pid(buf, 0, nread - strlen(kLineBreak));
-#if defined(OS_WIN)
-  *id = stoul(pid, nullptr);
-#else
-  if (!base::StringToInt(pid, id)) {
-    VLOG(0) << "tor: failed to parse tor pid";
-    return false;
-  }
-#endif
   return true;
 }
 
