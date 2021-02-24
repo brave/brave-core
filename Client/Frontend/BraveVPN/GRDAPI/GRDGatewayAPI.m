@@ -227,11 +227,11 @@
             if (completion) completion(nil, NO, @"Internal server error authenticating with subscriber credential");
             return;
             
-        } else if (statusCode == 410) {
-            NSLog(@"Subscriber credential invalid");
-            if (completion) completion(nil, NO, @"Subscriber credential invalid");
-            return;
-            
+        } else if (statusCode == 410 || statusCode == 406) {
+            NSLog(@"Subscriber credential invalid: %@", subscriberCredential);
+                [GRDKeychain removeKeychanItemForAccount:kKeychainStr_SubscriberCredential];
+                if (completion) completion(nil, NO, @"Invalid Subscriber Credential. Please try again.");
+                   return;
         } else if (statusCode == 400) {
             NSLog(@"Subscriber credential missing");
             if (completion) completion(nil, NO, @"Subscriber credential missing");
