@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
+#include "base/observer_list.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
@@ -27,6 +28,7 @@ namespace brave {
 
 class BraveP3AScheduler;
 class BraveP3AUploader;
+class BraveP3ACollector;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
@@ -53,6 +55,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
+
+  void AddCollector(BraveP3ACollector* collector);
+  void RemoveCollector(BraveP3ACollector* collector);
 
  private:
   friend class base::RefCountedThreadSafe<BraveP3AService>;
@@ -87,6 +92,10 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void UpdateRotationTimer();
 
+  // Get most recent values for metrics which may not always have pushed an updated
+  // value for the period in between uploads.
+  void CollectMetrics();
+
   // General prefs:
   bool initialized_ = false;
   PrefService* local_state_ = nullptr;
@@ -104,6 +113,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   std::unique_ptr<BraveP3ALogStore> log_store_;
   std::unique_ptr<BraveP3AUploader> uploader_;
   std::unique_ptr<BraveP3AScheduler> upload_scheduler_;
+
+  // Stores collectors who wish to be asked for metrics at appropriate times.
+  base::ObserverList<BraveP3ACollector>::Unchecked collectors_;
 
   // Used to store histogram values that are produced between constructing
   // the service and its initialization.

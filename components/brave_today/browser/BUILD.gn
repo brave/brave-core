@@ -1,0 +1,17 @@
+static_library("browser") {
+  sources = [
+    "brave_today_service.cc",
+    "brave_today_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_today/common",
+    "//brave/components/p3a",
+    "//brave/components/weekly_storage",
+    "//components/keyed_service/core",
+    "//components/pref_registry:pref_registry",
+    "//components/prefs",
+  ]
+}
