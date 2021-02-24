@@ -98,6 +98,8 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 
 // Custom combobox, shows permission lifetime options and applies selected value
 // to all permissions currently visible in the bubble.
+// This is currently a development stub for the "PermissionLifetime" feature,
+// the final UI might not even use a combobox at all.
 class PermissionLifetimeCombobox : public views::Combobox,
                                    public ui::ComboboxModel {
  public:
