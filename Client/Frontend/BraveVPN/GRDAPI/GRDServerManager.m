@@ -3,8 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+@import UserNotifications;
 #import "GRDServerManager.h"
 #import "NSLogDisabler.h"
+#import "NSPredicate+Additions.h"
 
 @interface GRDServerManager() {
     GRDNetworkHealthType networkHealth;
@@ -21,61 +23,34 @@
     return self;
 }
 
-- (void)selectGuardianHostWithCompletion:(void (^)(NSString * _Nullable, NSString * _Nullable errorMessage))completion {
+- (void)selectGuardianHostWithCompletion:(void (^)(NSString * _Nullable, NSString * _Nullable, NSString * _Nullable errorMessage))completion {
     [self getGuardianHostsWithCompletion:^(NSArray * _Nullable servers, NSString * _Nullable errorMessage) {
         if (servers == nil) {
-            if (completion) completion(nil, errorMessage);
+            if (completion) completion(nil, nil, errorMessage);
             return;
         }
         
-        // Create two mutable arrays for later use
-        NSMutableArray *zeroServers = [[NSMutableArray alloc] init];
-        NSMutableArray *oneServers = [[NSMutableArray alloc] init];
+        // The server selection logic tries to prioritize low capacity servers which is defined as
+        // having few clients connected. Low is defined as a capacity score of 0 or 1
+        // capcaity score != connected clients. It's a calculated value based on information from each VPN node
+        // this predicate will filter out anything above 1 as its capacity score
+        NSArray *availableServers = [servers filteredArrayUsingPredicate:[NSPredicate capacityPredicate]];
         
-        for (int i = 0; i < [servers count]; i++) {
-            NSDictionary *serverObj = [servers objectAtIndex:i];
-            
-            // Seperate the available servers into capacity score of 0 and 1
-            // Capacity scores over 1 are ignored entirely
-            if ([[serverObj objectForKey:@"capacity-score"] integerValue] == 0) {
-                [zeroServers addObject:serverObj];
-            
-            } else if ([[serverObj objectForKey:@"capacity-score"] integerValue] == 1) {
-                [oneServers addObject:serverObj];
-            }
-        }
-        
-        NSArray *availableServers;
-        // Fallback in the case that there are no servers with capacity score of 0 or 1
-        if ([zeroServers count] == 0 && [oneServers count] == 0) {
-            // Just take the servers returned by housekeeping and send it
-            availableServers = [NSArray arrayWithArray:servers];
-            
-        } else {
-            // If there is only 1 or 0 servers available with a 0 capacity score
-            // add it to the oneServers array and use it
-            if ([zeroServers count] <= 1) {
-                for (NSDictionary *zeroServer in zeroServers) {
-                    [oneServers addObject:zeroServer];
-                }
-                availableServers = [NSArray arrayWithArray:oneServers];
-            
-            // If there are at least two servers with a capcity score of 0 use that array
-            } else if ([zeroServers count] > 1) {
-                availableServers = [NSArray arrayWithArray:zeroServers];
-            
-            // If there are only servers with a capacity score of 1 use the oneServers array
-            } else {
-                availableServers = [NSArray arrayWithArray:oneServers];
-            }
+        // if at least 2 low capacity servers are not available, just use full list instead
+        // helps mitigate edge case: single server returned, but it is down yet not reported as such by Housekeeping
+        if ([availableServers count] < 2) {
+            // take full list of servers returned by housekeeping and use them
+            availableServers = servers;
+            NSLog(@"[selectGuardianHostWithCompletion] less than 2 low cap servers available, so not limiting list");
         }
         
         // Get a random index based on the length of availableServers
         // Then use that random index to select a hostname and return it to the caller
         NSUInteger randomIndex = arc4random_uniform((unsigned int)[availableServers count]);
         NSString *host = [[availableServers objectAtIndex:randomIndex] objectForKey:@"hostname"];
+        NSString *hostLocation = [[availableServers objectAtIndex:randomIndex] objectForKey:@"display-name"];
         NSLog(@"Selected hostname: %@", host);
-        if (completion) completion(host, nil);
+        if (completion) completion(host, hostLocation, nil);
     }];
 }
 
@@ -120,42 +95,19 @@
         NSTimeInterval nowUnix = [[NSDate date] timeIntervalSince1970];
         [defaults setObject:[NSNumber numberWithInt:nowUnix] forKey:@"housekeepingTimezonesTimestamp"];
         
-        NSString *regionName;
-        BOOL regionFound = NO;
+        NSDictionary *region = [GRDServerManager localRegionFromTimezones:timeZones];
+        NSLog(@"[DEBUG] found region: %@", region[@"name"]);
+        NSString *regionName = region[@"name"];
         NSTimeZone *local = [NSTimeZone localTimeZone];
+        NSLog(@"[DEBUG] real local time zone: %@", local);
         
-        // Loop through all time zones to match it with the current local
-        // one the device is currently set to
-        for (NSDictionary *region in timeZones) {
-            NSString *localRegionName = [region objectForKey:@"name"];
-            NSArray *regionTimezones = [region objectForKey:@"timezones"];
-            
-            // Loop through all time zones for the current region
-            for (NSString *timezone in regionTimezones) {
-                if ([[local name] isEqualToString:timezone]) {
-                    regionName = localRegionName;
-                    regionFound = YES;
-                    break;
-                }
-                
-                // There are time zones like "Cupertino" in iOS which is not a
-                // real time zone but a pseudo time zone. Simply set the region to us-west
-                if ([[local name] isEqualToString:@"US/Pacific"]) {
-                    regionName = @"us-west";
-                    regionFound = YES;
-                    break;
-                }
-            }
-            
-            // Exit the outter loop
-            if (regionFound == YES) {
-                break;
-            }
-        }
-        
+//        if ([defaults boolForKey:kGuardianUseFauxTimeZone]){
+//            NSLog(@"[DEBUG] using faux timezone: %@", [defaults valueForKey:kGuardianFauxTimeZone]);
+//            regionName = [defaults valueForKey:kGuardianFauxTimeZone];
+//        }
         // This is only meant as a fallback to have something
         // when absolutely everything seems to have fallen apart
-        if (regionFound == NO) {
+        if (regionName == nil) {
             NSLog(@"[getGuardianHostsWithCompletion] Failed to find time zone: %@", local);
             NSLog(@"[getGuardianHostsWithCompletion] Setting time zone to us-east");
             regionName = @"us-east";
@@ -167,11 +119,56 @@
                 if (completion) completion(nil, @"Failed to request list of servers.");
                 return;
             } else {
+                //NSLog(@"servers: %@", servers);
                 [defaults setObject:servers forKey:@"kKnownGuardianHosts"];
                 if (completion) completion(servers, nil);
             }
         }];
     }];
+}
+
+- (void)findBestHostInRegion:(NSString *)regionName
+                  completion:(void(^_Nullable)(NSString * _Nullable host,
+                                               NSString *hostLocation,
+                                               NSString * _Nullable error))block {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        GRDHousekeepingAPI *housekeeping = [[GRDHousekeepingAPI alloc] init];
+        [housekeeping requestServersForRegion:regionName completion:^(NSArray * _Nonnull servers, BOOL success) {
+            NSLog(@"[DEBUG] servers: %@", servers);
+            if (servers.count < 1){
+                if (block){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        block(nil, nil, NSLocalizedString(@"No server found", nil));
+                    });
+                }
+            } else {
+                NSArray *availableServers = [servers filteredArrayUsingPredicate:[NSPredicate capacityPredicate]];
+                NSLog(@"[DEBUG] availableServers: %@", availableServers);
+                if (availableServers.count < 2){
+                    NSLog(@"[DEBUG] less than 2 low capacity servers: %@", availableServers);
+                    availableServers = servers;
+                }
+                
+                NSUInteger randomIndex = arc4random_uniform((unsigned int)[availableServers count]);
+                NSString *guardianHost = [[availableServers objectAtIndex:randomIndex] objectForKey:@"hostname"];
+                NSString *guardianHostLocation = [[availableServers objectAtIndex:randomIndex] objectForKey:@"display-name"];
+                NSLog(@"[DEBUG] selecting host: %@ at random index: %lu", guardianHost, randomIndex);
+                if(block){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        block(guardianHost, guardianHostLocation, nil);
+                    });
+                }
+            }
+        }];
+    });
+}
+
+
+
++ (NSDictionary *)localRegionFromTimezones:(NSArray *)timezones {
+    NSDictionary *found = [[timezones filteredArrayUsingPredicate:[NSPredicate timezonePredicate]] lastObject];
+    return found;
+    
 }
 
 @end

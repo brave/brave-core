@@ -69,12 +69,16 @@ class BraveVPNSettingsViewController: TableViewController {
         }
     }
     
+    private var serverList = [VPNRegion]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = Strings.VPN.vpnName
         NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged),
                                                name: .NEVPNStatusDidChange, object: nil)
+        
+        fetchRegionList()
         
         let switchView = SwitchAccessoryView(initialValue: BraveVPN.isConnected, valueChange: { vpnOn in
             if vpnOn {
@@ -117,8 +121,15 @@ class BraveVPNSettingsViewController: TableViewController {
                     rows: [Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
                            Row(text: Strings.VPN.settingsServerLocation, detailText: location,
                                uuid: locationCellId),
+                           Row(text: Strings.VPN.settingsChangeLocation,
+                               selection: { [unowned self] in
+                                self.selectServerTapped()
+                               },
+                               cellClass: ButtonCell.self),
                            Row(text: Strings.VPN.settingsResetConfiguration,
-                               selection: resetConfigurationTapped,
+                               selection: { [unowned self] in
+                                self.selectServerTapped()
+                               },
                                cellClass: ButtonCell.self, uuid: resetCellId)],
                     uuid: serverSectionId)
         
@@ -141,6 +152,20 @@ class BraveVPNSettingsViewController: TableViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        serverListRequest?.cancel()
+    }
+    
+    private var serverListRequest: URLSessionDataTask?
+    
+    private func fetchRegionList() {
+        BraveVPN.requestAllServerRegions() { [weak self] regionList in
+            guard let regionList = regionList else {
+                log.error("Failed to fetch vpn region list")
+                return
+            }
+            
+            self?.serverList = regionList
+        }
     }
     
     private var hostname: String {
@@ -232,6 +257,20 @@ class BraveVPNSettingsViewController: TableViewController {
         }
         
         present(alert, animated: true)
+    }
+    
+    private func selectServerTapped() {
+        if serverList.isEmpty {
+            let alert = UIAlertController(title: Strings.VPN.vpnConfigGenericErrorTitle,
+                                          message: Strings.VPN.settingsFailedToFetchServerList,
+                                          preferredStyle: .alert)
+            alert.addAction(.init(title: Strings.OKString, style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        let vc = BraveVPNRegionPickerViewController(serverList: serverList)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func showVPNResetErrorAlert() {
