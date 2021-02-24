@@ -60,6 +60,8 @@
 		0A42F3BD25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A42F3BC25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift */; };
 		0A43293021B1C7F50041625B /* AdBlockStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43292F21B1C7F50041625B /* AdBlockStats.swift */; };
 		0A43293B21B1C8D10041625B /* FifoDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43293A21B1C8D10041625B /* FifoDict.swift */; };
+		0A47389E25D2DD6F0048201A /* NSPredicate+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A47389C25D2DD6E0048201A /* NSPredicate+Additions.m */; };
+		0A47389F25D2DD6F0048201A /* NSPredicate+Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A47389D25D2DD6F0048201A /* NSPredicate+Additions.h */; };
 		0A4B012020D02EC4004D4011 /* TabsBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */; };
 		0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012120D02F26004D4011 /* TabBarCell.swift */; };
 		0A4B012420D0321A004D4011 /* UX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012320D0321A004D4011 /* UX.swift */; };
@@ -107,6 +109,8 @@
 		0A91598922B834CE00CCC119 /* BVC+Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A91598822B834CE00CCC119 /* BVC+Rewards.swift */; };
 		0A917388231D11960069A08B /* AppReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A917387231D11960069A08B /* AppReview.swift */; };
 		0A917391231D173C0069A08B /* AppReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A917390231D173C0069A08B /* AppReviewTests.swift */; };
+		0A918DC1252C785200496088 /* VPNRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A918DC0252C785200496088 /* VPNRegion.swift */; };
+		0A918DCD252C81FA00496088 /* BraveVPNRegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A918DCC252C81FA00496088 /* BraveVPNRegionPickerViewController.swift */; };
 		0A93F1802264C2D200A3571B /* FolderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93F17F2264C2D200A3571B /* FolderDetailsView.swift */; };
 		0A93F1892264C72000A3571B /* BookmarkFormFieldsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93F1882264C72000A3571B /* BookmarkFormFieldsProtocol.swift */; };
 		0AA21E4A2302C4CC00358988 /* webauth_verify_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E472302C4CC00358988 /* webauth_verify_key.json */; };
@@ -1407,6 +1411,8 @@
 		0A42F3BC25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserIntroTests.swift; sourceTree = "<group>"; };
 		0A43292F21B1C7F50041625B /* AdBlockStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBlockStats.swift; sourceTree = "<group>"; };
 		0A43293A21B1C8D10041625B /* FifoDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifoDict.swift; sourceTree = "<group>"; };
+		0A47389C25D2DD6E0048201A /* NSPredicate+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPredicate+Additions.m"; sourceTree = "<group>"; };
+		0A47389D25D2DD6F0048201A /* NSPredicate+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPredicate+Additions.h"; sourceTree = "<group>"; };
 		0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsBarViewController.swift; sourceTree = "<group>"; };
 		0A4B012120D02F26004D4011 /* TabBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCell.swift; sourceTree = "<group>"; };
 		0A4B012320D0321A004D4011 /* UX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UX.swift; sourceTree = "<group>"; };
@@ -1462,6 +1468,8 @@
 		0A91598822B834CE00CCC119 /* BVC+Rewards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BVC+Rewards.swift"; sourceTree = "<group>"; };
 		0A917387231D11960069A08B /* AppReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReview.swift; sourceTree = "<group>"; };
 		0A917390231D173C0069A08B /* AppReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewTests.swift; sourceTree = "<group>"; };
+		0A918DC0252C785200496088 /* VPNRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNRegion.swift; sourceTree = "<group>"; };
+		0A918DCC252C81FA00496088 /* BraveVPNRegionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveVPNRegionPickerViewController.swift; sourceTree = "<group>"; };
 		0A93F17F2264C2D200A3571B /* FolderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailsView.swift; sourceTree = "<group>"; };
 		0A93F1882264C72000A3571B /* BookmarkFormFieldsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFormFieldsProtocol.swift; sourceTree = "<group>"; };
 		0A95EF7A23571F3A001385A3 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Storage.strings; sourceTree = "<group>"; };
@@ -2897,6 +2905,8 @@
 				0A39FE9D248660E900290ABC /* VPNConstants.h */,
 				0A39FE9E248660EA00290ABC /* VPNConstants.m */,
 				0AB6E25624C5EE290060B052 /* NSLogDisabler.h */,
+				0A47389D25D2DD6F0048201A /* NSPredicate+Additions.h */,
+				0A47389C25D2DD6E0048201A /* NSPredicate+Additions.m */,
 			);
 			path = GRDAPI;
 			sourceTree = "<group>";
@@ -3115,6 +3125,7 @@
 				0AF6B1E624A0EDC1005417FC /* InstallVPNViewController.swift */,
 				0AF6B1E924A0EE19005417FC /* InstallVPNView.swift */,
 				0A56108324324B2A00B39107 /* BraveVPNSettingsViewController.swift */,
+				0A918DCC252C81FA00496088 /* BraveVPNRegionPickerViewController.swift */,
 				0A55E53124349FE70069F06A /* EnableVPNSettingHeader.swift */,
 				0A55E5392434EEB60069F06A /* EnableVPNPopupViewController.swift */,
 				0A55E543243744DC0069F06A /* BraveVPN.swift */,
@@ -3124,6 +3135,7 @@
 				0A8ABE18247435E30062DA81 /* BraveVPNCommonUI.swift */,
 				0A0A07CD247518B100591DFB /* BraveVPNContactFormViewController.swift */,
 				0A2FF33E24A4B75000F88F43 /* vpncheckmark.json */,
+				0A918DC0252C785200496088 /* VPNRegion.swift */,
 			);
 			path = BraveVPN;
 			sourceTree = "<group>";
@@ -5438,6 +5450,7 @@
 				4422D56F21BFFB7F00BF1855 /* regexp.h in Headers */,
 				4422D43821BFD29E00BF1855 /* NSData+GZIP.h in Headers */,
 				4422D50921BFFB7600BF1855 /* port_example.h in Headers */,
+				0A47389F25D2DD6F0048201A /* NSPredicate+Additions.h in Headers */,
 				4422D42B21BFCF8900BF1855 /* RecentlyUsedCache.h in Headers */,
 				4422D56021BFFB7F00BF1855 /* prefilter_tree.h in Headers */,
 				0AB6E25724C5EE290060B052 /* NSLogDisabler.h in Headers */,
@@ -6893,6 +6906,7 @@
 				44331DDC22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift in Sources */,
 				27C6478F2551CD2B006D72FC /* RewardsInternalsDebugViewController.swift in Sources */,
 				4422D43721BFD29E00BF1855 /* NSData+GZIP.m in Sources */,
+				0A47389E25D2DD6F0048201A /* NSPredicate+Additions.m in Sources */,
 				27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */,
 				D31CF65C1CC1959A001D0BD0 /* PrivilegedRequest.swift in Sources */,
 				0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */,
@@ -6983,6 +6997,7 @@
 				0ADA01F32450894B00B21475 /* IAPObserver.swift in Sources */,
 				39DD030D1CD53E1900BC09B3 /* HomePageHelper.swift in Sources */,
 				C4F3B29A1CFCF93A00966259 /* ButtonToast.swift in Sources */,
+				0A918DC1252C785200496088 /* VPNRegion.swift in Sources */,
 				D31A0FC71A65D6D000DC8C7E /* SearchSuggestClient.swift in Sources */,
 				4422D4AE21BFFB7600BF1855 /* testutil.cc in Sources */,
 				0AE5C09922CAA01E00DFF3EE /* RewardsButton.swift in Sources */,
@@ -7088,6 +7103,7 @@
 				4422D56521BFFB7F00BF1855 /* filtered_re2.cc in Sources */,
 				277223722469B4FB0059A7EB /* FaviconFetcher.swift in Sources */,
 				274398F524E71D8700E79605 /* FailableDecodable.swift in Sources */,
+				0A918DCD252C81FA00496088 /* BraveVPNRegionPickerViewController.swift in Sources */,
 				279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */,
 				E650755F1E37F756006961AC /* Try.m in Sources */,
 				0A3C789D23055C4A0022F6D8 /* OnboardingSearchEnginesViewController.swift in Sources */,

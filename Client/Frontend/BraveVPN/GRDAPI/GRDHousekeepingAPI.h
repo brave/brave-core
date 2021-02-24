@@ -71,6 +71,11 @@ typedef NS_ENUM(NSInteger, GRDHousekeepingValidationMethod) {
 /// @param completion completion block returning an array of all hostnames and indicating request success
 - (void)requestAllHostnamesWithCompletion:(void (^)(NSArray * _Nullable allServers, BOOL success))completion;
 
+/// endpoint: /api/v1/servers/all-server-regions
+/// Used to retrieve all available Server Regions from housekeeping to allow users to override the selected Server Region
+/// @param completion completion block returning an array contain a dictionary for each server region and a BOOL indicating a successful API call
+- (void)requestAllServerRegions:(void (^)(NSArray <NSDictionary *> * _Nullable items, BOOL success))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

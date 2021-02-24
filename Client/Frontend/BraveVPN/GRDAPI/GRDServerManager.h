@@ -12,9 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GRDServerManager : NSObject
 
-- (void)selectGuardianHostWithCompletion:(void (^)(NSString * _Nullable guardianHost, NSString * _Nullable errorMessage))completion;
+- (void)bindPushToken;
+- (void)selectGuardianHostWithCompletion:(void (^)(NSString * _Nullable guardianHost, NSString * _Nullable guardianHostLocation, NSString * _Nullable errorMessage))completion;
 - (void)getGuardianHostsWithCompletion:(void (^)(NSArray * _Nullable servers, NSString * _Nullable errorMessage))completion;
-
++ (NSDictionary *)localRegionFromTimezones:(NSArray *)timezones;
+- (void)findBestHostInRegion:(NSString *)regionName
+                  completion:(void(^_Nullable)(NSString * _Nullable host,
+                                               NSString *hostLocation,
+                                               NSString * _Nullable error))block;
 @end
 
 NS_ASSUME_NONNULL_END

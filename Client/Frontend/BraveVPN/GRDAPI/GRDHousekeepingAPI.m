@@ -397,4 +397,38 @@
     [task resume];
 }
 
+- (void)requestAllServerRegions:(void (^)(NSArray <NSDictionary *> * _Nullable items, BOOL success))completion {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://housekeeping.sudosecuritygroup.com/api/v1/servers/all-server-regions"]];
+    [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
+    
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"Failed to get all region items: %@", error);
+            if (completion) completion(nil, NO);
+        }
+        
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        if (statusCode == 500) {
+            NSLog(@"[requestAllServerRegions] Internal server error");
+            if (completion) completion(nil, NO);
+            return;
+            
+        } else if (statusCode == 204) {
+            NSLog(@"[requestAllServerRegions] came back empty");
+            if (completion) completion(@[], YES);
+            return;
+            
+        } else if (statusCode == 200) {
+            NSArray *returnItems = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            if (completion) completion(returnItems, YES);
+            return;
+            
+        } else {
+            NSLog(@"Unknown server response: %ld", statusCode);
+            if (completion) completion(nil, NO);
+        }
+    }];
+    [task resume];
+}
+
 @end

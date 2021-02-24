@@ -1176,6 +1176,12 @@ extension Strings {
                               value: "Reset Configuration",
                               comment: "Button to reset VPN configuration")
         
+        public static let settingsChangeLocation =
+            NSLocalizedString("vpn.settingsChangeLocation",
+                              bundle: .braveShared,
+                              value: "Change Location",
+                              comment: "Button to change VPN server location")
+        
         public static let settingsContactSupport =
             NSLocalizedString("vpn.settingsContactSupport",
                               bundle: .braveShared,
@@ -1463,6 +1469,48 @@ extension Strings {
                               bundle: .braveShared,
                               value: "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
                               comment: "Disclaimer for user purchasing the VPN plan.")
+        
+        public static let regionPickerTitle =
+            NSLocalizedString("vpn.regionPickerTitle",
+                              bundle: .braveShared,
+                              value: "Server Region",
+                              comment: "Title for vpn region selector screen")
+        
+        public static let regionPickerAutomaticModeCellText =
+            NSLocalizedString("vpn.regionPickerAutomaticModeCellText",
+                              bundle: .braveShared,
+                              value: "Automatic",
+                              comment: "Name of automatic vpn region selector")
+        
+        public static let regionPickerAutomaticDescription =
+            NSLocalizedString("vpn.regionPickerAutomaticDescription",
+                              bundle: .braveShared,
+                              value: "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.",
+                              comment: "Description of what automatic server selection does.")
+        
+        public static let regionPickerErrorTitle =
+            NSLocalizedString("vpn.regionPickerErrorTitle",
+                              bundle: .braveShared,
+                              value: "Server Error",
+                              comment: "Title for error when we fail to switch vpn server for the user")
+        
+        public static let regionPickerErrorMessage =
+            NSLocalizedString("vpn.regionPickerErrorMessage",
+                              bundle: .braveShared,
+                              value: "Failed to switch servers, please try again later.",
+                              comment: "Message for error when we fail to switch vpn server for the user")
+        
+        public static let regionSwitchSuccessPopupText =
+            NSLocalizedString("vpn.regionSwitchSuccessPopupText",
+                              bundle: .braveShared,
+                              value: "VPN region changed.",
+                              comment: "Message that we show after successfully changing vpn region.")
+        
+        public static let settingsFailedToFetchServerList =
+            NSLocalizedString("vpn.settingsFailedToFetchServerList",
+                              bundle: .braveShared,
+                              value: "Failed to retrieve server list, please try again later.",
+                              comment: "Error message shown if we failed to retrieve vpn server list.")
     }
 }
 

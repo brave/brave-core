@@ -329,7 +329,7 @@ class BraveVPN {
         if firstTimeUserConfigPending { return }
         firstTimeUserConfigPending = true
         
-        serverManager.selectGuardianHost { host, error in
+        serverManager.selectGuardianHost { host, location, error in
             guard let host = host, error == nil else {
                 firstTimeUserConfigPending = false
                 logAndStoreError("configureFirstTimeUser connection problems")
@@ -419,6 +419,7 @@ class BraveVPN {
     
     /// Attempts to reconfigure the vpn by migrating to a new server.
     /// The new hostname is chosen randomly.
+    /// Depending on user preference this will connect to either manually selected server region or a region closest to the user.
     /// This method disconnects from the vpn before reconfiguration is happening
     /// and reconnects automatically after reconfiguration is done.
     static func reconfigureVPN(completion: ((Bool) -> Void)? = nil) {
@@ -428,41 +429,65 @@ class BraveVPN {
         // Small delay to disconnect the vpn.
         // Otherwise we might end up with 'no internet connection' error.
         DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: {
-            serverManager.selectGuardianHost { host, error in
-                guard let host = host, error == nil else {
-                    completion?(false)
-                    logAndStoreError("reconfigureVPN host error")
-                    return
-                }
-                
-                guard let credentialString =
-                    GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
-                    logAndStoreError("reconfigureVPN failed to retrieve subscriber credentials")
-                    completion?(false)
-                    return
-                }
-                
-                saveHostname(host)
-                
-                helper.createFreshUser(withSubscriberCredential: credentialString) { status, createError in
-                    if status != .success {
-                        logAndStoreError("reconfigureVPN createFreshUser failed")
+            // Region selected manually by the user.
+            if let regionOverride = Preferences.VPN.vpnRegionOverride.value {
+                serverManager.findBestHost(inRegion: regionOverride) { host, _, error in
+                    guard let host = host, error == nil else {
                         completion?(false)
+                        logAndStoreError("reconfigureVPN findBestHost host error")
                         return
                     }
                     
-                    connectOrMigrateToNewNode { status in
-                        switch status {
-                        case .error:
-                            logAndStoreError("reconfigureVPN connectOrMigrateToNewNode failed")
-                            completion?(false)
-                        case .success:
-                            completion?(true)
-                        }
+                    reconfigure(with: host) { success in
+                        completion?(success)
                     }
                 }
             }
+            // Default behavior, automatic mode, chooses location based on device's timezone.
+            else {
+                serverManager.selectGuardianHost { host, _, error in
+                    guard let host = host, error == nil else {
+                        completion?(false)
+                        logAndStoreError("reconfigureVPN selectGuardianHost host error")
+                        return
+                    }
+                    
+                    reconfigure(with: host) { success in
+                        completion?(success)
+                    }
+                }
+                
+            }
         })
+    }
+    
+    private static func reconfigure(with host: String, completion: ((Bool) -> Void)? = nil) {
+        guard let credentialString =
+            GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) else {
+            logAndStoreError("reconfigureVPN failed to retrieve subscriber credentials")
+            completion?(false)
+            return
+        }
+        
+        saveHostname(host)
+        
+        helper.createFreshUser(withSubscriberCredential: credentialString) { status, createError in
+            if status != .success {
+                logAndStoreError("reconfigureVPN createFreshUser failed")
+                completion?(false)
+                return
+            }
+            
+            connectOrMigrateToNewNode { status in
+                switch status {
+                case .error:
+                    logAndStoreError("reconfigureVPN connectOrMigrateToNewNode failed")
+                    completion?(false)
+                case .success:
+                    completion?(true)
+                }
+            }
+        }
     }
 
     /// Clears current vpn configuration and removes it from preferences.
@@ -537,5 +562,34 @@ class BraveVPN {
     private static func saveHostname(_ hostname: String) {
         GRDVPNHelper.saveAll(inOneBoxHostname: hostname)
         GRDGatewayAPI.shared().apiHostname = hostname
+    }
+    
+    // MARK: - Server selection
+    
+    /// Returns a list of available vpn regions to switch to.
+    static func requestAllServerRegions(_ completion: @escaping ([VPNRegion]?) -> Void) {
+        housekeepingApi.requestAllServerRegions { regionList, success in
+            if !success {
+                logAndStoreError("requestAllServerRegions call failed")
+                completion(nil)
+                return
+            }
+            
+            guard let regionList = regionList,
+                  let data = try? JSONSerialization.data(withJSONObject: regionList,
+                                                         options: .fragmentsAllowed) else {
+                logAndStoreError("failed to deserialize server regions data")
+                completion(nil)
+                return
+            }
+            
+            
+            do {
+                completion(try JSONDecoder().decode([VPNRegion].self, from: data))
+            } catch {
+                logAndStoreError("Failed to decode VPNRegion JSON: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
     }
 }
