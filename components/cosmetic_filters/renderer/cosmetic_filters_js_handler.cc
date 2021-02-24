@@ -68,7 +68,7 @@ const char kHideSelectorsInjectScript[] =
           if (!document.adoptedStyleSheets.includes(
               window.content_cosmetic.cosmeticStyleSheet)) {
             document.adoptedStyleSheets =
-              [window.content_cosmetic.cosmeticStyleSheet];
+              [...document.adoptedStyleSheets, window.content_cosmetic.cosmeticStyleSheet];
           };
         })();)";
 
@@ -92,7 +92,7 @@ const char kForceHideSelectorsInjectScript[] =
           if (!document.adoptedStyleSheets.includes(
               window.content_cosmetic.cosmeticStyleSheet)) {
             document.adoptedStyleSheets =
-              [window.content_cosmetic.cosmeticStyleSheet];
+              [...document.adoptedStyleSheets, window.content_cosmetic.cosmeticStyleSheet];
           };
         })();)";
 
@@ -123,8 +123,8 @@ const char kStyleSelectorsInjectScript[] =
           };
           if (!document.adoptedStyleSheets.includes(
                 window.content_cosmetic.cosmeticStyleSheet)){
-             document.adoptedStyleSheets =
-               [window.content_cosmetic.cosmeticStyleSheet];
+              document.adoptedStyleSheets =
+                [...document.adoptedStyleSheets, window.content_cosmetic.cosmeticStyleSheet];
           };
         })();)";
 
