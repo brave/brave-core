@@ -82,7 +82,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) {
       "WHERE creative_set_id NOT IN "
       "(SELECT creative_set_id from creative_ads) "
       "AND creative_set_id NOT IN "
-      "(SELECT creative_set_id from ad_conversions) "
+      "(SELECT creative_set_id from creative_ad_conversions) "
       "AND DATETIME('now') >= DATETIME(timestamp, 'unixepoch', '+3 month')",
       get_table_name().c_str());
 

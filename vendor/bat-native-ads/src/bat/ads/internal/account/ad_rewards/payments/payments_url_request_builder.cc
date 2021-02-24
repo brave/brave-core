@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/security/security_util.h"
+#include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 
 namespace ads {

@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmations_observer.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
@@ -51,7 +52,8 @@ class Confirmations : public RedeemUnblindedTokenDelegate {
 
   ConfirmationInfo CreateConfirmation(
       const std::string& creative_instance_id,
-      const ConfirmationType& confirmation_type) const;
+      const ConfirmationType& confirmation_type,
+      const base::DictionaryValue& user_data) const;
 
   Timer retry_timer_;
   void CreateNewConfirmationAndAppendToRetryQueue(

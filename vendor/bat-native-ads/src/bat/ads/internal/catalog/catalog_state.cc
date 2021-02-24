@@ -136,6 +136,11 @@ Result CatalogState::FromJson(const std::string& json,
         conversion.observation_window =
             conversion_node["observationWindow"].GetUint();
 
+        if (conversion_node.HasMember("conversionPublicKey")) {
+          conversion.advertiser_public_key =
+              conversion_node["conversionPublicKey"].GetString();
+        }
+
         base::Time end_at_timestamp;
         if (!base::Time::FromUTCString(campaign_info.end_at.c_str(),
                                        &end_at_timestamp)) {

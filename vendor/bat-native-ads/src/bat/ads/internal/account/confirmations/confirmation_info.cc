@@ -20,8 +20,8 @@ bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
          payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
          blinded_payment_token.encode_base64() ==
              rhs.blinded_payment_token.encode_base64() &&
-         credential == rhs.credential && timestamp == rhs.timestamp &&
-         created == rhs.created;
+         credential == rhs.credential && user_data == rhs.user_data &&
+         timestamp == rhs.timestamp && created == rhs.created;
 }
 
 bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {

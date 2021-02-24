@@ -11,7 +11,9 @@
 #include <vector>
 
 #include "base/guid.h"
+#include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/catalog/catalog_issuers_info.h"
@@ -22,6 +24,7 @@
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
+#include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 
 namespace ads {
 
@@ -96,9 +99,15 @@ void Confirmations::ConfirmAd(const std::string& creative_instance_id,
     return;
   }
 
-  const ConfirmationInfo confirmation =
-      CreateConfirmation(creative_instance_id, confirmation_type);
-  redeem_unblinded_token_->Redeem(confirmation);
+  dto::user_data::Build(
+      creative_instance_id, confirmation_type,
+      [=](const base::Value& user_data) {
+        const base::DictionaryValue* user_data_dictionary = nullptr;
+        user_data.GetAsDictionary(&user_data_dictionary);
+        const ConfirmationInfo confirmation = CreateConfirmation(
+            creative_instance_id, confirmation_type, *user_data_dictionary);
+        redeem_unblinded_token_->Redeem(confirmation);
+      });
 }
 
 void Confirmations::RetryAfterDelay() {
@@ -117,10 +126,10 @@ void Confirmations::RetryAfterDelay() {
 
 ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type) const {
+    const ConfirmationType& confirmation_type,
+    const base::DictionaryValue& user_data) const {
   DCHECK(!creative_instance_id.empty());
   DCHECK(confirmation_type != ConfirmationType::kUndefined);
-
   ConfirmationInfo confirmation;
 
   confirmation.id = base::GenerateGUID();
@@ -138,10 +147,14 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   const BlindedToken blinded_token = blinded_tokens.front();
   confirmation.blinded_payment_token = blinded_token;
 
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
-  confirmation.credential = CreateCredential(unblinded_token, payload);
+  std::string json;
+  base::JSONWriter::Write(user_data, &json);
+  confirmation.user_data = json;
 
   confirmation.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+
+  const std::string payload = CreateConfirmationRequestDTO(confirmation);
+  confirmation.credential = CreateCredential(unblinded_token, payload);
 
   ConfirmationsState::Get()->get_unblinded_tokens()->RemoveToken(
       unblinded_token);
@@ -157,9 +170,17 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     return;
   }
 
-  const ConfirmationInfo new_confirmation =
-      CreateConfirmation(confirmation.creative_instance_id, confirmation.type);
-  AppendToRetryQueue(new_confirmation);
+  dto::user_data::Build(
+      confirmation.creative_instance_id, confirmation.type,
+      [=](const base::Value& user_data) {
+        const base::DictionaryValue* user_data_dictionary = nullptr;
+        user_data.GetAsDictionary(&user_data_dictionary);
+
+        const ConfirmationInfo new_confirmation =
+            CreateConfirmation(confirmation.creative_instance_id,
+                               confirmation.type, *user_data_dictionary);
+        AppendToRetryQueue(new_confirmation);
+      });
 }
 
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {

@@ -162,6 +162,9 @@
                                             },
                                             "observationWindow": {
                                                 "type": "number"
+                                            },
+                                            "conversionPublicKey": {
+                                                "type": "string"
                                             }
                                         }
                                     }

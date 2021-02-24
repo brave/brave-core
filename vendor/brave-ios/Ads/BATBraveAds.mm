@@ -489,8 +489,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 #pragma mark - Reporting
 
-- (void)reportLoadedPageWithURL:(NSURL *)url redirectedFromURLs:(NSArray<NSURL *> *)redirectionURLs innerText:(NSString *)text tabId:(NSInteger)tabId
-{
+- (void)reportLoadedPageWithURL:(NSURL*)url
+             redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
+                           html:(NSString*)html
+                      innerText:(NSString*)text
+                          tabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) { return; }
   const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
   std::vector<std::string> urls;
@@ -498,8 +501,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     urls.push_back(base::SysNSStringToUTF8(redirectURL.absoluteString));
   }
   urls.push_back(urlString);
-  ads->OnPageLoaded((int32_t)tabId, -1, false, urls,
+  ads->OnTextLoaded((int32_t)tabId, -1, false, urls,
                     base::SysNSStringToUTF8(text));
+  ads->OnHtmlLoaded((int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId

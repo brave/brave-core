@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/security/security_util.h"
+#include "bat/ads/internal/security/crypto_util.h"
 
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
@@ -13,22 +13,18 @@
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/rand_util.h"
 #include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/security/key_pair_info.h"
+#include "bat/ads/internal/string_util.h"
 #include "tweetnacl.h"  // NOLINT
 #include "wrapper.hpp"
 
 namespace ads {
 namespace security {
-
-using challenge_bypass_ristretto::UnblindedToken;
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
 
 namespace {
 
@@ -65,45 +61,7 @@ std::vector<uint8_t> GetHKDF(const std::string& secret) {
   return derived_key;
 }
 
-bool GenerateKeyPair(const std::vector<uint8_t>& seed,
-                     std::vector<uint8_t>* public_key,
-                     std::vector<uint8_t>* secret_key) {
-  if (seed.empty() || !public_key || !secret_key) {
-    return false;
-  }
-
-  public_key->resize(crypto_sign_PUBLICKEYBYTES);
-
-  *secret_key = seed;
-  secret_key->resize(crypto_sign_SECRETKEYBYTES);
-
-  crypto_sign_keypair(&public_key->front(), &secret_key->front(), 1);
-
-  if (public_key->empty() || secret_key->empty()) {
-    return false;
-  }
-
-  return true;
-}
-
 }  // namespace
-
-std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64) {
-  std::string seed;
-  if (!base::Base64Decode(seed_base64, &seed)) {
-    return {};
-  }
-
-  const std::vector<uint8_t> derived_key = GetHKDF(seed);
-
-  std::vector<uint8_t> public_key;
-  std::vector<uint8_t> secret_key;
-  if (!GenerateKeyPair(derived_key, &public_key, &secret_key)) {
-    return {};
-  }
-
-  return secret_key;
-}
 
 std::string Sign(const std::map<std::string, std::string>& headers,
                  const std::string& key_id,
@@ -162,42 +120,85 @@ std::vector<uint8_t> Sha256Hash(const std::string& value) {
   return sha256;
 }
 
-bool Verify(const ConfirmationInfo& confirmation) {
-  std::string credential;
-  base::Base64Decode(confirmation.credential, &credential);
-
-  base::Optional<base::Value> value = base::JSONReader::Read(credential);
-  if (!value || !value->is_dict()) {
-    return false;
+KeyPairInfo GenerateSignKeyPairFromSeed(const std::vector<uint8_t>& seed) {
+  KeyPairInfo key_pair;
+  if (seed.empty()) {
+    return key_pair;
   }
 
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return false;
+  std::vector<uint8_t> secret_key = seed;
+  secret_key.resize(crypto_sign_SECRETKEYBYTES);
+  std::vector<uint8_t> public_key(crypto_sign_PUBLICKEYBYTES);
+  crypto_sign_keypair(&public_key.front(), &secret_key.front(), 1);
+
+  key_pair.public_key = public_key;
+  key_pair.secret_key = secret_key;
+
+  return key_pair;
+}
+
+KeyPairInfo GenerateBoxKeyPair() {
+  std::vector<uint8_t> public_key(crypto_box_PUBLICKEYBYTES);
+  std::vector<uint8_t> secret_key(crypto_box_SECRETKEYBYTES);
+  crypto_box_keypair(&public_key.front(), &secret_key.front());
+
+  KeyPairInfo key_pair;
+  key_pair.public_key = public_key;
+  key_pair.secret_key = secret_key;
+
+  return key_pair;
+}
+
+std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64) {
+  std::string seed;
+  if (!base::Base64Decode(seed_base64, &seed)) {
+    return {};
   }
 
-  const std::string* signature = dictionary->FindStringKey("signature");
-  if (!signature) {
-    return false;
-  }
+  const std::vector<uint8_t> derived_key = GetHKDF(seed);
+  KeyPairInfo key_pair = GenerateSignKeyPairFromSeed(derived_key);
 
-  VerificationSignature verification_signature =
-      VerificationSignature::decode_base64(*signature);
-  if (privacy::ExceptionOccurred()) {
-    NOTREACHED();
-    return false;
-  }
+  return key_pair.secret_key;
+}
 
-  const std::string payload = CreateConfirmationRequestDTO(confirmation);
+// Because NaCL uses a 192bit nonce, there is enough entropy to ensure
+// uniqueness if generated at random.
+std::vector<uint8_t> GenerateRandom192BitNonce() {
+  std::vector<uint8_t> nonce(crypto_box_NONCEBYTES);
+  base::RandBytes(&nonce.front(), nonce.size());
 
-  UnblindedToken unblinded_token = confirmation.unblinded_token.value;
-  VerificationKey verification_key = unblinded_token.derive_verification_key();
-  if (privacy::ExceptionOccurred()) {
-    NOTREACHED();
-    return false;
-  }
+  return nonce;
+}
 
-  return verification_key.verify(verification_signature, payload);
+std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
+                             const std::vector<uint8_t>& nonce,
+                             const std::vector<uint8_t>& public_key,
+                             const std::vector<uint8_t>& ephemeral_secret_key) {
+  // API requires 32 leading zero-padding bytes
+  std::vector<uint8_t> padded_plaintext = plaintext;
+  padded_plaintext.insert(padded_plaintext.begin(), crypto_box_ZEROBYTES, 0);
+
+  std::vector<uint8_t> ciphertext(padded_plaintext.size());
+  crypto_box(&ciphertext.front(), &padded_plaintext.front(),
+             padded_plaintext.size(), &nonce.front(), &public_key.front(),
+             &ephemeral_secret_key.front());
+
+  return ciphertext;
+}
+
+std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
+                             const std::vector<uint8_t>& nonce,
+                             const std::vector<uint8_t>& ephemeral_public_key,
+                             const std::vector<uint8_t>& secret_key) {
+  std::vector<uint8_t> padded_plaintext(ciphertext.size());
+  crypto_box_open(&padded_plaintext.front(), &ciphertext.front(),
+                  ciphertext.size(), &nonce.front(),
+                  &ephemeral_public_key.front(), &secret_key.front());
+
+  std::vector<uint8_t> plaintext(
+      padded_plaintext.begin() + crypto_box_ZEROBYTES, padded_plaintext.end());
+
+  return plaintext;
 }
 
 }  // namespace security

@@ -90,13 +90,18 @@ class ADS_EXPORT Ads {
   // pages, otherwise should be set to |-1|. |has_user_gesture| returns true if
   // the navigation was initiated by a user gesture, otherwise should be set to
   // false. |redirect_chain| contains the chain of redirects, including
-  // client-side redirect and the current URL. |content| will contain the HTML
+  // client-side redirect and the current URL. |text| will contain the HTML
   // page content
-  virtual void OnPageLoaded(const int32_t tab_id,
+  virtual void OnTextLoaded(const int32_t tab_id,
                             const int32_t page_transition_type,
                             const bool has_user_gesture,
                             const std::vector<std::string>& redirect_chain,
-                            const std::string& content) = 0;
+                            const std::string& text) = 0;
+
+  // Similar to |OnTextLoaded| but instead of inner text it keeps the html
+  virtual void OnHtmlLoaded(const int32_t tab_id,
+                            const std::vector<std::string>& redirect_chain,
+                            const std::string& html) = 0;
 
   // Should be called when a user is no longer idle. |idle_time| returns the
   // idle time in seconds. |was_locked| returns true if the screen is locked,

@@ -75,6 +75,8 @@ class ConversionQueue : public Table {
   void CreateTableV10(DBTransaction* transaction);
   void MigrateToV10(DBTransaction* transaction);
 
+  void MigrateToV11(DBTransaction* transaction);
+
   int batch_size_;
 };
 

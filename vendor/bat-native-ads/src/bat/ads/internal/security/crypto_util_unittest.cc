@@ -3,16 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/security/security_util.h"
+#include "bat/ads/internal/security/crypto_util.h"
 
 #include "base/base64.h"
+#include "bat/ads/internal/security/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "tweetnacl.h"  // NOLINT
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace security {
 
-TEST(BatAdsSecurityUtilsTest, Sign) {
+namespace {
+const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
+const size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
+}  // namespace
+
+TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
   // Arrange
   const std::map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
@@ -33,7 +41,7 @@ TEST(BatAdsSecurityUtilsTest, Sign) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest, SignWithInvalidheaders) {
+TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
   // Arrange
   const std::map<std::string, std::string> headers = {};
 
@@ -52,7 +60,7 @@ TEST(BatAdsSecurityUtilsTest, SignWithInvalidheaders) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest, SignWithInvalidKeyId) {
+TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
   // Arrange
   const std::map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
@@ -72,7 +80,7 @@ TEST(BatAdsSecurityUtilsTest, SignWithInvalidKeyId) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest, SignWithInvalidSecretKey) {
+TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidSecretKey) {
   // Arrange
   const std::map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
@@ -90,7 +98,7 @@ TEST(BatAdsSecurityUtilsTest, SignWithInvalidSecretKey) {
   EXPECT_EQ(expected_signature, signature);
 }
 
-TEST(BatAdsSecurityUtilsTest, Sha256) {
+TEST(BatAdsSecurityCryptoUtilsTest, Sha256) {
   // Arrange
   const std::string body = R"(
     {
@@ -160,7 +168,7 @@ TEST(BatAdsSecurityUtilsTest, Sha256) {
   EXPECT_EQ(expected_sha256_base64, sha256_base64);
 }
 
-TEST(BatAdsSecurityUtilsTest, Sha256WithEmptyString) {
+TEST(BatAdsSecurityCryptoUtilsTest, Sha256WithEmptyString) {
   // Arrange
   const std::string body = "";
 
@@ -171,4 +179,36 @@ TEST(BatAdsSecurityUtilsTest, Sha256WithEmptyString) {
   EXPECT_TRUE(sha256.empty());
 }
 
+TEST(BatAdsSecurityCryptoUtilsTest, GenerateBoxKeyPair) {
+  // Arrange
+
+  // Act
+  KeyPairInfo key_pair = GenerateBoxKeyPair();
+
+  // Assert
+  ASSERT_EQ(kCryptoBoxPublicKeyBytes, key_pair.public_key.size());
+  ASSERT_EQ(kCryptoBoxSecretKeyBytes, key_pair.secret_key.size());
+  EXPECT_TRUE(key_pair.IsValid());
+}
+
+TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {
+  // Arrange
+  KeyPairInfo key_pair = GenerateBoxKeyPair();
+  KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
+  std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
+  const std::string message = "The quick brown fox jumps over the lazy dog";
+  std::vector<uint8_t> plaintext(message.begin(), message.end());
+
+  // Act
+  const std::vector<uint8_t> ciphertext = security::Encrypt(
+      plaintext, nonce, key_pair.public_key, ephemeral_key_pair.secret_key);
+
+  const std::vector<uint8_t> decrypted_plaintext = security::Decrypt(
+      ciphertext, nonce, ephemeral_key_pair.public_key, key_pair.secret_key);
+
+  // Assert
+  EXPECT_EQ(plaintext, decrypted_plaintext);
+}
+
+}  // namespace security
 }  // namespace ads
