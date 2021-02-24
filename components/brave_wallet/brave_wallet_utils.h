@@ -17,6 +17,10 @@ std::string KeccakHash(const std::string& input);
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
 std::string GetFunctionHash(const std::string& input);
+// Pads a hex encoded parameter to 32-bytes
+// i.e. 64 hex characters.
+// Input must be prefixed with 0x
+bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
 
 }  // namespace brave_wallet
 

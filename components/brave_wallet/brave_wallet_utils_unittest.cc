@@ -27,4 +27,22 @@ TEST(BraveWalletUtilsUnitTest, GetFunctionHash) {
   ASSERT_EQ(GetFunctionHash("balanceOf(address)"), "0x70a08231");
 }
 
+TEST(BraveWalletUtilsUnitTest, PadHexEncodedParameter) {
+  std::string out;
+  // Pad an address
+  ASSERT_TRUE(PadHexEncodedParameter(
+      "0x4e02f254184E904300e0775E4b8eeCB14a1b29f0", &out));
+  ASSERT_EQ(
+      out,
+      "0x0000000000000000000000004e02f254184E904300e0775E4b8eeCB14a1b29f0");
+  ASSERT_TRUE(PadHexEncodedParameter("0x0", &out));
+  ASSERT_EQ(
+      out,
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
+  // Invalid input
+  ASSERT_FALSE(PadHexEncodedParameter("0x", &out));
+  ASSERT_FALSE(PadHexEncodedParameter("0", &out));
+  ASSERT_FALSE(PadHexEncodedParameter("", &out));
+}
+
 }  // namespace brave_wallet
