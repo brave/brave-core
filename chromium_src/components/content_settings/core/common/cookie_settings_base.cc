@@ -25,19 +25,9 @@ constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
 constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
 constexpr char kSonyentertainmentnetwork[] =
     "https://[*.]sonyentertainmentnetwork.com/*";
-constexpr char kTwitch[] = "https://clips.twitch.tv/embed?*";
-constexpr char kReddit[] = "https://[www|old]*.reddit.com/*";
-constexpr char kDiscord[] = "https://[*.]discord.com/channels/*";
-constexpr char kUbisoft[] = "https://[*.]ubisoft.com/*";
-constexpr char kUbi[] = "https://[*.]ubi.com/*";
-constexpr char kAmericanexpress[] = "https://[*.]americanexpress.com/*";
-constexpr char kAexp[] = "https://[*.]aexp-static.com/*";
 constexpr char kSony[] = "https://[*.]sony.com/*";
 constexpr char kGoogle[] = "https://[*.]google.com/*";
 constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
-constexpr char kBitbucket[] = "https://[*.]bitbucket.org/*";
-constexpr char kAtlassiannet[] = "https://[*.]atlassian.net/*";
-constexpr char kAtlassiancom[] = "https://[*.]atlassian.com/*";
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
@@ -61,27 +51,7 @@ bool BraveIsAllowedThirdParty(const GURL& url,
            {ContentSettingsPattern::FromString(kSony),
             ContentSettingsPattern::FromString(kPlaystation)},
            {ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSony)},
-           {ContentSettingsPattern::FromString(kUbisoft),
-            ContentSettingsPattern::FromString(kUbi)},
-           {ContentSettingsPattern::FromString(kUbi),
-            ContentSettingsPattern::FromString(kUbisoft)},
-           {ContentSettingsPattern::FromString(kAmericanexpress),
-            ContentSettingsPattern::FromString(kAexp)},
-           {ContentSettingsPattern::FromString(kAexp),
-            ContentSettingsPattern::FromString(kAmericanexpress)},
-           {ContentSettingsPattern::FromString(kTwitch),
-            ContentSettingsPattern::FromString(kReddit)},
-           {ContentSettingsPattern::FromString(kTwitch),
-            ContentSettingsPattern::FromString(kDiscord)},
-           {ContentSettingsPattern::FromString(kBitbucket),
-            ContentSettingsPattern::FromString(kAtlassiancom)},
-           {ContentSettingsPattern::FromString(kAtlassiancom),
-            ContentSettingsPattern::FromString(kBitbucket)},
-           {ContentSettingsPattern::FromString(kAtlassiancom),
-            ContentSettingsPattern::FromString(kAtlassiannet)},
-           {ContentSettingsPattern::FromString(kAtlassiannet),
-            ContentSettingsPattern::FromString(kAtlassiancom)}});
+            ContentSettingsPattern::FromString(kSony)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
