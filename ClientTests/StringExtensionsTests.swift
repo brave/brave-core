@@ -77,4 +77,12 @@ class StringExtensionsTests: XCTestCase {
             XCTAssert(strip == nounicode)
         }
     }
+    
+    func testWithSecureUrlScheme() {
+        XCTAssertEqual("test".withSecureUrlScheme, "https://test")
+        XCTAssertEqual("http://test".withSecureUrlScheme, "https://test")
+        XCTAssertEqual("https://test".withSecureUrlScheme, "https://test")
+        XCTAssertEqual("https://https://test".withSecureUrlScheme, "https://test")
+        XCTAssertEqual("https://http://test".withSecureUrlScheme, "https://test")
+    }
 }

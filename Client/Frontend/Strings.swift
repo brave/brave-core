@@ -18,7 +18,7 @@ private func applicationBundle() -> Bundle {
 
 extension Strings {
     public static let OKString = NSLocalizedString("OKString", bundle: Bundle.shared, value: "OK", comment: "OK button")
-    public static let thirdPartySearchFailedTitle = NSLocalizedString("ThirdPartySearchFailedTitle", bundle: Bundle.shared, value: "Failed", comment: "A title explaining that we failed to add a search engine")
+    public static let CancelString = NSLocalizedString("CancelString", bundle: Bundle.shared, value: "Cancel", comment: "Cancel button")
 }
 
 // Settings.
@@ -126,15 +126,67 @@ extension Strings {
 
 // Third Party Search Engines
 extension Strings {
-    public static let thirdPartySearchEngineAdded = NSLocalizedString("ThirdPartySearchEngineAdded", bundle: Bundle.shared, value: "Added Search engine!", comment: "The success message that appears after a user sucessfully adds a new search engine")
-    public static let thirdPartySearchAddTitle = NSLocalizedString("ThirdPartySearchAddTitle", bundle: Bundle.shared, value: "Add Search Provider?", comment: "The title that asks the user to Add the search provider")
-    public static let thirdPartySearchAddMessage = NSLocalizedString("ThirdPartySearchAddMessage", bundle: Bundle.shared, value: "The new search engine will appear in the quick search bar.", comment: "The message that asks the user to Add the search provider explaining where the search engine will appear")
-    public static let thirdPartySearchCancelButton = NSLocalizedString("ThirdPartySearchCancelButton", bundle: Bundle.shared, value: "Cancel", comment: "The cancel button if you do not want to add a search engine.")
-    public static let thirdPartySearchOkayButton = NSLocalizedString("ThirdPartySearchOkayButton", bundle: Bundle.shared, value: "OK", comment: "The confirmation button")
-    public static let thirdPartySearchFailedMessage = NSLocalizedString("ThirdPartySearchFailedMessage", bundle: Bundle.shared, value: "The search provider could not be added.", comment: "A title explaining that we failed to add a search engine")
-    public static let customEngineFormErrorMessage = NSLocalizedString("CustomEngineFormErrorMessage", bundle: Bundle.shared, value: "Please fill all fields correctly.", comment: "A message explaining fault in custom search engine form.")
-    public static let customEngineDuplicateErrorMessage = NSLocalizedString("CustomEngineDuplicateErrorMessage", bundle: Bundle.shared, value: "A search engine with this title or URL has already been added.", comment: "A message explaining fault in custom search engine form.")
-    public static let customEngineFillAllFieldsErrorMessage = NSLocalizedString("CustomEngineFillAllFieldsErrorMessage", bundle: Bundle.shared, value: "Please fill all the form fields.", comment: "A message explaining that all form fields are to be filled.")
+    public struct CustomSearchEngine {
+        public static let thirdPartySearchEngineAddErrorTitle = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddErrorTitle",
+            bundle: Bundle.shared,
+            value: "Custom Search Engine Error",
+            comment: "A title explaining that there is error while adding a search engine")
+        
+        public static let thirdPartySearchEngineAddErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddErrorDescription",
+            bundle: Bundle.shared,
+            value: "The custom search engine could not be added. Please try again later.",
+            comment: "A descriotion explaining that there is error while adding a search engine")
+        
+        public static let thirdPartySearchEngineMissingInfoErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription",
+            bundle: Bundle.shared,
+            value: "Please fill both Title and URL fields.",
+            comment: "A descriotion explaining that the fields must filled while adding a search engine. ")
+        
+        public static let thirdPartySearchEngineIncorrectFormErrorTitle = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle",
+            bundle: Bundle.shared,
+            value: "Search URL Query Error ",
+            comment: "A title explaining that there is a formatting error in URL field")
+        
+        public static let thirdPartySearchEngineIncorrectFormErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription",
+            bundle: Bundle.shared,
+            value: "Write the search url and replace the query with %s. ",
+            comment: "A description explaining that there is a formatting error in URL field")
+        
+        public static let thirdPartySearchEngineDuplicateErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription",
+            bundle: Bundle.shared,
+            value: "A search engine with this title or URL has already been added.",
+            comment: "A message explaining a replica search engine is already added")
+        
+        public static let thirdPartySearchEngineInsecureURLErrorDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription",
+            bundle: Bundle.shared,
+            value: "The copied text should be a valid secure URL which starts with 'https://'",
+            comment: "A description explaining the copied url should be secure")
+        
+        public static let thirdPartySearchEngineAddedToastTitle = NSLocalizedString(
+            "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle",
+            bundle: Bundle.shared,
+            value: "Added Search engine!",
+            comment: "The success message that appears after a user sucessfully adds a new search engine")
+        
+        public static let thirdPartySearchEngineAddAlertTitle = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddAlertTitle",
+            bundle: Bundle.shared,
+            value: "Add Search Provider?",
+            comment: "The title that asks the user to Add the search provider")
+
+        public static let thirdPartySearchEngineAddAlertDescription = NSLocalizedString(
+            "customSearchEngine.thirdPartySearchEngineAddAlertDescription",
+            bundle: Bundle.shared,
+            value: "The new search engine will appear in the quick search bar.",
+            comment: "The message that asks the user to Add the search provider explaining where the search engine will appear")
+    }
 }
 
 // Tabs Delete All Undo Toast

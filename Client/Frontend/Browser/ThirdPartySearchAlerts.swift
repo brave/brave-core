@@ -28,22 +28,22 @@ class ThirdPartySearchAlerts: UIAlertController {
         let alertMessage = """
                             \n\(engine.displayName)
                             \(engine.searchTemplate)
-                            \n\(Strings.thirdPartySearchAddMessage)
+                            \n\(Strings.CustomSearchEngine.thirdPartySearchEngineAddAlertDescription)
                             """
         let alert = ThirdPartySearchAlerts(
-            title: Strings.thirdPartySearchAddTitle,
+            title: Strings.CustomSearchEngine.thirdPartySearchEngineAddAlertTitle,
             message: alertMessage,
             preferredStyle: .alert
         )
 
         let noOption = UIAlertAction(
-            title: Strings.thirdPartySearchCancelButton,
+            title: Strings.CancelString,
             style: .cancel,
             handler: completion
         )
 
         let okayOption = UIAlertAction(
-            title: Strings.thirdPartySearchOkayButton,
+            title: Strings.OKString,
             style: .default,
             handler: completion
         )
@@ -61,28 +61,28 @@ class ThirdPartySearchAlerts: UIAlertController {
      **/
 
     static func failedToAddThirdPartySearch() -> UIAlertController {
-        return searchAlertWithOK(title: Strings.thirdPartySearchFailedTitle,
-                                 message: Strings.thirdPartySearchFailedMessage)
-    }
-    
-    static func incorrectCustomEngineForm() -> UIAlertController {
-        return searchAlertWithOK(title: Strings.thirdPartySearchFailedTitle,
-                                      message: Strings.customEngineFormErrorMessage)
-    }
-    
-    static func duplicateCustomEngine() -> UIAlertController {
-        return searchAlertWithOK(title: Strings.thirdPartySearchFailedTitle,
-                                 message: Strings.customEngineDuplicateErrorMessage)
+        return searchAlertWithOK(title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
+                                 message: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorDescription)
     }
     
     static func missingInfoToAddThirdPartySearch() -> UIAlertController {
-        return searchAlertWithOK(title: Strings.thirdPartySearchFailedTitle,
-                                 message: Strings.customEngineFillAllFieldsErrorMessage)
+        return searchAlertWithOK(title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
+                                 message: Strings.CustomSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription)
+    }
+    
+    static func incorrectCustomEngineForm() -> UIAlertController {
+        return searchAlertWithOK(title: Strings.CustomSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle,
+                                 message: Strings.CustomSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription)
+    }
+    
+    static func duplicateCustomEngine() -> UIAlertController {
+        return searchAlertWithOK(title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
+                                 message: Strings.CustomSearchEngine.thirdPartySearchEngineDuplicateErrorDescription)
     }
     
     static func insecureURLEntryThirdPartySearch() -> UIAlertController {
-        return searchAlertWithOK(title: Strings.thirdPartySearchFailedTitle,
-                                 message: Strings.customEngineFormErrorMessage)
+        return searchAlertWithOK(title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
+                                 message: Strings.CustomSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription)
     }
     
     private static func searchAlertWithOK(title: String, message: String) -> UIAlertController {
@@ -93,7 +93,7 @@ class ThirdPartySearchAlerts: UIAlertController {
         )
         
         let okayOption = UIAlertAction(
-            title: Strings.thirdPartySearchOkayButton,
+            title: Strings.OKString,
             style: .default,
             handler: nil
         )

@@ -131,4 +131,27 @@ extension String {
     public var withNonBreakingSpace: String {
         self.replacingOccurrences(of: " ", with: "\u{00a0}")
     }
+    
+    public var withSecureUrlScheme: String {
+        var textEntered = self
+
+        if !textEntered.hasPrefix("https://") {
+            if textEntered.hasPrefix("http://") {
+                textEntered = String(textEntered.dropFirst(7))
+            }
+            
+            return "https://\(textEntered)"
+        } else {
+            let substringWithoutHttps = String(textEntered.dropFirst(8))
+            
+            if substringWithoutHttps.hasPrefix("https://") {
+                return substringWithoutHttps
+            } else if substringWithoutHttps.hasPrefix("http://") {
+                let substringWithoutHttp = String(substringWithoutHttps.dropFirst(7))
+                return "https://\(substringWithoutHttp)"
+            }
+        }
+        
+        return textEntered
+    }
 }

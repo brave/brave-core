@@ -51,6 +51,8 @@ class SearchCustomEngineViewController: UIViewController {
         didSet {
             if let host = host, oldValue != host {
                 fetchSearchEngineSupportForHost(host)
+            } else {
+                checkManualAddExists()
             }
         }
     }
@@ -156,7 +158,7 @@ class SearchCustomEngineViewController: UIViewController {
                     alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
                 case .missingInformation:
                     alert = ThirdPartySearchAlerts.missingInfoToAddThirdPartySearch()
-                case .insecureURL:
+                case .invalidURL:
                     alert = ThirdPartySearchAlerts.insecureURLEntryThirdPartySearch()
             }
         } else {
@@ -432,7 +434,7 @@ extension SearchCustomEngineViewController {
         }
     
         // Check Engine Exists
-        guard profile.searchEngines.orderedEngines.filter({ $0.shortName == name }).isEmpty else {
+        guard profile.searchEngines.orderedEngines.filter({ $0.shortName == name || $0.searchTemplate.contains(template)}).isEmpty else {
             completion(nil, SearchEngineError.duplicate)
             return
         }
@@ -493,24 +495,23 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
             return false
         }
         
-        if let copiedText = UIPasteboard.general.string, text.contains(copiedText) {
-            guard copiedText.hasPrefix("https://") else {
-                handleError(error: SearchEngineError.insecureURL)
-                return false
-            }
+        let textLengthInRange = textView.text.count + (text.count - range.length)
             
-            return true
-        } else {
-            let textLengthInRange = textView.text.count + (text.count - range.length)
-            
-            // The default text "https://" cant ne deleted or changed so nothing without a secure scheme can be added
-            return textLengthInRange <= Constants.urlEntryMaxCharacterCount && textLengthInRange >= 8
-        }
+        // The default text "https://" cant ne deleted or changed so nothing without a secure scheme can be added
+        return textLengthInRange <= Constants.urlEntryMaxCharacterCount && textLengthInRange >= 8
     }
     
     func textViewDidChange(_ textView: UITextView) {
         changeAddButton(for: .disabled)
-        urlText = textView.text
+        
+        // The withSecureUrlScheme is used in order to force user to use secure url scheme
+        // Instead of checking paste-board with every character entry, the textView text is analyzed
+        // and according to what prefix copied or entered, text is altered to start with https://
+        // this logic block repeating https:// and http:// schemes
+        let textEntered = textView.text.withSecureUrlScheme
+        
+        textView.text = textEntered
+        urlText = textEntered
 
         if searchEngineTimer != nil {
             searchEngineTimer?.invalidate()
