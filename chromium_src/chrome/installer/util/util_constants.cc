@@ -5,12 +5,18 @@
 
 #include "chrome/installer/util/util_constants.h"
 
+#if defined(OFFICIAL_BUILD)
 #define kGoogleUpdateIsMachineEnvVar kGoogleUpdateIsMachineEnvVar_ChromiumImpl
+#endif
+
 #define kChromeExe kChromeExe_Unused
 
 #include "../../../../../chrome/installer/util/util_constants.cc"
 
+#if defined(OFFICIAL_BUILD)
 #undef kGoogleUpdateIsMachineEnvVar
+#endif
+
 #undef kChromeExe
 
 namespace installer {
@@ -19,9 +25,6 @@ namespace env_vars {
 
 #if defined(OFFICIAL_BUILD)
 const char kGoogleUpdateIsMachineEnvVar[] = "BraveSoftwareUpdateIsMachine";
-#else
-const char kGoogleUpdateIsMachineEnvVar[] =
-    kGoogleUpdateIsMachineEnvVar_ChromiumImpl;
 #endif
 
 }  // namespace env_vars
