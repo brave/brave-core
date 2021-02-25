@@ -64,6 +64,7 @@ const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
 const char kEmptyBalanceChecked[] =
     "brave.rewards.empty_balance_checked";
+const char kBAPReported[] = "brave.rewards.bap_reported";
 const char kWalletBrave[] =
     "brave.rewards.wallets.brave";
 const char kWalletUphold[] =

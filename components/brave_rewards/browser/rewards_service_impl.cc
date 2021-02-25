@@ -1498,6 +1498,9 @@ bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
     return false;
   }
 
+  if (name == ledger::option::kShouldReportBAPAmount)
+    return OnlyAnonWallet();
+
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
 
