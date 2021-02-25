@@ -6,15 +6,20 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "brave/common/url_constants.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_prompt.h"
 #include "components/permissions/permission_request.h"
+#include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/models/combobox_model.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/combobox/combobox.h"
+#include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -98,8 +103,6 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 
 // Custom combobox, shows permission lifetime options and applies selected value
 // to all permissions currently visible in the bubble.
-// This is currently a development stub for the "PermissionLifetime" feature,
-// the final UI might not even use a combobox at all.
 class PermissionLifetimeCombobox : public views::Combobox,
                                    public ui::ComboboxModel {
  public:
@@ -174,11 +177,65 @@ void AddPermissionLifetimeComboboxIfNeeded(
   dialog_delegate_view->AddChildView(std::move(container));
 }
 
+void AddFootnoteViewIfNeeded(
+    views::BubbleDialogDelegateView* dialog_delegate_view,
+    Browser* browser) {
+  if (!base::FeatureList::IsEnabled(
+          permissions::features::kPermissionLifetime)) {
+    return;
+  }
+
+  std::vector<base::string16> replacements{
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
+      l10n_util::GetStringUTF16(IDS_LEARN_MORE)};
+  std::vector<size_t> offsets;
+  base::string16 footnote_text = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT),
+      replacements, &offsets);
+
+  auto label = std::make_unique<views::StyledLabel>();
+  label->SetText(footnote_text);
+  label->SetDefaultTextStyle(views::style::STYLE_SECONDARY);
+
+  auto add_link = [&](size_t idx, GURL url) {
+    DCHECK(idx < offsets.size());
+    DCHECK(idx < replacements.size());
+
+    gfx::Range link_range(offsets[idx],
+                          offsets[idx] + replacements[idx].length());
+
+    views::StyledLabel::RangeStyleInfo link_style =
+        views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
+            [](Browser* browser, const GURL& url) {
+              chrome::AddSelectedTabWithURL(browser, url,
+                                            ui::PAGE_TRANSITION_LINK);
+            },
+            base::Unretained(browser), std::move(url)));
+
+    label->AddStyleRange(link_range, link_style);
+  };
+
+  add_link(0, GURL(chrome::kChromeUIContentSettingsURL));
+  add_link(1, GURL(kPermissionPromptLearnMoreUrl));
+
+  dialog_delegate_view->SetFootnoteView(std::move(label));
+}
+
 }  // namespace
 
 #define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW                               \
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
-  AddPermissionLifetimeComboboxIfNeeded(this, delegate_);
+  AddPermissionLifetimeComboboxIfNeeded(this, delegate_);                 \
+  AddFootnoteViewIfNeeded(this, browser_);
+
+static const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
+#undef IDS_PERMISSION_DENY
+#define IDS_PERMISSION_DENY                                                 \
+  (base::FeatureList::IsEnabled(permissions::features::kPermissionLifetime) \
+       ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER                                \
+       : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
 
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
+#undef IDS_PERMISSION_DENY
+#define IDS_PERMISSION_DENY IDS_PERMISSION_DENY_CHROMIUM_IMPL
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW

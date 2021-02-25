@@ -20,3 +20,4 @@ const char kImportDataHelpURL[] =
     "https://support.brave.com/hc/en-us/articles/360019782291#safari";
 const char kCryptoWalletsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360034535452";
+const char kPermissionPromptLearnMoreUrl[] = "https://support.brave.com/";

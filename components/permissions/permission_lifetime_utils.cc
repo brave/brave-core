@@ -30,29 +30,25 @@ PermissionLifetimeOption& PermissionLifetimeOption::operator=(
 PermissionLifetimeOption::~PermissionLifetimeOption() = default;
 
 std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
-  // TODO(https://github.com/brave/brave-browser/issues/14126): Actualize
-  // values.
-  constexpr base::TimeDelta kLifetimes[] = {
-      base::TimeDelta::FromSeconds(60), base::TimeDelta::FromHours(1),
-      base::TimeDelta::FromHours(3),    base::TimeDelta::FromDays(1),
-      base::TimeDelta::FromDays(30),
-  };
-
   std::vector<PermissionLifetimeOption> options;
-  options.reserve(1 + base::size(kLifetimes));
+  const size_t kOptionsCount = 4;
+  options.reserve(kOptionsCount);
+
   options.emplace_back(PermissionLifetimeOption(
       l10n_util::GetStringUTF16(
-          IDS_PERMISSIONS_BUBBLE_PERMANENT_LIFETIME_OPTION),
+          IDS_PERMISSIONS_BUBBLE_UNTIL_PAGE_CLOSE_LIFETIME_OPTION),
+      base::TimeDelta()));
+  options.emplace_back(PermissionLifetimeOption(
+      l10n_util::GetStringUTF16(
+          IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
+      base::TimeDelta::FromHours(24)));
+  options.emplace_back(PermissionLifetimeOption(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION),
+      base::TimeDelta::FromDays(7)));
+  options.emplace_back(PermissionLifetimeOption(
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
       base::nullopt));
-
-  for (const auto& lifetime : kLifetimes) {
-    base::string16 formatted_time;
-    const bool format_successful = base::TimeDurationFormat(
-        lifetime, base::DURATION_WIDTH_WIDE, &formatted_time);
-    DCHECK(format_successful);
-    options.emplace_back(
-        PermissionLifetimeOption(std::move(formatted_time), lifetime));
-  }
+  DCHECK_EQ(options.size(), kOptionsCount);
 
   return options;
 }

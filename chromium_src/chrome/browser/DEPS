@@ -110,6 +110,7 @@ include_rules = [
   "+components/signin/public/identity_manager",
   "+components/spellcheck/browser",
   "+components/startup_metric_utils/browser",
+  "+components/strings",
   "+components/version_info",
   "+extensions/browser",
   "+extensions/buildflags",
