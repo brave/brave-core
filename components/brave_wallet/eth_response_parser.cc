@@ -10,10 +10,10 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 
-namespace brave_wallet {
+namespace {
 
-bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
-  DCHECK(hex_balance);
+bool ParseSingleStringResult(const std::string& json, std::string* result) {
+  DCHECK(result);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -28,7 +28,19 @@ bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
     return false;
   }
 
-  return response_dict->GetString("result", hex_balance);
+  return response_dict->GetString("result", result);
+}
+
+}  // namespace
+
+namespace brave_wallet {
+
+bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
+  return ParseSingleStringResult(json, hex_balance);
+}
+
+bool ParseEthCall(const std::string& json, std::string* result) {
+  return ParseSingleStringResult(json, result);
 }
 
 }  // namespace brave_wallet

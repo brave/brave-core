@@ -43,4 +43,18 @@ TEST(EthResponseParserUnitTest, ParseEthGetBalanceError) {
   ASSERT_FALSE(ParseEthGetBalance(json, &balance));
 }
 
+TEST(EthResponseParserUnitTest, ParseEthCall) {
+  std::string json(
+      R"({
+    "id":1,
+    "jsonrpc": "2.0",
+    "result": "0x0"
+  })");
+  std::string result;
+  ASSERT_TRUE(ParseEthGetBalance(json, &result));
+  ASSERT_EQ(
+      result,
+      "0x0");
+}
+
 }  // namespace brave_wallet
