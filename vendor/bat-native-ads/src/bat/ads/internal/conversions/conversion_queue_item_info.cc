@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 
+#include <stdint.h>
+
 namespace ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
@@ -20,7 +22,9 @@ bool ConversionQueueItemInfo::operator==(
          creative_set_id == rhs.creative_set_id &&
          creative_instance_id == rhs.creative_instance_id &&
          advertiser_id == rhs.advertiser_id &&
-         conversion_id == rhs.conversion_id && timestamp == rhs.timestamp;
+         conversion_id == rhs.conversion_id &&
+         static_cast<int64_t>(timestamp.ToDoubleT()) ==
+             static_cast<int64_t>(rhs.timestamp.ToDoubleT());
 }
 
 bool ConversionQueueItemInfo::operator!=(

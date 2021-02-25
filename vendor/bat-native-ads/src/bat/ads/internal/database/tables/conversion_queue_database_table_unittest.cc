@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -73,8 +72,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
           const Result result,
           const ConversionQueueItemList& conversion_queue_items) {
         EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_TRUE(CompareAsSets(expected_conversion_queue_items,
-                                  conversion_queue_items));
+        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       });
 }
 
@@ -104,8 +102,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
           const Result result,
           const ConversionQueueItemList& conversion_queue_items) {
         EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_TRUE(CompareAsSets(expected_conversion_queue_items,
-                                  conversion_queue_items));
+        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       });
 }
 
@@ -152,8 +149,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
           const Result result,
           const ConversionQueueItemList& conversion_queue_items) {
         EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_TRUE(CompareAsSets(expected_conversion_queue_items,
-                                  conversion_queue_items));
+        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       });
 }
 
@@ -233,15 +229,15 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
 
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {
-      info_3, info_1, info_2};
+      info_2, info_3, info_1};
 
   database_table_->GetAll(
       [&expected_conversion_queue_items](
           const Result result,
           const ConversionQueueItemList& conversion_queue_items) {
         EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_TRUE(CompareAsSets(expected_conversion_queue_items,
-                                  conversion_queue_items));
+
+        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       });
 }
 
@@ -279,8 +275,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
           const Result result,
           const ConversionQueueItemList& conversion_queue_items) {
         EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_TRUE(CompareAsSets(expected_conversion_queue_items,
-                                  conversion_queue_items));
+        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       });
 }
 
@@ -332,8 +327,7 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
           const Result result,
           const ConversionQueueItemList& conversion_queue_items) {
         EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_TRUE(CompareAsSets(expected_conversion_queue_items,
-                                  conversion_queue_items));
+        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
       });
 }
 
