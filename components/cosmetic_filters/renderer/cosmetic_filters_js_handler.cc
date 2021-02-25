@@ -29,6 +29,26 @@ static base::NoDestructor<std::string> g_observing_script("");
 static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
     {"duckduckgo", "qwant", "bing", "startpage", "google", "yandex", "ecosia"});
 
+const char kScriptletInitScript[] =
+    R"((function() {
+          let text = `%s`;
+          let script;
+          try {
+            script = document.createElement('script');
+            const textNode = document.createTextNode(text);
+            script.appendChild(textNode);;
+            (document.head || document.documentElement).appendChild(script);
+          } catch (ex) {
+            /* Unused catch */
+          }
+          if (script) {
+            if (script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+            script.textContent = '';
+          }
+        })();)";
+
 const char kPreInitScript[] =
     R"((function() {
           if (window.content_cosmetic == undefined) {
@@ -281,9 +301,11 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
 
   std::string scriptlet_script;
   resources_dict->GetString("injected_script", &scriptlet_script);
-  // Execute scriptlets on all frames
   if (!scriptlet_script.empty()) {
-    web_frame->ExecuteScript(blink::WebString::FromUTF8(scriptlet_script));
+    scriptlet_script =
+        base::StringPrintf(kScriptletInitScript, scriptlet_script.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_, blink::WebString::FromUTF8(scriptlet_script));
   }
   if (!render_frame_->IsMainFrame())
     return;
