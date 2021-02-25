@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Inizia a usare Brave Rewards</translation>
 <translation id="48520986898237073">Prosegui per il portafoglio</translation>
 <translation id="3570367516044491911">Imposta come browser predefinito</translation>
-<translation id="7493053924837150477">Seleziona il browser di Brave dall'elenco e tocca "Sempre".</translation>
+<translation id="19715420010996093">Scegli il browser Brave e premi su 'Sempre'</translation>
 <translation id="3546439402724649282">Brave è già impostato come browser predefinito.</translation>
 <translation id="8389661903259423907">Hai già impostato un browser predefinito. Puoi cambiare il browser predefinito nelle impostazioni della tua applicazione.</translation>
 <translation id="7091885296442320770">Brave è veloce come un fulmine</translation>
@@ -235,6 +235,10 @@ attività in questo mese...</translation>
 <translation id="8712637175834984815">Fatto</translation>
 <translation id="4394049700291259645">Disabilita</translation>
 <translation id="8446884382197647889">Ulteriori informazioni</translation>
+<translation id="2514300153301737214">Abbiamo notato che hai attivato Brave Sync, ma la sincronizzazione del tuo sistema è disattivata, il che impedisce a Brave di sincronizzarsi. Premi per aprire le impostazioni.</translation>
+<translation id="7173114856073700355">Apri Impostazioni</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Non mostrare più</translation>
 <translation id="597993392929850353">Licenza di Brave</translation>
 <translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="6199596294742117349">Questa è una scheda privata</translation>
@@ -342,9 +346,15 @@ attività in questo mese...</translation>
 <translation id="5516010970279932133">Mostra siti suggeriti nel completamento automatico</translation>
 <translation id="5370478469168390143">Salva dati online</translation>
 <translation id="1118508688433541158">Naviga più velocemente e blocca gli annunci con Brave</translation>
-<translation id="915835519491851291">Hai appena bloccato alcuni tracker e annunci.</translation>
+<translation id="6589609065569680305">Tracciatori e pubblicità bloccati su questa pagina.</translation>
+<translation id="1283922192221545319">Brave Shields protegge solo la tua privacy.</translation>
 <translation id="3286927551967858325">Dai un'occhiata</translation>
-<translation id="2929661208078053609">Ottimo!</translation>
+<translation id="6227291358910554399">Le pubblicità sono bloccate durante la visione dei video su questo sito web.</translation>
+<translation id="7802980684512102010">I video senza pubblicità consumano meno dati.</translation>
+<translation id="2046475855484346614">10+ tracciatori e pubblicità bloccati su questa pagina.</translation>
+<translation id="5806208250835099572">Brave Shields protegge la tua privacy online su ogni sito.</translation>
+<translation id="5617673581653540121">La tua connessione ora è criptata.</translation>
+<translation id="4055107796760496928">Se disponibile, Brave ti porterà su una connessione sicura automaticamente.</translation>
 <translation id="4776948189086901857">Brave funziona ovunque</translation>
 <translation id="1606322780901645965">Scarica Brave sul tuo laptop o tablet da brave.com per una navigazione sul web più veloce e riservata</translation>
 <translation id="8374242949413616101">Protezione Privacy</translation>
@@ -455,7 +465,7 @@ attività in questo mese...</translation>
 <translation id="3895246934788932488">Scegliendo di utilizzare Brave Rewards, stai proteggendo la tua privacy e contribuisci a rendere il Web un posto migliore per tutti. E questo è fantastico!</translation>
 <translation id="5705882733397021510">Vai indietro</translation>
 <translation id="5140321319944305531">Facciamo un tour veloce</translation>
-<translation id="3808131693704413134">Dopo aver ricevuto il tuo primo pagamento puoi tornare e lasciare una mancia a questo creatore di contenuti!</translation>
+<translation id="2434574859640694129">Dopo aver ricevuto il tuo primo pagamento per le pubblicità, potrai ritornare e dare una mancia a questo creativo!</translation>
 <translation id="207242986925259074">Tour di aggiornamento veloce</translation>
 <translation id="8342862030112839977">Il tuo primo pagamento arriverà:</translation>
 <translation id="3769645103175790584">Guadagna gettoni e premia i cretori per i bei contenuti mentre navighi. <ph name="QUICK_TOUR"/>.</translation>
@@ -481,4 +491,15 @@ attività in questo mese...</translation>
 <translation id="6478996494082389936">analisi dei prodotti privati.</translation>
 <translation id="5187052478998910855">Serve un ripasso su Rewards?</translation>
 <translation id="8622329973403382303">Fai un breve tour per rinfrescare la memoria su come funziona per passare alla storia come una rockstar di Rewards!</translation>
+<translation id="8401711613788729448">Apri tutti i link con Brave per proteggere la tua privacy</translation>
+<translation id="3184805785843994538">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
+<translation id="8722651357687610395">Imposta Brave come default</translation>
+<translation id="3479552764303398839">Non adesso</translation>
+<translation id="6232491755501685494">Brave Rewards in Giappone sta passando a un nuovo sistema!</translation>
+<translation id="7444515017164572362">A partire dal 13 marzo non potrai usare i tuoi BAP. Dopo che sarai passato
+        al nuovo sistema ad aprile, potrai ricominciare con i nuovi token!</translation>
+<translation id="8587285254008006694">Per permettere questa transizione, le funzionalità di mance e contributi del
+        tuo browser saranno temporaneamente non disponibili dal 13 marzo e
+        il tuo saldo BAP sarà 0,0 finché non passerai al nuovo sistema
+        ad aprile. Quando passerai al nuovo sistema, inizierai con i nuovi token!</translation>
 </translationbundle>

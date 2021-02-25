@@ -635,6 +635,22 @@
     "message": "Câștigați tokenuri vizualizând reclame care respectă confidențialitatea și susțineți automat site-urile și creatorii de conținut favoriți.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Cât de des vreți să vedeți reclame?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(reclame pe oră)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Cât sprijin lunar vreți să oferiți creatorilor preferați?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(din câștigurile dvs. din reclame)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Începeți să folosiți Recompensele Brave",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Tokenii pot fi folosiți la mai mult decât susținerea creatorilor. Poți cumpăra conținut digital și alte bunuri pe măsură ce ni se alătură mai mulți vânzători.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "La sfârșit, să configurăm setările de bază",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Puteți modifica acest lucru mai târziu.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Iuhuu, totul e gata!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Folosind Recompensele Brave, dai o mână de ajutor la efortul de a face internetul un loc mai bun pentru toată lumea. Și asta este minunat!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards din Japonia trece la un sistem nou!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Află mai multe",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Folosiți BAP până pe 13 martie. După aceea, punctele BAP nu vor mai fi folosite.",
+    "description": "Text for BAP deprecation popup"
   }
 }

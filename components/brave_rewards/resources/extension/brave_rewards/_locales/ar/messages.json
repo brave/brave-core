@@ -635,6 +635,22 @@
     "message": "اربح العملات الرمزية من خلال عرض الإعلانات التي تحترم الخصوصية ودعم مواقعك المفضلة ومنشئي المحتوى تلقائياً.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "كم مرة تريد مشاهدة الإعلانات؟",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(إعلانات في الساعة) ",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "ما مقدار الدعم الشهري الذي تريد تقديمه لمنشئي المحتوى المفضلين لديك؟",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(من أرباح إعلاناتك)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "ابدأ في استخدام Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "يمكن استخدام العملات الرمزية بخلاف دعم المنشئين. يمكنك شراء محتوى رقمي وسلع أخرى عندما يأتي التجار على متن السفينة.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "أخيراً، دعنا نجهزك على الإعدادات الأساسية",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "يمكنك تغيير هذا لاحقاً.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "مرحى، أنت جاهز تماماً!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "باستخدام Brave Rewards، فأنت تساعد في جعل الويب مكاناً أفضل للجميع. وهذا رائع!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "برنامج Brave Rewards في اليابان يتحول إلى نظام جديد!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "مزيد من المعلومات",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "يُرجى استخدام رصيدك من BAP بحلول 13 مارس. بعد ذلك، سيتم إيقاف BAP.",
+    "description": "Text for BAP deprecation popup"
   }
 }

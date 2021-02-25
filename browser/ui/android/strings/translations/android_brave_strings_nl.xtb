@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Starten met het gebruik van Brave Rewards</translation>
 <translation id="48520986898237073">Doorgaan naar wallet</translation>
 <translation id="3570367516044491911">Stel in als standaard browser</translation>
-<translation id="7493053924837150477">Selecteer Brave Browser in de lijst en tik op 'Altijd'</translation>
+<translation id="19715420010996093">Selecteer de Brave Browser en druk op 'Altijd'</translation>
 <translation id="3546439402724649282">Brave is al ingesteld als je standaardbrowser.</translation>
 <translation id="8389661903259423907">Je hebt al een standaardbrowser ingesteld. Je kunt de standaardbrowser wijzigen in de instellingen van je app.</translation>
 <translation id="7091885296442320770">Brave is razendsnel</translation>
@@ -237,6 +237,10 @@ deze maand...</translation>
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="8446884382197647889">Meer informatie</translation>
+<translation id="2514300153301737214">We hebben gedetecteerd dat u Brave Sync ingeschakeld heeft, maar uw systeemsynchronisatie is uitgeschakeld en staat Brave niet toe te synchroniseren. Klik om de instellingen te openen</translation>
+<translation id="7173114856073700355">Instellingen openen</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Laat niet weer zien</translation>
 <translation id="597993392929850353">Brave Licentie</translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="6199596294742117349">Dit is een privaat tabblad</translation>
@@ -344,9 +348,15 @@ deze maand...</translation>
 <translation id="5516010970279932133">Toon voorgesteld sites voor automatisch aanvullen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
 <translation id="1118508688433541158">Browse sneller en blokkeer advertenties met Brave</translation>
-<translation id="915835519491851291">U hebt zojuist enkele trackers &amp; advertenties geblokkeerd.</translation>
+<translation id="6589609065569680305">Geblokkeerde trackers &amp; advertenties op deze pagina.</translation>
+<translation id="1283922192221545319">Brave Shields heeft zojuist uw privacy beschermd.</translation>
 <translation id="3286927551967858325">Neem een kijkje</translation>
-<translation id="2929661208078053609">Mooi!</translation>
+<translation id="6227291358910554399">Advertenties worden geblokkeerd bij het kijken van video's op deze website.</translation>
+<translation id="7802980684512102010">Video's zonder reclame gebruiken minder data.</translation>
+<translation id="2046475855484346614">10+ trackers &amp; advertenties geblokkeerd op deze pagina.</translation>
+<translation id="5806208250835099572">Brave Shields beschermt uw online privacy op elke website.</translation>
+<translation id="5617673581653540121">Uw verbinding is nu versleuteld.</translation>
+<translation id="4055107796760496928">Waar beschikbaar verbetert Brave automatisch uw verbinding naar beveiligd.</translation>
 <translation id="4776948189086901857">Brave werkt overal</translation>
 <translation id="1606322780901645965">Download Brave op brave.com op uw laptop of tablet voor sneller internet met meer privacy.</translation>
 <translation id="8374242949413616101">Privacybescherming</translation>
@@ -459,7 +469,7 @@ Beschikbaar</translation>
 <translation id="3895246934788932488">Door Brave Rewards te gebruiken, beschermt u uw privacy en helpt u internet te verbeteren voor iedereen. Is dat niet geweldig!</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
 <translation id="5140321319944305531">Laten we een beknopt overzicht bekijken</translation>
-<translation id="3808131693704413134">Nadat u uw eerste advertentie-uitbetaling heeft ontvangen, kunt u terugkomen en deze maker een fooi geven!</translation>
+<translation id="2434574859640694129">Nadat u uw eerste advertentiebetaling ontvangen heeft kunt u teruggaan en deze auteur een fooi geven!</translation>
 <translation id="207242986925259074">Snelle opfriscursus</translation>
 <translation id="8342862030112839977">De uitbetaling van uw eerste</translation>
 <translation id="3769645103175790584">Verdien tokens en beloon makers voor hun geweldige inhoud terwijl je bladert. <ph name="QUICK_TOUR"/>.</translation>
@@ -485,4 +495,16 @@ Beschikbaar</translation>
 <translation id="6478996494082389936">privé productanalyse.</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
+<translation id="8401711613788729448">Open alle links met Brave om uw privacy te beschermen</translation>
+<translation id="3184805785843994538">Brave Shields blokkeert trackers &amp; advertenties, bespaart data, en bespaart tijd op elke website die u bezoekt.</translation>
+<translation id="8722651357687610395">Stel Brave in als standaard</translation>
+<translation id="3479552764303398839">Niet nu</translation>
+<translation id="6232491755501685494">Brave Rewards gaat in Japan over naar een nieuw systeem!</translation>
+<translation id="7444515017164572362">Vanaf 13 maart kunt u uw BAP niet meer gebruiken. Maar zodra u
+        in April update naar het nieuwe systeem, zult u beginnen met nieuwe tokens!</translation>
+<translation id="8587285254008006694">Als onderdeel van deze overgang zullen de fooi- en bijdragefuncties in
+        uw browser vanaf 13 maart tijdelijk niet beschikbaar zijn, en
+        uw BAP-saldo zal 0,0 aangeven totdat u bent overgeschakeld op het nieuwe systeem
+        in april. Zodra u op het nieuwe systeem bent, zult u beginnen met nieuwe
+        tokens!</translation>
 </translationbundle>

@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Használja a Brave Rewardsot</translation>
 <translation id="48520986898237073">Tovább a pénztárcához</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
-<translation id="7493053924837150477">Válassza ki a Brave böngészőt a listáról, majd koppintson a „Mindig”-re</translation>
+<translation id="19715420010996093">Válaszd ki a Brave böngészőt és kattints a 'Mindig'-re</translation>
 <translation id="3546439402724649282">A Brave már be van állítva alapértelmezett böngészőként.</translation>
 <translation id="8389661903259423907">Már beállított egy alapértelmezett böngészőt. Az alapértelmezett böngészőt az alkalmazás beállításaiban lehet változtatni.</translation>
 <translation id="7091885296442320770">A Brave villámgyors</translation>
@@ -235,6 +235,10 @@ hónapban...</translation>
 <translation id="8712637175834984815">Sikerült</translation>
 <translation id="4394049700291259645">Kikapcsolás</translation>
 <translation id="8446884382197647889">További információ</translation>
+<translation id="2514300153301737214">Engedélyezve van a Brave Sync, de a rendszer szinkronizálása ki van kapcsolva, és nem engedélyezi a Brave szinkronizálását. Nyomd meg a beállítások indításához.</translation>
+<translation id="7173114856073700355">Beállítások megnyitása</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Ne mutassa többé</translation>
 <translation id="597993392929850353">Brave engedély</translation>
 <translation id="6336451774241870485">Új privát ablak</translation>
 <translation id="6199596294742117349">Ez egy bizalmas ablak</translation>
@@ -342,9 +346,15 @@ hónapban...</translation>
 <translation id="5516010970279932133">Mutassa a javasolt oldalakat az automatikus kiegészítőben</translation>
 <translation id="5370478469168390143">Adatok mentése online</translation>
 <translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
-<translation id="915835519491851291">Most tiltott le néhány követőt és hirdetést.</translation>
+<translation id="6589609065569680305">Követők és reklámok blokkolva ezen az oldalon.</translation>
+<translation id="1283922192221545319">A Brave Shields most védte meg adataidat.</translation>
 <translation id="3286927551967858325">Vessen egy pillantást</translation>
-<translation id="2929661208078053609">Szép!</translation>
+<translation id="6227291358910554399">A reklámok blokkolva vannak, míg videót nézel ezen az oldalon.</translation>
+<translation id="7802980684512102010">A reklámok nélküli videók kevesebb adatot használnak.</translation>
+<translation id="2046475855484346614">10+ követő és reklám lett blokkolva ezen az oldalon.</translation>
+<translation id="5806208250835099572">A Brave Shield biztosítja online adatvédelmedet minden oldalon.</translation>
+<translation id="5617673581653540121">A csatlakozásod titkosítva lett.</translation>
+<translation id="4055107796760496928">Ha lehetséges, a Brave automatikusan egy biztonságos kapcsolatra vált.</translation>
 <translation id="4776948189086901857">A Brave mindenhol működik</translation>
 <translation id="1606322780901645965">Töltsd le a Brave-et laptopodra vagy táblagépedre a brave.com-on, hogy a web gyorsabb és privátabb legyen.</translation>
 <translation id="8374242949413616101">Adatvédelem</translation>
@@ -455,7 +465,7 @@ hónapban...</translation>
 <translation id="3895246934788932488">A Brave Rewardsot használva vigyáz az adataira, és mindenki számára jobb hellyé teszi a netet. És ez fantasztikus!</translation>
 <translation id="5705882733397021510">Vissza</translation>
 <translation id="5140321319944305531">Tegyünk egy gyors bemutatót</translation>
-<translation id="3808131693704413134">Az első hirdetési fizetés megkapásakor térjen vissza, és adjon borravalót ennek az alkotónak!</translation>
+<translation id="2434574859640694129">Miután megkapod első fizetésed a reklámok után, térj vissza és adj borravalót ennek az alkotónak!</translation>
 <translation id="207242986925259074">Gyors frissítő bemutató</translation>
 <translation id="8342862030112839977">Az 1. jutalom kifizetés eddig fog megérkezni:</translation>
 <translation id="3769645103175790584">Szerezzen tokeneket és jutalmazza meg a készítőket a kiváló tartalmakért.<ph name="QUICK_TOUR"/>.</translation>
@@ -481,4 +491,11 @@ hónapban...</translation>
 <translation id="6478996494082389936">privát termékelemzés.</translation>
 <translation id="5187052478998910855">Kell egy kis frissítés a Rewardsot illetően?</translation>
 <translation id="8622329973403382303">Nézz meg egy gyors bemutatót, hogy tisztázódjon, hogyan működik, és Rewards rocksztárként jegyezhessen fel a történelem!</translation>
+<translation id="8401711613788729448">Nyiss meg minden hivatkozást Brave-ben, hogy vigyázz az adataidra.</translation>
+<translation id="3184805785843994538">A Brave Shields blokkolja a követőket és reklámokat, menti az adatokat, és időt spórol neked minden felkeresett oldalon.</translation>
+<translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
+<translation id="3479552764303398839">Ne most</translation>
+<translation id="6232491755501685494">A Brave Rewards Japánban új rendszerre vált!</translation>
+<translation id="7444515017164572362">Március 13-tól nem fogod tudni használni BAP-dat. Amint áprilisban az új rendszerre frissítesz, új tokenekkel fogsz indulni!</translation>
+<translation id="8587285254008006694">Az átállás részeként a borravalóadás és hozzájárulási funkciók a böngészőből ideiglenesen, március 13-tól nem lesznek elérhetők, és BAP egyenleged 0.0-t fog mutatni, amíg nem frissítesz az új rendszerre áprilisban. Amint felkerülsz az új rendszerre, új tokenekkel fogsz indulni!</translation>
 </translationbundle>

@@ -61,6 +61,7 @@
 <translation id="954001034349395856">ሁሉንም ምንጮች</translation>
 <translation id="8890516388109605451">ምንጮች</translation>
 <translation id="5158129253322921540">ይህንን ይዘት ከ <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">ከፍ ተደርጓል</translation>
 <translation id="1776831331757823105">ሰዓት</translation>
 <translation id="4643117005422448078">ከፍተኛ ጣቢያዎች</translation>
 <translation id="7791543448312431591">አክል</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">በቀጥታ በአሳሽዎ ውስጥ በBinance ላይ ክሪፕቶ ይገበያዩ።</translation>
 <translation id="2166494527623220386">በቀጥታ በአሳሽዎ ውስጥ በGemini ላይ ክሪፕቶ ይገበያዩ</translation>
 <translation id="7191394989411626168">ካርዶችን በማጥፋት፣ በአሁኑ ጊዜ የሚታዩ ሁሉም ካርዶች ይደበቃሉ። ሆኖም ፣ አሁንም ስለ አዲስ ካርዶች ማሳወቂያ ሊደርስዎት ይችላል።</translation>
+<translation id="5655621391922317800">Crypto ዋሌቶች</translation>
+<translation id="8820817407110198400">ዕልባቶች</translation>
+<translation id="1644574205037202324">ታሪክ</translation>
 <translation id="6165508094623778733">የበለጠ ይወቁ</translation>
 <translation id="8730621377337864115">ተከናውኗል</translation>
 <translation id="6248988683584659830">ቅንብሩን ይፈልጉ</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">ምናልባት በኋላ</translation>
 <translation id="5187052478998910855">በሽልማቶች ላይ አዳሽ ይፈልጋሉ?</translation>
 <translation id="8622329973403382303">እንደ የሽልማቶች ሮክስታር ታሪክ ውስጥ ለመግባት እንዴት እንደሚሠራ ለማወቅ በፍጥነት ጉብኝት ያድርጉ!</translation>
+<translation id="3115702351969988294">ማስታወቂያዎች ምን ያህል ጊዜ ማየት ይፈልጋሉ?</translation>
+<translation id="7532131110478098401">(ማስታወቂያዎች በሰዓት)</translation>
+<translation id="2951964054390325080">ለሚወዷቸው ፈጣሪዎች ምን ያህል ወርሃዊ ድጋፍ መስጠት ይፈልጋሉ?</translation>
+<translation id="3164498053837913829">(ከራስዎ ማስታወቂያዎች የተገኙ ገቢዎች)</translation>
 <translation id="2070991379950719711">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ</translation>
 <translation id="6318696841371191107">ፈጣን ጉብኝት ያድርጉ</translation>
 <translation id="2404165674840145940">በ Brave ሽልማት ጠቃሚ ምክር ይስጡ</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">ቲፕ መስጠት የሚወዱትን ይዘት ወይም ፈጣሪዎች በግል ለማበረታታት እና ለመደገፍ መንገድ ነው። ቲፕ መስጠትዎን ይቀጥሉ!</translation>
 <translation id="7509452925943421624">በ ማስመሰያዎች ምን ማድረግ ይችላሉ?</translation>
 <translation id="5876169128756792273">ቶክኖች ፈጣሪዎችን ከመደገፍ ባለፈ ጥቅም ላይ ሊውሉ ይችላሉ። ነጋዴዎች ሲመጡ ዲጂታል ይዘትን እና ሌሎች ሸቀጦችን መግዛት ይችላሉ።</translation>
+<translation id="1402530520078693620">በመጨረሻም፣ በመሰረታዊ ቅንብሮች ላይ እናዘጋጅዎ</translation>
+<translation id="3494356595346329740">ይህንን በኋላ መለወጥ ይችላሉ።</translation>
 <translation id="827315274423079662">ዎው፣ you’re ሁሉም ተዘጋጅቷል!</translation>
 <translation id="8268038362451312235">Brave Rewards ን በመጠቀም ድሩ ለሁሉም ሰው የተሻለ ቦታ እንዲሆን እየረዱ ነው። እና hat’s ግሩም ነው!</translation>
 <translation id="5094577350232361255">ስለ</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">እስካሁን በዚህ ወር የተገኘ ግምታዊ ገቢ</translation>
 <translation id="5235444069025581717">የዚህ ወር ጉርሻዎችና መዋጮዎች</translation>
 <translation id="1210965535849006928">ሽልማቶቼን ተቀበል</translation>
-<translation id="8092889639392847252">ይህን ስፖንሰር የተደረገ የዳራ ምስል ለማየት ክፍያ ያግኙ።</translation>
-<translation id="7914961605852877459">ድርሻዎን ለመጠየቅ የ Brave ማስታወቂያዎች ያብሩ። ስፖንሰር የተደረጉ ምስሎችን ለመደበቅም to <ph name="LINK_BEGIN"/>ሊመርጡ ይችላሉ<ph name="LINK_END"/>።</translation>
+<translation id="4609518959946843710">ይህንን ስፖንሰር የተደረገ የበስተጀርባ ምስል በመመልከትዎ ሽልማቶችን ያግኙ።</translation>
+<translation id="5311968438376723685">ድርሻዎን ለመጠየቅ የ Brave ማስታወቂያዎች ያብሩ። ስፖንሰር የተደረጉ ምስሎችን ለመደበቅም <ph name="LINK_BEGIN"/>ሊመርጡ ይችላሉ<ph name="LINK_END"/>።</translation>
 <translation id="8568666589217601917">ገና ነው!</translation>
 <translation id="764235488372037377">ከማስታወቂያ የሚያገኟቸው ሽልማቶች</translation>
 <translation id="7091215606170476659">ከ Brave የመጣ UGP አለዎት።</translation>
 <translation id="6759185676704303656">እርስ’ዎ ይህን የዳራ ምስል ለማየት ክፍያ እያገኙ ነው።</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>ስፖንሰር ስለተደረጉ ምስሎች<ph name="LINK_END"/> በ Brave ወሮታዎች ውስጥ ተጨማሪ መረጃ ያግኙ።</translation>
 <translation id="6113004497629356998">ስፖንሰር የተደረጉ ምስሎችን ደብቅ</translation>
+<translation id="8587285254008006694">እንደ የዚህ ሽግግር አካል፣ በአሳሽዎ ውስጥ ያለው ጠቃሚ ምክር ኣሰጣጥ እና አስተዋፅዖ ማድረጊያ
+        ለጊዜው ከማርች 13 ጀምሮ አይገኝም፣ እና
+        ኤፕሪል ውስጥ ወደ አዲሱ ስርዓት እስከሚያዘምኑ ድረስ የ BAP
+        ሂሳብዎ 0.0 ያሳያል። አንዴ ወደ አዲሱ ስርዓት ላይ ከገቡ በኋላ በአዳዲስ 
+        ማስመሰያዎች ይጀመራሉ!</translation>
+<translation id="6232491755501685494">በጃፓን ውስጥ የሚገኙ Brave ወሮታዎች ወደ አዲስ ስርዓት እየተቀየሩ ነው!</translation>
 <translation id="3787061634640932557">ካርዶችን ያርትዑ</translation>
 <translation id="4925543565930352284">{{title}} በመጫን እርስዎ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ሁኔታዎች<ph name="END_LINK1"/> እና <ph name="BEGIN_LINK2"/>የግላዊነት ፖሊሲ<ph name="END_LINK2"/> ተስማምተዋል።</translation>
 <translation id="5977237145327845546">ከጓደኞችዎና የስራ ባልደረቦችዎ ጋር የግል የቪድዮ ጥሪ ይጀምሩ።</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">የአንዱ ዋጋ</translation>
 <translation id="4763179765154524864">ጠቅላላ ወጪ</translation>
 <translation id="8851480289992540512">ጠቅላላ የተገኘው</translation>
-<translation id="5655621391922317800">Crypto ዋሌቶች</translation>
 <translation id="616639131065447379">ወደ Brave Crypto ዋሌቶች እንኳን በደህና መጡ</translation>
 <translation id="1740464057879304704">የ Crypto ዋሌቶች ከ cryptocurrency እና Brave ውስጥ ካሉ ተዛማጅ ሐብቶች ጋር እንዲሰሩ ያስችሉዎታል። የ Crypto ዋሌቶች እንደ ETH እና BAT ያሉ የ Ethereum ቶክኖችን፣ እንደዚሁም ተሰብሳቢ ሂሳቦችን ይደግፋሉ፣ ከ Ðመተግበሪያዎችና ከሌሎች ስማርት ኮንትራቶች ጋርም እንዲሰሩ ያስችልዎታል። ይህ ሁሉ የታሰበው ከ Ethereum እና ሌሎች የእግድ ሰንሰለት ስርዓቶች — ጋር ለሚተዋወቁ ወይም ማወቅ ለሚያስደስታቸው ሰዎች ነው።</translation>
 <translation id="4855440621031541830">Crypto ዋሌቶችን መጠቀም የሚችሉት ከዚህ አጠቃቀም ጋር ለተያያዙ ስጋቶች በሙሉ ሃላፊነቱ የእርስዎ ብቻ መሆኑንና በዚህ አጠቃቀም ምክንያት ወይም ከእርሱ ጋር በተያያዘ ለሚደርስብዎ ማንኛውም ሃላፊነት ወይም ተጠያቂነት የ Brave ሶፍትዌር ምንም ዓይነት ሃላፊነት እንደሌለበት ከተቀበሉ ብቻ ነው።</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">የፍጥነት አንባቢን አጥፋ</translation>
 <translation id="9020818404803201080">የተገናኙ አቻዎች:</translation>
 <translation id="2903493209154104877">አድራሻዎች</translation>
+<translation id="3207122385716480167">ሪፖ ስታትስቲክስ</translation>
+<translation id="2595187693729756455">የ ኖድ መረጃ</translation>
 <translation id="5789886980848929155">የ IPFS አንጓ ሁኔታ</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">አግባቢ ፍኖት</translation>
 <translation id="2551123942222622809">የብዙ ቡድኖች እንቅስቃሴ</translation>
-<translation id="3967335629471284781">ጀምሯል</translation>
+<translation id="5201810533706869030">ነገሮች</translation>
+<translation id="8028993641010258682">መጠን</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">ዱካ</translation>
+<translation id="2892680660204660712">የእኩያ ID</translation>
+<translation id="7536543993364605970">የወኪል ስሪት</translation>
+<translation id="3693482323085649439">ኖድ ጀምሯል</translation>
+<translation id="6315833555896070573">ኖድ እየሰራ ኣይደለም</translation>
 <translation id="1272079795634619415">አቁም</translation>
+<translation id="5895138241574237353">እንደገና ጀምር</translation>
 <translation id="6762417584993757344">አልተጫነም</translation>
+<translation id="4159076046325416152">IPFS በመጫን ላይ...</translation>
+<translation id="3854747677478661601">የቆሻሻ መሰብሰቢያ መጥረግን ያካሂዱ</translation>
+<translation id="7376842608449050673">የቆሻሻ መሰብሰቢያ ስህተት</translation>
 <translation id="8428368469058794536">IPFS አገልግሎት</translation>
+<translation id="6776260067907986254">የእኔ ኖድ</translation>
+<translation id="8523162996646111972">(ዝርዝሮች)</translation>
+<translation id="6121825639998459476">ይጫኑ እኛ ይጀምሩ</translation>
+<translation id="72868071984333667">ስለ IPFS እና ግላዊነት የበለጠ ይወቁ</translation>
+<translation id="1886162073868201257">IPFS የአገልግሎት ማስጀመሪያ ስህተት</translation>
 <translation id="5357895013476183089">IPFS አልተገናኘም</translation>
 <translation id="1196783328762622576">የአከባቢ አንጓን በመጠቀም የ IPFS ሀብቶችን መጫን አይቻልም</translation>
 <translation id="1141556610026845297">የተጠየቀውን የ IPFS ሀብቶችን ለመጫን የአከባቢውን የ IPFS አንጓ መጠቀም አልተሳካም። በምትኩ የህዝብ አግባቢ ፍኖት ለመጠቀም እና ወደፊት በራስ-ሰር አሠራር ወደ ህዝባዊ አግባቢ ፍኖት ለመመለስ “ቀጥል” የሚለውን ቁልፍ ጠቅ ያድርጉ።</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">የላቀ</translation>
 <translation id="9096577886148726047">የላቀውን ይደብቁ</translation>
 <translation id="7716995370131231171">Brave የአከባቢው አንጓ ስላልጀመረ ወይም በአሁኑ ጊዜ የተገናኙ እኩዮች ስለሌሉ የተጠየቀውን የ IPFS ሀብቶችን መጫን አይችልም። “ቀጥል” ን ከመረጡ፣ Brave የአከባቢ አንጓ መጠቀም በማንኛውም ጊዜ ካልተሳካ፣ በራስ-ሰር አሠራር ወደ ነባሪ የህዝብ አግባቢ ፍኖት ይመለሳል። ይህንን ባህሪ በማንኛውም ጊዜ በ Brave ቅንብሮች ውስጥ መለወጥ ይችላሉ።</translation>
+<translation id="8026038288183400906">IPFS ምርጫ</translation>
+<translation id="2058855456574089690">የእርስዎን IPFS ምርጫ ያቀናብሩ</translation>
+<translation id="4447758690649023734">የአከባቢ ኖድ ይጠቀሙ</translation>
+<translation id="8148464361648742409">አንድ የሕዝብ መተላለፊያ ይጠቀሙ</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) የ አቻ-ለአቻ የውሂብ ማከማቻ እና አቅርቦት የህዝብ ኔትዎርክ ነው። ይህ ፕሮቶኮል ከ HTTP(S) የተለያዩ ከግምት ውስጥ የገቡ የ ግላዊነት ሁኔታዎች አሉት።</translation>
+<translation id="5410952114182173389">የእርስዎ ኮምፒተር ለህዝባዊ ኔትዎርክ አስተዋፅዖ ያደርጋል፣ ነገር ግን የእርስዎ IP አድራሻ እና እርስዎ የጠየቁት ወይም የሚያቀርቡት ማንኛውም ይዘት ሊጋለጥ ይችላል። በ IPFS ላይ የጠየቁት ይዘት ለእርስዎ ከመቅረቡ በፊት እንዲረጋገጥ ይደረጋል።</translation>
+<translation id="8664689531113048642">ከሶስተኛ ወገን ታዛቢዎች የሚጠይቁትን የእርስዎ IP አድራሻ እና ይዘት ይጠብቅዎታል፣ ነገር ግን ከህዝብ ጌትዌይ ኦፕሬተር አይደለም። ጌትዌይ ኦፕሬተር በጌትዌይ ለእርስዎ የቀረበው ይዘት እርስዎ የጠየቁት ይዘት መሆኑን የማረጋገጥ ሃላፊነት አለበት። እንዲሁም ኮምፒተርዎ ለህዝብ IPFS ኔትዎርክ አስተዋፅዖ አያደርግም።</translation>
+<translation id="3977809385703587108">ምርጫዎችዎን እንደገና መለወጥ ይችላሉ በ</translation>
+<translation id="3340978935015468852">ቅንብሮች</translation>
+<translation id="4148957013307229264">በመጫን ላይ...</translation>
+<translation id="6057992164469678163">እኩዮችን በመጠበቅ ላይ...</translation>
+<translation id="1902096227388293745">እንደገና እኩዮች የሉም፣ እንደገና በመሞከር ላይ... (<ph name="ATTEMPTS_NUMBER"/> ሙከራዎች ቀርተዋል)</translation>
+<translation id="1675751799495331928">የሙከራ ገደቦችን አልፈናል፣ ቆይተው እንደገና ይሞክሩ።</translation>
+<translation id="4499666752625407848">ስሕተቱ የተፈጠረው በዝመና ወቅት ነው።</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">ገበያዎችን ይመልከቱ እና crypto ከ crypto.com ይግዙ።</translation>
 <translation id="4292334826913000023">ዋጋ አሳይ</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">ድጋፍ ያላቸው ጥንዶች</translation>
 <translation id="1164622162816276433">24ሰዐት ድምፅ</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
+<translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
+<translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
+<translation id="216855356675970168">የቶር ስሪት</translation>
+<translation id="2976625104959685176">የ ቶር ሂደት Id</translation>
+<translation id="6951743416068151209">የ ቶር ፕሮክሲ URI</translation>
+<translation id="1671503397662036257">የ ቶር ግንኙነት ሁኔታ</translation>
+<translation id="6024292492796847324">የ ቶር መነሻ እድገት</translation>
 </translationbundle>

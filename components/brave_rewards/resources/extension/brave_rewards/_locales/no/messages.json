@@ -635,6 +635,22 @@
     "message": "Tjen tokener ved å se på personvern-respekterende annonser og støtt favorittnettstedene og innholdsprodusentene dine automatisk.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Hvor ofte ønsker du å se annonser?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(annonser per time)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Hvor mye støtte ønsker du å gi til favorittskaperne dine per måned?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(fra annonseinntektene dine)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Begynn å bruke Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Polletter kan brukes til mer enn å støtte skapere. Du kan kjøpe digitalt innhold og andre artikler etter hvert som selgere blir med.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Til sist: La oss konfigurere de grunnleggende innstillingene dine",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Du kan endre dette senere.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Hurra, du er helt klar!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Når du bruker Brave Rewards bidrar du til å gjøre nettet til et bedre sted for alle. Og det er kjempebra!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards i Japan bytter nå til et nytt system!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Finn ut mer",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Vennligst bruk BAP-en din innen 13. mars. Etter det vil BAP bli avviklet.",
+    "description": "Text for BAP deprecation popup"
   }
 }

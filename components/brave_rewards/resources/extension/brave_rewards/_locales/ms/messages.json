@@ -635,6 +635,22 @@
     "message": "Dapatkan token dengan melihat iklan yang menghormati privasi dan sokong laman dan pencipta kandungan kegemaran anda secara automatik.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Berapa kerap anda ingin melihat iklan?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(iklan dalam sejam)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Berapa banyak sokongan bulanan yang anda ingin berikan kepada pencipta kegemaran anda?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(daripada pendapatan iklan anda)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Mula menggunakan Ganjaran Brave",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Token boleh digunakan selain daripada menyokong pencipta. Anda boleh membeli kandungan digital dan barangan-barangan lain apabila saudagar menyertai.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Akhir sekali, mari kita menetapkan tetapan asas",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Anda boleh menukar ini kemudian.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Woohoo, anda sudah bersedia!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Dengan menggunakan Ganjaran Brave anda membantu menjadikan web ini tempat yang lebih baik buat semua orang. Dan itu memang hebat!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Ganjaran Brave di Jepun beralih ke sistem baharu!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Ketahui lebih lanjut",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Sila gunakan BAP anda sebelum 13 Mac. BAP akan dihentikan selepas ini.",
+    "description": "Text for BAP deprecation popup"
   }
 }

@@ -635,6 +635,22 @@
     "message": "通过查看尊重隐私的广告来赚取代币和自动支持您最喜欢的网站和内容创作者。",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "您想多久看到广告一次？",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "（每小时广告）",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "您想每个月为您最喜欢的创作者提供多少支持？",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "（来自您的广告收入）",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "开始使用 Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "代币可以用于支持创作者之外的其他用途。随着商家的加入，您可以买到数字内容和其他商品。",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "最后，让我们进行基本设置",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "您可以稍后再更改。",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "太棒了, 您的设置完成了！",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "通过使用 Brave Rewards，您可以帮助使网络成为每个人的美好地方。太棒了！",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "日本的 Brave Rewards 即将切换到新系统！",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "了解详情",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "请在 3 月 13 日之前使用您的 BAP。之后，BAP 将被终止。",
+    "description": "Text for BAP deprecation popup"
   }
 }

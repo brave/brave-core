@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="48520986898237073">המשך לארנק</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
-<translation id="7493053924837150477">יש לבחור את דפדפן Brave מהרשימה וללחוץ על 'תמיד'</translation>
+<translation id="19715420010996093">בחר/י בדפדפן Brave והקש/י על "תמיד"</translation>
 <translation id="3546439402724649282">Brave כבר מוגדר כדפדפן ברירת המחדל שלך.</translation>
 <translation id="8389661903259423907">כבר הגדרת דפדפן ברירת מחדל. באפשרותך לשנות את דפדפן ברירת המחדל בהגדרות האפליקציה שלך.</translation>
 <translation id="7091885296442320770">Brave מהיר כברק</translation>
@@ -236,6 +236,10 @@
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="4394049700291259645">השבת</translation>
 <translation id="8446884382197647889">למידע נוסף</translation>
+<translation id="2514300153301737214">זיהינו שה-Brave שלך זמין, אך סנכרון המערכת שלך מכובה ולא יאפשר ל-Brave להסתנכרן. נא ללחוץ לפתיחת ההגדרות</translation>
+<translation id="7173114856073700355">פתיחת ההגדרות</translation>
+<translation id="6965382102122355670">אישור</translation>
+<translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="597993392929850353">רישיון Brave</translation>
 <translation id="6336451774241870485">כרטיסייה פרטית חדשה</translation>
 <translation id="6199596294742117349">זוהי כרטיסייה פרטית</translation>
@@ -343,9 +347,15 @@
 <translation id="5516010970279932133">הצג הצעות לאתרים בהשלמה האוטומטית</translation>
 <translation id="5370478469168390143">שמור נתונים באופן מקוון</translation>
 <translation id="1118508688433541158">גלשו במהירות רבה יותר וחסמו פרסומות עם Brave</translation>
-<translation id="915835519491851291">חסמת עכשיו מספר עוקבים &amp; פרסומות.</translation>
+<translation id="6589609065569680305">כלי מעקב וamp;amp; פרסומות חסומים בעמוד זה.</translation>
+<translation id="1283922192221545319">Brave Shields שמר עכשיו על פרטיותך.</translation>
 <translation id="3286927551967858325">תנ/י מבט</translation>
-<translation id="2929661208078053609">נחמד!</translation>
+<translation id="6227291358910554399">באתר זה הפרסומות חסומות בעת צפייה בסרטונים.</translation>
+<translation id="7802980684512102010">סרטים בלי פרסומות משתמשים בפחות נתונים.</translation>
+<translation id="2046475855484346614">יותר מ-10 כלי מעקב וBrave Shields פרסומות נחסמו בעמוד זה.</translation>
+<translation id="5806208250835099572">Brave Shields שומר על פרטיותך המקוונת בכל האתרים.</translation>
+<translation id="5617673581653540121">החיבור שלך מוצפן עכשיו.</translation>
+<translation id="4055107796760496928">בכפוף לזמינות, Brave ישדרג אותך לחיבור מאובטח באופן אוטומטי.</translation>
 <translation id="4776948189086901857">Brave עובד בכל מקום</translation>
 <translation id="1606322780901645965">הורידו את Brave ב- brave.com במחשב הנייד או בטאבלט שלכם בשביל אינטרנט מהיר ופרטי יותר</translation>
 <translation id="8374242949413616101">הגנת פרטיות</translation>
@@ -456,7 +466,7 @@
 <translation id="3895246934788932488">באמצעות שימוש ב- Brave Rewards אתם מגנים על פרטיותכם ועוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה’ מדהים!</translation>
 <translation id="5705882733397021510">חזור</translation>
 <translation id="5140321319944305531">בואו נעשה סיור מהיר</translation>
-<translation id="3808131693704413134">לאחר שתקבלו את תשלום הפרסומות הראשון שלכם תוכלו לחזור ולתת טיפ ליוצר זה!</translation>
+<translation id="2434574859640694129">אחרי שתקבל/י את התשלום הראשון שלך על פרסומות תוכל/י לחזור ולתת טיפ ליוצר!</translation>
 <translation id="207242986925259074">סיור רענון מהיר</translation>
 <translation id="8342862030112839977">תשלום התגמול הראשון שלכם יגיע עד:</translation>
 <translation id="3769645103175790584">הרוויחו טוקנים ותגמלו יוצרים עבור תוכן נהדר בזמן שאתם גולשים. <ph name="QUICK_TOUR"/>.</translation>
@@ -482,4 +492,11 @@
 <translation id="6478996494082389936">אנליטיקס מוצר פרטי.</translation>
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
+<translation id="8401711613788729448">פתיחת קישורים באמצעות Brave תשמור על פרטיותך</translation>
+<translation id="3184805785843994538">Brave Shields חוסם כלי מעקב וamp;amp; פרסומות, חוסך בנתונים וחוסך לך זמן בכל אתר שתבקר/י בו.</translation>
+<translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
+<translation id="3479552764303398839">לא עכשיו</translation>
+<translation id="6232491755501685494">Brave Rewards ביפן עובר למערכת חדשה!</translation>
+<translation id="7444515017164572362">מ-13במרץ, לא ניתן יהיה להשתמש ב-BAP שלך. לאחר עדכון למערכת החדשה באפריל, תתחילו מחדש עם אסימונים חדשים!</translation>
+<translation id="8587285254008006694">במהלך מהמעבר, תכונות מתן הטיפים והתרומות בדפדפן יושבתו זמנית מ-13 במרץ, ויתרת ה-BAP שלכם תהיה 0.0 עד שתעודכנו למערכת החדשה באפריל. ברגע שתהיו במערכת החדשה, תתחילו מחדש עם אסימונים חדשים!</translation>
 </translationbundle>

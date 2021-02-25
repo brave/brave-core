@@ -79,7 +79,7 @@
 <translation id="2070991379950719711">Pradėti naudotis „Brave Rewards“</translation>
 <translation id="48520986898237073">Tęsti su pinigine</translation>
 <translation id="3570367516044491911">Nustatyti kaip numatytąją naršyklę</translation>
-<translation id="7493053924837150477">Pasirinkite naršyklę „Brave“ iš sąrašo ir bakstelėkite „Visada“</translation>
+<translation id="19715420010996093">Pasirinkite naršyklę „Brave“ ir bakstelėkite „Visada“</translation>
 <translation id="3546439402724649282">„Brave“ jau nustatyta kaip jūsų numatytoji naršyklė.</translation>
 <translation id="8389661903259423907">Jau nustatėte numatytąją naršyklę. Numatytąją naršyklę galite keisti programos nuostatose.</translation>
 <translation id="7091885296442320770">„Brave“ veikia žaibo greičiu</translation>
@@ -231,6 +231,10 @@ dar nebuvo...</translation>
 <translation id="8712637175834984815">Supratau</translation>
 <translation id="4394049700291259645">Neleisti</translation>
 <translation id="8446884382197647889">Sužinokite daugiau</translation>
+<translation id="2514300153301737214">Nustatėme, kad įjungėte „Brave Sync“, tačiau jūsų sistemos sinchronizavimas išjungtas, todėl „Brave“ sinchronizuoti negalės. Paspauskite, kad atvertumėte nustatymus</translation>
+<translation id="7173114856073700355">Atidaryti nustatymus</translation>
+<translation id="6965382102122355670">Gerai</translation>
+<translation id="4450893287417543264">Neberodyti</translation>
 <translation id="597993392929850353">„Brave“ licencija</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6199596294742117349">Tai inkognito skirtukas</translation>
@@ -338,9 +342,15 @@ dar nebuvo...</translation>
 <translation id="5516010970279932133">Rodyti siūlomas svetaines automatiškai užpildant</translation>
 <translation id="5370478469168390143">Įrašyti duomenis internete</translation>
 <translation id="1118508688433541158">Naršykite sparčiau ir blokuokite reklamas naudodami „Brave“</translation>
-<translation id="915835519491851291">Ką tik užblokavote keletą sekiklių ir reklamų.</translation>
+<translation id="6589609065569680305">Sekikliai ir reklamos šiame puslapyje užblokuoti.</translation>
+<translation id="1283922192221545319">„Brave Shields“ ką tik apsaugojo jūsų privatumą.</translation>
 <translation id="3286927551967858325">Pasižiūrėkite</translation>
-<translation id="2929661208078053609">Puiku!</translation>
+<translation id="6227291358910554399">Kai šioje svetainėje žiūrite vaizdo įrašus, reklamos blokuojamos.</translation>
+<translation id="7802980684512102010">Vaizdo įrašams be reklamos naudojama mažiau duomenų.</translation>
+<translation id="2046475855484346614">Šiame puslapyje užblokuota daugiau nei 10 sekiklių ir reklamų.</translation>
+<translation id="5806208250835099572">„Brave Shields“ saugo jūsų privatumą kiekvienoje svetainėje.</translation>
+<translation id="5617673581653540121">Dabar jūsų ryšys šifruojamas.</translation>
+<translation id="4055107796760496928">Jei galima, „Brave“ automatiškai užmezga jums saugų ryšį.</translation>
 <translation id="4776948189086901857">„Brave“ veikia visur</translation>
 <translation id="1606322780901645965">Atsisiųskite „Brave“ iš brave.com į savo nešiojamąjį ar planšetinį kompiuterį ir naršykite žiniatinklyje sparčiau bei privačiau</translation>
 <translation id="8374242949413616101">Privatumo apsauga</translation>
@@ -451,7 +461,7 @@ dar nebuvo...</translation>
 <translation id="3895246934788932488">Naudodami „Brave Rewards“, saugote savo privatumą ir padedate padaryti, kad žiniatinklis būtų geresnė vieta visiems. Juk tai puiku!</translation>
 <translation id="5705882733397021510">Grįžti</translation>
 <translation id="5140321319944305531">Peržiūrėkite trumpą apžvalgą</translation>
-<translation id="3808131693704413134">Gavę pirmąją išmoką už reklamas galite grįžti ir skirti arbatpinigių šiam kūrėjui!</translation>
+<translation id="2434574859640694129">Gavę pirmąją išmoką už reklamas galite grįžti ir skirti arbatpinigių šiam kūrėjui!</translation>
 <translation id="207242986925259074">Trumpa priminimo apžvalga</translation>
 <translation id="8342862030112839977">Pirmojo atlygio išmoką gausite:</translation>
 <translation id="3769645103175790584">Naršydami gaukite žetonų ir atlyginkite kūrėjams už puikų turinį. <ph name="QUICK_TOUR"/>.</translation>
@@ -477,4 +487,16 @@ dar nebuvo...</translation>
 <translation id="6478996494082389936">privačią produkto analizę.</translation>
 <translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
 <translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>
+<translation id="8401711613788729448">Visas nuorodas atverkite per „Brave“, kad apsaugotumėte savo privatumą</translation>
+<translation id="3184805785843994538">„Brave Shields“ blokuoja sekiklius ir reklamas, įrašo duomenis ir taupo jūsų laiką kiekvienoje svetainėje, kurioje lankotės.</translation>
+<translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
+<translation id="3479552764303398839">Ne dabar</translation>
+<translation id="6232491755501685494">„Brave Rewards“ Japonijoje pereina prie naujos sistemos!</translation>
+<translation id="7444515017164572362">Nuo kovo 13 d. negalėsite naudoti savo BAP. Tačiau kai
+        balandį atnaujinsite į naująją sistemą, pradėsite su naujais žetonais!</translation>
+<translation id="8587285254008006694">Dėl šio perėjimo arbatpinigių davimo ir aukojimo funkcijos
+        jūsų naršyklėje laikinai neveiks nuo kovo 13 d., o
+        jūsų BAP likutis bus rodomas 0,0, kol balandį atnaujinsite į naująją sistemą.
+       Kai būsite naujojoje sistemoje, pradėsite su naujais
+        žetonais!</translation>
 </translationbundle>

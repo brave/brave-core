@@ -635,6 +635,22 @@
     "message": "Κερδίστε μάρκες προβάλλοντας διαφημίσεις που σέβονται το απόρρητο και υποστηρίξτε αυτόματα τους αγαπημένους σας ιστότοπους και δημιουργούς περιεχομένου.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Πόσο συχνά θέλετε να βλέπετε διαφημίσεις;",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(διαφημίσεις ανά ώρα)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Πόση μηνιαία υποστήριξη θέλετε να δώσετε στους αγαπημένους σας δημιουργούς;",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(από τα κέρδη των διαφημίσεών σας)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Ξεκινήστε να χρησιμοποιείτε το Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Τα token μπορούν να χρησιμοποιηθούν όχι μόνο για την υποστήριξη των δημιουργών. Θα μπορείτε να αγοράσετε ψηφιακό περιεχόμενο και άλλα προϊόντα όταν αρχίσουν να συμμετέχουν έμποροι.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Τέλος, ας σας βοηθήσουμε να ρυθμίσετε τις βασικές ρυθμίσεις",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Ξεκινήστε να χρησιμοποιείτε το Brave Rewards",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Γιούπι! Είναι όλα έτοιμα!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Χρησιμοποιώντας τις Ανταμοιβές Brave βοηθάτε να γίνει το διαδίκτυο ένα καλύτερο μέρος για όλους. Και αυτό είναι φοβερό!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Οι Ανταμοιβές Brave στην Ιαπωνία μεταβαίνουν σε ένα νέο σύστημα!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Μάθετε περισσότερα",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Παρακαλούμε χρησιμοποιήστε τα BAP σας έως τις 13 Μαρτίου. Μετά από αυτό, τα BAP θα διακοπούν.",
+    "description": "Text for BAP deprecation popup"
   }
 }

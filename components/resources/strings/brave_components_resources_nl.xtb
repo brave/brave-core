@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Alle bronnen</translation>
 <translation id="8890516388109605451">Bronnen</translation>
 <translation id="5158129253322921540">Inhoud van <ph name="PUBLISHER_NAME"/> uitschakelen</translation>
+<translation id="3189348785087463371">Gepromote inhoud</translation>
 <translation id="1776831331757823105">Klok</translation>
 <translation id="4643117005422448078">Top websites</translation>
 <translation id="7791543448312431591">Toevoegen</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Rechtstreeks in uw browser in crypto handelen op Binance.</translation>
 <translation id="2166494527623220386">Rechtstreeks in uw browser in crypto handelen op Gemini.</translation>
 <translation id="7191394989411626168">Door 'Kaarten' uit te schakelen, worden alle kaarten die momenteel zichtbaar zijn, verborgen. U kunt echter nog steeds op de hoogte worden gehouden van nieuwe kaarten.</translation>
+<translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="8820817407110198400">Bladwijzers</translation>
+<translation id="1644574205037202324">Geschiedenis</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="6248988683584659830">Zoekinstellingen</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Misschien later</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
+<translation id="3115702351969988294">Hoe vaak wilt u advertenties zien?</translation>
+<translation id="7532131110478098401">(advertenties per uur)</translation>
+<translation id="2951964054390325080">Hoeveel maandelijkse steun wilt u geven aan uw favoriete makers?</translation>
+<translation id="3164498053837913829">(van uw advertentie-inkomsten)</translation>
 <translation id="2070991379950719711">Starten met het gebruik van Brave rewards</translation>
 <translation id="6318696841371191107">Een beknopt overzicht bekijken</translation>
 <translation id="2404165674840145940">Een fooi geven met Brave Rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Een fooi geven is een manier om inhoud of makers waar u van houdt persoonlijk aan te moedigen en te steunen. Laten we een fooi geven!</translation>
 <translation id="7509452925943421624">Wat kunt u doen met tokens?</translation>
 <translation id="5876169128756792273">Tokens kunnen gebruikt worden buiten de ondersteuning van de makers. U kunt digitale content en andere producten kopen als handelaren aan boord komen.</translation>
+<translation id="1402530520078693620">Laten we tot slot de basisinstellingen instellen</translation>
+<translation id="3494356595346329740">U kunt dit later wijzigen.</translation>
 <translation id="827315274423079662">Woehoe u bent er helemaal klaar voor!</translation>
 <translation id="8268038362451312235">Door Brave Rewards te gebruiken helpt u het internet een betere plek te maken voor iedereen. En dat is geweldig!</translation>
 <translation id="5094577350232361255">over</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Geschatte inkomsten tot nu toe deze maand</translation>
 <translation id="5235444069025581717">Fooien en bijdragen deze maand</translation>
 <translation id="1210965535849006928">Claim mijn beloningen</translation>
-<translation id="8092889639392847252">Krijg betaald om deze gesponsorde achtergrondafbeelding te bekijken.</translation>
-<translation id="7914961605852877459">Zet Brave Ads aan om jouw deel te claimen. Je kunt er ook voor kiezen om <ph name="LINK_BEGIN"/>hide gesponsorde afbeeldingen te verbergen<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Ontvang een beloning voor het bekijken van deze gesponsorde achtergrondafbeelding.</translation>
+<translation id="5311968438376723685">Schakel Brave Privéadvertenties in om uw aandeel te claimen. U kunt er ook voor kiezen om <ph name="LINK_BEGIN"/>gesponsorde afbeeldingen te verbergen<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Goed gedaan!</translation>
 <translation id="764235488372037377">Uw beloningen uit advertenties zijn hier</translation>
 <translation id="7091215606170476659">U heeft een UGP-beurs van Brave.</translation>
 <translation id="6759185676704303656">Je wordt betaald om deze achtergrondafbeelding te bekijken.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over gesponsorde afbeeldingen in Brave Rewards.</translation>
 <translation id="6113004497629356998">Verberg gesponsorde afbeeldingen</translation>
+<translation id="8587285254008006694">Als onderdeel van deze overgang zullen de fooi- en bijdragefuncties in
+        uw browser vanaf 13 maart tijdelijk niet beschikbaar zijn, en
+        uw BAP-saldo zal 0,0 aangeven totdat u bent overgeschakeld op het nieuwe systeem
+        in april. Zodra u op het nieuwe systeem bent, zult u beginnen met nieuwe
+        tokens!</translation>
+<translation id="6232491755501685494">Brave Rewards in Japan gaat over op een nieuw systeem!</translation>
 <translation id="3787061634640932557">Kaarten bewerken</translation>
 <translation id="4925543565930352284">Door te klikken op {{title}}, ga je akkoord met de <ph name="BEGIN_LINK1"/>Gebruiksvoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Start een privé-videogesprek met je vrienden en collega's.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Prijs per eenheid</translation>
 <translation id="4763179765154524864">Totaaluitgaven</translation>
 <translation id="8851480289992540512">Totaal ontvangen</translation>
-<translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="616639131065447379">Welkom bij Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Met Crypto Wallets kun je werken met cryptocurrency en aanverwante middelen in Brave. Crypto Wallets ondersteunt Ethereum tokens zoals ETH en BAT, evenals collectibles, en staat je toe om te werken met Ðapps en andere slimme contracten. Dit alles is bedoeld voor mensen die bekend zijn met Ethereum en andere blockchain-systemen — of die het graag willen leren.</translation>
 <translation id="4855440621031541830">Gebruik Crypto Wallets alleen als je accepteert dat jij persoonlijk verantwoordelijk bent voor alle risico's die verbonden zijn aan dit gebruik, en dat Brave Software geen verantwoordelijkheid of aansprakelijkheid draagt voor eventuele verliezen, inclusief incidentele of indirecte schade die je zou kunnen lijden als gevolg van dit gebruik.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Schakel Speedreader UIT</translation>
 <translation id="9020818404803201080">Verbonden peers:</translation>
 <translation id="2903493209154104877">Adressen</translation>
+<translation id="3207122385716480167">Repo-statistieken</translation>
+<translation id="2595187693729756455">Node-info</translation>
 <translation id="5789886980848929155">Status IPFS-knooppunt</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">Gelanceerd</translation>
+<translation id="5201810533706869030">Objecten</translation>
+<translation id="8028993641010258682">Grootte</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Pad</translation>
+<translation id="2892680660204660712">Peer-ID</translation>
+<translation id="7536543993364605970">Agent-versie</translation>
+<translation id="3693482323085649439">Node is actief</translation>
+<translation id="6315833555896070573">Node is niet actief</translation>
 <translation id="1272079795634619415">Stop</translation>
+<translation id="5895138241574237353">Opnieuw starten</translation>
 <translation id="6762417584993757344">Niet geïnstalleerd</translation>
+<translation id="4159076046325416152">Bezig met installeren van IPFS...</translation>
+<translation id="3854747677478661601">Voer een afvalinzamelingsoperatie uit</translation>
+<translation id="7376842608449050673">Fout bij afvalinzameling</translation>
 <translation id="8428368469058794536">IPFS-service</translation>
+<translation id="6776260067907986254">Mijn Node</translation>
+<translation id="8523162996646111972">(details)</translation>
+<translation id="6121825639998459476">installeren en starten</translation>
+<translation id="72868071984333667">Meer informatie over IPFS en privacy</translation>
+<translation id="1886162073868201257">Fout bij opstarten de IPFS-service</translation>
 <translation id="5357895013476183089">IPFS niet verbonden</translation>
 <translation id="1196783328762622576">Kan geen IPFS-bronnen laden door middel van een lokaal knooppunt</translation>
 <translation id="1141556610026845297">Het is niet gelukt om het lokale IPFS-knooppunt te gebruiken om de gevraagde IPFS-bronnen te laden. Klik op de knop 'Proceed' om in plaats daarvan de openbare gateway te gebruiken en om in de toekomst automatisch terug te vallen op de openbare gateway.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Geavanceerd</translation>
 <translation id="9096577886148726047">Geavanceerd verbergen</translation>
 <translation id="7716995370131231171">Brave kan de gevraagde IPFS-bronnen niet laden omdat het lokale knooppunt niet is gestart, of omdat er op dit moment geen aangesloten peers beschikbaar zijn. Als u kiest voor 'Proceed', zal Brave automatisch terugvallen op de standaard openbare gateway wanneer het gebruik van het lokale knooppunt is mislukt. U kunt dit op elk gewenst moment in uw Brave-instellingen wijzigen.</translation>
+<translation id="8026038288183400906">IPFS-voorkeur</translation>
+<translation id="2058855456574089690">Stel uw IPFS-voorkeur in</translation>
+<translation id="4447758690649023734">Gebruik een lokale node</translation>
+<translation id="8148464361648742409">Gebruik een publieke gateway</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) is het openbare netwerk voor peer-to-peer gegevensopslag en -overdracht. Dit protocol maakt gebruik van andere privacy-overwegingen dan HTTP(S).</translation>
+<translation id="5410952114182173389">Uw computer neemt deel aan het openbare netwerk, maar uw IP-adres en de inhoud die u opvraagt of verstrekt zijn mogelijk zichtbaar. Inhoud die u via IPFS opvraagt wordt geverifieerd voordat deze aan u wordt aangeboden.</translation>
+<translation id="8664689531113048642">Beschermt uw IP-adres en de inhoud die u opvraagt van mogelijke externe waarnemers, maar niet van de beheerder van de publieke gateway. De beheerder van de gateway is er verantwoordelijk voor dat de inhoud die via een gateway aan u wordt aangeboden, ook de inhoud is die u hebt opgevraagd. Ook draagt uw computer niet bij aan het openbare IPFS-netwerk.</translation>
+<translation id="3977809385703587108">U kunt uw voorkeuren opnieuw wijzigen in</translation>
+<translation id="3340978935015468852">instellingen</translation>
+<translation id="4148957013307229264">Bezig mer installeren...</translation>
+<translation id="6057992164469678163">Wachten op peers...</translation>
+<translation id="1902096227388293745">Geen peers beschikbaar, bezig met opnieuw proberen... (<ph name="ATTEMPTS_NUMBER"/> attemps left)</translation>
+<translation id="1675751799495331928">We hebben het maximum aantal pogingen overschreden, probeer het later nog eens.</translation>
+<translation id="4499666752625407848">Er is een fout opgetreden tijdens een update.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Bekijk markten en koop crypto op crypto.com</translation>
 <translation id="4292334826913000023">Toon prijs</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Gesteunde koppels</translation>
 <translation id="1164622162816276433">24U Volume</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="3745016858329272300">Algemene informatie</translation>
+<translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
+<translation id="216855356675970168">Tor-versie</translation>
+<translation id="2976625104959685176">Tor-proces-id</translation>
+<translation id="6951743416068151209">Tor Proxy-URI</translation>
+<translation id="1671503397662036257">Tor-verbindingsstatus</translation>
+<translation id="6024292492796847324">Tor-initialisatievoortgang</translation>
 </translationbundle>

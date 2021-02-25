@@ -14,7 +14,7 @@
 <translation id="984275831282074731">भुगतान के तरीके</translation>
 <translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
-<translation id="4726634924419692905">जब कोई साइट आपके कंप्यूटर पर Widevine स्थापित करना चाहती है तब पूछें</translation>
+<translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
 <translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
 <translation id="1369311132025451972">.onion साइटों पर अपने आप रीडायरेक्ट करें</translation>
@@ -84,7 +84,7 @@ Binance
 <translation id="5448570825852364919">खाली पेज</translation>
 <translation id="5919424224662539292">नए टैब पेज़ पर दिखाई देने वाली पृष्ठभूमि छवि और विजेट को कस्टमाइज़ करें</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
-<translation id="8511502469534942133">इस साइट के लिए नया टो कनेक्शन</translation>
+<translation id="6924909138923993900">इस साइट के लिए नया टॉर कनेक्शन</translation>
 <translation id="4734294903299549345">टोर के साथ निजी विंडो से बाहर निकलें</translation>
 <translation id="8612763432858587652">निजी विंडो से बाहर निकलें</translation>
 <translation id="8760415064721320867">टोर के साथ प्राइवेट विंडो</translation>
@@ -266,6 +266,19 @@ Binance
 <translation id="5318548116565208315">अवतार बॉनबॉन कॉर्न</translation>
 <translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
 <translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
+<translation id="239760341987199724">क्रोमियम को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
+<translation id="9185422039067880535">ब्रेव ब्राउज़र फिलहाल आपका डिफ़ॉल्ट ब्राउज़र नही है. वेब पर तेज़ ब्राउज करने के लिए ब्रेव को अपना डिफ़ॉल्ट ब्राउज़र सेट करें- बड़ी न्यूज़ साइट्स पर औरों के से लगभग 6 गुना ज़्यादा तेज़</translation>
+<translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
+<translation id="3479552764303398839">अभी नहीं</translation>
+<translation id="4877147287319222750">साइडबार में जोड़ें</translation>
+<translation id="5404213409401164238">साइडबार दिखाएं</translation>
+<translation id="7561196759112975576">हमेशा</translation>
+<translation id="7060352228894039151">माउसओवर पर</translation>
+<translation id="407173827865827707">क्लिक करने पर</translation>
+<translation id="7961015016161918242">कभी नहीं</translation>
+<translation id="59174027418879706">सक्षम किया गया</translation>
+<translation id="8258999165172757081">जोड़ दिया गया</translation>
+<translation id="6959315322491671328">हटाने के लिए राइट क्लिक करें</translation>
 <translation id="1872784258300710671">Brave कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने के लिए पूरी तरह से निजी प्रोडक्ट एनालिटिक्स का उपयोग करता है</translation>
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="4394049700291259645">बंद करें</translation>
@@ -276,8 +289,8 @@ Binance
 <translation id="4823406846571523661">क्रिप्टो वॉलेट सेट करें</translation>
 <translation id="8199661191594897555">क्रिप्टो वॉलेट शुरू करें और पुनः लोड करें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
-<translation id="3110802155897279216">IPFS संसाधनों का पता चला है। क्या आप Brave द्वारा स्थानीय IPFS नोड का उपयोग करके उन्हें लोड करना चाहेंगे?</translation>
-<translation id="2366908098700680611">IPFS सक्रीय करें</translation>
+<translation id="1664718502100303670">वालेट सेटिंग्स</translation>
+<translation id="965566669123544695">आईएफपीएस सेटिंग्स</translation>
 <translation id="72868071984333667">IPFS और गोपनीयता के बारे में और जानें</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
 <translation id="2609895996619941644">क्या आप जांचना चाहते हैं कि क्या वेबैक मशीन पर सेव किया गया संस्करण उपलब्ध है?</translation>
@@ -296,4 +309,6 @@ Binance
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
+<translation id="1224064034972923114">अपने आप क्रैश रिपोर्ट भेजकर ब्रेव को सुधारने में मदद करें</translation>
+<translation id="3738833060602717053">अपने आप क्रैश रिपोर्ट्स भेजकर <ph name="PRODUCT_NAME"/> को बेहतर करने में मदद करें</translation>
 </translationbundle>
