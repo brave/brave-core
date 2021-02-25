@@ -14,6 +14,7 @@ source_set("brave_wallet_unit_tests") {
       "//brave/components/brave_wallet/brave_wallet_utils_unittest.cc",
       "//brave/components/brave_wallet/eth_json_rpc_controller_unittest.cc",
       "//brave/components/brave_wallet/eth_requests_unittest.cc",
+      "//brave/components/brave_wallet/eth_response_parser_unittest.cc",
     ]
 
     deps = [
