@@ -1365,7 +1365,7 @@ extension Strings {
         public static let contactFormSendButton =
             NSLocalizedString("vpn.contactFormSendButton",
                               bundle: .braveShared,
-                              value: "Send",
+                              value: "Continue to Email",
                               comment: "Button name to send contact form.")
         
         public static let contactFormIssueOtherConnectionError =
