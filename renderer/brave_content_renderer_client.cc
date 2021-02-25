@@ -35,5 +35,5 @@ void BraveContentRendererClient::RenderFrameCreated(
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
 
   new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
-      render_frame, ISOLATED_WORLD_ID_CHROME_INTERNAL);
+      render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
