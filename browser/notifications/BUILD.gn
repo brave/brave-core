@@ -3,17 +3,18 @@ source_set("notifications") {
   check_includes = false
   if (is_mac) {
     sources = [
-      "brave_alert_dispatcher_mac.mm",
       "brave_alert_dispatcher_mac.h",
-      "brave_notification_platform_bridge_mac.mm",
+      "brave_alert_dispatcher_mac.mm",
       "brave_notification_platform_bridge.h",
+      "brave_notification_platform_bridge_mac.mm",
     ]
 
     deps = [
       "//base",
       "//chrome/browser/ui/cocoa/notifications:common",
-      "//ui/message_center/public/cpp",
+      "//chrome/services/mac_notifications/public/cpp",
       "//skia",
+      "//ui/message_center/public/cpp",
     ]
 
     frameworks = [ "Foundation.framework" ]
