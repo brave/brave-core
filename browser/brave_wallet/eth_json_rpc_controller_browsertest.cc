@@ -33,9 +33,9 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
   http_response->set_content(R"({
-    jsonrpc: "2.0",
-    id: 1,
-    result: "0xb539d5"
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": "0xb539d5"
   })");
   return std::move(http_response);
 }
@@ -91,6 +91,14 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
       wait_for_request_->Quit();
     }
     ASSERT_EQ(expected_response_, response);
+    ASSERT_EQ(expected_success_, success);
+  }
+
+  void OnGetBalance(bool success, const std::string& hex_balance) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_EQ(expected_response_, hex_balance);
     ASSERT_EQ(expected_success_, success);
   }
 
@@ -158,5 +166,23 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, RequestError) {
                       base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
                                      base::Unretained(this)),
                       true);
+  WaitForResponse("", false);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalance) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  auto* controller = GetEthJsonRpcController();
+  controller->GetBalance("0x4e02f254184E904300e0775E4b8eeCB1",
+                         base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
+                                        base::Unretained(this)));
+  WaitForResponse("0xb539d5", true);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalanceServerError) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
+  auto* controller = GetEthJsonRpcController();
+  controller->GetBalance("0x4e02f254184E904300e0775E4b8eeCB1",
+                         base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
+                                        base::Unretained(this)));
   WaitForResponse("", false);
 }

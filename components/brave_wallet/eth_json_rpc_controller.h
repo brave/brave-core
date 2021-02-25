@@ -37,6 +37,9 @@ class EthJsonRpcController {
   void Request(const std::string& json_payload,
                URLRequestCallback callback,
                bool auto_retry_on_network_change);
+  using GetBallanceCallback =
+      base::OnceCallback<void(bool status, const std::string& balance)>;
+  void GetBalance(const std::string& address, GetBallanceCallback callback);
 
   Network GetNetwork() const;
   GURL GetNetworkURL() const;
@@ -49,6 +52,10 @@ class EthJsonRpcController {
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
                            URLRequestCallback callback,
                            const std::unique_ptr<std::string> response_body);
+  void OnGetBalance(GetBallanceCallback callback,
+                    const int status,
+                    const std::string& body,
+                    const std::map<std::string, std::string>& headers);
 
   content::BrowserContext* context_;
   GURL network_url_;

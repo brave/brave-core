@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/environment.h"
+#include "brave/components/brave_wallet/eth_requests.h"
+#include "brave/components/brave_wallet/eth_response_parser.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
@@ -174,6 +176,34 @@ void EthJsonRpcController::SetNetwork(Network network) {
 void EthJsonRpcController::SetCustomNetwork(const GURL& network_url) {
   network_ = Network::kCustom;
   network_url_ = network_url;
+}
+
+void EthJsonRpcController::GetBalance(
+    const std::string& address,
+    EthJsonRpcController::GetBallanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetBalance,
+                     base::Unretained(this), std::move(callback));
+  return Request(eth_getBalance(address, "latest"),
+                 std::move(internal_callback), true);
+}
+
+void EthJsonRpcController::OnGetBalance(
+    GetBallanceCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string balance;
+  if (!ParseEthGetBalance(body, &balance)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, balance);
 }
 
 }  // namespace brave_wallet
