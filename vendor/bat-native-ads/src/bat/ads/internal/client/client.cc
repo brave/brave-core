@@ -14,6 +14,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
+#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
@@ -94,9 +95,17 @@ void Client::Initialize(InitializeCallback callback) {
 void Client::AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history) {
   client_->ads_shown_history.push_front(ad_history);
 
-  if (client_->ads_shown_history.size() > history::kMaximumEntries) {
-    client_->ads_shown_history.pop_back();
-  }
+  const uint64_t timestamp = static_cast<uint64_t>(
+      (base::Time::Now() - base::TimeDelta::FromDays(history::kForDays))
+          .ToDoubleT());
+
+  const auto iter = std::remove_if(
+      client_->ads_shown_history.begin(), client_->ads_shown_history.end(),
+      [timestamp](const AdHistoryInfo& ad_history) {
+        return ad_history.timestamp_in_seconds < timestamp;
+      });
+
+  client_->ads_shown_history.erase(iter, client_->ads_shown_history.end());
 
   Save();
 }

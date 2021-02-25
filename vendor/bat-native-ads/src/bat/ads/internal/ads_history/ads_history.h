@@ -22,17 +22,7 @@ struct PromotedContentAdInfo;
 
 namespace history {
 
-// Maximum entries based upon 7 days of ad history for
-// |kAdNotificationsPerDayFrequencyCap| ad notifications per day with 2
-// confirmation types (viewed and either clicked or dismissed) and
-// |kNewTabPageAdsPerDayFrequencyCap| new tab page ads per day with 2
-// confirmation types (viewed and clicked)
-// |kPromotedContentAdsPerDayFrequencyCap| promoted content ads per day with 2
-// confirmation types (viewed and clicked)
-const size_t kMaximumEntries =
-    7 * ((kAdNotificationsPerDayFrequencyCap * 2) +
-         (kNewTabPageAdsPerDayFrequencyCap * 2) +
-         (kPromotedContentAdsPerDayFrequencyCap * 2));
+const int kForDays = 7;
 
 AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
                    const AdsHistoryInfo::SortType sort_type,
