@@ -232,6 +232,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if defined(OS_ANDROID)
     features::kWebNfc.name,
     feed::kInterestFeedContentSuggestions.name,
+    feed::kInterestFeedV2.name,
     offline_pages::kPrefetchingOfflinePagesFeature.name,
     translate::kTranslate.name,
 #endif
