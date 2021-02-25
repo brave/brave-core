@@ -47,7 +47,13 @@ extension BrowserViewController {
         // thus in case of yahoo.com the title is 'Yahoo Search' and Shortname is 'Yahoo'
         // Instead we are checking referenceURL match to determine searchEngine is added or not
         
-        let searchEngineExists = profile.searchEngines.orderedEngines.contains(where: { $0.referenceURL == referenceObject.reference })
+        let searchEngineExists = profile.searchEngines.orderedEngines.contains(where: {
+            if let referenceURL =  $0.referenceURL {
+                return referenceObject.reference.contains(referenceURL)
+            }
+            
+            return false
+        })
 
         if searchEngineExists {
             self.customSearchEngineButton.action = .disabled
@@ -163,7 +169,7 @@ extension BrowserViewController {
                 try self.profile.searchEngines.addSearchEngine(engine)
                 
                 let toast = SimpleToast()
-                toast.showAlertWithText(Strings.thirdPartySearchEngineAdded, bottomContainer: self.webViewContainer)
+                toast.showAlertWithText(Strings.CustomSearchEngine.thirdPartySearchEngineAddedToastTitle, bottomContainer: self.webViewContainer)
                 
                 self.customSearchEngineButton.action = .disabled
             } catch {
