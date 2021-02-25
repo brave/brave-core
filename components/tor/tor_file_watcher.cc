@@ -9,14 +9,14 @@
 #include <utility>
 
 #include "base/files/file.h"
+#include "base/logging.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 namespace tor {
 
@@ -42,16 +42,19 @@ TorFileWatcher::TorFileWatcher(const base::FilePath& watch_dir_path)
     : polling_(false),
       repoll_(false),
       watch_dir_path_(std::move(watch_dir_path)),
+      owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
       watch_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner(kWatchTaskTraits)),
       watcher_(new base::FilePathWatcher,
                base::OnTaskRunnerDeleter(watch_task_runner_)) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   DETACH_FROM_SEQUENCE(watch_sequence_checker_);
 }
 
 TorFileWatcher::~TorFileWatcher() {}
 
 void TorFileWatcher::StartWatching(WatchCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   watch_callback_ = std::move(callback);
   watch_task_runner_->PostTask(
       FROM_HERE,
@@ -86,7 +89,7 @@ void TorFileWatcher::OnWatchDirChanged(const base::FilePath& path, bool error) {
   VLOG(2) << "tor: watch directory changed";
 
   if (error) {
-    content::GetUIThreadTaskRunner({})->PostTask(
+    owner_task_runner_->PostTask(
         FROM_HERE, base::BindOnce(std::move(watch_callback_), false,
                                   std::vector<uint8_t>(), int()));
     return;
@@ -132,9 +135,9 @@ void TorFileWatcher::Poll() {
     return PollDone();
   }
 
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(std::move(watch_callback_), true,
-                                std::move(cookie), port));
+  owner_task_runner_->PostTask(FROM_HERE,
+                               base::BindOnce(std::move(watch_callback_), true,
+                                              std::move(cookie), port));
 }
 
 // PollDone()

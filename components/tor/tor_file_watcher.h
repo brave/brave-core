@@ -47,6 +47,7 @@ class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
   bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
   bool EatControlPort(int&, base::Time&);
 
+  SEQUENCE_CHECKER(owner_sequence_checker_);
   SEQUENCE_CHECKER(watch_sequence_checker_);
 
   bool polling_;
@@ -55,6 +56,7 @@ class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
 
   WatchCallback watch_callback_;
 
+  const scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
   std::unique_ptr<base::FilePathWatcher, base::OnTaskRunnerDeleter> watcher_;
 

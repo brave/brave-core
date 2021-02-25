@@ -108,6 +108,7 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
 void TorLauncherFactory::OnTorLogLoaded(
     GetLogCallback callback,
     const std::pair<bool, std::string>& result) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   std::move(callback).Run(result.first, result.second);
 }
 
@@ -170,6 +171,7 @@ void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
 }
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(INFO) << "Tor Launcher Crashed";
   for (auto& observer : observers_)
     observer.OnTorLauncherCrashed();
@@ -185,6 +187,7 @@ void TorLauncherFactory::OnTorCrashed(int64_t pid) {
 }
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (result) {
     is_starting_ = false;
     // We have to wait for circuit established
@@ -265,6 +268,7 @@ void TorLauncherFactory::OnTorControlPrerequisitesReady(
     bool ready,
     std::vector<uint8_t> cookie,
     int port) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (ready) {
     control_->Start(std::move(cookie), port);
     tor_file_watcher_.reset();
@@ -277,6 +281,7 @@ void TorLauncherFactory::OnTorControlPrerequisitesReady(
 }
 
 void TorLauncherFactory::RelaunchTor() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   Init();
   LaunchTorInternal();
 }

@@ -10,6 +10,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/io_buffer.h"
@@ -81,13 +82,14 @@ static std::string escapify(const char* buf, int len) {
 
 TorControl::TorControl(TorControl::Delegate* delegate)
     : running_(false),
+      owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
       io_task_runner_(content::GetIOThreadTaskRunner({})),
       writing_(false),
       reading_(false),
       read_start_(-1),
       read_cr_(false),
       delegate_(delegate) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   DETACH_FROM_SEQUENCE(io_sequence_checker_);
 }
 
@@ -99,7 +101,7 @@ TorControl::~TorControl() = default;
 //      connect, issue OnTorControlReady to delegate.
 //
 void TorControl::Start(std::vector<uint8_t> cookie, int port) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   DCHECK(!running_);
 
   running_ = true;
@@ -114,7 +116,7 @@ void TorControl::Start(std::vector<uint8_t> cookie, int port) {
 //      we have already connected.
 //
 void TorControl::Stop() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   if (!running_)
     return;
 
@@ -909,86 +911,58 @@ void TorControl::Error() {
 }
 
 void TorControl::NotifyTorControlReady() {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate) {
-                       if (delegate)
-                         delegate->OnTorControlReady();
-                     },
-                     delegate_->AsWeakPtr()));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorControlReady, delegate_->AsWeakPtr()));
 }
 
 void TorControl::NotifyTorControlClosed() {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::WeakPtr<TorControl::Delegate> delegate, bool was_running) {
-            if (delegate)
-              delegate->OnTorControlClosed(was_running);
-          },
-          delegate_->AsWeakPtr(), running_));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorControlClosed,
+                                delegate_->AsWeakPtr(), running_));
 }
 
 void TorControl::NotifyTorEvent(
     TorControlEvent event,
     const std::string& initial,
     const std::map<std::string, std::string>& extra) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        TorControlEvent event, const std::string& initial,
-                        const std::map<std::string, std::string>& extra) {
-                       if (delegate)
-                         delegate->OnTorEvent(event, initial, extra);
-                     },
-                     delegate_->AsWeakPtr(), event, initial, extra));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorEvent, delegate_->AsWeakPtr(),
+                                event, initial, extra));
 }
 
 void TorControl::NotifyTorRawCmd(const std::string& cmd) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& cmd) {
-                       if (delegate)
-                         delegate->OnTorRawCmd(cmd);
-                     },
-                     delegate_->AsWeakPtr(), cmd));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorRawCmd, delegate_->AsWeakPtr(), cmd));
 }
 
 void TorControl::NotifyTorRawAsync(const std::string& status,
                                    const std::string& line) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& status, const std::string& line) {
-                       if (delegate)
-                         delegate->OnTorRawAsync(status, line);
-                     },
-                     delegate_->AsWeakPtr(), status, line));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawAsync,
+                                delegate_->AsWeakPtr(), status, line));
 }
 
 void TorControl::NotifyTorRawMid(const std::string& status,
                                  const std::string& line) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& status, const std::string& line) {
-                       if (delegate)
-                         delegate->OnTorRawMid(status, line);
-                     },
-                     delegate_->AsWeakPtr(), status, line));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawMid, delegate_->AsWeakPtr(),
+                                status, line));
 }
 
 void TorControl::NotifyTorRawEnd(const std::string& status,
                                  const std::string& line) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& status, const std::string& line) {
-                       if (delegate)
-                         delegate->OnTorRawEnd(status, line);
-                     },
-                     delegate_->AsWeakPtr(), status, line));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawEnd, delegate_->AsWeakPtr(),
+                                status, line));
 }
 
 // ParseKV(string, key, value)

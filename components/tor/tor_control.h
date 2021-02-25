@@ -110,7 +110,8 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
   virtual ~TorControl();
 
   bool running_;
-  SEQUENCE_CHECKER(sequence_checker_);
+  scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
+  SEQUENCE_CHECKER(owner_sequence_checker_);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   SEQUENCE_CHECKER(io_sequence_checker_);
