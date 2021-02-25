@@ -1,3 +1,4 @@
 include_rules = [
   "+components/permissions",
+  "+services/preferences/public/cpp",
 ]

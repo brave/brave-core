@@ -135,20 +135,32 @@ class PermissionLifetimeCombobox : public views::Combobox,
                << (lifetime ? lifetime->InSeconds() : -1);
     // TODO(https://github.com/brave/brave-browser/issues/14126): Set the
     // lifetime for all current requests.
-    // for (auto* request : delegate_->Requests()) {
-    //   request->SetLifetime(lifetime);
-    // }
+    for (auto* request : delegate_->Requests()) {
+      request->SetLifetime(lifetime);
+    }
   }
 
   permissions::PermissionPrompt::Delegate* const delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
 
-void AddPermissionLifetimeComboboxIfNeeded(
-    views::BubbleDialogDelegateView* dialog_delegate_view,
+bool ShouldShowLifetimeOptions(
     permissions::PermissionPrompt::Delegate* delegate) {
   if (!base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {
+    return false;
+  }
+
+  const bool all_requests_support_lifetime = std::all_of(
+      delegate->Requests().begin(), delegate->Requests().end(),
+      [](const auto& request) { return request->SupportsLifetime(); });
+  return all_requests_support_lifetime;
+}
+
+void AddPermissionLifetimeComboboxIfNeeded(
+    views::BubbleDialogDelegateView* dialog_delegate_view,
+    permissions::PermissionPrompt::Delegate* delegate) {
+  if (!ShouldShowLifetimeOptions(delegate)) {
     return;
   }
 
@@ -230,10 +242,9 @@ void AddFootnoteViewIfNeeded(
 
 static const int IDS_PERMISSION_DENY_CHROMIUM_IMPL = IDS_PERMISSION_DENY;
 #undef IDS_PERMISSION_DENY
-#define IDS_PERMISSION_DENY                                                 \
-  (base::FeatureList::IsEnabled(permissions::features::kPermissionLifetime) \
-       ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER                                \
-       : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
+#define IDS_PERMISSION_DENY                                                   \
+  (ShouldShowLifetimeOptions(delegate_) ? IDS_PERMISSIONS_BUBBLE_DENY_FOREVER \
+                                        : IDS_PERMISSION_DENY_CHROMIUM_IMPL)
 
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
 #undef IDS_PERMISSION_DENY

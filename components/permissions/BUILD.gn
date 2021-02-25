@@ -1,15 +1,50 @@
 source_set("permissions") {
   sources = [
+    "permission_expirations.cc",
+    "permission_expirations.h",
+    "permission_lifetime_manager.cc",
+    "permission_lifetime_manager.h",
     "permission_lifetime_options.cc",
     "permission_lifetime_options.h",
+    "permission_lifetime_pref_names.cc",
+    "permission_lifetime_pref_names.h",
     "permission_lifetime_utils.cc",
     "permission_lifetime_utils.h",
+    "permission_origins.cc",
+    "permission_origins.h",
   ]
 
   deps = [
     "//base",
+    "//base/util/timer",
     "//brave/components/resources:strings_grit",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/keyed_service/core",
     "//components/permissions",
+    "//components/pref_registry",
+    "//services/preferences/public/cpp",
     "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "permission_expirations_unittest.cc" ]
+
+  deps = [
+    ":permissions",
+    "//base",
+    "//base/test:test_support",
+    "//components/content_settings/browser",
+    "//components/content_settings/browser:test_support",
+    "//components/content_settings/core/browser",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+    "//url",
   ]
 }

@@ -9,6 +9,7 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/ntp_background_images/view_counter_service_factory.h"
+#include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -69,6 +70,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::IpfsServiceFactory::GetInstance();
 #endif
+  PermissionLifetimeManagerFactory::GetInstance();
 }
 
 }  // namespace brave
