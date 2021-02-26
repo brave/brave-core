@@ -17,11 +17,12 @@
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/process/process.h"
 #include "base/time/time.h"
+#include "brave/base/delete_soon_helper.h"
 
 namespace base {
 class FilePathWatcher;
@@ -36,7 +37,7 @@ class TCPClientSocket;
 
 namespace tor {
 
-class TorControl : public base::RefCountedThreadSafe<TorControl> {
+class TorControl : public base::DeleteSoonHelper<TorControl> {
  public:
   using PerLineCallback =
       base::RepeatingCallback<void(const std::string& status,
@@ -66,9 +67,12 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
   };
 
   explicit TorControl(TorControl::Delegate* delegate);
+  virtual ~TorControl();
 
   void Start(std::vector<uint8_t> cookie, int port);
   void Stop();
+
+  void DeleteSoonImpl() override;
 
   void Cmd1(const std::string& cmd, CmdCallback callback);
   void Cmd(const std::string& cmd,
@@ -106,9 +110,6 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
                           size_t* end);
 
  private:
-  friend class base::RefCountedThreadSafe<TorControl>;
-  virtual ~TorControl();
-
   bool running_;
   scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   SEQUENCE_CHECKER(owner_sequence_checker_);
@@ -143,6 +144,8 @@ class TorControl : public base::RefCountedThreadSafe<TorControl> {
   std::unique_ptr<Async> async_;
 
   TorControl::Delegate* delegate_;
+
+  base::WeakPtrFactory<TorControl> weak_ptr_factory_{this};
 
   void OpenControl(int port, std::vector<uint8_t> cookie);
   void Connected(std::vector<uint8_t> cookie, int rv);

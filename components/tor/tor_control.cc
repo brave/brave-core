@@ -107,7 +107,8 @@ void TorControl::Start(std::vector<uint8_t> cookie, int port) {
   running_ = true;
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::OpenControl, this, port, std::move(cookie)));
+      base::BindOnce(&TorControl::OpenControl, weak_ptr_factory_.GetWeakPtr(),
+                     port, std::move(cookie)));
 }
 
 // Stop()
@@ -122,8 +123,13 @@ void TorControl::Stop() {
 
   running_ = false;
   async_events_.clear();
-  io_task_runner_->PostTask(FROM_HERE,
-                            base::BindOnce(&TorControl::Error, this));
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TorControl::Error, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void TorControl::DeleteSoonImpl() {
+  io_task_runner_->DeleteSoon(FROM_HERE, this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -142,8 +148,9 @@ void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
       net::IPAddress::IPv4Localhost(), portno);
   socket_ = std::make_unique<net::TCPClientSocket>(
       addrlist, nullptr, nullptr, net::NetLog::Get(), net::NetLogSource());
-  int rv = socket_->Connect(
-      base::BindOnce(&TorControl::Connected, this, std::move(cookie)));
+  int rv = socket_->Connect(base::BindOnce(&TorControl::Connected,
+                                           weak_ptr_factory_.GetWeakPtr(),
+                                           std::move(cookie)));
   if (rv == net::ERR_IO_PENDING)
     return;
   Connected(std::move(cookie), rv);
@@ -168,7 +175,8 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
   }
 
   Cmd1("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-       base::BindOnce(&TorControl::Authenticated, this));
+       base::BindOnce(&TorControl::Authenticated,
+                      weak_ptr_factory_.GetWeakPtr()));
 }
 
 // Authenticated(error, status, reply)
@@ -213,8 +221,9 @@ void TorControl::Authenticated(bool error,
 void TorControl::Subscribe(TorControlEvent event,
                            base::OnceCallback<void(bool error)> callback) {
   io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::DoSubscribe, this, event,
-                                std::move(callback)));
+      FROM_HERE,
+      base::BindOnce(&TorControl::DoSubscribe, weak_ptr_factory_.GetWeakPtr(),
+                     event, std::move(callback)));
 }
 
 void TorControl::DoSubscribe(TorControlEvent event,
@@ -227,8 +236,9 @@ void TorControl::DoSubscribe(TorControlEvent event,
   }
 
   async_events_[event] = 1;
-  Cmd1(SetEventsCmd(), base::BindOnce(&TorControl::Subscribed, this, event,
-                                      std::move(callback)));
+  Cmd1(SetEventsCmd(),
+       base::BindOnce(&TorControl::Subscribed, weak_ptr_factory_.GetWeakPtr(),
+                      event, std::move(callback)));
 }
 
 void TorControl::Subscribed(TorControlEvent event,
@@ -261,8 +271,9 @@ void TorControl::Subscribed(TorControlEvent event,
 void TorControl::Unsubscribe(TorControlEvent event,
                              base::OnceCallback<void(bool error)> callback) {
   io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::DoUnsubscribe, this, event,
-                                std::move(callback)));
+      FROM_HERE,
+      base::BindOnce(&TorControl::DoUnsubscribe, weak_ptr_factory_.GetWeakPtr(),
+                     event, std::move(callback)));
 }
 
 void TorControl::DoUnsubscribe(TorControlEvent event,
@@ -278,8 +289,9 @@ void TorControl::DoUnsubscribe(TorControlEvent event,
 
   DCHECK_EQ(async_events_[event], 0u);
   async_events_.erase(event);
-  Cmd1(SetEventsCmd(), base::BindOnce(&TorControl::Unsubscribed, this, event,
-                                      std::move(callback)));
+  Cmd1(SetEventsCmd(),
+       base::BindOnce(&TorControl::Unsubscribed, weak_ptr_factory_.GetWeakPtr(),
+                      event, std::move(callback)));
 }
 
 void TorControl::Unsubscribed(TorControlEvent event,
@@ -337,8 +349,9 @@ void TorControl::Cmd(const std::string& cmd,
                      PerLineCallback perline,
                      CmdCallback callback) {
   io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::DoCmd, this, cmd,
-                                std::move(perline), std::move(callback)));
+      FROM_HERE,
+      base::BindOnce(&TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(), cmd,
+                     std::move(perline), std::move(callback)));
 }
 
 void TorControl::DoCmd(std::string cmd,
@@ -376,8 +389,10 @@ void TorControl::GetVersion(
   std::unique_ptr<std::string> version = std::make_unique<std::string>();
   std::string* versionp = version.get();
   Cmd(kGetVersionCmd,
-      base::BindRepeating(&TorControl::GetVersionLine, this, versionp),
-      base::BindOnce(&TorControl::GetVersionDone, this, std::move(version),
+      base::BindRepeating(&TorControl::GetVersionLine,
+                          weak_ptr_factory_.GetWeakPtr(), versionp),
+      base::BindOnce(&TorControl::GetVersionDone,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(version),
                      std::move(callback)));
 }
 
@@ -416,10 +431,11 @@ void TorControl::GetSOCKSListeners(
       std::make_unique<std::vector<std::string>>();
   std::vector<std::string>* listeners_p = listeners.get();
   Cmd(kGetSOCKSListenersCmd,
-      base::BindRepeating(&TorControl::GetSOCKSListenersLine, this,
-                          listeners_p),
-      base::BindOnce(&TorControl::GetSOCKSListenersDone, this,
-                     std::move(listeners), std::move(callback)));
+      base::BindRepeating(&TorControl::GetSOCKSListenersLine,
+                          weak_ptr_factory_.GetWeakPtr(), listeners_p),
+      base::BindOnce(&TorControl::GetSOCKSListenersDone,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(listeners),
+                     std::move(callback)));
 }
 
 void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
@@ -483,7 +499,8 @@ void TorControl::DoWrites() {
   DCHECK(writeiobuf_);
   int rv;
   while ((rv = socket_->Write(writeiobuf_.get(), writeiobuf_->size(),
-                              base::BindOnce(&TorControl::WriteDoneAsync, this),
+                              base::BindOnce(&TorControl::WriteDoneAsync,
+                                             weak_ptr_factory_.GetWeakPtr()),
                               tor_control_traffic_annotation)) !=
          net::ERR_IO_PENDING) {
     WriteDone(rv);
@@ -580,7 +597,8 @@ void TorControl::DoReads() {
   DCHECK(readiobuf_->RemainingCapacity());
   while ((rv = socket_->Read(readiobuf_.get(), readiobuf_->RemainingCapacity(),
                              base::BindOnce(&TorControl::ReadDoneAsync,
-                                            this))) != net::ERR_IO_PENDING) {
+                                            weak_ptr_factory_.GetWeakPtr()))) !=
+         net::ERR_IO_PENDING) {
     ReadDone(rv);
     if (!reading_)
       break;

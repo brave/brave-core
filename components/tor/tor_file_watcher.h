@@ -12,7 +12,8 @@
 #include "base/callback.h"
 #include "base/files/file_path.h"
 #include "base/files/file_path_watcher.h"
-#include "base/memory/ref_counted.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/base/delete_soon_helper.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -25,20 +26,23 @@ namespace tor {
 FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlCookie);
 FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlPort);
 
-class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
+class TorFileWatcher : public base::DeleteSoonHelper<TorFileWatcher> {
  public:
   using WatchCallback = base::OnceCallback<
       void(bool success, std::vector<uint8_t> cookie, int port)>;
+
   explicit TorFileWatcher(const base::FilePath& watch_dir_path);
+
+  virtual ~TorFileWatcher();
 
   void StartWatching(WatchCallback);
 
+  void DeleteSoonImpl() override;
+
  private:
-  friend class base::RefCountedThreadSafe<TorFileWatcher>;
   // friend class TorFileWatcherTest;
   FRIEND_TEST_ALL_PREFIXES(TorFileWatcherTest, EatControlCookie);
   FRIEND_TEST_ALL_PREFIXES(TorFileWatcherTest, EatControlPort);
-  virtual ~TorFileWatcher();
 
   void StartWatchingOnTaskRunner();
   void OnWatchDirChanged(const base::FilePath& path, bool error);
@@ -59,6 +63,8 @@ class TorFileWatcher : public base::RefCountedThreadSafe<TorFileWatcher> {
   const scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
   std::unique_ptr<base::FilePathWatcher, base::OnTaskRunnerDeleter> watcher_;
+
+  base::WeakPtrFactory<TorFileWatcher> weak_ptr_factory_{this};
 
   TorFileWatcher(const TorFileWatcher&) = delete;
   TorFileWatcher& operator=(const TorFileWatcher&) = delete;

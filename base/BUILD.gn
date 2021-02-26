@@ -3,10 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+source_set("base") {
+  sources = [ "delete_soon_helper.h" ]
+}
+
 source_set("base_unittests") {
   testonly = true
   sources = [ "tools_sanity_unittest.cc" ]
-  deps = [
-    "//testing/gtest:gtest",
-  ]
+  deps = [ "//testing/gtest:gtest" ]
 }

@@ -45,6 +45,7 @@ source_set("tor") {
   }
 
   deps += [
+    "//brave/base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources:strings",
     "//brave/components/services/tor/public/interfaces",
