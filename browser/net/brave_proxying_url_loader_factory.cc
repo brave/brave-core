@@ -363,7 +363,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     // Create a data pipe for transmitting the response.
     mojo::ScopedDataPipeProducerHandle producer;
     mojo::ScopedDataPipeConsumerHandle consumer;
-    if (CreateDataPipe(nullptr, &producer, &consumer) != MOJO_RESULT_OK) {
+    if (CreateDataPipe(nullptr, producer, consumer) != MOJO_RESULT_OK) {
       OnRequestError(
           network::URLLoaderCompletionStatus(net::ERR_INSUFFICIENT_RESOURCES));
       return;
