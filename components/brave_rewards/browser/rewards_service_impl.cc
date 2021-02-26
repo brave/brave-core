@@ -1489,20 +1489,6 @@ void RewardsServiceImpl::ClearState(const std::string& name) {
 bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
   DCHECK(!name.empty());
 
-  if (name == ledger::option::kContributionsDisabledForBAPMigration) {
-    if (OnlyAnonWallet()) {
-      base::Time::Exploded cutoff_exploded{
-          .year = 2021, .month = 3, .day_of_month = 13};
-      base::Time cutoff;
-      bool ok = base::Time::FromUTCExploded(cutoff_exploded, &cutoff);
-      DCHECK(ok);
-      if (ok && base::Time::Now() >= cutoff) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
 
@@ -3029,7 +3015,7 @@ void RewardsServiceImpl::ShowNotification(
     callback(ledger::type::Result::LEDGER_OK);
 }
 
-bool RewardsServiceImpl::OnlyAnonWallet() const {
+bool RewardsServiceImpl::OnlyAnonWallet() {
   const int32_t current_country =
       country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
 

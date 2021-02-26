@@ -115,8 +115,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         rewardsState: {
           ...state.rewardsState,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
-          adsSupported: preInitialRewardsDataPayload.adsSupported,
-          onlyAnonWallet: preInitialRewardsDataPayload.onlyAnonWallet
+          adsSupported: preInitialRewardsDataPayload.adsSupported
         }
       }
       break
