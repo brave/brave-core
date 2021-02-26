@@ -26,6 +26,7 @@ if (!is_android) {
       "//brave/components/brave_shields/browser:browser",
       "//brave/components/brave_shields/common:common",
       "//chrome/browser",
+      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
       "//content/public/common",
