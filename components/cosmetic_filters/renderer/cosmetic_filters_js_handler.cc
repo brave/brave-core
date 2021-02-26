@@ -88,7 +88,8 @@ const char kHideSelectorsInjectScript[] =
           if (!document.adoptedStyleSheets.includes(
               window.content_cosmetic.cosmeticStyleSheet)) {
             document.adoptedStyleSheets =
-              [window.content_cosmetic.cosmeticStyleSheet];
+              [window.content_cosmetic.cosmeticStyleSheet,
+                ...document.adoptedStyleSheets];
           };
         })();)";
 
@@ -112,7 +113,8 @@ const char kForceHideSelectorsInjectScript[] =
           if (!document.adoptedStyleSheets.includes(
               window.content_cosmetic.cosmeticStyleSheet)) {
             document.adoptedStyleSheets =
-              [window.content_cosmetic.cosmeticStyleSheet];
+              [window.content_cosmetic.cosmeticStyleSheet,
+                ...document.adoptedStyleSheets];
           };
         })();)";
 
@@ -144,7 +146,8 @@ const char kStyleSelectorsInjectScript[] =
           if (!document.adoptedStyleSheets.includes(
                 window.content_cosmetic.cosmeticStyleSheet)){
              document.adoptedStyleSheets =
-               [window.content_cosmetic.cosmeticStyleSheet];
+               [window.content_cosmetic.cosmeticStyleSheet,
+                 ...document.adoptedStyleSheets];
           };
         })();)";
 
@@ -270,10 +273,11 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
 }
 
 void CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
-  if (!EnsureConnected())
+  url_ = url;
+  // Trivially, don't make exceptions for malformed URLs.
+  if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
     return;
 
-  url_ = url;
   cosmetic_filters_resources_->ShouldDoCosmeticFiltering(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnShouldDoCosmeticFiltering,
@@ -329,10 +333,6 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
     base::DictionaryValue* resources_dict) {
-  // Trivially, don't make exceptions for malformed URLs.
-  if (url_.is_empty() || !url_.is_valid())
-    return;
-
   // Otherwise, if its a vetted engine AND we're not in aggressive
   // mode, also don't do cosmetic filtering.
   if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))

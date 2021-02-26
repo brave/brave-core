@@ -15,8 +15,7 @@ namespace cosmetic_filters {
 
 namespace {
 
-const char kSecurityOrigin[] =
-    "chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd";
+const char kSecurityOrigin[] = "chrome://cosmetic_filters";
 
 void EnsureIsolatedWorldInitialized(int world_id) {
   static base::Optional<int> last_used_world_id;
@@ -69,15 +68,12 @@ void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
 }
 
 void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
-  // There could be empty and "about:blank" URLs, empty URLs are duplicated
-  // with DidCreateDocumentElement, so we just skip them, "about:blank"
-  // should fallback to the main frame rules
-  if (url_.is_empty())
-    return;
-  if (url_.spec() == "about:blank") {
+  // There could be empty, invalid and "about:blank" URLs,
+  // they should fallback to the main frame rules
+  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
-  }
+
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(
         new CosmeticFiltersJSHandler(render_frame(), isolated_world_id_));
