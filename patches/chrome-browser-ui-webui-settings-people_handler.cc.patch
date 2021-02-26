@@ -1,29 +1,28 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index ae21a216287416985a8498cf5917e14a3b599083..be0746661177a033eb0fde363786aad1519c8840 100644
+index eb6cf74a3c1c41a8181f812bbcbf26159a206307..d34894f5420bcae7f5369d0879385c52ca7faddb 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
-@@ -854,7 +854,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
+@@ -854,6 +854,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync) {
  
  void PeopleHandler::BeforeUnloadDialogCancelled() {
    // The before unload dialog is only shown during the first sync setup.
--  DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount());
-+  // DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount());
++  if (false)
+   DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
+       signin::ConsentLevel::kSync));
    syncer::SyncService* service = GetSyncService();
-   DCHECK(service && service->IsSetupInProgress() &&
-          !service->GetUserSettings()->IsFirstSetupComplete());
-@@ -902,6 +902,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
+@@ -905,6 +906,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsFirstSetupComplete() &&
-           identity_manager->HasPrimaryAccount());
+           identity_manager->HasPrimaryAccount(signin::ConsentLevel::kSync));
 +  BRAVE_GET_SYNC_STATUS_DICTIONARY
  
    const sync_ui_util::StatusLabels status_labels =
        sync_ui_util::GetStatusLabels(profile_);
-@@ -1053,6 +1054,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
+@@ -1057,6 +1059,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {
 +  return false;
-   return !IdentityManagerFactory::GetForProfile(profile_)
-               ->HasPrimaryAccount() ||
+   return !IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
+              signin::ConsentLevel::kSync) ||
           SigninErrorControllerFactory::GetForProfile(profile_)->HasError();

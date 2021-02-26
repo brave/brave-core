@@ -1,10 +1,10 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 63bc308c0647bba21bb6004ef18b458d7e92c91c..a68a905728beda3e23bc1df22ee8fcc8b1acf3bf 100644
+index 98922a3e36f5cf2b88a470dd163571fa52681408..2a2ba2d552235d8876a520d91f7f2a3554907ea6 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
 @@ -173,6 +173,7 @@ class InfoBarDelegate {
      ROSETTA_REQUIRED_INFOBAR_DELEGATE = 103,
-     WEBID_PERMISSION_INFOBAR_DELEGATE = 104,
+     // Removed: WEBID_PERMISSION_INFOBAR_DELEGATE = 104,
      AUTOFILL_OFFER_NOTIFICATION_INFOBAR_DELEGATE = 105,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
