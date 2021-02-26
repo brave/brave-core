@@ -12,7 +12,6 @@
 #include "base/time/time_override.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -504,22 +503,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BAPCutoffAfter) {
         []() { return GetDate(2021, 3, 13); }, nullptr, nullptr);
     ASSERT_EQ(FetchBalance(), 0.0);
   }
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BAPPopup) {
-  // Open the rewards popup.
-  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
-  ASSERT_TRUE(popup_contents);
-
-  // Attempt to open the BAP deprecation popup at the same time. The rewards
-  // panel popup should close. If both popups are shown at the same time, this
-  // test will crash on exit.
-  std::string error;
-  bool popup_shown = extensions::BraveActionAPI::ShowActionUI(
-      browser(), brave_rewards_extension_id,
-      std::make_unique<std::string>("brave_rewards_panel.html#bap-deprecation"),
-      &error);
-  EXPECT_TRUE(popup_shown);
 }
 
 }  // namespace rewards_browsertest
