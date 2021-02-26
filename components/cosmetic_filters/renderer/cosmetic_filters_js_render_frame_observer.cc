@@ -7,9 +7,42 @@
 
 #include "base/bind.h"
 #include "content/public/renderer/render_frame.h"
+#include "third_party/blink/public/platform/web_isolated_world_info.h"
+#include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
 namespace cosmetic_filters {
+
+namespace {
+
+const char kSecurityOrigin[] =
+    "chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd";
+
+void EnsureIsolatedWorldInitialized(int world_id) {
+  static base::Optional<int> last_used_world_id;
+  if (last_used_world_id) {
+    // Early return since the isolated world info. is already initialized.
+    DCHECK_EQ(*last_used_world_id, world_id)
+        << "EnsureIsolatedWorldInitialized should always be called with the "
+           "same |world_id|";
+    return;
+  }
+
+  last_used_world_id = world_id;
+
+  // Set an empty CSP so that the main world's CSP is not used in the isolated
+  // world.
+  constexpr char kContentSecurityPolicy[] = "";
+
+  blink::WebIsolatedWorldInfo info;
+  info.security_origin =
+      blink::WebSecurityOrigin::Create(GURL(kSecurityOrigin));
+  info.content_security_policy =
+      blink::WebString::FromUTF8(kContentSecurityPolicy);
+  blink::SetIsolatedWorldInfo(world_id, info);
+}
+
+}  // namespace
 
 CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame,
@@ -48,6 +81,7 @@ void CosmeticFiltersJsRenderFrameObserver::DidCreateNewDocument() {
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(
         new CosmeticFiltersJSHandler(render_frame(), isolated_world_id_));
+    EnsureIsolatedWorldInitialized(isolated_world_id_);
   }
   native_javascript_handle_->ProcessURL(url_);
 }
