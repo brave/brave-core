@@ -74,13 +74,35 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
+            response.body = R"(
+              {"drain_id": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(
+      *redeem_, [](const type::Result result, std::string drain_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
+        EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
+      });
+}
+
+TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 200;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  claim_->Request(*redeem_, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_OK);
-  });
+  claim_->Request(*redeem_,
+                    [](const type::Result result, std::string drain_id) {
+                      EXPECT_EQ(result, type::Result::RETRY);
+                      EXPECT_EQ(drain_id, "");
+                    });
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
@@ -94,9 +116,11 @@ TEST_F(PostSuggestionsClaimTest, ServerError400) {
             callback(response);
           }));
 
-  claim_->Request(*redeem_, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-  });
+  claim_->Request(*redeem_,
+                    [](const type::Result result, std::string drain_id) {
+                      EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                      EXPECT_EQ(drain_id, "");
+                    });
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
@@ -110,79 +134,7 @@ TEST_F(PostSuggestionsClaimTest, ServerError500) {
             callback(response);
           }));
 
-  claim_->Request(*redeem_, [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-  });
-}
-
-TEST_F(PostSuggestionsClaimTest, ServerV2OK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"(
-              {"drain_id": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
-            )";
-            callback(response);
-          }));
-
-  claim_->RequestV2(
-      *redeem_, [](const type::Result result, std::string drain_id) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-        EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
-      });
-}
-
-TEST_F(PostSuggestionsClaimTest, ServerV2NeedsRetry) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = "";
-            callback(response);
-          }));
-
-  claim_->RequestV2(*redeem_,
-                    [](const type::Result result, std::string drain_id) {
-                      EXPECT_EQ(result, type::Result::RETRY);
-                      EXPECT_EQ(drain_id, "");
-                    });
-}
-
-TEST_F(PostSuggestionsClaimTest, ServerV2Error400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            callback(response);
-          }));
-
-  claim_->RequestV2(*redeem_,
-                    [](const type::Result result, std::string drain_id) {
-                      EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-                      EXPECT_EQ(drain_id, "");
-                    });
-}
-
-TEST_F(PostSuggestionsClaimTest, ServerV2Error500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
-            type::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            callback(response);
-          }));
-
-  claim_->RequestV2(*redeem_,
+  claim_->Request(*redeem_,
                     [](const type::Result result, std::string drain_id) {
                       EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                       EXPECT_EQ(drain_id, "");

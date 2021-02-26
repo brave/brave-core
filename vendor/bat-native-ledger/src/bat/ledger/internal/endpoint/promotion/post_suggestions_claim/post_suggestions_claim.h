@@ -45,9 +45,6 @@ namespace endpoint {
 namespace promotion {
 
 using PostSuggestionsClaimCallback =
-    std::function<void(const type::Result result)>;
-
-using PostSuggestionsClaimCallbackV2 =
     std::function<void(const type::Result result, std::string drain_id)>;
 
 class PostSuggestionsClaim {
@@ -56,10 +53,7 @@ class PostSuggestionsClaim {
   ~PostSuggestionsClaim();
 
   void Request(const credential::CredentialsRedeem& redeem,
-               PostSuggestionsClaimCallback callback);
-
-  void RequestV2(const credential::CredentialsRedeem& redeem,
-                 PostSuggestionsClaimCallbackV2 callback);
+                 PostSuggestionsClaimCallback callback);
 
  private:
   std::string GetUrl();
@@ -75,9 +69,6 @@ class PostSuggestionsClaim {
 
   void OnRequest(const type::UrlResponse& response,
                  PostSuggestionsClaimCallback callback);
-
-  void OnRequestV2(const type::UrlResponse& response,
-                   PostSuggestionsClaimCallbackV2 callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -88,30 +88,11 @@ mojo::StructPtr<type::UrlRequest> PostSuggestionsClaim::GetSuggestionRequest(
   return request;
 }
 
-void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
-                                   PostSuggestionsClaimCallback callback) {
+void PostSuggestionsClaim::Request(
+    const credential::CredentialsRedeem& redeem,
+    PostSuggestionsClaimCallback callback) {
   auto url_callback =
       std::bind(&PostSuggestionsClaim::OnRequest, this, _1, callback);
-
-  const std::string payload = GeneratePayload(redeem);
-
-  auto wallet = ledger_->wallet()->GetWallet();
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto request = GetSuggestionRequest(std::move(wallet),
-                                      "post /v1/suggestions/claim", payload);
-  ledger_->LoadURL(std::move(request), url_callback);
-}
-
-void PostSuggestionsClaim::RequestV2(
-    const credential::CredentialsRedeem& redeem,
-    PostSuggestionsClaimCallbackV2 callback) {
-  auto url_callback =
-      std::bind(&PostSuggestionsClaim::OnRequestV2, this, _1, callback);
 
   const std::string payload = GeneratePayload(redeem);
 
@@ -123,19 +104,13 @@ void PostSuggestionsClaim::RequestV2(
   }
 
   auto request = GetSuggestionRequest(std::move(wallet),
-                                      "post /v2/suggestions/claim", payload);
+                                      "post v2/suggestions/claim", payload);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostSuggestionsClaim::OnRequest(const type::UrlResponse& response,
-                                     PostSuggestionsClaimCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
-}
-
-void PostSuggestionsClaim::OnRequestV2(
+void PostSuggestionsClaim::OnRequest(
     const type::UrlResponse& response,
-    PostSuggestionsClaimCallbackV2 callback) {
+    PostSuggestionsClaimCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
   if (result != type::Result::LEDGER_OK) {
