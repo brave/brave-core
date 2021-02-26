@@ -927,9 +927,9 @@ if (is_android) {
       "//components/password_manager/core/browser:password_manager_java_enums",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
-      "//third_party/android_deps:androidx_appcompat_appcompat_java",
-      "//third_party/android_deps:androidx_preference_preference_java",
       "//third_party/android_support_test_runner:runner_java",
+      "//third_party/androidx:androidx_appcompat_appcompat_java",
+      "//third_party/androidx:androidx_preference_preference_java",
       "//third_party/junit",
       "//ui/android:ui_no_recycler_view_java",
     ]
