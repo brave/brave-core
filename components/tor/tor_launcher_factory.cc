@@ -191,6 +191,8 @@ void TorLauncherFactory::OnTorCrashed(int64_t pid) {
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  for (auto& observer : observers_)
+    observer.OnTorLaunched(result, pid);
   if (result) {
     is_starting_ = false;
     // We have to wait for circuit established
@@ -198,12 +200,11 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     tor_pid_ = pid;
   } else {
     LOG(ERROR) << "Tor Launching Failed(" << pid << ")";
+    return;
   }
-  for (auto& observer : observers_)
-    observer.OnTorLaunched(result, pid);
   tor_file_watcher_->StartWatching(
       base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), pid));
 }
 
 void TorLauncherFactory::OnTorControlReady() {
@@ -268,17 +269,22 @@ void TorLauncherFactory::OnTorControlClosed(bool was_running) {
 }
 
 void TorLauncherFactory::OnTorControlPrerequisitesReady(
+    int64_t pid,
     bool ready,
     std::vector<uint8_t> cookie,
     int port) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (pid != tor_pid_) {
+    VLOG(1) << "Tor control pid mismatched!";
+    return;
+  }
   if (ready) {
     control_->Start(std::move(cookie), port);
     std::move(*tor_file_watcher_.release()).DeleteSoon();
   } else {
     tor_file_watcher_->StartWatching(
         base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
-                       weak_ptr_factory_.GetWeakPtr()));
+                       weak_ptr_factory_.GetWeakPtr(), pid));
   }
 }
 

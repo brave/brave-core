@@ -67,7 +67,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
 
-  void OnTorControlPrerequisitesReady(bool ready,
+  void OnTorControlPrerequisitesReady(int64_t pid,
+                                      bool ready,
                                       std::vector<uint8_t> cookie,
                                       int port);
 
