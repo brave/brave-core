@@ -1,3 +1,4 @@
+// NOLINT(build/header_guard)
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -43,29 +44,40 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostSuggestionsClaimCallback = std::function<void(
-    const type::Result result)>;
+using PostSuggestionsClaimCallback =
+    std::function<void(const type::Result result)>;
+
+using PostSuggestionsClaimCallbackV2 =
+    std::function<void(const type::Result result, std::string drain_id)>;
 
 class PostSuggestionsClaim {
  public:
   explicit PostSuggestionsClaim(LedgerImpl* ledger);
   ~PostSuggestionsClaim();
 
-  void Request(
-      const credential::CredentialsRedeem& redeem,
-      PostSuggestionsClaimCallback callback);
+  void Request(const credential::CredentialsRedeem& redeem,
+               PostSuggestionsClaimCallback callback);
+
+  void RequestV2(const credential::CredentialsRedeem& redeem,
+                 PostSuggestionsClaimCallbackV2 callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(
-      const credential::CredentialsRedeem& redeem);
+  std::string GeneratePayload(const credential::CredentialsRedeem& redeem);
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PostSuggestionsClaimCallback callback);
+  mojo::StructPtr<type::UrlRequest> GetSuggestionRequest(
+      const type::BraveWalletPtr wallet,
+      const char* path,
+      const std::string& payload);
+
+  void OnRequest(const type::UrlResponse& response,
+                 PostSuggestionsClaimCallback callback);
+
+  void OnRequestV2(const type::UrlResponse& response,
+                   PostSuggestionsClaimCallbackV2 callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
