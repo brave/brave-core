@@ -71,7 +71,8 @@ extension Preferences {
         /// Whether or not link preview upon long press action should be shown.
         static let enableLinkPreview = Option<Bool>(key: "general.night-mode", default: true)
         
-        /// Whether the default browser callout on new tab page was dismissed.
+        /// Whether a default browser callout was dismissed.
+        /// It should apply to all kinds of callouts: banner on NTP, at-launch modal etc.
         static let defaultBrowserCalloutDismissed =
             Option<Bool>(key: "general.default-browser-callout-dismissed", default: false)
         
