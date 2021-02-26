@@ -19,7 +19,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
-#include "bat/ledger/option_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -149,12 +148,6 @@ void Contribution::ResetReconcileStamp() {
 }
 
 void Contribution::StartMonthlyContribution() {
-  if (ledger_->ledger_client()->GetBooleanOption(
-          option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "Monthly contributions disabled for BAP migration");
-    return;
-  }
-
   const auto reconcile_stamp = ledger_->state()->GetReconcileStamp();
   ResetReconcileStamp();
 
@@ -279,12 +272,6 @@ void Contribution::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
     ledger::ResultCallback callback) {
-  if (ledger_->ledger_client()->GetBooleanOption(
-          option::kContributionsDisabledForBAPMigration)) {
-    BLOG(1, "One-time tips disabled for BAP migration");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
   tip_->Process(publisher_key, amount, callback);
 }
 

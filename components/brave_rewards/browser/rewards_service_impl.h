@@ -303,7 +303,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void DisconnectWallet(const std::string& wallet_type) override;
 
-  bool OnlyAnonWallet() const override;
+  bool OnlyAnonWallet() override;
 
   void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
