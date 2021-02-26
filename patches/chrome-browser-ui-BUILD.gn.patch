@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index ee53aa3d9432cb2284f873ba54f32a3a2970d109..2c7f3daa9df259fa5ccb6fdd47da38090fa510bb 100644
+index e970634b3dd2e8006140afccf2d7e2927fb2cb16..c98fa006e53caac07772efe55edc0248e646b4a0 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -595,6 +595,7 @@ static_library("ui") {
@@ -10,7 +10,7 @@ index ee53aa3d9432cb2284f873ba54f32a3a2970d109..2c7f3daa9df259fa5ccb6fdd47da3809
  
    # TODO(crbug/925153): Remove this circular dependency.
    allow_circular_includes_from = [
-@@ -3300,10 +3301,13 @@ static_library("ui") {
+@@ -3306,10 +3307,13 @@ static_library("ui") {
        ]
        deps += [ "//google_update" ]
      } else {

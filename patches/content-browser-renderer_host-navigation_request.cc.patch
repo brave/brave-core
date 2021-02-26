@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 654e3fced4f264286ef511ff1d69b80af4515df3..6218f4ab7673c31177278d08a7c0568438f26de0 100644
+index 81954d5d7ea24434e89fd0209821549e3bb8530a..24fc5405cd9aca74f31b701421a541e92e1b49a2 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
 @@ -302,7 +302,7 @@ void AddAdditionalRequestHeaders(
@@ -11,7 +11,7 @@ index 654e3fced4f264286ef511ff1d69b80af4515df3..6218f4ab7673c31177278d08a7c05684
            : user_agent_override);
  
    if (!render_prefs.enable_referrers) {
-@@ -2080,6 +2080,7 @@ void NavigationRequest::OnRequestRedirected(
+@@ -2041,6 +2041,7 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -19,7 +19,7 @@ index 654e3fced4f264286ef511ff1d69b80af4515df3..6218f4ab7673c31177278d08a7c05684
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -3086,6 +3087,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -3047,6 +3048,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
@@ -27,7 +27,7 @@ index 654e3fced4f264286ef511ff1d69b80af4515df3..6218f4ab7673c31177278d08a7c05684
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
-@@ -5423,7 +5425,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
+@@ -5379,7 +5381,7 @@ void NavigationRequest::SetIsOverridingUserAgent(bool override_ua) {
    auto user_agent_override = GetUserAgentOverride();
    headers.SetHeader(net::HttpRequestHeaders::kUserAgent,
                      user_agent_override.empty()

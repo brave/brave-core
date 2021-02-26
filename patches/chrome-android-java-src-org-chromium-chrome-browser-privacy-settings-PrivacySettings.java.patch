@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index c3319a4aef49f3dc5254f1f7e7f3055b79847923..e62ef6d8db6f8b79f106f37fd690ddc9da3d2898 100644
+index f4d5c4024ddc8e18a5b5a1def3bcbd3ac61def56..476b806fff16252cef534ddec1be997557c086cf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -45,7 +45,7 @@ import org.chromium.ui.text.SpanApplier;
+@@ -47,7 +47,7 @@ import org.chromium.ui.text.SpanApplier;
   * Fragment to keep track of the all the privacy related preferences.
   */
  public class PrivacySettings
@@ -11,7 +11,7 @@ index c3319a4aef49f3dc5254f1f7e7f3055b79847923..e62ef6d8db6f8b79f106f37fd690ddc9
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
      private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
      private static final String PREF_SECURE_DNS = "secure_dns";
-@@ -252,6 +252,7 @@ public class PrivacySettings
+@@ -263,6 +263,7 @@ public class PrivacySettings
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,7 +19,7 @@ index c3319a4aef49f3dc5254f1f7e7f3055b79847923..e62ef6d8db6f8b79f106f37fd690ddc9
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(VectorDrawableCompat.create(
-@@ -266,6 +267,6 @@ public class PrivacySettings
+@@ -277,6 +278,6 @@ public class PrivacySettings
                      null);
              return true;
          }

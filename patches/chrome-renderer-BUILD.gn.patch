@@ -1,12 +1,12 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index a56a2e8a741d79ad66c186a9294463dc38d2c736..176504802d7e072f565ff4dd2287396672041289 100644
+index a69e547cdaa14d4d8deec964648c475a12599228..c4347573f2ac783ca1298d7acf00f88b4c7c3114 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -223,6 +223,7 @@ static_library("renderer") {
+@@ -225,6 +225,7 @@ static_library("renderer") {
      "//v8",
    ]
-
+ 
 +  sources += brave_chrome_renderer_sources public_deps += brave_chrome_renderer_public_deps
    data_deps = [ "//tools/v8_context_snapshot" ]
-
+ 
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
