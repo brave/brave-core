@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.23.1](https://github.com/brave/brave-ios/releases/tag/v1.23.1)
+
+- Refactored both user scripts and content scripts to restrict web-pages interacting with content scripts. ([#2957](https://github.com/brave/brave-ios/issues/2957))
+- Improved handling of incorrect Brave VPN credentials. ([#3334](https://github.com/brave/brave-ios/issues/3334))
+- Improved search engine onboarding by displaying scrollbar to indicate list is scrollable. ([#3223](https://github.com/brave/brave-ios/issues/3223))
+
 ## [1.23](https://github.com/brave/brave-ios/releases/tag/v1.23)
 
 - [Security] Fixed "about:blank" spoofing issue as reported on HackerOne by rayyanh12. ([#2952](https://github.com/brave/brave-ios/issues/2952))
