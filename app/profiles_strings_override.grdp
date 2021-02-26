@@ -13,7 +13,7 @@
       other {Private (#)}
     }
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the inactive avatar button when the user is in private mode.">
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in private mode.">
     This is a private window
   </message>
   <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
@@ -60,50 +60,17 @@
     </if>
 
   <if expr="not is_android">
-    <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
-      Add profile
-    </message>
-    </if>
-
-  <if expr="not is_android">
     <if expr="use_titlecase">
-      <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
-        Add Profile
-      </message>
-      <if expr="not chromeos">
-        <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-          Remove This Profile
-        </message>
-      </if>
       <if expr="chromeos">
         </if>
       </if>
     <if expr="not use_titlecase">
-      <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
-        Add profile
-      </message>
-      <if expr="not chromeos">
-        <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-          Remove this profile
-        </message>
-      </if>
       <if expr="chromeos">
         </if>
       </if>
     <if expr="chromeos">
       </if>
-    <if expr="chromeos">
-      </if>
-    <if expr="not chromeos">
-      <message name="IDS_USER_MANAGER_REMOVE_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to remove a profile while all profiles are locked.">
-        Please unlock your profile before removing a profile.
-      </message>
-      <message name="IDS_USER_MANAGER_ADD_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to add a profile while all profiles are locked.">
-        Please unlock your profile before adding a profile.
-      </message>
-      </if>
-
-    </if>
+  </if>
 
   <if expr="not chromeos and not is_android">
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the private button in profile card menu">

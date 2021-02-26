@@ -613,6 +613,12 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_ENTRY_VIEWER_SET_LOCK_SCREEN" desc="Text prompting user to set device lock in order to view/copy passwords">
         To view or copy your password here, set screen lock on this device.
       </message>
+      <message name="IDS_PASSWORD_ENTRY_VIEW_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to view passwords">
+        To view passwords, first set a screen lock on your device
+      </message>
+      <message name="IDS_PASSWORD_ENTRY_COPY_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to copy passwords">
+        To copy passwords, first set a screen lock on your device
+      </message>
       <message name="IDS_PASSWORD_EXPORT_SET_LOCK_SCREEN" desc="Text prompting user to set device lock in order to be able to export passwords">
         Turn on screen lock in Settings to export your passwords from this device
       </message>
@@ -653,6 +659,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_LOCKSCREEN_DESCRIPTION_VIEW" desc="When a user attempts to view a password for a particular website in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
         Unlock to view your password
+      </message>
+      <message name="IDS_LOCKSCREEN_DESCRIPTION_EDIT" desc="When a user attempts to edit a password for a particular website in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
+        Unlock to edit your password
       </message>
       <message name="IDS_LOCKSCREEN_DESCRIPTION_EXPORT" desc="When a user attempts to export saved passwords in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
         Unlock to export your passwords
@@ -777,7 +786,7 @@ For example, some websites may respond to this request by showing you ads that a
       </message>
 
       <!-- Privacy Sandbox Settings. Used by //chrome/browser/privacy_sandbox. -->
-      <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy Sandbox' page.">
+      <message name="IDS_PREFS_PRIVACY_SANDBOX" desc="Title for the 'Privacy Sandbox' page. 'Privacy Sandbox' is a noun phrase (title case).">
         Privacy Sandbox
       </message>
       <message name="IDS_PRIVACY_SANDBOX_STATUS_ENABLED" desc="Status text, displayed when the Privacy sandbox APIs are enabled.">
@@ -796,10 +805,10 @@ Today, websites rely on many technologies, like third-party cookies, for importa
 
 Privacy Sandbox preserves the vitality of the open web by creating better ways to perform these services – without breaking sites, and while preventing you from being surreptitiously tracked across the web.
 
-Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies.
+Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PRIVACY_SANDBOX_TOGGLE" desc="Title for the Privacy Sandbox toggle.">
-        Enable Privacy Sandbox
+        Privacy Sandbox trials
       </message>
       <message name="IDS_PRIVACY_SANDBOX_TOGGLE_DESCRIPTION" desc="Description for the Privacy Sandbox toggle.">
         When enabled, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
@@ -809,7 +818,7 @@ Privacy Sandbox is still in active development and is available in selected regi
 <ph name="BEGIN_LIST_ITEM2">&lt;li2&gt;</ph>Advertisers can study the effectiveness of ads in a way that does not track you across sites.<ph name="END_LIST_ITEM2">&lt;/li2&gt;</ph>
       </message>
       <message name="IDS_PRIVACY_SANDBOX_SNACKBAR_MESSAGE" desc="The text displayed in the snackbar, which gives the user an option to navigate to the Privacy Sandbox settings page. 'Privacy sandbox' has TC ID 5753235213964358658.">
-        Explore the Privacy Sandbox
+        Learn about and control new technologies that aim to replace third-party cookies
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1231,11 +1240,20 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SETTINGS_AUTOMATIC" desc="Title of Translation settings that lists languages that should be automatically translated.">
         Automatically translate these languages
       </message>
-      <message name="IDS_LANGUAGES_SETTINGS_DONT_OFFER_LANG" desc="Title of Translation settings that lists languages where no prompt to translate will be shown.">
+      <message name="IDS_LANGUAGES_SETTINGS_AUTOMATIC_TITLE" desc="Short title for Translation settings page showing a list of languages that should be automatically translated.">
+        Automatically translate
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_DONT_OFFER_LANGS" desc="Title of Translation settings that lists languages where no prompt to translate will be shown.">
         Don’t offer to translate these languages
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_NEVER_LANGS_TITLE" desc="Short title for Translation settings page showing a list of languages that should never be translated">
+        Never translate
       </message>
       <message name="IDS_LANGUAGES_SETTINGS_DONT_OFFER_SITES" desc="Title of Translation settings that lists websites where no prompt to translate will be shown.">
         Don’t offer to translate these sites
+      </message>
+      <message name="IDS_LANGUAGES_SETTINGS_NEVER_SITES_TITLE" desc="Short title for Translation settings page showing a list of sites that should never be translated">
+        Never translate sites
       </message>
 
       <!-- Lite Mode-->
@@ -2110,6 +2128,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTMENU_SEARCH_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR-LIMIT=30]">
         Search with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
+      <message name="IDS_CONTEXTMENU_SEARCH_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR-LIMIT=30]">
+        Search image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
+      <message name="IDS_CONTEXTMENU_TRANSLATE_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive chip for deep linking into google lens for translate results. [CHAR-LIMIT=30]">
+          Translate image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
       <message name="IDS_CONTEXTMENU_SHOP_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
         Shop similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
@@ -2214,6 +2238,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_ACCESSIBILITY" desc="The content description for the bottom sheet install UI.">
         Install this app
+      </message>
+      <message name="IDS_PWA_INSTALL_BOTTOM_SHEET_SCREENSHOT" desc="The content description string for a screenshot in the bottom sheet install UI.">
+        Screenshot
       </message>
       <message name="IDS_IMAGE_ZOOM_CONTENT_DESCRIPTION" desc="The content description string for the screenshot in the image zoom view.">
         Screenshot. Tap to close.
@@ -2705,9 +2732,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
       <message name="IDS_REMOVE_ALL" desc="Context menu option to clear the list of recently closed tabs">
         Remove all
-      </message>
-      <message name="IDS_ACCESSIBILITY_NTP_OFFLINE_BADGE" desc="Content description for the badge that indicates offline availability of a most visited item or content suggestion on the new tab page.">
-        Available offline
       </message>
       <message name="IDS_NTP_LEARN_MORE_ABOUT_SUGGESTED_CONTENT" desc="Text in the footer of the New Tab Page. Part of the text is a link to a help center page where the user can learn more about suggested content.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph> about suggested content
@@ -3597,7 +3621,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
         You can clear the data in Brave Settings
       </message>
       <message name="IDS_TWA_CLEAR_DATA_DIALOG_KEEP_DATA" desc="Text on the negative button of the clear data dialog">
-        Keep data
+        Keep Data
       </message>
       <message name="IDS_TWA_CLEAR_DATA_SITE_SELECTION_TITLE" desc="Title of screen showing the sites linked to TWA, allowing the user to clean data in any of them.">
         Linked sites
@@ -4081,14 +4105,6 @@ Data from your Private session will only be cleared from Brave when you <ph name
          Sign-in failed
       </message>
 
-      <message name="IDS_CABLEV2_USB_PROMPT_TITLE" desc="The title of a screen that advises the user to try connecting their phone with a USB cable. This appears when the user is trying to sign in to a desktop/laptop by using their phone. If the connection isn't working (for example because they have no internet service on their phone) then we suggest that they can use a physical cable to connect the phone with the desktop/laptop. This title is rather generic and a different message is shown below to give precise instructions.">
-         Connection seems to be taking quite long…
-      </message>
-
-      <message name="IDS_CABLEV2_USB_PROMPT_BODY" desc="The body of a screen that advises the user to try connecting their phone with a USB cable. This appears when the user is trying to sign in to a desktop/laptop by using their phone. If the connection isn't working (for example because they have no internet service on their phone) then we suggest that they can use a physical cable to connect the phone with the desktop/laptop.">
-         Try connecting your phone with a USB cable
-      </message>
-
       <message name="IDS_CABLEV2_USB_DISCON_TITLE" desc="The title of a screen that advises the user to disconnect their phone. This shows when the user has connected their phone to their computer using a USB cable and needs to disconnect it once they have finished their current actions.">
          Connected with USB cable
       </message>
@@ -4172,7 +4188,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <message name="IDS_SHARING_HIGHLIGHTS" desc="Label for Link-to-text button in the sharing hub.">
-        Link to text
+        Link to highlight
       </message>
 
       <message name="IDS_SHARING_COPIED" desc="Text shown in the toast notification when Copy is selected in the sharing hub.">
@@ -4232,15 +4248,15 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <message name="IDS_LINK_TO_TEXT_FAILURE_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
-        Can’t create link to text. Share link to page.
+        Can’t create link to highlight. Share link to page.
       </message>
 
       <message name="IDS_LINK_TO_TEXT_FAILURE_TOAST_MESSAGE_V2" desc="Toast displayed when link to highlighted text was not possible to create.">
-        Can’t create link to text
+        Can’t create link to highlight
       </message>
 
       <message name="IDS_LINK_TO_TEXT_SUCCESS_LINK_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">
-        Include link to text
+        Include link to highlight
       </message>
 
       <message name="IDS_LINK_TO_TEXT_SUCCESS_TEXT_TOAST_MESSAGE" desc="Toast displayed when link to highlighted text was not possible to create.">

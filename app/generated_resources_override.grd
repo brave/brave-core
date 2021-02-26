@@ -444,9 +444,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="chromeos">
         </if>
-      <if expr="enable_plugins">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -830,6 +827,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New private window menu item">
           New private window
         </message>
+        </if>
+
+      <if expr="toolkit_views">
         </if>
 
       <if expr="enable_service_discovery">
