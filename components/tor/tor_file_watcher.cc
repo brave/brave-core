@@ -15,7 +15,6 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 
 namespace tor {
@@ -42,7 +41,6 @@ TorFileWatcher::TorFileWatcher(const base::FilePath& watch_dir_path)
     : polling_(false),
       repoll_(false),
       watch_dir_path_(std::move(watch_dir_path)),
-      owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
       watch_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner(kWatchTaskTraits)),
       watcher_(new base::FilePathWatcher,
@@ -94,9 +92,7 @@ void TorFileWatcher::OnWatchDirChanged(const base::FilePath& path, bool error) {
   VLOG(2) << "tor: watch directory changed";
 
   if (error) {
-    owner_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(std::move(watch_callback_), false,
-                                  std::vector<uint8_t>(), int()));
+    std::move(watch_callback_).Run(false, std::vector<uint8_t>(), int());
     return;
   }
 
@@ -140,9 +136,7 @@ void TorFileWatcher::Poll() {
     return PollDone();
   }
 
-  owner_task_runner_->PostTask(FROM_HERE,
-                               base::BindOnce(std::move(watch_callback_), true,
-                                              std::move(cookie), port));
+  std::move(watch_callback_).Run(true, std::move(cookie), port);
 }
 
 // PollDone()

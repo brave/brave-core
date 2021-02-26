@@ -60,7 +60,6 @@ class TorFileWatcher : public base::DeleteSoonHelper<TorFileWatcher> {
 
   WatchCallback watch_callback_;
 
-  const scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
   std::unique_ptr<base::FilePathWatcher, base::OnTaskRunnerDeleter> watcher_;
 
