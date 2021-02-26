@@ -65,6 +65,8 @@ class DefaultBrowserIntroCalloutViewController: UIViewController, Themeable {
             log.error("Failed to unwrap iOS settings URL")
             return
         }
+        
+        Preferences.General.defaultBrowserCalloutDismissed.value = true
         UIApplication.shared.open(settingsUrl)
         
         cancelAction()

@@ -15,7 +15,9 @@ struct DefaultBrowserIntroManager {
     /// Returns true if the popup should be shown.
     @discardableResult
     static func prepareAndShowIfNeeded(isNewUser: Bool, launchDate: Date = Date()) -> Bool {
-        if IntroPrefs.completed.value { return false }
+        if IntroPrefs.completed.value || Preferences.General.defaultBrowserCalloutDismissed.value {
+            return false
+        }
         
         IntroPrefs.appLaunchCount.value += 1
         

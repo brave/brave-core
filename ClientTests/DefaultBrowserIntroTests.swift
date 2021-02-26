@@ -16,6 +16,7 @@ class DefaultBrowserIntroTests: XCTestCase {
         IntroPrefs.completed.reset()
         IntroPrefs.appLaunchCount.reset()
         IntroPrefs.nextShowDate.reset()
+        Preferences.General.defaultBrowserCalloutDismissed.reset()
     }
 
     func testPrepareAndShowIfNeeded() throws {
@@ -47,5 +48,21 @@ class DefaultBrowserIntroTests: XCTestCase {
         let superLateDate = Date(timeInterval: 10.days, since: now)
         XCTAssertFalse(DefaultBrowserIntroManager.prepareAndShowIfNeeded(isNewUser: true,
                                                                     launchDate: superLateDate))
+    }
+    
+    func testDoNotShowTwice() throws {
+        let now = Date()
+        // First launch
+        XCTAssertFalse(DefaultBrowserIntroManager.prepareAndShowIfNeeded(isNewUser: true, launchDate: now))
+        
+        // Simulate user tapping on settings, we always set this pref to true then.
+        Preferences.General.defaultBrowserCalloutDismissed.value = true
+        
+        // Second launch
+        XCTAssertFalse(DefaultBrowserIntroManager.prepareAndShowIfNeeded(isNewUser: true, launchDate: now))
+        
+        let laterDate = Date(timeInterval: 2.days, since: now)
+        XCTAssertFalse(DefaultBrowserIntroManager.prepareAndShowIfNeeded(isNewUser: true,
+                                                                    launchDate: laterDate))
     }
 }
