@@ -15,8 +15,8 @@ const locale = {
   headerButton: 'Learn more',
 
   // Header Private Window with Tor
-  headerTorTitle: 'Private Window with Tor',
-  headerTorText: 'Brave never remembers what you do in a Private Window. With Tor, your browsing is also hidden from your ISP or employer, and your IP address is hidden from the sites you visit.',
+  headerTorTitle: 'Private Window with Tor Connectivity',
+  headerTorText: 'Brave never remembers what you do in a Private Window. With Tor connectivity, your IP address is also hidden from the sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.',
   headerTorButton: 'Learn more about Private Windows with Tor',
 
   // Box for DDG
@@ -31,9 +31,9 @@ const locale = {
   boxTorLabel2: 'You are browsing privately with',
   boxTorTitle: 'Tor Protection',
   // Private Window with Tor - Tor Box
-  boxTorText: 'Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting either. Tor can slow down browsing and some sites might not work at all.',
+  boxTorText: 'Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.',
   // Private Window - Tor Box
-  boxTorText2: 'Using Private Tabs only changes what Brave does on your device — it doesn\'t change anyone else\'s behavior. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Open a Private Window with Tor from the menu, or with Alt+Shift+N or Option+Shift+N.',
+  boxTorText2: 'Using Private Windows only changes what Brave does on your device — it doesn\'t change anyone else\'s behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with Alt+Shift+N or Option+Shift+N.',
   boxTorButton: 'Learn more about Tor in Brave',
 
   // Modal Private Window with Tor
