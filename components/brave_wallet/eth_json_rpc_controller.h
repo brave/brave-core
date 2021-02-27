@@ -41,6 +41,12 @@ class EthJsonRpcController {
       base::OnceCallback<void(bool status, const std::string& balance)>;
   void GetBalance(const std::string& address, GetBallanceCallback callback);
 
+  using GetERC20TokenBalanceCallback =
+      base::OnceCallback<void(bool status, const std::string& balance)>;
+  bool GetERC20TokenBalance(const std::string& conract_address,
+                            const std::string& address,
+                            GetERC20TokenBalanceCallback callback);
+
   Network GetNetwork() const;
   GURL GetNetworkURL() const;
   void SetNetwork(Network network);
@@ -56,6 +62,11 @@ class EthJsonRpcController {
                     const int status,
                     const std::string& body,
                     const std::map<std::string, std::string>& headers);
+  void OnGetERC20TokenBalance(
+      GetERC20TokenBalanceCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
 
   content::BrowserContext* context_;
   GURL network_url_;

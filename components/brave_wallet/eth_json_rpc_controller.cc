@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/environment.h"
+#include "brave/components/brave_wallet/eth_call_data_builder.h"
 #include "brave/components/brave_wallet/eth_requests.h"
 #include "brave/components/brave_wallet/eth_response_parser.h"
 #include "content/public/browser/browser_context.h"
@@ -204,6 +205,39 @@ void EthJsonRpcController::OnGetBalance(
   }
 
   std::move(callback).Run(true, balance);
+}
+
+bool EthJsonRpcController::GetERC20TokenBalance(
+    const std::string& contract,
+    const std::string& address,
+    EthJsonRpcController::GetBallanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenBalance,
+                     base::Unretained(this), std::move(callback));
+  std::string data;
+  if (!erc20::BalanceOf(address, &data)) {
+    return false;
+  }
+  Request(eth_call("", address, "", "", "", data, ""),
+          std::move(internal_callback), true);
+  return true;
+}
+
+void EthJsonRpcController::OnGetERC20TokenBalance(
+    GetERC20TokenBalanceCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string result;
+  if (!ParseEthCall(body, &result)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::move(callback).Run(true, result);
 }
 
 }  // namespace brave_wallet

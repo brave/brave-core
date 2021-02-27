@@ -52,9 +52,7 @@ TEST(EthResponseParserUnitTest, ParseEthCall) {
   })");
   std::string result;
   ASSERT_TRUE(ParseEthGetBalance(json, &result));
-  ASSERT_EQ(
-      result,
-      "0x0");
+  ASSERT_EQ(result, "0x0");
 }
 
 }  // namespace brave_wallet

@@ -17,6 +17,8 @@ source_set("brave_wallet") {
     "brave_wallet_service.h",
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
+    "eth_call_data_builder.cc",
+    "eth_call_data_builder.h",
     "eth_json_rpc_controller.cc",
     "eth_json_rpc_controller.h",
     "eth_requests.cc",

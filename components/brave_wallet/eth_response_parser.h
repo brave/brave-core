@@ -15,7 +15,6 @@ namespace brave_wallet {
 bool ParseEthGetBalance(const std::string& json, std::string* hex_balance);
 bool ParseEthCall(const std::string& json, std::string* result);
 
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_ETH_RESPONSE_PARSER_H_
