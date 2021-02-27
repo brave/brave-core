@@ -42,21 +42,4 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
   return true;
 }
 
-int OccurrencesForRollingTimeConstraint(
-    const std::deque<int64_t> history,
-    const int64_t time_constraint_in_seconds) {
-  int count = 0;
-
-  const int64_t now_in_seconds =
-      static_cast<int64_t>(base::Time::Now().ToDoubleT());
-
-  for (const auto& timestamp_in_seconds : history) {
-    if (now_in_seconds - timestamp_in_seconds < time_constraint_in_seconds) {
-      count++;
-    }
-  }
-
-  return count;
-}
-
 }  // namespace ads

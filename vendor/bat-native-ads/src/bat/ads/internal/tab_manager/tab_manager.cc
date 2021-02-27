@@ -21,6 +21,11 @@ TabManager::TabManager() {
   g_tab_manager = this;
 
   is_foregrounded_ = AdsClientHelper::Get()->IsForeground();
+  if (is_foregrounded_) {
+    BLOG(1, "Browser window is active");
+  } else {
+    BLOG(1, "Browser window is inactive");
+  }
 }
 
 TabManager::~TabManager() {
@@ -44,6 +49,10 @@ bool TabManager::IsForegrounded() const {
 }
 
 void TabManager::OnForegrounded() {
+  if (is_foregrounded_) {
+    return;
+  }
+
   BLOG(1, "Browser window did become active");
 
   is_foregrounded_ = true;
@@ -53,6 +62,10 @@ void TabManager::OnForegrounded() {
 }
 
 void TabManager::OnBackgrounded() {
+  if (!is_foregrounded_) {
+    return;
+  }
+
   BLOG(1, "Browser window did enter background");
 
   is_foregrounded_ = false;
@@ -80,6 +93,16 @@ void TabManager::OnUpdated(const int32_t id,
 
   if (!is_visible) {
     BLOG(7, "Tab id " << id << " is occluded");
+
+    if (!GetForId(id)) {
+      // Readd reloaded tabs when browser is restarted
+      TabInfo tab;
+      tab.id = id;
+      tab.url = url;
+
+      AddTab(id, tab);
+    }
+
     return;
   }
 
@@ -90,15 +113,14 @@ void TabManager::OnUpdated(const int32_t id,
 
     BLOG(2, "Tab id " << id << " was updated");
 
+    UserActivity::Get()->RecordEvent(UserActivityEventType::kTabUpdated);
+
     tabs_[id].url = url;
 
     return;
   }
 
   BLOG(2, "Tab id " << id << " is visible");
-
-  UserActivity::Get()->RecordEvent(
-      UserActivityEventType::kOpenedNewOrFocusedOnExistingTab);
 
   last_visible_tab_id_ = visible_tab_id_;
 
@@ -108,13 +130,26 @@ void TabManager::OnUpdated(const int32_t id,
   tab.id = id;
   tab.url = url;
 
-  tabs_.insert({id, tab});
+  if (GetForId(id)) {
+    BLOG(2, "Focused on existing tab id " << id);
+
+    UserActivity::Get()->RecordEvent(
+        UserActivityEventType::kFocusedOnExistingTab);
+
+    UpdateTab(id, tab);
+  } else {
+    BLOG(2, "Opened a new tab with id " << id);
+
+    UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+
+    AddTab(id, tab);
+  }
 }
 
 void TabManager::OnClosed(const int32_t id) {
   BLOG(2, "Tab id " << id << " was closed");
 
-  tabs_.erase(id);
+  RemoveTab(id);
 
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 }
@@ -138,17 +173,18 @@ void TabManager::OnMediaStopped(const int32_t id) {
 
   BLOG(2, "Tab id " << id << " stopped playing media");
 
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kStoppedPlayingMedia);
+
   tabs_[id].is_playing_media = false;
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
-  TabInfo tab;
-
-  if (tabs_.find(id) != tabs_.end()) {
-    tab = tabs_.at(id);
+  const base::Optional<TabInfo> tab = GetForId(id);
+  if (!tab) {
+    return false;
   }
 
-  return tab.is_playing_media;
+  return tab->is_playing_media;
 }
 
 base::Optional<TabInfo> TabManager::GetVisible() const {
@@ -165,6 +201,23 @@ base::Optional<TabInfo> TabManager::GetForId(const int32_t id) const {
   }
 
   return tabs_.at(id);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void TabManager::AddTab(const int32_t id, const TabInfo& tab) {
+  DCHECK(!GetForId(id));
+  tabs_[id] = tab;
+}
+
+void TabManager::UpdateTab(const int32_t id, const TabInfo& tab) {
+  DCHECK(GetForId(id));
+  tabs_[id] = tab;
+}
+
+void TabManager::RemoveTab(const int32_t id) {
+  DCHECK(GetForId(id));
+  tabs_.erase(id);
 }
 
 }  // namespace ads

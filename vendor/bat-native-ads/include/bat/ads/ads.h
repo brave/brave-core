@@ -86,19 +86,26 @@ class ADS_EXPORT Ads {
   virtual void OnAdsSubdivisionTargetingCodeHasChanged() = 0;
 
   // Should be called when a page has loaded and the content is available for
-  // analysis. |redirect_chain| contains the chain of redirects, incuding
+  // analysis. |page_transition_type| contains the page transition type between
+  // pages, otherwise should be set to |-1|. |has_user_gesture| returns true if
+  // the navigation was initiated by a user gesture, otherwise should be set to
+  // false. |redirect_chain| contains the chain of redirects, including
   // client-side redirect and the current URL. |content| will contain the HTML
   // page content
   virtual void OnPageLoaded(const int32_t tab_id,
+                            const int32_t page_transition_type,
+                            const bool has_user_gesture,
                             const std::vector<std::string>& redirect_chain,
                             const std::string& content) = 0;
 
-  // Should be called when a user is no longer idle. This call is optional for
-  // mobile devices
-  virtual void OnUnIdle() = 0;
+  // Should be called when a user is no longer idle. |idle_time| returns the
+  // idle time in seconds. |was_locked| returns true if the screen is locked,
+  // otherwise should be set to false. This should not be called on mobile
+  // devices
+  virtual void OnUnIdle(const int idle_time, const bool was_locked) = 0;
 
   // Should be called when a user is idle for the threshold set in
-  // |SetIdleThreshold|. This call is optional for mobile devices
+  // |prefs::kIdleTimeThreshold|. This should not be called on mobile devices
   virtual void OnIdle() = 0;
 
   // Should be called when the browser becomes active

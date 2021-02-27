@@ -63,6 +63,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/bandits/epsilon_greedy_bandit_features_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/purchase_intent/purchase_intent_features_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/text_classification/text_classification_features_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/features/user_activity/user_activity_features_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap_unittest.cc",
@@ -93,6 +94,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_hour_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_frequency_cap_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/idle_time_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/legacy_migration/legacy_migration_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/country_code_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/subdivision_code_util_unittest.cc",
@@ -112,6 +114,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/ads_server_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/confirmations_server_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/rewards_server_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/server/via_header_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/string_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/tab_manager/tab_manager_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.cc",
@@ -133,7 +136,11 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_util.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/unittest_util.h",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/url_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/page_transition_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/user_activity_scoring_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/user_activity_scoring_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/user_activity_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/user_activity_util_unittest.cc",
     ]
 
     if (!is_android) {
