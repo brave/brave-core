@@ -26,6 +26,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/future_join_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/future_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/shared_future_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/sql_store_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/test_ledger_client.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/test_ledger_client.h",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/test_ledger_client_unittest.cc",

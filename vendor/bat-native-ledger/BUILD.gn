@@ -197,6 +197,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/core/future.h",
     "src/bat/ledger/internal/core/future_join.h",
     "src/bat/ledger/internal/core/shared_future.h",
+    "src/bat/ledger/internal/core/sql_store.cc",
+    "src/bat/ledger/internal/core/sql_store.h",
     "src/bat/ledger/internal/credentials/credentials.h",
     "src/bat/ledger/internal/credentials/credentials_common.cc",
     "src/bat/ledger/internal/credentials/credentials_common.h",
