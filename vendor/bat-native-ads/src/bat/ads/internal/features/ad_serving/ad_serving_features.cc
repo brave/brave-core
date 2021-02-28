@@ -6,6 +6,7 @@
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 
 #include "base/metrics/field_trial_params.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace features {
@@ -14,6 +15,10 @@ namespace {
 
 const char kFeatureName[] = "AdServing";
 
+const char kFieldTrialParameterDefaultAdNotificationsPerHour[] =
+    "default_ad_notifications_per_hour";
+const int kDefaultDefaultAdNotificationsPerHour =
+    kDefaultAdNotificationsPerHour;
 const char kFieldTrialParameterMaximumAdNotificationsPerDay[] =
     "maximum_ad_notifications_per_day";
 const int kDefaultMaximumAdNotificationsPerDay = 40;
@@ -38,6 +43,12 @@ const base::Feature kAdServing{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
 
 bool IsAdServingEnabled() {
   return base::FeatureList::IsEnabled(kAdServing);
+}
+
+int GetDefaultAdNotificationsPerHour() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterDefaultAdNotificationsPerHour,
+      kDefaultDefaultAdNotificationsPerHour);
 }
 
 int GetMaximumAdNotificationsPerDay() {
