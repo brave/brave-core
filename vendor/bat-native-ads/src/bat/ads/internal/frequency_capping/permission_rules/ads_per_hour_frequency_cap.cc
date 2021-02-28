@@ -10,10 +10,9 @@
 #include <deque>
 
 #include "base/time/time.h"
-#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/pref_names.h"
+#include "bat/ads/internal/settings/settings.h"
 
 namespace ads {
 
@@ -49,8 +48,7 @@ bool AdsPerHourFrequencyCap::DoesRespectCap(
 
   const uint64_t time_constraint = base::Time::kSecondsPerHour;
 
-  const uint64_t cap =
-      AdsClientHelper::Get()->GetUint64Pref(prefs::kAdsPerHour);
+  const uint64_t cap = settings::GetAdsPerHour();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, cap);

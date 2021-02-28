@@ -8,7 +8,6 @@
 #include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -46,10 +45,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const uint64_t ads_per_hour = 5;
 
-  const AdEventList ad_events(kDefaultAdNotificationsPerHour, ad_event);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+
+  const AdEventList ad_events(ads_per_hour, ad_event);
 
   // Act
   AdsPerHourFrequencyCap frequency_cap(ad_events);
@@ -67,10 +68,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const uint64_t ads_per_hour = 5;
 
-  const AdEventList ad_events(kDefaultAdNotificationsPerHour, ad_event);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+
+  const AdEventList ad_events(ads_per_hour, ad_event);
 
   // Act
   AdsPerHourFrequencyCap frequency_cap(ad_events);
@@ -86,10 +89,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const uint64_t ads_per_hour = 5;
 
-  const AdEventList ad_events(kDefaultAdNotificationsPerHour - 1, ad_event);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+
+  const AdEventList ad_events(ads_per_hour - 1, ad_event);
 
   // Act
   AdsPerHourFrequencyCap frequency_cap(ad_events);
@@ -105,10 +110,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const uint64_t ads_per_hour = 5;
 
-  const AdEventList ad_events(kDefaultAdNotificationsPerHour, ad_event);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+
+  const AdEventList ad_events(ads_per_hour, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
 
@@ -126,10 +133,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-      ConfirmationType::kViewed);
+  const uint64_t ads_per_hour = 5;
 
-  const AdEventList ad_events(kDefaultAdNotificationsPerHour, ad_event);
+  const AdEventInfo ad_event =
+      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kViewed);
+
+  const AdEventList ad_events(ads_per_hour, ad_event);
 
   FastForwardClockBy(base::TimeDelta::FromMinutes(59));
 
@@ -139,16 +148,6 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
 
   // Assert
   EXPECT_FALSE(is_allowed);
-}
-
-TEST_F(BatAdsAdsPerHourFrequencyCapTest,
-    DefaultAdsPerHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(2UL, kDefaultAdNotificationsPerHour);
 }
 
 }  // namespace ads

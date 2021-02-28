@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_map.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
@@ -21,6 +22,7 @@
 #include "base/guid.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/numerics/ranges.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -515,9 +517,19 @@ bool AdsServiceImpl::IsEnabled() const {
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return base::ClampToRange(GetUint64Pref(ads::prefs::kAdsPerHour),
-      static_cast<uint64_t>(ads::kMinimumAdNotificationsPerHour),
-          static_cast<uint64_t>(ads::kMaximumAdNotificationsPerHour));
+  uint64_t ads_per_hour = GetUint64Pref(ads::prefs::kAdsPerHour);
+  if (ads_per_hour == 0) {
+    const base::Feature kAdServing{"AdServing",
+                                   base::FEATURE_ENABLED_BY_DEFAULT};
+
+    ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
+        kAdServing, "default_ad_notifications_per_hour",
+        ads::kDefaultAdNotificationsPerHour);
+  }
+
+  return base::ClampToRange(
+      ads_per_hour, static_cast<uint64_t>(ads::kMinimumAdNotificationsPerHour),
+      static_cast<uint64_t>(ads::kMaximumAdNotificationsPerHour));
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
