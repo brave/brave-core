@@ -89,4 +89,15 @@ TEST(BraveWalletUtilsUnitTest, HexValueToUint256) {
   ASSERT_EQ(out, (uint256_t)240);
 }
 
+TEST(BraveWalletUtilsUnitTest, Uint256ValueToHex) {
+  ASSERT_EQ(Uint256ValueToHex(1), "0x1");
+  ASSERT_EQ(Uint256ValueToHex(4660), "0x1234");
+  ASSERT_EQ(Uint256ValueToHex(11), "0xb");
+  // "10240000000000000000000000"
+  uint256_t input_val = 102400000000000;
+  input_val *= static_cast<uint256_t>(100000000000);
+  ASSERT_EQ(Uint256ValueToHex(input_val), "0x878678326eac900000000");
+  ASSERT_EQ(Uint256ValueToHex(3735928559), "0xdeadbeef");
+}
+
 }  // namespace brave_wallet

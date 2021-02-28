@@ -110,4 +110,27 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
   return true;
 }
 
+// Takes a uint256_t and converts it to a hex string
+std::string Uint256ValueToHex(uint256_t input) {
+  std::ostringstream ss;
+  while (input > static_cast<uint256_t>(0)) {
+    char i = static_cast<char>(input & static_cast<uint256_t>(0xF));
+    char sz[2] = {'\0'};
+    if (i <= 9) {
+      sz[0] = '0' + i;
+    } else {
+      sz[0] = 'a' + (i - 10);
+    }
+    ss << sz;
+    input >>= 4;
+  }
+  if (ss.str().length() == 0) {
+    ss << "0";
+  }
+  ss << "x0";
+  std::string reversed_hex = ss.str();
+  std::string out(reversed_hex.rbegin(), reversed_hex.rend());
+  return out;
+}
+
 }  // namespace brave_wallet
