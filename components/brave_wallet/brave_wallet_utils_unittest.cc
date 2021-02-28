@@ -63,12 +63,30 @@ TEST(BraveWalletUtilsUnitTest, ConcatHexStrings) {
       &out));
   ASSERT_EQ(out,
             "0x70a082310000000000000000000000004e02f254184E904300e0775E4b8eeCB1"
-            "4a1b29f0");  // NOLINT
+            "4a1b29f0");
   ASSERT_TRUE(ConcatHexStrings("0x0", "0x0", &out));
   ASSERT_EQ(out, "0x00");
   // Invalid input
   ASSERT_FALSE(ConcatHexStrings("0x", "0x0", &out));
   ASSERT_FALSE(ConcatHexStrings("0x0", "0", &out));
+}
+
+TEST(BraveWalletUtilsUnitTest, HexValueToUint256) {
+  uint256_t out;
+  ASSERT_TRUE(HexValueToUint256("0x1", &out));
+  ASSERT_EQ(out, (uint256_t)1);
+  ASSERT_TRUE(HexValueToUint256("0x1234", &out));
+  ASSERT_EQ(out, (uint256_t)4660);
+  ASSERT_TRUE(HexValueToUint256("0xB", &out));
+  ASSERT_EQ(out, (uint256_t)11);
+  uint256_t expected_val = 102400000000000;
+  // "10240000000000000000000000"
+  expected_val *= static_cast<uint256_t>(100000000000);
+  ASSERT_TRUE(HexValueToUint256("0x878678326eac900000000", &out));
+  ASSERT_TRUE(out == (uint256_t)expected_val);
+  // Check padded values too
+  ASSERT_TRUE(HexValueToUint256("0x00000000000000000000000F0", &out));
+  ASSERT_EQ(out, (uint256_t)240);
 }
 
 }  // namespace brave_wallet

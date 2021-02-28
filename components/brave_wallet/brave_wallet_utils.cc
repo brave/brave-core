@@ -6,7 +6,9 @@
 #include "brave/components/brave_wallet/brave_wallet_utils.h"
 
 #include <algorithm>
+#include <sstream>
 
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -81,6 +83,30 @@ bool ConcatHexStrings(const std::string& hex_input1,
   *out =
       base::StringPrintf("%s%s", hex_input1.c_str(),
                          hex_input2.substr(2, hex_input2.length() - 2).c_str());
+  return true;
+}
+
+// Takes a hex string as input and converts it to a uint256_t
+bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
+  if (!out) {
+    return false;
+  }
+  if (!IsValidHexString(hex_input)) {
+    return false;
+  }
+  *out = 0;
+  std::string hex_substr =
+      base::ToLowerASCII(hex_input.substr(2, hex_input.length() - 2));
+  for (size_t i = 0; i < hex_substr.length(); i++) {
+    (*out) <<= 4;
+    if (hex_substr[i] >= '0' && hex_substr[i] <= '9') {
+      (*out) += static_cast<uint256_t>(hex_substr[i] - '0');
+    } else if (hex_substr[i] >= 'a' && hex_substr[i] <= 'f') {
+      (*out) += static_cast<uint256_t>(10 + hex_substr[i] - 'a');
+    } else {
+      return false;
+    }
+  }
   return true;
 }
 
