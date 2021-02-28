@@ -98,6 +98,8 @@ class AdsServiceImpl : public AdsService,
   void ChangeLocale(const std::string& locale) override;
 
   void OnPageLoaded(const SessionID& tab_id,
+                    const int32_t page_transition_type,
+                    const bool has_user_gesture,
                     const std::vector<GURL>& redirect_chain,
                     const std::string& content) override;
 
@@ -199,8 +201,8 @@ class AdsServiceImpl : public AdsService,
 
   void StartCheckIdleStateTimer();
   void CheckIdleState();
-  void ProcessIdleState(const ui::IdleState idle_state);
-  int GetIdleThreshold();
+  void ProcessIdleState(const ui::IdleState idle_state, const int idle_time);
+  int GetIdleTimeThreshold();
 
   void OnShow(Profile* profile, const std::string& uuid);
   void OnClose(Profile* profile,
@@ -404,6 +406,7 @@ class AdsServiceImpl : public AdsService,
   std::unique_ptr<ads::Database> database_;
 
   ui::IdleState last_idle_state_;
+  int last_idle_time_;
 
   base::RepeatingTimer idle_poll_timer_;
 

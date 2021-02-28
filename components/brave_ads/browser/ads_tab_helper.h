@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 
+#include <stdint.h>
+
 #include <string>
 #include <vector>
 
@@ -87,8 +89,9 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool is_active_;
   bool is_browser_active_;
   std::vector<GURL> redirect_chain_;
-
-  bool run_distiller_;
+  int32_t page_transition_;
+  bool has_user_gesture_;
+  bool should_process_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
   WEB_CONTENTS_USER_DATA_KEY_DECL();

@@ -47,7 +47,7 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterUint64Pref(ads::prefs::kAdsPerHour,
                                ads::kDefaultAdNotificationsPerHour);
 
-  registry->RegisterIntegerPref(ads::prefs::kIdleThreshold, 15);
+  registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
 
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowAdsSubdivisionTargeting,
                                 false);

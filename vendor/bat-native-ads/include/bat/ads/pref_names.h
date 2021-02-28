@@ -23,7 +23,7 @@ extern const char kShouldAllowConversionTracking[];
 
 extern const char kAdsPerHour[];
 
-extern const char kIdleThreshold[];
+extern const char kIdleTimeThreshold[];
 
 extern const char kShouldAllowAdsSubdivisionTargeting[];
 extern const char kAdsSubdivisionTargetingCode[];

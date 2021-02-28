@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h"
+#include "bat/ads/internal/user_activity/user_activity_scoring_util.h"
 
 #include <vector>
 
@@ -12,23 +12,24 @@
 #include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/internal/user_activity/user_activity.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsUserActivityFrequencyCapTest : public UnitTestBase {
+class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
  protected:
-  BatAdsUserActivityFrequencyCapTest() = default;
+  BatAdsUserActivityScoringUtilTest() = default;
 
-  ~BatAdsUserActivityFrequencyCapTest() override = default;
+  ~BatAdsUserActivityScoringUtilTest() override = default;
 
   void SetUp() override {
     UnitTestBase::SetUp();
 
     base::FieldTrialParams parameters;
     const char kTriggersParameter[] = "triggers";
-    parameters[kTriggersParameter] = "0D=1.0;0E=1.0;08=1.0";
+    parameters[kTriggersParameter] = "0D=1.0;08=1.0";
     const char kTimeWindowParameter[] = "time_window";
     parameters[kTimeWindowParameter] = "1h";
     const char kThresholdParameter[] = "threshold";
@@ -46,46 +47,55 @@ class BatAdsUserActivityFrequencyCapTest : public UnitTestBase {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_F(BatAdsUserActivityFrequencyCapTest,
-       AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
+TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   // Act
-  UserActivityFrequencyCap frequency_cap;
-  const bool is_allowed = frequency_cap.ShouldAllow();
+  const bool was_user_active = WasUserActive();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(was_user_active);
 }
 
-TEST_F(BatAdsUserActivityFrequencyCapTest,
-       AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
+TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
+  // Arrange
+
+  // Act
+  const bool was_user_active = WasUserActive();
+
+  // Assert
+  EXPECT_FALSE(was_user_active);
+}
+
+TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
   UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kPlayedMedia);
+
+  // Act
+  const bool was_user_active = WasUserActive();
+
+  // Assert
+  EXPECT_FALSE(was_user_active);
+}
+
+TEST_F(BatAdsUserActivityScoringUtilTest,
+       WasUserInactiveAfterTimeWindowHasElapsed) {
+  // Arrange
+  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
-  // Act
-  UserActivityFrequencyCap frequency_cap;
-  const bool is_allowed = frequency_cap.ShouldAllow();
-
-  // Assert
-  EXPECT_TRUE(is_allowed);
-}
-
-TEST_F(BatAdsUserActivityFrequencyCapTest,
-       DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
-  // Arrange
-  UserActivity::Get()->RecordEvent(UserActivityEventType::kOpenedNewTab);
+  const base::TimeDelta elapsed_time_window =
+      features::user_activity::GetTimeWindow() +
+      base::TimeDelta::FromSeconds(1);
+  AdvanceClock(elapsed_time_window);
 
   // Act
-  UserActivityFrequencyCap frequency_cap;
-  const bool is_allowed = frequency_cap.ShouldAllow();
+  const bool was_user_active = WasUserActive();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(was_user_active);
 }
 
 }  // namespace ads

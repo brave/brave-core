@@ -107,11 +107,13 @@ class AdsImpl : public Ads,
   void OnAdsSubdivisionTargetingCodeHasChanged() override;
 
   void OnPageLoaded(const int32_t tab_id,
+                    const int32_t page_transition_type,
+                    const bool has_user_gesture,
                     const std::vector<std::string>& redirect_chain,
                     const std::string& content) override;
 
   void OnIdle() override;
-  void OnUnIdle() override;
+  void OnUnIdle(const int idle_time, const bool was_locked) override;
 
   void OnForeground() override;
   void OnBackground() override;

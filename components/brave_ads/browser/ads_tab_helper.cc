@@ -17,6 +17,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !defined(OS_ANDROID)
@@ -33,7 +34,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       ads_service_(nullptr),
       is_active_(false),
       is_browser_active_(true),
-      run_distiller_(false),
+      should_process_(false),
       weak_factory_(this) {
   if (!tab_id_.is_valid()) {
     return;
@@ -84,47 +85,50 @@ void AdsTabHelper::RunIsolatedJavaScript(
 }
 
 void AdsTabHelper::OnJavaScriptResult(base::Value value) {
-  DCHECK(ads_service_ && ads_service_->IsEnabled());
+  if (!IsAdsEnabled()) {
+    return;
+  }
 
   DCHECK(value.is_string());
   std::string content;
   value.GetAsString(&content);
 
-  ads_service_->OnPageLoaded(tab_id_, redirect_chain_, content);
+  ads_service_->OnPageLoaded(tab_id_, page_transition_, has_user_gesture_,
+                             redirect_chain_, content);
 }
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInMainFrame() ||
+  DCHECK(navigation_handle);
+
+  if (!IsAdsEnabled() || !navigation_handle->IsInMainFrame() ||
       !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
     return;
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  if (navigation_handle->IsSameDocument()) {
-    if (!IsAdsEnabled()) {
-      // Do not call the ads service if the ad service isn't enabled
-      return;
-    }
+  const ui::PageTransition page_transition =
+      navigation_handle->GetPageTransition();
 
-    content::RenderFrameHost* render_frame_host =
-        navigation_handle->GetRenderFrameHost();
+  page_transition_ = static_cast<int32_t>(page_transition);
 
-    RunIsolatedJavaScript(render_frame_host);
+  has_user_gesture_ = navigation_handle->HasUserGesture();
 
+  if (!navigation_handle->IsSameDocument()) {
+    should_process_ = navigation_handle->GetRestoreType() ==
+                      content::RestoreType::kNotRestored;
     return;
   }
 
-  bool was_restored =
-      navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
+  content::RenderFrameHost* render_frame_host =
+      navigation_handle->GetRenderFrameHost();
 
-  run_distiller_ = !was_restored;
+  RunIsolatedJavaScript(render_frame_host);
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
-  if (!IsAdsEnabled() || !run_distiller_) {
-    // Do not start distilling if the ad service isn't enabled
+  if (!IsAdsEnabled() || !should_process_) {
     return;
   }
 
@@ -140,6 +144,8 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                  const GURL& validated_url) {
+  DCHECK(render_frame_host);
+
   if (render_frame_host->GetParent()) {
     return;
   }
@@ -168,16 +174,22 @@ void AdsTabHelper::MediaStoppedPlaying(
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
-  bool old_active = is_active_;
-  if (visibility == content::Visibility::HIDDEN) {
-    is_active_ = false;
-  } else if (visibility == content::Visibility::OCCLUDED) {
-    is_active_ = false;
-  } else if (visibility == content::Visibility::VISIBLE) {
-    is_active_ = true;
+  const bool old_is_active = is_active_;
+
+  switch (visibility) {
+    case content::Visibility::HIDDEN:
+    case content::Visibility::OCCLUDED: {
+      is_active_ = false;
+      break;
+    }
+
+    case content::Visibility::VISIBLE: {
+      is_active_ = true;
+      break;
+    }
   }
 
-  if (old_active == is_active_) {
+  if (old_is_active == is_active_) {
     return;
   }
 
@@ -200,13 +212,14 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
     return;
   }
 
-  bool old_active = is_browser_active_;
+  const bool old_is_browser_active = is_browser_active_;
+
   if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
       TabStripModel::kNoTab) {
     is_browser_active_ = true;
   }
 
-  if (old_active == is_browser_active_) {
+  if (old_is_browser_active == is_browser_active_) {
     return;
   }
 
@@ -214,13 +227,16 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  bool old_active = is_browser_active_;
+  DCHECK(browser);
+
+  const bool old_is_browser_active = is_browser_active_;
+
   if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
       TabStripModel::kNoTab) {
     is_browser_active_ = false;
   }
 
-  if (old_active == is_browser_active_) {
+  if (old_is_browser_active == is_browser_active_) {
     return;
   }
 

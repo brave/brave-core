@@ -22,10 +22,6 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
     const uint64_t time_constraint_in_seconds,
     const uint64_t cap);
 
-int OccurrencesForRollingTimeConstraint(
-    const std::deque<int64_t> history,
-    const int64_t time_constraint_in_seconds);
-
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FREQUENCY_CAPPING_FREQUENCY_CAPPING_UTIL_H_

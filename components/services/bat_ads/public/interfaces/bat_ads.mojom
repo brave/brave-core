@@ -65,8 +65,8 @@ interface BatAds {
   Shutdown() => (int32 result);
   ChangeLocale(string locale);
   OnAdsSubdivisionTargetingCodeHasChanged();
-  OnPageLoaded(int32 tab_id, array<string> redirect_chain, string content);
-  OnUnIdle();
+  OnPageLoaded(int32 tab_id, int32 page_transition_type, bool has_user_gesture, array<string> redirect_chain, string content);
+  OnUnIdle(int32 idle_time, bool was_locked);
   OnIdle();
   OnForeground();
   OnBackground();
