@@ -633,7 +633,7 @@
   <message name="IDS_SECURE_PAYMENT_CONFIRMATION_TOTAL_LABEL" desc="In a secure payment confirmation dialog, this is the label for the row of data that shows the total price, e.g. $20.00 USD.">
     Total
   </message>
-  <message name="IDS_SECURE_PAYMENT_CONFIRMATION_VERIFY_BUTTON_LABEL" desc="As in 'Verify my identity', this is the label of the affirmitive button in a payment confirmation dialog that asks the user to verify their identity with a platform authenticator such as a fingerprint reader.">
+  <message name="IDS_SECURE_PAYMENT_CONFIRMATION_VERIFY_BUTTON_LABEL" desc="As in 'Verify my identity', this is the label of the affirmative button in a payment confirmation dialog that asks the user to verify their identity with a platform authenticator such as a fingerprint reader.">
     Verify
   </message>
 </grit-part>
