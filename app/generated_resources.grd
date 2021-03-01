@@ -6826,7 +6826,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Misc strings for SSL UI -->
-      <message name="IDS_UNSAFE_FRAME_MESSAGE" desc="The text displayed in the content that is subsituted to an unsafe frame.">
+      <message name="IDS_UNSAFE_FRAME_MESSAGE" desc="The text displayed in the content that is substituted to an unsafe frame.">
         This frame was blocked because it contains some insecure content.
       </message>
 
