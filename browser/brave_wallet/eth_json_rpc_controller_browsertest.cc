@@ -32,11 +32,19 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       new net::test_server::BasicHttpResponse());
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
-  http_response->set_content(R"({
-    jsonrpc: "2.0",
-    id: 1,
-    result: "0xb539d5"
-  })");
+  if (request.content.find(R"("eth_call")") != std::string::npos) {
+    http_response->set_content(R"({
+      "jsonrpc":"2.0",
+      "id":"b98deb91-6bf4-4ab3-af1a-97e1fc077f5e",
+      "result":"0x00000000000000000000000000000000000000000000000166e12cfce39a0000"
+    })");
+  } else {
+    http_response->set_content(R"({
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": "0xb539d5"
+    })");
+  }
   return std::move(http_response);
 }
 
@@ -94,6 +102,22 @@ class EthJsonRpcBrowserTest : public InProcessBrowserTest {
     ASSERT_EQ(expected_success_, success);
   }
 
+  void OnGetBalance(bool success, const std::string& hex_balance) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_EQ(expected_response_, hex_balance);
+    ASSERT_EQ(expected_success_, success);
+  }
+
+  void OnGetERC20TokenBalance(bool success, const std::string& hex_balance) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_EQ(expected_response_, hex_balance);
+    ASSERT_EQ(expected_success_, success);
+  }
+
   void WaitForResponse(const std::string& expected_response,
                        bool expected_success) {
     if (wait_for_request_) {
@@ -135,19 +159,19 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, Request) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   auto* controller = GetEthJsonRpcController();
   controller->Request(R"({
-          "id":1,
-          "jsonrpc":"2.0",
-          "method":"eth_blockNumber",
-          "params":[]
-        })",
+      "id":1,
+      "jsonrpc":"2.0",
+      "method":"eth_blockNumber",
+      "params":[]
+    })",
                       base::BindOnce(&EthJsonRpcBrowserTest::OnResponse,
                                      base::Unretained(this)),
                       true);
   WaitForResponse(R"({
-    jsonrpc: "2.0",
-    id: 1,
-    result: "0xb539d5"
-  })",
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": "0xb539d5"
+    })",
                   true);
 }
 
@@ -159,4 +183,35 @@ IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, RequestError) {
                                      base::Unretained(this)),
                       true);
   WaitForResponse("", false);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalance) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  auto* controller = GetEthJsonRpcController();
+  controller->GetBalance("0x4e02f254184E904300e0775E4b8eeCB1",
+                         base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
+                                        base::Unretained(this)));
+  WaitForResponse("0xb539d5", true);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetBalanceServerError) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
+  auto* controller = GetEthJsonRpcController();
+  controller->GetBalance("0x4e02f254184E904300e0775E4b8eeCB1",
+                         base::BindOnce(&EthJsonRpcBrowserTest::OnGetBalance,
+                                        base::Unretained(this)));
+  WaitForResponse("", false);
+}
+
+IN_PROC_BROWSER_TEST_F(EthJsonRpcBrowserTest, GetERC20TokenBalance) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  auto* controller = GetEthJsonRpcController();
+  controller->GetERC20TokenBalance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&EthJsonRpcBrowserTest::OnGetERC20TokenBalance,
+                     base::Unretained(this)));
+  WaitForResponse(
+      "0x00000000000000000000000000000000000000000000000166e12cfce39a0000",
+      true);
 }

@@ -8,6 +8,9 @@
 #include <utility>
 
 #include "base/environment.h"
+#include "brave/components/brave_wallet/eth_call_data_builder.h"
+#include "brave/components/brave_wallet/eth_requests.h"
+#include "brave/components/brave_wallet/eth_response_parser.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
@@ -174,6 +177,120 @@ void EthJsonRpcController::SetNetwork(Network network) {
 void EthJsonRpcController::SetCustomNetwork(const GURL& network_url) {
   network_ = Network::kCustom;
   network_url_ = network_url;
+}
+
+void EthJsonRpcController::GetBalance(
+    const std::string& address,
+    EthJsonRpcController::GetBallanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetBalance,
+                     base::Unretained(this), std::move(callback));
+  return Request(eth_getBalance(address, "latest"),
+                 std::move(internal_callback), true);
+}
+
+void EthJsonRpcController::OnGetBalance(
+    GetBallanceCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string balance;
+  if (!ParseEthGetBalance(body, &balance)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, balance);
+}
+
+bool EthJsonRpcController::GetERC20TokenBalance(
+    const std::string& contract,
+    const std::string& address,
+    EthJsonRpcController::GetBallanceCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenBalance,
+                     base::Unretained(this), std::move(callback));
+  std::string data;
+  if (!erc20::BalanceOf(address, &data)) {
+    return false;
+  }
+  Request(eth_call("", address, "", "", "", data, ""),
+          std::move(internal_callback), true);
+  return true;
+}
+
+void EthJsonRpcController::OnGetERC20TokenBalance(
+    GetERC20TokenBalanceCallback callback,
+    const int status,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string result;
+  if (!ParseEthCall(body, &result)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::move(callback).Run(true, result);
+}
+
+// [static]
+std::string EthJsonRpcController::GetChainIDFromNetwork(Network network) {
+  std::string chain_id;
+  switch (network) {
+    case Network::kMainnet:
+      chain_id = "0x1";
+      break;
+    case Network::kRinkeby:
+      chain_id = "0x4";
+      break;
+    case Network::kRopsten:
+      chain_id = "0x3";
+      break;
+    case Network::kGoerli:
+      chain_id = "0x5";
+      break;
+    case Network::kKovan:
+      chain_id = "0x2a";
+      break;
+    case Network::kLocalhost:
+      break;
+    case Network::kCustom:
+      break;
+  }
+  return chain_id;
+}
+
+GURL EthJsonRpcController::GetBlockTrackerURLFromNetwork(Network network) {
+  GURL url;
+  switch (network) {
+    case Network::kMainnet:
+      url = GURL("https://etherscan.io");
+      break;
+    case Network::kRinkeby:
+      url = GURL("https://rinkeby.etherscan.io");
+      break;
+    case Network::kRopsten:
+      url = GURL("https://ropsten.etherscan.io");
+      break;
+    case Network::kGoerli:
+      url = GURL("https://goerli.etherscan.io");
+      break;
+    case Network::kKovan:
+      url = GURL("https://kovan.etherscan.io");
+      break;
+    case Network::kLocalhost:
+      break;
+    case Network::kCustom:
+      break;
+  }
+  return url;
 }
 
 }  // namespace brave_wallet

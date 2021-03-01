@@ -37,11 +37,24 @@ class EthJsonRpcController {
   void Request(const std::string& json_payload,
                URLRequestCallback callback,
                bool auto_retry_on_network_change);
+  using GetBallanceCallback =
+      base::OnceCallback<void(bool status, const std::string& balance)>;
+  void GetBalance(const std::string& address, GetBallanceCallback callback);
+
+  using GetERC20TokenBalanceCallback =
+      base::OnceCallback<void(bool status, const std::string& balance)>;
+  bool GetERC20TokenBalance(const std::string& conract_address,
+                            const std::string& address,
+                            GetERC20TokenBalanceCallback callback);
 
   Network GetNetwork() const;
   GURL GetNetworkURL() const;
   void SetNetwork(Network network);
   void SetCustomNetwork(const GURL& provider_url);
+  // Returns the chain ID for a network or an empty string if no standard
+  // chain ID is defined for the specified network.
+  static std::string GetChainIDFromNetwork(Network network);
+  static GURL GetBlockTrackerURLFromNetwork(Network network);
 
  private:
   using SimpleURLLoaderList =
@@ -49,6 +62,15 @@ class EthJsonRpcController {
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator iter,
                            URLRequestCallback callback,
                            const std::unique_ptr<std::string> response_body);
+  void OnGetBalance(GetBallanceCallback callback,
+                    const int status,
+                    const std::string& body,
+                    const std::map<std::string, std::string>& headers);
+  void OnGetERC20TokenBalance(
+      GetERC20TokenBalanceCallback callback,
+      const int status,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
 
   content::BrowserContext* context_;
   GURL network_url_;
