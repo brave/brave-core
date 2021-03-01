@@ -4257,7 +4257,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_MESSAGE" desc="Message displayed on a snackbar when a paint preview is shown on startup, telling the user that this is a preview of the page">
         Previewing this page
       </message>
-      <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_ACTION" desc="Text displayed on the action button of snackbar, promting user to switch to the live page and exit paint preivew. [CHAR-LIMIT=12]">
+      <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_ACTION" desc="Text displayed on the action button of snackbar, promting user to switch to the live page and exit paint preview. [CHAR-LIMIT=12]">
         Reload
       </message>
       <message name="IDS_PAINT_PREVIEW_STARTUP_AUTO_UPGRADE_TOAST" desc="Text displayed as a toast message when paint preview         is automatically removed and live tab is shown.">
