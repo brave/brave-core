@@ -23,7 +23,7 @@ namespace views {
 
 // Make visual changes to MdTextButton in line with Brave visual style:
 //  - More rounded rectangle (for regular border, focus ring and ink drop)
-//  - Different hover text and boder color for non-prominent button
+//  - Different hover text and border color for non-prominent button
 //  - Differenet hover bg color for prominent background
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
