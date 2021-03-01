@@ -62,7 +62,7 @@ function handleCommand(code, text) {
   } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
     setTheme(text)
   } else if (code == IPFSOnboardingResponse.LOCAL_NODE_LAUNCHED) {
-    $('local-node-button').textContent = '$i18nRaw{watingPeersText}'
+    $('local-node-button').textContent = '$i18nRaw{waitingPeersText}'
   } else if (code == IPFSOnboardingResponse.NO_PEERS_AVAILABLE) {
     showErrorMessage(text)
   } else if (code == IPFSOnboardingResponse.NO_PEERS_LIMIT) {

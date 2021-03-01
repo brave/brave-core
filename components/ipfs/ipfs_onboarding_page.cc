@@ -242,7 +242,7 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "installationText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_INSTALLATION_STATUS));
   load_time_data->SetString(
-      "watingPeersText",
+      "waitingPeersText",
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_WAITING_PEERS_STATUS));
   load_time_data->SetString(
       "retryLimitPeersText",
