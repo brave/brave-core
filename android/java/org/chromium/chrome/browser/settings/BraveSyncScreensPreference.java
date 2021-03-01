@@ -756,7 +756,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-    private void showMainSyncScrypt() {
+    private void showMainSyncScript() {
         if (null != mScrollViewSyncInitial) {
             adjustWidth(mScrollViewSyncInitial, false);
             mScrollViewSyncInitial.setVisibility(View.VISIBLE);
@@ -942,7 +942,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     public void run() {
                         showEndDialog(
                                 getResources().getString(R.string.brave_sync_wrong_qrcode_error));
-                        showMainSyncScrypt();
+                        showMainSyncScript();
                     }
                 });
                 return;
