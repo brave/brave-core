@@ -184,7 +184,7 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       state.binanceState.assetDepoitQRCodeSrcs[asset] = imageSrc
       break
 
-    case types.ON_CONVERTABLE_ASSETS:
+    case types.ON_CONVERTIBLE_ASSETS:
       const { convertAsset, assets } = payload
       if (!convertAsset || !assets) {
         break
