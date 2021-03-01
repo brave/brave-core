@@ -201,7 +201,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
   DCHECK(ctx->browser_context);
-  // DoH or standard DNS quries won't be routed through Tor, so we need to skip
+  // DoH or standard DNS queries won't be routed through Tor, so we need to skip
   // it.
   if (ctx->browser_context->IsTor()) {
     ShouldBlockAdWithOptionalCname(task_runner, std::move(next_callback), ctx,
