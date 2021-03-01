@@ -1632,25 +1632,25 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNCING_CATEGORY" desc="Category to separate search and browse section with sync related data types. [CHAR-LIMT=32]">
         Syncing
       </message>
-      <message name="IDS_SYNC_EVERYTHING_PREF" desc="Title for preference which enables sync'ing of all data types. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_EVERYTHING_PREF" desc="Title for preference which enables syncing of all data types. [CHAR-LIMT=32]">
         Sync everything
       </message>
-      <message name="IDS_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_AUTOFILL" desc="Title for preference which enables syncing of autofill. [CHAR-LIMT=32]">
         Autofill
       </message>
-      <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables sync'ing of bookmarks. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_BOOKMARKS" desc="Title for preference which enables syncing of bookmarks. [CHAR-LIMT=32]">
         Bookmarks
       </message>
-      <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables sync'ing of history data. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_HISTORY" desc="Title for preference which enables syncing of history data. [CHAR-LIMT=32]">
         History
       </message>
-      <message name="IDS_SYNC_PASSWORDS" desc="Title for preference which enables sync'ing of passwords. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_PASSWORDS" desc="Title for preference which enables syncing of passwords. [CHAR-LIMT=32]">
         Passwords
       </message>
-      <message name="IDS_SYNC_RECENT_TABS" desc="Title for preference which enables sync'ing of open tabs. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_RECENT_TABS" desc="Title for preference which enables syncing of open tabs. [CHAR-LIMT=32]">
         Open tabs
       </message>
-      <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR-LIMT=32]">
+      <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables syncing of settings. [CHAR-LIMT=32]">
         Settings
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Brave Pay data for Autofill. 'Brave Pay' should not be translated as it is the product name.">
