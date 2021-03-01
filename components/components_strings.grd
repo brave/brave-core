@@ -296,6 +296,7 @@
       <part file="error_page_strings.grdp" />
       <part file="find_in_page_strings.grdp" />
       <part file="flags_strings.grdp" />
+      <part file="heavy_ad_intervention_strings.grdp" />
       <part file="history_strings.grdp" />
       <part file="javascript_dialogs_strings.grdp" />
       <part file="login_dialog_strings.grdp" />
@@ -318,6 +319,7 @@
       <part file="security_state_strings.grdp" />
       <part file="send_tab_to_self_strings.grdp" />
       <part file="sms_strings.grdp" />
+      <part file="soda_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="subresource_filter_strings.grdp" />
       <part file="sync_ui_strings.grdp" />

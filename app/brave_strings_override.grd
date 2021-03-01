@@ -148,11 +148,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="enable_extensions">
-        <if expr="not use_titlecase">
-          </if>
-        <if expr="use_titlecase">
-          </if>
-      </if>
+        </if>
 
       <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in private mode. Displayed in extensions management UI after an extension is selected to be run in private mode.">
         Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in private mode, unselect this option.
