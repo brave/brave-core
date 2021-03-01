@@ -61,7 +61,7 @@ bool MakeProchlomation(uint64_t metric,
   }
 
   // We have to create a Prochlomation and a PlainShufflerItem to encrypt them
-  // both into an AnalyzerItea and a ShufflerItem, respectively. We'll stage
+  // both into an AnalyzerItem and a ShufflerItem, respectively. We'll stage
   // those here. We can probably do this more efficiently to avoid copies.
   Prochlomation prochlomation;
   PlainShufflerItem plain_shuffler_item;
