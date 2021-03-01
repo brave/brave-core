@@ -8,7 +8,7 @@
 
 // First brave id must be higher than last chrome command.
 // Check chrome/app/chrome_command_ids.h when rebase.
-// ID of IDC_BRAVE_COMANDS_START and first brave command should be same.
+// ID of IDC_BRAVE_COMMANDS_START and first brave command should be same.
 #define IDC_BRAVE_COMMANDS_START 56000
 #define IDC_SHOW_BRAVE_REWARDS   56000
 #define IDC_SHOW_BRAVE_ADBLOCK   56001
