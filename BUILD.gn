@@ -247,7 +247,7 @@ if (!is_mac && !is_android && !is_ios) {
 
       public_deps = []
       foreach(locale, locales) {
-        # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
+        # public_deps is used intentionally because ":create_dist_zip" needs the all dependency
         # of all locale files.
         public_deps += [ ":brave_shields_locales_${locale}" ]
         if (brave_rewards_enabled) {
