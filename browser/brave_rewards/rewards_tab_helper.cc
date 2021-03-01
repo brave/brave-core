@@ -75,7 +75,7 @@ void RewardsTabHelper::ResourceLoadComplete(
   if (!rewards_service_ || !render_frame_host)
     return;
 
-  // TODO(nejczdovc): do we need to get anyother type then XHR??
+  // TODO(nejczdovc): do we need to get any other type then XHR??
   switch (resource_load_info.request_destination) {
     // Formerly ResourceType::kMedia
     case network::mojom::RequestDestination::kAudio:
