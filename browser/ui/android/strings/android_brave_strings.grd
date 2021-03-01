@@ -1327,7 +1327,7 @@ until they verify, or until 90 days have passed.
       <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
         Start browsing to see privacy reporting
       </message>
-      <message name="IDS_SET_BRAVE_AS_YOUR" desc="Deafult browser notification text">
+      <message name="IDS_SET_BRAVE_AS_YOUR" desc="Default browser notification text">
         Set Brave as your default browser for private and secure browsing.
       </message>
       <message name="IDS_ALLOWS_BRAVE_TO_SHOW" desc="Brave stats pref summary text">
