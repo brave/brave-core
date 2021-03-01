@@ -38,7 +38,7 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   }
 
   // In non qwant region, controller is also needed for private profile.
-  // We use separate TemplateURLService for normal and off the recored profile.
+  // We use separate TemplateURLService for normal and off the record profile.
   // That means changing normal profile's provider doesn't affect otr profile's.
   // This controller monitor's normal profile's service and apply its change to
   // otr profile to use same provider.

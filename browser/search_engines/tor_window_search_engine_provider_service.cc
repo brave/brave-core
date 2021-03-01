@@ -23,7 +23,7 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
       otr_profile->GetOriginalProfile()->GetPrefs());
 
   // Configure previously used provider because effective tor profile is
-  // off the recored profile.
+  // off the record profile.
   auto provider_data = GetInitialSearchEngineProvider(otr_profile->GetPrefs());
   TemplateURL provider_url(*provider_data);
   otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
