@@ -2175,7 +2175,7 @@ are declared in tools/grit/grit_rule.gni.
           This app was added by your organization. Restart the app to finish installing it.
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_FINISH_POLICY_WEB_APP_INSTALATION_RESTART" desc="The button in the Finish Policy Web App Installation dialog which closes the app and relaunches it.">
+        <message name="IDS_FINISH_POLICY_WEB_APP_INSTALLATION_RESTART" desc="The button in the Finish Policy Web App Installation dialog which closes the app and relaunches it.">
           Restart
         </message>
         <message name="IDS_FINISH_POLICY_WEB_APP_INSTALLATION_NOT_NOW" desc="The button in the Finish Policy Web App Installation dialog which dismisses the dialog.">
@@ -2183,7 +2183,7 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_FINISH_POLICY_WEB_APP_INSTALATION_RESTART" desc="The button in the Finish Policy Web App Installation dialog which closes the app and relaunches it.">
+        <message name="IDS_FINISH_POLICY_WEB_APP_INSTALLATION_RESTART" desc="The button in the Finish Policy Web App Installation dialog which closes the app and relaunches it.">
           Restart
         </message>
         <message name="IDS_FINISH_POLICY_WEB_APP_INSTALLATION_NOT_NOW" desc="The button in the Finish Policy Web App Installation dialog which dismisses the dialog.">
