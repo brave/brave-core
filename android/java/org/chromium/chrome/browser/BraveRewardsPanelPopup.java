@@ -1814,7 +1814,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.PENDING:
                 case BraveRewardsExternalWallet.VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
-                        Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minimum_balance), Toast.LENGTH_SHORT).show();
                     } else {
                         int requestCode =
                             (status == BraveRewardsExternalWallet.NOT_CONNECTED) ?
@@ -1827,7 +1827,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                 case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT && !isVerifyWalletEnabled()) {
-                        Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minium_balance), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContextUtils.getApplicationContext(), root.getResources().getString(R.string.required_minimum_balance), Toast.LENGTH_SHORT).show();
                     } else {
                         if (!TextUtils.isEmpty(mExternal_wallet.mVerify_url)) {
                             dismiss();

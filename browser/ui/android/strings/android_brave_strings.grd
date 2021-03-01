@@ -1174,7 +1174,7 @@ until they verify, or until 90 days have passed.
       <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
       </message>
-      <message name="IDS_REQUIRED_MINIUM_BALANCE" desc="Text for verify wallet minimum required balance.">
+      <message name="IDS_REQUIRED_MINIMUM_BALANCE" desc="Text for verify wallet minimum required balance.">
         A minimum balance of 25 BAT is required to verify.
       </message>
       <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
