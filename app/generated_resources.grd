@@ -2480,13 +2480,13 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_ALLOWED_MEDIASTREAM_CAMERA_BLOCK" desc="Radio button choice to block a site to access camera, displayed in bubble when a page is accessing camera.">
         Always block camera access
       </message>
-      <message name="IDS_BLOCKED_MEDIASTREAM_MIC_AND_CAMERA_NO_ACTION" desc="Radio button choice to block a site to access microphone and camera, displayed in bubble when a page was blocked from accesssing microphone and camera.">
+      <message name="IDS_BLOCKED_MEDIASTREAM_MIC_AND_CAMERA_NO_ACTION" desc="Radio button choice to block a site to access microphone and camera, displayed in bubble when a page was blocked from accessing microphone and camera.">
         Continue blocking camera and microphone access
       </message>
-      <message name="IDS_BLOCKED_MEDIASTREAM_MIC_NO_ACTION" desc="Radio button choice to block a site to access microphone, displayed in bubble when a page was blocked from accesssing microphone.">
+      <message name="IDS_BLOCKED_MEDIASTREAM_MIC_NO_ACTION" desc="Radio button choice to block a site to access microphone, displayed in bubble when a page was blocked from accessing microphone.">
         Continue blocking microphone access
       </message>
-      <message name="IDS_BLOCKED_MEDIASTREAM_CAMERA_NO_ACTION" desc="Radio button choice to block a site to access camera, displayed in bubble when a page was blocked from accesssing camera.">
+      <message name="IDS_BLOCKED_MEDIASTREAM_CAMERA_NO_ACTION" desc="Radio button choice to block a site to access camera, displayed in bubble when a page was blocked from accessing camera.">
         Continue blocking camera access
       </message>
       <message name="IDS_ALLOWED_MEDIASTREAM_MIC_AND_CAMERA_NO_ACTION" desc="Radio button choice to allow a site to access microphone and camera, displayed in bubble when a page is accessing microphone and camera.">
