@@ -1098,7 +1098,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateIframe(cross_site_url());
   CheckLocalStorageAccessible(child_frame());
 
-  // Thirdy-part cookies blocked:
+  // Third-part cookies blocked:
   Block3PCookies();
   // Main frame storage is always accessible.
   NavigateToPageWithIframe();
