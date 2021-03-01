@@ -3211,7 +3211,7 @@
       <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn how to update applications<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_LIST_TITLE" desc="This is the title for the list of incompatible applications.">
-      {NUM_APLLICATIONS, plural,
+      {NUM_APPLICATIONS, plural,
         =1 {Application}
         other {Applications}}
     </message>
