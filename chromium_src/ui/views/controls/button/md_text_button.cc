@@ -108,7 +108,7 @@ void MdTextButton::UpdateColors() {
   if (GetState() == ButtonState::STATE_PRESSED
         || GetState() == ButtonState::STATE_HOVERED) {
     // First, get the same background fill color that MdTextButtonBase does.
-    // It is undfortunate to copy these lines almost as-is. Consider otherwise
+    // It is unfortunate to copy these lines almost as-is. Consider otherwise
     // patching it in via a #define.
     SkColor bg_color =
         theme->GetSystemColor(ui::NativeTheme::kColorId_DialogBackground);
