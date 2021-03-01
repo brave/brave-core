@@ -65,7 +65,7 @@ TEST(BraveCommandLineHelperUnitTest, TestAppendSwitch) {
   ASSERT_TRUE(command_line.HasSwitch("a"));
   ASSERT_EQ(1, CountA(command_line.argv()));
 
-  // Chromium's AppendSwtich always adds to argv even if the switch
+  // Chromium's AppendSwitch always adds to argv even if the switch
   // has already been added.
   command_line.AppendSwitch("a");
   ASSERT_EQ(2, CountA(command_line.argv()));
