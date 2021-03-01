@@ -19,7 +19,7 @@ const char kGCMChannelStatus[] = "gcm.channel_status";
 void RegisterGCMProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Deprecated Chromium pref.
   registry->SetDefaultPrefValue(kGCMChannelStatus, base::Value(false));
-  // Current Brave eqiuvalent of the deprecated pref.
+  // Current Brave equivalent of the deprecated pref.
   registry->RegisterBooleanPref(kBraveGCMChannelStatus, false);
 }
 
