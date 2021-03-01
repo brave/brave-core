@@ -38,13 +38,13 @@ interface AddFundsAmountOption {
   totalCharge: string
 }
 
-interface AmountOpionPanelProps {
+interface AmountOptionPanelProps {
   amountOptions: AddFundsAmountOption[]
   selectedAmount: number
   setSelectedAmount: (amount: number) => void
 }
 
-function AmountOptionPanel (props: AmountOpionPanelProps) {
+function AmountOptionPanel (props: AmountOptionPanelProps) {
   if (props.amountOptions.length === 0) {
     return null
   }
