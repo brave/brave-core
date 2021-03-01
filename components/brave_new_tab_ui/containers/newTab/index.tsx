@@ -166,7 +166,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   trackBrandedWallpaperNotificationAutoDismiss () {
-    // Wait until page has been visible for an uninterupted Y seconds and then
+    // Wait until page has been visible for an uninterrupted Y seconds and then
     // dismiss the notification.
     this.visibilityTimer.startTracking()
   }
