@@ -1286,7 +1286,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             btClaimOk.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // This is custom Android notification and thus should be dismissed intead of
+                    // This is custom Android notification and thus should be dismissed instead of
                     // deleting
                     if (currentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
                         DismissNotification(currentNotificationId);

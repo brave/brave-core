@@ -1311,7 +1311,7 @@
   </message>
 
 <!-- Video Player -->
-  <message name="IDS_VIDEO_PLAYER_PLAY_THIS_COMPUTER" desc="In the video player app, message of menu item which is shown at the top of the list of Bravecasts. This menuitem is to play the video on this computer (locally), intead of on TVs with Bravecast.">
+  <message name="IDS_VIDEO_PLAYER_PLAY_THIS_COMPUTER" desc="In the video player app, message of menu item which is shown at the top of the list of Bravecasts. This menuitem is to play the video on this computer (locally), instead of on TVs with Bravecast.">
     This computer
   </message>
   <message name="IDS_VIDEO_PLAYER_PLAYING_ON" desc="In the video player app, message is shown ahead of the name of the current chromecast which plays the video now. For example, if this message is 'Playing on' and the Bravecast name is 'Foocast', 'Playing on Foocast' is shown.">
