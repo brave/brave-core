@@ -143,7 +143,7 @@ template("brave_extra_paks") {
 # * brave_200_percent.pak (optionally)
 # * resources.pak
 #
-# Paramters:
+# Parameters:
 #   output_dir [required]: Directory to output .pak files.
 #   additional_extra_paks: List of extra .pak sources for resources.pak.
 #   locale_whitelist: if set, override repack_whitelist for locale .pak files.
