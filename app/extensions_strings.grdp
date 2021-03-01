@@ -444,7 +444,7 @@
 <message name="IDS_EXTENSIONS_CHECKUP_BANNER_PERFORMANCE_TITLE" desc="Title of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a performance focus.">
   A healthier, happier Brave
 </message>
-<message name="IDS_EXTENSIONS_CHECKUP_BANNER_PERFORMANCE_BODY1" desc="First pargagraph of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a performance focus.">
+<message name="IDS_EXTENSIONS_CHECKUP_BANNER_PERFORMANCE_BODY1" desc="First paragraph of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a performance focus.">
   Some extensions can slow you down - especially ones you didn't mean to install.
 </message>
 <message name="IDS_EXTENSIONS_CHECKUP_BANNER_PERFORMANCE_BODY2" desc="Second paragraph of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a performance focus.">
@@ -453,7 +453,7 @@
 <message name="IDS_EXTENSIONS_CHECKUP_BANNER_PRIVACY_TITLE" desc="Title of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a privacy focus.">
   Check your extensions
 </message>
-<message name="IDS_EXTENSIONS_CHECKUP_BANNER_PRIVACY_BODY1" desc="First pargagraph of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a privacy focus.">
+<message name="IDS_EXTENSIONS_CHECKUP_BANNER_PRIVACY_BODY1" desc="First paragraph of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a privacy focus.">
   Some extensions can see your browsing activity - including personal information.
 </message>
 <message name="IDS_EXTENSIONS_CHECKUP_BANNER_PRIVACY_BODY2" desc="Second paragraph of the extensions checkup flow shown in the chrome://extensions page, encouraging the user to audit their installed extensions with a privacy focus.">
