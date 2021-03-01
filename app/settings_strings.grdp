@@ -1551,13 +1551,13 @@
   <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_ALLOWED_SENTENCE_START" desc="An indicator that a specific permission has been allowed for a website by the user. This will be used to start a sentence or by itself">
     Allowed <ph name="PERMISSION">$1<ex>Camera</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_AUTOBLOCKED" desc="An indicator that a specific permission has been automatically blocked by the browser, This will be used inside a sentance">
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_AUTOBLOCKED" desc="An indicator that a specific permission has been automatically blocked by the browser, This will be used inside a sentence">
     automatically blocked <ph name="PERMISSION">$1<ex>Notifications</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_BLOCKED" desc="An indicator that a specific permission has been blocked for a website by the user. This will be used inside a sentance">
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_BLOCKED" desc="An indicator that a specific permission has been blocked for a website by the user. This will be used inside a sentence">
     blocked <ph name="PERMISSION">$1<ex>Location</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_ALLOWED" desc="An indicator that a specific permission has been allowed for a website by the user. This will be used inside of a sentance">
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_CHANGE_ALLOWED" desc="An indicator that a specific permission has been allowed for a website by the user. This will be used inside of a sentence">
     allowed <ph name="PERMISSION">$1<ex>Camera</ex></ph>
   </message>
   <message name="IDS_SETTINGS_RECENT_PERMISSIONS_TWO_ITEMS" desc="A list containing two permissions which have recently changed">
