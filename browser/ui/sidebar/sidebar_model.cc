@@ -93,7 +93,7 @@ void SidebarModel::AddItem(const SidebarItem& item,
     obs.OnItemAdded(item, index == -1 ? data_.size() - 1 : index, user_gesture);
   }
 
-  // If active_index_ is not -1, check this addition affetcs active index.
+  // If active_index_ is not -1, check this addition affects active index.
   if (active_index_ != -1 && active_index_ >= index)
     UpdateActiveIndexAndNotify(index);
 
