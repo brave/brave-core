@@ -1463,7 +1463,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_CONTENT_LENGTH_MISMATCH" desc="The download is incomplete as not all the data are received.">
         File incomplete
       </message>
-      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_CONTENT_LENGTH_MISMATCH" desc="Download page message: Reveived fewer bytes than expected and the download was incomplete.">
+      <message name="IDS_DOWNLOAD_INTERRUPTED_DESCRIPTION_CONTENT_LENGTH_MISMATCH" desc="Download page message: Received fewer bytes than expected and the download was incomplete.">
         Destination file was incomplete due to a connection issue.
       </message>
       <message name="IDS_DOWNLOAD_INTERRUPTED_STATUS_SECURITY_CHECK_FAILED" desc="The security check performed on this download failed unexpectedly">
