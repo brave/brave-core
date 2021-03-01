@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BinanceCoinNetworks {
-    private List<CoinNetworkModel> mCoinNetwroksList = new ArrayList<>();
+    private List<CoinNetworkModel> mCoinNetworksList = new ArrayList<>();
     public BinanceCoinNetworks(String jsonNetworks) throws JSONException {
         fromJson(jsonNetworks);
     }
@@ -38,17 +38,17 @@ public class BinanceCoinNetworks {
             if (BinanceWidgetManager.comCurrenciesMap.containsKey(key)) {
                 CoinNetworkModel coinNetworkModel = BinanceWidgetManager.comCurrenciesMap.get(key);
                 coinNetworkModel.setTickerNetwork(jsonroot.getString(key));
-                mCoinNetwroksList.add(coinNetworkModel);
+                mCoinNetworksList.add(coinNetworkModel);
             }
         }
     }
 
     public List<CoinNetworkModel> getCoinNetworksList() {
-        return mCoinNetwroksList;
+        return mCoinNetworksList;
     }
 
     @Override
     public String toString() {
-        return TextUtils.join(", ", mCoinNetwroksList);
+        return TextUtils.join(", ", mCoinNetworksList);
     }
 }
