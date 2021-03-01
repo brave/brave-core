@@ -95,7 +95,7 @@ class NotificationView : public views::InkDropHostView,
   void DisableSlideForcibly(bool disable);
 
   // Updates the width of the buttons which are hidden and avail by swipe.
-  void SetSlideButtonWidth(int coutrol_button_width);
+  void SetSlideButtonWidth(int control_button_width);
 
   void set_scroller(views::ScrollView* scroller) { scroller_ = scroller; }
   std::string notification_id() const { return notification_id_; }
