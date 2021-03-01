@@ -422,7 +422,7 @@ interface IconButtonSideTextProps {
 // TODO(petemill): Customize button should get its own
 // element and not use IconButton so that the outer
 // element can be a <button> and we can use :focus-visible
-// and not :focus-within which cannot be combined with :focus-visble.
+// and not :focus-within which cannot be combined with :focus-visible.
 
 export const IconButtonSideText = styled<IconButtonSideTextProps, 'label'>('label')`
   display: grid;
