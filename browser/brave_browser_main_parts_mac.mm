@@ -14,7 +14,7 @@ void BraveBrowserMainPartsMac::PreMainMessageLoopStart() {
   ChromeBrowserMainPartsMac::PreMainMessageLoopStart();
 
 #if BUILDFLAG(ENABLE_SPARKLE)
-  // It would be no-op if udpate is disabled.
+  // It would be no-op if update is disabled.
   [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
 #endif
 }

@@ -113,7 +113,7 @@ reducer.on(Actions.feedItemViewedCountChanged, (state, payload) => {
 
 reducer.on(Actions.setPublisherPref, (state, payload) => {
   // Store change immediately so that we aren't relying on communication
-  // with background to send us a whole udpated publisher list (which it often
+  // with background to send us a whole updated publisher list (which it often
   // does a remote fetch in order to provide).
   let publishers = { ...state.publishers }
   let publisher = publishers[payload.publisherId]
