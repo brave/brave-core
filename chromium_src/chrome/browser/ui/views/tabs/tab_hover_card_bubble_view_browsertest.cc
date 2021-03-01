@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -50,7 +51,7 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
   TabHoverCardBubbleViewBrowserTest()
       : animation_mode_reset_(gfx::AnimationTestApi::SetRichAnimationRenderMode(
             gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED)) {
-    TabHoverCardBubbleView::disable_animations_for_testing_ = true;
+    TabHoverCardController::disable_animations_for_testing_ = true;
   }
   ~TabHoverCardBubbleViewBrowserTest() override = default;
 
@@ -59,8 +60,8 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     DialogBrowserTest::SetUp();
   }
 
-  static TabHoverCardBubbleView* GetHoverCard(const TabStrip* tabstrip) {
-    return tabstrip->hover_card_;
+  TabHoverCardBubbleView* GetHoverCard(const TabStrip* tab_strip) {
+    return tab_strip->hover_card_controller_->hover_card_;
   }
 
   static Widget* GetHoverCardWidget(TabHoverCardBubbleView* hover_card) {
@@ -81,7 +82,8 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
     // We don't use Tab::OnMouseEntered here to invoke the hover card because
     // that path is disabled in browser tests. If we enabled it, the real mouse
     // might interfere with the test.
-    tab_strip->UpdateHoverCard(tab_strip->tab_at(index));
+    tab_strip->UpdateHoverCard(tab_strip->tab_at(index),
+                               TabController::HoverCardUpdateType::kHover);
   }
 
   // DialogBrowserTest:
