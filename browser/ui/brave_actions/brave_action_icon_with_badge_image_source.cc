@@ -87,7 +87,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
     // If still cannot squeeze it in, reduce font size
     if (text_width > text_max_width) {
       // Reduce font size until we find the first one that fits within the width
-      // TODO(petermill): Consider adding minimum font-size and adjusting
+      // TODO(petemill): Consider adding minimum font-size and adjusting
       // |max_decrement_attempts| accordingly
       int max_decrement_attempts = base_font.GetFontSize() - 1;
       for (int i = 0; i < max_decrement_attempts; ++i) {
