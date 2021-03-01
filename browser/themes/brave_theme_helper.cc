@@ -140,7 +140,7 @@ base::Optional<SkColor> BraveThemeHelper::GetOmniboxColor(
   const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
                     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   incognito = incognito || is_tor_ || is_guest_;
-  // TODO(petemill): Get colors from color-pallete and theme constants
+  // TODO(petemill): Get colors from color-palette and theme constants
   switch (id) {
     case ThemeProperties::COLOR_OMNIBOX_BACKGROUND: {
       return GetLocationBarBackground(dark, incognito, /*hover*/ false);
