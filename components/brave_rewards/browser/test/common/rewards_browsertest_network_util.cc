@@ -69,7 +69,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
         "  <body>"
         "   <div class='timeline-comment-actions'>"
         "     <div>GitHubCommentReactsButton</div>"
-        "     <div>GitHubCommentElipsesButton</div>"
+        "     <div>GitHubCommentEllipsesButton</div>"
         "   </div>"
         " </body>"
         "</html>");
