@@ -72,7 +72,7 @@ BraveProfileManager::~BraveProfileManager() {
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   // migrate obsolete plugin prefs to temporary migration pref because otherwise
-  // they get deleteed by PrefProvider before we can migrate them in
+  // they get deleted by PrefProvider before we can migrate them in
   // BravePrefProvider
   content_settings::BravePrefProvider::CopyPluginSettingsForMigration(
       profile->GetPrefs());
