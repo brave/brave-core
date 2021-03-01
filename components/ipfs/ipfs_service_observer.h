@@ -22,7 +22,7 @@ class IpfsServiceObserver : public base::CheckedObserver {
   virtual void OnIpfsLaunched(bool result, int64_t pid) {}
   virtual void OnIpfsShutdown() {}
   virtual void OnInstallationEvent(ComponentUpdaterEvents event) {}
-  virtual void OnGetConnectedPeers(bool succes,
+  virtual void OnGetConnectedPeers(bool success,
                                    const std::vector<std::string>& peers) {}
 };
 

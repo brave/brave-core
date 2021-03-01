@@ -301,7 +301,7 @@
       =1 {Receiving <ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {Receiving <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_SUCCESS_TITLE" desc="Text shown as the title of a notification when data was sucessfully received via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_SUCCESS_TITLE" desc="Text shown as the title of a notification when data was successfully received via Nearby Share.">
     {COUNT, plural,
       =1 {<ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> received from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {<ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> received from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}

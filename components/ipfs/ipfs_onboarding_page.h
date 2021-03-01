@@ -85,7 +85,7 @@ class IPFSOnboardingPage
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnInstallationEvent(ipfs::ComponentUpdaterEvents event) override;
   void OnIpfsShutdown() override;
-  void OnGetConnectedPeers(bool succes,
+  void OnGetConnectedPeers(bool success,
                            const std::vector<std::string>& peers) override;
 
   // ui::NativeThemeObserver overrides:
