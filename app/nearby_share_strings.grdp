@@ -271,12 +271,12 @@
   <message name="IDS_NEARBY_NOTIFICATION_ACTION_OPEN_URL" desc="Notification action button text that opens the received URL.">
     Open
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_MESSAGE" desc="Text shown as the message of a notfication when a nearby device requests a connection via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_MESSAGE" desc="Text shown as the message of a notification when a nearby device requests a connection via Nearby Share.">
     {COUNT, plural,
       =1 {<ph name="DEVICE_NAME">$1<ex>Ted's Pixel 2</ex></ph> is sharing <ph name="ATTACHMENTS">$2<ex>1 item</ex></ph> with you.}
       other {<ph name="DEVICE_NAME">$1<ex>Ted's Pixel 2</ex></ph> is sharing <ph name="ATTACHMENTS">$2<ex>3 items</ex></ph> with you.}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_TITLE" desc="Text shown as the title of a notfication when a nearby device requests a connection via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_TITLE" desc="Text shown as the title of a notification when a nearby device requests a connection via Nearby Share.">
     Receive with Nearby Share?
   </message>
   <message name="IDS_NEARBY_NOTIFICATION_DECLINE_ACTION" desc="Text shown on the notification action to decline receiving data via Nearby Share.">
@@ -291,32 +291,32 @@
   <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_ACTION" desc="Text shown on the notification action to accept receiving data via Nearby Share.">
     Receive
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_FAILURE_TITLE" desc="Text shown as the title of a notfication when receiving data via Nearby Share failed.">
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_FAILURE_TITLE" desc="Text shown as the title of a notification when receiving data via Nearby Share failed.">
     {COUNT, plural,
       =1 {Failed to receive <ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {Failed to receive <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_PROGRESS_TITLE" desc="Text shown as the title of a notfication when receiving data via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_PROGRESS_TITLE" desc="Text shown as the title of a notification when receiving data via Nearby Share.">
     {COUNT, plural,
       =1 {Receiving <ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {Receiving <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_SUCCESS_TITLE" desc="Text shown as the title of a notfication when data was sucessfully received via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_SUCCESS_TITLE" desc="Text shown as the title of a notification when data was sucessfully received via Nearby Share.">
     {COUNT, plural,
       =1 {<ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> received from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {<ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> received from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_SEND_FAILURE_TITLE" desc="Text shown as the title of a notfication when sending data via Nearby Share failed.">
+  <message name="IDS_NEARBY_NOTIFICATION_SEND_FAILURE_TITLE" desc="Text shown as the title of a notification when sending data via Nearby Share failed.">
     {COUNT, plural,
       =1 {Failed to send <ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {Failed to send <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_SEND_PROGRESS_TITLE" desc="Text shown as the title of a notfication when sending data via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_SEND_PROGRESS_TITLE" desc="Text shown as the title of a notification when sending data via Nearby Share.">
     {COUNT, plural,
       =1 {Sending <ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {Sending <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}
   </message>
-  <message name="IDS_NEARBY_NOTIFICATION_SEND_SUCCESS_TITLE" desc="Text shown as the title of a notfication when data was successfully sent via Nearby Share.">
+  <message name="IDS_NEARBY_NOTIFICATION_SEND_SUCCESS_TITLE" desc="Text shown as the title of a notification when data was successfully sent via Nearby Share.">
     {COUNT, plural,
       =1 {<ph name="ATTACHMENTS">$1<ex>1 item</ex></ph> successfully sent to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}
       other {<ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> successfully sent to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>}}

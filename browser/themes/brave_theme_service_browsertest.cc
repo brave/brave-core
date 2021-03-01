@@ -202,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, DarkModeChangeByRegTest) {
   apps_use_light_theme = initial_dark_mode ? 0 : 1;
   hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
 
-  // Timeout is used because we can't get notifiication with light theme.
+  // Timeout is used because we can't get notification with light theme.
   RunLoopRunWithTimeout(base::TimeDelta::FromMilliseconds(500));
 }
 #endif

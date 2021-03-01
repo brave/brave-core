@@ -3716,10 +3716,10 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_VR_PREPARING_VR_TOAST_STANDALONE_TEXT" desc="Text shown on a toast when Brave's VR browser could not be started due to the VR module missing.">
         Brave is still preparing for VR. Restart Brave later.
       </message>
-      <message name="IDS_VR_PREPARING_VR_NOTIFICATION_TITLE" desc="Title of a notifaction shown in VR if VR browser not ready yet. [CHAR-LIMIT=23]">
+      <message name="IDS_VR_PREPARING_VR_NOTIFICATION_TITLE" desc="Title of a notification shown in VR if VR browser not ready yet. [CHAR-LIMIT=23]">
         Something went wrong.
       </message>
-      <message name="IDS_VR_PREPARING_VR_NOTIFICATION_BODY" desc="Body of a notifaction shown in VR if VR browser not ready yet.">
+      <message name="IDS_VR_PREPARING_VR_NOTIFICATION_BODY" desc="Body of a notification shown in VR if VR browser not ready yet.">
         Reopen Brave.
       </message>
 

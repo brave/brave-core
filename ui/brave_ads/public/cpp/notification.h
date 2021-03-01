@@ -287,7 +287,7 @@ class BRAVE_ADS_PUBLIC_EXPORT Notification {
   // The notification with lesser serial_number is considered 'older'.
   unsigned serial_number() { return serial_number_; }
 
-  // Gets and sets whether the notifiction should remain onscreen permanently.
+  // Gets and sets whether the notification should remain onscreen permanently.
   bool never_timeout() const { return optional_fields_.never_timeout; }
   void set_never_timeout(bool never_timeout) {
     optional_fields_.never_timeout = never_timeout;
