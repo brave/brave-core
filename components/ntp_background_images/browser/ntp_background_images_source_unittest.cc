@@ -46,7 +46,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
           "imageUrl": "logo.png",
           "alt": "Technikke: For music lovers",
           "companyName": "Technikke",
-          "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
+          "destinationUrl": "https://www.brave.com/?from-super-referrer-demo"
         },
         "wallpapers": [
           {
@@ -91,7 +91,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
           "imageUrl": "logo.png",
           "alt": "Technikke: For music lovers",
           "companyName": "Technikke",
-          "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
+          "destinationUrl": "https://www.brave.com/?from-super-referrer-demo"
         },
         "wallpapers": [
           {
