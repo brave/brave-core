@@ -996,7 +996,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_OFFLINE" desc="Text to display when the password check has an unknown error.">
         Offline. Brave can’t check your passwords.
       </message>
-      <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_SIGNED_OUT" desc="Text to display when the password check is unable to run because the usere is signed out.">
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_SIGNED_OUT" desc="Text to display when the password check is unable to run because the user is signed out.">
         Sign in to your Brave account to check your passwords
       </message>
       <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Text to display when the password check hits the daily quota limit.">
