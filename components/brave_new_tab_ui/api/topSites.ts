@@ -15,7 +15,7 @@ export function updateMostVisitedInfo () {
   chrome.send('updateMostVisitedInfo')
 }
 
-export function addMostVistedInfoChangedListener (listener: MostVisitedInfoChangedHandler): void {
+export function addMostVisitedInfoChangedListener (listener: MostVisitedInfoChangedHandler): void {
   window.cr.addWebUIListener('most-visited-info-changed', listener)
 }
 

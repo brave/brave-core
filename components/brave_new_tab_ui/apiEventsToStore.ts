@@ -52,7 +52,7 @@ export function wireApiEventsToStore () {
       getActions().today.todayInit()
     }
     // Listen for API changes and dispatch to store
-    topSitesAPI.addMostVistedInfoChangedListener(onMostVisitedInfoChanged)
+    topSitesAPI.addMostVisitedInfoChangedListener(onMostVisitedInfoChanged)
     topSitesAPI.updateMostVisitedInfo()
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)
