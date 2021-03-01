@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
-      << "All script loadings should be blocked.";
+      << "All script loads should be blocked.";
 
   AllowScriptOriginOnce("a.com");
 
@@ -157,20 +157,20 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
       embedded_test_server()->GetURL("b.com", "/load_js_from_origins.html"));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
-      << "All script loadings should be blocked after navigating away.";
+      << "All script loads should be blocked after navigating away.";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceDataURL) {
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 4u)
-      << "All script loadings should not be blocked by default.";
+      << "All script loads should not be blocked by default.";
 
   BlockScripts();
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
-      << "All script loadings should be blocked.";
+      << "All script loads should be blocked.";
 
   AllowScriptOriginAndDataURLOnce("a.com",
       "data:application/javascript;base64,"
@@ -187,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceIframe) {
 
   EXPECT_TRUE(NavigateToURLUntilLoadStop("a.com", "/remote_iframe.html"));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u)
-      << "All script loadings should be blocked.";
+      << "All script loads should be blocked.";
 
   AllowScriptOriginOnce("b.com");
 
