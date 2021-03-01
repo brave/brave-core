@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 // The rewards tour modal currently taller than the panel. This spacer
-// element will insert veritical space to expand the panel height by the
+// element will insert vertical space to expand the panel height by the
 // required amount.
 export const rewardsTourSpacer = styled.div`
   height: 70px;
