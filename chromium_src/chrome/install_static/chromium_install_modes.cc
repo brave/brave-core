@@ -186,7 +186,7 @@ const InstallConstants kInstallModes[] = {
         "",               // No install switch for the primary install mode.
         L"",              // Empty install_suffix for the primary install mode.
         L"",              // No logo suffix for the primary install mode.
-        L"",            // Empty app_guid since no integraion with Brave Update.
+        L"",            // Empty app_guid since no integration with Brave Update.
         L"Brave Development",  // A distinct base_app_name.
         L"BraveDevelopment",   // A distinct base_app_id.
         L"BraveDevHTM",                             // ProgID prefix.
