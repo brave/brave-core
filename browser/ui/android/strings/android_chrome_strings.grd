@@ -1212,7 +1212,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_LANGUAGES_SETTINGS_ADVANCED" desc="Title of Language settings section that will show advanced translation settings. [CHAR-LIMIT=32]">
         Advanced
       </message>
-      <message name="IDS_LANGUAGES_SETTINGS_TARGET" desc="Title of Translation settings for the current translate targert. Tapping this opens a new screen to select the target language.  [CHAR-LIMIT=32]">
+      <message name="IDS_LANGUAGES_SETTINGS_TARGET" desc="Title of Translation settings for the current translate target. Tapping this opens a new screen to select the target language.  [CHAR-LIMIT=32]">
         Translate into this language
       </message>
       <message name="IDS_LANGUAGES_SETTINGS_AUTOMATIC" desc="Title of Translation settings that lists languages that should be automatically translated.">
