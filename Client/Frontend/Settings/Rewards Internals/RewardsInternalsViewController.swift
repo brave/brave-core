@@ -29,15 +29,38 @@ class RewardsInternalsViewController: TableViewController {
     private let ledger: BraveLedger
     private var internalsInfo: RewardsInternalsInfo?
     
-    init(ledger: BraveLedger) {
+    private let legacyLedger: BraveLedger?
+    private var legacyInternalsInfo: RewardsInternalsInfo?
+    private var hasTransferrableBalance = false
+    
+    init(ledger: BraveLedger, legacyLedger: BraveLedger?) {
         self.ledger = ledger
+        self.legacyLedger = legacyLedger
         if #available(iOS 13.0, *) {
             super.init(style: .insetGrouped)
         } else {
             super.init(style: .grouped)
         }
-        ledger.rewardsInternalInfo { info in
-            self.internalsInfo = info
+        let group = DispatchGroup()
+        group.enter()
+        ledger.rewardsInternalInfo { [weak self] info in
+            self?.internalsInfo = info
+            group.leave()
+        }
+        if let legacyLedger = legacyLedger {
+            group.enter()
+            legacyLedger.rewardsInternalInfo { [weak self] info in
+                self?.legacyInternalsInfo = info
+                group.leave()
+            }
+            group.enter()
+            legacyLedger.transferrableAmount { [weak self] amount in
+                self?.hasTransferrableBalance = amount > 0
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) { [weak self] in
+            self?.reloadSections()
         }
     }
     
@@ -51,17 +74,27 @@ class RewardsInternalsViewController: TableViewController {
         
         title = Strings.RewardsInternals.title
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tappedShare)).then {
+            $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
+        }
+        
+        reloadSections()
+    }
+    
+    @objc private func tappedShare() {
+        let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: RewardsInternalsSharable.default)
+        let container = UINavigationController(rootViewController: controller)
+        present(container, animated: true)
+    }
+    
+    func reloadSections() {
         guard let info = internalsInfo else { return }
         
         let dateFormatter = DateFormatter().then {
             $0.dateStyle = .short
         }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tappedShare)).then {
-            $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
-        }
-        
-        let sections: [Static.Section] = [
+        var sections: [Static.Section] = [
             .init(
                 rows: [
                     Row(text: Strings.RewardsInternals.sharingWarningTitle, detailText: Strings.RewardsInternals.sharingWarningMessage, cellClass: WarningCell.self)
@@ -71,7 +104,12 @@ class RewardsInternalsViewController: TableViewController {
                 header: .title(Strings.RewardsInternals.walletInfoHeader),
                 rows: [
                     Row(text: Strings.RewardsInternals.keyInfoSeed, detailText: "\(info.isKeyInfoSeedValid ? Strings.RewardsInternals.valid : Strings.RewardsInternals.invalid)"),
-                    Row(text: Strings.RewardsInternals.walletPaymentID, detailText: info.paymentId, cellClass: SubtitleCell.self),
+                    Row(text: Strings.RewardsInternals.walletPaymentID, detailText: info.paymentId, selection: { [unowned self] in
+                        if let index = self.dataSource.sections[safe: 1]?.rows.firstIndex(where: { $0.cellClass == PaymentIDCell.self }),
+                           let cell = self.tableView.cellForRow(at: IndexPath(item: index, section: 1)) as? PaymentIDCell {
+                            cell.showMenu()
+                        }
+                    }, cellClass: PaymentIDCell.self),
                     Row(text: Strings.RewardsInternals.walletCreationDate, detailText: dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(info.bootStamp))))
                 ]
             ),
@@ -84,13 +122,27 @@ class RewardsInternalsViewController: TableViewController {
             )
         ]
         
+        if let legacyLedger = legacyLedger, let internals = legacyInternalsInfo, !legacyLedger.isLedgerTransferExpired {
+            let legacyWalletSection = sections.count
+            sections.append(
+                .init(
+                    header: .title(Strings.RewardsInternals.legacyWalletInfoHeader),
+                    rows: [
+                        Row(text: Strings.RewardsInternals.keyInfoSeed, detailText: "\(internals.isKeyInfoSeedValid ? Strings.RewardsInternals.valid : Strings.RewardsInternals.invalid)"),
+                        Row(text: Strings.RewardsInternals.walletPaymentID, detailText: internals.paymentId, selection: { [unowned self] in
+                            if let index = self.dataSource.sections[safe: legacyWalletSection]?.rows.firstIndex(where: { $0.cellClass == PaymentIDCell.self }),
+                               let cell = self.tableView.cellForRow(at: IndexPath(item: index, section: legacyWalletSection)) as? PaymentIDCell {
+                                cell.showMenu()
+                            }
+                        }, cellClass: PaymentIDCell.self),
+                        Row(text: Strings.RewardsInternals.walletCreationDate, detailText: dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(internals.bootStamp)))),
+                        Row(text: Strings.RewardsInternals.legacyWalletHasTransferrableBalance, detailText: hasTransferrableBalance ? Strings.yes : Strings.no)
+                    ]
+                )
+            )
+        }
+        
         dataSource.sections = sections
-    }
-    
-    @objc private func tappedShare() {
-        let controller = RewardsInternalsShareController(ledger: self.ledger, initiallySelectedSharables: RewardsInternalsSharable.default)
-        let container = UINavigationController(rootViewController: controller)
-        present(container, animated: true)
     }
 }
 
@@ -127,6 +179,32 @@ struct RewardsInternalsBasicInfoGenerator: RewardsInternalsFileGenerator {
             completion(nil)
         } catch {
             completion(error)
+        }
+    }
+}
+
+private class PaymentIDCell: SubtitleCell {
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        action == #selector(copy(_:))
+    }
+    
+    override func copy(_ sender: Any?) {
+        if let text = self.detailTextLabel?.text {
+            UIPasteboard.general.string = text
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        true
+    }
+    
+    func showMenu() {
+        becomeFirstResponder()
+        if #available(iOS 13.0, *) {
+            UIMenuController.shared.showMenu(from: self, rect: bounds)
+        } else {
+            UIMenuController.shared.setTargetRect(bounds, in: self)
+            UIMenuController.shared.setMenuVisible(true, animated: true)
         }
     }
 }
