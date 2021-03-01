@@ -133,7 +133,7 @@ describe('cosmeticFilterEvents events', () => {
         describe('when a selector is not returned', function () {
           it('calls window.prompt with `not found` message', function () {
             return cosmeticFilterEvents.onSelectorReturned(null).then(() => {
-              expect(lastInputText.indexOf('We were unable to automatically populat') > -1).toBe(true)
+              expect(lastInputText.indexOf('We were unable to automatically populate') > -1).toBe(true)
             })
           })
         })
