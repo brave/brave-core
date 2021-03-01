@@ -47,7 +47,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     this.state = { deviceRecognitionOpen: false }
   }
 
-  get totalDeviceRecognitonAttemptsDisplay (): string {
+  get totalDeviceRecognitionAttemptsDisplay (): string {
     const { fingerprintingBlocked } = this.props
     return blockedResourcesSize(fingerprintingBlocked)
   }
@@ -75,7 +75,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
                 ? <ArrowUpIcon />
                 : <ArrowDownIcon />
             }
-            <BlockedInfoRowStats>{this.totalDeviceRecognitonAttemptsDisplay}</BlockedInfoRowStats>
+            <BlockedInfoRowStats>{this.totalDeviceRecognitionAttemptsDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('readOnlyFingerprinting')}</BlockedInfoRowText>
           </BlockedInfoRowData>
         </BlockedInfoRowSummary>
