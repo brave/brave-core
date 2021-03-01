@@ -48,8 +48,8 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetPromotions(ledger::type::PromotionList list);
   void GetPartialLog(const base::ListValue* args);
   void OnGetPartialLog(const std::string& log);
-  void GetFulllLog(const base::ListValue* args);
-  void OnGetFulllLog(const std::string& log);
+  void GetFullLog(const base::ListValue* args);
+  void OnGetFullLog(const std::string& log);
   void ClearLog(const base::ListValue* args);
   void OnClearLog(const bool success);
   void GetUpholdWallet(const base::ListValue* args);
@@ -100,7 +100,7 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getFullLog",
       base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetFulllLog,
+          &RewardsInternalsDOMHandler::GetFullLog,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.clearLog",
@@ -288,7 +288,7 @@ void RewardsInternalsDOMHandler::OnGetPartialLog(const std::string& log) {
       base::Value(log));
 }
 
-void RewardsInternalsDOMHandler::GetFulllLog(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::GetFullLog(const base::ListValue *args) {
   if (!rewards_service_) {
     return;
   }
@@ -296,11 +296,11 @@ void RewardsInternalsDOMHandler::GetFulllLog(const base::ListValue *args) {
   rewards_service_->LoadDiagnosticLog(
       -1,
       base::BindOnce(
-          &RewardsInternalsDOMHandler::OnGetFulllLog,
+          &RewardsInternalsDOMHandler::OnGetFullLog,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetFulllLog(const std::string& log) {
+void RewardsInternalsDOMHandler::OnGetFullLog(const std::string& log) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
