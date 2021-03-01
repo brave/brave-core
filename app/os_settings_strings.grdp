@@ -2359,7 +2359,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_SECOND_STEP" desc="Second instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to look at notification settings for the Google Play Services app.">
     Tap App notifications &gt; Google Play services.
   </message>
-  <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_THIRD_STEP" desc="Third instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to enable notifications when already viewing noticiations settings for Google Play Services.">
+  <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_THIRD_STEP" desc="Third instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to enable notifications when already viewing notifications settings for Google Play Services.">
     Turn on Google Play services.
   </message>
   <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_FOURTH_STEP" desc="Fourth instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to enable the Instant Tethering notification channel for Google Play Services.">
