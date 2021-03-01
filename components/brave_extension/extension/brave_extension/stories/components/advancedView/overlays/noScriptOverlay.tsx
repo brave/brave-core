@@ -81,7 +81,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
       <BlockedListContent>
         <BlockedListHeader>
           <Favicon src={this.props.favicon} />
-          <SiteInfoText>buzfeed.com</SiteInfoText>
+          <SiteInfoText>buzzfeed.com</SiteInfoText>
         </BlockedListHeader>
         <details open={true}>
           <BlockedListSummary stats={false} onClick={onClose}>
