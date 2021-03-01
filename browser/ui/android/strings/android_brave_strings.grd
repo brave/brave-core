@@ -1471,7 +1471,7 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CONFIRM_CONVERT_BINANCE" desc="Button text for Binance convert">
         Confirm (<ph name="REMAINING_TIME">%1$s</ph>s)
       </message>
-      <message name="IDS_CONVERSION_FAILED" desc="Binance convesion failed text">
+      <message name="IDS_CONVERSION_FAILED" desc="Binance conversion failed text">
         Conversion Failed. Please try again.
       </message>
       <message name="IDS_SEARCH_COIN" desc="Binance deposit search text">
