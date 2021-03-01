@@ -148,7 +148,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         dataSavedText = layout.findViewById(R.id.data_saved_text);
         timeSavedCountText = layout.findViewById(R.id.time_saved_count_text);
         timeSavedText = layout.findViewById(R.id.time_saved_text);
-        websitesLayout = layout.findViewById(R.id.wesites_layout);
+        websitesLayout = layout.findViewById(R.id.websites_layout);
         trackersLayout = layout.findViewById(R.id.trackers_layout);
         braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
 

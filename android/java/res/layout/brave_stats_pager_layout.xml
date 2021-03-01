@@ -205,7 +205,7 @@
                 android:textColor="@color/brave_stats_text_color"/>
 
             <LinearLayout
-                android:id="@+id/wesites_layout"
+                android:id="@+id/websites_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"/>
