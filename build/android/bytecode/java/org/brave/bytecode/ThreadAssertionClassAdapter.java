@@ -48,7 +48,7 @@ class ThreadAssertionClassAdapter extends ClassVisitor {
         /**
          * Call for annotations on the method. Checks if the annotation is @UiThread
          * or @WorkerThread, and if so will set the mAssertMethodName property to the name of the
-         * method to call in order to assert that a method is running on the intented thread.
+         * method to call in order to assert that a method is running on the intended thread.
          *
          * @param descriptor Annotation descriptor containing its name and package.
          */
