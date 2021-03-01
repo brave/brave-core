@@ -20,7 +20,7 @@ void GetSearchProvidersUsingKeywordResult(
   GetSearchProvidersUsingKeywordResult_ChromiumImpl(
       result, service, prefs, template_urls, default_search_provider,
       search_terms_data, new_resource_keyword_version, removed_keyword_guids);
-  // Resort template_urls in the orider of prepopulated search engines.
+  // Resort template_urls in the order of prepopulated search engines.
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
         TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, nullptr);
