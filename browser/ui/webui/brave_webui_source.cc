@@ -1098,7 +1098,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
   // committing a Trusted Types related violation now that Trusted Types are
   // enforced on WebUI pages (see crrev.com/c/2234238 and crrev.com/c/2353547).
   // We should migrate those pages not to require using |innerHTML|, but for now
-  // we just restore pre-Cromium 87 behaviour for pages that are not ready yet.
+  // we just restore pre-Chromium 87 behaviour for pages that are not ready yet.
   if (disable_trusted_types_csp) {
     source->DisableTrustedTypesCSP();
   } else {
