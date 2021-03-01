@@ -15,7 +15,7 @@ import org.chromium.base.supplier.Supplier;
 import java.util.ArrayList;
 
 public abstract class BraveCommandLineInitUtil {
-    // Duplicate constant to avoid pull dependancy into base
+    // Duplicate constant to avoid pull dependency into base
     private static final String PREF_QA_VLOG_REWARDS = "qa_vlog_rewards";
     private static final String PREF_QA_COMMAND_LINE = "qa_command_line";
 
