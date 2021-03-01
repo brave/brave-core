@@ -39,7 +39,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
  public:
   void SetUp() override {
     // This is needed because component extensions are not added by default
-    // without it.  Theyu are found to interfere with tests otherwise. It's
+    // without it.  They are found to interfere with tests otherwise. It's
     // needed for loading the hangouts extension of which there are tests for
     // below.
     extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
