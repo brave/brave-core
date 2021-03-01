@@ -173,7 +173,7 @@
   <message name="IDS_MANAGEMENT_EXTENSION_REPORT_VERSION" desc="Message explaining that an extension currently reports the user's browser and machine version">
     Version information about your device and browser
   </message>
-  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_EXTENSIONS_PLUGINS" desc="Message explaining that an extension currently reports the user's exensions and plugins">
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_EXTENSIONS_PLUGINS" desc="Message explaining that an extension currently reports the user's extensions and plugins">
     Which extensions and plugins you have installed
   </message>
   <message name="IDS_MANAGEMENT_EXTENSION_REPORT_SAFE_BROWSING_WARNINGS" desc="Message explaining that an extension currently reports the user's Safe Browsing warnings and ignored warnings">
