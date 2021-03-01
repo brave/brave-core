@@ -196,7 +196,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
               IsDefaultValue()) {
     // At first fresh launch, we should finish initial component downloading to
     // set initial state properly.
-    // But browser could be shutdown accidently before getting it anytime.
+    // But browser could be shutdown accidentally before getting it anytime.
     // If this happens, we have to handle this abnormal situation strictly.
     // If not, this install will be act as a non SR install forever.
     // To resolve that situation,
