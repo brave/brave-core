@@ -34,7 +34,7 @@ export default class AdsTrackersControl extends React.PureComponent<{}, State> {
     this.state = { dummyScriptsBlockedOpen: false }
   }
   get generateNoScriptInfo () {
-    return generateNoScriptInfoDataStructure(dummyData.noScriptsResouces)
+    return generateNoScriptInfoDataStructure(dummyData.noScriptsResources)
   }
   onClickFakeScriptsBlocked = () => {
     this.setState({ dummyScriptsBlockedOpen: !this.state.dummyScriptsBlockedOpen })

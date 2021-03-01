@@ -43,7 +43,7 @@ const braveComponentsStringsPath = path.resolve(path.join(srcDir, 'brave', 'comp
 
 // generated_resources.grd and any of its parts files that we track localization for in transifex
 // There is also chromeos_strings.grdp, but we don't need to track it here because it is explicitly skipped in transifex.py
-// These map to brave/app/resources/generated_resoruces*.xtb
+// These map to brave/app/resources/generated_resources*.xtb
 const chromiumGeneratedResourcesPath = path.resolve(path.join(srcDir, 'chrome', 'app', 'generated_resources.grd'))
 const braveGeneratedResourcesPath = path.resolve(path.join(srcDir, 'brave', 'app', 'generated_resources.grd'))
 const chromiumGeneratedResourcesExcludes = new Set(["chromeos_strings.grdp"])

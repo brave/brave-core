@@ -105,7 +105,7 @@ export default class Header extends React.PureComponent<Props, {}> {
               <TotalBlockedStats size='large'>
                 <TotalBlockedStatsNumber>{this.totalBlockedSize}</TotalBlockedStatsNumber>
                 <TotalBlockedStatsText>
-                  {`${getLocale('blockedResoucesExplanation')} `}
+                  {`${getLocale('blockedResourcesExplanation')} `}
                   <Link onClick={toggleReadOnlyView}>{getLocale('learnMore')}</Link>
                 </TotalBlockedStatsText>
               </TotalBlockedStats>

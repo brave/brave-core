@@ -13,7 +13,7 @@ const data = {
   popupsBlocked: '2',
   imagesBlocked: '33',
   totalAdsTrackersBlocked: '100',
-  blockedScriptsResouces: {
+  blockedScriptsResources: {
     'https://imasdk.googleapis.com/js/sdkloader/ima3.js': {
       actuallyBlocked: true,
       willBlock: true,

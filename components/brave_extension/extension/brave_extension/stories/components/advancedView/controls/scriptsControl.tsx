@@ -112,7 +112,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
               favicon={favicon}
               hostname={hostname}
               name={getLocale('scriptsOnThisSite')}
-              list={data.blockedScriptsResouces}
+              list={data.blockedScriptsResources}
               onClose={this.onOpenScriptsBlockedOpen}
             />
         }

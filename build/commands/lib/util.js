@@ -231,7 +231,7 @@ const util = {
 
     // Copy xtb files for:
     // brave/app/resources/chromium_strings*.xtb
-    // brave/app/resources/generated_resoruces*.xtb
+    // brave/app/resources/generated_resources*.xtb
     // brave/components/strings/components_chromium_strings*.xtb
     // brave/browser/ui/android/strings/translations/android_chrome_strings*.xtb
     fileMap.add([path.join(braveAppDir, 'resources'), path.join(chromeAppDir, 'resources')])

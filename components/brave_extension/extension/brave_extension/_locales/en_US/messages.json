@@ -195,7 +195,7 @@
     "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
-  "blockedResoucesExplanation": {
+  "blockedResourcesExplanation": {
     "message": "Cross-site trackers and other creepy things blocked",
     "description": "Message for the main trackers count in Shields simple view"
   },
