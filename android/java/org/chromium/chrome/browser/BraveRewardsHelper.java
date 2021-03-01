@@ -198,7 +198,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     /**
-     *  we don't destroy mLargeIconBridge sisnce it's static
+     *  we don't destroy mLargeIconBridge since it's static
      */
     private void destroy() {
         if (mLargeIconBridge != null) {
