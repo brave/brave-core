@@ -217,7 +217,7 @@ BraveWalletGetBraveKeyFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveWalletResetWalletFunction::Run() {
+BraveWalletResetFunction::Run() {
   auto* service = GetBraveWalletService(browser_context());
   service->ResetCryptoWallets();
   return RespondNow(NoArguments());

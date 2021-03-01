@@ -134,7 +134,7 @@
           }
         ]
       }, {
-        "name": "resetWallet",
+        "name": "reset",
         "type": "function",
         "description": "Called to restore Crypto Wallets to its original state",
         "parameters": []
