@@ -61,7 +61,7 @@ uint64_t WeeklyStorage::GetWeeklySum() const {
   return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
                          [n_days_ago](const uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
-                           // Check only last continious days.
+                           // Check only last continuous days.
                            if (u2.day > n_days_ago) {
                              add = u2.value;
                            }
