@@ -219,7 +219,7 @@ function getUnverifiedNotice (
 }
 
 function getPostRelativeTime (postDate: Date) {
-  // TS does not yet recongnize RelativeTimeFormatter (since chromium 71)
+  // TS does not yet recognize RelativeTimeFormatter (since chromium 71)
   const { RelativeTimeFormat } = Intl as any
   const formatter = new RelativeTimeFormat()
   const sec = Math.max(0, Date.now() - postDate.getTime()) / 1000
