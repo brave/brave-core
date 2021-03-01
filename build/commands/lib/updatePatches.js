@@ -91,7 +91,7 @@ async function removeStalePatchFiles (patchFilenames, patchDirPath, keepPatchFil
  *
  * @param {*} gitRepoPath Repo path to look for changes
  * @param {*} patchDirPath Directory to keep .patch files in
- * @param {*} repoPathFilter Filter function for repo file paths to include or exlude (all included by default)
+ * @param {*} repoPathFilter Filter function for repo file paths to include or exclude (all included by default)
  * @param {*} [keepPatchFilenames=[]] Patch filenames to never delete
  */
 async function updatePatches (gitRepoPath, patchDirPath, repoPathFilter, keepPatchFilenames = []) {
