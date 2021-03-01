@@ -4859,7 +4859,7 @@ static const google_update_idl_MIDL_TYPE_FORMAT_STRING google_update_idl__MIDL_T
         {
 			NdrFcShort( 0x0 ),	/* 0 */
 /*  2 */	
-			0x11, 0xc,	/* FC_RP [alloced_on_stack] [simple_pointer] */
+			0x11, 0xc,	/* FC_RP [allocated_on_stack] [simple_pointer] */
 /*  4 */	0x8,		/* FC_LONG */
 			0x5c,		/* FC_PAD */
 /*  6 */	
@@ -4880,7 +4880,7 @@ static const google_update_idl_MIDL_TYPE_FORMAT_STRING google_update_idl__MIDL_T
 /* 26 */	0x0,		/* 0 */
 			0x46,		/* 70 */
 /* 28 */	
-			0x11, 0x4,	/* FC_RP [alloced_on_stack] */
+			0x11, 0x4,	/* FC_RP [allocated_on_stack] */
 /* 30 */	NdrFcShort( 0x1c ),	/* Offset= 28 (58) */
 /* 32 */	
 			0x13, 0x0,	/* FC_OP */
@@ -4920,11 +4920,11 @@ static const google_update_idl_MIDL_TYPE_FORMAT_STRING google_update_idl__MIDL_T
 /* 78 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 80 */	NdrFcShort( 0xfff4 ),	/* Offset= -12 (68) */
 /* 82 */	
-			0x11, 0xc,	/* FC_RP [alloced_on_stack] [simple_pointer] */
+			0x11, 0xc,	/* FC_RP [allocated_on_stack] [simple_pointer] */
 /* 84 */	0x6,		/* FC_SHORT */
 			0x5c,		/* FC_PAD */
 /* 86 */	
-			0x11, 0x4,	/* FC_RP [alloced_on_stack] */
+			0x11, 0x4,	/* FC_RP [allocated_on_stack] */
 /* 88 */	NdrFcShort( 0x3d4 ),	/* Offset= 980 (1068) */
 /* 90 */	
 			0x13, 0x0,	/* FC_OP */
@@ -5596,7 +5596,7 @@ static const google_update_idl_MIDL_TYPE_FORMAT_STRING google_update_idl__MIDL_T
 /* 1088 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 1090 */	NdrFcShort( 0xfff4 ),	/* Offset= -12 (1078) */
 /* 1092 */	
-			0x11, 0xc,	/* FC_RP [alloced_on_stack] [simple_pointer] */
+			0x11, 0xc,	/* FC_RP [allocated_on_stack] [simple_pointer] */
 /* 1094 */	0xb,		/* FC_HYPER */
 			0x5c,		/* FC_PAD */
 /* 1096 */	
