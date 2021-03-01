@@ -32,11 +32,11 @@ def run_cmd(cmd):
     assert p.returncode == 0, "Error signing"
 
 
-def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
+def sign_binaries(base_dir, endswith=('.exe', '.dll')):
     matches = []
     for root, dirnames, filenames in os.walk(base_dir):
         for filename in filenames:
-            if filename.endswith(endswidth):
+            if filename.endswith(endswith):
                 matches.append(os.path.join(root, filename))
 
     for binary in matches:
