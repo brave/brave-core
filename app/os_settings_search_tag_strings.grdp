@@ -102,7 +102,7 @@
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with a toggle to turn on cellular. Alternate phrase for: 'Turn on cellular network'">
     Enable Cellular
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_DISCONNECT" desc="Text for search result item which, when clicked, navigates the user to Cellular network settings, with a button to disconnect from the currently-connected Celluar network.">
+  <message name="IDS_OS_SETTINGS_TAG_CELLULAR_DISCONNECT" desc="Text for search result item which, when clicked, navigates the user to Cellular network settings, with a button to disconnect from the currently-connected Cellular network.">
     Disconnect Cellular network
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_REMOVE_PROFILE" desc="Text for search result item which, when clicked, navigates the user to the Cellular eSIM network settings, with a menu containing a button to remove the currently-connected Cellular eSIM network. Alternate phrase for: 'Delete Cellular network eSIM profile'">
