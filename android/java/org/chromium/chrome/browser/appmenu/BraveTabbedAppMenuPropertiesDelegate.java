@@ -71,7 +71,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             menu.findItem(R.id.icon_row_menu_id).setVisible(false).setEnabled(false);
         }
 
-        // Brave donesn't show help menu item in app menu.
+        // Brave doesn't show help menu item in app menu.
         menu.findItem(R.id.help_id).setVisible(false).setEnabled(false);
 
         // Always hide share row menu item in app menu if it's not on tablet.

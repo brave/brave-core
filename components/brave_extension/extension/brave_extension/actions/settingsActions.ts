@@ -36,7 +36,7 @@ export const settingsDidChange: actions.SettingsDidChange = (settings) => {
 
 /**
  * Get a list of settings values from brave://settings and update if comparison
- * against settings values from store deosn't match.
+ * against settings values from store doesn't match.
  */
 interface FetchAndDispatchSettings {
   (): (dispatch: Dispatch, getState: () => State) => void
