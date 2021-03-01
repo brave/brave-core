@@ -26,7 +26,7 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       bool is_tor_profile);
-  // For tests to use its own McokTorLauncherFactory
+  // For tests to use its own MockTorLauncherFactory
   static std::unique_ptr<TorNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       TorLauncherFactory* tor_launcher_factory,
