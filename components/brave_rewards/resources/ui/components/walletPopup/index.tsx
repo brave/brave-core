@@ -31,7 +31,7 @@ export interface Props {
 
 export default class WalletPopup extends React.PureComponent<Props, {}> {
   insideClick = (e: React.SyntheticEvent) => {
-    // Don't propogate click to container, which will close it
+    // Don't propagate click to container, which will close it
     e.stopPropagation()
   }
 
