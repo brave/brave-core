@@ -10,7 +10,7 @@
   <message name="IDS_APP_MANAGEMENT_MICROPHONE" desc="Label for the microphone permission toggle.">
     Microphone
   </message>
-  <message name="IDS_APP_MANAGEMENT_NO_APPS_FOUND" desc="Text shown when a search of apps yeilds no results.">
+  <message name="IDS_APP_MANAGEMENT_NO_APPS_FOUND" desc="Text shown when a search of apps yields no results.">
     No apps found
   </message>
   <message name="IDS_APP_MANAGEMENT_NOTIFICATIONS" desc="Label for notifications section in the app settings page.">
