@@ -61,7 +61,7 @@ public class BraveSyncWorker {
         // Deprecated
         public static final String PREF_NAME = "SyncPreferences";
         private static final String PREF_LAST_FETCH_NAME = "TimeLastFetch";
-        private static final String PREF_LATEST_DEVICE_RECORD_TIMESTAMPT_NAME =
+        private static final String PREF_LATEST_DEVICE_RECORD_TIMESTAMP_NAME =
                 "LatestDeviceRecordTime";
         private static final String PREF_LAST_TIME_SEND_NOT_SYNCED_NAME = "TimeLastSendNotSynced";
         public static final String PREF_DEVICE_ID = "DeviceId";
