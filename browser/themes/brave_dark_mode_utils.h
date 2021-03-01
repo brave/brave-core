@@ -52,7 +52,7 @@ void SetUseSystemDarkModeEnabledForTest(bool enabled);
 
 // When system supports system per-application system theme changing, set it.
 // Currently, only MacOS support it.
-// Otherewise, we need to overrides from native theme level and explicitly
+// Otherwise, we need to overrides from native theme level and explicitly
 // notifying to let observers know.
 // By overriding, base ui components also use same brave theme type.
 void SetSystemDarkMode(BraveDarkModeType type);
