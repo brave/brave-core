@@ -180,7 +180,7 @@ bool SidebarModel::IsLoadedAt(int index) const {
   return data_[index]->IsLoaded();
 }
 
-bool SidebarModel::IsSidebarHasAllBuiltiInItems() const {
+bool SidebarModel::IsSidebarHasAllBuiltInItems() const {
   return GetSidebarService(profile_)->GetNotAddedDefaultSidebarItems().empty();
 }
 

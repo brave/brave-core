@@ -79,7 +79,7 @@ class SidebarModel : public SidebarService::Observer,
   void SetActiveIndex(int index);
   // Returns true if webcontents of item at |index| already loaded url.
   bool IsLoadedAt(int index) const;
-  bool IsSidebarHasAllBuiltiInItems() const;
+  bool IsSidebarHasAllBuiltInItems() const;
   int GetIndexOf(const SidebarItem& item) const;
 
   // Don't cache web_contents. It can be deleted during the runtime.
