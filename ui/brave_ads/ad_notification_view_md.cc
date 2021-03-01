@@ -260,7 +260,7 @@ AdNotificationViewMD::AdNotificationViewMD(const Notification& notification)
 
   click_activator_ = std::make_unique<ClickActivator>(this);
   // Reasons to use pretarget handler instead of OnMousePressed:
-  // - AdNotificationViewMD::OnMousePresssed would not fire on the inline reply
+  // - AdNotificationViewMD::OnMousePressed would not fire on the inline reply
   //   textfield click in native notification.
   // - To make it look similar to ArcNotificationContentView::EventForwarder.
   AddPreTargetHandler(click_activator_.get());
