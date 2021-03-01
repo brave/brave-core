@@ -648,7 +648,7 @@ def check_for_chromium_upgrade_extra_langs(src_root, grd_file_path):
 
 
 def get_transifex_string_hash(string_name):
-    """Obains transifex string hash for the passed string."""
+    """Obtains transifex string hash for the passed string."""
     key = string_name.encode('utf-8')
     return str(md5(':'.join([key, ''])).hexdigest())
 
