@@ -47,7 +47,7 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   bool dont_ask_widevine_install_ = false;
 
   // Only can be true on linux.
-  // On linux, browser will use another permission request buble after finishing
+  // On linux, browser will use another permission request bubble after finishing
   // installation to ask user about restarting because installed widevine can
   // only be used after re-launch.
   bool for_restart_ = false;
