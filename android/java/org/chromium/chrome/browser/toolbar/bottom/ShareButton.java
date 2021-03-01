@@ -34,7 +34,7 @@ class ShareButton extends ChromeImageButton implements TintObserver {
     /** The {@link OverviewModeBehavior} used to observe overview state changes.  */
     private OverviewModeBehavior mOverviewModeBehavior;
 
-    /** The {@link OvervieModeObserver} observing the OverviewModeBehavior  */
+    /** The {@link OverviewModeObserver} observing the OverviewModeBehavior  */
     private OverviewModeBehavior.OverviewModeObserver mOverviewModeObserver;
 
     /** A collection of sharing utility functions.*/
