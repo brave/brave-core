@@ -19,7 +19,7 @@ chrome.webNavigation.onCommitted.addListener(
   (details: chrome.webNavigation.WebNavigationFramedCallbackDetails) => {
     // navigation events come in with the webtorrent extension as
     // the schema/host, the actual webtorrent URL appended to it
-    // after the chrome-extenion://extension-id/view.html?
+    // after the chrome-extension://extension-id/view.html?
     // delete everything up to the first question mark
     let original = details.url.replace(new RegExp(/^[^\?]*\?/), '')
     let decoded = decodeURIComponent(original)
