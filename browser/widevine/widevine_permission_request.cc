@@ -37,7 +37,7 @@ void WidevinePermissionRequest::PermissionGranted(bool is_one_time) {
   // Prevent relaunch during the browser test.
   // This will cause abnormal termination during the test.
   if (for_restart_ && !is_test_) {
-    // Try relaunch after handling permission grant logics in this turn.
+    // Try relaunch after handling permission grant logic in this turn.
     base::SequencedTaskRunnerHandle::Get()->PostTask(
         FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
   }
