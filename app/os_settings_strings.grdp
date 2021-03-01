@@ -2185,7 +2185,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MESSAGE" desc="Message describing the behavior of the known networks page.">
     Preferred networks will be preferred over other known networks if more than one is available
   </message>
-  <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_PREFFERED" desc="Title for list of preferred networks.">
+  <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_PREFERRED" desc="Title for list of preferred networks.">
     Preferred networks
   </message>
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_ADD_PREFERRED" desc="Settings &gt; Internet &gt; Known networks &gt; Dropdown menu item to add a network to the list of preferred networks.">
