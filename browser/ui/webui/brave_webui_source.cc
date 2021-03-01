@@ -197,7 +197,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         // Private Tab - Header Private Window with Tor
         { "headerTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR },
         { "headerTorText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC },
-        { "headerTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WIONDOW_TOR_BUTTON },             // NOLINT
+        { "headerTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_BUTTON },             // NOLINT
 
         // Private Tab - Box for DDG
         { "boxDdgLabel", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL },

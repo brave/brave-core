@@ -297,7 +297,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave never remembers what you do in a Private Window. With Tor, your browsing is also hidden from your ISP or employer, and your IP address is hidden from the sites you visit.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WIONDOW_TOR_BUTTON" desc="">Learn more about Private Windows with Tor</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_BUTTON" desc="">Learn more about Private Windows with Tor</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL" desc="">Search Privately with</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE" desc="">DuckDuckGo</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1" desc="">With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn’t track your search history, so you can search privately.</message>
