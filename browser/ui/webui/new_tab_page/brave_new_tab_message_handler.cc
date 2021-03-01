@@ -176,7 +176,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   //
   auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
   // For safety, default |is_ads_supported_locale_| to true. Better to have
-  // false positive than falsen egative,
+  // false positive than false negative,
   // in which case we would not show "opt out" toggle.
   bool is_ads_supported_locale_ = true;
   if (!ads_service_) {
