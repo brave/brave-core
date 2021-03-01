@@ -15,7 +15,7 @@
     <color name="black_alpha_30">#4D000000</color>
     <color name="black_alpha_50">#80000000</color>
 
-    <!-- Onborading colors -->
+    <!-- Onboarding colors -->
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
     <color name="onboarding_black">#1e2029</color>
