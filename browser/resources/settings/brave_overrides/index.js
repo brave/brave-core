@@ -6,7 +6,7 @@
 // Note that we cannot predict the order that
 // modules are executed in. It will be different between non-optimized
 // (the browser controls which es module is downloaded and executed,
-// where it is not consistant due to "network" responses) and
+// where it is not consistent due to "network" responses) and
 // optimized (rollup controls the order in which modules are executed).
 
 import './about_page.js'
