@@ -350,7 +350,7 @@ def get_strings_dict_from_xml_content(xml_content):
 def get_strings_dict_from_xtb_file(xtb_file_path):
     """Obtains a dictionary mapping the string fingerprint to its value for
     an xtb file"""
-    # No file exists yet, so just returna an empty dict
+    # No file exists yet, so just return an empty dict
     if not os.path.isfile(xtb_file_path):
         return {}
     translation_tags = lxml.etree.parse(
