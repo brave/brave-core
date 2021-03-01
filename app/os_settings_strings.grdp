@@ -747,6 +747,9 @@
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_INVALID_SSO_URL_MESSAGE" desc="The message shown when mounting a new SMB share fails because the URL is an invalid format when SSO authentication is used.">
     Invalid URL format. Server must be specified as a host name when SSO authentication is used.
   </message>
+  <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_INVALID_USERNAME_MESSAGE" desc="The message shown when mounting a new SMB share fails because the username is invalid.">
+    Invalid username
+  </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
     Share mounted successfully.
   </message>
@@ -2265,6 +2268,9 @@ Press an assigned switch to remove assignment.
   <message name="IDS_CELLULAR_SETUP_ESIM_PAGE_INSTALL_ERROR_DIALOG_CONFIRMATION_CODE_ERROR" desc="Settings &gt; Network &gt; Mobile data &gt; Download &gt; Install error dialog: Error indicating that installing the eSIM profile was unsuccessful.">
     Unable to connect to this profile. For technical support, please contact your carrier.
   </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_INSTALL_ERROR_DIALOG_GENERIC_ERROR_MESSAGE" desc="Settings &gt; Network &gt; Mobile data &gt; Download &gt; Install error dialog: Message for the dialog informing the user that there was an error installing their eSIM profile.">
+    Profile could not be downloaded. Please try again later or contact carrier for help.
+  </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_RENAME_DIALOG_RENAME_PROFILE" desc="Settings &gt; Internet &gt; Network details &gt; Rename profile dialog: Label for the dialog informing the user to rename an eSIM cellular network">
     Rename Profile
   </message>
@@ -2373,12 +2379,6 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORK_OUT_OF_RANGE" desc="Text shown when viewing the Wi-Fi network detail page when the currently-viewed Wi-Fi network has been lost (e.g., has gone out of range).">
     Network out of range
   </message>
-  <message name="IDS_SETTINGS_INTERNET_CELLULAR_CONTACT_SPECIFIC_CARRIER" desc="Text shown when the Bravebook cannot connect to a cellular network, which alerts the user to contact a specific carrier.">
-    Trouble connecting. Please contact <ph name="CARRIER_NAME">$1<ex>Brave Fi</ex></ph> for assistance.
-  </message>
-  <message name="IDS_SETTINGS_INTERNET_CELLULAR_CONTACT_DEFAULT_CARRIER" desc="Text shown when the Bravebook cannot connect to a cellular network, which alerts the user to contact their carrier.">
-    Trouble connecting. Please contact your carrier for assistance.
-  </message>
   <message name="IDS_SETTINGS_INTERNET_CELLULAR_SETUP_DIALOG_TITLE" desc="The title text of the cellular setup dialog that allows users set up a new cellular network by activating a physical SIM card or setting up the device's built in eSIM.">
     Set up new network
   </message>
@@ -2455,10 +2455,10 @@ Press an assigned switch to remove assignment.
     Instant Tethering
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no eSIM profile is available">
-    No available eSIM profiles. Download a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>
+    No available eSIM profiles. Download a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularEsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_PSIM_NOT_SETUP_WITH_SETUP_LINK" desc="Text shown when viewing the Mobile data page and no physical SIM profile is available">
-    No available SIM profiles. Setup a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularPsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
+    No available SIM profiles. Set up a new profile <ph name="BEGIN_LINK">&lt;a href="#" id="cellularPsimLink"&gt;</ph>here.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_NOT_SETUP_WITH_LEARN_MORE_LINK" desc="Text shown when viewing the Mobile data page and no instant tether network is available">
     No device detected <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -2683,7 +2683,9 @@ Press an assigned switch to remove assignment.
     Change PIN
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NUM_FINGERPRINTS" desc="Text on the lock screen which tells users how many fingerprints they have enrolled.">
-    <ph name="NUM_FINGERPRINTS">$1<ex>1</ex></ph> fingerprints set up
+    {COUNT, plural,
+      =1 {1 fingerprint set up}
+      other {{COUNT} fingerprints set up}}
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the profiles page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
     Sign in automatically
@@ -3212,6 +3214,9 @@ Press an assigned switch to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_LESS_SECURE" desc="Text telling users that fingerprints might be less secure than strong PINs or passwords.">
     Note: Your fingerprint may be less secure than a strong password or PIN.
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_NOTICE" desc="Tooltip text telling users that fingerprint data never leaves their device.">
+    Your fingerprint data is stored securely and never leaves your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Setup Pin dialog (OS settings) -->
