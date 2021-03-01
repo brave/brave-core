@@ -3404,7 +3404,7 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_NACL_PREFIX" desc="The prefix for a Task Manager Native Client module row">
           Native Client module: <ph name="NEXE_NAME">$1<ex>Unknown Native Client module</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_NACL_BROKER_PREFIX" desc="Task Manager row for Native Client broker, which acts as the sanbox manager for NaCl processes">
+        <message name="IDS_TASK_MANAGER_NACL_BROKER_PREFIX" desc="Task Manager row for Native Client broker, which acts as the sandbox manager for NaCl processes">
           Native Client security manager
         </message>
         <message name="IDS_TASK_MANAGER_GPU_PREFIX" desc="Task Manager row for the GPU process, which is the process doing all accelerated graphics rendering">
