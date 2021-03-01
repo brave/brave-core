@@ -549,9 +549,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             text = title + "\n\n";
         }
         text += message;
-        SpannableString formatedText = new SpannableString(text);
-        formatedText.setSpan(new RelativeSizeSpan(1.25f), 0, title.length(), 0);
-        textView.setText(formatedText);
+        SpannableString formattedText = new SpannableString(text);
+        formattedText.setSpan(new RelativeSizeSpan(1.25f), 0, title.length(), 0);
+        textView.setText(formattedText);
     }
 
     /** OnClickListener for the clear button. We show an alert dialog to confirm the action */
