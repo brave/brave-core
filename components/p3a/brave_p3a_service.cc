@@ -56,7 +56,7 @@ constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
-// TODO(iefremov): Provide moar histograms!
+// TODO(iefremov): Provide more histograms!
 // Whitelist for histograms that we collect. Will be replaced with something
 // updating on the fly.
 constexpr const char* kCollectedHistograms[] = {
