@@ -690,7 +690,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
 }
 
 // Tags for social buttons work
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButtonAdBlockTagTest) {
   UpdateAdBlockInstanceWithRules(
       base::StringPrintf("||example.com^$tag=%s",
                          brave_shields::kFacebookEmbeds)
@@ -713,7 +713,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
 }
 
 // Lack of tags for social buttons work
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButtonAdBlockDiffTagTest) {
   UpdateAdBlockInstanceWithRules("||example.com^$tag=sup");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);

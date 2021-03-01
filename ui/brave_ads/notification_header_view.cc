@@ -55,7 +55,7 @@ constexpr int kHeaderTextFontSize = 14;
 // Minimum spacing before the control buttons.
 constexpr int kControlButtonSpacing = 10;
 
-// ExpandButtton forwards all mouse and key events to NotificationHeaderView,
+// ExpandButton forwards all mouse and key events to NotificationHeaderView,
 // but takes tab focus for accessibility purpose.
 class ExpandButton : public views::ImageView {
  public:

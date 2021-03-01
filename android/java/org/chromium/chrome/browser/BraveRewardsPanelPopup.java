@@ -1276,10 +1276,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(stringToInsert);
         tv.setText(toInsert);
 
-        SetNotificationButtoClickListener();
+        SetNotificationButtonClickListener();
     }
 
-    private void SetNotificationButtoClickListener() {
+    private void SetNotificationButtonClickListener() {
         Button btClaimOk = (Button)root.findViewById(R.id.br_claim_button);
         String strAction = (btClaimOk != null && mBraveRewardsNativeWorker != null ) ? btClaimOk.getText().toString() : "";
         if (strAction.equals(root.getResources().getString(R.string.ok))) {
