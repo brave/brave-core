@@ -304,11 +304,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         //         &&
         //         SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
         //         == 1) {
-        //     Calendar calender = Calendar.getInstance();
-        //     calender.setTime(new Date());
-        //     calender.add(Calendar.DATE, DAYS_4);
+        //     Calendar calendar = Calendar.getInstance();
+        //     calendar.setTime(new Date());
+        //     calendar.add(Calendar.DATE, DAYS_4);
         //     OnboardingPrefManager.getInstance().setNextOnboardingDate(
-        //         calender.getTimeInMillis());
+        //         calendar.getTimeInMillis());
         // }
 
         // OnboardingActivity onboardingActivity = null;
@@ -325,11 +325,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         // }
 
         if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_12);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, DAYS_12);
             OnboardingPrefManager.getInstance().setNextCrossPromoModalDate(
-                calender.getTimeInMillis());
+                calendar.getTimeInMillis());
         }
 
         if (OnboardingPrefManager.getInstance().showCrossPromoModal()) {
@@ -378,10 +378,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 && SharedPreferencesManager.getInstance().readInt(
                            BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_4);
-            BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, DAYS_4);
+            BraveRewardsHelper.setNextRewardsOnboardingModalDate(calendar.getTimeInMillis());
         }
         if (BraveRewardsHelper.shouldShowRewardsOnboardingModalOnDay4()) {
             BraveRewardsHelper.setShowBraveRewardsOnboardingModal(true);
@@ -391,11 +391,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                 == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_5);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, DAYS_5);
             OnboardingPrefManager.getInstance().setNextSetDefaultBrowserModalDate(
-                    calender.getTimeInMillis());
+                    calendar.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
         if (mBraveRewardsNativeWorker != null
@@ -456,9 +456,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 shouldSetNextDate = true;
             }
             if (shouldSetNextDate) {
-                Calendar calender = toDayCalendar;
-                calender.add(Calendar.DATE, DAYS_3);
-                BraveRewardsHelper.setNextBAPModalDate(calender.getTimeInMillis());
+                Calendar calendar = toDayCalendar;
+                calendar.add(Calendar.DATE, DAYS_3);
+                BraveRewardsHelper.setNextBAPModalDate(calendar.getTimeInMillis());
             }
         }
     }

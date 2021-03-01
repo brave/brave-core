@@ -69,12 +69,12 @@ public class RateUtils {
     }
 
     public void setPrefNextRateDate() {
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(new Date());
-        calender.add(Calendar.DATE, DAYS_60);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, DAYS_60);
 
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_RATE_DATE, calender.getTimeInMillis());
+        sharedPreferencesEditor.putLong(PREF_NEXT_RATE_DATE, calendar.getTimeInMillis());
         sharedPreferencesEditor.apply();
     }
 
