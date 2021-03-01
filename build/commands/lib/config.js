@@ -188,7 +188,7 @@ Config.prototype.buildArgs = function () {
     brave_services_key: this.braveServicesKey,
     root_extra_deps: ["//brave"],
     // TODO: Re-enable when chromium_src overrides work for files in relative
-    // paths like widevine_cmdm_compoennt_installer.cc
+    // paths like widevine_cmdm_component_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
