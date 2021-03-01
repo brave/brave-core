@@ -1015,7 +1015,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         public View getView(int position, View view, ViewGroup viewGroup) {
             TextView tv;
             if (null == view) {
-                tv = (TextView)inflater.inflate(R.layout.brave_rewards_spinnner_item, null);
+                tv = (TextView)inflater.inflate(R.layout.brave_rewards_spinner_item, null);
             } else {
                 tv = (TextView)view;
             }
@@ -1032,7 +1032,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             TextView tv;
             if (null == convertView) {
-                tv = (TextView)inflater.inflate(R.layout.brave_rewards_spinnner_item_dropdown, null);
+                tv = (TextView)inflater.inflate(R.layout.brave_rewards_spinner_item_dropdown, null);
             } else {
                 tv = (TextView)convertView;
             }
