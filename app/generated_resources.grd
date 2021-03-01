@@ -4282,10 +4282,10 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_PACK_DIALOG_ERROR_ROOT_REQUIRED" desc="Error message in pack extension dialog when the user does not specify a root directory.">
         Extension root directory is required.
       </message>
-      <message name="IDS_EXTENSION_PACK_DIALOG_ERROR_ROOT_INVALID" desc="Error message in pack extension dialog when the user speciifes an invalid root directory.">
+      <message name="IDS_EXTENSION_PACK_DIALOG_ERROR_ROOT_INVALID" desc="Error message in pack extension dialog when the user specifies an invalid root directory.">
         Extension root directory is invalid.
       </message>
-      <message name="IDS_EXTENSION_PACK_DIALOG_ERROR_KEY_INVALID" desc="Error message in pack extension dialog when the user speciifes an invalid key file.">
+      <message name="IDS_EXTENSION_PACK_DIALOG_ERROR_KEY_INVALID" desc="Error message in pack extension dialog when the user specifies an invalid key file.">
         Private key file is invalid.
       </message>
       <message name="IDS_EXTENSION_PACK_DIALOG_SUCCESS_BODY_NEW" desc="Message shown on successful packing of a new extension.">
