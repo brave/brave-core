@@ -57,7 +57,7 @@ class BraveUptimeTracker {
 #if !defined(OS_ANDROID)
 // Periodically records P3A stats (extracted from Local State) regarding the
 // time when incognito windows were used.
-// Used as a leaking singletone.
+// Used as a leaking singleton.
 class BraveWindowTracker : public BrowserListObserver {
  public:
   explicit BraveWindowTracker(PrefService* local_state);

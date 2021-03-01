@@ -60,7 +60,7 @@ class BraveRequestHandler {
   std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
 
   // TODO(iefremov): actually, we don't have to keep the list here, since
-  // it is global for the whole browser and could live a singletonce in the
+  // it is global for the whole browser and could live a singleton in the
   // rewards service. Eliminating this will also help to avoid using
   // PrefChangeRegistrar and corresponding |base::Unretained| usages, that are
   // illegal.
