@@ -36,7 +36,7 @@ class BrowsingModeBottomToolbarMediator implements ThemeColorObserver {
     /** The transparency fraction of the IPH background. */
     private static final float DUET_IPH_BACKGROUND_ALPHA_FRACTION = 0.3f;
 
-    /** The dismissable parameter name of the IPH. */
+    /** The dismissible parameter name of the IPH. */
     static final String DUET_IPH_TAP_TO_DISMISS_PARAM_NAME = "duet_iph_tap_to_dismiss_enabled";
 
     /** The model for the browsing mode bottom toolbar that holds all of its state. */
