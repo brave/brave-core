@@ -142,7 +142,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
                     mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
             } else if (mIsSuccessShown) {
-                openPlaystore();
+                openPlayStore();
             } else {
                 laterAction();
             }
@@ -157,7 +157,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
-    private void openPlaystore() {
+    private void openPlayStore() {
         final Uri marketUri = Uri.parse("market://details?id=" + getActivity().getPackageName());
         try {
             getActivity().startActivity(new Intent(Intent.ACTION_VIEW, marketUri));
