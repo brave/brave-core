@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Všechny zdroje</translation>
 <translation id="8890516388109605451">Zdroje</translation>
 <translation id="5158129253322921540">Vypnout odběr obsahu od <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Propagované</translation>
 <translation id="1776831331757823105">Hodiny</translation>
 <translation id="4643117005422448078">Top weby</translation>
 <translation id="7791543448312431591">Přidat</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Obchodujte s kryptoměnami na burze Binance přímo v prohlížeči.</translation>
 <translation id="2166494527623220386">Obchodujte s kryptoměnami na burze Gemini přímo v prohlížeči.</translation>
 <translation id="7191394989411626168">Vypnutím Karet dojde ke skrytí všech aktuálně viditelných karet. Můžete ale stále dostávat oznámení o nových kartách.</translation>
+<translation id="5655621391922317800">Krypto peněženky</translation>
+<translation id="8820817407110198400">Záložky</translation>
+<translation id="1644574205037202324">Historie</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="6248988683584659830">Nastavení vyhledávání</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Možná později</translation>
 <translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
 <translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
+<translation id="3115702351969988294">Jak často chcete vídat reklamy?</translation>
+<translation id="7532131110478098401">(reklam za hodinu)</translation>
+<translation id="2951964054390325080">Jak velkou měsíční podporu chcete dávat svým oblíbeným tvůrcům?</translation>
+<translation id="3164498053837913829">(z vašich výdělků za reklamy)</translation>
 <translation id="2070991379950719711">Začněte používat Brave Rewards</translation>
 <translation id="6318696841371191107">Spustit rychlou prohlídku</translation>
 <translation id="2404165674840145940">Posílejte příspěvky s Brave Rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Přispívání je způsob, jak osobně povzbudit a podpořit tvůrce a obsah, co máte rádi. Pojďte přispívat!</translation>
 <translation id="7509452925943421624">Co můžete s tokeny dělat?</translation>
 <translation id="5876169128756792273">Tokeny lze použít i nad rámec podpory tvůrců.  Jakmile se přidají obchodníci, můžete si za ně koupit digitální obsah a další zboží.</translation>
+<translation id="1402530520078693620">A nakonec provedeme pár základních nastavení</translation>
+<translation id="3494356595346329740">Toto můžete později změnit.</translation>
 <translation id="827315274423079662">Hurá, je to nastavené!</translation>
 <translation id="8268038362451312235">Používáním služby Brave Rewards pomáháte vytvářet z webu lepší místo pro všechny. A to je úžasné!</translation>
 <translation id="5094577350232361255">o nás</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Přibližný dosavadní výdělek za tento měsíc</translation>
 <translation id="5235444069025581717">Dary a příspěvky tohoto měsíce</translation>
 <translation id="1210965535849006928">Nárokovat moje odměny</translation>
-<translation id="8092889639392847252">Dostávejte zaplaceno za zobrazení tohoto sponzorovaného obrázku pozadí.</translation>
-<translation id="7914961605852877459">Zapněte Brave Ads a získejte svůj podíl. Máte ale i možnost <ph name="LINK_BEGIN"/>skrýt sponzorované obrázky<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Získejte odměny za prohlížení tohoto sponzorovaného pozadí.</translation>
+<translation id="5311968438376723685">Zapněte si Brave Private Ads a získejte svůj podíl. Můžete se také rozhodnout <ph name="LINK_BEGIN"/>skrýt sponzorované obrázky<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">No, skvěle!</translation>
 <translation id="764235488372037377">Vaše odměny za reklamu jsou zde</translation>
 <translation id="7091215606170476659">Bylo vám uděleno UGP od Brave.</translation>
 <translation id="6759185676704303656">Dostáváte zaplaceno za zobrazení tohoto obrázku pozadí.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Zjistěte více<ph name="LINK_END"/> o sponzorovaných obrázcích v Brave Rewards.</translation>
 <translation id="6113004497629356998">Skrýt sponzorované obrázky</translation>
+<translation id="8587285254008006694">Součástí tohoto přechodu bude, že funkce příspěvků a odměn budou ve
+        vašem prohlížeči dočasně nedostupné (od 13. března) a
+        váš zůstatek BAP bude zobrazovat částku 0,0 až do té doby, než provedete v dubnu aktualizaci na nový
+        systém. Jakmile budete v novém systému, odstartujete s novými
+        tokeny!</translation>
+<translation id="6232491755501685494">Brave Rewards v Japonsku přechází na nový systém!</translation>
 <translation id="3787061634640932557">Upravit Karty</translation>
 <translation id="4925543565930352284">Klepnutím na {{title}} souhlasíte s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Ochranou soukromí<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Zahajte soukromý videohovor s vašimi přáteli a kolegy.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Jednotková cena</translation>
 <translation id="4763179765154524864">Celkem stráveno</translation>
 <translation id="8851480289992540512">Celkem přijato</translation>
-<translation id="5655621391922317800">Krypto peněženky</translation>
 <translation id="616639131065447379">Vítejte v Kryptopeněženkách Brave</translation>
 <translation id="1740464057879304704">Kryptopeněženky vám umožní pracovat s kryptoměnami a s nimi spojenými zdroji přímo v Brave. Kryptopeněženky podporují žetony Ethereum jako ETH a BAT stejně jako sběratelské předměty a umožňují vám pracovat s Ðaplikacemi a dalšími chytrými smlouvami. To vše je určené lidem, kteří jsou seznámeni s Ethereum a dalšími blockchain systémy — nebo se rádi učí.</translation>
 <translation id="4855440621031541830">Kryptopeněženky používejte jen v případě souhlasu s tím, že vy sami jste zodpovědní za veškerá rizika spojená s jejich používáním a že na Brave Software nespočívá žádná zodpovědnost nebo záruka vůči jakýmkoliv ztrátám včetně nechtěných nebo výsledných ztrát, které můžete utrpět důsledkem tohoto používání.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Vypnout Speedreader</translation>
 <translation id="9020818404803201080">Připojené peery:</translation>
 <translation id="2903493209154104877">Adresy</translation>
+<translation id="3207122385716480167">Statistiky repozitáře</translation>
+<translation id="2595187693729756455">Info o uzlu</translation>
 <translation id="5789886980848929155">Stav uzlu IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Brána</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">Spuštěno</translation>
+<translation id="5201810533706869030">Objekty</translation>
+<translation id="8028993641010258682">Velikost</translation>
+<translation id="7870625241353817260">MaxÚložistě</translation>
+<translation id="3202131003361292969">Cesta</translation>
+<translation id="2892680660204660712">ID peeru</translation>
+<translation id="7536543993364605970">Verze agenta</translation>
+<translation id="3693482323085649439">Uzel je v provozu</translation>
+<translation id="6315833555896070573">Uzel není v provozu</translation>
 <translation id="1272079795634619415">Zastavit</translation>
+<translation id="5895138241574237353">Restartovat</translation>
 <translation id="6762417584993757344">Není instalováno</translation>
+<translation id="4159076046325416152">Instaluje se IPFS...</translation>
+<translation id="3854747677478661601">Provést vymazání odpadních sektorů</translation>
+<translation id="7376842608449050673">Chyba správy odpadních sektorů</translation>
 <translation id="8428368469058794536">Služba IPFS</translation>
+<translation id="6776260067907986254">Můj uzel</translation>
+<translation id="8523162996646111972">(detaily)</translation>
+<translation id="6121825639998459476">Nainstalovat a spustit</translation>
+<translation id="72868071984333667">Další informace o IPFS a soukromí</translation>
+<translation id="1886162073868201257">Chyba při spouštění služby IPFS</translation>
 <translation id="5357895013476183089">IPFS nepřipojen</translation>
 <translation id="1196783328762622576">Pomocí místního uzlu nelze načíst prostředky IPFS</translation>
 <translation id="1141556610026845297">K načtení požadovaných prostředků IPFS se nepodařilo použít místní uzel IPFS.  Kliknutím na tlačítko „Pokračovat“ místo toho použijete veřejnou bránu a v budoucnu se automaticky vrátíte zpět k veřejné bráně.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Rozšířená nastavení</translation>
 <translation id="9096577886148726047">Skrýt pokročilé</translation>
 <translation id="7716995370131231171">Brave nemůže načíst požadované prostředky IPFS buď proto, že se nespustil místní uzel, nebo v tuto chvíli nejsou k dispozici žádné připojené peery.  Pokud zvolíte „Pokračovat“, Brave se automaticky přepne zpět na výchozí veřejnou bránu, kdykoli selže použití místního uzlu.  Toto chování můžete kdykoli změnit v nastavení Brave.</translation>
+<translation id="8026038288183400906">Předvolba IPFS</translation>
+<translation id="2058855456574089690">Nastavte svou preferenci IPFS</translation>
+<translation id="4447758690649023734">Použít lokální uzel</translation>
+<translation id="8148464361648742409">Použít veřejnou bránu</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) je veřejná síť pro ukládání a předávání dat formou peer-to-peer. Tento protokol má odlišné zásady ochrany osobních údajů než HTTP(S).</translation>
+<translation id="5410952114182173389">Váš počítač přispívá do veřejné sítě, ale vaše IP adresa a veškerý obsah, o který žádáte nebo poskytujete, by mohl být odhalen. Obsah, o který žádáte přes IPFS, je předtím, než ho dostanete, ověřován.</translation>
+<translation id="8664689531113048642">Chrání vaši IP adresu a obsah, o který žádáte, před potenciálními pozorovateli z třetích stran, nikoli však před operátorem veřejné brány. Provozovatel brány je odpovědný za zajištění toho, že obsah, který vám bude poskytován prostřednictvím brány, je obsah, který jste požadovali. Váš počítač také nepřispívá do veřejné sítě IPFS.</translation>
+<translation id="3977809385703587108">Předvolby můžete znovu změnit v</translation>
+<translation id="3340978935015468852">nastavení</translation>
+<translation id="4148957013307229264">Instalace...</translation>
+<translation id="6057992164469678163">Čeká se na peery...</translation>
+<translation id="1902096227388293745">Nejsou k dispozici žádné peery, probíhá další pokus... (ještě <ph name="ATTEMPTS_NUMBER"/> pokusů)</translation>
+<translation id="1675751799495331928">Překročili jsme limit pokusů, zkuste to později.</translation>
+<translation id="4499666752625407848">Během aktualizace došlo k chybě.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Prohlédněte si trhy na crypto.com a nakupte zde kryptoměny.</translation>
 <translation id="4292334826913000023">Ukázat cenu</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Podporované páry</translation>
 <translation id="1164622162816276433">Objem za 24 h</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="3745016858329272300">Obecné info</translation>
+<translation id="4045404575593562245">Kontrolní události Toru</translation>
+<translation id="216855356675970168">Verze Toru</translation>
+<translation id="2976625104959685176">Procesní ID Tor</translation>
+<translation id="6951743416068151209">URI Tor proxy</translation>
+<translation id="1671503397662036257">Status připojení Tor</translation>
+<translation id="6024292492796847324">Průběh inicializace Toru</translation>
 </translationbundle>

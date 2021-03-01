@@ -635,6 +635,22 @@
     "message": "Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư, đồng thời tự động hỗ trợ các website và người sáng tạo nội dung mà bạn yêu thích.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Bạn muốn xem quảng cáo bao lâu một lần?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(quảng cáo mỗi giờ)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Hàng tháng, bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo yêu thích của mình?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(từ thu nhập xem quảng cáo của bạn)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Bắt đầu sử dụng Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Bạn có thể sử dụng các token ngoài việc ủng hộ các nhà sáng tạo. Bạn có thể mua nội dung kỹ thuật số và các hàng hóa khác khi các thương gia tham gia.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Cuối cùng, bạn hãy thiết lập các cài đặt cơ bản",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Bạn có thể thay đổi điều này sau.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Tuyệt vời, tất cả đã sẵn sàng rồi!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Khi sử dụng Brave Rewards, bạn đang giúp làm cho trang web trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards ở Nhật Bản đang chuyển sang một hệ thống mới!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Xin vui lòng sử dụng BAP của bạn trước ngày 13 tháng 3. Sau đó, BAP sẽ bị ngừng hoạt động.",
+    "description": "Text for BAP deprecation popup"
   }
 }

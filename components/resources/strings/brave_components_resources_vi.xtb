@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Tất cả các nguồn</translation>
 <translation id="8890516388109605451">Nguồn</translation>
 <translation id="5158129253322921540">Vô hiệu hóa nội dung từ <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Được quảng bá</translation>
 <translation id="1776831331757823105">Đồng hồ</translation>
 <translation id="4643117005422448078">Các trang Hàng đầu</translation>
 <translation id="7791543448312431591">Thêm</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Mua bán Tiền ảo trên Binance ngay trong trình duyệt của bạn.</translation>
 <translation id="2166494527623220386">Mua bán Tiền ảo trên Gemini ngay trong trình duyệt của bạn.</translation>
 <translation id="7191394989411626168">Bằng cách tắt Thẻ, tất cả các thẻ hiện đang hiển thị sẽ bị ẩn. Tuy nhiên, bạn vẫn có thể được thông báo về thẻ mới.</translation>
+<translation id="5655621391922317800">Ví Điện tử</translation>
+<translation id="8820817407110198400">Dấu trang</translation>
+<translation id="1644574205037202324">Lịch sử</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8730621377337864115">Đã xong</translation>
 <translation id="6248988683584659830">Cài đặt tìm kiếm</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Có lẽ Để sau</translation>
 <translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
 <translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Rewards!</translation>
+<translation id="3115702351969988294">Bạn muốn xem quảng cáo bao lâu một lần?</translation>
+<translation id="7532131110478098401">(quảng cáo mỗi giờ)</translation>
+<translation id="2951964054390325080">Hàn tháng, bạn muốn hỗ trợ bao nhiêu cho những người sáng tạo yêu thích của mình?</translation>
+<translation id="3164498053837913829">(từ thu nhập xem quảng cáo của bạn)</translation>
 <translation id="2070991379950719711">Bắt đầu sử dụng Brave Rewards</translation>
 <translation id="6318696841371191107">Xem giới thiệu nhanh</translation>
 <translation id="2404165674840145940">Tặng tiền bằng Brave Rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Tặng tiền là một cách để bạn đích thân khuyến khích và hỗ trợ cho nội dung hoặc người sáng tạo mà bạn yêu thích. Bắt đầu tặng tiền!</translation>
 <translation id="7509452925943421624">Bạn có thể làm gì với token?</translation>
 <translation id="5876169128756792273">Bạn có thể sử dụng các token ngoài việc ủng hộ các nhà sáng tạo. Bạn có thể mua nội dung kỹ thuật số và các hàng hóa khác khi các thương gia tham gia.</translation>
+<translation id="1402530520078693620">Cuối cùng, bạn hãy thiết lập các cài đặt cơ bản</translation>
+<translation id="3494356595346329740">Bạn có thể thay đổi điều này sau.</translation>
 <translation id="827315274423079662">Tuyệt vời, tất cả đã sẵn sàng rồi!</translation>
 <translation id="8268038362451312235">Khi sử dụng Brave Rewards, bạn đang giúp làm cho trang web trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!</translation>
 <translation id="5094577350232361255">về</translation>
@@ -627,14 +637,16 @@
 <translation id="8344084848798035850">Doanh thu ước tính đến nay cho tháng này</translation>
 <translation id="5235444069025581717">Tiền thưởng thêm và khoản đóng góp tháng này</translation>
 <translation id="1210965535849006928">Nhận Phần thưởng của tôi</translation>
-<translation id="8092889639392847252">Nhận tiền khi xem hình nền được tài trợ này.</translation>
-<translation id="7914961605852877459">Bật Brave Ads để nhận phần tiền của bạn. Bạn cũng có thể chọn <ph name="LINK_BEGIN"/>ẩn hình ảnh được trả tiền để hiển thị<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Kiếm phần thưởng khi xem hình nền được tài trợ này.</translation>
+<translation id="5311968438376723685">Bật Brave Private Ads để nhận phần thưởng của bạn. Bạn cũng có thể chọn <ph name="LINK_BEGIN"/>ẩn hình ảnh được tài trợ<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Bạn thật xuất sắc!</translation>
 <translation id="764235488372037377">Đã có phần thưởng từ Brave Ads dành cho bạn</translation>
 <translation id="7091215606170476659">Bạn nhận được khoản tài trợ UGP từ Brave.</translation>
 <translation id="6759185676704303656">Bạn được trả tiền khi xem hình nền này.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về hình được tài trợ trong Phần thưởng Brave.</translation>
 <translation id="6113004497629356998">Ẩn hình được tài trợ</translation>
+<translation id="8587285254008006694">Nằm trong quá trình chuyển đổi này, các tính năng tặng tiền thưởng và đóng góp trong trình duyệt của bạn sẽ tạm thời không thể sử dụng kể từ ngày 13 tháng 3, đồng thời số dư BAP của bạn sẽ hiển thị 0,0 cho đến khi bạn cập nhật lên hệ thống mới vào tháng 4. Khi bạn sử dụng hệ thống mới, bạn sẽ bắt đầu với các token mới!</translation>
+<translation id="6232491755501685494">Brave Rewards ở Nhật Bản đang chuyển sang một hệ thống mới!</translation>
 <translation id="3787061634640932557">Chỉnh sửa Thẻ</translation>
 <translation id="4925543565930352284">Bằng việc nhấp vào {{title}}, bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Bắt đầu một cuộc gọi video riêng tư với bạn bè và đồng nghiệp của bạn.</translation>
@@ -699,7 +711,6 @@
 <translation id="1833248467354516560">Đơn Giá</translation>
 <translation id="4763179765154524864">Tổng số Tiền Đã chi</translation>
 <translation id="8851480289992540512">Tổng số Token Đã nhận</translation>
-<translation id="5655621391922317800">Ví Điện tử</translation>
 <translation id="616639131065447379">Chào mừng bạn đến với Ví Tiền điện tử Brave</translation>
 <translation id="1740464057879304704">Ví Tiền điện tử cho phép bạn làm việc với tiền điện tử và các tài sản liên quan trong Brave. Ví Tiền điện tử hỗ trợ các token Ethereum như ETH và BAT, cũng như các bộ sưu tập tiền điện tử, và cho phép bạn làm việc với các ứng dụng và hợp đồng thông minh khác. Tất cả điều này dành cho những người quen thuộc với Ethereum và các hệ thống blockchain khác hoặc hào hứng tìm hiểu.</translation>
 <translation id="4855440621031541830">Chỉ sử dụng Ví Tiền điện tử nếu bạn chấp nhận rằng một mình bạn chịu trách nhiệm cho mọi rủi ro liên quan đến việc sử dụng này và Phần mềm Brave không chịu trách nhiệm hoặc nghĩa vụ đối với bất kỳ tổn thất nào kể cả tổn thất ngẫu nhiên hoặc do hậu quả mà bạn có thể phải chịu do việc sử dụng này.</translation>
@@ -711,14 +722,32 @@
 <translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
 <translation id="9020818404803201080">Đồng đẳng đã kết nối:</translation>
 <translation id="2903493209154104877">Địa chỉ</translation>
+<translation id="3207122385716480167">Thống kê Repo</translation>
+<translation id="2595187693729756455">Thông tin nút</translation>
 <translation id="5789886980848929155">Trạng thái nút IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Cổng vào</translation>
 <translation id="2551123942222622809">Tập hợp</translation>
-<translation id="3967335629471284781">Đã khởi động</translation>
+<translation id="5201810533706869030">Đối tượng</translation>
+<translation id="8028993641010258682">Kích thước</translation>
+<translation id="7870625241353817260">Lưu trữ Tối đa</translation>
+<translation id="3202131003361292969">Đường dẫn</translation>
+<translation id="2892680660204660712">ID Nút ngang hàng</translation>
+<translation id="7536543993364605970">Phiên bảns Agent</translation>
+<translation id="3693482323085649439">Nút đang chạy</translation>
+<translation id="6315833555896070573">Nút không chạy</translation>
 <translation id="1272079795634619415">Dừng</translation>
+<translation id="5895138241574237353">Khởi động lại</translation>
 <translation id="6762417584993757344">Chưa Cài đặt</translation>
+<translation id="4159076046325416152">Đang xài đặt IPFS...</translation>
+<translation id="3854747677478661601">Thực hiện quét thu gom rác</translation>
+<translation id="7376842608449050673">Lỗi thu gom rác</translation>
 <translation id="8428368469058794536">Dịch vụ IPFS</translation>
+<translation id="6776260067907986254">Nút của Tôi</translation>
+<translation id="8523162996646111972">(chi tiết)</translation>
+<translation id="6121825639998459476">Cài đặt và bắt đầu</translation>
+<translation id="72868071984333667">Tìm hiểu thêm về IPFS và quyền riêng tư</translation>
+<translation id="1886162073868201257">Lỗi khởi chạy Dịch vụ IPFS</translation>
 <translation id="5357895013476183089">IPFS Không được Kết nối</translation>
 <translation id="1196783328762622576">Không thể tải tài nguyên IPFS bằng nút cục bộ</translation>
 <translation id="1141556610026845297">Không thể sử dụng nút IPFS cục bộ để tải các tài nguyên IPFS được yêu cầu. Hãy nhấn nút "Tiếp tục" để sử dụng cổng mạng công khai và để tự động quay lại cổng mạng công khai trong tương lai.</translation>
@@ -726,6 +755,20 @@
 <translation id="1974060860693918893">Nâng cao</translation>
 <translation id="9096577886148726047">Ẩn Nâng cao</translation>
 <translation id="7716995370131231171">Brave không thể tải các tài nguyên IPFS được yêu cầu vì nút cục bộ không khởi động hoặc vì không có máy ngang hàng nào có thể kết nối. Nếu bạn chọn "Tiếp tục", Brave sẽ tự động quay trở lại cổng mạng công khai mặc định bất cứ khi nào không sử dụng được nút cục bộ. Bạn có thể thay đổi chế độ này bất kỳ lúc nào trong phần cài đặt của Brave.</translation>
+<translation id="8026038288183400906">Tùy chọn IPFS</translation>
+<translation id="2058855456574089690">Thiết lập tùy chọn IPFS của bạn</translation>
+<translation id="4447758690649023734">Sử dụng nút cục bộ</translation>
+<translation id="8148464361648742409">Sử dụng cổng công cộng</translation>
+<translation id="5123478056123923857">IPFS (Hệ thống Tập tin Liên Hành tinh) là mạng công cộng để lưu trữ và phân phối dữ liệu ngang hàng. Giao thức này có các cân nhắc về quyền riêng tư khác với HTTP(S).</translation>
+<translation id="5410952114182173389">Máy tính của bạn đóng góp vào mạng công cộng, nhưng địa chỉ IP của bạn và bất kỳ nội dung nào bạn đang yêu cầu hoặc cung cấp có thể bị lộ. Nội dung bạn yêu cầu qua IPFS được xác minh trước khi được cung cấp cho bạn.</translation>
+<translation id="8664689531113048642">Bảo vệ địa chỉ IP và nội dung mà bạn đang yêu cầu khỏi những người quan sát tiềm năng của bên thứ ba, nhưng không bảo vệ những thông tin đó khỏi nhà điều hành cổng công cộng. Nhà điều hành cổng có trách nhiệm đảm bảo rằng nội dung được cung cấp cho bạn thông qua cổng là nội dung bạn đã yêu cầu. Ngoài ra, máy tính của bạn không đóng góp vào mạng IPFS công cộng.</translation>
+<translation id="3977809385703587108">Bạn có thể thay đổi tùy chọn của mình một lần nữa sau</translation>
+<translation id="3340978935015468852">cài đặt</translation>
+<translation id="4148957013307229264">Đang cài đặt...</translation>
+<translation id="6057992164469678163">Đang chờ các nút ngang hàng...</translation>
+<translation id="1902096227388293745">Không có nút ngang hàng nào, đang thử lại... (còn lại <ph name="ATTEMPTS_NUMBER"/> lần thử)</translation>
+<translation id="1675751799495331928">Chúng tôi đã vượt quá giới hạn số lần thử, xin vui lòng thử lại sau.</translation>
+<translation id="4499666752625407848">Đã xảy ra lỗi khi cập nhật.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Xem thị trường và mua tiền điện tử từ crypto.com.</translation>
 <translation id="4292334826913000023">Hiển thị Giá</translation>
@@ -737,4 +780,11 @@
 <translation id="5337526542182802976">Cặp tiền Được hỗ trợ</translation>
 <translation id="1164622162816276433">Khối lượng 24 giờ</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
+<translation id="3745016858329272300">Thông tin Chung</translation>
+<translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
+<translation id="216855356675970168">Phiên bản Tor</translation>
+<translation id="2976625104959685176">ID Tiến trình Tor</translation>
+<translation id="6951743416068151209">URI Proxy Tor</translation>
+<translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
+<translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
 </translationbundle>

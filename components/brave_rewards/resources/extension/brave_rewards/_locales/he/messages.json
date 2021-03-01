@@ -635,6 +635,22 @@
     "message": "הרוויחו טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות ותמכו באתרים וביוצרי התוכן המועדפים עליכם באופן אוטומטי.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "באיזו תדירות תרצו לראות פרסומות?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(פרסומות לשעה)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "כמה תמיכה חודשית תרצו לתת ליוצרים החביבים עליכם?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(מרווחי הפרסומות שלך)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "התחל להשתמש ב-Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "ניתן להשתמש בטוקנים מעבר לתמיכה ביוצרים. באפשרותכם לקנות תוכן דיגיטלי וסחורות אחרות כאשר הסוחרים מצטרפים.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "לסיום, בוא/י נתקין אותך עם ההגדרות הבסיסיות",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "תוכלו לשנות זאת בהמשך.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "ווהו, אתם מוכנים!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "בשימושכם ב-Brave Rewards אתם עוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה מדהים!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards ביפן עובר למערכת חדשה!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "למידע נוסף",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "אנא השתמש/י ב-BAP שלך עד 13 במרץ. לאחר מכן ייפסק השימוש ב-BAP.",
+    "description": "Text for BAP deprecation popup"
   }
 }

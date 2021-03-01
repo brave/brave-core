@@ -460,12 +460,12 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="6730444165801605682">Dar uma gorjeta é uma forma de encorajar e apoiar pessoalmente conteúdo ou criadores da sua preferência.  Receba gorjetas!</translation>
 <translation id="7509452925943421624">O que pode fazer com os tokens?</translation>
 <translation id="5876169128756792273">Os tokens podem ser usados para além do apoio aos criadores.  Pode comprar conteúdo e outros bens à medida que os comerciantes aderem.</translation>
-<translation id="1402530520078693620">Por último, vamos’ ajudá-lo a definir as configurações básicas</translation>
+<translation id="1402530520078693620">Por último, vamos ajudá-lo a definir as configurações básicas</translation>
 <translation id="3494356595346329740">Pode alterar isto mais tarde.</translation>
 <translation id="6462814326662189004">Quão frequentemente quer ver anúncios?\n(Anúncios por hora)</translation>
 <translation id="2134244432345596331">Com quanto deseja apoiar os seus criadores preferidos?\n(com os ganhos dos seus anúncios)</translation>
-<translation id="827315274423079662">Pronto, já’está!</translation>
-<translation id="3895246934788932488">Ao usar o Brave Rewards, protege a sua privacidade e ajuda a fazer da net um lugar melhor para todos.  O que é’ fantástido!</translation>
+<translation id="827315274423079662">Pronto, já está!</translation>
+<translation id="3895246934788932488">Ao usar o Brave Rewards, protege a sua privacidade e ajuda a fazer da net um lugar melhor para todos.  O que é fantástido!</translation>
 <translation id="5705882733397021510">Volte</translation>
 <translation id="5140321319944305531">Vamos a uma Visita Rápida</translation>
 <translation id="2434574859640694129">Após receber o pagamento dos seus primeiros anúncios, pode voltar e dar uma gorjeta a este criador!</translation>
@@ -473,7 +473,7 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8342862030112839977">As suas primeiras recompensas serão pagas a:</translation>
 <translation id="3769645103175790584">Ganhe tokens e recompense os criadores pelo excelente conteúdo enquanto navega. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Visita rápida</translation>
-<translation id="1080013038789678738">I’Estou dentro!</translation>
+<translation id="1080013038789678738">Estou dentro!</translation>
 <translation id="3604285424134705930">Converteu <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Por favor, verifique a sua ligação à internet.</translation>
 <translation id="7889432931837317731">Abrir automaticamente quando possível.</translation>
@@ -498,4 +498,12 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="3184805785843994538">O Brave Shields bloqueia rastreadores &amp; anúncios, economiza dados e tempo em todos os sites por si visitados</translation>
 <translation id="8722651357687610395">Definir o Brave como padrão</translation>
 <translation id="3479552764303398839">Agora não</translation>
+<translation id="6232491755501685494">A Brave Rewards no Japão está a mudar para um novo sistema! in</translation>
+<translation id="7444515017164572362">A partir do dia 13 de não lhe será mais possível usar os seus BAPs.  Mas, uma vez feita 
+        a atualização para o novo sistema em abril, ser-lhe-á possível usar os novos tokens.</translation>
+<translation id="8587285254008006694">Como parte desta transição, as gorjetas e as funcionalidades de contribuição presentes 
+        no serão navegador ficarão indisponíveis a partir do dia 13 de marco, e 
+        o seu balança BAP indicará 0.0, exceto caso tenha atualizado para o novo sistema
+        em abril. Uma vez por si concluída a adesão ao novo sistema, é-lhe possível iniciar com os novos 
+        tokens!</translation>
 </translationbundle>

@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Tutte le risorse</translation>
 <translation id="8890516388109605451">Fonti</translation>
 <translation id="5158129253322921540">Disabilita contenuto da <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Sponsorizzato</translation>
 <translation id="1776831331757823105">Orologio</translation>
 <translation id="4643117005422448078">I siti migliori</translation>
 <translation id="7791543448312431591">Aggiungi</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Scambia criptovalute su Binance direttamente dal tuo browser.</translation>
 <translation id="2166494527623220386">Scambia Criptovalute su Gemini direttamente dal tuo browser.</translation>
 <translation id="7191394989411626168">Spegnendo Carte, tutte le carte visibili al momento saranno nascoste. Tuttavia, puoi continuare a ricevere notifiche su nuove carte.</translation>
+<translation id="5655621391922317800">Portafogli di Criptovalute</translation>
+<translation id="8820817407110198400">Segnalibri</translation>
+<translation id="1644574205037202324">Cronologia</translation>
 <translation id="6165508094623778733">Scopri di più</translation>
 <translation id="8730621377337864115">Fine</translation>
 <translation id="6248988683584659830">Impostazioni di ricerca</translation>
@@ -331,6 +335,10 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="1275213816424141989">Forse più tardi</translation>
 <translation id="5187052478998910855">Hai bisogno di un ripasso su Rewards?</translation>
 <translation id="8622329973403382303">Fai un breve tour per rinfrescare la memoria su come funziona per passare alla storia come una rockstar di Rewards!</translation>
+<translation id="3115702351969988294">Quanto spesso vuoi vedere gli annunci?</translation>
+<translation id="7532131110478098401">(annunci per ora)</translation>
+<translation id="2951964054390325080">Quanto vuoi contribuire al mese per supportare i tuoi creatori preferiti?</translation>
+<translation id="3164498053837913829">(dai tuoi guadagni con gli annunci)</translation>
 <translation id="2070991379950719711">Inizia a usare Brave Rewards</translation>
 <translation id="6318696841371191107">Fai un tour veloce</translation>
 <translation id="2404165674840145940">Lascia mance con Brave Rewards</translation>
@@ -352,6 +360,8 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="6042317056594735519">Lasciare le mance è un modo per incoraggiare personalmente e supportare il contenuto o il creatori che più ami. Inizia a lasciare mance!</translation>
 <translation id="7509452925943421624">Cosa puoi fare con questo gettone?</translation>
 <translation id="5876169128756792273">I token possono essere utilizzati in vari modi, oltre a supportare i creatori. Puoi acquistare contenuti digitali e altri beni man mano che si aggiungono altri venditori.</translation>
+<translation id="1402530520078693620">Infine, spieghiamoti due cose sulle impostazioni</translation>
+<translation id="3494356595346329740">Puoi modificarlo in seguito</translation>
 <translation id="827315274423079662">Evviva, sei a posto!</translation>
 <translation id="8268038362451312235">Utilizzando Brave Rewards contribuisci a rendere il web un posto migliore per tutti. Fantastico!</translation>
 <translation id="5094577350232361255">su</translation>
@@ -628,14 +638,19 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="8344084848798035850">Stima dei guadagni mensili fino ad ora</translation>
 <translation id="5235444069025581717">Mance e contributi di questo mese</translation>
 <translation id="1210965535849006928">Richiedi i miei premi</translation>
-<translation id="8092889639392847252">Fatti pagare per visualizzare questa immagine di sfondo sponsorizzata.</translation>
-<translation id="7914961605852877459">Attiva gli Annunci di Brave per richiedere la tua parte. Puoi anche scegliere di <ph name="LINK_BEGIN"/>nascondere le immagini sponsorizzate<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Guadagna premi quando vedi immagini di sfondo sponsorizzate.</translation>
+<translation id="5311968438376723685">Attiva Brave Private Ads per richiedere la tua parte. Puoi anche scegliere di <ph name="LINK_BEGIN"/>nascondere le immagini sponsorizzate<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Ben fatto!</translation>
 <translation id="764235488372037377">Le tue ricompense per gli annunci sono qui</translation>
 <translation id="7091215606170476659">Hai una donazione UGP da Brave.</translation>
 <translation id="6759185676704303656">Vieni pagato per la visualizzazione di questa immagine di sfondo.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/> sulle immagini sponsorizzate in Brave Rewards.</translation>
 <translation id="6113004497629356998">Nascondi immagini sponsorizzate</translation>
+<translation id="8587285254008006694">Per permettere questa transizione, le funzionalità di mance e contributi del
+        tuo browser saranno temporaneamente non disponibili dal 13 marzo e
+        il tuo saldo BAP sarà 0,0 finché non passerai al nuovo sistema
+        ad aprile. Quando passerai al nuovo sistema, inizierai con i nuovi token!</translation>
+<translation id="6232491755501685494">Brave Rewards in Giappone sta passando a un nuovo sistema!</translation>
 <translation id="3787061634640932557">Modifica Carte</translation>
 <translation id="4925543565930352284">Facendo clic su {{title}}, accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>la Politica sulla Privacy<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Avvia una videochiamata privata con amici e colleghi.</translation>
@@ -700,7 +715,6 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="1833248467354516560">Prezzo Unitario</translation>
 <translation id="4763179765154524864">Spesa Totale</translation>
 <translation id="8851480289992540512">Totale Ricevuto</translation>
-<translation id="5655621391922317800">Portafogli di Criptovalute</translation>
 <translation id="616639131065447379">Benvenuto nei portafogli di criptovalute di Brave</translation>
 <translation id="1740464057879304704">I portafogli di criptovalute consentono di lavorare con le valute criptate e i relativi beni su Brave. I portafogli di criptovalute supportano gettoni Ethereum come ETH e BAT, così come oggetti da collezione, e ti permettono di lavorare con Ðapp e altri contratti intelligenti. Tutto questo è pensato per le persone che hanno familiarità con Ethereum e altri sistemi blockchain — o non vedono l'ora di imparare.</translation>
 <translation id="4855440621031541830">Utilizza i portafogli di criptovalute solo se accetti di essere l'unico responsabile di tutti i rischi associati a questo uso, e che il software Brave non si assume alcuna responsabilità per eventuali perdite, comprese le perdite incidentali o consequenziali che potresti subire in seguito a questo uso.</translation>
@@ -712,14 +726,32 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="763042262431778831">Disattiva Speedreader</translation>
 <translation id="9020818404803201080">Colleghi connessi:</translation>
 <translation id="2903493209154104877">Indirizzi</translation>
+<translation id="3207122385716480167">Statistiche repository</translation>
+<translation id="2595187693729756455">Informazioni sul nodo</translation>
 <translation id="5789886980848929155">Stato del nodo IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Sciame</translation>
-<translation id="3967335629471284781">Avviato</translation>
+<translation id="5201810533706869030">Oggetti</translation>
+<translation id="8028993641010258682">Dimensioni</translation>
+<translation id="7870625241353817260">ArchiviazioneMax</translation>
+<translation id="3202131003361292969">Percorso</translation>
+<translation id="2892680660204660712">ID peer</translation>
+<translation id="7536543993364605970">Versione dell'agente</translation>
+<translation id="3693482323085649439">Nodo attivo</translation>
+<translation id="6315833555896070573">Nodo non attivo</translation>
 <translation id="1272079795634619415">Interrompi</translation>
+<translation id="5895138241574237353">Riavvia</translation>
 <translation id="6762417584993757344">Non Installato</translation>
+<translation id="4159076046325416152">Installazione di IPFS...</translation>
+<translation id="3854747677478661601">Effettua un ciclo di garbage collection</translation>
+<translation id="7376842608449050673">Errore durante la garbage collection</translation>
 <translation id="8428368469058794536">Servizio IPFS</translation>
+<translation id="6776260067907986254">Il mio nodo</translation>
+<translation id="8523162996646111972">(dettagli)</translation>
+<translation id="6121825639998459476">Installa e inizia</translation>
+<translation id="72868071984333667">Ulteriori informazioni su IPFS e privacy</translation>
+<translation id="1886162073868201257">Errore di lancio del servizio IPFS</translation>
 <translation id="5357895013476183089">IPFS non connesso</translation>
 <translation id="1196783328762622576">Impossibile caricare le risorse IPFS utilizzando il nodo locale</translation>
 <translation id="1141556610026845297">Impossibile utilizzare il nodo IPFS locale per caricare le risorse IPFS richieste. Fare clic sul pulsante "Procedi" per utilizzare invece il gateway pubblico e per tornare automaticamente al gateway pubblico in futuro.</translation>
@@ -727,6 +759,20 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="1974060860693918893">Avanzate</translation>
 <translation id="9096577886148726047">Nascondi avanzato</translation>
 <translation id="7716995370131231171">Brave non può caricare le risorse IPFS richieste perché il nodo locale non si è avviato o perché al momento non ci sono peer connessi. Se scegli "Procedi", Brave tornerà automaticamente al gateway pubblico predefinito ogni volta che l'utilizzo del nodo locale fallisce. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni di Brave.</translation>
+<translation id="8026038288183400906">Preferenze IPFS</translation>
+<translation id="2058855456574089690">Configura le tue preferenze per l'IPFS</translation>
+<translation id="4447758690649023734">Usa un nodo locale</translation>
+<translation id="8148464361648742409">Usa un gateway pubblico</translation>
+<translation id="5123478056123923857">IPFS ("InterPlanetary File System") è la rete pubblica di archiviazione e distribuzione peer-to-peer. Questo protocollo ha delle caratteristiche di privacy diverse da quello HTTP(S).</translation>
+<translation id="5410952114182173389">Il tuo computer contribuisce alla rete pubblica, ma il tuo indirizzo IP e tutti i contenuti che richiedi o fornisci potrebbero essere esposti. I contenuti che richiedi tramite IPFS vengono verificati prima di essere presentati al tuo computer.</translation>
+<translation id="8664689531113048642">Protegge il tuo indirizzo IP e i contenuti che richiedi da eventuali osservatori esterni ma non dall'operatore del gateway pubblico. L'operatore del gateway si assicura che i contenuti che ti vengono presentati dal gateway siano sempre i contenuti che hai richiesto. Inoltre, il tuo computer non contribuisce alla rete IPFS pubblica.</translation>
+<translation id="3977809385703587108">Puoi cambiare di nuovo le tue preferenze tra</translation>
+<translation id="3340978935015468852">impostazioni</translation>
+<translation id="4148957013307229264">Installazione...</translation>
+<translation id="6057992164469678163">In attesa dei peer...</translation>
+<translation id="1902096227388293745">Nessun peer disponibile, riprovo... (<ph name="ATTEMPTS_NUMBER"/> tentativi rimasti)</translation>
+<translation id="1675751799495331928">Abbiamo superato il limite di tentativi, riprova più tardi.</translation>
+<translation id="4499666752625407848">Si è verificato un errore durante un aggiornamento.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Visualizza i mercati ed acquista criptovalute su crypto.com.</translation>
 <translation id="4292334826913000023">Mostra il prezzo</translation>
@@ -738,4 +784,11 @@ Per favore riferisciti a <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> per ag
 <translation id="5337526542182802976">Coppie supportate</translation>
 <translation id="1164622162816276433">Volume 24HR</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="3745016858329272300">Informazioni generali</translation>
+<translation id="4045404575593562245">Eventi di controllo di Tor</translation>
+<translation id="216855356675970168">Versione Tor</translation>
+<translation id="2976625104959685176">ID processo Tor</translation>
+<translation id="6951743416068151209">URI proxy Tor</translation>
+<translation id="1671503397662036257">Stato della connessione Tor</translation>
+<translation id="6024292492796847324">Progresso dell'inizializzazione di Tor</translation>
 </translationbundle>

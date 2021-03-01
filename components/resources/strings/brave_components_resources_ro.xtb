@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Toate sursele</translation>
 <translation id="8890516388109605451">Surse</translation>
 <translation id="5158129253322921540">Dezactivați conținutul de la <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Promovat</translation>
 <translation id="1776831331757823105">Ceas</translation>
 <translation id="4643117005422448078">Site-uri de top</translation>
 <translation id="7791543448312431591">Adaugă</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Tranzacționați criptomonede pe Binance direct din browser.</translation>
 <translation id="2166494527623220386">Tranzacționați criptomonede pe Gemini direct din browserul dvs.</translation>
 <translation id="7191394989411626168">Dacă dezactivați Cardurile, toate cardurile vizibile în prezent vor fi ascunse. Cu toate acestea, este posibil să mai primiți notificări pentru carduri noi.</translation>
+<translation id="5655621391922317800">Portofele cripto</translation>
+<translation id="8820817407110198400">Marcaje</translation>
+<translation id="1644574205037202324">Istoric</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="8730621377337864115">Efectuat</translation>
 <translation id="6248988683584659830">Setări căutare</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Poate mai târziu</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
+<translation id="3115702351969988294">Cât de des vreți să vedeți reclame?</translation>
+<translation id="7532131110478098401">(reclame pe oră)</translation>
+<translation id="2951964054390325080">Cât sprijin lunar vreți să oferiți creatorilor preferați?</translation>
+<translation id="3164498053837913829">(din câștigurile dvs. din reclame)</translation>
 <translation id="2070991379950719711">Începeți să folosiți Recompensele Brave</translation>
 <translation id="6318696841371191107">Faceți un tur rapid</translation>
 <translation id="2404165674840145940">Trimiteți tokenuri cu Recompense Brave</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Trimiterea de tokenuri este o modalitate de a încuraja și de a susține personal conținutul sau creatorii care vă plac. Începeți să trimiteți!</translation>
 <translation id="7509452925943421624">Ce puteți face cu tokenurile?</translation>
 <translation id="5876169128756792273">Tokenii pot fi folosiți la mai mult decât susținerea creatorilor. Poți cumpăra conținut digital și alte bunuri pe măsură ce ni se alătură mai mulți vânzători.</translation>
+<translation id="1402530520078693620">La final, să configurăm setările de bază</translation>
+<translation id="3494356595346329740">Puteți modifica acest lucru mai târziu.</translation>
 <translation id="827315274423079662">Iuhuu, totul e gata!</translation>
 <translation id="8268038362451312235">Folosind Recompensele Brave, dai o mână de ajutor la efortul de a face internetul un loc mai bun pentru toată lumea. Și asta este minunat!</translation>
 <translation id="5094577350232361255">despre</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Câștigurile estimate deocamdată pentru luna aceasta</translation>
 <translation id="5235444069025581717">Bacșișuri și contribuții luna aceasta</translation>
 <translation id="1210965535849006928">Îmi revendic Recompensele</translation>
-<translation id="8092889639392847252">Puteți fi plătit pentru a vizualiza această imagine de fundal sponsorizată.</translation>
-<translation id="7914961605852877459">Porniți Anunțurile Brave pentru a vă revendica partea. Puteți, de asemenea, să optați să <ph name="LINK_BEGIN"/>ascundeți imaginile sponsorizate<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Câștigați recompense pentru vizualizarea acestei imagini de fundal sponsorizate.</translation>
+<translation id="5311968438376723685">Activați Brave Private Ads pentru a vă revendica partea. Puteți și să alegeți să <ph name="LINK_BEGIN"/>ascundeți imaginile sponsorizate<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Bravo!</translation>
 <translation id="764235488372037377">Recompensele dvs. din Reclame sunt aici</translation>
 <translation id="7091215606170476659">Aveți un grant UGP de la Brave.</translation>
 <translation id="6759185676704303656">Sunteți plătit pentru a vizualiza această imagine de fundal.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/> despre imaginile sponsorizate în Brave Rewards.</translation>
 <translation id="6113004497629356998">Ascunde imaginile sponsorizate</translation>
+<translation id="8587285254008006694">Ca parte a acestei tranziții, funcția de trimitere de bacșiș și funcția de contribuire din
+        browser-ul dvs. vor fi indisponibile temporar începând cu 13 martie, iar
+        soldul dvs. BAP va afișa 0,0 până când faceți actualizarea către noul sistem
+        în aprilie. După ce veți intra în sistemul nou, veți începe cu
+        tokenuri noi!</translation>
+<translation id="6232491755501685494">Brave Rewards din Japonia trece la un sistem nou!</translation>
 <translation id="3787061634640932557">Editați Cardurile</translation>
 <translation id="4925543565930352284">Dând clic pe {{title}}, sunteți de acord cu <ph name="BEGIN_LINK1"/>Termenii serviciului<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Inițiați un apel video privat cu prietenii și colegii dvs.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Preț unitar</translation>
 <translation id="4763179765154524864">Total cheltuit</translation>
 <translation id="8851480289992540512">Total primit</translation>
-<translation id="5655621391922317800">Portofele cripto</translation>
 <translation id="616639131065447379">Bine ați venit la Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vă permite să lucrați cu criptomonedă și active asociate în Brave. Crypto Wallets acceptă tokenuri Ethereum, ca ETH și BAT, precum și  obiecte de colecție, și vă permite să lucrați cu aplicațiiÐ și alte contracte inteligente. Toate acestea sunt dedicate celor care sunt familiarizați cu Ethereum și alte sisteme blockchain — sau sunt nerăbdători să învețe.</translation>
 <translation id="4855440621031541830">Utilizați Crypto Wallets doar dacă acceptați că doar dvs. sunteți responsabil pentru toate riscurile asociate cu folosirea acestei aplicații și că Brave Software nu își asumă nicio responsabilitate sau răspundere pentru orice pierderi, inclusiv pierderi accidentale sau pe cale de consecință, pe care ați putea să le suferiți în urma utilizării aplicației.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Oprește Speedreader</translation>
 <translation id="9020818404803201080">Perechi conectate:</translation>
 <translation id="2903493209154104877">Adrese</translation>
+<translation id="3207122385716480167">Statistici depozit</translation>
+<translation id="2595187693729756455">Informații nod</translation>
 <translation id="5789886980848929155">Status nod IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Roi</translation>
-<translation id="3967335629471284781">Lansat</translation>
+<translation id="5201810533706869030">Obiecte</translation>
+<translation id="8028993641010258682">Dimensiune</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Cale</translation>
+<translation id="2892680660204660712">ID pereche</translation>
+<translation id="7536543993364605970">Versiune agent</translation>
+<translation id="3693482323085649439">Nodul rulează</translation>
+<translation id="6315833555896070573">Nodul nu funcționează</translation>
 <translation id="1272079795634619415">Oprește</translation>
+<translation id="5895138241574237353">Reîncepe</translation>
 <translation id="6762417584993757344">Neinstalat</translation>
+<translation id="4159076046325416152">Se instalează IPFS...</translation>
+<translation id="3854747677478661601">Efectuați o debarasare a colectării de resturi</translation>
+<translation id="7376842608449050673">Eroare de colectare a resturilor</translation>
 <translation id="8428368469058794536">Serviciul IPFS</translation>
+<translation id="6776260067907986254">Nodul meu</translation>
+<translation id="8523162996646111972">(detalii)</translation>
+<translation id="6121825639998459476">Instalați și începeți</translation>
+<translation id="72868071984333667">Află mai multe despre IPFS și politica de confidențialitate</translation>
+<translation id="1886162073868201257">Eroare de lansare serviciu IPFS</translation>
 <translation id="5357895013476183089">IPFS nu este conectat</translation>
 <translation id="1196783328762622576">Nu se pot încărca resursele IPFS folosind nodul local</translation>
 <translation id="1141556610026845297">Nu s-a putut utiliza nodul IPFS local pentru a încărca resursele IPFS solicitate. Apasă pe butonul „Continuare” pentru a utiliza în schimb poarta de ieșire publică și pentru a reveni automat la aceasta în viitor.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Avansate</translation>
 <translation id="9096577886148726047">Ascunde avansat</translation>
 <translation id="7716995370131231171">Brave nu poate încărca resursele IPFS solicitate fie pentru că nodul local nu a pornit, fie pentru că nu există colegi conectați disponibili în acest moment. Dacă alegi „Continuare”, Brave va reveni automat la poarta de ieșire publică implicită ori de câte ori utilizarea nodului local eșuează. Poți schimba acest comportament în orice moment, din setările Brave.</translation>
+<translation id="8026038288183400906">Preferință IPFS</translation>
+<translation id="2058855456574089690">Setați-vă preferința IPFS</translation>
+<translation id="4447758690649023734">Folosiți un nod local</translation>
+<translation id="8148464361648742409">Folosiți un gateway public</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) este rețeaua publică pentru stocarea și livrarea de date peer-to-peer. Acest protocol are considerații diferite de confidențialitate față de HTTP(S).</translation>
+<translation id="5410952114182173389">Computerul dvs. contribuie la rețeaua publică, dar adresa dvs. IP și orice conținut pe care îl solicitați sau îl oferiți poate fi expus. Conținutul pe care îl solicitați prin IPFS este verificat înainte de a vă fi oferit.</translation>
+<translation id="8664689531113048642">Vă protejează adresa IP și conținutul pe care îl solicitați de la observatori potențiali terți, însă nu de la operatorul public de gateway. Operatorul de gateway trebuie să se asigure că conținutul trimis către dvs. printr-un gateway este conținutul pe care l-ați solicitat. De asemenea, computerul dvs. nu contribuie la rețeaua publică IPFS.</translation>
+<translation id="3977809385703587108">Puteți să vă schimbați preferințele din nou în</translation>
+<translation id="3340978935015468852">setări</translation>
+<translation id="4148957013307229264">Se instalează...</translation>
+<translation id="6057992164469678163">Se așteaptă perechile...</translation>
+<translation id="1902096227388293745">Nu sunt disponibile perechi, se încearcă din nou... (<ph name="ATTEMPTS_NUMBER"/> încercări rămase)</translation>
+<translation id="1675751799495331928">Ați depășit numărul maxim de încercări, vă rugăm să încercați mai târziu.</translation>
+<translation id="4499666752625407848">Eroarea a apărut în timpul unei actualizări.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Vizualizați piețe și cumpărați criptomonede de pe crypto.com.</translation>
 <translation id="4292334826913000023">Arată preț</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Perechi acceptate</translation>
 <translation id="1164622162816276433">Volum 24HR</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
+<translation id="3745016858329272300">Informații generale</translation>
+<translation id="4045404575593562245">Evenimente control Tor</translation>
+<translation id="216855356675970168">Versiunea Tor</translation>
+<translation id="2976625104959685176">ID proces Tor</translation>
+<translation id="6951743416068151209">URI proxy Tor</translation>
+<translation id="1671503397662036257">Stare conexiune Tor</translation>
+<translation id="6024292492796847324">Progres inițializare Tor</translation>
 </translationbundle>

@@ -635,6 +635,22 @@
     "message": "Заробляйте токени, переглядаючи рекламні оголошення, що не порушують вашу конфіденційність, та автоматично підтримуйте улюблені сайти та творців контенту.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Як часто ви хочете бачити оголошення?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(оголошень за годину)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Яку суму щомісячної підтримки ви хочете віддавати своїм улюбленим творцям?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(із вашого заробітку з оголошень)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Почати користуватися Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Токени можна витрачати не лише на підтримку творців. З появою продавців за них можна буде придбати цифровий контент та інші товари.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Врешті, давайте завершимо ваші основні налаштування",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Ви можете змінити це пізніше.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Ура, все налаштовано!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Користуючись нагородами Brave, ви допомагаєте зробити мережу кращим місцем для кожного. І це чудово!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards у Японії переходять на нову систему!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Докладніше",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Будь ласка, використайте ваші BAP до 13 березня. Після того дія BAP завершиться. ",
+    "description": "Text for BAP deprecation popup"
   }
 }

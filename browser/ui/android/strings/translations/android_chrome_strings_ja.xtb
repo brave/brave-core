@@ -11,8 +11,9 @@
 <translation id="10614374240317010">常に保存しない</translation>
 <translation id="5428209950370661546">他の Brave サービス</translation>
 <translation id="107147699690128016">ファイル拡張子を変更すると、ファイルが別のアプリケーションで開かれる可能性があり、場合によってはデバイスに損害が生じます。</translation>
+<translation id="1094515529340404628">ウェブクラウドと広告の効果測定</translation>
 <translation id="1100066534610197918">新しいタブをグループで開く</translation>
-<translation id="1105960400813249514">画面キャプチャ</translation>
+<translation id="1105960400813249514">スクリーン キャプチャ</translation>
 <translation id="1111673857033749125">他のデバイスに保存されているブックマークがここに表示されます。</translation>
 <translation id="1113597929977215864">簡易表示する</translation>
 <translation id="1118561384561215815">ウェブ上のタスクのサポート</translation>
@@ -35,7 +36,6 @@
 <translation id="1208340532756947324">複数のデバイスで独自の設定を同期して共有するには、同期を有効にします</translation>
 <translation id="1209206284964581585">今は表示しない</translation>
 <translation id="1227058898775614466">ナビゲーション履歴</translation>
-<translation id="1229399675748764149">このページをホームページに設定する</translation>
 <translation id="1231733316453485619">同期を有効にしますか？</translation>
 <translation id="123724288017357924">キャッシュ コンテンツを無視して現在のページを再読み込みする</translation>
 <translation id="124678866338384709">現在のタブを閉じる</translation>
@@ -77,7 +77,6 @@
 <translation id="1513858653616922153">パスワードを削除</translation>
 <translation id="1521774566618522728">最終同期: 今日</translation>
 <translation id="1538801903729528855">ウェブにおける音声操作の利便性を向上</translation>
-<translation id="1543538514740974167">このページにすばやくアクセス</translation>
 <translation id="8090895580117672212">Brave アカウントを管理するには、[アカウントを管理] をタップします。</translation>
 <translation id="1549000191223877751">他のウィンドウに移動</translation>
 <translation id="1705567146636171298">Brave を更新</translation>
@@ -142,6 +141,7 @@
 <translation id="2017836877785168846">アドレスバーの履歴とオートコンプリート データを削除します。</translation>
 <translation id="2021896219286479412">全画面表示時のサイトの操作項目</translation>
 <translation id="2038563949887743358">[PC 版サイトを見る] をオンにします</translation>
+<translation id="2039379262107991683">ページをリーディング リストに追加すると、リマインダーを受け取ることができます</translation>
 <translation id="7675869148432102528">Brave にも <ph name="APP_NAME"/> のデータがあります</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="2052422354554967744">インターネットを検索する</translation>
@@ -169,6 +169,7 @@
 <translation id="6162454065885854378">お使いのスマートフォンから別のデバイスにデータを共有するには、両方のデバイスの Brave 設定で同期をオンにしてください</translation>
 <translation id="4162910516440006395">Brave ですべてのパスワードを確認できませんでした</translation>
 <translation id="2169830938017475061">たった今</translation>
+<translation id="2172688499998841696">画像の説明をオフにしました</translation>
 <translation id="2175927920773552910">QR コード</translation>
 <translation id="218608176142494674">共有</translation>
 <translation id="3842811252050200766">Brave の最高水準のセキュリティで保護する</translation>
@@ -195,7 +196,6 @@
 <translation id="2387895666653383613">テキストの拡大と縮小</translation>
 <translation id="2394602618534698961">ダウンロードしたファイルがここに表示されます</translation>
 <translation id="801672626447970525">この機能は Brave アカウントにログインすると有効になります</translation>
-<translation id="2407674018644220013"><ph name="APP_NAME"/> をデフォルトに設定しますか？</translation>
 <translation id="2410754283952462441">アカウントの選択</translation>
 <translation id="2414886740292270097">暗</translation>
 <translation id="2426805022920575512">別のアカウントを選択</translation>
@@ -206,8 +206,8 @@
 検索するには、対象の単語を長押しします。検索を絞り込むには、単語の選択範囲を変更します。パネルを開いてアイコンをタップすると、新しいタブで検索ボックスの内容を編集できます。</translation>
 <translation id="2459390580524506445">拡張音声検索</translation>
 <translation id="246532703174860178">共有</translation>
+<translation id="247737702124049222">画像の説明をオンにしました</translation>
 <translation id="2478076885740497414">アプリをインストール</translation>
-<translation id="2479148705183875116">設定に移動</translation>
 <translation id="2482878487686419369">通知</translation>
 <translation id="6361779936989026201">Brave の Brave アシスタント</translation>
 <translation id="2496180316473517155">閲覧履歴</translation>
@@ -223,6 +223,7 @@
 <translation id="2536728043171574184">このページのオフライン コピーを表示しています</translation>
 <translation id="2537178555904266562">パスワードの同期中にエラーが発生しました</translation>
 <translation id="2546283357679194313">Cookie とサイトデータ</translation>
+<translation id="2562889244313180139">ウェブサイトとアプリは、個人を特定できないエイリアスを使って、ユーザーの利便性を改善できるようになります。</translation>
 <translation id="2567385386134582609">画像</translation>
 <translation id="5079947353572974060">他の言語のページを Brave で翻訳するか尋ねる</translation>
 <translation id="2324920234469020158">Brave で重要度が低いと判断されるサイトの Cookie やキャッシュなどのデータを削除します。</translation>
@@ -239,6 +240,7 @@
 <translation id="2704606927547763573">コピーしました</translation>
 <translation id="2707726405694321444">ページを更新</translation>
 <translation id="2709516037105925701">自動入力</translation>
+<translation id="271033894570825754">新しいファイル</translation>
 <translation id="2718352093833049315">Wi-Fi接続時のみ</translation>
 <translation id="2718846868787000099">ご希望の言語でコンテンツを表示するため、アクセス先のサイトには設定内容が伝えられます</translation>
 <translation id="2723001399770238859">音声</translation>
@@ -255,6 +257,7 @@
 <translation id="7068873021383263704"><ph name="BEGIN_LINK"/>Brave アカウント<ph name="END_LINK"/>での保存パスワードの表示と管理</translation>
 <translation id="2818669890320396765">お使いのどのデバイスでも同じブックマークを使用するには、ログインして同期を有効にします</translation>
 <translation id="2827278682606527653">フィードカード メニューが画面の下半分に開いています</translation>
+<translation id="2833452327385637152">語句をタップする代わりに長押しして検索します</translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{前回の確認: 1 日前}other{前回の確認: # 日前}}</translation>
 <translation id="2842985007712546952">親フォルダ</translation>
 <translation id="2860954141821109167">このデバイスで通話アプリが有効になっていることを確認してください</translation>
@@ -306,6 +309,7 @@
 <translation id="3232754137068452469">ウェブアプリ</translation>
 <translation id="3236059992281584593">残り 1 分</translation>
 <translation id="3244271242291266297">MM</translation>
+<translation id="3250563604907490871">画像の説明は Wi-Fi に接続すると再開します</translation>
 <translation id="3254409185687681395">このページをブックマークに追加します</translation>
 <translation id="3259831549858767975">ページ上のすべての要素を縮小する</translation>
 <translation id="3264124641674805320">後で見るコンテンツをダウンロードするには</translation>
@@ -447,7 +451,6 @@
 <translation id="4335835283689002019">セーフ ブラウジングはオフになっています</translation>
 <translation id="4351244548802238354">ダイアログを閉じる</translation>
 <translation id="4378154925671717803">電話</translation>
-<translation id="5543146597494022157">Brave の言語として使用</translation>
 <translation id="4384468725000734951">検索に Sogou を使用します</translation>
 <translation id="4404568932422911380">ブックマークがありません</translation>
 <translation id="4405224443901389797">移動…</translation>
@@ -481,7 +484,6 @@
 <translation id="4587589328781138893">サイト</translation>
 <translation id="4594952190837476234">このオフライン ページは <ph name="CREATION_TIME"/> 時点のものであり、オンライン版とは異なる可能性があります。</translation>
 <translation id="4605958867780575332">削除したアイテム: <ph name="ITEM_TITLE"/></translation>
-<translation id="4614535611158687827">ページを後で読めるように保存してリマインダーを受け取ります</translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/> を起動</translation>
 <translation id="4634124774493850572">パスワードを使用</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{不正使用されたパスワード: 1 件}other{不正使用されたパスワード: # 件}}</translation>
@@ -549,6 +551,7 @@
 <translation id="4970824347203572753">お住まいの地域ではご利用になれません</translation>
 <translation id="7307583170263691471">危険なウェブサイト、ダウンロード、拡張機能から予防的な方法で迅速に保護します。パスワードの侵害があった場合は警告します。Brave に閲覧データを送信する必要があります。</translation>
 <translation id="497421865427891073">次に進む</translation>
+<translation id="4986638582553854481">敬称</translation>
 <translation id="4988210275050210843">ファイルをダウンロードしています（<ph name="MEGABYTES"/>）。</translation>
 <translation id="4988526792673242964">ページ</translation>
 <translation id="6447211988989208781">Brave アクティビティ管理</translation>
@@ -624,6 +627,7 @@
 <translation id="5581519193887989363">同期する項目はいつでも [<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>] で選択できます。</translation>
 <translation id="5595485650161345191">住所の編集</translation>
 <translation id="6157610782452852023">Brave アシスタントがウェブサイトでのタスクの完了をお手伝いします</translation>
+<translation id="5606787249466187650">プライバシー サンドボックスを見る</translation>
 <translation id="5620163320393916465">保存されているパスワードはありません</translation>
 <translation id="5620928963363755975">[その他のオプション] から [ダウンロード] を開いて自分のファイルやページを探すことができます</translation>
 <translation id="5626134646977739690">名前:</translation>
@@ -635,7 +639,6 @@
 <translation id="5668404140385795438">ウェブサイトのズーム防止リクエストを上書きします</translation>
 <translation id="5668833306439455813">Brave がアップデートを確認できません</translation>
 <translation id="5686790454216892815">ファイル名が長すぎます</translation>
-<translation id="5687809546194252819">再起動すると <ph name="APP_NAME"/> は<ph name="LANGUAGE"/>を使用します。</translation>
 <translation id="569536719314091526">[その他のオプション] から、このページを任意の言語に翻訳できます</translation>
 <translation id="2320748512701464301">Brave でデータ侵害や安全でないウェブサイトなどの脅威から保護されているか確認します</translation>
 <translation id="5697688514913266141">ファイルは <ph name="BEGIN_BOLD"/><ph name="DIRECTORY"/><ph name="END_BOLD"/> に保存されます。<ph name="BEGIN_LINK2"/>編集<ph name="END_LINK2"/></translation>
@@ -693,6 +696,7 @@
 <translation id="6005538289190791541">推奨パスワード</translation>
 <translation id="6012539369710767899">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{未読のページが <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/> 件あります}other{未読のページが <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> 件あります}}</translation>
 <translation id="6014293228235665243">未読</translation>
+<translation id="6018309500671889594">広告主は、個人を特定できない情報を使って、広告キャンペーンを分析できるようになります。</translation>
 <translation id="6036057147555329831">その他の ICU</translation>
 <translation id="6039379616847168523">次のタブに移動する</translation>
 <translation id="6040143037577758943">閉じる</translation>
@@ -713,7 +717,6 @@
 <translation id="6140912465461743537">国 / 地域</translation>
 <translation id="614940544461990577">次をお試しください</translation>
 <translation id="6154478581116148741">このデバイスからパスワードをエクスポートするには、[設定] で画面ロックをオンにしてください。</translation>
-<translation id="6157392216611456285"><ph name="APP_NAME"/> を選択する</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> のデータを削減</translation>
 <translation id="6186394685773237175">漏洩した可能性のあるパスワードは見つかりませんでした</translation>
 <translation id="6192907950379606605">画像の説明文を取得する</translation>
@@ -745,7 +748,6 @@
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 他 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> 件}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 他 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> 件}}</translation>
 <translation id="6345878117466430440">既読にする</translation>
 <translation id="6364438453358674297">履歴から候補を削除しますか？</translation>
-<translation id="6366047038980456022"><ph name="APP_NAME"/> の最先端技術で作業をすばやく安全に行えます。オンラインでのクリエイティブな作業や検索もスムーズです。</translation>
 <translation id="6378173571450987352">詳細: データ使用量の順</translation>
 <translation id="4993481112200507346">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および Chrome OS 追加利用規約<ph name="END_LINK2"/>に同意したことになります。</translation>
 <translation id="6381421346744604172">ウェブサイトを暗くする</translation>
@@ -769,6 +771,7 @@
 <translation id="6475951671322991020">動画をダウンロード</translation>
 <translation id="6477928892249167417">以下のサイトは重要な可能性があります。</translation>
 <translation id="6482749332252372425">ストレージの空き容量が不足しているため、<ph name="FILE_NAME"/> をダウンロードできませんでした。</translation>
+<translation id="6489610539826642779">リーディング リスト<ph name="BEGIN_NEW"/>新機能<ph name="END_NEW"/></translation>
 <translation id="6496823230996795692"><ph name="APP_NAME"/> を初めて使用する場合は、インターネットに接続してください。</translation>
 <translation id="3960299545138990065">Brave を再起動する</translation>
 <translation id="6527303717912515753">共有</translation>
@@ -807,7 +810,6 @@
 <translation id="7392539049993970338">Brave のプライバシーに関するお知らせ</translation>
 <translation id="6671495933530132209">画像をコピー</translation>
 <translation id="8581481290581777242">Brave データをこのデバイスから削除しますか？</translation>
-<translation id="6691888250440401212">1. <ph name="APP_NAME"/> を選択します\n2. [デフォルトとして設定] をタップします</translation>
 <translation id="6697492270171225480">ページが見つからない場合に類似のページを候補として表示する</translation>
 <translation id="6698801883190606802">同期データを管理</translation>
 <translation id="1006927014032731288">アクセスするページを Brave のサーバーで最適化します。</translation>
@@ -849,7 +851,6 @@
 <translation id="7027549951530753705"><ph name="ITEM_TITLE"/> を復元しました</translation>
 <translation id="7029809446516969842">パスワード</translation>
 <translation id="7030675613184250187">リーディング リストにページを保存すると、後から簡単にアクセスして、オフラインでも読めるようになります</translation>
-<translation id="703523980599857277">ホームページを変更</translation>
 <translation id="7054588988317389591">画像の説明文を取得しますか？</translation>
 <translation id="7055152154916055070">リダイレクトがブロックされました</translation>
 <translation id="7063006564040364415">同期サーバーに接続できませんでした。</translation>
@@ -860,7 +861,6 @@
 <translation id="8208853227947884571">Brave は最新の状態です</translation>
 <translation id="7106762743910369165">お使いのブラウザは組織によって管理されています</translation>
 <translation id="1968157943459987269">アドレスバーの履歴とオートコンプリートを削除します。お使いの Brave アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
-<translation id="7128355412245153445">ホームボタンをタップして、よく使用するサイトや最新の記事を表示できます</translation>
 <translation id="7138678301420049075">その他</translation>
 <translation id="7146622961999026732">以下のサイトやアプリは重要な可能性があります。</translation>
 <translation id="7149158118503947153"><ph name="DOMAIN_NAME"/> から<ph name="BEGIN_LINK"/>元のページを読み込む<ph name="END_LINK"/></translation>
@@ -872,11 +872,13 @@
 <translation id="718926126787620637">ブックマーク フォルダのリストが画面全体に表示されています</translation>
 <translation id="7189372733857464326">Google Play 開発者サービスの更新完了を待機しています</translation>
 <translation id="7191430249889272776">バックグラウンドでタブを開きました。</translation>
+<translation id="720894724577012575">カテゴリ: <ph name="COMMA_SEPERATED_CATEGORY_LIST"/></translation>
 <translation id="3512968675351418494">お使いの言語でウェブを表示するには、Brave の最新バージョンを入手してください</translation>
 <translation id="8287068819750208230">Brave で <ph name="TARGET_DEVICE_NAME"/> の同期がオンになっていることを確認してください</translation>
 <translation id="7274013316676448362">ブロック中のサイト</translation>
 <translation id="7286572596625053347"><ph name="LANGUAGE"/> を変更しますか？</translation>
 <translation id="7290209999329137901">名前の変更はできません</translation>
+<translation id="7291910923717764901">このページの画像の説明が追加されました</translation>
 <translation id="2997266899014181325">同期を開始するには、[Brave データを同期] をオンにしてください。</translation>
 <translation id="7293429513719260019">言語を選択</translation>
 <translation id="729975465115245577">お使いのデバイスにはパスワード ファイルを保存するためのアプリがインストールされていません。</translation>
@@ -896,6 +898,7 @@
 <translation id="724102042129299115">Brave 初回起動時の操作</translation>
 <translation id="741204030948306876">有効にする</translation>
 <translation id="7413229368719586778">開始日: <ph name="DATE"/></translation>
+<translation id="7416941666639889592">ウェブクラウドに参加することで、ウェブサイトによるユーザーの利便性改善に同意するものとします。個人を特定できる情報が使用されることはありません。ウェブサイトや広告主は、コンサートの観客と同じように、数千のユーザーが同様の興味を持っていることだけを把握できます。</translation>
 <translation id="7431991332293347422">検索などのカスタマイズを目的とした閲覧履歴の使用方法を設定</translation>
 <translation id="7435356471928173109">管理者によってオフにされています</translation>
 <translation id="6234515504547364178">Brave からログアウト</translation>
@@ -959,6 +962,7 @@
 <translation id="7798392620021911922"><ph name="TAB_COUNT"/> 個のタブを復元しました</translation>
 <translation id="780301667611848630">いいえ</translation>
 <translation id="7810647596859435254">アプリで開く…</translation>
+<translation id="7815484226266492798">ロング スクリーンショット</translation>
 <translation id="7821588508402923572">データ節約量がここに表示されます</translation>
 <translation id="7844171778363018843">同期するデータが選択されていません</translation>
 <translation id="7068829570137757602">Brave のサービス</translation>
@@ -1030,6 +1034,7 @@
 <translation id="8261506727792406068">削除</translation>
 <translation id="8266862848225348053">ダウンロード場所</translation>
 <translation id="8274165955039650276">ダウンロードを表示</translation>
+<translation id="8281886186245836920">スキップ</translation>
 <translation id="8284326494547611709">字幕</translation>
 <translation id="8310344678080805313">標準のタブ</translation>
 <translation id="8316092324682955408"><ph name="DOMAIN_NAME"/> とその他のサイト</translation>
@@ -1040,10 +1045,8 @@
 <translation id="8368027906805972958">不明またはサポートされていないデバイス（<ph name="DEVICE_ID"/>）</translation>
 <translation id="8372925856448695381"><ph name="LANG"/> を使用できるようになりました。</translation>
 <translation id="8393700583063109961">メッセージを送信</translation>
-<translation id="8407396331882458341">1. <ph name="APP_NAME"/> を選択します\n2. [常時] をタップします</translation>
 <translation id="8410695015584479363">料金をチェック</translation>
 <translation id="8413126021676339697">全履歴を表示</translation>
-<translation id="8425213833346101688">変更</translation>
 <translation id="8427875596167638501">[プレビュー] タブが半分開いています</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="8438566539970814960">検索とブラウジングを改善する</translation>
@@ -1067,13 +1070,14 @@
 <translation id="8555836665334561807">Wi-Fi 接続時</translation>
 <translation id="8559990750235505898">他の言語のページで翻訳するかどうかを尋ねる</translation>
 <translation id="8560602726703398413">リーディング リストはブックマークからアクセスできます</translation>
-<translation id="8561196567344536112">1. 設定に移動します\n2. [ブラウザアプリ] をタップします\n3. <ph name="APP_NAME"/> を選択します</translation>
 <translation id="8562452229998620586">保存したパスワードはこちらに表示されます。</translation>
 <translation id="8569404424186215731">（<ph name="DATE"/>以降）</translation>
 <translation id="8571213806525832805">過去 4 週間</translation>
 <translation id="8572344201470131220">画像をコピーしました</translation>
 <translation id="8583805026567836021">アカウント データをクリア中</translation>
+<translation id="8587585930972369234">長押しして検索</translation>
 <translation id="860043288473659153">カード名義人</translation>
+<translation id="860282621117673749">値下げアラート</translation>
 <translation id="5784514951651328424">お使いの Brave アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
 <translation id="8617240290563765734">ダウンロード コンテンツに指定されている URL を開きますか？</translation>
 <translation id="8636825310635137004">他のデバイスと同じタブを使用するには、同期を有効にします。</translation>
@@ -1092,6 +1096,7 @@
 <translation id="8748850008226585750">メッセージは非表示です</translation>
 <translation id="8788265440806329501">ナビゲーション履歴は閉じられています</translation>
 <translation id="8788968922598763114">最後に閉じたタブを開く</translation>
+<translation id="8795672590390389447">プライバシー サンドボックス</translation>
 <translation id="8798449543960971550">既読</translation>
 <translation id="8812260976093120287">一部のウェブサイトでは、デバイスでサポートされている上記のお支払いアプリを使って支払いができます。</translation>
 <translation id="881688628773363275">タブのコンテンツのプレビューを表示できません。</translation>
@@ -1157,7 +1162,6 @@
 <translation id="4596514158372210596">Brave のアクティビティを Digital Wellbeing から削除</translation>
 <translation id="2830145431802238213">Brave のライトモードをご活用ください</translation>
 <translation id="932327136139879170">ホーム</translation>
-<translation id="93753284658583800">ホームページを変更しました</translation>
 <translation id="938850635132480979">エラー: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">パスフレーズを入力</translation>
 <translation id="948039501338975565">ブックマーク フォルダのリスト</translation>

@@ -61,6 +61,7 @@
 <translation id="954001034349395856">所有來源</translation>
 <translation id="8890516388109605451">來源</translation>
 <translation id="5158129253322921540">停用從 <ph name="PUBLISHER_NAME"/> 而來的內容</translation>
+<translation id="3189348785087463371">推廣</translation>
 <translation id="1776831331757823105">時鐘</translation>
 <translation id="4643117005422448078">熱門網站</translation>
 <translation id="7791543448312431591">新增</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">在您瀏覽器中的 Binance 上直接交易加密貨幣。</translation>
 <translation id="2166494527623220386">在您瀏覽器中的 Gemini 上直接交易加密貨幣。</translation>
 <translation id="7191394989411626168">透過關閉卡片，所有目前可見的卡片都會被隱藏。但您可能仍會被通知新的卡片。</translation>
+<translation id="5655621391922317800">加密錢包</translation>
+<translation id="8820817407110198400">書籤列</translation>
+<translation id="1644574205037202324">歷史記錄</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="6248988683584659830">搜尋設定</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">晚點再說</translation>
 <translation id="5187052478998910855">需要複習一下獎勵嗎？</translation>
 <translation id="8622329973403382303">快速瀏覽，以溫習它如何以獎勵搖滾明星的身分名垂千古！</translation>
+<translation id="3115702351969988294">您想多常看到廣告？</translation>
+<translation id="7532131110478098401">（每小時幾則廣告）</translation>
+<translation id="2951964054390325080">您想給您最支持的創作者多少支持？</translation>
+<translation id="3164498053837913829">（從您的廣告收入）</translation>
 <translation id="2070991379950719711">開始使用 Brave Rewards</translation>
 <translation id="6318696841371191107">快速瀏覽</translation>
 <translation id="2404165674840145940">Brave Rewards 小費</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">給小費是一種個人鼓勵或支持您喜歡的內容或創作者的方式。取得小費！</translation>
 <translation id="7509452925943421624">您可以使用代幣做什麼？</translation>
 <translation id="5876169128756792273">代幣可用於支持創作者以外的用途。隨著商家加入行列，您可以購買數位內容和其他商品。</translation>
+<translation id="1402530520078693620">最後，讓我們協助您完成基本設定</translation>
+<translation id="3494356595346329740">您稍後可以變更此設定。</translation>
 <translation id="827315274423079662">喔耶，您已就緒！</translation>
 <translation id="8268038362451312235">透過使用 Brave 獎勵，您正在協助使網際網路成為適合所有人的更美好的地方。真是太棒了！</translation>
 <translation id="5094577350232361255">關於</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">本月到目前為止的估計收入</translation>
 <translation id="5235444069025581717">本月小費與貢獻</translation>
 <translation id="1210965535849006928">領取我的獎勵</translation>
-<translation id="8092889639392847252">檢視這張贊助背景影像來賺錢。</translation>
-<translation id="7914961605852877459">開啟 Brave Ads 來領取您的獎勵。您也可以選擇<ph name="LINK_BEGIN"/>隱藏贊助影像<ph name="LINK_END"/>。</translation>
+<translation id="4609518959946843710">檢視這張贊助的背景圖片來賺取獎勵。</translation>
+<translation id="5311968438376723685">開啟 Brave Private Ads 來賺取您的收入。您可以選擇<ph name="LINK_BEGIN"/>隱藏贊助圖片<ph name="LINK_END"/>。</translation>
 <translation id="8568666589217601917">該走了！</translation>
 <translation id="764235488372037377">您從廣告得來的獎勵在此</translation>
 <translation id="7091215606170476659">您有從 Brave 而來的 UGP 經費。</translation>
 <translation id="6759185676704303656">您在透過檢視這張背景影像來賺錢。</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards 的贊助影像。</translation>
 <translation id="6113004497629356998">隱藏贊助影像</translation>
+<translation id="8587285254008006694">作為此轉換的一部分，從 3 月 13 日開始，您的
+        瀏覽器中的小費和貢獻功能，將暫時無法使用，並且
+        您的 BAP 餘額將顯示為 0.0，直到 4 月更新至新系統
+        為止。一旦您在新的系統上，就將開始使用新
+        代幣！</translation>
+<translation id="6232491755501685494">日本的 Brave Rewards 正在切換到新系統！</translation>
 <translation id="3787061634640932557">編輯卡片</translation>
 <translation id="4925543565930352284">點擊 {{title}} 就代表您同意 <ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/> 與 <ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">與您的好友與同事開始私人視訊通話。</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">單價</translation>
 <translation id="4763179765154524864">總計花出</translation>
 <translation id="8851480289992540512">總計收到</translation>
-<translation id="5655621391922317800">加密錢包</translation>
 <translation id="616639131065447379">歡迎使用 Brave 加密錢包</translation>
 <translation id="1740464057879304704">加密錢包讓您可以在 Brave 中使用加密貨幣與相關資產。加密錢包支援如 ETH 與 BAT 等的以太坊權杖，以及其他收藏品，並讓您可以使用 Dapps 與其他智慧合約。這些東西全都是針對熟悉以太坊與其他區塊鏈系統或樂於學習的人們。</translation>
 <translation id="4855440621031541830">僅當您接受獨自承單與所有使用的風險時才使用加密錢包，且 Brave Software 對因使用此軟體而可能造成的任何損失（包含任何直接或間接的損失）不負任何責任。</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">關閉 Speedreader</translation>
 <translation id="9020818404803201080">已連線的同儕：</translation>
 <translation id="2903493209154104877">地址</translation>
+<translation id="3207122385716480167">倉庫統計</translation>
+<translation id="2595187693729756455">節點資訊</translation>
 <translation id="5789886980848929155">IPFS 節點狀態</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">閘道</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">已發動</translation>
+<translation id="5201810533706869030">物件</translation>
+<translation id="8028993641010258682">大小</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">路徑</translation>
+<translation id="2892680660204660712">Peer ID</translation>
+<translation id="7536543993364605970">代理程式版本</translation>
+<translation id="3693482323085649439">節點正在執行中</translation>
+<translation id="6315833555896070573">節點不在執行中</translation>
 <translation id="1272079795634619415">停止</translation>
+<translation id="5895138241574237353">重新啟動</translation>
 <translation id="6762417584993757344">未安裝</translation>
+<translation id="4159076046325416152">正在安裝 IPFS...</translation>
+<translation id="3854747677478661601">執行廢棄項目收集清理</translation>
+<translation id="7376842608449050673">廢棄項目收集錯誤</translation>
 <translation id="8428368469058794536">IPFS 服務</translation>
+<translation id="6776260067907986254">我的節點</translation>
+<translation id="8523162996646111972">（詳細資料）</translation>
+<translation id="6121825639998459476">安裝並啟動</translation>
+<translation id="72868071984333667">深入了解 IPFS 和隱私權</translation>
+<translation id="1886162073868201257">IPFS 服務啟動錯誤</translation>
 <translation id="5357895013476183089">找不到 IPFS</translation>
 <translation id="1196783328762622576">無法使用本地節點載入 IPFS 資源</translation>
 <translation id="1141556610026845297">無法使用本地 IPFS 節點來載入要求的 IPFS 資源。按一下「繼續」按鈕以改用公用閘道器，並在未來自動返回公用閘道器。</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">進階</translation>
 <translation id="9096577886148726047">隱藏進階</translation>
 <translation id="7716995370131231171">Brave 無法載入要求的 IPFS 資源，因為本地節點未啟動，或目前沒有已連接的同儕節點可用。若您選擇「繼續」，每當使用本地節點失敗時，Brave 將會自動返回預設的公用閘道器。您可以隨時在 Brave 設定中變更此行為。</translation>
+<translation id="8026038288183400906">IPFS 喜好設定</translation>
+<translation id="2058855456574089690">設定您的 IPFS 喜好設定</translation>
+<translation id="4447758690649023734">使用本機節點</translation>
+<translation id="8148464361648742409">使用公共閘道</translation>
+<translation id="5123478056123923857">IPFS（星際檔案系統）是用於點對點資料儲存和傳送的公共網絡。此通訊協定與 HTTP（S）具有不同的隱私權考量。</translation>
+<translation id="5410952114182173389">您的電腦參與公共網絡，但是您的 IP 位址和您要求或提供的任何內容可能被洩漏。透過 IPFS 要求的內容，在提供給您之前已經過驗證。</translation>
+<translation id="8664689531113048642">保護您向潛在的第三方觀察者，而不是公共閘道營運商，要求的 IP 位址和內容。 閘道營運商負責確保透過閘道提供給您的內容，是您請求的內容。此外，您的電腦不參與公共 IPFS 網絡。</translation>
+<translation id="3977809385703587108">您可以再次變更您的喜好設定，透過</translation>
+<translation id="3340978935015468852">設定</translation>
+<translation id="4148957013307229264">正在安裝...</translation>
+<translation id="6057992164469678163">正在等待同儕節點...</translation>
+<translation id="1902096227388293745">沒有可用的同儕節點，正在重試...（剩下 <ph name="ATTEMPTS_NUMBER"/> 次嘗試次數）</translation>
+<translation id="1675751799495331928">我們已超過嘗試次數的限制，請稍後再試。</translation>
+<translation id="4499666752625407848">更新期間發生錯誤。</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">檢視市場並從 crypto.com 購買加密貨幣。</translation>
 <translation id="4292334826913000023">顯示價格</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">支援的配對</translation>
 <translation id="1164622162816276433">24HR Volume</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
+<translation id="3745016858329272300">一般資訊</translation>
+<translation id="4045404575593562245">Tor 控制事件</translation>
+<translation id="216855356675970168">Tor 版本</translation>
+<translation id="2976625104959685176">Tor 處理程序 Id</translation>
+<translation id="6951743416068151209">Tor 代理伺服器 URI</translation>
+<translation id="1671503397662036257">Tor 連線狀態</translation>
+<translation id="6024292492796847324">Tor 初始化進度</translation>
 </translationbundle>

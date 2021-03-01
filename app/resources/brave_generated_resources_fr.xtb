@@ -14,7 +14,7 @@
 <translation id="984275831282074731">Modes de paiement</translation>
 <translation id="3699882589215410581">Installer et exécuter Widevine</translation>
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
-<translation id="4726634924419692905">Demandez quand un site veut installer Widevine sur votre ordinateur.</translation>
+<translation id="5249433283143453448">Utilisez le composant de gestion des droits numériques (digital rights management, DRM) Widevine afin de visualiser des vidéos en streaming protégées et d'autres contenus dans le navigateur.</translation>
 <translation id="6241402707160226266">Fenêtre privée avec Tor</translation>
 <translation id="8762452230727230396">Tor cache votre adresse IP sur les sites que vous visitez.</translation>
 <translation id="1369311132025451972">Rediriger automatiquement les sites .onion</translation>
@@ -50,7 +50,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5448570825852364919">Page blanche</translation>
 <translation id="5919424224662539292">Personnalisez l'image de fond et les widgets qui apparaissent sur la nouvelle page à onglet</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
-<translation id="8511502469534942133">Nouvelle connexion Tor pour ce site</translation>
+<translation id="6924909138923993900">Nouvelle connexion Tor pour ce site</translation>
 <translation id="4734294903299549345">Fermer la fenêtre de navigation privée avec Tor</translation>
 <translation id="8612763432858587652">Fermer la Fenêtre de Navigation Privée</translation>
 <translation id="8760415064721320867">Navigation privée avec Tor</translation>
@@ -232,6 +232,21 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="239760341987199724">Définir Brave comme navigateur par défaut</translation>
+<translation id="9185422039067880535">Le navigateur Brave n'est pas actuellement défini comme votre navigateur par défaut.
+Définissez Brave comme votre navigateur par défaut pour continuer à naviguer sur le web plus rapidement ;
+jusqu'à 6x plus rapidement sur les principaux sites d'information.</translation>
+<translation id="9218430445555521422">Définir comme navigateur par défaut</translation>
+<translation id="3479552764303398839">Pas maintenant</translation>
+<translation id="4877147287319222750">Ajouter à la barre latérale</translation>
+<translation id="5404213409401164238">Afficher la barre latérale</translation>
+<translation id="7561196759112975576">Toujours</translation>
+<translation id="7060352228894039151">Au passage de la souris</translation>
+<translation id="407173827865827707">En cas de clic</translation>
+<translation id="7961015016161918242">Jamais</translation>
+<translation id="59174027418879706">Activée</translation>
+<translation id="8258999165172757081">Ajouté</translation>
+<translation id="6959315322491671328">Cliquez avec le bouton droit de la souris pour supprimer</translation>
 <translation id="1872784258300710671">Brave utilise des analyses de produits entièrement privées pour estimer l'utilisation globale de certaines fonctionnalités.</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="4394049700291259645">Désactiver</translation>
@@ -242,8 +257,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4823406846571523661">Configurer les portefeuilles de crypto-monnaies</translation>
 <translation id="8199661191594897555">Démarrer les portefeuilles de crypto-monnaies et recharger</translation>
 <translation id="8428213095426709021">Paramètres</translation>
-<translation id="3110802155897279216">Ressources IPFS détectées. Voulez-vous que Brave les charge en utilisant un nœud IPFS local ?</translation>
-<translation id="2366908098700680611">Activer l'IPFS</translation>
+<translation id="1664718502100303670">Paramètres de portefeuille</translation>
+<translation id="965566669123544695">Paramètres IPFS</translation>
 <translation id="72868071984333667">En savoir plus au sujet de l'IPFS et de la confidentialité</translation>
 <translation id="4552520379838695057">Désolé, cette page est manquante.</translation>
 <translation id="2609895996619941644">Voulez-vous vérifier si une version enregistrée est disponible sur la Wayback Machine ?</translation>
@@ -262,4 +277,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8487693399751278191">Importer des signets maintenant...</translation>
 <translation id="2557899542277210112">Pour un accès rapide, placez vos signets ici sur la barre de signets.</translation>
 <translation id="2808630562319398131">Réinitialiser les données de Brave Rewards...</translation>
+<translation id="1224064034972923114">Contribuez à l'amélioration de Brave en envoyant automatiquement des rapports d'erreur</translation>
+<translation id="3738833060602717053">Contribuez à l'amélioration de <ph name="PRODUCT_NAME"/> en envoyant automatiquement des rapports d'erreur</translation>
 </translationbundle>

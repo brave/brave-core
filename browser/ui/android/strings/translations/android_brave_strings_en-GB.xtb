@@ -450,7 +450,7 @@ month ...</translation>
 <translation id="3895246934788932488">By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!</translation>
 <translation id="5705882733397021510">Go Back</translation>
 <translation id="5140321319944305531">Lets Take A Quick Tour</translation>
-<translation id="2434574859640694129">After you receive your first ads payout you can come back and tip this creator!</translation>
+<translation id="2434574859640694129">After you receive your first ads payout, you can come back and tip this creator!</translation>
 <translation id="207242986925259074">Quick refresher tour</translation>
 <translation id="8342862030112839977">Your 1st rewards payout will arrive by:</translation>
 <translation id="3769645103175790584">Earn tokens and reward creators for great content while you browse. <ph name="QUICK_TOUR"/>.</translation>
@@ -477,7 +477,15 @@ month ...</translation>
 <translation id="5187052478998910855">Need a refresher on Rewards?</translation>
 <translation id="8622329973403382303">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</translation>
 <translation id="8401711613788729448">Open all links with Brave to protect your privacy</translation>
-<translation id="3184805785843994538">Brave Shields blocks trackers &amp; ads, saves data, and saves you time on every site you visit.</translation>
+<translation id="3184805785843994538">Brave Shields blocks trackers &amp; ads, saves data and saves you time on every site you visit.</translation>
 <translation id="8722651357687610395">Set Brave as default</translation>
 <translation id="3479552764303398839">Not now</translation>
+<translation id="6232491755501685494">Brave Rewards in Japan is switching to a new system!</translation>
+<translation id="7444515017164572362">From 13 March, you won’t be able to use your BAP. But once you
+        update to the new system in April, you’ll start off with new tokens!</translation>
+<translation id="8587285254008006694">As part of this transition, the tipping and contribution features in
+        your browser will be temporarily unavailable from 13 March and
+        your BAP balance will show 0.0 until you have updated to the new system
+        in April. Once you’re on the new system, you’ll start off with new
+        tokens!</translation>
 </translationbundle>

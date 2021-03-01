@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Tüm kaynaklar</translation>
 <translation id="8890516388109605451">Kaynaklar</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>'den içeriği devre dışı bırakın</translation>
+<translation id="3189348785087463371">Tanıtılan</translation>
 <translation id="1776831331757823105">Saat</translation>
 <translation id="4643117005422448078">En İyi Siteler</translation>
 <translation id="7791543448312431591">Ekle</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Doğrudan tarayıcınızdan, Binance'da Kripto alım satımı yapın.</translation>
 <translation id="2166494527623220386">Doğrudan tarayıcınızdan, Gemini'de Kripto alım satımı yapın.</translation>
 <translation id="7191394989411626168">Kartları kapattığınızda, şu anda görünen tüm kartlar gizlenecektir. Ancak, yine de yeni kartlardan haberdar olabilirsiniz.</translation>
+<translation id="5655621391922317800">Kripto Cüzdanlar</translation>
+<translation id="8820817407110198400">Yer imleri</translation>
+<translation id="1644574205037202324">Geçmiş</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8730621377337864115">Bitti</translation>
 <translation id="6248988683584659830">Arama ayarları</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Belki Daha Sonra</translation>
 <translation id="5187052478998910855">Rewards'la ilgili bir hatırlatıcı mı lazım?</translation>
 <translation id="8622329973403382303">Tarihe bir Rewards rock yıldızı olarak geçmek için, işlerin nasıl yürüdüğü konusunda tazelenmek amacıyla hızlı bir gezinti yapın</translation>
+<translation id="3115702351969988294">Ne sıklıkla reklam görmek istersiniz?</translation>
+<translation id="7532131110478098401">(saat başına reklam sayısı)</translation>
+<translation id="2951964054390325080">Gözde içerik oluşturucularınıza aylık ne kadar destek vermek istiyorsunuz?</translation>
+<translation id="3164498053837913829">(reklam gelirlerinizden)</translation>
 <translation id="2070991379950719711">Brave Ödülleri'ni kullanmaya Başla</translation>
 <translation id="6318696841371191107">Hızlı bir tur atın</translation>
 <translation id="2404165674840145940">Brave ödülleriylle bahşiş ver</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Bahşiş, sevdiğiniz içeriği veya içerik üreticilerini kişisel olarak teşvik etmenin ve desteklemenin bir yoludur. Bahşiş vermeye başlayın!</translation>
 <translation id="7509452925943421624">Jetonlarla neler yapabilirsiniz?</translation>
 <translation id="5876169128756792273">Jetonlar yaratıcıları desteklemenin ötesinde de kullanılabilir. Satıcılar katıldıkça dijital içerik ve diğer ürünleri satın alabilirsiniz.</translation>
+<translation id="1402530520078693620">Son olarak, hadi size temel ayarları yapalım</translation>
+<translation id="3494356595346329740">Bunu daha sonra değiştirebilirsiniz.</translation>
 <translation id="827315274423079662">Yaşasın, her şey tamam!</translation>
 <translation id="8268038362451312235">Brave Rewards kullanarak webin herkes için daha iyi bir yer haline gelmesine yardım ediyorsunuz. Ve bu harika!</translation>
 <translation id="5094577350232361255">hakkında</translation>
@@ -627,14 +637,16 @@
 <translation id="8344084848798035850">Bu ay şu ana kadarki tahmini kazanç</translation>
 <translation id="5235444069025581717">Bu ayki bahşiş ve katkılar</translation>
 <translation id="1210965535849006928">Ödüllerimi Al</translation>
-<translation id="8092889639392847252">Bu sponsorlu arka plan görseline bakmak için para alın.</translation>
-<translation id="7914961605852877459">Payınızı almak için Brave Ads'i açın. Ayrıca <ph name="LINK_BEGIN"/>sponsorlu resimleri gizlemeyi<ph name="LINK_END"/>. de seçebilirsiniz.</translation>
+<translation id="4609518959946843710">Bu sponsorlu arka plan görselini görüntüleme karşılığında ödüller kazanın.</translation>
+<translation id="5311968438376723685">Payınızı talep etmek için Brave Özel Reklamları açın. Ayrıca <ph name="LINK_BEGIN"/>sponsorlu görselleri gizlemeyi<ph name="LINK_END"/> de seçebilirsiniz.</translation>
 <translation id="8568666589217601917">Tebrikler!</translation>
 <translation id="764235488372037377">Reklamlardan aldığınız ödül burada</translation>
 <translation id="7091215606170476659">Brave'den bir UGP bağışınız var.</translation>
 <translation id="6759185676704303656">Bu arka plan görseline bakmak için ödeme alıyorsunuz.</translation>
 <translation id="1749232564087138444">Brave Rewards'daki sponsorlu görsellerle ilgili <ph name="LINK_BEGIN"/>daha fazla öğren<ph name="LINK_END"/>.</translation>
 <translation id="6113004497629356998">Sponsorlu görselleri sakla</translation>
+<translation id="8587285254008006694">Bu geçişin bir parçası olarak, 13 Mart'tan başlamak üzere tarayıcınızdaki bahşiş ve katkı özellikleri geçici olarak kullanılamayacak ve siz Nisan ayında yeni sisteme güncelleme yapana dek BAP bakiyeniz 0,0 değerini gösterecek. Yeni sisteme geçtiğinizde yeni tokenlerle yola çıkacaksınız!</translation>
+<translation id="6232491755501685494">Brave Ödülleri Japonya'da yeni bir sisteme geçiyor!</translation>
 <translation id="3787061634640932557">Kartları düzenle</translation>
 <translation id="4925543565930352284">{{title}}'ı tıklıyarak, <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
 <translation id="5977237145327845546">Arkadaşlarınız ve iş arkadaşlarınız ile özel görüntülü bir arama başlatın.</translation>
@@ -699,7 +711,6 @@
 <translation id="1833248467354516560">Birim Fiyatı</translation>
 <translation id="4763179765154524864">Toplam Harcama</translation>
 <translation id="8851480289992540512">Toplam Alınan</translation>
-<translation id="5655621391922317800">Kripto Cüzdanlar</translation>
 <translation id="616639131065447379">Brave Kripto Cüzdan'a Hoşgeldiniz</translation>
 <translation id="1740464057879304704">Kripto Cüzdan, Brave'de kripto para birimi ve ilgili varlıklar ile çalışmanızı sağlar. Kripto Cüzdan, tahsil edilebilenler kadar ETH ve BAT gibi Ethereum jetonlarını da destekler ve Ðuygulamalr ile diğer akıllı kontratlar ile çalışmanıza izin verir. Bunların hepsi Ethereum'a ve diğer blok zinciri sistemlerine — aşina olanlar ile öğrenmeye hevesli olanlar içindir.</translation>
 <translation id="4855440621031541830">Kripto Cüzdanı, bu kullanımdan doğabilecek tüm risklerden sadece kendinizin sorumlu olduğunu ve Brave Yazılımının, tesadüfen veya sonunda bu kullanımdan yaşayabileceğiniz zararlar dahil, hiçbir sorumluluk ya da yükümlülük taşımadığını kabul ediyorsanız kullanın.</translation>
@@ -711,14 +722,32 @@
 <translation id="763042262431778831">Speedreader'ı Kapat</translation>
 <translation id="9020818404803201080">Bağlı eşler:</translation>
 <translation id="2903493209154104877">Adresler</translation>
+<translation id="3207122385716480167">Depo İstatistikleri</translation>
+<translation id="2595187693729756455">Düğüm bilgisi</translation>
 <translation id="5789886980848929155">IPFS düğümü durumu</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Ağ geçidi</translation>
 <translation id="2551123942222622809">Sürü</translation>
-<translation id="3967335629471284781">Başlatıldı</translation>
+<translation id="5201810533706869030">Nesneler</translation>
+<translation id="8028993641010258682">Boyut</translation>
+<translation id="7870625241353817260">DepolamaMaks</translation>
+<translation id="3202131003361292969">Yol</translation>
+<translation id="2892680660204660712">Eş Kimliği</translation>
+<translation id="7536543993364605970">Temsilci sürümü</translation>
+<translation id="3693482323085649439">Düğüm çalışıyor</translation>
+<translation id="6315833555896070573">Düğüm çalışmıyor</translation>
 <translation id="1272079795634619415">Durdur</translation>
+<translation id="5895138241574237353">Yeniden başlat</translation>
 <translation id="6762417584993757344">Yüklü değil</translation>
+<translation id="4159076046325416152">IPFS yükleniyor...</translation>
+<translation id="3854747677478661601">Bir çöp toplama süpürmesi işlemi gerçekleştir</translation>
+<translation id="7376842608449050673">Çöp toplama hatası</translation>
 <translation id="8428368469058794536">IPFS Hizmeti</translation>
+<translation id="6776260067907986254">Düğümüm</translation>
+<translation id="8523162996646111972">(ayrıntılar)</translation>
+<translation id="6121825639998459476">Yükle ve başla</translation>
+<translation id="72868071984333667">IPFS ve gizlilik hakkında daha fazlasını öğrenin</translation>
+<translation id="1886162073868201257">IPFS Hizmeti başlatma hatası</translation>
 <translation id="5357895013476183089">IPFS Bağlı Değil</translation>
 <translation id="1196783328762622576">Yerel düğüm kullanılarak IPFS kaynakları yüklenemiyor</translation>
 <translation id="1141556610026845297">İstenen IPFS kaynaklarını yüklemek için yerel IPFS düğümünün kullanımı başarısız oldu. Bunun yerine ortak ağ geçidi kullanmak ve gelecekte ortak ağ geçidine otomatik olarak geri düşmek için "İlerle" düğmesine tıklayın.</translation>
@@ -726,6 +755,20 @@
 <translation id="1974060860693918893">Gelişmiş</translation>
 <translation id="9096577886148726047">Gelişmişi Gizle</translation>
 <translation id="7716995370131231171">Ya yerel düğüm başlamadığı ya da şu an müsait bir bağlı eş olmadığı için, Brave istenen IPFS kaynaklarını yükleyemez. "İlerle"yi seçerseniz, yerel düğüm ne zaman başarısız olursa Brave otomatik olarak varsayılan ortak ağ geçidine geri düşecek. Bu davranışı istediğiniz zaman Brave ayarlardan değiştirebilirsiniz.</translation>
+<translation id="8026038288183400906">IPFS Tercihi</translation>
+<translation id="2058855456574089690">IPFS tercihinizi ayarlayın</translation>
+<translation id="4447758690649023734">Yerel bir düğüm kullan</translation>
+<translation id="8148464361648742409">Herkese açık bir ağ geçidi kullan</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary Dosya Sistemi), eşler arası veri depolama ve teslimatına yönelik ortak bir ağdır. Bu protokolün, HTTP(S)'den farklı gizlilik hususları vardır.</translation>
+<translation id="5410952114182173389">Bilgisayarınız ortak ağa katkıda bulunuyor, ama talep ettiğiniz veya sunduğunuz tüm içerikler ifşa edilebilir. IPFS üzerinden talep ettiğiniz içerik, size sunulmadan önce doğrulanır.</translation>
+<translation id="8664689531113048642">IP adresinizi ve potansiyel üçüncü kişi gözlemcilerden talep ettiğiniz içeriği korur, ama herkese açık ağ geçidi operatöründen talep ettiğiniz içeriği korumaz. Size bir ağ geçidi üzerinden sunulan içeriğin talep ettiğiniz içerik olmasını sağlamaktan ağ geçidi operatörü sorumludur. Ayrıca bilgisayarınız ortak IPFS ağına katkıda bulunmaz.</translation>
+<translation id="3977809385703587108">Tercihlerinizi şu süre içinde tekrar değiştirebilirsiniz:</translation>
+<translation id="3340978935015468852">ayarlar</translation>
+<translation id="4148957013307229264">Yükleniyor...</translation>
+<translation id="6057992164469678163">Eşler bekleniyor...</translation>
+<translation id="1902096227388293745">Kullanılabilir eş yok, tekrar deneniyor... (<ph name="ATTEMPTS_NUMBER"/> deneme kaldı)</translation>
+<translation id="1675751799495331928">Deneme limitini aştık, daha sonra deneyin.</translation>
+<translation id="4499666752625407848">Bir güncelleme sırasında hata oluştu.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Piyasaları görüntüle ve crypto.com'dan kripto al.</translation>
 <translation id="4292334826913000023">Fiyat göster</translation>
@@ -737,4 +780,11 @@
 <translation id="5337526542182802976">Desteklenen Çiftler</translation>
 <translation id="1164622162816276433">24saat Hacim</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="3745016858329272300">Genel Bilgi</translation>
+<translation id="4045404575593562245">Tor Denetimi Olayları</translation>
+<translation id="216855356675970168">Tor Sürümü</translation>
+<translation id="2976625104959685176">Tor İşlem Kimliği</translation>
+<translation id="6951743416068151209">Tor Proxy URL'si</translation>
+<translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
+<translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
 </translationbundle>

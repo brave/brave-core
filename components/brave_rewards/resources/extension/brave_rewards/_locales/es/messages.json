@@ -600,7 +600,7 @@
     "description": "Text for cancel button"
   },
   "changeAmount":  {
-    "message": "Cambiar la cantidad\n",
+    "message": "Cambiar la cantidad",
     "description": "Button text for changing monthly contribution amount"
   },
   "login":  {
@@ -633,6 +633,22 @@
   },
   "onboardingEarnText": {
     "message": "Gane tokens por ver anuncios que respetan la privacidad y apoye automáticamente a sus sitios web y creadores de contenidos favoritos.",
+    "description": ""
+  },
+  "onboardingSetupAdsHeader": {
+    "message": "¿Con qué frecuencia quieres ver anuncios?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(anuncios por hora)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "¿Cuánta aportación mensual quieres dar a tus creadores favoritos?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(de tus ganancias por los anuncios)",
     "description": ""
   },
   "onboardingStartUsingRewards": {
@@ -733,6 +749,14 @@
     "message": "Los vales se pueden usar para mucho más que para apoyar a los creadores. Puedes adquirir contenido digital y otros productos según se vayan incorporando los comercios.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Por último, hagamos unos ajustes en las configuraciones básicas.",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Podrás cambiarlo más adelante.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "¡Bien!, ya tienes todo lo que necesitas.",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Cuando usas los premios de Brave contribuyes para que la web sea un lugar mejor para todos. ¡Algo que es increíble!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "¡Brave Rewards está cambiándose a un nuevo sistema en Japón!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Más información",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Por favor, usa tu BAP solo hasta el 13 de marzo. Después de esa fecha, BAP sera suspendido.",
+    "description": "Text for BAP deprecation popup"
   }
 }

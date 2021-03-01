@@ -60,6 +60,7 @@
 <translation id="954001034349395856">Alle kilder</translation>
 <translation id="8890516388109605451">Kilder</translation>
 <translation id="5158129253322921540">Deaktiver innhold fra <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Anbefalt</translation>
 <translation id="1776831331757823105">Klokke</translation>
 <translation id="4643117005422448078">Populære nettsteder</translation>
 <translation id="3159285901314605198">Bakgrunnsbilde</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Handle krypto på Binance, direkte i nettleseren din.</translation>
 <translation id="2166494527623220386">Trade i krypto på Gemini, direkte i nettleseren din.</translation>
 <translation id="7191394989411626168">Ved å slå av kort vil alle kort som vises nå bli skjulte. Du kan likevel bli varslet om nye kort.</translation>
+<translation id="5655621391922317800">Kryptolommebøker</translation>
+<translation id="8820817407110198400">Bokmerker</translation>
+<translation id="1644574205037202324">Logg</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="6248988683584659830">Søkeinnstillinger</translation>
@@ -304,6 +308,10 @@
 <translation id="1275213816424141989">Kanskje senere</translation>
 <translation id="5187052478998910855">Behov for å friske opp kunnskapen om Belønninger?</translation>
 <translation id="8622329973403382303">Ta en rask omvisning og frisk opp kunnskapen om hvordan du går inn i historien som Rewards-rockestjerne!</translation>
+<translation id="3115702351969988294">Hvor ofte ønsker du å se annonser?</translation>
+<translation id="7532131110478098401">(annonser per time)</translation>
+<translation id="2951964054390325080">Hvor mye støtte ønsker du å gi til favorittskaperne dine hver måned?</translation>
+<translation id="3164498053837913829">(fra annonseinntektene dine)</translation>
 <translation id="2070991379950719711">Begynn å bruke Brave Rewards</translation>
 <translation id="6318696841371191107">Ta en rask omvisning</translation>
 <translation id="2404165674840145940">Tips med Brave Rewards</translation>
@@ -325,6 +333,8 @@
 <translation id="6042317056594735519">Tipsing er en måte å personlig oppmuntre og støtte innhold eller produsenter du elsker. Sett i gang å tipse!</translation>
 <translation id="7509452925943421624">Hva kan du gjøre med tokener?</translation>
 <translation id="5876169128756792273">Polletter kan brukes til mer enn å støtte skapere. Du kan kjøpe digitalt innhold og andre artikler etter hvert som selgere blir med.</translation>
+<translation id="1402530520078693620">La oss til slutt få satt deg opp med basisinnstillingene</translation>
+<translation id="3494356595346329740">Du kan endre dette senere.</translation>
 <translation id="827315274423079662">Hurra, du er helt klar!</translation>
 <translation id="8268038362451312235">Når du bruker Brave Rewards bidrar du til å gjøre nettet til et bedre sted for alle. Og det er kjempebra!</translation>
 <translation id="5094577350232361255">om</translation>
@@ -592,14 +602,16 @@
 <translation id="8344084848798035850">Beregnet fortjeneste så langt denne måneden</translation>
 <translation id="5235444069025581717">Tips og bidrag denne måneden</translation>
 <translation id="1210965535849006928">Gjør krav på mine Rewards</translation>
-<translation id="8092889639392847252">Få betalt for å se på dette sponsede bakgrunnsbildet.</translation>
-<translation id="7914961605852877459">Slå på Brave-annonser for å løse inn din andel. Du kan også velge å <ph name="LINK_BEGIN"/>skjule sponsede bilder<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Få belønning for å se dette sponsede bakgrunnsbildet.</translation>
+<translation id="5311968438376723685">Slå på Brave Private Ads for å få din andel. Du kan også velge å <ph name="LINK_BEGIN"/>skjule sponsede bilder<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Flott!</translation>
 <translation id="764235488372037377">Ads-belønningene dine er her</translation>
 <translation id="7091215606170476659">Du har en UGP-tildeling fra Brave.</translation>
 <translation id="6759185676704303656">Du får betalt for å se på dette bakgrunnsbildet.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mer informasjon<ph name="LINK_END"/> om sponsede bilder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Skjul sponsede bilder</translation>
+<translation id="8587285254008006694">Som del av denne overgangen vil tips- og bidragsfunksjonene i nettleseren din være midlertidig utilgjengelige fra og med 13. mars, og BAP-saldoen din vil vise 0,0 inntil du har oppdatert til det nye systemet i april. Så snart du er på det nye systemet, vil du begynne med nye polletter!</translation>
+<translation id="6232491755501685494">Brave Rewards i Japan bytter nå til et nytt system!</translation>
 <translation id="3787061634640932557">Rediger kort</translation>
 <translation id="4925543565930352284">Ved å klikke på {{title}}, godtar du <ph name="BEGIN_LINK1"/>vilkårene for bruk<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>personvernerklæringen<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Start en privat videosamtale med dine venner og kolleger.</translation>
@@ -664,7 +676,6 @@
 <translation id="1833248467354516560">Enhetspris</translation>
 <translation id="4763179765154524864">Totalt brukt</translation>
 <translation id="8851480289992540512">Mottatt totalt</translation>
-<translation id="5655621391922317800">Kryptolommebøker</translation>
 <translation id="616639131065447379">Velkommen til Braves kryptolommebok</translation>
 <translation id="1740464057879304704">Kryptolommeboken lar deg jobbe med kryptovaluta og relaterte aktiva i Brave. Kryptolommeboken støtter både Ethereum-tokener som ETH og BAT og samleobjekter, og lar deg jobbe med Ðapper og andre smartkontrakter. Alt dette er ment for folk som er kjent med Ethereum og andre blokkjedesystemer, — eller er ivrige etter å lære.</translation>
 <translation id="4855440621031541830">Bruk kryptolommebøker kun hvis du aksepterer at du ene og alene er ansvarlig for all risk assosiert med bruken av disse, og at Brave-programvaren bærer intet ansvar for tap, enten tilfeldig eller som følge av bruken av disse.</translation>
@@ -675,15 +686,33 @@
 <translation id="763042262431778831">Slå AV Hurtigleser</translation>
 <translation id="9020818404803201080">Tilkoblede maskiner:</translation>
 <translation id="2903493209154104877">Adresser</translation>
+<translation id="3207122385716480167">Arkivstatistikk</translation>
+<translation id="2595187693729756455">Nodeinformasjon</translation>
 <translation id="5789886980848929155">IPFS-nodestatus</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Sverm</translation>
-<translation id="3967335629471284781">Startet</translation>
+<translation id="5201810533706869030">Objekter</translation>
+<translation id="8028993641010258682">Størrelse</translation>
+<translation id="7870625241353817260">Lagring maks</translation>
+<translation id="3202131003361292969">Bane</translation>
+<translation id="2892680660204660712">Tjener-IP</translation>
+<translation id="7536543993364605970">Agentversjon</translation>
+<translation id="3693482323085649439">Noden kjører</translation>
+<translation id="6315833555896070573">Noden kjører ikke</translation>
 <translation id="2743301740238894839">Start</translation>
 <translation id="1272079795634619415">Stopp</translation>
+<translation id="5895138241574237353">Start på nytt</translation>
 <translation id="6762417584993757344">Ikke installert</translation>
+<translation id="4159076046325416152">Installerer IPFS …</translation>
+<translation id="3854747677478661601">Kjør en oppsamlingsrunde for søppel</translation>
+<translation id="7376842608449050673">Feil ved søppelhenting</translation>
 <translation id="8428368469058794536">IPFS-tjeneste</translation>
+<translation id="6776260067907986254">Min node</translation>
+<translation id="8523162996646111972">(detaljer)</translation>
+<translation id="6121825639998459476">Installer og start</translation>
+<translation id="72868071984333667">Lær mer om IPFS og personvern</translation>
+<translation id="1886162073868201257">Feil ved starting av IPFS-tjeneste</translation>
 <translation id="5357895013476183089">IPFS er ikke tilkoblet</translation>
 <translation id="1196783328762622576">Kan ikke laste IPFS-ressurser ved bruk av lokal node</translation>
 <translation id="1141556610026845297">Mislyktes i å bruke den lokale IPFS-noden til å laste de forespurte IPFS-ressursene. Klikk på "Fortsett"-knappen for å bruke den offentlige systemporten i stedet, og for å gå automatisk tilbake til den offentlige systemporten i fremtiden.</translation>
@@ -691,6 +720,20 @@
 <translation id="1974060860693918893">Avansert</translation>
 <translation id="9096577886148726047">Skjul avansert</translation>
 <translation id="7716995370131231171">Brave kunne ikke laste de forespurte IFPS-ressursene – enten fordi den lokale noden ikke startet, eller fordi det ikke er noen tilkoblede tjenere tilgjengelig for øyeblikket. Dersom du velger "Fortsett" vil Brave automatisk falle tilbake til standard offentlig systemport når forsøk på å bruke den lokale noden mislykkes. Du kan endre dette mønsteret når som helst i Brave-innstillingene.</translation>
+<translation id="8026038288183400906">Ønsket IPFS</translation>
+<translation id="2058855456574089690">Bestem ønsket IPFS</translation>
+<translation id="4447758690649023734">Bruk en lokal node</translation>
+<translation id="8148464361648742409">Bruk en offentlig systemport</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) er det offentlig tilgjengelige nettverket for lagring og levering av maskin-til-maskin-data. Denne protokollen innebærer andre hensyn til personvern enn HTTP(S) gjør.</translation>
+<translation id="5410952114182173389">Datamaskinen din bidrar til det åpne nettverket, men IP-adressen din, og eventuelt innhold du ber om eller legger inn, kan være eksponert. Innhold du ber om over IPFS blir verifisert før det leveres til deg.</translation>
+<translation id="8664689531113048642">Beskytter IP-adressen din og innhold du ber om fra potensielle tredjepartsobservatører, men ikke fra drifteren av den offentlig tilgjengelige systemporten. Drifteren av systemporten har ansvaret for å sikre at innholdet som leveres til deg via en systemport er innholdet du ba om. Datamaskinen din bidrar forøvrig ikke til det offentlig tilgjengelige IPFS-nettverket.</translation>
+<translation id="3977809385703587108">Du kan endre innstillingene dine igjen i</translation>
+<translation id="3340978935015468852">innstillinger</translation>
+<translation id="4148957013307229264">Installerer …</translation>
+<translation id="6057992164469678163">Venter på tjenere …</translation>
+<translation id="1902096227388293745">Ingen tjenere er tilgjengelige, prøver på nytt … (<ph name="ATTEMPTS_NUMBER"/> forsøk igjen)</translation>
+<translation id="1675751799495331928">Vi har brukt for mange forsøk, prøv igjen senere.</translation>
+<translation id="4499666752625407848">Det skjedde en feil under en oppdatering.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Vis markeder og kjøp kryptovaluta fra crypto.com.</translation>
 <translation id="4292334826913000023">Vis pris</translation>
@@ -702,4 +745,12 @@
 <translation id="5337526542182802976">Støttede par</translation>
 <translation id="1164622162816276433">24-timers volum</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
+<translation id="3745016858329272300">Generell informasjon</translation>
+<translation id="3662406032239313663">Logger</translation>
+<translation id="4045404575593562245">Tor-kontrollhendelser</translation>
+<translation id="216855356675970168">Tor-versjon</translation>
+<translation id="2976625104959685176">Tor-prosessid</translation>
+<translation id="6951743416068151209">Tor-mellomtjener-URI</translation>
+<translation id="1671503397662036257">Tor-tilkoblingsstatus</translation>
+<translation id="6024292492796847324">Tor-initialiseringsprosess</translation>
 </translationbundle>

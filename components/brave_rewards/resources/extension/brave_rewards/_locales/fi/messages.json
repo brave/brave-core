@@ -635,6 +635,22 @@
     "message": "Ansaitse maksutunnuksia katsomalla tietosuojaasi kunnioittavia mainoksia sekä tukemalla suosikkisivustojasi ja -kehittäjiäsi automaattisesti.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Kuinka usein tahdot nähdä mainoksia?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(mainoksia per tunti)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Kuinka paljon kuukausitukea olisit valmis antamaan suosikkikehittäjillesi?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(mainosansioistasi)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Aloita Brave-palkintojen käyttäminen",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Maksutunnuksia voidaan käyttää kehittäjien tukemiseen. Voit ostaa digitaalista sisältöä ynnä muuta sisältöä kauppiaiden tullessa mukaan.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Lopuksi voimme määrittää perusasetuksesi",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Voit muuttaa tämän myöhemmin.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Jee, valmista tuli!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave Rewardien avulla voit tehdä verkosta turvallisemman paikan muille. Se vasta onkin upeaa!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Japanin Brave Rewards ottaa käyttöön uuden järjestelmän!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Lisätietoja",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Käytä BAP:si ennen 13. maaliskuuta. Tämän jälkeen BAP ei ole enää käytössä.",
+    "description": "Text for BAP deprecation popup"
   }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Brave Belohnung</translation>
 <translation id="7942180974165298215">Brave Werbeblocker</translation>
 <translation id="4615489450165434530">Melden Sie eine fehlerhafte Website</translation>
 <translation id="6406506848690869874">Sync</translation>
@@ -14,7 +14,7 @@
 <translation id="984275831282074731">Zahlungsmethoden</translation>
 <translation id="3699882589215410581">Widevine installieren und ausführen</translation>
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
-<translation id="4726634924419692905">Fragen, wenn eine Seite Widevine auf Ihrem Computer installieren möchte.</translation>
+<translation id="5249433283143453448">Verwenden Sie die DRM-Komponente (Widevine Digitale Rechte Verwaltung), um geschützte Streaming-Videos und andere Inhalte im Browser anzuzeigen.</translation>
 <translation id="6241402707160226266">Privates Fenster mit Tor</translation>
 <translation id="8762452230727230396">Tor verbirgt Ihre IP-Adresse vor den Websites, die Sie besuchen.</translation>
 <translation id="1369311132025451972">.onion-Seiten automatisch weiterleiten</translation>
@@ -45,12 +45,12 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
 <translation id="7781069478569868053">Neuer-Tab-Seite</translation>
 <translation id="1988804048511540801">Neue Tab-Seite zeigt</translation>
-<translation id="2970343821770026391">Dashboard</translation>
+<translation id="2970343821770026391">Instrumententafel</translation>
 <translation id="3719826155360621982">Startseite</translation>
 <translation id="5448570825852364919">Leere Seite</translation>
 <translation id="5919424224662539292">Gestalten Sie das Hintergrundbild und Widget, die auf der Seite im neuen Reiter erscheinen, individuell</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
-<translation id="8511502469534942133">Neue Tor-Verbindung für diese Seite</translation>
+<translation id="6924909138923993900">Neue Tor-Verbindung für diese Site</translation>
 <translation id="4734294903299549345">Privates Fenster über Tor verlassen</translation>
 <translation id="8612763432858587652">Privates Fenster verlassen</translation>
 <translation id="8760415064721320867">Privates Fenster mit Tor</translation>
@@ -232,6 +232,19 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5318548116565208315">Bonbon-Avatar Mais</translation>
 <translation id="1959966725083452288">Bonbon-Avatar Adliger</translation>
 <translation id="2039034364578911089">Bonbon-Avatar Ninja</translation>
+<translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
+<translation id="9185422039067880535">Der Brave-Browser ist derzeit nicht als Standardbrowser festgelegt. Stellen Sie Brave als Standard ein, um das Surfen im Internet schneller zu beschleunigen - auf wichtigen Nachrichtenseiten bis zu 6x schneller.</translation>
+<translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
+<translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="4877147287319222750">Zur Seitenleiste hinzufügen</translation>
+<translation id="5404213409401164238">Seitenleiste anzeigen</translation>
+<translation id="7561196759112975576">Immer</translation>
+<translation id="7060352228894039151">Wenn die Mouse darüber ist</translation>
+<translation id="407173827865827707">Bei Klick</translation>
+<translation id="7961015016161918242">Nie</translation>
+<translation id="59174027418879706">Aktiviert</translation>
+<translation id="8258999165172757081">Hinzugefügt</translation>
+<translation id="6959315322491671328">Rechte Maustaste klicken zum Entfernen</translation>
 <translation id="1872784258300710671">Brave verwendet vollständig private Produktanalysen, um die Gesamtnutzung bestimmter Funktionen einzuschätzen</translation>
 <translation id="8712637175834984815">Alles klar</translation>
 <translation id="4394049700291259645">Deaktivieren</translation>
@@ -242,8 +255,8 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4823406846571523661">Setup von Crypto Wallets</translation>
 <translation id="8199661191594897555">Crypto Wallets starten und neu laden</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
-<translation id="3110802155897279216">IPFS-Ressourcen erkannt. Möchten Sie, dass Brave diese mittels eines lokalen IPFS-Knotens lädt?</translation>
-<translation id="2366908098700680611">IPFS einschalten</translation>
+<translation id="1664718502100303670">Wallet-Einstellungen</translation>
+<translation id="965566669123544695">IPFS-Einstellungen</translation>
 <translation id="72868071984333667">Erfahren Sie mehr über IPFS und Datenschutz</translation>
 <translation id="4552520379838695057">Diese Seite fehlt leider.</translation>
 <translation id="2609895996619941644">Möchten Sie überprüfen, ob eine gespeicherte Version in der Wayback Machine verfügbar ist?</translation>
@@ -262,4 +275,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8487693399751278191">Lesezeichen jetzt importieren ...</translation>
 <translation id="2557899542277210112">Für schnellen Zugriff platzieren Sie Ihre Lesezeichen hier auf der Lesezeichenleiste.</translation>
 <translation id="2808630562319398131">Brave-Rewards-Daten zurücksetzen</translation>
+<translation id="1224064034972923114">Helfen Sie durch automatisches Senden von Absturzberichten, Brave zu verbessern</translation>
+<translation id="3738833060602717053">Helfen Sie durch automatisches Senden von Absturzberichten, <ph name="PRODUCT_NAME"/> zu verbessern</translation>
 </translationbundle>

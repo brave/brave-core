@@ -635,6 +635,22 @@
     "message": "Zaradite tokene pregledavanjem oglasa kojima se poštuje privatnost i automatski dajte podršku svojim omiljenim mrežnim mjestima i autorima sadržaja.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Koliko često želite vidjeti oglase?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(oglasa po satu)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Koliki mjesečni doprinos želite dati svojim omiljenim autorima?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(od zarade od oglasa)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Počni upotrebljavati uslugu Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Tokeni se mogu upotrijebiti i za druge svrhe osim davanja podrške autorima. Možete kupiti digitalni sadržaj i dobra kako se trgovci pridružuju na platformi.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Naposljetku, postavimo zajedno osnovne postavke",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "To možete promijeniti kasnije.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Odlično, spremni ste!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Uporabom usluge Brave Rewards doprinosite stvaranju boljeg okruženja na mreži za sve. A to je odlično!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Značajka Brave Rewards u Japanu prelazi na novi sustav!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Saznajte više",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Iskoristite svoj BAP do 13. ožujka. Nakon toga BAP se više ne pruža.",
+    "description": "Text for BAP deprecation popup"
   }
 }

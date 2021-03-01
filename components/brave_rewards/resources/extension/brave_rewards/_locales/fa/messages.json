@@ -635,6 +635,22 @@
     "message": "با مشاهده آگهی‌هایی که به حریم خصوصی احترام می‌گذارند، توکن کسب کنید و به‌طور خودکار از سایت‌ها و سازندگان محتوای دلخواهتان پشتیبانی کنید.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "چندوقت یکبار می‌خواهید آگهی‌ها را ببینید؟",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(آگهی در هر ساعت)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "ماهانه چقدر می‌خواهید از تولیدکنندگان محتوای دلخواهتان حمایت مالی کنید؟",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(از درآمد آگهی‌هایتان)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "شروع استفاده از Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "توکن‌ها را فراتر از پشتیبانی از سازندگان می‌توان استفاده کرد. با پیوستن فروشندگان به تیم، می‌توانید محتوای دیجیتال و کالاهای دیگر خریداری کنید.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "در آخر، بیایید تنظیمات اصلی را انجام دهیم",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "بعداً می‌توانید این مورد را تغییر دهید.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "وو هوو، کاملاً آماده هستید!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards در ژاپن در حال جابجایی به یک سیستم جدید است!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "بیشتر بدانید",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "لطفاً تا ۱۳ مارس از BAP خود استفاده کنید. پس از آن، BAP متوقف می‌شود.",
+    "description": "Text for BAP deprecation popup"
   }
 }
