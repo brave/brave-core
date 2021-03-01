@@ -63,7 +63,7 @@ IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest, BookmarkBarOnNTPTest) {
   EXPECT_FALSE(IsNTP(contents));
   EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
 
-  // Check show bookarks on NTP is on by default.
+  // Check show bookmarks on NTP is on by default.
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kAlwaysShowBookmarkBarOnNTP));
 
   // Loading NTP.
