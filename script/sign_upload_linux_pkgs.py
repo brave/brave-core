@@ -129,7 +129,7 @@ def main():
             subprocess.check_output(gpgconf_cmd, shell=True)
             logging.info("\"gpgconf --kill gpg-agent\" succeeded")
         except subprocess.CalledProcessError as cpe:
-            loggint.error("Error: {}".format(cpe))
+            logging.error("Error: {}".format(cpe))
             exit(1)
         cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                gpg_passphrase, '--sign']
