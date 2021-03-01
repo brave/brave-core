@@ -20,7 +20,7 @@
 #endif
 
 // All above headers copied from original cdm_host_file_path.cc are included
-// to prevent below GOOGLE_CHROEM_BUILD affect them.
+// to prevent below GOOGLE_CHROME_BUILD affect them.
 
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
