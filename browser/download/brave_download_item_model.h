@@ -8,7 +8,7 @@
 
 #include "chrome/browser/download/download_item_model.h"
 
-// The purpose of this class is to extend DonwloadItemModel's class
+// The purpose of this class is to extend DownloadItemModel's class
 // functionality by adding a method for the origin URL text and
 // a method that returns tool tip text that includes origin URL.
 // This class, however, doesn't inherit from DownloadItemModel because
