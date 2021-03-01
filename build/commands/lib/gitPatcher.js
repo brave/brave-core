@@ -302,7 +302,7 @@ module.exports = class GitPatcher {
     }
     let resetWasSuccessful = true
     // Don't worry about errors with resetting obsolete patch files,
-    // some paths probably don't exist anymores
+    // some paths probably don't exist anymore
     const resetOp = this.resetRepoFiles(allPaths)
       .catch(() => {
         resetWasSuccessful = false
