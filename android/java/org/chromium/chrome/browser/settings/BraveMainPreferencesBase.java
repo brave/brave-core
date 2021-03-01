@@ -80,7 +80,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Run updateBravePreferences() after fininshing MainPreferences::updatePreferences().
+        // Run updateBravePreferences() after finishing MainPreferences::updatePreferences().
         // Otherwise, some prefs could be added after finishing updateBravePreferences().
         new Handler().post(() -> updateBravePreferences());
     }
