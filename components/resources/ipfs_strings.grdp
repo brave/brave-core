@@ -103,10 +103,10 @@
       Try again
     </message>
     <message name="IDS_IPFS_ONBOARDING_PEERS_ERROR" desc="Error message about no peers for IPFS interstitial page.">
-      No peers available, retrying... (<ph name="ATTEMPTS_NUMBER">$1<ex>5</ex></ph> attemps left)
+      No peers available, retrying... (<ph name="ATTEMPTS_NUMBER">$1<ex>5</ex></ph> attempts left)
     </message>
     <message name="IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR" desc="Error message about no peers for IPFS interstitial page.">
-      We have exceeded the limit of attemps, try again later.
+      We have exceeded the limit of attempts, try again later.
     </message>
     <message name="IDS_IPFS_ONBOARDING_INSTALLATION_ERROR" desc="Error message about installation error for IPFS interstitial page.">
       Error ocurred during an update.
