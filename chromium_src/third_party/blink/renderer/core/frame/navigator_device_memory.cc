@@ -28,7 +28,7 @@ float FarbleDeviceMemory(blink::ExecutionContext* context) {
   int max_farbled_index;
   if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::MAXIMUM) {
     // If anti-fingerprinting is at maximum, select a pseudo-random valid value
-    // based on domain + sesson key.
+    // based on domain + session key.
     min_farbled_index = 0;
     max_farbled_index = valid_values.size() - 1;
   } else {
