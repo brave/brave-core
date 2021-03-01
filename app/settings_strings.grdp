@@ -1318,7 +1318,7 @@
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
       Device software
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_BUTTON_ARIA_LABEL" desc="Accessiblity text for the button that allows users to review and remove harmful software found on their computer.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_BUTTON_ARIA_LABEL" desc="Accessibility text for the button that allows users to review and remove harmful software found on their computer.">
       Review device software
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITHOUT_TIMESTAMP" desc="This text describes that Brave can check if any known harmful software is installed on the user's computer.">

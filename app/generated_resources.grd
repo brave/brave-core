@@ -3964,13 +3964,13 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_DESKTOP_CAPTURE" desc="Permission string for Desktop Capture API.">
           Capture content of your screen
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_ACCESSIBILITY_FEATURES_MODIFY" desc="Permission string for modifying acccessibility settings via extension API shown when an extension utilizing the API is installed.">
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ACCESSIBILITY_FEATURES_MODIFY" desc="Permission string for modifying accessibility settings via extension API shown when an extension utilizing the API is installed.">
           Change your accessibility settings
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_ACCESSIBILITY_FEATURES_READ" desc="Permission string for modifying acccessibility settings via extension API shown when a extension utilizing the API is installed.">
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ACCESSIBILITY_FEATURES_READ" desc="Permission string for modifying accessibility settings via extension API shown when a extension utilizing the API is installed.">
           Read your accessibility settings
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_ACCESSIBILITY_FEATURES_READ_MODIFY" desc="Permission string for reading and modifying acccessibility settings via extension API shown when an extension utilizing the API is installed.">
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ACCESSIBILITY_FEATURES_READ_MODIFY" desc="Permission string for reading and modifying accessibility settings via extension API shown when an extension utilizing the API is installed.">
           Read and change your accessibility settings
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_PLATFORMKEYS" desc="Permission string for access to client certificates.">
@@ -7345,7 +7345,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Reload
       </message>
 
-      <!-- Accessiblility strings for Infobars in Views -->
+      <!-- Accessibility strings for Infobars in Views -->
       <if expr="toolkit_views">
         <message name="IDS_ACCNAME_INFOBAR_CONTAINER" desc="The accessible name for the infobar container.">
           Infobar Container
