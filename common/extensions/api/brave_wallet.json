@@ -168,7 +168,7 @@
               {
                 "name": "types",
                 "type": "string",
-                "description": "json stringified avalable web3 provider list"
+                "description": "json stringified available web3 provider list"
               }
             ]
           }

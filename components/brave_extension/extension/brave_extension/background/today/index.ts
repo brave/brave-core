@@ -164,8 +164,8 @@ Background.setListener<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUp
     let isUpdateAvailable = !!(feed && feed.hash !== requestHash)
     if (!isUpdateAvailable) {
       // Maybe Check for update from remote
-      const isRemoteUpdateAvailble = await fetchIsUpdateAvailableIfTime()
-      isUpdateAvailable = isRemoteUpdateAvailble || false
+      const isRemoteUpdateAvailable = await fetchIsUpdateAvailableIfTime()
+      isUpdateAvailable = isRemoteUpdateAvailable || false
     }
     sendResponse({ isUpdateAvailable })
   }

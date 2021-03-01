@@ -1365,7 +1365,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
     Only supported devices are shown.
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
+  <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no available USB devices.">
     Available USB devices will appear here.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_IN_USE" desc="Dialog title describing that a USB device is currently in use.">
@@ -3408,7 +3408,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
     Only supported devices are shown.
   </message>
-  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no available USB devices.">
     Available USB devices will appear here.
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_USB_DEVICES_IN_USE" desc="Dialog title describing that a USB device is currently in use.">
