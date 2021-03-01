@@ -217,7 +217,7 @@
   </message>
 
   <!-- Receive Confirmation Page Strings -->
-  <message name="IDS_NEARBY_RECEIVE_CONFIRM_PAGE_TITLE" desc="The title of the recieve confirmation page which askign the user to confirm receving a share from a specific device.">
+  <message name="IDS_NEARBY_RECEIVE_CONFIRM_PAGE_TITLE" desc="The title of the recieve confirmation page which asking the user to confirm receving a share from a specific device.">
     Receive from this device?
   </message>
   <message name="IDS_NEARBY_RECEIVE_CONFIRM_PAGE_CONNECTION_ID" desc="String that describes the secure connection ID which the receiving will happen in.">
