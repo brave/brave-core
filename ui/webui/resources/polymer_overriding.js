@@ -191,7 +191,7 @@ export function OverrideIronIcons(iconSetName, overridingIconSetName, iconOverri
       chromiumIcon.appendChild(braveIcon.firstChild)
     }
   }
-  // Ensure icons get re-parsed if already parseds
+  // Ensure icons get re-parsed if already parsed
   // `getIconNames` ensures this._icons in iron-iconset-svg is re-parsed
   // from DOM. If that changes, we'll need to find another way,
   // perhaps `srcIconSet._icons = srcIconSet._createIconMap()`
