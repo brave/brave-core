@@ -1356,7 +1356,7 @@ bool TorControl::ParseKV(const std::string& string,
     return false;
   size_t vstart = eq + 1;
 
-  // If we're at the end of the string, value is empt.
+  // If we're at the end of the string, value is empty.
   if (vstart == string.size()) {
     *key = string.substr(0, eq);
     *value = "";
