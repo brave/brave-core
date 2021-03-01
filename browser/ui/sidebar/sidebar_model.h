@@ -115,7 +115,7 @@ class SidebarModel : public SidebarService::Observer,
   void FetchFavicon(const sidebar::SidebarItem& item);
   void OnGetLocalFaviconImage(
       const sidebar::SidebarItem& item,
-      const favicon_base::FaviconRawBitmapResult& bitmapt_result);
+      const favicon_base::FaviconRawBitmapResult& bitmap_result);
 
   void FetchFaviconFromNetwork(const sidebar::SidebarItem& item);
   void OnGetFaviconImageFromNetwork(
