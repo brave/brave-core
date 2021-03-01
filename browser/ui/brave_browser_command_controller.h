@@ -21,7 +21,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
 #endif
 
  private:
-  // Overriden from CommandUpdater:
+  // Overridden from CommandUpdater:
   bool SupportsCommand(int id) const override;
   bool IsCommandEnabled(int id) const override;
   bool ExecuteCommandWithDisposition(

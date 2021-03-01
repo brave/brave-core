@@ -5,7 +5,7 @@
 
 export function isPublisherContentAllowed (publisher: BraveToday.Publisher): boolean {
   // Either the publisher is enabled-by-default (remotely) and the user has
-  // not overriden that default, or the user has made a choice.
+  // not overridden that default, or the user has made a choice.
   if (publisher.user_enabled) {
     return true
   }

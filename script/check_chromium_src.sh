@@ -11,9 +11,9 @@
 #    file under src tree (or grit).
 #
 # 2. Look for #defines that redefine symbols that aren't present in
-#    the overriden file.
+#    the overridden file.
 #
-# 3. Look for #include statements of the overriden file that have
+# 3. Look for #include statements of the overridden file that have
 #    incorrect number of ../ in the path.
 #
 # !!! This script does return false positives, but better check a

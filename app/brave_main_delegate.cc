@@ -60,7 +60,7 @@
 #endif
 
 namespace {
-// staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
+// staging "https://sync-v2.bravesoftware.com/v2" can be overridden by
 // switches::kSyncServiceURL manually
 const char kBraveSyncServiceStagingURL[] =
     "https://sync-v2.bravesoftware.com/v2";
