@@ -124,7 +124,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest,
-       ActiveOptedInWithNTPBackgoundOption) {
+       ActiveOptedInWithNTPBackgroundOption) {
   EnableNTPBGImagesPref(false);
   service_->sr_images_data_ = GetDemoWallpaper(true);
 

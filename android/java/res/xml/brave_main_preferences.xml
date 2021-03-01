@@ -37,7 +37,7 @@
         android:title="@string/prefs_appearance"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BackgroundImagesPreferences"
-        android:key="backgroud_images"
+        android:key="background_images"
         android:order="15"
         android:title="@string/prefs_new_tab_page"/>
     <Preference

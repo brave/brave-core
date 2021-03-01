@@ -96,7 +96,7 @@ class ViewCounterService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           ActiveOptedInWithNTPBackgoundOption);
+                           ActiveOptedInWithNTPBackgroundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
 
   void OnPreferenceChanged(const std::string& pref_name);
