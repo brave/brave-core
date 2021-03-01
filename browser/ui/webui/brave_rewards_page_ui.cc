@@ -47,7 +47,7 @@ using content::WebUIMessageHandler;
 
 namespace {
 
-// The handler for Javascript messages for Brave about: pages
+// The handler for JavaScript messages for Brave about: pages
 class RewardsDOMHandler : public WebUIMessageHandler,
     public brave_ads::AdsServiceObserver,
     public brave_rewards::RewardsNotificationServiceObserver,

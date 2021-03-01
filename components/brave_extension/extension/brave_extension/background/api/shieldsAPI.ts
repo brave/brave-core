@@ -157,7 +157,7 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
   chrome.braveShields.setHTTPSEverywhereEnabledAsync(setting === 'allow' ? false : true, origin)
 
 /**
- * Changes the Javascript to be on (allow) or off (block)
+ * Changes the JavaScript to be on (allow) or off (block)
  * @param {string} origin the origin of the site to change the setting for
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves when the setting is set

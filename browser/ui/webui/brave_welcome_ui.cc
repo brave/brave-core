@@ -41,7 +41,7 @@ void RecordP3AHistogram(int screen_number, bool finished) {
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.InteractionStatus", answer, 3);
 }
 
-// The handler for Javascript messages for the chrome://welcome page
+// The handler for JavaScript messages for the chrome://welcome page
 class WelcomeDOMHandler : public WebUIMessageHandler {
  public:
   WelcomeDOMHandler() {

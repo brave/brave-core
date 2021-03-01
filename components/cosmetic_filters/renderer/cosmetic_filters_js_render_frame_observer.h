@@ -19,7 +19,7 @@
 namespace cosmetic_filters {
 
 // CosmeticFiltersJsRenderFrame observer waits for a page to be loaded and then
-// adds the Javascript worker object.
+// adds the JavaScript worker object.
 class CosmeticFiltersJsRenderFrameObserver
     : public content::RenderFrameObserver {
  public:

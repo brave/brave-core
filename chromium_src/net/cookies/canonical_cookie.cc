@@ -9,7 +9,7 @@
 
 namespace {
 
-// Javascript max expiration is handled by blink::CookieStore
+// JavaScript max expiration is handled by blink::CookieStore
 constexpr base::TimeDelta kMaxCookieExpiration =
     base::TimeDelta::FromDays(30*6);  // 6 months
 

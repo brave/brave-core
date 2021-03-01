@@ -1854,20 +1854,20 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the images content setting.">
     Not allowed to show images
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_DESCRIPTION" desc="Description of the Javascript content setting.">
-    Sites usually use Javascript to display interactive features, like video games or web forms
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_DESCRIPTION" desc="Description of the JavaScript content setting.">
+    Sites usually use JavaScript to display interactive features, like video games or web forms
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED" desc="Label for the enabled option of the Javascript content setting.">
-    Sites can use Javascript (recommended)
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED" desc="Label for the enabled option of the JavaScript content setting.">
+    Sites can use JavaScript (recommended)
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED" desc="Label for the disabled option of the Javascript content setting.">
-    Block Javascript
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED" desc="Label for the disabled option of the JavaScript content setting.">
+    Block JavaScript
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the Javascript content setting.">
-    Allowed to use Javascript
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the JavaScript content setting.">
+    Allowed to use JavaScript
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the Javascript content setting.">
-    Not allowed to use Javascript
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the JavaScript content setting.">
+    Not allowed to use JavaScript
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_DESCRIPTION" desc="Description of the microphone content setting.">
     Sites usually use your microphone for communication features like video chatting
