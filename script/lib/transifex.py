@@ -506,7 +506,7 @@ def is_translateable_string(grd_file_path, message_tag):
 
 
 def get_grd_strings(grd_file_path, validate_tags=True):
-    """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
+    """Obtains a tuple of (name, value, FP) for each string in a GRD file"""
     strings = []
     # Keep track of duplicate message_names
     dupe_dict = defaultdict(int)
