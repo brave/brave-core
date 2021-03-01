@@ -18,7 +18,7 @@ import Footer from './footer'
 import WebCompatWarning from './overlays/webCompatWarningOverlay'
 
 // Types
-import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
+import { Tab, PersistentData } from '../../types/state/shieldsPanelState'
 import { isShieldsEnabled, getFavicon } from '../../helpers/shieldsUtils'
 import {
   ShieldsToggled,

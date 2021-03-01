@@ -11,7 +11,7 @@ import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as settingsTypes from '../../constants/settingsTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
-import { State, PersistentData } from '../../types/state/shieldsPannelState'
+import { State, PersistentData } from '../../types/state/shieldsPanelState'
 import { Actions } from '../../types/actions/index'
 import { SettingsData } from '../../types/other/settingsTypes'
 

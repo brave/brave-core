@@ -8,7 +8,7 @@ import { defaultState as rewardsData } from '../../components/brave_rewards/reso
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
 
 // Types
-import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPanelState'
 import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 // Helpers

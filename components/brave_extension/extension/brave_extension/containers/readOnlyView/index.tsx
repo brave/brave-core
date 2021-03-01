@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Types
-import { Tab } from '../../types/state/shieldsPannelState'
+import { Tab } from '../../types/state/shieldsPanelState'
 
 // Feature-specific components
 import {

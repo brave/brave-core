@@ -4,7 +4,7 @@
 
 // Types
 import { NoScriptInfo } from '../../../brave_extension/extension/brave_extension/types/other/noScriptInfo'
-import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPanelState'
 
 // State helpers
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'

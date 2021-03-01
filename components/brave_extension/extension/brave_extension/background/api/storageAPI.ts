@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Types
-import * as Shields from '../../types/state/shieldsPannelState'
+import * as Shields from '../../types/state/shieldsPanelState'
 import { SettingsData } from '../../types/other/settingsTypes'
 
 // Helpers

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Types
-import * as shieldState from '../types/state/shieldsPannelState'
+import * as shieldState from '../types/state/shieldsPanelState'
 
 // Helpers
 import { unique } from '../helpers/arrayUtils'

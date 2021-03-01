@@ -7,7 +7,7 @@ import * as types from '../../../../brave_extension/extension/brave_extension/co
 import * as windowTypes from '../../../../brave_extension/extension/brave_extension/constants/windowTypes'
 import * as tabTypes from '../../../../brave_extension/extension/brave_extension/constants/tabTypes'
 import * as webNavigationTypes from '../../../../brave_extension/extension/brave_extension/constants/webNavigationTypes'
-import { State } from '../../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { State } from '../../../../brave_extension/extension/brave_extension/types/state/shieldsPanelState'
 import { ShieldDetails } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 // APIs

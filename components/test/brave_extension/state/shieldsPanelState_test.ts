@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { State, PersistentData } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { State, PersistentData } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPanelState'
 import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'

@@ -16,7 +16,7 @@ import ReadOnlyView from './readOnlyView'
 import * as shieldsAPI from '../background/api/shieldsAPI'
 
 // Types
-import { Tab, PersistentData } from '../types/state/shieldsPannelState'
+import { Tab, PersistentData } from '../types/state/shieldsPanelState'
 import {
   ShieldsToggled,
   ReportBrokenSite,

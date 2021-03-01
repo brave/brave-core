@@ -28,7 +28,7 @@ import {
 } from '../../types/actions/shieldsPanelActions'
 
 // Helpers
-import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
+import { Tab, PersistentData } from '../../types/state/shieldsPanelState'
 import { getFavicon, isShieldsEnabled } from '../../helpers/shieldsUtils'
 
 interface Props {

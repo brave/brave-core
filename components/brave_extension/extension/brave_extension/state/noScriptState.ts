@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Types
-import { Tabs } from '../types/state/shieldsPannelState'
+import { Tabs } from '../types/state/shieldsPanelState'
 import {
   GetNoScriptInfo,
   ModifyNoScriptInfo,
