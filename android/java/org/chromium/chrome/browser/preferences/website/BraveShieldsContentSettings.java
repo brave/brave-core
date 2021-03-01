@@ -74,49 +74,49 @@ public class BraveShieldsContentSettings {
         BraveShieldsContentSettingsJni.get().destroy(mNativeBraveShieldsContentSettings);
     }
 
-    static public void setShields(Profile profile, String host, String resourceIndentifier, boolean value,
+    static public void setShields(Profile profile, String host, String resourceIdentifier, boolean value,
                                   boolean fromTopShields) {
         String setting_string = (value ? BLOCK_RESOURCE : ALLOW_RESOURCE);
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+        if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             BraveShieldsContentSettingsJni.get().setBraveShieldsEnabled(value, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
             BraveShieldsContentSettingsJni.get().setAdControlType(setting_string, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
         }
     }
 
-    public static void setShieldsValue(Profile profile, String host, String resourceIndentifier,
+    public static void setShieldsValue(Profile profile, String host, String resourceIdentifier,
                                        String settingOption, boolean fromTopShields) {
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+        if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             BraveShieldsContentSettingsJni.get().setFingerprintingControlType(settingOption, host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         }
     }
 
-    public static boolean getShields(Profile profile, String host, String resourceIndentifier) {
+    public static boolean getShields(Profile profile, String host, String resourceIdentifier) {
         String settings = BLOCK_RESOURCE;
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+        if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             return BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
             settings = BraveShieldsContentSettingsJni.get().getAdControlType(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             return BraveShieldsContentSettingsJni.get().getHTTPSEverywhereEnabled(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         }
 
         return !settings.equals(ALLOW_RESOURCE);
     }
 
-    public static String getShieldsValue(Profile profile, String host, String resourceIndentifier) {
+    public static String getShieldsValue(Profile profile, String host, String resourceIdentifier) {
         String settings = BLOCK_RESOURCE;
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+        if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host, profile);
-        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+        } else if (resourceIdentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         }
         return settings;
