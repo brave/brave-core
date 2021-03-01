@@ -187,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, CancelledNavigation) {
   bool cookie_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(!IsIntialCookieAvailable())",
+      "window.domAutomationController.send(!IsInitialCookieAvailable())",
       &cookie_blocked));
   EXPECT_TRUE(cookie_blocked);
 
