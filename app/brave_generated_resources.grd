@@ -954,7 +954,7 @@ up to 6x faster on major news sites.
         <message name="IDS_SIDEBAR_SHOW_OPTION_ALWAYS" desc="Label for always show sidebar option">
           Always
         </message>
-        <message name="IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER" desc="Label for show sidebar on mousee over option">
+        <message name="IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER" desc="Label for show sidebar on mouse over option">
           On mouseover
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_ONCLICK" desc="Label for show sidebar on click option">
