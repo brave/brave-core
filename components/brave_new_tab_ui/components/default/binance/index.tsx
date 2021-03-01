@@ -131,7 +131,7 @@ interface Props {
   btcPrice: string
   binanceClientUrl: string
   assetDepositInfo: Record<string, any>
-  assetDepoitQRCodeSrcs: Record<string, string>
+  assetDepositQRCodeSrcs: Record<string, string>
   convertAssets: Record<string, Record<string, string>[]>
   accountBTCValue: string
   accountBTCUSDValue: string
@@ -771,8 +771,8 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderQRView = () => {
-    const { assetDepoitQRCodeSrcs } = this.props
-    const imageSrc = assetDepoitQRCodeSrcs[this.state.currentQRAsset]
+    const { assetDepositQRCodeSrcs } = this.props
+    const imageSrc = assetDepositQRCodeSrcs[this.state.currentQRAsset]
 
     return (
       <InvalidWrapper>

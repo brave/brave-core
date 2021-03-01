@@ -163,7 +163,7 @@ declare namespace NewTab {
     btcVolume: string
     binanceClientUrl: string
     assetDepositInfo: Record<string, any>
-    assetDepoitQRCodeSrcs: Record<string, string>
+    assetDepositQRCodeSrcs: Record<string, string>
     convertAssets: Record<string, Record<string, string>[]>
     accountBTCValue: string
     accountBTCUSDValue: string

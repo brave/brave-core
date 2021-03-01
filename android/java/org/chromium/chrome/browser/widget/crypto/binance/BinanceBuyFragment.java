@@ -243,7 +243,7 @@ public class BinanceBuyFragment extends Fragment {
 
         @Override
         public void OnGetDepositInfo(
-                String depositAddress, String depositeTag, boolean isSuccess){};
+                String depositAddress, String depositTag, boolean isSuccess){};
 
         @Override
         public void OnConfirmConvert(boolean isSuccess, String message){};
