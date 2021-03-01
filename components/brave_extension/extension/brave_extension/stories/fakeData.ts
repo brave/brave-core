@@ -6,7 +6,7 @@ const data = {
   thirdPartyCookiesBlocked: '33',
   thirdPartyScriptsBlocked: '11',
   thirdPartyDeviceRecognitionBlocked: '10',
-  pishingMalwareBlocked: '23',
+  phishingMalwareBlocked: '23',
   connectionsEncrypted: '1',
   totalBlocked: '300',
   siteName: 'buzzfeed.com',
