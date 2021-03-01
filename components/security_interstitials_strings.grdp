@@ -420,7 +420,7 @@
     Proceed
   </message>
 
-  <!-- Origin Policy Error Interstial -->
+  <!-- Origin Policy Error Interstitial -->
   <message name="IDS_ORIGIN_POLICY_TITLE" desc="Title of the Origin Policy Error interstitial.">
     Origin Policy Error
   </message>
