@@ -119,7 +119,7 @@ class BRAVE_ADS_PUBLIC_EXPORT RichNotificationData {
   // should be considered when updating the notification.
   bool renotify = false;
 
-  // Whether all announcement mechansims should be suppressed when displaying
+  // Whether all announcement mechanisms should be suppressed when displaying
   // the notification.
   bool silent = false;
 
