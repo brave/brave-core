@@ -23,10 +23,10 @@
 
 namespace extensions {
 
-class BraveWalleBrowserClientUnitTest
+class BraveWalletBrowserClientUnitTest
     : public ChromeRenderViewHostTestHarness {
  public:
-  BraveWalleBrowserClientUnitTest() {}
+  BraveWalletBrowserClientUnitTest() {}
 
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
@@ -55,17 +55,17 @@ class BraveWalleBrowserClientUnitTest
   scoped_refptr<const Extension> extension_;
   content::ContentBrowserClient client_;
   content::ContentBrowserClient* original_client_;
-  DISALLOW_COPY_AND_ASSIGN(BraveWalleBrowserClientUnitTest);
+  DISALLOW_COPY_AND_ASSIGN(BraveWalletBrowserClientUnitTest);
 };
 
-TEST_F(BraveWalleBrowserClientUnitTest,
+TEST_F(BraveWalletBrowserClientUnitTest,
     DoesNotResolveEthereumRemoteClientIfNotInstalled) {
   GURL url("chrome://wallet/");
   ASSERT_FALSE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url, browser_context()));
 }
 
-TEST_F(BraveWalleBrowserClientUnitTest,
+TEST_F(BraveWalletBrowserClientUnitTest,
     ResolvesEthereumRemoteClientIfInstalled) {
   AddExtension();
   GURL url("chrome://wallet/");
