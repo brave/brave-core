@@ -141,7 +141,7 @@
                   },
                   "amount": {
                     "type": "string",
-                    "description": "total amount to be recieved"
+                    "description": "total amount to be received"
                   }
                 }
               }
