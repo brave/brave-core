@@ -217,7 +217,7 @@ void BraveBrowserView::OnTabStripModelChanged(
   BrowserView::OnTabStripModelChanged(tab_strip_model, change, selection);
 
   if (change.type() != TabStripModelChange::kSelectionOnly) {
-    // Stop tab cycling if tab is closed dusing the cycle.
+    // Stop tab cycling if tab is closed during the cycle.
     // This can happen when tab is closed by shortcut (ex, ctrl + F4).
     // After stopping, current tab cycling, new tab cycling will be started.
     StopTabCycling();
