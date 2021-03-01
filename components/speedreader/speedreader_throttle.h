@@ -14,7 +14,7 @@ namespace speedreader {
 
 class SpeedreaderRewriterService;
 
-// Launches the speedreader distillation pass over a reponce body, deferring
+// Launches the speedreader distillation pass over a response body, deferring
 // the load until distillation is done.
 // TODO(iefremov): Avoid distilling the same page twice (see comments in
 // blink::URLLoaderThrottle)?
