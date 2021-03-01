@@ -70,7 +70,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
                 IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT),
             -1);
 
-  // Disabling the shorcut by policy doesn't cause the command to be added.
+  // Disabling the shortcut by policy doesn't cause the command to be added.
   prefs->SetManagedPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar,
                         std::make_unique<base::Value>(false));
   EXPECT_EQ(controller.menu_model()->GetIndexOfCommandId(
