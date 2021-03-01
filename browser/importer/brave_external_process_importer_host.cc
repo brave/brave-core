@@ -41,7 +41,7 @@ base::Optional<base::Value> GetChromeExtensionsList(
   return base::nullopt;
 }
 
-// Silent installer via websotre w/o any prompt or bubble.
+// Silent installer via webstore w/o any prompt or bubble.
 class WebstoreInstallerForImporting
     : public extensions::WebstoreInstallWithPrompt {
  public:
