@@ -106,9 +106,9 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
   ContentSettingsAgentImpl::DidCommitProvisionalLoad(transition);
 }
 
-bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
+bool BraveContentSettingsAgentImpl::IsScriptTemporarilyAllowed(
     const GURL& script_url) {
-  // Check if scripts from this origin are temporily allowed or not.
+  // Check if scripts from this origin are temporarily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
   return base::Contains(temporarily_allowed_scripts_,
@@ -131,7 +131,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
   allow = allow || IsBraveShieldsDown(frame, secondary_url) ||
-          IsScriptTemporilyAllowed(secondary_url);
+          IsScriptTemporarilyAllowed(secondary_url);
 
   return allow;
 }
@@ -223,7 +223,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
 
   allow = allow || should_white_list ||
           IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
-          IsScriptTemporilyAllowed(secondary_url);
+          IsScriptTemporarilyAllowed(secondary_url);
 
   if (!allow) {
     blocked_script_url_ = secondary_url;

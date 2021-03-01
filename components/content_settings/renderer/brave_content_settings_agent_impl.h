@@ -67,7 +67,7 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   void OnAllowScriptsOnce(const std::vector<std::string>& origins);
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
-  bool IsScriptTemporilyAllowed(const GURL& script_url);
+  bool IsScriptTemporarilyAllowed(const GURL& script_url);
   bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
 
   // Origins of scripts which are temporary allowed for this frame in the
