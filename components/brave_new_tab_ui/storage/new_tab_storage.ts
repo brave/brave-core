@@ -182,7 +182,7 @@ export const migrateStackWidgetSettings = (state: NewTab.State) => {
 }
 
 // Ensure any new stack widgets introduced are put behind
-// the others, and not re-added unecessarily if removed
+// the others, and not re-added unnecessarily if removed
 // at one point.
 export const addNewStackWidget = (state: NewTab.State) => {
   defaultState.widgetStackOrder.map((widget: NewTab.StackWidget) => {
