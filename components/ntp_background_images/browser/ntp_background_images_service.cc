@@ -225,7 +225,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     }
 
     // If referral code is empty here, this is fresh launch.
-    // If browser is crashed before fetching this install's promo code at fiirst
+    // If browser is crashed before fetching this install's promo code at first
     // launch, it can be handled here also because code would be empty at this
     // time.
     const std::string code = GetReferralPromoCode();
