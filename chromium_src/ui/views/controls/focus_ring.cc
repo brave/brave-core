@@ -11,7 +11,7 @@
 #include "ui/views/controls/focus_ring.h"
 
 // Override the Focus Ring's color.
-// In Chromium, this is specified via platform-specfic native theme,
+// In Chromium, this is specified via platform-specific native theme,
 // using kColorId_FocusedBorderColor. However, only macOS Light native theme
 // overrides this. Since we do not have a Brave version of either
 // platform-specific, or common versions, and we only want to override a single
