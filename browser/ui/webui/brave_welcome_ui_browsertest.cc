@@ -48,7 +48,7 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
                     ->GetVirtualURL().possibly_invalid_spec().c_str());
 }
 
-// Check wheter startup url is not welcome ui at second run.
+// Check whether startup url is not welcome ui at second run.
 IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, StartupURLTest) {
   Browser* new_browser = OpenNewBrowser(browser()->profile());
   ASSERT_TRUE(new_browser);
