@@ -166,7 +166,7 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
   if (service->GetUserSettings()->IsFirstSetupComplete())
     return;
 
-  unified_consent::metrics::RecordSyncSetupDataTypesHistrogam(
+  unified_consent::metrics::RecordSyncSetupDataTypesHistogram(
       service->GetUserSettings(), profile_->GetPrefs());
 
   // We're done configuring, so notify SyncService that it is OK to start
