@@ -653,7 +653,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyYesCookiesnWordpressComInWpCom) {
+                       ThirdPartyYesCookiesInWordpressComInWpCom) {
   NavigateToPageWithFrame(wp_top_url_);
   ExpectCookiesOnHost(GURL("https://example.wordpress.com"), "");
 
