@@ -940,7 +940,7 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
             # Use our fp, when exists.
             old_fp = node.attrib['id']
             # It's possible for an xtb string to not be in our GRD.
-            # This happens, for exmaple, with Chrome OS strings which
+            # This happens, for example, with Chrome OS strings which
             # we don't process files for.
             if old_fp in fp_map:
                 new_fp = fp_map.get(old_fp)
