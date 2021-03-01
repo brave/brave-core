@@ -752,10 +752,10 @@
   <message name="IDS_OS_SETTINGS_TAG_APPS" desc="Text for search result item which, when clicked, navigates the user to apps settings.">
     Apps
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_APPS_MANAGEMENT" desc="Text for search result item which, when clicked, navigates the user to app mangement settings. Alternate phrase for: 'View installed apps'">
+  <message name="IDS_OS_SETTINGS_TAG_APPS_MANAGEMENT" desc="Text for search result item which, when clicked, navigates the user to app management settings. Alternate phrase for: 'View installed apps'">
     Manage apps
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_APPS_MANAGEMENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to app mangement settings. Alternate phrase for: 'Manage apps'">
+  <message name="IDS_OS_SETTINGS_TAG_APPS_MANAGEMENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to app management settings. Alternate phrase for: 'Manage apps'">
     View installed apps
   </message>
   <message name="IDS_OS_SETTINGS_TAG_REMOVE_PLAY_STORE" desc="Text for search result item which, when clicked, navigates the user to Android app settings, with a button to remove the Play Store (Android app store). Alternate phrase for: 'Uninstall Google Play Store'">
