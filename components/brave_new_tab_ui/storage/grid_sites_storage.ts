@@ -32,7 +32,7 @@ export const load = (): NewTab.GridSitesState => {
   if (data) {
     try {
       storedState = JSON.parse(data)
-      // add defaults for non-peristant data
+      // add defaults for non-persistent data
       state = {
         ...state,
         ...storedState

@@ -253,7 +253,7 @@ export const load = (): NewTab.State => {
   if (data) {
     try {
       storedState = JSON.parse(data)
-      // add defaults for non-peristant data
+      // add defaults for non-persistent data
       state = {
         ...state,
         ...storedState
