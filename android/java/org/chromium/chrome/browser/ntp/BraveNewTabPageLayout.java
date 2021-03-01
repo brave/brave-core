@@ -423,7 +423,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (sponsoredTab == null) {
-            initilizeSponsoredTab();
+            initializeSponsoredTab();
         }
         if (getPlaceholder() != null
                 && ((ViewGroup)getPlaceholder().getParent()) != null) {
@@ -622,7 +622,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         showNTPImage(ntpImage);
     }
 
-    private void initilizeSponsoredTab() {
+    private void initializeSponsoredTab() {
         if (TabAttributes.from(getTab()).get(String.valueOf(getTabImpl().getId())) == null) {
             SponsoredTab mSponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
             TabAttributes.from(getTab()).set(String.valueOf(getTabImpl().getId()), mSponsoredTab);
@@ -640,7 +640,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         @Override
         public void updateNTPImage() {
             if (sponsoredTab == null) {
-                initilizeSponsoredTab();
+                initializeSponsoredTab();
             }
             checkAndShowNTPImage(false);
         }
