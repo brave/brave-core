@@ -20,7 +20,7 @@ class BraveBrowser;
 class SidebarControlView;
 
 // This view is the parent view of all sidebar ui.
-// Thi will include sidebar items button, add button, settings button and panel
+// This will include sidebar items button, add button, settings button and panel
 // view.
 class SidebarContainerView : public sidebar::Sidebar,
                              public views::View,
