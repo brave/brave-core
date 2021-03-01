@@ -1027,7 +1027,7 @@ Brave is unable to recover your settings.
          =1 {Brave will restart in 1 second}
          other {Brave will restart in # seconds}}
       </message>
-      <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
+      <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously counting down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
         Please restart Brave now
       </message>
       <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="Explanation text for the bubble that appears when there is a critical update and Brave must restart to install it.">
