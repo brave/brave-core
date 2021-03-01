@@ -117,7 +117,7 @@ struct EncryptedProchlomation {
   uint8_t nonce[kNonceLength];
 
   // The key used to produce |ciphertext| is derived from the analyzer's key
-  // pair and the client's ephermeral key pair. The public key of the client's
+  // pair and the client's ephemeral key pair. The public key of the client's
   // key pair is |client_public_key|.
   uint8_t client_public_key[kPublicKeyLength];
 };
@@ -148,7 +148,7 @@ struct EncryptedPlainShufflerItem {
   uint8_t nonce[kNonceLength];
 
   // The key used to produce |ciphertext| is derived from the shuffler's key
-  // pair and the client's ephermeral key pair. The public key of the client's
+  // pair and the client's ephemeral key pair. The public key of the client's
   // key pair is |client_public_key|. Note that the client may (in fact, might
   // as well) use two different ephemeral key pairs, one for the shuffler and
   // one for the analyzer. So this may not be the same as the
