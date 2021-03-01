@@ -219,7 +219,7 @@ module.exports = class GitPatcher {
       }
     }
     this.logProgressLine('All patch apply done.')
-    // Create Patch Info file using post-patch repo file cheksums
+    // Create Patch Info file using post-patch repo file checksums
     // (in parallel)
     const patchInfoOps = []
     for (const { appliesTo, patchPath, patchInfoPath } of patchSets.filter(p => !p.error)) {
