@@ -43,7 +43,7 @@ class NoSnappedBubbleFrameView : public views::BubbleFrameView {
   NoSnappedBubbleFrameView& operator=(const NoSnappedBubbleFrameView&) = delete;
 
  private:
-  // views::BubbleFrarmeView overrides:
+  // views::BubbleFrameView overrides:
   // BubbleFrameView::GetFrameWidthForClientWidth() uses snapped dialog width
   // if dialog uses buttons. This width doesn't align with our design.
   int GetFrameWidthForClientWidth(int client_width) const override {
