@@ -249,7 +249,7 @@
     <message name="IDS_PAGE_INFO_TYPE_BACKGROUND_SYNC" desc="The label used for the background sync permission controls in the Page Info popup.">
       Background Sync
     </message>
-    <message name="IDS_PAGE_INFO_TYPE_IDLE_DETECTION" desc="The label used for the idle detection permission controlls in the Page Info popup.">
+    <message name="IDS_PAGE_INFO_TYPE_IDLE_DETECTION" desc="The label used for the idle detection permission controls in the Page Info popup.">
       Your presence
     </message>
     <message name="IDS_PAGE_INFO_TYPE_IMAGES" desc="The label used for images permission controls in the Page Info popup.">
