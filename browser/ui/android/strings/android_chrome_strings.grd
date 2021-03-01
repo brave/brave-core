@@ -2612,7 +2612,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       </message>
 
       <!-- Personalized Signin Promos Strings -->
-      <message name="IDS_SIGNIN_PROMO_CONTINUE_AS" desc="Button that the user can press to login without asking the password and continue using Brave with this acccount.">
+      <message name="IDS_SIGNIN_PROMO_CONTINUE_AS" desc="Button that the user can press to login without asking the password and continue using Brave with this account.">
         Continue as <ph name="USER_FULL_NAME">%1$s<ex>John Doe</ex></ph>
       </message>
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ACCOUNT" desc="Button that the user can press if they are not the profile that Brave found (opposite of 'Continue as Joe Doe').">
