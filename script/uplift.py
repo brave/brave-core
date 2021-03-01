@@ -135,7 +135,7 @@ def parse_args():
     parser.add_argument('-g', '--gpgsign',
                         help='GPG sign GitHub commit', action='store_true')
     parser.add_argument('--owners',
-                        help='comma seperated list of GitHub logins to mark as assignee',
+                        help='comma separated list of GitHub logins to mark as assignee',
                         default=None)
     parser.add_argument('--uplift-to',
                         help='starting at nightly (master), how far back to uplift the changes',
@@ -151,7 +151,7 @@ def parse_args():
     parser.add_argument('-n', '--dry-run', action='store_true',
                         help='don\'t actually create pull requests; just show a call would be made')
     parser.add_argument('--labels',
-                        help='comma seperated list of labels to apply to each pull request',
+                        help='comma separated list of labels to apply to each pull request',
                         default=None)
     parser.add_argument('--title',
                         help='title to use (instead of inferring one from the first commit)',
