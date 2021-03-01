@@ -41,7 +41,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Initially, active index is not set.
   EXPECT_EQ(-1, model()->active_index());
 
-  // Check sidebar UI is initalized properly.
+  // Check sidebar UI is initialized properly.
   EXPECT_TRUE(!!controller()->sidebar());
 
   // If current active tab is not NTP, we can add current url to sidebar.
