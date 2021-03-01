@@ -61,7 +61,7 @@ def replace_cc_arg(args):
             rel_path = os.path.join(rel_path_parts[3], rel_path_parts[4])
         elif rel_path_parts[3] == 'gen':
             # In addition to the regular gen location above, 64-bit builds may
-            # have the directory stucture like out/<BUILD>/android_clang_arm or
+            # have the directory structure like out/<BUILD>/android_clang_arm or
             # out/<BUILD>/android_clang_x86 on Android, or
             # out/<BUILD>/clang_x64_v8_arm64 on MacOS
             rel_path = rel_path_parts[4]
