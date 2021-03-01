@@ -2051,7 +2051,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_IPP_URI_UNREACHABLE" desc="The message shown on the uri field of the add/edit printer dialogs when attempting to connect to an IPP printer that is not found on the network.">
     Couldn't detect a printer. Please enter printer address again.
   </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_DIALOG_GENERAL_ERROR" desc="General message shown on the top of the add/edit printer dialogs when adding/editting a printer fails.">
+  <message name="IDS_SETTINGS_PRINTING_CUPS_DIALOG_GENERAL_ERROR" desc="General message shown on the top of the add/edit printer dialogs when adding/editing a printer fails.">
     Unable to set up printer. Please check configuration and try again.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINT_SERVER_FOUND_ZERO_PRINTERS" desc="Message shown on a toast to indicate no printers were found from a print server.">
