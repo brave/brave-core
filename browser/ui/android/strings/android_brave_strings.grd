@@ -1189,31 +1189,31 @@ until they verify, or until 90 days have passed.
       <message name="IDS_UPDATE_NOTIFICATION_TEXT" desc="Text of notification on application update.">
         Browse faster and block ads with Brave
       </message>
-      <message name="IDS_TOOLTIP_TITLE_1" desc="Shields tootltip title">
+      <message name="IDS_TOOLTIP_TITLE_1" desc="Shields tooltip title">
         Trackers &amp; ads blocked on this page.
       </message>
-      <message name="IDS_TOOLTIP_TEXT_1" desc="Shields tootltip text">
+      <message name="IDS_TOOLTIP_TEXT_1" desc="Shields tooltip text">
         Brave Shields just protected your privacy.
       </message>
-      <message name="IDS_TAKE_A_LOOK" desc="Shields tootltip button text">
+      <message name="IDS_TAKE_A_LOOK" desc="Shields tooltip button text">
         Take a look
       </message>
-      <message name="IDS_TOOLTIP_TITLE_2" desc="Shields tootltip title">
+      <message name="IDS_TOOLTIP_TITLE_2" desc="Shields tooltip title">
         Ads are blocked while watching videos on this website.
       </message>
-      <message name="IDS_TOOLTIP_TEXT_2" desc="Shields tootltip text">
+      <message name="IDS_TOOLTIP_TEXT_2" desc="Shields tooltip text">
         Videos without ads use less data.
       </message>
-      <message name="IDS_TOOLTIP_TITLE_3" desc="Shields tootltip title">
+      <message name="IDS_TOOLTIP_TITLE_3" desc="Shields tooltip title">
         10+ trackers &amp; ads blocked on this page.
       </message>
-      <message name="IDS_TOOLTIP_TEXT_3" desc="Shields tootltip text">
+      <message name="IDS_TOOLTIP_TEXT_3" desc="Shields tooltip text">
         Brave Shields protects your online privacy on every site.
       </message>
-      <message name="IDS_TOOLTIP_TITLE_4" desc="Shields tootltip title">
+      <message name="IDS_TOOLTIP_TITLE_4" desc="Shields tooltip title">
         Your connection is now encrypted.
       </message>
-      <message name="IDS_TOOLTIP_TEXT_4" desc="Shields tootltip text">
+      <message name="IDS_TOOLTIP_TEXT_4" desc="Shields tooltip text">
         If available, Brave upgrades you to a secure connection automatically.
       </message>
       <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
