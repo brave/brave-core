@@ -287,7 +287,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   cookie_settings.CheckSettingsWouldAllow(url2);
   cookie_settings.CheckSettingsAreDefault(GURL("http://brave.com:5555"));
 
-  // Finterprinting.
+  // Fingerprinting.
   fp_settings.SetPreMigrationSettings(pattern, CONTENT_SETTING_ALLOW);
   // Check that settings would allow brave.com:8080, but not brave.com:5555.
   fp_settings.CheckSettingsWouldAllow(url);
