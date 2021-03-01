@@ -66,7 +66,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
 
   // Delete Tor legacy profile if exists.
   if (base::PathExists(tor_legacy_path)) {
-    // Add tor legacy path into profile attributes storage first if nonexist
+    // Add tor legacy path into profile attributes storage first if nonexistent
     // because we will hit DCHECK(!GetProfileAttributesWithPath(...))  in
     // ProfileInfoCache::DeleteProfileFromCache when we trying to delete it
     // without this being added into the storage first.
