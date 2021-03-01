@@ -21,7 +21,7 @@ type RedditMediaData = {
   postText: string
 }
 
-type GithubMediaData = {
+type GitHubMediaData = {
   mediaType: 'github'
   publisherName: string
   publisherScreenName: string
@@ -31,7 +31,7 @@ export type MediaMetaData =
   EmptyMediaData |
   TwitterMediaData |
   RedditMediaData |
-  GithubMediaData
+  GitHubMediaData
 
 export type ShareTarget = 'twitter'
 

@@ -50,7 +50,7 @@ const char kRecoverySeed[] = "brave.rewards.wallet.seed";
 const char kPaymentId[] = "brave.rewards.wallet.payment_id";
 const char kInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";
 const char kInlineTipTwitterEnabled[] = "brave.rewards.inline_tip.twitter";
-const char kInlineTipGithubEnabled[] = "brave.rewards.inline_tip.github";
+const char kInlineTipGitHubEnabled[] = "brave.rewards.inline_tip.github";
 const char kParametersRate[] = "brave.rewards.parameters.rate";
 const char kParametersAutoContributeChoice[] =
     "brave.rewards.parameters.ac.choice";

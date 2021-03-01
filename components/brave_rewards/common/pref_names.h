@@ -44,7 +44,7 @@ extern const char kRecoverySeed[];  // DEPRECATED
 extern const char kPaymentId[];   // DEPRECATED
 extern const char kInlineTipRedditEnabled[];
 extern const char kInlineTipTwitterEnabled[];
-extern const char kInlineTipGithubEnabled[];
+extern const char kInlineTipGitHubEnabled[];
 extern const char kParametersRate[];
 extern const char kParametersAutoContributeChoice[];
 extern const char kParametersAutoContributeChoices[];

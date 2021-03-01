@@ -57,7 +57,7 @@ def download_from_github(args, logging):
             exit("Error: More than 1 release exists with the tag: \'{}\'".format(tag_name))
         release = releases[0]
     else:
-        exit("Error: Did not get the release \'{}\' from Github.".format(tag_name))
+        exit("Error: Did not get the release \'{}\' from GitHub.".format(tag_name))
 
     found_assets_in_github_release = {}
 
@@ -141,7 +141,7 @@ def download_from_github(args, logging):
     if len(file_list) < len(args.platform):
         for item in args.platform:
             logging.error(
-                "Cannot get requested file from Github! {}".format(found_assets_in_github_release[item]['name']))
+                "Cannot get requested file from GitHub! {}".format(found_assets_in_github_release[item]['name']))
         remove_github_downloaded_files(file_list, logging)
         exit(1)
 
@@ -190,7 +190,7 @@ def parse_args():
            "\nOMAHA_USER: The UserID to use to login to the Omaha server." \
            "\nOMAHA_PASS: The Password to login to the Omaha server." \
            "\nDSA_PRIVATE_PEM: The Private DSA pem file used to sign the Mac DMG file." \
-           "\nBRAVE_GITHUB_TOKEN: Github token to download from a draft release if not published yet. " \
+           "\nBRAVE_GITHUB_TOKEN: GitHub token to download from a draft release if not published yet. " \
            "(ONLY REQUIRED IF --github)" \
            "\nnpm_config_brave_version: Chromium version (only if not in brave-core directory with brave-browser" \
            " in the parent dir)"

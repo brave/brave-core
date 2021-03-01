@@ -380,7 +380,7 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
           &RewardsServiceImpl::OnPreferenceChanged,
           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
-      prefs::kInlineTipGithubEnabled,
+      prefs::kInlineTipGitHubEnabled,
       base::Bind(
           &RewardsServiceImpl::OnPreferenceChanged,
           base::Unretained(this)));
@@ -1331,7 +1331,7 @@ void RewardsServiceImpl::EnableGreaseLion() {
           !hide_button);
   greaselion_service_->SetFeatureEnabled(
       greaselion::GITHUB_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGitHubEnabled) &&
           !hide_button);
 #endif
 }

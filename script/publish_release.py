@@ -81,7 +81,7 @@ def parse_args():
     desc = "Publish GitHub draft release" \
         "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
         "\n\nCHANNEL: The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\'" \
-        "\n\nBRAVE_GITHUB_TOKEN: Github token to publish release. "
+        "\n\nBRAVE_GITHUB_TOKEN: GitHub token to publish release. "
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)

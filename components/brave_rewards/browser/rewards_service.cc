@@ -80,7 +80,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kPaymentId, "");
   registry->RegisterBooleanPref(prefs::kInlineTipRedditEnabled, true);
   registry->RegisterBooleanPref(prefs::kInlineTipTwitterEnabled, true);
-  registry->RegisterBooleanPref(prefs::kInlineTipGithubEnabled, true);
+  registry->RegisterBooleanPref(prefs::kInlineTipGitHubEnabled, true);
   registry->RegisterDoublePref(prefs::kParametersRate, 0.0);
   registry->RegisterDoublePref(
       prefs::kParametersAutoContributeChoice,

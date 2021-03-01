@@ -271,7 +271,7 @@ def download_linux_pkgs_from_github(args, logging):
 
     if len(file_list) < 2:
         logging.error(
-            "Cannot get both RPM and DEB files from Github! "
+            "Cannot get both RPM and DEB files from GitHub! "
             "Removing partially downloaded files from directory: {}".format(dist_dir))
         remove_github_downloaded_files(file_list, logging)
         exit(1)

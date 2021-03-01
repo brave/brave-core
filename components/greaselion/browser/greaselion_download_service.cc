@@ -62,7 +62,7 @@ const char kMinimumBraveVersion[] = "minimum_brave_version";
 const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
 const char kRedditTips[] = "reddit-tips-enabled";
-const char kGithubTips[] = "github-tips-enabled";
+const char kGitHubTips[] = "github-tips-enabled";
 const char kAutoContribution[] = "auto-contribution-enabled";
 const char kAds[] = "ads-enabled";
 const char kSupportsMinimumBraveVersion[] =
@@ -99,7 +99,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
         preconditions_.twitter_tips_enabled = condition;
       } else if (kv.first == kRedditTips) {
         preconditions_.reddit_tips_enabled = condition;
-      } else if (kv.first == kGithubTips) {
+      } else if (kv.first == kGitHubTips) {
         preconditions_.github_tips_enabled = condition;
       } else if (kv.first == kAutoContribution) {
         preconditions_.auto_contribution_enabled = condition;
