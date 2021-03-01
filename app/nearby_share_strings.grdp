@@ -156,34 +156,34 @@
   <message name="IDS_NEARBY_ERROR_UNSUPPORTED_FILE_TYPE" desc="Notify user that the file chosen can't be shared because of its type, e.g. missing file extension.">
     Unsupported file type
   </message>
-  <message name="IDS_NEARBY_FILE_ATTACHMENTS_APPS" desc="Describes one or more apps being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_APPS" desc="Describes one or more apps being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 app} other {# apps}}
   </message>
-  <message name="IDS_NEARBY_FILE_ATTACHMENTS_IMAGES" desc="Describes one or more images being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_IMAGES" desc="Describes one or more images being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 image} other {# images}}
   </message>
-  <message name="IDS_NEARBY_FILE_ATTACHMENTS_UNKNOWN" desc="Describes one or more files being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_UNKNOWN" desc="Describes one or more files being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 file} other {# files}}
   </message>
-  <message name="IDS_NEARBY_FILE_ATTACHMENTS_VIDEOS" desc="Describes one or more videos being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_VIDEOS" desc="Describes one or more videos being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 video} other {# videos}}
   </message>
   <message name="IDS_NEARBY_SECURE_CONNECTION_ID" desc="Description shown on both sender and receiver devices, to remind users to verify/compare tokens on both devices for security before sending/receiving data.">
     Secure connection ID: <ph name="TOKEN">$1<ex>1234</ex></ph>
   </message>
-  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_ADDRESSES" desc="Describes one or more addresses being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_ADDRESSES" desc="Describes one or more addresses being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 address} other {# addresses}}
   </message>
-  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_LINKS" desc="Describes one or more web links being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_LINKS" desc="Describes one or more web links being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 link} other {# links}}
   </message>
-  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_PHONE_NUMBERS" desc="Describes one or more phone numbers being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_PHONE_NUMBERS" desc="Describes one or more phone numbers being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 phone number} other {# phone numbers}}
   </message>
-  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_UNKNOWN" desc="Describes one or more pieces of text being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_UNKNOWN" desc="Describes one or more pieces of text being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 text} other {# texts}}
   </message>
-  <message name="IDS_NEARBY_UNKNOWN_ATTACHMENTS" desc="Describes one or more items being transfered via Nearby Share.">
+  <message name="IDS_NEARBY_UNKNOWN_ATTACHMENTS" desc="Describes one or more items being transferred via Nearby Share.">
     {COUNT, plural, =1 {1 item} other {# items}}
   </message>
 
