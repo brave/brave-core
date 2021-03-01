@@ -89,7 +89,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
     BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView,
             ViewStub stub, ActivityTabProvider tabProvider,
-            OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
+            OnLongClickListener tabsSwitcherLongClickListener, ThemeColorProvider themeColorProvider,
             Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
@@ -109,7 +109,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mBrowsingModeCoordinator = new BrowsingModeBottomToolbarCoordinator(root, tabProvider,
                 homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
-                tabsSwitcherLongClickListner);
+                tabsSwitcherLongClickListener);
 
         mTabSwitcherModeStub = root.findViewById(R.id.bottom_toolbar_tab_switcher_mode_stub);
 
