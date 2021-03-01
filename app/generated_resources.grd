@@ -1577,7 +1577,7 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_DOWNLOAD_STATUS_DOWNLOAD_FAILED_TITLE" desc="The title of a download notification: the current download status is failed.">
                  <ph name="FILE_NAME">$1<ex>somedocument.pdf</ex></ph> download unsuccessful
         </message>
-        <message name="IDS_DOWNLOAD_STATUS_COMPLETE_TITLE" desc="The title of a download notification: the current download status is finished successufully.">
+        <message name="IDS_DOWNLOAD_STATUS_COMPLETE_TITLE" desc="The title of a download notification: the current download status is finished successfully.">
                  Download complete
         </message>
         <message name="IDS_DOWNLOAD_STATUS_PAGE_READY_TITLE" desc="The title of a download notification for offline pages not stored in Downloads.">
