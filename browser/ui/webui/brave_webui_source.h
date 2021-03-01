@@ -20,7 +20,7 @@ content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
     const std::string& name,
     const GritResourceMap* resource_map,
-    size_t resouece_map_size,
+    size_t resource_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp = false);
 

@@ -62,8 +62,8 @@ export const getToggleStateViaEventTarget = (event: React.ChangeEvent<HTMLInputE
   return event.target.checked ? 'allow' : 'block'
 }
 
-export const maybeBlockResource = (resouce: BlockOptions) => {
-  return resouce !== 'allow'
+export const maybeBlockResource = (resource: BlockOptions) => {
+  return resource !== 'allow'
 }
 
 export const shouldDisableResourcesRow = (resource: number) => {
