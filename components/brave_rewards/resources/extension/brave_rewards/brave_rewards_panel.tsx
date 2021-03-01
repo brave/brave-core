@@ -33,8 +33,8 @@ const localeContext = {
     // chrome.i18n message placeholders with $N marker patterns. UI components
     // are responsible for replacing these markers with appropriate text or
     // using the markers to build HTML.
-    const subsitutions = ['$1', '$2', '$3', '$4', '$5', '$6', '$7', '$8', '$9']
-    return getMessage(key, subsitutions)
+    const substitutions = ['$1', '$2', '$3', '$4', '$5', '$6', '$7', '$8', '$9']
+    return getMessage(key, substitutions)
   }
 }
 
