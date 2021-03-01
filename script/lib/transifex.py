@@ -79,7 +79,7 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
     string_tag.set('id', str(fingerprint))
     if string_value.count('<') != string_value.count('>'):
         assert False, 'Warning: Unmatched < character, consider fixing on ' \
-                      ' Trasifex, force encoding the following string:' + string_value
+                      ' Transifex, force encoding the following string:' + string_value
     string_tag.text = string_value
     string_tag.tail = '\n'
     return string_tag
