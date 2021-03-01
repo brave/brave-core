@@ -344,10 +344,10 @@
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUT_OF_PAPER" desc="Error label to show under the destination dropdown when the printer is out of paper.">
          Out of paper
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_ALMOST_FULL" desc="Error label to show under the destination dropdown when the printer's output tray is almost full.">
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUTPUT_ALMOST_FULL" desc="Error label to show under the destination dropdown when the printer's output tray is almost full.">
          Output tray is almost full
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_FULL" desc="Error label to show under the destination dropdown when the printer's output tray is full.">
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUTPUT_FULL" desc="Error label to show under the destination dropdown when the printer's output tray is full.">
          Output tray is full
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAPER_JAM" desc="Error label to show under the destination dropdown when the printer has a paper jam.">
