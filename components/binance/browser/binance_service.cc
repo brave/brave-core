@@ -93,7 +93,7 @@ BinanceService::~BinanceService() {
 std::string BinanceService::GetOAuthClientUrl() {
   // The code_challenge_ value is derived from the code_verifier value.
   // Step 1 of the oauth process uses the code_challenge_ value.
-  // Step 4 of the oauth process uess the code_verifer_.
+  // Step 4 of the oauth process uess the code_verifier_.
   // We never need to persist these values, they are just used to get an
   // access token.
   code_verifier_ = ntp_widget_utils::GetCryptoRandomString(true);
