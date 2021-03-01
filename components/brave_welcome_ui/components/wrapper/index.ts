@@ -85,7 +85,7 @@ export const Content = styled<ContentProps, 'section'>('section')`
   /*
     inactive elements need to be absolute positioned to prevent pilling up
     in the background making visible elements misaligned. In this case display:none
-    would prevent us from seeing the ransition animation. See comment below.
+    would prevent us from seeing the transition animation. See comment below.
   */
   position: ${p => p.active ? 'static' : 'absolute'};
 
