@@ -1351,7 +1351,7 @@
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_SCANNING" desc="This text describes that Brave is currently checking the user's device for unwanted software. This takes a couple of minutes.">
       Brave is checking your computer for harmful software...
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_REMOVING" desc="This text describes that Brave is currently removing unwanted software frrom the user.s device. This takes a couple of minutes.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_REMOVING" desc="This text describes that Brave is currently removing unwanted software from the user.s device. This takes a couple of minutes.">
       Brave is removing harmful software from your computer...
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_DISABLED_BY_ADMIN" desc="This text describes that Brave can't check for unwanted software because an administrator disabled the feature.">
