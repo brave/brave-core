@@ -11,6 +11,7 @@ source_set("brave_wallet_unit_tests") {
   testonly = true
   if (brave_wallet_enabled) {
     sources = [
+      "//brave/components/brave_wallet/brave_wallet_utils_unittest.cc",
       "//brave/components/brave_wallet/eth_json_rpc_controller_unittest.cc",
       "//brave/components/brave_wallet/eth_requests_unittest.cc",
     ]

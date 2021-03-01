@@ -18,6 +18,7 @@
 !/vendor/CPPLINT.cfg
 node_modules/
 patches/**/*.patchinfo
+/third_party/ethash/src
 *.xcodeproj
 *.swp
 *.pyc
