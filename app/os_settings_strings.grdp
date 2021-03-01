@@ -829,34 +829,34 @@
   <message name="IDS_SETTINGS_DOCKED_MAGNIFIER_ZOOM_LABEL" desc="Label for dropdown menu which contains zoom levels for the docked magnifier">
     Docked zoom level:
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_2_X" desc="Desription of a 2x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_2_X" desc="Description of a 2x zoom level">
     2x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_4_X" desc="Desription of a 4x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_4_X" desc="Description of a 4x zoom level">
     4x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_6_X" desc="Desription of a 6x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_6_X" desc="Description of a 6x zoom level">
     6x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_8_X" desc="Desription of a 8x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_8_X" desc="Description of a 8x zoom level">
     8x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_10_X" desc="Desription of a 10x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_10_X" desc="Description of a 10x zoom level">
     10x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_12_X" desc="Desription of a 12x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_12_X" desc="Description of a 12x zoom level">
     12x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_14_X" desc="Desription of a 14x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_14_X" desc="Description of a 14x zoom level">
     14x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_16_X" desc="Desription of a 16x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_16_X" desc="Description of a 16x zoom level">
     16x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_18_X" desc="Desription of a 18x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_18_X" desc="Description of a 18x zoom level">
     18x
   </message>
-  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_20_X" desc="Desription of a 20x zoom level">
+  <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_20_X" desc="Description of a 20x zoom level">
     20x
   </message>
   <message name="IDS_SETTINGS_TAP_DRAGGING_LABEL" desc="Label for checkbox which enables tap dragging.">

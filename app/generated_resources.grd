@@ -4800,16 +4800,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- End of Sync Promo strings for Desktop Identity Consistency. -->
 
       <!-- Preview Stale Page UI -->
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_MINUTES" desc="The desciption stating how old a preview version of a page is in minutes. This is shown on the UI notifying the user that a preview page has been shown. The number of minutes will always be at least two so 'minutes' should be translated in the plural.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_MINUTES" desc="The description stating how old a preview version of a page is in minutes. This is shown on the UI notifying the user that a preview page has been shown. The number of minutes will always be at least two so 'minutes' should be translated in the plural.">
          Updated <ph name="MINUTES">$1<ex>30</ex></ph> min ago
       </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_ONE_HOUR" desc="The desciption stating a preview version of a page is one hour old. This is shown on the UI notifying the user that a preview page has been shown.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_ONE_HOUR" desc="The description stating a preview version of a page is one hour old. This is shown on the UI notifying the user that a preview page has been shown.">
          Updated 1hr ago
       </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_HOURS" desc="The desciption stating how old a preview version of a page is in hours. This is shown on the UI notifying the user that a preview page has been shown.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_HOURS" desc="The description stating how old a preview version of a page is in hours. This is shown on the UI notifying the user that a preview page has been shown.">
          Updated <ph name="HOURS">$1<ex>4</ex></ph> hrs ago
       </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_UPDATED_NOW" desc="The desciption stating that a preview version of a page was just updated. This is shown on the UI notifying the user that a preview page has been shown.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_UPDATED_NOW" desc="The description stating that a preview version of a page was just updated. This is shown on the UI notifying the user that a preview page has been shown.">
          Updated just now
       </message>
 
@@ -9028,7 +9028,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_CAMERA" desc="Description text for the camera.">
           Camera
         </message>
-        <message name="IDS_MIC" desc="Decription text for the microphone.">
+        <message name="IDS_MIC" desc="Description text for the microphone.">
           Microphone
         </message>
         <message name="IDS_TURNED_OFF" desc="Description text for the state of camera or microphone">
@@ -9037,7 +9037,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_CAMERA_TURNED_OFF" desc="Description text in the omnibox icon showing when camera permission is turned off.">
           Camera turned off
         </message>
-        <message name="IDS_MIC_TURNED_OFF" desc="Decription text in the omnibox icon showing when microphone permission is turned off.">
+        <message name="IDS_MIC_TURNED_OFF" desc="Description text in the omnibox icon showing when microphone permission is turned off.">
           Microphone turned off
         </message>
       </if>
