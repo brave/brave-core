@@ -18,8 +18,8 @@ const char kGCMChannelStatus[] = "gcm.channel_status";
 
 void RegisterGCMProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Deprecated Chromium pref.
-  registry->SetDefaultPrefValue(kGCMChannelStatus, base::Value(false));
-  // Current Brave eqiuvalent of the deprecated pref.
+  registry->RegisterBooleanPref(kGCMChannelStatus, false);
+  // Current Brave equivalent of the deprecated pref.
   registry->RegisterBooleanPref(kBraveGCMChannelStatus, false);
 }
 
@@ -29,6 +29,7 @@ void MigrateGCMPrefs(Profile* profile) {
   auto* pref = prefs->FindPreference(kGCMChannelStatus);
   if (pref && !pref->IsDefaultValue())
     prefs->SetBoolean(kBraveGCMChannelStatus, pref->GetValue()->GetBool());
+  prefs->ClearPref(kGCMChannelStatus);
 }
 
 }  // namespace gcm
