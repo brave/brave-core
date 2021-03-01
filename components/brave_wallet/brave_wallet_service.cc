@@ -215,7 +215,7 @@ bool BraveWalletService::LoadRootSeedInfo(std::vector<uint8_t> key,
     BraveWalletService::SaveToPrefs(prefs, cipher_seed, nonce);
   }
   // We should have the correct nonce size and seed size at this point
-  // regardless of if it was newly genearted or retrieved from prefs.
+  // regardless of if it was newly generated or retrieved from prefs.
   DCHECK_EQ(nonce.size(), BraveWalletService::kNonceByteLength);
   DCHECK_EQ(seed->size(), BraveWalletService::kSeedByteLength);
   return true;
