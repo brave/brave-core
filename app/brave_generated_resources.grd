@@ -1014,10 +1014,10 @@ up to 6x faster on major news sites.
       </message>
       <!-- IPFS -->
       <message name="IDS_BRAVE_WALLET_SETTINGS_SECTION" desc="Open Wallet settings section">
-        Wallet Settings
+        Wallet
       </message>
       <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
-        IPFS Settings
+        IPFS
       </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
