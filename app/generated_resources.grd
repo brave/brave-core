@@ -10715,7 +10715,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Deep scanning timed out dialog -->
-    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_TITLE" desc="Title shown in tab modal dialog when deep scaning times out.">
+    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_TITLE" desc="Title shown in tab modal dialog when deep scanning times out.">
       Timed out
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the deep scanning times out.">
