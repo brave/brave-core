@@ -1324,23 +1324,23 @@
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITHOUT_TIMESTAMP" desc="This text describes that Brave can check if any known harmful software is installed on the user's computer.">
       Brave can check your computer for harmful software
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_SECONDS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_SECONDS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful software the last time a certain time ago.">
       Brave didn't find harmful software on your computer • Checked just now
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_MINUTES" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_MINUTES" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful software the last time a certain time ago.">
       {NUM_MINS, plural,
        =1 {Brave didn't find harmful software on your computer • Checked 1 minute ago}
        other {Brave didn't find harmful software on your computer • Checked {NUM_MINS} minutes ago}}
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_HOURS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_HOURS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful software the last time a certain time ago.">
       {NUM_HOURS, plural,
        =1 {Brave didn't find harmful software on your computer • Checked 1 hour ago}
        other {Brave didn't find harmful software on your computer • Checked {NUM_HOURS} hours ago}}
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_YESTERDAY" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_YESTERDAY" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful software the last time a certain time ago.">
       Brave didn't find harmful software on your computer • Checked yesterday
     </message>
-    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_DAYS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful softwrae the last time a certain time ago.">
+    <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_NO_UWS_WITH_TIMESTAMP_AFTER_DAYS" desc="This text describes that Brave did not find any known harmful software installed on the user's computer, and that it checked for harmful software the last time a certain time ago.">
       {NUM_DAYS, plural,
        =1 {Brave didn't find harmful software on your computer • Checked 1 day ago}
        other {Brave didn't find harmful software on your computer • Checked {NUM_DAYS} days ago}}
