@@ -115,7 +115,7 @@ def Resolve(path, exe_path, loader_path, rpaths):
 
 
 def GetSharedLibraryDependenciesLinux(binary):
-  """Return absolute paths to all shared library dependecies of the binary.
+  """Return absolute paths to all shared library dependencies of the binary.
 
   This implementation assumes that we're running on a Linux system."""
   ldd = GetCommandOutput(['ldd', binary])
@@ -129,7 +129,7 @@ def GetSharedLibraryDependenciesLinux(binary):
 
 
 def GetSharedLibraryDependenciesMac(binary, exe_path):
-  """Return absolute paths to all shared library dependecies of the binary.
+  """Return absolute paths to all shared library dependencies of the binary.
 
   This implementation assumes that we're running on a Mac system."""
   loader_path = os.path.dirname(binary)
@@ -153,7 +153,7 @@ def GetSharedLibraryDependenciesMac(binary, exe_path):
 
 
 def GetSharedLibraryDependencies(options, binary, exe_path):
-  """Return absolute paths to all shared library dependecies of the binary."""
+  """Return absolute paths to all shared library dependencies of the binary."""
   deps = []
   if sys.platform.startswith('linux'):
     deps = GetSharedLibraryDependenciesLinux(binary)

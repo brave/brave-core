@@ -132,7 +132,7 @@ public class ClassPathValidator {
                 if (verbose) {
                     System.err.println("Class \"" + e.getClassName()
                             + "\" not found in direct dependencies,"
-                            + " but found in indirect dependiences.");
+                            + " but found in indirect dependencies.");
                 }
                 // Iterating through all jars that are in the full classpath but not the direct
                 // classpath to find which one provides the class we are looking for.
