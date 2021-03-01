@@ -24,7 +24,7 @@ import { getLocale } from '../../../common/locale'
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import BackgroundImageIcon from './settings/icons/backgroundImage.svg'
-import NraveStatsIcon from './settings/icons/braveStats.svg'
+import BraveStatsIcon from './settings/icons/braveStats.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
 import CardsIcon from './settings/icons/cards.svg'
@@ -188,7 +188,7 @@ export default class Settings extends React.PureComponent<Props, State> {
         srcUrl = BackgroundImageIcon
         break
       case TabType.BraveStats:
-        srcUrl = NraveStatsIcon
+        srcUrl = BraveStatsIcon
         break
       case TabType.TopSites:
         srcUrl = TopSitesIcon
