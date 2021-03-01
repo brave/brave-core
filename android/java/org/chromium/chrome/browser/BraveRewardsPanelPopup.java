@@ -174,7 +174,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private boolean mClaimInProcess;
 
     private boolean mAutoContributeEnabled;
-    private boolean mPubInReccuredDonation;
+    private boolean mPubInRecurredDonation;
 
     private String batPointsText;
 
@@ -1621,14 +1621,14 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnRecurringDonationUpdated() {
         String pubId = mBraveRewardsNativeWorker.GetPublisherId(currentTabId);
-        mPubInReccuredDonation = mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId);
+        mPubInRecurredDonation = mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId);
 
-        //all (mPubInReccuredDonation, mAutoContributeEnabled) are false: exit
+        //all (mPubInRecurredDonation, mAutoContributeEnabled) are false: exit
         //one is true: ac_enabled_controls on
         //mAutoContributeEnabled: attention_layout and include_in_ac_layout on
-        //mPubInReccuredDonation: auto_tip_layout is on
+        //mPubInRecurredDonation: auto_tip_layout is on
 
-        if (mAutoContributeEnabled || mPubInReccuredDonation) {
+        if (mAutoContributeEnabled || mPubInRecurredDonation) {
             root.findViewById(R.id.ac_enabled_controls).setVisibility(View.VISIBLE);
 
             if (mAutoContributeEnabled) {
@@ -1640,7 +1640,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
             //Temporary commented out due to dropdown spinner inflating issue on PopupWindow (API 24)
             /*
-            if (mPubInReccuredDonation){
+            if (mPubInRecurredDonation){
                 double amount  = mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
                 UpdateRecurentDonationSpinner(amount);
                 root.findViewById(R.id.auto_tip_layout).setVisibility(View.VISIBLE);
