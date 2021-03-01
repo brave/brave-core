@@ -279,4 +279,7 @@
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="1224064034972923114">通过自动发送崩溃报告来帮助改进 Brave</translation>
 <translation id="3738833060602717053">可通过自动发送崩溃报告来改善 <ph name="PRODUCT_NAME"/></translation>
+<translation id="8511502469534942133">为此站点新建的 Tor 连接</translation>
+<translation id="3110802155897279216">检测到 IPFS 资源。您是否希望 Brave 使用本地 IPFS 节点来加载它们？</translation>
+<translation id="2366908098700680611">开启 IPFS</translation>
 </translationbundle>

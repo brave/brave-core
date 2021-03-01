@@ -277,4 +277,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
 <translation id="1224064034972923114">Ajudeu a millorar Brave enviant automàticament informes d'errors</translation>
 <translation id="3738833060602717053">Ajudeu a millorar <ph name="PRODUCT_NAME"/> enviant informes d'errors automàticament</translation>
+<translation id="8511502469534942133">Nova connexió Tor per a aquest lloc.</translation>
+<translation id="3110802155897279216">Recursos IPFS detectats. Voleu que Brave els carregui fent servir un node IPFS local?</translation>
+<translation id="2366908098700680611">Activar IPFS</translation>
 </translationbundle>

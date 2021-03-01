@@ -278,4 +278,7 @@ Définissez Brave comme votre navigateur par défaut pour continuer à naviguer 
 <translation id="2808630562319398131">Reconfigurer les données de récompenses de Brave...</translation>
 <translation id="1224064034972923114">Aidez à améliorer Brave en envoyant automatiquement des rapports de plantage</translation>
 <translation id="3738833060602717053">Aidez à améliorer <ph name="PRODUCT_NAME"/> en envoyant automatiquement des rapports de plantage</translation>
+<translation id="8511502469534942133">Nouvelle connexion Tor pour ce site</translation>
+<translation id="3110802155897279216">Ressources IPFS détectées. Souhaitez-vous que Brave les charge à l'aide d'un nœud IPFS local?</translation>
+<translation id="2366908098700680611">Activer IPFS</translation>
 </translationbundle>

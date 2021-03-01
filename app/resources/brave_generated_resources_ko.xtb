@@ -279,4 +279,7 @@
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="1224064034972923114">자동으로 충돌 보고서를 보내 Brave 개선 지원</translation>
 <translation id="3738833060602717053">자동으로 충돌 보고서를 보내 <ph name="PRODUCT_NAME"/> 개선 지원</translation>
+<translation id="8511502469534942133">이 사이트 대상 새 Tor 연결</translation>
+<translation id="3110802155897279216">IPFS 리소스가 감지되었습니다. Brave가 로컬 IPFS 노드를 이용하여 이를 로드하도록 하시겠습니까?</translation>
+<translation id="2366908098700680611">IPFS 활성화</translation>
 </translationbundle>

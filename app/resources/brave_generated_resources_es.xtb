@@ -277,4 +277,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2808630562319398131">Restablecer los datos de recompensas de Brave...</translation>
 <translation id="1224064034972923114">Ayuda a mejorar Brave enviando informes de fallos</translation>
 <translation id="3738833060602717053">Ayuda a mejorar <ph name="PRODUCT_NAME"/> enviando informes de fallos automáticamente</translation>
+<translation id="8511502469534942133">Nueva Conexión Tor Para Esta Página</translation>
+<translation id="3110802155897279216">Se han detectado recursos IPFS. ¿Quieres que Brave los cargue usando un nodo IPFS local?</translation>
+<translation id="2366908098700680611">Habilitar IPFS</translation>
 </translationbundle>

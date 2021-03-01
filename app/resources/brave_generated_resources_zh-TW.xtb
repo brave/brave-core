@@ -279,4 +279,7 @@
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="1224064034972923114">透過自動傳送當機報告，協助改善 Brave</translation>
 <translation id="3738833060602717053">透過自動傳送當機報告，協助改善 <ph name="PRODUCT_NAME"/></translation>
+<translation id="8511502469534942133">為此網站建立的新 Tor 連線</translation>
+<translation id="3110802155897279216">偵測到 IPFS 資源。您要 Brave 使用本地 IPFS 節點來載入它們嗎？</translation>
+<translation id="2366908098700680611">啟用 IPFS</translation>
 </translationbundle>

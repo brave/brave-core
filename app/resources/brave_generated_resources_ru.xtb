@@ -280,4 +280,7 @@
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="1224064034972923114">Помогите улучшить Brave, автоматически отправляя отчеты о сбоях</translation>
 <translation id="3738833060602717053">Помогите улучшить <ph name="PRODUCT_NAME"/>, автоматически отправляя отчеты о сбоях</translation>
+<translation id="8511502469534942133">Новое подключение через Tor для этого сайта</translation>
+<translation id="3110802155897279216">Обнаружены ресурсы IPFS. Хотите, чтобы Brave загрузил их с помощью локального узла IPFS?</translation>
+<translation id="2366908098700680611">Включить IPFS</translation>
 </translationbundle>
