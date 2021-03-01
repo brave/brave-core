@@ -46,7 +46,6 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   // control_auth_cookie is a folder
   tor_file_watcher.reset(new TorFileWatcher(test_data_dir()));
@@ -54,7 +53,6 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   tor_file_watcher.reset(
       new TorFileWatcher(test_data_dir().AppendASCII("empty_auth_cookies")));
@@ -62,7 +60,6 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   tor_file_watcher.reset(
       new TorFileWatcher(test_data_dir().AppendASCII("auth_cookies_too_long")));
@@ -70,7 +67,6 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   constexpr unsigned char expected_auth_cookie[] = {
       0x6c, 0x6e, 0x9d, 0x24, 0x78, 0xe6, 0x6d, 0x69, 0xd3, 0x2d, 0xc9,
@@ -87,7 +83,6 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
             0);
   EXPECT_EQ(cookie.size(), expected_auth_cookie_len);
   EXPECT_NE(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 }
 
 TEST_F(TorFileWatcherTest, EatControlPort) {
@@ -101,7 +96,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   // controlport is a folder
   tor_file_watcher.reset(new TorFileWatcher(test_data_dir()));
@@ -109,7 +103,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   tor_file_watcher.reset(
       new TorFileWatcher(test_data_dir().AppendASCII("empty_controlport")));
@@ -117,7 +110,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
 #if defined(OS_WIN)
   tor_file_watcher.reset(new TorFileWatcher(
@@ -130,7 +122,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
 #if defined(OS_WIN)
   tor_file_watcher.reset(new TorFileWatcher(
@@ -143,7 +134,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
 #if defined(OS_WIN)
   tor_file_watcher.reset(new TorFileWatcher(
@@ -156,7 +146,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
 #if defined(OS_WIN)
   tor_file_watcher.reset(new TorFileWatcher(
@@ -169,7 +158,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 65536);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   port = -1;
 #if defined(OS_WIN)
@@ -183,7 +171,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 0);
   EXPECT_EQ(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 
   port = -1;
   time = base::Time();
@@ -199,7 +186,6 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_TRUE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 5566);
   EXPECT_NE(time.ToJsTime(), 0u);
-  std::move(*tor_file_watcher.release()).DeleteSoon();
 }
 
 }  // namespace tor

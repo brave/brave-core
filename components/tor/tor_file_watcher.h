@@ -13,12 +13,10 @@
 #include "base/files/file_path.h"
 #include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/base/delete_soon_helper.h"
 
 namespace base {
 class SequencedTaskRunner;
 struct OnTaskRunnerDeleter;
-
 }  // namespace base
 
 namespace tor {
@@ -26,7 +24,7 @@ namespace tor {
 FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlCookie);
 FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlPort);
 
-class TorFileWatcher : public base::DeleteSoonHelper<TorFileWatcher> {
+class TorFileWatcher {
  public:
   using WatchCallback = base::OnceCallback<
       void(bool success, std::vector<uint8_t> cookie, int port)>;
@@ -36,8 +34,6 @@ class TorFileWatcher : public base::DeleteSoonHelper<TorFileWatcher> {
   virtual ~TorFileWatcher();
 
   void StartWatching(WatchCallback);
-
-  void DeleteSoonImpl() override;
 
  private:
   // friend class TorFileWatcherTest;

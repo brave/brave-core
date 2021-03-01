@@ -24,6 +24,7 @@
 
 namespace base {
 class SequencedTaskRunner;
+struct OnTaskRunnerDeleter;
 }  // namespace base
 
 class MockTorLauncherFactory;
@@ -99,9 +100,10 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
-  std::unique_ptr<tor::TorControl> control_;
+  std::unique_ptr<tor::TorControl, base::OnTaskRunnerDeleter> control_;
 
-  std::unique_ptr<tor::TorFileWatcher> tor_file_watcher_;
+  // Not owned, it will delete itself when callback is ran
+  tor::TorFileWatcher* tor_file_watcher_;
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 

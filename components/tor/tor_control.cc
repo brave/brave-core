@@ -11,8 +11,6 @@
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/io_buffer.h"
 #include "net/base/net_errors.h"
 #include "net/socket/tcp_client_socket.h"
@@ -80,10 +78,11 @@ static std::string escapify(const char* buf, int len) {
 
 }  // namespace
 
-TorControl::TorControl(TorControl::Delegate* delegate)
+TorControl::TorControl(TorControl::Delegate* delegate,
+                       scoped_refptr<base::SequencedTaskRunner> task_runner)
     : running_(false),
       owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
-      io_task_runner_(content::GetIOThreadTaskRunner({})),
+      io_task_runner_(task_runner),
       writing_(false),
       reading_(false),
       read_start_(-1),
@@ -126,10 +125,6 @@ void TorControl::Stop() {
   io_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::Error, weak_ptr_factory_.GetWeakPtr()));
-}
-
-void TorControl::DeleteSoonImpl() {
-  io_task_runner_->DeleteSoon(FROM_HERE, this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -416,11 +411,11 @@ void TorControl::GetVersionDone(
     const std::string& status,
     const std::string& reply) {
   if (error || status != "250" || reply != "OK" || version->empty()) {
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), true, ""));
+    owner_task_runner_->PostTask(FROM_HERE,
+                                 base::BindOnce(std::move(callback), true, ""));
     return;
   }
-  content::GetUIThreadTaskRunner({})->PostTask(
+  owner_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(std::move(callback), false, *version));
 }
 
@@ -457,12 +452,12 @@ void TorControl::GetSOCKSListenersDone(
     const std::string& status,
     const std::string& reply) {
   if (error || status != "250" || reply != "OK" || listeners->empty()) {
-    content::GetUIThreadTaskRunner({})->PostTask(
+    owner_task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(std::move(callback), true, std::vector<std::string>()));
     return;
   }
-  content::GetUIThreadTaskRunner({})->PostTask(
+  owner_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(std::move(callback), false, *listeners));
 }
 

@@ -22,7 +22,6 @@
 #include "base/observer_list.h"
 #include "base/process/process.h"
 #include "base/time/time.h"
-#include "brave/base/delete_soon_helper.h"
 
 namespace base {
 class FilePathWatcher;
@@ -37,7 +36,7 @@ class TCPClientSocket;
 
 namespace tor {
 
-class TorControl : public base::DeleteSoonHelper<TorControl> {
+class TorControl {
  public:
   using PerLineCallback =
       base::RepeatingCallback<void(const std::string& status,
@@ -66,13 +65,12 @@ class TorControl : public base::DeleteSoonHelper<TorControl> {
                              const std::string& line) {}
   };
 
-  explicit TorControl(TorControl::Delegate* delegate);
+  TorControl(TorControl::Delegate* delegate,
+             scoped_refptr<base::SequencedTaskRunner> task_runner);
   virtual ~TorControl();
 
   void Start(std::vector<uint8_t> cookie, int port);
   void Stop();
-
-  void DeleteSoonImpl() override;
 
   void Cmd1(const std::string& cmd, CmdCallback callback);
   void Cmd(const std::string& cmd,

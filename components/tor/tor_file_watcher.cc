@@ -59,10 +59,6 @@ void TorFileWatcher::StartWatching(WatchCallback callback) {
                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
-void TorFileWatcher::DeleteSoonImpl() {
-  watch_task_runner_->DeleteSoon(FROM_HERE, this);
-}
-
 void TorFileWatcher::StartWatchingOnTaskRunner() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   if (!watcher_->Watch(watch_dir_path_,
@@ -93,6 +89,8 @@ void TorFileWatcher::OnWatchDirChanged(const base::FilePath& path, bool error) {
 
   if (error) {
     std::move(watch_callback_).Run(false, std::vector<uint8_t>(), int());
+    if (!watch_task_runner_->DeleteSoon(FROM_HERE, this))
+      delete this;
     return;
   }
 
@@ -137,6 +135,8 @@ void TorFileWatcher::Poll() {
   }
 
   std::move(watch_callback_).Run(true, std::move(cookie), port);
+  if (!watch_task_runner_->DeleteSoon(FROM_HERE, this))
+    delete this;
 }
 
 // PollDone()

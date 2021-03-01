@@ -107,34 +107,35 @@ TEST(TorControlTest, ParseKV) {
 
 TEST(TorControlTest, ReadLine) {
   content::BrowserTaskEnvironment task_environment;
+  scoped_refptr<base::SequencedTaskRunner> io_task_runner =
+      content::GetIOThreadTaskRunner({});
 
   MockTorControlDelegate delegate;
-  std::unique_ptr<TorControl> control = std::make_unique<TorControl>(&delegate);
+  std::unique_ptr<TorControl> control =
+      std::make_unique<TorControl>(&delegate, io_task_runner);
 
   EXPECT_CALL(delegate, OnTorControlClosed(false)).Times(2);
-  content::GetIOThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](std::unique_ptr<TorControl> control) {
-                       EXPECT_FALSE(control->ReadLine("500"));
-                       EXPECT_FALSE(control->ReadLine("500/OK"));
-                       std::move(*control.release()).DeleteSoon();
-                     },
-                     std::move(control)));
+  io_task_runner->PostTask(FROM_HERE,
+                           base::BindOnce(
+                               [](std::unique_ptr<TorControl> control) {
+                                 EXPECT_FALSE(control->ReadLine("500"));
+                                 EXPECT_FALSE(control->ReadLine("500/OK"));
+                               },
+                               std::move(control)));
 
-  control.reset(new TorControl(&delegate));
+  control.reset(new TorControl(&delegate, io_task_runner));
   EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
   EXPECT_CALL(delegate, OnTorRawEnd("250", "OK")).Times(1);
-  content::GetIOThreadTaskRunner({})->PostTask(
+  io_task_runner->PostTask(
       FROM_HERE, base::BindOnce(
                      [](std::unique_ptr<TorControl> control) {
                        EXPECT_TRUE(control->ReadLine("250-SOCKSPORT=9050"));
                        EXPECT_TRUE(control->ReadLine("250 OK"));
-                       std::move(*control.release()).DeleteSoon();
                      },
                      std::move(control)));
 
   // Test Async:
-  control.reset(new TorControl(&delegate));
+  control.reset(new TorControl(&delegate, io_task_runner));
   using tor::TorControlEvent;
   EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT WHAT")).Times(1);
   EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS UP")).Times(1);
@@ -153,7 +154,7 @@ TEST(TorControlTest, ReadLine) {
   EXPECT_CALL(delegate,
               OnTorEvent(TorControlEvent::CIRC, "1000 EXTENDED", circ_extra))
       .Times(1);
-  content::GetIOThreadTaskRunner({})->PostTask(
+  io_task_runner->PostTask(
       FROM_HERE,
       base::BindOnce(
           [](std::unique_ptr<TorControl> control) {
@@ -177,7 +178,6 @@ TEST(TorControlTest, ReadLine) {
             EXPECT_TRUE(control->ReadLine("650-EXTRAMAGIC=99"));
             EXPECT_TRUE(control->ReadLine("650 ANONYMITY=high"));
             EXPECT_FALSE(control->async_);
-            std::move(*control.release()).DeleteSoon();
           },
           std::move(control)));
 
