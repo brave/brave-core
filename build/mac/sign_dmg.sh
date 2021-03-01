@@ -20,7 +20,7 @@ set -v
 function check_exit() {
     return=$?;
     if [[ $return -eq 0 ]]; then
-  echo "[INFO] $0 succeded"
+  echo "[INFO] $0 succeeded"
     else
   echo "[ERROR] $0 failed"
     fi
