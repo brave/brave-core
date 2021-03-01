@@ -55,7 +55,7 @@ const code = `
           // "explicitly", instead of accessed dynamically / enumerated through
           // Object.getOwnPropertyNames
           //
-          // getOwnPropertyNames will unfortunately enumerate propery names even when a property's
+          // getOwnPropertyNames will unfortunately enumerate property names even when a property's
           // enumerable flag is false :(
           //
           // this code will admittedly check source around the call site when source is available
