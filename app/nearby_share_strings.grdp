@@ -236,28 +236,28 @@
   <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
     To use Nearby Share, make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook that is not in your contacts, make sure it has Nearby visibility turned on (open the status area by selecting the time, then turn on Nearby visibility) <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_ALL_CONTACTS" desc="Describes the user preference state for the user to be visibile to all their contacts in the Nearby Share feature.">
+  <message name="IDS_NEARBY_VISIBILITY_ALL_CONTACTS" desc="Describes the user preference state for the user to be visibile to all their contacts in the Nearby Share feature.">
     All contacts
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_ALL_CONTACTS_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting is all contacts for the Nearby Share feature." is_accessibility_with_no_ui="true">
+  <message name="IDS_NEARBY_VISIBILITY_ALL_CONTACTS_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting is all contacts for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current visibility setting is all contacts
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_SOME_CONTACTS" desc="Describes the user preference state for the user to be visibile to some selected set of their contacts in the Nearby Share feature.">
+  <message name="IDS_NEARBY_VISIBILITY_SOME_CONTACTS" desc="Describes the user preference state for the user to be visibile to some selected set of their contacts in the Nearby Share feature.">
     Some contacts
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_SOME_CONTACTS_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting is some contacts for the Nearby Share feature." is_accessibility_with_no_ui="true">
+  <message name="IDS_NEARBY_VISIBILITY_SOME_CONTACTS_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting is some contacts for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current visibility setting is some contacts
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_HIDDEN" desc="Describes the user preference state for the user to be visibile to none of their contacts (hidden) in the Nearby Share feature.">
+  <message name="IDS_NEARBY_VISIBILITY_HIDDEN" desc="Describes the user preference state for the user to be visibile to none of their contacts (hidden) in the Nearby Share feature.">
     Hidden
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_HIDDEN_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting hidden for the Nearby Share feature." is_accessibility_with_no_ui="true">
+  <message name="IDS_NEARBY_VISIBILITY_HIDDEN_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting hidden for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current visibility setting is hidden
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_UNKNOWN" desc="Describes the user preference state when the user has not chosen a visibility preference yet in the Nearby Share feature.">
+  <message name="IDS_NEARBY_VISIBILITY_UNKNOWN" desc="Describes the user preference state when the user has not chosen a visibility preference yet in the Nearby Share feature.">
     Choose your visibility
   </message>
-  <message name="IDS_NEARBY_VISIBLITY_UNKNOWN_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting is not set yet for the Nearby Share feature." is_accessibility_with_no_ui="true">
+  <message name="IDS_NEARBY_VISIBILITY_UNKNOWN_DESCRIPTION" desc="Accessibility description that explains to the user that their current visibility setting is not set yet for the Nearby Share feature." is_accessibility_with_no_ui="true">
     Current visibility setting is not set yet
   </message>
 

@@ -109,10 +109,10 @@ class NewTabPage extends React.Component<Props, State> {
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
-  onVisiblityTimerExpired = () => {
+  onVisibilityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
   }
-  visibilityTimer = new VisibilityTimer(this.onVisiblityTimerExpired, 4000)
+  visibilityTimer = new VisibilityTimer(this.onVisibilityTimerExpired, 4000)
 
   componentDidMount () {
     // if a notification is open at component mounting time, close it
