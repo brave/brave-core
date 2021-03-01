@@ -27,7 +27,7 @@ int GetDaemonUsageBucket(base::TimeDelta elapsed_time);
 // Maintains a timer to report in the amount of up time.
 class IpfsP3A : public IpfsServiceObserver {
  public:
-  IpfsP3A(IpfsService* service, content::BrowserContext* contex);
+  IpfsP3A(IpfsService* service, content::BrowserContext* context);
   ~IpfsP3A() override;
   IpfsP3A(const IpfsP3A&) = delete;
   IpfsP3A& operator=(IpfsP3A&) = delete;

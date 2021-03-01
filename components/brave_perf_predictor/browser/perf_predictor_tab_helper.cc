@@ -95,7 +95,7 @@ void PerfPredictorTabHelper::RecordSavings() {
     bandwidth_predictor_->Reset();
     VLOG(3) << "Saving computed bw saving = " << savings;
     if (savings > 0) {
-      // BrowserContenxt can be null in tests
+      // BrowserContext can be null in tests
       auto* browser_context = web_contents()->GetBrowserContext();
       if (!browser_context)
         return;
