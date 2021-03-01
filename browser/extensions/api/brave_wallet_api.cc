@@ -160,7 +160,7 @@ BraveWalletShouldCheckForDappsFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletGetWalletSeedFunction::Run() {
-  // make sure the passed in enryption key is 32 bytes.
+  // make sure the passed in encryption key is 32 bytes.
   std::unique_ptr<brave_wallet::GetWalletSeed::Params> params(
     brave_wallet::GetWalletSeed::Params::Create(*args_));
   if (params->key.size() != 32) {
@@ -183,7 +183,7 @@ BraveWalletGetWalletSeedFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletGetBitGoSeedFunction::Run() {
-  // make sure the passed in enryption key is 32 bytes.
+  // make sure the passed in encryption key is 32 bytes.
   std::unique_ptr<brave_wallet::GetBitGoSeed::Params> params(
     brave_wallet::GetBitGoSeed::Params::Create(*args_));
   if (params->key.size() != 32) {
