@@ -49,7 +49,7 @@ void BraveProfileSyncServiceDelegate::OnDeviceInfoChange() {
   }
 
   // When our device was removed from the sync chain by some other device,
-  // we don't seee it in devices list, we must reset sync in a proper way
+  // we don't see it in devices list, we must reset sync in a proper way
   if (!found_local_device) {
     // We can't call OnSelfDeviceInfoDeleted directly because we are on
     // remove device execution path, so posting task
