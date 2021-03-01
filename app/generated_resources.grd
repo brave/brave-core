@@ -2351,10 +2351,10 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_CREATE_SHORTCUTS_LABEL" desc="Contents of the main label in the create application shortcuts dialog explaining the dialog.">
           Add shortcuts to the following places:
         </message>
-        <message name="IDS_CREATE_SHORTCUTS_DESKTOP_CHKBOX" desc="Label of the checkbox to create an application shortcut on the desktop.">
+        <message name="IDS_CREATE_SHORTCUTS_DESKTOP_CHECKBOX" desc="Label of the checkbox to create an application shortcut on the desktop.">
           Desktop
         </message>
-        <message name="IDS_CREATE_SHORTCUTS_MENU_CHKBOX" desc="Label of the checkbox to create an application shortcut in the system's applications menu.">
+        <message name="IDS_CREATE_SHORTCUTS_MENU_CHECKBOX" desc="Label of the checkbox to create an application shortcut in the system's applications menu.">
           Applications menu
         </message>
         <message name="IDS_CREATE_SHORTCUTS_COMMIT" desc="Title of the button to actually create the shortcuts.">
@@ -2362,13 +2362,13 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="is_win">
-        <message name="IDS_CREATE_SHORTCUTS_START_MENU_CHKBOX" desc="Label of the checkbox to create an application shortcut in the start menu.">
+        <message name="IDS_CREATE_SHORTCUTS_START_MENU_CHECKBOX" desc="Label of the checkbox to create an application shortcut in the start menu.">
           Start menu
         </message>
-        <message name="IDS_CREATE_SHORTCUTS_QUICK_LAUNCH_BAR_CHKBOX" desc="Label of the checkbox to create an application shortcut in quick launch bar.">
+        <message name="IDS_CREATE_SHORTCUTS_QUICK_LAUNCH_BAR_CHECKBOX" desc="Label of the checkbox to create an application shortcut in quick launch bar.">
           Quick launch bar
         </message>
-        <message name="IDS_PIN_TO_TASKBAR_CHKBOX" desc="Label of the checkbox to pin an application shortcut to taskbar.">
+        <message name="IDS_PIN_TO_TASKBAR_CHECKBOX" desc="Label of the checkbox to pin an application shortcut to taskbar.">
           Pin to Taskbar
         </message>
       </if>
@@ -6211,19 +6211,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Thank you for your feedback. You are offline now, and your report will be sent later.
         </message>
         <if expr="not chromeos">
-          <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_CHKBOX" desc="Checkbox for including system information on the bug report dialog box">
+          <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_CHECKBOX" desc="Checkbox for including system information on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph>
           </message>
         </if>
         <if expr="chromeos">
-          <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_AND_METRICS_CHKBOX" desc="Checkbox for including system information and metrics on the bug report dialog box">
+          <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_AND_METRICS_CHECKBOX" desc="Checkbox for including system information and metrics on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK2">&lt;a href="#" id="histograms-url"&gt;</ph>metrics<ph name="END_LINK2">&lt;/a&gt;</ph>
           </message>
-          <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_AND_METRICS_CHKBOX_ARC" desc="Checkbox for including system, metrics and app information on the bug report dialog box on an ARC enabled device">
+          <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_AND_METRICS_CHECKBOX_ARC" desc="Checkbox for including system, metrics and app information on the bug report dialog box on an ARC enabled device">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system and app information<ph name="END_LINK1">&lt;/a&gt;</ph>, and <ph name="BEGIN_LINK2">&lt;a href="#" id="histograms-url"&gt;</ph>metrics<ph name="END_LINK2">&lt;/a&gt;</ph>
           </message>
         </if>
-        <message name="IDS_FEEDBACK_INCLUDE_ASSISTANT_INFORMATION_CHKBOX" desc="Checkbox for including Assistant debug information in the feedback report">
+        <message name="IDS_FEEDBACK_INCLUDE_ASSISTANT_INFORMATION_CHECKBOX" desc="Checkbox for including Assistant debug information in the feedback report">
           Include recent Assistant history via Sherlog. This may include your identity, location, and debug info. <ph name="BEGIN_LINK">&lt;a href="#" id="assistant-logs-info-link"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
         <message name="IDS_FEEDBACK_ATTACH_FILE_NOTE" desc="Text for describing the maximum size for an attached file">
