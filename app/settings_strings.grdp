@@ -3118,7 +3118,7 @@
     <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_PERMISSIONS_NEEDED" desc="Body of error message that could appear during the cleanup of harmful software. Imperative. ">
       Click Try Again, and accept the prompt on your computer
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_CURRENTLY_REMOVING" desc="Description in the Brave Cleanup web page that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is being removed by Brave from the user's computer. Appears under the title 'Removing harmful software...' Actor is Brave; we are indicating that harmful software is currently being removed. 'it' is harmful software. Preferrably, the translation for this string should parallel IDS_CHROME_CLEANUP_PROMPT_EXPLANATION.">
+    <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_CURRENTLY_REMOVING" desc="Description in the Brave Cleanup web page that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is being removed by Brave from the user's computer. Appears under the title 'Removing harmful software...' Actor is Brave; we are indicating that harmful software is currently being removed. 'it' is harmful software. Preferably, the translation for this string should parallel IDS_CHROME_CLEANUP_PROMPT_EXPLANATION.">
       There's harmful software on your computer. Brave is removing it, restoring your settings, and disabling extensions. This will make your browser work normally again.
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_SCAN_ERROR" desc="Body of error message that could appear during the cleanup of harmful software.">
