@@ -33,7 +33,7 @@
     <message name="IDS_IPFS_INSTALL_AND_LAUNCH" desc="Title of brave://ipfs install and launch button.">
       Install and start
     </message>
-    <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
+    <message name="IDS_IPFS_LEARN_MORE" desc="Link to open information about IPFS on brave://ipfs.">
       Learn more about IPFS and privacy
     </message>
     <message name="IDS_IPFS_SERVICE_LAUNCH_RETRY" desc="Retry button text for IPFS interstitial page.">
