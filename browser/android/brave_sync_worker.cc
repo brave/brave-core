@@ -132,7 +132,7 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
 }
 
 // Most of methods below were taken from by PeopleHandler class to
-// bring the logic of enabling / disabling sync from deskop to Android
+// bring the logic of enabling / disabling sync from desktop to Android
 
 void BraveSyncWorker::RequestSync(
     JNIEnv* env,
