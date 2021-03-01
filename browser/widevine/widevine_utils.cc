@@ -91,7 +91,7 @@ void DisableWidevineCdmComponent() {
       BraveDrmTabHelper::kWidevineComponentId);
 }
 
-int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
+int GetWidevinePermissionRequestTextFragmentResourceId(bool for_restart) {
 #if defined(OS_LINUX)
   return for_restart
              ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER

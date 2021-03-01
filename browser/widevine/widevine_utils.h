@@ -24,7 +24,7 @@ void EnableWidevineCdmComponent();
 void DisableWidevineCdmComponent();
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
-int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart);
+int GetWidevinePermissionRequestTextFragmentResourceId(bool for_restart);
 void RequestWidevinePermission(content::WebContents* web_contents,
                                bool for_restart);
 void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry);

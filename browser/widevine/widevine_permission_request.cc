@@ -25,7 +25,7 @@ WidevinePermissionRequest::~WidevinePermissionRequest() = default;
 
 base::string16 WidevinePermissionRequest::GetMessageTextFragment() const {
   return l10n_util::GetStringUTF16(
-      GetWidevinePermissionRequestTextFrangmentResourceId(for_restart_));
+      GetWidevinePermissionRequestTextFragmentResourceId(for_restart_));
 }
 
 GURL WidevinePermissionRequest::GetOrigin() const {
