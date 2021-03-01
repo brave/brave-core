@@ -95,7 +95,7 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
 #if defined(OS_LINUX)
     // Ask restart instead of reloading. Widevine is only usable after
     // restarting on linux. This restart permission request is only shown if
-    // this tab asks widevine explicitely.
+    // this tab asks widevine explicitly.
     if (is_widevine_requested_)
       RequestWidevinePermission(web_contents(), true /* for_restart*/);
 #else

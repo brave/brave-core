@@ -179,7 +179,7 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
   parent()->Layout();
 
   // Only show item added feedback bubble on active browser window if this new
-  // item is explicitely by user gesture.
+  // item is explicitly by user gesture.
   if (user_gesture && browser_ == BrowserList::GetInstance()->GetLastActive()) {
     // If scrollable, scroll to bottom with animation before showing feedback.
     if (IsScrollable()) {

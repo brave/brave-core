@@ -13,7 +13,7 @@ SpeedReader has two methods of deciding whether a page is readable:
 
 * `classifier` that analyses HTML content of a page and applies a pre-trained
   classifier to decide whether the page is article-style, text-oriented
-* `whitelist` that uses adblock-style rules that explciitly whitelist pages that
+* `whitelist` that uses adblock-style rules that explicitly whitelist pages that
   should be distilled
 
 Any page that is readable should then be passed to an instance of `SpeedReader`

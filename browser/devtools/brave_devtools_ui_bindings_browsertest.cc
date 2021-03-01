@@ -40,7 +40,7 @@ IN_PROC_BROWSER_TEST_F(BraveDevToolsUIBindingsBrowserTest, ThemeTest) {
       base::Bind(&BraveDevToolsUIBindingsBrowserTest::GetPreferenceCallback,
                  base::Unretained(this)));
   // Check current devtools' theme is same as native theme when user doesn't
-  // change devtools' theme explicitely.
+  // change devtools' theme explicitly.
   EXPECT_EQ(ui_theme_, "\"dark\"");
 
   dark_mode::SetBraveDarkModeType(
@@ -51,7 +51,7 @@ IN_PROC_BROWSER_TEST_F(BraveDevToolsUIBindingsBrowserTest, ThemeTest) {
   // In devtools, default is used as light.
   EXPECT_EQ(ui_theme_, "\"default\"");
 
-  // When user sets devtools' theme explicitely, respect user's setting.
+  // When user sets devtools' theme explicitly, respect user's setting.
   devtools_ui_bindings->SetPreference("uiTheme", "\"dark\"");
   devtools_ui_bindings->GetPreferences(
       base::Bind(&BraveDevToolsUIBindingsBrowserTest::GetPreferenceCallback,
