@@ -3099,7 +3099,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MAXIMUM" desc="In Device Settings &gt; Displays, the label of the maximum value for the display size slider">
     Large
   </message>
-  <message name="IDS_SETTINGS_DISPLAY_SCREEN" desc="In Device Settings &gt; Displays, the label for the dropdown menu for changing the dispay type.">
+  <message name="IDS_SETTINGS_DISPLAY_SCREEN" desc="In Device Settings &gt; Displays, the label for the dropdown menu for changing the display type.">
     Screen
   </message>
   <message name="IDS_SETTINGS_DISPLAY_SCREEN_EXTENDED" desc="The label for the dropdown menu list item to set the selected screen as extended display.">
