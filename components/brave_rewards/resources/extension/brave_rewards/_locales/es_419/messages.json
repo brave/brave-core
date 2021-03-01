@@ -635,6 +635,22 @@
     "message": "Gana tokens por ver anuncios que respetan la privacidad y apoya a tus sitios y creadores de contenido favoritos de forma automática.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "¿Con qué frecuencia deseas ver anuncios?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(anuncios por hora)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "¿Cuánto apoyo mensual deseas dar a tus creadores favoritos?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(de tus ingresos provenientes de anuncios)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Comenzar a utilizar Recompensas Brave",
     "description": ""
@@ -690,7 +706,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeText": {
-    "message": "Los anuncios privados de Brave te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.",
+    "message": "Los Brave Private Ads te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.",
     "description": ""
   },
   "onboardingPanelAdsHeader": {
@@ -698,7 +714,7 @@
     "description": ""
   },
   "onboardingPanelAdsText": {
-    "message": "Los anuncios privados de Brave se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.",
+    "message": "Los Brave Private Ads se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.",
     "description": ""
   },
   "onboardingPanelScheduleHeader": {
@@ -706,7 +722,7 @@
     "description": ""
   },
   "onboardingPanelScheduleText": {
-    "message": "Recibirás los tokens que ganaste de los anuncios de Brave durante el mes actual el día 5 del mes siguiente.",
+    "message": "Recibirás los tokens que ganaste de los Brave Private Ads durante el mes actual el día 5 del mes siguiente.",
     "description": ""
   },
   "onboardingPanelAcHeader": {
@@ -733,6 +749,14 @@
     "message": "Los tokens pueden utilizarse para otras cosas además de apoyar a creadores. Puedes comprar contenido digital y otros bienes a medida que los comercios se incorporan.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Por último, vamos a establecer la configuración básica.",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Puedes cambiar esto más tarde.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "¡Felicitaciones, has terminado!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Al utilizar Brave Rewards, estás ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "¡Brave Rewards está cambiando a un nuevo sistema en Japón!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Más información",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Usa tus BAP antes del 13 de marzo. Luego de esa fecha, se descontinuarán los BAP.",
+    "description": "Text for BAP deprecation popup"
   }
 }

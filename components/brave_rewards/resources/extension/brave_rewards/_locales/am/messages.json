@@ -635,6 +635,22 @@
     "message": "ግላዊነት ን የሚያከብሩ ማስታወቂያዎች በማየት ማስመሰያዎች ያግኙ እና የሚወዷቸውን ጣቢያዎች እና የ ይዘት ፈጣሪዎች በራስ-ሰር ይደግፉ።",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "ማስታወቂያዎች ምን ያህል ጊዜ ማየት ይፈልጋሉ?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(ማስታወቂያዎች በሰዓት)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "ለሚወዷቸው ፈጣሪዎች ምን ያህል ወርሃዊ ድጋፍ መስጠት ይፈልጋሉ?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(ከራስዎ ማስታወቂያዎች የተገኙ ገቢዎች)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "የ Brave ወሮታዎች ን መጠቀም ይጀምሩ",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "ቶክኖች ፈጣሪዎችን ከመደገፍ ባለፈ ጥቅም ላይ ሊውሉ ይችላሉ። ነጋዴዎች ሲመጡ ዲጂታል ይዘትን እና ሌሎች ሸቀጦችን መግዛት ይችላሉ።",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "በመጨረሻም፣ በመሰረታዊ ቅንብሮች ላይ እናዘጋጅልዎ",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "ይህንን በኋላ መለወጥ ይችላሉ።",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "ዎው፣ ሁላችሁም ተዘጋጅታችኋል!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave Rewards ን በመጠቀም ድሩ ለሁሉም ሰው የተሻለ ቦታ እንዲሆን እየረዱ ነው። እና ያ ግሩም ነው!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "በጃፓን ውስጥ የሚገኙ Brave ወሮታዎች ወደ አዲስ ስርዓት እየተቀየሩ ነው!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "የበለጠ ለመረዳት",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "እባክዎን የራስዎ BAP እስከ ማርች 13 ድረስ ይጠቀሙ። ከዚያ በኋላ ፣ BAP ይቋረጣል።",
+    "description": "Text for BAP deprecation popup"
   }
 }

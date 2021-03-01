@@ -635,6 +635,22 @@
     "message": "Ganhe tokens ao visualizar anúncios que respeitam a sua privacidade e apoie os seus sites preferidos e os criadores de conteúdo automaticamente. ",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Com que frequência visa visualizar anúncios?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(anúncios por hora)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Qual o apoio mensal com que visa presentear os seus criadores preferidos? ",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(a partir dos ganhos com os seus anúncios) ",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Comece a usar o Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Os tokens podem ser usados para além do apoio aos criadores.  Pode comprar conteúdo e outros bens à medida que os comerciantes aderem. ",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Por fim, procedamos às definições das suas configurações básicas ",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Pode alterar isto mais tarde.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Pronto, já está!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Ao usar os Brave Rewards está a ajudar a fazer da net um melhor lugar para todos.  E isso é fantástico!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "No Japão, a Brave Rewards está em processo de mudança para um novo sistema!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Saiba mais",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Por favor, use os seus BAPs antes do dia 13 de março. Após esse dia, os BAPs serão discontinuados. ",
+    "description": "Text for BAP deprecation popup"
   }
 }

@@ -68,6 +68,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="1236081509407217141">Laat VR toe?</translation>
 <translation id="1240347957665416060">Jou toestelnaam</translation>
 <translation id="124116460088058876">Meer tale</translation>
+<translation id="1243027604378859286">Outeur:</translation>
 <translation id="1052005765108026699">Stoor jou kaart, naam en faktureringadres in jou Brave-rekening om volgende keer vinniger te betaal.</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (gesinkroniseer)</translation>
 <translation id="1256368399071562588">&lt;p&gt;As jy probeer om 'n webwerf te besoek en dit maak nie oop nie, kan jy eers probeer om die fout met hierdie foutsporingstappe reg te stel:&lt;/p&gt;
@@ -77,6 +78,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
     &lt;li&gt;Kontak die webwerfeienaar.&lt;/li&gt;
     &lt;/ol&gt;</translation>
 <translation id="1257286744552378071">Jy het jou wagwoord ingevoer op 'n werf wat nie deur jou organisasie bestuur word nie. Om jou rekening te beskerm, moet jy nie jou wagwoord op ander programme en werwe hergebruik nie.</translation>
+<translation id="1259144770381827039">Sien besonderhede.</translation>
 <translation id="1263231323834454256">Leeslys</translation>
 <translation id="1267173982554786072"><ph name="BEGIN_BOLD"/>
         Aktiwiteit wat nie op hierdie toestel sal bly nie:
@@ -307,6 +309,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="2114841414352855701">Geïgnoreer, want dit is deur <ph name="POLICY_NAME"/> geïgnoreer.</translation>
 <translation id="2119505898009119320">Uitgereik aan: <ph name="ORGANIZATION"/> [<ph name="JURISDICTION"/>]</translation>
 <translation id="2119867082804433120">Pons regs onder</translation>
+<translation id="2126374524350484896">PDF-skepper:</translation>
 <translation id="2129079103035905234">Bewegingensors</translation>
 <translation id="2130448033692577677">Die template wat jy gespesifiseer het, kan dalk nie toegepas word die omdat die DnsOverHttpsMode-beleid nie gestel is nie.</translation>
 <translation id="213826338245044447">Mobiele boekmerke</translation>
@@ -320,6 +323,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="2164510882479075877">Kyk of daar 'n tikfout is in <ph name="HOST_NAME"/>.</translation>
 <translation id="2166049586286450108">Volle administrateurtoegang</translation>
 <translation id="2166378884831602661">Hierdie werf kan nie 'n veilige verbinding bied nie</translation>
+<translation id="2168151236314517198">Administrateursbeleid verhoed dat hierdie inhoud gedruk kan word</translation>
 <translation id="2169984857010174799">Kaku2 (Envelope)</translation>
 <translation id="2181821976797666341">Beleide</translation>
 <translation id="2183608646556468874">Foonnommer</translation>
@@ -365,9 +369,9 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="2354430244986887761">Brave Veiligblaai het onlangs <ph name="BEGIN_LINK"/>skadelike programme<ph name="END_LINK"/> op <ph name="SITE"/> gevind.</translation>
 <translation id="2355395290879513365">Aanvallers sal dalk die prente kan sien waarna jy op hierdie werf kyk en jou mislei deur hulle te wysig.</translation>
 <translation id="2356070529366658676">Vra</translation>
+<translation id="2357481397660644965">Jou toestel word deur <ph name="DEVICE_MANAGER"/> bestuur en jou rekening word deur <ph name="ACCOUNT_MANAGER"/> bestuur.</translation>
 <translation id="2359629602545592467">Veelvuldige</translation>
 <translation id="2359808026110333948">Gaan voort</translation>
-<translation id="2360873523816792727">Skakel sinkronisering aan om jou kaarte op al jou toestelle te gebruik.</translation>
 <translation id="2367567093518048410">Vlak</translation>
 <translation id="2380886658946992094">Wetlik</translation>
 <translation id="2384307209577226199">Ondernemingverstek</translation>
@@ -414,6 +418,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="2586657967955657006">Knipbord</translation>
 <translation id="2587730715158995865">Deur <ph name="ARTICLE_PUBLISHER"/>. Lees dit en <ph name="OTHER_ARTICLE_COUNT"/> ander stories.</translation>
 <translation id="2587841377698384444">Gids-API-ID:</translation>
+<translation id="2594318783181750337">Vinnige webaansig:</translation>
 <translation id="2595719060046994702">Hierdie toestel en rekening word nie deur 'n maatskappy of ander organisasie bestuur nie.</translation>
 <translation id="2597378329261239068">Hierdie dokument word deur 'n wagwoord beskerm. Voer asseblief 'n wagwoord in.</translation>
 <translation id="2609632851001447353">Variasies</translation>
@@ -484,7 +489,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="2903493209154104877">Adresse</translation>
 <translation id="290376772003165898">Bladsy is nie in <ph name="LANGUAGE"/> nie?</translation>
 <translation id="2909946352844186028">'n Netwerkverandering is bespeur.</translation>
-<translation id="2910133103376701357">Jou toestel en rekening word deur <ph name="ENROLLMENT_DOMAIN"/> bestuur.</translation>
 <translation id="2911973620368911614">Taakrekening se gebruiker-ID</translation>
 <translation id="2915068235268646559">Omval op <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Maak ander programme toe</translation>
@@ -509,6 +513,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="2989742184762224133">Dubbelkram bo</translation>
 <translation id="2991174974383378012">Deling met webwerwe</translation>
 <translation id="2991571918955627853">Jy kan nie <ph name="SITE"/> nou onmiddellik besoek nie omdat die webwerf HSTS gebruik. Netwerkfoute en -aanvalle is gewoonlik tydelik en daarom sal hierdie bladsy waarskynlik later werk.</translation>
+<translation id="2995517112308048736">Lêergrootte:</translation>
 <translation id="6683975920571472553">Voorstelle deur Brave</translation>
 <translation id="3002501248619246229">Gaan invoerlaaimedia na</translation>
 <translation id="3005723025932146533">Wys die kopie wat gestoor is</translation>
@@ -541,6 +546,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="3145945101586104090">Kon nie antwoord dekodeer nie</translation>
 <translation id="3150653042067488994">Tydelike bedienerfout</translation>
 <translation id="3154506275960390542">Hierdie bladsy bevat 'n vorm wat dalk nie veilig is om in te dien nie. Data wat jy stuur, kan deur ander bekyk word terwyl dit op pad is of kan dalk deur 'n aanvaller gewysig word om die data te verander wat deur die bediener ontvang word.</translation>
+<translation id="315504272643575312">Jou rekening word bestuur deur <ph name="MANAGER"/>.</translation>
 <translation id="3157931365184549694">Stel terug</translation>
 <translation id="3162559335345991374">Die Wi-Fi wat jy gebruik, kan vereis dat jy sy aanmeldbladsy besoek.</translation>
 <translation id="3169472444629675720">Discover</translation>
@@ -581,6 +587,12 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="3338095232262050444">Veilig</translation>
 <translation id="3355823806454867987">Verander instaanbedienerinstellings …</translation>
 <translation id="3360103848165129075">Betalinghanteerdersigblad</translation>
+<translation id="669410734497476819">Brave sal nie die volgende inligting <ph name="BEGIN_EMPHASIS"/>stoor nie<ph name="END_EMPHASIS"/>:
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Jou blaaigeskiedenis
+          <ph name="LIST_ITEM"/>Webkoekies en werfdata
+          <ph name="LIST_ITEM"/>Inligting wat op vorms ingevul is
+        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">Hierdie beleid is outomaties van die opgeskorte <ph name="OLD_POLICY"/>-beleid af gekopieer. Jy moet liewer hierdie beleid gebruik.</translation>
 <translation id="3364869320075768271"><ph name="URL"/> wil jou virtuelerealiteittoestel en -data gebruik</translation>
 <translation id="3366477098757335611">Bekyk kaarte</translation>
@@ -599,7 +611,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="3395827396354264108">Oplaaimetode</translation>
 <translation id="3399952811970034796">Afleweringadres</translation>
 <translation id="3402261774528610252">Die verbinding wat gebruik word om hierdie werf te laai, gebruik TLS 1.0 of TLS 1.1, wat opgeskort is en in die toekoms gedeaktiveer sal word. Nadat dit gedeaktiveer is, sal gebruikers verhinder word om hierdie werf te laai. Die bediener moet TLS 1.2 of nuwer aktiveer.</translation>
-<translation id="3411120537985775570">Jou administrateur blokkeer plak van <ph name="ORIGIN_NAME"/> af na hierdie ligging toe</translation>
 <translation id="3414952576877147120">Grootte:</translation>
 <translation id="25726459489263481">Lêers wat jy oplaai of aanheg, word na Brave Cloud of derde partye gestuur om ontleed te word. Hulle kan byvoorbeeld vir sensitiewe data of wanware geskandeer word.</translation>
 <translation id="3422248202833853650">Probeer opwindende ander programme om berging beskikbaar te maak.</translation>
@@ -626,6 +637,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="3487845404393360112">Laai 4</translation>
 <translation id="3495081129428749620">Vind in bladsy
     <ph name="PAGE_TITLE"/></translation>
+<translation id="350069200438440499">Lêernaam:</translation>
 <translation id="3507936815618196901">Skep 'n 3D-kaart van jou omgewing en spoor kameraposisie na</translation>
 <translation id="3512163584740124171">Hierdie beleid word geïgnoreer omdat 'n ander beleid van dieselfde beleidsgroep 'n hoër prioriteit het.</translation>
 <translation id="3518941727116570328">Hantering van veelvuldige voorwerpe</translation>
@@ -664,16 +676,17 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="1367445511302842209">Dateer Brave Op-knoppie; druk Enter om Brave vanuit jou Brave-instellings op te dateer</translation>
 <translation id="3634530185120165534">Laai 5</translation>
 <translation id="3640766068866876100">Index-4x6-Ext</translation>
+<translation id="3642638418806704195">Program:</translation>
 <translation id="3650584904733503804">Stawing suksesvol</translation>
 <translation id="3655670868607891010">As jy dit gereeld sien, probeer hierdie <ph name="HELP_LINK"/>.</translation>
 <translation id="3658742229777143148">Hersiening</translation>
+<translation id="3664782872746246217">Sleutelwoorde:</translation>
 <translation id="3676592649209844519">Toestel-ID:</translation>
 <translation id="3677008721441257057">Het jy bedoel &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Versoek kon nie onderteken word nie</translation>
 <translation id="3681007416295224113">Sertifikaatinligting</translation>
 <translation id="3701427423622901115">Terugstelling erken.</translation>
 <translation id="3704162925118123524">Die netwerk wat jy gebruik, kan vereis dat jy sy aanmeldbladsy besoek.</translation>
-<translation id="3704609568417268905"><ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Laai tans …</translation>
 <translation id="3709599264800900598">Teks wat jy gekopieer het</translation>
@@ -748,12 +761,11 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="3996311196211510766">Die werf <ph name="ORIGIN"/> het versoek dat 'n oorsprongbeleid
     op alle versoeke daaraan toegepas word, maar hierdie beleid kan nie op die oomblik toegepas word nie.</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{PDF-dokument met {COUNT} bladsy}other{PDF-dokument met {COUNT} bladsye}}</translation>
+<translation id="4023431997072828269">Ander mense sal jou inligting kan sien omdat hierdie vorm ingedien word oor 'n verbinding wat nie heeltemal veilig is nie.</translation>
 <translation id="4030383055268325496">Ontdoen voeg by</translation>
-<translation id="4032320456957708163">Jou blaaier word bestuur deur <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4058922952496707368">Sleutel "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (Envelope)</translation>
-<translation id="4067669230157909013">Skermskoot is hervat.</translation>
 <translation id="4067947977115446013">Voeg geldige adres by</translation>
 <translation id="4072486802667267160">Kon nie jou betaling verwerk nie. Probeer weer.</translation>
 <translation id="4075732493274867456">Die kliënt en bediener steun nie 'n gemeenskaplike SSL-protokolweergawe of kodesuite nie.</translation>
@@ -816,7 +828,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4270541775497538019">Stapelaar 6</translation>
 <translation id="4275830172053184480">Herbegin jou toestel</translation>
 <translation id="4277028893293644418">Stel wagwoord terug</translation>
-<translation id="4279811152705618813">Jou <ph name="DEVICE_TYPE"/> word bestuur deur <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Hierdie kaart is in jou Brave-rekening gestoor}other{Hierdie kaarte is in jou Brave-rekening gestoor}}</translation>
 <translation id="4297502707443874121">Kleinkiekie vir bladsy <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="42981349822642051">Vou uit</translation>
@@ -831,6 +842,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4318566738941496689">Jou toestelnaam en netwerkadres</translation>
 <translation id="4325863107915753736">Kon nie artikel vind nie</translation>
 <translation id="4326324639298822553">Gaan jou vervaldatum na en probeer weer</translation>
+<translation id="4329871760342656885">Beleidontledingfout: <ph name="ERROR"/></translation>
 <translation id="4331519897422864041">Stapelaar 5</translation>
 <translation id="4331708818696583467">Nie veilig nie</translation>
 <translation id="6116812392674177288">Hierdie rekenaar word nie bespeur as een wat deur 'n onderneming bestuur word nie en beleid kan dus net uitbreidings wat in die Brave Webwinkel gehuisves word, outomaties installeer. Die Brave Webwinkel se opdatering-URL is "<ph name="CWS_UPDATE_URL"/>".</translation>
@@ -877,7 +889,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4524805452350978254">Bestuur kaarte</translation>
 <translation id="4542971377163063093">Laai 6</translation>
 <translation id="455113658016510503">A9</translation>
-<translation id="4552089082226364758">Flits</translation>
 <translation id="4558551763791394412">Probeer om jou uitbreidings te deaktiveer.</translation>
 <translation id="4559332380232738994">10x11</translation>
 <translation id="457875822857220463">Aflewering</translation>
@@ -893,6 +904,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4644670975240021822">Omgekeerde volgorde, voorkant na onder</translation>
 <translation id="4646534391647090355">Vat my nou soontoe</translation>
 <translation id="4658638640878098064">Kram links bo</translation>
+<translation id="3812568169637430422">Jy kan nou privaat blaai en ander mense wat hierdie toestel gebruik, sal nie jou aktiwiteit sien nie. Aflaaie, boekmerke en leeslysitems sal egter gestoor word.</translation>
 <translation id="4668929960204016307">,</translation>
 <translation id="4670064810192446073">Virtuele realiteit</translation>
 <translation id="5554243581036241411">Jy sal geen Brave-profiel se inligting in gasmodus sien nie. Jy kan <ph name="LINK_BEGIN"/>aanmeld<ph name="LINK_END"/> om toegang te kry tot jou Brave-rekeninginligting, soos wagwoorde en betaalmetodes.</translation>
@@ -930,7 +942,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4771973620359291008">'n Onbekende fout het voorgekom.</translation>
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Opspringer is geblokkeer}other{# opspringers is geblokkeer}}</translation>
 <translation id="4780366598804516005">Posbus 1</translation>
-<translation id="4780900888022378816">Jou toestel word deur <ph name="ENROLLMENT_DOMAIN"/> bestuur en jou rekening word deur <ph name="ACCOUNT_DOMAIN"/> bestuur.</translation>
 <translation id="4785689107224900852">Skakel oor na hierdie oortjie toe</translation>
 <translation id="4791134497475588553">Geïnstalleerde Linux-programme en wanneer hulle laas gebruik is</translation>
 <translation id="4792686369684665359">Die inligting wat jy op die punt is om in te dien, is nie veilig nie</translation>
@@ -960,6 +971,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">Stoor …</translation>
 <translation id="4913987521957242411">Pons links bo</translation>
+<translation id="4918221908152712722">Installeer <ph name="APP_NAME"/> (geen aflaai word vereis nie)</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="4926049483395192435">Moet gespesifiseer word.</translation>
 <translation id="4926159001844873046"><ph name="SITE"/> sê</translation>
@@ -980,6 +992,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="4989542687859782284">Onbeskikbaar</translation>
 <translation id="4989809363548539747">Hierdie inprop word nie gesteun nie</translation>
 <translation id="4995216769782533993">Bevestig die sekuriteitkode om jou kaartbesonderhede met hierdie werf te deel</translation>
+<translation id="4995474875135717171">Verander:</translation>
 <translation id="3676215163710610678">As dit geaktiveer is, sal Brave 'n kopie van jou kaart op hierdie toestel berg om vorms vinniger in te vul.</translation>
 <translation id="5015510746216210676">Masjiennaam:</translation>
 <translation id="5017554619425969104">Teks wat jy gekopieer het</translation>
@@ -1025,6 +1038,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="5148809049217731050">Voorkant na bo</translation>
 <translation id="515292512908731282">C4 (Envelope)</translation>
 <translation id="5158275234811857234">Omslag</translation>
+<translation id="5161334686036120870">Onderwerp:</translation>
 <translation id="5161506081086828129">Stapelaar 9</translation>
 <translation id="5164798890604758545">Teks is ingetik</translation>
 <translation id="2996889577833788807">Voer die CVC vir <ph name="CREDIT_CARD"/> in. Nadat jy bevestig het, sal kaartbesonderhede vanaf jou Brave-rekening met hierdie werf gedeel word.</translation>
@@ -1055,6 +1069,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="5269999699920406580">Kenmerke wat oral in die stelsel van toepassing is, kan net deur die eienaar gestel word: <ph name="OWNER_EMAIL"/></translation>
 <translation id="5273658854610202413">Waarskuwing: Hierdie beleid is nie saamgevoeg soos in PolicyListMultipleSourceMergeList-beleid gespesifiseer nie omdat dit nie deel is van die woordeboekbeleide wat saamgevoeg kan word nie.</translation>
 <translation id="5283044957620376778">B1</translation>
+<translation id="5284295735376057059">Dokumenteienskappe</translation>
 <translation id="528468243742722775">Einde</translation>
 <translation id="5284909709419567258">Netwerkadresse</translation>
 <translation id="5285570108065881030">Wys alle gestoorde wagwoorde</translation>
@@ -1210,6 +1225,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="5895138241574237353">Herbegin</translation>
 <translation id="5895187275912066135">Uitgereik op</translation>
 <translation id="5901630391730855834">Geel</translation>
+<translation id="5903264686717710770">Titel:</translation>
 <translation id="5905445707201418379">Geblokkeer ingevolge <ph name="ORIGIN"/> se oorsprongbeleid.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (gesinkroniseer)</translation>
 <translation id="5913377024445952699">Skermskoot is onderbreek</translation>
@@ -1258,9 +1274,9 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6047927260846328439">Hierdie inhoud mag jou dalk probeer mislei om sagteware wat persoonlike inligting openbaar, te installeer. <ph name="BEGIN_LINK"/>Wys in elk geval<ph name="END_LINK"/></translation>
 <translation id="6049488691372270142">Bladsylewering</translation>
 <translation id="6051221802930200923">Jy kan nie <ph name="SITE"/> nou onmiddellik besoek nie omdat die webwerf sertifikaatvasspelding gebruik. Netwerkfoute en -aanvalle is gewoonlik tydelik en daarom sal hierdie bladsy waarskynlik later werk.</translation>
+<translation id="6051898664905071243">Aantal bladsye:</translation>
 <translation id="6052284303005792909">•</translation>
 <translation id="6053328359599022071">Deel jou teenwoordigheid?</translation>
-<translation id="6057359309778282021">Jou administrateur blokkeer deling van <ph name="ORIGIN_NAME"/> af na <ph name="VM_NAME"/></translation>
 <translation id="6058977677006700226">Gebruik jou kaarte op al jou toestelle?</translation>
 <translation id="6059925163896151826">USB-toestelle</translation>
 <translation id="6060009363608157444">Ongeldige DnsOverHttps-modus.</translation>
@@ -1281,6 +1297,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6151417162996330722">Die bedienersertifikaat het 'n geldigheidtydperk wat te lank is.</translation>
 <translation id="6157877588268064908">Kies 'n adres om versendingmetodes en -vereistes te sien</translation>
 <translation id="6165508094623778733">Kom meer te wete</translation>
+<translation id="5673623523506565506">Jy kan nou privaat blaai en ander mense wat hierdie toestel gebruik sal nie jou aktiwiteit sien nie. Aflaaie en boekmerke sal egter gestoor word.</translation>
 <translation id="6177128806592000436">Jou verbinding aan hierdie werf is nie veilig nie</translation>
 <translation id="6180316780098470077">Herprobeer-interval</translation>
 <translation id="6196640612572343990">Blokkeer derdeparty-webkoekies</translation>
@@ -1302,18 +1319,13 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="9136010393039243713">Brave-opdatering</translation>
 <translation id="6276112860590028508">Bladsye uit jou leeslys verskyn hier</translation>
 <translation id="7954557091400543500">Stoor jou kaart en faktureringadres in jou Brave-rekening om volgende keer vinniger te betaal.</translation>
-<translation id="293801390522973485">Brave sal nie die volgende inligting <ph name="BEGIN_EMPHASIS"/>stoor nie<ph name="END_EMPHASIS"/>:
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Jou blaaigeskiedenis
-          <ph name="LIST_ITEM"/>Webkoekies en werfdata
-          <ph name="LIST_ITEM"/>Inligting wat op vorms ingevul is
-        <ph name="END_LIST"/></translation>
 <translation id="6280223929691119688">Kan nie by hierdie adres aflewer nie. Kies 'n ander adres.</translation>
 <translation id="6282194474023008486">Poskode</translation>
 <translation id="6289939620939689042">Bladsykleur</translation>
 <translation id="6290238015253830360">Jou voorgestelde artikels verskyn hier</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="5880900081429361525">Brave Assistent in Brave stop tans</translation>
+<translation id="6304463939629872728">Betaal met</translation>
 <translation id="6305205051461490394"><ph name="URL"/> is onbereikbaar.</translation>
 <translation id="6312113039770857350">Webbladsy is nie beskikbaar nie</translation>
 <translation id="6321917430147971392">Gaan jou DNS-instellings na</translation>
@@ -1323,6 +1335,7 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6328786501058569169">Hierdie werf is misleidend</translation>
 <translation id="6337133576188860026">Maak minder as <ph name="SIZE"/> beskikbaar. Sommige werwe sal dalk op jou volgende besoek stadiger laai.</translation>
 <translation id="6337534724793800597">Filtreer beleide volgens naam</translation>
+<translation id="6349101878882523185">Installeer <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Geen}=1{1 wagwoord (vir <ph name="DOMAIN_LIST"/>, gesinkroniseer)}=2{2 wagwoorde (vir <ph name="DOMAIN_LIST"/>, gesinkroniseer)}other{# wagwoorde (vir <ph name="DOMAIN_LIST"/> gesinkroniseer)}}</translation>
 <translation id="6358450015545214790">Wat beteken dit?</translation>
 <translation id="6361757823711327522">B7</translation>
@@ -1336,11 +1349,13 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6389470377220713856">Naam op kaart</translation>
 <translation id="6390200185239044127">Halwe Z-vou</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
+<translation id="6393956493820063117">Administrateurbeleid blokkeer plak van <ph name="ORIGIN_NAME"/> af na hierdie ligging toe</translation>
 <translation id="6401136357288658127">Hierdie beleid is opgeskort. Jy moet liewer die <ph name="NEW_POLICY"/>-beleid gebruik.</translation>
 <translation id="6404511346730675251">Wysig boekmerk</translation>
 <translation id="6406765186087300643">C0 (Envelope)</translation>
 <translation id="9018981925326888629">Jy het sopas jou wagwoord op 'n misleidende werf ingevoer. Brave beveel aan dat jy jou wagwoord nou verander.</translation>
 <translation id="6410264514553301377">Voer die vervaldatum en CVC vir <ph name="CREDIT_CARD"/> in</translation>
+<translation id="548336221977372759">Moenie jou Brave Pay-aanbieding vergeet nie</translation>
 <translation id="6423385022588644828">Gebruik van nou af Touch ID om jou kaarte vinniger te bevestig</translation>
 <translation id="6425092077175753609">Materiaal</translation>
 <translation id="6427730057873428458">Uitvoublad</translation>
@@ -1369,7 +1384,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6529602333819889595">Herdoen uitvee</translation>
 <translation id="6545864417968258051">Bluetooth-opsporing</translation>
 <translation id="6547208576736763147">Dubbelpons links</translation>
-<translation id="6554795675067793129">Jou rekening word bestuur deur <ph name="ENROLLMENT_DOMAIN"/>.</translation>
 <translation id="6556866813142980365">Herdoen</translation>
 <translation id="6569060085658103619">Jy bekyk tans 'n uitbreidingbladsy</translation>
 <translation id="6573200754375280815">Dubbelpons regs</translation>
@@ -1380,7 +1394,6 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6587923378399804057">Skakel wat jy gekopieer het</translation>
 <translation id="6591833882275308647">Jou <ph name="DEVICE_TYPE"/> word nie bestuur nie</translation>
 <translation id="6596325263575161958">Enkripsie-opsies</translation>
-<translation id="6596892391065203054">Jou administrateur blokkeer die druk van hierdie inhoud.</translation>
 <translation id="6604181099783169992">Beweging- of ligsensors</translation>
 <translation id="6609880536175561541">Prc7 (Envelope)</translation>
 <translation id="6612358246767739896">Beskermde inhoud</translation>
@@ -1404,6 +1417,8 @@ Dit sal andersins deur jou privaatheidinstellings geblokkeer word. Dit sal die i
 <translation id="6687335167692595844">Lettertipegrootte versoek</translation>
 <translation id="6689249931105087298">Relatief met swartpuntsaampersing</translation>
 <translation id="5406652219015697259">Brave bied aan om jou kaarte in jou Brave-rekening te stoor omdat jy aangemeld is. Jy kan hierdie gedrag in instellings verander. Die kaarthouernaam kom van jou rekening af.</translation>
+<translation id="6698381487523150993">Geskep:</translation>
+<translation id="6702919718839027939">Bied aan</translation>
 <translation id="6710213216561001401">Vorige</translation>
 <translation id="6710594484020273272">&lt;Tik soekterm in&gt;</translation>
 <translation id="671076103358959139">Inskrywingtoken:</translation>
@@ -1574,12 +1589,10 @@ Bykomende besonderhede:
       &lt;li&gt;Klik &lt;strong&gt;Pas toe&lt;/strong&gt; en klik dan &lt;strong&gt;OK&lt;/strong&gt;
       &lt;li&gt;Besoek die &lt;a href="https://support.google.com/chrome/answer/6098869"&gt;Brave-hulpsentrum&lt;/a&gt; 
 om uit te vind hoe om die sagteware permanent van jou rekenaar te verwyder&lt;/ol&gt;</translation>
-<translation id="7409836189476010449">Laat loop Flash</translation>
 <translation id="741007362987735528">Wide-Format</translation>
 <translation id="7416351320495623771">Bestuur wagwoorde …</translation>
 <translation id="7419106976560586862">Profielpad</translation>
 <translation id="7437289804838430631">Voeg kontakinligting by</translation>
-<translation id="7438976808740265764">Flash Player sal ná Desember 2020 nie meer gesteun word nie.</translation>
 <translation id="7440140511386898319">Verken terwyl jy vanlyn is</translation>
 <translation id="7441627299479586546">Verkeerde beleidonderwerp</translation>
 <translation id="7442725080345379071">Ligoranje</translation>
@@ -1597,6 +1610,7 @@ om uit te vind hoe om die sagteware permanent van jou rekenaar te verwyder&lt;/o
 <translation id="7508255263130623398">Teruggestuurde beleidtoestel-ID is leeg of stem nie met huidige toestel-ID ooreen nie</translation>
 <translation id="7508870219247277067">Avokadogroen</translation>
 <translation id="7511955381719512146">Die Wi-Fi wat jy gebruik, kan vereis dat jy <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> besoek.</translation>
+<translation id="7512685745044087310">Hierdie beleid kan nie op "Waar" gestel wees en verpligtend wees nie en daarom is dit na aanbeveel verander.</translation>
 <translation id="7514365320538308">Laai af</translation>
 <translation id="7518003948725431193">Geen webbladsy is vir die volgende webadres gevind nie: <ph name="URL"/></translation>
 <translation id="7520302887438682816">C8 (Envelope)</translation>
@@ -1715,7 +1729,6 @@ om uit te vind hoe om die sagteware permanent van jou rekenaar te verwyder&lt;/o
 <translation id="7947285636476623132">Gaan jou vervaljaar na en probeer weer</translation>
 <translation id="7951415247503192394">(32 bis)</translation>
 <translation id="7953569069500808819">Randhegting bo</translation>
-<translation id="7954523986259449736">Ander mense sal jou inligting kan sien omdat die werf 'n verbinding gebruik wat nie heeltemal veilig is nie.</translation>
 <translation id="7956713633345437162">Mobiele boekmerke</translation>
 <translation id="7961015016161918242">Nooit</translation>
 <translation id="7966803981046576691">Taakrekeningsoort</translation>
@@ -1723,7 +1736,9 @@ om uit te vind hoe om die sagteware permanent van jou rekenaar te verwyder&lt;/o
 <translation id="7977538094055660992">Uitvoertoestel</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="79859296434321399">Installeer ARCore om verhoogderealiteitinhoud te bekyk</translation>
+<translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Gebind</translation>
+<translation id="7992044431894087211">Skermdeling met <ph name="APPLICATION_TITLE"/> is hervat</translation>
 <translation id="7995512525968007366">Nie gespesifiseer nie</translation>
 <translation id="800218591365569300">Probeer ander oortjies of programme toemaak om berging beskikbaar te maak.</translation>
 <translation id="8004582292198964060">Blaaier</translation>
@@ -1760,6 +1775,7 @@ om uit te vind hoe om die sagteware permanent van jou rekenaar te verwyder&lt;/o
 <translation id="8118489163946903409">Betalingmetode</translation>
 <translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" is nie behoorlik op jou rekenaar of netwerk geïnstalleer nie. Vra jou IT-administrateur om hierdie probleem op te los.</translation>
 <translation id="8131740175452115882">Bevestig</translation>
+<translation id="8148608574971654810">PDF-weergawe:</translation>
 <translation id="8149426793427495338">Jou rekenaar het gaan slaap.</translation>
 <translation id="8150722005171944719">Die lêer by <ph name="URL"/> is nie leesbaar nie. Dit is dalk verwyder, geskuif of lêertoestemmings kan dalk toegang verhinder.</translation>
 <translation id="8157295877370077682">Verlaat werf</translation>
@@ -1818,6 +1834,7 @@ om uit te vind hoe om die sagteware permanent van jou rekenaar te verwyder&lt;/o
 <translation id="8371889962595521444">Gepasmaakte kernsertifikate</translation>
 <translation id="8380941800586852976">Gevaarlik</translation>
 <translation id="8381674639488873545">Hierdie heffings kan eenmalig of herhalend wees en is dalk nie ooglopend nie. <ph name="BEGIN_LINK"/>Wys in elk geval<ph name="END_LINK"/></translation>
+<translation id="8390725133630534698">Administrateurbeleid blokkeer plak van <ph name="ORIGIN_NAME"/> af na <ph name="VM_NAME"/> toe</translation>
 <translation id="8412145213513410671">Omvalle (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">Jy moet dieselfde wagfrase twee keer invoer.</translation>
 <translation id="8416694386774425977">Die netwerkopstelling is ongeldig en kon nie ingevoer word nie.
@@ -1844,7 +1861,6 @@ Bykomende besonderhede:
 <translation id="8507227106804027148">Bevellyn</translation>
 <translation id="8508648098325802031">Search-ikoon</translation>
 <translation id="1426902392270366682">Brave kan jou help om jou Brave-rekening te beskerm en jou wagwoord te verander.</translation>
-<translation id="8525306231823319788">Volskerm</translation>
 <translation id="1215802963054007211">Vee jou blaaigeskiedenis, webkoekies, kasgeheue en meer in Brave-instellings uit</translation>
 <translation id="8533619373899488139">Besoek &lt;strong&gt;chrome://policy&lt;/strong&gt; om die lys geblokkeerde URL'e en ander beleide wat jou stelseladministrateur toepas te sien.</translation>
 <translation id="8541158209346794904">Bluetooth-toestel</translation>
@@ -1875,13 +1891,13 @@ Bykomende besonderhede:
 <translation id="8623885649813806493">Geen passende wagwoorde nie. Wys alle gestoorde wagwoorde.</translation>
 <translation id="8625384913736129811">Stoor hierdie kaart op hierdie toestel</translation>
 <translation id="8627040765059109009">Skermskoot is hervat</translation>
-<translation id="8657078576661269990">Jou administrateur het deling van <ph name="ORIGIN_NAME"/> af na <ph name="VM_NAME_1"/> en <ph name="VM_NAME_2"/> geblokkeer</translation>
 <translation id="8663226718884576429">Bestellingopsomming, <ph name="TOTAL_LABEL"/>, meer besonderhede</translation>
 <translation id="867224526087042813">Handtekening</translation>
 <translation id="8676424191133491403">Geen wagperiode nie</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, antwoord, <ph name="ANSWER"/></translation>
 <translation id="8681531050781943054">Die webbladsy by <ph name="PAGE"/> kon nie gelaai word nie, want:</translation>
 <translation id="8685155993131031756">Prc-16K</translation>
+<translation id="8687429322371626002">Jou toestel en rekening word deur <ph name="MANAGER"/> bestuur.</translation>
 <translation id="8688672835843460752">Beskikbaar</translation>
 <translation id="868922510921656628">Bladsye per stel</translation>
 <translation id="869891660844655955">Vervaldatum</translation>
@@ -1889,12 +1905,15 @@ Bykomende besonderhede:
 <translation id="8703575177326907206">Jou verbinding aan <ph name="DOMAIN"/> is nie geënkripteer nie.</translation>
 <translation id="8705331520020532516">Reeksnommer</translation>
 <translation id="8710842507289500830">Lettertipestyl</translation>
+<translation id="8712637175834984815">Het dit</translation>
 <translation id="8718314106902482036">Betaling is nie voltooi nie</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, soekvoorstel</translation>
 <translation id="8719528812645237045">Veelvuldige pons bo</translation>
 <translation id="8725066075913043281">Probeer weer</translation>
+<translation id="8726549941689275341">Bladsygrootte:</translation>
 <translation id="8730621377337864115">Gedoen</translation>
 <translation id="1769647018144434441">Bestuur Wagwoorde-knoppie; druk Enter om jou wagwoorde in Brave-instellings te bekyk en te bestuur</translation>
+<translation id="8734529307927223492">Jou <ph name="DEVICE_TYPE"/> word bestuur deur <ph name="MANAGER"/></translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, druk Tab en dan Enter om 'n nuwe incognitovenster oop te maak om privaat te blaai</translation>
 <translation id="6326805297893828864">Om 'n veilige verbinding te maak, moet jou horlosie reg gestel wees. Die rede hiervoor is omdat sertifikate wat webwerwe gebruik om hulself te identifiseer, net vir sekere tydperke beskikbaar is. Brave kan nie hierdie sertifikate verifieer nie, omdat jou toestel se horlosie nie reg gestel is nie.</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/> se &lt;abbr id="dnsDefinition"&gt;DNS-adres&lt;/abbr&gt; kon nie gevind word nie. Diagnoseer tans die probleem.</translation>
@@ -1982,6 +2001,8 @@ Bykomende besonderhede:
 <translation id="9101630580131696064">Laai 1</translation>
 <translation id="6373940988468425649"><ph name="SITE"/> gebruik gewoonlik enkripsie om jou inligting te beskerm. Toe Brave hierdie keer aan <ph name="SITE"/> probeer koppel het, het die webwerf ongewone en verkeerde eiebewyse teruggestuur. Dit kan gebeur wanneer 'n aanvaller probeer voorgee om <ph name="SITE"/> te wees, óf wanneer 'n Wi-Fi-aanmeldskerm die verbinding onderbreek het. Jou inligting is steeds veilig, want Brave het die verbinding gestaak voordat enige data uitgeruil is.</translation>
 <translation id="9106062320799175032">Voeg faktureringadres by</translation>
+<translation id="9107467864910557787">Jou blaaier word bestuur deur <ph name="MANAGER"/></translation>
+<translation id="91108059142052966">Administrateursbeleid deaktiveer skermdeling met <ph name="APPLICATION_TITLE"/> wanneer vertroulike inhoud sigbaar is</translation>
 <translation id="9114524666733003316">Bevestig tans kaart …</translation>
 <translation id="3582535072753734287">Hierdie blaaier word nie deur 'n maatskappy of ander organisasie bestuur nie. Aktiwiteit op hierdie toestel kan buite Brave bestuur word. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/></translation>
 <translation id="9119042192571987207">Opgelaai</translation>
@@ -1997,6 +2018,7 @@ Bykomende besonderhede:
 <translation id="9158625974267017556">C6 (Envelope)</translation>
 <translation id="9168814207360376865">Laat werwe toe om te kontroleer of jy betaalmetodes gestoor het</translation>
 <translation id="9169664750068251925">Blokkeer altyd op hierdie werf</translation>
+<translation id="9169931577761441333">Voeg <ph name="APP_NAME"/> by tuisskerm</translation>
 <translation id="9170848237812810038">Ontdoen</translation>
 <translation id="9171296965991013597">Verlaat program?</translation>
 <translation id="9173282814238175921">Een dokument/Nuwe bladsy</translation>
@@ -2017,9 +2039,9 @@ Bykomende besonderhede:
 <translation id="936474030629450166">Super-B</translation>
 <translation id="7486559383537872796">Jy kan toegang tot jou Brave-rekening verloor. Brave beveel aan dat jy jou wagwoord nou verander. Jy sal gevra word om aan te meld.</translation>
 <translation id="939736085109172342">Nuwe vouer</translation>
+<translation id="945522503751344254">Stuur terugvoer</translation>
 <translation id="945855313015696284">Gaan die inligting hieronder na en vee ongeldige kaarte uit</translation>
 <translation id="950736567201356821">Tripelpons bo</translation>
-<translation id="951941430552851965">Jou administrateur het skermskoot onderbreek weens inhoud op jou skerm.</translation>
 <translation id="961663415146723894">Gebind onder</translation>
 <translation id="962484866189421427">Hierdie inhoud kan probeer om misleidende programme te installeer wat voorgee om iets anders te wees of wat data insamel wat gebruik kan word om jou na te spoor. <ph name="BEGIN_LINK"/>Wys in elk geval<ph name="END_LINK"/></translation>
 <translation id="969892804517981540">Amptelike bou</translation>
@@ -2050,8 +2072,6 @@ Bykomende besonderhede:
 <translation id="2378238891085281592">Jy is nou incognito.</translation>
 <translation id="3774752171665127360">Bladsye wat jy in incognito-oortjies bekyk, sal nie in jou blaaier se geskiedenis, webkoekiewinkel of soekgeskiedenis wys nadat jy al jou incognito-oortjies toegemaak het nie. Enige lêers wat jy aflaai of boekmerk, sal gehou word.</translation>
 <translation id="9177896974490719854">Jy is egter nie onsigbaar nie. As jy incognito is, versteek dit nie jou blaaihandelinge vir jou werkgewer, jou internetdiensverskaffer of die webwerwe wat jy besoek nie.</translation>
-<translation id="2227116904818538760">Jy is nou incognito</translation>
-<translation id="2007417459975034427">Jy kan nou privaat blaai en ander mense wat hierdie toestel gebruik sal nie jou aktiwiteit sien nie. Aflaaie en boekmerke sal egter gestoor word.</translation>
 <translation id="6984479912851154518">Verlaat incognito-modus om via 'n eksterne program te betaal. Gaan voort?</translation>
 <translation id="7243899945709472787">&lt;h4&gt;Stap 1: Meld by die portaal aan&lt;/h4&gt;
     &lt;p&gt;Wi-Fi-netwerke in plekke soos kafees of lughawens vereis dat jy aanmeld. Om die aanmeldbladsy te sien, besoek 'n bladsy wat &lt;code&gt;http://&lt;/code&gt; gebruik.&lt;/p&gt;

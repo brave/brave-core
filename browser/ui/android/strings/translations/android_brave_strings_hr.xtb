@@ -79,7 +79,6 @@
 <translation id="2070991379950719711">Počni upotrebljavati uslugu Brave Rewards</translation>
 <translation id="48520986898237073">Nastavi na novčanik</translation>
 <translation id="3570367516044491911">Postavi kao zadani preglednik</translation>
-<translation id="7493053924837150477">Odaberite preglednik Brave na popisu i dodirnite Uvijek</translation>
 <translation id="3546439402724649282">Preglednik je Brave postavljen kao vaš zadani preglednik.</translation>
 <translation id="8389661903259423907">Već ste postavili svoj zadani preglednik. Možete promijeniti zadani preglednik u postavkama svoje aplikacije.</translation>
 <translation id="7091885296442320770">Preglednik je Brave iznimno brz</translation>
@@ -236,6 +235,10 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="8712637175834984815">Shvaćam</translation>
 <translation id="4394049700291259645">Onemogući</translation>
 <translation id="8446884382197647889">Saznajte više</translation>
+<translation id="2514300153301737214">Otkrili smo da ste omogući značajku Brave Sync međutim sinkronizacija je vašeg sustava isključena i ne dopušta pregledniku Brave sinkroniziranje. Pritisnite za otvaranje postavki</translation>
+<translation id="7173114856073700355">Otvorite Postavke</translation>
+<translation id="6965382102122355670">U redu</translation>
+<translation id="4450893287417543264">Ne prikazuj ponovno</translation>
 <translation id="597993392929850353">Licenca Brave</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="6199596294742117349">Ovo je privatna kartica</translation>
@@ -343,9 +346,15 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="5516010970279932133">Prikaži predložena mrežna mjesta u stavci za samostalno ispunjavanje</translation>
 <translation id="5370478469168390143">Spremi podatke na mreži</translation>
 <translation id="1118508688433541158">Pregledavajte brže i blokirajte oglase u pregledniku Brave</translation>
-<translation id="915835519491851291">Upravo ste blokirali neke elemente za praćenje i oglase</translation>
+<translation id="6589609065569680305">Elementi za praćenje i oglasi blokirani su na ovoj stranici.</translation>
+<translation id="1283922192221545319">Značajka Brave Shields upravo je zaštitila vašu privatnost.</translation>
 <translation id="3286927551967858325">Bacite pogled</translation>
-<translation id="2929661208078053609">Odlično!</translation>
+<translation id="6227291358910554399">Oglasi su blokirani tijekom gledanja videozapisa na ovom mrežnom mjestu.</translation>
+<translation id="7802980684512102010">Videozapisima bez oglasa troši se manje podataka.</translation>
+<translation id="2046475855484346614">Više od 10 elementa za praćenje i oglasa blokirano je na ovoj stranici.</translation>
+<translation id="5806208250835099572">Značajkom Brave Shields štiti se vaša privatnost na internetu na svakom mrežnom mjestu.</translation>
+<translation id="5617673581653540121">Vaša je veza sada šifrirana.</translation>
+<translation id="4055107796760496928">Ako je dostupno, preglednikom Brave prebacujete se automatski na sigurnu vezu.</translation>
 <translation id="4776948189086901857">Preglednik Brave funkcionira svugdje</translation>
 <translation id="1606322780901645965">Preuzmite preglednik Brave s mrežnog mjesta brave.com na svoj laptop ili tablet za ostvarivanje brže i privatnije mreže</translation>
 <translation id="8374242949413616101">Zaštita privatnosti</translation>
@@ -437,7 +446,7 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="8804164990146287819">Pravilnik o zaštiti privatnosti</translation>
 <translation id="6318696841371191107">Obavi kratkotrajni demonstracijski pregled</translation>
 <translation id="7930505144430343145">Dobro došli u uslugu Brave Rewards!</translation>
-<translation id="3477340970981564961">Putem privatnih Brave Ads dobivate tokene za pružanje podrške autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.</translation>
+<translation id="3477340970981564961">Putem Brave Private Ads dobivate tokene za pružanje podrške autorima sadržaja za razliku od tradicionalnih oglasa, a istovremeno vaši osobni podatci ostaju privatni.</translation>
 <translation id="6973095375773523904">Gdje se pojavljuju oglasi?</translation>
 <translation id="7556325460112047619">Privatni Brave Ads pojavljuju se kao normalna obavijest. U postavkama možete odrediti koliko se često prikazuju ovi oglasi.</translation>
 <translation id="5816125157889950051">Kada primate nagrade</translation>
@@ -456,7 +465,7 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="3895246934788932488">Uporabom usluge Brave Rewards štitite svoju privatnost i doprinosite stvaranju boljeg okruženja na mreži za sve. A to’ je izvrsno!</translation>
 <translation id="5705882733397021510">Idi natrag</translation>
 <translation id="5140321319944305531">Obavimo kratkotrajni demonstracijski pregled</translation>
-<translation id="3808131693704413134">Nakon što primite svoju prvu isplatu za oglase možete se vratiti i dati napojnicu ovom autoru!</translation>
+<translation id="2434574859640694129">Nakon što primite svoju prvu isplatu za oglase možete se vratiti i dati napojnicu ovom autoru!</translation>
 <translation id="207242986925259074">Kratkotrajno razgledavanje radi podsjećanja</translation>
 <translation id="8342862030112839977">Vaša se 1. isplata za nagrade isporučuje do:</translation>
 <translation id="3769645103175790584">Tijekom pregledavanja, zaradite tokene i nagradite autore za izvrstan sadržaj. <ph name="QUICK_TOUR"/>.</translation>
@@ -482,4 +491,16 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="6478996494082389936">privatna analitika proizvoda.</translation>
 <translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
 <translation id="8622329973403382303">Krenite u kratki obilazak kako biste razjasnili kako se ulazi u povijest kao zvijezda Rewards!</translation>
+<translation id="8401711613788729448">Otvori sve poveznice preglednikom Brave radi zaštite privatnosti</translation>
+<translation id="3184805785843994538">Značajkom Brave Shields blokiraju se elementi za praćenje, oglasi, štedi podatkovni promet kao i vrijeme na svakom mrežnom mjestu koje posjetite.</translation>
+<translation id="8722651357687610395">Postavi preglednik Brave kao zadan</translation>
+<translation id="3479552764303398839">Ne sada</translation>
+<translation id="6232491755501685494">Značajka Brave Rewards u Japanu prelazi na novi sustav!</translation>
+<translation id="7444515017164572362">Od 13. veljače nećete moći upotrebljavati svoje BAP. Kada
+        nadogradite na novi sustav u travnju, krećete uz uporabu novih tokena!</translation>
+<translation id="8587285254008006694">Kao dijelom prijenosa značajke su davanje napojnice i doprinosa u
+        pregledniku privremeno nedostupne od 13. ožujka 
+        i vaše je raspoloživo stanje BAP 0.0 dok ne ažurirate na novi sustav 
+        u travnju. Jednom kada započnete upotrebljavati novi sustav, krećete uz uporabu novih
+        tokena!</translation>
 </translationbundle>

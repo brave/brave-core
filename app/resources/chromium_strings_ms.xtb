@@ -2,14 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
 <translation id="1065672644894730302">Pilihan anda tidak dapat dibaca. Beberapa ciri mungkin tidak tersedia dan perubahan terhadap pilihan tidak akan disimpan.</translation>
-<translation id="8488151306313572776">Untuk memisahkan penyemakan imbas peribadi dan <ph name="NEW_USER"/>, buat profil baharu pada Brave</translation>
 <translation id="2796517443093885402">Brave dapat membantu untuk memastikan anda selamat daripada pelanggaran data, sambungan tidak elok dan pelbagai lagi</translation>
 <translation id="5918095577778020936">Brave mahu mengeksport kata laluan anda. Taip kata laluan Windows anda untuk membenarkannya.</translation>
 <translation id="5468853758063275923">Brave ialah penyemak imbas lalai anda</translation>
 <translation id="8522292744959221145">Untuk menyemak sama ada kata laluan anda selamat daripada pelanggaran data dan isu keselamatan lain, <ph name="BEGIN_LINK"/>log masuk ke Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Mengenai Brave</translation>
 <translation id="4798342026247191171">Sediakan profil Brave baharu anda</translation>
-<translation id="5893502481331584971">Tanya apabila Brave dibuka</translation>
 <translation id="113959764510199339">Brave sedang cuba memaparkan kata laluan.</translation>
 <translation id="8132634101975074716">Anda log masuk ke Brave!</translation>
 <translation id="7370605478942575409">Untuk menggunakan Rosetta untuk memainkan media yang dilindungi, anda mesti memulakan semula Brave.</translation>
@@ -25,6 +23,8 @@
 <translation id="1775322105159056176">Brave tidak dapat menentukan atau menetapkan penyemak imbas lalai</translation>
 <translation id="9220324636239049437">Tindakan ini akan memadamkan 1 item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Untuk menyemak sama ada kata laluan anda yang lain selamat daripada pelanggaran data dan isu keselamatan lain, <ph name="BEGIN_LINK"/>log masuk ke Brave<ph name="END_LINK"/>.</translation>
+<translation id="796822898986482154">Anda boleh mengurus akaun ini dan Akaun Brave lain yang telah ditambah untuk <ph name="USER_NAME"/> dari satu tempat dalam <ph name="LINK_BEGIN"/>Tetapan<ph name="LINK_END"/>.
+          Kebenaran yang telah anda berikan kepada laman web dalam penyemak imbas Brave dan apl daripada Google Play boleh digunakan pada semua akaun.</translation>
 <translation id="8745514854244955877">Brave - Log Masuk Rangkaian - <ph name="PAGE_TITLE"/></translation>
 <translation id="162629503687514352">OS Brave tidak dapat menyegerakkan kata laluan anda.</translation>
 <translation id="5659384504794665581">Jika anda berkongsi komputer, rakan dan keluarga boleh menyemak imbas secara berasingan dan menyediakan Brave sebagaimana yang mereka mahukan.</translation>
@@ -38,16 +38,22 @@
 <translation id="9026991721384951619">OS Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
 <translation id="7798069806040634998">Brave memerlukan akses storan untuk memuat turun fail</translation>
 <translation id="8447483940522230788">Pembantu Brave</translation>
+<translation id="7933006624150961626">Untuk mengakses bahan Brave anda pada semua peranti anda, log masuk supaya anda boleh menghidupkan penyegerakan.</translation>
+<translation id="7291143854620707672">Sebarang data Brave yang dijana semasa penggunaan profil ini (seperti pembuatan penanda halaman, sejarah, kata laluan dan tetapan lain) boleh dialih keluar oleh pentadbir profil kerja. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Chrome OS perlu dimulakan semula untuk melaksanakan kemas kini.</translation>
 <translation id="3913823837305937258">Komputer ini akan berhenti menerima kemas kini Brave kerana perkakasan komputer ini tidak lagi disokong.</translation>
 <translation id="7387051847644272380">Ralat sistem pengendalian berlaku semasa pemasangan. Sila muat turun Brave semula.</translation>
+<translation id="2648689842065142443">Jika anda berkongsi peranti, rakan dan keluarga boleh menyemak imbas secara terpisah dan menyediakan Brave sebagaimana yang mereka ingini</translation>
+<translation id="3749489756681759571">Brave mengesyorkan agar sambungan ini dilumpuhkan kerana tidak memenuhi standard Penyemakan Imbas Selamat Dipertingkat pada masa ini.</translation>
 <translation id="6791166902140255175">Tab Brave</translation>
 <translation id="8372880274820509128">Untuk keselamatan tambahan, Brave akan menyulitkan data anda.</translation>
 <translation id="2770231113462710648">Tukar penyemak imbas lalai kepada:</translation>
 <translation id="2799223571221894425">Lancarkan semula</translation>
+<translation id="6811506454451584223">Pisahkan profil Brave?</translation>
 <translation id="777113543093865885">Alih keluar daripada Brave...</translation>
 <translation id="2885378588091291677">Pengurus Tugas</translation>
 <translation id="2176825726964012531">Mengenai &amp;Brave</translation>
+<translation id="245659736593643560">OS Brave menjadi kenyataan dengan <ph name="BEGIN_LINK_CROS_OSS"/>perisian sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan, sebagaimana <ph name="BEGIN_LINK_LINUX_OSS"/>persekitaran pembangunan Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="8208853227947884571">Brave telah dikemas kini</translation>
 <translation id="2953892977076487219">Brave cuba mengedit kata laluan.</translation>
 <translation id="8755404239607088219">Brave tidak dapat menyemak kata laluan anda. Cuba lagi nanti.</translation>
@@ -65,18 +71,23 @@
 <translation id="2339258256897053758">Kunci API Brave tiada. Sesetengah fungsi Brave akan dilumpuhkan.</translation>
 <translation id="8926637909431618259">Terus menjalankan apl latar belakang apabila Brave ditutup</translation>
 <translation id="4480040274068703980">OS Brave tidak dapat menyegerakkan data anda disebabkan oleh ralat melog masuk.</translation>
+<translation id="2711887072399498551">Profil Brave dengan akaun ini telah pun wujud</translation>
+<translation id="2297290224191497273">Tukar kepada profil Brave yang sedia ada?</translation>
+<translation id="2450003541323895471">Dengan profil Brave anda dapat mengasingkan semua bahan Brave anda. Buat profil untuk rakan dan keluarga atau asingkan antara bahan kerja dengan bahan untuk keseronokan.</translation>
 <translation id="9216183508558772570">Brave akan memberitahu anda apabila anda log masuk menggunakan kata laluan yang terjejas</translation>
 <translation id="5853262807109651878">Tindakan ini akan memadamkan <ph name="ITEMS_COUNT"/> item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="8703492925273919597">Sila tutup semua tetingkap Brave dan cuba lagi.</translation>
 <translation id="1384923383737428730">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut, memulihkan tetapan anda dan melumpuhkan sambungan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
 <translation id="7029305463989165490">Untuk menghantar nombor daripada <ph name="ORIGIN"/> ke telefon Android anda, log masuk ke Brave pada kedua-dua peranti.</translation>
 <translation id="4304059894777924102">Brave tidak dapat menyemak kata laluan anda. Cuba periksa sambungan Internet anda.</translation>
+<translation id="2588634262982826227">OS Brave boleh memulihkan apl &amp; halaman anda pada bila-bila masa selepas but semula tanpa bertanya setiap kali.</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
 <translation id="7453070689008684791">Brave akan mengakses Drive anda untuk membuat cadangan dalam bar alamat</translation>
 <translation id="2106568569080763501">Brave membolehkan anda mengklik nombor telefon pada web dan menghubunginya dengan Skype!</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="6315734375101223238">Sesuaikan dan kawal Brave. Perhatian anda diperlukan - klik untuk mendapatkan butiran.</translation>
 <translation id="7130675370997202556">Klik nama anda untuk membuka Brave dan mula menyemak imbas.</translation>
+<translation id="4920958997042285125"><ph name="EXISTING_USER"/> telah pun dilog masuk ke profil Brave ini. Untuk menjadikan penyemakan imbas anda terpisah, Brave boleh membuat profil anda sendiri untuk anda.</translation>
 <translation id="8090497651549769448">Brave cuba menyalin kata laluan. Taip kata laluan Windows anda untuk membenarkan penyalinan.</translation>
 <translation id="6056473803837713617">Bantu jadikan Brave lebih baik dengan melaporkan <ph name="BEGIN_LINK"/>tetapan semasa<ph name="END_LINK"/></translation>
 <translation id="4050175100176540509">Peningkatan keselamatan penting dan ciri baharu tersedia dalam versi terkini.</translation>
@@ -84,12 +95,15 @@
 <translation id="2871190378186459992">Temui apl, permainan, sambungan dan tema yang hebat untuk Brave.</translation>
 <translation id="5757460455745382269">Bahasa ini digunakan untuk memaparkan UI Brave</translation>
 <translation id="1853997773668795891">Paut data Brave anda ke akaun ini?</translation>
+<translation id="8923080813984421771"><ph name="MANAGER"/> menghendaki anda membaca dan menerima Syarat Perkhidmatan berikut sebelum menggunakan peranti ini. Syarat ini tidak memperluas, mengubah suai atau mengehadkan Syarat OS Brave.</translation>
 <translation id="3262506503470845422">Dapatkan bantuan berkenaan Brave</translation>
 <translation id="7691786510374174420">Pemasangan gagal disebabkan ralat yang tidak dinyatakan. Jika Brave sedang dijalankan, sila tutup dan cuba semula.</translation>
 <translation id="9183662282810237335">Keluar daripada Brave juga?</translation>
 <translation id="4065288863231444640">Benarkan Brave Dijalankan dalam Latar Belakang</translation>
 <translation id="8148611988012584308">Sesuaikan dan kawal Brave</translation>
+<translation id="7084397798469173252">Selamat datang ke Brave; tetingkap penyemak imbas baharu dibuka</translation>
 <translation id="2633397153656205379">Brave tidak dikemas kini, kesilapan telah berlaku. <ph name="BEGIN_LINK"/>Selesaikan masalah kemas kini dan kegagalan kemas kini Brave.<ph name="END_LINK"/></translation>
+<translation id="3679799810790990472">Teruskan dalam profil Brave baharu?</translation>
 <translation id="4567424176335768812">Anda telah log masuk sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sekarang anda boleh mengakses penanda halaman, sejarah dan tetapan anda yang lain pada semua peranti yang anda gunakan untuk log masuk.</translation>
 <translation id="300669147395456190">Apl Brave</translation>
 <translation id="8142245354207161805">Nampaknya profil digunakan oleh proses Brave lain (<ph name="PROCESS_ID"/>) pada komputer lain (<ph name="HOST_NAME"/>). Brave telah mengunci profil supaya profil tidak rosak. Jika anda pasti tiada proses lain yang menggunakan profil ini, anda boleh membuka profil dan melancarkan semula Brave.</translation>
@@ -100,12 +114,11 @@
 <translation id="7914115000169617076">Kemas kini hampir selesai! Lancarkan semula Brave untuk menyelesaikan kemas kini. Tetingkap inkognito tidak dapat dibuka semula.</translation>
 <translation id="4823369970559443694">Brave tidak dapat menyemak kata laluan anda. Cuba lagi selepas 24 jam atau <ph name="BEGIN_LINK"/>semak kata laluan dalam Akaun Brave anda<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Ini menggunakan penyemak ejaan yang sama seperti yang digunakan dalam carian Brave. Teks yang anda taip dalam penyemak imbas akan dihantar kepada Brave. Anda boleh menukar gelagat ini dalam tetapan pada bila-bila masa.</translation>
+<translation id="2899369907387169108">Gunakan Brave tanpa akaun</translation>
 <translation id="1912973375560256099">Peraturan masuk bagi Brave untuk membolehkan trafik mDNS.</translation>
-<translation id="4856517706731535328">Tindakan ini akan memadamkan data penyemakan imbas anda daripada peranti ini selama-lamanya. Untuk memulihkan data, log masuk ke Brave sebagai</translation>
 <translation id="8797356639448065696">Brave dalam mod latar belakang.</translation>
 <translation id="7406627712452599344">Tetamu boleh menggunakan Brave tanpa meninggalkan apa-apa.</translation>
 <translation id="5952898964075639679">Tambahkan diri anda kepada Brave</translation>
-<translation id="2046045800310405444">Buat profil anda sendiri pada Brave?</translation>
 <translation id="9078804073692109646">Tiada kata laluan yang disimpan. Brave boleh menyemak kata laluan anda yang disimpan.</translation>
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
 <translation id="7708394612738038097">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. <ph name="LEARN_MORE"/></translation>
@@ -130,11 +143,11 @@
 <translation id="5895138241574237353">Mulakan Semula</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Log Masuk Rangkaian</translation>
 <translation id="3598551856834560515">Kemas kini Brave untuk memulakan penyegerakan</translation>
-<translation id="1662639173275167396">OS Brave menjadi kenyataan dengan <ph name="BEGIN_LINK_CROS_OSS"/>perisian sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan, sebagaimana <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="4325083532956419387">Versi OS Brave</translation>
 <translation id="505042220086416644">Terdapat versi baharu Brave yang lebih pantas daripada biasa tersedia.</translation>
 <translation id="9071554113102421877">&amp;Buka dalam Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> telah ditambahkan pada Brave</translation>
+<translation id="608006075545470555">Tambahkan Profil Kerja pada penyemak imbas ini</translation>
 <translation id="2577755334620061182">Brave tidak dapat menyegerakkan data anda disebabkan ralat melog masuk.</translation>
 <translation id="5849446944780602366">Sesuaikan dan kawal Brave. Kemas kini tersedia.</translation>
 <translation id="492209281555538239">Brave akan menyimpan kata laluan ini dalam Akaun Brave anda. Anda tidak perlu mengingati kata laluan tersebut.</translation>
@@ -147,6 +160,7 @@
 <translation id="5019879183386042809">Jadikan Brave penyemak imbas lalai</translation>
 <translation id="428541510811554120">Brave tidak dapat menyemak kemas kini. Cuba periksa sambungan Internet anda.</translation>
 <translation id="7445061995866044926">Log keluar daripada Brave?</translation>
+<translation id="6806912298071949921">Sesuaikan profil Brave anda</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> mungkin berbahaya, jadi Brave telah menyekat fail itu.</translation>
 <translation id="3205074487970075628">Brave menggunakan kamera anda.</translation>
 <translation id="1819119299840995223">Terdapat operasi lain sedang dijalankan pada Brave. Sila cuba sebentar lagi.</translation>
@@ -154,17 +168,21 @@
 <translation id="335632367599648646">Adakah anda pasti mahu menyahpasang Brave?</translation>
 <translation id="6373767849825830651">Brave merupakan penyemak imbas yang mengendalikan laman web dan aplikasi dengan kelajuan sepantas kilat. Brave cepat, stabil dan mudah digunakan. Semak imbas web lebih selamat dengan perlindungan perisian hasad dan pancingan data terbina dalam Brave.</translation>
 <translation id="2644798301485385923">Sistem OS Brave</translation>
+<translation id="1684121725014454063">Selamat datang ke profil Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave akan dimulakan semula dalam 1 saat}other{Brave akan dimulakan semula dalam # saat}}</translation>
 <translation id="2675662665675552980">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
 <translation id="5590013613412457132">Nyahpasang Brave</translation>
+<translation id="8646609321956191980">Setiap profil menyimpan maklumat Brave profil itu sendiri seperti penanda halaman, sejarah, kata laluan dan pelbagai lagi</translation>
 <translation id="2312399718665761438">Untuk membetulkan kesilapan ejaan, Brave menghantar teks yang anda taip dalam medan teks kepada Brave</translation>
 <translation id="3507835409099344374">Pergi ke tetapan pemberitahuan Brave</translation>
+<translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
 <translation id="6676384891291319759">Akses Internet</translation>
 <translation id="1489465648257900784">Profil anda tidak boleh digunakan kerana profil anda dihasilkan dari versi Brave yang lebih baharu.
 
 Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbeza atau gunakan versi Brave yang lebih baharu.</translation>
 <translation id="5450493308072741203">Kemas kini &amp;Brave</translation>
 <translation id="6666624454809779082">Brave telah dipasang untuk semua pengguna pada komputer anda.</translation>
+<translation id="5360050006043219962">Untuk mengakses bahan Brave anda pada semua peranti anda, log masuk, kemudian hidupkan penyegerakan.</translation>
 <translation id="8291513491595858997">Ibu/bapa anda telah mematikan "Kebenaran untuk tapak web, apl dan sambungan" untuk Brave. Tindakan mendayakan <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak dibenarkan.</translation>
 <translation id="8211837073776713955">Brave akan memberitahu anda sekiranya kata laluan anda terjejas</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
@@ -211,6 +229,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8462524920674814187">Untuk mendapatkan kemaskinian Brave yang akan datang, anda memerlukan OS X 10.11 atau yang lebih baharu. Komputer ini menggunakan OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave tidak dapat mengemas kini kepada versi terkini, maka anda terlepas ciri baharu dan penyelesaian keselamatan.</translation>
 <translation id="7573289029918943991">Untuk melihat sama ada peranti anda telah dikemas kini, pergi ke <ph name="LINK_BEGIN"/>Tetapan OS Brave<ph name="LINK_END"/></translation>
+<translation id="6755885556185485672">OS Brave tidak dimatikan dengan betul.</translation>
 <translation id="2925193881330501265">Anda telah log masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sila gunakan akaun yang sama untuk log masuk lagi.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan kedua Brave dan tidak boleh dijadikan penyemak imbas lalai anda.</translation>
 <translation id="4054452651944170004">Sembunyikan dalam menu Brave</translation>
@@ -225,6 +244,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Lancarkan semula Brave dalam masa sehari}other{Lancarkan semula Brave dalam masa # hari}}</translation>
 <translation id="6914496861676471566">Arkib pemasang rosak atau tidak sah. Sila muat turun Brave sekali lagi.</translation>
 <translation id="2097604701283463988">Brave sudah usang</translation>
+<translation id="8550334526674375523">Profil kerja ini terpisah sepenuhnya daripada profil peribadi anda.</translation>
 <translation id="2452889775041290116">Ibu/bapa anda telah mematikan "Kebenaran untuk tapak web, apl dan sambungan" untuk Brave. Tindakan menambah <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak dibenarkan.</translation>
 <translation id="227028348235968071">Brave boleh menyemak kata laluan anda apabila anda log masuk menggunakan Akaun Brave anda</translation>
 <translation id="8121009781989288430">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Hak cipta terpelihara.</translation>
@@ -241,15 +261,17 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8285294305439559616">Brave cuba menunjukkan kata laluan. Taip kata laluan Windows anda untuk membenarkannya.</translation>
 <translation id="6389268239133412586">Tidak dapat mengemas kini Brave</translation>
 <translation id="6368958679917195344">Chrome OS berjaya dilaksanakan dengan adanya <ph name="BEGIN_LINK_CROS_OSS"/>perisian sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan.</translation>
+<translation id="8986207147630327271">Anda menambahkan profil kerja pada penyemak imbas ini dan memberi pentadbir anda kawalan terhadap profil kerja sahaja.</translation>
+<translation id="1156157157416773301">Alihkan akaun ke profil Brave baharu?</translation>
 <translation id="5173820533850252773">Brave sudah usang</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave akan dilancarkan semula dalam masa sejam}other{Brave akan dilancarkan semula dalam masa # jam}}</translation>
+<translation id="3867851085410947377">Jika anda mempunyai berbilang Akaun Brave, anda boleh menambahkan akaun tersebut pada <ph name="DEVICE_TYPE"/> anda. Akaun anda akan tersedia dalam penyemak imbas Brave dan Gedung Play, serta perkhidmatan seperti Gmail, Drive dan YouTube. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="7863882214613921971">Buka Pautan dalam &amp;tab Brave Baharu</translation>
 <translation id="911206726377975832">Padamkan juga data menyemak imbas anda?</translation>
 <translation id="2444257125841652328">Pentadbir sistem anda telah mengkonfigurasikan Brave agar membuka penyemak imbas alternatif untuk mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="6568793831116033768">Sistem OS Brave</translation>
 <translation id="7977787072794666032">Brave mungkin tidak akan berfungsi dengan betul kerana tidak lagi disokong pada Windows XP atau Windows Vista</translation>
-<translation id="2398566204186296120"><ph name="DOMAIN"/> menghendaki anda membaca dan menerima Syarat Perkhidmatan berikut sebelum menggunakan peranti ini. Syarat ini tidak meluaskan, mengubah suai atau mengehadkan Syarat OS Brave.</translation>
-<translation id="4484434718272972655">Siapakah yang sedang menggunakan Brave?</translation>
 <translation id="8992261409816268381">Pengarang Brave</translation>
 <translation id="6134859571175647580">Amaran: Brave tidak dapat menghalang sambungan daripada merakamkan sejarah penyemakan imbas anda. Untuk melumpuhkan sambungan ini dalam mod inkognito, nyahpilih pilihan ini.</translation>
 <translation id="1448049584457347995">Untuk menjadikan Brave lebih selamat, kami melumpuhkan beberapa sambungan yang tidak disenaraikan dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa pengetahuan anda.</translation>
@@ -260,5 +282,4 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave.}=1{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini}=1{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini}=1{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
-<translation id="8343715364130396793">Gunakan profil berlainan dalam Brave untuk pelayaran kerja dan peribadi, atau untuk individu berbeza yang menggunakan peranti ini</translation>
 </translationbundle>

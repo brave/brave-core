@@ -64,6 +64,7 @@
 <translation id="954001034349395856">すべてのソース</translation>
 <translation id="8890516388109605451">ソース</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>のコンテンツを無効にする</translation>
+<translation id="3189348785087463371">プロモートされました</translation>
 <translation id="1776831331757823105">時刻表示</translation>
 <translation id="4643117005422448078">トップサイト</translation>
 <translation id="7791543448312431591">追加</translation>
@@ -71,6 +72,9 @@
 <translation id="1531133232292396145">ブラウザで、直接Binanceで暗号通貨を取引します。</translation>
 <translation id="2166494527623220386">ブラウザで直接Geminiで暗号通貨を取引しましょう。</translation>
 <translation id="7191394989411626168">カードをオフにすると、現在表示されているカードはすべて非表示になります。ただし、新しいカードが通知される場合があります。</translation>
+<translation id="5655621391922317800">仮想通貨ウォレット</translation>
+<translation id="8820817407110198400">ブックマーク</translation>
+<translation id="1644574205037202324">履歴</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="6248988683584659830">設定の検索</translation>
@@ -333,6 +337,10 @@
 <translation id="1275213816424141989">あとで</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsロックスターとして歴史に名を残すための仕組みについてブラッシュアップしてください！</translation>
+<translation id="3115702351969988294">どれくらいの頻度で広告を見たいですか。</translation>
+<translation id="7532131110478098401">(1時間当たりの広告)</translation>
+<translation id="2951964054390325080">お気に入りのクリエイターに毎月どれだけ寄付したいですか。</translation>
+<translation id="3164498053837913829">(広告収入から)</translation>
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="6318696841371191107">クイックツアーに参加</translation>
 <translation id="2404165674840145940">Brave rewardsでチップを渡す</translation>
@@ -354,6 +362,8 @@
 <translation id="6042317056594735519">チッピングは、あなたが好きなコンテンツやクリエイターを個人的に応援し、サポートする方法の1つです。チッピングしよう！</translation>
 <translation id="7509452925943421624">トークンで何ができますか？</translation>
 <translation id="5876169128756792273">トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。</translation>
+<translation id="1402530520078693620">最後に、基本設定を設定しましょう</translation>
+<translation id="3494356595346329740">これを後で変更できます。</translation>
 <translation id="827315274423079662">やったー、準備完了です！</translation>
 <translation id="8268038362451312235">Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！</translation>
 <translation id="5094577350232361255">について</translation>
@@ -630,14 +640,16 @@
 <translation id="8344084848798035850">今月のこれまでの推定収益</translation>
 <translation id="5235444069025581717">今月のチップと支援実績</translation>
 <translation id="1210965535849006928">報酬を受け取る</translation>
-<translation id="8092889639392847252">スポンサー背景画像を見て、報酬を受け取りましょう</translation>
-<translation id="7914961605852877459">Brave Adsをオンにして、分け前をもらいましょう。また<ph name="LINK_BEGIN"/>スポンサー画像を隠す<ph name="LINK_END"/>ことも選択できます。</translation>
+<translation id="4609518959946843710">このスポンサー背景画像の表示に対する報酬を獲得しましょう。</translation>
+<translation id="5311968438376723685">Braveプライベート広告をオンにして報酬を獲得しましょう。また、<ph name="LINK_BEGIN"/>スポンサー画像を非表示<ph name="LINK_END"/>にすることもできます。</translation>
 <translation id="8568666589217601917">おめでとうございます！</translation>
 <translation id="764235488372037377">Adsから得た報酬はこちらです！</translation>
 <translation id="7091215606170476659">UGPからポイントが付与されました。</translation>
 <translation id="6759185676704303656">この背景画像を見ると、報酬が支払われます。</translation>
 <translation id="1749232564087138444">Brave Rewardsのスポンサー画像に関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/>。</translation>
 <translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
+<translation id="8587285254008006694">この移行の一環として、ブラウザのチップ機能と寄付機能が3月13日から一時的に使用できなくなり、あなたが4月に新しいシステムにアップデートするまであなたのBAP残高は0.0と表示されます。新しいシステムに移行次第、新しいトークンを利用開始できます！</translation>
+<translation id="6232491755501685494">日本でのBrave Rewardsが新システムに移行します！</translation>
 <translation id="3787061634640932557">カードを編集</translation>
 <translation id="4925543565930352284">{{title}}をクリックすることで、 <ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/> および <ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意することとなります。</translation>
 <translation id="5977237145327845546">友人や同僚とプライベートなビデオ通話を開始する。</translation>
@@ -702,7 +714,6 @@
 <translation id="1833248467354516560">ユニット価格</translation>
 <translation id="4763179765154524864">合計の費やした時間</translation>
 <translation id="8851480289992540512">受け取った合計</translation>
-<translation id="5655621391922317800">仮想通貨ウォレット</translation>
 <translation id="616639131065447379">Brave クリプトウォレットへようこそ</translation>
 <translation id="1740464057879304704">クリプトウォレットでは仮想通貨や関連する資産を Brave内で取り扱いできます。クリプトウォレットはETHやBATなどのイーサリアムのトークンやコレクティブに対応しており、Ðのアプリやその他のスマートコントラクトにも対応しています。これらは全てイーサリアムやその他のブロックチェーンシステム—を良くご存知の方や、これから学びたい方向けの機能です。</translation>
 <translation id="4855440621031541830">この使用に関連するすべてのリスクの責任はあなた自身にあり、Brave Softwareがこの使用の結果として被る可能性のある偶発的、または結果的損失を含むいかなる損失についても責任または義務を負わないことを受け入れる場合にのみ、クリプトウォレットを使用してください。</translation>
@@ -714,14 +725,32 @@
 <translation id="763042262431778831">Speedreaderをオフにする</translation>
 <translation id="9020818404803201080">接続されたピア：</translation>
 <translation id="2903493209154104877">住所</translation>
+<translation id="3207122385716480167">報告統計</translation>
+<translation id="2595187693729756455">ノード情報</translation>
 <translation id="5789886980848929155">IPFSノードのステータス</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">ゲートウェイ</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">ローンチ済み</translation>
+<translation id="5201810533706869030">オブジェクト</translation>
+<translation id="8028993641010258682">サイズ</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">パス</translation>
+<translation id="2892680660204660712">ピアID</translation>
+<translation id="7536543993364605970">エージェントバージョン</translation>
+<translation id="3693482323085649439">ノードを実行中</translation>
+<translation id="6315833555896070573">ノードが実行されていません</translation>
 <translation id="1272079795634619415">中止</translation>
+<translation id="5895138241574237353">再起動</translation>
 <translation id="6762417584993757344">インストールされていません</translation>
+<translation id="4159076046325416152">IPFSをインストール中...</translation>
+<translation id="3854747677478661601">ガベージコレクションスイープを実行</translation>
+<translation id="7376842608449050673">ガベージコレクションエラー</translation>
 <translation id="8428368469058794536">IPFSサービス</translation>
+<translation id="6776260067907986254">マイノード</translation>
+<translation id="8523162996646111972">(詳細)</translation>
+<translation id="6121825639998459476">インストールして開始</translation>
+<translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
+<translation id="1886162073868201257">IPFSサービスローンチエラー</translation>
 <translation id="5357895013476183089">IPFSが接続されていません</translation>
 <translation id="1196783328762622576">ローカルノードを使用してIPFSリソースをロードできません</translation>
 <translation id="1141556610026845297">ローカルIPFSノードを使用して要求されたIPFSリソースをロードできませんでした。代わりにパブリックゲートウェイを使用し、今後はパブリックゲートウェイに自動的にフォールバックするには、[続ける]ボタンをクリックします。</translation>
@@ -729,6 +758,20 @@
 <translation id="1974060860693918893">詳細設定</translation>
 <translation id="9096577886148726047">高度な設定を隠す</translation>
 <translation id="7716995370131231171">ローカルノードが起動しなかったか、または現時点で利用可能な接続されたピアがないために、Braveは要求されたIPFSリソースをロードできません。[続ける]を選択すると、ローカルノードの使用に失敗するたびにBraveは自動的にデフォルトのパブリックゲートウェイにフォールバックします。この動作は、Braveの設定でどの時点であっても変更することができます。</translation>
+<translation id="8026038288183400906">IPFS設定</translation>
+<translation id="2058855456574089690">IPFSプリファレンスを設定</translation>
+<translation id="4447758690649023734">ローカルノードを使用</translation>
+<translation id="8148464361648742409">パブリックゲートウェイを使用</translation>
+<translation id="5123478056123923857">IPFS (惑星間ファイルシステム) はP2Pデータストレージおよびデータ配信用のパブリックネットワークです。このプロトコルはHTTP（S）とは異なる仕方でプライバシーが考慮されています。</translation>
+<translation id="5410952114182173389">あなたのコンピューターはパブリックネットワークに寄与しますが、あなたのIPアドレス、およびあなたがリクエストまたは提供するコンテンツが公開される可能性があります。IPFSを介してリクエストするコンテンツはあなたに提供される前に検証されます。</translation>
+<translation id="8664689531113048642">あなたのIPアドレスとあなたがリクエストしているコンテンツを、潜在的な第三者のオブザーバーから保護しますが、パブリックゲートウェイ・オペレーターからは保護しません。ゲートウェイ・オペレーターはゲートウェイを介してあなたに提供されるコンテンツがあなたがリクエストしたコンテンツであることを確保することに責任を負います。また、あなたのコンピューターはパブリックIPFSネットワークに寄与しません。</translation>
+<translation id="3977809385703587108">以下で設定を再度変更できます:</translation>
+<translation id="3340978935015468852">設定</translation>
+<translation id="4148957013307229264">インストール中…</translation>
+<translation id="6057992164469678163">ピアを待っています…</translation>
+<translation id="1902096227388293745">利用可能なピアがありません、再試行中です…(残り<ph name="ATTEMPTS_NUMBER"/>回の試行)</translation>
+<translation id="1675751799495331928">試行回数の上限を超過しました。後ほど再度お試しください。</translation>
+<translation id="4499666752625407848">アップデート中、エラーが発生しました。</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">市場を表示し、crypto.comから暗号通貨を購入してください。</translation>
 <translation id="4292334826913000023">価格を表示</translation>
@@ -740,4 +783,11 @@
 <translation id="5337526542182802976">サポートされているペア</translation>
 <translation id="1164622162816276433">24時間のボリューム</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="3745016858329272300">一般情報</translation>
+<translation id="4045404575593562245">Torコントロールイベント</translation>
+<translation id="216855356675970168">Torバージョン</translation>
+<translation id="2976625104959685176">TorプロセスID</translation>
+<translation id="6951743416068151209">TorプロキシURI</translation>
+<translation id="1671503397662036257">Tor接続ステータス</translation>
+<translation id="6024292492796847324">Tor初期化の進行状況</translation>
 </translationbundle>

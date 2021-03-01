@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Mulai Gunakan Brave Rewards</translation>
 <translation id="48520986898237073">Lanjut ke dompet</translation>
 <translation id="3570367516044491911">Jadikan peramban baku</translation>
-<translation id="7493053924837150477">Pilih Perambah Brave dari daftar dan pilih 'Selalu'</translation>
+<translation id="19715420010996093">Pilih Brave Browser dan ketuk 'Selalu'</translation>
 <translation id="3546439402724649282">Brave sudah diatur sebagai Peramban baku Anda.</translation>
 <translation id="8389661903259423907">Anda sudah mengatur peramban baku. Anda dapat mengubah peramban baku di pengaturan aplikasi Anda.</translation>
 <translation id="7091885296442320770">Brave cepat seperti kilat</translation>
@@ -238,6 +238,10 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="8712637175834984815">Mengerti</translation>
 <translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="8446884382197647889">Pelajari Selengkapnya</translation>
+<translation id="2514300153301737214">Kami mendeteksi bahwa Anda mengaktifkan Brave Sync, namun sinkronisasi sistem Anda dimatikan dan tidak memungkinkan Brave untuk melakukan sinkronisasi. Tekan untuk membuka pengaturan</translation>
+<translation id="7173114856073700355">Buka Setelan</translation>
+<translation id="6965382102122355670">Oke</translation>
+<translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="597993392929850353">Lisensi Brave</translation>
 <translation id="6336451774241870485">Tab pribadi baru</translation>
 <translation id="6199596294742117349">Ini adalah Tab Pribadi</translation>
@@ -345,9 +349,15 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="5516010970279932133">Tampilkan situs rekomendasi di isi otomatis</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
 <translation id="1118508688433541158">Ramban lebih cepat dan blokir iklan dengan Brave</translation>
-<translation id="915835519491851291">Anda baru saja memblokir sejumlah pelacak &amp; iklan.</translation>
+<translation id="6589609065569680305">Pelacak &amp; iklan diblokir di halaman ini.</translation>
+<translation id="1283922192221545319">Brave Shields baru saja melindungi privasi Anda.</translation>
 <translation id="3286927551967858325">Lihat</translation>
-<translation id="2929661208078053609">Bagus!</translation>
+<translation id="6227291358910554399">Iklan diblokir saat menonton video di situs web ini.</translation>
+<translation id="7802980684512102010">Video tanpa iklan menggunakan kuota data lebih sedikit.</translation>
+<translation id="2046475855484346614">10+ pelacak &amp; iklan diblokir di halaman ini.</translation>
+<translation id="5806208250835099572">Brave Shields melindungi privasi daring Anda di setiap situs.</translation>
+<translation id="5617673581653540121">Koneksi Anda sekarang dienkripsi.</translation>
+<translation id="4055107796760496928">Jika tersedia, Brave secara otomatis mengubah koneksi jadi koneksi aman.</translation>
 <translation id="4776948189086901857">Brave bekerja di mana saja</translation>
 <translation id="1606322780901645965">Unduh Brave di brave.com di laptop atau tablet untuk meramban web yang lebih cepat dan privat</translation>
 <translation id="8374242949413616101">Perlindungan privasi</translation>
@@ -458,7 +468,7 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="3895246934788932488">Dengan menggunakan Brave Rewards, Anda melindungi privasi Anda dan membantu membuat web jadi tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="5140321319944305531">Ayo Mengikuti Tur Cepat</translation>
-<translation id="3808131693704413134">Setelah Anda menerima pembayaran iklan pertama Anda, Anda dapat kembali dan memberi tip kepada pencipta konten ini!</translation>
+<translation id="2434574859640694129">Setelah Anda menerima pembayaran iklan pertama kali, Anda dapat kembali dan memberi tip kepada kreator ini!</translation>
 <translation id="207242986925259074">Tur pengingat singkat</translation>
 <translation id="8342862030112839977">Pembayaran imbalan pertama Anda akan diterima pada:</translation>
 <translation id="3769645103175790584">Dapatkan token dan beri imbalan bagi pencipta konten hebat sambil menjelajah. <ph name="QUICK_TOUR"/>.</translation>
@@ -484,4 +494,11 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="6478996494082389936">analitik produk privat.</translation>
 <translation id="5187052478998910855">Perlu penyegaran tentang Reward?</translation>
 <translation id="8622329973403382303">Ikuti tur singkat untuk mempelajari kembali cara menjadi rockstar Reward legendaris!</translation>
+<translation id="8401711613788729448">Buka semua tautan dengan Brave untuk melindungi privasi Anda</translation>
+<translation id="3184805785843994538">Brave Shields memblokir pelacak &amp; iklan, menghemat kuota data, dan menghemat waktu Anda di setiap situs yang Anda kunjungi.</translation>
+<translation id="8722651357687610395">Setel Brave sebagai peramban baku</translation>
+<translation id="3479552764303398839">Jangan sekarang</translation>
+<translation id="6232491755501685494">Brave Rewards di Jepang beralih ke sistem baru!</translation>
+<translation id="7444515017164572362">Mulai 13 Maret, Anda tidak dapat menggunakan BAP. Tapi setelah Anda diperbarui ke sistem baru pada bulan April, Anda akan memulai dengan token baru!</translation>
+<translation id="8587285254008006694">Sebagai bagian dari transisi ini, fitur memberi tip dan kontribusi di peramban Anda sementara tidak tersedia mulai 13 Maret, dan saldo BAP Anda akan menunjukkan 0,0 sampai Anda diperbarui ke sistem baru pada bulan April. Setelah Anda menggunakan sistem baru, Anda akan memulai dengan token baru!</translation>
 </translationbundle>

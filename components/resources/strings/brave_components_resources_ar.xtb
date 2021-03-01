@@ -61,6 +61,7 @@
 <translation id="954001034349395856">جميع المصادر</translation>
 <translation id="8890516388109605451">المصادر</translation>
 <translation id="5158129253322921540">قم بتعطيل المحتوى المُنشأ من قبل <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">تمت ترقيته</translation>
 <translation id="1776831331757823105">الساعة</translation>
 <translation id="4643117005422448078">المواقع الأولى</translation>
 <translation id="7791543448312431591">إضافة</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">تداول العملات المشفرة على Binance مباشرة في متصفحك.</translation>
 <translation id="2166494527623220386">تداول العملات المشفرة على Gemini مباشرةً في متصفحك.</translation>
 <translation id="7191394989411626168">من خلال إيقاف تشغيل البطاقات، سيتم إخفاء جميع البطاقات المرئية حالياً. ومع ذلك، قد يتم إخطارك بالبطاقات الجديدة.</translation>
+<translation id="5655621391922317800">محافظ Crypto Wallets</translation>
+<translation id="8820817407110198400">الإشارات المرجعية</translation>
+<translation id="1644574205037202324">السجل</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
 <translation id="8730621377337864115">تم</translation>
 <translation id="6248988683584659830">إعدادات البحث</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">ربما لاحقاً</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
+<translation id="3115702351969988294">كم مرة تريد مشاهدة الإعلانات؟</translation>
+<translation id="7532131110478098401">(إعلانات في الساعة)</translation>
+<translation id="2951964054390325080">ما مقدار الدعم الشهري الذي تريد تقديمه للمنشئين المفضلين لديك؟</translation>
+<translation id="3164498053837913829">(من أرباح إعلانات)</translation>
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="6318696841371191107">قم بجولة سريعة</translation>
 <translation id="2404165674840145940">قدم إكرامية عبر Brave Rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">الإكرامية هي وسيلة لتشجيع ودعم المحتوى أو المنشئين الذين تحبهم. هيا امنحهم بعضاً منها!</translation>
 <translation id="7509452925943421624">ماذا يمكنك أن تفعل بالعملات الرمزية؟</translation>
 <translation id="5876169128756792273">يمكن استخدام الرموز بخلاف دعم المنشئين. يمكنك شراء محتوى رقمي وسلع أخرى عندما يأتي التجار على متن السفينة.</translation>
+<translation id="1402530520078693620">أخيراً، اسمح لـ’s بأن يساعدك على ضبط الإعدادات الأساسية</translation>
+<translation id="3494356595346329740">يمكنك تغيير هذا لاحقاً.</translation>
 <translation id="827315274423079662">مرحى، أنت ’ جاهز تماماً!</translation>
 <translation id="8268038362451312235">باستخدام Brave Rewards، فأنت تساعد في جعل الويب مكاناً أفضل للجميع. وهذا ’ رائع!</translation>
 <translation id="5094577350232361255">معلومات</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">الأرباح المقدرة لغاية الوقت الحالي من هذا الشهر</translation>
 <translation id="5235444069025581717">إكراميات ومساهمات هذا الشهر</translation>
 <translation id="1210965535849006928">تحصيل مكافآتي</translation>
-<translation id="8092889639392847252">الحصول على أموال لعرض هذه الصورة الدعائية بالخلفية.</translation>
-<translation id="7914961605852877459">قم بتشغيل Brave Ads للمطالبة بحصتك. يمكنك أيضاً أن تختار <ph name="LINK_BEGIN"/> إخفاء الصور الدعائية <ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">اربح مكافآت لمشاهدة صورة الخلفية الدعائية هذه.</translation>
+<translation id="5311968438376723685">قم بتشغيل Brave Private Ads للمطالبة بحصتك. يمكنك أيضاً أن تختار <ph name="LINK_BEGIN"/>إخفاء الصور الدعائية <ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">أ!</translation>
 <translation id="764235488372037377">ها قد وصلتك مكافآتك من Ads</translation>
 <translation id="7091215606170476659">لديك منحة مستودع إنماء المستخدمين من Brave.</translation>
 <translation id="6759185676704303656">’re يُدفع لك لمشاهدة صورة الخلفية هذه.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>أعرف أكثر <ph name="LINK_END"/> عن الصور الدعائية في Brave Rewards.</translation>
 <translation id="6113004497629356998">إخفاء الصور الدعائية</translation>
+<translation id="8587285254008006694">كجزء من هذا الانتقال، ستكون ميزتا الإكرامية والمساهمة غير متاحتين
+          في متصفحك مؤقتاً اعتباراً من 13 مارس، و
+         سيظهر رصيدك في BAP 0.0 حتى تقوم بالتحديث إلى النظام الجديد
+         في أبريل. بمجرد ’ تشغيلك النظام الجديد، ستبدأ ’ باستخدام عملات رمزية
+         جديدة!</translation>
+<translation id="6232491755501685494">برنامج Brave Rewards في اليابان يتحول إلى نظام جديد!</translation>
 <translation id="3787061634640932557">تعديل البطاقات</translation>
 <translation id="4925543565930352284">بالنقر على {{title}} فأنت توافق على <ph name="BEGIN_LINK1"/>شروط الخدمة<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>سياسة الخصوصية<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">ابدأ مكالمة مرئية خاصة مع أصدقائك وزملائك.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">سعر الوحدة</translation>
 <translation id="4763179765154524864">إجمالي ما أُنفق</translation>
 <translation id="8851480289992540512">إجمالي المستلم</translation>
-<translation id="5655621391922317800">محافظ Crypto Wallets</translation>
 <translation id="616639131065447379">أهلاً بك في Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">تتيح لك Crypto Wallets العمل مع العملات المشفرة والأصول ذات الصلة في Brave. تدعم Crypto Wallets رموز Ethereum مثل ETH و BAT بالإضافة إلى المقتنيات، كما تتيح لك العمل مع Ðالتطبيقات والعقود الذكية الأخرى. كل هذا مخصص للأشخاص الذين هم على دراية بـ Ethereum وأنظمة سلسلة الكتل الأخرى — أو في شوقٍ للتعلم.</translation>
 <translation id="4855440621031541830">استخدم Crypto Wallets فقط إذا كنت تقر بأنك وحدك مسؤول عن جميع المخاطر المرتبطة بهذا الاستخدام، وأن Brave Software لا تتحمل أي مسؤولية أو تبعة عن أي خسائر بما في ذلك الخسائر العرضية أو التبعية التي قد تتعرض لها نتيجةً لهذا الاستخدام.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">أوقف قارئ السرعة</translation>
 <translation id="9020818404803201080">الأقران المتصلون:</translation>
 <translation id="2903493209154104877">العناوين</translation>
+<translation id="3207122385716480167">إحصائيات Repo</translation>
+<translation id="2595187693729756455">معلومات العقدة</translation>
 <translation id="5789886980848929155">حالة عقدة IPFS</translation>
 <translation id="6599816589121202398">واجهة برمجة التطبيقات</translation>
 <translation id="1327977588028644528">المدخل</translation>
 <translation id="2551123942222622809">سرب</translation>
-<translation id="3967335629471284781">تم الإطلاق</translation>
+<translation id="5201810533706869030">الأشياء</translation>
+<translation id="8028993641010258682">الحجم</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">المسار</translation>
+<translation id="2892680660204660712">معرف النظير</translation>
+<translation id="7536543993364605970">نسخة الوكيل</translation>
+<translation id="3693482323085649439">العقدة قيد التشغيل</translation>
+<translation id="6315833555896070573">العقدة لا تعمل</translation>
 <translation id="1272079795634619415">إيقاف</translation>
+<translation id="5895138241574237353">إعادة التشغيل</translation>
 <translation id="6762417584993757344">غير مثبت</translation>
+<translation id="4159076046325416152">جاري تثبيت IPFS ...</translation>
+<translation id="3854747677478661601">قم بإجراء عملية مسح لجمع الملفات المهملة</translation>
+<translation id="7376842608449050673">خطأ في جمع البيانات المهملة</translation>
 <translation id="8428368469058794536">خدمة "أي بي إف إس / IPFS"</translation>
+<translation id="6776260067907986254">عقدتي</translation>
+<translation id="8523162996646111972">(تفاصيل)</translation>
+<translation id="6121825639998459476">التثبيت والبدء</translation>
+<translation id="72868071984333667">تعرف على المزيد حول IPFS والخصوصية</translation>
+<translation id="1886162073868201257">خطأ في تشغيل خدمة IPFS</translation>
 <translation id="5357895013476183089">IPFS غير متصل</translation>
 <translation id="1196783328762622576">لا يمكن تحميل موارد IPFS باستخدام العقدة المحلية</translation>
 <translation id="1141556610026845297">فشل في استخدام عقدة IPFS المحلية لتحميل موارد IPFS المطلوبة. انقر فوق زر "متابعة" لاستخدام البوابة العامة بدلاً من ذلك، وللعودة تلقائياً إلى البوابة العامة في المستقبل.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">الإعدادات المتقدّمة</translation>
 <translation id="9096577886148726047">إخفاء الإعدادات المتقدمة</translation>
 <translation id="7716995370131231171">لا يمكن لـ Brave تحميل موارد IPFS المطلوبة إما لأن العقدة المحلية لم تبدأ، أو لأنه لا يوجد أقران متصلون متوفرون في الوقت الحالي. إذا اخترت "Proceed"، فسيعود Brave تلقائياً إلى البوابة العامة الافتراضية عندما يفشل استخدام العقدة المحلية. يمكنك تغيير هذا السلوك في أي وقت في إعدادات Brave.</translation>
+<translation id="8026038288183400906">تفضيل IPFS</translation>
+<translation id="2058855456574089690">قم بإعداد تفضيلات IPFS الخاصة بك</translation>
+<translation id="4447758690649023734">استخدم عقدة محلية</translation>
+<translation id="8148464361648742409">استخدم عنوان بوابة عام</translation>
+<translation id="5123478056123923857">IPFS (نظام الملفات بين الكواكب) هي الشبكة العامة لتخزين وتسليم البيانات من نظير إلى نظير. هذا البروتوكول له اعتبارات خصوصية مختلفة عن HTTP(S).</translation>
+<translation id="5410952114182173389">يساهم جهاز الكمبيوتر الخاص بك في الشبكة العامة، ولكن قد يتم كشف عنوان IP وأي محتوى ’ تطلبه أو تقدمه. يتم التحقق من المحتوى الذي تطلبه عبر IPFS قبل تقديمه إليك.</translation>
+<translation id="8664689531113048642">يحمي عنوان IP الخاص بك والمحتوى ’ الذي تطلبه من مراقبين محتملين تابعين لجهات خارجية، ولكن ليس من مشغل البوابة العام. يعتبر مشغل البوابة مسؤولاً عن ضمان أن المحتوى الذي يتم تقديمه لك عبر البوابة هو المحتوى الذي طلبته. أيضاً، لا يساهم جهاز الكمبيوتر الخاص بك في شبكة IPFS العامة.</translation>
+<translation id="3977809385703587108">يمكنك تغيير تفضيلاتك مرة أخرى في</translation>
+<translation id="3340978935015468852">الإعدادات</translation>
+<translation id="4148957013307229264">جارِ التثبيت ...</translation>
+<translation id="6057992164469678163">في انتظار اتصال النظراء...</translation>
+<translation id="1902096227388293745">لا يوجد نظراء متاحون، جارِ إعادة المحاولة ...(<ph name="ATTEMPTS_NUMBER"/> محاولات متبقية)</translation>
+<translation id="1675751799495331928">لقد تجاوزنا الحد الأقصى للمحاولات، حاول مرة أخرى لاحقاً.</translation>
+<translation id="4499666752625407848">حدث خطأ أثناء التحديث.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">قم باستعراض الأسواق وشراء العملات المشفرة من crypto.com.</translation>
 <translation id="4292334826913000023">عرض السعر</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">الأزواج المدعومة</translation>
 <translation id="1164622162816276433">حجم المعاملات خلال 24 ساعة</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
+<translation id="3745016858329272300">معلومات عامة</translation>
+<translation id="4045404575593562245">أحداث تحكم تور</translation>
+<translation id="216855356675970168">نسخة تور</translation>
+<translation id="2976625104959685176">معرف عملية تور</translation>
+<translation id="6951743416068151209">عنوان URI لوكيل متصفح تور</translation>
+<translation id="1671503397662036257">حالة اتصال تور</translation>
+<translation id="6024292492796847324">التقدم المحرز في تهيئة متصفح تور</translation>
 </translationbundle>

@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Empezar a utilizar Brave Rewards</translation>
 <translation id="48520986898237073">Continuar con el monedero</translation>
 <translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
-<translation id="7493053924837150477">Selecciona el navegador de Brave de la lista y pulsa 'Siempre'.</translation>
+<translation id="19715420010996093">Seleccione Brave Browser y pulse en «Siempre».</translation>
 <translation id="3546439402724649282">Brave ya está configurado como tu navegador predeterminado.</translation>
 <translation id="8389661903259423907">Ya has configurado un navegador predeterminado. Puedes cambiar el navegador predeterminado en la configuración de la aplicación.</translation>
 <translation id="7091885296442320770">Brave es más veloz que un rayo</translation>
@@ -141,7 +141,8 @@ para apoyarlos.</translation>
 <translation id="5727208111992260840">Este creador aún no se ha inscrito para recibir gratificaciones de usuarios de Brave.
         Cualquier propina que envíes permanecerá en tu monedero hasta que esté verificado.</translation>
 <translation id="8918760045046434238">Enviar una propina...</translation>
-<translation id="1978261665418056203">Todavía no hay actividades este mes...</translation>
+<translation id="1978261665418056203">Todavía no hay actividades este
+mes...</translation>
 <translation id="9182287025588539628">Propinas</translation>
 <translation id="7577100371127227294">Propinas Mensuales</translation>
 <translation id="3074127054582480056">Atención</translation>
@@ -169,7 +170,7 @@ para apoyarlos.</translation>
 <translation id="2323069945529668668">¡Uh oh!</translation>
 <translation id="7510166204621526816">El servidor de Brave Rewards no está respondiendo. Lo arreglaremos tan pronto como sea posible.</translation>
 <translation id="7117228822971127758">Por favor, inténtalo de nuevo más tarde</translation>
-<translation id="3068742524072211213">caduca el <ph name="DATE"/></translation>
+<translation id="3068742524072211213">expira el <ph name="DATE"/></translation>
 <translation id="4292832015778676417">ganado de anuncios</translation>
 <translation id="683765328936486920">en YouTube</translation>
 <translation id="8969049974285901797">en Twitch</translation>
@@ -237,6 +238,10 @@ para apoyarlos.</translation>
 <translation id="8712637175834984815">Listo</translation>
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="8446884382197647889">Más información</translation>
+<translation id="2514300153301737214">Hemos detectado que tiene habilitada la sincronización de Brave; sin embargo, la sincronización del sistema está desactivada y no permite que Brave se sincronice. Pulse aquí para abrir la configuración</translation>
+<translation id="7173114856073700355">Abrir Configuración</translation>
+<translation id="6965382102122355670">Aceptar</translation>
+<translation id="4450893287417543264">No volver a mostrar</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
@@ -258,7 +263,7 @@ para apoyarlos.</translation>
 <translation id="8713995420537272453">punto</translation>
 <translation id="2802462801862186499">1000 <ph name="TIP"/></translation>
 <translation id="3215472762156924589">5000 <ph name="TIP"/></translation>
-<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Página Nueva Pestaña</translation>
 <translation id="8522669544471808198">Mostrar imágenes de fondo</translation>
 <translation id="3870475560794762985">Mostrar imágenes patrocinadas</translation>
@@ -344,9 +349,15 @@ para apoyarlos.</translation>
 <translation id="5516010970279932133">Mostrar los sitios sugeridos en autocompletar</translation>
 <translation id="5370478469168390143">Guardar datos en línea</translation>
 <translation id="1118508688433541158">Navega más rápido y bloquea los anuncios con Brave</translation>
-<translation id="915835519491851291">Acabas de bloquear algunos rastreadores y anuncios.</translation>
+<translation id="6589609065569680305">Rastreadores y anuncios bloqueados en esta página.</translation>
+<translation id="1283922192221545319">Brave Shields acaba de proteger su privacidad.</translation>
 <translation id="3286927551967858325">Echa un vistazo</translation>
-<translation id="2929661208078053609">¡Bien!</translation>
+<translation id="6227291358910554399">Los anuncios están bloqueados mientras se visualizan los vídeos en esta página.</translation>
+<translation id="7802980684512102010">Los vídeos sin anuncios consumen menos datos.</translation>
+<translation id="2046475855484346614">Más de 10 rastreadores y anuncios bloqueados en esta página.</translation>
+<translation id="5806208250835099572">Brave Shields protege su privacidad en línea en todos los sitios.</translation>
+<translation id="5617673581653540121">Su conexión está ahora encriptada.</translation>
+<translation id="4055107796760496928">Siempre que esté disponible, Brave se encarga de cambiar a una conexión segura de forma automática.</translation>
 <translation id="4776948189086901857">Brave funciona en todas partes</translation>
 <translation id="1606322780901645965">Descargue Brave en brave.com en su portátil o tableta para tener una web más privada</translation>
 <translation id="8374242949413616101">Protección de privacidad</translation>
@@ -355,7 +366,7 @@ para apoyarlos.</translation>
 <translation id="1685837926613452362">Sin rastreadores ni anuncios, los sitios web utilizan menos datos y batería. Hasta podrías ahorrar dinero en las tarifas de tu operador.</translation>
 <translation id="5440744330377972191">Los sitios web se cargan más deprisa.</translation>
 <translation id="3000738865641747653">Cargar menos datos significa que los sitios web se cargan más rápido en Brave: hasta 8 veces más rápido que otros navegadores.</translation>
-<translation id="8903462729414407077">Obtenga actualizaciones semanales</translation>
+<translation id="8903462729414407077">Obtén actualizaciones semanales</translation>
 <translation id="8029219208182772618">Obtenga información sobre cuáles de los sitios web que visita invaden más la privacidad.\n\nSolo usted puede ver estas estadísticas de privacidad. Ningún dato personal o historial de navegación sale nunca del navegador Brave de su dispositivo.</translation>
 <translation id="6170159749517116894">Activar informes de privacidad</translation>
 <translation id="5966707198760109579">Semana</translation>
@@ -387,7 +398,7 @@ para apoyarlos.</translation>
 <translation id="7801488941710395275">Permite a brave mostrar sus estadísticas de privacidad.</translation>
 <translation id="1763352720905582220">Envía un informe de privacidad semanal</translation>
 <translation id="1811691435325545066">Eliminar todos los datos de informes de privacidad</translation>
-<translation id="8089997572759938512">Restablezca sus informes de privacidad a cero</translation>
+<translation id="8089997572759938512">Restablece tus informes de privacidad a cero</translation>
 <translation id="2718046830255553131">Se han borrado los datos de los informes de privacidad.</translation>
 <translation id="7559243474426790340">Actualizar estado</translation>
 <translation id="8376263745431603066">Habilitar "Modo nocturno" (experimental)</translation>
@@ -424,19 +435,19 @@ para apoyarlos.</translation>
 <translation id="2480674848181564169">No hay suficiente saldo para la conversión</translation>
 <translation id="2215334405220411393">La cantidad mínima a convertir es: <ph name="COIN_BALANCE"/> <ph name="COIN_NAME"/></translation>
 <translation id="6702658079816271889">No se puede conectar</translation>
-<translation id="7742417737698031726">Tarifa</translation>
+<translation id="7742417737698031726">Comisión</translation>
 <translation id="2122225204180056042">Recibirás</translation>
 <translation id="6432284126416751397">Confirmar la conversión</translation>
 <translation id="5137723827757859599">No hay nada aquí todavía en los sitios más importantes.</translation>
 <translation id="3891414008432200754">Precio</translation>
 <translation id="3733576242118819803">Confirma (<ph name="REMAINING_TIME"/>s)</translation>
-<translation id="1627064138060308910">La conversión falló. Inténtalo de nuevo.</translation>
+<translation id="1627064138060308910">La conversión ha fallado. Por favor, inténtalo de nuevo.</translation>
 <translation id="1449790603979388000"><ph name="COUNT"/> <ph name="COUNT_TEXT"/></translation>
 <translation id="7465614181960492526">Gane tokens y retribuya algo</translation>
 <translation id="244362569344671266">Gane tokens por ver Brave Ads privados y apoye a los creadores de contenido automáticamente.</translation>
 <translation id="631124996535890460">Al continuar, acepta las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Política de Privacidad</translation>
-<translation id="6318696841371191107">Haga una visita rápida</translation>
+<translation id="6318696841371191107">Haz una visita rápida</translation>
 <translation id="7930505144430343145">¡Bienvenido/a a Brave Rewards!</translation>
 <translation id="3477340970981564961">Los anuncios privados de Brave te premian con vales que sirven para apoyar a los creadores de contenido. Y a diferencia de los anuncios tradicionales, no tendrás que renunciar a la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
@@ -457,7 +468,7 @@ para apoyarlos.</translation>
 <translation id="3895246934788932488">Al utilizar Brave Rewards, protege su privacidad y ayuda a que la web sea un lugar mejor para todos. ¡Y eso es estupendo!</translation>
 <translation id="5705882733397021510">Volver</translation>
 <translation id="5140321319944305531">Hagamos una visita rápida</translation>
-<translation id="3808131693704413134">Tras recibir su primer pago por anuncios, podrá volver y dar propina a este creador.</translation>
+<translation id="2434574859640694129">Una vez que haya recibido su primer pago por publicidad puede volver y dar una propina a este creador.</translation>
 <translation id="207242986925259074">Visita rápida de repaso</translation>
 <translation id="8342862030112839977">Su primer pago de recompensas llegará antes del:</translation>
 <translation id="3769645103175790584">Gane tokens y recompense a los creadores por ver un gran contenido mientras navega. <ph name="QUICK_TOUR"/>.</translation>
@@ -483,4 +494,11 @@ para apoyarlos.</translation>
 <translation id="6478996494082389936">análisis privados de productos.</translation>
 <translation id="5187052478998910855">¿Necesitas hacer un repaso de los premios?</translation>
 <translation id="8622329973403382303">Haz un recorrido rápido para hacer un repaso de cómo funciona y pasar a la historia como la estrella de los premios.</translation>
+<translation id="8401711613788729448">Abra todos los enlaces con Brave para proteger su privacidad</translation>
+<translation id="3184805785843994538">Brave Shields bloquea los rastreadores y los anuncios, ahorra datos y le permite aprovechar el tiempo en cada sitio que visita.</translation>
+<translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
+<translation id="3479552764303398839">Ahora no</translation>
+<translation id="6232491755501685494">Brave Rewards en Japón cambia de sistema.</translation>
+<translation id="7444515017164572362">A partir del 13 de marzo, ya no podrás usar tu BAP. Pero una vez que actualices al nuevo sistema en abril, ¡podrás volver a empezar con fichas nuevas!</translation>
+<translation id="8587285254008006694">Como parte de esta transición, las funciones de contribución y propinas de tu navegador dejarán de estar disponibles a partir del 13 de marzo, y tu saldo de BAP mostrará 0.0 hasta que hayas actualizado al nuevo sistema en abril. Una vez que uses el nuevo sistema, ¡volverás a comenzar con nuevas fichas!</translation>
 </translationbundle>

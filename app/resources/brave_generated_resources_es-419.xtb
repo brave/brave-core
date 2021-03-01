@@ -14,7 +14,7 @@
 <translation id="984275831282074731">Formas de pago</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
 <translation id="8926389886865778422">No volver a preguntar</translation>
-<translation id="4726634924419692905">Preguntarme cuando un sitio intente instalar Widevine en mi computadora.</translation>
+<translation id="5249433283143453448">Usa el componente Widevine de gestión de derechos digitales (DRM, por sus siglas en inglés) para ver transmisión de video protegida y otro contenido en el navegador.</translation>
 <translation id="6241402707160226266">Ventana privada con Tor</translation>
 <translation id="8762452230727230396">Tor oculta tu dirección IP de los sitios que visitas.</translation>
 <translation id="1369311132025451972">Redirigir automáticamente a sitios .onion</translation>
@@ -50,7 +50,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="5448570825852364919">Página en blanco</translation>
 <translation id="5919424224662539292">Personaliza la imagen de fondo y los widgets que se muestran en la página de la pestaña nueva</translation>
 <translation id="7965178729203412357">Nueva identidad de Tor</translation>
-<translation id="8511502469534942133">Nueva conexión de Tor para este sitio</translation>
+<translation id="6924909138923993900">Nueva conexión de Tor para este sitio</translation>
 <translation id="4734294903299549345">Salir de la ventana privada con Tor</translation>
 <translation id="8612763432858587652">Salir de la ventana privada</translation>
 <translation id="8760415064721320867">Ventana privada con Tor</translation>
@@ -232,6 +232,21 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="5318548116565208315">Avatar Caramelo maíz</translation>
 <translation id="1959966725083452288">Avatar Caramelo real</translation>
 <translation id="2039034364578911089">Avatar Caramelo ninja</translation>
+<translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
+<translation id="9185422039067880535">El navegador Brave no está configurado como tu navegador predeterminado actualmente.
+Configura a Brave como tu navegador predeterminado para seguir navegando por la web con más velocidad:
+hasta 6 veces más rápido en los principales sitios de noticias.</translation>
+<translation id="9218430445555521422">Establecer como predeterminado</translation>
+<translation id="3479552764303398839">Ahora no</translation>
+<translation id="4877147287319222750">Agregar a la barra lateral</translation>
+<translation id="5404213409401164238">Mostrar la barra lateral</translation>
+<translation id="7561196759112975576">Siempre</translation>
+<translation id="7060352228894039151">Al pasar el cursor</translation>
+<translation id="407173827865827707">Al hacer clic</translation>
+<translation id="7961015016161918242">Nunca</translation>
+<translation id="59174027418879706">Activado</translation>
+<translation id="8258999165172757081">Agregado</translation>
+<translation id="6959315322491671328">Haz clic derecho para eliminar</translation>
 <translation id="1872784258300710671">Brave usa análisis del producto totalmente privados para calcular el uso general de determinadas funciones</translation>
 <translation id="8712637175834984815">Entendido</translation>
 <translation id="4394049700291259645">Inhabilitar</translation>
@@ -242,8 +257,8 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4823406846571523661">Configurar Crypto Wallets</translation>
 <translation id="8199661191594897555">Iniciar Crypto Wallets y cargar de nuevo</translation>
 <translation id="8428213095426709021">Configuración</translation>
-<translation id="3110802155897279216">Se detectaron recursos de IPFS. ¿Deseas que Brave los cargue utilizando un nodo de IPFS local?</translation>
-<translation id="2366908098700680611">Activar IPFS</translation>
+<translation id="1664718502100303670">Configuración de la billetera</translation>
+<translation id="965566669123544695">Configuración de IPFS</translation>
 <translation id="72868071984333667">Obtén más información sobre IPFS y la privacidad</translation>
 <translation id="4552520379838695057">Lo sentimos, esta página no está disponible.</translation>
 <translation id="2609895996619941644">¿Quieres verificar si hay disponible una versión guardada en Wayback Machine?</translation>
@@ -262,4 +277,6 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8487693399751278191">Importar marcadores ahora...</translation>
 <translation id="2557899542277210112">Para lograr un acceso rápido, coloca tus marcadores aquí en la barra de marcadores.</translation>
 <translation id="2808630562319398131">Restablecer datos de Recompensas Brave...</translation>
+<translation id="1224064034972923114">Ayúdanos a mejorar Brave enviando informes de errores de forma automática</translation>
+<translation id="3738833060602717053">Ayúdanos a mejorar <ph name="PRODUCT_NAME"/> enviando informes de errores de forma automática</translation>
 </translationbundle>
