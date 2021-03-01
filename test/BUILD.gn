@@ -451,6 +451,7 @@ test("brave_unit_tests") {
   if (ipfs_enabled) {
     sources += [
       "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
+      "//brave/browser/ipfs/ipfs_host_resolver_unittest.cc",
       "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
     ]
     deps += [ "//brave/components/ipfs" ]
@@ -748,6 +749,7 @@ if (!is_android) {
       sources += [
         "//brave/browser/extensions/api/ipfs_apitest.cc",
         "//brave/browser/ipfs/ipfs_policy_browsertest.cc",
+        "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
         "//brave/browser/net/ipfs_redirect_network_delegate_helper_browsertest.cc",
       ]
       deps += [ "//brave/components/ipfs" ]

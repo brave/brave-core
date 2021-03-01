@@ -10,6 +10,7 @@ extern const char kIPFSResolveMethod[];
 extern const char kIPFSBinaryPath[];
 extern const char kIPFSAutoFallbackToGateway[];
 extern const char kIPFSAutoRedirectGateway[];
+extern const char kIPFSAutoRedirectDNSLink[];
 extern const char kIPFSInfobarCount[];
 extern const char kIPFSEnabled[];
 extern const char kIPFSPublicGatewayAddress[];

@@ -115,6 +115,7 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
+  registry->RegisterBooleanPref(kIPFSAutoRedirectDNSLink, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
   registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
