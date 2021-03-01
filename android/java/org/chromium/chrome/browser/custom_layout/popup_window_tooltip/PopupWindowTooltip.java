@@ -308,7 +308,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     popup.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     popup.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(
                             mShowLayoutListener);
-                    RectF achorRect = PopupWindowTooltipUtils.calculeRectOnScreen(mAnchorView);
+                    RectF anchorRect = PopupWindowTooltipUtils.calculeRectOnScreen(mAnchorView);
                     RectF contentViewRect =
                             PopupWindowTooltipUtils.calculeRectOnScreen(mContentLayout);
                     float x;
@@ -318,7 +318,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                         x = mContentLayout.getPaddingLeft() + dpToPx(mContext, 2);
                         float centerX =
                                 (contentViewRect.width() / 2f) - (mArrowView.getWidth() / 2f);
-                        float newX = centerX - (contentViewRect.centerX() - achorRect.centerX());
+                        float newX = centerX - (contentViewRect.centerX() - anchorRect.centerX());
                         if (newX > x) {
                             if (newX + mArrowView.getWidth() + x > contentViewRect.width()) {
                                 x = contentViewRect.width() - mArrowView.getWidth() - x;
@@ -332,7 +332,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                         y = mContentLayout.getPaddingTop() + dpToPx(mContext, 2);
                         float centerY =
                                 (contentViewRect.height() / 2f) - (mArrowView.getHeight() / 2f);
-                        float newY = centerY - (contentViewRect.centerY() - achorRect.centerY());
+                        float newY = centerY - (contentViewRect.centerY() - anchorRect.centerY());
                         if (newY > y) {
                             if (newY + mArrowView.getHeight() + y > contentViewRect.height()) {
                                 y = contentViewRect.height() - mArrowView.getHeight() - y;
