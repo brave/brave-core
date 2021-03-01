@@ -10337,7 +10337,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <!-- Web-modal dialog shown during Web Authenticaton API requests. -->
+    <!-- Web-modal dialog shown during Web Authentication API requests. -->
     <if expr="is_win or is_macosx or desktop_linux or chromeos">
       <message name="IDS_WEBAUTHN_GENERIC_TITLE" desc="Title of most dialogs shown while the user is authenticating on a web site using a security key.">
         Use your security key with <ph name="APP_NAME">$1<ex>google.com</ex></ph>

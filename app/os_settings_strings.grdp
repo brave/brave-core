@@ -2700,7 +2700,7 @@ Press an assigned switch to remove assignment.
   </message>
 
   <!-- Kerberos section (OS settings) -->
-  <message name="IDS_OS_SETTINGS_KERBEROS" desc="Name of a section in the OS settings page." meaning="Manage Kerberos authetication tickets.">
+  <message name="IDS_OS_SETTINGS_KERBEROS" desc="Name of a section in the OS settings page." meaning="Manage Kerberos authentication tickets.">
     Kerberos
   </message>
 
