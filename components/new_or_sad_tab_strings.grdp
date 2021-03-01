@@ -176,7 +176,7 @@
       <!-- Ephemeral Guest Tab strings -->
       <!-- TODO(crbug.com/1125474): Rename strings to *GUEST* instead of *EPHEMERAL_GUEST* once all audit is done and all instances of non-ephemeral Guest profiles are deprecated.-->
 
-      <message name="IDS_NEW_TAB_EPHEMERAL_GUEST_SESSION_HEADING_SIGNED_OUT" desc="This is a greeting message that apprears when the user opens a new ephemeral guest tab while they are signed out of chrome guest session.">
+      <message name="IDS_NEW_TAB_EPHEMERAL_GUEST_SESSION_HEADING_SIGNED_OUT" desc="This is a greeting message that appears when the user opens a new ephemeral guest tab while they are signed out of chrome guest session.">
         You’re browsing as a Guest
       </message>
       <message name="IDS_NEW_TAB_EPHEMERAL_GUEST_SESSION_HEADING_SIGNED_IN" desc="This is greeting message with the user's name, appears when user opens a new ephemeral guest tab while they are signed in to chrome guest session.">

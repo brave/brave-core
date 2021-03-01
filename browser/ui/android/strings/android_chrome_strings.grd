@@ -3169,7 +3169,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
           other {Brave will load your pages when ready}}
       </message>
 
-      <message name="IDS_OFFLINE_PAGES_AUTO_FETCH_READY_NOTIFICATION_TEXT" desc="Text inside a notification explaining that the page has been fetched and is ready to view. This is the subtext of the notification and appars below the web page title. When the notification is tapped, the page is opened in Brave.">
+      <message name="IDS_OFFLINE_PAGES_AUTO_FETCH_READY_NOTIFICATION_TEXT" desc="Text inside a notification explaining that the page has been fetched and is ready to view. This is the subtext of the notification and appears below the web page title. When the notification is tapped, the page is opened in Brave.">
         Page is ready to view
       </message>
 
