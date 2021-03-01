@@ -17,14 +17,14 @@ import android.widget.FrameLayout;
 import androidx.annotation.ColorRes;
 
 public final class PopupWindowTooltipUtils {
-    public static RectF calculeRectOnScreen(View view) {
+    public static RectF calculateRectOnScreen(View view) {
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(),
                 location[1] + view.getMeasuredHeight());
     }
 
-    public static RectF calculeRectInWindow(View view) {
+    public static RectF calculateRectInWindow(View view) {
         int[] location = new int[2];
         view.getLocationInWindow(location);
         return new RectF(location[0], location[1], location[0] + view.getMeasuredWidth(),

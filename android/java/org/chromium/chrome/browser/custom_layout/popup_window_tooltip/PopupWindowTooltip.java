@@ -163,10 +163,10 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         }
     }
 
-    private PointF calculePopupLocation() {
+    private PointF calculatePopupLocation() {
         PointF location = new PointF();
 
-        final RectF anchorRect = PopupWindowTooltipUtils.calculeRectInWindow(mAnchorView);
+        final RectF anchorRect = PopupWindowTooltipUtils.calculateRectInWindow(mAnchorView);
         final PointF anchorCenter = new PointF(anchorRect.centerX(), anchorRect.centerY());
 
         switch (mGravity) {
@@ -292,7 +292,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     popup.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     popup.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(
                             mArrowLayoutListener);
-                    PointF location = calculePopupLocation();
+                    PointF location = calculatePopupLocation();
                     popup.setClippingEnabled(true);
                     popup.update((int) location.x, (int) location.y, popup.getWidth(),
                             popup.getHeight());
@@ -308,9 +308,9 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     popup.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     popup.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(
                             mShowLayoutListener);
-                    RectF anchorRect = PopupWindowTooltipUtils.calculeRectOnScreen(mAnchorView);
+                    RectF anchorRect = PopupWindowTooltipUtils.calculateRectOnScreen(mAnchorView);
                     RectF contentViewRect =
-                            PopupWindowTooltipUtils.calculeRectOnScreen(mContentLayout);
+                            PopupWindowTooltipUtils.calculateRectOnScreen(mContentLayout);
                     float x;
                     float y;
                     if (mArrowDirection == ArrowColorDrawable.TOP
