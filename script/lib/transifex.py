@@ -402,7 +402,7 @@ def upload_source_string_file_to_transifex(source_file_path, filename,
 
 
 def clean_triple_quoted_string(val):
-    """Grit parses out first 3 and last 3 isngle quote chars if they exist."""
+    """Grit parses out first 3 and last 3 single quote chars if they exist."""
     val = val.strip()
     if val.startswith("'''"):
         val = val[3:]
