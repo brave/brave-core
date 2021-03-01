@@ -56,7 +56,7 @@ const char kScripts[] = "scripts";
 const char kRunAt[] = "run_at";
 const char kMessages[] = "messages";
 // Note(petemill): "brave" instead of "browser" version in order
-// to preserve some sense of cross-browser targetting of the scripts.
+// to preserve some sense of cross-browser targeting of the scripts.
 const char kMinimumBraveVersion[] = "minimum_brave_version";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
