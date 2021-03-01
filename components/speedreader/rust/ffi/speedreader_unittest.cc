@@ -118,7 +118,7 @@ TEST(SpeedreaderFFITest, RewriterCallback) {
   EXPECT_STREQ(rewriter->GetOutput().c_str(), "");
 }
 
-TEST(SpeedreaderFFITest, RewriterBufering) {
+TEST(SpeedreaderFFITest, RewriterBuffering) {
   SpeedReader sr;
   ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
   std::string url_str = "https://example.com/news/article/topic/index.html";
