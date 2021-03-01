@@ -44,7 +44,7 @@ constexpr int kInnerHeaderHeight = kHeaderHeight - kHeaderOuterPadding.height();
 
 // Default paddings of the views of texts. Adjusted on Windows.
 // Top: 9px = 11px (from the mock) - 2px (outer padding).
-// Buttom: 6px from the mock.
+// Bottom: 6px from the mock.
 constexpr gfx::Insets kTextViewPaddingDefault(9, 12, 6, 0);
 
 // Bullet character. The divider symbol between different parts of the header.
