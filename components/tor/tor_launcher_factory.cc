@@ -187,7 +187,7 @@ void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   for (auto& observer : observers_)
     observer.OnTorCrashed(pid);
   KillTorProcess();
-  // Post delayed relaucn for control to stop
+  // Post delayed relaunch for control to stop
   content::GetUIThreadTaskRunner({})->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&TorLauncherFactory::RelaunchTor,
