@@ -492,7 +492,7 @@
     </if>
 
     <!-- Known interception disclosure infobar strings -->
-    <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connnection is being intercepted.">
+    <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connection is being intercepted.">
       Your activity on the web is being monitored
     </message>
     <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_BUTTON_TEXT" desc="Text of the button to close the disclosure infobar and continue using Brave.">

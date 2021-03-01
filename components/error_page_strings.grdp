@@ -266,7 +266,7 @@
   <message name="IDS_ERRORPAGES_SUGGESTION_LIST_HEADER" desc="Message that prefixes a list of suggestions to try when encountering a network error.">
     Try:
   </message>
-  <message name="IDS_ERRORPAGES_SUGGESTION_CHECK_CONNECTION_SUMMARY" desc="The message displayed in a list of suggestions following a network error, suggesting the user should try checking their connnection. The suggestions list is prefixed with 'Try:'.">
+  <message name="IDS_ERRORPAGES_SUGGESTION_CHECK_CONNECTION_SUMMARY" desc="The message displayed in a list of suggestions following a network error, suggesting the user should try checking their connection. The suggestions list is prefixed with 'Try:'.">
     Checking the connection
   </message>
   <if expr="is_android">
