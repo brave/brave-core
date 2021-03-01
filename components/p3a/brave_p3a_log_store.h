@@ -27,7 +27,7 @@ class BraveP3ALogStore : public metrics::LogStore {
  public:
   class Delegate {
    public:
-    // Prepares a string representaion of an entry.
+    // Prepares a string representation of an entry.
     virtual std::string Serialize(base::StringPiece histogram_name,
                                   uint64_t value) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
