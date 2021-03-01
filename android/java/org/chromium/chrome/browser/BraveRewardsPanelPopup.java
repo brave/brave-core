@@ -1147,9 +1147,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                 double value = 0;
                 String valueString = "";
-                String[] splittedValue = args[3].split("\\.", 0);
+                String[] splitValue = args[3].split("\\.", 0);
                 // 18 digits is a probi min digits count
-                if (splittedValue.length != 0 && splittedValue[0].length() >= 18) {
+                if (splitValue.length != 0 && splitValue[0].length() >= 18) {
                     value = BraveRewardsHelper.probiToDouble(args[3]);
                     valueString = Double.isNaN(value) ?
                                   ERROR_CONVERT_PROBI : String.format("%.3f", value);
