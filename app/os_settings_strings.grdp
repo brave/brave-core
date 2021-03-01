@@ -1332,7 +1332,7 @@ Press an assigned switch to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_LIST_EMPTY_MESSAGE" desc="Message shown when the user has not yet shared any folders in Crostini.">
     Shared folders will appear here
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_EXPORT_IMPORT_TITLE" desc="Title for crostini container export and imoprt (backup and restore) section">
+  <message name="IDS_SETTINGS_CROSTINI_EXPORT_IMPORT_TITLE" desc="Title for crostini container export and import (backup and restore) section">
     Backup &amp; restore
   </message>
   <message name="IDS_SETTINGS_CROSTINI_EXPORT" desc="Tile for exporting (backing up) the crostini container.">
