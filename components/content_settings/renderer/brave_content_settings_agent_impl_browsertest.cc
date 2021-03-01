@@ -791,7 +791,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             redirect_to_cross_site_url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
             redirect_to_cross_site_url().GetOrigin().spec());
-  // Intermidiate same-origin navigation gets full referrer.
+  // Intermediate same-origin navigation gets full referrer.
   EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
             link_url().spec());
 }
