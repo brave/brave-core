@@ -8,7 +8,7 @@
 #include "chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h"
 
 // Subclass SpellingOptionsSubMenuObserver to override InitMenu so that we can
-// remove extaneous separator and disable the submenu if it ends up empty.
+// remove extraneous separator and disable the submenu if it ends up empty.
 class BraveSpellingOptionsSubMenuObserver
     : public SpellingOptionsSubMenuObserver {
  public:
