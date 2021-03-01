@@ -237,7 +237,7 @@ void SidebarModel::OnGetLocalFaviconImage(
                     .AsImageSkia());
     }
   } else {
-    // Flaging to try to update favicon again.
+    // Flagging to try to update favicon again.
     data_[index]->set_need_favicon_update(true);
     FetchFaviconFromNetwork(item);
   }
