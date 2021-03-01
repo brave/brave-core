@@ -70,7 +70,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     /** The model for the browsing mode bottom toolbar that holds all of its state. */
     private final BrowsingModeBottomToolbarModel mModel;
 
-    /** The callback to be exectured when the share button on click listener is available. */
+    /** The callback to be executed when the share button on click listener is available. */
     private Callback<OnClickListener> mShareButtonListenerSupplierCallback;
 
     /** The supplier for the share button on click listener. */
