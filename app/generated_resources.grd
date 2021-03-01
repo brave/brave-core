@@ -6771,13 +6771,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Screen Capture strings -->
-      <message name="IDS_MEDIA_SCREEN_CAPTURE_CONFIRMATION_TITLE" desc="Title for the prompt shown when screen capturing is requrested by an app.">
+      <message name="IDS_MEDIA_SCREEN_CAPTURE_CONFIRMATION_TITLE" desc="Title for the prompt shown when screen capturing is requested by an app.">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> Screen Sharing Request
       </message>
-      <message name="IDS_MEDIA_SCREEN_CAPTURE_CONFIRMATION_TEXT" desc="Text for the prompt shown when screen capturing is requrested by an app.">
+      <message name="IDS_MEDIA_SCREEN_CAPTURE_CONFIRMATION_TEXT" desc="Text for the prompt shown when screen capturing is requested by an app.">
         Do you want <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> to share your screen?
       </message>
-      <message name="IDS_MEDIA_SCREEN_AND_AUDIO_CAPTURE_CONFIRMATION_TEXT" desc="Text for the prompt shown when screen and audio capturing is requrested by an app.">
+      <message name="IDS_MEDIA_SCREEN_AND_AUDIO_CAPTURE_CONFIRMATION_TEXT" desc="Text for the prompt shown when screen and audio capturing is requested by an app.">
         Do you want <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> to share your screen and audio output?
       </message>
       <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_TEXT" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by the same app initiating the window picker">
