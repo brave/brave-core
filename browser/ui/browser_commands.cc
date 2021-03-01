@@ -81,7 +81,7 @@ void ToggleSpeedreader(Browser* browser) {
   speedreader::SpeedreaderService* service =
       speedreader::SpeedreaderServiceFactory::GetForProfile(browser->profile());
   if (service) {
-    // This will trigger a button update via a pref change subscribition.
+    // This will trigger a button update via a pref change subscription.
     service->ToggleSpeedreader();
 
     WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
