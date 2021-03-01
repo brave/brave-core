@@ -85,7 +85,7 @@ void BraveExtensionManagement::OnTorDisabledChanged() {
 
 void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
   // BrowserPolicyConnector enforce policy earlier than this constructor so we
-  // have to manully cleanup tor executable when tor is disabled by gpo
+  // have to manually cleanup tor executable when tor is disabled by gpo
   OnTorDisabledChanged();
 
 #if BUILDFLAG(IPFS_ENABLED)
