@@ -271,7 +271,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   enabled_settings.CheckSettingsAreDefault(url);
   script_settings.CheckSettingsAreDefault(url);
 
-  // Set pre-migrtion patterns different from defaults.
+  // Set pre-migration patterns different from defaults.
   // ------------------------------------------------------
   ContentSettingsPattern pattern = ContentSettingsPattern::FromURL(url);
   ContentSettingsPattern pattern2 = ContentSettingsPattern::FromURL(url2);
