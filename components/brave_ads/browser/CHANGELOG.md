@@ -9,7 +9,7 @@
 ##### Description
 
 Added a new function to the ads service to check if the users locale is newly
-supported. Androd on-boarding should use this API call instead of the Android
+supported. Android on-boarding should use this API call instead of the Android
 implementation.
 
 ##### Added
