@@ -79,7 +79,7 @@
 <translation id="2453860139492968684">Concluir</translation>
 <translation id="48520986898237073">Continuar para a wallet (carteira)</translation>
 <translation id="3570367516044491911">Definir como navegador predefinido</translation>
-<translation id="7493053924837150477">Selecione Brave Browser na lista e toque em "Sempre"</translation>
+<translation id="19715420010996093">Selecione o Navegador Brave e clique em 'Sempre'</translation>
 <translation id="3546439402724649282">Brave já está definido como o seu navegador predefinido.</translation>
 <translation id="8389661903259423907">Já definiu um navegador padrão. Poderá alterar o navegador padrão nas definições da sua aplicação.</translation>
 <translation id="7091885296442320770">O Brave é rapidíssimo</translation>
@@ -237,8 +237,12 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="8712637175834984815">Entendido</translation>
 <translation id="4394049700291259645">Desactivar</translation>
 <translation id="8446884382197647889">Obter mais informações</translation>
+<translation id="2514300153301737214">Detetámos que, embora o Brave Sync esteja ativo, a sincronização do sistema está desligada, o que impede o Brave de sincronizar.  Pressione para abrir as configurações</translation>
+<translation id="7173114856073700355">Abrir Definições</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Não mostrar de novo</translation>
 <translation id="597993392929850353">Licença Brave</translation>
-<translation id="6336451774241870485">Nova Tabela Privada</translation>
+<translation id="6336451774241870485">Novo separador privado</translation>
 <translation id="6199596294742117349">Este é um separador privado</translation>
 <translation id="5858455511731621847">Embora os sites que você visita em separadores privados não sejam guardados localmente, eles não o tornam anónimo ou invisível para o seu ISP, empregador ou para os sites que está a visitar.</translation>
 <translation id="5789441016350810005">Anúncios do Brave enviados quando o navegador está em segundo plano</translation>
@@ -259,7 +263,7 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
 <translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
 <translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
-<translation id="7781069478569868053">Nova ficha de registo</translation>
+<translation id="7781069478569868053">Novo separador</translation>
 <translation id="8522669544471808198">Mostrar imagens de fundo</translation>
 <translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
@@ -345,9 +349,15 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="5516010970279932133">Mostrar os sites sugeridos em preenchimento automático</translation>
 <translation id="5370478469168390143">Guardar Dados Online</translation>
 <translation id="1118508688433541158">Navegue mais rápido e bloqueie anúncios com Brave</translation>
-<translation id="915835519491851291">Bloqueou alguns rastreadores &amp; anúncios.</translation>
+<translation id="6589609065569680305">Rastreadores &amp; anúncios bloqueados nesta página.</translation>
+<translation id="1283922192221545319">O Brave Shields apenas protegeu a sua privacidade.</translation>
 <translation id="3286927551967858325">Dê uma olhada</translation>
-<translation id="2929661208078053609">Excelente!</translation>
+<translation id="6227291358910554399">Os anúncios são bloqueados enquanto visualiza vídeos neste site.</translation>
+<translation id="7802980684512102010">Os vídeos sem anúncios usam menos dados.</translation>
+<translation id="2046475855484346614">+ de 10 rastreadores &amp; anúncios bloqueados nesta página.</translation>
+<translation id="5806208250835099572">A Brave Shields protege a sua privacidade online em todos os sites.</translation>
+<translation id="5617673581653540121">A sua ligação é agora encriptada.</translation>
+<translation id="4055107796760496928">Se disponível, o Brave atualiza-o automaticamente para uma ligação segura.</translation>
 <translation id="4776948189086901857">Brave funciona em qualquer lugar</translation>
 <translation id="1606322780901645965">Descarregue Brave para o seu computador ou tablet em  brave.com, para uma net mais rápida e privada</translation>
 <translation id="8374242949413616101">Proteção de privacidade</translation>
@@ -450,20 +460,20 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="6730444165801605682">Dar uma gorjeta é uma forma de encorajar e apoiar pessoalmente conteúdo ou criadores da sua preferência.  Receba gorjetas!</translation>
 <translation id="7509452925943421624">O que pode fazer com os tokens?</translation>
 <translation id="5876169128756792273">Os tokens podem ser usados para além do apoio aos criadores.  Pode comprar conteúdo e outros bens à medida que os comerciantes aderem.</translation>
-<translation id="1402530520078693620">Por último, vamos’ ajudá-lo a definir as configurações básicas</translation>
+<translation id="1402530520078693620">Por último, vamos ajudá-lo a definir as configurações básicas</translation>
 <translation id="3494356595346329740">Pode alterar isto mais tarde.</translation>
 <translation id="6462814326662189004">Quão frequentemente quer ver anúncios?\n(Anúncios por hora)</translation>
 <translation id="2134244432345596331">Com quanto deseja apoiar os seus criadores preferidos?\n(com os ganhos dos seus anúncios)</translation>
-<translation id="827315274423079662">Pronto, já’está!</translation>
-<translation id="3895246934788932488">Ao usar o Brave Rewards, protege a sua privacidade e ajuda a fazer da net um lugar melhor para todos.  O que é’ fantástido!</translation>
+<translation id="827315274423079662">Pronto, já está!</translation>
+<translation id="3895246934788932488">Ao usar o Brave Rewards, protege a sua privacidade e ajuda a fazer da net um lugar melhor para todos.  O que é fantástido!</translation>
 <translation id="5705882733397021510">Volte</translation>
 <translation id="5140321319944305531">Vamos a uma Visita Rápida</translation>
-<translation id="3808131693704413134">Depois de receber o pagamento pelos seus primeiros anúncios, pode voltar e presentear este criador!</translation>
+<translation id="2434574859640694129">Após receber o pagamento dos seus primeiros anúncios, pode voltar e dar uma gorjeta a este criador!</translation>
 <translation id="207242986925259074">Visita rápida de atualização</translation>
 <translation id="8342862030112839977">As suas primeiras recompensas serão pagas a:</translation>
 <translation id="3769645103175790584">Ganhe tokens e recompense os criadores pelo excelente conteúdo enquanto navega. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Visita rápida</translation>
-<translation id="1080013038789678738">I’Estou dentro!</translation>
+<translation id="1080013038789678738">Estou dentro!</translation>
 <translation id="3604285424134705930">Converteu <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Por favor, verifique a sua ligação à internet.</translation>
 <translation id="7889432931837317731">Abrir automaticamente quando possível.</translation>
@@ -484,4 +494,16 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="6478996494082389936">análises privadas de produtos.</translation>
 <translation id="5187052478998910855">Precisa ser atualizado quanto ao Rewards?</translation>
 <translation id="8622329973403382303">Proceda a uma viagem rápida para rever como funciona e entrar para a história como uma estrela rock do Rewards!</translation>
+<translation id="8401711613788729448">Abra todos os links com Brave para a proteção da sua privacidade</translation>
+<translation id="3184805785843994538">O Brave Shields bloqueia rastreadores &amp; anúncios, economiza dados e tempo em todos os sites por si visitados</translation>
+<translation id="8722651357687610395">Definir o Brave como padrão</translation>
+<translation id="3479552764303398839">Agora não</translation>
+<translation id="6232491755501685494">A Brave Rewards no Japão está a mudar para um novo sistema! in</translation>
+<translation id="7444515017164572362">A partir do dia 13 de não lhe será mais possível usar os seus BAPs.  Mas, uma vez feita 
+        a atualização para o novo sistema em abril, ser-lhe-á possível usar os novos tokens.</translation>
+<translation id="8587285254008006694">Como parte desta transição, as gorjetas e as funcionalidades de contribuição presentes 
+        no serão navegador ficarão indisponíveis a partir do dia 13 de marco, e 
+        o seu balança BAP indicará 0.0, exceto caso tenha atualizado para o novo sistema
+        em abril. Uma vez por si concluída a adesão ao novo sistema, é-lhe possível iniciar com os novos 
+        tokens!</translation>
 </translationbundle>

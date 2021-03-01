@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Zacznij korzystać z nagród Brave.</translation>
 <translation id="48520986898237073">Przejdź do portfela</translation>
 <translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
-<translation id="7493053924837150477">Wybierz przeglądarkę Brave z listy i kliknij Zawsze</translation>
+<translation id="19715420010996093">Wybierz przeglądarkę Brave i kliknij „Zawsze”</translation>
 <translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
 <translation id="8389661903259423907">Domyślna przeglądarka jest już ustawiona. Możesz zmienić domyślną przeglądarkę w ustawieniach aplikacji.</translation>
 <translation id="7091885296442320770">Brave jest szybka jak błyskawica</translation>
@@ -240,6 +240,10 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="8712637175834984815">Rozumiem</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
 <translation id="8446884382197647889">Dowiedz się więcej</translation>
+<translation id="2514300153301737214">Wykryliśmy, że posiadasz aktywną funkcję Brave Sync, jednak synchronizacja systemowa jest wyłączona i nie pozwoli Brave na synchronizację. Kliknij, aby otworzyć ustawienia</translation>
+<translation id="7173114856073700355">Otwórz Ustawienia</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Nie pokazuj ponownie</translation>
 <translation id="597993392929850353">Licencja Brave</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6199596294742117349">To jest karta prywatna</translation>
@@ -347,9 +351,15 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="5516010970279932133">Pokaż sugestie stron w autouzupełnieniu</translation>
 <translation id="5370478469168390143">Zapisz dane online</translation>
 <translation id="1118508688433541158">Przeglądaj szybciej i blokuj reklamy z Brave</translation>
-<translation id="915835519491851291">Właśnie udało Ci się zablokować kilka skryptów śledzących i reklam.</translation>
+<translation id="6589609065569680305">Pliki śledzące &amp; reklamy zablokowane na tej stronie.</translation>
+<translation id="1283922192221545319">Brave Shields właśnie ochroniło Twoją prywatność.</translation>
 <translation id="3286927551967858325">Rzuć okiem</translation>
-<translation id="2929661208078053609">Nieźle!</translation>
+<translation id="6227291358910554399">Reklamy są zablokowane podczas oglądania filmów na tej stronie.</translation>
+<translation id="7802980684512102010">Filmy bez reklam korzystają z mniejszej ilości przesyłu.</translation>
+<translation id="2046475855484346614">10+ plików śledzących &amp; reklam zablokowanych na tej stronie.</translation>
+<translation id="5806208250835099572">Brave Shields chroni Twoją prywatność w sieci na każdej stronie.</translation>
+<translation id="5617673581653540121">Twoje połączenie jest teraz szyfrowane.</translation>
+<translation id="4055107796760496928">Jeśli jest dostępne, Brave uaktywnia automatycznie połączenie bezpieczne.</translation>
 <translation id="4776948189086901857">Przeglądarka Brave działa wszędzie.</translation>
 <translation id="1606322780901645965">Pobierz przeglądarkę Brave ze strony brave.com na swój laptop lub tablet, aby korzystać z szybszego i Internetu z większą ochroną prywatności.</translation>
 <translation id="8374242949413616101">Ochrona prywatności</translation>
@@ -460,7 +470,7 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="3895246934788932488">Korzystając z nagród Brave, chronisz swoją prywatność i pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
 <translation id="5705882733397021510">Wróć</translation>
 <translation id="5140321319944305531">Zróbmy małe oprowadzanie.</translation>
-<translation id="3808131693704413134">Po otrzymaniu pierwszej wypłaty za reklamy możesz wrócić i dać temu twórcy napiwek!</translation>
+<translation id="2434574859640694129">Po otryzmaniu pierwszej wypłaty za reklamy możesz powrócić i wesprzeć tego twórcę!</translation>
 <translation id="207242986925259074">Szybkie oprowadzenie przypominające</translation>
 <translation id="8342862030112839977">Twoja pierwsza wypłata nagród nastąpi do:</translation>
 <translation id="3769645103175790584">Zarabiaj tokeny i nagradzaj twórców za świetne treści, przeglądając Internet. <ph name="QUICK_TOUR"/>.</translation>
@@ -486,4 +496,16 @@ przez kolejne 90 dni lub do momentu zarejestrowania się twórców.</translation
 <translation id="6478996494082389936">analityka prywatnego produktu</translation>
 <translation id="5187052478998910855">Potrzebujesz powtórzenia w zakresie nagród?</translation>
 <translation id="8622329973403382303">Przejdź krótki kurs, aby dowiedzieć się, jak przejść do historii jako gwiazda nagród!</translation>
+<translation id="8401711613788729448">Otwieraj wszystkie łącza w Brave, aby chronić swoją prywatność</translation>
+<translation id="3184805785843994538">Brave Shields blokuje pliki śledzące &amp; reklamy, zachowuje dane i pozwala oszczędzić czas na każdej odwiedzanej stronie.</translation>
+<translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
+<translation id="3479552764303398839">Nie teraz</translation>
+<translation id="6232491755501685494">Brave Rewards przechodzi na nowy system w Japonii!</translation>
+<translation id="7444515017164572362">Od 13 marca nie będziesz móc korzystać ze swoich punktów BAP, ale po
+        przejściu na nowy system w kwietniu zaczniesz z niego korzystać z nowymi tokenami!</translation>
+<translation id="8587285254008006694">W ramach tego przejścia funkcje dawania napiwków i wkładu w
+        Twojej przeglądarce staną się czasowo niedostępne, od 13 marca, a
+        na Twoim saldzie punktów BAP będzie wyświetlana wartość 0.0 do czasu, aż uaktualnisz system do nowego
+        w kwietniu. Kiedy będziesz w nowym systemie, zaczniesz z nowymi
+        tokenami!</translation>
 </translationbundle>

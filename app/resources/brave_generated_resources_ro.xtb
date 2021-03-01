@@ -14,7 +14,7 @@
 <translation id="984275831282074731">Metode de plată</translation>
 <translation id="3699882589215410581">Instalați și rulați Widevine</translation>
 <translation id="8926389886865778422">Nu mai întreba</translation>
-<translation id="4726634924419692905">Solicită când un site intenționează să instaleze Widevine pe calculator.</translation>
+<translation id="5249433283143453448">Folosiți componenta de management a drepturilor digitale (DRM) Widevine pentru a vedea conținut video protejat în streaming și alte conținuturi în browser.</translation>
 <translation id="6241402707160226266">Fereastră privată cu Tor</translation>
 <translation id="8762452230727230396">Tor ascunde adresa dvs. de IP de site-urile pe care le vizitați.</translation>
 <translation id="1369311132025451972">Redirecționează automat siteurile .onion</translation>
@@ -50,7 +50,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5448570825852364919">Pagină albă</translation>
 <translation id="5919424224662539292">Personalizați imaginea de fundal și widget-urile care apar pe pagina din fila nouă</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
-<translation id="8511502469534942133">Conexiune Tor nouă pentru acest site</translation>
+<translation id="6924909138923993900">Conexiune Tor nouă pentru acest site</translation>
 <translation id="4734294903299549345">Ieșiți din fereastra privată cu Tor</translation>
 <translation id="8612763432858587652">Ieșiți din fereastra privată</translation>
 <translation id="8760415064721320867">Fereastră Privată cu Tor</translation>
@@ -232,6 +232,21 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5318548116565208315">Avatar Porumb Bombon</translation>
 <translation id="1959966725083452288">Avatar Regal Bombon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombon</translation>
+<translation id="239760341987199724">Setați Brave ca browser prestabilit</translation>
+<translation id="9185422039067880535">Browser-ul Brave nu este setat ca browser prestabilit în acest moment.
+Setați Brave ca prestabilit pentru a naviga în continuare mai rapid pe internet -
+de până la 6 ori mai rapid pe site-urile de știri principale.</translation>
+<translation id="9218430445555521422">Setează ca prestabilit</translation>
+<translation id="3479552764303398839">Nu acum</translation>
+<translation id="4877147287319222750">Adăugați în bara laterală</translation>
+<translation id="5404213409401164238">Afișați bara laterală</translation>
+<translation id="7561196759112975576">Întotdeauna</translation>
+<translation id="7060352228894039151">Când treceți cu mouse-ul deasupra</translation>
+<translation id="407173827865827707">Când se dă clic</translation>
+<translation id="7961015016161918242">Niciodată</translation>
+<translation id="59174027418879706">Activat</translation>
+<translation id="8258999165172757081">Adăugat</translation>
+<translation id="6959315322491671328">Dați clic dreapta pentru a elimina</translation>
 <translation id="1872784258300710671">Brave folosește statistici de produs complet private pentru a estima utilizarea totală a anumitor funcții</translation>
 <translation id="8712637175834984815">Am înțeles</translation>
 <translation id="4394049700291259645">Dezactivează</translation>
@@ -242,8 +257,8 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4823406846571523661">Configurare Crypto Wallets</translation>
 <translation id="8199661191594897555">Porniți Crypto Wallets și reîncărcați</translation>
 <translation id="8428213095426709021">Setări</translation>
-<translation id="3110802155897279216">Resurse IPFS detectate. Dorești ca Brave să le încarce folosind un nod IPFS local?</translation>
-<translation id="2366908098700680611">Activează IPFS</translation>
+<translation id="1664718502100303670">Setări portofel</translation>
+<translation id="965566669123544695">Setări IPFS</translation>
 <translation id="72868071984333667">Află mai multe despre IPFS și politica de confidențialitate</translation>
 <translation id="4552520379838695057">Ne pare rău, pagina aceea lipsește.</translation>
 <translation id="2609895996619941644">Vreți să verificați dacă este disponibilă o versiune salvată pe Wayback Machine?</translation>
@@ -262,4 +277,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8487693399751278191">Se importă marcajele acum...</translation>
 <translation id="2557899542277210112">Pentru acces rapid, rețineți-vă marcajele aici, în bara de marcaje.</translation>
 <translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
+<translation id="1224064034972923114">Ajutați-ne să îmbunătățim Brave trimițând automat rapoarte de cădere</translation>
+<translation id="3738833060602717053">Ajutați-ne să îmbunătățim <ph name="PRODUCT_NAME"/> trimițând automat rapoarte de cădere</translation>
 </translationbundle>

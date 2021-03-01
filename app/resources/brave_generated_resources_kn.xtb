@@ -14,7 +14,7 @@
 <translation id="984275831282074731">ಪಾವತಿ ವಿಧಾನಗಳು</translation>
 <translation id="3699882589215410581">Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
 <translation id="8926389886865778422">ಮತ್ತೆ ಕೇಳಬೇಡಿ</translation>
-<translation id="4726634924419692905">ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ Widevine ಅನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಸೈಟ್ ಬಯಸಿದಾಗ ಕೇಳಿ.</translation>
+<translation id="5249433283143453448">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ರಕ್ಷಿಸಲಾದ ಸ್ಟ್ರೀಮಿಂಗ್ ವೀಡಿಯೊ ಮತ್ತು ಇತರ ವಿಷಯವನ್ನು ವೀಕ್ಷಿಸಲು Widevine ಡಿಜಿಟಲ್ ಹಕ್ಕುಗಳ ನಿರ್ವಹಣೆ (DRM) ಅಂಶವನ್ನು ಬಳಸಿ</translation>
 <translation id="6241402707160226266">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="8762452230727230396">ನೀವು ಭೇಟಿ ನೀಡುವ ಸೈಟ್ಗಳಿಂದ ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Tor ಮರೆಮಾಡುತ್ತದೆ.</translation>
 <translation id="1369311132025451972">.onion ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುನಿರ್ದೇಶಿಸಿ</translation>
@@ -50,7 +50,7 @@
 <translation id="5448570825852364919">ಖಾಲಿ ಪುಟ</translation>
 <translation id="5919424224662539292">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ಗೋಚರಿಸುವ ಹಿನ್ನೆಲೆ ಚಿತ್ರ ಮತ್ತು ವಿಜೆಟ್‌ಗಳನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
-<translation id="8511502469534942133">ಈ ಸೈಟ್‌ಗಾಗಿ ಹೊಸ Tor ಸಂಪರ್ಕ</translation>
+<translation id="6924909138923993900">ಈ ಸೈಟ್‌ಗಾಗಿ ಹೊಸ ಟಾರ್ ಸಂಪರ್ಕ</translation>
 <translation id="4734294903299549345">Tor ‌ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="8612763432858587652">ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="8760415064721320867">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
@@ -232,6 +232,21 @@
 <translation id="5318548116565208315">ಅವತಾರ್ ಬೋನ್‍ಬೋನ್ ಕಾರ್ನ್</translation>
 <translation id="1959966725083452288">ಅವತಾರ್ ಬೋನ್‌ಬೋನ್ ರಾಯಲ್</translation>
 <translation id="2039034364578911089">ಅವತಾರ್ ಬೋನ್‍ಬೋನ್ ನಿಂಜಾ</translation>
+<translation id="239760341987199724">Brave ಅನ್ನು ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್‌ ರೂಪದಲ್ಲಿ ಹೊಂದಿಸಿ</translation>
+<translation id="9185422039067880535">Brave ಬ್ರೌಸರ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಲಾಗಿಲ್ಲ.
+ವೆಬ್ ಅನ್ನು ವೇಗವಾಗಿ ಬ್ರೌಸ್ ಮಾಡಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಆಗಿ Brave ಅನ್ನು ಹೊಂದಿಸಿ -
+ಪ್ರಮುಖ ಸುದ್ದಿ ಸೈಟ್‌ಗಳಲ್ಲಿ 6x ವರೆಗೆ ವೇಗವಾಗಿದೆ.</translation>
+<translation id="9218430445555521422">ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
+<translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
+<translation id="4877147287319222750">ಸೈಡ್‌ಬಾರ್‌ಗೆ ಸೇರಿಸಿ</translation>
+<translation id="5404213409401164238">ಸೈಡ್‌ಬಾರ್ ತೋರಿಸಿ</translation>
+<translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
+<translation id="7060352228894039151">ಮೌಸ್ಓವರ್‌ನಲ್ಲಿ</translation>
+<translation id="407173827865827707">ಕ್ಲಿಕ್ ಮಾಡಿದಾಗ</translation>
+<translation id="7961015016161918242">ಎಂದಿಗೂ ಇಲ್ಲ</translation>
+<translation id="59174027418879706">ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
+<translation id="8258999165172757081">ಸೇರಿಸಲಾಗಿದೆ</translation>
+<translation id="6959315322491671328">ತೆಗೆದುಹಾಕಲು ರೈಟ್-ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="1872784258300710671">ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳ ಒಟ್ಟಾರೆ ಬಳಕೆಯನ್ನು ಅಂದಾಜು ಮಾಡಲು Brave ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಉತ್ಪನ್ನ ವಿಶ್ಲೇಷಣೆಯನ್ನು ಬಳಸುತ್ತದೆ</translation>
 <translation id="8712637175834984815">ಅರ್ಥವಾಯಿತು</translation>
 <translation id="4394049700291259645">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
@@ -242,8 +257,8 @@
 <translation id="4823406846571523661">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಹೊಂದಿಸಿ</translation>
 <translation id="8199661191594897555">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಮರುಲೋಡ್ ಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="3110802155897279216">IPFS ಸಂಪನ್ಮೂಲಗಳು ಪತ್ತೆಯಾಗಿವೆ. ಸ್ಥಳೀಯ IPFS ನೋಡ್ ಬಳಸಿಕೊಂಡು ಅವುಗಳನ್ನು Brave ಲೋಡ್ ಮಾಡಬೇಕೆಂದು ನೀವು ಬಯಸುವಿರಾ?</translation>
-<translation id="2366908098700680611">IPFS ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="1664718502100303670">ವ್ಯಾಲೆಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="965566669123544695">IPFS ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="72868071984333667">IPFS ಮತ್ತು ಗೌಪ್ಯತೆ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
 <translation id="4552520379838695057">ಕ್ಷಮಿಸಿ, ಆ ಪುಟ ಕಾಣೆಯಾಗಿದೆ.</translation>
 <translation id="2609895996619941644">ಉಳಿಸಿದ ಆವೃತ್ತಿಯು ವೇಬ್ಯಾಕ್ ಯಂತ್ರದಲ್ಲಿ ಲಭ್ಯವಿದೆಯೇ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಲು ಬಯಸುವಿರಾ?</translation>
@@ -262,4 +277,6 @@
 <translation id="8487693399751278191">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಈಗ ಆಮದು ಮಾಡಿ...</translation>
 <translation id="2557899542277210112">ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಇರಿಸಿ.</translation>
 <translation id="2808630562319398131">Brave Rewards ಡೇಟಾ ಮರುಹೊಂದಿಸಿ...</translation>
+<translation id="1224064034972923114">ಕ್ರ್ಯಾಷ್ ವರದಿಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸುವುದರಿಂದ Brave ಅನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
+<translation id="3738833060602717053">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕ್ರ್ಯಾಷ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸುವ ಮೂಲಕ <ph name="PRODUCT_NAME"/> ಅನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
 </translationbundle>

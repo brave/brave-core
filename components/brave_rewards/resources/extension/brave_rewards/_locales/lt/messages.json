@@ -635,6 +635,22 @@
     "message": "Gaukite žetonų žiūrėdami privatumo nepažeidžiančias reklamas ir automatiškai paremkite mėgstamas svetaines bei turinio kūrėjus.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Kaip dažnai norite matyti reklamas?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(reklamų skaičius per valandą)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Kiek paramos per mėnesį norite skirti savo mėgstamiems kūrėjams?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(iš savo uždarbio už reklamą)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Pradėti naudotis „Brave Rewards“",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Žetonus galima naudoti ne tik kūrėjams remti. Galite pirkti skaitmeninį turinį ir kitas prekes, nes mūsų gretas pildo pardavėjai.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Galiausiai nustatykime pagrindines nuostatas",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Tai galite pakeisti vėliau.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Valio! Viskas parengta!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Naudodami „Brave Rewards“ padedate siekti, kad žiniatinklis visiems taptų geresne vieta. Juk tai puiku!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "„Brave Rewards“ Japonijoje pereina prie naujos sistemos!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Sužinokite daugiau",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Išnaudokite turimus BAP iki kovo 13 d. Po to BAP nustos galioti.",
+    "description": "Text for BAP deprecation popup"
   }
 }

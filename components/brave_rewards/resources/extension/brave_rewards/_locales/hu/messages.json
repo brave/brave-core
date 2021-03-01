@@ -635,6 +635,22 @@
     "message": "Szerezzen tokeneket adatvédelmet tiszteletben tartó hirdetések nézésével, és támogassa automatikusan kedvenc oldalait és tartalomkészítőit.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Milyen gyakran szeretnél reklámot látni?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(hirdetés óránként)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Mennyi havi támogatást akarsz adni kedvenc alkotóidnak?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(hirdetési bevételeidből)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Használja a Brave Rewardsot",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "A tokeneket nem csak az alkotók támogatására használhatod. Digitális tartalmakat és egyéb javakat is vásárolhatsz, amint kereskedők csatlakoznak hozzánk.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Végül, állítsuk be az alapbeállításokat.",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Ez később megváltoztatható.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Juhé, készen állsz!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "A Brave Rewards használatával segítesz mindenki számára jobbá tenni az internetet. Ez fantasztikus!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "A Brave Rewards Japánban egy új rendszerre vált!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Tudj meg többet",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Használd el BAP-dat március 13. előtt. Ezután a BAP meg fog szakadni.",
+    "description": "Text for BAP deprecation popup"
   }
 }

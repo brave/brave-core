@@ -635,6 +635,22 @@
     "message": "Vydělávejte zobrazováním reklam respektujících soukromí tokeny a podporujte automaticky své oblíbené weby a tvůrce obsahu.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Jak často chcete vídat reklamy?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(reklam za hodinu)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Jak velkou měsíční podporu chcete věnovat svým oblíbeným tvůrcům?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(z vašich výdělků za reklamy)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Začněte používat Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Tokeny lze použít i nad rámec podpory tvůrců.  Jakmile se přidají obchodníci, můžete si za ně koupit digitální obsah a další zboží.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "A nakonec společně provedeme základní nastavení",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Toto můžete později změnit.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Hurá, vše bylo nastaveno!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Používáním služby Brave Rewards pomáháte vytvářet z webu lepší místo pro všechny. A to je úžasné!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards v Japonsku přechází na nový systém!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Další informace",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Své BAP prosím využijte do 13. března. Po tomto datu dojde k jejich zrušení.",
+    "description": "Text for BAP deprecation popup"
   }
 }

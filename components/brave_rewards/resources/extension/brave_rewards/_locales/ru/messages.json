@@ -635,6 +635,22 @@
     "message": "Зарабатывайте жетоны, просматривая рекламу, не нарушающую вашу конфиденциальность, и автоматически поддерживайте ваши любимые сайты и создателей контента.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Как часто вы хотите видеть рекламу?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(Количество рекламных объявлений в час)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Сколько вы хотите пожертвовать на поддержку ваших любимых авторов?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(из ваших заработков за рекламу)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Начать использовать Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Токены можно использовать не только для поддержки создателей контента. Вы сможете покупать цифровой контент и другие товары по мере прихода на платформу продавцов.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "В заключение, давайте настроим основные параметры",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Вы сможете поменять это позже.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Ура, всё готово к работе!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Используя Brave Rewards, вы помогаете сделать Интернет лучше для всех. И это прекрасно!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards в Японии переходит на новую систему!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Подробнее...",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Используйте ваши бонусные баллы BAP до 13 марта включительно. После этого срока использование бонусной системы BAP будет прекращенно.",
+    "description": "Text for BAP deprecation popup"
   }
 }

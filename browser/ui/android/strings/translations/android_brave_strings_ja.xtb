@@ -82,7 +82,7 @@
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="48520986898237073">引き続きウォレットに進む</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
-<translation id="7493053924837150477">リストからBraveブラウザを選択し、「常に」をタップします</translation>
+<translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
 <translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
 <translation id="8389661903259423907">すでにデフォルトブラウザが設定されています。アプリの設定でデフォルトブラウザを変更するこができます。</translation>
 <translation id="7091885296442320770">Braveは非常に高速です</translation>
@@ -237,6 +237,10 @@
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="8446884382197647889">詳しく知る</translation>
+<translation id="2514300153301737214">Braveの同期が有効になっていることが検出されましたが、お使いのシステムの同期がオフになっており、Braveの同期が許可されません。押して設定を開きます。</translation>
+<translation id="7173114856073700355">設定を開く</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="597993392929850353">Braveライセンス</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="6199596294742117349">これはプライベートタブです</translation>
@@ -344,9 +348,15 @@
 <translation id="5516010970279932133">推奨サイトをオートコンプリートで表示</translation>
 <translation id="5370478469168390143">データをオンラインで保存する</translation>
 <translation id="1118508688433541158">Braveなら読み込みが高速で、広告をブロックできます</translation>
-<translation id="915835519491851291">複数のトラッカーや広告がブロックされました。</translation>
+<translation id="6589609065569680305">トラッカー＆広告がこのページでブロックされています。</translation>
+<translation id="1283922192221545319">Brave Shieldsは、あなたのプライバシーを保護しました。</translation>
 <translation id="3286927551967858325">見てみる</translation>
-<translation id="2929661208078053609">いいですね！</translation>
+<translation id="6227291358910554399">このウェブサイトで動画を見ている間、広告はブロックされます。</translation>
+<translation id="7802980684512102010">広告のない動画は、使用するデータが少なくなります。</translation>
+<translation id="2046475855484346614">10以上のトラッカー＆広告がこのページでブロックされています。</translation>
+<translation id="5806208250835099572">Brave Shieldsは、すべてのサイトであなたのオンラインプライバシーを保護します。</translation>
+<translation id="5617673581653540121">これで、あなたの接続が暗号化されました。</translation>
+<translation id="4055107796760496928">可能な場合、Braveは自動的に安全な接続にアップブレード致します。</translation>
 <translation id="4776948189086901857">Braveはどこでも機能します</translation>
 <translation id="1606322780901645965">是非、パソコンやタブレットでもBraveをダウンロードして、高速でプライベートなウェブ体験をお楽しみください</translation>
 <translation id="8374242949413616101">プライバシー保護</translation>
@@ -457,7 +467,7 @@
 <translation id="3895246934788932488">Brave Rewardsを使用することで、あなたは自分のプライバシーを保護し、ウェブを誰にとってもより良い場所にするお手伝いをしています。そして、それは素晴らしいことです！</translation>
 <translation id="5705882733397021510">戻る</translation>
 <translation id="5140321319944305531">クイックツアーに参加しよう</translation>
-<translation id="3808131693704413134">最初の広告の支払いを受け取ったら、戻ってきてこのクリエイターにチップを渡すことができます！</translation>
+<translation id="2434574859640694129">最初の広告の支払いを受け取ったら、戻ってきてこのクリエイターにチップを渡すことができます！</translation>
 <translation id="207242986925259074">クイックリフレッシャーツアー</translation>
 <translation id="8342862030112839977">初めて報酬が支払われる日付:</translation>
 <translation id="3769645103175790584">閲覧中にトークンを獲得し、クリエイターの素晴らしいコンテンツに対して報酬を与えます。<ph name="QUICK_TOUR"/>。</translation>
@@ -484,4 +494,11 @@
 <translation id="6478996494082389936">プライベート製品分析。</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsロックスターとして歴史に名を残すための仕組みについてブラッシュアップしてください！</translation>
+<translation id="8401711613788729448">あなたのプライバシーを保護するためにBraveですべてのリンクを開く</translation>
+<translation id="3184805785843994538">「Brave Shields（ブレイブ・シールド）」は、トラッカー＆広告をブロックし、データを保存し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
+<translation id="8722651357687610395">Braveをデフォルトに設定</translation>
+<translation id="3479552764303398839">後で</translation>
+<translation id="6232491755501685494">日本の「Brave Rewards」は新しいシステムに移行を予定しています！</translation>
+<translation id="7444515017164572362">3月13日以降、BAPを使用できなくなります。ただし、4月に新しいシステムにアップデートを行えば、新しいトークンを利用開始することができます。</translation>
+<translation id="8587285254008006694">この移行の一環として、ブラウザのチップ機能と寄付機能が3月13日から一時的に使用できなくなり、あなたが4月に新しいシステムにアップデートするまであなたのBAP残高は0.0と表示されます。新しいシステムに移行次第、新しいトークンを利用開始できます！</translation>
 </translationbundle>

@@ -81,7 +81,6 @@
 <translation id="2070991379950719711">Alusta Brave Rewardsi kasutamist</translation>
 <translation id="48520986898237073">Ava rahakott</translation>
 <translation id="3570367516044491911">Määra tavabrauseriks</translation>
-<translation id="7493053924837150477">Valige loendist Brave Browser ja puudutage valikut „Alati“.</translation>
 <translation id="3546439402724649282">Brave on juba vaikebrauser.</translation>
 <translation id="8389661903259423907">Oled juba määranud vaikebrauseri. Seda saad muuda rakenduse seadetest.</translation>
 <translation id="7091885296442320770">Brave on välkkiire</translation>
@@ -240,6 +239,10 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="8712637175834984815">Selge</translation>
 <translation id="4394049700291259645">Keela</translation>
 <translation id="8446884382197647889">Rohkem teavet</translation>
+<translation id="2514300153301737214">Tuvastasime, et teil on Brave'i sünkroonimine lubatud, kuid teie süsteemi sünkroonimisfunktsioon on välja lülitatud ega võimalda Brave'il sünkroonida. Vajutage seadete avamiseks</translation>
+<translation id="7173114856073700355">Ava seaded</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Ära enam näita</translation>
 <translation id="597993392929850353">Brave'i litsents</translation>
 <translation id="6336451774241870485">Uus privaatne vaheleht</translation>
 <translation id="6199596294742117349">See on privaatne vahekaart</translation>
@@ -347,9 +350,15 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="5516010970279932133">Näita automaatse täitmise soovitustes soovitatud lehti</translation>
 <translation id="5370478469168390143">Salvesta andmed veebis</translation>
 <translation id="1118508688433541158">Surfa internetis kiiremini ja blokeeri reklaamid Brave'iga.</translation>
-<translation id="915835519491851291">Blokeerisid just jälgijad ja&amp; reklaamid</translation>
+<translation id="6589609065569680305">Sellel lehel on jälitajad ja reklaamid blokeeritud.</translation>
+<translation id="1283922192221545319">Brave'i kaitse hoidis äsja teie privaatust.</translation>
 <translation id="3286927551967858325">Vaata</translation>
-<translation id="2929661208078053609">Tore!</translation>
+<translation id="6227291358910554399">Sellel veebisaidil on reklaamid videote vaatamisel blokeeritud.</translation>
+<translation id="7802980684512102010">Reklaamideta videod kasutavad vähem andmesidemahtu.</translation>
+<translation id="2046475855484346614">Sellel lehel blokeeriti üle 10 jälitaja ja reklaami.</translation>
+<translation id="5806208250835099572">Brave'i kaitse hoiab kõigil veebisaitidel teie privaatsust võrgus.</translation>
+<translation id="5617673581653540121">Teie ühendus on nüüd krüptitud.</translation>
+<translation id="4055107796760496928">Kui see on saadaval, võtab Brave automaatselt kasutusele turvalise ühenduse.</translation>
 <translation id="4776948189086901857">Brave töötab kõikjal</translation>
 <translation id="1606322780901645965">Laadi aadressilt brave.com oma sülearvutisse või tahvlisse alla Brave, et saada kiirem ja privaatsem veeb</translation>
 <translation id="8374242949413616101">Privaatsuse kaitse</translation>
@@ -460,7 +469,7 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="3895246934788932488">Brave Rewardsi kasutamisega kaitsete oma privaatsust ja aitate veebi kõigi jaoks paremaks muuta. Ja see on vinge!</translation>
 <translation id="5705882733397021510">Mine tagasi</translation>
 <translation id="5140321319944305531">Teeme ühe kiire tuuri</translation>
-<translation id="3808131693704413134">Kui olete saanud reklaamide eest esimese väljamakse, võite tulla tagasi ja sellele loojale preemiat maksta.</translation>
+<translation id="2434574859640694129">Kui olete saanud reklaamide eest esimese väljamakse, võite tulla tagasi ja sellele loojale preemiat maksta.</translation>
 <translation id="207242986925259074">Kiire värskendustuur</translation>
 <translation id="8342862030112839977">Teie esimene preemiamakse saabub:</translation>
 <translation id="3769645103175790584">Veebilehti vaadates saate teenida tokeneid ja premeerida loojaid. <ph name="QUICK_TOUR"/>.</translation>
@@ -486,4 +495,16 @@ kuni nad kinnitavad või kuni möödub 90 päeva.</translation>
 <translation id="6478996494082389936">privaatset tooteanalüüsi teavet.</translation>
 <translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
 <translation id="8622329973403382303">Tehke kiire ringkäik, et meenutada, kuidas see toimis, ja võite ajalukku minna Rewardsi staarina!</translation>
+<translation id="8401711613788729448">Avage kõik lingid Brave'iga, et kaitsta oma privaatust</translation>
+<translation id="3184805785843994538">Brave'i kaitse blokeerib jälitajad ja reklaamid, salvestab andmed ja hoiab aega kokku igal veebisaidil, mida külastate.</translation>
+<translation id="8722651357687610395">Määra Brave vaikebrauseriks</translation>
+<translation id="3479552764303398839">Mitte praegu</translation>
+<translation id="6232491755501685494">Brave Rewards läheb Jaapanis üle uuele süsteemile.</translation>
+<translation id="7444515017164572362">Alates 13. märtsist ei saa te enam BAPi kasutada. Aga kui te uuendate
+süsteemi aprillis uuele versioonile, siis alustate uute tokenitega!</translation>
+<translation id="8587285254008006694">Selle ülemineku osana pole teie brauseri jootraha saatmise ja panustamisfunktsioonid
+ alates 13. märtsist
+ ajutiselt saadaval ja teie BAP-saldo näitab 0,0, kuni olete aprillis uuele
+ süsteemile värskendanud. Kui olete uue süsteemi kasutusele võtnud, alustate uute
+ tokenitega!</translation>
 </translationbundle>

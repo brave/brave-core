@@ -100,11 +100,11 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "지문 차단됨 (표준)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "지문 차단됨 (엄격, 사이트가 작동하지 않을 수 있음)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {

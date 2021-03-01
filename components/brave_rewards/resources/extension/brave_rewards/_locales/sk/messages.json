@@ -635,6 +635,22 @@
     "message": "Zarábajte žetóny zobrazovaním reklám rešpektujúcich súkromie a automaticky podporujte svoje obľúbené weby a tvorcov obsahu.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Ako často chcete vidieť reklamy?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(reklamy za hodinu)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Akú mesačnú podporu by ste chceli venovať svojim obľúbeným tvorcom? ",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(z vašich príjmov za reklamu)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Začnite používať Odmeny Brave",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Žetóny je možné používať nad rámec podpory tvorcov. Keď pribudnú obchodníci, môžete si kúpiť digitálny obsah a ďalší tovar.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Nakoniec si nastaviť základné nastavenia",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Toto môžete neskôr zmeniť.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Juchúúú, všetko je hotové!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Používaním služby Odmeny Brave pomáhate robiť z webu lepšie miesto pre všetkých. A to je úžasné!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave odmeny prechádzajú v Japonsku na nový systém!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Ďalšie informácie",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Svoj BAP používajte do 13. marca. Potom bude ukončený.",
+    "description": "Text for BAP deprecation popup"
   }
 }

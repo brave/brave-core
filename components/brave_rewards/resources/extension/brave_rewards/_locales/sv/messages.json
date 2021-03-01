@@ -635,6 +635,22 @@
     "message": "Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser och innehållsskapare automatiskt.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Hur ofta vill du se annonser?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(annonser per timme)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Hur mycket månatligt stöd vill du ge till dina favoritskapare?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(från dina annonsintäkter)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Börja använda Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Tokens kan användas till mer än att stödja skapare. Du kan köpa digitalt innehåll och andra varor när säljare går med.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Till sist, låt oss få dina grundinställningar på plats",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Du kan ändra detta senare.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Tjoho, du är klar!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Genom att använda Brave Belöningar hjälper du till att göra webben till en bättre plats för alla. Och det är toppen!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards i Japan byter till ett nytt system!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Läs mer",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Använd din BAP senast 13:e mars. Efter det upphör BAP att gälla.",
+    "description": "Text for BAP deprecation popup"
   }
 }

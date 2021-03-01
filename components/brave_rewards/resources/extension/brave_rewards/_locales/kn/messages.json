@@ -635,6 +635,22 @@
     "message": "ಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ನಿಮ್ಮ ನೆಚ್ಚಿನ ಸೈಟ್‌ಗಳು ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "ನೀವು ಎಷ್ಟು ಬಾರಿ ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಲು ಬಯಸುತ್ತೀರಿ?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(ಪ್ರತಿ ಗಂಟೆಗೆ ಜಾಹೀರಾತುಗಳು)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ರಚಿಸುವವರಿಗೆ ನೀವು ಮಾಸಿಕ ಎಷ್ಟು ಬೆಂಬಲವನ್ನು ನೀಡಲು ಬಯಸುತ್ತೀರಿ?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(ನಿಮ್ಮ ಜಾಹೀರಾತು ಗಳಿಕೆಗಳಿಂದ)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Brave Rewards ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸುವುದನ್ನು ಮೀರಿ ಟೋಕನ್‌ಗಳನ್ನು ಬಳಸಬಹುದು. ವ್ಯಾಪಾರಿಗಳು ನಮ್ಮ ವೇದಿಕೆಯನ್ನು ಸೇರಿಕೊಂಡಂತೆಲ್ಲಾ ನೀವು ಡಿಜಿಟಲ್ ವಿಷಯ ಮತ್ತು ಇತರ ಸರಕುಗಳನ್ನು ಖರೀದಿಸಬಹುದು.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "ಕೊನೆಯದಾಗಿ, ಮೂಲ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಹೊಂದಿಸಲು ನಮಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡಿ",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "ನೀವು ಇದನ್ನು ನಂತರ ಬದಲಾಯಿಸಬಹುದು.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "ಓಹೋ, ನೀವು ಸಿದ್ಧರಾಗಿರುವಿರಿ!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave Rewards ಬಳಸುವ ಮೂಲಕ, ಎಲ್ಲರಿಗೂ ವೆಬ್ ಅನ್ನು ಉತ್ತಮ ಸ್ಥಳವನ್ನಾಗಿ ಮಾಡಲು ನೀವು ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಅದು ಅದ್ಭುತವಾಗಿದೆ!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "ಜಪಾನ್ ನಲ್ಲಿನ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಒಂದು ಹೊಸ ಸಿಸ್ಟಮ್ ಗೆ ಬದಲಾಗುತ್ತಿದೆ.",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "ಮಾರ್ಚ್ 13 ನೇ ತಾರೀಖಿನ ಒಳಗೆ  ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಿಎಪಿಯನ್ನು ಬಳಸಿ. ನಂತರ ನಿಮ್ಮ ಬಿಎಪಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ.",
+    "description": "Text for BAP deprecation popup"
   }
 }

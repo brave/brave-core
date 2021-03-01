@@ -4,9 +4,9 @@
 <translation id="5288293905681750318">Seuraimet &amp; mainokset estetty</translation>
 <translation id="2313532038420432247">HTTPS -päivitykset</translation>
 <translation id="788493840831967104">Säästetty aika</translation>
-<translation id="2318592590318590295">Kaistanleveys tallennettu</translation>
-<translation id="5206618227023752085">Ylin sivu poistettu.</translation>
-<translation id="2079545284768500474">Pura</translation>
+<translation id="2318592590318590295">Säästetty kaistanleveys</translation>
+<translation id="5206618227023752085">Kärkisivusto poistettu.</translation>
+<translation id="2079545284768500474">Kumoa</translation>
 <translation id="6040143037577758943">Sulje</translation>
 <translation id="8529752221839395787">Palauta kaikki</translation>
 <translation id="3022168349636134570">sekunti</translation>
@@ -20,7 +20,7 @@
 <translation id="2116364690062294218">B</translation>
 <translation id="3123243061080120667">kt</translation>
 <translation id="977224059380370527">Mt</translation>
-<translation id="8776285424728638733">Iso-Britannia</translation>
+<translation id="8776285424728638733">Gt</translation>
 <translation id="8427933533533814946">Valokuvan ottanut:</translation>
 <translation id="7108338896283013870">Piilota</translation>
 <translation id="7115515527894388910">Muokkaa mieltymyksiä</translation>
@@ -31,19 +31,19 @@
 <translation id="8522669544471808198">Näytä taustakuvat</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
 <translation id="6836061097810262923">Näytä kello</translation>
-<translation id="5912396950572065471">Malli</translation>
+<translation id="5912396950572065471">Muoto</translation>
 <translation id="604124094241169006">Automaattinen</translation>
 <translation id="867722069064361487">12 tunnin kello</translation>
 <translation id="4064062743338217840">24 tunnin kello</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
-<translation id="7176563092712682575">Muokkaa suosituimpia sivuja</translation>
+<translation id="7176563092712682575">Muokkaa kärkisivustoja</translation>
 <translation id="3446024864193919737">Näytä Brave-palkinnot</translation>
 <translation id="6274899614137380422">Näytä Binance</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="5585019845078534178">Kortit</translation>
 <translation id="3870475560794762985">Näytä maksetut kuvat</translation>
 <translation id="2875302873837723333">kärkisivustot</translation>
-<translation id="8173998484743827990">Braven tilastot</translation>
+<translation id="8173998484743827990">Brave-tilastot</translation>
 <translation id="383680190590774040">kello</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Taustakuva</translation>
@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Kaikki lähteet</translation>
 <translation id="8890516388109605451">Lähteet</translation>
 <translation id="5158129253322921540">Ota sisältö pois käytöstä julkaisijalta <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Promootio</translation>
 <translation id="1776831331757823105">Kello</translation>
 <translation id="4643117005422448078">Kärkisivustot</translation>
 <translation id="7791543448312431591">Lisää</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Käy kryptokauppaa Binancessa suoraan selaimestasi käsin.</translation>
 <translation id="2166494527623220386">Käy kryptokauppaa Geminissä suoraan selaimestasi käsin.</translation>
 <translation id="7191394989411626168">Kaikki tällä hetkellä näkyvissä olevat kortit piilotetaan, jos asetat kortit pois päältä. Sinulle kuitenkin voidaan vielä ilmoittaa uusista korteista.</translation>
+<translation id="5655621391922317800">Kryptokukkarot</translation>
+<translation id="8820817407110198400">Kirjanmerkit</translation>
+<translation id="1644574205037202324">Historia</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="6248988683584659830">Hakuasetukset</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Ehkä myöhemmin</translation>
 <translation id="5187052478998910855">Tarvitsetko kertauksen Rewardsista?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi sen toimintoja ja siirry käyttöhistoriassa Rewards-asiantuntijan tavoin!</translation>
+<translation id="3115702351969988294">Kuinka usein tahdot nähdä mainoksia?</translation>
+<translation id="7532131110478098401">(mainoksia per tunti)</translation>
+<translation id="2951964054390325080">Kuinka paljon tukea suosikkikehittäjiäsi kuukausittain?</translation>
+<translation id="3164498053837913829">(mainosansioistasi)</translation>
 <translation id="2070991379950719711">Aloita Brave-palkintojen käyttäminen</translation>
 <translation id="6318696841371191107">Tee pikakatsaus</translation>
 <translation id="2404165674840145940">Tippaa Brave-palkintojen avulla</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Tippaaminen kannustaa ja tukee suosikkisisältöäsi ja -kehittäjiäsi. Aloita siis tippaaminen!</translation>
 <translation id="7509452925943421624">Mitä maksutunnuksilla voi tehdä?</translation>
 <translation id="5876169128756792273">Maksutunnuksia voidaan käyttää kehittäjien tukemiseen. Voit ostaa digitaalista sisältöä ja muita tuotteita kauppiaiden saavuttua.</translation>
+<translation id="1402530520078693620">Hoidetaan lopuksi perusasetukset pois alta</translation>
+<translation id="3494356595346329740">Voit muuttaa tämän myöhemmin.</translation>
 <translation id="827315274423079662">Jee, valmista tuli!</translation>
 <translation id="8268038362451312235">Brave Rewardit auttavat tekemään verkosta paremman paikan kaikille. Se vasta onkin upeaa!</translation>
 <translation id="5094577350232361255">tietoa</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Tämän kuun arvioidut ansiot tähän mennessä</translation>
 <translation id="5235444069025581717">Tipit ja avustukset tässä kuussa</translation>
 <translation id="1210965535849006928">Lunasta palkintoni</translation>
-<translation id="8092889639392847252">Ansaitse rahaa tämän maksetun taustakuvan katselulla.</translation>
-<translation id="7914961605852877459">Käynnistä Brave Ads lunastaaksesi osasi. Voit myös valita <ph name="LINK_BEGIN"/>piilota sponsoroidut kuvat<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Ansaitse palkintoja tämän sponsoroidun taustakuvan katsomisesta.</translation>
+<translation id="5311968438376723685">Aseta Brave Private Ads päälle lunastaaksesi oman osuutesi. Voit myös halutessasi <ph name="LINK_BEGIN"/>piilottaa sponsoroidut kuvat<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Hieno homma!</translation>
 <translation id="764235488372037377">Palkintosi mainoksista ovat täällä</translation>
 <translation id="7091215606170476659">Sinulla on UGP-stipendi Bravelta</translation>
 <translation id="6759185676704303656">Sinulle maksetaan tämän taustakuvan katselusta.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/> maksetuista kuvista Brave Rewards -palvelussa.</translation>
 <translation id="6113004497629356998">Piilota maksetut kuvat</translation>
+<translation id="8587285254008006694">Tämän siirtymän myötä tippaus- ja lahjoitusominaisuudet
+        ovat tilapäisesti poissa käytöstä selaimessasi 13. maaliskuuta alkaen, minkä lisäksi
+        BAP-saldonasi näkyy 0.0 siihen asti kunnes olet päivittänyt järjestelmän uuteen versioon
+        huhtikuussa. Siirryttyäsi uuteen järjestelmään saat käyttöösi uudet
+        maksutunnukset!</translation>
+<translation id="6232491755501685494">Japanin Brave Rewards ottaa käyttöön uuden järjestelmän!</translation>
 <translation id="3787061634640932557">Muokkaa kortteja</translation>
 <translation id="4925543565930352284">Klikkaamalla {{title}} hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Aloita videopuhelu ystäviesi tai kollegoidesi kanssa.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Yksikön hinta</translation>
 <translation id="4763179765154524864">Käytetty yhteensä</translation>
 <translation id="8851480289992540512">Vastaanotettu yhteensä</translation>
-<translation id="5655621391922317800">Kryptokukkarot</translation>
 <translation id="616639131065447379">Tervetuloa Braven Crypto Walletsiin</translation>
 <translation id="1740464057879304704">Crypto Wallets mahdollistaa kryptovaluuttojen ynnä muiden vastaavien varojen käytön Bravessa. Crypto Wallets tukee ETH:n ja BAT:n kaltaisia ethereum-käyttötunnuksia sekä kerättäviä tunnuksia, minkä lisäksi se mahdollistaa Ðsovellusten ynnä muiden älysopimusten käytön. Se on tarkoitettu niille jotka tuntevat ethereumin ynnä muut lohkoketjujärjestelmät — tai tahtovat oppia lisää niistä.</translation>
 <translation id="4855440621031541830">Käytä Crypto Walletsia ainoastaan, jos olet valmis itse kantamaan kaikki sen käyttöön liittyvät riskit. Sinun on myös tunnustettava, että Brave Software ei ole vastuussa sen käytöstä johtuvista tappioista, lompakon oheiskulut mukaan lukien.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Poista SpeedReader käytöstä</translation>
 <translation id="9020818404803201080">Yhdistäneet vertaiskäyttäjät:</translation>
 <translation id="2903493209154104877">Osoitteet</translation>
+<translation id="3207122385716480167">Uudelleennoston tiedot</translation>
+<translation id="2595187693729756455">Noodin tiedot</translation>
 <translation id="5789886980848929155">IPFS-noodin tila</translation>
 <translation id="6599816589121202398">Ohjelmointirajapinta</translation>
 <translation id="1327977588028644528">Yhdyskäytävä</translation>
 <translation id="2551123942222622809">Hajautus</translation>
-<translation id="3967335629471284781">Käynnistetty</translation>
+<translation id="5201810533706869030">Kohteet</translation>
+<translation id="8028993641010258682">Koko</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Reitti</translation>
+<translation id="2892680660204660712">Vertaistunniste</translation>
+<translation id="7536543993364605970">Toimihenkilön versio</translation>
+<translation id="3693482323085649439">Noodi on käynnissä</translation>
+<translation id="6315833555896070573">Noodi ei ole käynnissä</translation>
 <translation id="1272079795634619415">Pysäytä</translation>
+<translation id="5895138241574237353">Käynnistä uudelleen</translation>
 <translation id="6762417584993757344">Ei asennettu</translation>
+<translation id="4159076046325416152">IPFS:ää asennetaan...</translation>
+<translation id="3854747677478661601">Suorita roskakokoelman puhdistus</translation>
+<translation id="7376842608449050673">Roskien keräyshäiriö</translation>
 <translation id="8428368469058794536">IPFS-palvelu</translation>
+<translation id="6776260067907986254">Oma noodini</translation>
+<translation id="8523162996646111972">(lisätiedot)</translation>
+<translation id="6121825639998459476">Asenna ja aloita</translation>
+<translation id="72868071984333667">Lue lisää IPFS:stä ja tietosuojasta</translation>
+<translation id="1886162073868201257">IPFS-palvelimen käynnistyshäiriö</translation>
 <translation id="5357895013476183089">IPFS ei yhdistetty</translation>
 <translation id="1196783328762622576">Et voi ladata IPFS-resursseja paikallisen noodin avulla</translation>
 <translation id="1141556610026845297">Pyydettyjen IPFS-resurssien lataaminen paikallisen IPFS-noodin kautta epäonnistui. Napsauta "Jatka"-painiketta käyttääksesi julkista porttia sekä käyttääksesi julkista porttia jatkossa automaattisesti vastaavissa tilanteissa.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Lisäasetukset</translation>
 <translation id="9096577886148726047">Piilota vaativa</translation>
 <translation id="7716995370131231171">Brave ei voi ladata pyydettyä IPFS-resurssia, sillä joko paikallinen noodi ei käynnistynyt tai yhteyden muodostaneita vertaisia ei ole tällä hetkellä tavoitettavissa. Jos valitset "Jatka"-vaihtoehdon, Brave palaa automaattisesti oletusarvoiseen julkiseen porttiin aina kun paikallinen noodi pettää. Voit muuttaa tätä käytöstä milloin tahansa Brave-asetuksista käsin.</translation>
+<translation id="8026038288183400906">IPFS-suosikkiasetukset</translation>
+<translation id="2058855456574089690">Määritä IPFS-suosikkiasetuksesi</translation>
+<translation id="4447758690649023734">Käytä paikallista noodia</translation>
+<translation id="8148464361648742409">Käytä julkista porttia</translation>
+<translation id="5123478056123923857">IPFS ("InterPlanetary File System") on julkinen vertaisverkko datan tallennusta ja siirroa varten. Tämän protokollan tietosuojamenetelmät poikkeavat HTTP(S):n vastaavista.</translation>
+<translation id="5410952114182173389">Tietokoneesi on yhteydessä julkiseen verkostoon, mutta IP-osoitteesi sekä pyytämäsi tai antamsi sisältö saattavat olla alttiina seurannalle. IPFS:n kautta pyytämäsi sisältö vahvistetaan ennen kuin se tarjotaan sinulle.</translation>
+<translation id="8664689531113048642">Suojaa IP-osoitettasi sekä pyytämääsi sisältöä mahdollisilta kolmansilta osapuolilta, mutta ei julkisen portin operaattorilta. Portin operaattorin vastuulla on varmistaa, että portin kautta tarjottu sisältö on sitä, mitä pyysit. Tietokoneesi ei myöskään osallistu julksieen IPFS-verkkoon.</translation>
+<translation id="3977809385703587108">Voit muuttaa suosikkiasetuksiasi uudelleen</translation>
+<translation id="3340978935015468852">asetuksissa</translation>
+<translation id="4148957013307229264">Asennetaan...</translation>
+<translation id="6057992164469678163">Vertaisia odotetaan...</translation>
+<translation id="1902096227388293745">Vertaisia ei ole saatavilla. Yritetään uudelleen... (<ph name="ATTEMPTS_NUMBER"/> yrityskertaa jäljellä)</translation>
+<translation id="1675751799495331928">Yrityskertojen yläraja saavutettu. Yritä myöhemmin uudelleen.</translation>
+<translation id="4499666752625407848">Päivityksen yhteydessä ilmeni häiriö.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Katso markkinoita ja osta kryptoa crypto.comista.</translation>
 <translation id="4292334826913000023">Näytä hinta</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Tuetut parit</translation>
 <translation id="1164622162816276433">24 tunnin volyymi</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
+<translation id="3745016858329272300">Yleiset tiedot</translation>
+<translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
+<translation id="216855356675970168">Tor-versio</translation>
+<translation id="2976625104959685176">Tor-prosessin tunniste</translation>
+<translation id="6951743416068151209">Torin välityspalvelimen URI</translation>
+<translation id="1671503397662036257">Tor-yhteyden tila</translation>
+<translation id="6024292492796847324">Torin käynnistymisen edistyminen</translation>
 </translationbundle>

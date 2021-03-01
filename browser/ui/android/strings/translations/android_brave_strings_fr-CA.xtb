@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Commencer à utiliser Brave Rewards</translation>
 <translation id="48520986898237073">Continuer vers le portefeuille</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
-<translation id="7493053924837150477">Sélectionnez Brave Browser dans la liste et appuyez sur « Toujours ».</translation>
+<translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « toujours ».</translation>
 <translation id="3546439402724649282">Brave est déjà défini comme votre navigateur par défaut.</translation>
 <translation id="8389661903259423907">Vous avez déjà défini un navigateur par défaut. Vous pouvez modifier le navigateur par défaut dans les paramètres de votre application.</translation>
 <translation id="7091885296442320770">Brave est rapide comme l'éclair</translation>
@@ -236,6 +236,10 @@ mois-ci...</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="4394049700291259645">Désactiver</translation>
 <translation id="8446884382197647889">En savoir plus</translation>
+<translation id="2514300153301737214">Nous avons détecté que vous avez activé Brave Sync, mais votre système de synchronisation est désactivé et ne permet pas à Brave de se synchroniser. Appuyez pour ouvrir les paramètres</translation>
+<translation id="7173114856073700355">Ouvrir les paramètres</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Ne plus afficher</translation>
 <translation id="597993392929850353">Licence Brave</translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="6199596294742117349">Ceci est un onglet privé</translation>
@@ -343,9 +347,15 @@ mois-ci...</translation>
 <translation id="5516010970279932133">Afficher les sites suggérés en saisie automatique</translation>
 <translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
 <translation id="1118508688433541158">Naviguez plus rapidement et bloquez les publicités avec Brave</translation>
-<translation id="915835519491851291">Vous venez de bloquer quelques traqueurs et publicités.</translation>
+<translation id="6589609065569680305">Trackers, annonces bloquées sur cette page.</translation>
+<translation id="1283922192221545319">Brave Shields vient de protéger votre vie privée.</translation>
 <translation id="3286927551967858325">Jeter un coup d'œil</translation>
-<translation id="2929661208078053609">Bien!</translation>
+<translation id="6227291358910554399">Les publicités sont bloquées pendant le visionnage des vidéos sur ce site.</translation>
+<translation id="7802980684512102010">Les vidéos sans publicité utilisent moins de données.</translation>
+<translation id="2046475855484346614">Plus de 10 trackers, annonces bloquées sur cette page.</translation>
+<translation id="5806208250835099572">Brave Shields protège votre vie privée en ligne sur chaque site.</translation>
+<translation id="5617673581653540121">Votre connexion est maintenant cryptée.</translation>
+<translation id="4055107796760496928">Si elle est disponible, Brave vous met automatiquement à niveau vers une connexion sécurisée.</translation>
 <translation id="4776948189086901857">Brave fonctionne partout</translation>
 <translation id="1606322780901645965">Téléchargez Brave sur brave.com sur votre ordinateur ou votre tablette pour une navigation web plus rapide et confidentielle</translation>
 <translation id="8374242949413616101">Protection de la confidentialité</translation>
@@ -456,7 +466,7 @@ mois-ci...</translation>
 <translation id="3895246934788932488">En utilisant Brave Rewards, vous protégez votre confidentialité et vous aidez à faire de la toile un endroit meilleur pour tout le monde. Et c'est génial!</translation>
 <translation id="5705882733397021510">Revenir</translation>
 <translation id="5140321319944305531">Faisons une visite rapide</translation>
-<translation id="3808131693704413134">Après avoir reçu votre premier paiement publicitaire, vous pouvez revenir et donner du pourboire à ce créateur!</translation>
+<translation id="2434574859640694129">Après réception du paiement de vos premières annonces, vous pouvez revenir et donner un pourboire à ce créateur !</translation>
 <translation id="207242986925259074">Visite de remise à niveau rapide</translation>
 <translation id="8342862030112839977">Votre 1er paiement de récompenses arrivera le :</translation>
 <translation id="3769645103175790584">Gagnez des jetons et récompensez les créateurs pour leur contenu génial tout en navigant. <ph name="QUICK_TOUR"/>.</translation>
@@ -482,4 +492,11 @@ mois-ci...</translation>
 <translation id="6478996494082389936">analyse de produits privée.</translation>
 <translation id="5187052478998910855">Besoin d'un rappel sur les Récompenses?</translation>
 <translation id="8622329973403382303">Faites un tour rapide pour découvrir comment cela fonctionne pour entrer dans l'histoire en tant que rockstar Rewards!</translation>
+<translation id="8401711613788729448">Ouvrez tous les liens avec Brave pour protéger votre vie privée</translation>
+<translation id="3184805785843994538">Brave Shields bloque les trackers, les annonces, enregistre les données et vous fait gagner du temps sur chaque site que vous visitez.</translation>
+<translation id="8722651357687610395">Définir Brave par défaut</translation>
+<translation id="3479552764303398839">Pas maintenant</translation>
+<translation id="6232491755501685494">Brave Rewards au Japon passe à un nouveau système!</translation>
+<translation id="7444515017164572362">À partir du 13 mars, vous ne pourrez plus utiliser votre BAP. Mais une fois que vous serez passé au nouveau système en avril, vous commencerez à utiliser de nouveaux jetons!</translation>
+<translation id="8587285254008006694">Dans le cadre de cette transition, les fonctions de pourboire et de contribution de votre navigateur seront temporairement indisponibles à partir du 13 mars, et votre solde BAP affichera 0,0 jusqu'à ce que vous ayez effectué la mise à jour vers le nouveau système en avril. Une fois que vous serez sur le nouveau système, vous commencerez avec de nouveaux jetons!</translation>
 </translationbundle>

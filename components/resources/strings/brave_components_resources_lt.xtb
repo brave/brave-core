@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Visi šaltiniai</translation>
 <translation id="8890516388109605451">Šaltiniai</translation>
 <translation id="5158129253322921540">Išjungti turinį iš <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Reklamuojama</translation>
 <translation id="1776831331757823105">Laikrodis</translation>
 <translation id="4643117005422448078">Populiariausios svetainės</translation>
 <translation id="7791543448312431591">Pridėti</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Prekiaukite kriptovaliutomis per „Binance“ tiesiai savo naršyklėje.</translation>
 <translation id="2166494527623220386">Prekiaukite kriptovaliutomis per „Gemini“ tiesiai savo naršyklėje.</translation>
 <translation id="7191394989411626168">Išjungus korteles, visos dabar matomos kortelės bus paslėptos. Vis dėlto galėsite gauti pranešimus apie naujas korteles.</translation>
+<translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
+<translation id="8820817407110198400">Žymės</translation>
+<translation id="1644574205037202324">Istorija</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8730621377337864115">Atlikta</translation>
 <translation id="6248988683584659830">Paieškos nuostatos</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Gal vėliau</translation>
 <translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
 <translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>
+<translation id="3115702351969988294">Kaip dažnai norite matyti reklamas?</translation>
+<translation id="7532131110478098401">(reklamų skaičius per valandą)</translation>
+<translation id="2951964054390325080">Kiek paramos per mėnesį norite skirti savo mėgstamiems kūrėjams?</translation>
+<translation id="3164498053837913829">(iš jūsų uždarbio už reklamą)</translation>
 <translation id="2070991379950719711">Pradėti naudotis „Brave Rewards“</translation>
 <translation id="6318696841371191107">Peržiūrėkite trumpą apžvalgą</translation>
 <translation id="2404165674840145940">Skirti arbatpinigių per „Brave Rewards“</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Arbatpinigių skyrimas yra būdas asmeniškai paskatinti ir paremti mėgstamą turinį arba kūrėjus. Paaukokite!</translation>
 <translation id="7509452925943421624">Ką galite daryti su žetonais?</translation>
 <translation id="5876169128756792273">Žetonus galima naudoti ne tik kūrėjams remti. Galite pirkti skaitmeninį turinį ir kitas prekes, nes mūsų gretas pildo pardavėjai.</translation>
+<translation id="1402530520078693620">Galiausiai nustatykime pagrindines nuostatas</translation>
+<translation id="3494356595346329740">Tai galite pakeisti vėliau.</translation>
 <translation id="827315274423079662">Valio! Viskas parengta!</translation>
 <translation id="8268038362451312235">Naudodami „Brave Rewards“ padedate siekti, kad žiniatinklis visiems taptų geresne vieta. Juk tai puiku!</translation>
 <translation id="5094577350232361255">apie</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Apytikslis šio mėnesio uždarbis</translation>
 <translation id="5235444069025581717">Šio mėnesio arbatpinigiai ir indėliai</translation>
 <translation id="1210965535849006928">Atsiimti „Rewards“</translation>
-<translation id="8092889639392847252">Gaukite užmokestį už šio remiamo foninio vaizdo peržiūrą.</translation>
-<translation id="7914961605852877459">Įjunkite „Brave Ads“ ir gaukite savo dalį. Taip pat galite pasirinkti <ph name="LINK_BEGIN"/>slėpti remiamus vaizdus<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Gaukite atlygį už šio remiamo foninio vaizdo peržiūrą.</translation>
+<translation id="5311968438376723685">Įjunkite „Brave Private Ads“ ir gaukite savo dalį. Taip pat galite pasirinkti <ph name="LINK_BEGIN"/>slėpti remiamus vaizdus<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Puiku!</translation>
 <translation id="764235488372037377">Savo atlygius už reklamą rasite čia</translation>
 <translation id="7091215606170476659">Jūsų laukia UGP išmoka iš „Brave“.</translation>
 <translation id="6759185676704303656">Gaunate užmokestį už šio foninio vaizdo peržiūrą.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/> apie per „Brave Rewards“ remiamus vaizdus.</translation>
 <translation id="6113004497629356998">Slėpti remiamus vaizdus</translation>
+<translation id="8587285254008006694">Dėl šio perėjimo arbatpinigių davimo ir aukojimo funkcijos
+        jūsų naršyklėje laikinai neveiks nuo kovo 13 d., o
+        jūsų BAP likutis bus rodomas 0,0, kol balandį atnaujinsite į naująją sistemą.
+       Kai būsite naujojoje sistemoje, pradėsite su naujais
+        žetonais!</translation>
+<translation id="6232491755501685494">„Brave Rewards“ Japonijoje pereina prie naujos sistemos!</translation>
 <translation id="3787061634640932557">Redaguoti korteles</translation>
 <translation id="4925543565930352284">Spustelėdami {{title}} sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Pradėti privatų vaizdo skambutį su draugais ir kolegomis.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Vieneto kaina</translation>
 <translation id="4763179765154524864">Iš viso išleista</translation>
 <translation id="8851480289992540512">Iš viso gauta</translation>
-<translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
 <translation id="616639131065447379">Sveikiname atradus „Brave“ kriptovaliutų pinigines</translation>
 <translation id="1740464057879304704">Kriptovaliutų piniginės leidžia tvarkyti kriptovaliutas ir susijusį turtą „Brave“ naršyklėje. Kriptovaliutų piniginės palaiko eterio (angl. „Ethereum“) žetonus, kaip antai ETH ir BAT, bei kolekcines priemones, taip pat leidžia dirbti su Ðprogramėlėmis ir kitomis išmaniosiomis sutartimis. Visa tai skirta žmonėms, susipažinusiems arba norintiems susipažinti su eteriu ir kitomis blokų grandinės sistemomis —.</translation>
 <translation id="4855440621031541830">Kriptovaliutų pinigines naudokite tik tada, jei sutinkate visą su jų naudojimu susijusią riziką prisiimti patys ir sutinkate, kad „Brave Software“ neprisiims jokios atsakomybės už jokius nuostolius, tarp jų ir netyčinius bei pasekminius nuostolius, kuriuos galite patirti dėl tokio naudojimo.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">IŠJUNGTI spartųjį skaitlį</translation>
 <translation id="9020818404803201080">Prisijungę kolegos:</translation>
 <translation id="2903493209154104877">Adresai</translation>
+<translation id="3207122385716480167">Saugyklos statistiniai duomenys</translation>
+<translation id="2595187693729756455">Mazgo informacija</translation>
 <translation id="5789886980848929155">IPFS mazgo būsena</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
 <translation id="2551123942222622809">Spiečius</translation>
-<translation id="3967335629471284781">Paleista</translation>
+<translation id="5201810533706869030">Objektai</translation>
+<translation id="8028993641010258682">Dydis</translation>
+<translation id="7870625241353817260">Maksimalus saugyklos dydis</translation>
+<translation id="3202131003361292969">Kelias</translation>
+<translation id="2892680660204660712">Kolegos ID</translation>
+<translation id="7536543993364605970">Agento versija</translation>
+<translation id="3693482323085649439">Mazgas veikia</translation>
+<translation id="6315833555896070573">Mazgas neveikia</translation>
 <translation id="1272079795634619415">Sustabdyti</translation>
+<translation id="5895138241574237353">Paleisti iš naujo</translation>
 <translation id="6762417584993757344">Neįdiegta</translation>
+<translation id="4159076046325416152">Diegiamas IPFS...</translation>
+<translation id="3854747677478661601">Atlikti surinktų šiukšlių valymą</translation>
+<translation id="7376842608449050673">Šiukšlių surinkimo klaida</translation>
 <translation id="8428368469058794536">IPFS paslauga</translation>
+<translation id="6776260067907986254">Mano mazgas</translation>
+<translation id="8523162996646111972">(išsami informacija)</translation>
+<translation id="6121825639998459476">Įdiegti ir paleisti</translation>
+<translation id="72868071984333667">Daugiau informacijos apie IPFS ir privatumą</translation>
+<translation id="1886162073868201257">IPFS paslaugos paleidimo klaida</translation>
 <translation id="5357895013476183089">IPFS neprijungta</translation>
 <translation id="1196783328762622576">IPFS išteklių įkelti naudojant vietinį mazgą nepavyksta</translation>
 <translation id="1141556610026845297">IPFS išteklių įkėlimas naudojant vietinį IPFS mazgą nepavyko. Spustelėjus mygtuką „Tęsti“ bus naudojamas viešasis tinklų sietuvas ir kitą kartą prie viešojo tinklų sietuvo bus grįžtama automatiškai.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Išplėstiniai</translation>
 <translation id="9096577886148726047">Slėpti išplėstines parinktis</translation>
 <translation id="7716995370131231171">„Brave“ negali įkelti prašomų IPFS išteklių, nes nepaleistas vietinis mazgas arba šiuo metu nėra prisijungusių lygiarangių įrenginių. Jei pasirinksite „Tęsti“, nepavykus pasinaudoti vietiniu mazgu „Brave“ automatiškai grįš prie numatytojo viešojo tinklų sietuvo. Šią veikimo metodiką galima bet kada pakeisti „Brave“ nuostatų skiltyje.</translation>
+<translation id="8026038288183400906">IPFS nuostatos</translation>
+<translation id="2058855456574089690">Nustatykite norimas IPFS nuostatas</translation>
+<translation id="4447758690649023734">Naudoti vietinį mazgą</translation>
+<translation id="8148464361648742409">Naudoti viešąjį tinklų sietuvą</translation>
+<translation id="5123478056123923857">IPFS (Tarpplanetinė failų sistema) – tai viešasis tinklas, skirtas tarpasmeniniam duomenų laikymui ir tiekimui. Šio protokolo privatumo nustatymai skiriasi nuo HTTP(S).</translation>
+<translation id="5410952114182173389">Jūsų kompiuteris prisideda prie viešojo tinklo, bet jūsų IP adresas ir bet koks turinys, kurio prašote ar teikiate, gali būti matomas. Turinys, kurio prašote per IPFS, patikrinamas prieš jums pateikiant.</translation>
+<translation id="8664689531113048642">Apsaugo jūsų IP adresą ir turinį, kurio prašote iš galimų trečiųjų šalių stebėtojų, bet ne iš viešojo tinklų sietuvo operatoriaus. Tinklų sietuvo operatorius atsakingas už tai, kad užtikrintų, jog turinys, kurį gaunate per tinklų sietuvą, yra tas turinys, kurio prašėte. Be to, jūsų kompiuteris neprisideda prie viešojo iPFS tinklo.</translation>
+<translation id="3977809385703587108">Savo nuostatas vėl galėsite pakeisti dalyje</translation>
+<translation id="3340978935015468852">nustatymų</translation>
+<translation id="4148957013307229264">Diegiama...</translation>
+<translation id="6057992164469678163">Laukiama kolegų...</translation>
+<translation id="1902096227388293745">Galimų kolegų nėra, bandoma iš naujo... (<ph name="ATTEMPTS_NUMBER"/> likę bandymai)</translation>
+<translation id="1675751799495331928">Viršijome leidžiamą bandymų skaičių, vėliau pabandykite dar kartą.</translation>
+<translation id="4499666752625407848">Atnaujinant įvyko klaida.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Peržiūrėkite rinkas ir nusipirkite kriptovaliutų svetainėje crypto.com.</translation>
 <translation id="4292334826913000023">Rodyti kainą</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Remiamos poros</translation>
 <translation id="1164622162816276433">24 val. apimtis</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
+<translation id="3745016858329272300">Bendroji informacija</translation>
+<translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
+<translation id="216855356675970168">„Tor“ versija</translation>
+<translation id="2976625104959685176">„Tor“ proceso ID</translation>
+<translation id="6951743416068151209">„Tor“ tarpinio serverio URL</translation>
+<translation id="1671503397662036257">„Tor“ ryšio būsena</translation>
+<translation id="6024292492796847324">„Tor“ inicijavimo pažanga</translation>
 </translationbundle>

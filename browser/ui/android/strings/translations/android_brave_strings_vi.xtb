@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Bắt đầu sử dụng Brave Rewards</translation>
 <translation id="48520986898237073">Tiếp tục đến ví</translation>
 <translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
-<translation id="7493053924837150477">Chọn Trình duyệt Brave từ danh sách và nhấn "Mọi lúc"</translation>
+<translation id="19715420010996093">Chọn Trình duyệt Brave rồi nhấn vào "Luôn luôn"</translation>
 <translation id="3546439402724649282">Brave đã được đặt làm trình duyệt mặc định của bạn.</translation>
 <translation id="8389661903259423907">Bạn đã đặt trình duyệt mặc định. Bạn có thể thay đổi trình duyệt mặc định trong mục cài đặt ứng dụng.</translation>
 <translation id="7091885296442320770">Brave chạy nhanh như chớp</translation>
@@ -235,6 +235,10 @@ tháng này...</translation>
 <translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="8446884382197647889">Tìm hiểu thêm</translation>
+<translation id="2514300153301737214">Chúng tôi nhận thấy bạn đã bật Brave Sync. Tuy nhiên, tính năng đồng bộ hóa hệ thống của bạn đã tắt và không cho phép Brave đồng bộ hóa. Hãy nhấn để mở phần cài đặt</translation>
+<translation id="7173114856073700355">Mở phần Cài đặt</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Không hiển thị lại</translation>
 <translation id="597993392929850353">Giấy phép Brave</translation>
 <translation id="6336451774241870485">Tab riêng tư mới</translation>
 <translation id="6199596294742117349">Đây là Tab riêng tư</translation>
@@ -342,9 +346,15 @@ tháng này...</translation>
 <translation id="5516010970279932133">Hiển thị các website được đề xuất trong mục tự động hoàn thành</translation>
 <translation id="5370478469168390143">Lưu Dữ liệu Trực tuyến</translation>
 <translation id="1118508688433541158">Duyệt web nhanh hơn và chặn quảng cáo với Brave</translation>
-<translation id="915835519491851291">Bạn vừa chặn một số trình theo dõi &amp; quảng cáo.</translation>
+<translation id="6589609065569680305">Trình theo dõi &amp; quảng cáo đã bị chặn trên trang này.</translation>
+<translation id="1283922192221545319">Brave Shields vừa bảo vệ quyền riêng tư của bạn.</translation>
 <translation id="3286927551967858325">Hãy xem qua</translation>
-<translation id="2929661208078053609">Tuyệt!</translation>
+<translation id="6227291358910554399">Các quảng cáo đã bị chặn trong khi bạn xem video trên trang web này.</translation>
+<translation id="7802980684512102010">Video không có quảng cáo sử dụng ít dữ liệu hơn.</translation>
+<translation id="2046475855484346614">Hơn 10 trình theo dõi &amp; quảng cáo đã bị chặn trên trang này.</translation>
+<translation id="5806208250835099572">Brave Shields bảo vệ quyền riêng tư trực tuyến của bạn trên mọi trang web.</translation>
+<translation id="5617673581653540121">Kết nối của bạn hiện đã được mã hóa.</translation>
+<translation id="4055107796760496928">Nếu được cung cấp, Brave sẽ tự động nâng cấp bạn lên kết nối bảo mật.</translation>
 <translation id="4776948189086901857">Brave hoạt động ở khắp nơi</translation>
 <translation id="1606322780901645965">Hãy truy cập vào brave.com và tải Brave xuống máy tính xách tay hoặc máy tính bảng để duyệt web nhanh hơn và bảo mật hơn</translation>
 <translation id="8374242949413616101">Bảo vệ quyền riêng tư</translation>
@@ -455,7 +465,7 @@ tháng này...</translation>
 <translation id="3895246934788932488">Bằng cách sử dụng Brave Rewards, bạn đang bảo vệ quyền riêng tư của mình, đồng thời giúp cho mạng toàn cầu trở thành một nơi tốt hơn cho mọi người. Và điều đó thật tuyệt vời!</translation>
 <translation id="5705882733397021510">Quay Lại</translation>
 <translation id="5140321319944305531">Hãy Xem Giới thiệu Nhanh</translation>
-<translation id="3808131693704413134">Sau khi nhận được khoản thanh toán quảng cáo đầu tiên, bạn có thể quay lại và tặng tiền cho người sáng tạo này!</translation>
+<translation id="2434574859640694129">Sau khi nhận được khoản thanh toán quảng cáo đầu tiên, bạn có thể quay lại và thưởng tiền cho người sáng tạo này!</translation>
 <translation id="207242986925259074">Giới thiệu nhanh</translation>
 <translation id="8342862030112839977">Bạn sẽ nhận được khoản thanh toán phần thưởng đầu tiên của mình vào:</translation>
 <translation id="3769645103175790584">Kiếm token và tặng cho những người sáng tạo có nội dung tuyệt vời khi bạn duyệt web. <ph name="QUICK_TOUR"/>.</translation>
@@ -481,4 +491,11 @@ tháng này...</translation>
 <translation id="6478996494082389936">phân tích sản phẩm riêng tư.</translation>
 <translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
 <translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Phần thưởng!</translation>
+<translation id="8401711613788729448">Mở tất cả các đường liên kết bằng Brave để bảo vệ quyền riêng tư của bạn</translation>
+<translation id="3184805785843994538">Brave Shields chặn trình theo dõi &amp; quảng cáo, đồng thời giúp bạn tiết kiệm thời gian trên mỗi trang web mà bạn truy cập.</translation>
+<translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
+<translation id="3479552764303398839">Không phải bây giờ</translation>
+<translation id="6232491755501685494">Brave Rewards ở Nhật Bản hiện đang chuyển sang hệ thống mới!</translation>
+<translation id="7444515017164572362">Bắt đầu từ ngày 13 tháng 3, bạn sẽ không thể sử dụng BAP của mình. Nhưng khi bạn cập nhật lên hệ thống mới vào tháng 4, bạn sẽ bắt đầu với các token mới!</translation>
+<translation id="8587285254008006694">Nằm trong quá trình chuyển đổi này, các tính năng tặng tiền thưởng và đóng góp trong trình duyệt của bạn sẽ tạm thời không thể sử dụng kể từ ngày 13 tháng 3, đồng thời số dư BAP của bạn sẽ hiển thị 0,0 cho đến khi bạn cập nhật lên hệ thống mới vào tháng 4. Khi bạn sử dụng hệ thống mới, bạn sẽ bắt đầu với các token mới!</translation>
 </translationbundle>

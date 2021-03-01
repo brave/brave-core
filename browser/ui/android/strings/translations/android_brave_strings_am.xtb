@@ -78,7 +78,6 @@
 <translation id="2070991379950719711">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ</translation>
 <translation id="48520986898237073">በኪስ ቦርሳ ይቀጥሉ</translation>
 <translation id="3570367516044491911">እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
-<translation id="7493053924837150477">ከዝርዝሩ ውስጥ የ Brave ማሰሻን መርጠው 'ሁልጊዜ' የሚለውን ነካ ያድርጉ</translation>
 <translation id="3546439402724649282">Brave ቀደም ሲል ነባሪ አሳሽዎ ሆኗል።</translation>
 <translation id="8389661903259423907">ነባሪ አሳሽዎን ቀደም ሲል አዘጋጅተዋል። በመተግበሪያ ቅንብሮችዎ ውስጥ ነባሪ አሳሹን መቀየር ይችላሉ።</translation>
 <translation id="7091885296442320770">Brave በፍጥነት እየበራ ነው</translation>
@@ -235,6 +234,10 @@
 <translation id="8712637175834984815">ገባኝ</translation>
 <translation id="4394049700291259645">አሰናክል</translation>
 <translation id="8446884382197647889">የበለጠ ይወቁ</translation>
+<translation id="2514300153301737214">እርስዎ Brave አስምር እንዳበሩ ኣይተናል፣ ሆኖም የእርስዎ የ አስምር ስርዓት እንደጠፋ ነው ስለዚህም Brave አስምር እንዲሆን ኣይፈቅድለትም። ቅንብሮችን ለመክፈት ይጫኑ</translation>
+<translation id="7173114856073700355">ቅንብሮችን ክፈት</translation>
+<translation id="6965382102122355670">እሺ</translation>
+<translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="597993392929850353">የ Brave ፈቃድ</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="6199596294742117349">ይህ የግል ትር ነው</translation>
@@ -342,9 +345,15 @@
 <translation id="5516010970279932133">የተጠቆሙ ጣቢያዎችን በራስ-አጠናቅቅ አሳይ</translation>
 <translation id="5370478469168390143">በመስመር ላይ ውሂብ ይቆጥቡ</translation>
 <translation id="1118508688433541158">በፍጥነት ያስሱ እና በ Brave ማስታወቂያዎችን ያግዱ</translation>
-<translation id="915835519491851291">የተወሰኑ ዱካዎችን አግደዋል &amp; ማስታወቂያዎች።</translation>
+<translation id="6589609065569680305">ተከታታዮች &amp; ማስታወቂያዎች በዚህ ገጽ ላይ ታግደዋል።</translation>
+<translation id="1283922192221545319">Brave ጋሻዎች የእርስዎን ግላዊነት ጠብቀዋል።</translation>
 <translation id="3286927551967858325">ተመልከት</translation>
-<translation id="2929661208078053609">ጥሩ!</translation>
+<translation id="6227291358910554399">በዚህ ድር ጣቢያ ላይ ቪዲዮዎችን ሲመለከቱ ማስታወቂያዎች ታግደዋል።</translation>
+<translation id="7802980684512102010">ቪዲዮዎች ያለ ማስታወቂያዎች አነስተኛ ዳታ ይጠቀማሉ።</translation>
+<translation id="2046475855484346614">10+ ተከታታዮች &amp; ማስታወቂያዎች በዚህ ገጽ ላይ ታግደዋል።</translation>
+<translation id="5806208250835099572">Brave ጋሻዎች በእያንዳንዱ ጣቢያ ላይ የእርስዎን የኦንላይን ግላዊነት ጠብቀዋል።</translation>
+<translation id="5617673581653540121">አሁን የእርስዎ ግንኙነት ተመስጥረዋል።</translation>
+<translation id="4055107796760496928">የሚገኝ ከሆነ፣ Brave በራስ-ሰር ወደ ደህንነቱ የተጠበቀ ግንኙነት ያሻሽልዎታል።</translation>
 <translation id="4776948189086901857">Brave የትም ይሠራል</translation>
 <translation id="1606322780901645965">ለፈጣን እና ለበለጠ የግል ድር ጣቢያ Braveን ከ brave.com በላፕቶፕዎ ወይም በታብሌትዎ ላይ ያውርዱ</translation>
 <translation id="8374242949413616101">ግላዊነት ጥበቃ</translation>
@@ -436,7 +445,7 @@
 <translation id="8804164990146287819">የግለኝነት መጠበቂያ ህግ</translation>
 <translation id="6318696841371191107">ፈጣን ጉብኝት ያድርጉ</translation>
 <translation id="7930505144430343145">ወደ Brave ወሮታዎች እንኳን በደህና መጡ!</translation>
-<translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ ማስመሰያዎች ሽልማት ሰጥቶታል።</translation>
+<translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል ማስታወቂያዎች ከባህላዊ ማስታወቂያዎች በተለየ የ ይዘት ፈጣሪዎችን ለመደገፍ የ ማስመሰያዎች ሽልማት ሰጥቶታል።</translation>
 <translation id="6973095375773523904">ማስታወቂያዎች የት ይታያሉ?</translation>
 <translation id="7556325460112047619">የ Brave የግል ማስታወቂያዎች እንደ መደበኛ ማሳወቂያ ይታያሉ። እነዚህን ማስታወቂያዎች ምን ያህል ጊዜ ማየት እንደሚፈልጉ በቅንብሮች ውስጥ ይቆጣጠራሉ።</translation>
 <translation id="5816125157889950051">ሽልማቶችን መቼ ይቀበላሉ</translation>
@@ -455,7 +464,7 @@
 <translation id="3895246934788932488">Brave ወሮታዎች በመጠቀም፣ የእርስዎን ግላዊነት እየጠበቁ እና ድሩን ለሁሉም ሰው የተሻለ ቦታ ለማድረግ እየረዱ ነው። እና ይሄ ግሩም ነው!</translation>
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
 <translation id="5140321319944305531">እስቲ አንድ ፈጣን ጉብኝት እንውሰድ</translation>
-<translation id="3808131693704413134">የመጀመሪያዎን የ ማስታወቂያዎች ክፍያ ከተቀበሉ በኋላ ተመልሰው መጥተው ለዚህ ፈጣሪ ጠቃሚ ምክር መስጠት ይችላሉ!</translation>
+<translation id="2434574859640694129">የመጀመሪያዎን ማስታወቂያዎች ክፍያ ከተቀበሉ በኋላ ፣ ተመልሰው መጥተው ለዚህ ፈጣሪ ጠቃሚ ምክር መስጠት ይችላሉ!</translation>
 <translation id="207242986925259074">ፈጣን የማደሻ ጉብኝት</translation>
 <translation id="8342862030112839977">የእርስዎ 1ኛ ሽልማት ክፍያ በሚከተለው ይደርሳል፥</translation>
 <translation id="3769645103175790584">በሚያስሱበት ጊዜ ማስመሰያዎች ያግኙ እና ለታላቅ ይዘት ፈጣሪዎች ሽልማት ይስጡ። <ph name="QUICK_TOUR"/>.</translation>
@@ -481,4 +490,16 @@
 <translation id="6478996494082389936">የግል ምርት ትንታኔዎች።</translation>
 <translation id="5187052478998910855">በሽልማቶች ላይ አዳሽ ይፈልጋሉ?</translation>
 <translation id="8622329973403382303">እንደ የሽልማቶች ሮክስታር ታሪክ ውስጥ ለመግባት እንዴት እንደሚሠራ ለማወቅ በፍጥነት ጉብኝት ያድርጉ።</translation>
+<translation id="8401711613788729448">የራስዎን ግላዊነት ለመጠበቅ ሁሉንም አገናኞች በ Brave በኩል ይክፈቱ</translation>
+<translation id="3184805785843994538">Brave ጋሻዎች መከታተያዎችን ያግዳል &amp; ማስታወቂያዎች ፣ ዳታን ይቆጥባል እንዲሁም በሚጎበኟቸው ጣቢያ ሁሉ፣ ጊዜ ይቆጥብልዎታል።</translation>
+<translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
+<translation id="3479552764303398839">አሁን አይደለም</translation>
+<translation id="6232491755501685494">በጃፓን ውስጥ የሚገኙ Brave ወሮታዎች ወደ አዲስ ስርዓት እየተቀየሩ ነው!</translation>
+<translation id="7444515017164572362">ከ ማርች 13th፣ ጀምሮ የእርስዎን BAP መጠቀም አይችሉም። ሆኖም አንዴ፣
+        ወደ አዲሱ ስርዓት በ ኤፕሪል ካዘመኑ በኋላ፣ በአዳዲስ ማስመሰያዎች እንደአዲስ ይጀምራሉ!</translation>
+<translation id="8587285254008006694">እንደ የዚህ ሽግግር አካል፣ በአሳሽዎ ውስጥ ያለው ጠቃሚ ምክር ኣሰጣጥ እና አስተዋፅዖ ማድረጊያ
+        ለጊዜው ከማርች 13 ጀምሮ አይገኝም፣ እና
+        ኤፕሪል ውስጥ ወደ አዲሱ ስርዓት እስከሚያዘምኑ ድረስ የ BAP
+        ሂሳብዎ 0.0 ያሳያል። አንዴ ወደ አዲሱ ስርዓት ላይ ከገቡ በኋላ በአዳዲስ 
+        ማስመሰያዎች ይጀመራሉ!</translation>
 </translationbundle>

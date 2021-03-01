@@ -635,6 +635,22 @@
     "message": "รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "คุณต้องการเห็นโฆษณาบ่อยแค่ไหน",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(โฆษณาต่อชั่วโมง)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "คุณต้องการสนับสนุนครีเอเตอร์ที่คุณชื่นชอบเดือนละเท่าไร?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(จากรายได้โฆษณาของคุณ)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "เริ่มต้นใช้ Brave Reward",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "สามารถใช้โทเค็นในกิจกรรมอื่นๆ นอกเหนือจากการสนับสนุนครีเอเตอร์ โดยสามารถนำไปซื้อเนื้อหาดิจิตอลและสินค้าอื่นๆ เมื่อมีผู้ค้ามาเข้าร่วม",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "สุดท้ายนี้ มาเริ่มการตั้งค่าพื้นฐานกัน\n",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "สามารถแก้ไขในภายหลังได้",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "ไชโย คุณพร้อมแล้วละ!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "การใช้งาน Brave Reward จะช่วยส่งเสริมให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งนับว่าเยี่ยมยอดไปเลย!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards ในญี่ปุ่นกำลังเปลี่ยนไปใช้ระบบใหม่!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "ดูข้อมูลเพิ่มเติม",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "โปรดใช้ BAP ของคุณภายในวันที่ 13 มีนาคม หลังจากนั้น BAP จะถูกยกเลิก",
+    "description": "Text for BAP deprecation popup"
   }
 }

@@ -14,7 +14,7 @@
 <translation id="984275831282074731">Maksājumu veidi</translation>
 <translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
 <translation id="8926389886865778422">Nejautāt atkārtoti</translation>
-<translation id="4726634924419692905">Vaicāt, kad vietne vēlas instalēt Widevine uz jūsu datora.</translation>
+<translation id="5249433283143453448">Izmantojiet Widevine digitālā satura tiesību pārvaldības (DRM) komponentu, lai pārlūkā skatītu aizsargātu videostraumējumu un citu saturu.</translation>
 <translation id="6241402707160226266">Inkognito logs ar Tor</translation>
 <translation id="8762452230727230396">Paslēpj Jūsu IP adresi no apmeklētajām vietnēm.</translation>
 <translation id="1369311132025451972">Automātiski novirzīt .onion vietnes</translation>
@@ -50,7 +50,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5448570825852364919">Tukša lapa</translation>
 <translation id="5919424224662539292">Pielāgojiet fona attēlu un logrīkus, kas parādās jaunās cilnes lapā</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
-<translation id="8511502469534942133">Jauns Tor savienojums šai vietnei</translation>
+<translation id="6924909138923993900">Jauns Tor savienojums šai vietnei</translation>
 <translation id="4734294903299549345">Iziet no inkognito loga ar Tor</translation>
 <translation id="8612763432858587652">Iziet no inkognito loga</translation>
 <translation id="8760415064721320867">Inkognito logs ar Tor</translation>
@@ -232,6 +232,21 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="9185422039067880535">Brave pārlūks pašlaik nav iestatīts kā noklusējuma pārlūks.
+Iestatiet Brave kā noklusējuma pārlūku, lai varētu ātrāk pārlūkot tīmekli –
+lielākajās ziņu vietnēs līdz pat 6 reizēm ātrāk.</translation>
+<translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
+<translation id="3479552764303398839">Vēlāk</translation>
+<translation id="4877147287319222750">Pievienot sānjoslai</translation>
+<translation id="5404213409401164238">Rādīt sānjoslu</translation>
+<translation id="7561196759112975576">Vienmēr</translation>
+<translation id="7060352228894039151">Uzbraucot ar peles kursoru</translation>
+<translation id="407173827865827707">Noklikšķinot</translation>
+<translation id="7961015016161918242">Nekad</translation>
+<translation id="59174027418879706">Iespējots</translation>
+<translation id="8258999165172757081">Pievienots</translation>
+<translation id="6959315322491671328">Noklikšķiniet ar peles labo pogu, lai noņemtu</translation>
 <translation id="1872784258300710671">Brave izmanto pilnīgi privātu produktu analīzi, lai novērtētu konkrētu funkciju vispārējo lietojumu.</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="4394049700291259645">Atspējot</translation>
@@ -242,8 +257,8 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4823406846571523661">Iestatīt kripto makus</translation>
 <translation id="8199661191594897555">Startēt kripto makus un atkārtoti ielādēt</translation>
 <translation id="8428213095426709021">Iestatījumi</translation>
-<translation id="3110802155897279216">Konstatēti IPFS resursi. Vai vēlaties, lai Brave tos ielādētu, izmantojot vietējo IPFS mezglu?</translation>
-<translation id="2366908098700680611">Iespējot IPFS</translation>
+<translation id="1664718502100303670">Maka iestatījumi</translation>
+<translation id="965566669123544695">IPFS iestatījumi</translation>
 <translation id="72868071984333667">Uzzināt vairāk par IPFS un konfidencialitāti</translation>
 <translation id="4552520379838695057">Diemžēl, šī lapa nav atrodama.</translation>
 <translation id="2609895996619941644">Vai vēlaties pārbaudīt, vai Wayback Machine nav pieejama tās saglabātā versija?</translation>
@@ -262,4 +277,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8487693399751278191">Importēt grāmatzīmes tagad...</translation>
 <translation id="2557899542277210112">Ātrai piekļuvei ievietojiet savas grāmatzīmes šeit, grāmatzīmju joslā.</translation>
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
+<translation id="1224064034972923114">Palīdziet uzlabot Brave, automātiski nosūtot avāriju ziņojumus</translation>
+<translation id="3738833060602717053">Palīdziet uzlabot <ph name="PRODUCT_NAME"/>, automātiski nosūtot avāriju ziņojumus</translation>
 </translationbundle>

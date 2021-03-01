@@ -635,6 +635,22 @@
     "message": "Verdienen Sie Token, indem Sie Werbeanzeigen ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie automatisch Ihre Lieblingswebsites und liebsten Inhaltsersteller.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Wie oft möchten Sie Anzeigen sehen?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(Anzeigen pro Stunde)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Wie viel monatliche Unterstützung möchten Sie Ihren Lieblingskreatoren geben?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(aus Ihren Anzeigeneinnahmen)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Brave Rewards jetzt nutzen",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Tokens können auch für andere Zwecke als die Unterstützung von Inhaltserstellern genutzt werden. Sie können digitalen Content und andere Waren kaufen, wenn Händler an Bord kommen.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Zuletzt möchten wir Sie mit den Grundeinstellungen vertraut machen",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Sie können das später ändern.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Hurra, Sie sind startklar!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Indem Sie Brave Rewards nutzen, helfen Sie, das Web zu einem besseren Ort für alle zu machen. Und das ist toll!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards in Japan wechselt zu einem neuen System!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Weitere Informationen",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Bitte verwenden Sie Ihre BAP bis zum 13. März. Danach wird BAP eingestellt.",
+    "description": "Text for BAP deprecation popup"
   }
 }
