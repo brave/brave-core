@@ -111,7 +111,7 @@ def main():
         LOGGER.error('VT_API_KEY environment variable not set.')
         sys.exit(SCAN_ERROR)
 
-    LOGGER.debug('Initialzing VirusTotal API')
+    LOGGER.debug('Initializing VirusTotal API')
     vt_api_key = os.environ['VT_API_KEY']
 
     vt = Virustotal(vt_api_key)
