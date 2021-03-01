@@ -218,7 +218,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, CrashURLTest) {
 // Allowed url list are checked by IsURLAllowedInIncognito().
 // So, corresponding brave scheme url should be filtered as chrome scheme.
 // Ex, brave://settings should be loaded only in normal window because
-// chrome://settings is not allowed. When tyring to loading brave://settings in
+// chrome://settings is not allowed. When trying to loading brave://settings in
 // private window, it should be loaded in normal window instead of private
 // window.
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
