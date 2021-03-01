@@ -989,13 +989,13 @@
   <message name="IDS_OS_SETTINGS_TAG_PRINTING_SAVED_PRINTERS" desc="Text for search result item which, when clicked, navigates the user to printer settings, with the option to edit saved printers.">
     Saved printers
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print History'">
+  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT" desc="text for search result item which, when clicked, navigates the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print History'">
     Print jobs
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT1" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Jobs', 'Print History'">
+  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT1" desc="text for search result item which, when clicked, navigates the user to the printing section to open the print jobs app. alternate phrase for: 'Print Jobs', 'Print History'">
     Print management
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT2" desc="text for search result item which, when clicked, naviagets the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print Jobs'">
+  <message name="IDS_OS_SETTINGS_TAG_PRINT_MANAGEMENT_ALT2" desc="text for search result item which, when clicked, navigates the user to the printing section to open the print jobs app. alternate phrase for: 'Print Management', 'Print Jobs'">
     Print history
   </message>
   <message name="IDS_OS_SETTINGS_TAG_SCANNING_APP" desc="text for search result item which, when clicked, navigates the user to the printing section to open the scanning app.">
