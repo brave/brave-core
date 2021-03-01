@@ -296,7 +296,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                     R.id.brave_sync_device_text);
                             if (null != textView) {
                                 if (device.mIsCurrentDevice) {
-                                    // Highlight curret device
+                                    // Highlight current device
                                     textView.setTextColor(ApiCompatibilityUtils.getColor(
                                             getActivity().getResources(),
                                             R.color.brave_theme_color));
