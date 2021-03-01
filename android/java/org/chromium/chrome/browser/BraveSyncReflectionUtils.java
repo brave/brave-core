@@ -12,7 +12,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.BraveConfig;
 
 // The purpose of this class is to hide BraveSyncWorker object under `enable_brave_sync`
-// and create it without explict import
+// and create it without explicit import
 public class BraveSyncReflectionUtils {
     private static Object sBraveSyncWorker;
     private static boolean sInitialized;
