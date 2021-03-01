@@ -654,7 +654,7 @@ def get_transifex_string_hash(string_name):
 
 
 def braveify(string_value):
-    """Replace Chromium branded strings with Brave beranded strings."""
+    """Replace Chromium branded strings with Brave branded strings."""
     return (string_value.replace('Chrome', 'Brave')
             .replace('Chromium', 'Brave')
             .replace('Google', 'Brave')
