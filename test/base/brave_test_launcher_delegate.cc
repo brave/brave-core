@@ -14,7 +14,7 @@
 BraveTestLauncherDelegate::BraveTestLauncherDelegate(
     ChromeTestSuiteRunner* runner)
     : ChromeTestLauncherDelegate(runner) {
-  // Suppress first run dialg during the test. It can cause some tests timeout.
+  // Suppress first run dialog during the test. It can cause some tests timeout.
   // It's not used on Windows.
 #if defined(OS_MAC) || defined(OS_LINUX)
   first_run::internal::ForceFirstRunDialogShownForTesting(false);

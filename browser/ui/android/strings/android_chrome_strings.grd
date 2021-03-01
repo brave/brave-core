@@ -3547,7 +3547,7 @@ Data from your Private session will only be cleared from Brave when you <ph name
       <message name="IDS_STORAGE_MANAGEMENT_RESET_APP_DIALOG_TITLE" desc="Title of the reset app dialog in the storage UI used to reset the app.">
         Delete app data?
       </message>
-      <message name="IDS_STORAGE_MANAGEMENT_RESET_APP_DIALOG_TEXT" desc="Text of the reset app dialoag in the storage UI.">
+      <message name="IDS_STORAGE_MANAGEMENT_RESET_APP_DIALOG_TEXT" desc="Text of the reset app dialog in the storage UI.">
         All Brave’s app data will be deleted permanently. This includes all files, settings, accounts, databases, etc.
       </message>
 
