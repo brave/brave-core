@@ -206,6 +206,9 @@ const char kUpgradeHelpCenterBaseURL[] =
 const char kWhoIsMyAdministratorHelpURL[] =
     "https://support.brave.com/";
 
+const char kCwsEnhancedSafeBrowsingLearnMoreURL[] =
+    "https://support.brave.com/";
+
 #if defined(OS_ANDROID)
 const char kEnhancedPlaybackNotificationLearnMoreURL[] =
 // Keep in sync with chrome/android/java/strings/android_chrome_strings.grd
