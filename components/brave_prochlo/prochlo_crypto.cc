@@ -103,7 +103,7 @@ uint8_t* Crypto::ProchlomationToAnalyzerItemEncryption::ToTag() {
 
 bool Crypto::ProchlomationToAnalyzerItemEncryption::StreamDataForEncryption(
     EVP_CIPHER_CTX* ctx) {
-  // Stream the proclomation to the cipher and write out the ciphertext.
+  // Stream the prochlomation to the cipher and write out the ciphertext.
   uint8_t* next_byte = nullptr;
   size_t ciphertext_byte_count = 0;
   int32_t out_length;

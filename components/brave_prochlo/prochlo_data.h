@@ -22,7 +22,7 @@ namespace prochlo {
 
 // Nomenclature for message structures:
 //
-// The client's encoder produces a Proclomation, i.e., an EncoderItem, which it
+// The client's encoder produces a Prochlomation, i.e., an EncoderItem, which it
 // wishes to deliver to the Analyzer, via the shuffler.
 //
 // A ShufflerItem travels from the Client to the Shuffler.
@@ -32,7 +32,7 @@ namespace prochlo {
 // The Shuffler stores the intermediate state of its shuffle on local
 // (untrusted) storage, in the shape of an IntermediateShufflerItem.
 //
-// A Proclomation contains just the type of data (|metric|) and the value. The
+// A Prochlomation contains just the type of data (|metric|) and the value. The
 // Client encrypts using AES128-GCM, with a key derived from its ephemeral key
 // pair and the Analyzer's public key. That's the inner layer of the nested
 // encryption, and constitutes the AnalyzerItem.
