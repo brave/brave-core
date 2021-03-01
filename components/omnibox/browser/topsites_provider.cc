@@ -59,7 +59,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
   }
   if ((matches_.size() == 1) && !matches_[0].inline_autocompletion.empty()) {
     // If there's only one possible completion of the user's input and
-    // allowing completions truns out to be okay, give the match a high enough
+    // allowing completions turns out to be okay, give the match a high enough
     // score to allow it to beat url-what-you-typed and be inlined.
     matches_[0].SetAllowedToBeDefault(input);
     if (matches_[0].allowed_to_be_default_match) {
