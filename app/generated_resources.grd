@@ -5511,7 +5511,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CART_CART_MENU_HIDE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been temporarily hidden. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
         <ph name="MERCHANT">$1<ex>Amazon</ex> hidden. You’ll see it again when you revisit your cart.</ph>
       </message>
-      <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant wil be permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
+      <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT" desc="An option in the action menu of one cart in the chrome cart module. When clicked, cart from that merchant will be permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
         Never show <ph name="MERCHANT">$1<ex>Amazon</ex></ph>
       </message>
       <message name="IDS_NTP_MODULES_CART_CART_MENU_REMOVE_MERCHANT_TOAST_MESSAGE" desc="Text shown in the toast confirming the cart for a specific merchant has been permanently removed. Note that the MERCHANT field can be either merchant name (e.g. Amazon) or domain (e.g. amazon.com).">
