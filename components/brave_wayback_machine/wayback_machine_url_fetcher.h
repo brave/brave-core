@@ -41,7 +41,7 @@ class WaybackMachineURLFetcher final {
   void Fetch(const GURL& url);
 
  private:
-  void OnWaybackURLFetched(const GURL& orignal_url,
+  void OnWaybackURLFetched(const GURL& original_url,
                            std::unique_ptr<std::string> response_body);
 
   Client* client_;
