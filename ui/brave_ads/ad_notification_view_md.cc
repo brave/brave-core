@@ -305,7 +305,7 @@ void AdNotificationViewMD::Layout() {
   if (actions_row_->GetVisible()) {
     constexpr SkScalar kCornerRadius = SkIntToScalar(kNotificationCornerRadius);
 
-    // Use vertically larger clip path, so that actions row's top coners will
+    // Use vertically larger clip path, so that actions row's top corners will
     // not be rounded.
     SkPath path;
     gfx::Rect bounds = actions_row_->GetLocalBounds();
