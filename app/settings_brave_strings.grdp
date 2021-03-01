@@ -160,7 +160,7 @@
     Customize your Brave profile
   </message>
 </if>
-  <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
+  <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is already present in Brave.">
     Sync and personalize Brave across your devices
   </message>
 <if expr="chromeos">

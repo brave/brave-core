@@ -294,7 +294,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterMigration) {
                           base::Unretained(this)));
   referrals_service->Start();
   // NOTE: Don't call WaitForReferralInitializeCallback(); since a user
-  // migrating from an earlier version is aleady initialized, and that will
+  // migrating from an earlier version is already initialized, and that will
   // never trigger.
 
   // Start the stats updater, wait for it to perform its startup ping,
