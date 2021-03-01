@@ -184,7 +184,7 @@
         <ph name="BR">&lt;br&gt;</ph>
         You’re browsing as a Guest
       </message>
-      <message name="IDS_NEW_TAB_EPHEMERAL_GUEST_SESSION_DESCRIPTION_SIGNED_OUT" desc="This is a message displayed on the ephemeral guest NTP when the user is signed out of chrome guest session emphasing that no chrome profile info will be available unless the user chooses to sign in. The user can click on 'sign in' to start the sign in to chrome guest session flow.">
+      <message name="IDS_NEW_TAB_EPHEMERAL_GUEST_SESSION_DESCRIPTION_SIGNED_OUT" desc="This is a message displayed on the ephemeral guest NTP when the user is signed out of chrome guest session emphasizing that no chrome profile info will be available unless the user chooses to sign in. The user can click on 'sign in' to start the sign in to chrome guest session flow.">
         You won't see any Brave profile's info in Guest mode. You can <ph name="LINK_BEGIN">&lt;a id="change-sign-in-status"&gt;</ph>sign in<ph name="LINK_END">&lt;/a&gt;</ph> to access your Brave account info like passwords and payment methods.
       </message>
       <message name="IDS_NEW_TAB_EPHEMERAL_GUEST_SESSION_DESCRIPTION_SIGNED_IN" desc="This is a message displayed on the ephemeral guest NTP when the user is signed in to chrome guest session to encourage closing all open guest windows in order to delete their browsing activity from the device in use.">
