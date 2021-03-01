@@ -9,7 +9,7 @@
 namespace brave {
 
 // Set callbacks for existing Chromium histograms that will be braveized,
-// i.e. reemitted using a different name and custom buckets.
+// i.e. re-emitted using a different name and custom buckets.
 void SetupHistogramsBraveization();
 
 }  // namespace brave
