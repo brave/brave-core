@@ -132,7 +132,7 @@ void SpeedReaderURLLoader::OnComplete(
   DCHECK(!complete_status_.has_value());
   switch (state_) {
     case State::kWaitForBody:
-      // An error occured before receiving any data.
+      // An error occurred before receiving any data.
       DCHECK_NE(net::OK, status.error_code);
       state_ = State::kCompleted;
       if (!throttle_) {

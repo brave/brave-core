@@ -109,7 +109,7 @@
       We have exceeded the limit of attempts, try again later.
     </message>
     <message name="IDS_IPFS_ONBOARDING_INSTALLATION_ERROR" desc="Error message about installation error for IPFS interstitial page.">
-      Error ocurred during an update.
+      Error occurred during an update.
     </message>
   </if>
 </grit-part>

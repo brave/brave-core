@@ -88,7 +88,7 @@ declare global {
       numQueues: any
       alreadyUnhiddenSelectors: Set<string>
       alreadyKnownFirstPartySubtrees: WeakSet
-      _hasDelayOcurred: boolean
+      _hasDelayOccurred: boolean
       _startCheckingId: number | undefined
     }
   }

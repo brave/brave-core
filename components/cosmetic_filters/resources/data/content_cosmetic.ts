@@ -48,7 +48,7 @@ CC.numQueues = CC.numQueues || CC.allQueues.length
 CC.alreadyUnhiddenSelectors = CC.alreadyUnhiddenSelectors || new Set<string>()
 CC.alreadyKnownFirstPartySubtrees =
   CC.alreadyKnownFirstPartySubtrees || new WeakSet()
-CC._hasDelayOcurred = CC._hasDelayOcurred || false
+CC._hasDelayOccurred = CC._hasDelayOccurred || false
 CC._startCheckingId = CC._startCheckingId || undefined
 
 /**
@@ -542,7 +542,7 @@ const startObserving = () => {
 const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // Three states possible here.  First, the delay has already occurred.  If so,
   // pass through to pumpCosmeticFilterQueues immediately.
-  if (CC._hasDelayOcurred === true) {
+  if (CC._hasDelayOccurred === true) {
     pumpCosmeticFilterQueuesOnIdle()
     return
   }
@@ -554,7 +554,7 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // Third / final possibility, this is this the first time this has been
   // called, in which case set up a timer and quit
   CC._startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
-    CC._hasDelayOcurred = true
+    CC._hasDelayOccurred = true
     if (!genericHide) {
       startObserving()
     }

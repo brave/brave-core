@@ -305,7 +305,7 @@
     Error installing Linux application
   </message>
   <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_ERROR_DESCRIPTION" desc="In the File Manager, the dialog message when a Linux application installation fails.">
-    An error occured during installation of your Linux application.
+    An error occurred during installation of your Linux application.
   </message>
 
   <message name="IDS_FILE_BROWSER_GALLERY_NO_IMAGES" desc="In the Gallery, the message that there are no images in this directory.">

@@ -34,7 +34,7 @@ fn main() {
           println!("---- plain text ---");
           println!("{}", product.text);
       },
-      Err(_) => println!("error occured"),
+      Err(_) => println!("error occurred"),
   }
 }
 
