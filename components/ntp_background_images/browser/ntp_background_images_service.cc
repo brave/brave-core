@@ -211,7 +211,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     // initial component downloading is in-progress
     // So, We will try initialization again.
     // If referral code is non empty, that means browser is shutdown after
-    // getting referal code. In this case, we should start downloading mapping
+    // getting referral code. In this case, we should start downloading mapping
     // table.
     if ((local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
          local_pref_->GetBoolean(kReferralInitialization)) &&
