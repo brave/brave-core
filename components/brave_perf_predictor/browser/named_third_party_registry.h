@@ -28,7 +28,7 @@ class NamedThirdPartyRegistry : public KeyedService {
   NamedThirdPartyRegistry& operator=(const NamedThirdPartyRegistry&) = delete;
 
   // Parse the provided mappings (in JSON format), potentially discarding
-  // entities not relevant to the bandwith prediction model (i.e. those not
+  // entities not relevant to the bandwidth prediction model (i.e. those not
   // seen in training the model).
   bool LoadMappings(const base::StringPiece entities, bool discard_irrelevant);
   // Default initialization - asynchronously load from bundled resource
