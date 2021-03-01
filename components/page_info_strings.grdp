@@ -77,7 +77,7 @@
   <message name="IDS_PAGE_INFO_MIXED_CONTENT_DETAILS" desc="A short paragraph explaining a partially insecure site to the user.">
     Attackers might be able to see the images you’re looking at on this site and trick you by modifying them.
   </message>
-  <message name="IDS_PAGE_INFO_LEGACY_TLS_DETAILS" desc="A short paragraph explaining to the user a site that uses deprecated security configrations.">
+  <message name="IDS_PAGE_INFO_LEGACY_TLS_DETAILS" desc="A short paragraph explaining to the user a site that uses deprecated security configurations.">
     This site uses an outdated security configuration, which may expose your information (for example, passwords or credit card numbers) when it is sent to this site.
   </message>
   <message name="IDS_PAGE_INFO_NOT_SECURE_DETAILS" desc="A short paragraph explaining a non-secure site to the user.">
