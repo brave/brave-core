@@ -4,6 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 (function() {
+    if (window.ethereum) {
+      return
+    }
+
     window.ethereum = {
       request: function(obj) {
         brave_provider_handler.request(obj)

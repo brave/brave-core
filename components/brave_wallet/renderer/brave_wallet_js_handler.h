@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_JS_HANDLER_H_
 
+#include <string>
+
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
@@ -14,7 +17,7 @@ namespace brave_wallet {
 
 class BraveWalletJSHandler {
  public:
-  BraveWalletJSHandler(content::RenderFrame* render_frame);
+  explicit BraveWalletJSHandler(content::RenderFrame* render_frame);
   ~BraveWalletJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
@@ -29,11 +32,15 @@ class BraveWalletJSHandler {
                             v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
+  bool EnsureConnected();
 
   // Functions to be called from JS
   void Request(const std::string& input);
 
+  void OnRequest(const int status, const std::string& response);
+
   content::RenderFrame* render_frame_;
+  mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
 };
 
 }  // namespace brave_wallet

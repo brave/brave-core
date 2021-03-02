@@ -20,7 +20,7 @@ namespace brave_wallet {
 class BraveWalletRenderFrameObserver
     : public content::RenderFrameObserver {
  public:
-  BraveWalletRenderFrameObserver(content::RenderFrame* render_frame);
+  explicit BraveWalletRenderFrameObserver(content::RenderFrame* render_frame);
   ~BraveWalletRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.

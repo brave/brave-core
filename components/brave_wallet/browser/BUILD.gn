@@ -1,0 +1,15 @@
+import("//build/config/features.gni")
+
+source_set("browser") {
+  sources = [
+    "brave_wallet_provider.cc",
+    "brave_wallet_provider.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet",
+    "//brave/components/brave_wallet/common:mojom",
+    "//components/content_settings/core/browser",
+  ]
+}

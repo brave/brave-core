@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
 
-#include <string>
-
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated_map.h"
@@ -32,7 +30,7 @@ std::string LoadDataResource(const int id) {
   return resource_bundle.GetRawDataResource(id).as_string();
 }
 
-}
+}  // namespace
 
 namespace brave_wallet {
 
@@ -42,9 +40,19 @@ BraveWalletJSHandler::BraveWalletJSHandler(
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(kBraveWalletScriptGenerated[0].value);
   }
+  EnsureConnected();
 }
 
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
+
+bool BraveWalletJSHandler::EnsureConnected() {
+  if (!brave_wallet_provider_.is_bound()) {
+    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+        brave_wallet_provider_.BindNewPipeAndPassReceiver());
+  }
+
+  return brave_wallet_provider_.is_bound();
+}
 
 void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
     v8::Local<v8::Context> context) {
@@ -102,6 +110,17 @@ void BraveWalletJSHandler::BindFunctionToObject(
 }
 
 void BraveWalletJSHandler::Request(const std::string& input) {
+  if (!EnsureConnected())
+    return;
+
+  brave_wallet_provider_->Request(
+    input,
+    base::BindOnce(&BraveWalletJSHandler::OnRequest,
+                   base::Unretained(this)));
+}
+
+void BraveWalletJSHandler::OnRequest(const int status,
+                                     const std::string& response) {
 }
 
 void BraveWalletJSHandler::InjectScript() {

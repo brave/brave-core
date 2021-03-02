@@ -202,6 +202,8 @@ source_set("browser_process") {
     deps += [
       "brave_wallet",
       "//brave/components/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common:mojom",
     ]
   }
 
