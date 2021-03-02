@@ -32,15 +32,16 @@ BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
+
 EXCLUDES = [
-  './CPPLINT.cfg',
-  '_(unit|browser)test(_mac)?.cc',
-  'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
-  'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
-  'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
-  'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
-  './chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
-  './chrome/installer/linux/common/brave-browser/chromium-browser.info',
+    'CPPLINT.cfg',
+    '_(unit|browser)test(_mac)?.cc',
+    'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
+    'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
+    'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
+    'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
+    'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
+    'chrome/installer/linux/common/brave-browser/chromium-browser.info',
 ]
 
 
@@ -162,12 +163,22 @@ def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
     for dir_path, _dirnames, filenames in os.walk(BRAVE_CHROMIUM_SRC):
         for filename in filenames:
             full_path = os.path.join(dir_path, filename)
-            if include_regexp and not re.search(include_regexp, full_path):
+
+            # Strip the BRAVE_CHROMIUM_SRC prefix to match against the
+            # list of relative paths to be included and/or excluded
+            relative_path = full_path.replace(BRAVE_CHROMIUM_SRC, '')[1:]
+
+            # Normalize back slashes to forward slashes just in case we're in
+            # Windows before trying to match them against a regular expression.
+            normalized_path = relative_path.replace('\\', '/')
+            if include_regexp and not re.search(include_regexp, normalized_path):
                 continue
-            if exclude_regexp and re.search(exclude_regexp, full_path):
+            if exclude_regexp and re.search(exclude_regexp, normalized_path):
                 continue
-            # We need a path relative to |dir|, not an absolute one.
-            result.append(full_path.replace(BRAVE_CHROMIUM_SRC, '')[1:])
+
+            # Append the OS-dependant relative path instead of the normalized
+            # one as that's what functions using this list of paths expect.
+            result.append(relative_path)
 
     return result
 
