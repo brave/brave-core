@@ -49,7 +49,7 @@ def do_check_includes(override_filepath):
     Checks if |override_filepath| uses the correct number of ".." in the
     include statement for the original file.
     """
-    with open(override_filepath, 'r') as override_file:
+    with open(override_filepath, mode='r', encoding='utf-8') as override_file:
         override_filename = os.path.basename(override_filepath)
         override_dirpath = os.path.dirname(override_filepath)
 
@@ -92,7 +92,7 @@ def do_check_defines(override_filepath, original_filepath):
     Finds `#define TARGET REPLACEMENT` statements in |override_filepath| and
     attempts to find the <TARGET> in the |original_filepath|.
     """
-    with open(override_filepath, 'r') as override_file:
+    with open(override_filepath, mode='r', encoding='utf-8') as override_file:
         for line in override_file:
             line_match = re.search(r'^#define\s*(\S*)\s*(\S*)', line)
             if not line_match:
