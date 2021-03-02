@@ -28,9 +28,9 @@ import sys
 Look for potential problems in chromium_src overrides.
 """
 
-SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-CHROMIUM_SRC = os.path.join(SOURCE_ROOT, 'chromium_src')
-SRC_DIR = os.path.abspath(os.path.join(SOURCE_ROOT, '..', '..', 'src'))
+BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
+CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
 EXCLUDES = [
   './CPPLINT.cfg',
@@ -144,12 +144,12 @@ def get_generated_builddir(build, target_os=None, target_arch=None):
     """
     build_dirname = '_'.join(filter(None,
                                     [target_os, build, target_arch]))
-    return os.path.join(SRC_DIR, 'out', build_dirname, 'gen')
+    return os.path.join(CHROMIUM_SRC, 'out', build_dirname, 'gen')
 
 
 def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
     """
-    Return a list of paths pointing to the files in |CHROMIUM_SRC|
+    Return a list of paths pointing to the files in |BRAVE_CHROMIUM_SRC|
     after filtering the results according to the |include_regexp| and the
     |exclude_regexp| regexp rules, where |include_regexp| takes precedence
     over |exclude_regexp|.
@@ -159,7 +159,7 @@ def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
     if not include_regexp and not exclude_regexp:
         return result
 
-    for dir_path, _dirnames, filenames in os.walk(CHROMIUM_SRC):
+    for dir_path, _dirnames, filenames in os.walk(BRAVE_CHROMIUM_SRC):
         for filename in filenames:
             full_path = os.path.join(dir_path, filename)
             if include_regexp and not re.search(include_regexp, full_path):
@@ -167,7 +167,7 @@ def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
             if exclude_regexp and re.search(exclude_regexp, full_path):
                 continue
             # We need a path relative to |dir|, not an absolute one.
-            result.append(full_path.replace(CHROMIUM_SRC, '')[1:])
+            result.append(full_path.replace(BRAVE_CHROMIUM_SRC, '')[1:])
 
     return result
 
@@ -191,18 +191,18 @@ def main(args):
                                          options.arch)
 
     # Check that the required directories exist.
-    for dir in [SOURCE_ROOT, gen_buildir]:
+    for dir in [BRAVE_SRC, gen_buildir]:
         if not os.path.isdir(dir):
             print("ERROR: {} is not a valid directory.".format(dir))
             return 1
 
     # Change into the chromium_src directory for convenience.
-    os.chdir(CHROMIUM_SRC)
+    os.chdir(BRAVE_CHROMIUM_SRC)
 
     # Check non-GRIT overrides.
     src_overrides = filter_chromium_src_filepaths(
         exclude_regexp='|'.join(EXCLUDES + ['python_modules|.*grit.*']))
-    do_check_overrides(src_overrides, SRC_DIR, True)
+    do_check_overrides(src_overrides, CHROMIUM_SRC, True)
 
     # Check GRIT overrides.
     grit_overrides = filter_chromium_src_filepaths(include_regexp='.*grit.*')
