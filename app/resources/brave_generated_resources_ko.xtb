@@ -14,7 +14,7 @@
 <translation id="984275831282074731">결제 수단</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
-<translation id="4726634924419692905">사이트가 언제 컴퓨터에 Widevine을 설치할지 묻습니다.</translation>
+<translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="6241402707160226266">Tor와 함께하는 개인정보 보호 창</translation>
 <translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
 <translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
@@ -50,7 +50,7 @@
 <translation id="5448570825852364919">빈 페이지</translation>
 <translation id="5919424224662539292">새 탭 페이지에 표시되는 배경 이미지와 위젯을 사용자 지정합니다</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
-<translation id="8511502469534942133">이 사이트 대상 새 Tor 연결</translation>
+<translation id="6924909138923993900">이 사이트용 새 Tor 연결</translation>
 <translation id="4734294903299549345">Tor 비공개 창 종료</translation>
 <translation id="8612763432858587652">비공개 창 종료</translation>
 <translation id="8760415064721320867">Tor와 함께하는 비공개 윈도우</translation>
@@ -80,6 +80,9 @@
 <translation id="7390783310074170337">기본 보기</translation>
 <translation id="130615081792797568">간단한 보기</translation>
 <translation id="2360360976480535628">고급 보기</translation>
+<translation id="2133317862976486547">트래커 &amp; 광고 차단</translation>
+<translation id="4385707520896576447">쿠키 차단</translation>
+<translation id="4978786495456601191">지문 차단</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
 <translation id="4395160081588457461">보고 느끼기</translation>
@@ -88,9 +91,12 @@
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
+<translation id="4078738236287221428">강력</translation>
 <translation id="7740996059027112821">표준</translation>
 <translation id="4176463684765177261">사용 중지</translation>
+<translation id="5770288601196774623">사이트 간에서만</translation>
 <translation id="3587482841069643663">전체</translation>
+<translation id="5533533363827555308">염격, 사이트가 작동하지 않을 수 있음</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8798099450830957504">기본값</translation>
@@ -98,13 +104,23 @@
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
+<translation id="5565355416171743213">동기화 시작</translation>
 <translation id="4332558599726753990">동기화 설정</translation>
+<translation id="2187778349654214731">시작하시려면 동기화를 계획한 모든 장치들에 브레이브가 설치되어 있어야 합니다. 그리고 동기화 코드로 모두 안전하게 연동하세요.</translation>
+<translation id="7530575064080939974">동기화 기기 관리</translation>
+<translation id="7575156386943878014">동기화 관리자</translation>
 <translation id="1755198127524719638">동기화 설정</translation>
 <translation id="7558480201297099157">장치 간 동기화하고 싶은 정보를 관리합니다. 이 설정은 이 장치에만 영향을 끼칩니다.</translation>
+<translation id="7731928563672901833">기기 목록</translation>
 <translation id="28332161031213248">아래의 장치 목록에 귀하의 동기화 체인의 모든 장치들이 포함되어 있습니다. 각 장치들은 모든 다른 장치들로부터 관리될 수 있습니다.</translation>
 <translation id="1313162974556054106">장치 이름</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (이 기기)</translation>
+<translation id="3686835020221422649">마지막 활성화</translation>
 <translation id="1181037720776840403">삭제</translation>
+<translation id="2569646144216067185">글자 수: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">복사됨!</translation>
+<translation id="8802630444265810662">동기화 코드를 전달하기 위해 모바일 기기로 스캔해야 하는 QR코드</translation>
+<translation id="6221331245829088299">QR코드를 표시하던 중 오류가 발생했습니다. 새로고침하고 다시 시도해주세요.</translation>
 <translation id="298546024891487702">시작하시려면 동기화를 계획한 모든 장치들에 브레이브가 설치되어 있어야 합니다. 그들을 한데 묶으시려면, 귀하께서 안전하게 모든 장치들을 함께 연결할 때 사용하게 돌 동기화 체인을 시작하세요.</translation>
 <translation id="6200528822592747640">새 동기화 체인 시작하기</translation>
 <translation id="5184726904895809379">저는동기화 코드를 갖고 있습니다</translation>
@@ -125,8 +141,13 @@
 <translation id="5734745018569675530">아래 양식에 귀하께서 제공받은 동기화 체인 코드 단어들을 입력하세요.</translation>
 <translation id="1061533051865606843">새 장치 추가하기</translation>
 <translation id="5093410893656857925">장치 형태를 고르세요</translation>
+<translation id="4581190919849683048">어떤 유형의 장치에 동기화를 원하시나요?</translation>
+<translation id="4112587618563511470">잘못된 동기화 코드입니다. 확인하고 다시 시도해주세요.</translation>
 <translation id="2339730291919608488">동기화 체인에서 나가기</translation>
+<translation id="115699408012835975">동기화를 초기화하면 다른 기기에서 동기화 코드를 다시 입력해야 동기화를 진행할 수 있습니다. 이대로 계속하시겠어요?</translation>
 <translation id="339086854515247923">동기화 체인에서 선택한 장치를 정말 삭제하시겠습니까?</translation>
+<translation id="3396347744975515056">Brave Sync가 업그레이드되었고 설정이 필요합니다</translation>
+<translation id="7473245612074035141">설정 시작하기</translation>
 <translation id="3411013544209536575">도움말 팁</translation>
 <translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
 <translation id="1807246157184219062">라이트</translation>
@@ -211,6 +232,21 @@
 <translation id="5318548116565208315">아바타 봉봉 콘</translation>
 <translation id="1959966725083452288">아바타 봉봉 로열</translation>
 <translation id="2039034364578911089">아바타 봉봉 닌자</translation>
+<translation id="239760341987199724">Brave을 기본 브라우저로 설정</translation>
+<translation id="9185422039067880535">Brave 브라우저가 현재 기본 브라우저로 설정되어 있지 않습니다.
+주요 뉴스 사이트에서 최대 6배 빠른 웹 검색을 위해 Brave를
+기본 브라우저로 설정하세요.</translation>
+<translation id="9218430445555521422">기본 브라우저로 설정</translation>
+<translation id="3479552764303398839">나중에</translation>
+<translation id="4877147287319222750">사이드바에 추가</translation>
+<translation id="5404213409401164238">사이드바 표시</translation>
+<translation id="7561196759112975576">항상</translation>
+<translation id="7060352228894039151">온마우스오버</translation>
+<translation id="407173827865827707">클릭 시</translation>
+<translation id="7961015016161918242">사용하지 않음</translation>
+<translation id="59174027418879706">사용 설정됨</translation>
+<translation id="8258999165172757081">추가됨</translation>
+<translation id="6959315322491671328">마우스 오른쪽 버튼을 클릭하여 제거</translation>
 <translation id="1872784258300710671">Brave는 비밀이 완전히 보장되는 제품 애널리틱스를 사용하여 특정 기능의 전체 사용량을 추정합니다</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="4394049700291259645">사용 중지</translation>
@@ -221,8 +257,8 @@
 <translation id="4823406846571523661">암호 지갑 설정</translation>
 <translation id="8199661191594897555">암호 지갑을 시작하고 새로고침</translation>
 <translation id="8428213095426709021">설정</translation>
-<translation id="3110802155897279216">IPFS 리소스가 감지되었습니다. Brave가 로컬 IPFS 노드를 이용하여 이를 로드하도록 하시겠습니까?</translation>
-<translation id="2366908098700680611">IPFS 활성화</translation>
+<translation id="1664718502100303670">지갑 설정</translation>
+<translation id="965566669123544695">IPFS 설정</translation>
 <translation id="72868071984333667">IPFS와 프라이버시에 대해 더 알아보기</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
 <translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
@@ -241,4 +277,6 @@
 <translation id="8487693399751278191">지금 북마크 가져오기...</translation>
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
+<translation id="1224064034972923114">자동으로 충돌 보고서를 보내 Brave 개선 지원</translation>
+<translation id="3738833060602717053">자동으로 충돌 보고서를 보내 <ph name="PRODUCT_NAME"/> 개선 지원</translation>
 </translationbundle>

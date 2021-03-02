@@ -61,6 +61,7 @@
 <translation id="954001034349395856">همه منابع</translation>
 <translation id="8890516388109605451">منابع</translation>
 <translation id="5158129253322921540">محتوا از <ph name="PUBLISHER_NAME"/> غیرفعال شود</translation>
+<translation id="3189348785087463371">ارتقایافته</translation>
 <translation id="1776831331757823105">ساعت</translation>
 <translation id="4643117005422448078">سایت‌های برتر</translation>
 <translation id="7791543448312431591">افزودن</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">رمزارز در Binance را مستقیماً در مرورگر خود معامله کنید.</translation>
 <translation id="2166494527623220386">رمزارز در Gemini را مستقیماً در مرورگر خود معامله کنید.</translation>
 <translation id="7191394989411626168">با خاموش کردن کارت‌ها، همه کارت‌هایی که در حال حاضر قابل مشاهده هستند پنهان خواهند شد. با این وجود، ممکن است همچنان از کارت‌های جدید مطلع شوید.</translation>
+<translation id="5655621391922317800">کیف پول‌های رمزنگاری</translation>
+<translation id="8820817407110198400">نشانک‌ها</translation>
+<translation id="1644574205037202324">سابقه</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8730621377337864115">تمام</translation>
 <translation id="6248988683584659830">تنظیمات جستجو</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">شاید بعداً</translation>
 <translation id="5187052478998910855">به مرور اطلاعات مربوط به Rewards نیاز دارید؟</translation>
 <translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
+<translation id="3115702351969988294">چندوقت یکبار می‌خواهید آگهی‌ها را ببینید؟</translation>
+<translation id="7532131110478098401">(آگهی در هر ساعت)</translation>
+<translation id="2951964054390325080">ماهانه چقدر می‌خواهید از تولیدکنندگان محتوای دلخواهتان حمایت مالی کنید؟</translation>
+<translation id="3164498053837913829">(از درآمد آگهی‌هایتان)</translation>
 <translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
 <translation id="6318696841371191107">گشتی سریع بزنید</translation>
 <translation id="2404165674840145940">انعام دادن با Brave rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">انعام دادن روشی است برای تشویق شخصی و پشتیبانی از محتوا یا سازندگان مورد علاقه‌تان. انعام بدهید!</translation>
 <translation id="7509452925943421624">با توکن‌ها چه‌کارهایی می‌توانید انجام دهید؟</translation>
 <translation id="5876169128756792273">توکن‌ها را فراتر از پشتیبانی از سازندگان می‌توان استفاده کرد. با پیوستن فروشندگان به تیم، می‌توانید محتوای دیجیتال و کالاهای دیگر خریداری کنید.</translation>
+<translation id="1402530520078693620">در پایان، بیایید تنظیمات اولیه شما را راه‌اندازی کنیم</translation>
+<translation id="3494356595346329740">بعداً می‌توانید این مورد را تغییر دهید.</translation>
 <translation id="827315274423079662">وو هوو، کاملاً آماده هستید!</translation>
 <translation id="8268038362451312235">با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!</translation>
 <translation id="5094577350232361255">درباره</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">درآمد تخمینی این ماه تاکنون</translation>
 <translation id="5235444069025581717">انعام و کمک‌های این ماه</translation>
 <translation id="1210965535849006928">مطالبه پاداش‌های من</translation>
-<translation id="8092889639392847252">برای مشاهده این تصویر پس‌زمینه حمایت‌شده پول دریافت کنید.</translation>
-<translation id="7914961605852877459">برای مطالبه سهم خود، Brave Ads را روشن کنید. همچنین می‌توانید <ph name="LINK_BEGIN"/>پنهان کردن تصاویر حمایت‌شده<ph name="LINK_END"/> را انتخاب کنید.</translation>
+<translation id="4609518959946843710">برای بازدید از این تصویر پس‌زمینه دارای حامی مالی، پاداش دریافت کنید.</translation>
+<translation id="5311968438376723685">برای مطالبه سهم خود، «آگهی‌های خصوصی Brave» را روشن کنید. همچنین می‌توانید <ph name="LINK_BEGIN"/>پنهان کردن تصاویر دارای حامی مالی<ph name="LINK_END"/> را انتخاب کنید.</translation>
 <translation id="8568666589217601917">کارتان عالی بود!</translation>
 <translation id="764235488372037377">پاداش‌های شما از «آگهی‌ها» اینجا است</translation>
 <translation id="7091215606170476659">شما دارای هدیه UGP از Brave هستید.</translation>
 <translation id="6759185676704303656">برای مشاهده این تصویر پس‌زمینه پول دریافت می‌کنید.</translation>
 <translation id="1749232564087138444">درباره تصاویر حمایت‌شده در Brave Rewards،‏ <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="6113004497629356998">پنهان کردن تصاویر حمایت‌شده</translation>
+<translation id="8587285254008006694">به‌عنوان بخشی از این انتقال، ویژگی‌های کمک مالی و انعام‌دهی
+مرورگرتان از 13 مارس موقتاً در دسترس نخواهد بود، و
+تا‌زمانی‌که در آوریل به سیستم جدید به‌روزرسانی نکنید، در موجودی BAP شما 0.0
+نمایش داده می‌شود. پس از استفاده از سیستم جدید، با توکن‌های جدید شروع خواهید
+ کرد!</translation>
+<translation id="6232491755501685494">Brave Rewards در ژاپن در حال جابجایی به یک سیستم جدید است!</translation>
 <translation id="3787061634640932557">ویرایش کارت‌ها</translation>
 <translation id="4925543565930352284">با کلیک کردن روی {{title}}، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
 <translation id="5977237145327845546">یک تماس تصویری خصوصی با دوستان و همکاران خود شروع کنید.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">قیمت واحد</translation>
 <translation id="4763179765154524864">کل هزینه</translation>
 <translation id="8851480289992540512">مجموع دریافت‌شده</translation>
-<translation id="5655621391922317800">کیف پول‌های رمزگذاری‌شده</translation>
 <translation id="616639131065447379">به «کیف پول‌های رمزگذاری‌شده Brave» خوش آمدید</translation>
 <translation id="1740464057879304704">«کیف پول‌های رمزگذاری‌شده» به شما امکان می‌دهند با رمزارز و دارایی‌های مربوط به آن در Brave کار کنید. «کیف پول‌های رمزگذاری‌شده» از توکن‌های «اتریم»، مانند ETH و BAT و همچنین از موارد قابل وصول پشتیبانی می‌کنند و به شما امکان می‌دهند با برنامه‌ها و سایر قراردادهای هوشمند کار کنید. همه این قابلیت‌ها برای افرادی طراحی شده‌اند که با «اتریم» و سایر سیستم‌های زنجیره بلوکی آشنا هستند یا برای یادگیری در مورد آنها هیجان‌زده هستند.</translation>
 <translation id="4855440621031541830">تنها در صورتی از «کیف پول‌های رمزگذاری‌شده» استفاده کنید که می‌پذیرید در قبال تمام خطراتی که این استفاده در پی دارد، تنها شما مسئول هستید و می‌پذیرید که Brave Software در قبال هرگونه ضرر، شامل ضررهای ضمنی یا تبعی که ممکن است در نتیجه این استفاده بر شما تحمیل شود، هیچ‌گونه مسئولیت یا تعهدی ندارد.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">خاموش کردن تندخوان</translation>
 <translation id="9020818404803201080">همتایان متصل‌شده:</translation>
 <translation id="2903493209154104877">آدرس‌ها</translation>
+<translation id="3207122385716480167">آمار مخزن</translation>
+<translation id="2595187693729756455">اطلاعات گره</translation>
 <translation id="5789886980848929155">وضعیت گره IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">دروازه</translation>
 <translation id="2551123942222622809">دسته خطاها</translation>
-<translation id="3967335629471284781">راه‌اندازی شد</translation>
+<translation id="5201810533706869030">موارد</translation>
+<translation id="8028993641010258682">اندازه</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">مسیر</translation>
+<translation id="2892680660204660712">شناسه همتا</translation>
+<translation id="7536543993364605970">نسخه نماینده</translation>
+<translation id="3693482323085649439">گره در حال اجرا است</translation>
+<translation id="6315833555896070573">گره در حال اجرا نیست</translation>
 <translation id="1272079795634619415">توقف</translation>
+<translation id="5895138241574237353">راه‌اندازی مجدد</translation>
 <translation id="6762417584993757344">نصب نشده است</translation>
+<translation id="4159076046325416152">در حال نصب IPFS…</translation>
+<translation id="3854747677478661601">اجرای زباله‌روبی</translation>
+<translation id="7376842608449050673">خطای زباله‌روبی</translation>
 <translation id="8428368469058794536">سرویس IPFS</translation>
+<translation id="6776260067907986254">گره من</translation>
+<translation id="8523162996646111972">(جزئيات)</translation>
+<translation id="6121825639998459476">نصب و شروع</translation>
+<translation id="72868071984333667">درباره IPFS و حریم‌خصوصی بیشتر بدانید</translation>
+<translation id="1886162073868201257">خطای راه‌اندازی سرویس  IPFS</translation>
 <translation id="5357895013476183089">IPFS متصل نیست</translation>
 <translation id="1196783328762622576">بارگیری منابع IPFS با استفاده از گره محلی ممکن نیست</translation>
 <translation id="1141556610026845297">استفاده از گره IPFS محلی برای بار کردن منابع IPFS درخواست‌شده ممکن نیست. برای اینکه در عوض از دروازه عمومی استفاده شود و در آینده به‌طور خودکار به دروازه عمومی برگردانده شوید، روی «ادامه» کلیک کنید.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">پیشرفته</translation>
 <translation id="9096577886148726047">پنهان‌سازی پیشرفته</translation>
 <translation id="7716995370131231171">Brave نمی‌تواند منابع IPFS درخواست‌شده را بارگیری کند، چون یا گره محلی شروع نشده است یا در حال حاضر هیچ همتای متصلی در دسترس نیست. اگر «ادامه» را انتخاب کنید، هرگاه استفاده از گره محلی ممکن نباشد، Brave به‌طور خودکار به دروازه عمومی پیش‌فرض برگردانده خواهد شد. همیشه می‌توانید این رفتار را در تنظیمات Brave تغییر دهید.</translation>
+<translation id="8026038288183400906">اولویت IPFS</translation>
+<translation id="2058855456574089690">تنظیم اولویت IPFS</translation>
+<translation id="4447758690649023734">استفاده از گره محلی</translation>
+<translation id="8148464361648742409">استفاده از دروازه عمومی</translation>
+<translation id="5123478056123923857">IPFS (سیستم فایل InterPlanetary) شبکه عمومی برای ارسال و ذخیره‌سازی داده همتابه‌همتا است. ملاحظات حریم‌خصوصی این پروتکل با HTTP(ها) تفاوت دارد.</translation>
+<translation id="5410952114182173389">رایانه‌تان به شبکه عمومی کمک می‌کند، اما نشانی IP شما یا هر محتوایی که درخواست یا ارائه می‌کنید در معرض نمایش قرار نمی‌گیرد. محتوایی که از طریق IPFS درخواست می‌کنید، قبل از ارائه به شما تأیید می‌شود.</translation>
+<translation id="8664689531113048642">از نشانی IP و محتوایی که از ناظرهای شخص ثالث بالقوه درخواست می‌کنید، و نه اپراتور دروازه عمومی، محافظت می‌کند. اپراتور دروازه مسئولیت دارد مطمئن شود محتوایی که از طریق دروازه به شما ارائه می‌شود همان محتوای درخواستی شما است. همچنین، رایانه شما به شبکه عمومی IPFS کمک نمی‌کند.</translation>
+<translation id="3977809385703587108">می‌توانید اولویت‌هایتان را اینجا دوباره تغییر دهید</translation>
+<translation id="3340978935015468852">تنظیمات</translation>
+<translation id="4148957013307229264">در حال نصب…</translation>
+<translation id="6057992164469678163">در انتظار همتایان…</translation>
+<translation id="1902096227388293745">هیچ همتایی در دسترس نیست، در حال امتحان مجدد... (<ph name="ATTEMPTS_NUMBER"/> فرصت دیگر دارید)</translation>
+<translation id="1675751799495331928">تعداد تلاش‌ها به حداکثر مجاز رسیده است، دوباره بعداً امتحان کنید.</translation>
+<translation id="4499666752625407848">در طول به‌روزرسانی خطایی رخ داد.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">بازارها را مشاهده کنید و از crypto.com کریپتو بخرید.</translation>
 <translation id="4292334826913000023">نمایش قیمت</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">جفت‌های پشتیبانی‌شده</translation>
 <translation id="1164622162816276433">حجم 24 ساعته</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
+<translation id="3745016858329272300">اطلاعات عمومی</translation>
+<translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
+<translation id="216855356675970168">نسخه Tor</translation>
+<translation id="2976625104959685176">شناسه پردازش Tor</translation>
+<translation id="6951743416068151209">URI پراکسی Tor</translation>
+<translation id="1671503397662036257">وضعیت اتصال Tor</translation>
+<translation id="6024292492796847324">پیشرفت مقداردهی اولیه Tor</translation>
 </translationbundle>

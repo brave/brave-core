@@ -26,7 +26,7 @@
 <translation id="9148058034647219655">Ieși</translation>
 <translation id="520895744850022668">HTTPS peste tot</translation>
 <translation id="8710614491157212477">Deschide site-urile acceptate folosind HTTPS în loc de HTTP, atunci când este posibil</translation>
-<translation id="8387201461264842096">Adăugați bloc</translation>
+<translation id="8387201461264842096">Blocare reclame</translation>
 <translation id="1934885595886623674">Împiedică încărcarea reclamelor</translation>
 <translation id="5787084571334399599">Previne amprentarea browserului</translation>
 <translation id="7459000603787995422">Închideți paginile la ieșire</translation>
@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Începeți să folosiți Recompensele Brave</translation>
 <translation id="48520986898237073">Continuați spre portofel</translation>
 <translation id="3570367516044491911">Setați ca browser implicit</translation>
-<translation id="7493053924837150477">Selectați browserul Brave din listă și apăsați pe 'Întotdeauna'</translation>
+<translation id="19715420010996093">Selectați Brave Browser și atingeți „Întotdeauna”</translation>
 <translation id="3546439402724649282">Brave este setat deja ca browser implicit.</translation>
 <translation id="8389661903259423907">Ați setat deja un browser implicit. Puteți să schimbați browserul implicit din setările aplicației.</translation>
 <translation id="7091885296442320770">Brave este foarte rapid</translation>
@@ -206,21 +206,21 @@ lună...</translation>
 <translation id="2590683710114839102">Pe computerul dvs., navigați la Setările Brave &gt; Sincronizare. Alegeți "Introducere cod lanț sincronizare".</translation>
 <translation id="65315202420929965">Scanați acest cod de sincronizare</translation>
 <translation id="6764016175302339802">Tratați acest cod ca o parolă. Dacă îl obține cineva, acea persoană poate să citească și să modifice datele sincronizate.</translation>
-<translation id="6707003343517029414">Pe computerul țintă, navigați la sincronizarea Brave în setări și dați clic pe butonul "Am un cod de sincronizare".\nIntroduceți lanțul de sincronizare din cuvinte cod de mai jos.</translation>
+<translation id="6707003343517029414">Pe computerul țintă, navigați la sincronizarea Brave în setări și dați clic pe butonul "Am un cod de sincronizare".\nIntroduceți cuvintele codului lanțului de sincronizare mai jos.</translation>
 <translation id="2731921493694251495">Introduceți codul lanțului de sincronizare</translation>
 <translation id="2175927920773552910">Cod QR</translation>
-<translation id="8653433343015102968">Cuvinte cod</translation>
+<translation id="8653433343015102968">Cuvintele codului</translation>
 <translation id="8624315169751085215">Copiază în Clipboard</translation>
 <translation id="8730621377337864115">Efectuat</translation>
 <translation id="6174119914106813304">SINCRONIZARE PE ACEST DISPOZITIV</translation>
 <translation id="6776430845975754238">Modificarea setărilor va afecta doar datele pe care acest dispozitiv le partajează cu altele.</translation>
 <translation id="1061533051865606843">Adaugă Dispozitiv Nou</translation>
-<translation id="7539985410310934287">Introduceți cuvintele cod</translation>
+<translation id="7539985410310934287">Introduceți cuvintele codului</translation>
 <translation id="2886391679017857869">Folosind dispozitivul existent sincronizat, deschideți Setările Brave și navigați la Setări &gt; Sincronizare. Alegeți "Adaugă dispozitiv nou" apoi "Afișează cuvinte cod în schimb".</translation>
 <translation id="8131740175452115882">Confirmați</translation>
 <translation id="4973653569293835178">Voi folosi camera mea...</translation>
 <translation id="326454632686131209">Sincronizare dispozitiv</translation>
-<translation id="327726072512457161">Ieșire setări</translation>
+<translation id="327726072512457161">Ieșire din setări</translation>
 <translation id="8050847734948770789">Activează recompense Brave</translation>
 <translation id="9187185473011056079">Am intrat!</translation>
 <translation id="8185825081026121627">Câștigați Basic Attention Token (BAT) pentru a viziona reclame Brave Rewards care păstrează confidențialitatea.</translation>
@@ -229,13 +229,17 @@ lună...</translation>
 <translation id="6393502589311632553">Arată reclame când Brave nu este utilizat</translation>
 <translation id="3349204812119681938">Resetați recompensele Brave</translation>
 <translation id="8782039523249932839">Aceasta va șterge portofelul Brave și va reseta toate datele despre recompensele Brave</translation>
-<translation id="6810078320346589989">Creați un semn de carte</translation>
-<translation id="3396347744975515056">S-a făcut upgrade pentru Brave Sync și necesită configurare</translation>
+<translation id="6810078320346589989">Creați un marcaj</translation>
+<translation id="3396347744975515056">S-a făcut o actualizare pentru Brave Sync și necesită configurare</translation>
 <translation id="7473245612074035141">Începeți configurarea</translation>
 <translation id="1872784258300710671">Brave folosește statistici de produs complet private pentru a estima utilizarea totală a anumitor funcții</translation>
 <translation id="8712637175834984815">Am înțeles</translation>
 <translation id="4394049700291259645">Dezactivează</translation>
 <translation id="8446884382197647889">Aflați mai multe</translation>
+<translation id="2514300153301737214">Am detectat că opțiunea Brave Sync este activată; cu toate acestea, sincronizarea sistemului dvs. este dezactivată și nu va permite Brave să se sincronizeze. Apăsați pentru a deschide setările</translation>
+<translation id="7173114856073700355">Deschide Setările</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Nu mai afișa</translation>
 <translation id="597993392929850353">Licență Brave</translation>
 <translation id="6336451774241870485">Pagină nouă privată</translation>
 <translation id="6199596294742117349">Aceasta este o Filă privată</translation>
@@ -243,8 +247,8 @@ lună...</translation>
 <translation id="5789441016350810005">Brave Ads trimise atunci când browser-ul este în fundal</translation>
 <translation id="3690140184638701871">Contribuții și bacșișuri</translation>
 <translation id="844921671123185605">Bacșișurile dvs. lunare au fost procesate!</translation>
-<translation id="3124090095880236567">Activare Ads</translation>
-<translation id="2975780980638932742">Brave Ads a sosit!</translation>
+<translation id="3124090095880236567">Activare Reclame</translation>
+<translation id="2975780980638932742">Reclamele Brave a sosit!</translation>
 <translation id="7541582550122501404">Contribuție în așteptare</translation>
 <translation id="8520059774736886747">Creator <ph name="PUBLISHER_NAME"/> verificat recent</translation>
 <translation id="7924320838799747606">Soldul dvs.</translation>
@@ -285,7 +289,7 @@ lună...</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="6239274080752256452">Retragere fonduri</translation>
 <translation id="8874184842967597500">Neconectat</translation>
-<translation id="3368922792935385530">Conectată</translation>
+<translation id="3368922792935385530">Conectat</translation>
 <translation id="4569155249847375786">Verificat</translation>
 <translation id="5358719431303818601">Deconectare neverificată</translation>
 <translation id="4241449868720191203">Deconectat verificat</translation>
@@ -343,9 +347,15 @@ lună...</translation>
 <translation id="5516010970279932133">Afișați site-urile sugerate în completarea automată</translation>
 <translation id="5370478469168390143">Salvați datele online</translation>
 <translation id="1118508688433541158">Navigați mai rapid și blocați reclamele cu Brave</translation>
-<translation id="915835519491851291">Tocmai ați blocat unele instrumente de urmărire și reclame.</translation>
+<translation id="6589609065569680305">Programele de urmărire și reclamele sunt blocate pe această pagină.</translation>
+<translation id="1283922192221545319">Brave Shields tocmai v-a protejat confidențialitatea.</translation>
 <translation id="3286927551967858325">Aruncați o privire</translation>
-<translation id="2929661208078053609">Frumos!</translation>
+<translation id="6227291358910554399">Reclamele sunt blocate în timp ce urmăriți videoclipuri pe acest website.</translation>
+<translation id="7802980684512102010">Videoclipurile fără reclame folosesc mai puține date.</translation>
+<translation id="2046475855484346614">Peste 10 programe de urmărire și reclame au fost blocate pe această pagină.</translation>
+<translation id="5806208250835099572">Brave Shields vă protejează confidențialitatea online pe fiecare site.</translation>
+<translation id="5617673581653540121">Conexiunea dvs. este acum criptată.</translation>
+<translation id="4055107796760496928">Dacă este disponibilă, Brave va trece automat la o conexiune securizată.</translation>
 <translation id="4776948189086901857">Brave funcționează oriunde</translation>
 <translation id="1606322780901645965">Descărcați Brave de pe brave.com pe laptop sau tabletă, pentru un web mai rapid și mai privat</translation>
 <translation id="8374242949413616101">Protecția confidențialității</translation>
@@ -456,7 +466,7 @@ lună...</translation>
 <translation id="3895246934788932488">Folosind Recompensele Brave, vă protejați confidențialitatea și ajutați la crearea unei rețele web mai bună pentru toată lumea. Și asta e minunat!</translation>
 <translation id="5705882733397021510">Înapoi</translation>
 <translation id="5140321319944305531">Haideți să facem un tur rapid</translation>
-<translation id="3808131693704413134">După ce primiți prima plată pentru reclame, puteți să vă întoarceți și să trimiteți tokenuri acestui creator!</translation>
+<translation id="2434574859640694129">După ce primiți prima plată din reclame, puteți să vă întoarceți și să trimiteți un bacșiș acestui creator!</translation>
 <translation id="207242986925259074">Tur rapid de actualizare</translation>
 <translation id="8342862030112839977">Prima plată de recompense va sosi până pe:</translation>
 <translation id="3769645103175790584">Câștigați tokenuri și trimiteți recompense creatorilor pentru conținutul de calitate în timp ce navigați. <ph name="QUICK_TOUR"/>.</translation>
@@ -482,4 +492,16 @@ lună...</translation>
 <translation id="6478996494082389936">date de analiză produs privat.</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
+<translation id="8401711613788729448">Deschideți toate linkurile cu Brave pentru a vă proteja confidențialitatea</translation>
+<translation id="3184805785843994538">Brave Shield blochează programele de urmărire și reclamele, economisește date și timp pe fiecare website pe care îl accesați.</translation>
+<translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
+<translation id="3479552764303398839">Nu acum</translation>
+<translation id="6232491755501685494">Brave Rewards din Japonia trece la un sistem nou!</translation>
+<translation id="7444515017164572362">Începând cu 13 martie, nu veți putea să folosiți BAP. Dar după ce
+        faceți actualizarea către noul sistem în aprilie, veți începe cu tokenuri noi!</translation>
+<translation id="8587285254008006694">Ca parte a acestei tranziții, funcțiile de trimitere de bacșiș și contribuire din
+        browser-ul dvs. vor fi indisponibile temporar începând cu 13 martie, iar
+        soldul dvs. BAP va afișa 0,0 până când faceți actualizarea către noul sistem
+        în aprilie. După ce veți intra în sistemul nou, veți începe cu
+        tokenuri noi!</translation>
 </translationbundle>

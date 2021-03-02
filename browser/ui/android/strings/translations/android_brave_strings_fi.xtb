@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Aloita Brave-palkintojen käyttö</translation>
 <translation id="48520986898237073">Jatka lompakkoon</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
-<translation id="7493053924837150477">Valitse Brave-selain luettelosta ja napauta "Aina"-painiketta</translation>
+<translation id="19715420010996093">Valitse Brave Browser ja paina 'Aina'</translation>
 <translation id="3546439402724649282">Brave on jo asetettu oletusselaimeksi.</translation>
 <translation id="8389661903259423907">Olet jo asettanut oletusselaimen. Voit vaihtaa oletusselainta sovelluksen asetuksista.</translation>
 <translation id="7091885296442320770">Brave on salamannopea</translation>
@@ -237,6 +237,10 @@ tapahtumia…</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="8446884382197647889">Lue lisää</translation>
+<translation id="2514300153301737214">Havaitsimme, että Brave Sync on käytössäsi. Järjestelmän synkronointi on kuitenkin pois päältä, eikä salli Braven synkronointia. Paina avataksesi asetukset</translation>
+<translation id="7173114856073700355">Avaa asetukset</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Älä näytä uudelleen</translation>
 <translation id="597993392929850353">Brave License</translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
 <translation id="6199596294742117349">Tämä on yksityinen välilehti</translation>
@@ -344,9 +348,15 @@ tapahtumia…</translation>
 <translation id="5516010970279932133">Näytä ehdotetut sivut automaattitäydennyksessä</translation>
 <translation id="5370478469168390143">Tallenna tiedot verkossa</translation>
 <translation id="1118508688433541158">Selaa nopeammin ja estä mainoksia Braven avulla</translation>
-<translation id="915835519491851291">Estit juuri jotkin seuraimet &amp; mainokset.</translation>
+<translation id="6589609065569680305">Seurantalaitteet &amp; mainokset estetty tällä sivulla.</translation>
+<translation id="1283922192221545319">Brave Shields suojeli juuri yksityisyyttäsi.</translation>
 <translation id="3286927551967858325">Käy katsomassa</translation>
-<translation id="2929661208078053609">Hienoa!</translation>
+<translation id="6227291358910554399">Mainokset on estetty, kun katsot videoita tällä sivulla.</translation>
+<translation id="7802980684512102010">Videot ilman mainoksia käyttävät vähemmän dataa.</translation>
+<translation id="2046475855484346614">10+ seurantalaitetta &amp; mainosta estetty tällä sivulla.</translation>
+<translation id="5806208250835099572">Brave Shield suojaa yksityisyytesi verkossa jokaisella sivulla.</translation>
+<translation id="5617673581653540121">Yhteytesi on nyt salattu.</translation>
+<translation id="4055107796760496928">Brave päivittää sinut turvattuun yhteyteen automaattisesti, jos sellainen on tarjolla.</translation>
 <translation id="4776948189086901857">Brave toimii kaikkialla</translation>
 <translation id="1606322780901645965">Lataa Brave läppärillä tai tabletilla brave.comista ja teet selailustasi nopeampaa ja yksityisempää</translation>
 <translation id="8374242949413616101">Yksityisyyden suojaus</translation>
@@ -457,7 +467,7 @@ tapahtumia…</translation>
 <translation id="3895246934788932488">Brave-palkintoja käyttämällä suojaat yksityisyyttäsi sekä autat tekemään verkosta paremman paikan. Se vasta onkin upeaa!</translation>
 <translation id="5705882733397021510">Palaa takaisin</translation>
 <translation id="5140321319944305531">Tehdäänpä pikakatsaus</translation>
-<translation id="3808131693704413134">Saatuasi ensimmäiset mainospalkkiosi voit palata tänne ja antaa tälle kehittäjälle tippiä!</translation>
+<translation id="2434574859640694129">Kun olet saanut ensimmäisen mainosmaksusi, voit palata ja jättää tipin tälle tekijälle!</translation>
 <translation id="207242986925259074">Pikakertaus</translation>
 <translation id="8342862030112839977">Ensimmäinen palkintosi saapuu:</translation>
 <translation id="3769645103175790584">Ansaitse makustunnuksia ja palkitse kehittäjiä heidän upeasta sisällöstään selatessasi verkkoa. <ph name="QUICK_TOUR"/>.</translation>
@@ -483,4 +493,16 @@ tapahtumia…</translation>
 <translation id="6478996494082389936">yksityistuoteanalytiikka.</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>
+<translation id="8401711613788729448">Avaa kaikki linkit Bravella suojellaksesi yksityisyyttäsi</translation>
+<translation id="3184805785843994538">Brave Shields estää seurantalaitteet &amp; mainokset, säästää dataa ja aikaa jokaisella vierailemallasi sivulla.</translation>
+<translation id="8722651357687610395">Aseta Brave oletukseksi</translation>
+<translation id="3479552764303398839">Ei nyt</translation>
+<translation id="6232491755501685494">Japanin Brave Rewards vaihtaa uuteen järjestelmään!</translation>
+<translation id="7444515017164572362">Voit käyttää BAP:tasi 13. maaliskuuta alkaen. Sitten kun olet
+        päivittänyt käyttöösi uuden järjestelmän huhtikuussa saat itsellesi uusia maksutunnuksia!</translation>
+<translation id="8587285254008006694">Tämän siirtymän myötä tippaus- ja lahjoitusominaisuudet
+        ovat tilapäisesti poissa käytöstä selaimessasi 13. maaliskuuta alkaen, minkä lisäksi
+        BAP-saldonasi näkyy 0.0 siihen asti kunnes olet päivittänyt järjestelmän uuteen versioon
+        huhtikuussa. Siirryttyäsi uuteen järjestelmään saat käyttöösi uudet
+        maksutunnukset!</translation>
 </translationbundle>

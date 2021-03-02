@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Začnite používať Odmeny Brave</translation>
 <translation id="48520986898237073">Pokračujte do peňaženky</translation>
 <translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
-<translation id="7493053924837150477">Zo zoznamu vyberte prehliadač Brave a stlačte „Vždy“</translation>
+<translation id="19715420010996093">Zvoľte si Prehliadač Brave a klepnite na „Vždy“</translation>
 <translation id="3546439402724649282">Brave je už nastavený ako váš predvolený prehliadač.</translation>
 <translation id="8389661903259423907">Už ste nastavili predvolený prehliadač. Môžete ho zmeniť v nastaveniach aplikácie.</translation>
 <translation id="7091885296442320770">Prehliadač Brave je rýchly ako blesk</translation>
@@ -233,6 +233,10 @@
 <translation id="8712637175834984815">Dobre</translation>
 <translation id="4394049700291259645">Zakázať</translation>
 <translation id="8446884382197647889">Ďalšie informácie</translation>
+<translation id="2514300153301737214">Zistili sme, že máte povolenú synchronizáciu Brave, avšak vaša systémová synchronizácia je vypnutá a neumožňuje synchronizáciu Brave. Stlačením otvoríte nastavenia</translation>
+<translation id="7173114856073700355">Otvoriť Nastavenia</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Už nezobrazovať</translation>
 <translation id="597993392929850353">Licencia Brave</translation>
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="6199596294742117349">Toto je súkromná karta</translation>
@@ -340,9 +344,15 @@
 <translation id="5516010970279932133">Zobraziť navrhované stránky v automatickom dopĺňaní</translation>
 <translation id="5370478469168390143">Uložiť dáta online</translation>
 <translation id="1118508688433541158">Prehliadajte rýchlejšie a blokujte reklamy pomocou služby Brave</translation>
-<translation id="915835519491851291">Práve ste zablokovali niektoré sledovače &amp; reklám.</translation>
+<translation id="6589609065569680305">Sledovače &amp; blokované reklamy na tejto stránke.</translation>
+<translation id="1283922192221545319">Brave Shields práve ochránil vaše súkromie.</translation>
 <translation id="3286927551967858325">Nazrieť</translation>
-<translation id="2929661208078053609">Pekne!</translation>
+<translation id="6227291358910554399">Počas sledovania videí na tomto webe sú blokované reklamy.</translation>
+<translation id="7802980684512102010">Videá bez reklám spotrebujú menej dát.</translation>
+<translation id="2046475855484346614">Viac ako 10 sledovačov &amp; blokované reklamy na tejto stránke.</translation>
+<translation id="5806208250835099572">Brave Shields chráni vaše online súkromie na každej stránke.</translation>
+<translation id="5617673581653540121">Vaše pripojenie je teraz šifrované.</translation>
+<translation id="4055107796760496928">Brave vykoná automatické aktualizácie na zabezpečené pripojenie v prípade, že sú dostupné.</translation>
 <translation id="4776948189086901857">Brave funguje všade</translation>
 <translation id="1606322780901645965">Stiahnite si prehliadač Brave na brave.com na svoj notebook alebo tablet a získajte rýchlejší a súkromnejší web</translation>
 <translation id="8374242949413616101">Ochrana súkromia</translation>
@@ -453,7 +463,7 @@
 <translation id="3895246934788932488">Používaním služby Odmeny Brave chránite svoje súkromie a pomáhate robiť z webu lepšie miesto pre všetkých. A to je úžasné!</translation>
 <translation id="5705882733397021510">Ísť naspäť</translation>
 <translation id="5140321319944305531">Poďme na rýchlu prehliadku</translation>
-<translation id="3808131693704413134">Keď dostanete prvé platby za reklamy, môžete sa vrátiť a dať tomuto tvorcovi tringelt!</translation>
+<translation id="2434574859640694129">Keď dostanete prvé platby za reklamy, môžete sa vrátiť a upozorniť tohto tvorcu!</translation>
 <translation id="207242986925259074">Rýchla osviežujúca prehliadka</translation>
 <translation id="8342862030112839977">Vaša prvá výplata odmien dorazí do:</translation>
 <translation id="3769645103175790584">Zarábajte žetóny a odmeňujte tvorcov za skvelý obsah pri prehliadaní. <ph name="QUICK_TOUR"/>.</translation>
@@ -479,4 +489,16 @@
 <translation id="6478996494082389936">súkromné analýzy produktov.</translation>
 <translation id="5187052478998910855">Potrebujete obnovenia na Odmeny?</translation>
 <translation id="8622329973403382303">Urobte si krátku prehliadku, aby ste si osvojili, ako funguje vstup do histórie ako rocková hviezda Odmien!</translation>
+<translation id="8401711613788729448">Pre ochranu svojho súkromia otvorte všetky odkazy s programom Brave</translation>
+<translation id="3184805785843994538">Brave Shields blokuje sledovače &amp; reklamy, šetrí dáta a šetrí váš čas na každej stránke, ktorú navštívite.</translation>
+<translation id="8722651357687610395">Nastaviť Brave ako predvolené</translation>
+<translation id="3479552764303398839">Teraz nie</translation>
+<translation id="6232491755501685494">Brave Rewards v Japonsku prechádza na nový systém!</translation>
+<translation id="7444515017164572362">Od 13. marca nebudete môcť používať svoj BAP. Ale keď si už
+        v apríli inovujete nový systém, začnete s novými tokenmi!</translation>
+<translation id="8587285254008006694">V rámci tohto prechodu budú funkcie na poskytnutie príspevkov a darov
+         vo vašom prehliadači dočasne nedostupné od 13. marca a
+         váš zostatok BAP bude zobrazovať 0,0, až kým neaktualizujete nový systém
+         v apríli. Keď začnete používať nový systém, začnete aj s novými
+         tokenmi!</translation>
 </translationbundle>

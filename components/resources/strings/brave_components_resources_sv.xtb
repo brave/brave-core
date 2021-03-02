@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Alla källor</translation>
 <translation id="8890516388109605451">Källor</translation>
 <translation id="5158129253322921540">Inaktivera innehåll från <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Marknadsförd</translation>
 <translation id="1776831331757823105">Klocka</translation>
 <translation id="4643117005422448078">Toppsajter</translation>
 <translation id="7791543448312431591">Lägg till</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Handla krypto på Binance direkt i din webbläsare.</translation>
 <translation id="2166494527623220386">Handla krypto på Gemini direkt i din webbläsare.</translation>
 <translation id="7191394989411626168">Genom att stänga av kort, döljs alla kort som för närvarande syns. Du kan dock fortfarande meddelas om nya kort.</translation>
+<translation id="5655621391922317800">Kryptoplånböcker</translation>
+<translation id="8820817407110198400">Bokmärken</translation>
+<translation id="1644574205037202324">Historik</translation>
 <translation id="6165508094623778733">Läs mer</translation>
 <translation id="8730621377337864115">Klart</translation>
 <translation id="6248988683584659830">Sök i inställningar</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Kanske senare</translation>
 <translation id="5187052478998910855">Behöver du en repetition om Belöningar?</translation>
 <translation id="8622329973403382303">Ta en snabb rundtur för att friska upp minnet av hur det fungerar för att gå till historien som en Belöningarnas rockstjärna!</translation>
+<translation id="3115702351969988294">Hur ofta vill du se annonser?</translation>
+<translation id="7532131110478098401">(annonser per timme)</translation>
+<translation id="2951964054390325080">Hur mycket månatligt stöd vill du ge till dina favoritskapare?</translation>
+<translation id="3164498053837913829">(från dina annonsintäkter)</translation>
 <translation id="2070991379950719711">Börja använda Brave Rewards</translation>
 <translation id="6318696841371191107">Ta en snabb rundtur</translation>
 <translation id="2404165674840145940">Dricksa med Brave Rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Dricks är ett sätt att personligen uppmuntra och stödja innehåll eller skapare som du gillar. Börja dricksa!</translation>
 <translation id="7509452925943421624">Vad kan du göra med tokens?</translation>
 <translation id="5876169128756792273">Tokens kan användas till mer än att stödja skapare. Du kan köpa digitalt innehåll och andra varor när säljare går med.</translation>
+<translation id="1402530520078693620">Slutligen, låt oss komma igång med grundinställningarna</translation>
+<translation id="3494356595346329740">Du kan ändra detta senare.</translation>
 <translation id="827315274423079662">Tjoho, du är klar!</translation>
 <translation id="8268038362451312235">Genom att använda Brave Belöningar hjälper du till att göra webben till en bättre plats för alla. Och det är toppen!</translation>
 <translation id="5094577350232361255">om</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Beräknad inkomst hittills denna månad</translation>
 <translation id="5235444069025581717">Dricks och bidrag denna månad</translation>
 <translation id="1210965535849006928">Kräv mina belöningar</translation>
-<translation id="8092889639392847252">Få betalt för att se denna sponsrade bakgrundsbild.</translation>
-<translation id="7914961605852877459">Aktivera Brave Ads för att göra anspråk på din andel. Du kan också välja att <ph name="LINK_BEGIN"/>dölja sponsrade bilder<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Tjäna belöningar för att titta på denna sponsrade bakgrundsbild.</translation>
+<translation id="5311968438376723685">Sätt på Brave Private Ads för att hämta din andel. Du kan också välja att <ph name="LINK_BEGIN"/>dölja sponsrade länkar<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Så ska det se ut!</translation>
 <translation id="764235488372037377">Dina belöningar från annonser har kommit</translation>
 <translation id="7091215606170476659">Du har ett UGP-bidrag från Brave.</translation>
 <translation id="6759185676704303656">Du får betalt för att se denna bakgrundsbild.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lär dig mer<ph name="LINK_END"/> om sponsrade bilder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Dölj sponsrade bilder.</translation>
+<translation id="8587285254008006694">Som en del av denna övergång kommer funktionerna för dricks och donationer i din webbläsare att inte vara tillgängliga temporärt med start 13:e mars, och
+         ditt BAP-saldo kommer att visa 0.0 tills du har uppdaterat till det nya systemet
+          i april. När du är i det nya systemet
+startar du upp med nya
+          tokens!</translation>
+<translation id="6232491755501685494">Brave Rewards i Japan byter till ett nytt system!</translation>
 <translation id="3787061634640932557">Redigera kort</translation>
 <translation id="4925543565930352284">Genom att klicka på {{title}} godkänner du <ph name="BEGIN_LINK1"/>Användarvillkor<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>Integritetspolicy<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Påbörja ett privat videosamtal med dina vänner och kollegor.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Enhetspris</translation>
 <translation id="4763179765154524864">Totalt spenderat</translation>
 <translation id="8851480289992540512">Totalt mottaget</translation>
-<translation id="5655621391922317800">Kryptoplånböcker</translation>
 <translation id="616639131065447379">Välkommen till Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets låter dig arbeta med kryptovalutor och liknande tillgångar i Brave. Crypto Wallets stödjer Ethereum-polletter som ETH och BAT samt samlarsaker, och låter dig arbeta med Ðappar och andra smarta kontrakt. Allt detta är avsett för dem som är bekanta med Ethereum och andra blockkedjesystem — eller ser fram emot att lära sig.</translation>
 <translation id="4855440621031541830">Använd bara Crypto Wallets om du går med på att du ensam tar på dig all risk som är förknippad med användningen, och att Brave Software inte tar något ansvar för förluster, inbegripande tillfälliga förluster eller följdförluster som användningen medför.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Slå AV snabbläsaren</translation>
 <translation id="9020818404803201080">Anslutna peers:</translation>
 <translation id="2903493209154104877">Adresser</translation>
+<translation id="3207122385716480167">Repository-statistik</translation>
+<translation id="2595187693729756455">Nod-info</translation>
 <translation id="5789886980848929155">IPFS nodstatus</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">Startat</translation>
+<translation id="5201810533706869030">Objekt</translation>
+<translation id="8028993641010258682">Storlek</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Sökväg</translation>
+<translation id="2892680660204660712">Peer-id</translation>
+<translation id="7536543993364605970">Agent-version</translation>
+<translation id="3693482323085649439">Nod kör</translation>
+<translation id="6315833555896070573">Nod körs inte</translation>
 <translation id="1272079795634619415">Stopp</translation>
+<translation id="5895138241574237353">Starta om</translation>
 <translation id="6762417584993757344">Inte installerat</translation>
+<translation id="4159076046325416152">Installerar IPFS...</translation>
+<translation id="3854747677478661601">Gör ett skräpinsamlingssvep</translation>
+<translation id="7376842608449050673">Skräpinsamlingsfel</translation>
 <translation id="8428368469058794536">IPFS-tjänst</translation>
+<translation id="6776260067907986254">Min nod</translation>
+<translation id="8523162996646111972">(detaljer)</translation>
+<translation id="6121825639998459476">Installera och starta</translation>
+<translation id="72868071984333667">Läs mer om IPFS och sekretess</translation>
+<translation id="1886162073868201257">IPFS-tjänst startfel</translation>
 <translation id="5357895013476183089">IPFS är inte ansluten</translation>
 <translation id="1196783328762622576">Kan inte ladda IPFS-resurser med lokal nod</translation>
 <translation id="1141556610026845297">Misslyckades med att använda lokal IPFS-nod för att ladda de begärda IPFS-resurserna. Klicka på knappen "Fortsätt" för att använda publik gateway istället, och för att automatiskt återgå till publik gateway i framtiden.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Avancerat</translation>
 <translation id="9096577886148726047">Dölj Avancerat</translation>
 <translation id="7716995370131231171">Brave kan inte ladda de begärda IPFS-resurserna antingen för att den lokala noden inte startade eller för att det inte finns några anslutna parter tillgängliga för tillfället. Om du väljer "Fortsätt" kommer Brave automatiskt att återgå till förvald publik gateway när användning av den lokala noden misslyckas. Du kan ändra detta beteende när som helst i Braves inställningar.</translation>
+<translation id="8026038288183400906">IPFS-inställningar</translation>
+<translation id="2058855456574089690">Ställ in dina IPFS-inställningar</translation>
+<translation id="4447758690649023734">Använd en lokal nod</translation>
+<translation id="8148464361648742409">Använd en publik gateway</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) är det publika nätverket för peer-to-peer datalagring och leverans. Detta protokoll har andra integritetsöverväganden än HTTP(S).</translation>
+<translation id="5410952114182173389">Din dator bidrar till det publika nätverket, men din IP-adress och  innehåll du begär eller lämnar kan exponeras. Innehåll du begär över IPFS verifieras innan det presenteras för dig.</translation>
+<translation id="8664689531113048642">Skyddar din IP-adress och innehåll du begär från potentiella tredjepartsobservatörer, men inte från den publika gateway-operatören. Gateway-operatören är ansvarig för att säkerställa att det innehåll som presenteras för dig över en gateway är det innehåll du begärde. Din dator bidrar inte heller till det publika IPFS-nätverket.</translation>
+<translation id="3977809385703587108">Du kan ändra dina inställningar igen i</translation>
+<translation id="3340978935015468852">inställningar</translation>
+<translation id="4148957013307229264">Installerar...</translation>
+<translation id="6057992164469678163">Väntar på peers...</translation>
+<translation id="1902096227388293745">Inga peers tillgängliga, försöker igen... (<ph name="ATTEMPTS_NUMBER"/> försök kvar</translation>
+<translation id="1675751799495331928">Vi har överskridit gränsen för försök, försök igen senare.</translation>
+<translation id="4499666752625407848">Fel uppstod under en uppdatering.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Visa marknader och köp krypto från crypto.com.</translation>
 <translation id="4292334826913000023">Visa pris</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Par som stöds</translation>
 <translation id="1164622162816276433">24HR Volume</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
+<translation id="3745016858329272300">Allmän information</translation>
+<translation id="4045404575593562245">Tor kontrollhändelse</translation>
+<translation id="216855356675970168">Torversion</translation>
+<translation id="2976625104959685176">Tor process-id</translation>
+<translation id="6951743416068151209">Tor proxy URI</translation>
+<translation id="1671503397662036257">Tor anslutningsstatus</translation>
+<translation id="6024292492796847324">Tor Initieringsförlopp</translation>
 </translationbundle>

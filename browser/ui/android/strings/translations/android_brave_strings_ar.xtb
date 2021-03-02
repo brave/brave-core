@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="48520986898237073">الاستمرار إلى المحفظة</translation>
 <translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
-<translation id="7493053924837150477">حدد متصفح Brave من القائمة وانقر على "دائماً"</translation>
+<translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
 <translation id="3546439402724649282">تم تعيين Brave بالفعل كمتصفح افتراضي.</translation>
 <translation id="8389661903259423907">لقد قمت بالفعل بتعيين المتصفح الافتراضي. يمكنك تغيير المتصفح الافتراضي في إعدادات التطبيق الخاصة بك.</translation>
 <translation id="7091885296442320770">Brave بسرعة البرق</translation>
@@ -238,6 +238,10 @@
 <translation id="8712637175834984815">تم</translation>
 <translation id="4394049700291259645">إيقاف</translation>
 <translation id="8446884382197647889">مزيد من المعلومات</translation>
+<translation id="2514300153301737214">اكتشفنا أنه تم تمكين مزامنة Brave، ولكن تم إيقاف تشغيل مزامنة نظامك ولن تسمح لـ Brave بالمزامنة. اضغط لفتح الإعدادات</translation>
+<translation id="7173114856073700355">فتح الإعدادات</translation>
+<translation id="6965382102122355670">موافق</translation>
+<translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="597993392929850353">رخصة Brave</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="6199596294742117349">هذه علامة تبويب خاصة</translation>
@@ -345,9 +349,15 @@
 <translation id="5516010970279932133">أظهر المواقع المقترحة بشكل إكمال تلقائي</translation>
 <translation id="5370478469168390143">حفظ البيانات عبر الإنترنت</translation>
 <translation id="1118508688433541158">تصفّح أسرع وقم بحظر الإعلانات مع متصفح Brave</translation>
-<translation id="915835519491851291">لقد قمنا للتو بحظر بعض برامج التتبع &amp; الإعلانات.</translation>
+<translation id="6589609065569680305">برامج التتبع &amp; والإعلانات محظورة على هذه الصفحة.</translation>
+<translation id="1283922192221545319">تحمي Brave Shields خصوصيتك تماماً.</translation>
 <translation id="3286927551967858325">إلق نظرة</translation>
-<translation id="2929661208078053609">رائع!</translation>
+<translation id="6227291358910554399">يتم حظر الإعلانات أثناء مشاهدة مقاطع الفيديو على هذا الموقع.</translation>
+<translation id="7802980684512102010">تستهلك مقاطع الفيديو بدون إعلانات بيانات أقل.</translation>
+<translation id="2046475855484346614">أكثر من 10برامج تتبع &amp; وإعلانات تم حظرها في هذه الصفحة.</translation>
+<translation id="5806208250835099572">تحمي Brave Shields خصوصيتك على الإنترنت في كل موقع.</translation>
+<translation id="5617673581653540121">تم تشفير اتصالك الآن.</translation>
+<translation id="4055107796760496928">إن كان هذا متاحاً، يقوم Brave بترقيتك إلى اتصال آمن تلقائياً.</translation>
 <translation id="4776948189086901857">Brave يعمل في كل مكان</translation>
 <translation id="1606322780901645965">قم بتنزيل Brave على موقع brave.com على الكمبيوتر المحمول أو الجهاز اللوحي الخاص بك للحصول على شبكة ويب أسرع وأكثر خصوصية</translation>
 <translation id="8374242949413616101">حماية الخصوصية</translation>
@@ -458,7 +468,7 @@
 <translation id="3895246934788932488">باستخدام Brave Rewards، فأنت تحمي خصوصيتك وتساعد في جعل الويب مكاناً أفضل للجميع. وهذا الـ’s رائعاً!</translation>
 <translation id="5705882733397021510">العودة</translation>
 <translation id="5140321319944305531">لنقم بجولة سريعة</translation>
-<translation id="3808131693704413134">بعد استلام أول عائد لإعلاناتك، يمكنك العودة وإعطاء إكرامية لمنشئ المحتوى هذا!</translation>
+<translation id="2434574859640694129">بعد تلقي أول عائد لإعلاناتك، يمكنك العودة ودفع إكرامية لمنشئ المحتوى هذا!</translation>
 <translation id="207242986925259074">جولة تنشيطية سريعة</translation>
 <translation id="8342862030112839977">سوف تصل دفعة المكافآت الأولى الخاصة بك عن طريق:</translation>
 <translation id="3769645103175790584">اربح العملات الرمزية وكافئ منشئي المحتوى مقابل المحتوى الرائع أثناء التصفح <ph name="QUICK_TOUR"/>.</translation>
@@ -484,4 +494,16 @@
 <translation id="6478996494082389936">تحليلات المنتج الخاص.</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
+<translation id="8401711613788729448">افتح جميع الروابط بواسطة متصفح Brave لحماية خصوصيتك</translation>
+<translation id="3184805785843994538">تمنع Brave Shields برامج التتبع &amp; والإعلانات، وتحفظ البيانات، وتوفر لك الوقت في كل موقع تزوره.</translation>
+<translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="3479552764303398839">ليس الآن</translation>
+<translation id="6232491755501685494">جاري تحويل Brave Rewards في اليابان إلى نظام جديد!</translation>
+<translation id="7444515017164572362">بدءاً من 13 مارس، لن تتمكن ’ من استخدام رصيدك من BAP. ولكن بمجرد
+         التحديث إلى النظام الجديد في أبريل، ستبدأ ’ باستخدام عملات رمزية جديدة!</translation>
+<translation id="8587285254008006694">كجزء من هذا الانتقال، ستكون ميزتا الإكرامية والمساهمة غير متاحتين  
+        في متصفحك مؤقتاً اعتباراً من 13 مارس، و
+         سيظهر رصيدك في BAP 0.0 حتى تقوم بالتحديث إلى النظام الجديد
+         في أبريل. بمجرد تشغيلك ’ نظامنا الجديد، سوف ’ تبدأ باستخدام 
+        عملات رمزية جديدة!</translation>
 </translationbundle>

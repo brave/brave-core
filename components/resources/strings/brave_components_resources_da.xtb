@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Alle kilder</translation>
 <translation id="8890516388109605451">Kilder</translation>
 <translation id="5158129253322921540">Deaktivér indhold fra <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Promoveret</translation>
 <translation id="1776831331757823105">Ur</translation>
 <translation id="4643117005422448078">Topsider</translation>
 <translation id="7791543448312431591">Tilføj</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Handl kryptovaluta på Binance direkte fra din browser.</translation>
 <translation id="2166494527623220386">Handl kryptovaluta på Gemini direkte i din browser:</translation>
 <translation id="7191394989411626168">Ved at deaktivere Kort, vil alle kort, der på nuværende tidspunkt er synlige, blive skjult. Du kan dog stadig få besked om nye kort.</translation>
+<translation id="5655621391922317800">Crypto-Tegnebøger</translation>
+<translation id="8820817407110198400">Bogmærker</translation>
+<translation id="1644574205037202324">Historik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8730621377337864115">Færdig</translation>
 <translation id="6248988683584659830">Søgeindstillinger</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Måske senere</translation>
 <translation id="5187052478998910855">Har du brug for en opfriskning omkring Rewards?</translation>
 <translation id="8622329973403382303">Tag en hurtig rundvisning for at få et overblik over, hvordan det er at være en del af historien som en Rewards-rockstjerne!</translation>
+<translation id="3115702351969988294">Hvor ofte vil du se annoncer?</translation>
+<translation id="7532131110478098401">(annoncer i timen)</translation>
+<translation id="2951964054390325080">Hvor meget månedlig støtte vil du give til dine yndlingsskabere?</translation>
+<translation id="3164498053837913829">(fra din annonceindtjening)</translation>
 <translation id="2070991379950719711">Begynd at bruge Brave Rewards</translation>
 <translation id="6318696841371191107">Tag en hurtig rundvisning</translation>
 <translation id="2404165674840145940">Giv drikkepenge med Brave Rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">At give drikkepenge er en måde, hvorpå du personligt kan opfordre og støtte indhold eller skabere, som du elsker. Kom i gang med dine drikkepenge!</translation>
 <translation id="7509452925943421624">Hvad kan man bruge tokens til?</translation>
 <translation id="5876169128756792273">Tokens kan bruges til andet end at støtte indholdsskabere. Du kan købe digitalt indhold og andre varer som handlende kommer om bord.</translation>
+<translation id="1402530520078693620">Lad os endelig få dig opsat dine grundlæggende indstillinger</translation>
+<translation id="3494356595346329740">Du kan ændre det senere.</translation>
 <translation id="827315274423079662">Woohoo, du er helt klar!</translation>
 <translation id="8268038362451312235">Ved at bruge Brave Rewards hjælper du med at gøre internettet til et bedre sted for alle, og det er fantastisk!</translation>
 <translation id="5094577350232361255">om</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Estimeret optjening for denne måned</translation>
 <translation id="5235444069025581717">Tips og bidrag i denne måned</translation>
 <translation id="1210965535849006928">Bed om din belønninger</translation>
-<translation id="8092889639392847252">Bliv betalt for at se dette sponsorerede baggrundsbillede.</translation>
-<translation id="7914961605852877459">Aktivér Brave Ads for at gøre krav på din del. Du kan også vælge at <ph name="LINK_BEGIN"/>skjule sponsorerede billeder<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Optjen belønninger for at se dette sponsorerede baggrundsbillede.</translation>
+<translation id="5311968438376723685">Aktivér Brave Private Ads for at gøre krav på din andel. Du kan også vælge at <ph name="LINK_BEGIN"/>skjul sponsorerede billeder<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Sådan!</translation>
 <translation id="764235488372037377">Dine belønninger fra reklamer er her</translation>
 <translation id="7091215606170476659">Du har en UGP bevilling fra Brave</translation>
 <translation id="6759185676704303656">Du bliver betalt for at se dette baggrundsbillede.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/> om sponsorerede billeder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Skjul sponserede billeder</translation>
+<translation id="8587285254008006694">Som en del af denne overgang vil tip- og bidragsfunktionerne i
+         din browser være midlertidigt utilgængelige fra den 13. marts og
+         din BAP-saldo vil vise 0,0, indtil du har opdateret til det nye system
+         i april. Når du’er på det nye system, vil du’begynde med nye
+         tokens!</translation>
+<translation id="6232491755501685494">Brave Rewards i Japan skifter til et nyt system!</translation>
 <translation id="3787061634640932557">Redigér kort</translation>
 <translation id="4925543565930352284">Ved klikke {{title}} accpeterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Start et privat video-opkald med dine venner og kollegaer.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Enhedspris</translation>
 <translation id="4763179765154524864">Totalt forbrug</translation>
 <translation id="8851480289992540512">Total modtaget</translation>
-<translation id="5655621391922317800">Crypto-Tegnebøger</translation>
 <translation id="616639131065447379">Velkommen til Brave Krypto-tegnebøger</translation>
 <translation id="1740464057879304704">Krypto-tegnebøger lader dig arbejde med kryptovalutaer og relaterede aktiver i Brave. Krypto-tegnebøger understøtter Ethereum-poletter såsom ETH og BAT, samt samleobjekter, og lader dig arbejde med Ðapps og andre smarte kontrakter. Alt dette er tiltænkt personer som enten kender til Ethereum og andre blockchain-systemer — eller som ønsker at lære om dem.</translation>
 <translation id="4855440621031541830">Brug kun Krypto-tegnebøger hvis du er indforstået med, at du alene er ansvarlig for alle risici forbundet hermed, og at Brave Software ikke bærer nogen forpligtelse eller noget ansvar for eventuelle tab du måtte opleve som resultat af brug af Krypto-tegnebøger (herunder forbigående tab og følgetab).</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">SLUK for speedreader</translation>
 <translation id="9020818404803201080">Forbundne peers:</translation>
 <translation id="2903493209154104877">Adresser</translation>
+<translation id="3207122385716480167">Repo-statistikker</translation>
+<translation id="2595187693729756455">Node-info</translation>
 <translation id="5789886980848929155">IPFS-nodestatus</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">Lanceret</translation>
+<translation id="5201810533706869030">Objekter</translation>
+<translation id="8028993641010258682">Størrelse</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Sti</translation>
+<translation id="2892680660204660712">Peer ID</translation>
+<translation id="7536543993364605970">Agent-version</translation>
+<translation id="3693482323085649439">Node kører</translation>
+<translation id="6315833555896070573">Node kører ikke</translation>
 <translation id="1272079795634619415">Stop</translation>
+<translation id="5895138241574237353">Genstart</translation>
 <translation id="6762417584993757344">Ikke installeret</translation>
+<translation id="4159076046325416152">Installerer IPFS...</translation>
+<translation id="3854747677478661601">Udfør en spildopsamlingsrydning</translation>
+<translation id="7376842608449050673">Fejl ved spildopsamling</translation>
 <translation id="8428368469058794536">IPFS-Service</translation>
+<translation id="6776260067907986254">Min node</translation>
+<translation id="8523162996646111972">(detaljer)</translation>
+<translation id="6121825639998459476">Installer og start</translation>
+<translation id="72868071984333667">Lær mere om IPFS og databeskyttelse</translation>
+<translation id="1886162073868201257">IPFS Service-startfejl</translation>
 <translation id="5357895013476183089">IPFS ikke forbundet</translation>
 <translation id="1196783328762622576">Kan ikke indlæse IPF-ressourcer ved hjælp af lokal node</translation>
 <translation id="1141556610026845297">Kunne ikke bruge den lokale IPF-node til at indlæse de ønskede IPF-ressourcer. Klik på knappen "Fortsæt" for at bruge den offentlige gateway i stedet, og for at gå automatisk tilbage til den offentlige gateway i fremtiden.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Avanceret</translation>
 <translation id="9096577886148726047">Skjul avanceret</translation>
 <translation id="7716995370131231171">Brave kan ikke indlæse de anmodede IPF-ressourcer, enten fordi den lokale node ikke startede, eller fordi der ikke er nogen tilsluttede peers tilgængelige i øjeblikket. Hvis du vælger "Fortsæt", vil Brave automatisk gå tilbage til den offentlige standardgateway, når brug af den lokale node mislykkes. Du kan ændre denne handling når som helst i Brave-indstillingerne.</translation>
+<translation id="8026038288183400906">IPFS-præference</translation>
+<translation id="2058855456574089690">Indstil din IPFS-præference</translation>
+<translation id="4447758690649023734">Brug en lokal node</translation>
+<translation id="8148464361648742409">Brug en offentlig gateway</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary File System) er det offentlige netværk til peer-to-peer datalagring og levering. Denne protokol har forskellige privatlivsovervejelser fra HTTP(S).</translation>
+<translation id="5410952114182173389">Din computer bidrager til det offentlige netværk, men din IP-adresse og alt indhold, du’ beder om eller leverer, kan blive eksponeret. Indhold, du anmoder om via IPFS, bekræftes, før det serveres til dig.</translation>
+<translation id="8664689531113048642">Beskytter din IP-adresse og indhold, du’ anmoder om fra potentielle tredjepartsobservatører, men ikke fra den offentlige gatewayoperatør. Gatewayoperatøren er ansvarlig for at sikre, at det indhold, der serveres dig via en gateway, er det indhold, du har anmodet om. Desuden bidrager din computer ikke til det offentlige IPFS-netværk.</translation>
+<translation id="3977809385703587108">Du kan ændre dine præferencer igen i</translation>
+<translation id="3340978935015468852">indstillinger</translation>
+<translation id="4148957013307229264">Installerer...</translation>
+<translation id="6057992164469678163">Venter på peers...</translation>
+<translation id="1902096227388293745">Ingen peers tilgængelige, prøver igen... (<ph name="ATTEMPTS_NUMBER"/> forsøg tilbage)</translation>
+<translation id="1675751799495331928">Vi har overskredet grænsen for forsøg. Prøv igen senere.</translation>
+<translation id="4499666752625407848">Der opstod en fejl under en opdatering.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Se markeder og køb krypto fra crypto.com.</translation>
 <translation id="4292334826913000023">Vis pris</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Understøttede par</translation>
 <translation id="1164622162816276433">24-timers volumen</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
+<translation id="3745016858329272300">Generel info</translation>
+<translation id="4045404575593562245">Tor kontrolhændelser</translation>
+<translation id="216855356675970168">Tor Version</translation>
+<translation id="2976625104959685176">Tor Proces-Id</translation>
+<translation id="6951743416068151209">Tor proxy URI</translation>
+<translation id="1671503397662036257">Tor-forbindelsesstatus</translation>
+<translation id="6024292492796847324">Tor initialiseringsfremgang</translation>
 </translationbundle>

@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Mula menggunakan Ganjaran Brave</translation>
 <translation id="48520986898237073">Teruskan ke dompet</translation>
 <translation id="3570367516044491911">Tetapkan sebagai pelayar lalai</translation>
-<translation id="7493053924837150477">Pilih Pelayar Brave daripada senarai dan ketik 'Sentiasa'</translation>
+<translation id="19715420010996093">Pilih Pelayar Brave dan ketik 'Sentiasa'</translation>
 <translation id="3546439402724649282">Brave sudah pun ditetapkan sebagai pelayar lalai anda.</translation>
 <translation id="8389661903259423907">Anda telah pun menetapkan pelayar lalai. Anda boleh mengubah pelayar lalai melalui tetapan aplikasi anda.</translation>
 <translation id="7091885296442320770">Brave amat pantas</translation>
@@ -237,6 +237,10 @@ bulan ini...</translation>
 <translation id="8712637175834984815">Faham</translation>
 <translation id="4394049700291259645">Lumpuhkan</translation>
 <translation id="8446884382197647889">Ketahui Lebih Lanjut</translation>
+<translation id="2514300153301737214">Kami mendapati anda telah mengaktifkan Penyegerak Brave, namun penyegerak sistem anda dimatikan dan tidak membenarkan Brave disegerakkan. Sila buka tetapan</translation>
+<translation id="7173114856073700355">Buka Tetapan</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Jangan tunjuk lagi</translation>
 <translation id="597993392929850353">Lesen Brave</translation>
 <translation id="6336451774241870485">Tab sulit baru</translation>
 <translation id="6199596294742117349">Ini Tab Persendirian</translation>
@@ -344,9 +348,15 @@ bulan ini...</translation>
 <translation id="5516010970279932133">Paparkan laman dicadangkan dalam autolengkap</translation>
 <translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
 <translation id="1118508688433541158">Layar dengan lebih pantas dan sekat iklan dengan Brave</translation>
-<translation id="915835519491851291">Anda baru menyekat beberapa iklan &amp; penjejak.</translation>
+<translation id="6589609065569680305">Penjejak &amp; ads; disekat di halaman ini.</translation>
+<translation id="1283922192221545319">Perisai Brave baru sahaja melindungi privasi anda.</translation>
 <translation id="3286927551967858325">Lihat</translation>
-<translation id="2929661208078053609">Hebat!</translation>
+<translation id="6227291358910554399">Iklan disekat semasa menonton video di tapak web ini.</translation>
+<translation id="7802980684512102010">Video tanpa iklan menggunakan data yang lebih sedikit.</translation>
+<translation id="2046475855484346614">10+ penjejak &amp; ads disekat di halaman ini.</translation>
+<translation id="5806208250835099572">Perisai Brave melindungi privasi dalam talian anda di setiap tapak web.</translation>
+<translation id="5617673581653540121">Sambungan anda kini disulitkan.</translation>
+<translation id="4055107796760496928">Sekiranya tersedia, Brave akan ditingkatkan ke sambungan selamat secara automatik</translation>
 <translation id="4776948189086901857">Brave berfungsi di mana jua</translation>
 <translation id="1606322780901645965">Muat turun Brave di brave.com di komputer riba atau tablet anda untuk web yang lebih pantas dan lebih peribadi</translation>
 <translation id="8374242949413616101">Perlindungan privasi</translation>
@@ -457,7 +467,7 @@ bulan ini...</translation>
 <translation id="3895246934788932488">Dengan menggunakan Ganjaran Brave, anda melindungi privasi anda dan membantu menjadikan internet tempat yang lebih baik untuk semua orang. Dan itu’memang hebat!</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="5140321319944305531">Mari Menjelajah Dengan Pantas</translation>
-<translation id="3808131693704413134">Selepas anda menerima pembayaran iklan pertama anda, anda boleh kembali dan memberi tip kepada pencipta ini!</translation>
+<translation id="2434574859640694129">Selepas menerima pembayaran iklan pertama anda, anda boleh datang kembali dan memberikan tip kepada pencipta ini!</translation>
 <translation id="207242986925259074">Jelajah segar semula pantas</translation>
 <translation id="8342862030112839977">Pembayaran ganjaran pertama anda akan tiba sebelum:</translation>
 <translation id="3769645103175790584">Dapatkan token dan pencipta ganjaran untuk kandungan hebat sementara anda berlayar. <ph name="QUICK_TOUR"/>.</translation>
@@ -483,4 +493,16 @@ bulan ini...</translation>
 <translation id="6478996494082389936">analitik produk peribadi.</translation>
 <translation id="5187052478998910855">Perlukan penerangan semula tentang Ganjaran?</translation>
 <translation id="8622329973403382303">Teroka untuk mempelajari bagaimana caranya untuk mencatat nama dalam sejarah sebagai bintang rock Ganjaran!</translation>
+<translation id="8401711613788729448">Buka semua pautan dengan Brave untuk melindungi privasi anda</translation>
+<translation id="3184805785843994538">Perisai Brave menyekat penjejak &amp; ads, menyimpan data, dan menjimatkan masa anda di setiap tapak web yang anda layari.</translation>
+<translation id="8722651357687610395">Tetapkan Brave sebagai lalai</translation>
+<translation id="3479552764303398839">Bukan sekarang</translation>
+<translation id="6232491755501685494">Brave Rewards di Jepun beralih ke sistem baharu!</translation>
+<translation id="7444515017164572362">Mulai 13 Mac, anda tidak dapat’ menggunakan BAP anda. Tetapi selepas sistem anda
+         dikemas kini ke sistem baharu pada bulan April, anda#8217; akan bermula dengan token baharu!</translation>
+<translation id="8587285254008006694">Sebagai sebahagian daripada peralihan ini, tetapan pemberian tip dan sumbangan di
+         pelayar anda tidak akan tersedia buat sementara waktu mulai 13 Mac, dan
+         baki BAP anda akan menunjukkan 0.0 sehingga anda mengemas kini sistem baharu
+         dalam bulan April. Setelah sistem baharu anda’ dikemas kini, anda’ akan bermula dengan token
+         baharu!</translation>
 </translationbundle>

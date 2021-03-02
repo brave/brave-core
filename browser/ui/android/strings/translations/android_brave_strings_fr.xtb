@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Commencer à utiliser Brave Rewards</translation>
 <translation id="48520986898237073">Continuer vers le portefeuille</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
-<translation id="7493053924837150477">Sélectionnez le navigateur Brave dans la liste et appuyez sur « Toujours ».</translation>
+<translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « Toujours ».</translation>
 <translation id="3546439402724649282">Brave est déjà configuré comme votre navigateur par défaut.</translation>
 <translation id="8389661903259423907">Vous avez déjà configuré un navigateur par défaut. Vous pouvez changer le navigateur par défaut dans les paramètres de votre application.</translation>
 <translation id="7091885296442320770">Brave est rapide comme l'éclair</translation>
@@ -236,6 +236,10 @@ mois-ci...</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="4394049700291259645">Désactiver</translation>
 <translation id="8446884382197647889">En savoir plus</translation>
+<translation id="2514300153301737214">Nous avons détecté que Brave Sync est activé, mais la synchronisation de votre système est désactivée et n'autorise pas la synchronisation de Brave. Veuillez appuyer pour ouvrir les paramètres</translation>
+<translation id="7173114856073700355">Paramètres</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Ne plus afficher</translation>
 <translation id="597993392929850353">Licence Brave</translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
 <translation id="6199596294742117349">Ceci est un onglet privé</translation>
@@ -343,9 +347,15 @@ mois-ci...</translation>
 <translation id="5516010970279932133">Afficher les sites suggérés en saisie automatique</translation>
 <translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
 <translation id="1118508688433541158">Naviguez plus rapidement et bloquez les annonces avec Brave</translation>
-<translation id="915835519491851291">Vous venez de bloquer des pisteurs et annonces.</translation>
+<translation id="6589609065569680305">Trackers et publicités bloqués sur cette page.</translation>
+<translation id="1283922192221545319">Brave Shields vient de protéger votre confidentialité.</translation>
 <translation id="3286927551967858325">Voir le site</translation>
-<translation id="2929661208078053609">Super !</translation>
+<translation id="6227291358910554399">Les publicités sont bloquées pendant le visionnage des vidéos sur ce site.</translation>
+<translation id="7802980684512102010">Les vidéos sans publicité utilisent moins de données.</translation>
+<translation id="2046475855484346614">Plus de 10 trackers et publicités bloqués sur cette page.</translation>
+<translation id="5806208250835099572">Brave Shields protège votre confidentialité en ligne sur tous les sites.</translation>
+<translation id="5617673581653540121">Votre connexion est désormais cryptée.</translation>
+<translation id="4055107796760496928">Si disponible, Brave vous surclasse automatiquement vers une connexion sécurisée.</translation>
 <translation id="4776948189086901857">Brave fonctionne partout</translation>
 <translation id="1606322780901645965">Téléchargez Brave sur brave.com sur votre ordinateur portable ou tablette pour une expérience web plus rapide et plus privée</translation>
 <translation id="8374242949413616101">Protection de la vie privée</translation>
@@ -456,7 +466,7 @@ mois-ci...</translation>
 <translation id="3895246934788932488">En utilisant Brave Rewards, vous protégez votre vie privée et contribuez à faire du web un endroit meilleur pour tous. Et c’ est génial !</translation>
 <translation id="5705882733397021510">Revenir en arrière</translation>
 <translation id="5140321319944305531">Faisons Une Visite Rapide</translation>
-<translation id="3808131693704413134">Après avoir reçu votre premier paiement issu des pubs, vous pouvez revenir laisser un pourboire à ce créateur !</translation>
+<translation id="2434574859640694129">Après avoir reçu le paiement de vos premières annonces, vous pouvez revenir et donner un pourboire à ce créateur !</translation>
 <translation id="207242986925259074">Visite rapide pour se rafraîchir la mémoire</translation>
 <translation id="8342862030112839977">Le premier payement de vos Rewards arrivera vers le :</translation>
 <translation id="3769645103175790584">Gagnez des jetons et récompensez les créateurs de contenus intéressants pendant que vous naviguez. <ph name="QUICK_TOUR"/></translation>
@@ -482,4 +492,16 @@ mois-ci...</translation>
 <translation id="6478996494082389936">Analyse de données de produits privée.</translation>
 <translation id="5187052478998910855">Besoin qu'on vous rafraîchisse la mémoire au sujet des Rewards ?</translation>
 <translation id="8622329973403382303">Suivez une rapide visite guidée pour savoir comment faire pour qu'on se rappelle de vous en tant que star des Rewards !</translation>
+<translation id="8401711613788729448">Ouvrez tous les liens avec Brave afin de protéger votre confidentialité</translation>
+<translation id="3184805785843994538">Brave Shields bloque les trackers et les publicités, sauvegarde les données et vous fait gagner du temps sur chaque site que vous visitez.</translation>
+<translation id="8722651357687610395">Définir Brave par défaut</translation>
+<translation id="3479552764303398839">Pas maintenant</translation>
+<translation id="6232491755501685494">Brave Rewards au Japon passe à un nouveau système !</translation>
+<translation id="7444515017164572362">À partir du 13 mars, vous ne pourrez plus utiliser vos BAP. Mais une fois que vous
+        aurez effectué la mise à jour vers le nouveau système en avril, vous commencerez à utiliser de nouveaux jetons !</translation>
+<translation id="8587285254008006694">Dans le cadre de cette transition, les fonctionnalités de pourboire et de contribution de
+        votre navigateur seront temporairement indisponibles à partir du 13 mars, et
+        votre solde BAP indiquera 0,0 tant que vous n'aurez pas effectué la mise à jour vers le nouveau système
+        en avril. Une fois sur le nouveau système, vous commencerez avec de nouveaux
+        jetons !</translation>
 </translationbundle>

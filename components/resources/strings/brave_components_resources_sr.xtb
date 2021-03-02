@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Svi izvori</translation>
 <translation id="8890516388109605451">Извори</translation>
 <translation id="5158129253322921540">Onemogući sadržaj od strane <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Promovisano</translation>
 <translation id="1776831331757823105">Sat</translation>
 <translation id="4643117005422448078">Glavne lokacije</translation>
 <translation id="7791543448312431591">Додај</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Trgujte kriptovalutama na Binance-u direktno u svom pregledaču.</translation>
 <translation id="2166494527623220386">Trgujte kriptovalutama na Gemini-u direktno iz svog pregledača.</translation>
 <translation id="7191394989411626168">Isključivanjem opcije Kartice, sve kartice koje se trenutno vide će biti sakrivene. Međutim, i dalje možete biti obavešteni o novim karticama.</translation>
+<translation id="5655621391922317800">Crypto novčanici</translation>
+<translation id="8820817407110198400">Obeleživači</translation>
+<translation id="1644574205037202324">Историја</translation>
 <translation id="6165508094623778733">Nauči više</translation>
 <translation id="8730621377337864115">Gotovo</translation>
 <translation id="6248988683584659830">Podešavanja pretrage</translation>
@@ -331,6 +335,10 @@ ažuriranja.</translation>
 <translation id="1275213816424141989">Možda kasnije</translation>
 <translation id="5187052478998910855">Treba vam osveženje za nagrade?</translation>
 <translation id="8622329973403382303">Krenite u kratku turneju da biste razjasnili kako se ulazi u istoriju kao Rewards rok zvezda!</translation>
+<translation id="3115702351969988294">Koliko često biste želeli da vidite reklame?</translation>
+<translation id="7532131110478098401">(reklame na čas)</translation>
+<translation id="2951964054390325080">Koliko biste mesečne podrške želeli da date svojim omiljenim kreatorima?</translation>
+<translation id="3164498053837913829">(od Vaše zarade od reklama)</translation>
 <translation id="2070991379950719711">Počnite da koristite Brave nagrade</translation>
 <translation id="6318696841371191107">Krenite u brzi obilazak</translation>
 <translation id="2404165674840145940">Napojnica sa Brave nagradama</translation>
@@ -352,6 +360,8 @@ ažuriranja.</translation>
 <translation id="6042317056594735519">Napojnice su način da privatno ohrabrite i podržavate sadržaj ili kreatore koje volite. Krenite da dajete napojnice!</translation>
 <translation id="7509452925943421624">Šta možeš da uradiš sa tokenima?</translation>
 <translation id="5876169128756792273">Tokeni se mogu koristiti i van podržavanja kreatora. Možete kupiti digitalni sadržaj i drugu robu kako se prodavci pridružuju.</translation>
+<translation id="1402530520078693620">Poslednje, dozvolite’s vas namešta na osnovna podešavanja</translation>
+<translation id="3494356595346329740">Ovo možete promeniti kasnije.</translation>
 <translation id="827315274423079662">Vuuhuu, potpuno ste spremni!</translation>
 <translation id="8268038362451312235">Korišćenjem Brave nagrada pomažete da veb bude bolje mesto za sve. I to je sjajno!</translation>
 <translation id="5094577350232361255">o</translation>
@@ -628,14 +638,20 @@ ažuriranja.</translation>
 <translation id="8344084848798035850">Procenjena zarada do sada u ovom mesecu</translation>
 <translation id="5235444069025581717">Saveti i doprinosi ovog meseca</translation>
 <translation id="1210965535849006928">Zahtev za mojim nagradama</translation>
-<translation id="8092889639392847252">Budite plaćeni da pogledate ovu sponzorisanu pozadinsku sliku.</translation>
-<translation id="7914961605852877459">Uključite opciju „Brave oglasi” da biste zatražili svoj deo. Možete takođe izabrati da <ph name="LINK_BEGIN"/>sakrijete sponzorisane slike<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Zaradite nagrade za prikazivanje ove sponzorisane slike u pozadini.</translation>
+<translation id="5311968438376723685">Uključite Brave Privatne Reklame da biste zahtevali svoj udeo. Takođe možete izabrati da <ph name="LINK_BEGIN"/>sakrijete sponzorisane slike<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Svaka čast!</translation>
 <translation id="764235488372037377">Vaše nagrade od oglasa su ovde</translation>
 <translation id="7091215606170476659">Imate UGP dodelu od strane aplikacije Brave.</translation>
 <translation id="6759185676704303656">Plaćeni ste da pogledate ovu pozadinsku sliku.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saznaj više<ph name="LINK_END"/> o sponzorisanim slikama u Brave Nagradama.</translation>
 <translation id="6113004497629356998">Sakrijte sponzorisane slike</translation>
+<translation id="8587285254008006694">Kao deo ovog prelaza, funkcija napojnica i doprinosa u
+        pregledaču će privremeno biti nedostupna počev od 13. marta, a
+        Vaš BAP saldo će pokazivati 0,0 sve dok ne izvršite ažuriranje na novi sistem
+        u aprilu. Čim budete’ bili na novom sistemu, počećete’ sa novim
+        tokenima!</translation>
+<translation id="6232491755501685494">Brave Rewards se prebacuje na novi sistem u Japanu!</translation>
 <translation id="3787061634640932557">Uredi kartice</translation>
 <translation id="4925543565930352284">Klikom na {{title}}, prihvatate <ph name="BEGIN_LINK1"/>Uslove korišćenja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Smernice za privatnost<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Započnite privatni video poziv sa prijateljima i kolegama.</translation>
@@ -700,7 +716,6 @@ ažuriranja.</translation>
 <translation id="1833248467354516560">Cena jedinice</translation>
 <translation id="4763179765154524864">Ukupno potrošeno</translation>
 <translation id="8851480289992540512">Ukupno primljeno</translation>
-<translation id="5655621391922317800">Crypto novčanici</translation>
 <translation id="616639131065447379">Dobrodošli u Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets vam omogućava da radite sa kripto valutama i povezanim sredstvima u Brave-u. Crypto Wallets podržava Ethereum tokene poput ETH i BAT, kao i kolekcionarstvo i omogućava vam da radite sa Ðapps i drugim pametnim aranžmanima. Sve ovo je namenjeno ljudima koji su upoznati sa Ethereum-om i drugim blockchain sistemima — ili žele da uče.</translation>
 <translation id="4855440621031541830">Kripto novčanike koristite samo ako prihvatate da ste sami odgovorni za sav rizik povezan s ovom upotrebom i da Brave Software ne snosi nikakvu odgovornost za bilo kakve gubitke, uključujući slučajne ili posledične gubitke koje biste mogli pretrpeti kao rezultat ove upotrebe.</translation>
@@ -712,14 +727,32 @@ ažuriranja.</translation>
 <translation id="763042262431778831">Isključi Speedreader</translation>
 <translation id="9020818404803201080">Povezani ravnopravni uređaji:</translation>
 <translation id="2903493209154104877">Адресе</translation>
+<translation id="3207122385716480167">Statistika spremišta</translation>
+<translation id="2595187693729756455">Informacije o čvoru</translation>
 <translation id="5789886980848929155">Status IPFS čvorišta</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Мрежни пролаз</translation>
 <translation id="2551123942222622809">Gomila</translation>
-<translation id="3967335629471284781">Pokrenuto</translation>
+<translation id="5201810533706869030">Objekti</translation>
+<translation id="8028993641010258682">Величина</translation>
+<translation id="7870625241353817260">Maks. skladište</translation>
+<translation id="3202131003361292969">Путања</translation>
+<translation id="2892680660204660712">ID ravnopravnog uređaja</translation>
+<translation id="7536543993364605970">Verzija agenta</translation>
+<translation id="3693482323085649439">Čvor je aktivan</translation>
+<translation id="6315833555896070573">Čvor nije aktivan</translation>
 <translation id="1272079795634619415">Заустави</translation>
+<translation id="5895138241574237353">Покрени поново</translation>
 <translation id="6762417584993757344">Nije instalirano</translation>
+<translation id="4159076046325416152">Instaliranje IPFS...</translation>
+<translation id="3854747677478661601">Izvršite čišćenje prikupljenih ostataka</translation>
+<translation id="7376842608449050673">Greška pri prikupljanju ostataka</translation>
 <translation id="8428368469058794536">IPFS Usluga</translation>
+<translation id="6776260067907986254">Moj čvor</translation>
+<translation id="8523162996646111972">(detalji)</translation>
+<translation id="6121825639998459476">Instaliraj i pokreni</translation>
+<translation id="72868071984333667">Saznaj više o IPFS-u i privatnosti</translation>
+<translation id="1886162073868201257">Greška pri pokretanju IPFS servisa</translation>
 <translation id="5357895013476183089">IPFS nije povezan</translation>
 <translation id="1196783328762622576">Nije moguće učitati IPFS resurse koristeći lokalno čvorište</translation>
 <translation id="1141556610026845297">Nije uspelo korišćenje lokalnog IPFS čvorišta da bi se učitali zahtevani IPFS izvori. Kliknite na „Nastavi” dugme da biste koristili umesto toga javni mrežni prolaz i da se vratite u budućnosti automatski na javni mrežni prolaz.</translation>
@@ -727,6 +760,20 @@ ažuriranja.</translation>
 <translation id="1974060860693918893">Напредне опције</translation>
 <translation id="9096577886148726047">Sakrijte napredne opcije</translation>
 <translation id="7716995370131231171">Brave ne može da učita zatražene IPFS izvore ili zato što lokalno čvorište nije započeto ili zato što nema povezanih saradnika raspoloživih u ovom momentu. Ako izaberete „Nastavi”, Brave će automatski da se vrati na podrazumevani javni mrežni prolaz svaki put kada ne uspe korišćenje lokalnog čvorišta. Možete promeniti ovo ponašanje svakog trenutka u Brave podešavanjima.</translation>
+<translation id="8026038288183400906">Željena podešavanja IPFS</translation>
+<translation id="2058855456574089690">Podesite željene IPFS postavke</translation>
+<translation id="4447758690649023734">Koristite lokalni čvor</translation>
+<translation id="8148464361648742409">Koristi javni mrežni prolaz</translation>
+<translation id="5123478056123923857">IPFS (Međuplanetarni sistem datoteka) je javna mreža za „peer-to-peer” skladištenje podataka i isporuku. Ovaj protokol ima drugačije stavke privatnosti od HTTP(S).</translation>
+<translation id="5410952114182173389">Vaš računar doprinosi javnoj mreži, ali vaša IP adresa i bilo koji sadržaj da ’ zatražite ili pružite može biti izložen. Sadržaj koji zatražite preko IPFS verifikuje se pre nego što vam bude uslužen.</translation>
+<translation id="8664689531113048642">Štiti Vašu IP adresu i sadržaj koji’ zatražite od potencijalnih nezavisnih posmatrača, ali ne i od javnog operatera mrežnog prolaza. Operater mrežnog prolaza je odgovoran da obezbedi da sadržaj koji vam je uslužen preko mrežnog prolaza bude sadržaj koji ste zatražili. Takođe, Vaš računar ne doprinosi javnoj IPFS mreži.</translation>
+<translation id="3977809385703587108">Svoje željene postavke ponovo možete promeniti u</translation>
+<translation id="3340978935015468852">подешавања</translation>
+<translation id="4148957013307229264">Instaliranje...</translation>
+<translation id="6057992164469678163">Čekanje na ravnopravne uređaje...</translation>
+<translation id="1902096227388293745">Nema dostupnih ravnopravnih uređaja, ponovni pokušaj u toku... (<ph name="ATTEMPTS_NUMBER"/> pokušaja ostalo)</translation>
+<translation id="1675751799495331928">Premašili smo ograničen broj pokušaja, pokušajte ponovo kasnije.</translation>
+<translation id="4499666752625407848">Došlo je do greške tokom ažuriranja.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Vidite tržišta i kupite kripto na crypto.com.</translation>
 <translation id="4292334826913000023">Prikaži cenu</translation>
@@ -738,4 +785,11 @@ ažuriranja.</translation>
 <translation id="5337526542182802976">Podržani parovi</translation>
 <translation id="1164622162816276433">24 č. promet</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
+<translation id="3745016858329272300">Opšte informacije</translation>
+<translation id="4045404575593562245">Tor kontrolni događaji</translation>
+<translation id="216855356675970168">Verzija Tora</translation>
+<translation id="2976625104959685176">ID Tor procesa</translation>
+<translation id="6951743416068151209">URI Tor proksija</translation>
+<translation id="1671503397662036257">Status Tor veze</translation>
+<translation id="6024292492796847324">Napredovanje pokretanja Tora</translation>
 </translationbundle>

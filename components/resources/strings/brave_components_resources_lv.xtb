@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Visi avoti</translation>
 <translation id="8890516388109605451">Avoti</translation>
 <translation id="5158129253322921540">Atspējot saturu no <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Popularizēts</translation>
 <translation id="1776831331757823105">Pulkstenis</translation>
 <translation id="4643117005422448078">Populāras vietnes</translation>
 <translation id="7791543448312431591">Pievienot</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Tirgojieties ar kripto, izmantojot Binance tieši pārlūkā.</translation>
 <translation id="2166494527623220386">Tirgojieties ar kripto, izmantojot Gemini tieši pārlūkā.</translation>
 <translation id="7191394989411626168">Izslēdzot kartes, visas šobrīd redzamās kartes tiks paslēptas. Tomēr jūs vēl aizvien varat saņemt paziņojumus par jaunām kartēm.</translation>
+<translation id="5655621391922317800">Kripto maki</translation>
+<translation id="8820817407110198400">Grāmatzīmes</translation>
+<translation id="1644574205037202324">Vēsture</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
 <translation id="8730621377337864115">Pabeigts</translation>
 <translation id="6248988683584659830">Meklēt iestatījumus</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Varbūt vēlāk</translation>
 <translation id="5187052478998910855">Vai vēlaties atsvaidzināt zināšanas par balvām?</translation>
 <translation id="8622329973403382303">Izejiet ātru tūri, lai atsvaidzinātu zināšanas par to, kā tas darbojas, un iekļūtu vēsturē kā balvu rokzvaigzne!</translation>
+<translation id="3115702351969988294">Cik bieži vēlaties redzēt reklāmas?</translation>
+<translation id="7532131110478098401">(reklāmas stundā)</translation>
+<translation id="2951964054390325080">Cik lielu atbalstu katru mēnesi vēlaties sniegt saviem iecienītākajiem veidotājiem?</translation>
+<translation id="3164498053837913829">(no savas reklāmu peļņas)</translation>
 <translation id="2070991379950719711">Sākt izmantot Brave Rewards</translation>
 <translation id="6318696841371191107">Izejiet ātru tūri</translation>
 <translation id="2404165674840145940">Piešķiriet dzeramnaudas ar Brave balvām</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Dzeramnauda ir veids, kā personīgi iedrošināt un atbalstīt jūsu iecienītāko saturu vai veidotājus. Piešķiriet dzeramnaudu!</translation>
 <translation id="7509452925943421624">Ko jūs varat darīt ar žetoniem?</translation>
 <translation id="5876169128756792273">Žetonus var izmantot, ne tikai atbalstot veidotājus. Varat iegādāties digitālo saturu un citas preces, kad pievienojas tirgotāji.</translation>
+<translation id="1402530520078693620">Visbeidzot izveidosim jums pamata iestatījumus</translation>
+<translation id="3494356595346329740">Vēlāk varēsiet to mainīt.</translation>
 <translation id="827315274423079662">Hei, jūs esat gatavs!</translation>
 <translation id="8268038362451312235">Izmantojot Brave Rewards, jūs palīdzat tīmekli padarīt par labāku vietu ikvienam. Tas ir lieliski!</translation>
 <translation id="5094577350232361255">par</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Aptuvenā peļņa šomēnes līdz šīm</translation>
 <translation id="5235444069025581717">Dzeramnauda un ziedojumi šomēnes</translation>
 <translation id="1210965535849006928">Pieprasīt savas balvas</translation>
-<translation id="8092889639392847252">Nopelniet, apskatot šo sponsorēto fona attēlu.</translation>
-<translation id="7914961605852877459">Ieslēdziet Brave Ads, lai saņemtu savu daļu. Jūs arī varat izvēlēties <ph name="LINK_BEGIN"/>paslēpt sponsorētos attēlus<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Nopelniet balvas, aplūkojot šo sponsorēto fona attēlu.</translation>
+<translation id="5311968438376723685">Ieslēdziet Brave reklāmas, lai pieprasītu savu daļu. Jūs arī varat izvēlēties <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Tieši tā!</translation>
 <translation id="764235488372037377">Ir pieejamas Jūsu balvas no reklāmām</translation>
 <translation id="7091215606170476659">Jums pieejams UGP piešķīrums no Brave.</translation>
 <translation id="6759185676704303656">Jūs nopelnāt, aplūkojot šo fona attēlu.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/> par Brave Rewards pakalpojumā sponsorētajiem attēliem.</translation>
 <translation id="6113004497629356998">Paslēpt sponsorētos attēlus</translation>
+<translation id="8587285254008006694">Šīs pārejas ietvaros dzeramnaudas un ziedošanas funkcijas,
+        sākot no 13. marta, pārlūkā īslaicīgi nebūs pieejamas, un
+        BAP atlikums būs 0,0, līdz aprīlī veiksiet atjaunināšanu uz jauno
+        sistēmu. Jaunajā sistēmā jums būs jauni
+        žetoni!</translation>
+<translation id="6232491755501685494">Brave balvas Japānā pāriet uz jaunu sistēmu!</translation>
 <translation id="3787061634640932557">Rediģēt kartes</translation>
 <translation id="4925543565930352284">Nokllikšķinot uz {{title}}, jūs piekrītat <ph name="BEGIN_LINK1"/>pakalpojumu sniegšanas noteikumiem<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>konfidencialitātes politikai<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Sāciet privātu video zvanu ar saviem draugiem un kolēģiem.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Vienības cena</translation>
 <translation id="4763179765154524864">Kopā izdots</translation>
 <translation id="8851480289992540512">Kopā saņemts</translation>
-<translation id="5655621391922317800">Kripto maki</translation>
 <translation id="616639131065447379">Laipni lūdzam Brave kripto makos!</translation>
 <translation id="1740464057879304704">Kripto maki ļauj Brave vidē strādāt ar kriptovalūtām un saistītajiem aktīviem. Kripto maki atbalsta tādus Ethereum marķierus kā ETH un BAT, kā arī citas kolekcionējamās vienības, kā arī ļauj strādāt ar Ðlietotnēm un citiem viedajiem līgumiem. Visas šīs funkcijas ir paredzētas cilvēkiem, kuri pārzina Ethereum un citas blokķēžu sistēmas — vai vēlas tās apgūt.</translation>
 <translation id="4855440621031541830">Izmantojiet kripto makus tikai tad, ja piekrītat, ka pilnībā atbildat par visiem ar šī pakalpojuma izmantošanu saistītajiem riskiem un Brave Software nekādā veidā neatbild par jebkādiem zaudējumiem, tai skaitā nejaušiem vai secīgiem zaudējumiem, kas jums var rasties šī pakalpojuma lietošanas rezultātā, un tam nav nekādu saistību attiecībā uz šādiem zaudējumiem.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Izslēgt ātro lasītāju</translation>
 <translation id="9020818404803201080">Vienranga pieslēgumi:</translation>
 <translation id="2903493209154104877">Adreses</translation>
+<translation id="3207122385716480167">Krātuves statistika</translation>
+<translation id="2595187693729756455">Mezgla informācija</translation>
 <translation id="5789886980848929155">IPFS mezgla stāvoklis</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Vārteja</translation>
 <translation id="2551123942222622809">Spiets</translation>
-<translation id="3967335629471284781">Palaists</translation>
+<translation id="5201810533706869030">Objekti</translation>
+<translation id="8028993641010258682">Izmērs</translation>
+<translation id="7870625241353817260">Maks. krātuve</translation>
+<translation id="3202131003361292969">Ceļš</translation>
+<translation id="2892680660204660712">Vienranga ID</translation>
+<translation id="7536543993364605970">Aģenta versija</translation>
+<translation id="3693482323085649439">Mezgls darbojas</translation>
+<translation id="6315833555896070573">Mezgls nedarbojas</translation>
 <translation id="1272079795634619415">Apturēt</translation>
+<translation id="5895138241574237353">Restartēt</translation>
 <translation id="6762417584993757344">Nav instalēts</translation>
+<translation id="4159076046325416152">Notiek IPFS instalēšana...</translation>
+<translation id="3854747677478661601">Veikt drazu savākšanas tīrīšanu</translation>
+<translation id="7376842608449050673">Drazu savākšanas kļūda</translation>
 <translation id="8428368469058794536">IPFS pakalpojums</translation>
+<translation id="6776260067907986254">Mans mezgls</translation>
+<translation id="8523162996646111972">(detalizēta informācija)</translation>
+<translation id="6121825639998459476">Instalēt un sākt</translation>
+<translation id="72868071984333667">Uzzināt vairāk par IPFS un konfidencialitāti</translation>
+<translation id="1886162073868201257">IPFS pakalpojuma palaišanas kļūda</translation>
 <translation id="5357895013476183089">IPFS savienojums nav izveidots</translation>
 <translation id="1196783328762622576">Nevar ielādēt IPFS resursus, izmantojot vietējo mezglu</translation>
 <translation id="1141556610026845297">Neizdevās izmantot vietējo IPFS mezglu, lai ielādētu pieprasītos IPFS resursus. Noklikšķiniet uz tālāk esošās pogas “Turpināt”, lai tā vietā izmantotu publisko vārteju, kā arī turpmāk automātiski izmantotu publisko vārteju.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Papildu</translation>
 <translation id="9096577886148726047">Paslēpt papildu iespējas</translation>
 <translation id="7716995370131231171">Brave nevar ielādēt pieprasītos IPFS resursus vai nu tāpēc, ka vietējais mezgls netika palaists, vai tāpēc, ka šobrīd nav pieejami vienranga pieslēgumi. Ja izvēlēsieties “Turpināt”, Brave automātiski izmantos noklusējuma publisko vārteju, ja neizdosies izmantot vietējo mezglu. Šo darbību Brave iestatījumos var mainīt jebkurā laikā.</translation>
+<translation id="8026038288183400906">IPFS preference</translation>
+<translation id="2058855456574089690">Iestatiet savu IPFS preferenci</translation>
+<translation id="4447758690649023734">Izmantot vietējo mezglu</translation>
+<translation id="8148464361648742409">Izmantot publisko vārteju</translation>
+<translation id="5123478056123923857">IPFS (InterPlanetary failu sistēma) ir publiskais tīkls vienādranga datu glabāšanai un piegādei. Šim protokolam salīdzinājumā ar HTTP(S) ir atšķirīgi konfidencialitātes apsvērumi.</translation>
+<translation id="5410952114182173389">Jūsu dators piedalās publiskajā tīklā, taču jūsu IP adrese un jebkāds saturs, kuru pieprasāt vai nodrošināt, var tikt atklāts. Saturs, kuru pieprasāt, izmantojot IPFS, pirms piegādāšanas jums tiek pārbaudīts.</translation>
+<translation id="8664689531113048642">Aizsargā jūsu IP adresi un pieprasīto saturu no potenciālajiem trešo pušu novērotājiem, taču ne no publiskās vārtejas operatora. Vārtejas operators ir atbildīgs par to, lai saturs, kas jums tiek piegādāts, izmantojot vārteju, būtu jūsu pieprasītais saturs. Turklāt jūsu dators nepiedalās publiskajā IPFS tīklā.</translation>
+<translation id="3977809385703587108">Savas preferences varēsiet atkal mainīt</translation>
+<translation id="3340978935015468852">Iestatījumi</translation>
+<translation id="4148957013307229264">Notiek instalēšana...</translation>
+<translation id="6057992164469678163">Gaida vienādranga pieslēgumus...</translation>
+<translation id="1902096227388293745">Vienādranga pieslēgumi nav pieejami, mēģina vēlreiz... (atlikuši <ph name="ATTEMPTS_NUMBER"/> mēģinājumi)</translation>
+<translation id="1675751799495331928">Esam pārsnieguši mēģinājumu skaitu, vēlāk mēģiniet vēlreiz.</translation>
+<translation id="4499666752625407848">Atjaunināšanas laikā radās kļūda.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Skatīt tirgus un iegādāties kripto vietnē crypto.com.</translation>
 <translation id="4292334826913000023">Rādīt cenu</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Atbalstītie pāri</translation>
 <translation id="1164622162816276433">24 h apjoms</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
+<translation id="3745016858329272300">Vispārīga informācija</translation>
+<translation id="4045404575593562245">Tor kontroles notikumi</translation>
+<translation id="216855356675970168">Tor versija</translation>
+<translation id="2976625104959685176">Tor procesa ID</translation>
+<translation id="6951743416068151209">Tor starpniekservera URL</translation>
+<translation id="1671503397662036257">Tor savienojuma statuss</translation>
+<translation id="6024292492796847324">Tor inicializēšanas progress</translation>
 </translationbundle>

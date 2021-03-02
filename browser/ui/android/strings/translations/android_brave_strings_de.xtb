@@ -81,7 +81,7 @@
 <translation id="2070991379950719711">Brave Rewards jetzt nutzen</translation>
 <translation id="48520986898237073">Weiter zur Wallet:</translation>
 <translation id="3570367516044491911">Als Standardbrowser setzen</translation>
-<translation id="7493053924837150477">Wählen Sie Brave Browser aus der Liste aus und tippen Sie auf „Immer".</translation>
+<translation id="19715420010996093">Wähle Brave Browser und tippe auf „Immer“</translation>
 <translation id="3546439402724649282">Brave ist bereits aus Ihr Standardbrowser gesetzt.</translation>
 <translation id="8389661903259423907">Sie haben bereits einen Standardbrowser festgelegt. Sie können den Standardbrowser in Ihren App-Einstellungen ändern.</translation>
 <translation id="7091885296442320770">Brave ist blitzschnell</translation>
@@ -234,6 +234,10 @@ um das nächste Internet zu erleben.</translation>
 <translation id="8712637175834984815">Alles klar</translation>
 <translation id="4394049700291259645">Deaktivieren</translation>
 <translation id="8446884382197647889">Mehr...</translation>
+<translation id="2514300153301737214">Wir haben festgestellt, dass Sie Brave Sync aktiviert haben. Allerdings ist Ihre Systemsynchronisierung deaktiviert und daher kann Brave nicht synchronisieren. Zum Öffnen der Einstellungen drücken</translation>
+<translation id="7173114856073700355">Einstellungen öffnen</translation>
+<translation id="6965382102122355670">Ok</translation>
+<translation id="4450893287417543264">Nicht noch einmal anzeigen</translation>
 <translation id="597993392929850353">Brave-Lizenz</translation>
 <translation id="6336451774241870485">Neue private Registerkarte</translation>
 <translation id="6199596294742117349">Dies ist ein privater Tab</translation>
@@ -341,9 +345,15 @@ um das nächste Internet zu erleben.</translation>
 <translation id="5516010970279932133">Vorgeschlagene Websites in der Autovervollständigung anzeigen</translation>
 <translation id="5370478469168390143">Daten online speichern</translation>
 <translation id="1118508688433541158">Browsen Sie schneller und blockieren Sie Anzeigen mit Brave</translation>
-<translation id="915835519491851291">Sie haben gerade manche Tracker &amp; Anzeigen blockiert.</translation>
+<translation id="6589609065569680305">Tracker &amp; Werbung wurden auf dieser Seite blockiert.</translation>
+<translation id="1283922192221545319">Brave Shields hat gerade Ihre Privatsphäre geschützt.</translation>
 <translation id="3286927551967858325">Anschauen</translation>
-<translation id="2929661208078053609">Toll!</translation>
+<translation id="6227291358910554399">Werbeanzeigen werden blockiert, wenn Sie auf dieser Website Videos anzeigen.</translation>
+<translation id="7802980684512102010">Videos ohne Werbung verbrauchen weniger Datenvolumen.</translation>
+<translation id="2046475855484346614">10+ Tracker &amp; Werbeanzeigen wurden auf dieser Seite blockiert.</translation>
+<translation id="5806208250835099572">Brave Shields schützt Ihre Online-Privatsphäre auf allen Website.</translation>
+<translation id="5617673581653540121">Ihre Verbindung ist jetzt verschlüsselt.</translation>
+<translation id="4055107796760496928">Wenn verfügbar, stuft Brave Ihr Verbindung automatisch zu einer sicheren Option hoch.</translation>
 <translation id="4776948189086901857">Brave funktioniert überall</translation>
 <translation id="1606322780901645965">Laden Sie für ein schnelleres und privateres Web Brave auf brave.com herunter</translation>
 <translation id="8374242949413616101">Privatsphäreschutz</translation>
@@ -454,7 +464,7 @@ um das nächste Internet zu erleben.</translation>
 <translation id="3895246934788932488">Durch Nutzung von Brave Rewards schützen Sie Ihre Privatsphäre und tragen dazu bei, das Internet zu einem besseren Ort zu machen. Und das ist genial!</translation>
 <translation id="5705882733397021510">Zurück</translation>
 <translation id="5140321319944305531">Begeben wir uns auf einen kleinen Rundgang</translation>
-<translation id="3808131693704413134">Nach Erhalt Ihrer ersten Werbeanzeigen-Auszahlung können Sie hierher zurückkehren und an den Ersteller spenden!</translation>
+<translation id="2434574859640694129">Nachdem Sie Ihre Werbeauszahlung erhalten haben, können Sie zurückkommen und an diesen Creator spenden!</translation>
 <translation id="207242986925259074">Kurze Tour zur Auffrischung unternehmen</translation>
 <translation id="8342862030112839977">Die Auszahlung Ihrer ersten Belohnung erfolgt vor dem oder am:</translation>
 <translation id="3769645103175790584">Verdienen Sie beim Browsen Token und belohnen Sie Ersteller für tolle Inhalte. <ph name="QUICK_TOUR"/>.</translation>
@@ -480,4 +490,16 @@ um das nächste Internet zu erleben.</translation>
 <translation id="6478996494082389936">private Produktanalytik.</translation>
 <translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
 <translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
+<translation id="8401711613788729448">Öffnen Sie zum Schutz Ihrer Privatsphäre alle Links in Brave</translation>
+<translation id="3184805785843994538">Brave Shields blockiert Trackers &amp; Werbung, spart Datenvolumen und spart dir bei jedem Websitebesuch Zeit.</translation>
+<translation id="8722651357687610395">Brave als Standard einrichten</translation>
+<translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="6232491755501685494">Brave Rewards in Japan wechselt zu einem neuen System!</translation>
+<translation id="7444515017164572362">Ab 13. März können Sie Ihre BAP nicht mehr nutzen. Aber sobald Sie
+        im April auf das neue System aktualisieren, beginnen Sie mit neuen Tokens!</translation>
+<translation id="8587285254008006694">Als Teil dieses Übergangs werden die Trinkgeld- und Beitragsfunktionen in
+        Ihrem Browser ab 13. März vorübergehend nicht verfügbar sein und
+        Ihr BAP-Guthaben wird 0,0 anzeigen, bis Sie im April auf das neue System aktualisiert haben.
+        Sobald Sie im neuen System sind, beginnen Sie mit neuen
+        Tokens!</translation>
 </translationbundle>

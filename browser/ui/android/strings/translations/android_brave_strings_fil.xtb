@@ -79,7 +79,6 @@
 <translation id="2070991379950719711">Simulang gamitin ang Brave Rewards</translation>
 <translation id="48520986898237073">Tumuloy sa wallet</translation>
 <translation id="3570367516044491911">Itakda bilang default na browser</translation>
-<translation id="7493053924837150477">Piliin ang Brave Browser mula sa listahan at i-tap ang 'Palagi'</translation>
 <translation id="3546439402724649282">Nakatakda na ang Brave bilang iyong default na browser.</translation>
 <translation id="8389661903259423907">Nagtakda ka na ng default na browser. Maaari mong palitan ang default na browser sa mga setting ng app mo.</translation>
 <translation id="7091885296442320770">Napakabilis ng Brave</translation>
@@ -238,6 +237,10 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="4394049700291259645">Huwag paganahin</translation>
 <translation id="8446884382197647889">Matuto Pa</translation>
+<translation id="2514300153301737214">Na-detect naming na-enable mo ang Brave Sync, gayunpaman, naka-off ang iyong pag-sync ng system at hindi nito mabibigyang-daan ang Brave na mag-sync. Pindutin para buksan ang mga setting</translation>
+<translation id="7173114856073700355">Buksan ang Mga Setting</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Huwag ipakita ulit</translation>
 <translation id="597993392929850353">Lisensya ng Brave</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="6199596294742117349">Pribadong Tab ito.</translation>
@@ -345,9 +348,15 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="5516010970279932133">Magpakita ng mga iminumungkahing site sa autocomplete</translation>
 <translation id="5370478469168390143">Mag-save ng Data Online</translation>
 <translation id="1118508688433541158">Mag-browse nang mas mabilis at mag-block ng ads gamit ang Brave</translation>
-<translation id="915835519491851291">Nag-block ka ng ilang trackers at ads.</translation>
+<translation id="6589609065569680305">Mga tracker at ad na na-block sa page na ito.</translation>
+<translation id="1283922192221545319">Pinrotektahan ng Brave Shields ang iyong privacy.</translation>
 <translation id="3286927551967858325">Tingnan mo</translation>
-<translation id="2929661208078053609">Magaling!</translation>
+<translation id="6227291358910554399">Bina-block ang mga ad habang nanonood ng mga video sa website na ito.</translation>
+<translation id="7802980684512102010">Gumagamit ng mas kaunting data ang mga video na walang ad.</translation>
+<translation id="2046475855484346614">10+ tracker at ad ang na-block sa page na ito.</translation>
+<translation id="5806208250835099572">Pinoprotektahan ng Brave Shields ang iyong privacy online sa lahat ng site.</translation>
+<translation id="5617673581653540121">Naka-encrypt na ngayon ang iyong koneksyon.</translation>
+<translation id="4055107796760496928">Kung available, awtomatiko kang ina-upgrade ng Brave sa isang secure na koneksyon.</translation>
 <translation id="4776948189086901857">Gumagana kahit saan ang Brave</translation>
 <translation id="1606322780901645965">I-download ang Brave sa brave.com sa iyong laptop o tablet para sa mas mabilis at mas pribadong web</translation>
 <translation id="8374242949413616101">Proteksyon sa privacy</translation>
@@ -458,7 +467,7 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="3895246934788932488">Sa pamamagitan ng paggamit sa Brave Rewards, pinoprotektahan mo ang iyong privacy at nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At ayos iyan!</translation>
 <translation id="5705882733397021510">Bumalik</translation>
 <translation id="5140321319944305531">Mabilis Tayong Maglibot</translation>
-<translation id="3808131693704413134">Pagkatapos mong matanggap ang iyong unang payout ng mga ad, puwede kang bumalik at bigyan ng tip ang creator na ito!</translation>
+<translation id="2434574859640694129">Pagkatapos mong matanggap ang iyong unang payout ng mga ad, puwede kang bumalik at magbigay ng tip sa creator na ito!</translation>
 <translation id="207242986925259074">Mabilis na pang-refresh na paglilibot</translation>
 <translation id="8342862030112839977">Darating ang iyong unang payout ng mga reward sa:</translation>
 <translation id="3769645103175790584">Makakuha ng mga token at bigyan ng reward ang mga creator para sa mahusay na content habang nagba-browse ka. <ph name="QUICK_TOUR"/>.</translation>
@@ -484,4 +493,16 @@ hanggang sa mag-verify sila, o pagkalipas ng 90 araw.</translation>
 <translation id="6478996494082389936">pribadong pagsusuri ng produkto.</translation>
 <translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
 <translation id="8622329973403382303">Mabilis na matuto tungkol sa kung paano ito gumagana para maalala bilang nangunguna sa Rewards!</translation>
+<translation id="8401711613788729448">Buksan ang lahat ng link gamit ang Brave para maprotektahan ang iyong privacy</translation>
+<translation id="3184805785843994538">Sa pamamagitan ng Brave Shields, naba-block ang mga tracker at ad, nakakatipid ng data, at nakakatipid ka ng oras sa bawat site na binibisita mo.</translation>
+<translation id="8722651357687610395">Itakda ang Brave bilang default</translation>
+<translation id="3479552764303398839">Hindi ngayon</translation>
+<translation id="6232491755501685494">Lilipat sa bagong system ang Brave Rewards sa Japan!</translation>
+<translation id="7444515017164572362">Simula sa ika-13 ng Marso, hindi mo na magagamit ang iyong BAP. Pero kapag na-update mo
+        ang bagong system sa Abril, magsisimula ka nang may mga bagong token!</translation>
+<translation id="8587285254008006694">Bilang bahagi ng paglilipat na ito, pansamantalang magiging hindi available ang mga feature na pag-tip at kontribusyon sa
+        iyong browser simula sa ika-13 ng Marso, at
+        0.0 ang makikitang balanse mo sa BAP hanggang sa mag-update ka sa bagong system
+        sa Abril. Kapag nasa bagong system ka na, magsisimula ka nang may mga bagong
+        token!</translation>
 </translationbundle>

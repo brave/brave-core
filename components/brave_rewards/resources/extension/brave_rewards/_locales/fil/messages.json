@@ -635,6 +635,22 @@
     "message": "Makakuha ng mga token sa pamamagitan ng pagtingin sa mga ad na gumagalang sa privacy at awtomatikong suportahan ang iyong mga paboritong site at creator ng content.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Gaano ka kadalas nakakakita ng mga ad?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(mga ad bawat oras)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Gaano kalaking buwanang suporta ang gusto mong ibigay sa iyong mga paboritong creator?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(mula sa iyong mga kinikita sa mga ad)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Simulang gamitin ang Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng digital na content at iba pang produkto sa pagdating ng mga merchant.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Panghuli, tutulungan ka naming i-set up ang mga pangunahing setting",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Puwede mo itong baguhin sa ibang pagkakataon.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Ayos, handa ka na!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Sa pamamagitan ng paggamit sa Brave Rewards, nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At mabuti iyon!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Lilipat sa bagong system ang Brave Rewards sa Japan!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Matuto pa",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Pakigamit ang iyong BAP bago ang ika-13 ng Marso. Pagkatapos noon, hindi na ipagpapatuloy ang BAP.",
+    "description": "Text for BAP deprecation popup"
   }
 }

@@ -68,6 +68,7 @@
 <translation id="1236081509407217141">Να επιτρέπεται το VR;</translation>
 <translation id="1240347957665416060">Το όνομα της συσκευής σας</translation>
 <translation id="124116460088058876">Περισσότερες γλώσσες</translation>
+<translation id="1243027604378859286">Συντάκτης:</translation>
 <translation id="1052005765108026699">Για πιο γρήγορες πληρωμές στο μέλλον, αποθηκεύστε τα στοιχεία της κάρτας σας, το όνομα και τη διεύθυνση χρέωσης στον Λογαριασμό σας Brave.</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (συγχρονισμένο)</translation>
 <translation id="1256368399071562588">&lt;p&gt;Αν προσπαθείτε να επισκεφτείτε έναν ιστότοπο και ο ιστότοπος δεν ανοίγει, δοκιμάστε πρώτα να διορθώσετε το σφάλμα, ακολουθώντας τα παρακάτω βήματα αντιμετώπισης προβλημάτων:&lt;/p&gt;
@@ -77,6 +78,7 @@
     &lt;li&gt;Επικοινωνήστε με τον κάτοχο του ιστοτόπου.&lt;/li&gt;
     &lt;/ol&gt;</translation>
 <translation id="1257286744552378071">Έχετε εισαγάγει τον κωδικό πρόσβασής σας σε έναν ιστότοπο τον οποίο δεν διαχειρίζεται ο οργανισμός σας. Για να προστατεύσετε τον λογαριασμό σας, μην χρησιμοποιήσετε ξανά αυτόν τον κωδικό πρόσβασης σε άλλες εφαρμογές και ιστοτόπους.</translation>
+<translation id="1259144770381827039">Δείτε λεπτομέρειες.</translation>
 <translation id="1263231323834454256">Λίστα ανάγνωσης</translation>
 <translation id="1267173982554786072"><ph name="BEGIN_BOLD"/>
         Δραστηριότητα που δεν θα παραμένει σε αυτήν τη συσκευή:
@@ -306,6 +308,7 @@
 <translation id="2114841414352855701">Αγνοήθηκε επειδή αντικαταστάθηκε από την πολιτική <ph name="POLICY_NAME"/>.</translation>
 <translation id="2119505898009119320">Εκδόθηκε σε: <ph name="ORGANIZATION"/> [<ph name="JURISDICTION"/>]</translation>
 <translation id="2119867082804433120">Τρύπημα κάτω δεξιά</translation>
+<translation id="2126374524350484896">Εργαλείο παραγωγής PDF:</translation>
 <translation id="2129079103035905234">Αισθητήρες κίνησης</translation>
 <translation id="2130448033692577677">Τα πρότυπα που έχετε καθορίσει μπορεί να μην εφαρμοστούν επειδή δεν έχει ρυθμιστεί η πολιτική DnsOverHttpsMode.</translation>
 <translation id="213826338245044447">Σελιδοδείκτες κινητής συσκευής</translation>
@@ -319,6 +322,7 @@
 <translation id="2164510882479075877">Ελέγξτε μήπως υπάρχει κάποιο ορθογραφικό λάθος στη διεύθυνση <ph name="HOST_NAME"/>.</translation>
 <translation id="2166049586286450108">Πλήρης πρόσβαση διαχειριστή</translation>
 <translation id="2166378884831602661">Αυτός ο ιστότοπος δεν μπορεί να προσφέρει ασφαλή σύνδεση</translation>
+<translation id="2168151236314517198">Η εκτύπωση αυτού του περιεχομένου έχει αποκλειστεί από την πολιτική διαχειριστή.</translation>
 <translation id="2169984857010174799">Kaku2 (Φάκελος)</translation>
 <translation id="2181821976797666341">Πολιτικές</translation>
 <translation id="2183608646556468874">Αριθμός τηλεφώνου</translation>
@@ -364,9 +368,9 @@
 <translation id="2354430244986887761">Η Ασφαλής περιήγηση Brave πρόσφατα <ph name="BEGIN_LINK"/>εντόπισε επιβλαβείς εφαρμογές<ph name="END_LINK"/> στον ιστότοπο <ph name="SITE"/>.</translation>
 <translation id="2355395290879513365">Οι εισβολείς ενδέχεται να έχουν τη δυνατότητα να δουν τις εικόνες που προβάλετε σε αυτόν τον ιστότοπο και να σας εξαπατήσουν τροποποιώντας τες.</translation>
 <translation id="2356070529366658676">Να γίνεται ερώτηση</translation>
+<translation id="2357481397660644965">Η διαχείριση της συσκευής σας γίνεται από τον τομέα <ph name="DEVICE_MANAGER"/> και του λογαριασμού σας από τον τομέα <ph name="ACCOUNT_MANAGER"/>.</translation>
 <translation id="2359629602545592467">Πολλά</translation>
 <translation id="2359808026110333948">Συνέχεια</translation>
-<translation id="2360873523816792727">Για να χρησιμοποιείτε τις κάρτες σας σε όλες τις συσκευές, ενεργοποιήστε τον συγχρονισμό.</translation>
 <translation id="2367567093518048410">Επίπεδο</translation>
 <translation id="2380886658946992094">Legal</translation>
 <translation id="2384307209577226199">Προεπιλογή επιχείρησης</translation>
@@ -413,6 +417,7 @@
 <translation id="2586657967955657006">Πρόχειρο</translation>
 <translation id="2587730715158995865">Από <ph name="ARTICLE_PUBLISHER"/>. Διαβάστε αυτό το άρθρο και <ph name="OTHER_ARTICLE_COUNT"/> ακόμα ιστορίες.</translation>
 <translation id="2587841377698384444">Αναγνωριστικό API καταλόγου:</translation>
+<translation id="2594318783181750337">Γρήγορη προβολή ιστού:</translation>
 <translation id="2595719060046994702">Αυτή η συσκευή και αυτός ο λογαριασμός δεν είναι υπό τη διαχείριση μιας εταιρείας ή ενός οργανισμού.</translation>
 <translation id="2597378329261239068">Αυτό το έγγραφο προστατεύεται με κωδικό πρόσβασης.  Πληκτρολογήστε έναν κωδικό πρόσβασης.</translation>
 <translation id="2609632851001447353">Παραλλαγές</translation>
@@ -483,7 +488,6 @@
 <translation id="2903493209154104877">Διευθύνσεις</translation>
 <translation id="290376772003165898">Η σελίδα δεν είναι στα <ph name="LANGUAGE"/>;</translation>
 <translation id="2909946352844186028">Εντοπίστηκε μια αλλαγή δικτύου.</translation>
-<translation id="2910133103376701357">Η διαχείριση της συσκευής και του λογαριασμού γίνεται από τον τομέα <ph name="ENROLLMENT_DOMAIN"/>.</translation>
 <translation id="2911973620368911614">Αναγνωριστικό χρήστη λογαριασμού εργασίας</translation>
 <translation id="2915068235268646559">Σφάλμα από τις <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Κλείστε τα άλλα προγράμματα</translation>
@@ -508,6 +512,7 @@
 <translation id="2989742184762224133">Διπλή συρραφή στο επάνω μέρος</translation>
 <translation id="2991174974383378012">Κοινοποίηση σε ιστότοπους</translation>
 <translation id="2991571918955627853">Δεν μπορείτε να επισκεφτείτε τον ιστότοπο <ph name="SITE"/> αυτήν τη στιγμή, επειδή ο ιστότοπος χρησιμοποιεί HSTS. Τα σφάλματα δικτύου και οι επιθέσεις είναι συνήθως προσωρινά, συνεπώς αυτή η σελίδα πιθανότατα θα λειτουργήσει αργότερα.</translation>
+<translation id="2995517112308048736">Μέγεθος αρχείου:</translation>
 <translation id="6683975920571472553">Προτάσεις από Brave</translation>
 <translation id="3002501248619246229">Έλεγχος μέσων δίσκου εισαγωγής</translation>
 <translation id="3005723025932146533">Εμφάνιση αποθηκευμένου αντιγράφου</translation>
@@ -540,6 +545,7 @@
 <translation id="3145945101586104090">Αποτυχία αποκωδικοποίησης απόκρισης</translation>
 <translation id="3150653042067488994">Προσωρινό σφάλμα διακομιστή</translation>
 <translation id="3154506275960390542">Αυτή η σελίδα περιέχει μια φόρμα η οποία πιθανώς να μην υποβληθεί με ασφάλεια. Τα δεδομένα που στέλνετε μπορούν να προβληθούν από άλλους κατά την αποστολή ή μπορούν να τροποποιηθούν από κάποιον εισβολέα ώστε να αλλάξει το περιεχόμενο που θα λάβει ο διακομιστής.</translation>
+<translation id="315504272643575312">Η διαχείριση του λογαριασμού σας γίνεται από τον τομέα <ph name="MANAGER"/>.</translation>
 <translation id="3157931365184549694">Επαναφορά</translation>
 <translation id="3162559335345991374">Το Wi-Fi που χρησιμοποιείτε ενδέχεται να σας ζητήσει να επισκεφτείτε τη σελίδα σύνδεσής του.</translation>
 <translation id="3169472444629675720">Discover</translation>
@@ -580,6 +586,12 @@
 <translation id="3338095232262050444">Ασφαλές</translation>
 <translation id="3355823806454867987">Αλλαγή ρυθμίσεων διακομιστή μεσολάβησης...</translation>
 <translation id="3360103848165129075">Φύλλο δείκτη χειρισμού πληρωμών</translation>
+<translation id="669410734497476819">Το Brave <ph name="BEGIN_EMPHASIS"/>δεν θα αποθηκεύει<ph name="END_EMPHASIS"/> τις παρακάτω πληροφορίες:
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Το ιστορικό περιήγησής σας
+          <ph name="LIST_ITEM"/>Cookie και δεδομένα ιστοτόπου
+          <ph name="LIST_ITEM"/>Πληροφορίες που εισάγετε σε φόρμες
+        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">Αυτή η πολιτική αντιγράφηκε αυτόματα από την πολιτική <ph name="OLD_POLICY"/> που έχει καταργηθεί. Θα πρέπει να χρησιμοποιήσετε εναλλακτικά αυτήν την πολιτική.</translation>
 <translation id="3364869320075768271">Το <ph name="URL"/> θέλει να χρησιμοποιήσει τη συσκευή και τα δεδομένα εικονικής πραγματικότητας.</translation>
 <translation id="3366477098757335611">Προβολή καρτών</translation>
@@ -598,7 +610,6 @@
 <translation id="3395827396354264108">Τρόπος παραλαβής</translation>
 <translation id="3399952811970034796">Διεύθυνση παράδοσης</translation>
 <translation id="3402261774528610252">Η σύνδεση που χρησιμοποιήθηκε για τη φόρτωση αυτού του ιστοτόπου χρησιμοποίησε το TLS 1.0 ή το TLS 1.1, τα οποία έχουν καταργηθεί και θα απενεργοποιηθούν στο μέλλον. Μετά την απενεργοποίησή τους, οι χρήστες δεν θα μπορούν να φορτώσουν αυτόν τον ιστότοπο. Θα πρέπει να ενεργοποιηθεί η έκδοση TLS 1.2 ή μεταγενέστερη στον διακομιστή.</translation>
-<translation id="3411120537985775570">Η επικόλληση από <ph name="ORIGIN_NAME"/> σε αυτήν την τοποθεσία έχει αποκλειστεί από τον διαχειριστή.</translation>
 <translation id="3414952576877147120">Μέγεθος:</translation>
 <translation id="25726459489263481">Τα αρχεία που ανεβάζετε ή επισυνάπτετε αποστέλλονται στο Brave Cloud ή σε τρίτα μέρη για ανάλυση. Για παράδειγμα, ενδέχεται να σαρώνονται για ευαίσθητα δεδομένα ή κακόβουλο λογισμικό.</translation>
 <translation id="3422248202833853650">Δοκιμάστε να εξέλθετε από τα άλλα προγράμματα για να απελευθερώσετε μνήμη.</translation>
@@ -625,6 +636,7 @@
 <translation id="3487845404393360112">Δίσκος 4</translation>
 <translation id="3495081129428749620">Εύρεση στη σελίδα
     <ph name="PAGE_TITLE"/></translation>
+<translation id="350069200438440499">Όνομα αρχείου:</translation>
 <translation id="3507936815618196901">Δημιουργία τρισδιάστατου χάρτη του περιβάλλοντα χώρου σας και παρακολούθηση της θέσης της κάμερας.</translation>
 <translation id="3512163584740124171">Αυτή η πολιτική αγνοείται επειδή μια άλλη πολιτική από την ίδια ομάδα πολιτικής έχει υψηλότερη προτεραιότητα.</translation>
 <translation id="3518941727116570328">Χειρισμός πολλών αντικειμένων</translation>
@@ -663,16 +675,17 @@
 <translation id="1367445511302842209">Κουμπί ενημέρωσης Brave, πατήστε Enter για να ενημερώσετε το Brave από τις ρυθμίσεις του Brave.</translation>
 <translation id="3634530185120165534">Δίσκος 5</translation>
 <translation id="3640766068866876100">Index-4x6-Ext</translation>
+<translation id="3642638418806704195">Εφαρμογή:</translation>
 <translation id="3650584904733503804">Επιτυχής επικύρωση</translation>
 <translation id="3655670868607891010">Αν αυτό το μήνυμα εμφανίζεται συχνά, μπορείτε να βρείτε βοήθεια εδώ <ph name="HELP_LINK"/>.</translation>
 <translation id="3658742229777143148">Αναθεώρηση</translation>
+<translation id="3664782872746246217">Λέξεις-κλειδιά:</translation>
 <translation id="3676592649209844519">Αναγνωριστικό συσκευής:</translation>
 <translation id="3677008721441257057">Μήπως εννοούσατε &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;;</translation>
 <translation id="3678029195006412963">Δεν ήταν δυνατή η έγκριση του αιτήματος</translation>
 <translation id="3681007416295224113">Πληροφορίες πιστοποιητικού</translation>
 <translation id="3701427423622901115">Έγινε επιβεβαίωση της επαναφοράς.</translation>
 <translation id="3704162925118123524">Το δίκτυο που χρησιμοποιείτε ενδέχεται να σας ζητήσει να επισκεφτείτε τη σελίδα σύνδεσης του.</translation>
-<translation id="3704609568417268905"><ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Φόρτωση...</translation>
 <translation id="3709599264800900598">Κείμενο που αντιγράψατε</translation>
@@ -747,12 +760,11 @@
 <translation id="3996311196211510766">Ο ιστότοπος <ph name="ORIGIN"/> ζήτησε να εφαρμοστεί μια πολιτική προέλευσης
     για όλα τα αιτήματά του, αλλά δεν είναι δυνατή η εφαρμογή της πολιτικής αυτήν τη στιγμή.</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{Έγγραφο PDF που περιέχει {COUNT} σελίδα}other{Έγγραφο PDF που περιέχει {COUNT} σελίδες}}</translation>
+<translation id="4023431997072828269">Επειδή αυτή η φόρμα υποβάλλεται χρησιμοποιώντας μια σύνδεση που δεν είναι ασφαλής, οι πληροφορίες σας θα είναι ορατές σε άλλους χρήστες.</translation>
 <translation id="4030383055268325496">&amp;Αναίρεση προσθήκης</translation>
-<translation id="4032320456957708163">Το πρόγραμμα περιήγησής σας είναι διαχειριζόμενο από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="4056223980640387499">Σέπια</translation>
 <translation id="4058922952496707368">Κλειδί "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
 <translation id="4067263367174615723">C1 (Φάκελος)</translation>
-<translation id="4067669230157909013">H λήψη οθόνης ξεκίνησε ξανά.</translation>
 <translation id="4067947977115446013">Προσθήκη έγκυρης διεύθυνσης</translation>
 <translation id="4072486802667267160">Προέκυψε σφάλμα κατά την επεξεργασία της παραγγελίας σας. Δοκιμάστε ξανά.</translation>
 <translation id="4075732493274867456">Η εφαρμογή πελάτης και ο διακομιστής δεν υποστηρίζουν κάποια κοινή έκδοση πρωτοκόλλου SSL ή σουίτα κρυπτογράφησης.</translation>
@@ -815,7 +827,6 @@
 <translation id="4270541775497538019">Μονάδα στοίβαξης 6</translation>
 <translation id="4275830172053184480">Επανεκκινήστε τη συσκευή σας</translation>
 <translation id="4277028893293644418">Επαναφορά κωδικού πρόσβασης</translation>
-<translation id="4279811152705618813">Η συσκευή <ph name="DEVICE_TYPE"/> είναι διαχειριζόμενη από τον οργανισμό <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Αυτή η κάρτα αποθηκεύτηκε στον Λογαριασμό σας Brave}other{Αυτές οι κάρτες αποθηκεύτηκαν στον Λογαριασμό σας Brave}}</translation>
 <translation id="4297502707443874121">Μικρογραφία για τη σελίδα <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="42981349822642051">Επέκταση</translation>
@@ -830,6 +841,7 @@
 <translation id="4318566738941496689">Το όνομα της συσκευής και η διεύθυνση δικτύου σας</translation>
 <translation id="4325863107915753736">Αποτυχία εύρεσης άρθρου</translation>
 <translation id="4326324639298822553">Ελέγξτε την ημερομηνία λήξης σας και δοκιμάστε ξανά</translation>
+<translation id="4329871760342656885">Σφάλμα ανάλυσης πολιτικής: <ph name="ERROR"/></translation>
 <translation id="4331519897422864041">Μονάδα στοίβαξης 5</translation>
 <translation id="4331708818696583467">Μη ασφαλές</translation>
 <translation id="6116812392674177288">Αυτός ο υπολογιστής δεν έχει εντοπιστεί ως διαχειριζόμενος από επιχείρηση. Συνεπώς, η πολιτική μπορεί να εγκαθιστά αυτόματα μόνο επεκτάσεις οι οποίες φιλοξενούνται στο Brave Webstore. Το URL ενημέρωσης του Brave Webstore είναι το "<ph name="CWS_UPDATE_URL"/>".</translation>
@@ -876,7 +888,6 @@
 <translation id="4524805452350978254">Διαχείριση καρτών</translation>
 <translation id="4542971377163063093">Δίσκος 6</translation>
 <translation id="455113658016510503">A9</translation>
-<translation id="4552089082226364758">Flash</translation>
 <translation id="4558551763791394412">Δοκιμάστε να απενεργοποιήσετε τις επεκτάσεις σας.</translation>
 <translation id="4559332380232738994">10x11</translation>
 <translation id="457875822857220463">Παράδοση</translation>
@@ -929,7 +940,6 @@
 <translation id="4771973620359291008">Παρουσιάστηκε άγνωστο σφάλμα.</translation>
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Το αναδυόμενο παράθυρο αποκλ.}other{# αναδυόμενα παράθυρα αποκλείστηκαν}}</translation>
 <translation id="4780366598804516005">Γραμματοκιβώτιο 1</translation>
-<translation id="4780900888022378816">Η διαχείριση της συσκευής σας γίνεται από τον τομέα <ph name="ENROLLMENT_DOMAIN"/> και του λογαριασμού σας από τον τομέα <ph name="ACCOUNT_DOMAIN"/>.</translation>
 <translation id="4785689107224900852">Εναλλαγή σε αυτήν την καρτέλα</translation>
 <translation id="4791134497475588553">Εφαρμογές Linux που έχουν εγκατασταθεί και πότε χρησιμοποιήθηκαν τελευταία φορά.</translation>
 <translation id="4792686369684665359">Οι πληροφορίες που πρόκειται να υποβάλετε δεν είναι ασφαλείς</translation>
@@ -958,6 +968,7 @@
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
 <translation id="4901778704868714008">Αποθήκευση…</translation>
 <translation id="4913987521957242411">Τρύπημα επάνω αριστερά</translation>
+<translation id="4918221908152712722">Εγκατάσταση εφαρμογής <ph name="APP_NAME"/> (δεν απαιτείται λήψη)</translation>
 <translation id="4923459931733593730">Πληρωμή</translation>
 <translation id="4926049483395192435">Πρέπει να καθοριστεί.</translation>
 <translation id="4926159001844873046">Ο ιστότοπος <ph name="SITE"/> λέει</translation>
@@ -978,6 +989,7 @@
 <translation id="4989542687859782284">Μη διαθέσιμο</translation>
 <translation id="4989809363548539747">Αυτή η προσθήκη δεν υποστηρίζεται</translation>
 <translation id="4995216769782533993">Επιβεβαιώστε τον κωδικό ασφαλείας για να μοιραστείτε τις λεπτομέρειες της κάρτας σας με αυτόν τον ιστότοπο.</translation>
+<translation id="4995474875135717171">Τροποποιήθηκε:</translation>
 <translation id="3676215163710610678">Εάν ενεργοποιηθεί, το Brave θα αποθηκεύσει ένα αντίγραφο της κάρτας σας σε αυτήν τη συσκευή για ταχύτερη συμπλήρωση φορμών.</translation>
 <translation id="5015510746216210676">Όνομα συσκευής:</translation>
 <translation id="5017554619425969104">Κείμενο που αντιγράψατε</translation>
@@ -1023,6 +1035,7 @@
 <translation id="5148809049217731050">Πρόσοψη προς τα επάνω</translation>
 <translation id="515292512908731282">C4 (Φάκελος)</translation>
 <translation id="5158275234811857234">Εξώφυλλο</translation>
+<translation id="5161334686036120870">Θέμα:</translation>
 <translation id="5161506081086828129">Μονάδα στοίβαξης 9</translation>
 <translation id="5164798890604758545">Έχει εισαχθεί κείμενο</translation>
 <translation id="2996889577833788807">Εισαγάγετε τον κωδικό CVC για την πιστωτική κάρτα <ph name="CREDIT_CARD"/>. Μετά την επιβεβαίωση, τα στοιχεία της κάρτας από τον Λογαριασμό Brave θα κοινοποιηθούν σε αυτόν τον ιστότοπο.</translation>
@@ -1053,6 +1066,7 @@
 <translation id="5269999699920406580">Οι λειτουργίες που ισχύουν για ολόκληρο το σύστημα μπορούν να οριστούν μόνο από τον κάτοχο: <ph name="OWNER_EMAIL"/>.</translation>
 <translation id="5273658854610202413">Προειδοποίηση: Αυτή η πολιτική δεν συγχωνεύτηκε, όπως ορίζεται στην πολιτική PolicyDictionaryMultipleSourceMergeList, επειδή δεν ανήκει στις πολιτικές λεξικού που μπορούν να συγχωνευτούν.</translation>
 <translation id="5283044957620376778">B1</translation>
+<translation id="5284295735376057059">Ιδιότητες εγγράφου</translation>
 <translation id="528468243742722775">Τέλος</translation>
 <translation id="5284909709419567258">Διευθύνσεις δικτύου</translation>
 <translation id="5285570108065881030">Εμφάνιση όλων των αποθηκευμένων κωδικών πρόσβασης</translation>
@@ -1208,6 +1222,7 @@
 <translation id="5895138241574237353">Επανεκκίνηση</translation>
 <translation id="5895187275912066135">Εκδόθηκε την</translation>
 <translation id="5901630391730855834">Κίτρινο</translation>
+<translation id="5903264686717710770">Τίτλος:</translation>
 <translation id="5905445707201418379">Αποκλείστηκε σύμφωνα με την πολιτική προέλευσης του <ph name="ORIGIN"/>.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (συγχρονισμένο)</translation>
 <translation id="5913377024445952699">Η καταγραφή οθόνης τέθηκε σε παύση</translation>
@@ -1256,9 +1271,9 @@
 <translation id="6047927260846328439">Αυτό το περιεχόμενο μπορεί να προσπαθήσει να σας εξαπατήσει έτσι ώστε να εγκαταστήσετε λογισμικό ή να αποκαλύψετε προσωπικά στοιχεία. <ph name="BEGIN_LINK"/>Εμφάνιση ούτως ή άλλως<ph name="END_LINK"/></translation>
 <translation id="6049488691372270142">Παράδοση σελίδας</translation>
 <translation id="6051221802930200923">Δεν μπορείτε να επισκεφτείτε το <ph name="SITE"/> αυτήν τη στιγμή επειδή ο ιστότοπος χρησιμοποιεί certificate pinning (κλείδωμα πιστοποιητικών). Τα σφάλματα δικτύου και οι επιθέσεις είναι συνήθως προσωρινά, συνεπώς αυτή η σελίδα πιθανότατα θα λειτουργήσει αργότερα.</translation>
+<translation id="6051898664905071243">Πλήθος σελίδων:</translation>
 <translation id="6052284303005792909">•</translation>
 <translation id="6053328359599022071">Κοινοποίηση της παρουσίας σας;</translation>
-<translation id="6057359309778282021">Ο διαχειριστής έχει αποκλείσει την κοινοποίηση αυτού του περιεχομένου από <ph name="ORIGIN_NAME"/> σε <ph name="VM_NAME"/></translation>
 <translation id="6058977677006700226">Χρήση των καρτών σας σε όλες τις συσκευές σας;</translation>
 <translation id="6059925163896151826">Συσκευές USB</translation>
 <translation id="6060009363608157444">Μη έγκυρη λειτουργία DnsOverHttps.</translation>
@@ -1300,18 +1315,13 @@
 <translation id="9136010393039243713">Brave Update</translation>
 <translation id="6276112860590028508">Εδώ εμφανίζονται οι σελίδες από τη λίστα ανάγνωσής σας</translation>
 <translation id="7954557091400543500">Για πιο γρήγορες πληρωμές, αποθηκεύστε τα στοιχεία της κάρτας και τη διεύθυνση χρέωσης στον Λογαριασμό σας Brave.</translation>
-<translation id="293801390522973485">Το Brave <ph name="BEGIN_EMPHASIS"/>δεν θα αποθηκεύει<ph name="END_EMPHASIS"/> τις παρακάτω πληροφορίες:
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Το ιστορικό περιήγησής σας
-          <ph name="LIST_ITEM"/>Cookie και δεδομένα ιστοτόπου
-          <ph name="LIST_ITEM"/>Πληροφορίες που εισάγετε σε φόρμες
-        <ph name="END_LIST"/></translation>
 <translation id="6280223929691119688">Δεν είναι δυνατή η παράδοση σε αυτήν τη διεύθυνση. Επιλέξτε μια άλλη διεύθυνση.</translation>
 <translation id="6282194474023008486">Ταχυδρομικός κώδικας</translation>
 <translation id="6289939620939689042">Χρώμα σελίδας</translation>
 <translation id="6290238015253830360">Τα προτεινόμενα άρθρα σας εμφανίζονται εδώ</translation>
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="5880900081429361525">Διακοπή Βοηθού Brave στο Brave</translation>
+<translation id="6304463939629872728">Ολοκλήρωση αγορών με</translation>
 <translation id="6305205051461490394">Δεν είναι δυνατή η πρόσβαση στο <ph name="URL"/>.</translation>
 <translation id="6312113039770857350">Η ιστοσελίδα δεν είναι διαθέσιμη</translation>
 <translation id="6321917430147971392">Ελέγξτε τις ρυθμίσεις DNS</translation>
@@ -1321,6 +1331,7 @@
 <translation id="6328786501058569169">Αυτός ο ιστότοπος είναι παραπλανητικός</translation>
 <translation id="6337133576188860026">Απελευθερώνει λιγότερο από <ph name="SIZE"/>. Ορισμένοι ιστότοποι μπορεί να φορτωθούν πιο αργά κατά την επόμενη επίσκεψή σας.</translation>
 <translation id="6337534724793800597">Φιλτράρισμα πολιτικών με βάση το όνομα</translation>
+<translation id="6349101878882523185">Εγκατάσταση εφαρμογής <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Κανένας}=1{1 κωδικός πρόσβασης (για <ph name="DOMAIN_LIST"/>, συγχρονισμένος)}=2{2 κωδικοί πρόσβασης (για <ph name="DOMAIN_LIST"/>, συγχρονισμένοι)}other{# κωδικοί πρόσβασης (για <ph name="DOMAIN_LIST"/>, συγχρονισμένοι)}}</translation>
 <translation id="6358450015545214790">Τι σημαίνουν αυτά;</translation>
 <translation id="6361757823711327522">B7</translation>
@@ -1334,11 +1345,13 @@
 <translation id="6389470377220713856">Όνομα σε κάρτα</translation>
 <translation id="6390200185239044127">Δίπλωμα Z στη μέση</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
+<translation id="6393956493820063117">Η επικόλληση από το <ph name="ORIGIN_NAME"/> σε αυτήν την τοποθεσία έχει αποκλειστεί από την πολιτική του διαχειριστή.</translation>
 <translation id="6401136357288658127">Αυτή η πολιτική έχει καταργηθεί. Θα πρέπει να χρησιμοποιήσετε εναλλακτικά την πολιτική <ph name="NEW_POLICY"/>.</translation>
 <translation id="6404511346730675251">Επεξεργασία σελιδοδείκτη</translation>
 <translation id="6406765186087300643">C0 (Φάκελος)</translation>
 <translation id="9018981925326888629">Μόλις καταχωρίσατε τον κωδικό πρόσβασής σας σε έναν παραπλανητικό ιστότοπο. Το Brave συνιστά να αλλάξετε τον κωδικό πρόσβασής σας τώρα.</translation>
 <translation id="6410264514553301377">Εισαγάγετε την ημερομηνία λήξης και τον κωδικό CVC για την κάρτα <ph name="CREDIT_CARD"/></translation>
+<translation id="548336221977372759">Μην ξεχάσετε την προσφορά σας στο Brave Pay</translation>
 <translation id="6423385022588644828">Επιβεβαιώστε πιο γρήγορα τις κάρτες σας, χρησιμοποιώντας το Touch ID από εδώ και στο εξής</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Δίπλωση παράθυρο</translation>
@@ -1367,7 +1380,6 @@
 <translation id="6529602333819889595">&amp;Επανάληψη διαγραφής</translation>
 <translation id="6545864417968258051">Σάρωση Bluetooth</translation>
 <translation id="6547208576736763147">Διπλό τρύπημα στα αριστερά</translation>
-<translation id="6554795675067793129">Η διαχείριση του λογαριασμού σας γίνεται από τον τομέα <ph name="ENROLLMENT_DOMAIN"/>.</translation>
 <translation id="6556866813142980365">Επανάληψη ενέργειας</translation>
 <translation id="6569060085658103619">Βλέπετε μια σελίδα επέκτασης</translation>
 <translation id="6573200754375280815">Διπλό τρύπημα στα δεξιά</translation>
@@ -1378,7 +1390,6 @@
 <translation id="6587923378399804057">Σύνδεσμος που αντιγράψατε</translation>
 <translation id="6591833882275308647">Η συσκευή <ph name="DEVICE_TYPE"/> δεν είναι διαχειριζόμενη</translation>
 <translation id="6596325263575161958">Επιλογές κρυπτογράφησης</translation>
-<translation id="6596892391065203054">Η εκτύπωση αυτού του περιεχομένου έχει αποκλειστεί από τον διαχειριστή.</translation>
 <translation id="6604181099783169992">Αισθητήρες κίνησης ή φωτός</translation>
 <translation id="6609880536175561541">Prc7 (Φάκελος)</translation>
 <translation id="6612358246767739896">Προστατ. περιεχ.</translation>
@@ -1402,6 +1413,8 @@
 <translation id="6687335167692595844">Ζητήθηκε μέγεθος γραμματοσειράς</translation>
 <translation id="6689249931105087298">Σχετική με τη συμπίεση μαύρου σημείου</translation>
 <translation id="5406652219015697259">Το Brave προσφέρεται να αποθηκεύσει τις κάρτες σας στον Λογαριασμό σας Brave, επειδή έχετε συνδεθεί. Μπορείτε να αλλάξετε αυτήν τη συμπεριφορά στις ρυθμίσεις. Το όνομα του κατόχου κάρτας προέρχεται από τον λογαριασμό σας.</translation>
+<translation id="6698381487523150993">Δημιουργήθηκε:</translation>
+<translation id="6702919718839027939">Παρουσίαση</translation>
 <translation id="6710213216561001401">Προηγούμενο</translation>
 <translation id="6710594484020273272">&lt;Πληκτρολογήστε όρο αναζήτησης&gt;</translation>
 <translation id="671076103358959139">Διακριτικό εγγραφής:</translation>
@@ -1571,12 +1584,10 @@
     &lt;li&gt;Κάντε κλικ στο κουμπί &lt;strong&gt;Εφαρμογή&lt;/strong&gt; και, έπειτα, στο κουμπί &lt;strong&gt;OK&lt;/strong&gt;
     &lt;li&gt;Επισκεφτείτε το &lt;a href="https://support.google.com/chrome/answer/6098869"&gt;Κέντρο βοήθειας του Brave&lt;/a&gt;, για να μάθετε πώς μπορείτε να καταργήσετε οριστικά το λογισμικό από τον υπολογιστή σας
     &lt;/ol&gt;</translation>
-<translation id="7409836189476010449">Εκτέλεση Flash</translation>
 <translation id="741007362987735528">Wide-Format</translation>
 <translation id="7416351320495623771">Διαχείριση κωδικών πρόσβασης…</translation>
 <translation id="7419106976560586862">Διαδρομή προφίλ</translation>
 <translation id="7437289804838430631">Προσθήκη στοιχείων επικοινωνίας</translation>
-<translation id="7438976808740265764">Το Flash Player δεν θα υποστηρίζεται πλέον μετά τον Δεκέμβριο του 2020.</translation>
 <translation id="7440140511386898319">Αναζήτηση εκτός σύνδεσης</translation>
 <translation id="7441627299479586546">Εσφαλμένο θέμα πολιτικής</translation>
 <translation id="7442725080345379071">Ανοιχτό πορτοκαλί</translation>
@@ -1594,6 +1605,7 @@
 <translation id="7508255263130623398">Η εμφανιζόμενη συσκευή πολιτικής είναι κενή ή δεν αντιστοιχεί στο τρέχον αναγνωριστικό συσκευής</translation>
 <translation id="7508870219247277067">Πράσινο αβοκάντο</translation>
 <translation id="7511955381719512146">Το Wi-Fi που χρησιμοποιείτε ενδέχεται να σας ζητήσει να επισκεφτείτε τη διεύθυνση <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
+<translation id="7512685745044087310">Αυτή η πολιτική δεν μπορεί να οριστεί ως Αληθής (True) και να είναι υποχρεωτική. Επομένως, αλλάχθηκε σε προτεινόμενη.</translation>
 <translation id="7514365320538308">Λήψη</translation>
 <translation id="7518003948725431193">Δεν βρέθηκε καμία ιστοσελίδα για τη διεύθυνση ιστού:<ph name="URL"/></translation>
 <translation id="7520302887438682816">C8 (Φάκελος)</translation>
@@ -1712,7 +1724,6 @@
 <translation id="7947285636476623132">Ελέγξτε το έτος λήξης σας και δοκιμάστε ξανά</translation>
 <translation id="7951415247503192394">(32-bit)</translation>
 <translation id="7953569069500808819">Ραφή στο επάνω άκρο</translation>
-<translation id="7954523986259449736">Επειδή ο ιστότοπος χρησιμοποιεί μια σύνδεση που δεν είναι απολύτως ασφαλής, οι πληροφορίες σας θα είναι ορατές σε άλλους χρήστες.</translation>
 <translation id="7956713633345437162">Σελιδοδείκτες κινητής συσκευής</translation>
 <translation id="7961015016161918242">Ποτέ</translation>
 <translation id="7966803981046576691">Τύπος λογαριασμού εργασίας</translation>
@@ -1720,7 +1731,9 @@
 <translation id="7977538094055660992">Συσκευή εξόδου</translation>
 <translation id="7977894662897852582">Edp</translation>
 <translation id="79859296434321399">Για να δείτε περιεχόμενο επαυξημένης πραγματικότητας, εγκαταστήστε το ARCore</translation>
+<translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Δέσιμο</translation>
+<translation id="7992044431894087211">Έγινε συνέχιση της κοινής χρήσης οθόνης με την εφαρμογή <ph name="APPLICATION_TITLE"/>.</translation>
 <translation id="7995512525968007366">Δεν καθορίστηκε</translation>
 <translation id="800218591365569300">Δοκιμάστε να κλείσετε τις άλλες καρτέλες ή τα άλλα προγράμματα για να απελευθερώσετε μνήμη.</translation>
 <translation id="8004582292198964060">Πρόγραμμα περιήγησης</translation>
@@ -1757,6 +1770,7 @@
 <translation id="8118489163946903409">Τρόπος πληρωμής</translation>
 <translation id="8127301229239896662">Το λογισμικό "<ph name="SOFTWARE_NAME"/>" δεν εγκαταστάθηκε σωστά στον υπολογιστή ή στο δίκτυό σας. Ζητήστε από τον διαχειριστή IT να επιλύσει αυτό το πρόβλημα.</translation>
 <translation id="8131740175452115882">Επιβεβαίωση</translation>
+<translation id="8148608574971654810">Έκδοση PDF:</translation>
 <translation id="8149426793427495338">Ο υπολογιστής σας τέθηκε σε αδράνεια.</translation>
 <translation id="8150722005171944719">Δεν είναι δυνατή η ανάγνωση του αρχείου στη διεύθυνση <ph name="URL"/>. Ενδέχεται να καταργήθηκε, να μετακινήθηκε ή τα δικαιώματα αρχείου μπορεί να μην επιτρέπουν την πρόσβαση.</translation>
 <translation id="8157295877370077682">Αποχώρηση από τον ιστότοπο</translation>
@@ -1815,6 +1829,7 @@
 <translation id="8371889962595521444">Προσαρμοσμένα πιστοποιητικά ρίζας</translation>
 <translation id="8380941800586852976">Επικίνδυνο</translation>
 <translation id="8381674639488873545">Αυτές οι χρεώσεις μπορεί να είναι εφάπαξ ή επαναλαμβανόμενες και ίσως να μην είναι εμφανείς.<ph name="BEGIN_LINK"/>Εμφάνιση ούτως ή άλλως<ph name="END_LINK"/></translation>
+<translation id="8390725133630534698">Η κοινοποίηση από το <ph name="ORIGIN_NAME"/> στο <ph name="VM_NAME"/> έχει αποκλειστεί από την πολιτική του διαχειριστή.</translation>
 <translation id="8412145213513410671">Σφάλματα (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">Πρέπει να εισαγάγετε δύο φορές την ίδια φράση πρόσβασης.</translation>
 <translation id="8416694386774425977">Η διαμόρφωση δικτύου είναι μη έγκυρη και δεν ήταν δυνατή η εισαγωγή της.
@@ -1841,7 +1856,6 @@
 <translation id="8507227106804027148">Γραμμή εντολών</translation>
 <translation id="8508648098325802031">Εικονίδιο αναζήτησης</translation>
 <translation id="1426902392270366682">Το Brave μπορεί να σας βοηθήσει να προστατεύσετε τον Λογαριασμό σας Brave και να αλλάξετε τον κωδικό πρόσβασής σας.</translation>
-<translation id="8525306231823319788">Πλήρης οθόνη</translation>
 <translation id="1215802963054007211">Διαγράψτε το ιστορικό περιήγησης, τα cookie, την κρυφή μνήμη και άλλα στοιχεία στις ρυθμίσεις του Brave.</translation>
 <translation id="8533619373899488139">Μεταβείτε στη διεύθυνση &lt;strong&gt;chrome://policy&lt;/strong&gt; για να δείτε τη λίστα των αποκλεισμένων URL και άλλες πολιτικές που έχουν τεθεί σε εφαρμογή από τον διαχειριστή του συστήματός σας.</translation>
 <translation id="8541158209346794904">Συσκευή Bluetooth</translation>
@@ -1873,13 +1887,13 @@
 <translation id="8623885649813806493">Δεν αντιστοιχούν κωδικοί πρόσβασης. Εμφάνιση όλων των αποθηκευμένων κωδικών πρόσβασης.</translation>
 <translation id="8625384913736129811">Αποθήκευση αυτής της κάρτας στη συγκεκριμένη συσκευή</translation>
 <translation id="8627040765059109009">Η καταγραφή οθόνης συνεχίζεται</translation>
-<translation id="8657078576661269990">Ο διαχειριστής έχει αποκλείσει την κοινοποίηση αυτού του περιεχομένου από <ph name="ORIGIN_NAME"/> σε <ph name="VM_NAME_1"/> και <ph name="VM_NAME_2"/></translation>
 <translation id="8663226718884576429">Σύνοψη παραγγελίας, <ph name="TOTAL_LABEL"/>, Περισσότερες λεπτομέρειες</translation>
 <translation id="867224526087042813">Υπογραφή</translation>
 <translation id="8676424191133491403">Χωρίς καθυστέρηση</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, απάντηση, <ph name="ANSWER"/></translation>
 <translation id="8681531050781943054">Η φόρτωση της ιστοσελίδας στη διεύθυνση <ph name="PAGE"/> δεν ήταν δυνατή επειδή:</translation>
 <translation id="8685155993131031756">Prc-16K</translation>
+<translation id="8687429322371626002">Η διαχείριση της συσκευής και του λογαριασμού γίνεται από τον τομέα <ph name="MANAGER"/>.</translation>
 <translation id="8688672835843460752">Διαθέσιμο</translation>
 <translation id="868922510921656628">Σελίδες ανά δευτερόλεπτο</translation>
 <translation id="869891660844655955">Ημερομηνία λήξης</translation>
@@ -1887,12 +1901,15 @@
 <translation id="8703575177326907206">Η σύνδεσή σας με τον τομέα <ph name="DOMAIN"/> δεν είναι κρυπτογραφημένη.</translation>
 <translation id="8705331520020532516">Σειριακός αριθμός</translation>
 <translation id="8710842507289500830">Στιλ γραμματοσειράς</translation>
+<translation id="8712637175834984815">Κατάλαβα!</translation>
 <translation id="8718314106902482036">Η πληρωμή δεν ολοκληρώθηκε</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, πρόταση αναζήτησης</translation>
 <translation id="8719528812645237045">Πολλαπλό τρύπημα στο επάνω μέρος</translation>
 <translation id="8725066075913043281">Προσπαθήστε ξανά</translation>
+<translation id="8726549941689275341">Μέγεθος σελίδας:</translation>
 <translation id="8730621377337864115">Ολοκληρώθηκε</translation>
 <translation id="1769647018144434441">Κουμπί διαχείρισης κωδικών πρόσβασης, πατήστε Enter για προβολή και διαχείριση των κωδικών πρόσβασής σας στις ρυθμίσεις του Brave</translation>
+<translation id="8734529307927223492">Η διαχείριση της συσκευής <ph name="DEVICE_TYPE"/> γίνεται από τον τομέα <ph name="MANAGER"/></translation>
 <translation id="6326805297893828864">Για την επίτευξη μιας ασφαλούς σύνδεσης, θα πρέπει να γίνει σωστή ρύθμιση του ρολογιού σας. Αυτό οφείλεται στο γεγονός ότι τα πιστοποιητικά που χρησιμοποιούν οι ιστότοποι για την ταυτοποίησή τους είναι έγκυρα μόνο για συγκεκριμένες χρονικές περιόδους. Εφόσον το ρολόι της συσκευής σας δεν είναι σωστά ρυθμισμένο, το Brave δεν μπορεί να επαληθεύσει αυτά τα πιστοποιητικά.</translation>
 <translation id="8740359287975076522">Δεν ήταν δυνατός ο εντοπισμός της &lt;abbr id="dnsDefinition"&gt;διεύθυνσης DNS&lt;/abbr&gt; του κεντρικού υπολογιστή <ph name="HOST_NAME"/>. Γίνεται διάγνωση του προβλήματος.</translation>
 <translation id="8742371904523228557">Το <ph name="ONE_TIME_CODE"/> είναι ο κωδικός σας για το <ph name="ORIGIN"/></translation>
@@ -1979,6 +1996,8 @@
 <translation id="9101630580131696064">Δίσκος 1</translation>
 <translation id="6373940988468425649">Κανονικά, ο ιστότοπος <ph name="SITE"/> χρησιμοποιεί κρυπτογράφηση για να προστατεύει τα στοιχεία σας. Όταν το Brave επιχείρησε πρόσφατα να συνδεθεί στο <ph name="SITE"/>, ο ιστότοπος ανταποκρίθηκε δημιουργώντας ασυνήθιστα και εσφαλμένα διαπιστευτήρια. Αυτό μπορεί να συμβεί όταν κάποιος εισβολέας προσπαθεί να υποκριθεί ότι είναι ο ιστότοπος <ph name="SITE"/> ή όταν κάποια οθόνη σύνδεσης Wi-Fi έχει διακόψει τη σύνδεσή σας. Τα στοιχεία σας εξακολουθούν να είναι ασφαλή επειδή το Brave διέκοψε τη σύνδεση πριν από την ανταλλαγή δεδομένων.</translation>
 <translation id="9106062320799175032">Προσθήκη διεύθυνσης χρέωσης</translation>
+<translation id="9107467864910557787">Η διαχείριση του προγράμματος περιήγησής σας γίνεται από τον τομέα <ph name="MANAGER"/></translation>
+<translation id="91108059142052966">Η πολιτική διαχειριστή απενεργοποιεί την κοινή χρήση οθόνης με την εφαρμογή <ph name="APPLICATION_TITLE"/> όταν εμφανίζεται εμπιστευτικό περιεχόμενο.</translation>
 <translation id="9114524666733003316">Επιβεβαίωση κάρτας…</translation>
 <translation id="3582535072753734287">Αυτός ο ιστότοπος δεν είναι διαχειριζόμενος από κάποια εταιρεία ή άλλον οργανισμό. Η διαχείριση της δραστηριότητας σε αυτήν τη συσκευή μπορεί να πραγματοποιηθεί εκτός Brave. <ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/></translation>
 <translation id="9119042192571987207">Έγινε μεταφόρτωση</translation>
@@ -1994,6 +2013,7 @@
 <translation id="9158625974267017556">C6 (Φάκελος)</translation>
 <translation id="9168814207360376865">Να επιτρέπεται σε ιστοτόπους να ελέγχουν αν έχετε αποθηκεύσει τρόπους πληρωμής</translation>
 <translation id="9169664750068251925">Να γίνεται πάντα αποκλεισμός σε αυτόν τον ιστότοπο</translation>
+<translation id="9169931577761441333">Προσθήκη του <ph name="APP_NAME"/> στην Αρχική οθόνη</translation>
 <translation id="9170848237812810038">Αναί&amp;ρεση</translation>
 <translation id="9171296965991013597">Αποχώρηση από την εφαρμογή;</translation>
 <translation id="9173282814238175921">Ένα έγγραφο/Νέο φύλλο</translation>
@@ -2014,9 +2034,9 @@
 <translation id="936474030629450166">Super-B</translation>
 <translation id="7486559383537872796">Μπορεί να χάσετε την πρόσβαση στον Λογαριασμό σας Brave. Το Brave συνιστά να αλλάξετε τον κωδικό πρόσβασής σας τώρα. Θα σας ζητηθεί να συνδεθείτε.</translation>
 <translation id="939736085109172342">Νέος φάκελος</translation>
+<translation id="945522503751344254">Αποστολή σχολίων</translation>
 <translation id="945855313015696284">Ελέγξτε τις πληροφορίες παρακάτω και διαγράψτε τυχόν μη έγκυρες κάρτες</translation>
 <translation id="950736567201356821">Τριπλό τρύπημα στο επάνω μέρος</translation>
-<translation id="951941430552851965">Έγινε παύση της λήψης οθόνης από τον διαχειριστή σας λόγω του περιεχομένου που εμφανίζεται στην οθόνη.</translation>
 <translation id="961663415146723894">Δέσιμο στο κάτω μέρος</translation>
 <translation id="962484866189421427">Αυτό το περιεχόμενο μπορεί να επιχειρήσει να εγκαταστήσει παραπλανητικές εφαρμογές που προσποιούνται ότι είναι κάτι άλλο ή συλλέγουν δεδομένα τα οποία μπορεί να χρησιμοποιηθούν για την παρακολούθησή σας. <ph name="BEGIN_LINK"/>Να εμφανίζεται ούτως ή άλλως<ph name="END_LINK"/></translation>
 <translation id="969892804517981540">Επίσημη έκδοση</translation>
@@ -2047,8 +2067,8 @@
 <translation id="2378238891085281592">Πραγματοποιείτε ανώνυμη περιήγηση</translation>
 <translation id="3774752171665127360">Οι σελίδες που προβάλλετε στις καρτέλες της ανώνυμης περιήγησης δεν διατηρούνται στο ιστορικό του προγράμματος περιήγησης, στα cookie ή στο ιστορικό αναζήτησης, αφού κλείσετε όλες τις καρτέλες της ανώνυμης περιήγησης. Τα αρχεία που κατεβάζετε ή οι σελιδοδείκτες που δημιουργείτε θα διατηρούνται.</translation>
 <translation id="9177896974490719854">Ωστόσο, δεν είστε αόρατος/η.  Με την κατάσταση ανώνυμης περιήγησης δεν μπορείτε να αποκρύψετε τα στοιχεία της περιήγησής σας από τους εργοδότες σας, τον πάροχο υπηρεσιών διαδικτύου που χρησιμοποιείτε ή τους ιστότοπους που επισκέπτεστε.</translation>
-<translation id="2227116904818538760">Είστε σε κατάσταση ανώνυμης περιήγησης.</translation>
-<translation id="2007417459975034427">Στο εξής μπορείτε να περιηγηθείτε ιδιωτικά και η δραστηριότητά σας δεν θα είναι ορατή στα άλλα άτομα που χρησιμοποιούν αυτήν τη συσκευή. Ωστόσο, οι λήψεις και οι σελιδοδείκτες θα αποθηκεύονται.</translation>
+<translation id="5673623523506565506">Τώρα μπορείτε να περιηγηθείτε ιδιωτικά και άλλα προφίλ που χρησιμοποιούν αυτήν τη συσκευή δεν θα βλέπουν τη δραστηριότητά σας. Ωστόσο, οι λήψεις και οι σελιδοδείκτες θα αποθηκεύονται.</translation>
+<translation id="3812568169637430422">Τώρα μπορείτε να περιηγηθείτε ιδιωτικά και άλλα προφίλ που χρησιμοποιούν αυτήν τη συσκευή δεν θα βλέπουν τη δραστηριότητά σας. Ωστόσο, οι λήψεις και τα στοιχεία της λίστας ανάγνωσης θα αποθηκεύονται.</translation>
 <translation id="5549245478906381817">Άνοιγμα Ιδιωτικού παραθύρου</translation>
 <translation id="5497977785983089120">Ανοίξετε ένα νέο Ιδιωτικό παράθυρο για ιδιωτική περιήγηση</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, πατήστε Tab και Enter για να ανοίξετε ένα νέο Ιδιωτικό παράθυρο για ιδιωτική περιήγηση</translation>

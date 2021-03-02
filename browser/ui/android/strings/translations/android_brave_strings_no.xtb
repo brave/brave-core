@@ -74,7 +74,7 @@
 <translation id="4930714375720679147">Slå på</translation>
 <translation id="2453860139492968684">Fullfør</translation>
 <translation id="3570367516044491911">Angi som standardnettleser</translation>
-<translation id="7493053924837150477">Velg Brave-nettleseren på listen, og trykk på «Alltid»</translation>
+<translation id="19715420010996093">Velg Brave Browser og trykk på 'Alltid'</translation>
 <translation id="3546439402724649282">Brave er allerede angitt som standardnettleser.</translation>
 <translation id="8389661903259423907">Du har allerede angitt en standardnettleser. Du kan endre standardnettleseren i appinnstillingene.</translation>
 <translation id="7091885296442320770">Brave er lynrask</translation>
@@ -228,6 +228,10 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="8712637175834984815">Skjønner</translation>
 <translation id="4394049700291259645">Slå av</translation>
 <translation id="8446884382197647889">Les mer</translation>
+<translation id="2514300153301737214">Vi ser at du har Brave Sync aktivert, men systemsynkroniseringen din er slått av og hindrer Brave å synkronisere. Trykk for å åpne innstillinger</translation>
+<translation id="7173114856073700355">Åpne Innstillinger</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="4450893287417543264">Ikke vis igjen</translation>
 <translation id="597993392929850353">Brave-lisens</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6199596294742117349">Dette er en privat fane</translation>
@@ -332,6 +336,14 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="76550953340008122">Takk for at du ga beskjed til utviklerne av Brave om at noe er galt med dette nettstedet. Vi skal gjøre vårt beste for å rette det!</translation>
 <translation id="650318023204990401">Avanserte kontroller</translation>
 <translation id="7182293319417450928">Det kreves en saldo på minimum 25 BAT for å verifisere.</translation>
+<translation id="6589609065569680305">Trackere og annonser blokkert på denne siden.</translation>
+<translation id="1283922192221545319">Brave Shields sikret nettopp personvernet ditt.</translation>
+<translation id="6227291358910554399">Annonser blokkeres når man ser på videoer på dette nettstedet.</translation>
+<translation id="7802980684512102010">Videoer uten annonser bruke mindre data.</translation>
+<translation id="2046475855484346614">10+ trackere og annonser blokkert på denne siden.</translation>
+<translation id="5806208250835099572">Brave Shields sikrer nett-personvernet ditt på hvert nettsted.</translation>
+<translation id="5617673581653540121">Forbindelsen din er nå kryptert.</translation>
+<translation id="4055107796760496928">Hvis tilgjengelig, oppgraderer Brave deg automatisk til en sikker forbindelse.</translation>
 <translation id="4776948189086901857">Brave fungerer overalt</translation>
 <translation id="1606322780901645965">Last ned Brave på brave.com på din bærbare PC eller nettbrett for et raskere og mer privat web</translation>
 <translation id="8374242949413616101">Personvernbeskyttelse</translation>
@@ -443,7 +455,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="3895246934788932488">Ved å bruke Brave Rewards styrker du personvernet ditt og bidrar til å gjøre nettet til et bedre sted for alle. Det er bare fantastisk!</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
 <translation id="5140321319944305531">La oss ta en rask omvisning</translation>
-<translation id="3808131693704413134">Etter at du mottar de første annonseutbetalingene dine kan du komme tilbake og tipse denne produsenten.</translation>
+<translation id="2434574859640694129">Etter du mottar den første annonseutbetalingen din kan du komme tilbake og tipse denne innholdsprodusenten!</translation>
 <translation id="207242986925259074">Rask oppfrisknings-omvisning</translation>
 <translation id="8342862030112839977">Den første belønningsutbetalingen din kommer innen:</translation>
 <translation id="3769645103175790584">Tjen tokener og gi produsenter belønning for flott innhold mens du surfer. <ph name="QUICK_TOUR"/>.</translation>
@@ -469,4 +481,11 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="6478996494082389936">privat produktanalyse.</translation>
 <translation id="5187052478998910855">Behov for å friske opp kunnskapene dine om Rewards?</translation>
 <translation id="8622329973403382303">Ta en rask omvisning og frisk opp kunnskapen om hvordan du går inn i historien som Rewards-rockestjerne!</translation>
+<translation id="8401711613788729448">Åpne alle lenker med Brave for å sikre personvernet ditt</translation>
+<translation id="3184805785843994538">Brave Shields blokkerer trackere og annonser, lagrer data og sparer deg for tid på hvert nettsted du besøker.</translation>
+<translation id="8722651357687610395">Sett Brave som standard</translation>
+<translation id="3479552764303398839">Ikke nå</translation>
+<translation id="6232491755501685494">Brave Rewards i Japan bytter til et nytt system!</translation>
+<translation id="7444515017164572362">Fra og med 13. mars vil du ikke kunne bruke BAP-en din. Men når du har oppdatert til det nye systemet i april, vil du begynne med nye polletter!</translation>
+<translation id="8587285254008006694">Som del av denne overgangen vil tips- og bidragsfunksjonene i nettleseren din være midlertidig utilgjengelige fra og med 13. mars, og BAP-saldoen din vil vise 0,0 inntil du har oppdatert til det nye systemet i april. Så snart du er på det nye systemet, vil du begynne med nye polletter!</translation>
 </translationbundle>

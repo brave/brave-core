@@ -76,7 +76,6 @@
 <translation id="2070991379950719711">Comenzar a utilizar Recompensas Brave</translation>
 <translation id="48520986898237073">Continuar a la billetera</translation>
 <translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
-<translation id="7493053924837150477">Selecciona el navegador Brave de la lista y pulsa "Siempre"</translation>
 <translation id="3546439402724649282">Brave ya es tu navegador predeterminado.</translation>
 <translation id="8389661903259423907">Ya has definido un navegador predeterminado. Puedes cambiarlo en los ajustes de tu app.</translation>
 <translation id="7091885296442320770">Brave es ultrarrápido</translation>
@@ -229,6 +228,10 @@ hasta que lo verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="8712637175834984815">Entendido</translation>
 <translation id="4394049700291259645">Inhabilitar</translation>
 <translation id="8446884382197647889">Más información</translation>
+<translation id="2514300153301737214">Detectamos que activaste Brave Sync. Sin embargo, la sincronización de tu sistema está desactivada y no permitirá que Brave se sincronice. Presiona para abrir la configuración.</translation>
+<translation id="7173114856073700355">Abrir la configuración</translation>
+<translation id="6965382102122355670">Aceptar</translation>
+<translation id="4450893287417543264">No volver a mostrar</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
@@ -336,9 +339,15 @@ hasta que lo verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="5516010970279932133">Mostrar los sitios sugeridos en la opción de autocompletar</translation>
 <translation id="5370478469168390143">Guardar datos en línea</translation>
 <translation id="1118508688433541158">Navega más rápido y bloquea anuncios con Brave</translation>
-<translation id="915835519491851291">Bloqueaste algunos rastreadores y anuncios.</translation>
+<translation id="6589609065569680305">Rastreadores y anuncios bloqueados en esta página.</translation>
+<translation id="1283922192221545319">Brave Shields acaba de proteger tu privacidad.</translation>
 <translation id="3286927551967858325">Echa un vistazo</translation>
-<translation id="2929661208078053609">¡Excelente!</translation>
+<translation id="6227291358910554399">Los anuncios se bloquean mientras se ven videos en este sitio web.</translation>
+<translation id="7802980684512102010">Los videos sin anuncios usan menos datos.</translation>
+<translation id="2046475855484346614">Más de 10 rastreadores y anuncios bloqueados en esta página.</translation>
+<translation id="5806208250835099572">Brave Shields protege tu privacidad mientras navegas por cada sitio.</translation>
+<translation id="5617673581653540121">Tu conexión ahora está encriptada.</translation>
+<translation id="4055107796760496928">En caso de estar disponible, Brave te actualiza a una conexión segura de forma automática.</translation>
 <translation id="4776948189086901857">Brave funciona en todos lados</translation>
 <translation id="1606322780901645965">Descarga Brave en brave.com en tu computadora portátil o tableta para navegar de forma más rápida y privada</translation>
 <translation id="8374242949413616101">Protección de privacidad</translation>
@@ -430,11 +439,11 @@ hasta que lo verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="8804164990146287819">Política de privacidad</translation>
 <translation id="6318696841371191107">Haz un recorrido rápido</translation>
 <translation id="7930505144430343145">¡Te damos la bienvenida a Recompensas Brave!</translation>
-<translation id="3477340970981564961">Los anuncios privados de Brave te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.</translation>
+<translation id="3477340970981564961">Brave Private Ads te recompensan con tokens para apoyar a creadores de contenido a diferencia de los anuncios tradicionales, todo mientras mantienes la privacidad de tu información personal.</translation>
 <translation id="6973095375773523904">¿Dónde se muestran los anuncios?</translation>
-<translation id="7556325460112047619">Los anuncios privados de Brave se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.</translation>
+<translation id="7556325460112047619">Los Brave Private Ads se mostrarán como una notificación normal. Puedes controlar con qué frecuencia deseas ver estos anuncios en la configuración.</translation>
 <translation id="5816125157889950051">¿Cuándo recibes recompensas?</translation>
-<translation id="310863932297733723">Recibirás los tokens que ganaste de los anuncios de Brave durante el mes actual el día 5 del mes siguiente.</translation>
+<translation id="310863932297733723">Recibirás los tokens que ganaste de Brave Private Ads durante el mes actual el día 5 del mes siguiente.</translation>
 <translation id="7712287524451429139">Retribuye sin demasiado esfuerzo</translation>
 <translation id="105037569026952831">Los creadores reciben tus contribuciones de tokens de forma automática en función de tus niveles de participación que medimos como ‘Atención’.</translation>
 <translation id="5323267338679539010">Agradece con propinas</translation>
@@ -449,7 +458,7 @@ hasta que lo verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="3895246934788932488">Al utilizar Recompensas Brave, estás protegiendo tu privacidad y ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!</translation>
 <translation id="5705882733397021510">Regresar</translation>
 <translation id="5140321319944305531">Hagamos un recorrido rápido</translation>
-<translation id="3808131693704413134">Después de recibir tu primer pago de anuncios, ¡puedes regresar y darle una propina a este creador!</translation>
+<translation id="2434574859640694129">Después de recibir tu primer pago de anuncios, ¡puedes regresar y darle una propina a este creador!</translation>
 <translation id="207242986925259074">Recorrido rápido de actualización</translation>
 <translation id="8342862030112839977">Recibirás tu primer pago de recompensas el:</translation>
 <translation id="3769645103175790584">Gana tokens y recompensa a los creadores por contenido excelente mientras navegas. <ph name="QUICK_TOUR"/>.</translation>
@@ -475,4 +484,16 @@ hasta que lo verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="6478996494082389936">análisis de productos privados.</translation>
 <translation id="5187052478998910855">¿Necesitas actualizarte en cuanto a Rewards?</translation>
 <translation id="8622329973403382303">¡Haz un recorrido rápido para repasar cómo funciona y pasar a la historia como una estrella de Rewards!</translation>
+<translation id="8401711613788729448">Abre todos los enlaces con Brave para proteger tu privacidad</translation>
+<translation id="3184805785843994538">Brave Shields bloquea rastreadores y anuncios, además de ahorrarte datos y tiempo en todos los sitios que visitas.</translation>
+<translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
+<translation id="3479552764303398839">Ahora no</translation>
+<translation id="6232491755501685494">¡Brave Rewards está cambiando a un nuevo sistema en Japón!</translation>
+<translation id="7444515017164572362">A partir del 13 de marzo, no podrás usar tus BAP. Sin embargo, una vez que
+        actualices al nuevo sistema en abril, ¡comenzarás con nuevos tokens!</translation>
+<translation id="8587285254008006694">Como parte de esta transición, las funciones de propinas y contribuciones de
+        tu navegador no estarán disponibles temporalmente a partir del 13 de marzo, y
+        tu saldo de BAP se mostrará en 0.0 hasta que hayas actualizado al nuevo sistema
+        en abril. Una vez que tengas el nuevo sistema, ¡comenzarás con nuevos
+        tokens!</translation>
 </translationbundle>

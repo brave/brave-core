@@ -11,6 +11,7 @@
 <translation id="10614374240317010">저장하지 않음</translation>
 <translation id="5428209950370661546">다른 Brave 서비스</translation>
 <translation id="107147699690128016">파일 확장자를 변경하면 파일이 다른 애플리케이션에서 열리고 기기가 위험에 노출될 수도 있습니다.</translation>
+<translation id="1094515529340404628">웹 크라우드 및 광고 측정</translation>
 <translation id="1100066534610197918">새 탭을 그룹에서 열기</translation>
 <translation id="1105960400813249514">화면 캡처</translation>
 <translation id="1111673857033749125">다른 기기에서 저장한 북마크가 여기에 표시됩니다.</translation>
@@ -35,7 +36,6 @@
 <translation id="1208340532756947324">모든 기기에서 동기화 및 맞춤설정하려면 동기화를 사용 설정하세요.</translation>
 <translation id="1209206284964581585">지금 숨기기</translation>
 <translation id="1227058898775614466">탐색 기록</translation>
-<translation id="1229399675748764149">이 페이지를 홈페이지로 지정</translation>
 <translation id="1231733316453485619">동기화를 사용하시겠습니까?</translation>
 <translation id="123724288017357924">캐시된 콘텐츠를 무시하고 현재 페이지 새로고침</translation>
 <translation id="124678866338384709">현재 탭 닫기</translation>
@@ -77,7 +77,6 @@
 <translation id="1513858653616922153">비밀번호 삭제</translation>
 <translation id="1521774566618522728">오늘 사용</translation>
 <translation id="1538801903729528855">웹에서의 음성 사용 환경 개선하기</translation>
-<translation id="1543538514740974167">여기로 더 빠르게 이동하기</translation>
 <translation id="8090895580117672212">Brave 계정을 관리하려면 '계정 관리' 버튼을 탭하세요.</translation>
 <translation id="1549000191223877751">다른 창으로 이동</translation>
 <translation id="1705567146636171298">Brave 업데이트</translation>
@@ -142,6 +141,7 @@
 <translation id="2017836877785168846">검색주소창의 검색 기록 및 자동 완성 항목을 삭제합니다.</translation>
 <translation id="2021896219286479412">전체화면 사이트 컨트롤</translation>
 <translation id="2038563949887743358">데스크톱 버전으로 보기 사용 설정</translation>
+<translation id="2039379262107991683">알림을 받으려면 읽기 목록에 페이지를 추가하세요.</translation>
 <translation id="7675869148432102528"><ph name="APP_NAME"/>도 Brave에서 데이터를 보유하고 있습니다</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="2052422354554967744">인터넷 검색하기</translation>
@@ -169,6 +169,7 @@
 <translation id="6162454065885854378">스마트폰에서 다른 기기로 콘텐츠를 공유하려면 두 기기의 Brave 설정에서 동기화를 사용 설정하세요.</translation>
 <translation id="4162910516440006395">Brave에서 일부 비밀번호를 확인할 수 없습니다.</translation>
 <translation id="2169830938017475061">방금</translation>
+<translation id="2172688499998841696">이미지 설명 사용 중지됨</translation>
 <translation id="2175927920773552910">QR 코드</translation>
 <translation id="218608176142494674">공유</translation>
 <translation id="3842811252050200766">Brave의 가장 강력한 보안 기능 사용하기</translation>
@@ -195,7 +196,6 @@
 <translation id="2387895666653383613">텍스트 크기 조정</translation>
 <translation id="2394602618534698961">다운로드한 파일이 여기 표시됩니다.</translation>
 <translation id="801672626447970525">Brave 계정에 로그인하면 이 기능이 사용 설정됩니다.</translation>
-<translation id="2407674018644220013"><ph name="APP_NAME"/>을(를) 기본 브라우저로 설정하시겠습니까?</translation>
 <translation id="2410754283952462441">계정 선택</translation>
 <translation id="2414886740292270097">어둡게</translation>
 <translation id="2426805022920575512">다른 계정 선택</translation>
@@ -206,8 +206,8 @@
 아무 단어나 길게 터치하여 검색하세요. 더욱 상세히 검색하려면 단어를 더 많이 선택하거나 적게 선택합니다. 검색어를 수정하려면 패널을 열고 아이콘을 탭하여 새 탭에서 연 다음, 검색창 내용을 변경하세요.</translation>
 <translation id="2459390580524506445">향상된 음성 검색</translation>
 <translation id="246532703174860178">공유</translation>
+<translation id="247737702124049222">이미지 설명 사용 설정됨</translation>
 <translation id="2478076885740497414">앱 설치</translation>
-<translation id="2479148705183875116">설정으로 이동</translation>
 <translation id="2482878487686419369">알림</translation>
 <translation id="6361779936989026201">Brave의 Brave 어시스턴트</translation>
 <translation id="2496180316473517155">인터넷 사용 기록</translation>
@@ -223,6 +223,7 @@
 <translation id="2536728043171574184">이 페이지의 오프라인 사본 보는 중</translation>
 <translation id="2537178555904266562">비밀번호 동기화 중 오류 발생</translation>
 <translation id="2546283357679194313">쿠키 및 사이트 데이터</translation>
+<translation id="2562889244313180139">웹사이트와 앱에서 식별할 수 없는 별칭을 사용하여 나에게 관련성 높은 사용 환경을 제공하도록 허용합니다.</translation>
 <translation id="2567385386134582609">이미지</translation>
 <translation id="5079947353572974060">다른 언어로 된 페이지를 Brave 번역으로 전송하는 옵션 제공</translation>
 <translation id="2324920234469020158">이를 통해 쿠키, 캐시 및 Brave에서 중요하다고 간주하지 않는 사이트의 기타 데이터가 삭제됩니다.</translation>
@@ -239,6 +240,7 @@
 <translation id="2704606927547763573">복사됨</translation>
 <translation id="2707726405694321444">페이지 새로고침</translation>
 <translation id="2709516037105925701">자동 완성</translation>
+<translation id="271033894570825754">New</translation>
 <translation id="2718352093833049315">Wi-Fi 연결 시</translation>
 <translation id="2718846868787000099">콘텐츠를 기본 언어로 표시하기 위해 방문하는 사이트에서 기본 설정을 확인할 수 있습니다.</translation>
 <translation id="2723001399770238859">오디오</translation>
@@ -255,6 +257,7 @@
 <translation id="7068873021383263704"><ph name="BEGIN_LINK"/>Brave 계정<ph name="END_LINK"/>에서 저장된 비밀번호 보기 및 관리</translation>
 <translation id="2818669890320396765">어느 기기에서나 내 북마크를 사용하려면 로그인하고 동기화를 사용 설정하세요.</translation>
 <translation id="2827278682606527653">피드 카드 메뉴 절반 높이</translation>
+<translation id="2833452327385637152">단어 또는 구문을 검색하려면 탭하는 대신 길게 터치하세요.</translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{1일 전에 확인됨}other{#일 전에 확인됨}}</translation>
 <translation id="2842985007712546952">상위 폴더</translation>
 <translation id="2860954141821109167">이 기기에서 전화 앱이 사용 설정되어 있는지 확인하세요.</translation>
@@ -306,6 +309,7 @@
 <translation id="3232754137068452469">웹 앱</translation>
 <translation id="3236059992281584593">1분 남음</translation>
 <translation id="3244271242291266297">MM</translation>
+<translation id="3250563604907490871">이미지 설명은 Wi-Fi에 연결되면 재개됩니다.</translation>
 <translation id="3254409185687681395">현재 페이지를 북마크에 추가</translation>
 <translation id="3259831549858767975">페이지의 모든 항목 축소</translation>
 <translation id="3264124641674805320">나중에 보기 위해 콘텐츠를 다운로드하는 방법</translation>
@@ -447,7 +451,6 @@
 <translation id="4335835283689002019">세이프 브라우징 사용 안함</translation>
 <translation id="4351244548802238354">대화상자 닫기</translation>
 <translation id="4378154925671717803">전화기</translation>
-<translation id="5543146597494022157">Brave 언어로 사용</translation>
 <translation id="4384468725000734951">검색할 때 Sogou 사용</translation>
 <translation id="4404568932422911380">북마크 없음</translation>
 <translation id="4405224443901389797">다음 폴더로 이동…</translation>
@@ -481,7 +484,6 @@
 <translation id="4587589328781138893">사이트</translation>
 <translation id="4594952190837476234">이 오프라인 페이지는 <ph name="CREATION_TIME"/>에 생성되었으며 온라인 버전과 다를 수 있습니다.</translation>
 <translation id="4605958867780575332"><ph name="ITEM_TITLE"/> 삭제됨</translation>
-<translation id="4614535611158687827">나중에 읽을 수 있게 페이지를 저장하고 알림 받기</translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/> 열기</translation>
 <translation id="4634124774493850572">비밀번호 사용</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{유출된 비밀번호 1개}other{유출된 비밀번호 #개}}</translation>
@@ -549,6 +551,7 @@
 <translation id="4970824347203572753">현재 위치에서 사용할 수 없습니다.</translation>
 <translation id="7307583170263691471">위험한 웹사이트, 다운로드 항목 및 확장 프로그램에 더 빠르게 대응하여 선제적 보호 조치를 취합니다. 비밀번호 유출에 관해 알립니다. Brave에 인터넷 사용 기록을 전송해야 합니다.</translation>
 <translation id="497421865427891073">앞으로 이동</translation>
+<translation id="4986638582553854481">제목</translation>
 <translation id="4988210275050210843">파일 다운로드 중(<ph name="MEGABYTES"/>)</translation>
 <translation id="4988526792673242964">페이지</translation>
 <translation id="6447211988989208781">Brave 활동 제어</translation>
@@ -565,7 +568,7 @@
 <translation id="5127805178023152808">동기화 사용 안함</translation>
 <translation id="5132942445612118989">모든 기기의 비밀번호, 방문 기록 등 동기화</translation>
 <translation id="5136035049889637840">비슷한 상품 구입 <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
-<translation id="5139940364318403933">Brave 드라이브 사용 방법 알아보기</translation>
+<translation id="5139940364318403933">Google Drive 사용 방법 알아보기</translation>
 <translation id="5152843274749979095">지원되는 앱이 설치되어 있지 않음</translation>
 <translation id="5161254044473106830">제목이 필요합니다.</translation>
 <translation id="5162754098604580781">{FILE_COUNT,plural, =1{다운로드 1개 실패}other{다운로드 #개 실패}}</translation>
@@ -624,6 +627,7 @@
 <translation id="5581519193887989363">언제든지 <ph name="BEGIN_LINK1"/>설정<ph name="END_LINK1"/>에서 동기화할 항목을 선택할 수 있습니다.</translation>
 <translation id="5595485650161345191">주소 수정</translation>
 <translation id="6157610782452852023">Brave 어시스턴트가 사용자를 위해 여러 웹사이트에서 작업을 완료할 수 있습니다.</translation>
+<translation id="5606787249466187650">개인정보 보호 샌드박스 살펴보기</translation>
 <translation id="5620163320393916465">저장된 비밀번호 없음</translation>
 <translation id="5620928963363755975">옵션 더보기 버튼을 눌러 다운로드에서 파일 및 페이지를 찾아보세요.</translation>
 <translation id="5626134646977739690">이름:</translation>
@@ -635,7 +639,6 @@
 <translation id="5668404140385795438">웹사이트의 확대 방지 요청 무시</translation>
 <translation id="5668833306439455813">Brave에서 업데이트를 확인할 수 없음</translation>
 <translation id="5686790454216892815">파일 이름이 너무 깁니다.</translation>
-<translation id="5687809546194252819">다시 시작하면 <ph name="APP_NAME"/>에서 <ph name="LANGUAGE"/>를 사용합니다.</translation>
 <translation id="569536719314091526">옵션 더보기 버튼을 눌러 이 페이지를 원하는 언어로 번역하세요</translation>
 <translation id="2320748512701464301">Brave은 정보 유출, 안전하지 않은 웹사이트 등으로부터 사용자를 보호해 줍니다.</translation>
 <translation id="5697688514913266141">파일이 <ph name="BEGIN_BOLD"/><ph name="DIRECTORY"/><ph name="END_BOLD"/>에 저장됩니다. <ph name="BEGIN_LINK2"/>수정<ph name="END_LINK2"/></translation>
@@ -693,6 +696,7 @@
 <translation id="6005538289190791541">추천 비밀번호</translation>
 <translation id="6012539369710767899">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{페이지가 <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/>개 있습니다.}other{페이지가 <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/>개 있습니다.}}</translation>
 <translation id="6014293228235665243">읽지 않음</translation>
+<translation id="6018309500671889594">광고주가 식별할 수 없는 정보를 사용하여 광고 캠페인을 조사하도록 허용합니다.</translation>
 <translation id="6036057147555329831">추가 ICU</translation>
 <translation id="6039379616847168523">다음 탭으로 이동</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -713,7 +717,6 @@
 <translation id="6140912465461743537">국가/지역</translation>
 <translation id="614940544461990577">다음 방법을 시도해 보세요.</translation>
 <translation id="6154478581116148741">이 기기에서 비밀번호를 내보내려면 설정에서 화면 잠금을 사용 설정하세요</translation>
-<translation id="6157392216611456285"><ph name="APP_NAME"/> 선택</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> 데이터 절약</translation>
 <translation id="6186394685773237175">유출된 비밀번호가 없습니다.</translation>
 <translation id="6192907950379606605">이미지 설명 보기</translation>
@@ -745,7 +748,6 @@
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> 외 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>개}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> 외 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>개}}</translation>
 <translation id="6345878117466430440">읽음으로 표시</translation>
 <translation id="6364438453358674297">기록에서 제안을 삭제하시겠습니까?</translation>
-<translation id="6366047038980456022"><ph name="APP_NAME"/>은(는) 인터넷으로 작업과 탐색을 안전하게 진행하는 데 필요한 스마트한 기능과 빠른 속도를 제공합니다.</translation>
 <translation id="6378173571450987352">세부정보: 사용된 데이터 양에 따라 정렬</translation>
 <translation id="4993481112200507346"><ph name="APP_NAME"/> 앱이 Brave에서 열립니다. 계속하면 <ph name="BEGIN_LINK1"/>Brave 서비스 약관<ph name="END_LINK1"/>과 <ph name="BEGIN_LINK2"/>Brave 및 Chrome OS 추가 서비스 약관<ph name="END_LINK2"/>에 동의하는 것으로 간주됩니다.</translation>
 <translation id="6381421346744604172">웹사이트 어둡게 보기</translation>
@@ -769,6 +771,7 @@
 <translation id="6475951671322991020">동영상 다운로드</translation>
 <translation id="6477928892249167417">다음 사이트는 중요할 수도 있습니다.</translation>
 <translation id="6482749332252372425">저장공간이 부족하여 <ph name="FILE_NAME"/>을(를) 다운로드할 수 없습니다.</translation>
+<translation id="6489610539826642779">읽기 목록 <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="6496823230996795692">처음으로 <ph name="APP_NAME"/>을(를) 사용하는 경우 인터넷에 연결하세요.</translation>
 <translation id="3960299545138990065">Brave 다시 시작하기</translation>
 <translation id="6527303717912515753">공유</translation>
@@ -807,7 +810,6 @@
 <translation id="7392539049993970338">Brave 개인정보처리방침</translation>
 <translation id="6671495933530132209">이미지 복사</translation>
 <translation id="8581481290581777242">기기에서 Brave 데이터를 삭제하시겠습니까?</translation>
-<translation id="6691888250440401212">1. <ph name="APP_NAME"/>을 선택합니다.\n2. '기본 브라우저로 설정'을 탭합니다.</translation>
 <translation id="6697492270171225480">페이지를 찾을 수 없을 때 비슷한 페이지 제안 표시</translation>
 <translation id="6698801883190606802">동기화된 데이터 관리</translation>
 <translation id="1006927014032731288">Brave 서버에서 내가 방문하는 페이지를 최적화합니다.</translation>
@@ -849,7 +851,6 @@
 <translation id="7027549951530753705"><ph name="ITEM_TITLE"/> 복원됨</translation>
 <translation id="7029809446516969842">비밀번호</translation>
 <translation id="7030675613184250187">읽기 목록에 페이지를 저장하여 다시 찾아보거나 오프라인 상태에서 읽을 수 있습니다.</translation>
-<translation id="703523980599857277">홈페이지 변경</translation>
 <translation id="7054588988317389591">이미지 설명을 표시하시겠습니까?</translation>
 <translation id="7055152154916055070">다음 주소로의 리디렉션이 차단됨:</translation>
 <translation id="7063006564040364415">동기화 서버에 연결할 수 없습니다.</translation>
@@ -860,7 +861,6 @@
 <translation id="8208853227947884571">Brave이 최신 버전입니다.</translation>
 <translation id="7106762743910369165">조직에서 관리하는 브라우저입니다.</translation>
 <translation id="1968157943459987269">검색주소창에 저장된 방문 기록과 자동 완성 내역을 지웁니다. Brave 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
-<translation id="7128355412245153445">홈 버튼을 탭할 때마다 자주 방문하는 사이트 및 최근 스토리가 표시됩니다.</translation>
 <translation id="7138678301420049075">기타</translation>
 <translation id="7146622961999026732">다음 사이트와 앱은 중요할 수도 있습니다.</translation>
 <translation id="7149158118503947153"><ph name="DOMAIN_NAME"/>에서 <ph name="BEGIN_LINK"/>원본 페이지 로드<ph name="END_LINK"/>하기</translation>
@@ -872,11 +872,13 @@
 <translation id="718926126787620637">북마크 폴더 목록이 전체 높이로 열림</translation>
 <translation id="7189372733857464326">Google Play 서비스 업데이트 완료 대기 중</translation>
 <translation id="7191430249889272776">탭이 백그라운드에 열림</translation>
+<translation id="720894724577012575">카테고리: <ph name="COMMA_SEPERATED_CATEGORY_LIST"/>.</translation>
 <translation id="3512968675351418494">내가 사용하는 언어로 웹을 보려면 최신 버전의 Brave을 사용하세요.</translation>
 <translation id="8287068819750208230"><ph name="TARGET_DEVICE_NAME"/>에서 Brave 동기화가 사용 설정되어 있는지 확인하세요.</translation>
 <translation id="7274013316676448362">차단된 사이트</translation>
 <translation id="7286572596625053347"><ph name="LANGUAGE"/>를 변경하시겠습니까?</translation>
 <translation id="7290209999329137901">이름 변경 불가</translation>
+<translation id="7291910923717764901">이 페이지에 추가된 이미지 설명</translation>
 <translation id="2997266899014181325">동기화를 시작하려면 'Brave 데이터 동기화'를 사용 설정하세요.</translation>
 <translation id="7293429513719260019">언어 선택</translation>
 <translation id="729975465115245577">기기에 비밀번호 파일을 저장할 수 있는 앱이 없습니다.</translation>
@@ -896,6 +898,7 @@
 <translation id="724102042129299115">Brave 첫 실행</translation>
 <translation id="741204030948306876">사용</translation>
 <translation id="7413229368719586778">시작일: <ph name="DATE"/></translation>
+<translation id="7416941666639889592">웹 크라우드에 참여하면 웹사이트가 개인 식별 정보를 사용하지 않고 나에게 관련성 높은 웹 환경을 제공하도록 허용하게 됩니다. 특정 가수의 공연장에 있는 군중들이 비슷한 취향을 공유하듯 웹사이트와 광고주만이 수천 명의 사용자가 비슷한 관심사를 공유한다는 사실을 알 수 있습니다.</translation>
 <translation id="7431991332293347422">검색 등을 맞춤설정하는 데 인터넷 방문 기록이 사용되는 방식 관리</translation>
 <translation id="7435356471928173109">관리자가 사용 중지했습니다.</translation>
 <translation id="6234515504547364178">Brave에서 로그아웃</translation>
@@ -959,6 +962,7 @@
 <translation id="7798392620021911922">탭 <ph name="TAB_COUNT"/>개를 복원했습니다.</translation>
 <translation id="780301667611848630">취소</translation>
 <translation id="7810647596859435254">연결 프로그램...</translation>
+<translation id="7815484226266492798">긴 스크린샷</translation>
 <translation id="7821588508402923572">절약한 데이터 양이 여기에 표시됩니다</translation>
 <translation id="7844171778363018843">동기화할 데이터 선택 안됨</translation>
 <translation id="7068829570137757602">Brave 서비스</translation>
@@ -1030,6 +1034,7 @@
 <translation id="8261506727792406068">삭제</translation>
 <translation id="8266862848225348053">다운로드 위치</translation>
 <translation id="8274165955039650276">다운로드 항목 보기</translation>
+<translation id="8281886186245836920">건너뛰기</translation>
 <translation id="8284326494547611709">자막</translation>
 <translation id="8310344678080805313">일반 탭</translation>
 <translation id="8316092324682955408"><ph name="DOMAIN_NAME"/> 및 그 외 사이트</translation>
@@ -1040,10 +1045,8 @@
 <translation id="8368027906805972958">알 수 없거나 지원되지 않는 기기(<ph name="DEVICE_ID"/>)</translation>
 <translation id="8372925856448695381"><ph name="LANG"/>를 사용할 준비가 되었습니다.</translation>
 <translation id="8393700583063109961">메시지 보내기</translation>
-<translation id="8407396331882458341">1. <ph name="APP_NAME"/>을 선택합니다.\n2. '항상'을 탭합니다.</translation>
 <translation id="8410695015584479363">가격 추적</translation>
 <translation id="8413126021676339697">방문 기록 전체 보기</translation>
-<translation id="8425213833346101688">변경</translation>
 <translation id="8427875596167638501">미리보기 탭이 절반 높이로 열림</translation>
 <translation id="8428213095426709021">설정</translation>
 <translation id="8438566539970814960">검색 및 탐색 기능 개선</translation>
@@ -1067,13 +1070,14 @@
 <translation id="8555836665334561807">Wi-Fi 이용 시</translation>
 <translation id="8559990750235505898">다른 언어로 된 페이지의 번역 옵션 제공</translation>
 <translation id="8560602726703398413">북마크에서 읽기 목록 찾기</translation>
-<translation id="8561196567344536112">1. 설정으로 이동합니다.\n2. '브라우저 앱'을 탭합니다.\n3. <ph name="APP_NAME"/>을(를) 선택합니다.</translation>
 <translation id="8562452229998620586">저장한 비밀번호가 여기에 표시됩니다.</translation>
 <translation id="8569404424186215731"><ph name="DATE"/>부터</translation>
 <translation id="8571213806525832805">지난 4주</translation>
 <translation id="8572344201470131220">이미지 복사됨</translation>
 <translation id="8583805026567836021">계정 데이터 지우기</translation>
+<translation id="8587585930972369234">길게 터치하여 검색</translation>
 <translation id="860043288473659153">카드 명의자 이름</translation>
+<translation id="860282621117673749">가격 인하 알림</translation>
 <translation id="5784514951651328424">Brave 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
 <translation id="8617240290563765734">다운로드한 콘텐츠에 지정된 추천 URL을 여시겠습니까?</translation>
 <translation id="8636825310635137004">다른 기기에서 탭을 가져오려면 동기화를 사용 설정하세요.</translation>
@@ -1092,6 +1096,7 @@
 <translation id="8748850008226585750">숨겨진 콘텐츠</translation>
 <translation id="8788265440806329501">탐색 기록 닫힘</translation>
 <translation id="8788968922598763114">마지막으로 닫은 탭 다시 열기</translation>
+<translation id="8795672590390389447">개인정보 보호 샌드박스</translation>
 <translation id="8798449543960971550">읽음</translation>
 <translation id="8812260976093120287">일부 웹사이트에서는 위의 결제 앱을 사용하여 내 기기에서 결제할 수 있습니다.</translation>
 <translation id="881688628773363275">미리보기 탭 콘텐츠를 볼 수 없습니다.</translation>
@@ -1157,7 +1162,6 @@
 <translation id="4596514158372210596">디지털 웰빙에서 Brave 활동 삭제</translation>
 <translation id="2830145431802238213">Brave에서 라이트 모드를 사용하세요.</translation>
 <translation id="932327136139879170">홈</translation>
-<translation id="93753284658583800">홈페이지 변경됨</translation>
 <translation id="938850635132480979">오류: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">암호 입력</translation>
 <translation id="948039501338975565">북마크 폴더 목록</translation>

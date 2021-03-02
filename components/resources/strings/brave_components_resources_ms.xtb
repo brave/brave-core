@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Semua sumber</translation>
 <translation id="8890516388109605451">Sumber</translation>
 <translation id="5158129253322921540">Nyahdayakan kandungan daripada <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Tajaan</translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="4643117005422448078">Laman Popular</translation>
 <translation id="7791543448312431591">Tambah</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Dagangkan Kripto di Binance terus dalam pelayar anda.</translation>
 <translation id="2166494527623220386">Dagangkan Kripto di Gemini terus dalam pelayar anda.</translation>
 <translation id="7191394989411626168">Dengan mematikan Kad, semua kad yang boleh dilihat sekarang akan disembunyikan. Namun, anda mungkin masih akan diberitahu tentang kad-kad baharu.</translation>
+<translation id="5655621391922317800">Dompet Crypto</translation>
+<translation id="8820817407110198400">Penanda buku</translation>
+<translation id="1644574205037202324">Sejarah</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="6248988683584659830">Cari tetapan</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Mungkin Kemudian</translation>
 <translation id="5187052478998910855">Perlukan penyegaran semula tentang Ganjaran?</translation>
 <translation id="8622329973403382303">Terokai dengan pantas untuk menyegar semula bagaimana caranya untuk mengukir nama dalam sejarah sebagai bintang rock Ganjaran!</translation>
+<translation id="3115702351969988294">Berapa kerap anda ingin melihat iklan?</translation>
+<translation id="7532131110478098401">(iklan dalam sejam)</translation>
+<translation id="2951964054390325080">Berapa banyak sokongan bulanan yang anda ingin berikan kepada pencipta kegemaran anda?</translation>
+<translation id="3164498053837913829">(daripada pendapatan iklan anda)</translation>
 <translation id="2070991379950719711">Mula menggunakan Ganjaran Brave</translation>
 <translation id="6318696841371191107">Jelajah pantas</translation>
 <translation id="2404165674840145940">Berikan Tip dengan ganjaran Brave</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Memberi tip ialah sebuah cara untuk menggalakkan dan menyokong secara peribadi kandungan atau pencipta yang anda sukai. Berikan tip!</translation>
 <translation id="7509452925943421624">Apakah yang anda boleh lakukan dengan token?</translation>
 <translation id="5876169128756792273">Token boleh digunakan selain daripada menyokong pencipta. Anda boleh membeli kandungan digital dan barangan-barangan lain apabila saudagar menyertai.</translation>
+<translation id="1402530520078693620">Akhirnya, mari’ kita sediakan anda untuk tetapan asas</translation>
+<translation id="3494356595346329740">Anda boleh menukar ini kemudian.</translation>
 <translation id="827315274423079662">Woohoo, anda sudah bersedia!</translation>
 <translation id="8268038362451312235">Dengan menggunakan Ganjaran Brave anda membantu untuk menjadikan web ini tempat yang lebih baik buat semua orang. Dan itu memang hebat!</translation>
 <translation id="5094577350232361255">tentang</translation>
@@ -627,14 +637,21 @@
 <translation id="8344084848798035850">Anggaran pendapatan setakat bulan ini</translation>
 <translation id="5235444069025581717">Petua dan sumbangan bulan ini</translation>
 <translation id="1210965535849006928">Tuntut Ganjaran saya</translation>
-<translation id="8092889639392847252">Dapatkan bayaran untuk melihat imej latar belakang tajaan ini.</translation>
-<translation id="7914961605852877459">Tekan buka Brave Ads untuk menuntut bahagian anda. Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>sembunyi imej tajaan<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Dapatkan ganjaran dengan melihat imej latar belakang tajaan ini.</translation>
+<translation id="5311968438376723685">Hidupkan Iklan Brave Peribadi untuk menuntut bahagian anda.
+Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Syabas!</translation>
 <translation id="764235488372037377">Ganjaran anda daripada Iklan ada di sini</translation>
 <translation id="7091215606170476659">Anda mempunyai geran UGP daripada Brave.</translation>
 <translation id="6759185676704303656">Anda mendapat bayaran kerana melihat imej latar belakang ini.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Ketahui Lebih Lanjut<ph name="LINK_END"/> mengenai imej tajaan di Brave Rewards.</translation>
 <translation id="6113004497629356998">Sembunyikan imej tajaan</translation>
+<translation id="8587285254008006694">Sebagai sebahagian daripada peralihan ini, tetapan pemberian tip dan sumbangan di
+         pelayar anda tidak akan tersedia buat sementara waktu mulai 13 Mac, dan
+         baki BAP anda akan menunjukkan 0.0 sehingga anda mengemas kini sistem baharu
+         dalam bulan April. Setelah sistem baharu anda’ telah dikemas kini, anda’ akan bermula dengan token
+         baharu!</translation>
+<translation id="6232491755501685494">Ganjaran Brave di Jepun beralih ke sistem baharu!</translation>
 <translation id="3787061634640932557">Edit Kad</translation>
 <translation id="4925543565930352284">Dengan mengklik {{title}}, anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Mulakan panggilan video peribadi dengan rakan-rakan dan rakan sekerja anda.</translation>
@@ -699,7 +716,6 @@
 <translation id="1833248467354516560">Harga Unit</translation>
 <translation id="4763179765154524864">Jumlah Dibelanjakan</translation>
 <translation id="8851480289992540512">Jumlah diterima</translation>
-<translation id="5655621391922317800">Dompet Crypto</translation>
 <translation id="616639131065447379">Selamat datang ke Dompet Kripto Brave</translation>
 <translation id="1740464057879304704">Dompet Kripto membolehkan anda bekerja dengan mata wang kripto dan aset-aset yang berkaitan di Brave. Dompet Kripto menyokong token Ethereum seperti ETH dan BAT, dan juga barangan koleksi, dan membolehkan anda bekerja dengan Ðaplikasi dan kontrak-kontrak pintar yang lain. Semua ini adalah untuk mereka yang mengenali Ethereum dan sistem-sistem rangkaian sekatan yang lain — atau teruja untuk belajar.</translation>
 <translation id="4855440621031541830">Hanya guna Dompet Kripto sekiranya anda menerima bahawa anda sendiri bertanggungjawab ke atas segala risiko yang berkaitan dengan penggunaan ini, dan bahawa Perisian Brave tidak akan memikul tanggungjawab mahupun liabiliti ke atas sebarang kerugian ketika kerugian kebetulan atau akibat yang anda mungkin akan alami akibat penggunaan ini.</translation>
@@ -711,14 +727,32 @@
 <translation id="763042262431778831">MATIKAN Pembaca Kelajuan</translation>
 <translation id="9020818404803201080">Rakan yang disambungkan:</translation>
 <translation id="2903493209154104877">Alamat</translation>
+<translation id="3207122385716480167">Stats Repo</translation>
+<translation id="2595187693729756455">Maklumat Nod</translation>
 <translation id="5789886980848929155">Status nod IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Get Laluan</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">Dilancarkan</translation>
+<translation id="5201810533706869030">Objek</translation>
+<translation id="8028993641010258682">Saiz</translation>
+<translation id="7870625241353817260">PenyimpananMaks</translation>
+<translation id="3202131003361292969">Laluan</translation>
+<translation id="2892680660204660712">ID Rakan Sebaya</translation>
+<translation id="7536543993364605970">Versi Ejen</translation>
+<translation id="3693482323085649439">Nod sedang berjalan</translation>
+<translation id="6315833555896070573">Nod tidak berjalan</translation>
 <translation id="1272079795634619415">Berhenti</translation>
+<translation id="5895138241574237353">Mulakan Semula</translation>
 <translation id="6762417584993757344">Tidak Dipasang</translation>
+<translation id="4159076046325416152">Sedang memasang IPFS...</translation>
+<translation id="3854747677478661601">Melakukan sapuan pengumpulan sampah</translation>
+<translation id="7376842608449050673">Ralat pengumpulan sampah</translation>
 <translation id="8428368469058794536">Perkhidmatan IPFS</translation>
+<translation id="6776260067907986254">Nod saya</translation>
+<translation id="8523162996646111972">(butiran)</translation>
+<translation id="6121825639998459476">Pasang dan mula</translation>
+<translation id="72868071984333667">Ketahui selanjutnya mengenai IPFS dan privasi</translation>
+<translation id="1886162073868201257">Ralat pelancaran Perkhidmatan IPFS</translation>
 <translation id="5357895013476183089">IPFS Tidak Dihubungkan</translation>
 <translation id="1196783328762622576">Tidak dapat memuatkan sumber IPFS menggunakan nod tempatan</translation>
 <translation id="1141556610026845297">Gagal menggunakan nod IPFS tempatan untuk memuatkan sumber IPFS yang diminta. Klik butang "Teruskan" untuk menggunakan gerbang awam, dan untuk kembali menggunakan gerbang awam secara automatik pada masa akan datang.</translation>
@@ -726,6 +760,20 @@
 <translation id="1974060860693918893">Lanjutan</translation>
 <translation id="9096577886148726047">Sembunyi Info Lanjut</translation>
 <translation id="7716995370131231171">Brave tidak boleh memuatkan sumber IPFS yang diminta sama ada kerana nod tempatan tidak bermula, atau kerana tiada rakan tersambung yang ada pada ketika itu. Sekiranya anda memilih "Teruskan", Brave akan kembali secara automatik kepada gerbang  awam lalai apabila menggunakan nod tempatan gagal. Anda boleh mengubah gelagat ini pada bila-bila masa dalam tetapan Brave.</translation>
+<translation id="8026038288183400906">Keutamaan IPFS</translation>
+<translation id="2058855456574089690">Tetapkan keutamaan IPFS anda</translation>
+<translation id="4447758690649023734">Guna nod tempatan</translation>
+<translation id="8148464361648742409">Menggunakan get laluan awam</translation>
+<translation id="5123478056123923857">IPFS (Sistem Fail InterPlanetary) adalah rangkaian awam untuk penyimpanan dan penghantaran data rakan-ke-rakan. Protokol ini mempunyai pertimbangan privasi yang berbeza daripada HTTP(S).</translation>
+<translation id="5410952114182173389">Komputer anda menyumbang kepada rangkaian awam, tetapi alamat IP anda dan apa-apa kandungan yang anda’ minta atau menyediakan mungkin terdedah. Kandungan yang anda minta melalui IPFS disahkan sebelum disampaikan kepada anda.</translation>
+<translation id="8664689531113048642">Melindungi alamat IP dan kandungan anda yang anda ’ meminta dari pemerhati pihak ketiga yang berpotensi, tetapi bukan daripada pengendali get laluan awam. Pengendali get laluan awam bertanggungjawab untuk memastikan kandungan yang disampaikan kepada anda melalui get laluan merupakan kandungan yang anda minta. Selain itu, komputer anda tidak menyumbang kepada rangkaian IPFS awam.</translation>
+<translation id="3977809385703587108">Anda boleh menukar keutamaan anda lagi di</translation>
+<translation id="3340978935015468852">tetapan</translation>
+<translation id="4148957013307229264">Sedang memasang...</translation>
+<translation id="6057992164469678163">Menunggu rakan sebaya...</translation>
+<translation id="1902096227388293745">Tiada rakan sebaya tersedia, cuba lagi...(<ph name="ATTEMPTS_NUMBER"/> attemps left)</translation>
+<translation id="1675751799495331928">Kami telah melebihi had percubaan, cuba lagi nanti.</translation>
+<translation id="4499666752625407848">Ralat berlaku semasa kemas kini.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Lihat pasaran dan beli kripto daripada crypto.com.</translation>
 <translation id="4292334826913000023">Papar Harga</translation>
@@ -737,4 +785,11 @@
 <translation id="5337526542182802976">Pasangan Disokong</translation>
 <translation id="1164622162816276433">Jumlah 24JAM</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
+<translation id="3745016858329272300">Maklumat Umum</translation>
+<translation id="4045404575593562245">Acara Kawalan Tor</translation>
+<translation id="216855356675970168">Versi Tor</translation>
+<translation id="2976625104959685176">Id Proses Tor</translation>
+<translation id="6951743416068151209">URI Proksi Tor</translation>
+<translation id="1671503397662036257">Status Sambungan Tor</translation>
+<translation id="6024292492796847324">Kemajuan Permulaan Tor</translation>
 </translationbundle>

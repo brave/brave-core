@@ -635,6 +635,22 @@
     "message": "Žetone prejmete z ogledom oglasov, ki spoštujejo zasebnost in samodejno podprite svoja najljubša spletna mesta in ustvarjalce vsebin.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Kako pogosto si želite ogledati oglase?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(oglasi na uro)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Koliko mesečnih prispevkov želite poslati svojim najljubšim ustvarjalcem?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(od zaslužka od oglasov)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Začnite uporabljati Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Žetone je mogoče uporabiti poleg podpore ustvarjalcem. Ko se pojavijo trgovci, lahko kupite digitalno vsebino in drugo blago.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "V zadnjem koraku si oglejmo še vaše nastavitve.",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "To lahko spremenite pozneje.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Hura, vse je pripravljeno!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Z uporabo Brave Rewards pomagate izboljšati splet za vse. In to je super!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards na Japonskem prehaja na nov sistem!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Več o tem",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Prosimo, uporabite svoj BAP do 13. marca. Po tem se BAP ukine.",
+    "description": "Text for BAP deprecation popup"
   }
 }

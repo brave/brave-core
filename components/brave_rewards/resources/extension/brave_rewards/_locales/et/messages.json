@@ -635,6 +635,22 @@
     "message": "Teenite tokeneid, vaadates privaatsust austavaid reklaame ja toetate automaatselt oma lemmiksaite ja -loojaid.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "Kui tihti soovite reklaame näha?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(reklaami tunnis)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Kui palju soovite oma lemmikloojaid igas kuus toetada?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(teie reklaamituludest)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Alustage Brave Rewardsi kasutamist",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Tokeneid saab kasutada ka muuks peale loojate toetamise. Saate osta digitaalset sisu ja muid kaupu, sedamööda, kuidas lisandub kaupmehi.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Lõpuks tutvustame põhisätteid",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Seda saate hiljem muuta.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Ohoo, olete valmis alustama!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave Rewardsi kasutamisega aitate veebi kõigi jaoks paremaks muuta. Ja see on vinge!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards läheb Jaapanis üle uuele süsteemile.",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "Lisateave",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Kasutage oma BAP-d ära 13. märtsiks. Pärast seda BAP-de kasutamine lõpetatakse.",
+    "description": "Text for BAP deprecation popup"
   }
 }

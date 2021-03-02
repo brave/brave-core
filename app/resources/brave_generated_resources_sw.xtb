@@ -14,7 +14,7 @@
 <translation id="984275831282074731">Njia za kulipa</translation>
 <translation id="3699882589215410581">Sanidi na fungua Widevine</translation>
 <translation id="8926389886865778422">Nisiulizwe tena</translation>
-<translation id="4726634924419692905">Uliza wakati tovuti inataka kusakinisha Widevine kwenye kompyuta yako.</translation>
+<translation id="5249433283143453448">Tumia kipengee cha idevine digital rights management (DRM) kutazama video iliyodhibitiwa na vipengele vingine kwenye kisakuzi.</translation>
 <translation id="6241402707160226266">Dirisha la Faragha na Tor</translation>
 <translation id="8762452230727230396">Tor huficha anwani yako ya IP kutoka kwenye tovuti unazotembelea.</translation>
 <translation id="1369311132025451972">Elekeza kiotomatiki tovuti za .onion</translation>
@@ -50,7 +50,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5448570825852364919">Ukurasa mtupu</translation>
 <translation id="5919424224662539292">Fanya picha na wijeti za mandharinyuma zifae ambazo zinaonekana kwenye ukurasa mpya wa kichupo</translation>
 <translation id="7965178729203412357">Utambulisho Mpya wa Tor</translation>
-<translation id="8511502469534942133">Mpya Kwa muunganisho Wa Tovuti Hii</translation>
+<translation id="6924909138923993900">Maunganisho mapya ya Tor katika tovuti hii</translation>
 <translation id="4734294903299549345">Toka kwenye Dirisha la Faragha na Tor</translation>
 <translation id="8612763432858587652">Toka kwenye Dirisha la Faragha</translation>
 <translation id="8760415064721320867">Dirisha Binafsi na Tor</translation>
@@ -233,6 +233,19 @@ Zawadi za Avatar Paladin</translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="239760341987199724">Weka Brave kuwa kivinjari chako chaguomsingi</translation>
+<translation id="9185422039067880535">Kisakuzi cha Brave hakijawekwa kama kisakuzi chaguomsingi. Weka Brave kama kisakuzi chaguomsingi ili kuendelea kufanya usakuzi wako haraka hadi mara sita ya visakuzi vya kawaida katika tovuti kuu.</translation>
+<translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
+<translation id="3479552764303398839">Si sasa</translation>
+<translation id="4877147287319222750">Ongeza kwenye Sidebar</translation>
+<translation id="5404213409401164238">Onyesha Sidebar</translation>
+<translation id="7561196759112975576">Kila wakati</translation>
+<translation id="7060352228894039151">Katika kipanya</translation>
+<translation id="407173827865827707">Unapobofya</translation>
+<translation id="7961015016161918242">Katu</translation>
+<translation id="59174027418879706">Imewezeshwa</translation>
+<translation id="8258999165172757081">Imeongezwa</translation>
+<translation id="6959315322491671328">Bofya-kulia ili kutoa</translation>
 <translation id="1872784258300710671">Brave hutumia uchanganuzi wa bidhaa wa faragha kabisa kukadiria matumizi ya jumla ya vipengele fulani</translation>
 <translation id="8712637175834984815">Nimeelewa</translation>
 <translation id="4394049700291259645">Zima</translation>
@@ -243,8 +256,8 @@ Zawadi za Avatar Paladin</translation>
 <translation id="4823406846571523661">Weka Mipangilio ya Crypto Wallets</translation>
 <translation id="8199661191594897555">Anzisha Crypto Wallets na upakie</translation>
 <translation id="8428213095426709021">Mipangilio</translation>
-<translation id="3110802155897279216">Rasilimali za IPFS zimegunduliwa. Je, ungependa Brave izipakie kwa kutumia nodi ya ndani ya IPFS?</translation>
-<translation id="2366908098700680611">Wezesha IPFS</translation>
+<translation id="1664718502100303670">Mipangilio ya waleti</translation>
+<translation id="965566669123544695">Mipangilio ya IPFS</translation>
 <translation id="72868071984333667">Jifunze zaidi kuhusu IPFS na faragha</translation>
 <translation id="4552520379838695057">Samahani, ukurasa huo haupo.</translation>
 <translation id="2609895996619941644">Je, unataka kuangalia ikiwa toleo lililohifadhiwa linapatikana kwenye Wayback Machine?</translation>
@@ -263,4 +276,6 @@ Zawadi za Avatar Paladin</translation>
 <translation id="8487693399751278191">Leta vialamisho sasa...</translation>
 <translation id="2557899542277210112">Kwa ufikiaji wa haraka, weka vialmaisho vyako hapa kwenye upau wa vialamisho.</translation>
 <translation id="2808630562319398131">Weka upya data ya Zawadi za Brave...</translation>
+<translation id="1224064034972923114">Saidia kuboresha Brave kwa kutuma kiotomatiki ripoti za kulemaa</translation>
+<translation id="3738833060602717053">Saidia kuboresha <ph name="PRODUCT_NAME"/> kwa kutuma ripoti kiotomatiki.</translation>
 </translationbundle>

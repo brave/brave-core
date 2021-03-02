@@ -635,6 +635,22 @@
     "message": "गोपनीयता का सम्मान करने वाले विज्ञापन देखकर टोकन कमाएँ और अपने पसंदीदा साइटों और कंटेंट रचनाकारों का स्वचालित रूप से सपोर्ट करें।",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "आप कितनी बार एड देखना चाहते हैं?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(एड्स प्रति घंटा)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "आप अपने मनपसंद क्रिएटर्स को एक महीने में कितना सहयोग देना चाहते हैं?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(आपकी एड्स से हुई कमाई से)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "ब्रेव रिवार्ड्स का उपयोग करना शुरू करें\n",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "टोकन का उपयोग निर्मातों की सहायता से परे भी किया जा सकता है। आप डिजिटल सामग्री और अन्य वस्तुएँ खरीद सकते हैं क्योंकि व्यापारी ऑनबोर्ड आते हैं।",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "अंत में, बेसिक सेटिंग के साथ शुरू करने के लिए तैयार हो जाइए",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "आप इसे बाद में बदल सकते हैं।",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "वूहू, आप पूरी तरह से तैयार हैं!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave पुरस्कारों का उपयोग करके आप वेब को सभी के लिए बेहतर जगह बनाने में मदद कर रहे हैं। और वह बहुत बढ़िया है!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "जापान में ब्रेव रिवार्ड्स नए सिस्टम में पलायन कर रहे हैं!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "ज़्यादा जानें",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "कृपया अपने बीएपी का उपयोग 13 मार्च तक कर लें. इसके बाद, बीएपी को बंद कर दिया जाएगा.",
+    "description": "Text for BAP deprecation popup"
   }
 }
