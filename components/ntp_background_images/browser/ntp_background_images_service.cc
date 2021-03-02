@@ -269,7 +269,6 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
   const std::string new_referral_code = GetReferralPromoCode();
   DVLOG(2) << __func__ << ": Got referral promo code: "
                        << new_referral_code;
-  DCHECK(!new_referral_code.empty());
   if (brave::BraveReferralsService::IsDefaultReferralCode(new_referral_code)) {
     DVLOG(2) << __func__ << ": This has default referral promo code.";
     MarkThisInstallIsNotSuperReferralForever();

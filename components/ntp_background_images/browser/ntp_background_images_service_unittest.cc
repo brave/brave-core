@@ -350,7 +350,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
   observer.on_super_referral_ended_ = false;
-  pref_service_.SetString(kReferralPromoCode, "BRV001");
+  pref_service_.SetString(kReferralPromoCode, "");
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   // We should notify OnSuperReferralEnded() if this is not NTP SR
   // (default promo code).
@@ -360,7 +360,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
 // Test default referral code and not first run.
 // Sponsored Images component will be run after getting mapping table.
 TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
-  pref_service_.SetString(kReferralPromoCode, "BRV001");
+  pref_service_.SetString(kReferralPromoCode, "");
   pref_service_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));
   Init();
