@@ -635,6 +635,22 @@
     "message": "プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのサイトやコンテンツクリエイターを自動的にサポートします。",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "どれくらいの頻度で広告を見たいですか。",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(1時間当たりの広告)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "お気に入りのクリエイターに毎月どれだけ寄付したいですか。",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(広告収入から)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Brave Rewardsの使用を開始",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "トークンはクリエイターをサポートする以外にも使用できます。加盟店が参加すると、デジタルコンテンツやその他の商品を購入することができます。",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "最後に、基本設定のセットアップを行いましょう",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "これを後で変更できます。",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "やったー、準備完了です！",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave Rewardsを使用することで、ウェブを誰にとってもより良い場所にすることができます。そしてそれは素晴らしいことです！",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "日本でのBrave Rewardsが新システムに移行します！",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "詳しくはこちら",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "お持ちのBATポイント(BAP)は、3月13日までにご使用ください。BAPはそれ以降に廃止されます。",
+    "description": "Text for BAP deprecation popup"
   }
 }

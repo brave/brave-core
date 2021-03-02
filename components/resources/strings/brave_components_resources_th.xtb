@@ -61,6 +61,7 @@
 <translation id="954001034349395856">แหล่งข้อมูลทั้งหมด</translation>
 <translation id="8890516388109605451">แหล่งที่มา</translation>
 <translation id="5158129253322921540">ปิดใช้งานเนื้อหาจาก <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">โปรโมทแล้ว</translation>
 <translation id="1776831331757823105">นาฬิกา</translation>
 <translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">เทรด Crypto บน Binance ในเบราว์เซอร์ของคุณได้โดยตรง</translation>
 <translation id="2166494527623220386">เทรด Crypto บน Gemini ในเบราว์เซอร์ของคุณได้โดยตรง</translation>
 <translation id="7191394989411626168">เมื่อปิดใช้งาน "บัตร" บัตรทั้งหมดที่แสดงอยู่ในขณะนี้จะถูกซ่อน แต่คุณอาจยังได้รับแจ้งเตือนเมื่อมีบัตรใหม่</translation>
+<translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
+<translation id="8820817407110198400">บุ๊กมาร์ก</translation>
+<translation id="1644574205037202324">ประวัติการเข้าชม</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="6248988683584659830">ตั้งค่าการค้นหา</translation>
@@ -331,6 +335,10 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1275213816424141989">ไว้ทีหลัง</translation>
 <translation id="5187052478998910855">อยากฟื้นวิชาเก็บ Reward รึเปล่า</translation>
 <translation id="8622329973403382303">ดูบทแนะนำฉบับย่อเพื่อเติมเกร็ดความรู้ว่าคุณต้องทำอย่างไรเพื่อให้ถูกจารึกเป็นดาวเด่นแห่งวงการ Reward</translation>
+<translation id="3115702351969988294">คุณต้องการเห็นโฆษณาบ่อยแค่ไหน</translation>
+<translation id="7532131110478098401">(โฆษณาต่อชั่วโมง)</translation>
+<translation id="2951964054390325080">คุณต้องการสนับสนุนครีเอเตอร์ที่คุณชื่นชอบเดือนละเท่าไร?</translation>
+<translation id="3164498053837913829">(จากรายได้โฆษณาของคุณ)</translation>
 <translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
 <translation id="6318696841371191107">ดูการแนะนำสั้นๆ</translation>
 <translation id="2404165674840145940">เคล็ดลับการใช้ Brave Reward</translation>
@@ -352,6 +360,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6042317056594735519">การให้ทิปเป็นวิธีส่งกำลังใจและให้การสนับสนุนเนื้อหาหรือผู้สร้างที่คุณชื่นชอบ ไปให้ทิปกัน!</translation>
 <translation id="7509452925943421624">ใช้โทเค็นทำอะไรได้บ้าง</translation>
 <translation id="5876169128756792273">สามารถใช้โทเค็นในกิจกรรมอื่นๆ นอกเหนือจากการสนับสนุนครีเอเตอร์ โดยสามารถนำไปซื้อเนื้อหาดิจิตอลและสินค้าอื่นๆ เมื่อมีผู้ค้ามาเข้าร่วม</translation>
+<translation id="1402530520078693620">ขั้นสุดท้าย ไปตั้งค่าพื้นฐานให้เสร็จสิ้นกันดีกว่า</translation>
+<translation id="3494356595346329740">สามารถแก้ไขในภายหลังได้</translation>
 <translation id="827315274423079662">ไชโย คุณพร้อมแล้วละ!</translation>
 <translation id="8268038362451312235">การใช้งาน Brave Reward จะช่วยส่งเสริมให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งนับว่าเยี่ยมยอดไปเลย!</translation>
 <translation id="5094577350232361255">เกี่ยวกับ</translation>
@@ -628,14 +638,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8344084848798035850">ประมาณการรายได้จนถึงปัจจุบันในเดือนนี้</translation>
 <translation id="5235444069025581717">ทิปและเงินบริจาคในเดือนนี้</translation>
 <translation id="1210965535849006928">ขอรับ Rewards</translation>
-<translation id="8092889639392847252">รับเงินจากการดูรูปพื้นหลังที่ได้รับการสนับสนุนนี้</translation>
-<translation id="7914961605852877459">เปิด Brave Ads เพื่อรับส่วนของคุณ คุณยังสามารถเลือกที่จะ <ph name="LINK_BEGIN"/>ซ่อนภาพที่ได้รับการสนับสนุนได้<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">รับรางวัลจากการดูภาพพื้นหลังที่ได้รับการสนับสนุนนี้</translation>
+<translation id="5311968438376723685">เปิดโฆษณาส่วนตัวของ Brave เพื่อรับส่วนแบ่งของคุณ คุณยังสามารถเลือกที่จะ <ph name="LINK_BEGIN"/>ซ่อนภาพที่ได้รับการสนับสนุน<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">เยี่ยมไปเลย</translation>
 <translation id="764235488372037377">ของรางวัลจากโฆษณาจะปรากฏที่นี่</translation>
 <translation id="7091215606170476659">คุณมียอด UGP จาก Brave</translation>
 <translation id="6759185676704303656">คุณจะได้รับเงินจากการดูรูปพื้นหลังนี้</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/> เกี่ยวกับรูปที่ได้รับการสนับสนุนใน Brave Rewards</translation>
 <translation id="6113004497629356998">ซ่อนรูปที่ได้รับการสนับสนุน</translation>
+<translation id="8587285254008006694">เนื่องจากเป็นส่วนหนึ่งของการเปลี่ยนแปลงนี้ ฟีเจอร์การให้ทิปและการมีส่วนร่วมใน
+        เบราว์เซอร์ของคุณจะใช้งานไม่ได้ชั่วคราวตั้งแต่วันที่ 13 มีนาคม เป็นต้นไป และ
+        ยอดคงเหลือ BAP ของคุณจะแสดงเป็น 0.0 จนกว่าคุณจะอัปเดตเป็นระบบใหม่
+        ในเดือนเมษายน เมื่อคุณใช้ระบบใหม่คุณจะเริ่มต้นด้วยโทเค็น
+        ใหม่!</translation>
+<translation id="6232491755501685494">Brave Rewards ในญี่ปุ่นกำลังเปลี่ยนไปใช้ระบบใหม่!</translation>
 <translation id="3787061634640932557">แก้ไขบัตร</translation>
 <translation id="4925543565930352284">ด้วยการคลิก {{title}}คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">เริ่มวิดีโอคอลส่วนตัวกับเพื่อนและคนรู้จักของคุณ</translation>
@@ -700,7 +716,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1833248467354516560">ราคาต่อหน่วย</translation>
 <translation id="4763179765154524864">ใช้ไปทั้งหมด</translation>
 <translation id="8851480289992540512">ได้รับทั้งหมด</translation>
-<translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
 <translation id="616639131065447379">ขอต้อนรับสู่ Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets ให้คุณทำงานกับสกุลเงินคริปโตและสินทรัพย์ที่เกี่ยวข้องใน Brave Crypto Wallets รองรับโทเคน Ethereum เช่น ETH และ BAT เช่นเดียวกับของสะสม และให้คุณทำงานกับ Ðapps และสัญญาอัจฉริยะอื่น ๆ ทั้งหมดนี้เพื่อคนที่คุ้นเคยกับ Ethereum และระบบบล็อกเชนอื่น ๆ — หรืออยากเรียนรู้</translation>
 <translation id="4855440621031541830">ใช้ Crypto Wallets เฉพาะเมื่อคุณยอมรับว่าคุณคนเดียวที่รับผิดชอบต่อความเสี่ยงทั้งหมดที่เกี่ยวข้องกับการใช้นี้และ Brave Software ไม่มีส่วนรับผิดชอบหรือความรับผิดใด ๆ ต่อการสูญเสียใด  ๆ รวมทั้งความสูญเสียแบบไม่ได้ตั้งใจหรือเป็นผลสืบเนื่องจากการใช้นี้</translation>
@@ -712,14 +727,32 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="763042262431778831">ปิด Speedreader</translation>
 <translation id="9020818404803201080">เพื่อนที่เชื่อมต่อ:</translation>
 <translation id="2903493209154104877">ที่อยู่</translation>
+<translation id="3207122385716480167">สถิติ Repo</translation>
+<translation id="2595187693729756455">ข้อมูลโหนด</translation>
 <translation id="5789886980848929155">สถานะโหนด IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">เกตเวย์</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">เปิดใช้อยู่</translation>
+<translation id="5201810533706869030">วัตถุ</translation>
+<translation id="8028993641010258682">ขนาด</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">เส้นทาง</translation>
+<translation id="2892680660204660712">ID เพียร์</translation>
+<translation id="7536543993364605970">เวอร์ชันตัวแทน</translation>
+<translation id="3693482323085649439">โหนดกำลังทำงาน</translation>
+<translation id="6315833555896070573">โหนดไม่ทำงาน</translation>
 <translation id="1272079795634619415">หยุด</translation>
+<translation id="5895138241574237353">ปิดแล้วเปิดอีกครั้ง</translation>
 <translation id="6762417584993757344">ไม่ได้ติดตั้ง</translation>
+<translation id="4159076046325416152">กำลังติดตั้ง IPFS ...</translation>
+<translation id="3854747677478661601">ดำเนินการเก็บกวาดขยะ</translation>
+<translation id="7376842608449050673">ข้อผิดพลาดในการรวบรวมขยะ</translation>
 <translation id="8428368469058794536">บริการ IPFS</translation>
+<translation id="6776260067907986254">โหนดของฉัน</translation>
+<translation id="8523162996646111972">(รายละเอียด)</translation>
+<translation id="6121825639998459476">ติดตั้งและเริ่มต้น</translation>
+<translation id="72868071984333667">ดูข้อมูลเพิ่มเติมเกี่ยวกับ IPFS และความเป็นส่วนตัว</translation>
+<translation id="1886162073868201257">ข้อผิดพลาดในการเริ่มดำเนินการบริการ IPFS</translation>
 <translation id="5357895013476183089">IPFS ไม่เชื่อมต่อ</translation>
 <translation id="1196783328762622576">ไม่สามารถโหลดทรัพยากร IPFS โดยใช้โหนดเฉพาะที่</translation>
 <translation id="1141556610026845297">ใช้โหนด IPFS เฉพาะที่โหลดทรัพยากร IPFS ตามคำขอได้ไม่สำเร็จ คลิกปุ่ม "ดำเนินการต่อ" เพื่อใช้เกตเวย์สาธารณะแทน และย้อนกลับไปยังเกตเวย์สาธารณะโดยอัตโนมัติในอนาคต</translation>
@@ -727,6 +760,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1974060860693918893">ขั้นสูง</translation>
 <translation id="9096577886148726047">ซ่อนค่าขั้นสูง</translation>
 <translation id="7716995370131231171">Brave ไม่สามารถโหลดทรัพยากร IPFS ตามคำขอเนื่องจากโหนดเฉพาะที่ไม่เริ่มทำงานหรือไม่มีเพียร์ที่เชื่อมต่อแล้วและพร้อมใช้งานในขณะนี้ หากคุณเลือก "ดำเนินการต่อ" Brave จะย้อนกลับไปยังเกตเวย์สาธารณะตามค่าเริ่มต้นโดยอัตโนมัติเมื่อการใช้โหนดเฉพาะที่ล้มเหลว คุณสามารถเปลี่ยนรูปแบบการทำงานนี้ได้ทุกเมื่อในการตั้งค่า Brave</translation>
+<translation id="8026038288183400906">การตั้งค่า IPFS</translation>
+<translation id="2058855456574089690">ตั้งค่า IPFS ที่คุณต้องการ</translation>
+<translation id="4447758690649023734">ใช้โลคัลโหนด</translation>
+<translation id="8148464361648742409">ใช้เกตเวย์สาธารณะ</translation>
+<translation id="5123478056123923857">PFS (ระบบไฟล์ InterPlanetary) คือเครือข่ายสาธารณะสำหรับการจัดเก็บและจัดส่งข้อมูลแบบเพียร์ทูเพียร์ โปรโตคอลนี้มีการพิจารณาความเป็นส่วนตัวที่แตกต่างจาก HTTP(S)</translation>
+<translation id="5410952114182173389">คอมพิวเตอร์ของคุณสนับสนุนเครือข่ายสาธารณะ แต่ที่อยู่ IP ของคุณและเนื้อหาใด ๆ ที่คุณร้องขอหรือจัดหาให้อาจถูกเปิดเผย เนื้อหาที่คุณร้องขอผ่าน IPFS ได้รับการตรวจสอบก่อนที่จะให้บริการแก่คุณ</translation>
+<translation id="8664689531113048642">ปกป้องที่อยู่ IP และเนื้อหาที่คุณร้องขอจากผู้สังเกตการณ์บุคคลที่สามที่มีศักยภาพ แต่ไม่ใช่จากผู้ให้บริการเกตเวย์สาธารณะ ผู้ให้บริการเกตเวย์มีหน้าที่รับผิดชอบในการตรวจสอบว่าเนื้อหาที่ให้บริการแก่คุณผ่านเกตเวย์เป็นเนื้อหาที่คุณร้องขอ และคอมพิวเตอร์ของคุณไม่สนับสนุนเครือข่าย IPFS สาธารณะ</translation>
+<translation id="3977809385703587108">คุณสามารถเปลี่ยนการตั้งค่าของคุณได้อีกครั้งใน</translation>
+<translation id="3340978935015468852">การตั้งค่า</translation>
+<translation id="4148957013307229264">กำลังติดตั้ง...</translation>
+<translation id="6057992164469678163">กำลังรอเพียร์...</translation>
+<translation id="1902096227388293745">ไม่มีเพียร์ กำลังลองใหม่ ... (ลองได้อีก <ph name="ATTEMPTS_NUMBER"/> ครั้ง)</translation>
+<translation id="1675751799495331928">เราลองเกินจำนวนครั้งที่จำกัดแล้ว โปรดลองอีกครั้งในภายหลัง</translation>
+<translation id="4499666752625407848">เกิดข้อผิดพลาดระหว่างการอัปเดต</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">ดูตลาดแล้วซื้อเงินคริปโตจาก crypto.com</translation>
 <translation id="4292334826913000023">แสดงราคา</translation>
@@ -738,4 +785,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5337526542182802976">คู่ที่ได้รับการสนับสนุน</translation>
 <translation id="1164622162816276433">ระดับช่วง 24่ชม.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
+<translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
+<translation id="216855356675970168">เวอร์ชัน Tor</translation>
+<translation id="2976625104959685176">หมายเลขโปรเซส Tor</translation>
+<translation id="6951743416068151209">Tor Proxy URI</translation>
+<translation id="1671503397662036257">สถานะการเชื่อมต่อ Tor</translation>
+<translation id="6024292492796847324">ความคืบหน้าการเริ่มต้น Tor</translation>
 </translationbundle>

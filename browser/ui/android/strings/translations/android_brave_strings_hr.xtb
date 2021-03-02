@@ -346,12 +346,12 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="5516010970279932133">Prikaži predložena mrežna mjesta u stavci za samostalno ispunjavanje</translation>
 <translation id="5370478469168390143">Spremi podatke na mreži</translation>
 <translation id="1118508688433541158">Pregledavajte brže i blokirajte oglase u pregledniku Brave</translation>
-<translation id="6589609065569680305">Blokirani elementi za praćenje oglasa na ovoj stranici.</translation>
+<translation id="6589609065569680305">Elementi za praćenje i oglasi blokirani su na ovoj stranici.</translation>
 <translation id="1283922192221545319">Značajka Brave Shields upravo je zaštitila vašu privatnost.</translation>
 <translation id="3286927551967858325">Bacite pogled</translation>
 <translation id="6227291358910554399">Oglasi su blokirani tijekom gledanja videozapisa na ovom mrežnom mjestu.</translation>
 <translation id="7802980684512102010">Videozapisima bez oglasa troši se manje podataka.</translation>
-<translation id="2046475855484346614">Više od 10 blokiranih elementa za praćenje oglasa na ovoj stranici.</translation>
+<translation id="2046475855484346614">Više od 10 elementa za praćenje i oglasa blokirano je na ovoj stranici.</translation>
 <translation id="5806208250835099572">Značajkom Brave Shields štiti se vaša privatnost na internetu na svakom mrežnom mjestu.</translation>
 <translation id="5617673581653540121">Vaša je veza sada šifrirana.</translation>
 <translation id="4055107796760496928">Ako je dostupno, preglednikom Brave prebacujete se automatski na sigurnu vezu.</translation>
@@ -495,4 +495,12 @@ registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti 
 <translation id="3184805785843994538">Značajkom Brave Shields blokiraju se elementi za praćenje, oglasi, štedi podatkovni promet kao i vrijeme na svakom mrežnom mjestu koje posjetite.</translation>
 <translation id="8722651357687610395">Postavi preglednik Brave kao zadan</translation>
 <translation id="3479552764303398839">Ne sada</translation>
+<translation id="6232491755501685494">Značajka Brave Rewards u Japanu prelazi na novi sustav!</translation>
+<translation id="7444515017164572362">Od 13. veljače nećete moći upotrebljavati svoje BAP. Kada
+        nadogradite na novi sustav u travnju, krećete uz uporabu novih tokena!</translation>
+<translation id="8587285254008006694">Kao dijelom prijenosa značajke su davanje napojnice i doprinosa u
+        pregledniku privremeno nedostupne od 13. ožujka 
+        i vaše je raspoloživo stanje BAP 0.0 dok ne ažurirate na novi sustav 
+        u travnju. Jednom kada započnete upotrebljavati novi sustav, krećete uz uporabu novih
+        tokena!</translation>
 </translationbundle>

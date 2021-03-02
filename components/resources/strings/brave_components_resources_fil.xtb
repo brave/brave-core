@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Lahat ng source</translation>
 <translation id="8890516388109605451">Mga Source</translation>
 <translation id="5158129253322921540">I-disable ang content mula sa <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Na-promote</translation>
 <translation id="1776831331757823105">Orasan</translation>
 <translation id="4643117005422448078">Nangungunang Sites</translation>
 <translation id="7791543448312431591">Idagdag</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Mag-trade ng Crypto sa Binance nang direkta sa iyong browser.</translation>
 <translation id="2166494527623220386">Mag-trade ng Crypto sa Gemini nang direkta sa iyong browser.</translation>
 <translation id="7191394989411626168">Sa pamamagitan ng pag-off ng Mga Card, itatago ang lahat ng card na kasalukuyang nakikita. Gayunpaman, posibleng aabisuhan ka pa rin tungkol sa mga bagong card.</translation>
+<translation id="5655621391922317800">Mga Crypto Wallet</translation>
+<translation id="8820817407110198400">Mga Bookmark</translation>
+<translation id="1644574205037202324">History</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8730621377337864115">Tapos na</translation>
 <translation id="6248988683584659830">Mga setting ng paghahanap</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Sa Ibang Pagkakataon Siguro</translation>
 <translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
 <translation id="8622329973403382303">Mabilis na matuto tungkol sa kung paano ito gumagana para maalala bilang nangunguna sa Rewards!</translation>
+<translation id="3115702351969988294">Gaano mo kadalas gustong makakita ng mga ad?</translation>
+<translation id="7532131110478098401">(mga ad bawat oras)</translation>
+<translation id="2951964054390325080">Gaano kalaking buwanang suporta ang gusto mong ibigay sa iyong mga paboritong creator?</translation>
+<translation id="3164498053837913829">(mula sa iyong mga kinikita sa mga ad)</translation>
 <translation id="2070991379950719711">Simulang gamitin ang Brave Rewards</translation>
 <translation id="6318696841371191107">Mabilis na maglibot</translation>
 <translation id="2404165674840145940">Magbigay ng tip sa pamamagitan ng Brave rewards</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Ang pagbibigay ng tip ay isang paraan para personal na himukin at suportahan ang content o mga creator na gusto mo. Magbigay ng tip!</translation>
 <translation id="7509452925943421624">Ano ang magagawa mo sa mga token?</translation>
 <translation id="5876169128756792273">Magagamit ang mga token hindi lang sa pagsuporta sa mga creator. Puwede kang bumili ng digital na content at iba pang produkto sa pagdating ng mga merchant.</translation>
+<translation id="1402530520078693620">Panghuli, tutulungan ka naming mag-set up sa mga basic na setting</translation>
+<translation id="3494356595346329740">Puwede mo itong baguhin sa ibang pagkakataon.</translation>
 <translation id="827315274423079662">Ayos, handa ka na!</translation>
 <translation id="8268038362451312235">Sa pamamagitan ng paggamit sa Brave Rewards, nakakatulong kang gawing mas magandang lugar ang web para sa lahat. At mabuti iyon!</translation>
 <translation id="5094577350232361255">tungkol sa</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Mga tinatantiyang kita sa kasalukuyan ngayong buwang ito</translation>
 <translation id="5235444069025581717">Mga tip at kontribusyon ngayong buwan</translation>
 <translation id="1210965535849006928">I-claim ang aking Mga Reward</translation>
-<translation id="8092889639392847252">Mabayan para tingnan ang naka-sponsor na larawan sa background na ito.</translation>
-<translation id="7914961605852877459">I-on ang Brave Ads para kunin ang iyong bahagi. Puwede mo ring piliing <ph name="LINK_BEGIN"/>itago ang mga naka-sponsor na larawan<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Makakuha ng mga reward para sa pagtingin sa sino-sponsor na larawan sa background na ito.</translation>
+<translation id="5311968438376723685">I-on ang Brave Private Ads para kunin ang iyong bahagi. Puwede mo ring piliing <ph name="LINK_BEGIN"/>itago ang mga sino-sponsor na larawan<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Mahusay!</translation>
 <translation id="764235488372037377">Narito ang iyong mga reward mula sa Mga Ad</translation>
 <translation id="7091215606170476659">Mayroon kang grant para sa UGP mula sa Brave.</translation>
 <translation id="6759185676704303656">Binabayaran k’a para tingnan ang larawan sa background na ito.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/> tungkol sa mga naka-sponsor na larawan sa Brave Rewards.</translation>
 <translation id="6113004497629356998">Itago ang mga naka-sponsor na larawan</translation>
+<translation id="8587285254008006694">Bilang bahagi ng pagbabagong ito, pansamantalang magiging hindi available ang mga feature na pag-tip at kontribusyon sa
+        iyong browser simula sa ika-13 ng Marso, at
+        0.0 ang makikitang balanse mo sa BAP hanggang sa mag-update ka sa bagong system
+        sa Abril. Kapag nasa bagong system ka na, magsisimula ka nang may mga bagong
+        token!</translation>
+<translation id="6232491755501685494">Lilipat sa bagong system ang Brave Rewards sa Japan!</translation>
 <translation id="3787061634640932557">I-edit ang Mga Card</translation>
 <translation id="4925543565930352284">Sa pamamagitan ng pag-click sa {{title}}, sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Magsimula ng pribadong video call kasama ang iyong mga kaibigan at katrabaho.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Presyo ng Unit</translation>
 <translation id="4763179765154524864">Kabuuang Ginastos</translation>
 <translation id="8851480289992540512">Kabuuang Natanggap</translation>
-<translation id="5655621391922317800">Mga Crypto Wallet</translation>
 <translation id="616639131065447379">Maligayang pagdating sa Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Nagbibigay-daan sa iyo ang Crypto Wallets na makagamit ng cryptocurrency at mga nauugnay na asset sa Brave. Sinusuportahan ng Crypto Wallets ang mga Ethereum token gaya ng ETH at BAT, pati na rin ang mga collectible, at nagbibigay-daan ito sa iyong makagamit ng Ðmga app at iba pang smart contract. Ang lahat ng ito ay nilayon para sa mga taong pamilyar sa Ethereum at iba pang blockchain system — o nasasabik na matutunan ang mga ito.</translation>
 <translation id="4855440621031541830">Gamitin lang ang Crypto Wallets kung tinatanggap mo na ikaw lang ang responsable para sa lahat ng panganib na nauugnay sa paggamit na ito, at walang responsibilidad o pananagutan ang Brave Software para sa anumang mga pagkalugi kabilang ang kaugnay o kinahinatnang pagkalugi na posible mong maranasan bilang resulta ng paggamit na ito.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">I-OFF ang Speedreader</translation>
 <translation id="9020818404803201080">Mga nakakonektang peer:</translation>
 <translation id="2903493209154104877">Mga Address</translation>
+<translation id="3207122385716480167">Mga Istatistika ng Repo</translation>
+<translation id="2595187693729756455">Impormasyon ng node</translation>
 <translation id="5789886980848929155">Status ng node ng IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="2551123942222622809">Swarm</translation>
-<translation id="3967335629471284781">Inilunsad</translation>
+<translation id="5201810533706869030">Mga Object</translation>
+<translation id="8028993641010258682">Laki</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Path</translation>
+<translation id="2892680660204660712">Peer ID</translation>
+<translation id="7536543993364605970">Agent na bersyon</translation>
+<translation id="3693482323085649439">Tumatakbo ang node</translation>
+<translation id="6315833555896070573">Hindi tumatakbo ang node</translation>
 <translation id="1272079795634619415">Stop</translation>
+<translation id="5895138241574237353">I-restart</translation>
 <translation id="6762417584993757344">Hindi Naka-install</translation>
+<translation id="4159076046325416152">Ini-install ang IPFS...</translation>
+<translation id="3854747677478661601">Magsagawa ng garbage collection sweep</translation>
+<translation id="7376842608449050673">Error sa garbage collection</translation>
 <translation id="8428368469058794536">Serbisyo ng IPFS</translation>
+<translation id="6776260067907986254">Aking Node</translation>
+<translation id="8523162996646111972">(mga detalye)</translation>
+<translation id="6121825639998459476">I-install at magsimula</translation>
+<translation id="72868071984333667">Matuto pa tungkol sa IPFS at privacy</translation>
+<translation id="1886162073868201257">Error sa pag-launch sa Serbisyo ng IPFS</translation>
 <translation id="5357895013476183089">Hindi Nakakonekta ang IPFS</translation>
 <translation id="1196783328762622576">Hindi ma-load ang mga resource ng IPFS gamit ang lokal na node</translation>
 <translation id="1141556610026845297">Hindi nagamit ang lokal na node ng IPFS para i-load ang mga hiniling na resource ng IPFS. I-click ang button na "Magpatuloy" para ang pampublikong gateway na lang ang gamitin, at para awtomatikong bumalik sa pampublikong gateway sa hinaharap.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Advanced</translation>
 <translation id="9096577886148726047">Itago ang Advanced</translation>
 <translation id="7716995370131231171">Hindi ma-load ng Brave ang mga hiniling na resource ng IPFS dahil hindi nagsimula ang lokal na node, o dahil walang available na nakakonektang peer sa kasalukuyan. Kung pipiliin mo ang "Magpatuloy," awtomatikong babalik ang Brave sa default na pampublikong gateway sa tuwing hindi magtatagumpay ang paggamit sa lokal na node. Puwede mong baguhin ang gawing ito anumang oras sa mga setting ng Brave.</translation>
+<translation id="8026038288183400906">Kagustuhan sa IPFS</translation>
+<translation id="2058855456574089690">Itakda ang iyong kagustuhan sa IPFS</translation>
+<translation id="4447758690649023734">Gumamit ng lokal na node</translation>
+<translation id="8148464361648742409">Gumamit ng pampublikong gateway</translation>
+<translation id="5123478056123923857">Ang IPFS (InterPlanetary File System) ay ang pampublikong network para sa peer-to-peer na pag-store at paghahatid ng data. May iba't ibang pagsasaalang-alang sa privacy ang protocol na ito mula sa HTTP(S).</translation>
+<translation id="5410952114182173389">Nag-aambag ang iyong computer sa pampublikong network, pero posibleng malantad ang IP address mo at anumang content na hinihiling o ibinibigay mo. Vine-verify ang content na hinihiling mo sa IPFS bago ito ihatid sa iyo.</translation>
+<translation id="8664689531113048642">Pinoprotektahan ang iyong IP address at content na hinihiling mo mula sa mga potensyal na third-party na tagamasid, pero hindi mula sa operator ng pampublikong gateway. Responsibilidad ng operator ng gateway na tiyaking ang content na inihatid sa iyo sa pamamagitan ng isang gateway ay ang content na hiniling mo. Dagdag pa rito, hindi nag-aambag ang iyong computer sa pampublikong network ng IPFS.</translation>
+<translation id="3977809385703587108">Puwede mo ulit baguhin ang iyong mga kagustuhan sa</translation>
+<translation id="3340978935015468852">mga setting</translation>
+<translation id="4148957013307229264">Ini-install...</translation>
+<translation id="6057992164469678163">Naghihintay ng mga peer...</translation>
+<translation id="1902096227388293745">Walang available na peer, sinusubukan ulit... (<ph name="ATTEMPTS_NUMBER"/> pagsubok na lang ang natitira)</translation>
+<translation id="1675751799495331928">Lumampas na tayo sa limitasyon sa mga pagsubok, subukan ulit sa ibang pagkakataon.</translation>
+<translation id="4499666752625407848">Nagkaroon ng error habang nag-a-update.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Tumingin ng mga merkado at bumili ng crypto mula sa crypto.com.</translation>
 <translation id="4292334826913000023">Ipakita ang Presyo</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Mga Sinusuportahang Pares</translation>
 <translation id="1164622162816276433">24 na Oras na Volume</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
+<translation id="3745016858329272300">Pangkalahatang Impormasyon</translation>
+<translation id="4045404575593562245">Mga Control Event ng Tor</translation>
+<translation id="216855356675970168">Bersyon ng Tor</translation>
+<translation id="2976625104959685176">Process Id ng Tor</translation>
+<translation id="6951743416068151209">URI ng Proxy ng Tor</translation>
+<translation id="1671503397662036257">Status ng Koneksyon ng Tor</translation>
+<translation id="6024292492796847324">Pag-usad ng Pagsisimula ng Tor</translation>
 </translationbundle>

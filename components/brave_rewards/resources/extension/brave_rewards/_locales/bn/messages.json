@@ -635,6 +635,22 @@
     "message": "গোপনীয়তা-সম্মানজনক বিজ্ঞাপনগুলি দেখে টোকেনগুলি উপার্জন করুন এবং আপনার পছন্দসই সাইট এবং সামগ্রী নির্মাতাকে স্বয়ংক্রিয়ভাবে সমর্থন করুন।",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "আপনি কত ঘন ঘন বিজ্ঞাপন দেখতে চান?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(বিজ্ঞাপন প্রতি ঘণ্টায়)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "আপনি আপনার প্রিয় নির্মাতাদের কত মাসিক সমর্থন দিতে চান?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(আপনার বিজ্ঞাপন উপার্জন থেকে)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Brave Rewards ব্যবহার শুরু করা হল ",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "টোকেনগুলি স্রষ্টাদের সহায়তার বাইরেও ব্যবহার করা যেতে পারে।বণিকরা জাহাজে আসার সাথে সাথে আপনি ডিজিটাল সামগ্রী এবং অন্যান্য পণ্য কিনতে পারেন।",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "শেষ অবধি, আসুন আপনাকে মৌলিক সেটিংসে সেট আপ করা যাক",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "আপনি এটি পরে পরিবর্তন করতে পারেন।",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "ওহু, আপনি সম্পূর্ণ প্রস্তুত!",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "Brave রিওয়ার্ডস ব্যবহার করে আপনি ওয়েবকে সবার জন্য আরও ভাল জায়গা করতে সহায়তা করছেন। এবং এটি দুর্দান্ত!",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "জাপানে Brave পুরষ্কারগুলি একটি নতুন সিস্টেমে স্যুইচ করছে!",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "আরও জানুন",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "13 ই মার্চের মধ্যে আপনার BAP ব্যবহার করুন। এর পরে, BAP বন্ধ করা হবে।",
+    "description": "Text for BAP deprecation popup"
   }
 }

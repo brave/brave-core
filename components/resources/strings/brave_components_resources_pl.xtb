@@ -61,6 +61,7 @@
 <translation id="954001034349395856">Wszystkie źródła</translation>
 <translation id="8890516388109605451">Źródła</translation>
 <translation id="5158129253322921540">Wyłącz treści od <ph name="PUBLISHER_NAME"/></translation>
+<translation id="3189348785087463371">Promowane</translation>
 <translation id="1776831331757823105">Godzina</translation>
 <translation id="4643117005422448078">Popularne strony</translation>
 <translation id="7791543448312431591">Dodaj</translation>
@@ -68,6 +69,9 @@
 <translation id="1531133232292396145">Handluj kryptowalutami na platformie Binance, bezpośednio w swojej przeglądarce.</translation>
 <translation id="2166494527623220386">Handluj kryptowalutami w Gemini bezpośrednio w swojej przeglądarce.</translation>
 <translation id="7191394989411626168">Wyłączenie kart spowoduje ukrycie wszystkich aktualnie widocznych kart. Wciąż jednak mogą Państwo otrzymywać powiadomienia o nowych kartach.</translation>
+<translation id="5655621391922317800">Portfele kryptowalut</translation>
+<translation id="8820817407110198400">Zakładki</translation>
+<translation id="1644574205037202324">Historia</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8730621377337864115">Gotowe</translation>
 <translation id="6248988683584659830">Przeszukaj ustawienia</translation>
@@ -330,6 +334,10 @@
 <translation id="1275213816424141989">Może później</translation>
 <translation id="5187052478998910855">Potrzebujesz powtórzenia w zakresie Nagród?</translation>
 <translation id="8622329973403382303">Przejdź krótki kurs, aby dowiedzieć się, jak przejść do historii jako gwiazda nagród!</translation>
+<translation id="3115702351969988294">Jak często chcesz widzieć reklamy?</translation>
+<translation id="7532131110478098401">(reklamy na godzinę)</translation>
+<translation id="2951964054390325080">W jakim wymiarze miesięcznie chcesz udzielać wsparcia ulubionym twórcom?</translation>
+<translation id="3164498053837913829">(z Twoich zarobków z reklam)</translation>
 <translation id="2070991379950719711">Zacznij korzystać z nagród Brave.</translation>
 <translation id="6318696841371191107">Weź udział w szybkim oprowadzeniu.</translation>
 <translation id="2404165674840145940">Dawaj napiwki z nagród Brave.</translation>
@@ -351,6 +359,8 @@
 <translation id="6042317056594735519">Dawanie napiwków to sposób na osobiste zachęcanie i wspieranie twórców Twoich ulubionych treści. Zacznij dawać napiwki!</translation>
 <translation id="7509452925943421624">Co można zrobić z tokenami?</translation>
 <translation id="5876169128756792273">Żetony mogą być wykorzystane poza zakresem wspierających twórców. Możesz zakupić cyfrowe treści i inne towary, gdy kupcy wchodzą na pokład.</translation>
+<translation id="1402530520078693620">Na koniec skonfigurujmy podstawowe ustawienia.</translation>
+<translation id="3494356595346329740">Można to później zmienić.</translation>
 <translation id="827315274423079662">Huraa, jesteście’ gotowi!</translation>
 <translation id="8268038362451312235">Poprzez korzystanie z Nagród Brave pomagasz sprawić, aby sieć była lepszym miejscem dla wszystkich. I to’s świetnie!</translation>
 <translation id="5094577350232361255">informacje</translation>
@@ -627,14 +637,20 @@
 <translation id="8344084848798035850">Szacunkowe zarobki do tej pory w tym miesiącu</translation>
 <translation id="5235444069025581717">Napiwki i wsparcia w tym miesiącu</translation>
 <translation id="1210965535849006928">Odbierz nagrody</translation>
-<translation id="8092889639392847252">Otrzymaj zapłatę za wyświetlenie tego sponsorowanego obrazu w tle.</translation>
-<translation id="7914961605852877459">Włącz Brave Ads, by zażądać swojego udziału. Możęsz też wybrać <ph name="LINK_BEGIN"/>hide sponsorowane obrazy<ph name="LINK_END"/>.</translation>
+<translation id="4609518959946843710">Zarabiaj nagrody za oglądanietego sponsorowanego obrazu w tle.</translation>
+<translation id="5311968438376723685">Włącz prywatne reklamy Brave, aby wykorzystać swój udział. Możesz też wybrać opcję <ph name="LINK_BEGIN"/>Ukrycie sponsorowanych obrazów<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Tak trzymaj!</translation>
 <translation id="764235488372037377">Twoje nagrody z reklam są tutaj</translation>
 <translation id="7091215606170476659">Możesz odebrać tokeny UGP od Brave</translation>
 <translation id="6759185676704303656">Otrzymujesz wynagrodzenie za wyświetlenie tego obrazu w tle.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/> o sponsorowanych obrazach w nagrodach Brave.</translation>
 <translation id="6113004497629356998">Ukryj obrazy sponsorowane</translation>
+<translation id="8587285254008006694">W ramach tego przejścia funkcje dawania napiwków i wkładu w
+        Twojej przeglądarce staną się czasowo niedostępne, od 13 marca, a
+        na Twoim saldzie punktów BAP będzie wyświetlana wartość 0.0 do czasu, aż uaktualnisz system do nowego
+        w kwietniu. Kiedy będziesz w nowym systemie, zaczniesz z nowymi
+        tokenami!</translation>
+<translation id="6232491755501685494">Nagrody Brave w Japonii przełączane są na nowy system!</translation>
 <translation id="3787061634640932557">Edytuj karty</translation>
 <translation id="4925543565930352284">Klikając {{title}},zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Rozpocznij prywatne połączenie wideo ze znajomymi i współpracownikami.</translation>
@@ -699,7 +715,6 @@
 <translation id="1833248467354516560">Cena jednostkowa</translation>
 <translation id="4763179765154524864">Wydano ogółem</translation>
 <translation id="8851480289992540512">Otrzymano ogółem</translation>
-<translation id="5655621391922317800">Portfele kryptowalut</translation>
 <translation id="616639131065447379">Witamy w portfelach kryptowalut Brave</translation>
 <translation id="1740464057879304704">Portfele kryptowalut pozwalają Ci pracować z kryptowalutą i powiązanymi aktywami w Brave. Portfele kryptowalut obsługują tokeny Ethereum, takie jak ETH i BAT, jak również należności, i umożliwiają pracę z Ðaplikacjami i innymi inteligentnymi kontraktami. Wszystko to przeznaczone jest dla osób, które znają Ethereum i inne systemy blockchain — lub chcą je poznać.</translation>
 <translation id="4855440621031541830">Używaj portfeli kryptowalut tylko wtedy, gdy akceptujesz, że ponosisz całą odpowiedzialność za wszelkie ryzyko powiązane z użytkowaniem, a także to, że Brave Software nie ponosi żadnej odpowiedzialności za jakiekolwiek straty, w tym straty wypadkowe i wynikowe, których możesz doznać na skutek użytkowania.</translation>
@@ -711,14 +726,32 @@
 <translation id="763042262431778831">Wyłącz Speedreader</translation>
 <translation id="9020818404803201080">Połączone węzły:</translation>
 <translation id="2903493209154104877">Adresy</translation>
+<translation id="3207122385716480167">Statystyki repo</translation>
+<translation id="2595187693729756455">Informacje o węźle</translation>
 <translation id="5789886980848929155">Status węzła IPFS</translation>
 <translation id="6599816589121202398">API</translation>
 <translation id="1327977588028644528">Brama</translation>
 <translation id="2551123942222622809">Rój</translation>
-<translation id="3967335629471284781">Uruchomiono</translation>
+<translation id="5201810533706869030">Obiekty</translation>
+<translation id="8028993641010258682">Rozmiar</translation>
+<translation id="7870625241353817260">StorageMax</translation>
+<translation id="3202131003361292969">Ścieżka</translation>
+<translation id="2892680660204660712">Peer ID</translation>
+<translation id="7536543993364605970">Wersja agenta</translation>
+<translation id="3693482323085649439">Węzeł jest uruchomiony.</translation>
+<translation id="6315833555896070573">Węzeł nie jest uruchomiony.</translation>
 <translation id="1272079795634619415">Zatrzymaj</translation>
+<translation id="5895138241574237353">Uruchom ponownie</translation>
 <translation id="6762417584993757344">Nie zainstalowano</translation>
+<translation id="4159076046325416152">Trwa instalowanie IPFS...</translation>
+<translation id="3854747677478661601">Przeprowadź proces „garbage collection”.</translation>
+<translation id="7376842608449050673">Błąd „garbage collection”</translation>
 <translation id="8428368469058794536">Usługa IPFS</translation>
+<translation id="6776260067907986254">Mój węzeł</translation>
+<translation id="8523162996646111972">(dane)</translation>
+<translation id="6121825639998459476">Zainstaluj i rozpocznij</translation>
+<translation id="72868071984333667">Dowiedz się więcej o IPFS oraz prywatności</translation>
+<translation id="1886162073868201257">Błąd uruchamiania usługi IPFS</translation>
 <translation id="5357895013476183089">Nie połączono z IPFS</translation>
 <translation id="1196783328762622576">Nie można załadować zasobów IPFS za pomocą lokalnego węzła</translation>
 <translation id="1141556610026845297">Nie udało się użyć lokalnego węzła IPFS, aby załadować żądane zasody IPFS. Kliknij "Kontynuuj", aby skorzystać zamiast tego z publicznego wejścia i wracać automatycznie do wejścia publicznego w przyszłości.</translation>
@@ -726,6 +759,20 @@
 <translation id="1974060860693918893">Zaawansowane</translation>
 <translation id="9096577886148726047">Ukryj Zaawansowane</translation>
 <translation id="7716995370131231171">Brave nie może załadować żądanych zasobów IPFS, ponieważ lokalny węzeł nie rozpoczął się lub ponieważ nie ma obecnie żadnych połączonych znajomych. Jeśli wybierzesz "Kontynuuj", Brave automatycznie wróci do domyślnego wejścia publicznego za każdym razem, gdy korzystanie z lokalnego węzła nie powiedzie się. Możesz zmienić to w każdym momencie w ustawieniach Brave.</translation>
+<translation id="8026038288183400906">Preferencje IPFS</translation>
+<translation id="2058855456574089690">Ustaw swoje preferencje IPFS</translation>
+<translation id="4447758690649023734">Skorzystaj z lokalnego węzła.</translation>
+<translation id="8148464361648742409">Skorzystaj z publicznej bramki</translation>
+<translation id="5123478056123923857">IFPS (InterPlanetary File System) to sieć publiczna do przechowywania i dostarczania danych w oparciu o model peer-to-peer. Protokół ten różni się parametrami prywatności od protokołu HTTP(S).</translation>
+<translation id="5410952114182173389">Twój komputer ma wkład w sieć publcizną, ale Twój adres IP i wszelkie treści, których żądasz lub które dostarczasz, mogą być narażone. Treści, których żądasz przez IPFS, są weryfikowane przed podaniem Ci ich.</translation>
+<translation id="8664689531113048642">Chroni Twój adres IP i treści, których żądasz, przed potencjalnymi obserwatorami będącymi osobami trzecimi, ale nie przed operatorem bramki publicznej. Operator bramki jest odpowiedzialny za dbanie o to, by podawane Ci przez bramkę treści były tymi, których żądasz. Ponadto Twój komputer nie ma wkładu w publiczną sieć IPFS.</translation>
+<translation id="3977809385703587108">Możesz jeszcze raz zmienić preferencje w</translation>
+<translation id="3340978935015468852">ustawienia</translation>
+<translation id="4148957013307229264">Trwa instalowanie...</translation>
+<translation id="6057992164469678163">Trwa oczekiwanie na „peerów”.</translation>
+<translation id="1902096227388293745">Brak jest dostępnych „peerów”, podejmowana jest ponowna próba (<ph name="ATTEMPTS_NUMBER"/> pozostałych prób)</translation>
+<translation id="1675751799495331928">Przekroczyliśmy limit prób; spróbuj ponownie później.</translation>
+<translation id="4499666752625407848">Podczas aktualizowania wystąpił błąd.</translation>
 <translation id="2880025073956220119">Crypto.com</translation>
 <translation id="8237504256665975959">Zobacz rynki i kupuj kryptowaluty na platformie crypto.com</translation>
 <translation id="4292334826913000023">Pokaż ceny</translation>
@@ -737,4 +784,11 @@
 <translation id="5337526542182802976">Wspierane pary</translation>
 <translation id="1164622162816276433">Obroty 24 h</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
+<translation id="3745016858329272300">Ogólne informacje</translation>
+<translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
+<translation id="216855356675970168">Wersja sieci Tor</translation>
+<translation id="2976625104959685176">ID procesu Tor</translation>
+<translation id="6951743416068151209">URI Tor Proxy</translation>
+<translation id="1671503397662036257">Status połączenia z siecią Tor</translation>
+<translation id="6024292492796847324">Postęp inicjalizacji sieci Tor</translation>
 </translationbundle>

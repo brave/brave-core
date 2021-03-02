@@ -635,6 +635,22 @@
     "message": "Gagnez des jetons en visualisant des publicités plus respectueuses de la vie privée et soutenez automatiquement vos sites et créateurs de contenu préférés.",
     "description": ""
   },
+  "onboardingSetupAdsHeader": {
+    "message": "À quelle fréquence voulez-vous voir des publicités ?",
+    "description": ""
+  },
+  "onboardingSetupAdsSubheader": {
+    "message": "(publicités par heure)",
+    "description": ""
+  },
+  "onboardingSetupContributeHeader": {
+    "message": "Quel est le montant du soutien mensuel que vous souhaitez accorder à vos créateurs préférés ?",
+    "description": ""
+  },
+  "onboardingSetupContributeSubheader": {
+    "message": "(provenant de vos revenus publicitaires)",
+    "description": ""
+  },
   "onboardingStartUsingRewards": {
     "message": "Commencez à utiliser Brave Rewards",
     "description": ""
@@ -733,6 +749,14 @@
     "message": "Les jetons peuvent être utilisés au-delà du soutien aux créateurs. Vous pouvez acheter du contenu digital et d'autres produits à mesure que les vendeurs nous rejoignent.",
     "description": ""
   },
+  "onboardingPanelSetupHeader": {
+    "message": "Pour finir, nous allons vous aider à configurer les paramètres de base",
+    "description": ""
+  },
+  "onboardingPanelSetupText": {
+    "message": "Vous pourrez changer ça plus tard.",
+    "description": ""
+  },
   "onboardingPanelCompleteHeader": {
     "message": "Wahou, vous êtes fin prêt !",
     "description": ""
@@ -740,5 +764,17 @@
   "onboardingPanelCompleteText": {
     "message": "En utilisant les Brave Rewards, vous aider à faire du Web un endroit meilleur pour tout le monde. Et c'est génial !",
     "description": ""
+  },
+  "bapDeprecationHeader": {
+    "message": "Brave Rewards au Japon passe à un nouveau système !",
+    "description": "Header text for BAP deprecation warning message"
+  },
+  "bapDeprecationLearnMore": {
+    "message": "En savoir plus",
+    "description": "Link to learn more about BAP deprecation"
+  },
+  "bapDeprecationPopupText": {
+    "message": "Veuillez utiliser vos BAP avant le 13 mars. Après cette date, les BAP seront interrompus.",
+    "description": "Text for BAP deprecation popup"
   }
 }

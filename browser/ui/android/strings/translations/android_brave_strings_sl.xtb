@@ -348,12 +348,12 @@ dejavnosti ...</translation>
 <translation id="5516010970279932133">V samodejnem dokončanju prikaži predlagana spletna mesta</translation>
 <translation id="5370478469168390143">Podatke shrani na spletu</translation>
 <translation id="1118508688433541158">Brskaj hitreje in blokiraj oglase s programom Brave</translation>
-<translation id="6589609065569680305">Sledilci &amp; oglasi so na tej strani blokirani.</translation>
+<translation id="6589609065569680305">Sledilci i oglasi so na tej strani blokirani.</translation>
 <translation id="1283922192221545319">Brave Shields je pravkar zaščitil vašo zasebnost.</translation>
 <translation id="3286927551967858325">Oglejte si</translation>
 <translation id="6227291358910554399">Med gledanjem videoposnetkov na tej spletni strani so oglasi blokirani.</translation>
 <translation id="7802980684512102010">Videoposnetki brez oglasov porabijo manj podatkov.</translation>
-<translation id="2046475855484346614">10+ sledilcev &amp; oglasi so na tej strani blokirani.</translation>
+<translation id="2046475855484346614">10+ sledilcev i oglasi so na tej strani blokirani.</translation>
 <translation id="5806208250835099572">Brave Shields ščiti vašo spletno zasebnost na vseh spletnih mestih.</translation>
 <translation id="5617673581653540121">Vaša povezava je zdaj šifrirana.</translation>
 <translation id="4055107796760496928">Če je na voljo, vas Brave samodejno nadgradi na varno povezavo.</translation>
@@ -494,7 +494,15 @@ dejavnosti ...</translation>
 <translation id="5187052478998910855">Potrebujete kratko osvežitev o Rewards?</translation>
 <translation id="8622329973403382303">Na hitro si oglejte, kako vse skupaj deluje, da se boste zapisali v zgodovino kot zvezda Rewards!</translation>
 <translation id="8401711613788729448">Odprite vse povezave z Brave, da zaščitite svojo zasebnost</translation>
-<translation id="3184805785843994538">Brave Shields blokira sledilce &amp; oglase, shranjuje podatke in prihrani čas na vsakem spletnem mestu, ki ga obiščete.</translation>
+<translation id="3184805785843994538">Brave Shields blokira sledilce i oglase, shranjuje podatke in prihrani čas na vsakem spletnem mestu, ki ga obiščete.</translation>
 <translation id="8722651357687610395">Privzeto nastavite Brave</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
+<translation id="6232491755501685494">Brave Rewards na Japonskem prehaja na nov sistem!</translation>
+<translation id="7444515017164572362">Od 13. marca svojega BAP ne boste mogli več uporabljati. Ko pa se
+        aprila posodobite na nov sistem, boste začeli z novimi žetoni!</translation>
+<translation id="8587285254008006694">Kot del tega prehoda funkcije odlaganja in prispevanja v
+        vašem brskalniku od 13. marca začasno ne bodo na voljo,
+        vaše stanje BAP bo prikazovalo 0.0, dokler se ne posodobite na nov sistem
+        v aprilu. Ko boste že v novem sistemu, boste začeli z novimi 
+        žetoni!</translation>
 </translationbundle>
