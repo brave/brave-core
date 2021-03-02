@@ -272,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   // Verify that there is no referral code
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "");
+  EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterMigration) {
@@ -280,7 +280,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterMigration) {
   // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
   ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
   GetLocalState()->SetString(kReferralDownloadID, "migration");
-  GetLocalState()->SetString(kReferralPromoCode, "");
+  GetLocalState()->SetString(kReferralPromoCode, "BRV001");
   GetLocalState()->SetBoolean(kReferralCheckedForPromoCodeFile, true);
 
   // Start the referrals service, since the stats updater's startup
@@ -321,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterMigration) {
 
   // Verify that there is no referral code
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "");
+  EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
 // Run the stats updater with an active referral and verify that the
