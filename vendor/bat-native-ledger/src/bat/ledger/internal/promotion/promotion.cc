@@ -774,7 +774,7 @@ void Promotion::ErrorCredsStatusSaved(const type::Result result) {
   ledger_->database()->GetAllPromotions(retry_callback);
 }
 
-void Promotion::TransferTokens(ledger::ResultCallback callback) {
+void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
   transfer_->Start(callback);
 }
 

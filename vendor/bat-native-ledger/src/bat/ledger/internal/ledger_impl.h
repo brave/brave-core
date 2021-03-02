@@ -355,9 +355,8 @@ class LedgerImpl : public ledger::Ledger {
 
   std::string GetWalletPassphrase() const override;
 
-  void LinkBraveWallet(
-      const std::string& destination_payment_id,
-      ResultCallback callback) override;
+  void LinkBraveWallet(const std::string& destination_payment_id,
+                       PostSuggestionsClaimCallback callback) override;
 
   void GetTransferableAmount(GetTransferableAmountCallback callback) override;
 

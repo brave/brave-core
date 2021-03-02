@@ -44,16 +44,13 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostSuggestionsClaimCallback =
-    std::function<void(const type::Result result, std::string drain_id)>;
-
 class PostSuggestionsClaim {
  public:
   explicit PostSuggestionsClaim(LedgerImpl* ledger);
   ~PostSuggestionsClaim();
 
   void Request(const credential::CredentialsRedeem& redeem,
-                 PostSuggestionsClaimCallback callback);
+               PostSuggestionsClaimCallback callback);
 
  private:
   std::string GetUrl();
