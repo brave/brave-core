@@ -101,7 +101,7 @@ IpfsService::IpfsService(content::BrowserContext* context,
   // available in unit tests.
   if (ipfs_client_updater_) {
     ipfs_client_updater_->AddObserver(this);
-    OnExecutableReady(GetIpfsExecutablePath());
+    OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
   }
 }
 
@@ -113,17 +113,16 @@ void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
-  registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
   registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);
+  registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
 }
 
-base::FilePath IpfsService::GetIpfsExecutablePath() {
-  // ipfs_client_updater is not available in unit tests.
-  return ipfs_client_updater_ ? ipfs_client_updater_->GetExecutablePath()
-                              : base::FilePath();
+base::FilePath IpfsService::GetIpfsExecutablePath() const {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  return prefs->GetFilePath(kIPFSBinaryPath);
 }
 
 void IpfsService::OnInstallationEvent(ComponentUpdaterEvents event) {
@@ -137,7 +136,7 @@ void IpfsService::OnExecutableReady(const base::FilePath& path) {
     return;
 
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  prefs->SetBoolean(kIPFSBinaryAvailable, true);
+  prefs->SetFilePath(kIPFSBinaryPath, path);
 
   if (ipfs_client_updater_) {
     ipfs_client_updater_->RemoveObserver(this);
@@ -390,8 +389,7 @@ void IpfsService::OnConfigLoaded(GetConfigCallback callback,
 }
 
 bool IpfsService::IsIPFSExecutableAvailable() const {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  return prefs->GetBoolean(kIPFSBinaryAvailable);
+  return !GetIpfsExecutablePath().empty();
 }
 
 void IpfsService::AddObserver(IpfsServiceObserver* observer) {

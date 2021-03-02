@@ -7,8 +7,10 @@
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -111,4 +113,22 @@ IN_PROC_BROWSER_TEST_F(BraveIpfsClientUpdaterTest, IpfsClientInstalls) {
   base::FilePath executable_path =
       g_brave_browser_process->ipfs_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveIpfsClientUpdaterTest, IpfsExecutableReady) {
+  ipfs::IpfsService* ipfs_service =
+      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(profile());
+  ASSERT_TRUE(ipfs_service);
+  ASSERT_FALSE(ipfs_service->IsIPFSExecutableAvailable());
+  ASSERT_TRUE(ipfs_service->GetIpfsExecutablePath().empty());
+  SetComponentIdAndBase64PublicKeyForTest(
+      kIpfsClientUpdaterComponentTestId,
+      kIpfsClientUpdaterComponentTestBase64PublicKey);
+  ASSERT_TRUE(InstallIpfsClientUpdater());
+  base::FilePath executable_path =
+      g_brave_browser_process->ipfs_client_updater()->GetExecutablePath();
+  ASSERT_TRUE(PathExists(executable_path));
+
+  EXPECT_EQ(ipfs_service->GetIpfsExecutablePath(), executable_path);
+  ASSERT_TRUE(ipfs_service->IsIPFSExecutableAvailable());
 }
