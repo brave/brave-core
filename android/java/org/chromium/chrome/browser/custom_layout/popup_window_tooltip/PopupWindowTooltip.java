@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.annotation.SuppressLint;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
@@ -105,6 +106,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setTouchable(true);
         mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int x = (int) event.getX();

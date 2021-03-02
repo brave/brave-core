@@ -10,6 +10,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.annotation.SuppressLint;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -54,6 +55,7 @@ public class VerticalViewPager extends ViewPager {
         return toIntercept;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         final boolean toHandle = super.onTouchEvent(flipXY(ev));

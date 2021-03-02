@@ -67,7 +67,7 @@
 	            style="?android:attr/borderlessButtonStyle"/>
 
 	        <TextView
-	        	android:id="@+id/tos_pp_text"
+	        	android:id="@+id/brave_rewards_opt_in_tos_pp_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"
@@ -79,7 +79,7 @@
 	    </LinearLayout>
 
 	    <androidx.appcompat.widget.AppCompatImageView
-	        android:id="@+id/modal_close"
+	        android:id="@+id/brave_rewards_opt_in_modal_close"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:contentDescription="@null"

@@ -113,6 +113,7 @@
             android:textColor="@color/onboarding_gray"
             android:textAllCaps="false"
             android:visibility="invisible"
+            style="?android:attr/buttonBarButtonStyle"
             android:gravity="center"/>
 
         <Button
@@ -127,6 +128,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:textColor="@color/onboarding_orange"
             android:textAllCaps="false"
+            style="?android:attr/buttonBarButtonStyle"
             android:gravity="center"/>
 
     </LinearLayout>

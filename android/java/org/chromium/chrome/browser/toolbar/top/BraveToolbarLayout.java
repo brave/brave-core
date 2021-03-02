@@ -653,7 +653,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         + context.getResources().getString(R.string.privacy_policy).length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.tos_pp_text);
+        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.brave_rewards_onboarding_modal_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
@@ -678,7 +678,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             }
         }));
         AppCompatImageView modalCloseButton =
-                braveRewardsOnboardingModalView.findViewById(R.id.modal_close);
+                braveRewardsOnboardingModalView.findViewById(R.id.brave_rewards_onboarding_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

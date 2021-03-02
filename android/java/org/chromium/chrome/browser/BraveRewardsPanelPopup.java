@@ -47,6 +47,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -214,6 +215,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         mIconFetcher = new BraveRewardsHelper(BraveRewardsHelper.currentActiveChromeTabbedActivityTab());
 
         this.window.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
@@ -291,6 +293,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tvBrBatWallet = root.findViewById(R.id.br_bat_wallet);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initViewActionEvents() {
         if (tvPublisherNotVerifiedSummary != null) {
             tvPublisherNotVerifiedSummary.setOnTouchListener(new View.OnTouchListener() {
@@ -554,11 +557,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOptInView.findViewById(R.id.tos_pp_text);
+        TextView tosAndPpText = braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
-        AppCompatImageView modalCloseButton = braveRewardsOptInView.findViewById(R.id.modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -607,7 +610,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.tos_pp_text);
+        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.brave_rewards_onboarding_modal_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
@@ -629,7 +632,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 showBraveRewardsOnboarding(root, true);
             }
         }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(R.id.modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(R.id.brave_rewards_onboarding_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -681,7 +684,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         braveRewardsViewPager.setAdapter(braveRewardsOnboardingPagerAdapter);
         TabLayout braveRewardsTabLayout = braveRewardsOnboardingView.findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(braveRewardsViewPager, true);
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(R.id.modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(R.id.brave_rewards_onboarding_layout_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -714,7 +717,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         }));
         AppCompatImageView modalCloseButton =
-                braveRewardsWelcomeView.findViewById(R.id.modal_close);
+                braveRewardsWelcomeView.findViewById(R.id.brave_rewards_welcome_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -95,7 +95,7 @@
 	            android:textColor="@color/brave_rewards_modal_theme_color"/>
 
 	        <TextView
-	        	android:id="@+id/tos_pp_text"
+	        	android:id="@+id/brave_rewards_onboarding_modal_tos_pp_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"
@@ -111,7 +111,7 @@
 	    </androidx.core.widget.NestedScrollView>
 
 	    <androidx.appcompat.widget.AppCompatImageView
-	        android:id="@+id/modal_close"
+	        android:id="@+id/brave_rewards_onboarding_modal_close"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:contentDescription="@null"

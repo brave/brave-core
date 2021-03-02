@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
 import org.chromium.chrome.browser.app.BraveActivity;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
+import android.annotation.SuppressLint;
 import org.chromium.chrome.browser.tab.Tab;
 
 import java.math.RoundingMode;
@@ -315,6 +316,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         sendDonationLayout = findViewById(R.id.send_donation_button);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setPublisherNoteText(@PublisherStatus int pubStatus) {
         String note_part1 = "";
         if (pubStatus == BraveRewardsPublisher.CONNECTED) {

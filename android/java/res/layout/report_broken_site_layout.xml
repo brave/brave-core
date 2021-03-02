@@ -66,6 +66,7 @@
             android:text="@android:string/cancel"
             android:textAllCaps="false"
             android:textSize="16sp"
+            style="?android:attr/buttonBarButtonStyle"
             android:textColor="@color/default_icon_color_tint_list"/>
 
         <Button

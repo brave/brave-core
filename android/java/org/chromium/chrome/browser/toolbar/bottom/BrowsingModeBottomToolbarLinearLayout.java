@@ -9,6 +9,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
@@ -45,6 +46,7 @@ public class BrowsingModeBottomToolbarLinearLayout extends LinearLayout {
         return super.onInterceptTouchEvent(ev);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!mTouchEnabled) return true;
