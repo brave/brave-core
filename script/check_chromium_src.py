@@ -66,8 +66,10 @@ def do_check_includes(override_filepath):
             if not line_match:
                 continue
 
+            # Count the number of '../' elements, but don't use the OS's path
+            # separator here, since we're counting paths from a C++ include.
             include_path = line_match.group(1)
-            actual_count = include_path.split(os.path.sep).count('..')
+            actual_count = include_path.split('/').count('..')
 
             # Check actual vs expected.
             if actual_count != expected_count:
@@ -107,7 +109,7 @@ def do_check_defines(override_filepath, original_filepath):
                 target = buildflag_match.group(1)
 
             # Report ERROR if target can't be found in the original file.
-            with open(original_filepath, 'r') as original_file:
+            with open(original_filepath, mode='r', encoding='utf-8') as original_file:
                 if target not in original_file.read():
                     print("ERROR: Unable to find symbol {} in {}"
                           .format(target, original_filepath))
@@ -145,25 +147,27 @@ def get_generated_builddir(build, target_os=None, target_arch=None):
     return os.path.join(SRC_DIR, 'out', build_dirname, 'gen')
 
 
-def filter_filepaths(dir, include_regexp=None, exclude_regexp=None):
+def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
     """
-    Return a list of paths pointing to the files under the directory |dir| after
-    filtering the results according to the |include_regexp| and |exclude_regexp|
-    regexp rules, where |include_regexp| takes precedence over |exclude_regexp|.
+    Return a list of paths pointing to the files in |CHROMIUM_SRC|
+    after filtering the results according to the |include_regexp| and the
+    |exclude_regexp| regexp rules, where |include_regexp| takes precedence
+    over |exclude_regexp|.
     """
     result = []
 
     if not include_regexp and not exclude_regexp:
         return result
 
-    for dir_path, dirnames, filenames in os.walk(dir):
+    for dir_path, _dirnames, filenames in os.walk(CHROMIUM_SRC):
         for filename in filenames:
             full_path = os.path.join(dir_path, filename)
             if include_regexp and not re.search(include_regexp, full_path):
                 continue
             if exclude_regexp and re.search(exclude_regexp, full_path):
                 continue
-            result.append(full_path.replace('{}/'.format(dir), ''))
+            # We need a path relative to |dir|, not an absolute one.
+            result.append(full_path.replace(CHROMIUM_SRC, '')[1:])
 
     return result
 
@@ -196,13 +200,12 @@ def main(args):
     os.chdir(CHROMIUM_SRC)
 
     # Check non-GRIT overrides.
-    src_overrides = filter_filepaths(
-        CHROMIUM_SRC,
+    src_overrides = filter_chromium_src_filepaths(
         exclude_regexp='|'.join(EXCLUDES + ['python_modules|.*grit.*']))
     do_check_overrides(src_overrides, SRC_DIR, True)
 
     # Check GRIT overrides.
-    grit_overrides = filter_filepaths(CHROMIUM_SRC, include_regexp='.*grit.*')
+    grit_overrides = filter_chromium_src_filepaths(include_regexp='.*grit.*')
     do_check_overrides(grit_overrides, gen_buildir, False)
 
 
