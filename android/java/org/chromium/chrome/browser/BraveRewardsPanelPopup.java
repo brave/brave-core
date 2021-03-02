@@ -6,6 +6,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +48,6 @@ import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -557,11 +557,13 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_tos_pp_text);
+        TextView tosAndPpText =
+                braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
-        AppCompatImageView modalCloseButton = braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_modal_close);
+        AppCompatImageView modalCloseButton =
+                braveRewardsOptInView.findViewById(R.id.brave_rewards_opt_in_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -610,7 +612,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(mActivity.getResources().getColor(R.color.brave_rewards_modal_theme_color)), privacyPolicyIndex, privacyPolicyIndex + mActivity.getResources().getString(R.string.privacy_policy).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(R.id.brave_rewards_onboarding_modal_tos_pp_text);
+        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(
+                R.id.brave_rewards_onboarding_modal_tos_pp_text);
         tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
         tosAndPpText.setText(tosTextSS);
 
@@ -632,7 +635,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 showBraveRewardsOnboarding(root, true);
             }
         }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(R.id.brave_rewards_onboarding_modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
+                R.id.brave_rewards_onboarding_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -684,7 +688,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         braveRewardsViewPager.setAdapter(braveRewardsOnboardingPagerAdapter);
         TabLayout braveRewardsTabLayout = braveRewardsOnboardingView.findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(braveRewardsViewPager, true);
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(R.id.brave_rewards_onboarding_layout_modal_close);
+        AppCompatImageView modalCloseButton = braveRewardsOnboardingView.findViewById(
+                R.id.brave_rewards_onboarding_layout_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {

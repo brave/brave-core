@@ -5,11 +5,11 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
-import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 

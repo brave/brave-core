@@ -4,35 +4,35 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.chrome.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.text.Spanned;
-import android.view.MotionEvent;
+
 import org.chromium.base.IntentUtils;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
 import org.chromium.chrome.browser.app.BraveActivity;
-import android.graphics.Bitmap;
-import android.widget.ImageView;
-import android.annotation.SuppressLint;
 import org.chromium.chrome.browser.tab.Tab;
 
 import java.math.RoundingMode;

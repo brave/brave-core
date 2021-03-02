@@ -136,9 +136,12 @@ public class BinanceDepositFragment extends Fragment {
                     ImageView currencyImageView = view.findViewById(R.id.currency_image);
                     TextView currencyText = view.findViewById(R.id.currency_text);
 
-                    String currencyString = new StringBuilder(coinNetworkModel.getCoin()).append((TextUtils.isEmpty(coinNetworkModel.getCoinDesc())
-                                            ? ""
-                                            : " (" + coinNetworkModel.getCoinDesc() + ")")).toString();
+                    String currencyString =
+                            new StringBuilder(coinNetworkModel.getCoin())
+                                    .append((TextUtils.isEmpty(coinNetworkModel.getCoinDesc())
+                                                    ? ""
+                                                    : " (" + coinNetworkModel.getCoinDesc() + ")"))
+                                    .toString();
 
                     currencyText.setText(currencyString);
                     if (coinNetworkModel.getCoinRes() == 0) {
@@ -219,9 +222,14 @@ public class BinanceDepositFragment extends Fragment {
                 });
 
                 if (selectedCoinNetworkModel != null) {
-                    String currencyTitleString = new StringBuilder(selectedCoinNetworkModel.getCoin()).append((TextUtils.isEmpty(selectedCoinNetworkModel.getCoinDesc())
-                                            ? ""
-                                            : " (" + selectedCoinNetworkModel.getCoinDesc() + ")")).toString();
+                    String currencyTitleString =
+                            new StringBuilder(selectedCoinNetworkModel.getCoin())
+                                    .append((TextUtils.isEmpty(
+                                                     selectedCoinNetworkModel.getCoinDesc())
+                                                    ? ""
+                                                    : " (" + selectedCoinNetworkModel.getCoinDesc()
+                                                            + ")"))
+                                    .toString();
                     currencyTitleText.setText(currencyTitleString);
                     currencyAddressText.setText(String.format(
                             getActivity().getResources().getString(R.string.currency_address_text),

@@ -157,15 +157,15 @@ public class OnboardingV2Fragment extends Fragment {
                     mIndicator1.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
                             R.drawable.selected_indicator, /* theme= */ null));
                     break;
-		case 1:
+                case 1:
                     mIndicator2.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
                             R.drawable.selected_indicator, /* theme= */ null));
                     break;
-		case 2:
+                case 2:
                     mIndicator3.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
                             R.drawable.selected_indicator, /* theme= */ null));
                     break;
-		case 3:
+                case 3:
                     mIndicator4.setBackground(ResourcesCompat.getDrawable(mContext.getResources(),
                             R.drawable.selected_indicator, /* theme= */ null));
                     FrameLayout.LayoutParams params =
@@ -175,7 +175,7 @@ public class OnboardingV2Fragment extends Fragment {
                     mOnboardingLayout.setLayoutParams(params);
                     if (isFromStats) mLearnMoreButton.setVisibility(View.VISIBLE);
                     break;
-		}
+                }
 	}
 
 	public void setPosition(int position) {
