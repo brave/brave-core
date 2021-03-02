@@ -117,4 +117,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       prefs::kCloudPrintSubmitEnabled));
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
       prefs::kNtpUseMostVisitedTiles));
+  EXPECT_TRUE(
+      browser()->profile()->GetPrefs()->GetBoolean(prefs::kHideWebStoreIcon));
 }

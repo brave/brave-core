@@ -17,6 +17,7 @@ import {
   BinanceWidget as Binance,
   GeminiWidget as Gemini,
   CryptoDotComWidget as CryptoDotCom,
+  EditTopSite,
   EditCards
 } from '../../components/default'
 import * as Page from '../../components/default/page'
@@ -25,6 +26,7 @@ import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday from '../../components/default/braveToday'
 import BAPDeprecationModal from '../../components/default/rewards/bapDeprecationModal'
+import { addNewTopSite, editTopSite } from '../../api/topSites'
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
@@ -45,6 +47,7 @@ import { BraveTodayState } from '../../reducers/today'
 
 // NTP features
 import Settings, { TabType as SettingsTabType } from './settings'
+import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 
 interface Props {
   newTabData: NewTab.State
@@ -67,6 +70,8 @@ interface Props {
 interface State {
   onlyAnonWallet: boolean
   showSettingsMenu: boolean
+  showEditTopSite: boolean
+  targetTopSiteForEditing?: NewTab.Site
   backgroundHasLoaded: boolean
   activeSettingsTab: SettingsTabType | null
 }
@@ -103,6 +108,7 @@ class NewTabPage extends React.Component<Props, State> {
   state: State = {
     onlyAnonWallet: false,
     showSettingsMenu: false,
+    showEditTopSite: false,
     backgroundHasLoaded: false,
     activeSettingsTab: null
   }
@@ -234,6 +240,10 @@ class NewTabPage extends React.Component<Props, State> {
   toggleCustomLinksEnabled = () => {
     const { showTopSites, customLinksEnabled } = this.props.newTabData
     this.props.actions.setMostVisitedSettings(showTopSites, !customLinksEnabled)
+  }
+
+  setMostVisitedSettings = (showTopSites: boolean, customLinksEnabled: boolean) => {
+    this.props.actions.setMostVisitedSettings(showTopSites, customLinksEnabled)
   }
 
   toggleShowRewards = () => {
@@ -396,6 +406,28 @@ class NewTabPage extends React.Component<Props, State> {
       showSettingsMenu: false,
       activeSettingsTab: null
     })
+  }
+
+  showEditTopSite = (targetTopSiteForEditing?: NewTab.Site) => {
+    this.setState({
+      showEditTopSite: true,
+      targetTopSiteForEditing
+    })
+  }
+
+  closeEditTopSite = () => {
+    this.setState({
+      showEditTopSite: false
+    })
+  }
+
+  saveNewTopSite = (title: string, url: string, newUrl: string) => {
+    if (url) {
+      editTopSite(title, url, newUrl === url ? '' : newUrl)
+    } else {
+      addNewTopSite(title, newUrl)
+    }
+    this.closeEditTopSite()
   }
 
   openSettings = (activeTab?: SettingsTabType) => {
@@ -989,7 +1021,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu } = this.state
+    const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing } = this.state
 
     if (!newTabData) {
       return null
@@ -997,8 +1029,15 @@ class NewTabPage extends React.Component<Props, State> {
 
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
-    const showTopSites = !!this.props.gridSitesData.gridSites.length && newTabData.showTopSites
     const cryptoContent = this.renderCryptoContent()
+    const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
+
+    let showTopSites = newTabData.showTopSites
+    // In favorites mode, add site tile is visible by default if there is no
+    // item. In frecency, top sites widget is hidden with empty tiles.
+    if (showTopSites && !newTabData.customLinksEnabled) {
+      showTopSites = this.props.gridSitesData.gridSites.length !== 0
+    }
 
     return (
       <Page.App
@@ -1050,12 +1089,15 @@ class NewTabPage extends React.Component<Props, State> {
               <Page.GridItemTopSites>
                 <TopSitesGrid
                   actions={actions}
-                  paddingType={'right'}
+                  paddingType={'none'}
                   customLinksEnabled={newTabData.customLinksEnabled}
+                  onShowEditTopSite={this.showEditTopSite}
                   widgetTitle={getLocale('topSitesTitle')}
                   gridSites={gridSitesData.gridSites}
                   menuPosition={'right'}
                   hideWidget={this.toggleShowTopSites}
+                  onAddSite={showAddNewSiteMenuItem ? this.showEditTopSite : undefined}
+                  onToggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
                   textDirection={newTabData.textDirection}
                 />
               </Page.GridItemTopSites>
@@ -1065,7 +1107,7 @@ class NewTabPage extends React.Component<Props, State> {
             gridSitesData.shouldShowSiteRemovedNotification
             ? (
             <Page.GridItemNotification>
-              <SiteRemovalNotification actions={actions} />
+              <SiteRemovalNotification actions={actions} showRestoreAll={!newTabData.customLinksEnabled} />
             </Page.GridItemNotification>
             ) : null
           }
@@ -1135,7 +1177,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowStats={this.toggleShowStats}
           toggleShowToday={this.toggleShowToday}
           toggleShowTopSites={this.toggleShowTopSites}
-          toggleCustomLinksEnabled={this.toggleCustomLinksEnabled}
+          setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
@@ -1164,6 +1206,15 @@ class NewTabPage extends React.Component<Props, State> {
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.toggleAllCards}
         />
+        {
+          showEditTopSite ?
+            <EditTopSite
+              targetTopSiteForEditing={targetTopSiteForEditing}
+              textDirection={newTabData.textDirection}
+              onClose={this.closeEditTopSite}
+              onSave={this.saveNewTopSite}
+            /> : null
+        }
         <BAPDeprecationModal rewardsState={this.props.newTabData.rewardsState} />
       </Page.App>
     )

@@ -247,6 +247,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kCloudPrintSubmitEnabled,
                                 base::Value(false));
 
+  // Disable default webstore icons in topsites or apps.
+  registry->SetDefaultPrefValue(prefs::kHideWebStoreIcon, base::Value(true));
+
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);

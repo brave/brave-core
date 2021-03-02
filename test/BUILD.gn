@@ -136,6 +136,7 @@ test("brave_unit_tests") {
     "//brave/browser/tor:unit_tests",
     "//brave/browser/translate/buildflags",
     "//brave/browser/ui",
+    "//brave/browser/ui/webui/new_tab_page:unit_tests",
     "//brave/browser/widevine:unittest",
     "//brave/common:network_constants",
     "//brave/common:pref_names",

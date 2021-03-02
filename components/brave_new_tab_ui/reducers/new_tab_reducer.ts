@@ -171,11 +171,12 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     }
 
     case types.TOP_SITES_STATE_UPDATED: {
-      const { newShowTopSites, newCustomLinksEnabled } = payload
+      const { newShowTopSites, newCustomLinksEnabled, customLinksNum } = payload
       state = {
         ...state,
         showTopSites: newShowTopSites,
-        customLinksEnabled: newCustomLinksEnabled
+        customLinksEnabled: newCustomLinksEnabled,
+        customLinksNum: customLinksNum
       }
       break
     }

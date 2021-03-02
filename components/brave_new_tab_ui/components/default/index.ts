@@ -5,7 +5,7 @@
 
 import { StatsContainer, StatsItem } from './stats'
 export * from './settings'
-import { ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './gridSites'
+import { AddSiteTile, AddSiteTileImage, Tile, TileActionsContainer, TileAction, TileFavicon, TileMenu, TileMenuItem, TileTitle } from './gridSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { ClockWidget } from './clock'
 import { RewardsWidget } from './rewards'
@@ -14,6 +14,7 @@ import { TogetherWidget } from './together'
 import { GeminiWidget } from './gemini'
 import { CryptoDotComWidget } from './cryptoDotCom'
 import EditCards from './editCards'
+import EditTopSite from './editTopSite'
 import createWidget from './widget'
 
 export * from './page'
@@ -21,11 +22,15 @@ export * from './page'
 export {
   StatsContainer,
   StatsItem,
-  ListWidget,
+  AddSiteTile,
+  AddSiteTileImage,
   Tile,
   TileActionsContainer,
   TileAction,
   TileFavicon,
+  TileMenu,
+  TileMenuItem,
+  TileTitle,
   SiteRemovalNotification,
   SiteRemovalText,
   SiteRemovalAction,
@@ -36,5 +41,6 @@ export {
   EditCards,
   GeminiWidget,
   CryptoDotComWidget,
-  createWidget
+  createWidget,
+  EditTopSite
 }

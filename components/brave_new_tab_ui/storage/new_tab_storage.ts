@@ -19,6 +19,7 @@ export const defaultState: NewTab.State = {
   clockFormat: '',
   showTopSites: false,
   customLinksEnabled: false,
+  customLinksNum: 0,
   showRewards: false,
   showTogether: false,
   showBinance: false,

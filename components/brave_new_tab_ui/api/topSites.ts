@@ -6,6 +6,7 @@
 export type MostVisitedInfoChanged = {
   tiles: NewTab.Site[]
   custom_links_enabled: boolean
+  custom_links_num: number
   visible: boolean
 }
 
@@ -21,6 +22,14 @@ export function addMostVistedInfoChangedListener (listener: MostVisitedInfoChang
 
 export function deleteMostVisitedTile (url: string): void {
   chrome.send('deleteMostVisitedTile', [url])
+}
+
+export function addNewTopSite (title: string, url: string): void {
+  chrome.send('addNewTopSite', [url, title])
+}
+
+export function editTopSite (title: string, url: string, newUrl: string): void {
+  chrome.send('editTopSite', [url, newUrl, title])
 }
 
 export function reorderMostVisitedTile (url: string, newPos: number): void {

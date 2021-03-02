@@ -3,10 +3,71 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled from 'brave-ui/theme'
+import styled, { css } from 'brave-ui/theme'
 
-interface ListProps {
+export const TileTitle = styled<{}, 'p'>('p')`
+  margin: 0;
+  font-family: Poppins;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 17px;
+  max-width: 100%;
+  height: 17px;
+  color: white;
+  padding: 0 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+export const AddSiteTileImage = styled<{}, 'div'>('div')`
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+`
+
+export const AddSiteTile = styled<{}, 'button'>('button')`
+  background: transparent;
+  width: 78px;
+  height: 110px;
+  cursor: pointer;
+  border: none;
+  margin: 0;
+  padding: 0;
+  outline: unset;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  visibility: hidden;
+  gap: 8px;
+
+  &:focus-visible, :focus {
+    gap: 4px;
+
+    ${AddSiteTileImage} {
+      margin-top: -4px;
+      width: 78px;
+      height: 78px;
+      background-clip: padding-box;
+      border: 4px solid white;
+    }
+  }
+`
+
+export interface ListProps {
   blockNumber: number
+  isDragging: boolean
 }
 
 export const List = styled<ListProps, 'div'>('div')`
@@ -14,16 +75,25 @@ export const List = styled<ListProps, 'div'>('div')`
   align-items: normal;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 92px);
+  grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 86px);
   justify-content: var(--ntp-item-justify, start);
+  padding: 24px 56px 24px 24px;
 
   @media screen and (max-width: 700px) {
-    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 92px);
+    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 86px);
   }
 
   @media screen and (max-width: 390px) {
-    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 2).toString()}, 92px);
+    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 2).toString()}, 86px);
   }
+
+  ${p => !p.isDragging && css`
+    &:hover {
+      ${AddSiteTile} {
+        visibility: visible;
+      }
+    }
+  `}
 `
 
 export const TileActionsContainer = styled<{}, 'nav'>('nav')`
@@ -32,78 +102,159 @@ export const TileActionsContainer = styled<{}, 'nav'>('nav')`
   visibility: hidden;
   transition: 0.15s opacity linear;
   position: absolute;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  text-align: center;
+  width: 40px;
+  height: 40px;
+  z-index: 1;
+  top: -12px;
+  right: -12px;
   display: flex;
-  justify-content: space-between;
-  margin: 6px;
-  border-radius: 4px;
-  background-color: #FFFFFF;
 `
 
-interface TileActionProps {
-  standalone?: boolean
-}
+export const TileMenu = styled<{}, 'div'>('div')`
+  position: absolute;
+  top: 15px;
+  left: 80px;
+  min-width: 185px;
+  height: 72px;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 
-export const TileAction = styled<TileActionProps, 'button'>('button')`
-  -webkit-appearance: none;
-  box-sizing: border-box;
-  transition: color 0.1s linear;
-  color: #424242;
-  font-size: 14px;
-  width: 20px;
-  height: 20px;
-  padding: 2px 4px;
-  background: ${p => p.standalone && '#FFFFFF'};
-  position: ${p => p.standalone && 'absolute'};
-  top: ${p => p.standalone && '6px'};
-  left: ${p => p.standalone && '6px'};
-  border-radius: ${p => p.standalone && '4px'};
-  margin: 0;
-  display: block;
-  cursor: pointer;
-  border: 0;
-
-  &:hover {
-    color: #000;
+  background: white;
+  @media (prefers-color-scheme: dark) {
+    background: #3B3E4F;
   }
 `
 
-interface TileProps {
-  isDragging?: boolean
-}
-
-export const Tile = styled<TileProps, 'div'>('div')`
-  background-color: #ffffff;
-  position: relative;
-  user-select: none;
-  margin: 6px;
+export const TileMenuItem = styled<{}, 'button'>('button')`
+  width: 100%;
+  height: 30px;
+  font-family: Poppins;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  margin: 0;
+  border: none;
+  outline: unset;
+  padding: 4px 13px;
+  background: inherit;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  box-shadow: 1px 1px 6px 2px rgba(0,0,0,0.3);
-  border-radius: 8px;
-  width: 80px;
-  height: 80px;
-  font-size: 38px;
-  z-index: 3;
-  cursor: grab;
+  gap: 11px;
+  cursor: pointer;
+  color: ${p => p.theme.color.contextMenuHoverForeground};
 
-  &:hover {
-    ${TileActionsContainer} {
-      opacity: 1;
-      visibility: visible;
-    }
+  &:hover, :focus-visible {
+    background-color: ${p => p.theme.color.contextMenuHoverBackground};
+    color: ${p => p.theme.color.contextMenuHoverForeground};
+  }
+`
+
+export const TileAction = styled<{}, 'button'>('button')`
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  transition: color 0.1s linear;
+  background: #DADCEB;
+  width: 100%;
+  border-radius: 50%;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: unset;
+  background-clip: padding-box;
+  border: 4px solid transparent;
+
+  &:focus-visible {
+    border: 4px solid rgba(255, 255, 255, 0.6);
+  }
+
+  &:active {
+    background: #AEB1C2;
+    border: 4px solid transparent;
+    background-clip: padding-box;
   }
 `
 
 export const TileFavicon = styled<{}, 'img'>('img')`
+  background-color: #ffffff;
   display: block;
-  height: 72px;
   padding: 16px;
+  width: 70px;
+  height: 70px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
   object-fit: contain;
 `
 
-export const ListWidget = List
+interface TileProps {
+  isDragging: boolean
+  isMenuShowing: boolean
+}
+
+export const Tile = styled<TileProps, 'a'>('a')`
+  position: relative;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 78px;
+  height: 110px;
+  cursor: pointer;
+  // Menu goes behind in other Tiles when tils has z-index.
+  // Give z-index while dragging to make dragging tile moves over other tiles.
+  z-index: ${p => p.isDragging ? 3 : 'unset' }
+  outline: unset;
+  gap: 8px;
+
+  ${p => !p.isMenuShowing && css`
+    &:active {
+      gap: 4px;
+
+      ${TileFavicon} {
+        margin-top: -4px;
+        width: 78px;
+        height: 78px;
+        background-clip: padding-box;
+        border: 4px solid rgba(255, 255, 255, 0.6) ;
+      }
+    }
+  `}
+
+  &:focus-visible {
+    gap: 4px;
+
+    ${TileFavicon} {
+      margin-top: -4px;
+      width: 78px;
+      height: 78px;
+      background-clip: padding-box;
+      border: 4px solid rgba(255, 255, 255, 0.6) ;
+    }
+  }
+
+  ${p => !p.isDragging && !p.isMenuShowing && css`
+    &:hover {
+      ${TileActionsContainer} {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  `}
+
+  ${p => p.isMenuShowing && css`
+    ${TileActionsContainer} {
+      opacity: 1;
+      visibility: visible;
+    }
+  `}
+`

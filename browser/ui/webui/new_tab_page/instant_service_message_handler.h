@@ -38,6 +38,10 @@ class InstantServiceMessageHandler : public content::WebUIMessageHandler,
   void HandleRestoreMostVisitedDefaults(const base::ListValue* args);
   void HandleUndoMostVisitedTileAction(const base::ListValue* args);
   void HandleSetMostVisitedSettings(const base::ListValue* args);
+  void HandleEditTopSite(const base::ListValue* args);
+  void HandleAddNewTopSite(const base::ListValue* args);
+
+  int GetCustomLinksNum() const;
 
   GURL last_blacklisted_;
   // Weak pointer.
