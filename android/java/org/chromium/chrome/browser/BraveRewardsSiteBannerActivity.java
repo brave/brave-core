@@ -69,6 +69,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         setContentView(R.layout.brave_rewards_site_banner);
 
         isAnonWallet = BraveRewardsHelper.isAnonWallet();
+        sendDonationLayout = findViewById(R.id.send_donation_button);
 
         //change weight of the footer in landscape mode
         int orientation = this.getResources().getConfiguration().orientation;
@@ -312,8 +313,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 icon_layout.requestLayout();
             }
         });
-
-        sendDonationLayout = findViewById(R.id.send_donation_button);
     }
 
     @SuppressLint("ClickableViewAccessibility")
