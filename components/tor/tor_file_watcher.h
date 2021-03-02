@@ -24,6 +24,8 @@ namespace tor {
 FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlCookie);
 FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlPort);
 
+// This is used to fetch Tor cookie and port which are required to establish
+// control channel. It will delete itself when WatchCallback is called.
 class TorFileWatcher {
  public:
   using WatchCallback = base::OnceCallback<

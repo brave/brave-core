@@ -49,7 +49,9 @@ TorFileWatcher::TorFileWatcher(const base::FilePath& watch_dir_path)
   DETACH_FROM_SEQUENCE(watch_sequence_checker_);
 }
 
-TorFileWatcher::~TorFileWatcher() {}
+TorFileWatcher::~TorFileWatcher() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
+}
 
 void TorFileWatcher::StartWatching(WatchCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);

@@ -92,7 +92,9 @@ TorControl::TorControl(TorControl::Delegate* delegate,
   DETACH_FROM_SEQUENCE(io_sequence_checker_);
 }
 
-TorControl::~TorControl() = default;
+TorControl::~TorControl() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+}
 
 // Start()
 //
@@ -169,9 +171,10 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
     return;
   }
 
-  Cmd1("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-       base::BindOnce(&TorControl::Authenticated,
-                      weak_ptr_factory_.GetWeakPtr()));
+  DoCmd("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::BindOnce(&TorControl::Authenticated,
+                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 // Authenticated(error, status, reply)
@@ -194,10 +197,12 @@ void TorControl::Authenticated(bool error,
   }
   VLOG(2) << "tor: control connection ready";
 
-  Cmd1("TAKEOWNERSHIP",
-       base::DoNothing::Once<bool, const std::string&, const std::string&>());
-  Cmd1("RESETCONF __OwningControllerProcess",
-       base::DoNothing::Once<bool, const std::string&, const std::string&>());
+  DoCmd("TAKEOWNERSHIP",
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::DoNothing::Once<bool, const std::string&, const std::string&>());
+  DoCmd("RESETCONF __OwningControllerProcess",
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::DoNothing::Once<bool, const std::string&, const std::string&>());
   NotifyTorControlReady();
 }
 
@@ -215,6 +220,7 @@ void TorControl::Authenticated(bool error,
 //
 void TorControl::Subscribe(TorControlEvent event,
                            base::OnceCallback<void(bool error)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   io_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::DoSubscribe, weak_ptr_factory_.GetWeakPtr(),
@@ -231,9 +237,10 @@ void TorControl::DoSubscribe(TorControlEvent event,
   }
 
   async_events_[event] = 1;
-  Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControl::Subscribed, weak_ptr_factory_.GetWeakPtr(),
-                      event, std::move(callback)));
+  DoCmd(SetEventsCmd(),
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::BindOnce(&TorControl::Subscribed, weak_ptr_factory_.GetWeakPtr(),
+                       event, std::move(callback)));
 }
 
 void TorControl::Subscribed(TorControlEvent event,
@@ -265,6 +272,7 @@ void TorControl::Subscribed(TorControlEvent event,
 //
 void TorControl::Unsubscribe(TorControlEvent event,
                              base::OnceCallback<void(bool error)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   io_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::DoUnsubscribe, weak_ptr_factory_.GetWeakPtr(),
@@ -284,9 +292,11 @@ void TorControl::DoUnsubscribe(TorControlEvent event,
 
   DCHECK_EQ(async_events_[event], 0u);
   async_events_.erase(event);
-  Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControl::Unsubscribed, weak_ptr_factory_.GetWeakPtr(),
-                      event, std::move(callback)));
+  DoCmd(
+      SetEventsCmd(),
+      base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+      base::BindOnce(&TorControl::Unsubscribed, weak_ptr_factory_.GetWeakPtr(),
+                     event, std::move(callback)));
 }
 
 void TorControl::Unsubscribed(TorControlEvent event,
@@ -323,32 +333,12 @@ std::string TorControl::SetEventsCmd() {
 ///////////////////////////////////////////////////////////////////////////////
 // Sending commands
 
-// Cmd1(cmd, callback)
-//
-//      Issue a Tor control command for which we only care about the
-//      final line; ignore all intermediate lines.
-//
-void TorControl::Cmd1(const std::string& cmd, CmdCallback callback) {
-  Cmd(cmd,
-      base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
-      std::move(callback));
-}
-
-// Cmd(cmd, perline, callback)
+// DoCmd(cmd, perline, callback)
 //
 //      Issue a Tor control command.  Call perline for each
 //      intermediate line; then call callback for the last line or on
 //      error.
 //
-void TorControl::Cmd(const std::string& cmd,
-                     PerLineCallback perline,
-                     CmdCallback callback) {
-  io_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(), cmd,
-                     std::move(perline), std::move(callback)));
-}
-
 void TorControl::DoCmd(std::string cmd,
                        PerLineCallback perline,
                        CmdCallback callback) {
@@ -381,19 +371,24 @@ void TorControl::DoCmd(std::string cmd,
 //
 void TorControl::GetVersion(
     base::OnceCallback<void(bool error, const std::string& version)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   std::unique_ptr<std::string> version = std::make_unique<std::string>();
-  std::string* versionp = version.get();
-  Cmd(kGetVersionCmd,
-      base::BindRepeating(&TorControl::GetVersionLine,
-                          weak_ptr_factory_.GetWeakPtr(), versionp),
-      base::BindOnce(&TorControl::GetVersionDone,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(version),
-                     std::move(callback)));
+  std::string* version_p = version.get();
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(), kGetVersionCmd,
+          base::BindRepeating(&TorControl::GetVersionLine,
+                              weak_ptr_factory_.GetWeakPtr(), version_p),
+          base::BindOnce(&TorControl::GetVersionDone,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(version),
+                         std::move(callback))));
 }
 
 void TorControl::GetVersionLine(std::string* version,
                                 const std::string& status,
                                 const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (status != "250" ||
       !base::StartsWith(reply, kGetVersionReply,
                         base::CompareCase::SENSITIVE) ||
@@ -410,32 +405,37 @@ void TorControl::GetVersionDone(
     bool error,
     const std::string& status,
     const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (error || status != "250" || reply != "OK" || version->empty()) {
-    owner_task_runner_->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(callback), true, ""));
+    std::move(callback).Run(true, "");
     return;
   }
-  owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), false, *version));
+  std::move(callback).Run(false, *version);
 }
 
 void TorControl::GetSOCKSListeners(
     base::OnceCallback<
         void(bool error, const std::vector<std::string>& listeners)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   std::unique_ptr<std::vector<std::string>> listeners =
       std::make_unique<std::vector<std::string>>();
   std::vector<std::string>* listeners_p = listeners.get();
-  Cmd(kGetSOCKSListenersCmd,
-      base::BindRepeating(&TorControl::GetSOCKSListenersLine,
-                          weak_ptr_factory_.GetWeakPtr(), listeners_p),
-      base::BindOnce(&TorControl::GetSOCKSListenersDone,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(listeners),
-                     std::move(callback)));
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(),
+          kGetSOCKSListenersCmd,
+          base::BindRepeating(&TorControl::GetSOCKSListenersLine,
+                              weak_ptr_factory_.GetWeakPtr(), listeners_p),
+          base::BindOnce(&TorControl::GetSOCKSListenersDone,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(listeners),
+                         std::move(callback))));
 }
 
 void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
                                        const std::string& status,
                                        const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (status != "250" || !base::StartsWith(reply, kGetSOCKSListenersReply,
                                            base::CompareCase::SENSITIVE)) {
     VLOG(0) << "tor: unexpected " << kGetSOCKSListenersCmd << " reply";
@@ -451,14 +451,12 @@ void TorControl::GetSOCKSListenersDone(
     bool error,
     const std::string& status,
     const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (error || status != "250" || reply != "OK" || listeners->empty()) {
-    owner_task_runner_->PostTask(
-        FROM_HERE,
-        base::BindOnce(std::move(callback), true, std::vector<std::string>()));
+    std::move(callback).Run(true, std::vector<std::string>());
     return;
   }
-  owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), false, *listeners));
+  std::move(callback).Run(false, *listeners);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

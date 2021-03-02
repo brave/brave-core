@@ -13,6 +13,46 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace tor {
+namespace {
+
+constexpr char kInvalidControlport[] =
+#if defined(OS_WIN)
+    "invalid_controlport_win";
+#else
+    "invalid_controlport";
+#endif
+constexpr char kValidControlportNotLocalhost[] =
+#if defined(OS_WIN)
+    "valid_controlport_not_localhost_win";
+#else
+    "valid_controlport_not_localhost";
+#endif
+constexpr char kControlportTooLong[] =
+#if defined(OS_WIN)
+    "controlport_too_long_win";
+#else
+    "controlport_too_long";
+#endif
+constexpr char kControlportOverflow[] =
+#if defined(OS_WIN)
+    "controlport_overflow_win";
+#else
+    "controlport_overflow";
+#endif
+constexpr char kInvalidControlPortEnd[] =
+#if defined(OS_WIN)
+    "invalid_control_port_end_win";
+#else
+    "invalid_control_port_end";
+#endif
+constexpr char kNormalControlport[] =
+#if defined(OS_WIN)
+    "normal_controlport_win";
+#else
+    "normal_controlport";
+#endif
+
+}  // namespace
 
 class TorFileWatcherTest : public testing::Test {
  public:
@@ -111,62 +151,37 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
 
-#if defined(OS_WIN)
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("invalid_controlport_win")));
-#else
   tor_file_watcher.reset(
-      new TorFileWatcher(test_data_dir().AppendASCII("invalid_controlport")));
-#endif
+      new TorFileWatcher(test_data_dir().AppendASCII(kInvalidControlport)));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
 
-#if defined(OS_WIN)
   tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("valid_controlport_not_localhost_win")));
-#else
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("valid_controlport_not_localhost")));
-#endif
+      test_data_dir().AppendASCII(kValidControlportNotLocalhost)));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
 
-#if defined(OS_WIN)
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("controlport_too_long_win")));
-#else
   tor_file_watcher.reset(
-      new TorFileWatcher(test_data_dir().AppendASCII("controlport_too_long")));
-#endif
+      new TorFileWatcher(test_data_dir().AppendASCII(kControlportTooLong)));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
   EXPECT_EQ(time.ToJsTime(), 0u);
 
-#if defined(OS_WIN)
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("controlport_overflow_win")));
-#else
   tor_file_watcher.reset(
-      new TorFileWatcher(test_data_dir().AppendASCII("controlport_overflow")));
-#endif
+      new TorFileWatcher(test_data_dir().AppendASCII(kControlportOverflow)));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 65536);
   EXPECT_EQ(time.ToJsTime(), 0u);
 
   port = -1;
-#if defined(OS_WIN)
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("invalid_control_port_end_win")));
-#else
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("invalid_control_port_end")));
-#endif
+  tor_file_watcher.reset(
+      new TorFileWatcher(test_data_dir().AppendASCII(kInvalidControlPortEnd)));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 0);
@@ -175,13 +190,8 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   port = -1;
   time = base::Time();
 
-#if defined(OS_WIN)
-  tor_file_watcher.reset(new TorFileWatcher(
-      test_data_dir().AppendASCII("normal_controlport_win")));
-#else
   tor_file_watcher.reset(
-      new TorFileWatcher(test_data_dir().AppendASCII("normal_controlport")));
-#endif
+      new TorFileWatcher(test_data_dir().AppendASCII(kNormalControlport)));
   tor_file_watcher->polling_ = true;
   EXPECT_TRUE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 5566);

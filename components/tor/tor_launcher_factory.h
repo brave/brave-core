@@ -17,6 +17,7 @@
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/sequence_checker.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/tor/tor_control.h"
 #include "brave/components/tor/tor_file_watcher.h"
@@ -98,12 +99,9 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   base::ObserverList<TorLauncherObserver> observers_;
 
-  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
-
   std::unique_ptr<tor::TorControl, base::OnTaskRunnerDeleter> control_;
 
-  // Not owned, it will delete itself when callback is ran
-  tor::TorFileWatcher* tor_file_watcher_;
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 

@@ -72,11 +72,6 @@ class TorControl {
   void Start(std::vector<uint8_t> cookie, int port);
   void Stop();
 
-  void Cmd1(const std::string& cmd, CmdCallback callback);
-  void Cmd(const std::string& cmd,
-           PerLineCallback perline,
-           CmdCallback callback);
-
   void Subscribe(TorControlEvent event,
                  base::OnceCallback<void(bool error)> callback);
   void Unsubscribe(TorControlEvent event,
