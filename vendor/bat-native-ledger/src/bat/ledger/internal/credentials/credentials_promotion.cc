@@ -449,6 +449,8 @@ void CredentialsPromotion::Completed(
 void CredentialsPromotion::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
+  DCHECK(redeem.type != type::RewardsType::TRANSFER);
+
   if (redeem.token_list.empty()) {
     BLOG(0, "Token list empty");
     callback(type::Result::LEDGER_ERROR);
@@ -463,17 +465,13 @@ void CredentialsPromotion::RedeemTokens(
   auto url_callback = std::bind(&CredentialsPromotion::OnRedeemTokens, this, _1,
                                 token_id_list, redeem, callback);
 
-  if (redeem.type == type::RewardsType::TRANSFER) {
-    promotion_server_->post_suggestions_claim()->Request(redeem, url_callback);
-  } else {
-    if (redeem.publisher_key.empty()) {
-      BLOG(0, "Publisher key is empty");
-      callback(type::Result::LEDGER_ERROR);
-      return;
-    }
-
-    promotion_server_->post_suggestions()->Request(redeem, url_callback);
+  if (redeem.publisher_key.empty()) {
+    BLOG(0, "Publisher key is empty");
+    callback(type::Result::LEDGER_ERROR);
+    return;
   }
+
+  promotion_server_->post_suggestions()->Request(redeem, url_callback);
 }
 
 void CredentialsPromotion::OnRedeemTokens(
