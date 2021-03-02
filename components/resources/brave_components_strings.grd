@@ -196,8 +196,26 @@
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_DEFAULT" desc="Text for default choice Clock>Format setting">Automatic</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_12" desc="Text for choice '12-hour clock' Clock>Format setting">12-hour clock</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_24" desc="Text for choice '24-hour clock' Clock>Format setting">24-hour clock</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
-      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_LINKS_ENABLED" desc="Text for allowing customizing of top sites">Customize Top Sites</message>
+
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_TITLE" desc="Title text for adding top site dialog ">Add site</message>
+      <message name="IDS_BRAVE_NEW_TAB_EDIT_TOP_SITE_DIALOG_TITLE" desc="Title text for editing top site dialog">Edit site</message>
+      <message name="IDS_BRAVE_NEW_TAB_EDIT_SITE_TILE_MENU_ITEM" desc="Text for editing site tile menu item">Edit site</message>
+      <message name="IDS_BRAVE_NEW_TAB_REMOVE_TILE_MENU_ITEM" desc="Text for removing top site tile menu item">Remove</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_URL_LABEL" desc="Text for settings show top sites option">URL</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_URL_INPUT_PLACEHOLDER" desc="Text for settings show top sites option">Website address</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_NAME_LABEL" desc="Text for settings show top sites option">Name</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_NAME_INPUT_PLACEHOLDER" desc="Text for settings show top sites option">Website title</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_SAVE_BUTTON_LABEL" desc="Text for settings show top sites option">Save</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_CANCEL_BUTTON_LABEL" desc="Text for settings show top sites option">Cancel</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Top Sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_LABEL" desc="Label for allowing customizing of top sites">Favorites</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_DESC" desc="Desc for allowing customizing of top sites">Top sites are curated by you</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_LABEL" desc="Label for showing most visited istes as top sites">Frequently Visited</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_DESC" desc="Desc for showing most visited sites as top sites">Top sites are suggested based on websites you visit often</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_SITE_MENU_LABEL" desc="Label for adding site to top sites menu item of topsites tiles">Add Site</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
+
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOGETHER" desc="Text for show together option">Brave Together</message>

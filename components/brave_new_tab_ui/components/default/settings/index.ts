@@ -5,12 +5,38 @@
 
 import styled, { css } from 'brave-ui/theme'
 
+import favoritesSelectedLight from './assets/favorites-selected.png'
+import favoritesUnselectedLight from './assets/favorites-unselected.png'
+import frecencySelectedLight from './assets/frecency-selected.png'
+import frecencyUnselectedLight from './assets/frecency-unselected.png'
+
+import favoritesSelectedDark from './assets/favorites-selected-dark.png'
+import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
+import frecencySelectedDark from './assets/frecency-selected-dark.png'
+import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
+
 interface Props {
   textDirection: string
 }
 
 const isDarkTheme = (p: any) => {
   return p.theme.name === 'Brave Dark'
+}
+
+const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorites: boolean) => {
+  if (dark) {
+    if (selected) {
+      return favorites ? favoritesSelectedDark : frecencySelectedDark
+    } else {
+      return favorites ? favoritesUnselectedDark : frecencyUnselectedDark
+    }
+  } else {
+    if (selected) {
+      return favorites ? favoritesSelectedLight : frecencySelectedLight
+    } else {
+      return favorites ? favoritesUnselectedLight : frecencyUnselectedLight
+    }
+  }
 }
 
 export const SettingsMenu = styled<Props, 'div'>('div')`
@@ -451,4 +477,89 @@ export const ToggleCardsCopy = styled<{}, 'p'>('p')`
 export const ToggleCardsSwitch = styled<{}, 'div'>('div')`
   float: right;
   margin: -65px -10px 0 0;
+`
+
+export const StyledTopSitesCustomizationSettings = styled('div')`
+  --widget-gap: 10px;
+  font-family: ${p => p.theme.fontFamily.heading};
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  gap: var(--widget-gap)
+`
+
+export const StyledTopSitesCustomizationSettingsOption = styled<{}, 'button'>('button')`
+  width: calc(50% - var(--widget-gap) / 2);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: unset;
+  outline: unset;
+  background: inherit;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
+`
+
+interface CustomizationImageBorderProps {
+  selected: boolean
+}
+
+export const StyledTopSitesCustomizationImageBorder = styled<CustomizationImageBorderProps, 'div'>('div')`
+  margin-bottom: 8px;
+  border-radius: 11px;
+
+  ${p => p.selected && css`
+    background: ${p => isDarkTheme(p) ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
+                                      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
+    padding: 3px;
+  `}
+
+  ${p => !p.selected && css`
+    border: 2px solid ${p => isDarkTheme(p) ? '#3B3E4F' : '#F1F3F5'};
+    background: ${p => isDarkTheme(p) ? '#17171F' : '#FFF'};
+    padding: 1px;
+
+    &:hover {
+      border: 2px solid ${p => isDarkTheme(p) ? '#C2C4CF' : '#AEB1C2'};
+      background: ${p => isDarkTheme(p) ? '#2B2D3F' : '#FAFAFF'};
+      padding: 1px;
+    }
+  `}
+`
+
+interface CustomizationImageProps {
+  isFavorites: boolean
+  selected: boolean
+}
+
+export const StyledTopSitesCustomizationImage = styled<CustomizationImageProps, 'img'>('img')`
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  content: url(${p => getTopSiteCustomizationImage(isDarkTheme(p), p.selected, p.isFavorites)});
+
+  ${p => p.selected && css`
+    background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};
+    border-radius: 8px;
+  `}
+`
+
+export const StyledTopSitesCustomizationOptionTitle = styled<{}, 'div'>('div')`
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: 2px;
+  text-align: left;
+`
+
+export const StyledTopSitesCustomizationOptionDesc = styled<{}, 'div'>('div')`
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 17px;
+  text-align: left;
 `

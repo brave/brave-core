@@ -53,7 +53,7 @@ export interface Props {
   toggleShowStats: () => void
   toggleShowToday: () => any
   toggleShowTopSites: () => void
-  toggleCustomLinksEnabled: () => void
+  setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
   toggleShowTogether: () => void
   toggleShowBinance: () => void
@@ -235,7 +235,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowClock,
       toggleShowStats,
       toggleShowTopSites,
-      toggleCustomLinksEnabled,
+      setMostVisitedSettings,
       toggleShowRewards,
       toggleShowTogether,
       toggleBrandedWallpaperOptIn,
@@ -338,8 +338,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                     <TopSitesSettings
                       toggleShowTopSites={toggleShowTopSites}
                       showTopSites={showTopSites}
-                      toggleCustomLinksEnabled={toggleCustomLinksEnabled}
                       customLinksEnabled={customLinksEnabled}
+                      setMostVisitedSettings={setMostVisitedSettings}
                     />
                   ) : null
               }

@@ -122,6 +122,7 @@ declare namespace NewTab {
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
     customLinksEnabled: boolean
+    customLinksNum: number
     showTogether: boolean
     showBinance: boolean
     showGemini: boolean

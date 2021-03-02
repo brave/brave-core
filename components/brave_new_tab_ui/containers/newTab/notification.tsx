@@ -24,6 +24,7 @@ import * as gridSitesActions from '../../actions/grid_sites_actions'
 
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
+  showRestoreAll: boolean
 }
 
 export default class Notification extends React.Component<Props, {}> {
@@ -53,9 +54,12 @@ export default class Notification extends React.Component<Props, {}> {
           >
             {getLocale('undoRemoved')}
           </SiteRemovalAction>
-         <SiteRemovalAction onClick={this.onUndoRemoveAllTopSites}>
-            {getLocale('restoreAll')}
-          </SiteRemovalAction>
+          { this.props.showRestoreAll ?
+            <SiteRemovalAction onClick={this.onUndoRemoveAllTopSites}>
+              {getLocale('restoreAll')}
+            </SiteRemovalAction>
+            : null
+          }
           <SiteRemovalAction
             onClick={this.onHideSiteRemovalNotification}
             iconOnly={true}

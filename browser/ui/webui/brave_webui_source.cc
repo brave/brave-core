@@ -145,8 +145,24 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "clockFormatDefault", IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_DEFAULT },
         { "clockFormat12", IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_12 },
         { "clockFormat24", IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_24 },
+        { "addTopSiteDialogTitle", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_TITLE },  // NOLINT
+        { "editTopSiteDialogTitle", IDS_BRAVE_NEW_TAB_EDIT_TOP_SITE_DIALOG_TITLE },  // NOLINT
+        { "editSiteTileMenuItem", IDS_BRAVE_NEW_TAB_EDIT_SITE_TILE_MENU_ITEM },
+        { "removeTileMenuItem", IDS_BRAVE_NEW_TAB_REMOVE_TILE_MENU_ITEM },
+        { "addTopSiteDialogURLLabel", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_URL_LABEL },  // NOLINT
+        { "addTopSiteDialogURLInputPlaceHolder", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_URL_INPUT_PLACEHOLDER },  // NOLINT
+        { "addTopSiteDialogNameLabel", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_NAME_LABEL },  // NOLINT
+        { "addTopSiteDialogNameInputPlaceHolder", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_NAME_INPUT_PLACEHOLDER },  // NOLINT
+        { "addTopSiteDialogSaveButtonLabel", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_SAVE_BUTTON_LABEL },  // NOLINT
+        { "addTopSiteDialogCancelButtonLabel", IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_CANCEL_BUTTON_LABEL },  // NOLINT
         { "showTopSites", IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES },
-        { "topSiteCustomLinksEnabled", IDS_BRAVE_NEW_TAB_CUSTOM_LINKS_ENABLED },
+        { "showFavoritesLabel", IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_LABEL },
+        { "showFavoritesDesc", IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_DESC },
+        { "showFrecencyLabel", IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_LABEL },
+        { "showFrecencyDesc", IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_DESC },
+        { "addSiteMenuLabel", IDS_BRAVE_NEW_TAB_ADD_SITE_MENU_LABEL },
+        { "showFrecencyMenuLabel", IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL },
+        { "showFavoritesMenuLabel", IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL },  // NOLINT
         { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
         { "showBinance", IDS_BRAVE_NEW_TAB_SHOW_BINANCE },
         { "showTogether", IDS_BRAVE_NEW_TAB_SHOW_TOGETHER },

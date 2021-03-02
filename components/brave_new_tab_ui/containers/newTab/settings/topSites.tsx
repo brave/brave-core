@@ -7,7 +7,13 @@ import * as React from 'react'
 
 import {
   SettingsRow,
-  SettingsText
+  SettingsText,
+  StyledTopSitesCustomizationSettings,
+  StyledTopSitesCustomizationSettingsOption,
+  StyledTopSitesCustomizationImageBorder,
+  StyledTopSitesCustomizationImage,
+  StyledTopSitesCustomizationOptionTitle,
+  StyledTopSitesCustomizationOptionDesc
 } from '../../../components/default'
 import { Toggle } from '../../../components/toggle'
 
@@ -16,20 +22,28 @@ import { getLocale } from '../../../../common/locale'
 interface Props {
   toggleShowTopSites: () => void
   showTopSites: boolean
-  toggleCustomLinksEnabled: () => void
   customLinksEnabled: boolean
+  setMostVisitedSettings: (show: boolean, customize: boolean) => void
 }
 
 class TopSitesSettings extends React.PureComponent<Props, {}> {
+  onClickFavorites = () => {
+    this.props.setMostVisitedSettings(true, true)
+  }
+
+  onClickFrecency = () => {
+    this.props.setMostVisitedSettings(true, false)
+  }
+
   render () {
     const {
       toggleShowTopSites,
       showTopSites,
-      toggleCustomLinksEnabled,
       customLinksEnabled
     } = this.props
-    // Enable when we're ready to use add shortcut feature to topsite.
-    const showCustomizedLink = false
+
+    const favoritesSelected = showTopSites && customLinksEnabled
+    const frecencySelected = showTopSites && !customLinksEnabled
     return (
       <div>
         <SettingsRow>
@@ -40,17 +54,44 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
             size='large'
           />
         </SettingsRow>
-        {
-          showCustomizedLink ?
-          (<SettingsRow>
-            <SettingsText>{getLocale('topSiteCustomLinksEnabled')}</SettingsText>
-            <Toggle
-              onChange={toggleCustomLinksEnabled}
-              checked={customLinksEnabled}
-              size='large'
-            />
-          </SettingsRow>) : null
-        }
+        <StyledTopSitesCustomizationSettings>
+          <StyledTopSitesCustomizationSettingsOption
+            onClick={this.onClickFavorites}
+          >
+            <StyledTopSitesCustomizationImageBorder
+              selected={favoritesSelected}
+            >
+              <StyledTopSitesCustomizationImage
+                isFavorites={true}
+                selected={favoritesSelected}
+              />
+            </StyledTopSitesCustomizationImageBorder>
+            <StyledTopSitesCustomizationOptionTitle>
+              {getLocale('showFavoritesLabel')}
+            </StyledTopSitesCustomizationOptionTitle>
+            <StyledTopSitesCustomizationOptionDesc>
+              {getLocale('showFavoritesDesc')}
+            </StyledTopSitesCustomizationOptionDesc>
+          </StyledTopSitesCustomizationSettingsOption>
+          <StyledTopSitesCustomizationSettingsOption
+            onClick={this.onClickFrecency}
+          >
+            <StyledTopSitesCustomizationImageBorder
+              selected={frecencySelected}
+            >
+              <StyledTopSitesCustomizationImage
+                isFavorites={false}
+                selected={frecencySelected}
+              />
+            </StyledTopSitesCustomizationImageBorder>
+            <StyledTopSitesCustomizationOptionTitle>
+              {getLocale('showFrecencyLabel')}
+            </StyledTopSitesCustomizationOptionTitle>
+            <StyledTopSitesCustomizationOptionDesc>
+              {getLocale('showFrecencyDesc')}
+            </StyledTopSitesCustomizationOptionDesc>
+          </StyledTopSitesCustomizationSettingsOption>
+        </StyledTopSitesCustomizationSettings>
       </div>
     )
   }

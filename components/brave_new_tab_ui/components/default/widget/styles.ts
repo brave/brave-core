@@ -127,12 +127,10 @@ export const StyledWidgetButton = styled<WidgetButtonProps, 'button'>('button')`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  outline-color: #FF7654;
-  outline-width: 2px;
-  outline-offset: -3px;
+  outline: unset;
   cursor: pointer;
 
-  &:hover {
+  &:hover, :focus-visible {
     background-color: ${p => p.theme.color.contextMenuHoverBackground};
     color: ${p => p.theme.color.contextMenuHoverForeground};
   }

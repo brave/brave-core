@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../components/ntp_tiles",
+  "+components/ntp_tiles",
+]

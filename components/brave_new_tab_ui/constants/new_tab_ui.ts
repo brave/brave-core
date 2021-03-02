@@ -3,4 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-export const MAX_GRID_SIZE = 6
+// Sync this with kBraveMaxTopSitesNumber
+// in //brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_unittest.cc
+export const MAX_GRID_SIZE = 12
