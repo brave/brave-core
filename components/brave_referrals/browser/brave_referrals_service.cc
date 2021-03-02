@@ -359,12 +359,16 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 }
 
 void BraveReferralsService::OnReadPromoCodeComplete() {
-  if (!promo_code_.empty()) {
+  if (!promo_code_.empty() && !IsDefaultReferralCode(promo_code_)) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     DCHECK(!initialization_timer_);
     InitReferral();
   } else {
-    // No referral code, no point of reporting it.
+    // store referral code if it's not empty (ex: it's the default code)
+    if (!promo_code_.empty()) {
+      pref_service_->SetString(kReferralPromoCode, promo_code_);
+    }
+    // No referral code or it's the default, no point of reporting it.
     pref_service_->SetBoolean(kReferralInitialization, true);
     if (!referral_initialized_callback_.is_null())
       referral_initialized_callback_.Run(std::string());
