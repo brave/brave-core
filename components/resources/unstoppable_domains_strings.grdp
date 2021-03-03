@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="unstoppable_domains_enabled">
+    <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE" desc="Title of interstitial opt-in page for unstoppable domains.">
+      Unstoppable Domains
+    </message>
+    <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING" desc="Heading of unstoppable domains opt-in interstitial opt-in page.">
+      Enable support of Unstoppable Domains in Brave?
+    </message>
+    <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of unstoppable domains not connected interstitial page.">
+      Brave can enable you to visit .crypto domains by using Cloudflare to resolve .crypto domain name lookup requests using DNS over HTTPS. If you enable this, Cloudflare will see the .crypto domain that you're trying to visit but they will not be able to see other domains. See Cloudflare's <ph name="BEGIN_CF_TOU_LINK">$1</ph>terms of use<ph name="END_CF_TOU_LINK">$2</ph> and <ph name="BEGIN_CF_PRIVACY_LINK">$3</ph>privacy policy<ph name="END_CF_PRIVACY_LINK">$4</ph>.
+    </message>
+    <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_BUTTON" desc="The text for the unstoppable domains opt-in interstitial primary button.">
+      Proceed using Cloudflare server
+    </message>
+    <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_DONT_PROCEED_BUTTON" desc="The text for the don't proceed button in unstoppable domains opt-in interstitial page.">
+      Disable
+    </message>
+  </if>
+</grit-part>

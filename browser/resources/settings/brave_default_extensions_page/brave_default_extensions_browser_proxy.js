@@ -67,6 +67,10 @@ cr.define('settings', function () {
     wasSignInEnabledAtStartup () {
       return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
     }
+
+    isUnstoppableDomainsEnabled () {
+      return cr.sendWithPromise('isUnstoppableDomainsEnabled')
+    }
   }
 
   cr.addSingletonGetter(BraveDefaultExtensionsBrowserProxyImpl)

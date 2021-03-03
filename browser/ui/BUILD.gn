@@ -7,6 +7,7 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/unstoppable_domains/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -237,6 +238,7 @@ source_set("ui") {
     "//brave/components/p3a:buildflags",
     "//brave/components/sidebar/buildflags",
     "//brave/components/tor:pref_names",
+    "//brave/components/unstoppable_domains/buildflags",
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/webcompat_reporter/ui:generated_resources",
@@ -370,6 +372,10 @@ source_set("ui") {
       if (enable_widevine) {
         deps += [ "//brave/browser/widevine" ]
       }
+    }
+
+    if (unstoppable_domains_enabled) {
+      deps += [ "//brave/components/unstoppable_domains" ]
     }
 
     if (brave_rewards_enabled) {

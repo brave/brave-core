@@ -1072,6 +1072,7 @@
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
       <part file="speedreader_strings.grdp" />
       <part file="ipfs_strings.grdp" />
+      <part file="unstoppable_domains_strings.grdp" />
       <part file="crypto_dot_com_strings.grdp" />
       <part file="tor_strings.grdp" />
     </messages>

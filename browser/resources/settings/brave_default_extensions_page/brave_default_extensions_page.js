@@ -20,7 +20,19 @@ Polymer({
     showRestartToast_: Boolean,
     torEnabled_: Boolean,
     widevineEnabled_: Boolean,
-    disableTorOption_: Boolean
+    disableTorOption_: Boolean,
+    unstoppableDomainsEnabled_: Boolean,
+    unstoppableDomainsResolveMethod_: {
+      readOnly: true,
+      type: Array,
+      value() {
+        return [
+          {value:0, name: "Ask"},
+          {value:1, name: "Disabled"},
+          {value:2, name: "Public DNS over HTTPS server"},
+        ];
+      },
+    },
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -63,6 +75,9 @@ Polymer({
     this.browserProxy_.isWidevineEnabled().then(enabled => {
       this.widevineEnabled_ = enabled
     })
+    this.browserProxy_.isUnstoppableDomainsEnabled().then(enabled => {
+      this.unstoppableDomainsEnabled_ = enabled
+    });
   },
 
   onWebTorrentEnabledChange_: function() {

@@ -7,6 +7,7 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/unstoppable_domains/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
@@ -42,6 +43,7 @@ grit("static_resources") {
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
+    "unstoppable_domains_enabled=$unstoppable_domains_enabled",
   ]
 
   grit_flags = [
@@ -95,6 +97,7 @@ grit("strings") {
   defines = [
     "enable_speedreader=$enable_speedreader",
     "ipfs_enabled=$ipfs_enabled",
+    "unstoppable_domains_enabled=$unstoppable_domains_enabled",
     "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",
     "enable_sidebar=$enable_sidebar",

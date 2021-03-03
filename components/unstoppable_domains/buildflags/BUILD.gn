@@ -1,0 +1,7 @@
+import("//brave/components/unstoppable_domains/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "UNSTOPPABLE_DOMAINS_ENABLED=$unstoppable_domains_enabled" ]
+}
