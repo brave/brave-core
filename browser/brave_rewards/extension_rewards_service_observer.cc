@@ -25,6 +25,23 @@ ExtensionRewardsServiceObserver::ExtensionRewardsServiceObserver(
 ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 }
 
+void ExtensionRewardsServiceObserver::OnRewardsInitialized(
+    RewardsService* rewards_service) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::Initialized::Create(0).release());
+
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::Initialized::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     const ledger::type::Result result,

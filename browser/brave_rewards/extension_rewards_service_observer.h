@@ -28,6 +28,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   ~ExtensionRewardsServiceObserver() override;
 
   // RewardsServiceObserver implementation
+  void OnRewardsInitialized(RewardsService* rewards_service) override;
+
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
       ledger::type::PublisherInfoList list) override;

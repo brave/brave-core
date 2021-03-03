@@ -805,7 +805,6 @@ class RewardsServiceImpl : public RewardsService,
 
   uint32_t next_timer_id_;
   bool reset_states_;
-  bool is_ledger_initialized_ = false;
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;
   bool should_persist_logs_ = false;
