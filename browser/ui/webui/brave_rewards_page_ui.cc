@@ -199,6 +199,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SaveOnboardingResult(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
+  void OnRewardsInitialized(
+      brave_rewards::RewardsService* rewards_service) override;
   void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
       const ledger::type::Result result,
@@ -543,6 +545,16 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   }
   web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.rewardsParameters", data);
+}
+
+void RewardsDOMHandler::OnRewardsInitialized(
+    brave_rewards::RewardsService* rewards_service) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.initialized",
+      base::Value(0));
 }
 
 void RewardsDOMHandler::GetAutoContributeProperties(

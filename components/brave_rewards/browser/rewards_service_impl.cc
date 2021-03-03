@@ -815,14 +815,18 @@ void RewardsServiceImpl::OnLedgerInitialized(
     StartProcessCallback callback,
     const ledger::type::Result result) {
   if (result == ledger::type::Result::LEDGER_OK) {
-    std::move(callback).Run(result);
-    is_ledger_initialized_ = true;
     StartNotificationTimers();
   }
 
   if (!ready_->is_signaled()) {
     ready_->Signal();
   }
+
+  for (auto& observer : observers_) {
+    observer.OnRewardsInitialized(this);
+  }
+
+  std::move(callback).Run(result);
 }
 
 void RewardsServiceImpl::OnGetAutoContributeProperties(
@@ -1419,7 +1423,6 @@ void RewardsServiceImpl::Reset() {
   bat_ledger_.reset();
   bat_ledger_client_receiver_.reset();
   bat_ledger_service_.reset();
-  is_ledger_initialized_ = false;
   ready_ = std::make_unique<base::OneShotEvent>();
   bool success =
       file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());

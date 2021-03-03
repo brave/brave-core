@@ -21,6 +21,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
  public:
   ~RewardsServiceObserver() override {}
 
+  virtual void OnRewardsInitialized(
+      RewardsService* rewards_service) {}
+
   virtual void OnFetchPromotions(
       RewardsService* rewards_service,
       const ledger::type::Result result,
