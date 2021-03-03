@@ -398,7 +398,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                     calender.getTimeInMillis());
         }
         checkSetDefaultBrowserModal();
-        if (mBraveRewardsNativeWorker != null
+        if (mBraveRewardsNativeWorker != null && mBraveRewardsNativeWorker.isRewardsEnabled()
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             mBraveRewardsNativeWorker.StartProcess();
