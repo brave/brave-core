@@ -1,3 +1,5 @@
+import("//chrome/common/features.gni")
+
 source_set("notifications") {
   # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
   check_includes = false
@@ -5,9 +7,14 @@ source_set("notifications") {
     sources = [
       "brave_alert_dispatcher_mac.h",
       "brave_alert_dispatcher_mac.mm",
-      "brave_notification_platform_bridge.h",
-      "brave_notification_platform_bridge_mac.mm",
     ]
+
+    if (enable_system_notifications) {
+      sources += [
+        "brave_notification_platform_bridge.h",
+        "brave_notification_platform_bridge_mac.mm",
+      ]
+    }
 
     deps = [
       "//base",
