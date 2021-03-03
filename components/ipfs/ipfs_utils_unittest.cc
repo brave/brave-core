@@ -264,6 +264,38 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSSchemeLocal) {
                           "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
+TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemeLocal) {
+  GURL url("ipfs:QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway(), false));
+  EXPECT_EQ(new_url, GURL("http://localhost:48080/ipfs/"
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+}
+
+TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemePublic) {
+  GURL url("ipfs:QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway(), false));
+  EXPECT_EQ(new_url, GURL("https://dweb.link/ipfs/"
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+}
+
+TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemeLocal) {
+  GURL url("ipns:QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, local_gateway(), false));
+  EXPECT_EQ(new_url, GURL("http://localhost:48080/ipns/"
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+}
+
+TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemePublic) {
+  GURL url("ipns:QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
+  GURL new_url;
+  ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, public_gateway(), false));
+  EXPECT_EQ(new_url, GURL("https://dweb.link/ipns/"
+                          "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+}
+
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPath) {
   GURL url(
       "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
