@@ -42,6 +42,7 @@ export const defaultState: IPFS.State = {
 
 export const getLoadTimeData = (state: IPFS.State): IPFS.State => {
   state = { ...state }
+  state = Object.assign({}, defaultState, state)
   return state
 }
 
