@@ -203,52 +203,54 @@ bool TranslateIPFSURI(const GURL& url,
   if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
     return false;
   }
+  if (!url.host().empty())
+    return false;
 
-  std::string path = url.path();
+  // ipfs: or ipfs://
+  size_t offset = (url.path().substr(0, 2) == "//") ? 2 : 0;
   // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
   // host is empty and path is //wiki/Vincent_van_Gogh.html
-  if (url.host().empty() && path.length() > 2 && path.substr(0, 2) == "//") {
-    std::string cid(path.substr(2));
-    // If we have a path after the CID, get at the real resource path
-    size_t pos = cid.find("/");
-    std::string path;
-    if (pos != std::string::npos && pos != 0) {
-      // path would be /wiki/Vincent_van_Gogh.html
-      path = cid.substr(pos, cid.length() - pos);
-      // cid would be [cid]
-      cid = cid.substr(0, pos);
-    }
-    bool ipfs_scheme = url.scheme() == kIPFSScheme;
-    bool ipns_scheme = url.scheme() == kIPNSScheme;
-    if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
-                                    [loc = std::locale{}](char c) {
-                                      return std::isalnum(c, loc);
-                                    })) ||
-        ipns_scheme) {
-      // new_url would be:
-      // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
-      if (new_url) {
-        GURL::Replacements replacements;
-        replacements.SetSchemeStr(gateway_url.scheme_piece());
-        replacements.SetPortStr(gateway_url.port_piece());
-        std::string new_host = gateway_url.host();
-        std::string new_path = path;
-        if (use_subdomain) {
-          new_host = base::StringPrintf("%s.%s.%s", cid.c_str(),
-                                        ipfs_scheme ? "ipfs" : "ipns",
-                                        gateway_url.host().c_str());
-        } else {
-          new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
-        }
-        replacements.SetHostStr(new_host);
-        replacements.SetPathStr(new_path);
-        *new_url = url.ReplaceComponents(replacements);
-        VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
-      }
-
-      return true;
-    }
+  std::string cid(url.path().substr(offset));
+  // If we have a path after the CID, get at the real resource path
+  size_t pos = cid.find("/");
+  std::string path;
+  if (pos != std::string::npos && pos != 0) {
+    // path would be /wiki/Vincent_van_Gogh.html
+    path = cid.substr(pos, cid.length() - pos);
+    // cid would be [cid]
+    cid = cid.substr(0, pos);
   }
+  bool ipfs_scheme = url.scheme() == kIPFSScheme;
+  bool ipns_scheme = url.scheme() == kIPNSScheme;
+  if ((ipfs_scheme && std::all_of(cid.begin(), cid.end(),
+                                  [loc = std::locale{}](char c) {
+                                    return std::isalnum(c, loc);
+                                  })) ||
+      ipns_scheme) {
+    // new_url would be:
+    // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
+    if (new_url) {
+      GURL::Replacements replacements;
+      replacements.SetSchemeStr(gateway_url.scheme_piece());
+      replacements.SetPortStr(gateway_url.port_piece());
+      std::string new_host = gateway_url.host();
+      std::string new_path = path;
+      if (use_subdomain) {
+        new_host = base::StringPrintf("%s.%s.%s", cid.c_str(),
+                                      ipfs_scheme ? "ipfs" : "ipns",
+                                      gateway_url.host().c_str());
+      } else {
+        new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
+      }
+      replacements.SetHostStr(new_host);
+      replacements.SetPathStr(new_path);
+      *new_url = url.ReplaceComponents(replacements);
+      VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
+    }
+
+    return true;
+  }
+
   return false;
 }
 
