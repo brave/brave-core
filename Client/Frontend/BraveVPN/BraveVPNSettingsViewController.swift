@@ -128,7 +128,7 @@ class BraveVPNSettingsViewController: TableViewController {
                                cellClass: ButtonCell.self),
                            Row(text: Strings.VPN.settingsResetConfiguration,
                                selection: { [unowned self] in
-                                self.selectServerTapped()
+                                self.resetConfigurationTapped()
                                },
                                cellClass: ButtonCell.self, uuid: resetCellId)],
                     uuid: serverSectionId)
