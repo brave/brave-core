@@ -10,7 +10,6 @@
 #define FPL FILE_PATH_LITERAL
 
 #if defined(OS_MAC)
-#define CHROMIUM_PRODUCT_STRING BRAVE_PRODUCT_STRING
 #define PRODUCT_STRING BRAVE_PRODUCT_STRING
 #endif  // defined(OS_MAC)
 
@@ -36,74 +35,42 @@ const char kChromeVersion[] = CHROME_VERSION_STRING;
 // do so.
 
 #if defined(OS_WIN)
-const base::FilePath::CharType kBrowserProcessExecutableNameChromium[] =
-    FPL("brave.exe");
 const base::FilePath::CharType kBrowserProcessExecutableName[] =
-    FPL("brave.exe");
-const base::FilePath::CharType kHelperProcessExecutableNameChromium[] =
     FPL("brave.exe");
 const base::FilePath::CharType kHelperProcessExecutableName[] =
     FPL("brave.exe");
 #elif defined(OS_MAC)
-const base::FilePath::CharType kBrowserProcessExecutableNameChromium[] =
-    FPL(CHROMIUM_PRODUCT_STRING);
 const base::FilePath::CharType kBrowserProcessExecutableName[] =
     FPL(PRODUCT_STRING);
-const base::FilePath::CharType kHelperProcessExecutableNameChromium[] =
-    FPL(CHROMIUM_PRODUCT_STRING " Helper");
 const base::FilePath::CharType kHelperProcessExecutableName[] =
     FPL(PRODUCT_STRING " Helper");
 #elif defined(OS_ANDROID)
 // NOTE: Keep it synced with the process names defined in AndroidManifest.xml.
 const base::FilePath::CharType kBrowserProcessExecutableName[] = FPL("brave");
-const base::FilePath::CharType kBrowserProcessExecutableNameChromium[] =
-    FPL("");
 const base::FilePath::CharType kHelperProcessExecutableName[] =
     FPL("sandboxed_process");
-const base::FilePath::CharType kHelperProcessExecutableNameChromium[] = FPL("");
 #elif defined(OS_POSIX)
-const base::FilePath::CharType kBrowserProcessExecutableNameChromium[] =
-    FPL("brave");
 const base::FilePath::CharType kBrowserProcessExecutableName[] = FPL("brave");
 // Helper processes end up with a name of "exe" due to execing via
 // /proc/self/exe.  See bug 22703.
-const base::FilePath::CharType kHelperProcessExecutableNameChromium[] =
-    FPL("exe");
 const base::FilePath::CharType kHelperProcessExecutableName[] = FPL("exe");
 #endif  // OS_*
 
 #if defined(OS_WIN)
-const base::FilePath::CharType kBrowserProcessExecutablePathChromium[] =
-    FPL("brave.exe");
 const base::FilePath::CharType kBrowserProcessExecutablePath[] =
-    FPL("brave.exe");
-const base::FilePath::CharType kHelperProcessExecutablePathChromium[] =
     FPL("brave.exe");
 const base::FilePath::CharType kHelperProcessExecutablePath[] =
     FPL("brave.exe");
 #elif defined(OS_MAC)
-const base::FilePath::CharType kBrowserProcessExecutablePathChromium[] =
-    FPL(CHROMIUM_PRODUCT_STRING ".app/Contents/MacOS/" CHROMIUM_PRODUCT_STRING);
 const base::FilePath::CharType kBrowserProcessExecutablePath[] =
     FPL(PRODUCT_STRING ".app/Contents/MacOS/" PRODUCT_STRING);
-const base::FilePath::CharType kHelperProcessExecutablePathChromium[] =
-    FPL(CHROMIUM_PRODUCT_STRING " Helper.app/Contents/MacOS/"
-        CHROMIUM_PRODUCT_STRING " Helper");
 const base::FilePath::CharType kHelperProcessExecutablePath[] =
     FPL(PRODUCT_STRING " Helper.app/Contents/MacOS/" PRODUCT_STRING " Helper");
 #elif defined(OS_ANDROID)
 const base::FilePath::CharType kBrowserProcessExecutablePath[] = FPL("brave");
 const base::FilePath::CharType kHelperProcessExecutablePath[] = FPL("brave");
-const base::FilePath::CharType kBrowserProcessExecutablePathChromium[] =
-    FPL("brave");
-const base::FilePath::CharType kHelperProcessExecutablePathChromium[] =
-    FPL("brave");
 #elif defined(OS_POSIX)
-const base::FilePath::CharType kBrowserProcessExecutablePathChromium[] =
-    FPL("brave");
 const base::FilePath::CharType kBrowserProcessExecutablePath[] = FPL("brave");
-const base::FilePath::CharType kHelperProcessExecutablePathChromium[] =
-    FPL("brave");
 const base::FilePath::CharType kHelperProcessExecutablePath[] = FPL("brave");
 #endif  // OS_*
 
@@ -194,13 +161,6 @@ const wchar_t kUserDataDirname[] = L"User Data";
 #endif
 
 const float kMaxShareOfExtensionProcesses = 0.30f;
-
-#if defined(OS_CHROMEOS)
-const char kProfileDirPrefix[] = "u-";
-const char kLegacyProfileDir[] = "user";
-const char kTestUserProfileDir[] = "test-user";
-const char kLockScreenAppProfile[] = "LockScreenAppsProfile";
-#endif
 
 // This GUID is associated with any 'don't ask me again' settings that the
 // user can select for different file types.
