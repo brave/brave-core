@@ -119,6 +119,22 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->redirect_source = old_ctx->redirect_source;
   }
 
+#if BUILDFLAG(IPFS_ENABLED)
+  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
+  ctx->ipfs_gateway_url =
+      ipfs::GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
+  ctx->ipfs_auto_fallback = prefs->GetBoolean(kIPFSAutoRedirectGateway);
+
+  // ipfs:// navigations have no tab origin set, but we want it to be the tab
+  // origin of the gateway so that ad-block in particular won't give up early.
+  if (ipfs::IsLocalGatewayConfigured(browser_context) &&
+      ctx->tab_origin.is_empty() &&
+      ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
+    ctx->tab_url = ctx->initiator_url;
+    ctx->tab_origin = ctx->initiator_url.GetOrigin();
+  }
+#endif
+
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   ctx->allow_brave_shields =
@@ -138,21 +154,6 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->upload_data = GetUploadData(request);
 
   ctx->browser_context = browser_context;
-#if BUILDFLAG(IPFS_ENABLED)
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  ctx->ipfs_gateway_url =
-      ipfs::GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
-  ctx->ipfs_auto_fallback = prefs->GetBoolean(kIPFSAutoRedirectGateway);
-
-  // ipfs:// navigations have no tab origin set, but we want it to be the tab
-  // origin of the gateway so that ad-block in particular won't give up early.
-  if (ipfs::IsLocalGatewayConfigured(browser_context) &&
-      ctx->tab_origin.is_empty() &&
-      ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
-    ctx->tab_url = ctx->initiator_url;
-    ctx->tab_origin = ctx->initiator_url.GetOrigin();
-  }
-#endif
 
   // TODO(fmarier): remove this once the hacky code in
   // brave_proxying_url_loader_factory.cc is refactored. See
