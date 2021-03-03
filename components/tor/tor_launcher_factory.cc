@@ -8,15 +8,17 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/bind_post_task.h"
 #include "base/files/file_util.h"
-#include "base/process/kill.h"
+#include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/service_sandbox_type.h"
+#include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/child_process_launcher_utils.h"
 #include "content/public/browser/service_process_host.h"
 
 using content::BrowserThread;
@@ -51,16 +53,14 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       is_connected_(false),
       tor_pid_(-1),
-      file_task_runner_(base::CreateSequencedTaskRunner(
-          {base::ThreadPool(), base::MayBlock(),
-           base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      control_(tor::TorControl::Create(this)),
+      control_(new tor::TorControl(this, content::GetIOThreadTaskRunner({})),
+               base::OnTaskRunnerDeleter(content::GetIOThreadTaskRunner({}))),
       weak_ptr_factory_(this) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
 void TorLauncherFactory::Init() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   content::ServiceProcessHost::Launch(
       tor_launcher_.BindNewPipeAndPassReceiver(),
       content::ServiceProcessHost::Options()
@@ -75,10 +75,12 @@ void TorLauncherFactory::Init() {
       &TorLauncherFactory::OnTorCrashed, weak_ptr_factory_.GetWeakPtr()));
 }
 
-TorLauncherFactory::~TorLauncherFactory() {}
+TorLauncherFactory::~TorLauncherFactory() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
 
 void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (is_starting_) {
     LOG(WARNING) << "tor process is already starting";
@@ -104,21 +106,19 @@ void TorLauncherFactory::LaunchTorProcess(const tor::mojom::TorConfig& config) {
     Init();
   }
 
-  // Launch tor after cleanup is done
-  control_->PreStartCheck(
-      config_.tor_watch_path,
-      base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
-                     weak_ptr_factory_.GetWeakPtr()));
+  LaunchTorInternal();
 }
 
 void TorLauncherFactory::OnTorLogLoaded(
     GetLogCallback callback,
     const std::pair<bool, std::string>& result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(result.first, result.second);
 }
 
-void TorLauncherFactory::OnTorControlCheckComplete() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+void TorLauncherFactory::LaunchTorInternal() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   if (tor_launcher_.is_bound()) {
     auto config = tor::mojom::TorConfig::New(config_);
     tor_launcher_->Launch(std::move(config),
@@ -130,7 +130,7 @@ void TorLauncherFactory::OnTorControlCheckComplete() {
 }
 
 void TorLauncherFactory::KillTorProcess() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (tor_launcher_.is_bound())
     tor_launcher_->Shutdown();
   control_->Stop();
@@ -140,62 +140,70 @@ void TorLauncherFactory::KillTorProcess() {
 }
 
 int64_t TorLauncherFactory::GetTorPid() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return tor_pid_;
 }
 
 bool TorLauncherFactory::IsTorConnected() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return is_connected_;
 }
 
 std::string TorLauncherFactory::GetTorProxyURI() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return tor_proxy_uri_;
 }
 
 std::string TorLauncherFactory::GetTorVersion() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return tor_version_;
 }
 
 void TorLauncherFactory::GetTorLog(GetLogCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::FilePath tor_log_path = config_.tor_data_path.AppendASCII("tor.log");
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner(
+      base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN}));
   base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
+      file_task_runner.get(), FROM_HERE,
       base::BindOnce(&LoadTorLogOnFileTaskRunner, tor_log_path),
       base::BindOnce(&TorLauncherFactory::OnTorLogLoaded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TorLauncherFactory::AddObserver(TorLauncherObserver* observer) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   observers_.AddObserver(observer);
 }
 
 void TorLauncherFactory::RemoveObserver(TorLauncherObserver* observer) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   observers_.RemoveObserver(observer);
 }
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(INFO) << "Tor Launcher Crashed";
-  is_starting_ = false;
   for (auto& observer : observers_)
     observer.OnTorLauncherCrashed();
+  DelayedRelaunchTor();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(INFO) << "Tor Process(" << pid << ") Crashed";
-  is_starting_ = false;
-  is_connected_ = false;
   for (auto& observer : observers_)
     observer.OnTorCrashed(pid);
-  KillTorProcess();
-  // Post delayed relaucn for control to stop
-  content::GetUIThreadTaskRunner({})->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(&TorLauncherFactory::RelaunchTor,
-                     weak_ptr_factory_.GetWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+  DelayedRelaunchTor();
 }
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  for (auto& observer : observers_)
+    observer.OnTorLaunched(result, pid);
   if (result) {
     is_starting_ = false;
     // We have to wait for circuit established
@@ -203,19 +211,28 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     tor_pid_ = pid;
   } else {
     LOG(ERROR) << "Tor Launching Failed(" << pid << ")";
+    return;
   }
-  for (auto& observer : observers_)
-    observer.OnTorLaunched(result, pid);
-  control_->Start();
+
+  tor::TorFileWatcher* tor_file_watcher =
+      new tor::TorFileWatcher(config_.tor_watch_path);
+  tor_file_watcher->StartWatching(base::BindPostTask(
+      base::SequencedTaskRunnerHandle::Get(),
+      base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
+                     weak_ptr_factory_.GetWeakPtr(), pid)));
 }
 
 void TorLauncherFactory::OnTorControlReady() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "TOR CONTROL: Ready!";
-  control_->GetVersion(base::BindOnce(&TorLauncherFactory::GotVersion,
-                                      weak_ptr_factory_.GetWeakPtr()));
-  control_->GetSOCKSListeners(base::BindOnce(
-      &TorLauncherFactory::GotSOCKSListeners, weak_ptr_factory_.GetWeakPtr()));
+  control_->GetVersion(
+      base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
+                         base::BindOnce(&TorLauncherFactory::GotVersion,
+                                        weak_ptr_factory_.GetWeakPtr())));
+  control_->GetSOCKSListeners(
+      base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
+                         base::BindOnce(&TorLauncherFactory::GotSOCKSListeners,
+                                        weak_ptr_factory_.GetWeakPtr())));
   control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT,
@@ -227,7 +244,7 @@ void TorLauncherFactory::OnTorControlReady() {
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (error) {
     VLOG(1) << "Failed to get version!";
     return;
@@ -239,7 +256,7 @@ void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
 void TorLauncherFactory::GotSOCKSListeners(
     bool error,
     const std::vector<std::string>& listeners) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (error) {
     VLOG(1) << "Failed to get SOCKS listeners!";
     return;
@@ -260,40 +277,62 @@ void TorLauncherFactory::GotSOCKSListeners(
     observer.OnTorNewProxyURI(tor_proxy_uri);
 }
 
-void TorLauncherFactory::OnTorClosed() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+void TorLauncherFactory::OnTorControlClosed(bool was_running) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "TOR CONTROL: Closed!";
+  // If we're still running, try watching again to start over.
+  // TODO(riastradh-brave): Rate limit in case of flapping?
+  if (was_running) {
+    LaunchTorInternal();
+  }
 }
 
-void TorLauncherFactory::OnTorCleanupNeeded(base::ProcessId id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  VLOG(2) << "Killing old tor process pid=" << id;
-  // Dispatch to launcher thread
-  content::GetProcessLauncherTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&TorLauncherFactory::KillOldTorProcess,
-                                base::Unretained(this), std::move(id)));
-}
-
-void TorLauncherFactory::KillOldTorProcess(base::ProcessId id) {
-  DCHECK(content::CurrentlyOnProcessLauncherTaskRunner());
-  base::Process tor_process = base::Process::Open(id);
-  if (tor_process.IsValid())
-    tor_process.Terminate(0, false);
+void TorLauncherFactory::OnTorControlPrerequisitesReady(
+    int64_t pid,
+    bool ready,
+    std::vector<uint8_t> cookie,
+    int port) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (pid != tor_pid_) {
+    VLOG(1) << "Tor control pid mismatched!";
+    return;
+  }
+  if (ready) {
+    control_->Start(std::move(cookie), port);
+  } else {
+    tor::TorFileWatcher* tor_file_watcher =
+        new tor::TorFileWatcher(config_.tor_watch_path);
+    tor_file_watcher->StartWatching(base::BindPostTask(
+        base::SequencedTaskRunnerHandle::Get(),
+        base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
+                       weak_ptr_factory_.GetWeakPtr(), pid)));
+  }
 }
 
 void TorLauncherFactory::RelaunchTor() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   Init();
-  control_->PreStartCheck(
-      config_.tor_watch_path,
-      base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
-                     weak_ptr_factory_.GetWeakPtr()));
+  LaunchTorInternal();
+}
+
+void TorLauncherFactory::DelayedRelaunchTor() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  is_starting_ = false;
+  is_connected_ = false;
+  KillTorProcess();
+  // Post delayed relaunch for control to stop
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&TorLauncherFactory::RelaunchTor,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::TimeDelta::FromSeconds(1));
 }
 
 void TorLauncherFactory::OnTorEvent(
     tor::TorControlEvent event,
     const std::string& initial,
     const std::map<std::string, std::string>& extra) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const std::string raw_event =
       (*tor::kTorControlEventByEnum.find(event)).second + ": " + initial;
   VLOG(3) << "TOR CONTROL: event " << raw_event;
@@ -323,24 +362,24 @@ void TorLauncherFactory::OnTorEvent(
 }
 
 void TorLauncherFactory::OnTorRawCmd(const std::string& cmd) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(3) << "TOR CONTROL: command: " << cmd;
 }
 
 void TorLauncherFactory::OnTorRawAsync(const std::string& status,
                                        const std::string& line) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(3) << "TOR CONTROL: async " << status << " " << line;
 }
 
 void TorLauncherFactory::OnTorRawMid(const std::string& status,
                                      const std::string& line) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(3) << "TOR CONTROL: mid " << status << "-" << line;
 }
 
 void TorLauncherFactory::OnTorRawEnd(const std::string& status,
                                      const std::string& line) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(3) << "TOR CONTROL: end " << status << " " << line;
 }

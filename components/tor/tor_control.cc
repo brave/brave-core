@@ -5,25 +5,16 @@
 
 #include "brave/components/tor/tor_control.h"
 
-#include "base/callback_helpers.h"
-#include "base/files/file.h"
-#include "base/files/file_path_watcher.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "base/time/time.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/io_buffer.h"
 #include "net/base/net_errors.h"
 #include "net/socket/tcp_client_socket.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
-
-// Tor Control Channel spec:
-// https://gitweb.torproject.org/torspec.git/plain/control-spec.txt
 
 namespace tor {
 
@@ -44,26 +35,11 @@ const net::NetworkTrafficAnnotationTag tor_control_traffic_annotation =
   )");
 
 const size_t kTorBufferSize = 4096;
-#if defined(OS_WIN)
-constexpr char kControlPortMinTmpl[] = "PORT=1.1.1.1:1\r\n";
-constexpr char kControlPortMaxTmpl[] = "PORT=255.255.255.255:65535\r\n";
-constexpr char kLineBreak[] = "\r\n";
-#else
-constexpr char kControlPortMinTmpl[] = "PORT=1.1.1.1:1\n";
-constexpr char kControlPortMaxTmpl[] = "PORT=255.255.255.255:65535\n";
-constexpr char kLineBreak[] = "\n";
-#endif
-constexpr char kControlAuthCookieName[] = "control_auth_cookie";
-constexpr char kControlPortName[] = "controlport";
-constexpr char kTorPidName[] = "tor.pid";
 
 constexpr char kGetVersionCmd[] = "GETINFO version";
 constexpr char kGetVersionReply[] = "version=";
 constexpr char kGetSOCKSListenersCmd[] = "GETINFO net/listeners/socks";
 constexpr char kGetSOCKSListenersReply[] = "net/listeners/socks=";
-
-constexpr base::TaskTraits kWatchTaskTraits = {
-    base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT};
 
 static std::string escapify(const char* buf, int len) {
   std::ostringstream s;
@@ -99,36 +75,22 @@ static std::string escapify(const char* buf, int len) {
 
 }  // namespace
 
-// static
-std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
-  return std::make_unique<TorControl>(delegate);
-}
-
-TorControl::TorControl(TorControl::Delegate* delegate)
+TorControl::TorControl(TorControl::Delegate* delegate,
+                       scoped_refptr<base::SequencedTaskRunner> task_runner)
     : running_(false),
-      watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
-      io_task_runner_(content::GetIOThreadTaskRunner({})),
-      polling_(false),
-      repoll_(false),
+      owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
+      io_task_runner_(task_runner),
       writing_(false),
       reading_(false),
       read_start_(-1),
       read_cr_(false),
       delegate_(delegate) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DETACH_FROM_SEQUENCE(watch_sequence_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   DETACH_FROM_SEQUENCE(io_sequence_checker_);
 }
 
-TorControl::~TorControl() = default;
-
-void TorControl::PreStartCheck(const base::FilePath& watchDirPath,
-                               base::OnceClosure check_complete) {
-  watch_dir_path_ = std::move(watchDirPath);
-  watch_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::CheckingOldTorProcess, base::Unretained(this),
-                     std::move(check_complete)));
+TorControl::~TorControl() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 }
 
 // Start()
@@ -136,36 +98,12 @@ void TorControl::PreStartCheck(const base::FilePath& watchDirPath,
 //      Start watching for the Tor control channel.  If we are able to
 //      connect, issue OnTorControlReady to delegate.
 //
-void TorControl::Start() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(!watch_dir_path_.empty());
-  DCHECK(!running_);
-
-  running_ = true;
-  watch_task_runner_->PostTask(
+void TorControl::Start(std::vector<uint8_t> cookie, int port) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
+  io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::StartWatching, base::Unretained(this)));
-}
-
-void TorControl::StartWatching() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(!watcher_);
-
-  // Create a watcher and start watching.
-  watcher_ = std::make_unique<base::FilePathWatcher>();
-
-  if (!watcher_->Watch(watch_dir_path_,
-                       base::FilePathWatcher::Type::kNonRecursive,
-                       base::BindRepeating(&TorControl::WatchDirChanged,
-                                           base::Unretained(this)))) {
-    // Never mind -- destroy the watcher and stop everything else.
-    VLOG(0) << "tor: failed to watch directory";
-    watcher_.reset();
-    return;
-  }
-
-  polling_ = true;
-  Poll();
+      base::BindOnce(&TorControl::OpenControl, weak_ptr_factory_.GetWeakPtr(),
+                     port, std::move(cookie)));
 }
 
 // Stop()
@@ -174,264 +112,10 @@ void TorControl::StartWatching() {
 //      we have already connected.
 //
 void TorControl::Stop() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!running_)
-    return;
-
-  running_ = false;
-  async_events_.clear();
-  watch_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::StopWatching, base::Unretained(this)));
-  io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::Error, base::Unretained(this)));
-}
-
-void TorControl::StopWatching() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-
-  repoll_ = false;
-  watcher_.reset();
-  watch_dir_path_.clear();
-}
-
-void TorControl::CheckingOldTorProcess(base::OnceClosure callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  base::ProcessId id;
-  if (EatOldPid(&id))
-    NotifyTorCleanupNeeded(std::move(id));
-  content::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, std::move(callback));
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Watching for startup
-
-// WatchDirChanged(path, error)
-//
-//      Something happened in the watch directory at path.  If we're
-//      already polling, make sure to try again if it fails -- the tor
-//      daemon may now be ready if it wasn't before.  Otherwise, start
-//      polling.
-//
-void TorControl::WatchDirChanged(const base::FilePath& path, bool error) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  VLOG(2) << "tor: watch directory changed";
-
-  if (polling_) {
-    repoll_ = true;
-  } else {
-    DCHECK(!repoll_);
-    polling_ = true;
-    Poll();
-  }
-}
-
-// Poll()
-//
-//      Something happened in the watch directory.  See whether we
-//      have a control cookie and control port to connect to, and if
-//      so, start connecting.  Must be done in a separate task because
-//      it does file I/O which may block.
-//
-void TorControl::Poll() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(polling_);
-
-  std::vector<uint8_t> cookie;
-  base::Time cookie_mtime;
-  int port;
-  base::Time port_mtime;
-
-  if (!EatControlCookie(cookie, cookie_mtime))
-    return PollDone();
-  if (!EatControlPort(port, port_mtime))
-    return PollDone();
-
-  // Tor writes the control port first, then the auth cookie.  If the
-  // auth cookie is _older_ than the control port, then it's certainly
-  // stale.  If they are the _same age_, then probably the control
-  // port is older but the file system resolution is just not enough
-  // to distinguish them.
-  if (cookie_mtime < port_mtime) {
-    VLOG(0) << "tor: tossing stale cookie";
-    return PollDone();
-  }
-
-  // Blocking shenanigans all done; move back to the regular sequence.
-  io_task_runner_->PostTask(FROM_HERE, base::BindOnce(&TorControl::OpenControl,
-                                                      base::Unretained(this),
-                                                      port, std::move(cookie)));
-}
-
-// EatControlCookie(cookie, mtime)
-//
-//      Try to read the control auth cookie.  Return true and set
-//      cookie and mtime if successful; return false on failure.
-//
-bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie,
-                                  base::Time& mtime) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(polling_);
-
-  // Open the control auth cookie file.
-  base::FilePath cookiepath =
-      watch_dir_path_.AppendASCII(kControlAuthCookieName);
-  base::File cookiefile(cookiepath,
-                        base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!cookiefile.IsValid()) {
-    VLOG(0) << "tor: failed to open control auth cookie";
-    return false;
-  }
-
-  // Get the file's info, including modification time.
-  base::File::Info info;
-  if (!cookiefile.GetInfo(&info)) {
-    VLOG(0) << "tor: failed to stat control auth cookie";
-    return false;
-  }
-
-  // Read up to 33 octets.  We should need no more than 32, so 33 will
-  // indicate the file is abnormally large.
-  constexpr size_t kBufSiz = 33;
-  char buf[kBufSiz];
-  int nread = cookiefile.ReadAtCurrentPos(buf, kBufSiz);
-  if (nread < 0) {
-    VLOG(0) << "tor: failed to read Tor control auth cookie";
-    return false;
-  }
-  if (nread > 32) {
-    VLOG(0) << "tor: control auth cookie too large";
-    return false;
-  }
-
-  // Success!
-  cookie.assign(buf, buf + nread);
-  mtime = info.last_accessed;
-  VLOG(3) << "Control cookie " << base::HexEncode(buf, nread) << ", mtime "
-          << mtime;
-  return true;
-}
-
-// EatControlPort(port, mtime)
-//
-//      Try to read the control port number.  Return true and set
-//      port and mtime if successful; return false on failure.
-//
-bool TorControl::EatControlPort(int& port, base::Time& mtime) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(polling_);
-
-  // Open the control port file.
-  base::FilePath portpath = watch_dir_path_.AppendASCII(kControlPortName);
-  base::File portfile(portpath, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!portfile.IsValid()) {
-    VLOG(0) << "tor: failed to open control port";
-    return false;
-  }
-
-  // Get the file's info, including modification time.
-  base::File::Info info;
-  if (!portfile.GetInfo(&info)) {
-    VLOG(0) << "tor: failed to stat control port";
-    return false;
-  }
-
-  // Read up to 27/28 octets, the maximum we will ever need.
-  const size_t kBufSiz = strlen(kControlPortMaxTmpl);
-  char buf[kBufSiz];
-  int nread = portfile.ReadAtCurrentPos(buf, sizeof buf);
-  if (nread < 0) {
-    VLOG(0) << "tor: failed to read control port";
-    return false;
-  }
-  if (static_cast<size_t>(nread) < strlen(kControlPortMinTmpl)) {
-    VLOG(0) << "tor: control port truncated";
-    return false;
-  }
-  DCHECK(static_cast<size_t>(nread) <= sizeof buf);
-
-  std::string text(buf, 0, nread);
-
-  // Sanity-check the content.
-  if (!base::StartsWith(text, "PORT=", base::CompareCase::SENSITIVE) ||
-      !base::EndsWith(text, kLineBreak, base::CompareCase::SENSITIVE)) {
-    VLOG(0) << "tor: invalid control port: "
-            << "`" << text << ";";  // XXX escape
-    return false;
-  }
-
-  // Verify that it's localhost.
-  const char expected[] = "PORT=127.0.0.1:";
-  if (!base::StartsWith(text, expected, base::CompareCase::SENSITIVE)) {
-    VLOG(0) << "tor: control port has non-local control address";
-    return false;
-  }
-
-  // Parse it!
-  std::string portstr(text, strlen(expected),
-                      nread - strlen(kLineBreak) - strlen(expected));
-  if (!base::StringToInt(portstr, &port)) {
-    VLOG(0) << "tor: failed to parse control port: "
-            << "`" << portstr << "'";  // XXX escape
-    return false;
-  }
-  mtime = info.last_modified;
-  VLOG(3) << "Control port " << port << ", mtime " << mtime;
-  return true;
-}
-
-bool TorControl::EatOldPid(base::ProcessId* id) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(id);
-
-  // Open the tor pid file.
-  base::FilePath pidpath = watch_dir_path_.AppendASCII(kTorPidName);
-  base::File pidfile(pidpath, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  if (!pidfile.IsValid()) {
-    VLOG(0) << "tor: failed to open tor.pid";
-    return false;
-  }
-
-  const size_t kBufSiz = pidfile.GetLength();
-  char buf[kBufSiz];
-  int nread = pidfile.ReadAtCurrentPos(buf, sizeof buf);
-  if (nread < 0) {
-    VLOG(0) << "tor: failed to read tor pid file";
-    return false;
-  }
-
-  std::string pid(buf, 0, nread - strlen(kLineBreak));
-#if defined(OS_WIN)
-  *id = stoul(pid, nullptr);
-#else
-  if (!base::StringToInt(pid, id)) {
-    VLOG(0) << "tor: failed to parse tor pid";
-    return false;
-  }
-#endif
-  return true;
-}
-
-// PollDone()
-//
-//      Just finished polling the watch directory and failed to
-//      establish a connection.  Decide whether to go back to watching
-//      and waiting or whether to poll again, if something else
-//      happened on the file system while we were busy polling.
-//
-void TorControl::PollDone() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  DCHECK(polling_);
-
-  if (repoll_) {
-    VLOG(2) << "tor: retrying control connection";
-    repoll_ = false;
-    watch_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&TorControl::Poll, base::Unretained(this)));
-  } else {
-    VLOG(2) << "tor: control connection not yet ready";
-    polling_ = false;
-  }
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
+  io_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(&TorControl::StopOnTaskRunner,
+                                           weak_ptr_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -444,17 +128,31 @@ void TorControl::PollDone() {
 //
 void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  DCHECK(!running_);
+
+  running_ = true;
   VLOG(3) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
 
   net::AddressList addrlist = net::AddressList::CreateFromIPAddress(
       net::IPAddress::IPv4Localhost(), portno);
   socket_ = std::make_unique<net::TCPClientSocket>(
       addrlist, nullptr, nullptr, net::NetLog::Get(), net::NetLogSource());
-  int rv = socket_->Connect(base::BindOnce(
-      &TorControl::Connected, base::Unretained(this), std::move(cookie)));
+  int rv = socket_->Connect(base::BindOnce(&TorControl::Connected,
+                                           weak_ptr_factory_.GetWeakPtr(),
+                                           std::move(cookie)));
   if (rv == net::ERR_IO_PENDING)
     return;
   Connected(std::move(cookie), rv);
+}
+
+void TorControl::StopOnTaskRunner() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  if (!running_)
+    return;
+
+  running_ = false;
+  async_events_.clear();
+  Error();
 }
 
 // Connected(rv, cookie)
@@ -471,14 +169,14 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
     // activity while we were waiting.  If so, try again; if not, go
     // back to watching and waiting.
     VLOG(1) << "tor: control connection failed: " << net::ErrorToString(rv);
-    watch_task_runner_->PostTask(
-        FROM_HERE,
-        base::BindOnce(&TorControl::PollDone, base::Unretained(this)));
+    NotifyTorControlClosed();
     return;
   }
 
-  Cmd1("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-       base::BindOnce(&TorControl::Authenticated, base::Unretained(this)));
+  DoCmd("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::BindOnce(&TorControl::Authenticated,
+                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 // Authenticated(error, status, reply)
@@ -500,6 +198,13 @@ void TorControl::Authenticated(bool error,
     return;
   }
   VLOG(2) << "tor: control connection ready";
+
+  DoCmd("TAKEOWNERSHIP",
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::DoNothing::Once<bool, const std::string&, const std::string&>());
+  DoCmd("RESETCONF __OwningControllerProcess",
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::DoNothing::Once<bool, const std::string&, const std::string&>());
   NotifyTorControlReady();
 }
 
@@ -517,10 +222,11 @@ void TorControl::Authenticated(bool error,
 //
 void TorControl::Subscribe(TorControlEvent event,
                            base::OnceCallback<void(bool error)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::DoSubscribe, base::Unretained(this), event,
-                     std::move(callback)));
+      base::BindOnce(&TorControl::DoSubscribe, weak_ptr_factory_.GetWeakPtr(),
+                     event, std::move(callback)));
 }
 
 void TorControl::DoSubscribe(TorControlEvent event,
@@ -533,9 +239,10 @@ void TorControl::DoSubscribe(TorControlEvent event,
   }
 
   async_events_[event] = 1;
-  Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControl::Subscribed, base::Unretained(this), event,
-                      std::move(callback)));
+  DoCmd(SetEventsCmd(),
+        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::BindOnce(&TorControl::Subscribed, weak_ptr_factory_.GetWeakPtr(),
+                       event, std::move(callback)));
 }
 
 void TorControl::Subscribed(TorControlEvent event,
@@ -567,10 +274,11 @@ void TorControl::Subscribed(TorControlEvent event,
 //
 void TorControl::Unsubscribe(TorControlEvent event,
                              base::OnceCallback<void(bool error)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::DoUnsubscribe, base::Unretained(this), event,
-                     std::move(callback)));
+      base::BindOnce(&TorControl::DoUnsubscribe, weak_ptr_factory_.GetWeakPtr(),
+                     event, std::move(callback)));
 }
 
 void TorControl::DoUnsubscribe(TorControlEvent event,
@@ -586,9 +294,11 @@ void TorControl::DoUnsubscribe(TorControlEvent event,
 
   DCHECK_EQ(async_events_[event], 0u);
   async_events_.erase(event);
-  Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControl::Unsubscribed, base::Unretained(this), event,
-                      std::move(callback)));
+  DoCmd(
+      SetEventsCmd(),
+      base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+      base::BindOnce(&TorControl::Unsubscribed, weak_ptr_factory_.GetWeakPtr(),
+                     event, std::move(callback)));
 }
 
 void TorControl::Unsubscribed(TorControlEvent event,
@@ -625,31 +335,12 @@ std::string TorControl::SetEventsCmd() {
 ///////////////////////////////////////////////////////////////////////////////
 // Sending commands
 
-// Cmd1(cmd, callback)
-//
-//      Issue a Tor control command for which we only care about the
-//      final line; ignore all intermediate lines.
-//
-void TorControl::Cmd1(const std::string& cmd, CmdCallback callback) {
-  Cmd(cmd,
-      base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
-      std::move(callback));
-}
-
-// Cmd(cmd, perline, callback)
+// DoCmd(cmd, perline, callback)
 //
 //      Issue a Tor control command.  Call perline for each
 //      intermediate line; then call callback for the last line or on
 //      error.
 //
-void TorControl::Cmd(const std::string& cmd,
-                     PerLineCallback perline,
-                     CmdCallback callback) {
-  io_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&TorControl::DoCmd, base::Unretained(this), cmd,
-                                std::move(perline), std::move(callback)));
-}
-
 void TorControl::DoCmd(std::string cmd,
                        PerLineCallback perline,
                        CmdCallback callback) {
@@ -682,18 +373,24 @@ void TorControl::DoCmd(std::string cmd,
 //
 void TorControl::GetVersion(
     base::OnceCallback<void(bool error, const std::string& version)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   std::unique_ptr<std::string> version = std::make_unique<std::string>();
-  std::string* versionp = version.get();
-  Cmd(kGetVersionCmd,
-      base::BindRepeating(&TorControl::GetVersionLine, base::Unretained(this),
-                          versionp),
-      base::BindOnce(&TorControl::GetVersionDone, base::Unretained(this),
-                     std::move(version), std::move(callback)));
+  std::string* version_p = version.get();
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(), kGetVersionCmd,
+          base::BindRepeating(&TorControl::GetVersionLine,
+                              weak_ptr_factory_.GetWeakPtr(), version_p),
+          base::BindOnce(&TorControl::GetVersionDone,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(version),
+                         std::move(callback))));
 }
 
 void TorControl::GetVersionLine(std::string* version,
                                 const std::string& status,
                                 const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (status != "250" ||
       !base::StartsWith(reply, kGetVersionReply,
                         base::CompareCase::SENSITIVE) ||
@@ -710,31 +407,37 @@ void TorControl::GetVersionDone(
     bool error,
     const std::string& status,
     const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (error || status != "250" || reply != "OK" || version->empty()) {
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), true, ""));
+    std::move(callback).Run(true, "");
     return;
   }
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), false, *version));
+  std::move(callback).Run(false, *version);
 }
 
 void TorControl::GetSOCKSListeners(
     base::OnceCallback<
         void(bool error, const std::vector<std::string>& listeners)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
   std::unique_ptr<std::vector<std::string>> listeners =
       std::make_unique<std::vector<std::string>>();
   std::vector<std::string>* listeners_p = listeners.get();
-  Cmd(kGetSOCKSListenersCmd,
-      base::BindRepeating(&TorControl::GetSOCKSListenersLine,
-                          base::Unretained(this), listeners_p),
-      base::BindOnce(&TorControl::GetSOCKSListenersDone, base::Unretained(this),
-                     std::move(listeners), std::move(callback)));
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(),
+          kGetSOCKSListenersCmd,
+          base::BindRepeating(&TorControl::GetSOCKSListenersLine,
+                              weak_ptr_factory_.GetWeakPtr(), listeners_p),
+          base::BindOnce(&TorControl::GetSOCKSListenersDone,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(listeners),
+                         std::move(callback))));
 }
 
 void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
                                        const std::string& status,
                                        const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (status != "250" || !base::StartsWith(reply, kGetSOCKSListenersReply,
                                            base::CompareCase::SENSITIVE)) {
     VLOG(0) << "tor: unexpected " << kGetSOCKSListenersCmd << " reply";
@@ -750,14 +453,12 @@ void TorControl::GetSOCKSListenersDone(
     bool error,
     const std::string& status,
     const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (error || status != "250" || reply != "OK" || listeners->empty()) {
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE,
-        base::BindOnce(std::move(callback), true, std::vector<std::string>()));
+    std::move(callback).Run(true, std::vector<std::string>());
     return;
   }
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), false, *listeners));
+  std::move(callback).Run(false, *listeners);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -792,11 +493,11 @@ void TorControl::DoWrites() {
   DCHECK(writing_);
   DCHECK(writeiobuf_);
   int rv;
-  while (
-      (rv = socket_->Write(
-           writeiobuf_.get(), writeiobuf_->size(),
-           base::BindOnce(&TorControl::WriteDoneAsync, base::Unretained(this)),
-           tor_control_traffic_annotation)) != net::ERR_IO_PENDING) {
+  while ((rv = socket_->Write(writeiobuf_.get(), writeiobuf_->size(),
+                              base::BindOnce(&TorControl::WriteDoneAsync,
+                                             weak_ptr_factory_.GetWeakPtr()),
+                              tor_control_traffic_annotation)) !=
+         net::ERR_IO_PENDING) {
     WriteDone(rv);
     if (!writing_)
       break;
@@ -891,7 +592,7 @@ void TorControl::DoReads() {
   DCHECK(readiobuf_->RemainingCapacity());
   while ((rv = socket_->Read(readiobuf_.get(), readiobuf_->RemainingCapacity(),
                              base::BindOnce(&TorControl::ReadDoneAsync,
-                                            base::Unretained(this)))) !=
+                                            weak_ptr_factory_.GetWeakPtr()))) !=
          net::ERR_IO_PENDING) {
     ReadDone(rv);
     if (!reading_)
@@ -1199,7 +900,7 @@ void TorControl::Error() {
 
   VLOG(1) << "tor: closing control on " << (running_ ? "request" : "error");
 
-  NotifyTorClosed();
+  NotifyTorControlClosed();
 
   // Invoke all callbacks with errors and clear read state.
   while (!cmdq_.empty()) {
@@ -1220,107 +921,61 @@ void TorControl::Error() {
 
   // Clear the socket.
   socket_.reset();
-
-  // If we're still running, try watching again to start over.
-  //
-  // XXX Rate limit in case of flapping?
-  if (running_) {
-    watch_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&TorControl::Poll, base::Unretained(this)));
-  }
 }
 
 void TorControl::NotifyTorControlReady() {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate) {
-                       if (delegate)
-                         delegate->OnTorControlReady();
-                     },
-                     delegate_->AsWeakPtr()));
-}
-
-void TorControl::NotifyTorClosed() {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate) {
-                       if (delegate)
-                         delegate->OnTorClosed();
-                     },
-                     delegate_->AsWeakPtr()));
-}
-
-void TorControl::NotifyTorCleanupNeeded(base::ProcessId id) {
-  content::GetUIThreadTaskRunner({})->PostTask(
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(
-          [](base::WeakPtr<TorControl::Delegate> delegate, base::ProcessId id) {
-            if (delegate)
-              delegate->OnTorCleanupNeeded(std::move(id));
-          },
-          delegate_->AsWeakPtr(), std::move(id)));
+      base::BindOnce(&Delegate::OnTorControlReady, delegate_->AsWeakPtr()));
+}
+
+void TorControl::NotifyTorControlClosed() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorControlClosed,
+                                delegate_->AsWeakPtr(), running_));
 }
 
 void TorControl::NotifyTorEvent(
     TorControlEvent event,
     const std::string& initial,
     const std::map<std::string, std::string>& extra) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        TorControlEvent event, const std::string& initial,
-                        const std::map<std::string, std::string>& extra) {
-                       if (delegate)
-                         delegate->OnTorEvent(event, initial, extra);
-                     },
-                     delegate_->AsWeakPtr(), event, initial, extra));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorEvent, delegate_->AsWeakPtr(),
+                                event, initial, extra));
 }
 
 void TorControl::NotifyTorRawCmd(const std::string& cmd) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& cmd) {
-                       if (delegate)
-                         delegate->OnTorRawCmd(cmd);
-                     },
-                     delegate_->AsWeakPtr(), cmd));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorRawCmd, delegate_->AsWeakPtr(), cmd));
 }
 
 void TorControl::NotifyTorRawAsync(const std::string& status,
                                    const std::string& line) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& status, const std::string& line) {
-                       if (delegate)
-                         delegate->OnTorRawAsync(status, line);
-                     },
-                     delegate_->AsWeakPtr(), status, line));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawAsync,
+                                delegate_->AsWeakPtr(), status, line));
 }
 
 void TorControl::NotifyTorRawMid(const std::string& status,
                                  const std::string& line) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& status, const std::string& line) {
-                       if (delegate)
-                         delegate->OnTorRawMid(status, line);
-                     },
-                     delegate_->AsWeakPtr(), status, line));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawMid, delegate_->AsWeakPtr(),
+                                status, line));
 }
 
 void TorControl::NotifyTorRawEnd(const std::string& status,
                                  const std::string& line) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<TorControl::Delegate> delegate,
-                        const std::string& status, const std::string& line) {
-                       if (delegate)
-                         delegate->OnTorRawEnd(status, line);
-                     },
-                     delegate_->AsWeakPtr(), status, line));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  owner_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawEnd, delegate_->AsWeakPtr(),
+                                status, line));
 }
 
 // ParseKV(string, key, value)

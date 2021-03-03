@@ -13,16 +13,17 @@
 #include <vector>
 
 #include "base/callback.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/sequence_checker.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/tor/tor_control.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace base {
 class SequencedTaskRunner;
+struct OnTaskRunnerDeleter;
 }  // namespace base
 
 class MockTorLauncherFactory;
@@ -47,8 +48,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   // tor::TorControl::Delegate
   void OnTorControlReady() override;
-  void OnTorClosed() override;
-  void OnTorCleanupNeeded(base::ProcessId id) override;
+  void OnTorControlClosed(bool was_running) override;
   void OnTorEvent(tor::TorControlEvent event,
                   const std::string& initial,
                   const std::map<std::string, std::string>& extra) override;
@@ -67,7 +67,10 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
 
-  void OnTorControlCheckComplete();
+  void OnTorControlPrerequisitesReady(int64_t pid,
+                                      bool ready,
+                                      std::vector<uint8_t> cookie,
+                                      int port);
 
   void OnTorLauncherCrashed();
   void OnTorCrashed(int64_t pid);
@@ -76,9 +79,9 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   void GotVersion(bool error, const std::string& version);
   void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);
 
-  void KillOldTorProcess(base::ProcessId id);
-
+  void LaunchTorInternal();
   void RelaunchTor();
+  void DelayedRelaunchTor();
 
   bool is_starting_;
   bool is_connected_;
@@ -94,9 +97,9 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   base::ObserverList<TorLauncherObserver> observers_;
 
-  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  std::unique_ptr<tor::TorControl, base::OnTaskRunnerDeleter> control_;
 
-  std::unique_ptr<tor::TorControl> control_;
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 
