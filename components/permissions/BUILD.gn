@@ -6,7 +6,6 @@ source_set("permissions") {
 
   deps = [
     "//base",
-    "//base:i18n",
     "//brave/components/resources:strings_grit",
     "//components/permissions",
     "//ui/base",

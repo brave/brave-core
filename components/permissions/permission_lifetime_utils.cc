@@ -5,10 +5,6 @@
 
 #include "brave/components/permissions/permission_lifetime_utils.h"
 
-#include <utility>
-
-#include "base/i18n/time_formatting.h"
-#include "base/stl_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
