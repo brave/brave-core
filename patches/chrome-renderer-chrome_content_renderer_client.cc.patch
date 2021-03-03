@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 93c3620fb0c95752bc491fcc830e4cef2bf1db4f..437313ad669d5c23cb9aedb69e58915e0256e4af 100644
+index b6fe493a6ddcbeec0fc56ac7976edf425f8edc07..84f8680f5dd3657638918d0a115e95e04a643c6e 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -480,7 +480,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -478,7 +478,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
    content_settings::ContentSettingsAgentImpl* content_settings =
