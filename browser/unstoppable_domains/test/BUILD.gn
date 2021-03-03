@@ -1,0 +1,47 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  sources = [
+    "//brave/browser/unstoppable_domains/test/unstoppable_domains_navigation_throttle_browsertest.cc",
+    "//brave/browser/unstoppable_domains/test/unstoppable_domains_service_browsertest.cc",
+  ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/unstoppable_domains",
+    "//chrome/browser:browser_process",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//components/security_interstitials/content:security_interstitial_page",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}  # source_set("browser_tests") {
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "//brave/browser/unstoppable_domains/test/utils_unittest.cc",
+    "//brave/net/dns/dns_transaction_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/unstoppable_domains",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//net",
+    "//net:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}  # source_set("unit_tests")

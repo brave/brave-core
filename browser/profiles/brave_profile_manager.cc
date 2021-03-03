@@ -19,6 +19,7 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
+#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -48,6 +49,10 @@
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#endif
+
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#include "brave/browser/unstoppable_domains/unstoppable_domains_service_factory.h"
 #endif
 
 using content::BrowserThread;
@@ -107,6 +112,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   ipfs::IpfsServiceFactory::GetForContext(profile);
+#endif
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+  unstoppable_domains::UnstoppableDomainsServiceFactory::GetForContext(profile);
 #endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =

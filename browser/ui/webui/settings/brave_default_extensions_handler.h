@@ -44,6 +44,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetWidevineEnabled(const base::ListValue* args);
   void IsWidevineEnabled(const base::ListValue* args);
   void OnWidevineEnabledChanged();
+  void IsUnstoppableDomainsEnabled(const base::ListValue* args);
 
   void InitializePrefCallbacks();
 

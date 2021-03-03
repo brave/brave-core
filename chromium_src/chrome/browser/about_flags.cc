@@ -16,6 +16,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
@@ -92,6 +93,18 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#include "brave/components/unstoppable_domains/features.h"
+
+#define BRAVE_UNSTOPPABLE_DOMAINS_FEATURE_ENTRIES                             \
+    {"brave-unstoppable-domains",                                             \
+     flag_descriptions::kBraveUnstoppableDomainsName,                         \
+     flag_descriptions::kBraveUnstoppableDomainsDescription, kOsDesktop,      \
+     FEATURE_VALUE_TYPE(unstoppable_domains::features::kUnstoppableDomains)},
+#else
+#define BRAVE_UNSTOPPABLE_DOMAINS_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_FEATURE_ENTRIES \
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
@@ -114,6 +127,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     BRAVE_IPFS_FEATURE_ENTRIES                                             \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
     SIDEBAR_FEATURE_ENTRIES                                                \
+    BRAVE_UNSTOPPABLE_DOMAINS_FEATURE_ENTRIES                              \
     {"brave-super-referral",                                               \
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \
