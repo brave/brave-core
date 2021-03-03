@@ -20,6 +20,7 @@ import {
   EditTopSite,
   EditCards
 } from '../../components/default'
+import { FTXWidget as FTX } from '../../components/widgets'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
@@ -62,6 +63,7 @@ interface Props {
   saveShowBinance: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
   saveShowCryptoDotCom: (value: boolean) => void
+  saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   onReadBraveTodayIntroCard: () => any
   saveSetAllStackWidgets: (value: boolean) => void
@@ -292,6 +294,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   toggleShowCryptoDotCom = () => {
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
+  }
+
+  toggleShowFTX = () => {
+    this.props.saveShowFTX(!this.props.newTabData.showFTX)
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -613,6 +619,14 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
+  onFTXOptInMarkets = (show: boolean) => {
+    this.props.actions.onFTXOptInMarkets(show)
+  }
+
+  onFTXInteraction = () => {
+    this.props.actions.onFTXInteraction()
+  }
+
   getCurrencyList = () => {
     const { accountBalances, userTLD } = this.props.newTabData.binanceState
     const { usCurrencies, comCurrencies } = currencyData
@@ -702,6 +716,8 @@ class NewTabPage extends React.Component<Props, State> {
       geminiSupported,
       showCryptoDotCom,
       cryptoDotComSupported,
+      showFTX,
+      ftxSupported,
       binanceSupported
     } = this.props.newTabData
     const lookup = {
@@ -724,6 +740,10 @@ class NewTabPage extends React.Component<Props, State> {
       'cryptoDotCom': {
         display: showCryptoDotCom && cryptoDotComSupported,
         render: this.renderCryptoDotComWidget.bind(this)
+      },
+      'ftx': {
+        display: showFTX && ftxSupported,
+        render: this.renderFTXWidget.bind(this)
       }
     }
 
@@ -759,6 +779,8 @@ class NewTabPage extends React.Component<Props, State> {
       showGemini,
       showCryptoDotCom,
       cryptoDotComSupported,
+      showFTX,
+      ftxSupported,
       binanceSupported
     } = this.props.newTabData
     return [
@@ -766,7 +788,8 @@ class NewTabPage extends React.Component<Props, State> {
       togetherSupported && showTogether,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
-      cryptoDotComSupported && showCryptoDotCom
+      cryptoDotComSupported && showCryptoDotCom,
+      ftxSupported && showFTX
     ].every((widget: boolean) => !widget)
   }
 
@@ -782,7 +805,8 @@ class NewTabPage extends React.Component<Props, State> {
       'cryptoDotCom': this.props.saveShowCryptoDotCom,
       'gemini': this.props.saveShowGemini,
       'rewards': this.props.saveShowRewards,
-      'together': this.props.saveShowTogether
+      'together': this.props.saveShowTogether,
+      'ftx': this.props.saveShowFTX
     }
 
     const setAllTrue = (list: NewTab.StackWidget[]) => {
@@ -1019,6 +1043,35 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  renderFTXWidget (showContent: boolean, position: number) {
+    const { newTabData } = this.props
+    const { ftxState, showFTX, textDirection, ftxSupported } = newTabData
+
+    if (!showFTX || !ftxSupported) {
+      return null
+    }
+
+    return (
+      <FTX
+        {...ftxState}
+        isCrypto={true}
+        paddingType={'none'}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'FTX'}
+        isForeground={showContent}
+        stackPosition={position}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowFTX}
+        showContent={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'ftx')}
+        onInteraction={this.onFTXInteraction}
+        onOptInMarkets={this.onFTXOptInMarkets}
+      />
+    )
+  }
+
   render () {
     const { newTabData, gridSitesData, actions } = this.props
     const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing } = this.state
@@ -1198,10 +1251,13 @@ class NewTabPage extends React.Component<Props, State> {
           showTogether={newTabData.showTogether}
           geminiSupported={newTabData.geminiSupported}
           toggleShowGemini={this.toggleShowGemini}
-          showCryptoDotCom={newTabData.showCryptoDotCom}
+          showGemini={newTabData.showGemini}
           cryptoDotComSupported={newTabData.cryptoDotComSupported}
           toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
-          showGemini={newTabData.showGemini}
+          showCryptoDotCom={newTabData.showCryptoDotCom}
+          ftxSupported={newTabData.ftxSupported}
+          toggleShowFTX={this.toggleShowFTX}
+          showFTX={newTabData.showFTX}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.toggleAllCards}

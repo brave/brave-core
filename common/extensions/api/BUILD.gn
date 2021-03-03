@@ -4,6 +4,7 @@ import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -30,6 +31,10 @@ json_features("api_features") {
 
   if (gemini_enabled) {
     sources += [ "_gemini_api_features.json" ]
+  }
+
+  if (ftx_enabled) {
+    sources += [ "_ftx_api_features.json" ]
   }
 
   if (crypto_dot_com_enabled) {
@@ -92,6 +97,10 @@ if (binance_enabled) {
 
 if (gemini_enabled) {
   brave_extensions_api_schema_sources += [ "gemini.json" ]
+}
+
+if (ftx_enabled) {
+  brave_extensions_api_schema_sources += [ "ftx.json" ]
 }
 
 if (crypto_dot_com_enabled) {

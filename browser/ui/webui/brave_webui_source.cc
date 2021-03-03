@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -376,6 +377,28 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "cryptoDotComWidgetGraph", IDS_CRYPTO_DOT_COM_WIDGET_GRAPH },
         { "cryptoDotComWidgetPairs", IDS_CRYPTO_DOT_COM_WIDGET_PAIRS },
         { "cryptoDotComWidgetVolume", IDS_CRYPTO_DOT_COM_WIDGET_VOLUME },
+#endif
+#if BUILDFLAG(FTX_ENABLED)
+        { "ftxWidgetSite", IDS_FTX_WIDGET_SITE },
+        { "ftxWidgetDescription", IDS_FTX_WIDGET_DESCRIPTION },
+        { "ftxWidgetViewMarkets", IDS_FTX_WIDGET_VIEW_MARKETS },
+        { "ftxWidgetConnectAccount", IDS_FTX_WIDGET_CONNECT_ACCOUNT },
+        { "ftxWidgetMarkets", IDS_FTX_WIDGET_MARKETS },
+        { "ftxWidgetSummary", IDS_FTX_WIDGET_SUMMARY },
+        { "ftxWidgetFutures", IDS_FTX_WIDGET_FUTURES },
+        { "ftxWidgetMoreMarkets", IDS_FTX_WIDGET_MORE_MARKETS },
+        { "ftxWidgetSevenDayGraph", IDS_FTX_WIDGET_SEVEN_DAY_GRAPH },
+        { "ftxWidgetDailyVolume", IDS_FTX_WIDGET_DAILY_VOLUME },
+        { "ftxWidgetLoginJoin", IDS_FTX_WIDGET_LOGIN_OR_JOIN },
+        { "ftxWidgetJoin", IDS_FTX_WIDGET_JOIN },
+        { "ftxWidgetLogin", IDS_FTX_WIDGET_LOGIN },
+        { "ftxWidgetAvailable", IDS_FTX_WIDGET_AVAILABLE },
+        { "ftxWidgetConvert", IDS_FTX_WIDGET_CONVERT },
+        { "ftxWidgetConvertPlaceholder", IDS_FTX_WIDGET_CONVERT_PLACEHOLDER },
+        { "ftxWidgetPreviewConvert", IDS_FTX_WIDGET_PREVIEW_CONVERT },
+        { "ftxWidgetPreviewCancel", IDS_FTX_WIDGET_PREVIEW_CANCEL },
+        { "ftxWidgetAccountRequired", IDS_FTX_WIDGET_ACCOUNT_REQUIRED },
+        { "ftxWidgetDescriptionTwo", IDS_FTX_WIDGET_DESCRIPTION_TWO },
 #endif
       }
     }, {

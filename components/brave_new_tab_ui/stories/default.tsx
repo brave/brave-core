@@ -90,6 +90,7 @@ storiesOf('New Tab/Containers', module)
         saveShowTogether={doNothing}
         saveShowGemini={doNothing}
         saveShowCryptoDotCom={doNothing}
+        saveShowFTX={doNothing}
         saveBrandedWallpaperOptIn={doNothing}
         onReadBraveTodayIntroCard={dismissBraveTodayIntroCard}
         saveSetAllStackWidgets={doNothing}

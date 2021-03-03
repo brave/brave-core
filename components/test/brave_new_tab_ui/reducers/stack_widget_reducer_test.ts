@@ -76,7 +76,7 @@ describe('stackWidgetReducer', () => {
       const expectedState = {
         ...storage.defaultState,
         showBinance: true,
-        widgetStackOrder: ['cryptoDotCom', 'gemini', 'rewards', 'binance']
+        widgetStackOrder: ['ftx', 'cryptoDotCom', 'gemini', 'rewards', 'binance']
       }
       const assertion = handleWidgetPrefsChange(newState, oldState)
       expect(assertion).toEqual(expectedState)
