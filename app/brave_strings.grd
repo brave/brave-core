@@ -37,6 +37,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <output filename="chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
       <output filename="chromium_strings_zu.pak" type="data_package" lang="zu" />
     </if>
+    <if expr="chromeos or lacros">
+      <output filename="chromium_strings_is.pak" type="data_package" lang="is" />
+    </if>
     <output filename="chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="chromium_strings_ar.pak" type="data_package" lang="ar" />
     <output filename="chromium_strings_bg.pak" type="data_package" lang="bg" />
@@ -745,6 +748,12 @@ Brave is unable to recover your settings.
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
           <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph> is already signed in to this Brave profile. To keep your browsing separate, Brave can create your own profile for you.
         </message>
+          <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC_MANAGED_DEVICE" desc="Body of the web signin interception bubble on a managed device">
+          <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph> is already signed in to this Brave profile. This will create a new Brave profile for <ph name="USER_EMAIL_ADDRESS">$2<ex>foo@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC_MANAGED_DEVICE" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed on a managed device">
+          This will create a new Brave profile for <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>
+        </message>
       </if>
 
       <!-- Brave Cleanup prompt.
@@ -1174,6 +1183,9 @@ Brave is unable to recover your settings.
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE" desc="Profile picker main view title">
           Welcome to Brave profiles
         </message>
+        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_V2" desc="Title of a screen that lets the user choose which profile to use when browsing the web. *If the EN source doesn't translate well in your language, an alternative string 'Which Brave profile would you like to use?' may be used instead">
+          Who's using Brave?
+        </message>
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
           With Brave profiles you can separate all your Brave stuff. Create profiles for friends and family, or split between work and fun.
         </message>
@@ -1194,6 +1206,12 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_PROFILE_PICKER_IPH_FOR_ADD_PROFILE_TEXT" desc="Text of the IPH bubble for adding new profiles.">
           If you share a device, friends and family can browse separately and set up Brave just the way they want
+        </message>
+        <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_TITLE" desc="Profile picker profile switch title">
+          Switch to existing Brave profile?
+        </message>
+        <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_SUBTITLE" desc="Profile picker profile switch subtitle">
+          A Brave profile with this account already exists on this device
         </message>
       </if>
 
