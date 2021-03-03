@@ -26,6 +26,8 @@ FORWARD_DECLARE_TEST(TorFileWatcherTest, EatControlPort);
 
 // This is used to fetch Tor cookie and port which are required to establish
 // control channel. It will delete itself when WatchCallback is called.
+// The destructor must run on the watch_task_runner which is the sequence we
+// post task to FilePathWatcher, so the weak ptr can invalidated on the sequence
 class TorFileWatcher {
  public:
   using WatchCallback = base::OnceCallback<
@@ -33,8 +35,10 @@ class TorFileWatcher {
 
   explicit TorFileWatcher(const base::FilePath& watch_dir_path);
 
-  virtual ~TorFileWatcher();
+  ~TorFileWatcher();
 
+  // Caller should use base::BindPostTask to make
+  // sure callback will be ran on the dedicated thread.
   void StartWatching(WatchCallback);
 
  private:

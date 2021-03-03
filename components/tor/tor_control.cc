@@ -16,9 +16,6 @@
 #include "net/socket/tcp_client_socket.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
-// Tor Control Channel spec:
-// https://gitweb.torproject.org/torspec.git/plain/control-spec.txt
-
 namespace tor {
 
 namespace {
@@ -103,9 +100,6 @@ TorControl::~TorControl() {
 //
 void TorControl::Start(std::vector<uint8_t> cookie, int port) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
-  DCHECK(!running_);
-
-  running_ = true;
   io_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::OpenControl, weak_ptr_factory_.GetWeakPtr(),
@@ -119,14 +113,9 @@ void TorControl::Start(std::vector<uint8_t> cookie, int port) {
 //
 void TorControl::Stop() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
-  if (!running_)
-    return;
-
-  running_ = false;
-  async_events_.clear();
-  io_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&TorControl::Error, weak_ptr_factory_.GetWeakPtr()));
+  io_task_runner_->PostTask(FROM_HERE,
+                            base::BindOnce(&TorControl::StopOnTaskRunner,
+                                           weak_ptr_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,6 +128,9 @@ void TorControl::Stop() {
 //
 void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  DCHECK(!running_);
+
+  running_ = true;
   VLOG(3) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
 
   net::AddressList addrlist = net::AddressList::CreateFromIPAddress(
@@ -151,6 +143,16 @@ void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   if (rv == net::ERR_IO_PENDING)
     return;
   Connected(std::move(cookie), rv);
+}
+
+void TorControl::StopOnTaskRunner() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  if (!running_)
+    return;
+
+  running_ = false;
+  async_events_.clear();
+  Error();
 }
 
 // Connected(rv, cookie)

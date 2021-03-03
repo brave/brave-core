@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/service_sandbox_type.h"
+#include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -280,7 +281,7 @@ void TorLauncherFactory::OnTorControlClosed(bool was_running) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "TOR CONTROL: Closed!";
   // If we're still running, try watching again to start over.
-  // XXX Rate limit in case of flapping?
+  // TODO(riastradh-brave): Rate limit in case of flapping?
   if (was_running) {
     LaunchTorInternal();
   }

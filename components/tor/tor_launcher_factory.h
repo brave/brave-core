@@ -13,14 +13,12 @@
 #include <vector>
 
 #include "base/callback.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/sequence_checker.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/tor/tor_control.h"
-#include "brave/components/tor/tor_file_watcher.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace base {
