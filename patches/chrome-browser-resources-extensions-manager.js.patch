@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/extensions/manager.js b/chrome/browser/resources/extensions/manager.js
-index 271dfba94a3cbd6b53b17f99ba94634c1bbc3b1a..1dd5c561924f4aed399836b70de51b00fe1ca0c7 100644
+index 3bef81eb86f46bddd44fee7a3f27a9d68c5e5546..1dd5c561924f4aed399836b70de51b00fe1ca0c7 100644
 --- a/chrome/browser/resources/extensions/manager.js
 +++ b/chrome/browser/resources/extensions/manager.js
 @@ -5,7 +5,6 @@
  import 'chrome://resources/cr_elements/cr_drawer/cr_drawer.m.js';
  import 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.m.js';
  import 'chrome://resources/cr_elements/cr_toast/cr_toast_manager.m.js';
--import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.m.js';
+-import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
  import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.m.js';
  import 'chrome://resources/cr_elements/hidden_style_css.m.js';
  import 'chrome://resources/cr_elements/shared_vars_css.m.js';

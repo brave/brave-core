@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/history/history_toolbar.js b/chrome/browser/resources/history/history_toolbar.js
-index c7c81ad026834767938ba994cf4d23945af5b96a..37a9bcf669d2242aabd5b3513308ff4485e0fda2 100644
+index b32eebcf69cd42e72ad7231c4623209c188de23e..37a9bcf669d2242aabd5b3513308ff4485e0fda2 100644
 --- a/chrome/browser/resources/history/history_toolbar.js
 +++ b/chrome/browser/resources/history/history_toolbar.js
 @@ -3,7 +3,7 @@
  // found in the LICENSE file.
  
  import 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.m.js';
--import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.m.js';
+-import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
  import './shared_style.js';
  import './strings.js';

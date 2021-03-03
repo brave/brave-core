@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b27802159df9007 100644
+index bc6ad6815cf2f5fe687b871dd8019aa2ec9a785f..c92ca88fae11427fd4111b9e6d4fe7299754ca20 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 @@ -44,7 +44,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
@@ -19,8 +19,8 @@ index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b278021
              ChannelId.MEDIA_PLAYBACK, ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS,
              ChannelId.WEBAPP_ACTIONS, ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES,
              ChannelId.COMPLETED_DOWNLOADS, ChannelId.PERMISSION_REQUESTS,
-@@ -92,7 +93,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
-         String WEBRTC_CAM_AND_MIC = "webrtc_cam_and_mic";
+@@ -94,7 +95,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+         String PRICE_DROP = "shopping_price_drop_alerts";
      }
  
 -    @StringDef({ChannelGroupId.GENERAL, ChannelGroupId.SITES})
@@ -28,7 +28,7 @@ index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b278021
      @Retention(RetentionPolicy.SOURCE)
      public @interface ChannelGroupId {
          String SITES = "sites";
-@@ -121,6 +122,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -123,6 +124,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -36,7 +36,7 @@ index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b278021
              map.put(ChannelId.BROWSER,
                      PredefinedChannel.create(ChannelId.BROWSER,
                              R.string.notification_category_browser,
-@@ -236,6 +238,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -245,6 +247,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          static final Map<String, PredefinedChannelGroup> MAP;
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();

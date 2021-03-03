@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/downloads/toolbar.js b/chrome/browser/resources/downloads/toolbar.js
-index 9d6413739b71440ad88eb3bd57b0f415d425299c..8aecba85bed4c7d3461f2ec7f04734c1eeab0ff9 100644
+index 49290544679d9a044ec2066dfd83f1494424263b..8aecba85bed4c7d3461f2ec7f04734c1eeab0ff9 100644
 --- a/chrome/browser/resources/downloads/toolbar.js
 +++ b/chrome/browser/resources/downloads/toolbar.js
 @@ -4,7 +4,7 @@
  
  import 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.m.js';
  import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.m.js';
--import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.m.js';
+-import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.js';
 +import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js';
  import 'chrome://resources/cr_elements/hidden_style_css.m.js';
  import 'chrome://resources/cr_elements/icons.m.js';
