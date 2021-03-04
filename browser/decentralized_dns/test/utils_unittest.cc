@@ -52,20 +52,24 @@ TEST_P(UtilsUnitTest, IsDecentralizedDnsEnabled) {
   EXPECT_EQ(feature_enabled(), IsDecentralizedDnsEnabled());
 }
 
-TEST_P(UtilsUnitTest, IsResolveMethodAsk) {
-  EXPECT_EQ(feature_enabled(), IsResolveMethodAsk(local_state()));
+TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
+  EXPECT_EQ(feature_enabled(),
+            IsUnstoppableDomainsResolveMethodAsk(local_state()));
 
   local_state()->SetInteger(
-      kResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
-  EXPECT_FALSE(IsResolveMethodAsk(local_state()));
+      kUnstoppableDomainsResolveMethod,
+      static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 }
 
-TEST_P(UtilsUnitTest, IsResolveMethodDoH) {
-  EXPECT_FALSE(IsResolveMethodDoH(local_state()));
+TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodDoH) {
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodDoH(local_state()));
 
   local_state()->SetInteger(
-      kResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
-  EXPECT_EQ(feature_enabled(), IsResolveMethodDoH(local_state()));
+      kUnstoppableDomainsResolveMethod,
+      static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  EXPECT_EQ(feature_enabled(),
+            IsUnstoppableDomainsResolveMethodDoH(local_state()));
 }
 
 INSTANTIATE_TEST_SUITE_P(/* no prefix */, UtilsUnitTest, testing::Bool());

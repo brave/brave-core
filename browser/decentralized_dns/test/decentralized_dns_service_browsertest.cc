@@ -52,7 +52,7 @@ class DecentralizedDnsServiceBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
                        UpdateConfigWhenPrefChanged) {
   // Initial state.
-  EXPECT_EQ(local_state()->GetInteger(kResolveMethod),
+  EXPECT_EQ(local_state()->GetInteger(kUnstoppableDomainsResolveMethod),
             static_cast<int>(ResolveMethodTypes::ASK));
   SecureDnsConfig config = GetSecureDnsConfiguration();
   EXPECT_EQ(config.mode(), net::SecureDnsMode::kAutomatic);
@@ -60,16 +60,18 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
 
   // Set resolve method to DoH should update the config.
   local_state()->SetInteger(
-      kResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+      kUnstoppableDomainsResolveMethod,
+      static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   config = GetSecureDnsConfiguration();
   std::vector<net::DnsOverHttpsServerConfig> expected_doh_servers = {
-      {kDoHResolver, true}};
+      {kUnstoppableDomainsDoHResolver, true}};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set custom DoH provider should still keep the resolver for UD.
   local_state()->SetString(prefs::kDnsOverHttpsTemplates, "https://test.com");
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{kDoHResolver, true}, {"https://test.com", true}};
+  expected_doh_servers = {{kUnstoppableDomainsDoHResolver, true},
+                          {"https://test.com", true}};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set secure mode to off should return empty DoH servers.
@@ -87,7 +89,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set resolve method to disabled should keep user's DoH setting.
-  local_state()->SetInteger(kResolveMethod,
+  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
                             static_cast<int>(ResolveMethodTypes::DISABLED));
   config = GetSecureDnsConfiguration();
   expected_doh_servers = {{"https://test.com", true}};
@@ -97,7 +99,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
                        HideDecentralizedDnsResolvers) {
   // Initial state.
-  EXPECT_EQ(local_state()->GetInteger(kResolveMethod),
+  EXPECT_EQ(local_state()->GetInteger(kUnstoppableDomainsResolveMethod),
             static_cast<int>(ResolveMethodTypes::ASK));
   SecureDnsConfig config = GetSecureDnsConfiguration();
   EXPECT_EQ(config.mode(), net::SecureDnsMode::kAutomatic);
@@ -105,16 +107,18 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
 
   // Set resolve method to DoH should update the config.
   local_state()->SetInteger(
-      kResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+      kUnstoppableDomainsResolveMethod,
+      static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   config = GetSecureDnsConfiguration();
   std::vector<net::DnsOverHttpsServerConfig> expected_doh_servers = {
-      {kDoHResolver, true}};
+      {kUnstoppableDomainsDoHResolver, true}};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Set custom DoH provider should still keep the resolver for UD.
   local_state()->SetString(prefs::kDnsOverHttpsTemplates, "https://test.com");
   config = GetSecureDnsConfiguration();
-  expected_doh_servers = {{kDoHResolver, true}, {"https://test.com", true}};
+  expected_doh_servers = {{kUnstoppableDomainsDoHResolver, true},
+                          {"https://test.com", true}};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
   // Should hide unstoppable domains resolver if

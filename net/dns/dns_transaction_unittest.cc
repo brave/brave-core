@@ -943,12 +943,12 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
   ~BraveDnsTransactionTest() override = default;
 
   void BraveConfigureDohServers(bool multiple_server) {
-    GURL url(decentralized_dns::kDoHResolver);
+    GURL url(decentralized_dns::kUnstoppableDomainsDoHResolver);
     URLRequestFilter* filter = URLRequestFilter::GetInstance();
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
     config_.dns_over_https_servers.push_back(
-        {decentralized_dns::kDoHResolver, true});
+        {decentralized_dns::kUnstoppableDomainsDoHResolver, true});
 
     if (multiple_server) {
       GURL url2("https://test.com/dns-query");

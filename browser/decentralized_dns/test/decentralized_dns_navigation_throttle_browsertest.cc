@@ -103,12 +103,12 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
-            local_state()->GetInteger(kResolveMethod));
+            local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
   SendInterstitialCommandSync(
       browser(),
       security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS),
-            local_state()->GetInteger(kResolveMethod));
+            local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
 }
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
@@ -123,12 +123,12 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
-            local_state()->GetInteger(kResolveMethod));
+            local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
   SendInterstitialCommandSync(
       browser(),
       security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DISABLED),
-            local_state()->GetInteger(kResolveMethod));
+            local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
 }
 
 }  // namespace decentralized_dns
