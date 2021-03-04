@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -13,6 +14,8 @@
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -30,7 +33,14 @@ class AdblockDOMHandler : public content::WebUIMessageHandler {
   void HandleEnableFilterList(const base::ListValue* args);
   void HandleGetCustomFilters(const base::ListValue* args);
   void HandleGetRegionalLists(const base::ListValue* args);
+  void HandleGetListSubscriptions(const base::ListValue* args);
   void HandleUpdateCustomFilters(const base::ListValue* args);
+  void HandleSubmitNewSubscription(const base::ListValue* args);
+  void HandleSetSubscriptionEnabled(const base::ListValue* args);
+  void HandleDeleteSubscription(const base::ListValue* args);
+  void HandleRefreshSubscription(const base::ListValue* args);
+
+  void RefreshSubscriptionsList();
 
   DISALLOW_COPY_AND_ASSIGN(AdblockDOMHandler);
 };
@@ -53,8 +63,28 @@ void AdblockDOMHandler::RegisterMessages() {
       base::BindRepeating(&AdblockDOMHandler::HandleGetRegionalLists,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "brave_adblock.getListSubscriptions",
+      base::BindRepeating(&AdblockDOMHandler::HandleGetListSubscriptions,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "brave_adblock.updateCustomFilters",
       base::BindRepeating(&AdblockDOMHandler::HandleUpdateCustomFilters,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_adblock.submitNewSubscription",
+      base::BindRepeating(&AdblockDOMHandler::HandleSubmitNewSubscription,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_adblock.setSubscriptionEnabled",
+      base::BindRepeating(&AdblockDOMHandler::HandleSetSubscriptionEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_adblock.deleteSubscription",
+      base::BindRepeating(&AdblockDOMHandler::HandleDeleteSubscription,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_adblock.refreshSubscription",
+      base::BindRepeating(&AdblockDOMHandler::HandleRefreshSubscription,
                           base::Unretained(this)));
 }
 
@@ -89,6 +119,13 @@ void AdblockDOMHandler::HandleGetRegionalLists(const base::ListValue* args) {
   CallJavascriptFunction("brave_adblock.onGetRegionalLists", *regional_lists);
 }
 
+void AdblockDOMHandler::HandleGetListSubscriptions(
+    const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  AllowJavascript();
+  RefreshSubscriptionsList();
+}
+
 void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 1U);
   std::string custom_filters;
@@ -97,6 +134,99 @@ void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue* args) {
 
   g_brave_browser_process->ad_block_custom_filters_service()
       ->UpdateCustomFilters(custom_filters);
+}
+
+void AdblockDOMHandler::HandleSubmitNewSubscription(
+    const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  std::string list_url_string;
+  if (!args->GetString(0, &list_url_string)) {
+    return;
+  }
+  const GURL list_url = GURL(list_url_string);
+  if (!list_url.is_valid()) {
+    return;
+  }
+  g_brave_browser_process->ad_block_service()
+      ->subscription_service_manager()
+      ->CreateSubscription(list_url);
+  RefreshSubscriptionsList();
+}
+
+void AdblockDOMHandler::HandleSetSubscriptionEnabled(
+    const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 2U);
+  AllowJavascript();
+  std::string list_url_string;
+  if (!args->GetString(0, &list_url_string)) {
+    return;
+  }
+  bool enabled;
+  if (!args->GetBoolean(1, &enabled)) {
+    return;
+  }
+  const GURL list_url = GURL(list_url_string);
+  if (!list_url.is_valid()) {
+    return;
+  }
+  g_brave_browser_process->ad_block_service()
+      ->subscription_service_manager()
+      ->EnableSubscription(list_url, enabled);
+  RefreshSubscriptionsList();
+}
+
+void AdblockDOMHandler::HandleDeleteSubscription(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 1U);
+  AllowJavascript();
+  std::string list_url_string;
+  if (!args->GetString(0, &list_url_string)) {
+    return;
+  }
+  const GURL list_url = GURL(list_url_string);
+  if (!list_url.is_valid()) {
+    return;
+  }
+  g_brave_browser_process->ad_block_service()
+      ->subscription_service_manager()
+      ->DeleteSubscription(list_url);
+  RefreshSubscriptionsList();
+}
+
+void AdblockDOMHandler::HandleRefreshSubscription(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 1U);
+  std::string list_url_string;
+  if (!args->GetString(0, &list_url_string)) {
+    return;
+  }
+  const GURL list_url = GURL(list_url_string);
+  if (!list_url.is_valid()) {
+    return;
+  }
+  g_brave_browser_process->ad_block_service()
+      ->subscription_service_manager()
+      ->RefreshSubscription(list_url);
+  // TODO callback and show the result when finished
+}
+
+// Convenience method to push updated subscription information to the UI.
+void AdblockDOMHandler::RefreshSubscriptionsList() {
+  DCHECK(IsJavascriptAllowed());
+  auto list_subscriptions = g_brave_browser_process->ad_block_service()
+                                ->subscription_service_manager()
+                                ->GetSubscriptions();
+  auto list_value = std::make_unique<base::ListValue>();
+  for (const auto& subscription : list_subscriptions) {
+    auto dict = std::make_unique<base::DictionaryValue>();
+    dict->SetStringKey("list_url", subscription.list_url.spec());
+    dict->SetBoolKey("enabled", subscription.enabled);
+    dict->SetDoubleKey("last_update_attempt",
+                       subscription.last_update_attempt.ToJsTime());
+    dict->SetDoubleKey("last_successful_update_attempt",
+                       subscription.last_successful_update_attempt.ToJsTime());
+    list_value->Append(std::move(dict));
+  }
+  CallJavascriptFunction("brave_adblock.onGetListSubscriptions", *list_value);
 }
 
 }  // namespace
