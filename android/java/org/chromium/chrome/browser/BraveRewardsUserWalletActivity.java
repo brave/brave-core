@@ -111,13 +111,12 @@ public class BraveRewardsUserWalletActivity extends AppCompatActivity {
     private void SetDisconnectBtnClickHandler() {
         Button btnDisconnect = (Button)findViewById(
                 R.id.user_wallet_disconnect);
-        btnDisconnect.setOnClickListener( (View v) -> {
-            BraveRewardsNativeWorker.getInstance().DisconnectWallet
-                    (BraveRewardsBalance.WALLET_UPHOLD);
+        btnDisconnect.setOnClickListener((View v) -> {
+            BraveRewardsNativeWorker.getInstance().DisconnectWallet();
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
-      });
+        });
     }
 
     @Override

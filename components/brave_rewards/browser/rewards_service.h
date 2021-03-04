@@ -313,17 +313,14 @@ class RewardsService : public KeyedService {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
-  virtual std::string GetExternalWalletType() const = 0;
-
-  virtual void GetExternalWallet(const std::string& wallet_type,
-                                 GetExternalWalletCallback callback) = 0;
+  virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) = 0;
 
-  virtual void DisconnectWallet(const std::string& wallet_type) = 0;
+  virtual void DisconnectWallet() = 0;
 
   virtual bool OnlyAnonWallet() const = 0;
 

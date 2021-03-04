@@ -515,7 +515,7 @@ void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
       boot_stamp);
 
   // Don't display notification if user has a verified wallet.
-  GetExternalWallet(GetExternalWalletType(), std::move(callback));
+  GetExternalWallet(std::move(callback));
 }
 
 void RewardsServiceImpl::WalletBackupNotification(
@@ -2905,16 +2905,16 @@ void RewardsServiceImpl::OnGetExternalWallet(
   std::move(callback).Run(result, std::move(wallet));
 }
 
-void RewardsServiceImpl::GetExternalWallet(const std::string& wallet_type,
-                                           GetExternalWalletCallback callback) {
+void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
   if (!Connected()) {
     std::move(callback).Run(ledger::type::Result::LEDGER_OK, nullptr);
     return;
   }
 
   bat_ledger_->GetExternalWallet(
-      wallet_type, base::BindOnce(&RewardsServiceImpl::OnGetExternalWallet,
-                                  AsWeakPtr(), std::move(callback)));
+      GetExternalWalletType(),
+      base::BindOnce(&RewardsServiceImpl::OnGetExternalWallet, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnExternalWalletAuthorization(
@@ -3013,11 +3013,12 @@ void RewardsServiceImpl::OnDisconnectWallet(
   }
 }
 
-void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
+void RewardsServiceImpl::DisconnectWallet() {
   if (!Connected()) {
     return;
   }
 
+  std::string wallet_type = GetExternalWalletType();
   bat_ledger_->DisconnectWallet(
       wallet_type, base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
                                   AsWeakPtr(), wallet_type));

@@ -153,8 +153,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& obj);
 
     void DisconnectWallet(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& wallet_type);
+                          const base::android::JavaParamRef<jobject>& obj);
 
     void ProcessRewardsPageUrl(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj,

@@ -172,18 +172,15 @@ class MockRewardsService : public RewardsService {
                void(const std::map<std::string, std::string>&,
                     brave_rewards::SaveMediaInfoCallback));
 
-  MOCK_METHOD2(GetExternalWallet,
-               void(const std::string& wallet_type,
-                    brave_rewards::GetExternalWalletCallback callback));
-
-  MOCK_CONST_METHOD0(GetExternalWalletType, std::string());
+  MOCK_METHOD1(GetExternalWallet,
+               void(brave_rewards::GetExternalWalletCallback callback));
 
   MOCK_METHOD3(ProcessRewardsPageUrl,
                void(const std::string& path,
                     const std::string& query,
                     brave_rewards::ProcessRewardsPageUrlCallback callback));
 
-  MOCK_METHOD1(DisconnectWallet, void(const std::string& wallet_type));
+  MOCK_METHOD0(DisconnectWallet, void());
 
   MOCK_CONST_METHOD0(OnlyAnonWallet, bool());
 
