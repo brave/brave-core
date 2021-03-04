@@ -20,8 +20,7 @@ class PrefService;
 
 namespace decentralized_dns {
 
-class DecentralizedDnsNavigationThrottle
-    : public content::NavigationThrottle {
+class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit DecentralizedDnsNavigationThrottle(
       content::NavigationHandle* navigation_handle,

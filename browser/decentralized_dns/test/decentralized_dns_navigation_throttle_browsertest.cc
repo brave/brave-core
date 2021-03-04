@@ -5,9 +5,9 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/decentralized_dns/constants.h"
+#include "brave/components/decentralized_dns/decentralized_dns_opt_in_page.h"
 #include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
-#include "brave/components/decentralized_dns/decentralized_dns_opt_in_page.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

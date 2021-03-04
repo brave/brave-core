@@ -12,7 +12,7 @@ namespace decentralized_dns {
 namespace features {
 
 constexpr base::Feature kDecentralizedDns{"DecentralizedDns",
-                                            base::FEATURE_DISABLED_BY_DEFAULT};
+                                          base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace decentralized_dns

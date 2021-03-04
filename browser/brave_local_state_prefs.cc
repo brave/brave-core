@@ -13,12 +13,12 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "chrome/common/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -101,8 +101,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-  decentralized_dns::DecentralizedDnsService::RegisterLocalStatePrefs(
-      registry);
+  decentralized_dns::DecentralizedDnsService::RegisterLocalStatePrefs(registry);
 #endif
 
   RegisterLocalStatePrefsForMigration(registry);

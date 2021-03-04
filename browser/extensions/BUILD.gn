@@ -6,11 +6,11 @@ import("//brave/components/brave_wallet/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -65,10 +65,10 @@ source_set("extensions") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_today/browser",
     "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/sidebar/buildflags",
     "//brave/components/tor/buildflags",
-    "//brave/components/decentralized_dns/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",

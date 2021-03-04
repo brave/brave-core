@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/pref_names.h"
 #include "brave/components/decentralized_dns/decentralized_dns_service_delegate.h"
+#include "brave/components/decentralized_dns/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -24,9 +24,8 @@ DecentralizedDnsService::DecentralizedDnsService(
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   pref_change_registrar_->Init(local_state);
   pref_change_registrar_->Add(
-      kResolveMethod,
-      base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
-                 base::Unretained(this)));
+      kResolveMethod, base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
+                                 base::Unretained(this)));
 }
 
 DecentralizedDnsService::~DecentralizedDnsService() = default;

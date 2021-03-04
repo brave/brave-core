@@ -31,8 +31,7 @@ class DecentralizedDnsService : public KeyedService {
   ~DecentralizedDnsService() override;
 
   DecentralizedDnsService(const DecentralizedDnsService&) = delete;
-  DecentralizedDnsService& operator=(const DecentralizedDnsService&) =
-      delete;
+  DecentralizedDnsService& operator=(const DecentralizedDnsService&) = delete;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 

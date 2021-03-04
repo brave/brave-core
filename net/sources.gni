@@ -6,7 +6,7 @@
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 
 brave_net_sources = [
+  "//brave/net/decentralized_dns/constants.h",
   "//brave/net/proxy_resolution/proxy_config_service_tor.cc",
   "//brave/net/proxy_resolution/proxy_config_service_tor.h",
-  "//brave/net/decentralized_dns/constants.h",
 ]

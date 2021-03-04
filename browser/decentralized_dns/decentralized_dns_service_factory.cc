@@ -23,8 +23,7 @@ DecentralizedDnsServiceFactory::DecentralizedDnsServiceFactory()
 DecentralizedDnsServiceFactory::~DecentralizedDnsServiceFactory() {}
 
 // static
-DecentralizedDnsServiceFactory*
-DecentralizedDnsServiceFactory::GetInstance() {
+DecentralizedDnsServiceFactory* DecentralizedDnsServiceFactory::GetInstance() {
   return base::Singleton<DecentralizedDnsServiceFactory>::get();
 }
 
