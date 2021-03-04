@@ -15,6 +15,7 @@ extern const base::Feature kAdServing;
 
 bool IsAdServingEnabled();
 
+int GetDefaultAdNotificationsPerHour();
 int GetMaximumAdNotificationsPerDay();
 int GetMaximumNewTabPageAdsPerHour();
 int GetMaximumNewTabPageAdsPerDay();

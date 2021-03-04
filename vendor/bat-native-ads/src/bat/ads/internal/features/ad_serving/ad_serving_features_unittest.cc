@@ -44,6 +44,71 @@ TEST(BatAdsAdServingFeaturesTest, AdServingDisabled) {
   EXPECT_FALSE(is_enabled);
 }
 
+TEST(BatAdsAdServingFeaturesTest, DefaultAdNotificationsPerHour) {
+  // Arrange
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  base::FieldTrialParams kAdServingParameters;
+  kAdServingParameters["default_ad_notifications_per_hour"] = "2";
+  enabled_features.push_back({features::kAdServing, kAdServingParameters});
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const int default_ad_notifications_per_hour =
+      features::GetDefaultAdNotificationsPerHour();
+
+  // Assert
+  const int expected_default_ad_notifications_per_hour = 2;
+  EXPECT_EQ(expected_default_ad_notifications_per_hour,
+            default_ad_notifications_per_hour);
+}
+
+TEST(BatAdsAdServingFeaturesTest, DefaultDefaultAdNotificationsPerHour) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+  // Act
+  const int default_ad_notifications_per_hour =
+      features::GetDefaultAdNotificationsPerHour();
+
+  // Assert
+  const int expected_default_ad_notifications_per_hour = 5;
+  EXPECT_EQ(expected_default_ad_notifications_per_hour,
+            default_ad_notifications_per_hour);
+}
+
+TEST(BatAdsAdServingFeaturesTest, DisabledDefaultAdNotificationsPerHour) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  std::vector<base::Feature> disabled_features;
+  disabled_features.push_back(features::kAdServing);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const int default_ad_notifications_per_hour =
+      features::GetDefaultAdNotificationsPerHour();
+
+  // Assert
+  const int expected_default_ad_notifications_per_hour = 5;
+  EXPECT_EQ(expected_default_ad_notifications_per_hour,
+            default_ad_notifications_per_hour);
+}
+
 TEST(BatAdsAdServingFeaturesTest, MaximumAdNotificationsPerDay) {
   // Arrange
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
