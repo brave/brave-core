@@ -331,7 +331,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
       };
 
   rewards_service_->GetExternalWallet(
-      ledger::constant::kWalletUphold,
       base::BindLambdaForTesting(test_callback));
   run_loop.Run();
 }

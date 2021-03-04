@@ -452,7 +452,6 @@ void TipMessageHandler::GetExternalWallet(const base::ListValue* args) {
     return;
   }
   rewards_service_->GetExternalWallet(
-      rewards_service_->GetExternalWalletType(),
       base::BindOnce(&TipMessageHandler::GetExternalWalletCallback,
                      weak_factory_.GetWeakPtr()));
 }

@@ -340,7 +340,6 @@ void RewardsInternalsDOMHandler::GetExternalWallet(
   }
 
   rewards_service_->GetExternalWallet(
-      rewards_service_->GetExternalWalletType(),
       base::BindOnce(&RewardsInternalsDOMHandler::OnGetExternalWallet,
                      weak_ptr_factory_.GetWeakPtr()));
 }

@@ -1036,10 +1036,8 @@ BraveRewardsGetExternalWalletFunction::Run() {
     return RespondNow(OneArgument(std::move(data)));
   }
 
-  rewards_service->GetExternalWallet(
-      rewards_service->GetExternalWalletType(),
-      base::BindOnce(
-          &BraveRewardsGetExternalWalletFunction::OnGetExternalWallet, this));
+  rewards_service->GetExternalWallet(base::BindOnce(
+      &BraveRewardsGetExternalWalletFunction::OnGetExternalWallet, this));
   return RespondLater();
 }
 
@@ -1080,7 +1078,7 @@ BraveRewardsDisconnectWalletFunction::Run() {
     return RespondNow(NoArguments());
   }
 
-  rewards_service->DisconnectWallet(rewards_service->GetExternalWalletType());
+  rewards_service->DisconnectWallet();
   return RespondNow(NoArguments());
 }
 

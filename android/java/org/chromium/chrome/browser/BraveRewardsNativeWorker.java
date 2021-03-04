@@ -377,9 +377,9 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void DisconnectWallet(String wallet_type) {
+    public void DisconnectWallet() {
         synchronized (lock) {
-            nativeDisconnectWallet(mNativeBraveRewardsNativeWorker, wallet_type);
+            nativeDisconnectWallet(mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -625,7 +625,7 @@ public class BraveRewardsNativeWorker {
     private native void nativeSetAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
     private native boolean nativeIsAnonWallet(long nativeBraveRewardsNativeWorker);
     private native void nativeGetExternalWallet(long nativeBraveRewardsNativeWorker);
-    private native void nativeDisconnectWallet(long nativeBraveRewardsNativeWorker, String wallet_type);
+    private native void nativeDisconnectWallet(long nativeBraveRewardsNativeWorker);
     private native void nativeProcessRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
     private native void nativeRecoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
     private native void nativeRefreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);

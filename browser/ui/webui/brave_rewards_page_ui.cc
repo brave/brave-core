@@ -1574,10 +1574,8 @@ void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
     return;
   }
 
-  rewards_service_->GetExternalWallet(
-      rewards_service_->GetExternalWalletType(),
-      base::BindOnce(&RewardsDOMHandler::OnGetExternalWallet,
-                     weak_factory_.GetWeakPtr()));
+  rewards_service_->GetExternalWallet(base::BindOnce(
+      &RewardsDOMHandler::OnGetExternalWallet, weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetExternalWallet(
@@ -1652,7 +1650,7 @@ void RewardsDOMHandler::DisconnectWallet(const base::ListValue* args) {
   if (!rewards_service_) {
     return;
   }
-  rewards_service_->DisconnectWallet(rewards_service_->GetExternalWalletType());
+  rewards_service_->DisconnectWallet();
 }
 
 void RewardsDOMHandler::OnDisconnectWallet(
