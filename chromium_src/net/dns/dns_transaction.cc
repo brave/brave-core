@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_util.h"
-#include "brave/net/unstoppable_domains/constants.h"
+#include "brave/net/decentralized_dns/constants.h"
 #include "net/dns/dns_config.h"
 #include "net/dns/dns_server_iterator.h"
 
@@ -16,8 +16,8 @@ bool GetNextIndex(const std::string& hostname,
                   size_t* doh_server_index) {
   // Skip unstoppable domains resolver for non-crypto domains.
   if (config.dns_over_https_servers[*doh_server_index].server_template ==
-          unstoppable_domains::kDoHResolver &&
-      !base::EndsWith(hostname, unstoppable_domains::kCryptoDomain)) {
+          decentralized_dns::kDoHResolver &&
+      !base::EndsWith(hostname, decentralized_dns::kCryptoDomain)) {
     // No next available index to attempt.
     if (!dns_server_iterator->AttemptAvailable()) {
       return false;

@@ -16,7 +16,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
-#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/permissions/features.h"
@@ -96,16 +96,16 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-#include "brave/components/unstoppable_domains/features.h"
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/features.h"
 
-#define BRAVE_UNSTOPPABLE_DOMAINS_FEATURE_ENTRIES                             \
-    {"brave-unstoppable-domains",                                             \
-     flag_descriptions::kBraveUnstoppableDomainsName,                         \
-     flag_descriptions::kBraveUnstoppableDomainsDescription, kOsDesktop,      \
-     FEATURE_VALUE_TYPE(unstoppable_domains::features::kUnstoppableDomains)},
+#define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                             \
+    {"brave-decentralized-dns",                                             \
+     flag_descriptions::kBraveDecentralizedDnsName,                         \
+     flag_descriptions::kBraveDecentralizedDnsDescription, kOsDesktop,      \
+     FEATURE_VALUE_TYPE(decentralized_dns::features::kDecentralizedDns)},
 #else
-#define BRAVE_UNSTOPPABLE_DOMAINS_FEATURE_ENTRIES
+#define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_FEATURE_ENTRIES \
@@ -139,7 +139,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     BRAVE_IPFS_FEATURE_ENTRIES                                             \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
     SIDEBAR_FEATURE_ENTRIES                                                \
-    BRAVE_UNSTOPPABLE_DOMAINS_FEATURE_ENTRIES                              \
+    BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                              \
     {"brave-super-referral",                                               \
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \

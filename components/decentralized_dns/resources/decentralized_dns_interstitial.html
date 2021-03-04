@@ -1,0 +1,31 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#fff">
+  <title>$i18n{tabTitle}</title>
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
+  <link rel="stylesheet" href="decentralized_dns_interstitial.css">
+  <script src="../../../../ui/webui/resources/js/assert.js"></script>
+  <script src="../../../../ui/webui/resources/js/util.js"></script>
+  <script src="../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
+  <script src="decentralized_dns_interstitial.js"></script>
+</head>
+<body id="body">
+  <div class="interstitial-wrapper">
+    <div id="main-content">
+      <div class="icon" id="icon"></div>
+      <div id="main-message">
+        <h1>$i18nRaw{heading}</h1>
+        <p>$i18nRaw{primaryParagraph}</p>
+      </div>
+    </div>
+    <div class="nav-wrapper">
+      <button id="primary-button">$i18n{primaryButtonText}</button>
+      <button id="proceed-button" class="secondary-button small-link hidden"></button>
+      <button id="dont-proceed-button" class="secondary-button small-link">
+        $i18n{dontProceedButtonText}
+      </button>
+    </div>
+  </div>
+</body>

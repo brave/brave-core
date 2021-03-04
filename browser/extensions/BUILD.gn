@@ -10,7 +10,7 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/unstoppable_domains/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -68,7 +68,7 @@ source_set("extensions") {
     "//brave/components/ipfs/buildflags",
     "//brave/components/sidebar/buildflags",
     "//brave/components/tor/buildflags",
-    "//brave/components/unstoppable_domains/buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
@@ -113,8 +113,8 @@ source_set("extensions") {
     deps += [ "//brave/components/ipfs" ]
   }
 
-  if (unstoppable_domains_enabled) {
-    deps += [ "//brave/components/unstoppable_domains" ]
+  if (decentralized_dns_enabled) {
+    deps += [ "//brave/components/decentralized_dns" ]
   }
 
   if (brave_rewards_enabled) {

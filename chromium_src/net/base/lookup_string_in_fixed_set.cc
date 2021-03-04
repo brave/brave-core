@@ -10,7 +10,7 @@
 #undef LookupSuffixInReversedSet
 
 #include "base/strings/string_util.h"
-#include "brave/net/unstoppable_domains/constants.h"
+#include "brave/net/decentralized_dns/constants.h"
 
 namespace net {
 
@@ -45,8 +45,8 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
   // this, when users type *.crypto in omnibox, it will be parsed as
   // OmniboxInputType::URL input type instead of OmniboxInputType::UNKNOWN,
   // The first entry in the autocomplete list will be URL instead of search.
-  if (base::EndsWith(host, unstoppable_domains::kCryptoDomain)) {
-    *suffix_length = strlen(unstoppable_domains::kCryptoDomain) - 1;
+  if (base::EndsWith(host, decentralized_dns::kCryptoDomain)) {
+    *suffix_length = strlen(decentralized_dns::kCryptoDomain) - 1;
     return kDafsaFound;
   }
 

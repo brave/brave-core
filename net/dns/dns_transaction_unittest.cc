@@ -25,7 +25,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/net/unstoppable_domains/constants.h"
+#include "brave/net/decentralized_dns/constants.h"
 #include "net/base/ip_address.h"
 #include "net/base/port_util.h"
 #include "net/base/upload_bytes_element_reader.h"
@@ -943,12 +943,12 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
   ~BraveDnsTransactionTest() override = default;
 
   void BraveConfigureDohServers(bool multiple_server) {
-    GURL url(unstoppable_domains::kDoHResolver);
+    GURL url(decentralized_dns::kDoHResolver);
     URLRequestFilter* filter = URLRequestFilter::GetInstance();
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
     config_.dns_over_https_servers.push_back(
-        {unstoppable_domains::kDoHResolver, true});
+        {decentralized_dns::kDoHResolver, true});
 
     if (multiple_server) {
       GURL url2("https://test.com/dns-query");

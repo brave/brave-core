@@ -3,28 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #include "base/strings/strcat.h"
-#include "brave/components/unstoppable_domains/utils.h"
-#include "brave/net/unstoppable_domains/constants.h"
+#include "brave/components/decentralized_dns/utils.h"
+#include "brave/net/decentralized_dns/constants.h"
 #endif
 
 namespace {
 
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 void AddUnstoppableDomainsResolver(std::string* doh_templates,
                                    PrefService* local_state) {
-  if (unstoppable_domains::IsResolveMethodDoH(local_state) &&
-      doh_templates->find(unstoppable_domains::kDoHResolver) ==
+  if (decentralized_dns::IsResolveMethodDoH(local_state) &&
+      doh_templates->find(decentralized_dns::kDoHResolver) ==
           std::string::npos) {
     *doh_templates =
-        base::StrCat({unstoppable_domains::kDoHResolver, " ", *doh_templates});
+        base::StrCat({decentralized_dns::kDoHResolver, " ", *doh_templates});
   }
 }
-#endif  // BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#endif  // BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 
 // Add DoH servers to support Unstoppable Domains (and ENS in the future PR).
 // These servers are controlled using its own prefs and not
@@ -40,7 +40,7 @@ void AddDoHServers(std::string* doh_templates,
   if (force_check_parental_controls_for_automatic_mode)
     return;
 
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   AddUnstoppableDomainsResolver(doh_templates, local_state);
 #endif
 }

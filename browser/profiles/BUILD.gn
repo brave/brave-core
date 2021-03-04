@@ -37,7 +37,7 @@ source_set("profiles") {
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/tor",
-    "//brave/components/unstoppable_domains/buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/content:browser",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",

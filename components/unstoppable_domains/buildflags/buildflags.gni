@@ -1,3 +1,0 @@
-declare_args() {
-  unstoppable_domains_enabled = is_mac || is_linux || is_win
-}

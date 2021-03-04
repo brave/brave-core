@@ -1090,6 +1090,7 @@
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
 
       <part file="crypto_dot_com_strings.grdp" />
+      <part file="decentralized_dns_strings.grdp" />
       <part file="domain_block_strings.grdp" />
       <part file="ipfs_strings.grdp" />
       <part file="permissions_strings.grdp" />

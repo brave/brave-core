@@ -68,8 +68,8 @@ cr.define('settings', function () {
       return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue')
     }
 
-    isUnstoppableDomainsEnabled () {
-      return cr.sendWithPromise('isUnstoppableDomainsEnabled')
+    isDecentralizedDnsEnabled () {
+      return cr.sendWithPromise('isDecentralizedDnsEnabled')
     }
   }
 
