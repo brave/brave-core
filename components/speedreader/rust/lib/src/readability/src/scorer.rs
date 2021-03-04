@@ -58,7 +58,7 @@ pub fn fix_img_path(handle: Handle, url: &Url) -> bool {
     if let Some(src) = dom::get_attr("src", &handle) {
         if !src.starts_with("//") && !src.starts_with("http://") && src.starts_with("https://") {
             if let Ok(new_url) = url.join(&src) {
-                dom::set_attr("src", new_url.as_str(), handle);
+                dom::set_attr("src", new_url.as_str(), handle, false);
                 true
             } else {
                 // failed to fix

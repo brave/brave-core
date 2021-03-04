@@ -1,8 +1,7 @@
 use markup5ever_rcdom::NodeData::{Element, Text};
 use markup5ever_rcdom::{Handle, Node};
 use html5ever::tendril::StrTendril;
-use html5ever::Attribute;
-use html5ever::LocalName;
+use html5ever::{Attribute, QualName, LocalName};
 use std::rc::Rc;
 use std::str::FromStr;
 
@@ -29,7 +28,7 @@ pub fn attr(attr_name: &str, attrs: &[Attribute]) -> Option<String> {
     None
 }
 
-pub fn set_attr(attr_name: &str, value: &str, handle: Handle) {
+pub fn set_attr(attr_name: &str, value: &str, handle: Handle, create_if_missing: bool) {
     if let Element { ref attrs, .. } = handle.data {
         let attrs = &mut attrs.borrow_mut();
         if let Some(index) = attrs.iter().position(|attr| {
@@ -42,7 +41,21 @@ pub fn set_attr(attr_name: &str, value: &str, handle: Handle) {
                     value,
                 }
             }
+        } else {
+            if create_if_missing {
+                append_attr(attr_name, value, attrs);
+            }
         }
+    }
+}
+
+pub fn append_attr(attr_name: &str, value: &str, attrs: &mut Vec<Attribute>) {
+    if let Ok(value) = StrTendril::from_str(value) {
+        let new_attr = Attribute {
+            name: QualName::new(None, ns!(), LocalName::from(attr_name)),
+            value: value,
+        };
+        attrs.push(new_attr);
     }
 }
 

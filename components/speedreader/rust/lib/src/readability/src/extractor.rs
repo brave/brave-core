@@ -1,3 +1,4 @@
+use dom;
 use markup5ever_rcdom::RcDom;
 use markup5ever_rcdom::SerializableHandle;
 use html5ever::tendril::TendrilSink;
@@ -86,8 +87,15 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         &candidates,
     );
 
+    // Our CSS formats based on id="article".
+    dom::set_attr("id", "article", top_candidate.node.clone(), true);
+    let serialize_opts = serialize::SerializeOpts {
+        traversal_scope: serialize::TraversalScope::IncludeNode,
+        ..Default::default()
+    };
+
     let document: SerializableHandle = top_candidate.node.clone().into();
-    serialize(&mut bytes, &document, Default::default())?;
+    serialize(&mut bytes, &document, serialize_opts)?;
     let content = String::from_utf8(bytes).unwrap_or_default();
 
     Ok(Product { title, content })
