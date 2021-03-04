@@ -41,9 +41,8 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
-#include "brave/components/brave_rewards/browser/file_util.h"
+#include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
-#include "brave/components/brave_rewards/browser/logging_util.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -96,7 +95,7 @@ static const unsigned int kRetriesCountOnNetworkChange = 1;
 namespace {
 
 const int kDiagnosticLogMaxVerboseLevel = 6;
-const int kTailDiagnosticLogToNumLines = 20000;
+const int kDiagnosticLogKeepNumLines = 20000;
 const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
 const char pref_prefix[] = "brave.rewards";
 
@@ -114,6 +113,19 @@ std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
       NOTREACHED();
       return "GET";
   }
+}
+
+bool DeleteFilesOnFileTaskRunner(
+    const std::vector<base::FilePath>& file_paths) {
+  bool result = true;
+
+  for (const auto& file_path : file_paths) {
+    if (!base::DeletePathRecursively(file_path)) {
+      result = false;
+    }
+  }
+
+  return result;
 }
 
 // Returns pair of string and its parsed counterpart. We parse it on the file
@@ -307,6 +319,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
       publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
+      diagnostic_log_(new DiagnosticLog(diagnostic_log_path_,
+                                        kDiagnosticLogMaxFileSize,
+                                        kDiagnosticLogKeepNumLines)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
       next_timer_id_(0) {
   // Set up the rewards data source
@@ -316,6 +331,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
   }
@@ -871,6 +887,7 @@ void RewardsServiceImpl::LoadLedgerState(
 void RewardsServiceImpl::OnLedgerStateLoaded(
     ledger::client::OnLoadCallback callback,
     std::pair<std::string, base::Value> state) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!Connected()) {
     return;
   }
@@ -903,6 +920,7 @@ void RewardsServiceImpl::LoadPublisherState(
 void RewardsServiceImpl::OnPublisherStateLoaded(
     ledger::client::OnLoadCallback callback,
     const std::string& data) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!Connected()) {
     return;
   }
@@ -1352,23 +1370,8 @@ void RewardsServiceImpl::OnStopLedger(
 void RewardsServiceImpl::OnStopLedgerForCompleteReset(
     SuccessCallback callback,
     const ledger::type::Result result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
-
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(
-          &RewardsServiceImpl::ResetOnFilesTaskRunner,
-          base::Unretained(this)),
-      base::BindOnce(
-          &RewardsServiceImpl::OnCompleteReset,
-          AsWeakPtr(),
-          std::move(callback)));
-}
-
-bool RewardsServiceImpl::ResetOnFilesTaskRunner() {
-  // Close any open files before deleting them (required on Windows)
-  diagnostic_log_.Close();
 
   const std::vector<base::FilePath> paths = {
     ledger_state_path_,
@@ -1378,14 +1381,11 @@ bool RewardsServiceImpl::ResetOnFilesTaskRunner() {
     publisher_list_path_,
   };
 
-  bool res = true;
-  for (size_t i = 0; i < paths.size(); i++) {
-    if (!base::DeletePathRecursively(paths[i])) {
-      res = false;
-    }
-  }
-
-  return res;
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
+      base::BindOnce(&RewardsServiceImpl::OnFilesDeletedForReset, AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::Reset() {
@@ -1794,8 +1794,8 @@ void RewardsServiceImpl::FetchFavIcon(
   if (image_service) {
     current_media_fetchers_[url] = image_service->RequestImage(
         parsedUrl,
-        base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted,
-                   base::Unretained(this), callback, favicon_key, parsedUrl),
+        base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted, AsWeakPtr(),
+                   callback, favicon_key, parsedUrl),
         GetNetworkTrafficAnnotationTagForFaviconFetch());
   }
 }
@@ -2214,37 +2214,10 @@ void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
       "rewards_notification_tips_processed");
 }
 
-bool RewardsServiceImpl::MaybeTailDiagnosticLog(
-    const int num_lines) {
-  if (!diagnostic_log_.IsValid()) {
-    return false;
-  }
-
-  static bool first_run = true;
-
-  const int64_t length = diagnostic_log_.GetLength();
-  if (length == -1) {
-    return false;
-  }
-
-  if (!first_run && length <= kDiagnosticLogMaxFileSize) {
-    return true;
-  }
-
-  first_run = false;
-
-  if (!TailFile(&diagnostic_log_, num_lines)) {
-    return false;
-  }
-
-  return true;
-}
-
-void RewardsServiceImpl::DiagnosticLog(
-    const std::string& file,
-    const int line,
-    const int verbose_level,
-    const std::string& message) {
+void RewardsServiceImpl::WriteDiagnosticLog(const std::string& file,
+                                            const int line,
+                                            const int verbose_level,
+                                            const std::string& message) {
   if (ledger_for_testing_ || !should_persist_logs_) {
     return;
   }
@@ -2257,89 +2230,24 @@ void RewardsServiceImpl::DiagnosticLog(
     return;
   }
 
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RewardsServiceImpl::WriteToDiagnosticLogOnFileTaskRunner,
-          base::Unretained(this),
-          diagnostic_log_path_,
-          kTailDiagnosticLogToNumLines,
-          file,
-          line,
-          verbose_level,
-          message),
-      base::BindOnce(&RewardsServiceImpl::OnWriteToLogOnFileTaskRunner,
-          AsWeakPtr()));
+  diagnostic_log_->Write(
+      message, base::Time::Now(), file, line, verbose_level,
+      base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogWritten, AsWeakPtr()));
 }
 
-bool RewardsServiceImpl::WriteToDiagnosticLogOnFileTaskRunner(
-    const base::FilePath& log_path,
-    const int num_lines,
-    const std::string& file,
-    const int line,
-    const int verbose_level,
-    const std::string& message) {
-  if (!InitializeLog(&diagnostic_log_, log_path)) {
-    VLOG(0) << "Failed to initialize diagnostic log: "
-        << GetLastFileError(&diagnostic_log_);
-
-    return false;
-  }
-
-  const base::Time time = base::Time::Now();
-
-  const std::string log_entry =
-      FriendlyFormatLogEntry(time, file, line, verbose_level, message);
-
-  if (!WriteToLog(&diagnostic_log_, log_entry)) {
-    VLOG(0) << "Failed to write to diagnostic log: "
-        << GetLastFileError(&diagnostic_log_);
-
-    return false;
-  }
-
-  if (!MaybeTailDiagnosticLog(num_lines)) {
-    VLOG(0) << "Failed to vacuum diagnostic log";
-
-    return false;
-  }
-
-  return true;
-}
-
-void RewardsServiceImpl::OnWriteToLogOnFileTaskRunner(
-    const bool success) {
+void RewardsServiceImpl::OnDiagnosticLogWritten(const bool success) {
   DCHECK(success);
 }
 
 void RewardsServiceImpl::LoadDiagnosticLog(
       const int num_lines,
       LoadDiagnosticLogCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RewardsServiceImpl::LoadDiagnosticLogOnFileTaskRunner,
-          base::Unretained(this),
-          diagnostic_log_path_,
-          num_lines),
-      base::BindOnce(&RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner,
-          AsWeakPtr(),
-          std::move(callback)));
+  diagnostic_log_->ReadLastNLines(
+      num_lines, base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogLoaded,
+                                AsWeakPtr(), std::move(callback)));
 }
 
-std::string RewardsServiceImpl::LoadDiagnosticLogOnFileTaskRunner(
-    const base::FilePath& path,
-    const int num_lines) {
-  if (!base::PathExists(path)) {
-    return "";
-  }
-
-  std::string value;
-  if (!TailFileAsString(&diagnostic_log_, num_lines, &value)) {
-    return base::StringPrintf("ERROR: %s",
-        GetLastFileError(&diagnostic_log_).c_str());
-  }
-
-  return value;
-}
-
-void RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner(
+void RewardsServiceImpl::OnDiagnosticLogLoaded(
     LoadDiagnosticLogCallback callback,
     const std::string& value) {
   std::move(callback).Run(value);
@@ -2347,29 +2255,23 @@ void RewardsServiceImpl::OnLoadDiagnosticLogOnFileTaskRunner(
 
 void RewardsServiceImpl::ClearDiagnosticLog(
     ClearDiagnosticLogCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RewardsServiceImpl::ClearDiagnosticLogOnFileTaskRunner,
-          base::Unretained(this),
-          diagnostic_log_path_),
-      base::BindOnce(&RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner,
-          AsWeakPtr(),
-          std::move(callback)));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const std::vector<base::FilePath> paths = {
+      diagnostic_log_path_,
+  };
+
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
+      base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogCleared, AsWeakPtr(),
+                     std::move(callback)));
 }
 
-bool RewardsServiceImpl::ClearDiagnosticLogOnFileTaskRunner(
-    const base::FilePath& path) {
-  if (!base::PathExists(path)) {
-    return true;
-  }
-
-  diagnostic_log_.Close();
-
-  return base::DeleteFile(path);
-}
-
-void RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner(
+void RewardsServiceImpl::OnDiagnosticLogCleared(
     ClearDiagnosticLogCallback callback,
     const bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(success);
 }
 
@@ -2380,7 +2282,7 @@ void RewardsServiceImpl::Log(
     const std::string& message) {
   DCHECK(file);
 
-  DiagnosticLog(file, line, verbose_level, message);
+  WriteDiagnosticLog(file, line, verbose_level, message);
 
   const int vlog_level = ::logging::GetVlogLevelHelper(file, strlen(file));
   if (verbose_level <= vlog_level) {
@@ -3229,6 +3131,7 @@ void RewardsServiceImpl::RunDBTransaction(
 void RewardsServiceImpl::OnRunDBTransaction(
     ledger::client::RunDBTransactionCallback callback,
     ledger::type::DBCommandResponsePtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   callback(std::move(response));
 }
 
@@ -3332,8 +3235,9 @@ void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
   StopLedger(std::move(stop_callback));
 }
 
-void RewardsServiceImpl::OnCompleteReset(SuccessCallback callback,
-                                         bool success) {
+void RewardsServiceImpl::OnFilesDeletedForReset(SuccessCallback callback,
+                                                const bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   resetting_rewards_ = false;
   StartProcess(
       base::BindOnce(&RewardsServiceImpl::OnStartProcessForCompleteReset,
@@ -3354,26 +3258,22 @@ void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
 }
 
 void RewardsServiceImpl::DeleteLog(ledger::ResultCallback callback) {
-  diagnostic_log_.Close();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const std::vector<base::FilePath> paths = {
+      diagnostic_log_path_,
+  };
+
   base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(
-          &RewardsServiceImpl::DeleteLogTaskRunner,
-          base::Unretained(this)),
-      base::BindOnce(
-          &RewardsServiceImpl::OnDeleteLog,
-          AsWeakPtr(),
-          std::move(callback)));
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
+      base::BindOnce(&RewardsServiceImpl::OnDiagnosticLogDeleted, AsWeakPtr(),
+                     std::move(callback)));
 }
 
-bool RewardsServiceImpl::DeleteLogTaskRunner() {
-  return base::DeleteFile(diagnostic_log_path_);
-}
-
-void RewardsServiceImpl::OnDeleteLog(
-    ledger::ResultCallback callback,
-    const bool success) {
+void RewardsServiceImpl::OnDiagnosticLogDeleted(ledger::ResultCallback callback,
+                                                const bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const auto result = success
       ? ledger::type::Result::LEDGER_OK
       : ledger::type::Result::LEDGER_ERROR;

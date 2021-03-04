@@ -211,7 +211,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetAllPromotions,
                void(brave_rewards::GetAllPromotionsCallback callback));
 
-  MOCK_METHOD4(DiagnosticLog,
+  MOCK_METHOD4(WriteDiagnosticLog,
                void(const std::string& file,
                     const int line,
                     const int verbose_level,

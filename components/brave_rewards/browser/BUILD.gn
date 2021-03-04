@@ -9,11 +9,9 @@ source_set("browser") {
   sources = [
     "android_util.cc",
     "android_util.h",
-    "file_util.cc",
-    "file_util.h",
+    "diagnostic_log.cc",
+    "diagnostic_log.h",
     "logging.h",
-    "logging_util.cc",
-    "logging_util.h",
     "rewards_notification_service.cc",
     "rewards_notification_service.h",
     "rewards_notification_service_observer.h",
