@@ -901,6 +901,19 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsBlocked", IDS_ADBLOCK_TOTAL_ADS_BLOCKED },
         { "customFiltersTitle", IDS_ADBLOCK_CUSTOM_FILTERS_TITLE },
         { "customFiltersInstructions", IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS },                // NOLINT
+        { "customListSubscriptionsTitle", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TITLE },         // NOLINT
+        { "customListSubscriptionsInstructions", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_INSTRUCTIONS },  // NOLINT
+        { "customListSubscriptionsDisclaimer", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_DISCLAIMER },      // NOLINT
+
+        { "customListSubscriptionsEnterSubscriptionUrlPlaceholder", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ENTER_SUBSCRIPTION_URL_PLACEHOLDER }, // NOLINT
+        { "customListSubscriptionsSubmitNewSubscription", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_SUBMIT_NEW_SUBSCRIPTION },    // NOLINT
+        { "customListSubscriptionsCancelAddSubscription", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_CANCEL_ADD_SUBSCRIPTION },    // NOLINT
+        { "customListSubscriptionsAddNewFilterList", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ADD_NEW_FILTER_LIST },             // NOLINT
+        { "customListSubscriptionsTableFilterListColumn", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_FILTER_LIST_COLUMN },   // NOLINT
+        { "customListSubscriptionsTableLastUpdatedColumn", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_LAST_UPDATED_COLUMN }, // NOLINT
+        { "customListSubscriptionsTriggerUpdate", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TRIGGER_UPDATE },                     // NOLINT
+        { "customListSubscriptionsViewListSource", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_VIEW_LIST_SOURCE },                  // NOLINT
+        { "customListSubscriptionsUnsubscribe", IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE },                          // NOLINT
       }
     }, {
 #if BUILDFLAG(ENABLE_IPFS)

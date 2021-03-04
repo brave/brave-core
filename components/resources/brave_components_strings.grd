@@ -350,6 +350,18 @@
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total ads and trackers blocked:</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_TITLE" desc="Title for custom filters section">Custom Filters</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS" desc="Instructions for custom filters section">One per line, a filter is described in Adblock Plus filter syntax</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TITLE" desc="Title for custom filter list subscriptions section">Subscribe to filter lists</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_INSTRUCTIONS" desc="Instructions for custom filter list subscriptions section">Add additional lists created and maintained by your trusted community</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_DISCLAIMER" desc="Warning about risk of periodic IP address leakage from custom filter list subscriptions">Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ADD_NEW_FILTER_LIST" desc="Text for button to begin adding a new filter list subscription by entering its URL">Add filter list via URL</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ENTER_SUBSCRIPTION_URL_PLACEHOLDER" desc="Placeholder text for filter list URL input">Enter URL</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_SUBMIT_NEW_SUBSCRIPTION" desc="Text for filter list subscription submission button">Submit</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_CANCEL_ADD_SUBSCRIPTION" desc="Text for filter list subscription cancel button">Cancel</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_FILTER_LIST_COLUMN" desc="Header for the filter list name column in a table of all list subscriptions">Filter list</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_LAST_UPDATED_COLUMN" desc="Header for the time of last update in a table of all list subscriptions">Last updated</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TRIGGER_UPDATE" desc="Text for button to immediately download and apply the latest filter list version">Update now</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_VIEW_LIST_SOURCE" desc="Text for button to view the raw source for a custom filter list subscription">View source</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE" desc="Text for button to unsubscribe from a custom filter list subscription">Unsubscribe</message>
 
       <!-- WebUI webcompat reporter resources -->
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>

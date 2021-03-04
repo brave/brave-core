@@ -40,11 +40,24 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
     case types.ADBLOCK_GET_REGIONAL_LISTS:
       chrome.send('brave_adblock.getRegionalLists')
       break
+    case types.ADBLOCK_GET_LIST_SUBSCRIPTIONS:
+      break
+    case types.ADBLOCK_SUBMIT_NEW_SUBSCRIPTION:
+      break
+    case types.ADBLOCK_SET_SUBSCRIPTION_ENABLED:
+      break
+    case types.ADBLOCK_DELETE_SUBSCRIPTION:
+      break
+    case types.ADBLOCK_REFRESH_SUBSCRIPTION:
+      break
     case types.ADBLOCK_ON_GET_CUSTOM_FILTERS:
       state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
       break
     case types.ADBLOCK_ON_GET_REGIONAL_LISTS:
       state = { ...state, settings: { ...state.settings, regionalLists: action.payload.regionalLists } }
+      break
+    case types.ADBLOCK_ON_GET_LIST_SUBSCRIPTIONS:
+      state = { ...state, settings: { ...state.settings, listSubscriptions: action.payload.listSubscriptions } }
       break
     case types.ADBLOCK_UPDATE_CUSTOM_FILTERS:
       state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
