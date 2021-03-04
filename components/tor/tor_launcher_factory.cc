@@ -233,6 +233,14 @@ void TorLauncherFactory::OnTorControlReady() {
       base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
                          base::BindOnce(&TorLauncherFactory::GotSOCKSListeners,
                                         weak_ptr_factory_.GetWeakPtr())));
+  // A Circuit might have been established when Tor control is ready, in that
+  // case we will not receive circuit established events. So we query the status
+  // directly as fail safe, otherwise Tor window might stuck in disconnected
+  // state while Tor circuit is ready.
+  control_->GetCircuitEstablished(base::BindPostTask(
+      base::SequencedTaskRunnerHandle::Get(),
+      base::BindOnce(&TorLauncherFactory::GotCircuitEstablished,
+                     weak_ptr_factory_.GetWeakPtr())));
   control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT,
@@ -275,6 +283,17 @@ void TorLauncherFactory::GotSOCKSListeners(
   tor_proxy_uri_ = tor_proxy_uri;
   for (auto& observer : observers_)
     observer.OnTorNewProxyURI(tor_proxy_uri);
+}
+
+void TorLauncherFactory::GotCircuitEstablished(bool error, bool established) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (error) {
+    VLOG(1) << "Failed to get circuit established!";
+    return;
+  }
+  is_connected_ = established;
+  for (auto& observer : observers_)
+    observer.OnTorCircuitEstablished(established);
 }
 
 void TorLauncherFactory::OnTorControlClosed(bool was_running) {

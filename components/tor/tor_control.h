@@ -90,12 +90,15 @@ class TorControl {
       base::OnceCallback<void(bool error,
                               const std::vector<std::string>& listeners)>
           callback);
+  void GetCircuitEstablished(
+      base::OnceCallback<void(bool error, bool established)> callback);
 
  protected:
   friend class TorControlTest;
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseQuoted);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseKV);
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ReadLine);
+  FRIEND_TEST_ALL_PREFIXES(TorControlTest, GetCircuitEstablishedDone);
 
   static bool ParseKV(const std::string& string,
                       std::string* key,
@@ -134,6 +137,15 @@ class TorControl {
       std::unique_ptr<std::vector<std::string>> listeners,
       base::OnceCallback<
           void(bool error, const std::vector<std::string>& listeners)> callback,
+      bool error,
+      const std::string& status,
+      const std::string& reply);
+  void GetCircuitEstablishedLine(std::string* established,
+                                 const std::string& status,
+                                 const std::string& reply);
+  void GetCircuitEstablishedDone(
+      std::unique_ptr<std::string> established,
+      base::OnceCallback<void(bool error, bool established)> callback,
       bool error,
       const std::string& status,
       const std::string& reply);

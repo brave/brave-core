@@ -40,6 +40,9 @@ constexpr char kGetVersionCmd[] = "GETINFO version";
 constexpr char kGetVersionReply[] = "version=";
 constexpr char kGetSOCKSListenersCmd[] = "GETINFO net/listeners/socks";
 constexpr char kGetSOCKSListenersReply[] = "net/listeners/socks=";
+constexpr char kGetCircuitEstablishedCmd[] =
+    "GETINFO status/circuit-established";
+constexpr char kGetCircuitEstablishedReply[] = "status/circuit-established=";
 
 static std::string escapify(const char* buf, int len) {
   std::ostringstream s;
@@ -459,6 +462,58 @@ void TorControl::GetSOCKSListenersDone(
     return;
   }
   std::move(callback).Run(false, *listeners);
+}
+
+void TorControl::GetCircuitEstablished(
+    base::OnceCallback<void(bool error, bool established)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
+  std::unique_ptr<std::string> established = std::make_unique<std::string>();
+  std::string* established_p = established.get();
+  io_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &TorControl::DoCmd, weak_ptr_factory_.GetWeakPtr(),
+          kGetCircuitEstablishedCmd,
+          base::BindRepeating(&TorControl::GetCircuitEstablishedLine,
+                              weak_ptr_factory_.GetWeakPtr(), established_p),
+          base::BindOnce(&TorControl::GetCircuitEstablishedDone,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(established),
+                         std::move(callback))));
+}
+
+void TorControl::GetCircuitEstablishedLine(std::string* established,
+                                           const std::string& status,
+                                           const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  if (status != "250" ||
+      !base::StartsWith(reply, kGetCircuitEstablishedReply,
+                        base::CompareCase::SENSITIVE) ||
+      !established->empty()) {
+    VLOG(0) << "tor: unexpected " << kGetCircuitEstablishedCmd << " reply";
+    return;
+  }
+  *established = reply.substr(strlen(kGetCircuitEstablishedReply));
+}
+
+void TorControl::GetCircuitEstablishedDone(
+    std::unique_ptr<std::string> established,
+    base::OnceCallback<void(bool error, bool established)> callback,
+    bool error,
+    const std::string& status,
+    const std::string& reply) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
+  bool result;
+  if (*established == "1")
+    result = true;
+  else if (*established == "0")
+    result = false;
+  else
+    error = true;
+  if (error || status != "250" || reply != "OK" || established->empty()) {
+    std::move(callback).Run(true, false);
+    return;
+  }
+  std::move(callback).Run(false, result);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
