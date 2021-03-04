@@ -935,6 +935,15 @@ static const uint8_t kTestCryptoResponseDatagram[] = {
     0x00, 0x00, 0x01, 0x00, 0x01, 0xc0, 0x0c, 0x00, 0x01, 0x00, 0x01, 0x00,
     0x00, 0x00, 0xa2, 0x00, 0x04, 0x8e, 0xfa, 0x48, 0xc4};
 
+static const char kTestEthHostName[] = "test.eth";
+
+// Response contains IP address: 142.250.72.196 for test.eth.
+static const uint8_t kTestEthResponseDatagram[] = {
+    0x00, 0x00, 0x81, 0x80, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x74, 0x65, 0x73, 0x74, 0x03, 0x65, 0x74, 0x68, 0x00,
+    0x00, 0x01, 0x00, 0x01, 0xc0, 0x0c, 0x00, 0x01, 0x00, 0x01, 0x00,
+    0x00, 0x00, 0xa2, 0x00, 0x04, 0x8e, 0xfa, 0x48, 0xc4};
+
 class BraveDnsTransactionTest : public DnsTransactionTestBase,
                                 public WithTaskEnvironment {
  public:
@@ -942,7 +951,7 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
 
   ~BraveDnsTransactionTest() override = default;
 
-  void BraveConfigureDohServers(bool multiple_server) {
+  void BraveConfigureDohServers(bool user_doh_server) {
     GURL url(decentralized_dns::kUnstoppableDomainsDoHResolver);
     URLRequestFilter* filter = URLRequestFilter::GetInstance();
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
@@ -950,11 +959,17 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
     config_.dns_over_https_servers.push_back(
         {decentralized_dns::kUnstoppableDomainsDoHResolver, true});
 
-    if (multiple_server) {
-      GURL url2("https://test.com/dns-query");
-      filter->AddHostnameInterceptor(url2.scheme(), url2.host(),
+    url = GURL(decentralized_dns::kENSDoHResolver);
+    filter->AddHostnameInterceptor(url.scheme(), url.host(),
+                                   std::make_unique<DohJobInterceptor>(this));
+    config_.dns_over_https_servers.push_back(
+        {decentralized_dns::kENSDoHResolver, true});
+
+    if (user_doh_server) {
+      url = GURL("https://test.com/dns-query");
+      filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                      std::make_unique<DohJobInterceptor>(this));
-      config_.dns_over_https_servers.push_back({url2.spec(), true});
+      config_.dns_over_https_servers.push_back({url.spec(), true});
     }
 
     ConfigureFactory();
@@ -966,10 +981,13 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
   }
 };
 
-TEST_F(BraveDnsTransactionTest, SkipUDResolverForNonCryptoDomainsSingleServer) {
+TEST_F(BraveDnsTransactionTest,
+       SkipDecentralizedDNSResolversForNonTargetTLDsWithoutUserDoHServer) {
   BraveConfigureDohServers(false);
   EXPECT_TRUE(resolve_context_->GetDohServerAvailability(
       0u /* doh_server_index */, session_.get()));
+  EXPECT_TRUE(resolve_context_->GetDohServerAvailability(
+      1u /* doh_server_index */, session_.get()));
   TransactionHelper helper0(ERR_BLOCKED_BY_CLIENT);
   helper0.StartTransaction(transaction_factory_.get(), kT0HostName, kT0Qtype,
                            true /* secure */, resolve_context_.get());
@@ -977,7 +995,7 @@ TEST_F(BraveDnsTransactionTest, SkipUDResolverForNonCryptoDomainsSingleServer) {
 }
 
 TEST_F(BraveDnsTransactionTest,
-       SkipUDResolverForNonCryptoDomainsMultipleServers) {
+       SkipDecentralizedDNSResolversForNonTargetTLDsWithUserDoHServer) {
   BraveConfigureDohServers(true);
   AddQueryAndResponse(0, kT0HostName, kT0Qtype, kT0ResponseDatagram,
                       base::size(kT0ResponseDatagram), SYNCHRONOUS,
@@ -990,7 +1008,8 @@ TEST_F(BraveDnsTransactionTest,
   helper0.RunUntilComplete();
 }
 
-TEST_F(BraveDnsTransactionTest, UseUDResolverForCryptoDomainsSingleServer) {
+TEST_F(BraveDnsTransactionTest,
+       UseUDResolverForCryptoDomainsWithoutUserDoHServer) {
   BraveConfigureDohServers(false);
   AddQueryAndResponse(
       0, kTestCryptoHostName, dns_protocol::kTypeA, kTestCryptoResponseDatagram,
@@ -1004,7 +1023,8 @@ TEST_F(BraveDnsTransactionTest, UseUDResolverForCryptoDomainsSingleServer) {
   helper0.RunUntilComplete();
 }
 
-TEST_F(BraveDnsTransactionTest, UseUDResolverForCryptoDomainsMultipleServer) {
+TEST_F(BraveDnsTransactionTest,
+       UseUDResolverForCryptoDomainsWithUserDoHServer) {
   BraveConfigureDohServers(true);
   AddQueryAndResponse(
       0, kTestCryptoHostName, dns_protocol::kTypeA, kTestCryptoResponseDatagram,
@@ -1013,6 +1033,35 @@ TEST_F(BraveDnsTransactionTest, UseUDResolverForCryptoDomainsMultipleServer) {
       false /* enqueue_transaction_id */);
   TransactionHelper helper0(1);
   helper0.StartTransaction(transaction_factory_.get(), kTestCryptoHostName,
+                           dns_protocol::kTypeA, true /* secure */,
+                           resolve_context_.get());
+  helper0.RunUntilComplete();
+}
+
+TEST_F(BraveDnsTransactionTest,
+       UseENSResolverForEthDomainsWithoutUserDoHServer) {
+  BraveConfigureDohServers(false);
+  AddQueryAndResponse(
+      0, kTestEthHostName, dns_protocol::kTypeA, kTestEthResponseDatagram,
+      base::size(kTestEthResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
+      nullptr /* opt_rdata */, DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
+      false /* enqueue_transaction_id */);
+  TransactionHelper helper0(1);
+  helper0.StartTransaction(transaction_factory_.get(), kTestEthHostName,
+                           dns_protocol::kTypeA, true /* secure */,
+                           resolve_context_.get());
+  helper0.RunUntilComplete();
+}
+
+TEST_F(BraveDnsTransactionTest, UseENSResolverForEthDomainsWithUserDoHServer) {
+  BraveConfigureDohServers(false);
+  AddQueryAndResponse(
+      0, kTestEthHostName, dns_protocol::kTypeA, kTestEthResponseDatagram,
+      base::size(kTestEthResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
+      nullptr /* opt_rdata */, DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
+      false /* enqueue_transaction_id */);
+  TransactionHelper helper0(1);
+  helper0.StartTransaction(transaction_factory_.get(), kTestEthHostName,
                            dns_protocol::kTypeA, true /* secure */,
                            resolve_context_.get());
   helper0.RunUntilComplete();

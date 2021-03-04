@@ -88,8 +88,19 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
   config = GetSecureDnsConfiguration();
   EXPECT_EQ(config.servers(), expected_doh_servers);
 
+  // Set resolve method of ENS to DoH should update the config.
+  local_state()->SetInteger(
+      kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  config = GetSecureDnsConfiguration();
+  expected_doh_servers = {{kENSDoHResolver, true},
+                          {kUnstoppableDomainsDoHResolver, true},
+                          {"https://test.com", true}};
+  EXPECT_EQ(config.servers(), expected_doh_servers);
+
   // Set resolve method to disabled should keep user's DoH setting.
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
+                            static_cast<int>(ResolveMethodTypes::DISABLED));
+  local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::DISABLED));
   config = GetSecureDnsConfiguration();
   expected_doh_servers = {{"https://test.com", true}};
@@ -118,6 +129,15 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsServiceBrowserTest,
   local_state()->SetString(prefs::kDnsOverHttpsTemplates, "https://test.com");
   config = GetSecureDnsConfiguration();
   expected_doh_servers = {{kUnstoppableDomainsDoHResolver, true},
+                          {"https://test.com", true}};
+  EXPECT_EQ(config.servers(), expected_doh_servers);
+
+  // Set resolve method of ENS to DoH should update the config.
+  local_state()->SetInteger(
+      kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  config = GetSecureDnsConfiguration();
+  expected_doh_servers = {{kENSDoHResolver, true},
+                          {kUnstoppableDomainsDoHResolver, true},
                           {"https://test.com", true}};
   EXPECT_EQ(config.servers(), expected_doh_servers);
 

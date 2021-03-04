@@ -92,7 +92,7 @@ class DecentralizedDnsNavigationThrottleBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
-                       ShowInterstitialAndProceed) {
+                       ShowUnstoppableDomainsInterstitialAndProceed) {
   ui_test_utils::NavigateToURL(browser(), GURL("http://test.crypto"));
 
   content::WebContents* web_contents =
@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
-                       ShowInterstitialAndReject) {
+                       ShowUnstoppableDomainsInterstitialAndReject) {
   ui_test_utils::NavigateToURL(browser(), GURL("http://test.crypto"));
 
   content::WebContents* web_contents =
@@ -129,6 +129,46 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DISABLED),
             local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
+}
+
+IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
+                       ShowENSInterstitialAndProceed) {
+  ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth"));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
+            local_state()->GetInteger(kENSResolveMethod));
+  SendInterstitialCommandSync(
+      browser(),
+      security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS),
+            local_state()->GetInteger(kENSResolveMethod));
+}
+
+IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
+                       ShowENSInterstitialAndReject) {
+  ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth"));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
+  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
+            local_state()->GetInteger(kENSResolveMethod));
+  SendInterstitialCommandSync(
+      browser(),
+      security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DISABLED),
+            local_state()->GetInteger(kENSResolveMethod));
 }
 
 }  // namespace decentralized_dns

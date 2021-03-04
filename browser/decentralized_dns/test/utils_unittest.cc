@@ -42,14 +42,15 @@ class UtilsUnitTest : public testing::TestWithParam<bool> {
   bool feature_enabled_;
 };
 
+TEST_P(UtilsUnitTest, IsDecentralizedDnsEnabled) {
+  EXPECT_EQ(feature_enabled(), IsDecentralizedDnsEnabled());
+}
+
 TEST_P(UtilsUnitTest, IsUnstoppableDomainsTLD) {
   EXPECT_TRUE(IsUnstoppableDomainsTLD(GURL("http://test.crypto")));
   EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://test.com")));
+  EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://test.eth")));
   EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://crypto")));
-}
-
-TEST_P(UtilsUnitTest, IsDecentralizedDnsEnabled) {
-  EXPECT_EQ(feature_enabled(), IsDecentralizedDnsEnabled());
 }
 
 TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
@@ -70,6 +71,29 @@ TEST_P(UtilsUnitTest, IsUnstoppableDomainsResolveMethodDoH) {
       static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
   EXPECT_EQ(feature_enabled(),
             IsUnstoppableDomainsResolveMethodDoH(local_state()));
+}
+
+TEST_P(UtilsUnitTest, IsENSTLD) {
+  EXPECT_TRUE(IsENSTLD(GURL("http://test.eth")));
+  EXPECT_FALSE(IsENSTLD(GURL("http://test.com")));
+  EXPECT_FALSE(IsENSTLD(GURL("http://test.crypto")));
+  EXPECT_FALSE(IsENSTLD(GURL("http://eth")));
+}
+
+TEST_P(UtilsUnitTest, IsENSResolveMethodAsk) {
+  EXPECT_EQ(feature_enabled(), IsENSResolveMethodAsk(local_state()));
+
+  local_state()->SetInteger(
+      kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
+}
+
+TEST_P(UtilsUnitTest, IsENSResolveMethodDoH) {
+  EXPECT_FALSE(IsENSResolveMethodDoH(local_state()));
+
+  local_state()->SetInteger(
+      kENSResolveMethod, static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS));
+  EXPECT_EQ(feature_enabled(), IsENSResolveMethodDoH(local_state()));
 }
 
 INSTANTIATE_TEST_SUITE_P(/* no prefix */, UtilsUnitTest, testing::Bool());
