@@ -184,4 +184,120 @@ TEST(TorControlTest, ReadLine) {
   base::RunLoop().RunUntilIdle();
 }
 
+TEST(TorControlTest, GetCircuitEstablishedDone) {
+  content::BrowserTaskEnvironment task_environment;
+  scoped_refptr<base::SequencedTaskRunner> io_task_runner =
+      content::GetIOThreadTaskRunner({});
+
+  MockTorControlDelegate delegate;
+  std::unique_ptr<TorControl> control =
+      std::make_unique<TorControl>(&delegate, io_task_runner);
+
+  io_task_runner->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](std::unique_ptr<TorControl> control) {
+                       std::unique_ptr<std::string> established =
+                           std::make_unique<std::string>("0");
+                       bool is_called = false;
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_FALSE(error);
+                                 EXPECT_FALSE(result);
+                               },
+                               &is_called),
+                           false, "250", "OK");
+                       EXPECT_TRUE(is_called);
+
+                       is_called = false;
+                       established.reset(new std::string("1"));
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_FALSE(error);
+                                 EXPECT_TRUE(result);
+                               },
+                               &is_called),
+                           false, "250", "OK");
+                       EXPECT_TRUE(is_called);
+
+                       // --- Error cases ---
+                       is_called = false;
+                       established.reset(new std::string("iambrave"));
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_TRUE(error);
+                                 EXPECT_FALSE(result);
+                               },
+                               &is_called),
+                           false, "250", "OK");
+                       EXPECT_TRUE(is_called);
+
+                       is_called = false;
+                       established.reset(new std::string(""));
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_TRUE(error);
+                                 EXPECT_FALSE(result);
+                               },
+                               &is_called),
+                           false, "250", "OK");
+                       EXPECT_TRUE(is_called);
+
+                       is_called = false;
+                       established.reset(new std::string("1"));
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_TRUE(error);
+                                 EXPECT_FALSE(result);
+                               },
+                               &is_called),
+                           true, "250", "OK");
+                       EXPECT_TRUE(is_called);
+
+                       is_called = false;
+                       established.reset(new std::string("1"));
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_TRUE(error);
+                                 EXPECT_FALSE(result);
+                               },
+                               &is_called),
+                           false, "500", "OK");
+                       EXPECT_TRUE(is_called);
+
+                       is_called = false;
+                       established.reset(new std::string("1"));
+                       control->GetCircuitEstablishedDone(
+                           std::move(established),
+                           base::BindOnce(
+                               [](bool* is_called, bool error, bool result) {
+                                 *is_called = true;
+                                 EXPECT_TRUE(error);
+                                 EXPECT_FALSE(result);
+                               },
+                               &is_called),
+                           false, "500", "NOT_OK");
+                       EXPECT_TRUE(is_called);
+                     },
+                     std::move(control)));
+  base::RunLoop().RunUntilIdle();
+}
+
 }  // namespace tor

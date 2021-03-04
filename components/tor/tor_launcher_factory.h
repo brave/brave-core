@@ -78,6 +78,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void GotVersion(bool error, const std::string& version);
   void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);
+  void GotCircuitEstablished(bool error, bool established);
 
   void LaunchTorInternal();
   void RelaunchTor();
