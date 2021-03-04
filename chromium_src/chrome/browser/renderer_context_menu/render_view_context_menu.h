@@ -13,7 +13,15 @@
 
 // Get the Chromium declaration.
 #define RenderViewContextMenu RenderViewContextMenu_Chromium
+
+class BraveRenderViewContextMenu;
+
+#define RegisterMenuShownCallbackForTesting                      \
+  RegisterMenuShownCallbackForTesting(                           \
+      base::OnceCallback<void(BraveRenderViewContextMenu*)> cb); \
+  static void RegisterMenuShownCallbackForTesting_unused
 #include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.h"
+#undef RegisterMenuShownCallbackForTesting
 #undef RenderViewContextMenu
 
 // Declare our own subclass with overridden methods.

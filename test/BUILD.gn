@@ -32,8 +32,8 @@ static_library("brave_test_support_unit") {
   testonly = true
 
   sources = [
-    "base/brave_testing_profile.cc",
-    "base/brave_testing_profile.h",
+    # Not including brave_testing_profile.{h,cc} here, they need to be pulled
+    # via an override for testing_profile.{h,cc} for upstream tests to build.
     "base/brave_unit_test_suite.cc",
     "base/brave_unit_test_suite.h",
     "base/run_all_unittests.cc",
