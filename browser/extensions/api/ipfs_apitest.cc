@@ -70,7 +70,8 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, ExecutableAvailChangeIsReflected) {
       "executableAvailableChangeIsReflected(false)"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 
-  GetPrefs()->SetBoolean(kIPFSBinaryAvailable, true);
+  GetPrefs()->SetFilePath(kIPFSBinaryPath,
+                          base::FilePath(FILE_PATH_LITERAL("some_path")));
   ASSERT_TRUE(extension);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ipfs_companion_extension_id,
@@ -141,8 +142,10 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchShutdownSuccess) {
           browser()->profile());
   ASSERT_TRUE(service);
 
-  GetPrefs()->SetBoolean(kIPFSBinaryAvailable, true);
+  GetPrefs()->SetFilePath(kIPFSBinaryPath,
+                          base::FilePath(FILE_PATH_LITERAL("some_path")));
   service->SetAllowIpfsLaunchForTest(true);
+
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ipfs_companion_extension_id, "launchSuccess()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
@@ -164,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(IpfsExtensionApiTest, LaunchFailWhenNotInstalled) {
   ASSERT_TRUE(service);
 
   service->SetAllowIpfsLaunchForTest(true);
-  GetPrefs()->SetBoolean(kIPFSBinaryAvailable, false);
+  GetPrefs()->SetFilePath(kIPFSBinaryPath, base::FilePath());
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ipfs_companion_extension_id, "launchFail()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;

@@ -80,7 +80,7 @@ class IpfsService : public KeyedService,
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
   IPFSResolveMethodTypes GetIPFSResolveMethodType() const;
-  base::FilePath GetIpfsExecutablePath();
+  base::FilePath GetIpfsExecutablePath() const;
   base::FilePath GetDataPath() const;
   base::FilePath GetConfigFilePath() const;
 

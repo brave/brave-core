@@ -13,9 +13,8 @@
 // Disabled: Disables all IPFS handling.
 const char kIPFSResolveMethod[] = "brave.ipfs.resolve_method";
 
-// Stores the location of the IPFS binary to determine if a local node was ever
-// installed.
-const char kIPFSBinaryAvailable[] = "brave.ipfs.binary_available";
+// Stores the location of the IPFS binary
+const char kIPFSBinaryPath[] = "brave.ipfs.binary_path";
 
 // Used to determine whether to automatically fallback to gateway when the
 // local node is not available.

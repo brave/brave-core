@@ -71,8 +71,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #if BUILDFLAG(IPFS_ENABLED)
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod),
             static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_ASK)));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kIPFSBinaryAvailable));
+  EXPECT_TRUE(
+      browser()->profile()->GetPrefs()->GetFilePath(kIPFSBinaryPath).empty());
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSAutoRedirectGateway));
 #endif
