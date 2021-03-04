@@ -78,7 +78,7 @@ static std::string escapify(const char* buf, int len) {
 
 }  // namespace
 
-TorControl::TorControl(TorControl::Delegate* delegate,
+TorControl::TorControl(base::WeakPtr<TorControl::Delegate> delegate,
                        scoped_refptr<base::SequencedTaskRunner> task_runner)
     : running_(false),
       owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
@@ -981,15 +981,14 @@ void TorControl::Error() {
 void TorControl::NotifyTorControlReady() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&Delegate::OnTorControlReady, delegate_->AsWeakPtr()));
+      FROM_HERE, base::BindOnce(&Delegate::OnTorControlReady, delegate_));
 }
 
 void TorControl::NotifyTorControlClosed() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&Delegate::OnTorControlClosed,
-                                delegate_->AsWeakPtr(), running_));
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorControlClosed, delegate_, running_));
 }
 
 void TorControl::NotifyTorEvent(
@@ -998,39 +997,38 @@ void TorControl::NotifyTorEvent(
     const std::map<std::string, std::string>& extra) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&Delegate::OnTorEvent, delegate_->AsWeakPtr(),
-                                event, initial, extra));
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorEvent, delegate_, event, initial, extra));
 }
 
 void TorControl::NotifyTorRawCmd(const std::string& cmd) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&Delegate::OnTorRawCmd, delegate_->AsWeakPtr(), cmd));
+      FROM_HERE, base::BindOnce(&Delegate::OnTorRawCmd, delegate_, cmd));
 }
 
 void TorControl::NotifyTorRawAsync(const std::string& status,
                                    const std::string& line) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&Delegate::OnTorRawAsync,
-                                delegate_->AsWeakPtr(), status, line));
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorRawAsync, delegate_, status, line));
 }
 
 void TorControl::NotifyTorRawMid(const std::string& status,
                                  const std::string& line) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&Delegate::OnTorRawMid, delegate_->AsWeakPtr(),
-                                status, line));
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorRawMid, delegate_, status, line));
 }
 
 void TorControl::NotifyTorRawEnd(const std::string& status,
                                  const std::string& line) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   owner_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&Delegate::OnTorRawEnd, delegate_->AsWeakPtr(),
-                                status, line));
+      FROM_HERE,
+      base::BindOnce(&Delegate::OnTorRawEnd, delegate_, status, line));
 }
 
 // ParseKV(string, key, value)
