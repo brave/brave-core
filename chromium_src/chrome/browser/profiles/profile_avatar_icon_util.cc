@@ -8,6 +8,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/grit/theme_resources.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
 
 // First, define anything that patches will rely on.
@@ -47,6 +48,10 @@ size_t GetBraveAvatarIconStartIndex();
   GetCustomProfileAvatarIconsAndLabels_ChromiumImpl
 #define IsDefaultAvatarIconUrl IsDefaultAvatarIconUrl_ChromiumImpl
 #define GetGuestAvatar GetGuestAvatar_ChromiumImpl
+#define GetPlaceholderAvatarIconWithColors \
+  GetPlaceholderAvatarIconWithColors_ChromiumImpl
+#define GetDefaultProfileAvatarIconAndLabel \
+  GetDefaultProfileAvatarIconAndLabel_ChromiumImpl
 
 #include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
@@ -54,6 +59,8 @@ size_t GetBraveAvatarIconStartIndex();
 #undef GetCustomProfileAvatarIconsAndLabels
 #undef IsDefaultAvatarIconUrl
 #undef GetGuestAvatar
+#undef GetPlaceholderAvatarIconWithColors
+#undef GetDefaultProfileAvatarIconAndLabel
 
 namespace profiles {
 
@@ -187,6 +194,32 @@ ui::ImageModel GetGuestAvatar(int size) {
       ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
           ui::NativeTheme::kColorId_DefaultIconColor),
       size);
+}
+
+gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
+  SkColor stroke_color,
+  int size) {
+  return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+    GetPlaceholderAvatarIconResourceID());
+}
+
+// Have to redo implementation here because of the re-definition of the
+// GetPlaceholderAvatarIconWithColors function above which is used in this
+// function. Also, changes the label from "Default Avatar" to our placeholder
+// avatar name.
+std::unique_ptr<base::DictionaryValue> GetDefaultProfileAvatarIconAndLabel(
+  SkColor fill_color,
+  SkColor stroke_color,
+  bool selected) {
+  std::unique_ptr<base::DictionaryValue> avatar_info(
+    new base::DictionaryValue());
+  gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
+    fill_color, stroke_color, kAvatarIconSize);
+  size_t index = profiles::GetPlaceholderAvatarIndex();
+  return GetAvatarIconAndLabelDict(
+    webui::GetBitmapDataUrl(icon.AsBitmap()),
+    l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
+    index, selected, /*is_gaia_avatar=*/false);
 }
 
 }  // namespace profiles
