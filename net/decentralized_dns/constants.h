@@ -9,8 +9,12 @@
 namespace decentralized_dns {
 
 constexpr char kCryptoDomain[] = ".crypto";
-constexpr char kDoHResolver[] =
+constexpr char kUnstoppableDomainsDoHResolver[] =
     "https://resolver.unstoppable.io/dns-query{?brave_UD}";
+
+constexpr char kEthDomain[] = ".eth";
+constexpr char kENSDoHResolver[] =
+    "https://resolver.cloudflare-eth.com/dns-query{?brave_ENS}";
 
 }  // namespace decentralized_dns
 

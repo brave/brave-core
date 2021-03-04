@@ -11,10 +11,15 @@ class PrefService;
 
 namespace decentralized_dns {
 
-bool IsUnstoppableDomainsTLD(const GURL& url);
 bool IsDecentralizedDnsEnabled();
-bool IsResolveMethodAsk(PrefService* local_state);
-bool IsResolveMethodDoH(PrefService* local_state);
+
+bool IsUnstoppableDomainsTLD(const GURL& url);
+bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state);
+bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state);
+
+bool IsENSTLD(const GURL& url);
+bool IsENSResolveMethodAsk(PrefService* local_state);
+bool IsENSResolveMethodDoH(PrefService* local_state);
 
 }  // namespace decentralized_dns
 

@@ -13,7 +13,15 @@ namespace decentralized_dns {
 // Disabled: Disable all unstoppable domains resolution.
 // Ask: Ask users if they want to enable support of unstoppable domains.
 // DNS Over HTTPS: Resolve domain name using a public DNS over HTTPS server.
-constexpr char kResolveMethod[] = "brave.unstoppable_domains.resolve_method";
+constexpr char kUnstoppableDomainsResolveMethod[] =
+    "brave.unstoppable_domains.resolve_method";
+
+// Used to determine which method should be used to resolve ENS domains,
+// between:
+// Disabled: Disable all ENS domains resolution.
+// Ask: Ask users if they want to enable support of ENS.
+// DNS Over HTTPS: Resolve domain name using a public DNS over HTTPS server.
+constexpr char kENSResolveMethod[] = "brave.ens.resolve_method";
 
 }  // namespace decentralized_dns
 

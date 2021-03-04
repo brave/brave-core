@@ -7,6 +7,7 @@
 
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
 #include "components/security_interstitials/core/metrics_helper.h"
@@ -52,7 +53,10 @@ void DecentralizedDnsInterstitialControllerClient::DontProceed() {
 void DecentralizedDnsInterstitialControllerClient::SetResolveMethodAndReload(
     ResolveMethodTypes type) {
   DCHECK(local_state_);
-  local_state_->SetInteger(kResolveMethod, static_cast<int>(type));
+  auto* pref_name = IsUnstoppableDomainsTLD(request_url_)
+                        ? kUnstoppableDomainsResolveMethod
+                        : kENSResolveMethod;
+  local_state_->SetInteger(pref_name, static_cast<int>(type));
   Reload();
 }
 

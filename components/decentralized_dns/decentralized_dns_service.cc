@@ -24,8 +24,13 @@ DecentralizedDnsService::DecentralizedDnsService(
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   pref_change_registrar_->Init(local_state);
   pref_change_registrar_->Add(
-      kResolveMethod, base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
-                                 base::Unretained(this)));
+      kUnstoppableDomainsResolveMethod,
+      base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
+                 base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kENSResolveMethod,
+      base::Bind(&DecentralizedDnsService::OnPreferenceChanged,
+                 base::Unretained(this)));
 }
 
 DecentralizedDnsService::~DecentralizedDnsService() = default;
@@ -33,7 +38,9 @@ DecentralizedDnsService::~DecentralizedDnsService() = default;
 // static
 void DecentralizedDnsService::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
-  registry->RegisterIntegerPref(kResolveMethod,
+  registry->RegisterIntegerPref(kUnstoppableDomainsResolveMethod,
+                                static_cast<int>(ResolveMethodTypes::ASK));
+  registry->RegisterIntegerPref(kENSResolveMethod,
                                 static_cast<int>(ResolveMethodTypes::ASK));
 }
 

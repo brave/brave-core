@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/decentralized_dns/decentralized_dns_interstitial_controller_client.h"
+#include "brave/components/decentralized_dns/utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
@@ -34,7 +35,8 @@ DecentralizedDnsOptInPage::DecentralizedDnsOptInPage(
         controller)
     : security_interstitials::SecurityInterstitialPage(web_contents,
                                                        request_url,
-                                                       std::move(controller)) {}
+                                                       std::move(controller)),
+      request_url_(request_url) {}
 
 DecentralizedDnsOptInPage::~DecentralizedDnsOptInPage() = default;
 
@@ -64,13 +66,6 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     base::DictionaryValue* load_time_data) {
-  load_time_data->SetString(
-      "tabTitle",
-      l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
-  load_time_data->SetString(
-      "heading",
-      l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
-
   const std::vector<base::string16> message_params = {
       base::ASCIIToUTF16("<a "
                          "href='https://www.cloudflare.com/en-ca/"
@@ -82,12 +77,32 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
           "target='_blank' rel='noopener noreferrer'>"),
       base::ASCIIToUTF16("</a>"),
   };
-  load_time_data->SetString(
-      "primaryParagraph",
-      base::ReplaceStringPlaceholders(
-          l10n_util::GetStringUTF16(
-              IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
-          message_params, nullptr));
+
+  if (IsUnstoppableDomainsTLD(request_url_)) {
+    load_time_data->SetString(
+        "tabTitle",
+        l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
+    load_time_data->SetString(
+        "heading",
+        l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
+
+    load_time_data->SetString(
+        "primaryParagraph",
+        base::ReplaceStringPlaceholders(
+            l10n_util::GetStringUTF16(
+                IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
+            message_params, nullptr));
+  } else {
+    load_time_data->SetString("tabTitle",
+                              l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_TITLE));
+    load_time_data->SetString(
+        "heading", l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_HEADING));
+    load_time_data->SetString(
+        "primaryParagraph",
+        base::ReplaceStringPlaceholders(
+            l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
+            message_params, nullptr));
+  }
 
   load_time_data->SetString(
       "primaryButtonText",

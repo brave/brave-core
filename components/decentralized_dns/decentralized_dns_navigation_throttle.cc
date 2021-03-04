@@ -53,15 +53,17 @@ DecentralizedDnsNavigationThrottle::~DecentralizedDnsNavigationThrottle() =
 content::NavigationThrottle::ThrottleCheckResult
 DecentralizedDnsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if (!IsUnstoppableDomainsTLD(url) || !IsResolveMethodAsk(local_state_)) {
-    return content::NavigationThrottle::PROCEED;
+  if ((IsUnstoppableDomainsTLD(url) &&
+       IsUnstoppableDomainsResolveMethodAsk(local_state_)) ||
+      (IsENSTLD(url) && IsENSResolveMethodAsk(local_state_))) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&DecentralizedDnsNavigationThrottle::ShowInterstitial,
+                       weak_ptr_factory_.GetWeakPtr()));
+    return content::NavigationThrottle::DEFER;
   }
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&DecentralizedDnsNavigationThrottle::ShowInterstitial,
-                     weak_ptr_factory_.GetWeakPtr()));
-  return content::NavigationThrottle::DEFER;
+  return content::NavigationThrottle::PROCEED;
 }
 
 void DecentralizedDnsNavigationThrottle::ShowInterstitial() {

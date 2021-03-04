@@ -51,6 +51,9 @@ class DecentralizedDnsOptInPage
   void PopulateInterstitialStrings(
       base::DictionaryValue* load_time_data) override;
   int GetHTMLTemplateId() override;
+
+ private:
+  const GURL request_url_;
 };
 
 }  // namespace decentralized_dns

@@ -14,20 +14,8 @@
 
 namespace {
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-void AddUnstoppableDomainsResolver(std::string* doh_templates,
-                                   PrefService* local_state) {
-  if (decentralized_dns::IsResolveMethodDoH(local_state) &&
-      doh_templates->find(decentralized_dns::kDoHResolver) ==
-          std::string::npos) {
-    *doh_templates =
-        base::StrCat({decentralized_dns::kDoHResolver, " ", *doh_templates});
-  }
-}
-#endif  // BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-
-// Add DoH servers to support Unstoppable Domains (and ENS in the future PR).
-// These servers are controlled using its own prefs and not
+// Add DoH servers to support decentralized DNS such as Unstoppable Domains and
+// ENS. These servers are controlled using its own prefs and not
 // kDnsOverHttpsTemplates pref as the servers we added here are special and
 // only applies to certain TLD which is different from user's global DoH
 // provider settings.
@@ -41,7 +29,20 @@ void AddDoHServers(std::string* doh_templates,
     return;
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-  AddUnstoppableDomainsResolver(doh_templates, local_state);
+  if (decentralized_dns::IsUnstoppableDomainsResolveMethodDoH(local_state) &&
+      doh_templates->find(decentralized_dns::kUnstoppableDomainsDoHResolver) ==
+          std::string::npos) {
+    *doh_templates =
+        base::StrCat({decentralized_dns::kUnstoppableDomainsDoHResolver, " ",
+                      *doh_templates});
+  }
+
+  if (decentralized_dns::IsENSResolveMethodDoH(local_state) &&
+      doh_templates->find(decentralized_dns::kENSDoHResolver) ==
+          std::string::npos) {
+    *doh_templates =
+        base::StrCat({decentralized_dns::kENSDoHResolver, " ", *doh_templates});
+  }
 #endif
 }
 

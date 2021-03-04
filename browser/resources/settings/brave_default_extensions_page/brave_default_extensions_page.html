@@ -92,6 +92,12 @@
                                 pref="{{prefs.brave.unstoppable_domains.resolve_method}}"
                                 menu-options="[[unstoppableDomainsResolveMethod_]]">
       </div>
+      <div class="settings-box">
+        <div class="start">$i18n{resolveENSDesc}</div>
+        <settings-dropdown-menu id="ensResolveMethodType"
+                                pref="{{prefs.brave.ens.resolve_method}}"
+                                menu-options="[[ensResolveMethod_]]">
+      </div>
     </template>
     <settings-toggle-button id="mediaRouterEnabled"
         class="cr-row"

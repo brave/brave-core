@@ -213,8 +213,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_STRING;
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
-  // Unstoppable Domains pref
-  (*s_brave_allowlist)[decentralized_dns::kResolveMethod] =
+  (*s_brave_allowlist)[decentralized_dns::kUnstoppableDomainsResolveMethod] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[decentralized_dns::kENSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
 

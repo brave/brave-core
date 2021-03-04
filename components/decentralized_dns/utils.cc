@@ -16,29 +16,51 @@
 
 namespace decentralized_dns {
 
-bool IsUnstoppableDomainsTLD(const GURL& url) {
-  return base::EndsWith(url.host_piece(), kCryptoDomain);
-}
-
 bool IsDecentralizedDnsEnabled() {
   return base::FeatureList::IsEnabled(features::kDecentralizedDns);
 }
 
-bool IsResolveMethodAsk(PrefService* local_state) {
+bool IsUnstoppableDomainsTLD(const GURL& url) {
+  return base::EndsWith(url.host_piece(), kCryptoDomain);
+}
+
+bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state) {
   if (!local_state || !IsDecentralizedDnsEnabled()) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kResolveMethod) ==
+  return local_state->GetInteger(kUnstoppableDomainsResolveMethod) ==
          static_cast<int>(ResolveMethodTypes::ASK);
 }
 
-bool IsResolveMethodDoH(PrefService* local_state) {
+bool IsUnstoppableDomainsResolveMethodDoH(PrefService* local_state) {
   if (!local_state || !IsDecentralizedDnsEnabled()) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kResolveMethod) ==
+  return local_state->GetInteger(kUnstoppableDomainsResolveMethod) ==
+         static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
+}
+
+bool IsENSTLD(const GURL& url) {
+  return base::EndsWith(url.host_piece(), kEthDomain);
+}
+
+bool IsENSResolveMethodAsk(PrefService* local_state) {
+  if (!local_state || !IsDecentralizedDnsEnabled()) {
+    return false;  // Treat it as disabled.
+  }
+
+  return local_state->GetInteger(kENSResolveMethod) ==
+         static_cast<int>(ResolveMethodTypes::ASK);
+}
+
+bool IsENSResolveMethodDoH(PrefService* local_state) {
+  if (!local_state || !IsDecentralizedDnsEnabled()) {
+    return false;  // Treat it as disabled.
+  }
+
+  return local_state->GetInteger(kENSResolveMethod) ==
          static_cast<int>(ResolveMethodTypes::DNS_OVER_HTTPS);
 }
 
