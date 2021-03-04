@@ -10,21 +10,6 @@
 
 namespace permissions {
 
-PermissionLifetimeOption::PermissionLifetimeOption(
-    base::string16 label,
-    base::Optional<base::TimeDelta> lifetime)
-    : label(std::move(label)), lifetime(std::move(lifetime)) {}
-
-PermissionLifetimeOption::PermissionLifetimeOption(
-    const PermissionLifetimeOption&) = default;
-PermissionLifetimeOption& PermissionLifetimeOption::operator=(
-    const PermissionLifetimeOption&) = default;
-PermissionLifetimeOption::PermissionLifetimeOption(
-    PermissionLifetimeOption&&) noexcept = default;
-PermissionLifetimeOption& PermissionLifetimeOption::operator=(
-    PermissionLifetimeOption&&) noexcept = default;
-PermissionLifetimeOption::~PermissionLifetimeOption() = default;
-
 std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   std::vector<PermissionLifetimeOption> options;
   const size_t kOptionsCount = 4;
