@@ -12,10 +12,14 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry_factory.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/extension_system_provider.h"
 #include "extensions/browser/extensions_browser_client.h"
+#endif  // #if BUILDFLAG(ENABLE_EXTENSIONS)
 
 // static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
@@ -32,9 +36,11 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveWalletService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
   DependsOn(
       extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
+#endif  // #if BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() {}

@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/config.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 assert(brave_wallet_enabled)
 
@@ -41,12 +42,15 @@ source_set("brave_wallet") {
     "//components/user_prefs",
     "//content/public/browser",
     "//crypto",
-    "//extensions/browser",
-    "//extensions/common:common_constants",
+    "//extensions/buildflags",
     "//services/network/public/cpp",
     "//third_party/boringssl",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/browser" ]
+  }
 }
 
 config("infura_config") {

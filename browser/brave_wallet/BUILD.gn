@@ -1,4 +1,5 @@
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 assert(brave_wallet_enabled)
 
@@ -8,9 +9,15 @@ source_set("brave_wallet") {
     "brave_wallet_delegate_impl.h",
   ]
   deps = [
-    "//brave/browser/extensions",
     "//brave/components/brave_wallet:brave_wallet",
-    "//chrome/browser/extensions:extensions",
-    "//extensions/browser",
+    "//content/public/browser",
+    "//extensions/buildflags",
   ]
+  if (enable_extensions) {
+    deps += [
+      "//brave/browser/extensions",
+      "//chrome/browser/extensions:extensions",
+      "//extensions/browser",
+    ]
+  }
 }

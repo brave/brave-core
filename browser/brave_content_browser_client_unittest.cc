@@ -16,7 +16,7 @@
 #include "extensions/common/extension_builder.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(BRAVE_WALLET_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "content/public/common/content_client.h"

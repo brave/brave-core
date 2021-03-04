@@ -27,18 +27,22 @@
 #include "crypto/hkdf.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/shared_user_script_manager.h"
 #include "extensions/browser/unloaded_extension_reason.h"
-#include "extensions/common/constants.h"
+#endif
 
 BraveWalletService::BraveWalletService(
     content::BrowserContext* context,
     std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate)
     : context_(context),
       brave_wallet_delegate_(std::move(brave_wallet_delegate)),
+#if BUILDFLAG(ENABLE_EXTENSIONS)
       extension_registry_observer_(this),
+#endif
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
@@ -53,7 +57,9 @@ BraveWalletService::BraveWalletService(
   // In case any web3 providers have already loaded content scripts at
   // this point.
   RemoveUnusedWeb3ProviderContentScripts();
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_registry_observer_.Add(extensions::ExtensionRegistry::Get(context));
+#endif
 
   controller_ = std::make_unique<brave_wallet::EthJsonRpcController>(
       context, brave_wallet::Network::kMainnet);
@@ -170,8 +176,10 @@ void BraveWalletService::SaveToPrefs(PrefService* prefs,
 }
 
 void BraveWalletService::ResetCryptoWallets() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
       ethereum_remote_client_extension_id);
+#endif
 }
 
 brave_wallet::EthJsonRpcController* BraveWalletService::controller() const {
@@ -252,6 +260,7 @@ std::string BraveWalletService::GetBitGoSeed(std::vector<uint8_t> key) {
 }
 
 void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto* shared_user_script_manager =
       extensions::ExtensionSystem::Get(context_)->shared_user_script_manager();
@@ -292,12 +301,14 @@ void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
                                                     metamask_extension);
     }
   }
+#endif
 }
 
 void BraveWalletService::OnPreferenceChanged() {
   RemoveUnusedWeb3ProviderContentScripts();
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveWalletService::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
@@ -345,6 +356,13 @@ void BraveWalletService::OnExtensionUninstalled(
   }
 }
 
+void BraveWalletService::CryptoWalletsExtensionReady() {
+  if (load_ui_callback_) {
+    std::move(load_ui_callback_).Run();
+  }
+}
+#endif
+
 bool BraveWalletService::IsCryptoWalletsSetup() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return prefs->HasPrefPath(kBraveWalletAES256GCMSivNonce) &&
@@ -352,9 +370,13 @@ bool BraveWalletService::IsCryptoWalletsSetup() const {
 }
 
 bool BraveWalletService::IsCryptoWalletsReady() const {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   auto* registry = extensions::ExtensionRegistry::Get(context_);
   return registry->ready_extensions().Contains(
       ethereum_remote_client_extension_id);
+#else
+  return true;
+#endif
 }
 
 bool BraveWalletService::ShouldShowLazyLoadInfobar() const {
@@ -365,13 +387,10 @@ bool BraveWalletService::ShouldShowLazyLoadInfobar() const {
          !IsCryptoWalletsReady();
 }
 
-void BraveWalletService::LoadCryptoWalletsExtension(LoadUICallback callback) {
+void BraveWalletService::MaybeLoadCryptoWalletsExtension(
+    LoadUICallback callback) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   load_ui_callback_ = std::move(callback);
-  brave_wallet_delegate_->LoadCryptoWalletsExtension(context_);
-}
-
-void BraveWalletService::CryptoWalletsExtensionReady() {
-  if (load_ui_callback_) {
-    std::move(load_ui_callback_).Run();
-  }
+  brave_wallet_delegate_->MaybeLoadCryptoWalletsExtension(context_);
+#endif
 }

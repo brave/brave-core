@@ -11,7 +11,8 @@
 class BraveWalletDelegateImpl : public BraveWalletDelegate {
  public:
   ~BraveWalletDelegateImpl() override;
-  void LoadCryptoWalletsExtension(content::BrowserContext* context) override;
+  void MaybeLoadCryptoWalletsExtension(
+      content::BrowserContext* context) override;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_DELEGATE_IMPL_H_

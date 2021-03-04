@@ -23,9 +23,13 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/eth_json_rpc_controller.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "extensions/buildflags/buildflags.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
-#include "url/gurl.h"
+#endif
 
 class BraveWalletDelegate;
 class PrefChangeRegistrar;
@@ -40,8 +44,12 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 class BraveWalletService : public KeyedService,
                            public extensions::ExtensionRegistryObserver {
+#else
+class BraveWalletService : public KeyedService {
+#endif
  public:
   explicit BraveWalletService(
       content::BrowserContext* context,
@@ -57,7 +65,7 @@ class BraveWalletService : public KeyedService,
   bool IsCryptoWalletsSetup() const;
   bool IsCryptoWalletsReady() const;
   bool ShouldShowLazyLoadInfobar() const;
-  void LoadCryptoWalletsExtension(LoadUICallback callback);
+  void MaybeLoadCryptoWalletsExtension(LoadUICallback callback);
   void CryptoWalletsExtensionReady();
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
@@ -86,6 +94,8 @@ class BraveWalletService : public KeyedService,
   bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
   void RemoveUnusedWeb3ProviderContentScripts();
   void OnPreferenceChanged();
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   void OnExtensionInstalled(content::BrowserContext* browser_context,
                             const extensions::Extension* extension,
                             bool is_update) override;
@@ -97,14 +107,17 @@ class BraveWalletService : public KeyedService,
   void OnExtensionUninstalled(content::BrowserContext* browser_context,
                               const extensions::Extension* extension,
                               extensions::UninstallReason reason) override;
+#endif
 
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate_;
   std::unique_ptr<brave_wallet::EthJsonRpcController> controller_;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   ScopedObserver<extensions::ExtensionRegistry,
                  extensions::ExtensionRegistryObserver>
       extension_registry_observer_{this};
+#endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   LoadUICallback load_ui_callback_;
   base::WeakPtrFactory<BraveWalletService> weak_factory_;
