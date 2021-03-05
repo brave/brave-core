@@ -53,7 +53,8 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       is_connected_(false),
       tor_pid_(-1),
-      control_(new tor::TorControl(this, content::GetIOThreadTaskRunner({})),
+      control_(new tor::TorControl(this->AsWeakPtr(),
+                                   content::GetIOThreadTaskRunner({})),
                base::OnTaskRunnerDeleter(content::GetIOThreadTaskRunner({}))),
       weak_ptr_factory_(this) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

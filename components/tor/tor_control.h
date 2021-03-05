@@ -71,7 +71,7 @@ class TorControl {
                              const std::string& line) {}
   };
 
-  TorControl(TorControl::Delegate* delegate,
+  TorControl(base::WeakPtr<TorControl::Delegate> delegate,
              scoped_refptr<base::SequencedTaskRunner> task_runner);
   virtual ~TorControl();
 
@@ -227,7 +227,7 @@ class TorControl {
   };
   std::unique_ptr<Async> async_;
 
-  TorControl::Delegate* delegate_;
+  base::WeakPtr<TorControl::Delegate> delegate_;
 
   base::WeakPtrFactory<TorControl> weak_ptr_factory_{this};
 };

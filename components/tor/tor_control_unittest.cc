@@ -112,7 +112,7 @@ TEST(TorControlTest, ReadLine) {
 
   MockTorControlDelegate delegate;
   std::unique_ptr<TorControl> control =
-      std::make_unique<TorControl>(&delegate, io_task_runner);
+      std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
 
   EXPECT_CALL(delegate, OnTorControlClosed(false)).Times(2);
   io_task_runner->PostTask(FROM_HERE,
@@ -123,7 +123,7 @@ TEST(TorControlTest, ReadLine) {
                                },
                                std::move(control)));
 
-  control.reset(new TorControl(&delegate, io_task_runner));
+  control.reset(new TorControl(delegate.AsWeakPtr(), io_task_runner));
   EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
   EXPECT_CALL(delegate, OnTorRawEnd("250", "OK")).Times(1);
   io_task_runner->PostTask(
@@ -135,7 +135,7 @@ TEST(TorControlTest, ReadLine) {
                      std::move(control)));
 
   // Test Async:
-  control.reset(new TorControl(&delegate, io_task_runner));
+  control.reset(new TorControl(delegate.AsWeakPtr(), io_task_runner));
   using tor::TorControlEvent;
   EXPECT_CALL(delegate, OnTorRawAsync("650", "FAKEVENT WHAT")).Times(1);
   EXPECT_CALL(delegate, OnTorRawAsync("650", "NETWORK_LIVENESS UP")).Times(1);
@@ -191,7 +191,7 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
 
   MockTorControlDelegate delegate;
   std::unique_ptr<TorControl> control =
-      std::make_unique<TorControl>(&delegate, io_task_runner);
+      std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
 
   io_task_runner->PostTask(
       FROM_HERE, base::BindOnce(
