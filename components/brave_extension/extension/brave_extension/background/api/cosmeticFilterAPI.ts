@@ -71,25 +71,24 @@ export const applyAdblockCosmeticFilters = (tabId: number, frameId: number, url:
   })
 }
 
-// User generated cosmetic filtering below
-export const applyCSSCosmeticFilters = (tabId: number, hostname: string) => {
+// A very early implementation of cosmetic filtering used extension-local
+// storage to store CSS selectors of elements to apply hide rules to on a
+// per-site basis.
+//
+// If any of these legacy cosmetic filters are still present, this function
+// will migrate them to share the adblock-rust infrastructure used by the
+// custom filters engine from brave://adblock.
+const tryMigratingLegacyCosmeticFilters = () => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
-    if (!storeData.cosmeticFilterList) {
-      if (process.env.NODE_ENV === 'shields_development') {
-        console.log('applySiteFilters: no cosmetic filter store yet')
-      }
-      return
-    }
-    if (storeData.cosmeticFilterList[hostname] !== undefined) {
-      storeData.cosmeticFilterList[hostname].map((rule: string) => {
-        if (process.env.NODE_ENV === 'shields_development') {
-          console.log('applying rule', rule)
+    if (storeData.cosmeticFilterList !== undefined) {
+      const cosmeticFilterList = storeData.cosmeticFilterList
+      console.error(JSON.stringify(cosmeticFilterList))
+      chrome.braveShields.migrateLegacyCosmeticFilters(cosmeticFilterList, (success) => {
+        if (success) {
+          chrome.storage.local.remove('cosmeticFilterList')
+        } else {
+          console.error('Legacy cosmetic filter migration failed!')
         }
-        chrome.tabs.insertCSS(tabId, { // https://github.com/brave/brave-browser/wiki/Cosmetic-Filtering
-          code: `${rule} {display: none !important;}`,
-          cssOrigin: 'user',
-          runAt: 'document_start'
-        })
       })
     }
   })
@@ -99,6 +98,7 @@ export const removeAllFilters = () => {
   chrome.storage.local.set({ 'cosmeticFilterList': {} })
 }
 
+// TODO - remove all remaining reads/writes to cosmeticFilterList
 export const addSiteCosmeticFilter = async (origin: string, cssfilter: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
@@ -118,3 +118,7 @@ export const removeSiteFilter = (origin: string) => {
     chrome.storage.local.set({ 'cosmeticFilterList': storeList })
   })
 }
+
+// Attempt to run the legacy filters migration during brave_extension
+// initialization.
+tryMigratingLegacyCosmeticFilters()
