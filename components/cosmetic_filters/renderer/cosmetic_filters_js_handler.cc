@@ -31,7 +31,7 @@ static base::NoDestructor<std::vector<std::string>> g_vetted_search_engines(
 
 const char kScriptletInitScript[] =
     R"((function() {
-          let text = `%s`;
+          let text = %s;
           let script;
           try {
             script = document.createElement('script');
@@ -304,10 +304,13 @@ void CosmeticFiltersJSHandler::OnUrlCosmeticResources(base::Value result) {
     return;
 
   std::string scriptlet_script;
-  resources_dict->GetString("injected_script", &scriptlet_script);
-  if (!scriptlet_script.empty()) {
+  base::Value* injected_script = resources_dict->FindPath("injected_script");
+  if (injected_script &&
+      base::JSONWriter::Write(*injected_script, &scriptlet_script)) {
     scriptlet_script =
         base::StringPrintf(kScriptletInitScript, scriptlet_script.c_str());
+  }
+  if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_, blink::WebString::FromUTF8(scriptlet_script));
   }
