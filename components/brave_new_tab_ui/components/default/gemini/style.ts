@@ -23,7 +23,7 @@ interface StyleProps {
   isAuth?: boolean
 }
 
-export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
+export const WidgetWrapper = styled('div')<StyleProps>`
   color: white;
   padding: 6px 20px 12px 20px;
   border-radius: 6px;
@@ -35,11 +35,11 @@ export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   background: #000;
 `
 
-export const Header = styled<{}, 'div'>('div')`
+export const Header = styled('div')<{}>`
   text-align: left;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   margin-top: 6px;
   display: flex;
   justify-content: flex-start;
@@ -50,18 +50,18 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const GeminiIcon = styled<{}, 'div'>('div')`
+export const GeminiIcon = styled('div')<{}>`
   width: 27px;
   height: 27px;
   margin-right: 7px;
   margin-left: 2px;
 `
 
-export const StyledTitleText = styled<{}, 'div'>('div')`
+export const StyledTitleText = styled('div')<{}>`
   margin-top: 4px;
 `
 
-export const DismissAction = styled<{}, 'span'>('span')`
+export const DismissAction = styled('span')<{}>`
   display: block;
   cursor: pointer;
   color: #A6A6A6;
@@ -70,14 +70,14 @@ export const DismissAction = styled<{}, 'span'>('span')`
   font-weight: bold;
 `
 
-export const IntroTitle = styled<{}, 'span'>('span')`
+export const IntroTitle = styled('span')<{}>`
   font-size: 14px;
   margin-top: 10px;
   display: block;
   font-weight: 600;
 `
 
-export const Copy = styled<{}, 'p'>('p')`
+export const Copy = styled('p')<{}>`
   font-size: 13px;
   max-width: 240px;
   margin-top: 10px;
@@ -85,12 +85,12 @@ export const Copy = styled<{}, 'p'>('p')`
   color: #A6A6A6;
 `
 
-export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
+export const ActionsWrapper = styled('div')<StyleProps>`
   margin-bottom: ${p => p.isAuth ? 20 : 5}px;
   text-align: center;
 `
 
-export const ConnectButton = styled<StyleProps, 'button'>('button')`
+export const ConnectButton = styled('button')<StyleProps>`
   font-size: 14px;
   font-weight: bold;
   border-radius: 20px;
@@ -113,7 +113,7 @@ export const SmallButton = styled(ConnectButton)`
   margin-bottom: 10px;
 `
 
-export const NavigationBar = styled<{}, 'div'>('div')`
+export const NavigationBar = styled('div')<{}>`
   height: 30px;
   margin-top: 15px;
   &:first-child {
@@ -121,7 +121,7 @@ export const NavigationBar = styled<{}, 'div'>('div')`
   }
 `
 
-export const NavigationItem = styled<StyleProps, 'button'>('button')`
+export const NavigationItem = styled('button')<StyleProps>`
   float: left;
   width: 33%;
   font-size: 14px;
@@ -137,7 +137,7 @@ export const NavigationItem = styled<StyleProps, 'button'>('button')`
   }
 `
 
-export const SelectedView = styled<StyleProps, 'div'>('div')`
+export const SelectedView = styled('div')<StyleProps>`
   border: 1px solid rgb(70, 70, 70);
   overflow-y: ${p => p.hideOverflow ? 'hidden' : 'scroll'};
   height: 260px;
@@ -145,14 +145,14 @@ export const SelectedView = styled<StyleProps, 'div'>('div')`
   margin-left: 4px;
 `
 
-export const ListItem = styled<{}, 'div'>('div')`
+export const ListItem = styled('div')<{}>`
   border-bottom: 1px solid rgb(70, 70, 70);
   padding: 6px 5px;
   overflow-y: auto;
   overflow-x: hidden;
 `
 
-export const ListIcon = styled<{}, 'div'>('div')`
+export const ListIcon = styled('div')<{}>`
   margin-left: 5px;
   width: 28px;
   margin-top: 6px;
@@ -160,31 +160,31 @@ export const ListIcon = styled<{}, 'div'>('div')`
   margin-right: 10px;
 `
 
-export const ListImg = styled<{}, 'img'>('img')`
+export const ListImg = styled('img')<{}>`
   width: 20px;
   margin-top: -6px;
 `
 
-export const ListLabel = styled<StyleProps, 'div'>('div')`
+export const ListLabel = styled('div')<StyleProps>`
   color: #fff;
   cursor: ${p => p.clickable ? 'pointer' : 'initial'};
   margin-top: 10px;
   font-weight: 600;
 `
 
-export const AssetIconWrapper = styled<StyleProps, 'div'>('div')`
+export const AssetIconWrapper = styled('div')<StyleProps>`
   height: 25px;
   width: 25px;
   border-radius: 100px;
   display: inline-block;
 `
 
-export const AssetIcon = styled<StyleProps, 'span'>('span')`
+export const AssetIcon = styled('span')<StyleProps>`
   margin-top: 6px;
   margin-left: 6px;
 `
 
-export const SearchInput = styled<{}, 'input'>('input')`
+export const SearchInput = styled('input')<{}>`
   border: none;
   color: #fff;
   background: inherit;
@@ -194,31 +194,31 @@ export const SearchInput = styled<{}, 'input'>('input')`
   }
 `
 
-export const DetailIcons = styled<{}, 'div'>('div')`
+export const DetailIcons = styled('div')<{}>`
   float: left;
   margin-top: -3px;
   margin-right: 10px;
 `
 
-export const AssetTicker = styled<{}, 'span'>('span')`
+export const AssetTicker = styled('span')<{}>`
   color: #fff;
   font-weight: bold;
   margin-right: 3px;
   font-size: 15px;
 `
 
-export const AssetQR = styled<{}, 'div'>('div')`
+export const AssetQR = styled('div')<{}>`
   float: right;
   margin-top: -3px;
   cursor: pointer;
 `
 
-export const DetailArea = styled<{}, 'div'>('div')`
+export const DetailArea = styled('div')<{}>`
   padding: 5px;
   font-weight: bold;
 `
 
-export const AssetLabel = styled<{}, 'span'>('span')`
+export const AssetLabel = styled('span')<{}>`
   color: rgb(70, 70, 70);
   display: inline-block;
   font-weight: bold;
@@ -226,16 +226,16 @@ export const AssetLabel = styled<{}, 'span'>('span')`
   min-width: 80px;
 `
 
-export const MemoArea = styled<{}, 'div'>('div')`
+export const MemoArea = styled('div')<{}>`
   padding: 5px;
 `
 
-export const MemoInfo = styled<{}, 'div'>('div')`
+export const MemoInfo = styled('div')<{}>`
   float: left;
   max-width: 160px;
 `
 
-export const GenButton = styled<{}, 'button'>('button')`
+export const GenButton = styled('button')<{}>`
   font-size: 13px;
   font-weight: bold;
   border-radius: 20px;
@@ -250,7 +250,7 @@ export const CopyButton = styled(GenButton)`
   float: right;
 `
 
-export const DetailInfo = styled<{}, 'span'>('span')`
+export const DetailInfo = styled('span')<{}>`
   color: #fff;
   font-weight: bold;
   display: block;
@@ -260,7 +260,7 @@ export const DetailInfo = styled<{}, 'span'>('span')`
   word-wrap: break-word;
 `
 
-export const BackArrow = styled<{}, 'div'>('div')`
+export const BackArrow = styled('div')<{}>`
   width: 20px;
   float: left;
   cursor: pointer;
@@ -268,7 +268,7 @@ export const BackArrow = styled<{}, 'div'>('div')`
   margin-top: 3px;
 `
 
-export const NoticeWrapper = styled<{}, 'div'>('div')`
+export const NoticeWrapper = styled('div')<{}>`
   padding-top: 75px;
   min-height: 250px;
   text-align: center;
@@ -279,14 +279,14 @@ export const SmallNoticeWrapper = styled(NoticeWrapper)`
   min-width: 244px;
 `
 
-export const QRImage = styled<{}, 'img'>('img')`
+export const QRImage = styled('img')<{}>`
   width: 150px;
   height: 150px;
   display: block;
   margin: 0 auto 20px auto;
 `
 
-export const DetailLabel = styled<{}, 'span'>('span')`
+export const DetailLabel = styled('span')<{}>`
   color: #7d7d7d;
   font-weight: bold;
   display: block;
@@ -294,7 +294,7 @@ export const DetailLabel = styled<{}, 'span'>('span')`
   margin-bottom: 5px;
 `
 
-export const DetailIconWrapper = styled<{}, 'div'>('div')`
+export const DetailIconWrapper = styled('div')<{}>`
   float: right;
 `
 
@@ -302,7 +302,7 @@ export const AccountSummary = styled(ListItem)`
   padding: 5px 7px;
 `
 
-export const ListInfo = styled<StyleProps, 'div'>('div')`
+export const ListInfo = styled('div')<StyleProps>`
   float: ${p => `${p.position}`};
   min-width: ${p => p.isSummary ? 60 : 83}px;
   font-size: ${p => p.isAsset ? '16px' : 'inherit'};
@@ -322,7 +322,7 @@ export const ListInfo = styled<StyleProps, 'div'>('div')`
   }}
 `
 
-export const TradeLabel = styled<{}, 'span'>('span')`
+export const TradeLabel = styled('span')<{}>`
   font-weight: bold;
   font-size: 14px;
   display: block;
@@ -330,7 +330,7 @@ export const TradeLabel = styled<{}, 'span'>('span')`
   margin-bottom: 3px;
 `
 
-export const Balance = styled<StyleProps, 'span'>('span')`
+export const Balance = styled('span')<StyleProps>`
   display: block;
   font-size: ${p => p.isSummary ? '25' : '14'}px;
   margin: ${p => p.isSummary ? '5px' : '20px'} 0;
@@ -340,24 +340,24 @@ export const Balance = styled<StyleProps, 'span'>('span')`
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
 
-export const BlurIcon = styled<{}, 'div'>('div')`
+export const BlurIcon = styled('div')<{}>`
   margin-left: 50%;
   margin-top: 25%;
   cursor: pointer;
   color: rgb(70, 70, 70);
 `
 
-export const TradeWrapper = styled<{}, 'div'>('div')`
+export const TradeWrapper = styled('div')<{}>`
   margin-bottom: 20px;
 `
 
-export const InputWrapper = styled<{}, 'div'>('div')`
+export const InputWrapper = styled('div')<{}>`
   height: 30px;
   border: 1px solid white;
   margin-bottom: 10px;
 `
 
-export const InputField = styled<{}, 'input'>('input')`
+export const InputField = styled('input')<{}>`
   display: inline-block;
   min-width: 215px;
   height: 30px;
@@ -382,7 +382,7 @@ export const AmountInputField = styled(InputField)`
   border-bottom: 1px solid white;
 `
 
-export const Dropdown = styled<StyleProps, 'div'>('div')`
+export const Dropdown = styled('div')<StyleProps>`
   float: right;
   width: 30%;
   padding: 7px 5px 0px 7px;
@@ -390,7 +390,7 @@ export const Dropdown = styled<StyleProps, 'div'>('div')`
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
 
-export const CaratDropdown = styled<StyleProps, 'div'>('div')`
+export const CaratDropdown = styled('div')<StyleProps>`
   width: 14px;
   height: 14px;
   float: right;
@@ -398,7 +398,7 @@ export const CaratDropdown = styled<StyleProps, 'div'>('div')`
   visibility: ${p => p.hide ? 'hidden' : 'visible'};
 `
 
-export const AssetDropdown = styled<StyleProps, 'div'>('div')`
+export const AssetDropdown = styled('div')<StyleProps>`
   height: 30px;
   background: #000;
   color: #fff;
@@ -407,13 +407,13 @@ export const AssetDropdown = styled<StyleProps, 'div'>('div')`
   cursor: pointer;
   border-bottom: ${p => p.itemsShowing ? 'none' : '1px solid white'};
 `
-export const AssetDropdownLabel = styled<{}, 'span'>('span')`
+export const AssetDropdownLabel = styled('span')<{}>`
   float: left;
   margin-top: -5px;
   font-weight: bold;
 `
 
-export const AssetItems = styled<StyleProps, 'div'>('div')`
+export const AssetItems = styled('div')<StyleProps>`
   z-index: 1;
   background: #000;
   color: #fff;
@@ -428,18 +428,18 @@ export const AssetItems = styled<StyleProps, 'div'>('div')`
   left: auto;
 `
 
-export const AssetItem = styled<StyleProps, 'div'>('div')`
+export const AssetItem = styled('div')<StyleProps>`
   padding: 3px 0px;
   font-weight: bold;
   cursor: pointer;
   border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
 `
 
-export const DropdownIcon = styled<StyleProps, 'span'>('span')`
+export const DropdownIcon = styled('span')<StyleProps>`
   margin-right: 10px;
 `
 
-export const ActionButton = styled<{}, 'button'>('button')`
+export const ActionButton = styled('button')<{}>`
   font-size: 13px;
   font-weight: bold;
   border-radius: 20px;
@@ -452,12 +452,12 @@ export const ActionButton = styled<{}, 'button'>('button')`
   margin-top: 20px;
 `
 
-export const TradeSwitchWrapper = styled<StyleProps, 'div'>('div')`
+export const TradeSwitchWrapper = styled('div')<StyleProps>`
   float: right;
   margin-top: -35px;
 `
 
-export const TradeSwitch = styled<StyleProps, 'div'>('div')`
+export const TradeSwitch = styled('div')<StyleProps>`
   font-size: 13px;
   font-weight: bold;
   display: inline-block;
@@ -466,14 +466,14 @@ export const TradeSwitch = styled<StyleProps, 'div'>('div')`
   color: ${p => p.isActive ? '#EEEEEE' : '#8F8F8F'};
 `
 
-export const DisconnectWrapper = styled<{}, 'div'>('div')`
+export const DisconnectWrapper = styled('div')<{}>`
   padding-top: 75px;
   min-height: 250px;
   text-align: center;
   max-width: 240px;
 `
 
-export const Title = styled<{}, 'span'>('span')`
+export const Title = styled('span')<{}>`
   display: block;
   font-size: 13px;
   font-weight: bold;
@@ -512,14 +512,14 @@ export const InvalidWrapper = styled(DisconnectWrapper)`
   min-width: 244px;
 `
 
-export const TradeItemLabel = styled<{}, 'span'>('span')`
+export const TradeItemLabel = styled('span')<{}>`
   float: left;
   width: 45%;
   text-align: left;
   font-size: 15px;
 `
 
-export const TradeValue = styled<{}, 'span'>('span')`
+export const TradeValue = styled('span')<{}>`
   font-weight: bold;
   float: right;
   width: 55%;
@@ -527,18 +527,18 @@ export const TradeValue = styled<{}, 'span'>('span')`
   font-size: 15px;
 `
 
-export const TradeInfoWrapper = styled<StyleProps, 'div'>('div')`
+export const TradeInfoWrapper = styled('div')<StyleProps>`
   margin: 20px 0;
   overflow-y: auto;
 `
 
-export const TradeInfoItem = styled<StyleProps, 'div'>('div')`
+export const TradeInfoItem = styled('div')<StyleProps>`
   margin: 5px 0;
   overflow-y: hidden;
   margin-top: ${p => p.isLast ? '15' : '5'}px;
 `
 
-export const StyledParty = styled<{}, 'div'>('div')`
+export const StyledParty = styled('div')<{}>`
   font-size: 35px;
   margin: 10px 0px;
 `

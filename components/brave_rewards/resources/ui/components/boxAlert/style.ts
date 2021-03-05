@@ -4,14 +4,14 @@
 */
 
 import { Type } from './index'
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
 interface StyleProps {
   modal?: boolean
   type?: Type
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   width: 100%;
   display: flex;
   align-items: center;
@@ -22,14 +22,14 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   border-radius: 4px;
 `
 
-export const StyledAlertIcon = styled<{}, 'div'>('div')`
+export const StyledAlertIcon = styled('div')<{}>`
   width: 24px;
   height: 24px;
   margin: 8px;
   color: ${p => p.theme.palette.blue500};
 `
 
-export const StyledInfo = styled<StyleProps, 'div'>('div')`
+export const StyledInfo = styled('div')<StyleProps>`
   font-size: 16px;
   font-family: ${p => p.theme.fontFamily.body};
   color: ${p => p.theme.color.text};
@@ -37,24 +37,24 @@ export const StyledInfo = styled<StyleProps, 'div'>('div')`
   align-items: center;
 `
 
-export const StyledMessage = styled<StyleProps, 'span'>('span')`
+export const StyledMessage = styled('span')<StyleProps>`
   display: flex;
   align-items: center;
 `
 
-export const StyledMonthlyTips = styled<StyleProps, 'span'>('span')`
+export const StyledMonthlyTips = styled('span')<StyleProps>`
   padding: 4px;
   display: flex;
   align-items: center;
 `
 
-export const StyledReviewWrapper = styled<{}, 'div'>('div')`
+export const StyledReviewWrapper = styled('div')<{}>`
   padding: 4px;
   display: flex;
   align-items: center;
 `
 
-export const StyledReviewList = styled<{}, 'span'>('span')`
+export const StyledReviewList = styled('span')<{}>`
   color: #15A4FA;
   cursor: pointer;
   font-size: 14px;
@@ -63,49 +63,49 @@ export const StyledReviewList = styled<{}, 'span'>('span')`
   line-height: 18px;
 `
 
-export const StyledModalContent = styled<{}, 'div'>('div')`
+export const StyledModalContent = styled('div')<{}>`
   display: block;
 `
 
-export const StyledTipsIcon = styled<{}, 'div'>('div')`
+export const StyledTipsIcon = styled('div')<{}>`
   width: 20%;
   vertical-align: top;
   margin-top: -33px;
   display: inline-block;
 `
 
-export const StyledModalInfo = styled<{}, 'div'>('div')`
+export const StyledModalInfo = styled('div')<{}>`
   width: 80%;
   padding-left: 20px;
   display: inline-block;
 `
 
-export const StyledListMessage = styled<{}, 'div'>('div')`
+export const StyledListMessage = styled('div')<{}>`
   display: block;
   font-size: 16px;
   font-weight: 600;
   margin-top: 30px;
 `
 
-export const StyledList = styled<{}, 'ul'>('ul')`
+export const StyledList = styled('ul')<{}>`
   display: block;
   font-size: 14px;
   font-weight: 300;
   padding-left: 20px;
 `
 
-export const StyledListItem = styled<{}, 'li'>('li')`
+export const StyledListItem = styled('li')<{}>`
   display: block;
   display: list-item;
   line-height: 28px;
   list-style-type: disc;
 `
 
-export const StyledButton = styled<{}, 'div'>('div')`
+export const StyledButton = styled('div')<{}>`
   width: 235px;
   margin: 40px auto 0 auto;
 `
 
-export const StyledButtonContainer = styled<{}, 'div'>('div')`
+export const StyledButtonContainer = styled('div')<{}>`
   width: 100%;
 `

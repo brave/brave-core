@@ -230,7 +230,7 @@ export default class Donate extends React.PureComponent<Props, State> {
             <SendButton
               monthly={isMonthly}
               onKeyUp={this.onKeyUp}
-              innerRef={this.sendNodeRef}
+              ref={this.sendNodeRef}
               onClick={this.validateDonation}
               data-test-id={'send-tip-button'}
             >

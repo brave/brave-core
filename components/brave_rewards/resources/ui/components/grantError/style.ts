@@ -4,13 +4,13 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   text-align: center;
   width: 100%;
   padding: 20px 10px 0;
 `
 
-export const StyledText = styled<{}, 'div'>('div')`
+export const StyledText = styled('div')<{}>`
   font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1.29;
@@ -18,7 +18,7 @@ export const StyledText = styled<{}, 'div'>('div')`
   margin: 44px 0 32px;
 `
 
-export const StyledButton = styled<{}, 'div'>('div')`
+export const StyledButton = styled('div')<{}>`
   display: block;
   margin: 0 auto;
 `

@@ -11,7 +11,7 @@ import SearchImage from './welcome_search.svg'
 import ShieldsImage from './welcome_shields.svg'
 import WelcomeImage from './welcome_bg.svg'
 
-const BaseImage = styled<{}, 'img'>('img')`
+const BaseImage = styled('img')<{}>`
   box-sizing: border-box;
   display: block;
   max-width: 100%;
@@ -49,7 +49,7 @@ export const topToBottom = keyframes`
 
 export const backgroundHeight = 136
 
-export const BackgroundContainer = styled<{}, 'div'>('div')`
+export const BackgroundContainer = styled('div')<{}>`
   box-sizing: border-box;
   width: inherit;
   height: ${backgroundHeight}px;
@@ -62,7 +62,7 @@ export const BackgroundContainer = styled<{}, 'div'>('div')`
   animation-iteration-count: 1;
 `
 
-export const Background = styled<{}, 'div'>('div')`
+export const Background = styled('div')<{}>`
   box-sizing: border-box;
   background: url('${WelcomeImage}');
   width: 100%;

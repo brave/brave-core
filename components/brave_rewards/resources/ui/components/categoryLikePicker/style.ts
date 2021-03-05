@@ -4,15 +4,15 @@
 
 import styled from 'styled-components'
 
-export const StyledCategoryActionOptinLogo = styled<{}, 'div'>('div')`
+export const StyledCategoryActionOptinLogo = styled('div')<{}>`
   display: inline-block;
 `
 
-export const StyledCategoryActionOptoutLogo = styled<{}, 'div'>('div')`
+export const StyledCategoryActionOptoutLogo = styled('div')<{}>`
   display: inline-block;
 `
 
-export const StyledCategoryActionOptinButton = styled<{}, 'div'>('div')`
+export const StyledCategoryActionOptinButton = styled('div')<{}>`
 margin: auto;
   border: none;
   height: 32px;
@@ -22,7 +22,7 @@ margin: auto;
   object-fit: cover;
 `
 
-export const StyledCategoryActionOptoutButton = styled<{}, 'div'>('div')`
+export const StyledCategoryActionOptoutButton = styled('div')<{}>`
   border: none;
   height: 31px;
   width: 31px;

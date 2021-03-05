@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { StyledComponentClass } from 'styled-components'
 import { CaratStrongDownIcon, ShieldAlertIcon, AlertMessageIcon } from 'brave-ui/components/icons'
 

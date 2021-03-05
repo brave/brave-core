@@ -2,10 +2,10 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 import { Props } from './index'
 
-export const StyledWrapper = styled<Partial<Props>, 'div'>('div')`
+export const StyledWrapper = styled('div')<Partial<Props>>`
   position: relative;
   display: flex;
   border-bottom: ${p => p.border === 'last' ? 'none' : '1px solid #d0d6dc'};
@@ -17,7 +17,7 @@ export const StyledWrapper = styled<Partial<Props>, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.body};
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   font-size: 14px;
   line-height: 1.3;
   color: #4b4c5c;
@@ -25,7 +25,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   padding: 10px 5px 10px 0;
 `
 
-export const StyledContentWrapper = styled<{}, 'div'>('div')`
+export const StyledContentWrapper = styled('div')<{}>`
   flex: 1 1;
   text-align: right;
 `

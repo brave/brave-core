@@ -9,20 +9,20 @@ interface StyleProps {
   size?: string
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   display: block;
   width: 100%;
   height: 100%;
 ` as any
 
-export const StyledTransitionWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledTransitionWrapper = styled('div')<StyleProps>`
   height: ${p => p.show ? '100%' : '0'};
   opacity: ${p => p.show ? '1' : '0'};
   overflow: ${p => p.show ? 'unset' : 'hidden'};
   position: relative;
 ` as any
 
-export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
+export const StyledToggleWrapper = styled('div')<StyleProps>`
   width: 100%;
   display: block;
   max-height: 56px;
@@ -33,7 +33,7 @@ export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
   background: ${p => p.show ? '#E9EBFF' : 'inherit'};
 ` as any
 
-export const StyledSummaryText = styled<{}, 'span'>('span')`
+export const StyledSummaryText = styled('span')<{}>`
   color: #A1A8F2;
   font-size: 14px;
   font-weight: 600;
@@ -42,19 +42,19 @@ export const StyledSummaryText = styled<{}, 'span'>('span')`
   line-height: 22px;
 ` as any
 
-export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
+export const StyledArrowIcon = styled('span')<StyleProps>`
   width: 24px;
   height: 24px;
   display: flex;
   color: #696FDC;
 ` as any
 
-export const StyledGrid = styled<{}, 'div'>('div')`
+export const StyledGrid = styled('div')<{}>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `
 
-export const StyledColumn = styled<StyleProps, 'div'>('div')`
+export const StyledColumn = styled('div')<StyleProps>`
   display: flex;
 `

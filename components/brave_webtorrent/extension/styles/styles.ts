@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledTorrentViewer = styled<{}, 'div'>('div')`
+export const StyledTorrentViewer = styled('div')<{}>`
   min-height: 100%;
   padding: 100px;
   font-family: Muli, sans-serif;

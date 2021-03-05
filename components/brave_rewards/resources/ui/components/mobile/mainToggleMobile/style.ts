@@ -2,9 +2,9 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   display: flex;
   width: 100%;
@@ -19,7 +19,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   padding: 0 16px;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   color: #4B4C5C;
   font-size: 22px;
   font-weight: 600;
@@ -30,7 +30,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledLogoWrapper = styled<{}, 'div'>('div')`
+export const StyledLogoWrapper = styled('div')<{}>`
   width: 24px;
   height: 24px;
   margin: 8px;

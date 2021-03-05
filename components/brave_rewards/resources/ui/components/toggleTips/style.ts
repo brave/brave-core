@@ -4,14 +4,14 @@
 
 import styled from 'styled-components'
 
-export const StyledEnableTipsSection = styled<{}, 'section'>('section')`
+export const StyledEnableTipsSection = styled('section')<{}>`
   background: #F5F5F9;
   display: block;
   width: 100%;
   padding: 10px 30px;
 ` as any
 
-export const StyledEnableTipsInner = styled<{}, 'div'>('div')`
+export const StyledEnableTipsInner = styled('div')<{}>`
   color: #838391;
   font-size: 14px;
   font-weight: normal;
@@ -20,7 +20,7 @@ export const StyledEnableTipsInner = styled<{}, 'div'>('div')`
   position: relative;
 ` as any
 
-export const StyledEnableTips = styled<{}, 'span'>('span')`
+export const StyledEnableTips = styled('span')<{}>`
   color: #4C54D2;
   font-size: 14px;
   font-weight: 500;
@@ -29,11 +29,11 @@ export const StyledEnableTips = styled<{}, 'span'>('span')`
   margin-right: 5px;
 ` as any
 
-export const StyledText = styled<{}, 'span'>('span')`
+export const StyledText = styled('span')<{}>`
   margin-right: 5px;
 ` as any
 
-export const StyledProviderImg = styled<{}, 'span'>('span')`
+export const StyledProviderImg = styled('span')<{}>`
   margin-right: 5px;
   vertical-align: middle;
   width: 20px;
@@ -42,12 +42,12 @@ export const StyledProviderImg = styled<{}, 'span'>('span')`
   display: inline-block;
 ` as any
 
-export const StyledProviderName = styled<{}, 'span'>('span')`
+export const StyledProviderName = styled('span')<{}>`
   font-weight: 600;
   margin-right: 5px;
 ` as any
 
-export const StyledToggleOuter = styled<{}, 'div'>('div')`
+export const StyledToggleOuter = styled('div')<{}>`
   display: inline-block;
   vertical-align: middle;
   margin-top: 3px;
@@ -56,12 +56,12 @@ export const StyledToggleOuter = styled<{}, 'div'>('div')`
   right: 0px;
 ` as any
 
-export const StyledToggleInner = styled<{}, 'div'>('div')`
+export const StyledToggleInner = styled('div')<{}>`
   float: right;
   margin-top: 2px;
 ` as any
 
-export const StyledThumbsUpIcon = styled<{}, 'span'>('span')`
+export const StyledThumbsUpIcon = styled('span')<{}>`
   width: 20px;
   height: 20px;
   display: inline-block;
