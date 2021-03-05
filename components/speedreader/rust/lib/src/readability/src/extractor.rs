@@ -1,8 +1,10 @@
 use dom;
-use markup5ever_rcdom::RcDom;
-use markup5ever_rcdom::SerializableHandle;
+use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
+use html5ever::tree_builder::TreeSink;
+use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{parse_document, serialize};
+use html5ever::{LocalName, QualName};
 use markup5ever_rcdom::RcDom;
 use markup5ever_rcdom::SerializableHandle;
 use scorer;
@@ -13,6 +15,8 @@ use std::collections::HashMap;
 use std::default::Default;
 use std::io::Read;
 use std::path::Path;
+use std::rc::Rc;
+use std::str::FromStr;
 use url::Url;
 
 #[derive(Debug)]
@@ -117,6 +121,23 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         traversal_scope: serialize::TraversalScope::IncludeNode,
         ..Default::default()
     };
+
+    let name = QualName::new(None, ns!(), LocalName::from("h1"));
+    let header = dom.create_element(name, vec![], ElementFlags::default());
+    dom.append(
+        &header,
+        NodeOrText::AppendText(StrTendril::from_str(&title.title).unwrap_or_default()),
+    );
+
+    if let Some(first_child) = top_candidate.node.children.clone().borrow().iter().nth(0) {
+        // Kinda hacky, but it's possible the parent is a dangling pointer if it
+        // was deleted during the preprocess or cleaning stages. This ensures we
+        // don't panic in append_before_sibling().
+        first_child
+            .parent
+            .set(Some(Rc::downgrade(&top_candidate.node)));
+        dom.append_before_sibling(&first_child.clone(), NodeOrText::AppendNode(header.clone()));
+    }
 
     let document: SerializableHandle = top_candidate.node.clone().into();
     serialize(&mut bytes, &document, serialize_opts)?;
