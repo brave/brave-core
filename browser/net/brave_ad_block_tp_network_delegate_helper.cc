@@ -193,9 +193,13 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
                                  std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  // If the following info isn't available, then proper content settings can't
+  // be looked up, so do nothing.
+  if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
+      ctx->request_url.is_empty()) {
+    return;
+  }
   DCHECK_NE(ctx->request_identifier, 0UL);
-  DCHECK(!ctx->request_url.is_empty());
-  DCHECK(!ctx->initiator_url.is_empty());
 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
@@ -214,10 +218,13 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
 
 int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         std::shared_ptr<BraveRequestInfo> ctx) {
+  if (ctx->request_url.is_empty()) {
+    return net::OK;
+  }
+
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url.is_empty() || ctx->initiator_url.is_empty() ||
-      !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
+  if (ctx->tab_origin.is_empty() || !ctx->allow_brave_shields ||
       ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
