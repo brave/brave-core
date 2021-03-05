@@ -216,7 +216,6 @@ void TabManager::UpdateTab(const int32_t id, const TabInfo& tab) {
 }
 
 void TabManager::RemoveTab(const int32_t id) {
-  DCHECK(GetForId(id));
   tabs_.erase(id);
 }
 
