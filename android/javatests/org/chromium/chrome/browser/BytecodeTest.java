@@ -327,6 +327,8 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabCountProvider"));
         Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
+        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mTabSwitcherModeCoordinatorPhone"));
         Assert.assertTrue(
