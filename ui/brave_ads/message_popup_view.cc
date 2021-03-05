@@ -68,16 +68,18 @@ void MessagePopupView::Clicked(const std::string& notification_id) {
 
 // static
 void MessagePopupView::ClosePopup(const bool by_user) {
-  for (auto iter = g_notifications_.begin(); iter != g_notifications_.end();
-       ++iter) {
-    MessagePopupView* message_popup_view = g_notifications_[iter->first];
+  for (const auto& notification : g_notifications_) {
+    MessagePopupView* message_popup_view = notification.second;
+
     NotificationDelegate* notification_delegate =
         message_popup_view->notification_.delegate();
     if (notification_delegate) {
       notification_delegate->Close(by_user);
     }
+
     message_popup_view->Close();
   }
+
   g_notifications_.clear();
 }
 
@@ -87,14 +89,14 @@ MessagePopupView::MessagePopupView(const Notification& notification)
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
-  const gfx::Size& screen_size =
+  const gfx::Size screen_size =
       display::Screen::GetScreen()->GetPrimaryDisplay().size();
 #if defined(OS_WIN)
-  const uint64_t screen_y = screen_size.height() - kPopupYDeltaWin;
+  const int screen_y = screen_size.height() - kPopupYDeltaWin;
 #elif defined(OS_LINUX)
-  const uint64_t screen_y = kPopupYDeltaLinux;
+  const int screen_y = kPopupYDeltaLinux;
 #else
-  const uint64_t screen_y = kPopupYDeltaOther;
+  const int screen_y = kPopupYDeltaOther;
 #endif
   params.bounds = {screen_size.width() - kPopupBaseWidth - kPopupPadding,
                    screen_y, kPopupBaseWidth,
