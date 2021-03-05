@@ -20,6 +20,7 @@
 #include "content/public/browser/browser_thread.h"
 
 class AdBlockServiceTest;
+class DomainBlockTest;
 class PrefChangeRegistrar;
 class PrefService;
 
@@ -75,6 +76,7 @@ class AdBlockService : public AdBlockBaseService {
 
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::DomainBlockTest;
   static std::string g_ad_block_component_id_;
   static std::string g_ad_block_component_base64_public_key_;
   static std::string g_ad_block_dat_file_version_;

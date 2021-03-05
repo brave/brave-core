@@ -24,6 +24,9 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
 const char kBraveAdblockCosmeticFilteringName[] = "Enable cosmetic filtering";
 const char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
+const char kBraveDomainBlockName[] = "Enable domain blocking";
+const char kBraveDomainBlockDescription[] =
+    "Enable support for blocking domains with an interstitial page";
 const char kBraveSidebarName[] = "Enable Sidebar";
 // TODO(simon): Use more better description.
 const char kBraveSidebarDescription[] = "Enable Sidebar";

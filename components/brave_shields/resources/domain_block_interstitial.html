@@ -1,0 +1,34 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#fff">
+  <title>$i18n{tabTitle}</title>
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
+  <link rel="stylesheet" href="domain_block_interstitial.css">
+  <script src="../../../../ui/webui/resources/js/assert.js"></script>
+  <script src="../../../../ui/webui/resources/js/util.js"></script>
+  <script src="../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
+  <script src="domain_block_interstitial.js"></script>
+</head>
+<body id="body" class="domainblock">
+  <div class="interstitial-wrapper">
+    <div id="main-content">
+      <div class="icon" id="icon"></div>
+      <div id="main-message">
+        <h1>$i18nRaw{heading}</h1>
+        <p>$i18nRaw{primaryParagraph}</p>
+        <pre id="domain">$i18nRaw{domain}</pre>
+        <p>$i18nRaw{explanationParagraph}</p>
+      </div>
+      <div id="dont-warn-again">
+        <input type="checkbox" id="dont-warn-again-checkbox">
+        <label for="dont-warn-again-checkbox" id="dont-warn-again-label">$i18nRaw{dontWarnAgainText}</label>
+      </div>
+    </div>
+    <div class="nav-wrapper">
+      <button id="primary-button" class="primary-button">$i18n{goBackText}</button>
+      <button id="proceed-button" class="proceed-button secondary-button"">$i18n{proceedAnywayText}</button>
+    </div>
+  </div>
+</body>

@@ -64,6 +64,7 @@
       <part file="brave_flags_ui_resources.grdp" />
       <part file="ipfs_resources.grdp" />
       <part file="unstoppable_domains_resources.grdp" />
+      <part file="domain_block_resources.grdp" />
     </includes>
   </release>
 </grit>

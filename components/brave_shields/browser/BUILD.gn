@@ -1,13 +1,12 @@
+import(
+    "//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10643 is resolved
   check_includes = false
-  public_deps = [
-    "buildflags",
-  ]
+  public_deps = [ "buildflags" ]
 
   sources = [
     "ad_block_base_service.cc",
@@ -34,6 +33,14 @@ source_set("browser") {
     "brave_shields_web_contents_observer.h",
     "cookie_pref_service.cc",
     "cookie_pref_service.h",
+    "domain_block_controller_client.cc",
+    "domain_block_controller_client.h",
+    "domain_block_navigation_throttle.cc",
+    "domain_block_navigation_throttle.h",
+    "domain_block_page.cc",
+    "domain_block_page.h",
+    "domain_block_tab_storage.cc",
+    "domain_block_tab_storage.h",
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
@@ -75,8 +82,6 @@ source_set("browser") {
   ]
 
   if (enable_brave_perf_predictor) {
-    deps += [
-      "//brave/components/brave_perf_predictor/browser",
-    ]
+    deps += [ "//brave/components/brave_perf_predictor/browser" ]
   }
 }
