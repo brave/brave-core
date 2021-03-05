@@ -9,7 +9,7 @@ interface StyleProps {
   src?: string
 }
 
-export const StyledWrapper = styled<{}, 'a'>('a')`
+export const StyledWrapper = styled('a')<{}>`
   color: #fff;
   width: 100%;
   background: #fff;
@@ -21,7 +21,7 @@ export const StyledWrapper = styled<{}, 'a'>('a')`
   overflow: hidden;
 `
 
-export const StyledCloseIcon = styled<{}, 'div'>('div')`
+export const StyledCloseIcon = styled('div')<{}>`
   width: 12px;
   height: 12px;
   color: ${palette.grey600};
@@ -31,18 +31,18 @@ export const StyledCloseIcon = styled<{}, 'div'>('div')`
   margin: 11px 11px 0 0;
 `
 
-export const StyledBackground = styled<StyleProps, 'div'>('div')`
+export const StyledBackground = styled('div')<StyleProps>`
   width: 117px;
   background: url(${p => p.src}) no-repeat;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   max-width: 222px;
   margin-top: 14px;
   padding-left: 15px;
 `
 
-export const StyledTitle = styled<{}, 'span'>('span')`
+export const StyledTitle = styled('span')<{}>`
   color: #000;
   display: block;
   font-size: 15px;
@@ -52,7 +52,7 @@ export const StyledTitle = styled<{}, 'span'>('span')`
   line-height: 1.6;
 `
 
-export const StyledInfo = styled<{}, 'div'>('div')`
+export const StyledInfo = styled('div')<{}>`
   font-size: 11.5px;
   line-height: 18px;
   color: ${palette.grey600};
@@ -60,7 +60,7 @@ export const StyledInfo = styled<{}, 'div'>('div')`
   line-height: 1.57;
 `
 
-export const StyledLink = styled<{}, 'a'>('a')`
+export const StyledLink = styled('a')<{}>`
   margin-left: 2px;
   font-weight: bold;
   display: inline-block;
@@ -68,7 +68,7 @@ export const StyledLink = styled<{}, 'a'>('a')`
   text-decoration: none;
 `
 
-export const StyledDisclaimer = styled<{}, 'span'>('span')`
+export const StyledDisclaimer = styled('span')<{}>`
   display: block;
   margin: 10px 0px;
   font-size: 11px;
@@ -77,6 +77,6 @@ export const StyledDisclaimer = styled<{}, 'span'>('span')`
   font-family: Muli, sans-serif;
 `
 
-export const StyleRight = styled<{}, 'div'>('div')`
+export const StyleRight = styled('div')<{}>`
   flex-grow: 1;
 `

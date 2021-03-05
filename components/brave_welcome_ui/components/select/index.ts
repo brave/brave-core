@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'brave-ui/theme'
+import styled, { css } from 'styled-components'
 import palette from 'brave-ui/theme/colors'
 import caratUrl from './carat.svg'
 
@@ -16,7 +16,7 @@ export interface SelectBoxProps {
   children: React.ReactNode
 }
 
-export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
+export const SelectBox = styled('select')<SelectBoxProps>`
   box-sizing: border-box;
   position: relative;
   -webkit-font-smoothing: antialiased;

@@ -19,13 +19,13 @@ const fadeIn = keyframes`
   }
 `
 
-const BaseGrid = styled<{}, 'div'>('div')`
+const BaseGrid = styled('div')<{}>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
 `
 
-const BaseColumn = styled<{}, 'div'>('div')`
+const BaseColumn = styled('div')<{}>`
   box-sizing: border-box;
   position: relative;
   display: flex;
@@ -69,7 +69,7 @@ interface ContentProps {
   isPrevious: boolean
 }
 
-export const Content = styled<ContentProps, 'section'>('section')`
+export const Content = styled('section')<ContentProps>`
   opacity: 0;
   will-change: transform;
   transform: translateX(${p => p.isPrevious ? '-' + p.screenPosition : p.screenPosition}) scale(0.8);
@@ -110,7 +110,7 @@ interface PageProps {
   shouldUpdateElementOverflow: boolean
 }
 
-export const Page = styled<PageProps, 'div'>('div')`
+export const Page = styled('div')<PageProps>`
   width: inherit;
   height: inherit;
   background: ${p => p.theme.color.panelBackground};
@@ -138,7 +138,7 @@ export const Panel = styled('div')`
   height: calc(100vh - ${backgroundHeight}px);
 `
 
-export const SlideContent = styled<{}, 'div'>('div')`
+export const SlideContent = styled('div')<{}>`
   display: flex;
   height: ${slideContentHeight}px;
 `

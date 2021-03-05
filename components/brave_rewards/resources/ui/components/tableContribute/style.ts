@@ -4,14 +4,14 @@
 
 import styled from 'styled-components'
 
-export const StyledText = styled<{}, 'div'>('div')`
+export const StyledText = styled('div')<{}>`
   font-family: Muli, sans-serif;
   font-size: 14px;
   text-align: right;
   color: #686978;
 `
 
-export const StyledRemove = styled<{}, 'button'>('button')`
+export const StyledRemove = styled('button')<{}>`
   margin: 0 8px;
   background: none;
   border: none;
@@ -22,7 +22,7 @@ export const StyledRemove = styled<{}, 'button'>('button')`
   padding: 0;
 `
 
-export const StyledTHOther = styled<{}, 'div'>('div')`
+export const StyledTHOther = styled('div')<{}>`
   text-align: right;
 `
 
@@ -30,11 +30,11 @@ export const StyledTHLast = styled(StyledTHOther)`
   padding-right: 10px;
 `
 
-export const StyledToggleWrap = styled<{}, 'div'>('div')`
+export const StyledToggleWrap = styled('div')<{}>`
   text-align: right;
 `
 
-export const StyledToggle = styled<{}, 'button'>('button')`
+export const StyledToggle = styled('button')<{}>`
   font-family: Poppins, sans-serif;
   font-size: 13px;
   color: #4c54d2;
@@ -45,6 +45,6 @@ export const StyledToggle = styled<{}, 'button'>('button')`
   cursor: pointer;
 `
 
-export const StyledLink = styled<{}, 'a'>('a')`
+export const StyledLink = styled('a')<{}>`
   text-decoration: none;
 `

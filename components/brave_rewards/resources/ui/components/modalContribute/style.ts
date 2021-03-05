@@ -4,11 +4,11 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   font-family: Poppins, sans-serif;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled('div')<{}>`
   font-size: 16px;
   font-weight: 600;
   line-height: 2;
@@ -16,27 +16,27 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   margin-bottom: 20px;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   font-size: 16px;
   color: #4b4c5c;
   margin: 30px 0px 20px;
 `
 
-export const StyledNum = styled<{}, 'span'>('span')`
+export const StyledNum = styled('span')<{}>`
   font-weight: 500;
   color: #0c0d21;
 `
 
-export const StyledTabWrapper = styled<{}, 'div'>('div')`
+export const StyledTabWrapper = styled('div')<{}>`
   margin: 0 auto 30px;
 `
 
-export const StyledControlWrapper = styled<{}, 'div'>('div')`
+export const StyledControlWrapper = styled('div')<{}>`
   width: 100%;
   margin-bottom: 30px;
 `
 
-export const RestoreWrapper = styled<{}, 'div'>('div')`
+export const RestoreWrapper = styled('div')<{}>`
   float: right;
   margin: -18px 0 -10px;
 `

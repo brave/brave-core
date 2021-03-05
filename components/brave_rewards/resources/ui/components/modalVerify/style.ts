@@ -11,7 +11,7 @@ interface StyleProps {
   compact?: boolean
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
   background-image: linear-gradient(180deg, ${p => p.theme.palette.blurple500} 0%, #563195 100%);
   padding: 42px 42px 30px;
@@ -19,7 +19,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   position: relative;
 `
 
-export const StyledClose = styled<{}, 'div'>('div')`
+export const StyledClose = styled('div')<{}>`
   position: absolute;
   top: 20px;
   right: 20px;
@@ -29,19 +29,19 @@ export const StyledClose = styled<{}, 'div'>('div')`
   color: ${p => p.theme.palette.white};
 `
 
-export const StyledHeader = styled<StyleProps, 'div'>('div')`
+export const StyledHeader = styled('div')<StyleProps>`
   margin-bottom: 40px;
   padding-left: 26px;
 `
 
-export const StyledWalletIcon = styled<{}, 'div'>('div')`
+export const StyledWalletIcon = styled('div')<{}>`
   display: inline-block;
   vertical-align: middle;
   width: 50px;
   height: 50px;
 `
 
-export const StyledHeaderText = styled<{}, 'div'>('div')`
+export const StyledHeaderText = styled('div')<{}>`
   vertical-align: middle;
   display: inline-block;
   padding: 3px 0 0 22px;
@@ -62,19 +62,19 @@ export const StyledListTitle = styled(Heading)`
   color: ${p => p.theme.palette.white};
 `
 
-export const StyledListItem = styled<StyleProps, 'div'>('div')`
+export const StyledListItem = styled('div')<StyleProps>`
   color: ${p => p.theme.palette.whiteFade15};
   margin: 17px 0;
 `
 
-export const StyledListIcon = styled<{}, 'div'>('div')`
+export const StyledListIcon = styled('div')<{}>`
   display: inline-block;
   width: 24px;
   height: 24px;
   vertical-align: top;
 `
 
-export const StyledListItemText = styled<{}, 'div'>('div')`
+export const StyledListItemText = styled('div')<{}>`
   vertical-align: middle;
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 15px;
@@ -91,37 +91,37 @@ export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
   margin-top: -25px;
 `
 
-export const StyledFooter = styled<StyleProps, 'div'>('div')`
+export const StyledFooter = styled('div')<StyleProps>`
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 12px;
   color: ${p => p.theme.palette.whiteFade30};
   margin-top: 32px;
 `
 
-export const StyledFooterIcon = styled<{}, 'div'>('div')`
+export const StyledFooterIcon = styled('div')<{}>`
   display: inline-block;
   vertical-align: middle;
   width: 20px;
   height: 20px;
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
+export const StyledContent = styled('div')<{}>`
   display: flex;
   margin-bottom: 10px;
 `
 
-export const StyledLeftSide = styled<{}, 'div'>('div')`
+export const StyledLeftSide = styled('div')<{}>`
   width: 50%;
   padding-right: 10px;
   margin-top: 9px;
 `
 
-export const StyledRightSide = styled<{}, 'div'>('div')`
+export const StyledRightSide = styled('div')<{}>`
   width: 50%;
   padding-left: 40px;
 `
 
-export const StyledNote = styled<{}, 'div'>('div')`
+export const StyledNote = styled('div')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 12px;
   line-height: 20px;
@@ -129,7 +129,7 @@ export const StyledNote = styled<{}, 'div'>('div')`
   margin-top: 15px;
 `
 
-export const NoteText = styled<{}, 'div'>('div')`
+export const NoteText = styled('div')<{}>`
   color: ${p => p.theme.palette.whiteFade15};
   font-size: 12px;
   margin-top: 15px;

@@ -271,7 +271,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     return (
       <SettingsWrapper textDirection={textDirection}>
         <SettingsMenu
-          innerRef={this.settingsMenuRef}
+          ref={this.settingsMenuRef}
           textDirection={textDirection}
           title={getLocale('dashboardSettingsTitle')}
         >

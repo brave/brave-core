@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { AnyStyledComponent } from 'styled-components'
 
 import createWidget from '../widget/index'
 import {
@@ -1243,7 +1244,7 @@ class Binance extends React.PureComponent<Props, State> {
       currenciesShowing
     } = this.state
     const isUS = userTLD === 'us'
-    const ButtonComponent = userAuthed ? ActionButton : ConnectButton
+    const ButtonComponent: AnyStyledComponent = userAuthed ? ActionButton : ConnectButton
     const currencies = getCurrencyList()
 
     return (

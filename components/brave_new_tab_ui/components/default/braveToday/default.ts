@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import styled, { keyframes } from 'brave-ui/theme'
+import styled, { keyframes } from 'styled-components'
 
 const blurOut = keyframes`
   from {
@@ -53,7 +53,7 @@ export const Block = styled('div')`
   }
 `
 
-export const Debugger = styled<{}, 'h1'>('h1')`
+export const Debugger = styled('h1')<{}>`
   background: red;
   position: absolute;
   padding: 5px 0;
@@ -68,7 +68,7 @@ export const Image = styled('img')`
   display: block;
 `
 
-export const Text = styled<{}, 'div'>('div')`
+export const Text = styled('div')<{}>`
   box-sizing: border-box;
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: normal;
@@ -94,7 +94,7 @@ export const Time = styled(Text.withComponent('time'))`
   color: rgba(255,255,255,0.7);
 `
 
-export const PublisherLogo = styled<{}, 'img'>('img')`
+export const PublisherLogo = styled('img')<{}>`
   box-sizing: border-box;
   max-width: 100%;
   height: 30px;

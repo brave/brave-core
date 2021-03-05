@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import styled, { css } from 'brave-ui/theme'
+import styled, { css } from 'styled-components'
 import palette from 'brave-ui/theme/colors'
 import confettiImageUrl from './confetti.png'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
@@ -38,18 +38,18 @@ export const WidgetLayer = styled(Base)`
   grid-column: 1 / 2;
 `
 
-export const Footer = styled<{}, 'div'>('div')`
+export const Footer = styled('div')<{}>`
   max-width: 275px;
   margin-top: 25px;
 `
 
-export const BatIcon = styled<{}, 'div'>('div')`
+export const BatIcon = styled('div')<{}>`
   width: 27px;
   height: 27px;
   margin-right: 8px;
 `
 
-export const RewardsTitle = styled<StyleProps, 'div'>('div')`
+export const RewardsTitle = styled('div')<StyleProps>`
   margin-top: ${p => p.isInTab ? 6 : 0}px;
   display: flex;
   justify-content: flex-start;
@@ -59,20 +59,20 @@ export const RewardsTitle = styled<StyleProps, 'div'>('div')`
   font-family: Poppins, sans-serif;
 `
 
-export const ServiceLink = styled<{}, 'a'>('a')`
+export const ServiceLink = styled('a')<{}>`
   color: ${p => p.theme.color.brandBrave};
   font-weight: 600;
   text-decoration: none;
 `
 
-export const LearnMoreText = styled<{}, 'div'>('div')`
+export const LearnMoreText = styled('div')<{}>`
   font-size: 12px;
   line-height: 18px;
   font-weight: 500;
   font-family: Poppins, sans-serif;
 `
 
-export const Title = styled<{ isGrant?: boolean}, 'span'>('span')`
+export const Title = styled('span')<{ isGrant?: boolean}>`
   font-size: ${p => p.isGrant ? 16 : 14}px;
   display: block;
   font-family: ${p => p.theme.fontFamily.heading};
@@ -80,7 +80,7 @@ export const Title = styled<{ isGrant?: boolean}, 'span'>('span')`
   font-weight: 500;
 `
 
-export const SubTitle = styled<{}, 'span'>('span')`
+export const SubTitle = styled('span')<{}>`
   font-size: 14px;
   display: block;
   margin-top: 15px;
@@ -88,7 +88,7 @@ export const SubTitle = styled<{}, 'span'>('span')`
   line-height: 1.4;
 `
 
-export const SubTitleLink = styled<{}, 'a'>('a')`
+export const SubTitleLink = styled('a')<{}>`
   color: ${p => p.theme.color.brandBrave};
   text-decoration: none;
   cursor: pointer;
@@ -97,7 +97,7 @@ export const SubTitleLink = styled<{}, 'a'>('a')`
   }
 `
 
-export const TurnOnButton = styled<{}, 'button'>('button')`
+export const TurnOnButton = styled('button')<{}>`
   --rewards-widget-button-extra-space: 2px;
   margin: 0 auto;
   border: solid 1px ${palette.grey400};
@@ -168,7 +168,7 @@ export const NotificationButton = styled(CoinsButton)`
   margin-top: 25px;
 `
 
-export const AmountItem = styled<StyleProps, 'div'>('div')`
+export const AmountItem = styled('div')<StyleProps>`
   margin-top: 18px;
   margin-bottom: ${p => p.isLast ? -10 : 0}px;
   ${p => p.isActionPrompt && css`
@@ -178,17 +178,17 @@ export const AmountItem = styled<StyleProps, 'div'>('div')`
   `}
 `
 
-export const Amount = styled<{}, 'span'>('span')`
+export const Amount = styled('span')<{}>`
   font-size: 32px;
   margin-right: 10px;
   font-family: Poppins, sans-serif;
 `
 
-export const ConvertedAmount = styled<{}, 'span'>('span')`
+export const ConvertedAmount = styled('span')<{}>`
   font-size: 14px;
 `
 
-export const AmountDescription = styled<{}, 'div'>('div')`
+export const AmountDescription = styled('div')<{}>`
   font-size: 14px;
   color: ${palette.grey300};
 `
@@ -228,7 +228,7 @@ export const NotificationWrapper = styled(BaseNotificationWrapper)`
 export const OrphanedNotificationWrapper = styled(BaseNotificationWrapper)`
 `
 
-export const NotificationAction = styled<{}, 'a'>('a')`
+export const NotificationAction = styled('a')<{}>`
   margin-top: 20px;
   max-width: 250px;
   display: block;
@@ -242,7 +242,7 @@ export const NotificationAction = styled<{}, 'a'>('a')`
   }
 `
 
-export const CloseIcon = styled<{}, 'div'>('div')`
+export const CloseIcon = styled('div')<{}>`
   color: #fff;
   width: 13px;
   height: 13px;
@@ -251,20 +251,20 @@ export const CloseIcon = styled<{}, 'div'>('div')`
   margin-top: 2px;
 `
 
-export const UnsupportedMessage = styled<{}, 'div'>('div')`
+export const UnsupportedMessage = styled('div')<{}>`
   color: rgba(255, 255, 255, 0.70);
   font-size: 14px;
   max-width: 235px;
   margin-top: 8px;
 `
 
-export const TurnOnText = styled<{}, 'div'>('div')`
+export const TurnOnText = styled('div')<{}>`
   font-size: 13px;
   color: ${palette.grey300};
   margin-top: 8px;
 `
 
-export const TurnOnTitle = styled<{}, 'div'>('div')`
+export const TurnOnTitle = styled('div')<{}>`
   font-size: 15px;
   font-weight: 600;
   color: ${palette.grey300};
@@ -279,6 +279,6 @@ export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
   }
 `
 
-export const StyleCenter = styled<{}, 'div'>('div')`
+export const StyleCenter = styled('div')<{}>`
   text-align: center;
 `

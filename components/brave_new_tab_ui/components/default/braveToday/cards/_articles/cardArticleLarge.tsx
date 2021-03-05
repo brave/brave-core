@@ -85,7 +85,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
   // TODO(petemill): Avoid nested links
   // `ref as any` due to https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   return (
-    <Card.Large innerRef={innerRef}>
+    <Card.Large ref={innerRef}>
       <a onClick={onClick} href={item.url} ref={cardRef}>
         <CardImage
           imageUrl={item.img}
