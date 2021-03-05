@@ -73,6 +73,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.List;
 
 public class BraveToolbarManager extends ToolbarManager {
+    // To delete in bytecode, members from parent class will be used instead.
     private ObservableSupplierImpl<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
     private CallbackController mCallbackController;
     private BrowserControlsSizer mBrowserControlsSizer;
@@ -94,7 +95,9 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabModelSelector mTabModelSelector;
     private IncognitoStateProvider mIncognitoStateProvider;
     private TabCountProvider mTabCountProvider;
+    private TabGroupUi mTabGroupUi;
 
+    // Own members.
     private boolean mIsBottomToolbarVisible;
     private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
@@ -102,7 +105,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private AppCompatActivity mActivity;
     private WindowAndroid mWindowAndroid;
     private CompositorViewHolder mCompositorViewHolder;
-    private TabGroupUi mTabGroupUi;
 
     public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
@@ -189,11 +191,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 mFullscreenManager, (ScrollingBottomViewResourceFrameLayout) root,
                 mAppThemeColorProvider, mTabGroupUi, mOverlayPanelVisibilitySupplier));
         updateBottomToolbarVisibility();
-    }
-
-    @Override
-    public TabGroupUi getTabGroupUi() {
-        return mTabGroupUi;
     }
 
     @Override
