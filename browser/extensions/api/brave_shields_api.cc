@@ -145,6 +145,22 @@ BraveShieldsMigrateLegacyCosmeticFiltersFunction::Run() {
   return RespondNow(ArgumentList(std::move(callback_args)));
 }
 
+ExtensionFunction::ResponseAction
+BraveShieldsAddSiteCosmeticFilterFunction::Run() {
+  std::unique_ptr<brave_shields::AddSiteCosmeticFilter::Params> params(
+      brave_shields::AddSiteCosmeticFilter::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* custom_filters_service =
+      g_brave_browser_process->ad_block_custom_filters_service();
+  std::string custom_filters = custom_filters_service->GetCustomFilters();
+  custom_filters_service->UpdateCustomFilters(custom_filters + '\n' +
+                                              params->host + "##" +
+                                              params->css_selector + '\n');
+
+  return RespondNow(NoArguments());
+}
+
 ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(
       brave_shields::AllowScriptsOnce::Params::Create(*args_));
