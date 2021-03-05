@@ -3,8 +3,10 @@ use markup5ever_rcdom::RcDom;
 use markup5ever_rcdom::SerializableHandle;
 use html5ever::tendril::TendrilSink;
 use html5ever::{parse_document, serialize};
+use markup5ever_rcdom::RcDom;
+use markup5ever_rcdom::SerializableHandle;
 use scorer;
-use scorer::Candidate;
+use scorer::{Candidate, Title};
 use std::cell::Cell;
 use std::collections::BTreeMap;
 use std::collections::HashMap;
@@ -30,12 +32,26 @@ where
     extract_dom(&mut dom, url, &HashMap::new())
 }
 
+pub fn preprocess<R>(input: &mut R) -> Result<Title, std::io::Error>
+where
+    R: Read,
+{
+    let mut dom = parse_document(RcDom::default(), Default::default())
+        .from_utf8()
+        .read_from(input)?;
+
+    let mut title = Title::default();
+    let handle = dom.document.clone();
+    scorer::preprocess(&mut dom, handle, &mut title);
+    Ok(title)
+}
+
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
     mut dom: &mut RcDom,
     url: &Url,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
-    let mut title = String::new();
+    let mut title = Title::default();
     let mut candidates = BTreeMap::new();
     let mut nodes = BTreeMap::new();
     let handle = dom.document.clone();
@@ -55,6 +71,14 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         &mut candidates,
         &mut nodes,
     );
+
+    if candidates.iter().count() == 0 {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "No candidates found.",
+        ));
+    }
+
     let mut id: &str = "/";
 
     // top candidate is the top scorer among the tree dom's candidates. this is
@@ -82,7 +106,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         Path::new(id),
         top_candidate.node.clone(),
         url,
-        &title,
+        &title.title,
         features,
         &candidates,
     );
@@ -98,20 +122,46 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     serialize(&mut bytes, &document, serialize_opts)?;
     let content = String::from_utf8(bytes).unwrap_or_default();
 
-    Ok(Product { title, content })
+    Ok(Product {
+        title: title.title,
+        content: content,
+    })
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs::File;
-    use url::Url;
+    use std::io::Cursor;
 
     #[test]
     fn test_extract_title() {
-        let mut file = File::open("../../data/tests-samples/simple_title/title.html").unwrap();
-        let url = Url::parse("https://example.com").unwrap();
-        let product = extract(&mut file, &url).unwrap();
+        let data = r#"
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>This is title</title>
+          </head>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(data);
+        let product = preprocess(&mut cursor).unwrap();
         assert_eq!(product.title, "This is title");
+    }
+
+    #[test]
+    fn test_prefer_meta() {
+        let data = r#"
+        <head>
+        <meta property="og:title" content="Raspberry Pi 3 - All-time bestselling computer in UK"/>
+        <meta property="hi" content="test"/>
+        <title>Raspberry Pi 3 - All-time bestselling computer in UK - SimplyFound</title>
+        </head>
+        "#;
+        let mut cursor = Cursor::new(data);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            product.title,
+            "Raspberry Pi 3 - All-time bestselling computer in UK"
+        );
     }
 }

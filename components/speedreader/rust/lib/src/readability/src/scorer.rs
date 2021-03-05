@@ -1,9 +1,11 @@
 use dom;
-use markup5ever_rcdom::{Handle, Node, RcDom};
-use markup5ever_rcdom::NodeData::{Comment, Doctype, Document, ProcessingInstruction, Element, Text};
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
+use markup5ever_rcdom::NodeData::{
+    Comment, Doctype, Document, Element, ProcessingInstruction, Text,
+};
+use markup5ever_rcdom::{Handle, Node, RcDom};
 use regex::Regex;
 use std::cell::Cell;
 use std::collections::{BTreeMap, HashMap};
@@ -52,6 +54,12 @@ lazy_static! {
 pub struct Candidate {
     pub node: Rc<Node>,
     pub score: Cell<f32>,
+}
+
+#[derive(Default)]
+pub struct Title {
+    pub title: String,
+    pub is_meta: bool,
 }
 
 pub fn fix_img_path(handle: Handle, url: &Url) -> bool {
@@ -166,7 +174,33 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
     weight
 }
 
-pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -> bool {
+pub fn get_metadata(handle: &Handle, title: &mut Title) {
+    if title.is_meta {
+        // We already grabbed a title from the metadata earlier in the parse.
+        return;
+    }
+    if let Some(property) = dom::get_attr("property", &handle) {
+        // TODO(keur): grab author, description, site name, etc in here.
+        // For now we are just getting the title.
+        match property.as_ref() {
+            "dc:title"
+            | "dcterm:title"
+            | "og:title"
+            | "weibo:article:title"
+            | "weibo:webpage:title"
+            | "title"
+            | "twitter:title" => {
+                if let Some(content) = dom::get_attr("content", &handle) {
+                    title.title = content;
+                    title.is_meta = true;
+                }
+            }
+            _ => (),
+        }
+    }
+}
+
+pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut Title) -> bool {
     if let Element {
         ref name,
         ref attrs,
@@ -175,7 +209,15 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
     {
         match name.local {
             local_name!("script") | local_name!("link") | local_name!("style") => return true,
-            local_name!("title") => dom::extract_text(&handle, &mut title, true),
+            local_name!("title") => {
+                if !title.is_meta && title.title.is_empty() {
+                    dom::extract_text(&handle, &mut title.title, true);
+                    title.is_meta = false;
+                }
+            },
+            local_name!("meta") => {
+                get_metadata(&handle, title);
+            },
             _ => (),
         }
         for attr_name in ["id", "class", "itemProp"].iter() {
