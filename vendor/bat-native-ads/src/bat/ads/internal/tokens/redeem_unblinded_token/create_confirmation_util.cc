@@ -5,22 +5,16 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/base64url.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/optional.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/values.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/features/features.h"
-#include "bat/ads/internal/locale/country_code_util.h"
-#include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
-#include "brave/components/l10n/browser/locale_helper.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -44,42 +38,14 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   const std::string type = std::string(confirmation.type);
   dto.SetKey("type", base::Value(type));
 
-  DCHECK(!g_build_channel.name.empty());
-  dto.SetKey("buildChannel", base::Value(g_build_channel.name));
-
-  if (g_build_channel.is_release) {
-    const std::string locale =
-        brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-
-    if (locale::IsMemberOfAnonymitySet(locale)) {
-      const std::string country_code = brave_l10n::GetCountryCode(locale);
-      dto.SetKey("countryCode", base::Value(country_code));
-    } else {
-      if (locale::ShouldClassifyAsOther(locale)) {
-        dto.SetKey("countryCode", base::Value("??"));
-      }
+  base::Optional<base::Value> user_data =
+      base::JSONReader::Read(confirmation.user_data);
+  if (user_data && user_data->is_dict()) {
+    base::DictionaryValue* user_data_dictionary = nullptr;
+    if (user_data->GetAsDictionary(&user_data_dictionary)) {
+      dto.MergeDictionary(user_data_dictionary);
     }
   }
-
-  if (!features::HasActiveStudy()) {
-    dto.SetKey("experiment", base::Value(base::Value::Type::DICTIONARY));
-  } else {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-    const base::Optional<std::string> study = features::GetStudy();
-    if (study.has_value() && !study->empty()) {
-      dictionary.SetKey("name", base::Value(study.value()));
-    }
-
-    const base::Optional<std::string> group = features::GetGroup();
-    if (group.has_value() && !group->empty()) {
-      dictionary.SetKey("group", base::Value(group.value()));
-    }
-
-    dto.SetKey("experiment", std::move(dictionary));
-  }
-
-  const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
-  dto.SetKey("platform", base::Value(platform));
 
   std::string json;
   base::JSONWriter::Write(dto, &json);

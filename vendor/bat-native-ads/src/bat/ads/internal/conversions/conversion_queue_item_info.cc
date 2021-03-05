@@ -23,6 +23,7 @@ bool ConversionQueueItemInfo::operator==(
          creative_instance_id == rhs.creative_instance_id &&
          advertiser_id == rhs.advertiser_id &&
          conversion_id == rhs.conversion_id &&
+         advertiser_public_key == rhs.advertiser_public_key &&
          static_cast<int64_t>(timestamp.ToDoubleT()) ==
              static_cast<int64_t>(rhs.timestamp.ToDoubleT());
 }

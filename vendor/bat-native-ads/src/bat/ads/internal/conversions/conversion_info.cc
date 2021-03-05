@@ -17,6 +17,7 @@ bool ConversionInfo::operator==(const ConversionInfo& rhs) const {
   return creative_set_id == rhs.creative_set_id && type == rhs.type &&
          url_pattern == rhs.url_pattern &&
          observation_window == rhs.observation_window &&
+         advertiser_public_key == rhs.advertiser_public_key &&
          expiry_timestamp == rhs.expiry_timestamp;
 }
 

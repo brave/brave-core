@@ -337,6 +337,16 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     confirmation_dictionary.SetKey("credential",
                                    base::Value(confirmation.credential));
 
+    base::Optional<base::Value> user_data =
+        base::JSONReader::Read(confirmation.user_data);
+    if (user_data && user_data->is_dict()) {
+      base::DictionaryValue* user_data_dictionary = nullptr;
+      if (user_data->GetAsDictionary(&user_data_dictionary)) {
+        confirmation_dictionary.SetKey("user_data",
+                                       base::Value(user_data_dictionary));
+      }
+    }
+
     confirmation_dictionary.SetKey(
         "timestamp_in_seconds",
         base::Value(std::to_string(confirmation.timestamp)));
@@ -474,6 +484,15 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       continue;
     }
     confirmation.credential = *credential;
+
+    // User data
+    const base::Value* user_data_dictionary =
+        confirmation_dictionary->FindDictKey("user_data");
+    if (user_data_dictionary) {
+      std::string json;
+      base::JSONWriter::Write(*user_data_dictionary, &json);
+      confirmation.user_data = json;
+    }
 
     // Timestamp
     const std::string* timestamp =

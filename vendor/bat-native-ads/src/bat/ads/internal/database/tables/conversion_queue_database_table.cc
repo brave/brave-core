@@ -85,6 +85,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
       "cq.creative_instance_id, "
       "cq.advertiser_id, "
       "cq.conversion_id, "
+      "cq.advertiser_public_key, "
       "cq.timestamp "
       "FROM %s AS cq "
       "ORDER BY timestamp ASC",
@@ -100,6 +101,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) {
       DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       DBCommand::RecordBindingType::STRING_TYPE,  // conversion_id
+      DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_public_key
       DBCommand::RecordBindingType::DOUBLE_TYPE   // timestamp
   };
 
@@ -128,6 +130,7 @@ void ConversionQueue::GetForCreativeInstanceId(
       "cq.creative_instance_id, "
       "cq.advertiser_id, "
       "cq.conversion_id, "
+      "cq.advertiser_public_key, "
       "cq.timestamp "
       "FROM %s AS cq "
       "WHERE cq.creative_instance_id = '%s' "
@@ -144,6 +147,7 @@ void ConversionQueue::GetForCreativeInstanceId(
       DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
       DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_id
       DBCommand::RecordBindingType::STRING_TYPE,  // conversion_id
+      DBCommand::RecordBindingType::STRING_TYPE,  // advertiser_public_key
       DBCommand::RecordBindingType::DOUBLE_TYPE   // timestamp
   };
 
@@ -173,6 +177,11 @@ void ConversionQueue::Migrate(DBTransaction* transaction,
   switch (to_version) {
     case 10: {
       MigrateToV10(transaction);
+      break;
+    }
+
+    case 11: {
+      MigrateToV11(transaction);
       break;
     }
 
@@ -215,6 +224,7 @@ int ConversionQueue::BindParameters(
     BindString(command, index++, conversion_queue_item.creative_instance_id);
     BindString(command, index++, conversion_queue_item.advertiser_id);
     BindString(command, index++, conversion_queue_item.conversion_id);
+    BindString(command, index++, conversion_queue_item.advertiser_public_key);
     BindDouble(command, index++, conversion_queue_item.timestamp.ToDoubleT());
 
     count++;
@@ -237,9 +247,10 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
       "creative_instance_id, "
       "advertiser_id, "
       "conversion_id, "
+      "advertiser_public_key, "
       "timestamp) VALUES %s",
       get_table_name().c_str(),
-      BuildBindingParameterPlaceholders(6, count).c_str());
+      BuildBindingParameterPlaceholders(7, count).c_str());
 }
 
 void ConversionQueue::OnGetAll(DBCommandResponsePtr response,
@@ -288,7 +299,8 @@ ConversionQueueItemInfo ConversionQueue::GetFromRecord(DBRecord* record) const {
   info.creative_instance_id = ColumnString(record, 2);
   info.advertiser_id = ColumnString(record, 3);
   info.conversion_id = ColumnString(record, 4);
-  info.timestamp = base::Time::FromDoubleT(ColumnDouble(record, 5));
+  info.advertiser_public_key = ColumnString(record, 5);
+  info.timestamp = base::Time::FromDoubleT(ColumnDouble(record, 6));
 
   return info;
 }
@@ -297,8 +309,8 @@ void ConversionQueue::CreateTableV10(DBTransaction* transaction) {
   DCHECK(transaction);
 
   // campaign_id and advertiser_id can be NULL for legacy conversions migrated
-  // from |ad_conversions.json| and conversion_id will be empty for non
-  // verifiable conversions
+  // from |ad_conversions.json| and conversion_id and advertiser_public_key will
+  // be empty for non verifiable conversions
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
       "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
@@ -323,6 +335,21 @@ void ConversionQueue::MigrateToV10(DBTransaction* transaction) {
   util::Drop(transaction, get_table_name());
 
   CreateTableV10(transaction);
+}
+
+void ConversionQueue::MigrateToV11(DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "ALTER TABLE %s "
+      "ADD COLUMN advertiser_public_key TEXT",
+      get_table_name().c_str());
+
+  DBCommandPtr command = DBCommand::New();
+  command->type = DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace table

@@ -26,6 +26,7 @@ struct ConversionQueueItemInfo {
   std::string creative_instance_id;
   std::string advertiser_id;
   std::string conversion_id;
+  std::string advertiser_public_key;
   base::Time timestamp;
 
   bool IsValid() const;

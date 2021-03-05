@@ -26,6 +26,7 @@ struct ConversionInfo {
   std::string creative_set_id;
   std::string type;
   std::string url_pattern;
+  std::string advertiser_public_key;
   int observation_window = 0;
   int64_t expiry_timestamp = 0;
 };
