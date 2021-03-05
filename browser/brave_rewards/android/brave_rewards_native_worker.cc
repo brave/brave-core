@@ -651,16 +651,15 @@ void BraveRewardsNativeWorker::GetExternalWallet(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    auto callback = base::Bind(
-        &BraveRewardsNativeWorker::OnGetExternalWallet,
-        base::Unretained(this));
-    brave_rewards_service_->GetUpholdWallet(callback);
+    brave_rewards_service_->GetExternalWallet(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetExternalWallet,
+                       base::Unretained(this)));
   }
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
     const ledger::type::Result result,
-    ledger::type::UpholdWalletPtr wallet) {
+    ledger::type::ExternalWalletPtr wallet) {
   std::string json_wallet;
   if (!wallet) {
     json_wallet = "";
@@ -686,13 +685,11 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
       base::android::ConvertUTF8ToJavaString(env, json_wallet));
 }
 
-void BraveRewardsNativeWorker::DisconnectWallet(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj,
-    const base::android::JavaParamRef<jstring>& wallet_type) {
+void BraveRewardsNativeWorker::DisconnectWallet(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    std::string str_wallet_type =
-        base::android::ConvertJavaStringToUTF8(env, wallet_type);
-    brave_rewards_service_->DisconnectWallet(str_wallet_type);
+    brave_rewards_service_->DisconnectWallet();
   }
 }
 

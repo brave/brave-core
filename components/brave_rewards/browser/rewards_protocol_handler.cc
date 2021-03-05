@@ -58,8 +58,20 @@ void LoadRewardsURL(
     return;
   }
 
-  // we should only allow rewards schema to be used from uphold.com domains
-  if (!web_contents->GetURL().DomainIs("uphold.com")) {
+  // Only accept rewards scheme from allowed domains
+  const char* kAllowedDomains[] = {
+      "uphold.com",  // Uphold staging/production
+  };
+  bool allowed_domain = false;
+  for (const auto* domain : kAllowedDomains) {
+    if (ref_url.DomainIs(domain)) {
+      allowed_domain = true;
+      break;
+    }
+  }
+
+  if (!allowed_domain) {
+    LOG(ERROR) << "Blocked invalid rewards url domain: " << ref_url.spec();
     return;
   }
 

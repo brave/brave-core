@@ -208,7 +208,7 @@ TEST_F(UpholdUtilTest, GenerateRandomString) {
 TEST_F(UpholdUtilTest, GenerateLinks) {
   ledger::_environment = type::Environment::STAGING;
 
-  auto wallet = type::UpholdWallet::New();
+  auto wallet = type::ExternalWallet::New();
   wallet->address = "123123123124234234234";
 
   // Not connected
@@ -297,7 +297,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
 TEST_F(UpholdUtilTest, GenerateVerifyLink) {
   ledger::_environment = type::Environment::STAGING;
 
-  auto wallet = type::UpholdWallet::New();
+  auto wallet = type::ExternalWallet::New();
   wallet->one_time_string = "123123123124234234234";
 
   // Not connected

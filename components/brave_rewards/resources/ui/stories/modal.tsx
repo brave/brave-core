@@ -49,6 +49,7 @@ storiesOf('Rewards/Modal', module)
           funds={'55 BAT'}
           activeTabId={store.state.activeTabId}
           showBackupNotice={boolean('Show backup notice?', false)}
+          walletProvider={'Uphold'}
           backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
           error={text('Error', '')}
           onTabChange={onTabChange}
@@ -331,7 +332,7 @@ storiesOf('Rewards/Modal', module)
   .add('Redirect',() => {
     return (
       <ModalRedirect
-        titleText={text('Title text', 'Sorry there was problem processing your request, please try again.')}
+        titleText={text('Title text', 'Sorry there was a problem processing your request, please try again.')}
         errorText={'Error explanation, more info here.'}
         onClick={doNothing}
       />
@@ -343,6 +344,7 @@ storiesOf('Rewards/Modal', module)
         <ModalVerify
           onVerifyClick={doNothing}
           onClose={doNothing}
+          walletProvider={'Uphold'}
         />
       </div>
     )

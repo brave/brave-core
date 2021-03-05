@@ -117,7 +117,7 @@ class SettingsPage extends React.Component<Props, State> {
       prevProps.rewardsData.externalWallet &&
       !this.props.rewardsData.externalWallet
     ) {
-      this.actions.getExternalWallet('uphold')
+      this.actions.getExternalWallet()
     }
   }
 
@@ -146,7 +146,7 @@ class SettingsPage extends React.Component<Props, State> {
     }, 60000)
 
     this.actions.fetchPromotions()
-    this.actions.getExternalWallet('uphold')
+    this.actions.getExternalWallet()
     this.actions.getOnboardingStatus()
 
     this.handleURL()
@@ -222,13 +222,15 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   getRedirectModal = () => {
-    const { ui } = this.props.rewardsData
+    const { externalWallet, ui } = this.props.rewardsData
+    const walletType = externalWallet ? externalWallet.type : ''
 
     if (ui.modalRedirect === 'show') {
       return (
         <ModalRedirect
           id={'redirect-modal-show'}
           titleText={getLocale('processingRequest')}
+          walletType={walletType}
         />
       )
     }
@@ -240,18 +242,21 @@ class SettingsPage extends React.Component<Props, State> {
           errorText={getLocale('redirectModalNotAllowed')}
           titleText={getLocale('redirectModalErrorWallet')}
           buttonText={getLocale('redirectModalClose')}
+          walletType={walletType}
           onClick={this.actions.hideRedirectModal}
         />
       )
     }
 
     if (ui.modalRedirect === 'batLimit') {
+      // NOTE: The minimum BAT limit error is currently Uphold-specific
       return (
         <ModalRedirect
           id={'redirect-modal-bat-limit'}
           titleText={getLocale('redirectModalBatLimitTitle')}
           errorText={getLocale('redirectModalBatLimitText')}
           buttonText={getLocale('redirectModalClose')}
+          walletType={walletType}
           onClick={this.actions.hideRedirectModal}
         />
       )
@@ -264,6 +269,7 @@ class SettingsPage extends React.Component<Props, State> {
           errorText={getLocale('redirectModalError')}
           buttonText={getLocale('processingRequestButton')}
           titleText={getLocale('processingRequest')}
+          walletType={walletType}
           onClick={this.onRedirectError}
         />
       )
@@ -343,6 +349,8 @@ class SettingsPage extends React.Component<Props, State> {
       ui
     } = this.props.rewardsData
 
+    const { autoContributeChoices } = parameters
+
     const onDone = () => {
       this.setState({ showRewardsTour: false, firstTimeSetup: false })
     }
@@ -362,7 +370,7 @@ class SettingsPage extends React.Component<Props, State> {
         onlyAnonWallet={ui.onlyAnonWallet}
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
-        autoContributeAmountOptions={parameters.autoContributeChoices}
+        autoContributeAmountOptions={autoContributeChoices}
         onAdsPerHourChanged={onAdsPerHourChanged}
         onAutoContributeAmountChanged={onAcAmountChanged}
         onDone={onDone}

@@ -141,9 +141,11 @@ struct MediaEventInfo {
   string status;
 };
 
-struct UpholdWallet {
+struct ExternalWallet {
+  string type;
   string token;
   string address;
+  string linking_info;
   WalletStatus status;
   string verify_url;
   string add_url;
@@ -239,7 +241,7 @@ enum Result {
 enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
-  VERIFIED = 2
+  UPHOLD_VERIFIED = 2
 };
 
 struct ServerPublisherInfo {

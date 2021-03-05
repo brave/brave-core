@@ -21,16 +21,18 @@ export interface Promo {
 }
 
 export const getActivePromos = (rewardsData: Rewards.State) => {
-  let promos = ['tap-network']
+  let promos = []
 
-  if (rewardsData) {
+  if (rewardsData && rewardsData.externalWallet) {
     let wallet = rewardsData.externalWallet
-    if (wallet && wallet.status === 2 && wallet.address && wallet.address.length > 0) { // WalletStatus::VERIFIED
-      promos.unshift('uphold-card')
+    if (wallet.type === 'uphold') {
+      promos.unshift('tap-network')
+      if (wallet.status === 2 && wallet.address) { // WalletStatus::VERIFIED
+        promos.unshift('uphold-card')
+      }
+      promos.unshift('uphold-equities')
     }
   }
-
-  promos.unshift('uphold-equities')
 
   return promos
 }

@@ -289,7 +289,7 @@ class RewardsServiceImpl : public RewardsService,
 
   std::string GetLegacyWallet() override;
 
-  void GetUpholdWallet(GetUpholdWalletCallback callback) override;
+  void GetExternalWallet(GetExternalWalletCallback callback) override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -301,7 +301,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) override;
 
-  void DisconnectWallet(const std::string& wallet_type) override;
+  void DisconnectWallet() override;
 
   bool OnlyAnonWallet() const override;
 
@@ -368,6 +368,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void EnableGreaseLion();
 
+  std::string GetExternalWalletType() const;
+
   void OnStopLedger(
       StopLedgerCallback callback,
       const ledger::type::Result result);
@@ -420,10 +422,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void MaybeShowBackupNotification(uint64_t boot_stamp);
 
-  void WalletBackupNotification(
-      const uint64_t boot_stamp,
-      const ledger::type::Result result,
-      ledger::type::UpholdWalletPtr wallet);
+  void WalletBackupNotification(const uint64_t boot_stamp,
+                                const ledger::type::Result result,
+                                ledger::type::ExternalWalletPtr wallet);
 
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
 
@@ -468,10 +469,9 @@ class RewardsServiceImpl : public RewardsService,
                       const ledger::type::Result result,
                       ledger::type::BalancePtr balance);
 
-  void OnGetUpholdWallet(
-      GetUpholdWalletCallback callback,
-      const ledger::type::Result result,
-      ledger::type::UpholdWalletPtr wallet);
+  void OnGetExternalWallet(GetExternalWalletCallback callback,
+                           const ledger::type::Result result,
+                           ledger::type::ExternalWalletPtr wallet);
 
   void OnExternalWalletAuthorization(
     const std::string& wallet_type,
@@ -804,6 +804,7 @@ class RewardsServiceImpl : public RewardsService,
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   uint32_t next_timer_id_;
+  int32_t country_id_ = 0;
   bool reset_states_;
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;

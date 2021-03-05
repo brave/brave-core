@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_MOJOM_STRUCTS_
-#define BAT_LEDGER_MOJOM_STRUCTS_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_MOJOM_STRUCTS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_MOJOM_STRUCTS_H_
 
 #include <string>
 #include <vector>
@@ -87,8 +87,8 @@ using Environment = mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;
 
-using UpholdWallet = mojom::UpholdWallet;
-using UpholdWalletPtr = mojom::UpholdWalletPtr;
+using ExternalWallet = mojom::ExternalWallet;
+using ExternalWalletPtr = mojom::ExternalWalletPtr;
 
 using InlineTipsPlatforms = mojom::InlineTipsPlatforms;
 
@@ -214,4 +214,4 @@ using DBValuePtr = mojom::DBValuePtr;
 }  // namespace type
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_MOJOM_STRUCTS_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_MOJOM_STRUCTS_H_

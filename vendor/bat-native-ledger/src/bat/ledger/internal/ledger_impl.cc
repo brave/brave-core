@@ -7,15 +7,16 @@
 
 #include "base/task/post_task.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/static_values.h"
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
-#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 
@@ -695,9 +696,10 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   wallet()->FetchBalance(callback);
 }
 
-void LedgerImpl::GetUpholdWallet(ledger::UpholdWalletCallback callback) {
-  uphold()->GenerateWallet(
-    [this, callback](const type::Result result) {
+void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
+                                   ledger::ExternalWalletCallback callback) {
+  if (wallet_type == constant::kWalletUphold) {
+    uphold()->GenerateWallet([this, callback](const type::Result result) {
       if (result != type::Result::LEDGER_OK &&
           result != type::Result::CONTINUE) {
         callback(result, nullptr);
@@ -707,6 +709,11 @@ void LedgerImpl::GetUpholdWallet(ledger::UpholdWalletCallback callback) {
       auto wallet = uphold()->GetWallet();
       callback(type::Result::LEDGER_OK, std::move(wallet));
     });
+    return;
+  }
+
+  NOTREACHED();
+  callback(type::Result::LEDGER_OK, nullptr);
 }
 
 void LedgerImpl::ExternalWalletAuthorization(
