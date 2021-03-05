@@ -103,6 +103,7 @@
     *** mTabModelSelector;
     *** mIncognitoStateProvider;
     *** mTabCountProvider;
+    *** mTabGroupUi;
     *** onOrientationChange(...);
     *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
