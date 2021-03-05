@@ -1088,12 +1088,14 @@
       <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_WALLET_DOWNLOADING" desc="">Downloading Component...</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
-      <part file="speedreader_strings.grdp" />
-      <part file="ipfs_strings.grdp" />
-      <part file="unstoppable_domains_strings.grdp" />
-      <part file="domain_block_strings.grdp" />
+
       <part file="crypto_dot_com_strings.grdp" />
+      <part file="domain_block_strings.grdp" />
+      <part file="ipfs_strings.grdp" />
+      <part file="permissions_strings.grdp" />
+      <part file="speedreader_strings.grdp" />
       <part file="tor_strings.grdp" />
+      <part file="unstoppable_domains_strings.grdp" />
     </messages>
   </release>
 </grit>

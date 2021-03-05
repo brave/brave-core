@@ -19,6 +19,7 @@
 #include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/permissions/features.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 
@@ -141,7 +142,12 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
     {"brave-ephemeral-storage",                                            \
      flag_descriptions::kBraveEphemeralStorageName,                        \
      flag_descriptions::kBraveEphemeralStorageDescription, kOsAll,         \
-     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},
+     FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage)},           \
+    {"brave-permission-lifetime",                                          \
+     flag_descriptions::kBravePermissionLifetimeName,                      \
+     flag_descriptions::kBravePermissionLifetimeDescription, kOsAll,       \
+     FEATURE_VALUE_TYPE(permissions::features::kPermissionLifetime)},
+
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT
