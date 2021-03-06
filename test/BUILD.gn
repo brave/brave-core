@@ -11,13 +11,13 @@ import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/unstoppable_domains/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -200,8 +200,8 @@ test("brave_unit_tests") {
     "//services/preferences/public/cpp",
   ]
 
-  if (unstoppable_domains_enabled) {
-    deps += [ "//brave/browser/unstoppable_domains/test:unit_tests" ]
+  if (decentralized_dns_enabled) {
+    deps += [ "//brave/browser/decentralized_dns/test:unit_tests" ]
   }
 
   if (toolkit_views) {
@@ -633,8 +633,8 @@ if (!is_android) {
       "//testing/gmock",
     ]
 
-    if (unstoppable_domains_enabled) {
-      deps += [ "//brave/browser/unstoppable_domains/test:browser_tests" ]
+    if (decentralized_dns_enabled) {
+      deps += [ "//brave/browser/decentralized_dns/test:browser_tests" ]
     }
 
     if (enable_brave_perf_predictor) {

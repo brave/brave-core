@@ -10,11 +10,11 @@
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/unstoppable_domains/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
@@ -46,8 +46,8 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-#include "brave/components/unstoppable_domains/pref_names.h"
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/pref_names.h"
 #endif
 
 namespace extensions {
@@ -212,9 +212,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[prefs::kWebRTCIPHandlingPolicy] =
       settings_api::PrefType::PREF_TYPE_STRING;
 
-#if BUILDFLAG(UNSTOPPABLE_DOMAINS_ENABLED)
-  // Unstoppable Domains pref
-  (*s_brave_allowlist)[unstoppable_domains::kResolveMethod] =
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  (*s_brave_allowlist)[decentralized_dns::kUnstoppableDomainsResolveMethod] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[decentralized_dns::kENSResolveMethod] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
 

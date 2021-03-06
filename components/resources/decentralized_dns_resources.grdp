@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="decentralized_dns_enabled">
+    <include name="IDR_DECENTRALIZED_DNS_INTERSTITIAL_HTML" file="../decentralized_dns/resources/decentralized_dns_interstitial.html" flattenhtml="true" type="BINDATA" />
+    <include name="IDR_DECENTRALIZED_DNS_INTERSTITIAL_JS" file="../decentralized_dns/resources/decentralized_dns_interstitial.js" type="BINDATA" />
+    <include name="IDR_DECENTRALIZED_DNS_INTERSTITIAL_CSS" file="../decentralized_dns/resources/decentralized_dns_interstitial.css" type="BINDATA" />
+  </if>
+</grit-part>

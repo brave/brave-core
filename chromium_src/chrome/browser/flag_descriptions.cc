@@ -45,9 +45,10 @@ const char kNativeBraveWalletName[] = "Enable experimental Brave native wallet";
 const char kNativeBraveWalletDescription[] =
     "Experimental native cryptocurrency wallet support without the use of "
     "extensions";
-const char kBraveUnstoppableDomainsName[] = "Enable unstoppable domains";
-const char kBraveUnstoppableDomainsDescription[] =
-    "Enable resolution support of unstoppable domains.";
+const char kBraveDecentralizedDnsName[] = "Enable decentralized DNS";
+const char kBraveDecentralizedDnsDescription[] =
+    "Enable decentralized DNS support, such as Unstoppable Domains and "
+    "Ethereum Name Service (ENS).";
 const char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 const char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
