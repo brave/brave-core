@@ -1096,7 +1096,6 @@
       <part file="permissions_strings.grdp" />
       <part file="speedreader_strings.grdp" />
       <part file="tor_strings.grdp" />
-      <part file="unstoppable_domains_strings.grdp" />
     </messages>
   </release>
 </grit>
