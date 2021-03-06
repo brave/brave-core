@@ -122,10 +122,9 @@ bool ShouldShowDefaultBrowserPrompt(Profile* profile) {
   const int current_count =
       profile->GetPrefs()->GetInteger(kDefaultBrowserLaunchingCount);
 
-  // We only show prompt at 2nd, 3rd, 4th, 8th and 20th.
+  // We only show prompt at 3rd and 20th.
   // This is not called at first run. So, count 1 is second run.
-  if (current_count == 1 || current_count == 2 || current_count == 3 ||
-      current_count == 7 || current_count == 19)
+  if (current_count == 2 || current_count == 19)
     return true;
 
   return false;
@@ -166,7 +165,8 @@ void ShowDefaultBraveBrowserPrompt(Profile* profile) {
 }
 
 void ResetDefaultBraveBrowserPrompt(Profile* profile) {
-  profile->GetPrefs()->ClearPref(kDefaultBrowserLaunchingCount);
+  // Don't reset, but keep this function for now as more work is
+  // planned in https://github.com/brave/brave-browser/issues/14469
 }
 
 void RegisterDefaultBraveBrowserPromptPrefs(PrefRegistrySimple* registry) {
