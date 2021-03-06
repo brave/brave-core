@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/core/bat_ledger_context.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/static_values.h"
@@ -22,24 +23,24 @@ using std::placeholders::_1;
 
 namespace ledger {
 
-LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
-    ledger_client_(client),
-    promotion_(std::make_unique<promotion::Promotion>(this)),
-    publisher_(std::make_unique<publisher::Publisher>(this)),
-    media_(std::make_unique<braveledger_media::Media>(this)),
-    contribution_(
-        std::make_unique<contribution::Contribution>(this)),
-    wallet_(std::make_unique<wallet::Wallet>(this)),
-    database_(std::make_unique<database::Database>(this)),
-    report_(std::make_unique<report::Report>(this)),
-    state_(std::make_unique<state::State>(this)),
-    api_(std::make_unique<api::API>(this)),
-    recovery_(std::make_unique<recovery::Recovery>(this)),
-    uphold_(std::make_unique<uphold::Uphold>(this)),
-    initialized_task_scheduler_(false),
-    initializing_(false),
-    last_tab_active_time_(0),
-    last_shown_tab_id_(-1) {
+LedgerImpl::LedgerImpl(ledger::LedgerClient* client)
+    : ledger_client_(client),
+      context_(std::make_unique<BATLedgerContext>(this)),
+      promotion_(std::make_unique<promotion::Promotion>(this)),
+      publisher_(std::make_unique<publisher::Publisher>(this)),
+      media_(std::make_unique<braveledger_media::Media>(this)),
+      contribution_(std::make_unique<contribution::Contribution>(this)),
+      wallet_(std::make_unique<wallet::Wallet>(this)),
+      database_(std::make_unique<database::Database>(this)),
+      report_(std::make_unique<report::Report>(this)),
+      state_(std::make_unique<state::State>(this)),
+      api_(std::make_unique<api::API>(this)),
+      recovery_(std::make_unique<recovery::Recovery>(this)),
+      uphold_(std::make_unique<uphold::Uphold>(this)),
+      initialized_task_scheduler_(false),
+      initializing_(false),
+      last_tab_active_time_(0),
+      last_shown_tab_id_(-1) {
   // Ensure ThreadPoolInstance is initialized before creating the task runner
   // for ios.
   set_ledger_client_for_logging(ledger_client_);
@@ -66,6 +67,10 @@ LedgerImpl::~LedgerImpl() {
     DCHECK(base::ThreadPoolInstance::Get());
     base::ThreadPoolInstance::Get()->Shutdown();
   }
+}
+
+BATLedgerContext* LedgerImpl::context() const {
+  return context_.get();
 }
 
 ledger::LedgerClient* LedgerImpl::ledger_client() const {

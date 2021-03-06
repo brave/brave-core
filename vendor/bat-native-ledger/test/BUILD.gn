@@ -13,6 +13,11 @@ source_set("bat_native_ledger_tests") {
   sources = [
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_monthly_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unblinded_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/async_result_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/bat_ledger_context_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/bat_ledger_task_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/bat_ledger_test.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/bat_ledger_test.h",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/test_ledger_client.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/test_ledger_client.h",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/core/test_ledger_client_unittest.cc",

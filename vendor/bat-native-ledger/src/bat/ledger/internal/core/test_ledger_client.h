@@ -153,7 +153,12 @@ class TestLedgerClient : public LedgerClient {
 
   void SetOptionForTesting(const std::string& name, base::Value&& value);
 
-  void SetNetworkResultsForTesting(std::list<TestNetworkResult>&& list);
+  void AddNetworkResultForTesting(const std::string& url,
+                                  mojom::UrlMethod method,
+                                  mojom::UrlResponsePtr response);
+
+  using LogCallback = base::RepeatingCallback<void(const std::string&)>;
+  void SetLogCallbackForTesting(LogCallback callback);
 
   LedgerDatabaseImpl* database() { return ledger_database_.get(); }
 
@@ -170,6 +175,7 @@ class TestLedgerClient : public LedgerClient {
   base::Value encrypted_state_store_;
   base::Value option_store_;
   std::list<TestNetworkResult> network_results_;
+  LogCallback log_callback_;
   base::WeakPtrFactory<TestLedgerClient> weak_factory_{this};
 };
 
