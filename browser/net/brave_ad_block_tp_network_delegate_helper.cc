@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
+#include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -220,6 +221,12 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
       !ctx->initiator_url.has_host() || !ctx->allow_brave_shields ||
       ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
+    return net::OK;
+  }
+
+  // Also, until a better solution is available, we explicitly allow any
+  // request from an extension.
+  if (ctx->initiator_url.SchemeIs(kChromeExtensionScheme)) {
     return net::OK;
   }
 
