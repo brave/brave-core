@@ -7,15 +7,18 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -40,6 +43,90 @@ const char kInvalidUrlError[] = "Invalid URL.";
 const char kInvalidControlTypeError[] = "Invalid ControlType.";
 
 }  // namespace
+
+ExtensionFunction::ResponseAction
+BraveShieldsUrlCosmeticResourcesFunction::Run() {
+  std::unique_ptr<brave_shields::UrlCosmeticResources::Params> params(
+      brave_shields::UrlCosmeticResources::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  g_brave_browser_process->ad_block_service()
+      ->GetTaskRunner()
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(&BraveShieldsUrlCosmeticResourcesFunction::
+                             GetUrlCosmeticResourcesOnTaskRunner,
+                         this, params->url),
+          base::BindOnce(&BraveShieldsUrlCosmeticResourcesFunction::
+                             GetUrlCosmeticResourcesOnUI,
+                         this));
+  return RespondLater();
+}
+
+std::unique_ptr<base::ListValue>
+BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnTaskRunner(
+    const std::string& url) {
+  base::Optional<base::Value> resources =
+      g_brave_browser_process->ad_block_service()->UrlCosmeticResources(url);
+
+  if (!resources || !resources->is_dict()) {
+    return std::unique_ptr<base::ListValue>();
+  }
+
+  auto result_list = std::make_unique<base::ListValue>();
+  result_list->Append(std::move(*resources));
+  return result_list;
+}
+
+void BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnUI(
+    std::unique_ptr<base::ListValue> resources) {
+  if (!resources) {
+    Respond(Error("Url-specific cosmetic resources could not be returned"));
+    return;
+  }
+  Respond(ArgumentList(std::move(resources)));
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsHiddenClassIdSelectorsFunction::Run() {
+  std::unique_ptr<brave_shields::HiddenClassIdSelectors::Params> params(
+      brave_shields::HiddenClassIdSelectors::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  g_brave_browser_process->ad_block_service()
+      ->GetTaskRunner()
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(&BraveShieldsHiddenClassIdSelectorsFunction::
+                             GetHiddenClassIdSelectorsOnTaskRunner,
+                         this, params->classes, params->ids,
+                         params->exceptions),
+          base::BindOnce(&BraveShieldsHiddenClassIdSelectorsFunction::
+                             GetHiddenClassIdSelectorsOnUI,
+                         this));
+  return RespondLater();
+}
+
+std::unique_ptr<base::ListValue> BraveShieldsHiddenClassIdSelectorsFunction::
+    GetHiddenClassIdSelectorsOnTaskRunner(
+        const std::vector<std::string>& classes,
+        const std::vector<std::string>& ids,
+        const std::vector<std::string>& exceptions) {
+  base::Optional<base::Value> hide_selectors =
+      g_brave_browser_process->ad_block_service()->HiddenClassIdSelectors(
+          classes, ids, exceptions);
+
+  if (!hide_selectors || !hide_selectors->is_list())
+    return std::make_unique<base::ListValue>();
+
+  auto result_list =
+      std::make_unique<base::ListValue>(hide_selectors->GetList());
+
+  return result_list;
+}
+
+void BraveShieldsHiddenClassIdSelectorsFunction::GetHiddenClassIdSelectorsOnUI(
+    std::unique_ptr<base::ListValue> selectors) {
+  Respond(ArgumentList(std::move(selectors)));
+}
 
 ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(
@@ -124,6 +211,11 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveShieldsShouldDoCosmeticFilteringFunction::Run() {
+#if !defined(OS_ANDROID) && !defined(CHROME_OS)
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kBraveAdblockCosmeticFilteringNative))
+    return RespondNow(OneArgument(base::Value(false)));
+#endif
   std::unique_ptr<brave_shields::ShouldDoCosmeticFiltering::Params>
     params(
       brave_shields::ShouldDoCosmeticFiltering::Params::Create(*args_));
