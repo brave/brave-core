@@ -24,6 +24,7 @@
 #include "net/base/features.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
+using brave_shields::features::kBraveAdblockCosmeticFilteringNative;
 using brave_shields::features::kBraveDomainBlock;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
@@ -124,6 +125,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll, \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                  \
+    {"brave-adblock-cosmetic-filtering-native",                            \
+     flag_descriptions::kBraveAdblockCosmeticFilteringNativeName,          \
+     flag_descriptions::kBraveAdblockCosmeticFilteringNativeDescription,   \
+     kOsMac | kOsWin | kOsLinux,                                           \
+     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFilteringNative)},            \
     {"brave-domain-block",                                                 \
      flag_descriptions::kBraveDomainBlockName,                             \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,              \

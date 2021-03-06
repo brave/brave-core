@@ -24,6 +24,10 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
 const char kBraveAdblockCosmeticFilteringName[] = "Enable cosmetic filtering";
 const char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
+const char kBraveAdblockCosmeticFilteringNativeName[] =
+    "Use native implementation for cosmetic filtering";
+const char kBraveAdblockCosmeticFilteringNativeDescription[] =
+    "Uses native implementation for cosmetic filtering instead of extension";
 const char kBraveDomainBlockName[] = "Enable domain blocking";
 const char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";

@@ -897,11 +897,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 
 // Test cosmetic filtering ignores content determined to be 1st party
 // This is disabled due to https://github.com/brave/brave-browser/issues/13882
-#if defined(OS_WIN)
 #define MAYBE_CosmeticFilteringProtect1p DISABLED_CosmeticFilteringProtect1p
-#else
-#define MAYBE_CosmeticFilteringProtect1p CosmeticFilteringProtect1p
-#endif
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_CosmeticFilteringProtect1p) {
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
