@@ -38,7 +38,20 @@ GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
   return match.destination_url;
 }
 
+base::OnceCallback<void(BraveRenderViewContextMenu*)>*
+BraveGetMenuShownCallback() {
+  static base::NoDestructor<
+      base::OnceCallback<void(BraveRenderViewContextMenu*)>>
+      callback;
+  return callback.get();
+}
+
 }  // namespace
+
+void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+    base::OnceCallback<void(BraveRenderViewContextMenu*)> cb) {
+  *BraveGetMenuShownCallback() = std::move(cb);
+}
 
 #define BRAVE_APPEND_SEARCH_PROVIDER \
   if (GetProfile()->IsOffTheRecord()) { \
@@ -50,10 +63,13 @@ GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
 
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
+#define RegisterMenuShownCallbackForTesting \
+  RegisterMenuShownCallbackForTesting_unused
 
 #include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
 
 #undef SpellingOptionsSubMenuObserver
+#undef RegisterMenuShownCallbackForTesting
 
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
