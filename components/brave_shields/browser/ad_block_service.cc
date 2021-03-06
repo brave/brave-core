@@ -10,6 +10,7 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/macros.h"
@@ -23,6 +24,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -153,6 +155,21 @@ base::Optional<base::Value> AdBlockService::HiddenClassIdSelectors(
   } else {
     hide_selectors = std::move(regional_selectors);
   }
+
+#if !defined(OS_ANDROID) && !defined(CHROME_OS)
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockCosmeticFilteringNative)) {
+    auto result_list = std::make_unique<base::ListValue>();
+    if (hide_selectors && hide_selectors->is_list()) {
+      result_list->Append(std::move(*hide_selectors));
+    }
+    if (custom_selectors && custom_selectors->is_list()) {
+      result_list->Append(std::move(*custom_selectors));
+    }
+
+    return std::move(*result_list);
+  }
+#endif
 
   if (!hide_selectors || !hide_selectors->is_list())
     hide_selectors = base::ListValue();
