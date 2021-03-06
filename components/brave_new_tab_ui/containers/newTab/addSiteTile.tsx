@@ -13,12 +13,16 @@ import AddSiteTileIcon from '../../components/default/gridSites/assets/add-site-
 
 interface Props {
   showEditTopSite: () => void
+  isDragging: boolean
 }
 
 class AddSite extends React.PureComponent<Props, {}> {
   render () {
     return (
-      <AddSiteTile onClick={this.props.showEditTopSite}>
+      <AddSiteTile
+        onClick={this.props.showEditTopSite}
+        isDragging={this.props.isDragging}
+      >
         <AddSiteTileImage>
           <AddSiteTileIcon/>
         </AddSiteTileImage>

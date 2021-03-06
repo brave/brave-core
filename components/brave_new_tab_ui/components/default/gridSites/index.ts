@@ -36,7 +36,11 @@ export const AddSiteTileImage = styled<{}, 'div'>('div')`
   }
 `
 
-export const AddSiteTile = styled<{}, 'button'>('button')`
+export interface AddSiteTileProps {
+  isDragging: boolean
+}
+
+export const AddSiteTile = styled<AddSiteTileProps, 'button'>('button')`
   background: transparent;
   width: 78px;
   height: 110px;
@@ -49,8 +53,11 @@ export const AddSiteTile = styled<{}, 'button'>('button')`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  visibility: hidden;
   gap: 8px;
+
+  ${p => p.isDragging && css`
+    visibility: hidden;
+  `}
 
   &:focus-visible, :focus {
     gap: 4px;
@@ -67,7 +74,6 @@ export const AddSiteTile = styled<{}, 'button'>('button')`
 
 export interface ListProps {
   blockNumber: number
-  isDragging: boolean
 }
 
 export const List = styled<ListProps, 'div'>('div')`
@@ -86,14 +92,6 @@ export const List = styled<ListProps, 'div'>('div')`
   @media screen and (max-width: 390px) {
     grid-template-columns: repeat(${p => Math.min(p.blockNumber, 2).toString()}, 86px);
   }
-
-  ${p => !p.isDragging && css`
-    &:hover {
-      ${AddSiteTile} {
-        visibility: visible;
-      }
-    }
-  `}
 `
 
 export const TileActionsContainer = styled<{}, 'nav'>('nav')`
