@@ -10,13 +10,13 @@ import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
+import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/unstoppable_domains/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -144,6 +144,7 @@ source_set("browser_process") {
     "//brave/components/cosmetic_filters/browser",
     "//brave/components/cosmetic_filters/common:mojom",
     "//brave/components/crypto_dot_com/browser/buildflags",
+    "//brave/components/decentralized_dns/buildflags",
     "//brave/components/gemini/browser/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/buildflags",
@@ -155,7 +156,6 @@ source_set("browser_process") {
     "//brave/components/sidebar/buildflags",
     "//brave/components/speedreader:buildflags",
     "//brave/components/tor/buildflags",
-    "//brave/components/unstoppable_domains/buildflags",
     "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
     "//brave/ui/brave_ads",
@@ -291,8 +291,8 @@ source_set("browser_process") {
     ]
   }
 
-  if (unstoppable_domains_enabled) {
-    deps += [ "//brave/browser/unstoppable_domains" ]
+  if (decentralized_dns_enabled) {
+    deps += [ "//brave/browser/decentralized_dns" ]
   }
 
   if (ipfs_enabled) {
