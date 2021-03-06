@@ -146,7 +146,6 @@ struct ExternalWallet {
   string type;
   string token;
   string address;
-  string linking_info;
   WalletStatus status;
   string verify_url;
   string add_url;

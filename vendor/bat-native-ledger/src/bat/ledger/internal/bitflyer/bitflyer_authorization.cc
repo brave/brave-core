@@ -176,7 +176,6 @@ void BitflyerAuthorization::OnClaimWallet(
 
   wallet_ptr->token = token;
   wallet_ptr->address = address;
-  wallet_ptr->linking_info = linking_info;
 
   switch (wallet_ptr->status) {
     case type::WalletStatus::NOT_CONNECTED:
