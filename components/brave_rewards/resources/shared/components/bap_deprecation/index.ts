@@ -64,9 +64,9 @@ export function shouldShowBAPAlert (onlyAnonWallet: boolean, balance: number) {
   const { alertDismissed } = loadInteractionState()
 
   if (alertDismissed) {
-    // Do not show the modal if the user has dismissed it within the last 3 days
+    // Do not show the modal if the user has dismissed it within the last day
     // or if they have dismissed it and we are now past the BAP cutoff date
-    if (daysInPast(alertDismissed) < 3 || Date.now() >= bapCutoffBegins) {
+    if (daysInPast(alertDismissed) < 1 || Date.now() >= bapCutoffBegins) {
       return false
     }
   }
