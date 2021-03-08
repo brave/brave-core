@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinition
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;
 import org.chromium.components.browser_ui.notifications.NotificationWrapperBuilder;
+import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 
 /**
  * Builds a notification according to BraveAds spec.
@@ -185,7 +186,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
 
     @Override
     public NotificationBuilderBase addButtonAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, @Nullable PendingIntent intent) {
+            @Nullable CharSequence title, PendingIntentProvider intent) {
         return this;
     }
 
@@ -196,13 +197,13 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     @Override
     public NotificationBuilderBase addTextAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, @Nullable PendingIntent intent, String placeholder) {
+            @Nullable CharSequence title, PendingIntentProvider intent, String placeholder) {
         return this;
     }
 
     @Override
     public NotificationBuilderBase addSettingsAction(
-            int iconId, @Nullable CharSequence title, @Nullable PendingIntent intent) {
+            int iconId, @Nullable CharSequence title, PendingIntentProvider intent) {
         return this;
     }
 
