@@ -195,6 +195,7 @@ test("brave_unit_tests") {
     "//google_apis/gcm",
     "//google_apis/gcm:test_support",
     "//mojo/core/embedder",
+    "//services/device/public/cpp:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
