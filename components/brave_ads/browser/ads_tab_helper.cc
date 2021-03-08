@@ -139,7 +139,8 @@ void AdsTabHelper::DidFinishNavigation(
   RunIsolatedJavaScript(render_frame_host);
 }
 
-void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
+void AdsTabHelper::DocumentOnLoadCompletedInMainFrame(
+    content::RenderFrameHost* render_frame_host) {
   if (!IsAdsEnabled() || !should_process_) {
     return;
   }
@@ -148,10 +149,12 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
       std::make_unique<dom_distiller::SourcePageHandleWebContents>(
           web_contents(), false);
 
-  content::RenderFrameHost* render_frame_host =
+  // We can't use |render_frame_host| directly because it represents the frame
+  // where the event happened, which can be different than the main frame.
+  content::RenderFrameHost* main_frame_rfh =
       handle->web_contents()->GetMainFrame();
 
-  RunIsolatedJavaScript(render_frame_host);
+  RunIsolatedJavaScript(main_frame_rfh);
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
