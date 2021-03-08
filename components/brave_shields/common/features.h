@@ -15,6 +15,7 @@ namespace features {
 extern const base::Feature kBraveAdblockCosmeticFiltering;
 extern const base::Feature kBraveAdblockCosmeticFilteringNative;
 extern const base::Feature kBraveDomainBlock;
+extern const base::Feature kBraveExtensionNetworkBlocking;
 }  // namespace features
 }  // namespace brave_shields
 
