@@ -1,8 +1,9 @@
-use markup5ever_rcdom::NodeData::{Element, Text};
-use markup5ever_rcdom::{Handle, Node};
 use html5ever::tendril::StrTendril;
-use html5ever::Attribute;
-use html5ever::LocalName;
+use html5ever::tendril::TendrilSink;
+use html5ever::{parse_document, ParseOpts};
+use html5ever::{Attribute, LocalName, QualName};
+use markup5ever_rcdom::NodeData::{Comment, Element, Text};
+use markup5ever_rcdom::{Handle, Node, RcDom};
 use std::rc::Rc;
 use std::str::FromStr;
 
@@ -29,7 +30,7 @@ pub fn attr(attr_name: &str, attrs: &[Attribute]) -> Option<String> {
     None
 }
 
-pub fn set_attr(attr_name: &str, value: &str, handle: Handle) {
+pub fn set_attr(attr_name: &str, value: &str, handle: Handle, create_if_missing: bool) {
     if let Element { ref attrs, .. } = handle.data {
         let attrs = &mut attrs.borrow_mut();
         if let Some(index) = attrs.iter().position(|attr| {
@@ -42,7 +43,21 @@ pub fn set_attr(attr_name: &str, value: &str, handle: Handle) {
                     value,
                 }
             }
+        } else {
+            if create_if_missing {
+                append_attr(attr_name, value, attrs);
+            }
         }
+    }
+}
+
+pub fn append_attr(attr_name: &str, value: &str, attrs: &mut Vec<Attribute>) {
+    if let Ok(value) = StrTendril::from_str(value) {
+        let new_attr = Attribute {
+            name: QualName::new(None, ns!(), LocalName::from(attr_name)),
+            value: value,
+        };
+        attrs.push(new_attr);
     }
 }
 
@@ -164,7 +179,7 @@ pub fn has_nodes(handle: &Handle, tag_names: &[&'static LocalName]) -> bool {
                 return true;
             }
         }
-        
+
         if match child.data {
             Element { .. } => has_nodes(child, tag_names),
             _ => false,
@@ -189,4 +204,48 @@ pub fn text_children_count(handle: &Handle) -> usize {
         }
     }
     count
+}
+
+pub fn previous_element_sibling<'a>(
+    handle: &Handle,
+    siblings: &'a Vec<Handle>,
+) -> Option<&'a Handle> {
+    let mut prev: Option<&Handle> = None;
+    for child in siblings.iter() {
+        if Rc::ptr_eq(handle, child) {
+            break;
+        }
+        if let Element { .. } = child.data {
+            prev = Some(child);
+        }
+    }
+    prev
+}
+
+pub fn parse_inner(contents: &str) -> Option<Handle> {
+    let dom = parse_document(RcDom::default(), ParseOpts::default()).one(contents);
+    let document_children = dom.document.children.borrow();
+    let html = document_children.get(0)?;
+    let html_children = html.children.borrow();
+    let body = html_children.get(1)?;
+    let body_children = body.children.borrow();
+    let elem = body_children.get(0)?;
+    Some(elem.clone())
+}
+
+pub fn is_single_image(handle: &Handle) -> bool {
+    match handle.data {
+        Element { ref name, .. } if name.local == local_name!("img") => return true,
+        Text { ref contents } if !contents.borrow().trim().is_empty() => return false,
+        Comment { .. } => (),
+        _ => {
+            return false;
+        }
+    }
+
+    let children = handle.children.borrow();
+    if children.len() != 1 {
+        return false;
+    }
+    return is_single_image(&children[0]);
 }
