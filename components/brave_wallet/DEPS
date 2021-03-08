@@ -4,4 +4,5 @@ include_rules = [
   "+extensions/browser",
   "+extensions/common",
   "+services/network/public/cpp",
+  "+third_party/boringssl",
 ]

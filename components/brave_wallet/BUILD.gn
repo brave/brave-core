@@ -34,14 +34,17 @@ source_set("brave_wallet") {
   deps = [
     "//base",
     "//brave/third_party/ethash",
+    "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//crypto",
     "//extensions/browser",
     "//extensions/common:common_constants",
     "//services/network/public/cpp",
+    "//third_party/boringssl",
     "//url",
   ]
 }
