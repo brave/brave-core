@@ -36,7 +36,7 @@ where
     extract_dom(&mut dom, url, &HashMap::new())
 }
 
-pub fn preprocess<R>(input: &mut R) -> Result<Title, std::io::Error>
+pub fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
 where
     R: Read,
 {
@@ -47,7 +47,14 @@ where
     let mut title = Title::default();
     let handle = dom.document.clone();
     scorer::preprocess(&mut dom, handle, &mut title);
-    Ok(title)
+    let mut bytes = vec![];
+    let document: SerializableHandle = dom.document.clone().into();
+    serialize(&mut bytes, &document, serialize::SerializeOpts::default())?;
+    let content = String::from_utf8(bytes).unwrap_or_default();
+    Ok(Product {
+        title: title.title,
+        content: content,
+    })
 }
 
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
@@ -154,6 +161,14 @@ mod tests {
     use super::*;
     use std::io::Cursor;
 
+    fn normalize_output(input: &str) -> String {
+        return input
+            .lines()
+            .map(|line| line.trim())
+            .filter(|line| !line.is_empty())
+            .collect();
+    }
+
     #[test]
     fn test_extract_title() {
         let data = r#"
@@ -170,7 +185,7 @@ mod tests {
     }
 
     #[test]
-    fn test_prefer_meta() {
+    fn test_title_prefer_meta() {
         let data = r#"
         <head>
         <meta property="og:title" content="Raspberry Pi 3 - All-time bestselling computer in UK"/>
@@ -183,6 +198,79 @@ mod tests {
         assert_eq!(
             product.title,
             "Raspberry Pi 3 - All-time bestselling computer in UK"
+        );
+    }
+
+    #[test]
+    fn unwrap_noscript_img_simple() {
+        let input = r#"
+        <body>
+          <noscript>
+            <img src="https://example.com/image.png">
+          </noscript>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <img src="https://example.com/image.png">
+        </body>
+        </html>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn unwrap_noscript_img_delete_preceding() {
+        let input = r#"
+        <body>
+          <img src="https://example.com/image.png">
+          <noscript>
+            <img src="https://example.com/image.png">
+          </noscript>
+        </body>"#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <img src="https://example.com/image.png">
+        </body>
+        </html>"#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
+        );
+    }
+
+    #[test]
+    fn unwrap_noscript_img_nested() {
+        let input = r#"
+        <body>
+          <img src="https://example.com/image.png">
+          <noscript>
+            <span><img src="https://example.com/image.png"></span>
+          </noscript>
+        </body>
+        "#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <img src="https://example.com/image.png">
+        </body>
+        </html>
+        "#;
+
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(
+            normalize_output(expected),
+            normalize_output(&product.content)
         );
     }
 }
