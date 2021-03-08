@@ -46,7 +46,6 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
       tags = splitStringForTag(errorText)
     }
 
-    // TODO(zenparsing): Do we need a support URL for bitflyer?
     let supportURL = ''
     if (walletType === 'uphold') {
       supportURL = 'https://uphold.com/en/brave/support'
