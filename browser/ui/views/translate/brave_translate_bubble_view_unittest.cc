@@ -61,15 +61,15 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
     return base::ASCIIToUTF16("Spanish");
   }
 
-  std::string GetOriginalLanguageCode() const override {
+  std::string GetSourceLanguageCode() const override {
     return std::string("en-US");
   }
 
-  int GetOriginalLanguageIndex() const override {
+  int GetSourceLanguageIndex() const override {
     return original_language_index_;
   }
 
-  void UpdateOriginalLanguageIndex(int index) override {
+  void UpdateSourceLanguageIndex(int index) override {
     original_language_index_ = index;
   }
 
