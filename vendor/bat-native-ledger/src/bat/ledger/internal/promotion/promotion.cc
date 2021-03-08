@@ -14,12 +14,13 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "bat/ledger/internal/constants.h"
+#include "bat/ledger/option_keys.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -107,6 +108,13 @@ void Promotion::Initialize() {
 }
 
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
+  if (ledger_->ledger_client()->GetBooleanOption(
+          option::kContributionsDisabledForBAPMigration)) {
+    BLOG(1, "Fetch promotions disabled for BAP migration");
+    callback(type::Result::LEDGER_OK, {});
+    return;
+  }
+
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
   if (!ledger::is_testing) {

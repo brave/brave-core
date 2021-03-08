@@ -11,8 +11,9 @@
 #include <vector>
 
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/option_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -28,6 +29,13 @@ WalletBalance::WalletBalance(LedgerImpl* ledger) :
 WalletBalance::~WalletBalance() = default;
 
 void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
+  if (ledger_->ledger_client()->GetBooleanOption(
+          option::kContributionsDisabledForBAPMigration)) {
+    BLOG(1, "Fetch balance disabled for BAP migration");
+    callback(type::Result::LEDGER_OK, type::Balance::New());
+    return;
+  }
+
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!ledger_->state()->GetFetchOldBalanceEnabled()) {

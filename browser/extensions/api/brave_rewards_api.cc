@@ -47,6 +47,25 @@ BraveRewardsOpenBrowserActionUIFunction::Run() {
   std::unique_ptr<brave_rewards::OpenBrowserActionUI::Params> params(
       brave_rewards::OpenBrowserActionUI::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* profile = Profile::FromBrowserContext(browser_context());
+
+  // Start the rewards ledger process if it is not already started
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service)
+    return RespondNow(Error("Rewards service is not initialized"));
+
+  rewards_service->StartProcess(base::DoNothing());
+
+  // Load the rewards extension if it is not already loaded
+  auto* extension_service =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+  if (!extension_service)
+    return RespondNow(Error("Extension service is not initialized"));
+
+  static_cast<BraveComponentLoader*>(extension_service->component_loader())
+      ->AddRewardsExtension();
+
   std::string error;
   if (!BraveActionAPI::ShowActionUI(this,
       brave_rewards_extension_id,

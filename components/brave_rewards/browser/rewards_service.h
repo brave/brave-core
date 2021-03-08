@@ -322,7 +322,7 @@ class RewardsService : public KeyedService {
 
   virtual void DisconnectWallet(const std::string& wallet_type) = 0;
 
-  virtual bool OnlyAnonWallet() = 0;
+  virtual bool OnlyAnonWallet() const = 0;
 
   virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;
 
