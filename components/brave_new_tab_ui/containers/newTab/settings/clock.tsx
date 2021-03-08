@@ -3,94 +3,95 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import * as React from "react";
+import * as React from 'react'
 
 // Components
-import { SettingsRow, SettingsText } from "../../../components/default";
-import { Toggle } from "../../../components/toggle";
-import { Select } from "brave-ui/components";
+import { SettingsRow, SettingsText } from '../../../components/default'
+import { Toggle } from '../../../components/toggle'
+import { Select } from 'brave-ui/components'
 
 // Utils
-import { getLocale } from "../../../../common/locale";
+import { getLocale } from '../../../../common/locale'
 
 // Types
-import * as newTabActions from "../../../actions/new_tab_actions";
+import * as newTabActions from '../../../actions/new_tab_actions'
 
 interface Props {
-  actions: typeof newTabActions;
-  toggleShowClock: () => void;
-  showClock: boolean;
-  clockFormat: string;
+  actions: typeof newTabActions
+  toggleShowClock: () => void
+  showClock: boolean
+  clockFormat: string
 }
 
-export type ComponentType = "dark" | "light";
+export type ComponentType = 'dark' | 'light'
 
 class ClockSettings extends React.PureComponent<
   Props,
   { themeType: ComponentType }
 > {
+  
   constructor(props: any) {
-    super(props);
-    this.state = { themeType: "light" };
+    super(props)
+    this.state = { themeType: 'light' }
   }
 
   getTheme = async (): Promise<String> => {
     return new Promise((resolve) =>
       chrome.braveTheme.getBraveThemeType(resolve)
     ).then((themeType: chrome.braveTheme.ThemeType) => {
-      if (themeType === "Dark") return "dark";
-      else return "light";
-    });
-  };
+      if (themeType === 'Dark') return 'dark'
+      else return 'light'
+    })
+  }
 
   onClockFormatChanged = (selectedValue: any) => {
-    this.props.actions.clockWidgetUpdated(this.props.showClock, selectedValue);
-  };
+    this.props.actions.clockWidgetUpdated(this.props.showClock, selectedValue)
+  }
 
   async componentDidMount() {
     this.getTheme().then((theme: ComponentType) =>
       this.setState({ themeType: theme })
-    );
+    )
   }
 
   render() {
-    const { toggleShowClock, showClock, clockFormat } = this.props;
+    const { toggleShowClock, showClock, clockFormat } = this.props
 
-    let localeInfo = "";
-    const dateFormat = new Intl.DateTimeFormat();
-    const dateFormatOptions = dateFormat && dateFormat.resolvedOptions();
+    let localeInfo = ''
+    const dateFormat = new Intl.DateTimeFormat()
+    const dateFormatOptions = dateFormat && dateFormat.resolvedOptions()
     if (dateFormatOptions && dateFormatOptions.locale) {
-      localeInfo = ` (${dateFormatOptions.locale})`;
+      localeInfo = ` (${dateFormatOptions.locale})`
     }
 
     return (
       <div>
         <SettingsRow>
-          <SettingsText>{getLocale("showClock")}</SettingsText>
-          <Toggle onChange={toggleShowClock} checked={showClock} size="large" />
+          <SettingsText>{getLocale('showClock')}</SettingsText>
+          <Toggle onChange={toggleShowClock} checked={showClock} size='large' />
         </SettingsRow>
         <SettingsRow>
-          <SettingsText>{getLocale("clockFormat")}</SettingsText>
+          <SettingsText>{getLocale('clockFormat')}</SettingsText>
           <Select
             value={clockFormat}
             onChange={this.onClockFormatChanged}
             type={this.state.themeType}
           >
-            <div key="clock-default" data-value="">
-              {getLocale("clockFormatDefault")}
+            <div key='clock-default' data-value=''>
+              {getLocale('clockFormatDefault')}
               {localeInfo}
             </div>
-            <div key="clock-12" data-value="12">
-              {getLocale("clockFormat12")}
+            <div key='clock-12' data-value='12'>
+              {getLocale('clockFormat12')}
             </div>
-            <div key="clock-24" data-value="24">
-              {getLocale("clockFormat24")}
+            <div key='clock-24' data-value='24'>
+              {getLocale('clockFormat24')}
             </div>
           </Select>
         </SettingsRow>
       </div>
-    );
+    )
   }
 }
 
-export default ClockSettings;
+export default ClockSettings
