@@ -290,6 +290,34 @@ class BraveVPN {
     /// Connects to Guardian's server to validate locally stored receipt.
     /// Returns true if the receipt expired, false if not or nil if expiration status can't be determined.
     static func validateReceipt(receiptHasExpired: ((Bool?) -> Void)? = nil) {
+        /// A helper struct to deal with unwrapping receipt json and extracting properites we are interested in.
+        struct _Receipt: Decodable {
+            let expireDate: Date
+            let isTrialPeriod: Bool?
+
+            private enum CodingKeys: String, CodingKey {
+                case expiresDateMs = "expires_date_ms"
+                case isTrialPeriod = "is_trial_period"
+            }
+            
+            init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let expireDateString = try container.decode(String.self, forKey: .expiresDateMs)
+                if let expireDateTimeIntervalMs = TimeInterval(expireDateString) {
+                    // Expiration date comes in milisecond while the iOS time interval uses seconds.
+                    self.expireDate = Date(timeIntervalSince1970: expireDateTimeIntervalMs / 1000.0)
+                } else {
+                    throw "Casting `expireDateString` failed"
+                }
+                
+                if let isTrialString = try container.decodeIfPresent(String.self, forKey: .isTrialPeriod) {
+                    self.isTrialPeriod = Bool(isTrialString)
+                } else {
+                    self.isTrialPeriod = nil
+                }
+            }
+        }
+        
         housekeepingApi.verifyReceipt { validSubscriptions, success, error in
             if !success {
                 // Api call for receipt verification failed,
@@ -298,24 +326,22 @@ class BraveVPN {
                 logAndStoreError("Api call for receipt verification failed")
                 return
             }
-            
-            guard let receipt = validSubscriptions?.first as? [String: Any],
-                let expireDateMs = receipt["expires_date_ms"] as? String,
-                let expireDate = TimeInterval(expireDateMs) else {
-                    // Setting super old date to force expiration logic in the UI.
-                    Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
-                    receiptHasExpired?(true)
-                    logAndStoreError("vpn expired", printToConsole: false)
-                    return
+
+            guard let validSubscriptions = validSubscriptions as? [[String: Any]],
+                let data = try? JSONSerialization.data(withJSONObject: validSubscriptions, options: []),
+                  let receipts = try? JSONDecoder().decode([_Receipt].self, from: data),
+                  let newestReceipt = receipts.sorted(by: { $0.expireDate > $1.expireDate }).first else {
+                // Setting super old date to force expiration logic in the UI.
+                Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
+                receiptHasExpired?(true)
+                logAndStoreError("vpn expired", printToConsole: false)
+                return
             }
             
-            // Expiration date comes in milisecond while the iOS time interval uses seconds.
-            Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: expireDate / 1000.0)
+            Preferences.VPN.expirationDate.value = newestReceipt.expireDate
             
-            if let isTrial = receipt["is_trial_period"] as? String,
-                let isTrialBool = Bool(isTrial) {
-                
-                Preferences.VPN.freeTrialUsed.value = !isTrialBool
+            if let isTrial = newestReceipt.isTrialPeriod {
+                Preferences.VPN.freeTrialUsed.value = !isTrial
             }
             
             receiptHasExpired?(false)
