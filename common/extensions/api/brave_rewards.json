@@ -1095,9 +1095,6 @@
                   "type": {
                     "type": "string"
                   },
-                  "token": {
-                    "type": "any"
-                  },
                   "address": {
                     "type": "any"
                   },
