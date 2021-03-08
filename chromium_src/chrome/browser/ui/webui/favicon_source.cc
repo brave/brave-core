@@ -66,6 +66,17 @@ class InstantService {
     return false;
   }
 };
+
+// Toolkit views are not enabled for Android, so just fallback to what we had
+// before the change.
+#if !defined(TOOLKIT_VIEWS)
+namespace webui {
+ui::NativeTheme* GetNativeTheme(content::WebContents* web_contents) {
+  return ui::NativeTheme::GetInstanceForNativeUi();
+}
+}  // namespace webui
+#endif  // !defined(TOOLKIT_VIEWS)
+
 #endif  // #if defined(OS_ANDROID)
 
 #include "../../../../../../chrome/browser/ui/webui/favicon_source.cc"
