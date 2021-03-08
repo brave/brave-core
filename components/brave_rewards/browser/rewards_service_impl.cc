@@ -1487,6 +1487,11 @@ void RewardsServiceImpl::ClearState(const std::string& name) {
 bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
   DCHECK(!name.empty());
 
+  // AC is not currently supported for regions where the external wallet
+  // provider is bitFlyer.
+  if (name == ledger::option::kAutoContributeSupported)
+    return GetExternalWalletType() != ledger::constant::kWalletBitflyer;
+
   if (name == ledger::option::kContributionsDisabledForBAPMigration) {
     if (OnlyAnonWallet()) {
       base::Time::Exploded cutoff_exploded{
@@ -1644,13 +1649,6 @@ void RewardsServiceImpl::GetAutoContributeEnabled(
 void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
   if (!Connected()) {
     return;
-  }
-
-  // Do not allow the user to enable AC for bitFlyer-supported regions.
-  // TODO(zenparsing): What if they've already enabled AC? Does this also affect
-  // users that have not connected a wallet?
-  if (enabled && GetExternalWalletType() == ledger::constant::kWalletBitflyer) {
-    enabled = false;
   }
 
   bat_ledger_->SetAutoContributeEnabled(enabled);

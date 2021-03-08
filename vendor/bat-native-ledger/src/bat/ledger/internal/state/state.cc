@@ -10,11 +10,12 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration.h"
-#include "bat/ledger/internal/constants.h"
+#include "bat/ledger/option_keys.h"
 
 namespace {
 
@@ -165,6 +166,13 @@ void State::SetAutoContributeEnabled(bool enabled) {
 }
 
 bool State::GetAutoContributeEnabled() {
+  // Auto-contribute may not be supported for some regions. If AC is not
+  // supported, then always report AC as disabled.
+  bool ac_supported = ledger_->ledger_client()->GetBooleanOption(
+      option::kAutoContributeSupported);
+  if (!ac_supported)
+    return false;
+
   return ledger_->ledger_client()->GetBooleanState(kAutoContributeEnabled);
 }
 
