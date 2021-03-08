@@ -87,16 +87,8 @@ export enum ExternalWalletStatus {
 }
 
 export interface ExternalWalletInfo {
-  token: string
-  address: string
   status: ExternalWalletStatus
   type: 'anonymous' | 'uphold' | 'bitflyer'
-  verifyUrl: string
-  addUrl: string
-  withdrawUrl: string
-  userName: string
-  accountUrl: string
-  loginUrl: string
 }
 
 export interface RewardsParameters {
