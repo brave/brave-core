@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_PROMOTION_H_
-#define BRAVELEDGER_PROMOTION_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_H_
 
 #include <map>
 #include <memory>
@@ -24,6 +24,7 @@ class LedgerImpl;
 namespace promotion {
 
 class PromotionTransfer;
+class BAPReporter;
 
 class Promotion {
  public:
@@ -146,6 +147,7 @@ class Promotion {
 
   std::unique_ptr<ledger::attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
+  std::unique_ptr<BAPReporter> bap_reporter_;
   std::unique_ptr<credential::Credentials> credentials_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
   LedgerImpl* ledger_;  // NOT OWNED
@@ -156,4 +158,4 @@ class Promotion {
 }  // namespace promotion
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_PROMOTION_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_PROMOTION_PROMOTION_H_

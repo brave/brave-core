@@ -258,6 +258,12 @@ void RewardsBrowserTestResponse::Get(
     return;
   }
 
+  if (url.find("/v1/promotions/report-bap") != std::string::npos) {
+    *response = "";
+    *response_status_code = net::HTTP_OK;
+    return;
+  }
+
   if (url.find("/v1/captchas") != std::string::npos) {
     *response = captcha_;
   }
