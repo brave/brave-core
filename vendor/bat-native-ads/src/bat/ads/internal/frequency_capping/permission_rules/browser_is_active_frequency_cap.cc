@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/browser_is_active_frequency_cap.h"
 
+#include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-#include "bat/ads/internal/tab_manager/tab_manager.h"
 
 namespace ads {
 
@@ -33,7 +33,7 @@ bool BrowserIsActiveFrequencyCap::DoesRespectCap() {
     return true;
   }
 
-  return TabManager::Get()->IsForegrounded();
+  return BrowserManager::Get()->IsActive();
 }
 
 }  // namespace ads

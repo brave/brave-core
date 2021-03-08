@@ -63,6 +63,7 @@ class AdsClientHelper;
 class AdServer;
 class AdTargeting;
 class AdTransfer;
+class BrowserManager;
 class Catalog;
 class Client;
 class ConfirmationsState;
@@ -214,6 +215,7 @@ class AdsImpl : public Ads,
   std::unique_ptr<database::Initialize> database_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
+  std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
 

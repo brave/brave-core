@@ -1703,11 +1703,6 @@ bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
 }
 
 bool AdsServiceImpl::IsForeground() const {
-  Profile* profile = ProfileManager::GetLastUsedProfile();
-  if (profile_ != profile) {
-    return false;
-  }
-
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
