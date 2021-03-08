@@ -53,8 +53,8 @@ def parse_args():
     args = parser.parse_args()
     # validate args
     if (args.output_path is None or
-        len(args.output_path) is not 1 or
-            len(args.output_path[0]) is 0):
+        len(args.output_path) != 1 or
+            len(args.output_path[0]) == 0):
         raise Exception(" output_path argument was not specified correctly")
     # args are valid
     return args
