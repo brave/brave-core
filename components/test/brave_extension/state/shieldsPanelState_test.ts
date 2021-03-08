@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { State, PersistentData } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
-import * as deepFreeze from 'deep-freeze-node'
+import * as deepFreeze from 'deep-freeze-node2'
 import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
 import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'

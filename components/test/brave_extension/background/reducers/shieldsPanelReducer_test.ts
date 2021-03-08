@@ -24,7 +24,7 @@ import * as noScriptState from '../../../../brave_extension/extension/brave_exte
 
 // Utils
 import { initialState } from '../../../testData'
-import * as deepFreeze from 'deep-freeze-node'
+import * as deepFreeze from 'deep-freeze-node2'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
 const origin = 'https://brave.com'

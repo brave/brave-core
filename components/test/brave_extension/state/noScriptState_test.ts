@@ -10,7 +10,7 @@ import { State } from '../../../brave_extension/extension/brave_extension/types/
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
 
 // Helpers
-import * as deepFreeze from 'deep-freeze-node'
+import * as deepFreeze from 'deep-freeze-node2'
 import { getHostname, getOrigin } from '../../../brave_extension/extension/brave_extension/helpers/urlUtils'
 
 const url1: string = 'http://aaaa.com/script1.js'

@@ -12,7 +12,7 @@ import { Tab } from '../brave_extension/extension/brave_extension/types/state/sh
 import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 // Helpers
-import * as deepFreeze from 'deep-freeze-node'
+import * as deepFreeze from 'deep-freeze-node2'
 
 export class ChromeEvent {
   listeners: Array<() => void>
