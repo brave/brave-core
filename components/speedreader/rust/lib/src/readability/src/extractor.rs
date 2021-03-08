@@ -1,4 +1,4 @@
-use dom;
+use crate::dom;
 use html5ever::tendril::StrTendril;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::TreeSink;
@@ -53,7 +53,7 @@ where
     let content = String::from_utf8(bytes).unwrap_or_default();
     Ok(Product {
         title: title.title,
-        content: content,
+        content,
     })
 }
 
@@ -152,7 +152,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 
     Ok(Product {
         title: title.title,
-        content: content,
+        content,
     })
 }
 

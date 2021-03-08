@@ -222,27 +222,21 @@ pub fn previous_element_sibling<'a>(
     prev
 }
 
-pub fn parse_inner(contents: StrTendril) -> Option<Handle> {
+pub fn parse_inner(contents: &str) -> Option<Handle> {
     let dom = parse_document(RcDom::default(), ParseOpts::default()).one(contents);
-    let document = dom.document.clone();
-    let html = document.children.borrow().get(0)?.clone();
-    let body = html.children.borrow().get(1)?.clone();
-    let img = body.children.borrow().get(0)?.clone();
-    Some(img)
+    let document_children = dom.document.children.borrow();
+    let html = document_children.get(0)?;
+    let html_children = html.children.borrow();
+    let body = html_children.get(1)?;
+    let body_children = body.children.borrow();
+    let elem = body_children.get(0)?;
+    Some(elem.clone())
 }
 
 pub fn is_single_image(handle: &Handle) -> bool {
     match handle.data {
-        Element { ref name, .. } => {
-            if name.local == local_name!("img") {
-                return true;
-            }
-        }
-        Text { ref contents } => {
-            if !contents.borrow().trim().is_empty() {
-                return false;
-            }
-        }
+        Element { ref name, .. } if name.local == local_name!("img") => return true,
+        Text { ref contents } if !contents.borrow().trim().is_empty() => return false,
         Comment { .. } => (),
         _ => {
             return false;

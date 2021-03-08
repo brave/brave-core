@@ -1,5 +1,4 @@
-use dom;
-use html5ever::tendril::StrTendril;
+use crate::dom;
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};
@@ -205,8 +204,7 @@ fn get_inner_img(dom: &mut RcDom, handle: &Handle) -> Option<Handle> {
     let children = handle.children.borrow();
     let child = children.get(0)?;
     if let Text { ref contents } = child.data {
-        let s: StrTendril = contents.borrow().clone();
-        let inner = dom::parse_inner(s)?;
+        let inner = dom::parse_inner(&contents.borrow())?;
         if dom::is_single_image(&inner) {
             if let Element {
                 ref name,
