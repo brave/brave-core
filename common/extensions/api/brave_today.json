@@ -36,6 +36,24 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getRegionUrlPart",
+        "type": "function",
+        "description": "Gets optional url part for currently configured Brave Today region variation.",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Callback providing the URL part string",
+            "parameters": [
+              {
+                "name": "regionUrlPart",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ]
   }
