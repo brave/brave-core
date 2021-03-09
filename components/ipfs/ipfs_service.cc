@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
+#include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
@@ -37,6 +38,12 @@
 #include "url/gurl.h"
 
 namespace {
+
+// Used to retry request if we got zero peers from ipfs service
+// Actual value will be generated randomly in range
+// (kMinimalPeersRetryIntervalMs, kPeersRetryRate*kMinimalPeersRetryIntervalMs)
+const int kMinimalPeersRetryIntervalMs = 350;
+const int kPeersRetryRate = 3;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
@@ -265,7 +272,8 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
   return url_loader;
 }
 
-void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
+void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
+                                    int retries) {
   if (!IsDaemonLaunched()) {
     if (callback)
       std::move(callback).Run(false, std::vector<std::string>{});
@@ -285,12 +293,21 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
-                     std::move(iter), std::move(callback)));
+                     std::move(iter), std::move(callback), retries));
+}
+
+base::TimeDelta IpfsService::CalculatePeersRetryTime() {
+  if (zero_peer_time_for_test_)
+    return base::TimeDelta();
+  return base::TimeDelta::FromMilliseconds(
+      base::RandInt(kMinimalPeersRetryIntervalMs,
+                    kPeersRetryRate * kMinimalPeersRetryIntervalMs));
 }
 
 void IpfsService::OnGetConnectedPeers(
     SimpleURLLoaderList::iterator iter,
     GetConnectedPeersCallback callback,
+    int retry_number,
     std::unique_ptr<std::string> response_body) {
   auto* url_loader = iter->get();
   int error_code = url_loader->NetError();
@@ -298,6 +315,16 @@ void IpfsService::OnGetConnectedPeers(
   if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
     response_code = url_loader->ResponseInfo()->headers->response_code();
   url_loaders_.erase(iter);
+  last_peers_retry_value_for_test_ = retry_number;
+  if (error_code == net::ERR_CONNECTION_REFUSED && retry_number) {
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&IpfsService::GetConnectedPeers,
+                       weak_factory_.GetWeakPtr(), std::move(callback),
+                       retry_number - 1),
+        CalculatePeersRetryTime());
+    return;
+  }
 
   std::vector<std::string> peers;
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);
@@ -431,6 +458,14 @@ void IpfsService::RegisterIpfsClientUpdater() {
   if (ipfs_client_updater_) {
     ipfs_client_updater_->Register();
   }
+}
+
+int IpfsService::GetLastPeersRetryForTest() const {
+  return last_peers_retry_value_for_test_;
+}
+
+void IpfsService::SetZeroPeersDeltaForTest(bool value) {
+  zero_peer_time_for_test_ = value;
 }
 
 void IpfsService::SetAllowIpfsLaunchForTest(bool launched) {

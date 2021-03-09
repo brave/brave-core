@@ -72,6 +72,11 @@ class IpfsService : public KeyedService,
   using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
 
+  // Retry after some time If local node responded with error.
+  // The connected peers are often called immediately after startup
+  // and node initialization may take some time.
+  static constexpr int kPeersDefaultRetries = 5;
+
   void AddObserver(IpfsServiceObserver* observer);
   void RemoveObserver(IpfsServiceObserver* observer);
 
@@ -88,7 +93,9 @@ class IpfsService : public KeyedService,
   void Shutdown() override;
 
   void RestartDaemon();
-  void GetConnectedPeers(GetConnectedPeersCallback callback);
+
+  void GetConnectedPeers(GetConnectedPeersCallback callback,
+                         int retries = kPeersDefaultRetries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
   void LaunchDaemon(LaunchDaemonCallback callback);
   void ShutdownDaemon(ShutdownDaemonCallback callback);
@@ -103,6 +110,8 @@ class IpfsService : public KeyedService,
   bool WasConnectedPeersCalledForTest() const;
   void SetGetConnectedPeersCalledForTest(bool value);
   void RunLaunchDaemonCallbackForTest(bool result);
+  int GetLastPeersRetryForTest() const;
+  void SetZeroPeersDeltaForTest(bool value);
 
  protected:
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
@@ -122,11 +131,12 @@ class IpfsService : public KeyedService,
   void NotifyDaemonLaunchCallbacks(bool result);
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
-
+  base::TimeDelta CalculatePeersRetryTime();
   std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(const GURL& gurl);
 
   void OnGetConnectedPeers(SimpleURLLoaderList::iterator iter,
                            GetConnectedPeersCallback,
+                           int retries,
                            std::unique_ptr<std::string> response_body);
   void OnGetAddressesConfig(SimpleURLLoaderList::iterator iter,
                             GetAddressesConfigCallback callback,
@@ -159,6 +169,8 @@ class IpfsService : public KeyedService,
   bool allow_ipfs_launch_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;
   bool connected_peers_function_called_ = false;
+  int last_peers_retry_value_for_test_ = -1;
+  bool zero_peer_time_for_test_ = false;
 
   GURL server_endpoint_;
 
