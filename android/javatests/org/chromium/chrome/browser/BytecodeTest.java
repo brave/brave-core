@@ -186,9 +186,6 @@ public class BytecodeTest {
                 "showBookmarkBottomSheet", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addBookmarkAndShowSnackbar", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment",
-                "updateLeakDetectionAndExtendedReportingPreferences", false, null));
     }
 
     @Test
