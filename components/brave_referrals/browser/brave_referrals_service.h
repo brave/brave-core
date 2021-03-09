@@ -15,8 +15,7 @@
 #include "base/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "content/public/browser/notification_observer.h"
-#include "content/public/browser/notification_registrar.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
 #if defined(OS_ANDROID)
@@ -25,6 +24,7 @@
 
 class PrefRegistrySimple;
 class PrefService;
+class Profile;
 
 namespace network {
 class SimpleURLLoader;
@@ -34,7 +34,7 @@ namespace brave {
 
 std::string GetAPIKey();
 
-class BraveReferralsService : public content::NotificationObserver {
+class BraveReferralsService : public ProfileManagerObserver {
  public:
   explicit BraveReferralsService(PrefService* pref_service,
                                  const std::string& platform,
@@ -58,10 +58,8 @@ class BraveReferralsService : public content::NotificationObserver {
   static bool IsDefaultReferralCode(const std::string& code);
 
  private:
-  // content::NotificationObserver
-  void Observe(int type,
-               const content::NotificationSource& source,
-               const content::NotificationDetails& details) override;
+  // ProfileManagerObserver
+  void OnProfileAdded(Profile* profile) override;
 
   void GetFirstRunTime();
   void GetFirstRunTimeDesktop();
@@ -124,8 +122,6 @@ class BraveReferralsService : public content::NotificationObserver {
   const std::string api_key_;
   const std::string platform_;
   std::string promo_code_;
-
-  content::NotificationRegistrar registrar_;
 
   base::WeakPtrFactory<BraveReferralsService> weak_factory_;
 };

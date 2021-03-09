@@ -25,7 +25,6 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave_base/random.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -35,7 +34,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
@@ -98,29 +96,21 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service,
       api_key_(api_key),
       platform_(platform),
       weak_factory_(this) {
-  registrar_.Add(this, chrome::NOTIFICATION_PROFILE_ADDED,
-                 content::NotificationService::AllBrowserContextsAndSources());
+  // Track initial profile creation
+  if (g_browser_process->profile_manager()) {
+    g_browser_process->profile_manager()->AddObserver(this);
+    DCHECK_EQ(0U,
+              g_browser_process->profile_manager()->GetLoadedProfiles().size());
+  }
 }
 
 BraveReferralsService::~BraveReferralsService() {
 }
 
-void BraveReferralsService::Observe(
-    int type,
-    const content::NotificationSource& source,
-    const content::NotificationDetails& details) {
-  switch (type) {
-    case chrome::NOTIFICATION_PROFILE_ADDED: {
-      Profile* profile = content::Source<Profile>(source).ptr();
-      if (profile == ProfileManager::GetPrimaryUserProfile()) {
-        registrar_.Remove(this, chrome::NOTIFICATION_PROFILE_ADDED,
-                 content::NotificationService::AllBrowserContextsAndSources());
-        Start();
-      }
-      break;
-    }
-    default:
-      NOTREACHED();
+void BraveReferralsService::OnProfileAdded(Profile* profile) {
+  if (profile == ProfileManager::GetPrimaryUserProfile()) {
+    g_browser_process->profile_manager()->RemoveObserver(this);
+    Start();
   }
 }
 

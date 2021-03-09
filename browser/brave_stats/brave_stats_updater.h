@@ -13,14 +13,14 @@
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "content/public/browser/notification_observer.h"
-#include "content/public/browser/notification_registrar.h"
+#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
 class PrefChangeRegistrar;
 class PrefRegistrySimple;
 class PrefService;
+class Profile;
 
 namespace base {
 class OneShotTimer;
@@ -39,7 +39,7 @@ namespace brave_stats {
 
 class BraveStatsUpdaterParams;
 
-class BraveStatsUpdater : public content::NotificationObserver {
+class BraveStatsUpdater : public ProfileManagerObserver {
  public:
   explicit BraveStatsUpdater(PrefService* pref_service);
   ~BraveStatsUpdater() override;
@@ -54,10 +54,8 @@ class BraveStatsUpdater : public content::NotificationObserver {
   void SetStatsThresholdCallback(StatsUpdatedCallback stats_threshold_callback);
 
  private:
-  // content::NotificationObserver
-  void Observe(int type,
-               const content::NotificationSource& source,
-               const content::NotificationDetails& details) override;
+  // ProfileManagerObserver
+  void OnProfileAdded(Profile* profile) override;
 
   GURL BuildStatsEndpoint(const std::string& path);
   void OnThresholdLoaderComplete(scoped_refptr<net::HttpResponseHeaders>);
@@ -101,8 +99,6 @@ class BraveStatsUpdater : public content::NotificationObserver {
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
-
-  content::NotificationRegistrar registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };
