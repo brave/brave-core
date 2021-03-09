@@ -19,7 +19,10 @@ module.exports = async ({ config, mode }) => {
   })
   config.resolve.alias = {
     ...config.resolve.alias,
-    'brave-ui': path.resolve(__dirname, '../node_modules/brave-ui/src')
+    'brave-ui': path.resolve(__dirname, '../node_modules/brave-ui/src'),
+    // Force same styled-components module for brave-core and brave-ui
+    // which ensure both repos code use the same singletons, e.g. ThemeContext.
+    'styled-components': path.resolve(__dirname, '../node_modules/styled-components'),
   }
   config.resolve.extensions.push('.ts', '.tsx')
   return config
