@@ -104,6 +104,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists(
@@ -182,6 +184,9 @@ public class BytecodeTest {
                 "showBookmarkBottomSheet", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
                 "addBookmarkAndShowSnackbar", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment",
+                "updateLeakDetectionAndExtendedReportingPreferences", false, null));
     }
 
     @Test
