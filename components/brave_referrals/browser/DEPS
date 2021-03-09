@@ -18,5 +18,6 @@ specific_include_rules = {
     "+chrome/common/chrome_paths.h",
     "+chrome/browser/android/service_tab_launcher.h",
     "+chrome/browser/ui/browser.h",
+    "+chrome/browser/chrome_notification_types.h",
   ],
 }

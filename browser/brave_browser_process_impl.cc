@@ -117,8 +117,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_brave_browser_process = this;
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  brave_referrals_service_ = brave::BraveReferralsServiceFactory::GetInstance()
-      ->GetForPrefs(local_state());
+  brave_referrals_service_ =
+      brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
+          local_state());
 #endif
   // iniitlize brave stats
   brave_stats_updater();
