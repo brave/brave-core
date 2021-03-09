@@ -106,6 +106,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists(
@@ -207,6 +209,9 @@ public class BytecodeTest {
                 List.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
                 "getBoundsAfterAccountingForRightButtons", true, int.class, ViewGroup.class));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment",
+                "updateLeakDetectionAndExtendedReportingPreferences", true, void.class));
 
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
