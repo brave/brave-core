@@ -15,8 +15,7 @@ import { Toggle } from '../../../../components/toggle'
 import * as s from './style'
 
 export const DynamicListContext = React.createContext<
-  Partial<{ setSize: (index: number, size: number) => void }>
->({})
+  Partial<{ setSize: (index: number, size: number) => void }>>({})
 
 type PublisherPrefsProps = {
   setPublisherPref: (publisherId: string, enabled: boolean) => any

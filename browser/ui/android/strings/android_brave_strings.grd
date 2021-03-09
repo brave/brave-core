@@ -1508,7 +1508,7 @@ until they verify, or until 90 days have passed.
         Where do ads show up?
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP_TEXT" desc="Brave rewards onboarding title">
-        Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
+        Brave Private Ads will appear as a normal notification. You control how often you see these ads in Settings.
       </message>
       <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS" desc="Brave rewards onboarding title">
         When do you receive rewards
