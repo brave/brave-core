@@ -42,3 +42,11 @@ index 38c40cd243dcdd7440f8884f2081e0b01bb56da0..8f6f00c3527091f3a8cea2bde61b9578
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
+@@ -2286,6 +2291,7 @@ android_library("base_module_java") {
+     "//components/payments/content/android:service_java",
+     "//third_party/androidx:androidx_browser_browser_java",
+   ]
++  sources += brave_java_base_module_sources deps += brave_java_base_module_deps
+ 
+   # More deps for DFMs.
+   if (dfmify_dev_ui) {
