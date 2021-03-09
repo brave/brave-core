@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine_impl/model_type_worker.h b/components/sync/engine_impl/model_type_worker.h
+index f3ef9da0d7a80b4dfa7e833a803e87da854a55ab..ffbe4112379b8866c12a6408afc2eb0b5ab32947 100644
+--- a/components/sync/engine_impl/model_type_worker.h
++++ b/components/sync/engine_impl/model_type_worker.h
+@@ -123,6 +123,7 @@ class ModelTypeWorker : public UpdateHandler,
+     min_gu_responses_to_ignore_key_ = min_gu_responses_to_ignore_key;
+   }
+ 
++ BRAVE_MODEL_TYPE_WORKER_H_
+  private:
+   struct UnknownEncryptionKeyInfo {
+     // Not increased if the cryptographer knows it's in a pending state
