@@ -77,7 +77,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   }
   
   fileprivate func updateEmptyPanelState() {
-    if frc?.fetchedObjects?.count == 0 {
+    if frc?.fetchedObjects?.isEmpty == true {
       if self.emptyStateOverlayView.superview == nil {
         self.tableView.addSubview(self.emptyStateOverlayView)
         self.emptyStateOverlayView.snp.makeConstraints { make -> Void in

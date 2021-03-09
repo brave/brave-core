@@ -204,7 +204,7 @@ extension BrowserViewController: KeyboardHelperDelegate {
     func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
         keyboardState = nil
         updateViewConstraints()
-        //If the searchEngineButton exists remove it form the keyboard
+        // If the searchEngineButton exists remove it form the keyboard
         if let buttonGroup = customSearchBarButton?.buttonGroup {
             buttonGroup.barButtonItems = buttonGroup.barButtonItems.filter { $0 != customSearchBarButton }
             customSearchBarButton = nil

@@ -46,7 +46,7 @@ extension Strings {
     public static let updateLoginPrompt = NSLocalizedString("UpdateLoginPrompt", bundle: Bundle.shared, value: "Update login %@ for %@?", comment: "Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site.")
 }
 
-//Hotkey Titles
+// Hotkey Titles
 extension Strings {
     public static let reloadPageTitle = NSLocalizedString("ReloadPageTitle", bundle: Bundle.shared, value: "Reload Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
     public static let backTitle = NSLocalizedString("BackTitle", bundle: Bundle.shared, value: "Back", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
@@ -195,7 +195,7 @@ extension Strings {
     public static let tabsDeleteAllUndoAction = NSLocalizedString("TabsDeleteAllUndoAction", bundle: Bundle.shared, value: "Undo", comment: "The button to undo the delete all tabs")
 }
 
-//Clipboard Toast
+// Clipboard Toast
 extension Strings {
     public static let goToCopiedLink = NSLocalizedString("GoToCopiedLink", bundle: Bundle.shared, value: "Go to copied link?", comment: "Message displayed when the user has a copied link on the clipboard")
     public static let goButtonTittle = NSLocalizedString("GoButtonTittle", bundle: Bundle.shared, value: "Go", comment: "The button to open a new tab with the copied link")

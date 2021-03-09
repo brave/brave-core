@@ -114,7 +114,7 @@ class NTPDownloader {
     }
     
     private func getNTPResource(for type: ResourceType, _ completion: @escaping (NTPThemeable?) -> Void) {
-        //Load from cache because the time since the last fetch hasn't expired yet..
+        // Load from cache because the time since the last fetch hasn't expired yet..
         if let nextDate = Preferences.NTP.ntpCheckDate.value,
             Date().timeIntervalSince1970 - nextDate < 0 {
             
@@ -130,7 +130,7 @@ class NTPDownloader {
         self.downloadMetadata(type: type) { [weak self] url, cacheInfo, error in
             guard let self = self else { return }
             
-            //Start the timer no matter what..
+            // Start the timer no matter what..
             self.startNTPTimer()
             
             if case .campaignEnded = error {
@@ -157,8 +157,8 @@ class NTPDownloader {
                 return completion(self.loadNTPResource(for: type))
             }
             
-            //Move contents of `url` directory
-            //to somewhere more permanent where we'll load the images from..
+            // Move contents of `url` directory
+            // to somewhere more permanent where we'll load the images from..
  
             do {
                 guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
@@ -171,7 +171,7 @@ class NTPDownloader {
                 
                 try FileManager.default.moveItem(at: url, to: saveLocation)
                 
-                //Store the ETag
+                // Store the ETag
                 if let cacheInfo = cacheInfo {
                     self.setETag(cacheInfo.etag, type: type)
                 }
@@ -252,7 +252,7 @@ class NTPDownloader {
             self.timer?.invalidate()
             self.timer = nil
             
-            //If the time hasn't passed yet, reschedule the timer with the relative time..
+            // If the time hasn't passed yet, reschedule the timer with the relative time..
             if let nextDate = Preferences.NTP.ntpCheckDate.value,
                 Date().timeIntervalSince1970 - nextDate < 0 {
                 
@@ -261,7 +261,7 @@ class NTPDownloader {
                     self?.notifyObservers(for: resourceType)
                 }
             } else {
-                //Else the time has already passed so download the new data, reschedule the timers and notify the observers
+                // Else the time has already passed so download the new data, reschedule the timers and notify the observers
                 self.notifyObservers(for: resourceType)
             }
         }
@@ -402,7 +402,7 @@ class NTPDownloader {
         }
     }
     
-    //MARK: - Download & Unpacking
+    // MARK: - Download & Unpacking
     
     private func parseETagResponseInfo(_ response: HTTPURLResponse) -> CacheResponse {
         if let etag = response.allHeaderFields["Etag"] as? String {

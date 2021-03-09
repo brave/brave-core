@@ -66,10 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.backgroundColor = .black
         
-        //Brave Core Initialization
+        // Brave Core Initialization
         self.braveCore = BraveCoreMain()
         self.braveCore?.setUserAgent(UserAgent.mobile)
-
         
         SceneObserver.setupApplication(window: self.window!)
 

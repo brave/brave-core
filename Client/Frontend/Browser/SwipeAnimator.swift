@@ -59,7 +59,7 @@ class SwipeAnimator: NSObject {
     }
 }
 
-//MARK: Private Helpers
+// MARK: Private Helpers
 extension SwipeAnimator {
     fileprivate func animateBackToCenter() {
         UIView.animate(withDuration: params.recenterAnimationDuration, animations: {
@@ -107,7 +107,7 @@ extension SwipeAnimator {
     }
 }
 
-//MARK: Selectors
+// MARK: Selectors
 extension SwipeAnimator {
     @objc func didPan(_ recognizer: UIPanGestureRecognizer!) {
         let translation = recognizer.translation(in: animatingView)

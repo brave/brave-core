@@ -283,16 +283,16 @@ class TabManager: NSObject {
         }
     }
 
-    //Called by other classes to signal that they are entering/exiting private mode
-    //This is called by TabTrayVC when the private mode button is pressed and BEFORE we've switched to the new mode
-    //we only want to remove all private tabs when leaving PBM and not when entering.
+    // Called by other classes to signal that they are entering/exiting private mode
+    // This is called by TabTrayVC when the private mode button is pressed and BEFORE we've switched to the new mode
+    // we only want to remove all private tabs when leaving PBM and not when entering.
     func willSwitchTabMode(leavingPBM: Bool) {
         if leavingPBM {
             removeAllPrivateTabs()
         }
     }
 
-    ///Called to turn selectedIndex back to -1
+    /// Called to turn selectedIndex back to -1
     func resetSelectedIndex() {
         _selectedIndex = -1
     }
@@ -532,9 +532,9 @@ class TabManager: NSObject {
             if tabs(withType: .private).count <= 1 {
                 removeAllBrowsingDataForTab(tab)
                 
-                //After clearing the very last webview from the storage, give it a blank persistent store
-                //This is the only way to guarantee that the last reference to the shared persistent store
-                //reaches zero and destroys all its data.
+                // After clearing the very last webview from the storage, give it a blank persistent store
+                // This is the only way to guarantee that the last reference to the shared persistent store
+                // reaches zero and destroys all its data.
                 
                 BraveWebView.removeNonPersistentStore()
                 configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
@@ -675,7 +675,7 @@ class TabManager: NSObject {
     }
     
     func undoCloseTabs() {
-        guard let tempTabs = self.tempTabs, tempTabs.count > 0 else {
+        guard let tempTabs = self.tempTabs, !tempTabs.isEmpty else {
             return
         }
 

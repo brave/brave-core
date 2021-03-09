@@ -40,6 +40,6 @@ struct ReferralData {
         var headers = [CustomHeaderData]()
         headers.append(contentsOf: CustomHeaderData.customHeaders(from: json["headers"]))
 
-        self.customHeaders = headers.count > 0 ? headers : nil
+        self.customHeaders = !headers.isEmpty ? headers : nil
     }
 }

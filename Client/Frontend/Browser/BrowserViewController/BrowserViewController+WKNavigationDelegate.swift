@@ -242,7 +242,7 @@ extension BrowserViewController: WKNavigationDelegate {
                 webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
             }
             
-            //Cookie Blocking code below
+            // Cookie Blocking code below
             if let tab = tabManager[webView] {
                 tab.userScriptManager?.isCookieBlockingEnabled = Preferences.Privacy.blockAllCookies.value
             }

@@ -7,13 +7,13 @@ import CommonCrypto
 
 /// An error class representing an error that has occurred when handling encryption
 public struct CryptographyError: Error {
-  //The error domain
+  // The error domain
   public let domain: String
   
-  //The error code
+  // The error code
   public let code: Int32
   
-  //A description of the error
+  // A description of the error
   public let description: String?
   
   init(code: Int32 = -1, description: String? = nil) {
@@ -115,10 +115,10 @@ public struct CryptographicKey {
       return nil
     }
     
-    //opensource.apple.com/source/security_certtool/security_certtool-55103/src/dumpasn1.cfg
-    //OID = 06 07 2A 86 48 CE 3D 02 01
-    //Comment = ANSI X9.62 public key type
-    //Description = ecPublicKey (1 2 840 10045 2 1)
+    // opensource.apple.com/source/security_certtool/security_certtool-55103/src/dumpasn1.cfg
+    // OID = 06 07 2A 86 48 CE 3D 02 01
+    // Comment = ANSI X9.62 public key type
+    // Description = ecPublicKey (1 2 840 10045 2 1)
     let curveOIDHeader: [UInt8] = [0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01, 0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07, 0x03, 0x42, 0x00]
 
     var data = Data(bytes: curveOIDHeader, count: curveOIDHeader.count)
@@ -159,7 +159,7 @@ public struct CryptographicKey {
 public class Cryptography {
   
   /// The access control flags for any keys generated
-  public static let accessControlFlags = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenUnlockedThisDeviceOnly, [.privateKeyUsage], nil) //.biometryAny
+  public static let accessControlFlags = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenUnlockedThisDeviceOnly, [.privateKeyUsage], nil) // .biometryAny
   
   /// Determines if a key exists in the keychain without retrieving it
   public class func keyExists(id: String) -> Bool {
@@ -175,7 +175,7 @@ public class Cryptography {
         let item = result[kSecAttrAccessControl as String] as CFTypeRef?,
         CFGetTypeID(item) == SecAccessControlGetTypeID() {
 
-        let accessControl = item as! SecAccessControl //swiftlint:disable:this force_cast
+        let accessControl = item as! SecAccessControl // swiftlint:disable:this force_cast
         return String(describing: accessControl).contains("bio")
       }
     }
@@ -200,7 +200,7 @@ public class Cryptography {
     let error = SecItemCopyMatching(query as CFDictionary, &result)
     if error == errSecSuccess || error == errSecDuplicateItem || error == errSecInteractionNotAllowed {
       if let result = result, CFGetTypeID(result) == SecKeyGetTypeID() {
-        return CryptographicKey(key: result as! SecKey, keyId: id) //swiftlint:disable:this force_cast
+        return CryptographicKey(key: result as! SecKey, keyId: id) // swiftlint:disable:this force_cast
       }
       return nil
     }

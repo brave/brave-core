@@ -122,7 +122,7 @@ class SyncSettingsTableViewController: UITableViewController {
         }
         
         guard device.isCurrentDevice || (!device.isCurrentDevice && device.supportsSelfDelete) else {
-            //See: `BraveSyncDevice.remove()` for more info.
+            // See: `BraveSyncDevice.remove()` for more info.
             return
         }
         

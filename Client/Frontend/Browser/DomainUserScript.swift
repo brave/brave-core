@@ -61,9 +61,9 @@ enum DomainUserScript: CaseIterable {
         case .youtube:
             guard let source = sourceFile else { return nil }
             
-            //Verify that the application itself is making a call to the JS script instead of other scripts on the page.
-            //This variable will be unique amongst scripts loaded in the page.
-            //When the script is called, the token is provided in order to access the script variable.
+            // Verify that the application itself is making a call to the JS script instead of other scripts on the page.
+            // This variable will be unique amongst scripts loaded in the page.
+            // When the script is called, the token is provided in order to access the script variable.
             var alteredSource = source
             let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "",
                                                                                         options: .literal)

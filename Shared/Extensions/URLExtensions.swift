@@ -564,7 +564,7 @@ extension String {
     }
 }
 
-//MARK: Private Helpers
+// MARK: Private Helpers
 private extension URL {
     func publicSuffixFromHost( _ host: String, withAdditionalParts additionalPartCount: Int) -> String? {
         if host.isEmpty {

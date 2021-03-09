@@ -490,7 +490,7 @@ class TabTrayController: UIViewController, Themeable {
         let toView: UIView
         if !privateTabsAreEmpty(), let newSnapshot = collectionView.snapshotView(afterScreenUpdates: true) {
             emptyPrivateTabsView.isHidden = true
-            //when exiting private mode don't screenshot the collectionview (causes the UI to hang)
+            // when exiting private mode don't screenshot the collectionview (causes the UI to hang)
             newSnapshot.frame = collectionView.frame
             view.insertSubview(newSnapshot, aboveSubview: fromView)
             collectionView.alpha = 0
@@ -738,7 +738,7 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
             return a.section < b.section || (a.section == b.section && a.row < b.row)
         }
 
-        if indexPaths.count == 0 {
+        if indexPaths.isEmpty {
             return Strings.tabTrayEmptyVoiceOverText
         }
 

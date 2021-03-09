@@ -21,7 +21,7 @@ class Migration {
             Preferences.Migration.documentsDirectoryCleanupCompleted.value = true
         }
         
-        //`.migrate` is called in `BrowserViewController.viewDidLoad()`
+        // `.migrate` is called in `BrowserViewController.viewDidLoad()`
         if !Preferences.Chromium.syncV2BookmarksMigrationCompleted.value {
             braveCoreBookmarksMigrator = BraveCoreMigrator()
         }

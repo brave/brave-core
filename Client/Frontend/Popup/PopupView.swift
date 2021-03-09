@@ -180,7 +180,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         contentView.frame = CGRect(x: 0.0, y: 0.0, width: dialogView.bounds.size.width, height: contentSize.height)
         
         // Add and create buttons as necessary.
-        if dialogButtons.count > 0 {
+        if !dialogButtons.isEmpty {
             var buttonWidth: CGFloat = 0.0
             
             dialogButtonsContainer.frame = CGRect(x: 0.0, y: contentSize.height, width: dialogView.frame.size.width, height: kPopupDialogButtonHeight)
@@ -198,7 +198,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
                     button = UIButton(type: .system)
                     button!.titleLabel!.font = buttonData.font
                     button!.titleLabel!.adjustsFontSizeToFitWidth = true
-                    button!.layer.cornerRadius = buttonFrame.height / 2.0 //kPopupDialogButtonRadius
+                    button!.layer.cornerRadius = buttonFrame.height / 2.0 // kPopupDialogButtonRadius
                     button!.backgroundColor = buttonData.type.backgroundColor
                     button!.setTitle(buttonData.title, for: .normal)
                     button!.setTitleColor(buttonData.type.titleColor, for: .normal)
@@ -221,7 +221,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         let contentSize: CGSize = contentView.frame.size
         var dialogSize: CGSize = CGSize(width: dialogWidth, height: contentSize.height)
         
-        if dialogButtons.count > 0 {
+        if !dialogButtons.isEmpty {
             dialogSize.height += kPopupDialogButtonHeight
             dialogSize.height += kPopupDialogButtonPadding
         }

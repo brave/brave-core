@@ -36,6 +36,7 @@ disabled_rules: # rule identifiers to exclude from running
   - legacy_cggeometry_functions
   - unneeded_break_in_switch
   - closure_parameter_position
+  - inclusive_language
 opt_in_rules: # some rules are only opt-in
   - closing_brace
   - opening_brace
@@ -73,7 +74,6 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level
 trailing_semicolon: error
-empty_count: error
 closing_brace: error
 opening_brace: error
 return_arrow_whitespace: error

@@ -654,7 +654,7 @@ class U2FExtensions: NSObject {
             ]
 
             var allowList = [YKFFIDO2PublicKeyCredentialDescriptor]()
-            if request.allowCredentials.count > 0 {
+            if !request.allowCredentials.isEmpty {
                 for credentialId in request.allowCredentials {
                     let credentialDescriptor = YKFFIDO2PublicKeyCredentialDescriptor()
                     
@@ -1087,12 +1087,12 @@ class U2FExtensions: NSObject {
                 return
             }
             
-            guard var count = self.fidoRequests[handle] else {
+            guard var requestsCount = self.fidoRequests[handle] else {
                 log.error(U2FErrorMessages.ErrorAuthentication.rawValue)
                 return
             }
             
-            if count == authSuccess {
+            if requestsCount == authSuccess {
                 // auth was successful we don't need to execute again
                 return
             }
@@ -1113,11 +1113,11 @@ class U2FExtensions: NSObject {
                         return
                     }
                     
-                    count -= 1
-                    self.fidoRequests[handle] = count
+                    requestsCount -= 1
+                    self.fidoRequests[handle] = requestsCount
                     
                     if error != nil {
-                        if count == 0 {
+                        if requestsCount == 0 {
                             let errorMessage = error?.localizedDescription ?? Strings.U2FAuthenticationError
                             self.sendFIDOAuthenticationError(handle: handle, requestId: requestId, errorCode: U2FErrorCodes.other_error, errorMessage: errorMessage)
                         }
@@ -1476,18 +1476,18 @@ extension U2FExtensions: TabContentScript {
 }
 
 extension Strings {
-    //FIDO & FIDO2 Error messages
+    // FIDO & FIDO2 Error messages
     public static let tryAgain = NSLocalizedString("tryAgain", tableName: "BraveShared", bundle: Bundle.braveShared, value: ", please try again.", comment: "Suffix for error strings")
     public static let U2FRegistrationError = NSLocalizedString("U2FRegistrationError", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Error registering your security key", comment: "Error handling U2F registration.") + tryAgain
     public static let U2FAuthenticationError = NSLocalizedString("U2FAuthenticationError", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Error authenticating your security key", comment: "Error handling U2F authentication.") + tryAgain
     
-    //Lightning Modals
+    // Lightning Modals
     public static let touchKeyMessage = NSLocalizedString("touchKeyMessage", bundle: Bundle.shared, value: "Touch your key to finish the request for ", comment: "Message for touch key modal.")
     public static let insertKeyMessage = NSLocalizedString("insertKeyMessage", bundle: Bundle.shared, value: "Insert your security key for ", comment: "Message for touch key modal.")
     public static let keyCancel = NSLocalizedString("touchKeyCancel", bundle: Bundle.shared, value: "Cancel", comment: "Text for touch key modal button.")
     public static let selectKey = NSLocalizedString("selectKey", bundle: Bundle.shared, value: "Scan or Insert your security key for ", comment: "Message for selecting security key.")
     
-    //PIN
+    // PIN
     public static let pinTitle = NSLocalizedString("pinTitle", bundle: Bundle.shared, value: "PIN verification required", comment: "Title for the alert modal when a security key with PIN is inserted.")
     public static let pinPlaceholder = NSLocalizedString("pinPlaceholder", bundle: Bundle.shared, value: "Enter your PIN", comment: "Placeholder text for PIN")
     public static let confirmPin = NSLocalizedString("confirmPin", bundle: Bundle.shared, value: "Verify", comment: "Button text to confirm PIN")

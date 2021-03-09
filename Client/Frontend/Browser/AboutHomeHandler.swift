@@ -2,11 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/**
- * Handles the page request to about/home/ so that the page loads and does not throw an error (404) on initialization
- */
 import GCDWebServers
 
+/// Handles the page request to about/home/ so that the page loads and does not throw an error (404) on initialization
 struct AboutHomeHandler {
     static func register(_ webServer: WebServer) {
         webServer.registerHandlerForMethod("GET", module: "about", resource: "home") { (request: GCDWebServerRequest?) -> GCDWebServerResponse? in
@@ -15,6 +13,7 @@ struct AboutHomeHandler {
     }
 }
 
+/// Handles the page request to about/license/ so that the page loads and does not throw an error (404) on initialization
 struct AboutLicenseHandler {
     static func register(_ webServer: WebServer) {
         webServer.registerHandlerForMethod("GET", module: "about", resource: "license") { (request: GCDWebServerRequest?) -> GCDWebServerResponse? in

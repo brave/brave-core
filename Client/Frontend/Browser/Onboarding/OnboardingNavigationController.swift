@@ -51,7 +51,7 @@ class OnboardingNavigationController: UINavigationController {
             if BraveRewards.isAvailable {
                 switch self {
                 case .newUser(let progress):
-                    //The user already made it to rewards and agreed so they should only see ads countdown
+                    // The user already made it to rewards and agreed so they should only see ads countdown
                     if progress == .rewards {
                         return [.rewardsAgreement]
                     }
@@ -65,7 +65,7 @@ class OnboardingNavigationController: UINavigationController {
                     
                     return newUserScreens
                 case .existingUserRewardsOff(let progress):
-                    //The user already made it to rewards and agreed so they should only see ads countdown
+                    // The user already made it to rewards and agreed so they should only see ads countdown
                     if progress == .rewards {
                         return []
                     }
@@ -225,14 +225,14 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         guard let toView = transitionContext.view(forKey: UITransitionContextViewKey.to) else { return }
         
-        //Setup
+        // Setup
         fromView.frame = container.bounds
         toView.frame = container.bounds
         container.addSubview(toView)
         fromView.layoutIfNeeded()
         toView.layoutIfNeeded()
         
-        //Get animatable views
+        // Get animatable views
         let fBackground = fromView.subview(with: OnboardingViewAnimationID.background.rawValue)
         let fDetails = fromView.subview(with: OnboardingViewAnimationID.details.rawValue)
         let fDetailsContent = fromView.subview(with: OnboardingViewAnimationID.detailsContent.rawValue)
@@ -241,7 +241,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let tDetails = toView.subview(with: OnboardingViewAnimationID.details.rawValue)
         let tDetailsContent = toView.subview(with: OnboardingViewAnimationID.detailsContent.rawValue)
 
-        //Setup animation
+        // Setup animation
         fBackground?.alpha = 1.0
         fDetails?.alpha = 1.0
         fDetails?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -260,16 +260,16 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         tDetailsFrame.origin.y = (container.frame.height - container.frame.origin.y) - tDetailsFrame.height
         tDetailsFrame = tDetailsFrame.offsetBy(dx: 0.0, dy: -inset)
         
-        //Pause animations..
+        // Pause animations..
         if !shouldFadeGraphics, let fAnimation = fBackground as? AnimationView, let tAnimation = tBackground as? AnimationView {
             
             fAnimation.pause()
             tAnimation.play(fromProgress: fAnimation.currentProgress, toProgress: 1.0)
-            //tAnimation.pause()
+            // tAnimation.pause()
             fAnimation.stop()
         }
 
-        //fade contents of white panel
+        // fade contents of white panel
         POPBasicAnimation(propertyNamed: kPOPLayerOpacity)?.do {
             $0.toValue = 0.0
             $0.duration = 0.2
@@ -292,7 +292,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             }
         }
         
-        //resize white background to size on next screen
+        // resize white background to size on next screen
         POPBasicAnimation(propertyNamed: kPOPViewFrame)?.do {
             $0.fromValue = fDetailsFrame
             $0.toValue = tDetailsFrame
@@ -308,7 +308,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             fDetails?.layer.pop_add($0, forKey: "cornerRadius")
         }
         
-        //fade in background of next screen and its contents..
+        // fade in background of next screen and its contents..
         POPBasicAnimation(propertyNamed: kPOPLayerOpacity)?.do {
             $0.toValue = 1.0
             $0.duration = 0.4
