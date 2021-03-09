@@ -264,7 +264,7 @@
     "@types/styled-components": "^5.1.7",
     "acorn": "8.0.5",
     "babel-loader": "8.2.2",
-    "brave-ui": "github:brave/brave-ui#9797c76577ae787983c72aa1d84ba4048eba6b74",
+    "brave-ui": "github:brave/brave-ui#161da1d51d1e34c257bd5a42aee3442600e1bd6a",
     "chalk": "4.1.0",
     "commander": "2.20.3",
     "css-loader": "2.1.1",
