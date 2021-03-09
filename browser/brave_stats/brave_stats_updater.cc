@@ -21,6 +21,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/channel_info.h"
@@ -28,6 +29,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/notification_service.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
@@ -119,9 +121,28 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
   } else {
     usage_server_ = BRAVE_USAGE_SERVER;
   }
+
+  registrar_.Add(this, chrome::NOTIFICATION_PROFILE_ADDED,
+                 content::NotificationService::AllBrowserContextsAndSources());
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {}
+
+void BraveStatsUpdater::Observe(int type,
+                                const content::NotificationSource& source,
+                                const content::NotificationDetails& details) {
+  switch (type) {
+    case chrome::NOTIFICATION_PROFILE_ADDED: {
+      Profile* profile = content::Source<Profile>(source).ptr();
+      if (profile == ProfileManager::GetPrimaryUserProfile()) {
+        Start();
+      }
+      break;
+    }
+    default:
+      NOTREACHED();
+  }
+}
 
 void BraveStatsUpdater::Start() {
   // Startup timer, only initiated once we've checked for a promo

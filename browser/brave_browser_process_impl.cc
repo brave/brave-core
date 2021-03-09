@@ -10,7 +10,6 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
@@ -119,23 +118,11 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave_referrals_service_ = brave::BraveReferralsServiceFactory::GetInstance()
-    ->GetForPrefs(local_state());
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](brave::BraveReferralsService* referrals_service) {
-            referrals_service->Start();
-          },
-          base::Unretained(brave_referrals_service_.get())),
-      base::TimeDelta::FromSeconds(3));
+      ->GetForPrefs(local_state());
 #endif
+  // iniitlize brave stats
+  brave_stats_updater();
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](brave_stats::BraveStatsUpdater* stats_updater) {
-                       stats_updater->Start();
-                     },
-                     base::Unretained(brave_stats_updater())));
   // Disabled on mobile platforms, see for instance issues/6176
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   // Create P3A Service early to catch more histograms. The full initialization

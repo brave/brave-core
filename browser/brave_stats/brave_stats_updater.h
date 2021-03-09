@@ -13,6 +13,8 @@
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "content/public/browser/notification_observer.h"
+#include "content/public/browser/notification_registrar.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
@@ -37,10 +39,10 @@ namespace brave_stats {
 
 class BraveStatsUpdaterParams;
 
-class BraveStatsUpdater {
+class BraveStatsUpdater : public content::NotificationObserver {
  public:
   explicit BraveStatsUpdater(PrefService* pref_service);
-  ~BraveStatsUpdater();
+  ~BraveStatsUpdater() override;
 
   void Start();
   void Stop();
@@ -52,6 +54,11 @@ class BraveStatsUpdater {
   void SetStatsThresholdCallback(StatsUpdatedCallback stats_threshold_callback);
 
  private:
+  // content::NotificationObserver
+  void Observe(int type,
+               const content::NotificationSource& source,
+               const content::NotificationDetails& details) override;
+
   GURL BuildStatsEndpoint(const std::string& path);
   void OnThresholdLoaderComplete(scoped_refptr<net::HttpResponseHeaders>);
   // Invoked from SimpleURLLoader after download is complete.
@@ -94,6 +101,8 @@ class BraveStatsUpdater {
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
+
+  content::NotificationRegistrar registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };
