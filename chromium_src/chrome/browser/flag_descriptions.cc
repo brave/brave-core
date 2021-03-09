@@ -31,6 +31,10 @@ const char kBraveAdblockCosmeticFilteringNativeDescription[] =
 const char kBraveDomainBlockName[] = "Enable domain blocking";
 const char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";
+const char kBraveExtensionNetworkBlockingName[] =
+    "Enable extension network blocking";
+const char kBraveExtensionNetworkBlockingDescription[] =
+    "Enable blocking for network requests initiated by extensions";
 const char kBraveSidebarName[] = "Enable Sidebar";
 // TODO(simon): Use more better description.
 const char kBraveSidebarDescription[] = "Enable Sidebar";
