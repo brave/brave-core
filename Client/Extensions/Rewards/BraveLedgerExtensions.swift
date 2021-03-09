@@ -36,7 +36,7 @@ extension BraveLedger {
             let filter = ActivityInfoFilter().then {
                 $0.id = ""
                 $0.excluded = .filterAllExceptExcluded
-                $0.percent = 1 //exclude 0% sites.
+                $0.percent = 1 // exclude 0% sites.
                 $0.orderBy = [sort]
                 $0.nonVerified = allowUnverifiedPublishers
                 $0.reconcileStamp = autoContributeProperties.reconcileStamp

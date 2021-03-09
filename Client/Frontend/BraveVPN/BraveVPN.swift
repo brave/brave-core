@@ -609,7 +609,6 @@ class BraveVPN {
                 return
             }
             
-            
             do {
                 completion(try JSONDecoder().decode([VPNRegion].self, from: data))
             } catch {

@@ -202,13 +202,13 @@ extension OnboardingSearchEnginesViewController {
         static let preferredHeight = UX.SearchEngineCell.rowHeight
         
         var searchEngineName: String? {
-            set { textLabel?.text = newValue }
             get { return textLabel?.text }
+            set { textLabel?.text = newValue }
         }
         
         var searchEngineImage: UIImage? {
-            set { imageView?.image = newValue }
             get { return imageView?.image }
+            set { imageView?.image = newValue }
         }
         
         var selectedBackgroundColor: UIColor? {

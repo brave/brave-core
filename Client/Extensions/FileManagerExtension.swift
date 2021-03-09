@@ -23,7 +23,7 @@ extension FileManager {
                                        appropriateFor: nil, create: false).appendingPathComponent("Downloads")
     }
     
-    //Lock a folder using FolderLockObj provided.
+    // Lock a folder using FolderLockObj provided.
     @discardableResult public func setFolderAccess(_ lockObjects: [FolderLockObj]) -> Bool {
         guard let baseDir = baseDirectory() else { return false }
         for lockObj in lockObjects {

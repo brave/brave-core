@@ -110,7 +110,7 @@ extension PaymentRequestExtension: TabContentScript {
 }
 
 extension Strings {
-    //Errors
+    // Errors
     public static let unsupportedInstrumentMessage = NSLocalizedString("unsupportedInstrumentMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Unsupported payment instruments", comment: "Error message if list of Payment Instruments doesn't include BAT")
     public static let userCancelledMessage = NSLocalizedString("userCancelledMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "User cancelled", comment: "Error message if the payment workflow is canceled by the user")
     public static let invalidDetailsMessage = NSLocalizedString("invalidDetailsMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Invalid details in payment request", comment: "Error message if details don't have the right type or values")

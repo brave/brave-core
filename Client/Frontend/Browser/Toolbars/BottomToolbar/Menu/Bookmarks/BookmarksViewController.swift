@@ -89,10 +89,10 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
     
     private func updateEditBookmarksButtonStatus() {
-        guard let count = bookmarksFRC?.fetchedObjectsCount else { return }
+        guard let objectsCount = bookmarksFRC?.fetchedObjectsCount else { return }
         
-        editBookmarksButton?.isEnabled = count != 0
-        if tableView.isEditing && count == 0 {
+        editBookmarksButton?.isEnabled = objectsCount != 0
+        if tableView.isEditing && objectsCount == 0 {
             disableTableEditingMode()
         }
     }
@@ -430,7 +430,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         
         if !bookmark.isFolder {
             if tableView.isEditing {
-                //show editing view for bookmark item
+                // show editing view for bookmark item
                 self.showEditBookmarkController(bookmark: bookmark)
             } else {
                 if let url = URL(string: bookmark.url ?? "") {
@@ -441,7 +441,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
             }
         } else {
             if tableView.isEditing {
-                //show editing view for bookmark item
+                // show editing view for bookmark item
                 self.showEditBookmarkController(bookmark: bookmark)
             } else {
                 self.updateLastVisitedFolder(bookmark)
@@ -673,7 +673,7 @@ extension BookmarksViewController {
             self.spinner.stopAnimating()
             self.spinner.removeFromSuperview()
             
-            //Controller must be retained otherwise `AirDrop` and other sharing options will fail!
+            // Controller must be retained otherwise `AirDrop` and other sharing options will fail!
             self.documentInteractionController = UIDocumentInteractionController(url: url)
             guard let vc = self.documentInteractionController else { return }
             vc.uti = String(kUTTypeHTML)

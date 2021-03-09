@@ -176,7 +176,7 @@ class BraveCoreImportExportUtility {
     private let importer = BraveBookmarksImporter()
     private let exporter = BraveBookmarksExporter()
     
-    //Serial queue because we don't want someone accidentally importing and exporting at the same time..
+    // Serial queue because we don't want someone accidentally importing and exporting at the same time..
     private let queue = DispatchQueue(label: "brave.core.import.export.utility", qos: .userInitiated)
     
     private enum State {

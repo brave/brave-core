@@ -405,7 +405,7 @@ extension BuyVPNViewController {
                         $0.setContentHuggingPriority(UILayoutPriority(rawValue: 100), for: .horizontal)
                         $0.appearanceTextColor = UX.primaryTextColor
                         $0.font = .systemFont(ofSize: 12, weight: .bold)
-                        //$0.backgroundColor = UX.disclaimerColor
+                        // $0.backgroundColor = UX.disclaimerColor
                         $0.layer.cornerRadius = 4
                         $0.layer.masksToBounds = true
                     }

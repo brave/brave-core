@@ -486,7 +486,7 @@ class LoginDataSource: NSObject, UITableViewDataSource {
     }
 
     fileprivate func computeSectionsFromLogins(_ logins: [Login]) -> Deferred<Maybe<([Character], [Character: [Login]])>> {
-        guard logins.count > 0 else {
+        guard !logins.isEmpty else {
             return deferMaybe( ([Character](), [Character: [Login]]()) )
         }
 

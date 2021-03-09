@@ -299,7 +299,7 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
         var leftEdge = searchEngineScrollViewContent.snp.left
 
-        //search settings icon
+        // search settings icon
         let searchButton = UIButton()
         searchButton.setImage(#imageLiteral(resourceName: "quickSearch"), for: [])
         searchButton.imageView?.contentMode = .center
@@ -315,13 +315,13 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         searchEngineScrollViewContent.addSubview(searchButton)
         searchButton.snp.makeConstraints { make in
             make.size.equalTo(SearchViewControllerUX.faviconSize)
-            //offset the left edge to align with search results
+            // offset the left edge to align with search results
             make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
             make.top.equalTo(searchEngineScrollViewContent).offset(SearchViewControllerUX.searchButtonMargin)
             make.bottom.equalTo(searchEngineScrollViewContent).offset(-SearchViewControllerUX.searchButtonMargin)
         }
 
-        //search engines
+        // search engines
         leftEdge = searchButton.snp.right
         for engine in quickSearchEngines {
             let engineButton = UIButton()
@@ -564,8 +564,8 @@ extension SearchViewController {
         let initialSection = SearchListSection.bookmarksAndHistory.rawValue
         
         guard let current = tableView.indexPathForSelectedRow else {
-            let count = tableView(tableView, numberOfRowsInSection: initialSection)
-            if sender.input == UIKeyCommand.inputDownArrow, count > 0 {
+            let numberOfRows = tableView(tableView, numberOfRowsInSection: initialSection)
+            if sender.input == UIKeyCommand.inputDownArrow, numberOfRows > 0 {
                 let next = IndexPath(item: 0, section: initialSection)
                 self.tableView(tableView, didHighlightRowAt: next)
                 tableView.selectRow(at: next, animated: false, scrollPosition: .top)

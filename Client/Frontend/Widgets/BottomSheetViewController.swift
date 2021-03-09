@@ -21,7 +21,7 @@ class BottomSheetViewController: UIViewController {
     private let maxHorizontalWidth = 400
     private let animationDuration: TimeInterval = 0.25
     
-    //let childViewController: UIViewController
+    // let childViewController: UIViewController
     
     // MARK: - Views
 

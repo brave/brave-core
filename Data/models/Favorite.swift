@@ -102,8 +102,8 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
     }
     
     public class var hasFavorites: Bool {
-        guard let count = count(predicate: isFavoritePredicate) else { return false }
-        return count > 0
+        guard let favoritesCount = count(predicate: isFavoritePredicate) else { return false }
+        return favoritesCount > 0
     }
     
     public class var allFavorites: [Favorite] {

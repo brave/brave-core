@@ -86,16 +86,16 @@ class Bookmarkv2: WebsitePresentable {
     }
     
     public var order: Int16 {
-        let defaultOrder = 0 //taken from CoreData
+        let defaultOrder = 0 // taken from CoreData
 
-        //MUST Use childCount instead of children.count! for performance
-        guard let count = bookmarkNode.parent?.childCount, count > 0 else {
+        // MUST Use childCount instead of children.count! for performance
+        guard let childCount = bookmarkNode.parent?.childCount, childCount > 0 else {
             return Int16(defaultOrder)
         }
 
-        //Do NOT change this to self.parent.children.indexOf(where: { self.id == $0.id })
-        //Swift's performance on `Array` is abominable!
-        //Therefore we call a native function `index(ofChild:)` to return the index.
+        // Do NOT change this to self.parent.children.indexOf(where: { self.id == $0.id })
+        // Swift's performance on `Array` is abominable!
+        // Therefore we call a native function `index(ofChild:)` to return the index.
         return Int16(self.parent?.bookmarkNode.index(ofChild: self.bookmarkNode) ?? defaultOrder)
     }
     
@@ -225,9 +225,9 @@ extension Bookmarkv2 {
     }
     
     public static func byFrequency(query: String? = nil) -> [WebsitePresentable] {
-        //Invalid query.. BraveCore doesn't store bookmarks based on last visited.
-        //Any last visited bookmarks would show up in `History` anyway.
-        //BraveCore automatically sorts them by date as well.
+        // Invalid query.. BraveCore doesn't store bookmarks based on last visited.
+        // Any last visited bookmarks would show up in `History` anyway.
+        // BraveCore automatically sorts them by date as well.
         guard let query = query, !query.isEmpty else { return [] }
         return Bookmarkv2.bookmarksAPI.search(withQuery: query, maxCount: 200)
             .compactMap({ return !$0.isFolder ? Bookmarkv2($0) : nil })
@@ -265,7 +265,7 @@ extension Bookmarkv2 {
         if let node = frc.object(at: sourceIndexPath)?.bookmarkNode,
            let parent = node.parent ?? bookmarksAPI.mobileNode {
             
-            //Moving to the very last index.. same as appending..
+            // Moving to the very last index.. same as appending..
             if destinationIndexPath.row == parent.children.count - 1 {
                 node.move(toParent: parent)
             } else {

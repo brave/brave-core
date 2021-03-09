@@ -68,7 +68,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                             if success {
                                 Preferences.Privacy.blockAllCookies.value = status
                             } else {
-                                //Revert the changes. Not handling success here to avoid a loop.
+                                // Revert the changes. Not handling success here to avoid a loop.
                                 FileManager.default.setFolderAccess([
                                     (.cookie, false),
                                     (.webSiteData, false)
@@ -248,13 +248,13 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                     self.clearPrivateData(clearables).uponQueue(.main) { [weak self] in
                         guard let self = self else { return }
                         
-                        //First remove all tabs so that only a blank tab exists.
+                        // First remove all tabs so that only a blank tab exists.
                         self.tabManager.removeAll()
                         
-                        //Reset tab configurations and delete all webviews..
+                        // Reset tab configurations and delete all webviews..
                         self.tabManager.reset()
                         
-                        //Restore all existing tabs by removing the blank tabs and recreating new ones..
+                        // Restore all existing tabs by removing the blank tabs and recreating new ones..
                         self.tabManager.removeAll()
                         
                         spinner.dismiss()

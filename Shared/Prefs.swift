@@ -5,7 +5,7 @@
 import Foundation
 
 public struct PrefsKeys {
-    //Activity Stream
+    // Activity Stream
     public static let keyTopSitesCacheIsValid = "topSitesCacheIsValid"
     public static let keyTopSitesCacheSize = "topSitesCacheSize"
 }

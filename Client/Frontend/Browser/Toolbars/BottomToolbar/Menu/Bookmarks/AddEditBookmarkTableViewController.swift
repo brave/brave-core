@@ -121,7 +121,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     /// Currently selected save location.
     private var saveLocation: BookmarkSaveLocation
     private var rootFolderName: String
-    private var rootFolderId: Int = 0 //MobileBookmarks Folder Id
+    private var rootFolderId: Int = 0 // MobileBookmarks Folder Id
     
     init(mode: BookmarkEditMode) {
         self.mode = mode

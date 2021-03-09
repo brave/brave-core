@@ -35,27 +35,27 @@ class BraveCoreMigrator {
         
         #if TEST_MIGRATION
         var didFinishTest = false
-        //Add fake bookmarks to CoreData
+        // Add fake bookmarks to CoreData
         self.testMassiveMigration { [weak self] in
             guard let self = self else {
                 didFinishTest = true
                 return
             }
             
-            //Wait for BookmarkModel to Load if needed..
+            // Wait for BookmarkModel to Load if needed..
             //
-            //If the user is in a sync group, leave the sync chain just in case,
-            //so they don't lose everything while testing.
+            // If the user is in a sync group, leave the sync chain just in case,
+            // so they don't lose everything while testing.
             //
-            //Delete all existing BraveCore bookmarks.
+            // Delete all existing BraveCore bookmarks.
             //
-            //Finally perform the migration..
+            // Finally perform the migration..
             if self.bookmarksAPI.isLoaded {
                 BraveSyncAPI.shared.leaveSyncGroup()
                 self.bookmarksAPI.removeAll()
-                //self.migrate() { _ in
+                // self.migrate() { _ in
                     didFinishTest = true
-                //}
+                // }
             } else {
                 self.observer = self.bookmarksAPI.add(BookmarksModelLoadedObserver({ [weak self] in
                     guard let self = self else { return }
@@ -64,9 +64,9 @@ class BraveCoreMigrator {
 
                     BraveSyncAPI.shared.leaveSyncGroup()
                     self.bookmarksAPI.removeAll()
-                    //self.migrate() { _ in
+                    // self.migrate() { _ in
                         didFinishTest = true
-                    //}
+                    // }
                 }))
             }
         }
@@ -155,15 +155,15 @@ class BraveCoreMigrator {
             }
         }
         
-        //If the bookmark model has already loaded, the observer does NOT get called!
-        //Therefore we should continue to migrate the bookmarks
+        // If the bookmark model has already loaded, the observer does NOT get called!
+        // Therefore we should continue to migrate the bookmarks
         if bookmarksAPI.isLoaded {
             performMigrationIfNeeded({
                 self.migrationObserver = $0 ? .completed : .failed
                 completion?($0)
             })
         } else {
-            //Wait for the bookmark model to load before we attempt to perform migration!
+            // Wait for the bookmark model to load before we attempt to perform migration!
             self.observer = bookmarksAPI.add(BookmarksModelLoadedObserver({ [weak self] in
                 guard let self = self else { return }
                 self.observer?.destroy()
@@ -194,7 +194,7 @@ class BraveCoreMigrator {
     }
     
     private func migrateBookmarks(_ completion: @escaping (_ success: Bool) -> Void) {
-        //Migrate to the mobile folder by default..
+        // Migrate to the mobile folder by default..
         guard let rootFolder = bookmarksAPI.mobileNode else {
             log.error("Invalid Root Folder - Mobile Node")
             DispatchQueue.main.async {

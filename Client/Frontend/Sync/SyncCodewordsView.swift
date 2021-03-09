@@ -50,13 +50,13 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
     }
     
     func setCodewords(data: [String]) {
-        field.text = data.count > 0 ? data.joined(separator: " ") : ""
+        field.text = !data.isEmpty ? data.joined(separator: " ") : ""
         
         updateWordCount()
     }
     
     func codeWords() -> [String] {
-        return field.text.separatedBy(" ").filter { $0.count > 0 }
+        return field.text.separatedBy(" ").filter { !$0.isEmpty }
     }
     
     func wordCount() -> Int {
@@ -64,7 +64,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
     }
     
     func updateWordCount() {
-        placeholder.isHidden = (field.text.count != 0)
+        placeholder.isHidden = !field.text.isEmpty
         
         let wordCount = self.wordCount()
         if wordCount != currentWordCount {

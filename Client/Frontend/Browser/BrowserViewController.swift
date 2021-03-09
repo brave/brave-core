@@ -359,7 +359,7 @@ class BrowserViewController: UIViewController {
                 if Preferences.NewTabPage.preloadedFavoritiesInitialized.value
                     || Favorite.hasFavorites { return }
                 
-                guard let sites = sites, sites.count > 0 else {
+                guard let sites = sites, !sites.isEmpty else {
                     FavoritesHelper.addDefaultFavorites()
                     return
                 }
@@ -373,7 +373,7 @@ class BrowserViewController: UIViewController {
         backgroundDataSource.replaceFavoritesIfNeeded = { sites in
             if Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value { return }
             
-            guard let sites = sites, sites.count > 0 else { return }
+            guard let sites = sites, !sites.isEmpty else { return }
             
             DispatchQueue.main.async {
                 let defaultFavorites = PreloadedFavorites.getList()
@@ -729,7 +729,7 @@ class BrowserViewController: UIViewController {
         
         showWalletTransferExpiryPanelIfNeeded()
         
-        //We stop ever attempting migration after 3 times.
+        // We stop ever attempting migration after 3 times.
         if Preferences.Chromium.syncV2BookmarksMigrationCount.value < 3 {
             self.migrateToChromiumBookmarks { success in
                 if !success {
@@ -743,8 +743,8 @@ class BrowserViewController: UIViewController {
                 }
             }
         } else {
-            //After 3 tries, we mark Migration as successful.
-            //There is nothing more we can do for the user other than to let them export/import bookmarks.
+            // After 3 tries, we mark Migration as successful.
+            // There is nothing more we can do for the user other than to let them export/import bookmarks.
             Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = true
         }
         
@@ -1452,10 +1452,10 @@ class BrowserViewController: UIViewController {
                 return
             }
             
-            //Another Fix for: https://github.com/brave/brave-ios/pull/2296
-            //Disable any sort of privileged execution contexts
-            //IE: The user must explicitly tap a bookmark they have saved.
-            //Block all other contexts such as redirects, downloads, embed, linked, etc..
+            // Another Fix for: https://github.com/brave/brave-ios/pull/2296
+            // Disable any sort of privileged execution contexts
+            // IE: The user must explicitly tap a bookmark they have saved.
+            // Block all other contexts such as redirects, downloads, embed, linked, etc..
             if visitType == .bookmark {
                 if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
                     webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
@@ -1555,7 +1555,7 @@ class BrowserViewController: UIViewController {
         case .title:
             // Ensure that the tab title *actually* changed to prevent repeated calls
             // to navigateInTab(tab:).
-            guard let title = (webView.title?.count == 0 ? webView.url?.absoluteString : webView.title) else { break }
+            guard let title = (webView.title?.isEmpty == true ? webView.url?.absoluteString : webView.title) else { break }
             if !title.isEmpty && title != tab.lastTitle {
                 navigateInTab(tab: tab)
             }
@@ -1619,10 +1619,10 @@ class BrowserViewController: UIViewController {
                         break
                     }
                     
-                    //All our checks failed, we show the page as insecure
+                    // All our checks failed, we show the page as insecure
                     tab.secureContentState = .insecure
                 } else {
-                    //When there is no URL, it's likely a new tab.
+                    // When there is no URL, it's likely a new tab.
                     tab.secureContentState = .localHost
                 }
                 
@@ -3231,7 +3231,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
                 let changeCount = pasteboard.changeCount
                 let application = UIApplication.shared
                 var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
-                taskId = application.beginBackgroundTask (expirationHandler: {
+                taskId = application.beginBackgroundTask(expirationHandler: {
                     application.endBackgroundTask(taskId)
                 })
                 

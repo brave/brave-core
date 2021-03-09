@@ -216,7 +216,7 @@ private class TwoLineCellHelper {
         setupDynamicFonts()
 
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 6 //hmm
+        imageView.layer.cornerRadius = 6 // hmm
         imageView.layer.masksToBounds = true
     }
 

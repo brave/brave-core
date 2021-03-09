@@ -96,7 +96,7 @@ class AlertPopupView: PopupView {
         updateSubviews(resizePercentage: 1.0)
         
         let paddingHeight = padding * 3.0
-        let externalContentHeight = dialogButtons.count == 0 ? paddingHeight : kPopupDialogButtonHeight + paddingHeight
+        let externalContentHeight = dialogButtons.isEmpty ? paddingHeight : kPopupDialogButtonHeight + paddingHeight
         let desiredHeight = UIScreen.main.bounds.height - externalContentHeight
         
         if containerView.frame.height > desiredHeight {

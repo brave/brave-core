@@ -371,11 +371,11 @@ private extension DeviceCheckClient {
       }
       
       if T.self == Data.self {
-        return completion(.success(data as! T)) //swiftlint:disable:this force_cast
+        return completion(.success(data as! T)) // swiftlint:disable:this force_cast
       }
       
       if T.self == String.self {
-        return completion(.success(String(data: data, encoding: .utf8) as! T)) //swiftlint:disable:this force_cast
+        return completion(.success(String(data: data, encoding: .utf8) as! T)) // swiftlint:disable:this force_cast
       }
       
       do {

@@ -67,7 +67,7 @@ class OptionSelectionViewController<OptionType: RepresentableOptionType>: TableV
     }
     
     init(options: [OptionType], selectedOption: OptionType? = nil, optionChanged: @escaping SelectedOptionChanged) {
-        assert(options.count > 0, "There should always be at least 1 option to choose from")
+        assert(!options.isEmpty, "There should always be at least 1 option to choose from")
         
         self.options = options
         self.selectedOption = selectedOption ?? options.first!
