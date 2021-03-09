@@ -20,6 +20,7 @@ action("create_symbol_archive") {
     script,
     shell_script,
     brave_apk_output,
+    #"$root_out_dir/apks/BraveTrichromeLibrary.apk",
   ]
 
   outputs = [ archive_name ]
