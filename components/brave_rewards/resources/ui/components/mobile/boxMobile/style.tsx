@@ -239,7 +239,11 @@ export const MobileListWrapper = styled('div')<{}>`
 `
 
 export const Alert = styled('div')<{}>`
-  background: ${p => p.theme.color.infoBackground};
+  background: ${p => {
+    // @ts-ignore This property does not exist on the theme,
+    // but the error was found during a typescript / styled-components refactor.
+    return p.theme.color.infoBackground
+  }};
   padding: 18px;
   display: flex;
   flex-direction: row;

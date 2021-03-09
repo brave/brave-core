@@ -98,7 +98,7 @@ export const StyledAdInfoDiv = styled('div')<{}>`
 `
 export const StyledAdInfo = styled('div')<{}>`
   display: block;
-  color: ${p => p.theme.fontFamily.detailDescription};
+  color: ${p => p.theme.color.detailDescription};
   padding-bottom: 2px;
 `
 

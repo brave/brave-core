@@ -47,7 +47,7 @@ const getTypeStyle = (type?: Type, disabled?: boolean) => {
           background: ${p =>
             disabled
               ? p.theme.color.brandBrave
-              : p.theme.brandBraveInteracting
+              : p.theme.color.brandBraveInteracting
           };
         }
       `

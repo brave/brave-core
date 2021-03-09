@@ -115,7 +115,7 @@ export const StyledMonthlyWrapper = styled('div')<StyleProps>`
   overflow-y: visible;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
-  color: ${p => p.theme.color.black};
+  color: ${p => p.theme.palette.black};
   line-height: 21px;
   height: 27px;
 `

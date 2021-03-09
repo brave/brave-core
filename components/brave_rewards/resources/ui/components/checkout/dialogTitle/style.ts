@@ -10,5 +10,5 @@ export const StyledHeader = styled.h1`
   font-weight: 500;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 22px;
-  color: ${p => p.theme.color.grey800};
+  color: ${p => p.theme.palette.grey800};
 `
