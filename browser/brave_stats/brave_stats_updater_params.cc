@@ -10,6 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "brave/common/pref_names.h"
@@ -107,12 +108,18 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
+
   if (ShouldForceFirstRun()) {
     date_of_installation_ = GetCurrentTimeNow();
   } else {
     date_of_installation_ = GetFirstRunTime(stats_pref_service_);
-    DCHECK(!date_of_installation_.is_null());
+    if (date_of_installation_.is_null()) {
+      LOG(WARNING)
+          << "Couldn't find the time of first run. This should only happen "
+             "when running tests, but never in production code.";
+    }
   }
+
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   referral_promo_code_ = stats_pref_service_->GetString(kReferralPromoCode);
 #endif
@@ -195,8 +202,11 @@ base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
 #else
   (void)pref_service;  // suppress unused warning
 
-  // Note that CreateSentinelIfNeeded() is called in chrome_browser_main.cc,
-  // so this will be a non-blocking read of the cached sentinel value.
+  // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
+  // non-blocking read of the cached sentinel value when running from production
+  // code. However tests will never create the sentinel file due to being run
+  // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
+  base::ScopedAllowBlockingForTesting allow_blocking;
   return first_run::GetFirstRunSentinelCreationTime();
 #endif  // #defined(OS_ANDROID)
 }
