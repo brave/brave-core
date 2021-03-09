@@ -1,20 +1,20 @@
 diff --git a/components/component_updater/component_updater_service.h b/components/component_updater/component_updater_service.h
-index d87906676548af1ef77303ef03cf7fc709ed2f6e..fc5773a6c93f91c7e9b251462c0ea7b2b15281e4 100644
+index d87906676548af1ef77303ef03cf7fc709ed2f6e..1ecf36794cc3bd1f81d6a0221c2cd8741809aab1 100644
 --- a/components/component_updater/component_updater_service.h
 +++ b/components/component_updater/component_updater_service.h
-@@ -150,6 +150,7 @@ class ComponentUpdateService {
-
+@@ -143,6 +143,7 @@ class ComponentUpdateService {
+ 
    friend class speech::SodaInstallerImpl;
    friend class ::ComponentsHandler;
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_
    FRIEND_TEST_ALL_PREFIXES(ComponentInstallerTest, RegisterComponent);
  };
-
+ 
 @@ -156,6 +157,7 @@ class OnDemandUpdater {
    enum class Priority { BACKGROUND = 0, FOREGROUND = 1 };
-
+ 
    virtual ~OnDemandUpdater() = default;
 +  BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER
-
+ 
   private:
    friend class OnDemandTester;
