@@ -113,6 +113,8 @@ void BraveReferralsService::Observe(
     case chrome::NOTIFICATION_PROFILE_ADDED: {
       Profile* profile = content::Source<Profile>(source).ptr();
       if (profile == ProfileManager::GetPrimaryUserProfile()) {
+        registrar_.Remove(this, chrome::NOTIFICATION_PROFILE_ADDED,
+                 content::NotificationService::AllBrowserContextsAndSources());
         Start();
       }
       break;
