@@ -121,7 +121,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
       brave::BraveReferralsServiceFactory::GetInstance()->GetForPrefs(
           local_state());
 #endif
-  // iniitlize brave stats
+  // initialize brave stats
   brave_stats_updater();
 
   // Disabled on mobile platforms, see for instance issues/6176
