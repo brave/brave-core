@@ -25,15 +25,21 @@ pub struct Product {
     pub content: String,
 }
 
-pub fn extract<R>(input: &mut R, url: &Url) -> Result<Product, std::io::Error>
+pub fn extract<R>(input: &mut R, website: Option<&str>) -> Result<Product, std::io::Error>
 where
     R: Read,
 {
+    let url: Url;
+    if let Some(website) = website {
+        url = Url::parse(website).unwrap();
+    } else {
+        url = Url::parse("https://example.com").unwrap();
+    }
     let mut dom = parse_document(RcDom::default(), Default::default())
         .from_utf8()
         .read_from(input)?;
 
-    extract_dom(&mut dom, url, &HashMap::new())
+    extract_dom(&mut dom, &url, &HashMap::new())
 }
 
 pub fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
@@ -110,8 +116,6 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         top_candidate = c;
     }
 
-    let mut bytes = vec![];
-
     scorer::clean(
         &mut dom,
         Path::new(id),
@@ -147,6 +151,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     }
 
     let document: SerializableHandle = top_candidate.node.clone().into();
+    let mut bytes = vec![];
     serialize(&mut bytes, &document, serialize_opts)?;
     let content = String::from_utf8(bytes).unwrap_or_default();
 
@@ -272,5 +277,35 @@ mod tests {
             normalize_output(expected),
             normalize_output(&product.content)
         );
+    }
+
+    #[test]
+    fn preserve_spaces() {
+        let input = r#"
+        <body>
+          <p>
+            <strong>
+              <a href="example.com/example.png">Some Link</a>
+              &nbsp;
+            </strong>
+            this text should have a space between the link.
+          </p>
+        </body>
+        "#;
+        let expected = r#"
+        <body id="article">
+          <h1></h1>
+          <p>
+            <strong>
+              <a href="example.com/example.png">Some Link</a>
+              &nbsp;
+            </strong>
+            this text should have a space between the link.
+          </p>
+        </body>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let product = extract(&mut cursor, None).unwrap();
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 }

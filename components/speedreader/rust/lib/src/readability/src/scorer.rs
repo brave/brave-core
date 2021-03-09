@@ -446,14 +446,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     let useless = match handle.data {
         Document => false,
         Doctype { .. } => false,
-        Text { ref contents } => {
-            let s = contents.borrow();
-            if s.trim().is_empty() {
-                true
-            } else {
-                false
-            }
-        }
+        Text { .. } => false,
         Comment { .. } => true,
         Element {
             ref name,
