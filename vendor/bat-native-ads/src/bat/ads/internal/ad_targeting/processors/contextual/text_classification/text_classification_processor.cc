@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/usermodel/user_model.h"
+#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -23,9 +23,9 @@ std::string GetTopSegmentFromPageProbabilities(
 
   const auto iter =
       std::max_element(probabilities.begin(), probabilities.end(),
-                       [](const SegmentProbabilityPair& a,
-                          const SegmentProbabilityPair& b) -> bool {
-                         return a.second < b.second;
+                       [](const SegmentProbabilityPair& lhs,
+                          const SegmentProbabilityPair& rhs) -> bool {
+                         return lhs.second < rhs.second;
                        });
 
   return iter->first;
@@ -48,10 +48,10 @@ void TextClassification::Process(const std::string& text) {
     return;
   }
 
-  usermodel::UserModel* user_model = resource_->get();
+  ml::pipeline::TextProcessing* text_proc_pipeline = resource_->get();
 
   const TextClassificationProbabilitiesMap probabilities =
-      user_model->ClassifyPage(text);
+      text_proc_pipeline->ClassifyPage(text);
 
   if (probabilities.empty()) {
     BLOG(1, "Text not classified as not enough content");

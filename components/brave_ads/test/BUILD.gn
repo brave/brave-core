@@ -99,6 +99,17 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/legacy_migration/legacy_migration_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/country_code_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale/subdivision_code_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/data/text_data_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/data/vector_data_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/ml_prediction_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/ml_transformation_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/model/linear/linear_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/pipeline/pipeline_util_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/pipeline/text_processing/text_processing_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/hash_vectorizer_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/hashed_ngrams_transformation_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/lowercase_transformation_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/ml/transformation/normalization_transformation_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/number_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/p2a/p2a_util_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/platform/platform_helper_mock.cc",
@@ -152,15 +163,6 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/user_activity/user_activity_util_unittest.cc",
     ]
 
-    if (!is_android) {
-      sources += [
-        # TODO(https://github.com/brave-intl/bat-native-usermodel/issues/26):
-        # Fix bat-native-user-model unittests fail to load data files from
-        # 'brave/vendor/bat-native-usermodel/test/data'
-        "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
-      ]
-    }
-
     deps = [
       "//base/test:test_support",
       "//brave/browser:browser_process",
@@ -175,7 +177,6 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-rapidjson",
       "//brave/vendor/bat-native-tweetnacl:tweetnacl",
-      "//brave/vendor/bat-native-usermodel",
       "//chrome/browser:browser",
       "//components/prefs:prefs",
       "//content/test:test_support",
