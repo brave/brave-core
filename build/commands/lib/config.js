@@ -132,6 +132,12 @@ const Config = function () {
   this.braveAndroidKeystorePassword = getNPMConfig(['brave_android_keystore_password'])
   this.braveAndroidKeyPassword = getNPMConfig(['brave_android_key_password'])
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
+
+  this.gomaHost = null
+}
+
+Config.prototype.useGoma = function () {
+  return this.gomaHost !== null
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -232,6 +238,7 @@ Config.prototype.buildArgs = function () {
     sparkle_dsa_private_key_file: this.sparkleDSAPrivateKeyFile,
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
+    use_goma: this.useGoma(),
     ...this.extraGnArgs,
   }
 
@@ -399,10 +406,14 @@ Config.prototype.buildArgs = function () {
     delete args.brave_variations_server_url
   }
 
-  if (process.platform === 'win32') {
-    args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.cmd')
-  } else {
-    args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
+  if (!this.useGoma()) {
+    // Goma is incompatible with `cc_wrapper`:
+    // https://source.chromium.org/chromium/chromium/src/+/master:build/toolchain/cc_wrapper.gni;l=39;drc=3c38c5cdab9e6fc35852ae79be5351be2bd6d49e
+    if (process.platform === 'win32') {
+      args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.cmd')
+    } else {
+      args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
+    }
   }
   return args
 }
@@ -640,6 +651,10 @@ Config.prototype.update = function (options) {
       opts.push(value)
     })
   }
+
+  if (options.experimental_use_goma === true) {
+    this.gomaHost = 'goma-chromite.engflow.com'
+  }
 }
 
 Config.prototype.getCachePath = function () {
@@ -685,6 +700,10 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (process.platform === 'linux') {
       env.LLVM_DOWNLOAD_GOLD_PLUGIN = '1'
+    }
+
+    if (this.useGoma()) {
+      env.GOMA_SERVER_HOST = this.gomaHost
     }
 
     return {

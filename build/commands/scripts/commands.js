@@ -89,6 +89,7 @@ program
   .option('--ninja <opt>', 'Additional Ninja command-line options, in the form <key>:<value>', collect, [])
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
+  .option('--experimental_use_goma', 'whether to use Goma for building')
   .arguments('[build_config]')
   .action(build)
 
