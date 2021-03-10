@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../common/locale'
 
-import { PaddedButton, Section, Title } from '../style'
+import { PaddedButton, Section, Title, Error } from '../style'
 
 interface Props {
   daemonStatus: IPFS.DaemonStatus
@@ -28,6 +28,12 @@ export class UninstalledView extends React.Component<Props, {}> {
         <div>
           {this.props.daemonStatus.installing ? getLocale('installing') : getLocale('notInstalled')}
         </div>
+        {this.props.daemonStatus.error.length > 0 && (
+        <div
+          style={Error}
+        >
+          {this.props.daemonStatus.error}
+        </div>)}
         {!this.props.daemonStatus.installed && (
           <PaddedButton
             text={getLocale('installAndLaunch')}
