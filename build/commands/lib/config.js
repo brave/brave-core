@@ -634,8 +634,7 @@ Config.prototype.update = function (options) {
     })
   }
 
-  if (options.dcheck_always_on)
-    this.dcheck_always_on = true
+  this.dcheck_always_on = ('dcheck_always_on' in options) ? options.dcheck_always_on : true
 }
 
 Config.prototype.getCachePath = function () {
