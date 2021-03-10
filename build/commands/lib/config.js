@@ -147,7 +147,7 @@ Config.prototype.isDebug = function () {
 }
 
 Config.prototype.isDcheckAlwaysOn = function () {
-  return this.buildConfig !== 'Release'
+  return ('dcheck_always_on' in options) ? options.dcheck_always_on : true
 }
 
 Config.prototype.enableCDMHostVerification = function () {
