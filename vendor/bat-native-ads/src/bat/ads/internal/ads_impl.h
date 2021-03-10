@@ -154,7 +154,7 @@ class AdsImpl : public Ads,
                                const uint64_t from_timestamp,
                                const uint64_t to_timestamp) override;
 
-  void GetStatement(GetStatementCallback callback) override;
+  void GetAccountStatement(GetAccountStatementCallback callback) override;
 
   AdContentInfo::LikeAction ToggleAdThumbUp(
       const std::string& creative_instance_id,

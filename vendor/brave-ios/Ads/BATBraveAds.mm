@@ -558,7 +558,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->GetStatement(^(bool success, ads::StatementInfo list) {
+  ads->GetAccountStatement(^(bool success, ads::StatementInfo list) {
     if (!success) {
       completion(0, 0, nil);
       return;

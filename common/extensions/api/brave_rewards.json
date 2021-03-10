@@ -839,23 +839,6 @@
         ]
       },
       {
-        "name": "getAdsEstimatedEarnings",
-        "type": "function",
-        "description": "Gets estimated ads earnings for the current month",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "amount",
-                "type": "number"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getACEnabled",
         "type": "function",
         "description": "Gets whether auto contribute is enabled",
@@ -1152,6 +1135,45 @@
               {
                 "name": "only",
                 "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAdsAccountStatement",
+        "type": "function",
+        "description": "Get ads account statement",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              },
+              {
+                "name": "adsAccountStatement",
+                "type": "object",
+                "optional": true,
+                "properties": {
+                  "estimatedPendingRewards": {
+                    "type": "number"
+                  },
+                  "nextPaymentDate": {
+                    "type": "string"
+                  },
+                  "adsReceivedThisMonth": {
+                    "type": "integer"
+                  },
+                  "earningsThisMonth": {
+                    "type": "number"
+                  },
+                  "earningsLastMonth": {
+                    "type": "number"
+                  }
+                }
               }
             ]
           }
