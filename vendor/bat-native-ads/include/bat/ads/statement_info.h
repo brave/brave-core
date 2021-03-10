@@ -28,8 +28,8 @@ struct ADS_EXPORT StatementInfo {
   bool FromJson(const std::string& json);
 
   double estimated_pending_rewards = 0.0;
-  uint64_t next_payment_date = 0;
-  uint64_t ads_received_this_month = 0;
+  int64_t next_payment_date = 0;
+  int ads_received_this_month = 0;
   double earnings_this_month = 0.0;
   double earnings_last_month = 0.0;
   TransactionList transactions;

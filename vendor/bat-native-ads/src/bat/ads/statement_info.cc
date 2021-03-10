@@ -47,7 +47,7 @@ std::string StatementInfo::ToJson() const {
 
   // Ads received this month
   dictionary.SetKey("ads_received_this_month",
-                    base::Value(std::to_string(ads_received_this_month)));
+                    base::Value(ads_received_this_month));
 
   // Earnings this month
   dictionary.SetKey("earnings_this_month", base::Value(earnings_this_month));
@@ -130,18 +130,7 @@ uint64_t StatementInfo::GetAdsReceivedThisMonthFromDictionary(
     base::DictionaryValue* dictionary) const {
   DCHECK(dictionary);
 
-  const std::string* value =
-      dictionary->FindStringKey("ads_received_this_month");
-  if (!value) {
-    return 0;
-  }
-
-  uint64_t value_as_uint64 = 0;
-  if (!base::StringToUint64(*value, &value_as_uint64)) {
-    return 0;
-  }
-
-  return value_as_uint64;
+  return dictionary->FindIntKey("ads_received_this_month").value_or(0);
 }
 
 double StatementInfo::GetEarningsThisMonthFromDictionary(

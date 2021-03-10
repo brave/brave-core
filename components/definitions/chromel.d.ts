@@ -96,7 +96,7 @@ declare namespace chrome.braveRewards {
   }
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
-  const getAdsEstimatedEarnings: (callback: (amount: number) => void) => {}
+  const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
   const saveAdsSetting: (key: string, value: string) => {}
   const setAutoContributeEnabled: (enabled: boolean) => {}
