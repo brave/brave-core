@@ -56,6 +56,7 @@ const char kBraveReleaseTagPrefix[] =
 const char kGoogleLoginLearnMoreURL[] =
     "https://github.com/brave/brave-browser/wiki/"
     "Allow-Google-login---Third-Parties-and-Extensions";
+const char kDNSLinkLearnMoreURL[] = "https://docs.ipfs.io/concepts/dnslink/";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -239,6 +240,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_LABEL},
     {"ipfsAutoRedirectGatewayDesc",
      IDS_SETTINGS_IPFS_AUTO_REDIRECT_GATEWAY_DESC},
+    {"ipfsAutoRedirectDNSLinkLabel",
+     IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_LABEL},
+    {"ipfsAutoRedirectDNSLinkDesc",
+     IDS_SETTINGS_IPFS_AUTO_REDIRECT_DNSLINK_RESOURCES_DESC},
     {"ipfsCompanionEnabledDesc", IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
     {"mediaRouterEnabledDesc", IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
     {"torEnabledLabel", IDS_SETTINGS_ENABLE_TOR_TITLE},
@@ -263,6 +268,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                          base::ASCIIToUTF16(kWebRTCLearnMoreURL));
   html_source->AddString("googleLoginLearnMoreURL",
                          base::ASCIIToUTF16(kGoogleLoginLearnMoreURL));
+  html_source->AddString("ipfsDNSLinkLearnMoreURL",
+                         base::UTF8ToUTF16(kDNSLinkLearnMoreURL));
+
   html_source->AddString(
       "getMoreExtensionsUrl",
       base::ASCIIToUTF16(

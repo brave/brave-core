@@ -369,7 +369,10 @@ source_set("ui") {
         "webui/settings/brave_default_extensions_handler.h",
       ]
 
-      deps += [ "//third_party/widevine/cdm:buildflags" ]
+      deps += [
+        "//brave/components/ipfs/buildflags",
+        "//third_party/widevine/cdm:buildflags",
+      ]
 
       if (enable_widevine) {
         deps += [ "//brave/browser/widevine" ]
@@ -394,11 +397,19 @@ source_set("ui") {
       ]
     }
 
+    if (ipfs_enabled) {
+      sources += [
+        "views/location_bar/ipfs_location_view.cc",
+        "views/location_bar/ipfs_location_view.h",
+      ]
+    }
+
     deps += [
       "//brave/browser/extensions",
       "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
+      "//brave/components/resources:static_resources",
       "//chrome/browser/extensions",
       "//components/sessions",
       "//extensions/browser",

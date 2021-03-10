@@ -56,6 +56,13 @@
       label="$i18n{ipfsAutoRedirectGatewayLabel}"
       sub-label="$i18n{ipfsAutoRedirectGatewayDesc}">
     </settings-toggle-button>
+    <settings-toggle-button id="ipfsAutoRedirectDNSLink"
+      class="cr-row"
+      pref="{{prefs.brave.ipfs.auto_redirect_dnslink}}"
+      label="$i18n{ipfsAutoRedirectDNSLinkLabel}"
+      sub-label="$i18n{ipfsAutoRedirectDNSLinkDesc}"
+      learn-more-url="$i18n{ipfsDNSLinkLearnMoreURL}">
+    </settings-toggle-button>
 
     <settings-toggle-button id="ipfsCompanionEnabled"
       class="cr-row"
@@ -70,4 +77,4 @@
     </template>
   </template>
   <script src="brave_ipfs_page.js"></script>
-</dom-module> 
+</dom-module>

@@ -23,6 +23,9 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
+#endif
 
 namespace {
 
@@ -72,6 +75,11 @@ void BraveLocationBarView::Init() {
   onion_location_view_ = new OnionLocationView(browser_->profile());
   AddChildView(onion_location_view_);
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  ipfs_location_view_ = new IPFSLocationView(browser_->profile());
+  AddChildView(ipfs_location_view_);
+#endif
+
   // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
@@ -94,6 +102,11 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   if (onion_location_view_)
     onion_location_view_->Update(contents);
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  if (ipfs_location_view_)
+    ipfs_location_view_->Update(contents);
+#endif
+
   LocationBarView::Update(contents);
 }
 
@@ -109,6 +122,11 @@ void BraveLocationBarView::OnChanged() {
     onion_location_view_->Update(
         browser_->tab_strip_model()->GetActiveWebContents());
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  if (ipfs_location_view_)
+    ipfs_location_view_->Update(
+        browser_->tab_strip_model()->GetActiveWebContents());
+#endif
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();
@@ -120,6 +138,11 @@ std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   if (onion_location_view_)
     views.push_back(onion_location_view_);
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  if (ipfs_location_view_)
+    views.push_back(ipfs_location_view_);
+#endif
+
   if (brave_actions_)
     views.push_back(brave_actions_);
 
@@ -141,6 +164,14 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
     min_size.Enlarge(extra_width, 0);
   }
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  if (ipfs_location_view_ && ipfs_location_view_->GetVisible()) {
+    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+                            ipfs_location_view_->GetMinimumSize().width();
+    min_size.Enlarge(extra_width, 0);
+  }
+#endif
+
   return min_size;
 }
 
