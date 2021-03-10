@@ -38,6 +38,13 @@ class BraveModelTypeWorker : public ModelTypeWorker {
   void OnCommitResponse(
       const CommitResponseDataList& committed_response_list,
       const FailedCommitResponseDataList& error_response_list) override;
+
+  bool IsResetProgressMarkerRequired(
+      const FailedCommitResponseDataList& error_response_list);
+  void ResetProgressMarker();
+
+  size_t failed_commit_times_ = 0;
+  base::Time last_reset_marker_time_;
 };
 
 }  // namespace syncer
