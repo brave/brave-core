@@ -92,7 +92,8 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
           installed: false,
           launched: false,
           restarting: false,
-          installing: true
+          installing: true,
+          error: ''
         }
       }
       break
@@ -133,7 +134,8 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
           installed: true,
           launched: false,
           restarting: true,
-          installing: false
+          installing: false,
+          error: ''
         }
       }
       break

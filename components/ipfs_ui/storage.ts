@@ -20,7 +20,8 @@ export const defaultState: IPFS.State = {
     installed: false,
     launched: false,
     restarting: false,
-    installing: false
+    installing: false,
+    error: ''
   },
   garbageCollectionStatus: {
     success: true,

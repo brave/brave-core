@@ -25,6 +25,7 @@ declare namespace IPFS {
     launched: bool
     restarting: bool
     installing: bool
+    error: string
   }
 
   export interface GarbageCollectionStatus {

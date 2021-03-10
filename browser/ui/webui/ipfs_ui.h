@@ -36,6 +36,7 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
   void OnIpfsShutdown() override;
   void OnGetConnectedPeers(bool success,
                            const std::vector<std::string>& peers) override;
+  void OnInstallationEvent(ipfs::ComponentUpdaterEvents event) override;
 
  private:
   void HandleGetConnectedPeers(const base::ListValue* args);
