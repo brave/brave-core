@@ -29,40 +29,27 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
                   const base::android::JavaRef<jobject>& obj);
   ~BraveSyncWorker() override;
 
-  void Destroy(JNIEnv* env,
-               const base::android::JavaParamRef<jobject>& jcaller);
+  void Destroy(JNIEnv* env);
 
-  base::android::ScopedJavaLocalRef<jstring> GetSyncCodeWords(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+  base::android::ScopedJavaLocalRef<jstring> GetSyncCodeWords(JNIEnv* env);
 
   void SaveCodeWords(JNIEnv* env,
-                     const base::android::JavaParamRef<jobject>& jcaller,
                      const base::android::JavaParamRef<jstring>& passphrase);
 
-  void RequestSync(JNIEnv* env,
-                   const base::android::JavaParamRef<jobject>& jcaller);
+  void RequestSync(JNIEnv* env);
 
-  void FinalizeSyncSetup(JNIEnv* env,
-                         const base::android::JavaParamRef<jobject>& jcaller);
+  void FinalizeSyncSetup(JNIEnv* env);
 
-  bool IsFirstSetupComplete(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+  bool IsFirstSetupComplete(JNIEnv* env);
 
-  void ResetSync(JNIEnv* env,
-                 const base::android::JavaParamRef<jobject>& jcaller);
+  void ResetSync(JNIEnv* env);
 
-  bool GetSyncV1WasEnabled(JNIEnv* env,
-                           const base::android::JavaParamRef<jobject>& jcaller);
+  bool GetSyncV1WasEnabled(JNIEnv* env);
 
-  bool GetSyncV2MigrateNoticeDismissed(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+  bool GetSyncV2MigrateNoticeDismissed(JNIEnv* env);
 
   void SetSyncV2MigrateNoticeDismissed(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller,
       bool sync_v2_migration_notice_dismissed);
 
  private:

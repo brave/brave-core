@@ -29,9 +29,8 @@ class SafetyNetCheck {
       ClientAttestationCallback attest_callback,
       const bool perform_attestation_on_client);
     // Callback returns client attestation final result, called from Java
-    void clientAttestationResult(
+    void ClientAttestationResult(
         JNIEnv* env,
-        const base::android::JavaRef<jobject>& jobj,
         jboolean token_received,
         const base::android::JavaParamRef<jstring>& jresult_string,
         jboolean attestation_passed);

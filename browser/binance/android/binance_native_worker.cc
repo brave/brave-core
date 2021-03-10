@@ -90,9 +90,7 @@ std::string BinanceNativeWorker::StdStrStrMapToJsonString(
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-BinanceNativeWorker::GetOAuthClientUrl(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+BinanceNativeWorker::GetOAuthClientUrl(JNIEnv* env) {
   base::android::ScopedJavaLocalRef<jstring> url =
       base::android::ConvertUTF8ToJavaString(env, "");
 
@@ -104,17 +102,14 @@ BinanceNativeWorker::GetOAuthClientUrl(
   return url;
 }
 
-void BinanceNativeWorker::GetAccessToken(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BinanceNativeWorker::GetAccessToken(JNIEnv* env) {
   if (binance_service_) {
     binance_service_->GetAccessToken(base::Bind(
         &BinanceNativeWorker::OnGetAccessToken, weak_factory_.GetWeakPtr()));
   }
 }
 
-bool BinanceNativeWorker::IsSupportedRegion(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+bool BinanceNativeWorker::IsSupportedRegion(JNIEnv* env) {
   if (!binance_service_) {
     return false;
   }
@@ -123,8 +118,7 @@ bool BinanceNativeWorker::IsSupportedRegion(JNIEnv* env,
 }
 
 base::android::ScopedJavaLocalRef<jstring> BinanceNativeWorker::GetLocaleForURL(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    JNIEnv* env) {
   base::android::ScopedJavaLocalRef<jstring> locale =
       base::android::ConvertUTF8ToJavaString(env, "");
 
@@ -142,9 +136,7 @@ void BinanceNativeWorker::OnGetAccessToken(bool success) {
       env, weak_java_binance_native_worker_.get(env), success);
 }
 
-void BinanceNativeWorker::GetAccountBalances(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BinanceNativeWorker::GetAccountBalances(JNIEnv* env) {
   if (binance_service_) {
     binance_service_->GetAccountBalances(
         base::Bind(&BinanceNativeWorker::OnGetAccountBalances,
@@ -164,7 +156,6 @@ void BinanceNativeWorker::OnGetAccountBalances(
 
 void BinanceNativeWorker::GetConvertQuote(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& from,
     const base::android::JavaParamRef<jstring>& to,
     const base::android::JavaParamRef<jstring>& amount) {
@@ -191,9 +182,7 @@ void BinanceNativeWorker::OnGetConvertQuote(const std::string& quote_id,
       base::android::ConvertUTF8ToJavaString(env, total_amount));
 }
 
-void BinanceNativeWorker::GetCoinNetworks(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BinanceNativeWorker::GetCoinNetworks(JNIEnv* env) {
   if (binance_service_) {
     binance_service_->GetCoinNetworks(base::Bind(
         &BinanceNativeWorker::OnGetCoinNetworks, weak_factory_.GetWeakPtr()));
@@ -211,7 +200,6 @@ void BinanceNativeWorker::OnGetCoinNetworks(
 
 void BinanceNativeWorker::GetDepositInfo(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& symbol,
     const base::android::JavaParamRef<jstring>& ticker_network) {
   if (binance_service_) {
@@ -235,7 +223,6 @@ void BinanceNativeWorker::OnGetDepositInfo(const std::string& deposit_address,
 
 void BinanceNativeWorker::ConfirmConvert(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& quote_id) {
   if (binance_service_) {
     binance_service_->ConfirmConvert(
@@ -253,9 +240,7 @@ void BinanceNativeWorker::OnConfirmConvert(bool success,
       base::android::ConvertUTF8ToJavaString(env, message));
 }
 
-void BinanceNativeWorker::GetConvertAssets(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BinanceNativeWorker::GetConvertAssets(JNIEnv* env) {
   if (binance_service_) {
     binance_service_->GetConvertAssets(base::Bind(
         &BinanceNativeWorker::OnGetConvertAssets, weak_factory_.GetWeakPtr()));
@@ -272,9 +257,7 @@ void BinanceNativeWorker::OnGetConvertAssets(
       base::android::ConvertUTF8ToJavaString(env, json_assets));
 }
 
-void BinanceNativeWorker::RevokeToken(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+void BinanceNativeWorker::RevokeToken(JNIEnv* env) {
   if (binance_service_) {
     binance_service_->RevokeToken(base::Bind(
         &BinanceNativeWorker::OnRevokeToken, weak_factory_.GetWeakPtr()));
@@ -289,7 +272,6 @@ void BinanceNativeWorker::OnRevokeToken(bool success) {
 
 void BinanceNativeWorker::SetAuthToken(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller,
     const base::android::JavaParamRef<jstring>& auth_token) {
   if (binance_service_) {
     binance_service_->SetAuthToken(

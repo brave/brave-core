@@ -7,18 +7,21 @@
 package org.chromium.chrome.browser;
 
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
+
+import org.json.JSONException;
 
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.embedder_support.util.UrlConstants;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +85,7 @@ public class BraveRewardsNativeWorker {
 
     private void Init() {
       if (mNativeBraveRewardsNativeWorker == 0) {
-          nativeInit();
+          BraveRewardsNativeWorkerJni.get().init(BraveRewardsNativeWorker.this);
       }
     }
 
@@ -93,7 +96,7 @@ public class BraveRewardsNativeWorker {
 
     private void Destroy() {
         if (mNativeBraveRewardsNativeWorker != 0) {
-            nativeDestroy(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().destroy(mNativeBraveRewardsNativeWorker);
             mNativeBraveRewardsNativeWorker = 0;
         }
     }
@@ -168,14 +171,15 @@ public class BraveRewardsNativeWorker {
 
     public void GetRewardsParameters() {
         synchronized(lock) {
-            nativeGetRewardsParameters(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getRewardsParameters(mNativeBraveRewardsNativeWorker);
         }
     }
 
     @Nullable
     public BraveRewardsBalance GetWalletBalance() {
         synchronized(lock) {
-            String  json = nativeGetWalletBalance(mNativeBraveRewardsNativeWorker);
+            String json = BraveRewardsNativeWorkerJni.get().getWalletBalance(
+                    mNativeBraveRewardsNativeWorker);
             BraveRewardsBalance balance = null;
             try{
                 balance = new BraveRewardsBalance (json);
@@ -189,91 +193,104 @@ public class BraveRewardsNativeWorker {
 
     public double GetWalletRate() {
         synchronized(lock) {
-            return nativeGetWalletRate(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().getWalletRate(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void GetPublisherInfo(int tabId, String host) {
         synchronized(lock) {
-            nativeGetPublisherInfo(mNativeBraveRewardsNativeWorker, tabId, host);
+            BraveRewardsNativeWorkerJni.get().getPublisherInfo(
+                    mNativeBraveRewardsNativeWorker, tabId, host);
         }
     }
 
     public String GetPublisherURL(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherURL(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherURL(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public String GetPublisherFavIconURL(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherFavIconURL(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherFavIconURL(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public String GetPublisherName(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherName(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherName(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public String GetPublisherId(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherId(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherId(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public int GetPublisherPercent(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherPercent(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherPercent(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public boolean GetPublisherExcluded(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherExcluded(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherExcluded(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public @PublisherStatus int GetPublisherStatus(int tabId) {
         synchronized(lock) {
-            return nativeGetPublisherStatus(mNativeBraveRewardsNativeWorker, tabId);
+            return BraveRewardsNativeWorkerJni.get().getPublisherStatus(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public void IncludeInAutoContribution(int tabId, boolean exclude) {
         synchronized(lock) {
-            nativeIncludeInAutoContribution(mNativeBraveRewardsNativeWorker, tabId, exclude);
+            BraveRewardsNativeWorkerJni.get().includeInAutoContribution(
+                    mNativeBraveRewardsNativeWorker, tabId, exclude);
         }
     }
 
     public void RemovePublisherFromMap(int tabId) {
         synchronized(lock) {
-            nativeRemovePublisherFromMap(mNativeBraveRewardsNativeWorker, tabId);
+            BraveRewardsNativeWorkerJni.get().removePublisherFromMap(
+                    mNativeBraveRewardsNativeWorker, tabId);
         }
     }
 
     public void GetCurrentBalanceReport() {
         synchronized(lock) {
-            nativeGetCurrentBalanceReport(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getCurrentBalanceReport(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void Donate(String publisher_key, int amount, boolean recurring) {
         synchronized(lock) {
-            nativeDonate(mNativeBraveRewardsNativeWorker, publisher_key, amount, recurring);
+            BraveRewardsNativeWorkerJni.get().donate(
+                    mNativeBraveRewardsNativeWorker, publisher_key, amount, recurring);
         }
     }
 
     public void GetAllNotifications() {
         synchronized(lock) {
-            nativeGetAllNotifications(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getAllNotifications(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void DeleteNotification(String notification_id) {
         synchronized(lock) {
-            nativeDeleteNotification(mNativeBraveRewardsNativeWorker, notification_id);
+            BraveRewardsNativeWorkerJni.get().deleteNotification(
+                    mNativeBraveRewardsNativeWorker, notification_id);
         }
     }
 
@@ -283,122 +300,133 @@ public class BraveRewardsNativeWorker {
                 return;
             }
             grantClaimInProcess = true;
-            nativeGetGrant(mNativeBraveRewardsNativeWorker, promotionId);
+            BraveRewardsNativeWorkerJni.get().getGrant(
+                    mNativeBraveRewardsNativeWorker, promotionId);
         }
     }
 
     public String[] GetCurrentGrant(int position) {
         synchronized(lock) {
-            return nativeGetCurrentGrant(mNativeBraveRewardsNativeWorker, position);
+            return BraveRewardsNativeWorkerJni.get().getCurrentGrant(
+                    mNativeBraveRewardsNativeWorker, position);
         }
     }
 
     public void GetPendingContributionsTotal() {
         synchronized(lock) {
-            nativeGetPendingContributionsTotal(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getPendingContributionsTotal(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void GetRecurringDonations() {
         synchronized(lock) {
-            nativeGetRecurringDonations(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getRecurringDonations(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
     public boolean IsCurrentPublisherInRecurrentDonations(String publisher) {
         synchronized(lock) {
-            return nativeIsCurrentPublisherInRecurrentDonations(mNativeBraveRewardsNativeWorker, publisher);
+            return BraveRewardsNativeWorkerJni.get().isCurrentPublisherInRecurrentDonations(
+                    mNativeBraveRewardsNativeWorker, publisher);
         }
     }
 
     public double GetPublisherRecurrentDonationAmount(String publisher) {
         synchronized(lock) {
-            return nativeGetPublisherRecurrentDonationAmount(mNativeBraveRewardsNativeWorker, publisher);
+            return BraveRewardsNativeWorkerJni.get().getPublisherRecurrentDonationAmount(
+                    mNativeBraveRewardsNativeWorker, publisher);
         }
     }
 
     public void GetAutoContributeProperties() {
         synchronized(lock) {
-            nativeGetAutoContributeProperties(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getAutoContributeProperties(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
     public boolean IsAutoContributeEnabled() {
         synchronized(lock) {
-            return nativeIsAutoContributeEnabled(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().isAutoContributeEnabled(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void GetReconcileStamp() {
         synchronized(lock) {
-            nativeGetReconcileStamp(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getReconcileStamp(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void RemoveRecurring(String publisher) {
         synchronized(lock) {
-            nativeRemoveRecurring(mNativeBraveRewardsNativeWorker,publisher);
+            BraveRewardsNativeWorkerJni.get().removeRecurring(
+                    mNativeBraveRewardsNativeWorker, publisher);
         }
     }
 
     public void ResetTheWholeState() {
         synchronized(lock) {
-            nativeResetTheWholeState(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().resetTheWholeState(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void FetchGrants() {
         synchronized(lock) {
-            nativeFetchGrants(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().fetchGrants(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public int GetAdsPerHour() {
         synchronized (lock) {
-            return nativeGetAdsPerHour(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().getAdsPerHour(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void SetAdsPerHour(int value) {
         synchronized (lock) {
-            nativeSetAdsPerHour(mNativeBraveRewardsNativeWorker, value);
+            BraveRewardsNativeWorkerJni.get().setAdsPerHour(mNativeBraveRewardsNativeWorker, value);
         }
     }
 
     public boolean IsAnonWallet() {
         synchronized(lock) {
-            return nativeIsAnonWallet(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().isAnonWallet(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public boolean isRewardsEnabled() {
         synchronized (lock) {
-            return nativeIsRewardsEnabled(mNativeBraveRewardsNativeWorker);
+            return BraveRewardsNativeWorkerJni.get().isRewardsEnabled(
+                    mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void GetExternalWallet() {
         synchronized (lock) {
-            nativeGetExternalWallet(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().getExternalWallet(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void DisconnectWallet() {
         synchronized (lock) {
-            nativeDisconnectWallet(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().disconnectWallet(mNativeBraveRewardsNativeWorker);
         }
     }
 
     public void ProcessRewardsPageUrl(String path, String query) {
         synchronized (lock) {
-            nativeProcessRewardsPageUrl(mNativeBraveRewardsNativeWorker,
-                    path, query);
+            BraveRewardsNativeWorkerJni.get().processRewardsPageUrl(
+                    mNativeBraveRewardsNativeWorker, path, query);
         }
     }
 
     public void RecoverWallet(String passPhrase) {
         synchronized (lock) {
-            nativeRecoverWallet(mNativeBraveRewardsNativeWorker, passPhrase);
+            BraveRewardsNativeWorkerJni.get().recoverWallet(
+                    mNativeBraveRewardsNativeWorker, passPhrase);
         }
     }
 
@@ -411,25 +439,28 @@ public class BraveRewardsNativeWorker {
 
     public void RefreshPublisher(String publisherKey) {
         synchronized (lock) {
-            nativeRefreshPublisher(mNativeBraveRewardsNativeWorker, publisherKey);
+            BraveRewardsNativeWorkerJni.get().refreshPublisher(
+                    mNativeBraveRewardsNativeWorker, publisherKey);
         }
     }
 
     public void SetAutoContributeEnabled(boolean isSetAutoContributeEnabled) {
         synchronized(lock) {
-            nativeSetAutoContributeEnabled(mNativeBraveRewardsNativeWorker, isSetAutoContributeEnabled);
+            BraveRewardsNativeWorkerJni.get().setAutoContributeEnabled(
+                    mNativeBraveRewardsNativeWorker, isSetAutoContributeEnabled);
         }
     }
 
     public void SetAutoContributionAmount(double amount) {
         synchronized(lock) {
-            nativeSetAutoContributionAmount(mNativeBraveRewardsNativeWorker, amount);
+            BraveRewardsNativeWorkerJni.get().setAutoContributionAmount(
+                    mNativeBraveRewardsNativeWorker, amount);
         }
     }
 
     public void StartProcess() {
         synchronized (lock) {
-            nativeStartProcess(mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get().startProcess(mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -593,51 +624,55 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    private native void nativeInit();
-    private native void nativeDestroy(long nativeBraveRewardsNativeWorker);
-    private native String nativeGetWalletBalance(long nativeBraveRewardsNativeWorker);
-    private native double nativeGetWalletRate(long nativeBraveRewardsNativeWorker);
-    private native void nativeGetPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
-    private native String nativeGetPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
-    private native String nativeGetPublisherFavIconURL(long nativeBraveRewardsNativeWorker, int tabId);
-    private native String nativeGetPublisherName(long nativeBraveRewardsNativeWorker, int tabId);
-    private native String nativeGetPublisherId(long nativeBraveRewardsNativeWorker, int tabId);
-    private native int nativeGetPublisherPercent(long nativeBraveRewardsNativeWorker, int tabId);
-    private native boolean nativeGetPublisherExcluded(long nativeBraveRewardsNativeWorker, int tabId);
-    private native int nativeGetPublisherStatus(long nativeBraveRewardsNativeWorker, int tabId);
-    private native void nativeIncludeInAutoContribution(long nativeBraveRewardsNativeWorker, int tabId,
-      boolean exclude);
-    private native void nativeRemovePublisherFromMap(long nativeBraveRewardsNativeWorker, int tabId);
-    private native void nativeGetCurrentBalanceReport(long nativeBraveRewardsNativeWorker);
-    private native void nativeDonate(long nativeBraveRewardsNativeWorker, String publisher_key,
-            int amount, boolean recurring);
-    private native void nativeGetAllNotifications(long nativeBraveRewardsNativeWorker);
-    private native void nativeDeleteNotification(
-            long nativeBraveRewardsNativeWorker, String notification_id);
-    private native void nativeGetGrant(long nativeBraveRewardsNativeWorker, String promotionId);
-    private native String[] nativeGetCurrentGrant(long nativeBraveRewardsNativeWorker, int position);
-    private native void nativeGetPendingContributionsTotal(long nativeBraveRewardsNativeWorker);
-    private native void nativeGetRecurringDonations(long nativeBraveRewardsNativeWorker);
-    private native boolean nativeIsCurrentPublisherInRecurrentDonations(long nativeBraveRewardsNativeWorker,
-        String publisher);
-    private native void nativeGetAutoContributeProperties(long nativeBraveRewardsNativeWorker);
-    private native boolean nativeIsAutoContributeEnabled(long nativeBraveRewardsNativeWorker);
-    private native void nativeGetReconcileStamp(long nativeBraveRewardsNativeWorker);
-    private native double nativeGetPublisherRecurrentDonationAmount(long nativeBraveRewardsNativeWorker, String publisher);
-    private native void nativeRemoveRecurring(long nativeBraveRewardsNativeWorker, String publisher);
-    private native void nativeResetTheWholeState(long nativeBraveRewardsNativeWorker);
-    private native void nativeFetchGrants(long nativeBraveRewardsNativeWorker);
-    private native int nativeGetAdsPerHour(long nativeBraveRewardsNativeWorker);
-    private native void nativeSetAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
-    private native boolean nativeIsAnonWallet(long nativeBraveRewardsNativeWorker);
-    private native boolean nativeIsRewardsEnabled(long nativeBraveRewardsNativeWorker);
-    private native void nativeGetExternalWallet(long nativeBraveRewardsNativeWorker);
-    private native void nativeDisconnectWallet(long nativeBraveRewardsNativeWorker);
-    private native void nativeProcessRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
-    private native void nativeRecoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
-    private native void nativeRefreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
-    private native void nativeGetRewardsParameters(long nativeBraveRewardsNativeWorker);
-    private native void nativeSetAutoContributeEnabled(long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
-    private native void nativeSetAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
-    private native void nativeStartProcess(long nativeBraveRewardsNativeWorker);
+    @NativeMethods
+    interface Natives {
+        void init(BraveRewardsNativeWorker caller);
+        void destroy(long nativeBraveRewardsNativeWorker);
+        String getWalletBalance(long nativeBraveRewardsNativeWorker);
+        double getWalletRate(long nativeBraveRewardsNativeWorker);
+        void getPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
+        String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
+        String getPublisherFavIconURL(long nativeBraveRewardsNativeWorker, int tabId);
+        String getPublisherName(long nativeBraveRewardsNativeWorker, int tabId);
+        String getPublisherId(long nativeBraveRewardsNativeWorker, int tabId);
+        int getPublisherPercent(long nativeBraveRewardsNativeWorker, int tabId);
+        boolean getPublisherExcluded(long nativeBraveRewardsNativeWorker, int tabId);
+        int getPublisherStatus(long nativeBraveRewardsNativeWorker, int tabId);
+        void includeInAutoContribution(
+                long nativeBraveRewardsNativeWorker, int tabId, boolean exclude);
+        void removePublisherFromMap(long nativeBraveRewardsNativeWorker, int tabId);
+        void getCurrentBalanceReport(long nativeBraveRewardsNativeWorker);
+        void donate(long nativeBraveRewardsNativeWorker, String publisher_key, int amount,
+                boolean recurring);
+        void getAllNotifications(long nativeBraveRewardsNativeWorker);
+        void deleteNotification(long nativeBraveRewardsNativeWorker, String notification_id);
+        void getGrant(long nativeBraveRewardsNativeWorker, String promotionId);
+        String[] getCurrentGrant(long nativeBraveRewardsNativeWorker, int position);
+        void getPendingContributionsTotal(long nativeBraveRewardsNativeWorker);
+        void getRecurringDonations(long nativeBraveRewardsNativeWorker);
+        boolean isCurrentPublisherInRecurrentDonations(
+                long nativeBraveRewardsNativeWorker, String publisher);
+        void getAutoContributeProperties(long nativeBraveRewardsNativeWorker);
+        boolean isAutoContributeEnabled(long nativeBraveRewardsNativeWorker);
+        void getReconcileStamp(long nativeBraveRewardsNativeWorker);
+        double getPublisherRecurrentDonationAmount(
+                long nativeBraveRewardsNativeWorker, String publisher);
+        void removeRecurring(long nativeBraveRewardsNativeWorker, String publisher);
+        void resetTheWholeState(long nativeBraveRewardsNativeWorker);
+        void fetchGrants(long nativeBraveRewardsNativeWorker);
+        int getAdsPerHour(long nativeBraveRewardsNativeWorker);
+        void setAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
+        boolean isAnonWallet(long nativeBraveRewardsNativeWorker);
+        boolean isRewardsEnabled(long nativeBraveRewardsNativeWorker);
+        void getExternalWallet(long nativeBraveRewardsNativeWorker);
+        void disconnectWallet(long nativeBraveRewardsNativeWorker);
+        void processRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
+        void recoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
+        void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
+        void getRewardsParameters(long nativeBraveRewardsNativeWorker);
+        void setAutoContributeEnabled(
+                long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
+        void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
+        void startProcess(long nativeBraveRewardsNativeWorker);
+    }
 }

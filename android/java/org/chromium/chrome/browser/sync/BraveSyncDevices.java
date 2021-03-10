@@ -13,6 +13,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class BraveSyncDevices {
 
     private void Init() {
         if (mNativeBraveSyncDevicesAndroid == 0) {
-            nativeInit();
+            BraveSyncDevicesJni.get().init(BraveSyncDevices.this);
         }
     }
 
@@ -59,7 +60,7 @@ public class BraveSyncDevices {
 
     private void Destroy() {
         if (mNativeBraveSyncDevicesAndroid != 0) {
-            nativeDestroy(mNativeBraveSyncDevicesAndroid);
+            BraveSyncDevicesJni.get().destroy(mNativeBraveSyncDevicesAndroid);
             mNativeBraveSyncDevicesAndroid = 0;
         }
     }
@@ -108,7 +109,8 @@ public class BraveSyncDevices {
 
     public ArrayList<SyncDeviceInfo> GetSyncDeviceList() {
         ArrayList<SyncDeviceInfo> deviceList = new ArrayList<SyncDeviceInfo>();
-        String json = nativeGetSyncDeviceListJson(mNativeBraveSyncDevicesAndroid);
+        String json =
+                BraveSyncDevicesJni.get().getSyncDeviceListJson(mNativeBraveSyncDevicesAndroid);
         // Add root element to make it real JSON, otherwise getJSONArray cannot parse it
         json = "{\"devices\":" + json + "}";
         try {
@@ -136,12 +138,15 @@ public class BraveSyncDevices {
     }
 
     public void DeleteDevice(String deviceGuid) {
-        nativeDeleteDevice(mNativeBraveSyncDevicesAndroid, deviceGuid);
+        BraveSyncDevicesJni.get().deleteDevice(mNativeBraveSyncDevicesAndroid, deviceGuid);
     }
 
-    private native void nativeInit();
-    private native void nativeDestroy(long nativeBraveSyncDevicesAndroid);
+    @NativeMethods
+    interface Natives {
+        void init(BraveSyncDevices caller);
+        void destroy(long nativeBraveSyncDevicesAndroid);
 
-    private native String nativeGetSyncDeviceListJson(long nativeBraveSyncDevicesAndroid);
-    private native void nativeDeleteDevice(long nativeBraveSyncDevicesAndroid, String deviceGuid);
+        String getSyncDeviceListJson(long nativeBraveSyncDevicesAndroid);
+        void deleteDevice(long nativeBraveSyncDevicesAndroid, String deviceGuid);
+    }
 }
