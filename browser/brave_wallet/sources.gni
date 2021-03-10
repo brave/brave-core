@@ -5,6 +5,7 @@
 #
 
 import("//brave/components/brave_wallet/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_wallet_sources = []
 
@@ -16,8 +17,9 @@ if (brave_wallet_enabled) {
     "//brave/browser/brave_wallet/brave_wallet_service_factory.h",
   ]
 
-  brave_browser_wallet_deps += [
-    "//components/keyed_service/content:content",
-    "//extensions/browser",
-  ]
+  brave_browser_wallet_deps += [ "//components/keyed_service/content:content" ]
+
+  if (enable_extensions) {
+    brave_browser_wallet_deps += [ "//extensions/browser" ]
+  }
 }

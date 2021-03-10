@@ -100,9 +100,9 @@ bool CryptoWalletsInfoBarDelegate::Accept() {
       auto* browser_context = web_contents->GetBrowserContext();
       Profile* profile = Profile::FromBrowserContext(browser_context);
       auto* service = BraveWalletServiceFactory::GetForProfile(profile);
-      service->LoadCryptoWalletsExtension(base::BindOnce(
-          &CryptoWalletsInfoBarDelegate::OnCryptoWalletsLoaded,
-          base::Unretained(this), web_contents));
+      service->MaybeLoadCryptoWalletsExtension(
+          base::BindOnce(&CryptoWalletsInfoBarDelegate::OnCryptoWalletsLoaded,
+                         base::Unretained(this), web_contents));
     }
     return true;
   }

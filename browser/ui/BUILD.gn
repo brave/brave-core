@@ -448,7 +448,7 @@ source_set("ui") {
     deps += [ "//brave/components/tor/resources:internals_generated_resources" ]
   }
 
-  if (brave_wallet_enabled) {
+  if (brave_wallet_enabled && !is_android) {
     sources += [
       "webui/brave_wallet_ui.cc",
       "webui/brave_wallet_ui.h",
