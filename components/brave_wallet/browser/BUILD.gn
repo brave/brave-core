@@ -27,6 +27,8 @@ source_set("browser") {
     "eth_requests.h",
     "eth_response_parser.cc",
     "eth_response_parser.h",
+    "hd_key.cc",
+    "hd_key.h",
     "pref_names.cc",
     "pref_names.h",
   ]
@@ -35,6 +37,8 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/third_party/bitcoin-core",
+    "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/content_settings/core/browser",

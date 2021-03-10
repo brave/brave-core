@@ -1,0 +1,54 @@
+config("warnings") {
+  cflags = []
+
+  if (is_clang) {
+    cflags += [ "-Wno-unused-function" ]
+  }
+}
+
+config("bitcoin-core_config") {
+  include_dirs = [ "src/src" ]
+}
+
+static_library("bitcoin-core") {
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+    ":warnings",
+  ]
+
+  public_configs = [ ":bitcoin-core_config" ]
+
+  sources = [
+    "src/src/base58.cpp",
+    "src/src/base58.h",
+    "src/src/crypto/ripemd160.cpp",
+    "src/src/crypto/ripemd160.h",
+    "src/src/crypto/sha256.cpp",
+    "src/src/crypto/sha256.h",
+  ]
+}
+
+static_library("secp256k1") {
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    ":warnings",
+  ]
+  include_dirs = [ "src/src/secp256k1" ]
+  defines = [
+    "USE_NUM_NONE",
+    "USE_FORCE_WIDEMUL_INT64",
+    "USE_FIELD_INV_BUILTIN",
+    "USE_SCALAR_INV_BUILTIN",
+    "ECMULT_WINDOW_SIZE=15",
+    "ECMULT_GEN_PREC_BITS=4",
+  ]
+
+  sources = [
+    "src/src/secp256k1/include/secp256k1.h",
+    "src/src/secp256k1/include/secp256k1_preallocated.h",
+    "src/src/secp256k1/src/secp256k1.c",
+  ]
+}
