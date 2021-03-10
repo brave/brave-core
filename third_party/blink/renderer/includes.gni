@@ -30,6 +30,7 @@ brave_idl_imports = [
 # third_party/blink/renderer/bindings/idl_in_modules.gni
 brave_static_idl_files_in_modules = [
   "//brave/third_party/blink/renderer/modules/brave/brave.idl",
+  "//brave/third_party/blink/renderer/modules/brave/brave_wallet.idl",
   "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
   "//brave/third_party/blink/renderer/modules/global_privacy_control/navigator_global_privacy_control.idl",
 ]
@@ -37,6 +38,8 @@ brave_static_idl_files_in_modules = [
 # common includes which can help minimize patches for
 # third_party/blink/renderer/bindings/generated_in_modules.gni
 brave_generated_interface_sources_in_modules = [
-  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.h",
   "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.cc",
+  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.h",
+  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave_wallet.cc",
+  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave_wallet.h",
 ]

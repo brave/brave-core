@@ -6,4 +6,5 @@
     ImplementedAs=NavigatorBrave
 ] partial interface Navigator {
     readonly attribute Brave brave;
+    readonly attribute BraveWallet brave_wallet;
 };

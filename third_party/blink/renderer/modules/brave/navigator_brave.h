@@ -14,6 +14,7 @@
 namespace blink {
 
 class Brave;
+class BraveWallet;
 class Navigator;
 
 class NavigatorBrave final
@@ -26,7 +27,9 @@ class NavigatorBrave final
 
   static NavigatorBrave& From(Navigator&);
   static Brave* brave(Navigator&);
+  static BraveWallet* brave_wallet(Navigator&);
   Brave* brave();
+  BraveWallet* brave_wallet();
 
   explicit NavigatorBrave(Navigator&);
 
@@ -37,6 +40,7 @@ class NavigatorBrave final
 
  private:
   Member<Brave> brave_;
+  Member<BraveWallet> brave_wallet_;
 };
 
 }  // namespace blink

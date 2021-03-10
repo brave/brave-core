@@ -27,8 +27,6 @@ class BraveWalletRenderFrameObserver
   void DidStartNavigation(
       const GURL& url,
       base::Optional<blink::WebNavigationType> navigation_type) override;
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
   void DidCreateNewDocument() override;
 
  private:

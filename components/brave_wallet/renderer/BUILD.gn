@@ -17,13 +17,9 @@ source_set("renderer") {
 
   deps = [
     "//base",
-    "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/resources:generated_resources",
     "//content/public/renderer",
-    "//gin",
-    "//mojo/public/cpp/bindings",
     "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
-    "//v8",
   ]
 }

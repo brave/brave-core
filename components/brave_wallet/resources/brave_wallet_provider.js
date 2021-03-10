@@ -10,8 +10,10 @@
 
     window.ethereum = {
       request: function(obj) {
-        brave_provider_handler.request(obj)
-        return Promise.resolve()
+        return navigator.brave_wallet.request(obj).then(
+                function(value) { console.log('window.ethereum.request resolved: ' + value) },
+                function(error) { console.log('window.ethereum.request rejected: ' + error) }
+            );
       }
     }
 })()
