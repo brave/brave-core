@@ -582,7 +582,7 @@ void IpfsService::OnGarbageCollection(
   if (success) {
     const std::string& body = *response_body;
     if (!body.empty())
-      success = IPFSJSONParser::GetGarbageCollectionFromJSON(body, &error);
+      IPFSJSONParser::GetGarbageCollectionFromJSON(body, &error);
   }
   std::move(callback).Run(success && error.empty(), error);
 }
