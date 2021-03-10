@@ -322,7 +322,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
               this.props.internalFunds > 0
               ? <span>
                 {parts[0]}
-                <b>{this.props.internalFunds.toString()}</b>
+                <b>{this.props.internalFunds.toString()} BAT</b>
                 {parts[1]}
                 {this.props.walletProvider}
                 {parts[2]}
