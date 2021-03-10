@@ -11,9 +11,12 @@
 #include "base/values.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -86,6 +89,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setMediaRouterEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setIPFSStorageMax",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSStorageMax,
+                          base::Unretained(this)));
+
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -348,6 +356,24 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
                       base::Value(false));
 #endif
     OnRestartNeededChanged();
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  int storage_max_gb = 0;
+  args->GetInteger(0, &storage_max_gb);
+  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  prefs->SetInteger(kIpfsStorageMax, storage_max_gb);
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForContext(profile_);
+  if (!service) {
+    return;
+  }
+  if (service->IsDaemonLaunched()) {
+    service->RestartDaemon();
   }
 }
 

@@ -730,6 +730,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL" desc="The text label for IPFS gateway input field">
         Gateway address
       </message>
+      <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL" desc="The text label for Maximum IPFS cache size field">
+        Maximum IPFS cache size (GB)
+      </message>
+      <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC" desc="The text label for Maximum IPFS cache size field">
+        A soft upper limit for the size of the IPFS repository's datastore.
+      </message>
       <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS" desc="The error message used when user input an invalid gateway address">
         Invalid gateway address
       </message>

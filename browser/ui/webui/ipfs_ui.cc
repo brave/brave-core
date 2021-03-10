@@ -210,19 +210,9 @@ void IPFSDOMHandler::HandleRestartDaemon(const base::ListValue* args) {
   if (!service) {
     return;
   }
-  auto launch_callback = base::BindOnce(&IPFSDOMHandler::LaunchDaemon,
-                                        weak_ptr_factory_.GetWeakPtr());
-  service->ShutdownDaemon(base::BindOnce(
-      [](base::OnceCallback<void()> launch_callback, const bool success) {
-        if (!success) {
-          VLOG(1) << "Unable to shutdown daemon";
-          return;
-        }
-        if (launch_callback) {
-          std::move(launch_callback).Run();
-        }
-      },
-      std::move(launch_callback)));
+  if (service->IsDaemonLaunched()) {
+    service->RestartDaemon();
+  }
 }
 
 void IPFSDOMHandler::HandleGetRepoStats(const base::ListValue* args) {
