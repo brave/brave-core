@@ -182,7 +182,7 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(DisconnectWallet, void(const std::string& wallet_type));
 
-  MOCK_METHOD0(OnlyAnonWallet, bool());
+  MOCK_CONST_METHOD0(OnlyAnonWallet, bool());
 
   MOCK_METHOD1(AddPrivateObserver,
       void(RewardsServicePrivateObserver* observer));

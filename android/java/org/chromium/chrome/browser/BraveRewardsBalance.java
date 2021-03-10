@@ -13,7 +13,7 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class BraveRewardsBalance {
+public class BraveRewardsBalance {
     public static final String WALLET_ANONYMOUS = "anonymous";
     public static final String WALLET_UPHOLD = "uphold";
     public static final String WALLET_BLINDED = "blinded";
@@ -44,6 +44,10 @@ class BraveRewardsBalance {
             Double val = json_wallets.getDouble(key);
             mWallets.put (key, val);
         }
+    }
+
+    public double getTotal() {
+        return mTotal;
     }
 
     @VisibleForTesting

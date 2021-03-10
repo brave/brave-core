@@ -508,11 +508,11 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "ウォレットを確認",
+    "message": "ウォレットを認証",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "ウォレットが検証済み",
+    "message": "ウォレットが認証済み",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -520,19 +520,19 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Braveの報酬から切断",
+    "message": "Brave Rewardとの接続を解除する",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
-    "message": "確認済み",
+    "message": "認証済み",
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
-    "message": "ウォレットの確認が完了しました！",
+    "message": "ウォレットの認証が完了しました！",
     "description": "Title for notification when wallet becomes verified"
   },
   "walletVerifiedTextNotification":  {
-    "message": "おめでとうございます！お使いの$name$ウォレットの確認が無事完了し、資金の追加と引き出しの準備が整いました。",
+    "message": "おめでとうございます！お使いの$name$ウォレットの認証が無事完了し、資金の追加と引き出しの準備が整いました。",
     "description": "Title for notification when wallet becomes verified",
     "placeholders": {
       "name": {
@@ -554,7 +554,7 @@
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "ウォレットの検証を完了",
+    "message": "ウォレットの認証を完了",
     "description": "CTA for completing wallet verification"
   },
   "set": {
@@ -766,7 +766,7 @@
     "description": ""
   },
   "bapDeprecationHeader": {
-    "message": "日本でのBrave Rewardsが新システムに移行します！",
+    "message": "日本の「Brave Rewards」は新しいシステムに移行を予定しています！",
     "description": "Header text for BAP deprecation warning message"
   },
   "bapDeprecationLearnMore": {
