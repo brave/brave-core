@@ -275,7 +275,7 @@ class NTPDownloader {
             }
             
             let metadata = try Data(contentsOf: metadataFileURL)
-            if self.isCampaignEnded(data: metadata) {
+            if Self.isCampaignEnded(data: metadata) {
                 try self.removeCampaign(type: type)
                 return nil
             }
@@ -392,7 +392,7 @@ class NTPDownloader {
                 return completion(nil, nil, .metadataError("Invalid \(type.resourceName) for NTP Download"))
             }
             
-            if self.isCampaignEnded(data: data) {
+            if Self.isCampaignEnded(data: data) {
                 return completion(nil, nil, .campaignEnded)
             }
             
@@ -582,8 +582,14 @@ class NTPDownloader {
         return saveLocation.appendingPathComponent(type.resourceName)
     }
     
-    private func isCampaignEnded(data: Data) -> Bool {
-        return data.count <= 5 || String(data: data, encoding: .utf8) == "{\n}\n"
+    static func isCampaignEnded(data: Data) -> Bool {
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+              let wallpapers = json["wallpapers"] as? [[String: Any]],
+              wallpapers.count > 0 else {
+            return true
+        }
+        
+        return false
     }
     
     private struct CacheResponse {

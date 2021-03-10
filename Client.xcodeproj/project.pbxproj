@@ -33,6 +33,7 @@
 		0A1E84452190A57F0042F782 /* SyncPairWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1E843B2190A57F0042F782 /* SyncPairWordsViewController.swift */; };
 		0A1E84462190A57F0042F782 /* SyncAddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1E843C2190A57F0042F782 /* SyncAddDeviceViewController.swift */; };
 		0A27ABA123D1B9C400194921 /* BrandedImageCalloutState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */; };
+		0A2BFB3425F2754600719AA9 /* NTPDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2BFB3325F2754600719AA9 /* NTPDownloaderTests.swift */; };
 		0A2FF33F24A4B75100F88F43 /* vpncheckmark.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A2FF33E24A4B75000F88F43 /* vpncheckmark.json */; };
 		0A39FE902486604D00290ABC /* GRDSubscriberCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A39FE832486604100290ABC /* GRDSubscriberCredential.h */; };
 		0A39FE912486604D00290ABC /* GRDGatewayAPIResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A39FE842486604200290ABC /* GRDGatewayAPIResponse.h */; };
@@ -1382,6 +1383,7 @@
 		0A24F846233EB5B5004D2F3A /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Dev.xcconfig; sourceTree = "<group>"; };
 		0A24F847233EB5B5004D2F3A /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandedImageCalloutState.swift; sourceTree = "<group>"; };
+		0A2BFB3325F2754600719AA9 /* NTPDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPDownloaderTests.swift; sourceTree = "<group>"; };
 		0A2D5DF623571F02001ED889 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0A2FF33E24A4B75000F88F43 /* vpncheckmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vpncheckmark.json; sourceTree = "<group>"; };
 		0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
@@ -5244,6 +5246,7 @@
 				0A42F3BC25B5CFAE00BD370B /* DefaultBrowserIntroTests.swift */,
 				F9488F12258D6B9800A72C84 /* WKWebViewExtensionsTest.swift */,
 				F95ED17D25A95426001A432D /* UserScriptManagerTest.swift */,
+				0A2BFB3325F2754600719AA9 /* NTPDownloaderTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -7244,6 +7247,7 @@
 				D8EFFA261FF702A8001D3A09 /* NavigationRouterTests.swift in Sources */,
 				F939FBFE22A596B900D9CD3F /* U2FTests.swift in Sources */,
 				0A4BEFD6221E13830005551A /* ContentBlockerTests.swift in Sources */,
+				0A2BFB3425F2754600719AA9 /* NTPDownloaderTests.swift in Sources */,
 				A83E5B1D1C1DA8D80026D912 /* UIPasteboardExtensionsTests.swift in Sources */,
 				E696FE511C47F86E00EC007C /* AuthenticatorTests.swift in Sources */,
 				275965E224EEC4EA0051A827 /* FeedFillStrategyTests.swift in Sources */,
