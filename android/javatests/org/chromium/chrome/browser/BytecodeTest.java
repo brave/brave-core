@@ -206,9 +206,6 @@ public class BytecodeTest {
                 List.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout",
                 "getBoundsAfterAccountingForRightButtons", true, int.class, ViewGroup.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment",
-                "updateLeakDetectionAndExtendedReportingPreferences", true, void.class));
 
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
@@ -252,6 +249,9 @@ public class BytecodeTest {
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
                 ObservableSupplier.class, ModalDialogManager.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
+                        "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
     }
 
     @Test

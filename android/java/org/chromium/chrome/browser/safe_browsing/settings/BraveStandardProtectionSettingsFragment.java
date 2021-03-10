@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.safe_browsing.settings;
 
+import android.os.Bundle;
+
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 
@@ -12,9 +14,9 @@ import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
  * Fragment containing standard protection settings.
  */
 public class BraveStandardProtectionSettingsFragment extends StandardProtectionSettingsFragment {
-    public void updateLeakDetectionAndExtendedReportingPreferences() {
-        BraveReflectionUtil.InvokeMethod(StandardProtectionSettingsFragment.class, this,
-                "updateLeakDetectionAndExtendedReportingPreferences");
+    @Override
+    protected void onCreatePreferencesInternal(Bundle bundle, String rootKey) {
+        super.onCreatePreferencesInternal(bundle, rootKey);
 
         SafeBrowsingBridge.setSafeBrowsingExtendedReportingEnabled(false);
         getPreferenceScreen().removePreference(mExtendedReportingPreference);

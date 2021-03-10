@@ -206,6 +206,10 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment {
-    *** updateLeakDetectionAndExtendedReportingPreferences(...);
+-keep class org.chromium.chrome.browser.settings.SettingsLauncherImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl {
+    public <init>(...);
 }
