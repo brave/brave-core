@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("browser_tests") {
@@ -29,6 +30,7 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "//brave/browser/decentralized_dns/test/decentralized_dns_navigation_throttle_unittest.cc",
     "//brave/browser/decentralized_dns/test/utils_unittest.cc",
     "//brave/net/dns/dns_transaction_unittest.cc",
   ]
@@ -37,6 +39,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/decentralized_dns",
+    "//brave/components/tor/buildflags",
     "//chrome/test:test_support",
     "//components/prefs",
     "//net",
@@ -44,4 +47,8 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
+  }
 }  # source_set("unit_tests")

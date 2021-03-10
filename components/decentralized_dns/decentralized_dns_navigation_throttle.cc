@@ -28,7 +28,9 @@ DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     PrefService* local_state,
     const std::string& locale) {
-  if (!IsDecentralizedDnsEnabled())
+  content::BrowserContext* context =
+      navigation_handle->GetWebContents()->GetBrowserContext();
+  if (!IsDecentralizedDnsEnabled() || context->IsOffTheRecord())
     return nullptr;
 
   return std::make_unique<DecentralizedDnsNavigationThrottle>(
