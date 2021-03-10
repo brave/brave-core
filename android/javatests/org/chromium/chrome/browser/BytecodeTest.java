@@ -104,6 +104,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/ChromeTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists(
@@ -245,6 +249,9 @@ public class BytecodeTest {
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
                 ObservableSupplier.class, ModalDialogManager.class));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
+                        "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
     }
 
     @Test
