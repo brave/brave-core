@@ -96,9 +96,22 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service,
       api_key_(api_key),
       platform_(platform),
       weak_factory_(this) {
+  // Track initial profile creation
+  if (g_browser_process->profile_manager()) {
+    g_browser_process->profile_manager()->AddObserver(this);
+    DCHECK_EQ(0U,
+              g_browser_process->profile_manager()->GetLoadedProfiles().size());
+  }
 }
 
 BraveReferralsService::~BraveReferralsService() {
+}
+
+void BraveReferralsService::OnProfileAdded(Profile* profile) {
+  if (profile == ProfileManager::GetPrimaryUserProfile()) {
+    g_browser_process->profile_manager()->RemoveObserver(this);
+    Start();
+  }
 }
 
 void BraveReferralsService::Start() {

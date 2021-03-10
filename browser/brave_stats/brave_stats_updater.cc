@@ -114,9 +114,23 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
   } else {
     usage_server_ = BRAVE_USAGE_SERVER;
   }
+
+  // Track initial profile creation
+  if (g_browser_process->profile_manager()) {
+    g_browser_process->profile_manager()->AddObserver(this);
+    DCHECK_EQ(0U,
+              g_browser_process->profile_manager()->GetLoadedProfiles().size());
+  }
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {}
+
+void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
+  if (profile == ProfileManager::GetPrimaryUserProfile()) {
+    g_browser_process->profile_manager()->RemoveObserver(this);
+    Start();
+  }
+}
 
 void BraveStatsUpdater::Start() {
   // Startup timer, only initiated once we've checked for a promo
