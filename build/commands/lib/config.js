@@ -146,10 +146,6 @@ Config.prototype.isDebug = function () {
   return this.buildConfig === 'Debug'
 }
 
-Config.prototype.isDcheckAlwaysOn = function () {
-  return ('dcheck_always_on' in options) ? options.dcheck_always_on : true
-}
-
 Config.prototype.enableCDMHostVerification = function () {
   const enable = this.buildConfig === 'Release' &&
                  process.platform !== 'linux' &&
@@ -200,7 +196,7 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
-    dcheck_always_on: this.isDcheckAlwaysOn(),
+    dcheck_always_on: this.dcheck_always_on,
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
@@ -363,10 +359,7 @@ Config.prototype.buildArgs = function () {
     args.ios_deployment_target = '12.0'
     args.ios_enable_code_signing = false
     args.fatal_linker_warnings = !this.isComponentBuild()
-    // DCHECK's crash on Static builds without allowing the debugger to continue
-    // Can be removed when approprioate DCHECK's have been fixed:
-    // https://github.com/brave/brave-browser/issues/10334
-    args.dcheck_always_on = this.isDebug()
+    args.dcheck_always_on = this.dcheck_always_on
 
     args.ios_enable_content_widget_extension = false
     args.ios_enable_search_widget_extension = false
@@ -640,6 +633,9 @@ Config.prototype.update = function (options) {
       opts.push(value)
     })
   }
+
+  if (options.dcheck_always_on)
+    this.dcheck_always_on = true
 }
 
 Config.prototype.getCachePath = function () {
