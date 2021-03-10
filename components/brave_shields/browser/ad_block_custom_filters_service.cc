@@ -8,8 +8,8 @@
 #include "base/logging.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 

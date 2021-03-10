@@ -37,11 +37,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # Add the licensing info that would normally be in a README.chromium file.
     # This is for when we pull in external repos directly.
     special_cases.update({
-        os.path.join('brave', 'vendor', 'adblock_rust_ffi'): {
-            "Name": "adblock-rust-ffi",
-            "URL": "https://github.com/brave/adblock-rust-ffi",
-            "License": "MPL-2.0",
-        },
         os.path.join('brave', 'vendor', 'bat-native-anonize'): {
             "Name": "bat-native-anonize",
             "URL": "https://github.com/brave-intl/bat-native-anonize",
