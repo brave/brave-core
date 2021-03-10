@@ -32,25 +32,14 @@ EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
 
   for (const auto& segment : kSegments) {
     const auto iter = updated_arms.find(segment);
-
     if (iter != updated_arms.end()) {
-      BLOG(3, "Epsilon greedy bandit arm already exists for "
-          << segment << " segment");
+      const EpsilonGreedyBanditArmInfo arm = iter->second;
+      if (arm.IsValid()) {
+        BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
+                                                                << " segment");
 
-      continue;
-    }
-
-    if (!iter->second.IsValid()) {
-      EpsilonGreedyBanditArmInfo new_arm;
-      new_arm.value = kArmDefaultValue;
-      new_arm.pulls = kArmDefaultPulls;
-
-      updated_arms[segment] = new_arm;
-
-      BLOG(2, "Epsilon greedy bandit invalid arm was reset for "
-          << segment << " segment");
-
-      continue;
+        continue;
+      }
     }
 
     EpsilonGreedyBanditArmInfo arm;
